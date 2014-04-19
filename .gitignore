@@ -1,0 +1,15 @@
+*.obj
+*.ipch
+*.pdb
+*.tlog
+DeathLeak.opensdf
+DeathLeak.sdf
+dx10examples/Debug/DeathLeak.lastbuildstate
+dx10examples/Debug/DeathLeak.unsuccessfulbuild
+dx10examples/Debug/dx10examples.log
+dx10examples/Debug/vc110.idb
+dx10examples/x64/Debug/DeathLeak.lastbuildstate
+dx10examples/x64/Debug/DeathLeak.pch
+x64/Debug/DeathLeak.exe
+x64/Debug/DeathLeak.ilk
+dx10examples/x64/Debug/dx10examples.log
