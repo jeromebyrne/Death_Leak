@@ -1,0 +1,13 @@
+<uiscreen>
+  <meter name="2_health_bar"
+        process_input="false"
+        posX ="200" posY ="-450" width="500" height ="85"
+        image="Media\\UI\\meter_bar_middle.png"
+        meter_edge="Media\\UI\\meter_edge.png"
+        meter_middle="Media\\UI\\meter_middle.png"
+        meter_bar_middle="Media\\UI\\meter_bar_middle.png"
+        hflip="false" vflip="false"
+        alpha="1.0">
+  </meter>
+  
+</uiscreen>

@@ -1,0 +1,424 @@
+<particlespray id="2" updateable="true">
+  <position z="16" y="150" x="100" rotation="0" />
+  <dimensions breadth="0" height="128" width="128" native="true" />
+  <material value="" />
+  <alpha value="1" />
+  <effect name="effectlighttexture" />
+  <texture filename="Media\\orb3.png" />
+  <direction x="1" y="0"/>
+  <spread value="0.1"/>
+  <speed min="2" max="12" />
+  <livetime min="1000" max="3000" />
+  <size min="30" max="60" scaleto="true" scaletovalue="3.0" />
+  <gravity value="1.0" />
+  <loop value="true" looptime="-1" />
+  <brightness min="0.5" max="1.0" />
+</particlespray>
+
+<!-- audio object -->
+<AudioObject id="22" updateable="true">
+  <position z="11" y="-50" x="3000" rotation="0" />
+  <dimensions breadth="0" height="300" width="500" />
+  <material value="" />
+  <audiofile value="character\scream.wav" />
+  <adjustvolumetocamera value="true" />
+  <repeat value="true" />
+  <volumeadjustmultiplier value="10.000000" />
+</AudioObject>
+
+<!--Wood Platform Long-->
+<platform id="4" updateable="true">
+  <alpha value="1" />
+  <position x="5290" y="1100" z="8" />
+  <dimensions native="true" width="512" height="512" breadth="0" />
+  <effect name="effectlighttexture" />
+  <texture filename="Media\\objects\\wood_platform_long.png" />
+  <horizontalflip value="true"/>
+  <verticalflip value="false"/>
+  <resistance x="0.95" y="1.5" z="0" />
+  <velocity x="0" y="0" z="0" />
+  <maxvelocity x="20" y="-1" z="0" />
+  <direction x="1" y="0" z="0" />
+  <acceleration x="0" y="0" z="0" />
+  <applygravity value="false"/>
+  <collisionboxdimensions x="450" y="100" z="0"/>
+  <passive value ="true"/>
+  <isanimated value ="false" />
+  <animationfile value="XmlFiles\diamondstoneplatform.xml" />
+  <material value="stone" />
+  <timeuntilreturn value="3000"/>
+  <maxtriggertime value="400"/>
+</platform>
+
+<!--Wood platform Short-->
+<fallingplatform id="4" updateable="true">
+  <alpha value="1" />
+  <position x="5800" y="2350" z="8" />
+  <dimensions native="true" width="512" height="512" breadth="0" />
+  <effect name="effectlighttexture" />
+  <texture filename="Media\\objects\\wood_platform_short.png" />
+  <horizontalflip value="false"/>
+  <verticalflip value="false"/>
+  <resistance x="0.95" y="1.5" z="0" />
+  <velocity x="0" y="0" z="0" />
+  <maxvelocity x="20" y="-1" z="0" />
+  <direction x="1" y="0" z="0" />
+  <acceleration x="0" y="0" z="0" />
+  <applygravity value="false"/>
+  <collisionboxdimensions x="290" y="100" z="0"/>
+  <passive value ="true"/>
+  <isanimated value ="false" />
+  <animationfile value="XmlFiles\diamondstoneplatform.xml" />
+  <material value="softwood" />
+  <timeuntilreturn value="20000"/>
+  <maxtriggertime value="700"/>
+</fallingplatform>
+
+<!-- Cart -->
+<sprite id="2" updateable="True">
+  <alpha value="1.0" />
+  <position x="7000" y="75" z="8" />
+  <dimensions native="false" width="300" height="300" breadth="0" />
+  <effect name="effectlighttexture" />
+  <texture filename="Media\\objects\\cart.png" />
+  <horizontalflip value="true"/>
+  <verticalflip value="false"/>
+  <isanimated value ="false" />
+  <animationfile value="XmlFiles\ninjaAnimation.xml" />
+  <material value="null" />
+</sprite>
+
+<!--Watch tower-->
+
+<sprite id="1400" updateable="True">
+  <alpha value="1.0" />
+  <position x="4300" y="750" z="7" />
+  <dimensions native="true" width="1000" height="500" breadth="0" />
+  <effect name="effectlighttexture" />
+  <texture filename="Media\\buildings\\watchtower.png" />
+  <horizontalflip value="false"/>
+  <verticalflip value="false"/>
+  <isanimated value ="false" />
+  <animationfile value="XmlFiles\ninjaAnimation.xml" />
+  <material value="softwood" />
+</sprite>
+
+<!--watch tower collision 1-->
+<platform id="4" updateable="true">
+  <alpha value="0" />
+  <position x="4325" y="337" z="7" />
+  <dimensions native="true" width="512" height="512" breadth="0" />
+  <effect name="effectlighttexture" />
+  <texture filename="Media\\blank_alpha.png" />
+  <horizontalflip value="true"/>
+  <verticalflip value="false"/>
+  <resistance x="0.95" y="1.5" z="0" />
+  <velocity x="0" y="0" z="0" />
+  <maxvelocity x="20" y="-1" z="0" />
+  <direction x="1" y="0" z="0" />
+  <acceleration x="0" y="0" z="0" />
+  <applygravity value="false"/>
+  <collisionboxdimensions x="775" y="450" z="0"/>
+  <passive value ="true"/>
+  <isanimated value ="false" />
+  <animationfile value="XmlFiles\diamondstoneplatform.xml" />
+  <material value="softwood" />
+  <timeuntilreturn value="3000"/>
+  <maxtriggertime value="400"/>
+</platform>
+
+<!--watch tower collision 2-->
+<platform id="4" updateable="true">
+  <alpha value="0" />
+  <position x="4375" y="1280" z="7" />
+  <dimensions native="true" width="512" height="512" breadth="0" />
+  <effect name="effectlighttexture" />
+  <texture filename="Media\\blank_alpha.png" />
+  <horizontalflip value="true"/>
+  <verticalflip value="false"/>
+  <resistance x="0.95" y="1.5" z="0" />
+  <velocity x="0" y="0" z="0" />
+  <maxvelocity x="20" y="-1" z="0" />
+  <direction x="1" y="0" z="0" />
+  <acceleration x="0" y="0" z="0" />
+  <applygravity value="false"/>
+  <collisionboxdimensions x="400" y="150" z="0"/>
+  <passive value ="true"/>
+  <isanimated value ="false" />
+  <animationfile value="XmlFiles\diamondstoneplatform.xml" />
+  <material value="softwood" />
+  <timeuntilreturn value="3000"/>
+  <maxtriggertime value="400"/>
+</platform>
+
+<!-- Waterfall-->
+<ParallaxLayer id="2" updateable="true">
+  <position z="6" y="300" x="-1500" rotation="0" />
+  <dimensions breadth="0" height="512" width="512" native="true" repeatX="false" repeatY="false" />
+  <material value="" />
+  <alpha value="0.65" />
+  <effect name="effectnoise" />
+  <texture filename="Media\\waterfall_2.png" />
+  <horizontalflip value="true" />
+  <verticalflip value="false" />
+  <isanimated value="false" />
+  <fade_when_player_occluded value="false" />
+  <cameraparallaxmultiplierx value="0" />
+  <cameraparallaxmultipliery value="0" />
+  <repeatwidth value="1920" />
+  <followcamy value="false" />
+  <followcamx value="false" />
+  <autoscrollx value="false" />
+  <autoscrolly value="true" />
+  <autoscrollxspeed value="0" />
+  <autoscrollyspeed value="5" />
+</ParallaxLayer>
+
+<ParallaxLayer id="2" updateable="true">
+  <position z="5" y="300" x="-1590" rotation="0" />
+  <dimensions breadth="0" height="512" width="512" native="true" repeatX="false" repeatY="false" />
+  <material value="" />
+  <alpha value="0.7" />
+  <effect name="effectlighttexture" />
+  <texture filename="Media\\waterfall_3.png" />
+  <horizontalflip value="false" />
+  <verticalflip value="false" />
+  <isanimated value="false" />
+  <fade_when_player_occluded value="false" />
+  <cameraparallaxmultiplierx value="0" />
+  <cameraparallaxmultipliery value="0" />
+  <repeatwidth value="1920" />
+  <followcamy value="false" />
+  <followcamx value="false" />
+  <autoscrollx value="false" />
+  <autoscrolly value="true" />
+  <autoscrollxspeed value="0" />
+  <autoscrollyspeed value="10" />
+</ParallaxLayer>
+<ParallaxLayer id="2" updateable="true">
+  <position z="5" y="300" x="-1390" rotation="0" />
+  <dimensions breadth="0" height="512" width="512" native="true" repeatX="false" repeatY="false" />
+  <material value="" />
+  <alpha value="0.7" />
+  <effect name="effectlighttexture" />
+  <texture filename="Media\\waterfall_3.png" />
+  <horizontalflip value="false" />
+  <verticalflip value="false" />
+  <isanimated value="false" />
+  <fade_when_player_occluded value="false" />
+  <cameraparallaxmultiplierx value="0" />
+  <cameraparallaxmultipliery value="0" />
+  <repeatwidth value="1920" />
+  <followcamy value="false" />
+  <followcamx value="false" />
+  <autoscrollx value="false" />
+  <autoscrolly value="true" />
+  <autoscrollxspeed value="0" />
+  <autoscrollyspeed value="8.5" />
+</ParallaxLayer>
+<ParallaxLayer id="2" updateable="true">
+  <position z="5" y="300" x="-1500" rotation="0" />
+  <dimensions breadth="0" height="512" width="512" native="true" repeatX="false" repeatY="false" />
+  <material value="" />
+  <alpha value="0.8" />
+  <effect name="effectlighttexture" />
+  <texture filename="Media\\waterfall_3.png" />
+  <horizontalflip value="false" />
+  <verticalflip value="false" />
+  <isanimated value="false" />
+  <fade_when_player_occluded value="false" />
+  <cameraparallaxmultiplierx value="0" />
+  <cameraparallaxmultipliery value="0" />
+  <repeatwidth value="1920" />
+  <followcamy value="false" />
+  <followcamx value="false" />
+  <autoscrollx value="false" />
+  <autoscrolly value="true" />
+  <autoscrollxspeed value="0" />
+  <autoscrollyspeed value="16" />
+</ParallaxLayer>
+<ParallaxLayer id="2" updateable="true">
+  <position z="4.5" y="300" x="-1500" rotation="0" />
+  <dimensions breadth="0" height="512" width="512" native="true" repeatX="false" repeatY="false" />
+  <material value="" />
+  <alpha value="0.3" />
+  <effect name="effectnoise" />
+  <texture filename="Media\\waterfall_2.png" />
+  <horizontalflip value="true" />
+  <verticalflip value="false" />
+  <isanimated value="false" />
+  <fade_when_player_occluded value="false" />
+  <cameraparallaxmultiplierx value="0" />
+  <cameraparallaxmultipliery value="0" />
+  <repeatwidth value="1920" />
+  <followcamy value="false" />
+  <followcamx value="false" />
+  <autoscrollx value="false" />
+  <autoscrolly value="true" />
+  <autoscrollxspeed value="0" />
+  <autoscrollyspeed value="4" />
+</ParallaxLayer>
+
+<Sprite id="3" updateable="true">
+  <position z="3.1" y="-220" x="-1500" rotation="0" />
+  <dimensions breadth="0" height="300" width="400" native="false" repeatX="false" repeatY="false" />
+  <material value="" />
+  <alpha value="0.75" />
+  <effect name="effectlighttexturevertexwobble" />
+  <texture filename="Media\\waterfall_steam.png" />
+  <horizontalflip value="false" />
+  <verticalflip value="false" />
+  <isanimated value="false" />
+  <fade_when_player_occluded value="false" />
+</Sprite>
+<Sprite id="3" updateable="true">
+  <position z="3.1" y="-200" x="-1700" rotation="0" />
+  <dimensions breadth="0" height="300" width="400" native="false" repeatX="false" repeatY="false" />
+  <material value="" />
+  <alpha value="0.75" />
+  <effect name="effectlighttexturevertexwobble" />
+  <texture filename="Media\\waterfall_steam.png" />
+  <horizontalflip value="false" />
+  <verticalflip value="true" />
+  <isanimated value="false" />
+  <fade_when_player_occluded value="false" />
+</Sprite>
+<Sprite id="3" updateable="true">
+  <position z="3.1" y="-200" x="-1300" rotation="0" />
+  <dimensions breadth="0" height="300" width="400" native="false" repeatX="false" repeatY="false" />
+  <material value="" />
+  <alpha value="0.8" />
+  <effect name="effectlighttexturevertexwobble" />
+  <texture filename="Media\\waterfall_steam.png" />
+  <horizontalflip value="true" />
+  <verticalflip value="true" />
+  <isanimated value="false" />
+  <fade_when_player_occluded value="false" />
+</Sprite>
+
+<Sprite id="3" updateable="true">
+  <position z="5" y="-220" x="-1500" rotation="0" />
+  <dimensions breadth="0" height="280" width="370" native="false" repeatX="false" repeatY="false" />
+  <material value="" />
+  <alpha value="0.9" />
+  <effect name="effectlighttexturevertexwobble" />
+  <texture filename="Media\\waterfall_steam.png" />
+  <horizontalflip value="false" />
+  <verticalflip value="false" />
+  <isanimated value="false" />
+  <fade_when_player_occluded value="false" />
+</Sprite>
+<Sprite id="3" updateable="true">
+  <position z="5" y="-200" x="-1700" rotation="0" />
+  <dimensions breadth="0" height="280" width="370" native="false" repeatX="false" repeatY="false" />
+  <material value="" />
+  <alpha value="0.9" />
+  <effect name="effectlighttexturevertexwobble" />
+  <texture filename="Media\\waterfall_steam.png" />
+  <horizontalflip value="false" />
+  <verticalflip value="true" />
+  <isanimated value="false" />
+  <fade_when_player_occluded value="false" />
+</Sprite>
+<Sprite id="3" updateable="true">
+  <position z="5" y="-200" x="-1300" rotation="0" />
+  <dimensions breadth="0" height="280" width="370" native="false" repeatX="false" repeatY="false" />
+  <material value="" />
+  <alpha value="0.9" />
+  <effect name="effectlighttexturevertexwobble" />
+  <texture filename="Media\\waterfall_steam.png" />
+  <horizontalflip value="true" />
+  <verticalflip value="true" />
+  <isanimated value="false" />
+  <fade_when_player_occluded value="false" />
+</Sprite>
+
+<ParticleSpray id="73" updateable="false">
+  <position z="3.5" y="-200" x="-1700" rotation="0" />
+  <dimensions breadth="0" height="600" width="1000" />
+  <material value="" />
+  <alpha value="1" />
+  <effect name="effectlighttexture" />
+  <numparticles value="15.000000" />
+  <texture filename="Media\\large_splash.png" />
+  <direction x="0.000000" y="1.000000" />
+  <spread value="0.500000" />
+  <speed min="3.000000" max="5.000000" />
+  <livetime min="800.000000" max="1500.000000" />
+  <size min="75.000000" max="150.000000" scaleto="true" scaletovalue="3.500000" />
+  <gravity value="1.9000000" />
+  <loop value="true" looptime="-1.000000" />
+  <brightness min="0.900000" max="1.000000" />
+</ParticleSpray>
+
+<ParticleSpray id="73" updateable="false">
+  <position z="3.5" y="-200" x="-1500" rotation="0" />
+  <dimensions breadth="0" height="600" width="1000" />
+  <material value="" />
+  <alpha value="1" />
+  <effect name="effectlighttexture" />
+  <numparticles value="15.000000" />
+  <texture filename="Media\\large_splash.png" />
+  <direction x="0.200000" y="0.800000" />
+  <spread value="0.500000" />
+  <speed min="3.000000" max="5.000000" />
+  <livetime min="800.000000" max="1500.000000" />
+  <size min="75.000000" max="150.000000" scaleto="true" scaletovalue="3.500000" />
+  <gravity value="1.9000000" />
+  <loop value="true" looptime="-1.000000" />
+  <brightness min="0.900000" max="1.000000" />
+</ParticleSpray>
+
+<ParticleSpray id="73" updateable="false">
+  <position z="3.5" y="-200" x="-1300" rotation="0" />
+  <dimensions breadth="0" height="600" width="1000" />
+  <material value="" />
+  <alpha value="1" />
+  <effect name="effectlighttexture" />
+  <numparticles value="15.000000" />
+  <texture filename="Media\\large_splash.png" />
+  <direction x="0.400000" y="0.600000" />
+  <spread value="0.500000" />
+  <speed min="3.000000" max="5.000000" />
+  <livetime min="800.000000" max="1500.000000" />
+  <size min="75.000000" max="150.000000" scaleto="true" scaletovalue="3.500000" />
+  <gravity value="1.9000000" />
+  <loop value="true" looptime="-1.000000" />
+  <brightness min="0.900000" max="1.000000" />
+</ParticleSpray>
+
+<ParticleSpray id="73" updateable="false">
+  <position z="3.5" y="-180" x="-1700" rotation="0" />
+  <dimensions breadth="0" height="600" width="1000" />
+  <material value="" />
+  <alpha value="1" />
+  <effect name="effectlighttexture" />
+  <numparticles value="10.000000" />
+  <texture filename="Media\\wetsplashparticle.png" />
+  <direction x="-0.200000" y="0.800000" />
+  <spread value="0.400000" />
+  <speed min="9.000000" max="12.000000" />
+  <livetime min="400.000000" max="700.000000" />
+  <size min="75.000000" max="150.000000" scaleto="true" scaletovalue="2.000000" />
+  <gravity value="2.9000000" />
+  <loop value="true" looptime="-1.000000" />
+  <brightness min="0.900000" max="1.000000" />
+</ParticleSpray>
+
+<ParticleSpray id="73" updateable="false">
+  <position z="3.5" y="-180" x="-1300" rotation="0" />
+  <dimensions breadth="0" height="600" width="1000" />
+  <material value="" />
+  <alpha value="1" />
+  <effect name="effectlighttexture" />
+  <numparticles value="10.000000" />
+  <texture filename="Media\\wetsplashparticle.png" />
+  <direction x="0.200000" y="0.800000" />
+  <spread value="0.400000" />
+  <speed min="9.000000" max="12.000000" />
+  <livetime min="400.000000" max="700.000000" />
+  <size min="75.000000" max="150.000000" scaleto="true" scaletovalue="2.000000" />
+  <gravity value="2.9000000" />
+  <loop value="true" looptime="-1.000000" />
+  <brightness min="0.900000" max="1.000000" />
+</ParticleSpray>

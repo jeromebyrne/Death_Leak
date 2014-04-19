@@ -1,0 +1,44 @@
+FileVersion=6
+[GENERAL]
+Name=Session
+Notes=
+Launch="c:\Users\JB\Documents\DEVELOPMENT\All Things Ninja\VS2008 build\Ninja_2\Debug\Ninja_2.exe" 
+WorkDir=c:\Users\JB\Documents\DEVELOPMENT\All Things Ninja\VS2008 build\Ninja_2\Debug
+StopOnApp=1
+BreakAfter=1
+Duration=0
+StartPaused=0
+StartImmediately=0
+CSS=0
+CssInterval=10
+StartDelay=0
+CssUnwind=10
+Affinity=18446744073709551615
+SaveRaw=0
+ApplyProcFilter= 0
+UtilMask= 0
+Pids=  
+EnvVars=
+LastProfile=
+LaunchHistory=c:\Users\JB\Documents\DEVELOPMENT\All Things Ninja\VS2008 build\Ninja_2\Debug\Ninja_2.exe
+LaunchHistory=
+ArgumentsHistory=
+WorkDirHistory=c:\Users\JB\Documents\DEVELOPMENT\All Things Ninja\VS2008 build\Ninja_2\Debug
+WorkDirHistory=
+ProcessFilter=
+
+[TBP]
+
+[End]
+
+[EBP]
+
+[End]
+
+[Thread]
+
+[End]
+
+[IBS]
+
+[End]

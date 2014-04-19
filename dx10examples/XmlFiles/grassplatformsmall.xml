@@ -1,0 +1,14 @@
+<data>
+  <body OffsetX="0" OffsetY="8" SizeX="40" SizeY="80">
+    <Still FrameRate="0" MaxFrameRate="0" MinFrameRate="0">
+      <frame filename="Media\\platform_grass.png">
+        <skeletonparts>
+          <part xoffset="-120" yoffset="0" radius="100"/>
+          <part xoffset="-45" yoffset="0" radius="100"/>
+          <part xoffset="30" yoffset="0" radius="100"/>
+          <part xoffset="105" yoffset="0" radius="100"/>
+        </skeletonparts>
+      </frame>
+    </Still>
+  </body>
+</data>

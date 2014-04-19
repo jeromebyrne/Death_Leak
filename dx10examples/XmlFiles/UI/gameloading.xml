@@ -1,0 +1,25 @@
+<uiscreen>
+  <sprite name="1_load_splash"
+           process_input="false"
+           posX ="-1024" posY ="-540" width="2048" height ="2048"
+           image="Media\\UI\\blank_dark.png"
+           hflip="false" vflip="false"
+           alpha="1.0">
+  </sprite>
+
+  <animatedsprite name="2_anim"
+                   process_input="false"
+                   posX ="520" posY ="-470" width="256" height ="256"
+                   image="Media\\characters\\player_run_1.png"
+                   hflip="false" vflip="false"
+                   alpha="1.0"
+                   fps ="15">
+    <frames frame1="Media\\characters\\player\\player_run_1.png"
+            frame2="Media\\characters\\player\\player_run_2.png"
+            frame3="Media\\characters\\player\\player_run_3.png"
+            frame4="Media\\characters\\player\\player_run_4.png"
+            frame5="Media\\characters\\player\\player_run_5.png"
+    />
+  </animatedsprite>
+
+</uiscreen>
