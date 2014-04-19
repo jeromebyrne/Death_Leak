@@ -17,3 +17,5 @@ dx10examples/x64/Release/DeathLeak.lastbuildstate
 dx10examples/x64/Release/DeathLeak.pch
 dx10examples/x64/Release/DeathLeak.unsuccessfulbuild
 dx10examples/x64/Release/dx10examples.log
+*.suo
+*.exe
