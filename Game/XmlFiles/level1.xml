@@ -1667,7 +1667,7 @@
         <dimensions breadth="0" height="99.5425" width="90.6989" native="false" repeatX="false" repeatY="false" />
         <material value="" />
         <alpha value="1" />
-        <effect name="effectlight" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <texture filename="Media\objects\muckpile2.png" />
         <horizontalflip value="true" />
         <verticalflip value="false" />
@@ -4421,7 +4421,7 @@
         <dimensions breadth="0" height="220.1" width="220.1" native="false" repeatX="false" repeatY="false" />
         <material value="" />
         <alpha value="1" />
-        <effect name="effectlighttexturebump" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <texture filename="Media\objects\muckpile2.png" />
         <horizontalflip value="false" />
         <verticalflip value="true" />

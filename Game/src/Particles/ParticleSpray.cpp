@@ -1,10 +1,11 @@
 #include "precompiled.h"
 #include "ParticleSpray.h"
 #include "particleEmitterManager.h"
+#include "Projectile.h"
 
 static const unsigned int kMaxParticlesPerSpray = 100;
 
-ParticleSpray::ParticleSpray(bool isBloodSpray, Vector3 position, Vector3 dimensions, const char* textureFileName, list<Particle*> particles, bool isLooping, unsigned long loopTime,
+ParticleSpray::ParticleSpray(bool isBloodSpray, Vector3 position, Vector3 dimensions, const char* textureFileName, list<Particle> particles, bool isLooping, unsigned long loopTime,
 							 bool scaleByLiveTime, float scaleTo)
 	: DrawableObject(position.X, position.Y, position.Z, dimensions.X, dimensions.Y, dimensions.Z), 
 	m_vertexBuffer(0), 
@@ -35,13 +36,6 @@ ParticleSpray::ParticleSpray(bool isBloodSpray, Vector3 position, Vector3 dimens
 
 ParticleSpray::~ParticleSpray(void)
 {
-	for (Particle * p : m_particleList)
-	{
-		if (p)
-		{
-			delete p;
-		}
-	}
 	m_particleList.clear();
 
 	if (m_parent)
@@ -75,12 +69,11 @@ void ParticleSpray::SetVertexBuffer(ID3D10Device* device, UINT byteSize, VertexP
 	}
 	
 	device->CreateBuffer( &bd, &InitData, &m_vertexBuffer );
+	GAME_ASSERT(m_vertexBuffer);
 }
 
 void ParticleSpray::Draw(ID3D10Device* device, Camera2D * camera)
 {
-	//DrawableObject::Draw(device, camera);
-
 	D3DXVECTOR2 tex1 = D3DXVECTOR2(1,1);
 	D3DXVECTOR2 tex2 = D3DXVECTOR2(0,1);
 	D3DXVECTOR2 tex3 = D3DXVECTOR2(0,0);
@@ -94,28 +87,20 @@ void ParticleSpray::Draw(ID3D10Device* device, Camera2D * camera)
 	int numAliveParticles = 0; // the total number of particles we actually need to render
 
 	int currentVerts = 0;
-	for (Particle * currentParticle : m_particleList)
+	for (auto & currentParticle : m_particleList)
 	{
-		//if(currentVerts >= kMaxParticlesPerSpray * 6)
-		//{
-			//break;
-		//}
-		if (!currentParticle)
+		if(!currentParticle.IsDead)
 		{
-			continue;
-		}
-		if(!currentParticle->IsDead)
-		{
-			float size = currentParticle->Size/2;
-			float posX = currentParticle->PosX;
-			float posY = currentParticle->PosY;
+			float size = currentParticle.Size/2;
+			float posX = currentParticle.PosX;
+			float posY = currentParticle.PosY;
 			float depth = 1;
 
 			// set the correct texture coords
-			if (currentParticle->FlippedHorizontal)	{ tex1.x = 0; tex2.x = 1; tex3.x = 1; tex4.x = 0; }
+			if (currentParticle.FlippedHorizontal)	{ tex1.x = 0; tex2.x = 1; tex3.x = 1; tex4.x = 0; }
 			else									{ tex1.x = 1; tex2.x = 0; tex3.x = 0; tex4.x = 1; }
 
-			if (currentParticle->FlippedVertical)	{ tex1.y = 0; tex2.y = 0; tex3.y = 1; tex4.y = 1; }
+			if (currentParticle.FlippedVertical)	{ tex1.y = 0; tex2.y = 0; tex3.y = 1; tex4.y = 1; }
 			else									{ tex1.y = 1; tex2.y = 1; tex3.y = 0; tex4.y = 0; }
 			
 			//NOTE: We store individual particle alpha value in the Normal.X component
@@ -150,20 +135,20 @@ void ParticleSpray::Draw(ID3D10Device* device, Camera2D * camera)
 			vertices[currentVerts + 5].Normal = normal;
 
 			// just do our particle update logic here rather than looping through all again
-			if(currentParticle->Gravity > 0)
+			if(currentParticle.Gravity > 0)
 			{
 				// slow our particles down (air resistance)
-				currentParticle->Speed *= 0.99;
+				currentParticle.Speed *= 0.99;
 			}
-			currentParticle->PosX = posX + (currentParticle->DirectionX * currentParticle->Speed);
-			currentParticle->PosY = posY + (currentParticle->DirectionY * currentParticle->Speed);
-			currentParticle->PosY -= currentParticle->Gravity; // apply gravity
+			currentParticle.PosX = posX + (currentParticle.DirectionX * currentParticle.Speed);
+			currentParticle.PosY = posY + (currentParticle.DirectionY * currentParticle.Speed);
+			currentParticle.PosY -= currentParticle.Gravity; // apply gravity
 
-			float death_time = currentParticle->StartTime + currentParticle->MaxLiveTime;
+			float death_time = currentParticle.StartTime + currentParticle.MaxLiveTime;
 			float time_left = death_time - currentTime;
 
 			// set alpha                                                    
-			float alpha = (float)time_left / (float)currentParticle->MaxLiveTime;
+			float alpha = (float)time_left / (float)currentParticle.MaxLiveTime;
 			vertices[currentVerts].Normal.x = alpha;
 			vertices[currentVerts + 1].Normal.x = alpha;
 			vertices[currentVerts + 2].Normal.x = alpha;
@@ -172,7 +157,7 @@ void ParticleSpray::Draw(ID3D10Device* device, Camera2D * camera)
 			vertices[currentVerts + 5].Normal.x = alpha;
 
 			// set the brightness
-			float brightness = currentParticle->Brightness;
+			float brightness = currentParticle.Brightness;
 			vertices[currentVerts].Normal.y = brightness;
 			vertices[currentVerts + 1].Normal.y = brightness;
 			vertices[currentVerts + 2].Normal.y = brightness;
@@ -183,19 +168,19 @@ void ParticleSpray::Draw(ID3D10Device* device, Camera2D * camera)
 			// increment size if scalable
 			if(m_scalesByLiveTime)
 			{
-				float startSize = currentParticle->StartSize;
-				float finalSize = currentParticle->StartSize * m_scaleTo;
+				float startSize = currentParticle.StartSize;
+				float finalSize = currentParticle.StartSize * m_scaleTo;
 				float sizeDifference = finalSize - startSize;
 
-				float currentLive = currentTime - currentParticle->StartTime;
+				float currentLive = currentTime - currentParticle.StartTime;
 
 				// get the current size as a percentage of the final size
-				float livePercent = ((float)currentLive/ (float)currentParticle->MaxLiveTime);
+				float livePercent = ((float)currentLive/ (float)currentParticle.MaxLiveTime);
 				
 				float toAdd = sizeDifference * livePercent;
 
 				// get the percentage  value of the size difference and add it
-				currentParticle->Size = currentParticle->StartSize + toAdd;
+				currentParticle.Size = currentParticle.StartSize + toAdd;
 			}
 
 			if(time_left <= 0)
@@ -208,44 +193,44 @@ void ParticleSpray::Draw(ID3D10Device* device, Camera2D * camera)
 						{
 							if (m_parent->IsHFlipped())
 							{
-								currentParticle->PosX = m_parent->X() - m_parentOffset.X;
-								currentParticle->PosY = m_parent->Y() - m_parentOffset.Y;
+								currentParticle.PosX = m_parent->X() - m_parentOffset.X;
+								currentParticle.PosY = m_parent->Y() - m_parentOffset.Y;
 							}
 							else
 							{
-								currentParticle->PosX = m_parent->X() + m_parentOffset.X;
-								currentParticle->PosY = m_parent->Y() - m_parentOffset.Y;
+								currentParticle.PosX = m_parent->X() + m_parentOffset.X;
+								currentParticle.PosY = m_parent->Y() - m_parentOffset.Y;
 							}
 						}
 						else
 						{
 							if (m_parent->IsHFlipped())
 							{
-								currentParticle->PosX = m_parent->X() + m_parentOffset.X;
-								currentParticle->PosY = m_parent->Y() - m_parentOffset.Y;
+								currentParticle.PosX = m_parent->X() + m_parentOffset.X;
+								currentParticle.PosY = m_parent->Y() - m_parentOffset.Y;
 							}
 							else
 							{
-								currentParticle->PosX = m_parent->X() - m_parentOffset.X;
-								currentParticle->PosY = m_parent->Y() - m_parentOffset.Y;
+								currentParticle.PosX = m_parent->X() - m_parentOffset.X;
+								currentParticle.PosY = m_parent->Y() - m_parentOffset.Y;
 							}
 						}
 					}
 					else
 					{
-						currentParticle->PosX = currentParticle->StartPosX;
-						currentParticle->PosY = currentParticle->StartPosY;
+						currentParticle.PosX = currentParticle.StartPosX;
+						currentParticle.PosY = currentParticle.StartPosY;
 					}
-					currentParticle->Speed = currentParticle->StartSpeed;
-					currentParticle->Size = currentParticle->StartSize;
-					currentParticle->StartTime = Timing::Instance()->GetTotalTimeSeconds();
+					currentParticle.Speed = currentParticle.StartSpeed;
+					currentParticle.Size = currentParticle.StartSize;
+					currentParticle.StartTime = Timing::Instance()->GetTotalTimeSeconds();
 					
 					numAliveParticles++;
 				}
 				else
 				{
 					// this particle is dead
-					currentParticle->IsDead = true;
+					currentParticle.IsDead = true;
 					ParticleEmitterManager::DecrementParticleWorldCount(1);
 				}
 			}
@@ -408,6 +393,14 @@ void ParticleSpray::LoadContent(ID3D10Device* device)
 
 void ParticleSpray::AttachToSprite(Sprite * parent, Vector2 offset)
 {
+	if (!parent)
+	{
+		GAME_ASSERT(parent);
+		return;
+	}
+
+	GAME_ASSERT((!dynamic_cast<Projectile*>(parent)));
+
 	m_parent = parent;
 	m_parentOffset = offset;
 	m_parentHFlipInitial = parent->IsHFlipped();
@@ -417,6 +410,6 @@ void ParticleSpray::AttachToSprite(Sprite * parent, Vector2 offset)
 
 void ParticleSpray::DetachFromSprite()
 {
-	m_parent = 0;
+	m_parent = nullptr;
 	m_parentOffset = Vector2(0,0);
 }

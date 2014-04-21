@@ -17,12 +17,6 @@ TextureManager::TextureManager(void)
 
 }
 
-void TextureManager::Release()
-{
-	// just call the destructor
-	delete this;
-}
-
 TextureManager::~TextureManager(void)
 {
 	// release all of our texture resources
@@ -55,7 +49,6 @@ void TextureManager::Initialise(ID3D10Device * graphicsDevice)
 
 ID3D10ShaderResourceView* TextureManager::LoadTexture(const char * fileName)
 {
-	
 	// first convert our char* to wchar_t*
 	wchar_t* fileNameWide = Utilities::ConvertCharStringToWcharString(fileName);
 
@@ -68,14 +61,14 @@ ID3D10ShaderResourceView* TextureManager::LoadTexture(const char * fileName)
 	// we dont already have it so let's load it
 	HRESULT hr = S_OK;
 
-	ID3D10ShaderResourceView* texture = 0;
+	ID3D10ShaderResourceView* texture = nullptr;
 
-	D3DX10CreateShaderResourceViewFromFile( m_graphicsDevice, fileNameWide, NULL, NULL, &texture, NULL );
+	D3DX10CreateShaderResourceViewFromFile( m_graphicsDevice, fileNameWide, nullptr, nullptr, &texture, nullptr );
 
-    if( FAILED( hr ) )
+    if( FAILED( hr ) || !texture)
 	{
-        MessageBox( NULL,
-                    TEXT("The Texture could not be loaded.  Please run this executable from the directory that contains the texture file."),TEXT( "Error"), MB_OK );
+		LOG_ERROR("Couldn't load texture: %s", fileName);
+		GAME_ASSERT(false);
 	}
 	else
 	{
@@ -86,7 +79,7 @@ ID3D10ShaderResourceView* TextureManager::LoadTexture(const char * fileName)
 	return texture;
 }
 
-ID3D10ShaderResourceView* TextureManager::LoadTexture_ui(char * fileName)
+ID3D10ShaderResourceView* TextureManager::LoadTexture_ui(const char * fileName)
 {
 	// first convert our char* to wchar_t*
 	wchar_t* fileNameWide = Utilities::ConvertCharStringToWcharString(fileName);
@@ -100,14 +93,14 @@ ID3D10ShaderResourceView* TextureManager::LoadTexture_ui(char * fileName)
 	// we dont already have it so let's load it
 	HRESULT hr = S_OK;
 
-	ID3D10ShaderResourceView* texture = 0;
+	ID3D10ShaderResourceView* texture = nullptr;
 
-	D3DX10CreateShaderResourceViewFromFile( m_graphicsDevice, fileNameWide, NULL, NULL, &texture, NULL );
+	D3DX10CreateShaderResourceViewFromFile( m_graphicsDevice, fileNameWide, nullptr, nullptr, &texture, nullptr );
 
-    if( FAILED( hr ) )
+    if( FAILED( hr ) || !texture)
 	{
-        MessageBox( NULL,
-                    TEXT("The Texture could not be loaded.  Please run this executable from the directory that contains the texture file."),TEXT( "Error"), MB_OK );
+		LOG_ERROR("Couldn't load texture: %s", fileName);
+		GAME_ASSERT(false);
 	}
 	else
 	{
@@ -116,5 +109,11 @@ ID3D10ShaderResourceView* TextureManager::LoadTexture_ui(char * fileName)
 	}
 
 	return texture;
+}
+
+void TextureManager::Release()
+{
+	delete m_instance;
+	m_instance = nullptr;
 }
 

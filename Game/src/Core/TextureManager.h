@@ -16,9 +16,9 @@ private:
 public:
 	
 	static TextureManager* Instance();
-	void Release(); // release all of our texture manager
+	void Release();
 	ID3D10ShaderResourceView* LoadTexture(const char * fileName);
-	ID3D10ShaderResourceView* LoadTexture_ui(char * filename); // separate function for UI texture loading
+	ID3D10ShaderResourceView* LoadTexture_ui(const char * filename); // separate function for UI texture loading
 	void Initialise(ID3D10Device * graphicsDevice);
 };
 #endif

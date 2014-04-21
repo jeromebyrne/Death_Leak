@@ -42,6 +42,7 @@ void AIStateFollow::Update()
 		else
 		{
 			m_npc->StopXAccelerating();
+			m_npc->FireProjectileAtObject(m_npc->m_player);
 		}
 	}
 }

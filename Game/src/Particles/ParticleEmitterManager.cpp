@@ -76,11 +76,11 @@ ParticleSpray * ParticleEmitterManager::CreateRadialBloodSpray(unsigned int numP
 
 	float gameScale = Game::GetGameScale().X;
 
-	list<Particle*> particleList;
+	list<Particle> particleList;
 	for(int i = 0; i < numParticles; i++)
 	{
-		Particle * p = new Particle();
-		p->StartTime = creationTime;
+		Particle p;
+		p.StartTime = creationTime;
 
 		float randDirX = ((rand() % 100)+1) * 0.01;
 		float randDirY = ((rand() % 100)+1) * 0.01;
@@ -91,33 +91,33 @@ ParticleSpray * ParticleEmitterManager::CreateRadialBloodSpray(unsigned int numP
 		if(directionXSign == 0)
 		{
 			randDirX = -randDirX;
-			p->FlippedHorizontal = true; // just do this here for convenience
+			p.FlippedHorizontal = true; // just do this here for convenience
 		}
 		if(directionYSign)
 		{
 			randDirY = -randDirY;
-			p->FlippedVertical = true; // just do this here for convenience
+			p.FlippedVertical = true; // just do this here for convenience
 		}
-		p->DirectionX = randDirX;
-		p->DirectionY = randDirY;
+		p.DirectionX = randDirX;
+		p.DirectionY = randDirY;
 
-		p->MaxLiveTime = kBloodRadialMaxLiveTime - (((kBloodRadialMaxLiveTime - kBloodRadialMinLiveTime) / numParticles) * i);
-		p->PosX = position.X;
-		p->PosY = position.Y;
-		p->StartPosX = position.X; // our original start position
-		p->StartPosY = position.Y;
+		p.MaxLiveTime = kBloodRadialMaxLiveTime - (((kBloodRadialMaxLiveTime - kBloodRadialMinLiveTime) / numParticles) * i);
+		p.PosX = position.X;
+		p.PosY = position.Y;
+		p.StartPosX = position.X; // our original start position
+		p.StartPosY = position.Y;
 
 		int randSize = ((rand() % (int)(kBloodRadialMaxSize - kBloodRadialMinSize)) + kBloodRadialMinSize + 1) * gameScale;
-		p->Size = randSize;
-		p->StartSize = randSize;
+		p.Size = randSize;
+		p.StartSize = randSize;
 
 		float randSpeed = (((rand() % (int)(kBloodRadialMaxSpeed * 100 - kBloodRadialMinSpeed * 100)) * 0.01) + kBloodRadialMinSpeed + 0.01) * gameScale;
-		p->Speed = randSpeed;
-		p->StartSpeed = randSpeed; // our original start speed
+		p.Speed = randSpeed;
+		p.StartSpeed = randSpeed; // our original start speed
 
-		p->Gravity = kBloodRadialGravity;
+		p.Gravity = kBloodRadialGravity;
 
-		p->Brightness = 1; // this is determined in the shader
+		p.Brightness = 1; // this is determined in the shader
 		
 		particleList.push_back(p);
 	}
@@ -151,35 +151,35 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedBloodSpray(int numParticle
 
 	float gameScale = Game::GetGameScale().X;
 
-	list<Particle*> particleList;
+	list<Particle> particleList;
 	for(int i = 0; i < numParticles; i++)
 	{
-		Particle * p = new Particle();
-		p->StartTime = creationTime;
+		Particle p;
+		p.StartTime = creationTime;
 
 		float randSpread = ((rand() % (int)(spread * 100)) * 0.01);
 
-		p->FlippedHorizontal = true; 
-		p->FlippedVertical = false; 
-		p->DirectionX = direction.X + randSpread;
-		p->DirectionY = direction.Y - randSpread;
+		p.FlippedHorizontal = true; 
+		p.FlippedVertical = false; 
+		p.DirectionX = direction.X + randSpread;
+		p.DirectionY = direction.Y - randSpread;
 
-		p->MaxLiveTime = kBloodDirectedMaxLiveTime - (((kBloodDirectedMaxLiveTime - kBloodDirectedMinLiveTime) / numParticles) * i);
-		p->PosX = position.X;
-		p->PosY = position.Y;
-		p->StartPosX = position.X; // our original start position
-		p->StartPosY = position.Y;
+		p.MaxLiveTime = kBloodDirectedMaxLiveTime - (((kBloodDirectedMaxLiveTime - kBloodDirectedMinLiveTime) / numParticles) * i);
+		p.PosX = position.X;
+		p.PosY = position.Y;
+		p.StartPosX = position.X; // our original start position
+		p.StartPosY = position.Y;
 
 		int randSize = ((rand() % (int)(kBloodDirectedMaxSize - kBloodDirectedMinSize)) + kBloodDirectedMinSize + 1) * gameScale;
-		p->Size = randSize;
-		p->StartSize = randSize;
+		p.Size = randSize;
+		p.StartSize = randSize;
 
 		float randSpeed = (((rand() % (int)(kBloodDirectedMaxSpeed * 100 - kBloodDirectedMinSpeed * 100)) * 0.01) + kBloodDirectedMinSpeed + 0.01) * gameScale;
-		p->Speed = randSpeed;
-		p->StartSpeed = randSpeed; // our original start speed
+		p.Speed = randSpeed;
+		p.StartSpeed = randSpeed; // our original start speed
 
-		p->Gravity = kBloodDirectedGravity;
-		p->Brightness = 1;
+		p.Gravity = kBloodDirectedGravity;
+		p.Brightness = 1;
 
 		particleList.push_back(p);
 	}
@@ -247,11 +247,11 @@ void ParticleEmitterManager::CreateRadialSpray(int numParticles,
 	float gameScale = Game::GetGameScale().X;
 
 	// create our individual particles
-	list<Particle*> particleList;
+	list<Particle> particleList;
 	for(int i = 0; i < numParticles; i++)
 	{
-		Particle * p = new Particle();
-		p->StartTime = creationTime;
+		Particle p;
+		p.StartTime = creationTime;
 
 		// random direction ======================================
 		float randDirX = ((rand() % 100)+1) * 0.01;
@@ -263,56 +263,56 @@ void ParticleEmitterManager::CreateRadialSpray(int numParticles,
 		if(directionXSign == 0)
 		{
 			randDirX = -randDirX;
-			p->FlippedHorizontal = true; // just do this here for convenience
+			p.FlippedHorizontal = true; // just do this here for convenience
 		}
 		if(directionYSign)
 		{
 			randDirY = -randDirY;
-			p->FlippedVertical = true; // just do this here for convenience
+			p.FlippedVertical = true; // just do this here for convenience
 		}
-		p->DirectionX = randDirX;
-		p->DirectionY = randDirY;
+		p.DirectionX = randDirX;
+		p.DirectionY = randDirY;
 		// =======================================================
 
-		p->MaxLiveTime = maxLiveTime - (((maxLiveTime - minLiveTime) / numParticles) * i);
-		p->PosX = position.X;
-		p->PosY = position.Y;
-		p->StartPosX = position.X; // our original start position
-		p->StartPosY = position.Y;
+		p.MaxLiveTime = maxLiveTime - (((maxLiveTime - minLiveTime) / numParticles) * i);
+		p.PosX = position.X;
+		p.PosY = position.Y;
+		p.StartPosX = position.X; // our original start position
+		p.StartPosY = position.Y;
 		
 		if(maxSize <= minSize)
 		{
-			p->Size = maxSize * gameScale;
-			p->StartSize = maxSize * gameScale;
+			p.Size = maxSize * gameScale;
+			p.StartSize = maxSize * gameScale;
 		}
 		else
 		{
 			int randSize = ((rand() % (int)(maxSize - minSize)) + minSize + 1) * gameScale;
-			p->Size = randSize;
-			p->StartSize = randSize;
+			p.Size = randSize;
+			p.StartSize = randSize;
 		}
 
 		if(maxSpeed <= minSpeed)
 		{
-			p->Speed = maxSpeed * gameScale;
-			p->StartSpeed = maxSpeed * gameScale; // our original start speed
+			p.Speed = maxSpeed * gameScale;
+			p.StartSpeed = maxSpeed * gameScale; // our original start speed
 		}
 		else
 		{
 			float randSpeed = (((rand() % (int)(maxSpeed * 100 - minSpeed * 100)) * 0.01) + minSpeed + 0.01) * gameScale;
-			p->Speed = randSpeed;
-			p->StartSpeed = randSpeed; // our original start speed
+			p.Speed = randSpeed;
+			p.StartSpeed = randSpeed; // our original start speed
 		}
-		p->Gravity = gravity;
+		p.Gravity = gravity;
 
 		if(maxBrightness <= minBrightness)
 		{
-			p->Brightness = maxBrightness;
+			p.Brightness = maxBrightness;
 		}
 		else
 		{
 			// do random brightness
-			p->Brightness = ((rand() % (int)(maxBrightness * 100 - minBrightness * 100)) * 0.01) + minBrightness + 0.01;
+			p.Brightness = ((rand() % (int)(maxBrightness * 100 - minBrightness * 100)) * 0.01) + minBrightness + 0.01;
 		}
 		
 		particleList.push_back(p);
@@ -377,11 +377,11 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSpray(int numParticles,
 	float gameScale = Game::GetGameScale().X;
 
 	// create our individual particles
-	list<Particle*> particleList;
+	list<Particle> particleList;
 	for(int i = 0; i < numParticles; i++)
 	{
-		Particle * p = new Particle();
-		p->StartTime = creationTime;
+		Particle p;
+		p.StartTime = creationTime;
 		
 		int flippedVertical = rand() % 2;
 		int flippedHorizontal = rand() % 2;
@@ -389,18 +389,18 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSpray(int numParticles,
 
 		if(flippedVertical == 0)
 		{
-			p->FlippedHorizontal = true; 
-			p->DirectionX = direction.X + randSpread;
-			p->DirectionY = direction.Y - randSpread;
+			p.FlippedHorizontal = true; 
+			p.DirectionX = direction.X + randSpread;
+			p.DirectionY = direction.Y - randSpread;
 		}
 		else
 		{
-			p->DirectionX = direction.X - randSpread;
-			p->DirectionY = direction.Y + randSpread;
+			p.DirectionX = direction.X - randSpread;
+			p.DirectionY = direction.Y + randSpread;
 		}
 		if(flippedHorizontal == 0)
 		{
-			p->FlippedVertical = true; 
+			p.FlippedVertical = true; 
 		}
 			
 		if(maxLiveTime == minLiveTime)
@@ -410,45 +410,45 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSpray(int numParticles,
 
 		//int val = (int)(maxLiveTime  - minLiveTime) + minLiveTime;
 
-		p->MaxLiveTime = maxLiveTime - (((maxLiveTime - minLiveTime) / numParticles) * i);
-		p->PosX = position.X;
-		p->PosY = position.Y;
-		p->StartPosX = position.X; // our original start position
-		p->StartPosY = position.Y;
+		p.MaxLiveTime = maxLiveTime - (((maxLiveTime - minLiveTime) / numParticles) * i);
+		p.PosX = position.X;
+		p.PosY = position.Y;
+		p.StartPosX = position.X; // our original start position
+		p.StartPosY = position.Y;
 		
 		if(maxSize <= minSize)
 		{
-			p->Size = maxSize * gameScale;
-			p->StartSize = maxSize * gameScale;
+			p.Size = maxSize * gameScale;
+			p.StartSize = maxSize * gameScale;
 		}
 		else
 		{
 			int randSize = ((rand() % (int)(maxSize - minSize)) + minSize + 1) * gameScale;
-			p->Size = randSize;
-			p->StartSize = randSize;
+			p.Size = randSize;
+			p.StartSize = randSize;
 		}
 
 		if(maxSpeed <= minSpeed)
 		{
-			p->Speed = maxSpeed * gameScale;
-			p->StartSpeed = maxSpeed * gameScale; // our original start speed
+			p.Speed = maxSpeed * gameScale;
+			p.StartSpeed = maxSpeed * gameScale; // our original start speed
 		}
 		else
 		{
 			float randSpeed = (((rand() % (int)(maxSpeed * 100 - minSpeed * 100)) * 0.01) + minSpeed + 0.01) * gameScale;
-			p->Speed = randSpeed;
-			p->StartSpeed = randSpeed; // our original start speed
+			p.Speed = randSpeed;
+			p.StartSpeed = randSpeed; // our original start speed
 		}
-		p->Gravity = gravity;
+		p.Gravity = gravity;
 
 		if(maxBrightness <= minBrightness)
 		{
-			p->Brightness = maxBrightness;
+			p.Brightness = maxBrightness;
 		}
 		else
 		{
 			// do random brightness
-			p->Brightness = ((rand() % (int)(maxBrightness * 100 - minBrightness * 100)) * 0.01) + minBrightness + 0.01;
+			p.Brightness = ((rand() % (int)(maxBrightness * 100 - minBrightness * 100)) * 0.01) + minBrightness + 0.01;
 		}
 		
 		particleList.push_back(p);
@@ -521,11 +521,11 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSprayLoadTime(int numParti
 	float gameScale = Game::GetGameScale().X;
 
 	// create our individual particles
-	list<Particle*> particleList;
+	list<Particle> particleList;
 	for(int i = 0; i < numParticles; i++)
 	{
-		Particle * p = new Particle();
-		p->StartTime = creationTime;
+		Particle p;
+		p.StartTime = creationTime;
 		
 		int flippedVertical = rand() % 2;
 		int flippedHorizontal = rand() % 2;
@@ -533,18 +533,18 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSprayLoadTime(int numParti
 
 		if(flippedVertical == 0)
 		{
-			p->FlippedHorizontal = true; 
-			p->DirectionX = direction.X + randSpread;
-			p->DirectionY = direction.Y - randSpread;
+			p.FlippedHorizontal = true; 
+			p.DirectionX = direction.X + randSpread;
+			p.DirectionY = direction.Y - randSpread;
 		}
 		else
 		{
-			p->DirectionX = direction.X - randSpread;
-			p->DirectionY = direction.Y + randSpread;
+			p.DirectionX = direction.X - randSpread;
+			p.DirectionY = direction.Y + randSpread;
 		}
 		if(flippedHorizontal == 0)
 		{
-			p->FlippedVertical = true; 
+			p.FlippedVertical = true; 
 		}
 			
 		if(maxLiveTime == minLiveTime)
@@ -552,45 +552,45 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSprayLoadTime(int numParti
 			maxLiveTime += 0.1;
 		}
 
-		p->MaxLiveTime = maxLiveTime - (((maxLiveTime - minLiveTime) / numParticles) * i);
-		p->PosX = position.X;
-		p->PosY = position.Y;
-		p->StartPosX = position.X * gameScale; // our original start position
-		p->StartPosY = position.Y * gameScale;
+		p.MaxLiveTime = maxLiveTime - (((maxLiveTime - minLiveTime) / numParticles) * i);
+		p.PosX = position.X;
+		p.PosY = position.Y;
+		p.StartPosX = position.X * gameScale; // our original start position
+		p.StartPosY = position.Y * gameScale;
 		
 		if(maxSize <= minSize)
 		{
-			p->Size = maxSize * gameScale;
-			p->StartSize = maxSize * gameScale;
+			p.Size = maxSize * gameScale;
+			p.StartSize = maxSize * gameScale;
 		}
 		else
 		{
 			int randSize = ((rand() % (int)(maxSize - minSize)) + minSize + 1) * gameScale;
-			p->Size = randSize;
-			p->StartSize = randSize;
+			p.Size = randSize;
+			p.StartSize = randSize;
 		}
 
 		if(maxSpeed <= minSpeed)
 		{
-			p->Speed = maxSpeed * gameScale;
-			p->StartSpeed = maxSpeed * gameScale; // our original start speed
+			p.Speed = maxSpeed * gameScale;
+			p.StartSpeed = maxSpeed * gameScale; // our original start speed
 		}
 		else
 		{
 			float randSpeed = (((rand() % (int)(maxSpeed * 100 - minSpeed * 100)) * 0.01) + minSpeed + 0.01) * gameScale;
-			p->Speed = randSpeed;
-			p->StartSpeed = randSpeed; // our original start speed
+			p.Speed = randSpeed;
+			p.StartSpeed = randSpeed; // our original start speed
 		}
-		p->Gravity = gravity;
+		p.Gravity = gravity;
 
 		if(maxBrightness <= minBrightness)
 		{
-			p->Brightness = maxBrightness;
+			p.Brightness = maxBrightness;
 		}
 		else
 		{
 			// do random brightness
-			p->Brightness = ((rand() % (int)(maxBrightness * 100 - minBrightness * 100)) * 0.01) + minBrightness + 0.01;
+			p.Brightness = ((rand() % (int)(maxBrightness * 100 - minBrightness * 100)) * 0.01) + minBrightness + 0.01;
 		}
 		
 		particleList.push_back(p);

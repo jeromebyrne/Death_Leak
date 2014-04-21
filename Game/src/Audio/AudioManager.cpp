@@ -40,7 +40,12 @@ ISound * AudioManager::PlaySoundEffect(string fileName, bool loop, bool track)
 			track = true;
 		}
 		ISound * sound = m_irrKlangEngine->play2D(file.c_str(), loop, false, track);
-		if (sound)
+		if (!sound)
+		{
+			LOG_ERROR("Sound file not found: %s", fileName.c_str());
+			GAME_ASSERT(sound);
+		}
+		else
 		{
 			sound->setPlaybackSpeed(timeMod);
 

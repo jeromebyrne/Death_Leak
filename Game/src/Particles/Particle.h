@@ -25,25 +25,25 @@ public:
 
 	float CurrentAlpha; // needed to stop the alpha from flickering
 
-	Particle(void)
+	Particle(void) :
+		 PosX(0),
+		 PosY(0),
+		 StartPosX(0),
+		 StartPosY(0),
+		 DirectionX(0),
+		 DirectionY(0),
+		 Size(0),
+		 StartSize(0),
+		 Speed(0),
+		 StartSpeed(0),
+		 MaxLiveTime(0),
+		 StartTime(0),
+		 IsDead(false),
+		 Gravity(0),
+		 FlippedHorizontal(false),
+		 FlippedVertical(false),
+		 Brightness(false)
 	{
-		 PosX = 0;
-		 PosY = 0;
-		 StartPosX = 0;
-		 StartPosY = 0;
-		 DirectionX = 0;
-		 DirectionY = 0;
-		 Size = 0;
-		 StartSize = 0;
-		 Speed = 0;
-		 StartSpeed = 0;
-		 MaxLiveTime = 0;
-		 StartTime = 0;
-		 IsDead = false;
-		 Gravity = 0;
-		 FlippedHorizontal = false;
-		 FlippedVertical = false;
-		 Brightness = 1.0;
 	}
 
 	~Particle(void)

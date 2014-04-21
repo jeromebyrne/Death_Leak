@@ -67,8 +67,7 @@ public:
 			if (!CONDITION)\
 			{\
 				LOG_ERROR("*** GameAssert FAILED! ***: %s \nFile: %s, Line: %i\n", #CONDITION, __FILE__, __LINE__ );\
-				assert(0);\
-				exit(EXIT_FAILURE);\
+				DebugBreak();\
 			}\
 		\
 		} while (0)

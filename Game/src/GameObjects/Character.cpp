@@ -771,5 +771,9 @@ bool Character::IsOnSolidSurface()
 
 void Character::RemoveProjectileFromActiveList(Projectile * projectile)
 {
+	if (!projectile)
+	{
+		GAME_ASSERT(projectile);
+	}
 	mActiveProjectiles.erase(projectile);
 }

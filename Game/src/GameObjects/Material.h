@@ -20,8 +20,6 @@ public:
 	string GetRandomParticleTexture();
 	string GetDestroyedSound() const { return m_destroySound; }
 	string GetMaterialName() const { return mMaterialName; }
-
-	void Release();
 };
 
 #endif

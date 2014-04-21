@@ -33,7 +33,19 @@ void DrawableObject:: Initialise()
 {
 	// init the base
 	GameObject::Initialise();
+}
 
+void DrawableObject::Draw(ID3D10Device * device, Camera2D * camera)
+{
+}
+
+void DrawableObject::Update(float delta)
+{
+	GameObject::Update(delta);
+}
+
+void DrawableObject::LoadContent(ID3D10Device * graphicsdevice)
+{
 	// get our effects
 	m_effectBasic = static_cast<EffectBasic*>(EffectManager::Instance()->GetEffect("effectbasic"));
 	m_effectLightTexture = static_cast<EffectLightTexture*>(EffectManager::Instance()->GetEffect("effectlighttexture"));
@@ -72,19 +84,6 @@ void DrawableObject:: Initialise()
 	{
 		m_currentEffectType = EFFECT_PIXEL_WOBBLE;
 	}
-}
-
-void DrawableObject::Draw(ID3D10Device * device, Camera2D * camera)
-{
-}
-
-void DrawableObject::Update(float delta)
-{
-	GameObject::Update(delta);
-}
-
-void DrawableObject::LoadContent(ID3D10Device * graphicsdevice)
-{
 }
 
 void DrawableObject::XmlRead(TiXmlElement * element)

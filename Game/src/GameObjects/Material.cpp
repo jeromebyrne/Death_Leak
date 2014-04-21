@@ -61,16 +61,13 @@ void Material::ReadXml(TiXmlElement * element)
 	// done
 }
 
-void Material::Release()
-{
-	
-}
-
 string Material::GetRandomDamageSoundFilename()
 {
 	int soundCount = m_damageSoundEffects.size();
 	if (soundCount == 0)
 	{
+		LOG_ERROR("Damage sound count is 0 for material: %s", mMaterialName.c_str());
+		GAME_ASSERT(soundCount > 0);
 		return "";
 	}
 	int randNum = rand() % soundCount;
@@ -83,6 +80,8 @@ string Material::GetRandomFootstepSoundFilename()
 	int soundCount = m_footstepSoundEffects.size();
 	if (soundCount == 0)
 	{
+		LOG_ERROR("Footstep sound count is 0 for material: %s", mMaterialName.c_str());
+		GAME_ASSERT(soundCount > 0);
 		return "";
 	}
 	int randNum = rand() % soundCount;
@@ -95,6 +94,8 @@ string Material::GetRandomParticleTexture()
 	int texCount = m_particleTextures.size();
 	if (texCount == 0)
 	{
+		LOG_ERROR("Particle texture count is 0 for material: %s", mMaterialName.c_str());
+		GAME_ASSERT(texCount > 0);
 		return "";
 	}
 	int randNum = rand() % texCount;

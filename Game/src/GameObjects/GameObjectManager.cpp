@@ -73,12 +73,19 @@ void GameObjectManager::OrderDrawable_pushBack(DrawableObject* object)
 
 void GameObjectManager::RemoveGameObject_RunTime(GameObject * object, bool defer)
 {
+	if (!object)
+	{
+		GAME_ASSERT(object);
+		return;
+	}
 	if (defer)
 	{
+		GAME_ASSERT((std::find(m_killList.begin(), m_killList.end(), object) == m_killList.end()));
 		m_killList.push_back(object); // add to the kill list
 	}
 	else
 	{
+		GAME_ASSERT((std::find(m_gameObjects.begin(), m_gameObjects.end(), object) != m_gameObjects.end()));
 		m_gameObjects.remove(object);
 
 		// try and cast to a solid object
@@ -296,7 +303,7 @@ void GameObjectManager::LoadObjectsFromFile(const char* filename)
 	char * audio_track = XmlUtilities::ReadAttributeAsString(root, "", "audio");
 	
 	// start playing level music as we load the objects
-	AudioManager::Instance()->PlayMusic(audio_track, true); // always loop level music
+	// AudioManager::Instance()->PlayMusic(audio_track, true); // always loop level music
 
 	TiXmlElement * child = root->FirstChildElement();
 

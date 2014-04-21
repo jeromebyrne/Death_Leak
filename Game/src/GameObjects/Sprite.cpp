@@ -26,17 +26,17 @@ Sprite::Sprite(float x, float y, float z, float width, float height, float bread
 :DrawableObject(x,y,z,width,height,breadth),
 m_horizontalFlip(false),
 m_verticalFlip(false), 
-VertexBuffer(0), 
-VertexBufferBump(0),
-IndexBuffer(0),
+VertexBuffer(nullptr), 
+VertexBufferBump(nullptr),
+IndexBuffer(nullptr),
 m_isAnimated(false),
-m_attachedTo(0),
+m_attachedTo(nullptr),
 m_attachedToOffset(0,0,0),
 m_parentHFlipInitial(false),
 m_hflippedOnAttach(true),
 m_drawAtNativeDimensions(true),
-m_texture(0),
-m_textureBump(0),
+m_texture(nullptr),
+m_textureBump(nullptr),
 m_fadeAlphaWhenPlayerOccluded(false),
 m_alphaWhenOccluding(0.5),
 m_alphaWhenNotOccluding(1.0),
@@ -155,10 +155,15 @@ void Sprite::LoadContent(ID3D10Device * graphicsdevice)
 	DrawableObject::LoadContent(graphicsdevice);
 
 	// load the sprite texture
-	m_texture = TextureManager::Instance()->LoadTexture(m_textureFilename.c_str());
+	if (!m_isAnimated)
+	{
+		m_texture = TextureManager::Instance()->LoadTexture(m_textureFilename.c_str());
+	}
 	
-	// TODO: bump map may not exist
-	m_textureBump = TextureManager::Instance()->LoadTexture(m_textureBumpFilename.c_str());
+	if (m_currentEffectType == EFFECT_BUMP)
+	{
+		m_textureBump = TextureManager::Instance()->LoadTexture(m_textureBumpFilename.c_str());
+	}
 	
 	ID3D10Device * device = Graphics::GetInstance()->Device();
 
@@ -484,7 +489,6 @@ void Sprite::Draw(ID3D10Device * device, Camera2D * camera)
 			{
 				break;
 			}
-
 	};
 }
 
@@ -610,6 +614,7 @@ void Sprite::SetVertexBuffer(ID3D10Device* device, UINT byteSize, VertexPosition
 	}
 	
 	device->CreateBuffer( &bd, &InitData, &VertexBuffer );
+	GAME_ASSERT(VertexBuffer);
 }
 
 void Sprite::SetVertexBufferBump(ID3D10Device* device, UINT byteSize, VertexPositionTextureNormalTanBiNorm vertices[])
@@ -629,6 +634,7 @@ void Sprite::SetVertexBufferBump(ID3D10Device* device, UINT byteSize, VertexPosi
 	}
 	
 	device->CreateBuffer( &bd, &InitData, &VertexBufferBump );
+	GAME_ASSERT(VertexBufferBump);
 }
 
 void Sprite::SetIndexBuffer(ID3D10Device* device, UINT byteSize, DWORD indices[])
@@ -643,6 +649,7 @@ void Sprite::SetIndexBuffer(ID3D10Device* device, UINT byteSize, DWORD indices[]
     InitData.pSysMem = indices;
 
 	device->CreateBuffer( &bd, &InitData, &IndexBuffer );
+	GAME_ASSERT(IndexBuffer);
 }
 
 void Sprite::Draw_effectBasic(ID3D10Device * graphicsdevice)
@@ -863,7 +870,6 @@ void Sprite::Draw_effectLightTexWobble(ID3D10Device * device)
 		m_effectLightTextureWobble->CurrentTechnique->GetPassByIndex(p)->Apply(0);
 		device->DrawIndexed(4, 0 , 0);
 	}
-
 }
 
 void Sprite::Draw_effectReflection(ID3D10Device * graphicsdevice)
@@ -894,7 +900,8 @@ Animation * Sprite::GetAnimation()
 {
 	if (!m_isAnimated)
 	{
-		return 0;
+		GAME_ASSERT(!m_isAnimated);
+		return nullptr;
 	}
 
 	return m_animation;
@@ -972,9 +979,16 @@ void Sprite::CalculateNormal(Vector3 tangent, Vector3 binormal, Vector3 &normal)
 
 void Sprite::NotifyParticlesDetach()
 {
-	for (ParticleSpray * s : mParticlesAttachedToUs)
+	for (auto s : mParticlesAttachedToUs)
 	{
-		s->DetachFromSprite();
+		if (s)
+		{
+			s->DetachFromSprite();
+		}
+		else
+		{
+			GAME_ASSERT(s);
+		}
 	}
 
 	mParticlesAttachedToUs.clear();
@@ -982,6 +996,11 @@ void Sprite::NotifyParticlesDetach()
 
 void Sprite::OnParticleAttached(ParticleSpray * spray)
 {
+	if (!spray)
+	{
+		GAME_ASSERT(spray);
+		return;
+	}
 	mParticlesAttachedToUs.push_back(spray);
 }
 
@@ -994,6 +1013,10 @@ void Sprite::OnParticleSprayDead(ParticleSpray * spray)
 		{
 			mParticlesAttachedToUs.remove(spray);
 		}
+	}
+	else
+	{
+		GAME_ASSERT(spray);
 	}
 }
 

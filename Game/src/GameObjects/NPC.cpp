@@ -83,6 +83,12 @@ void NPC::SetState(AIState::AIStateType state)
 
 void NPC::FireProjectileAtObject(GameObject * target)
 {
+	if (!target)
+	{
+		GAME_ASSERT(target);
+		return;
+	}
+
 	// just using this static for testing, fire time should be determined by weapon type (not implemented)
 	static float last_fire_time = 0.0f;
 

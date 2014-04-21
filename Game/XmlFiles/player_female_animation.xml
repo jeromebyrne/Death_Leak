@@ -80,7 +80,7 @@
     </JumpingDown>
 
     <SlidingDown FrameRate="0" MaxFrameRate="0" MinFrameRate="0">
-      <frame filename="Media\\characters\\female\\Ninja_onWall_1.dds">
+      <frame filename="Media\\characters\\female\\ning_jump_01.png">
         <skeletonparts>
           <part xoffset="160" yoffset="100" radius="100"/>
           <part xoffset="120" yoffset="0" radius="120"/>
@@ -94,7 +94,7 @@
 
 	<arm OffsetX="6" OffsetY="24" SizeX="32" SizeY="30">
 		<Still FrameRate="0" MaxFrameRate="0" MinFrameRate="0">
-      <frame filename="Media\\characters\\female\\momohime.dds">
+      <frame filename="Media\\characters\\female2\\ning_jump_01.png">
         <skeletonparts>
           <part xoffset="160" yoffset="100" radius="100"/>
           <part xoffset="120" yoffset="0" radius="120"/>

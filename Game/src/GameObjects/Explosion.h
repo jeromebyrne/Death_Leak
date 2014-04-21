@@ -10,11 +10,19 @@ public:
 
 private:
 
+	virtual void Update(float delta) override;
+
+	void PlaySFX();
+	void Display();
+	void Inflict();
+
 	float mDamage;
 	float mRadius;
 
 	void ApplyDamage();
 	void ApplyForceToApplicable();
+
+	unsigned int mFramesActive;
 };
 
 #endif

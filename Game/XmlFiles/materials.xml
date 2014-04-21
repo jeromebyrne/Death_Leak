@@ -224,9 +224,11 @@
     </particletextures>
 
     <damagesoundeffects>
+      <sound file="blood\\blood1.wav" />
     </damagesoundeffects>
 
     <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
     </footstepsoundeffects>
 
     <destroysoundeffect file="blood\\blood2.wav"/>

@@ -111,7 +111,10 @@ HRESULT Graphics::CreateDepthStencilBuffer(int bufferWidth, int bufferHeight)
     descDepth.MiscFlags = 0;
 	hr = m_pd3dDevice->CreateTexture2D( &descDepth, NULL, &m_pDepthStencil );
     if( FAILED(hr) )
-        ShowMessageBox(L"error creating stencil buffer", L"error");
+	{
+		LOG_ERROR("Depth Stencil Buffer create failure");
+		GAME_ASSERT(false);
+	}
 
     // Create the depth stencil view
     D3D10_DEPTH_STENCIL_VIEW_DESC descDSV;
@@ -120,7 +123,10 @@ HRESULT Graphics::CreateDepthStencilBuffer(int bufferWidth, int bufferHeight)
     descDSV.Texture2D.MipSlice = 0;
 	hr = m_pd3dDevice->CreateDepthStencilView( m_pDepthStencil, &descDSV, &m_pDepthStencilView );
     if( FAILED(hr) )
-       ShowMessageBox(L"error creating stencil buffer view", L"error");
+	{
+		LOG_ERROR("Depth Stencil View create failure");
+		GAME_ASSERT(false);
+	}
 	
 	// create a shader resource view for the depth stencil buffer
 	D3D10_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
@@ -135,6 +141,8 @@ HRESULT Graphics::CreateDepthStencilBuffer(int bufferWidth, int bufferHeight)
 	hr = m_pd3dDevice->CreateShaderResourceView(m_pDepthStencil, &shaderResourceViewDesc, &m_depthStencilSRV);
 	if(FAILED(hr))
 	{
+		LOG_ERROR("Depth Stencil Resource View create failure");
+		GAME_ASSERT(false);
 		return false;
 	}
 
@@ -171,8 +179,14 @@ HRESULT Graphics::SetupDevice(HWND hWnd, int bufferWidth, int bufferHeight)
         if( SUCCEEDED( hr ) )
             break;
     }
+
     if( FAILED( hr ) )
+	{
+		LOG_ERROR("Device Setup failed. If a developer check you have all Windows/VS SDK components installed.");
+		GAME_ASSERT(false);
+
         return hr;
+	}
 
 	// Create a render target view
     CreateRenderTargetViews(m_backBufferWidth, m_backBufferHeight);
@@ -252,21 +266,30 @@ HRESULT Graphics::CreateRenderTargetViews(int bufferWidth, int bufferHeight)
 	hr = m_pSwapChain->GetBuffer(0, __uuidof(ID3D10Texture2D), (LPVOID*)&m_pBackBuffer);
 	if(FAILED(hr))
 	{
+		LOG_ERROR("Swap Chain get back buffer failure");
+		GAME_ASSERT(false);
 		return false;
 	}
 
 	hr = m_pd3dDevice->CreateRenderTargetView( m_pBackBuffer, NULL , &m_pBackBufferRenderTargetView );
+	if( FAILED( hr ) )
+	{
+		LOG_ERROR("Render Target View create failure");
+		GAME_ASSERT(false);
+        return false;
+	}
+
 	D3D10_TEXTURE2D_DESC desc1;
 	m_pBackBuffer->GetDesc(&desc1);
 	desc1.BindFlags = D3D10_BIND_RENDER_TARGET | D3D10_BIND_SHADER_RESOURCE;
     m_pBackBuffer->Release();
-    if( FAILED( hr ) )
-        return FALSE;
 
 	hr = m_pd3dDevice->CreateTexture2D( &desc1, NULL, &m_pPreProcessTexture );
 
 	if (FAILED(hr))
 	{
+		LOG_ERROR("Pre process render texture create failure");
+		GAME_ASSERT(false);
 		return false;
 	}
 
@@ -277,7 +300,11 @@ HRESULT Graphics::CreateRenderTargetViews(int bufferWidth, int bufferHeight)
 
 	hr = m_pd3dDevice->CreateRenderTargetView( m_pPreProcessTexture, &renderTargetViewDesc, &m_pPreProcessRenderTargetView );
 	if ( FAILED( hr ) )
+	{
+		LOG_ERROR("Render Target View create failure");
+		GAME_ASSERT(false);
 		return false;
+	}
 
 	D3D10_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
 
@@ -291,6 +318,8 @@ HRESULT Graphics::CreateRenderTargetViews(int bufferWidth, int bufferHeight)
 	hr = m_pd3dDevice->CreateShaderResourceView(m_pPreProcessTexture, &shaderResourceViewDesc, &m_preProcessSRV);
 	if(FAILED(hr))
 	{
+		LOG_ERROR("Pre process texture shader resource view create failure");
+		GAME_ASSERT(false);
 		return false;
 	}
 

@@ -19,7 +19,7 @@ protected:
 	EffectBloodParticleSpray * m_effectBloodParticleSpray; // the specialised blood shader
 	EffectParticleSpray * m_currentEffect;
 
-	list<Particle*> m_particleList; // a list of particle structures
+	list<Particle> m_particleList; // a list of particle structures
 	int m_numAliveParticles; // the number of particles still alive
 
 	bool m_isLooping; // do we do a continous spray of particles?
@@ -53,7 +53,7 @@ public:
 					Vector3 position,
 					Vector3 dimensions, 
 					const char* textureFileName, 
-					list<Particle*> particles,
+					list<Particle> particles,
 					bool isLooping,
 					unsigned long loopTime,
 					bool scaleByLiveTime, 

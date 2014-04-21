@@ -14,128 +14,9 @@ static const char * kExplosionTexture3 = "";
 Explosion::Explosion(float damage,float radius, float x, float y, float z, float width, float height, float breadth, char* effectName) :
 	DrawableObject(x, y, z, width, height, breadth, effectName),
 	mDamage(damage),
-	mRadius(radius)
+	mRadius(radius),
+	mFramesActive(0)
 {
-	Vector3 pos = Vector3(x,y,z);
-	//pos.Z = pos.Z + 1;
-
-	bool loop = false;
-	unsigned long loopTime = -1;
-
-	int randBang = rand() % 4;
-	switch (randBang)
-	{
-		case 0:
-			{
-				AudioManager::Instance()->PlaySoundEffect("explosion\\bang.wav");
-				break;
-			}
-		case 1:
-			{
-				AudioManager::Instance()->PlaySoundEffect("explosion\\bang2.wav");
-				break;
-			}
-		case 2:
-			{
-				AudioManager::Instance()->PlaySoundEffect("explosion\\bang3.wav");
-				break;
-			}
-		case 3:
-			{
-				AudioManager::Instance()->PlaySoundEffect("explosion\\bang4.wav");
-				break;
-			}
-		default:
-			{
-				AudioManager::Instance()->PlaySoundEffect("explosion\\bang.wav");
-				break;
-			}
-	}
-			
-
-	ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
-															pos,
-															Vector3(0, 0, 0),
-															0.4,
-															Vector3(3200, 1200, 0),
-															"Media\\explosion_lines.png",
-															0.01,
-															0.01,
-															0.3f,
-															0.3f,
-															128,
-															128,
-															0,
-															false,
-															0.7,
-															1.0,
-															10000,
-															true,
-															8);
-
-
-	ParticleEmitterManager::Instance()->CreateRadialSpray(30,
-															pos,
-															Vector3(3200, 1200, 0),
-															"Media\\smoke.png",
-															3,
-															7,
-															1.0f,
-															1.75f,
-															50,
-															120,
-															0.5f,
-															false,
-															0.2f,
-															0.7f,
-															-1,
-															true,
-															6);
-
-	ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
-															pos,
-															Vector3(0, 0, 0),
-															0.4,
-															Vector3(3200, 1200, 0),
-															"Media\\blast_circle.png",
-															0.01,
-															0.01,
-															0.4f,
-															0.55f,
-															32,
-															32,
-															0,
-															false,
-															0.7,
-															1.0,
-															10000,
-															true,
-															70);
-
-	ParticleEmitterManager::Instance()->CreateRadialSpray(20,
-															pos,
-															Vector3(3200, 1200, 0),
-															"Media\\flame.dds",
-															10,
-															20,
-															0.75f,
-															1.5f,
-															50,
-															300,
-															0.5f,
-															false,
-															0.4f,
-															1.0f,
-															-1,
-															true,
-															3);
-
-
-	ApplyDamage();
-
-	ApplyForceToApplicable();
-
-	GameObjectManager::Instance()->RemoveGameObject_RunTime(this, true);
 }
 
 
@@ -192,4 +73,143 @@ void Explosion::ApplyForceToApplicable()
 			}
 		}
 	}
+}
+
+void Explosion::Update(float delta)
+{
+	if (mFramesActive == 1)
+	{
+		PlaySFX();
+		Display();
+		Inflict();
+	}
+	else if (mFramesActive == 2)
+	{
+		GameObjectManager::Instance()->RemoveGameObject_RunTime(this, true);
+	}
+
+	++mFramesActive;
+}
+
+void Explosion::PlaySFX()
+{
+	bool loop = false;
+	unsigned long loopTime = -1;
+
+	int randBang = rand() % 4;
+	switch (randBang)
+	{
+		case 0:
+			{
+				AudioManager::Instance()->PlaySoundEffect("explosion\\bang.wav");
+				break;
+			}
+		case 1:
+			{
+				AudioManager::Instance()->PlaySoundEffect("explosion\\bang2.wav");
+				break;
+			}
+		case 2:
+			{
+				AudioManager::Instance()->PlaySoundEffect("explosion\\bang3.wav");
+				break;
+			}
+		case 3:
+			{
+				AudioManager::Instance()->PlaySoundEffect("explosion\\bang4.wav");
+				break;
+			}
+		default:
+			{
+				AudioManager::Instance()->PlaySoundEffect("explosion\\bang.wav");
+				break;
+			}
+	}
+}
+
+void Explosion::Display()
+{
+	ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
+															m_position,
+															Vector3(0, 0, 0),
+															0.4,
+															Vector3(3200, 1200, 0),
+															"Media\\explosion_lines.png",
+															0.01,
+															0.01,
+															0.3f,
+															0.3f,
+															128,
+															128,
+															0,
+															false,
+															0.7,
+															1.0,
+															10000,
+															true,
+															8);
+
+
+	ParticleEmitterManager::Instance()->CreateRadialSpray(30,
+															m_position,
+															Vector3(3200, 1200, 0),
+															"Media\\smoke.png",
+															3,
+															7,
+															1.0f,
+															1.75f,
+															50,
+															120,
+															0.5f,
+															false,
+															0.2f,
+															0.7f,
+															-1,
+															true,
+															6);
+
+	ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
+															m_position,
+															Vector3(0, 0, 0),
+															0.4,
+															Vector3(3200, 1200, 0),
+															"Media\\blast_circle.png",
+															0.01,
+															0.01,
+															0.4f,
+															0.55f,
+															32,
+															32,
+															0,
+															false,
+															0.7,
+															1.0,
+															10000,
+															true,
+															70);
+
+	ParticleEmitterManager::Instance()->CreateRadialSpray(20,
+															m_position,
+															Vector3(3200, 1200, 0),
+															"Media\\flame.dds",
+															10,
+															20,
+															0.75f,
+															1.5f,
+															50,
+															300,
+															0.5f,
+															false,
+															0.4f,
+															1.0f,
+															-1,
+															true,
+															3);
+}
+
+void Explosion::Inflict()
+{
+	ApplyDamage();
+
+	ApplyForceToApplicable();
 }
