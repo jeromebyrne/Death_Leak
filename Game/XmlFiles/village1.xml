@@ -1,0 +1,3414 @@
+<level audio="weather\2minutestorm.mp3">
+    <Player id="892" updateable="true">
+        <position z="15" y="995.174" x="-2058.74" rotation="0" />
+        <dimensions breadth="0" height="200" width="200" native="true" repeatX="false" repeatY="false" />
+        <material value="maleninja" />
+        <alpha value="1" />
+        <effect name="effectnoise" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\ninjaAnimation.xml" />
+        <fade_when_player_occluded value="false" />
+        <resistance z="0" y="1.8" x="0.9" />
+        <maxvelocity z="0" y="99999" x="8" />
+        <applygravity value="true" />
+        <collisionboxdimensions z="0" y="199.46" x="115.477" offsetX="0" offsetY="0" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0" />
+        <can_be_damaged value="true" />
+        <maxjumpspeed value="25" />
+        <xaccelrate value="1" />
+        <projectileoffsetx value="15" />
+        <projectileoffsety value="20" />
+    </Player>
+    <Sprite id="893" updateable="true">
+        <position z="9" y="519.174" x="-1494.74" rotation="0" />
+        <dimensions breadth="0" height="646.799" width="489.733" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\blank_black.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="894" updateable="true">
+        <position z="9" y="852.174" x="-1482.74" rotation="0" />
+        <dimensions breadth="0" height="251.455" width="709.338" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\waterfall_top.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="895" updateable="true">
+        <position z="3.9" y="851.174" x="-1482.74" rotation="0" />
+        <dimensions breadth="0" height="251.455" width="709.338" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\waterfall_top_fade.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="896" updateable="true">
+        <position z="8" y="505.174" x="-1125.74" rotation="0" />
+        <dimensions breadth="0" height="671.966" width="257.893" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\waterfall_side.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="897" updateable="true">
+        <position z="8" y="500.174" x="-1857.74" rotation="0" />
+        <dimensions breadth="0" height="671.966" width="257.893" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\waterfall_side.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="898" updateable="true">
+        <position z="8" y="317.174" x="1113.26" rotation="0.0095471" />
+        <dimensions breadth="0" height="519.486" width="882.177" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\buildings\hut.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="899" updateable="true">
+        <position z="8" y="334.73" x="402.26" rotation="0.0095471" />
+        <dimensions breadth="0" height="168.07" width="424.948" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\objects\raft.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="900" updateable="true">
+        <position z="8" y="-748.27" x="412.26" rotation="0" />
+        <dimensions breadth="0" height="413" width="2048" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\cave_ceiling.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="901" updateable="true">
+        <position z="8" y="-747.27" x="-1635.74" rotation="0" />
+        <dimensions breadth="0" height="413" width="2048" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\cave_ceiling.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="902" updateable="true">
+        <position z="8" y="-1419.27" x="408.26" rotation="0" />
+        <dimensions breadth="0" height="771" width="2048" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\cave_floor.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="903" updateable="true">
+        <position z="8" y="-1419.27" x="-1639.74" rotation="0" />
+        <dimensions breadth="0" height="771" width="2048" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\cave_floor.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="904" updateable="true">
+        <position z="8" y="120.174" x="1991.26" rotation="-0.119696" />
+        <dimensions breadth="0" height="276.518" width="354.289" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\objects\boulder.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="905" updateable="true">
+        <position z="7" y="517.73" x="301.26" rotation="0" />
+        <dimensions breadth="0" height="471.529" width="261.551" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\objects\wall_pillar.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="906" updateable="true">
+        <position z="10" y="169.73" x="310.26" rotation="0" />
+        <dimensions breadth="0" height="471.529" width="261.551" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\objects\wall_pillar.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="907" updateable="true">
+        <position z="8" y="53.73" x="270.26" rotation="0" />
+        <dimensions breadth="0" height="471.529" width="261.551" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\objects\wall_pillar.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <ParallaxLayer id="908" updateable="true">
+        <position z="6" y="309.174" x="-1493.74" rotation="0" />
+        <dimensions breadth="0" height="1024" width="560" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="0.65" />
+        <effect name="effectnoise" />
+        <texture filename="Media\\waterfall_2.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+        <cameraparallaxmultiplierx value="0" />
+        <cameraparallaxmultipliery value="0" />
+        <repeatwidth value="1920" />
+        <followcamy value="false" />
+        <followcamx value="false" />
+        <autoscrollx value="false" />
+        <autoscrolly value="true" />
+        <autoscrollxspeed value="0" />
+        <autoscrollyspeed value="5" />
+    </ParallaxLayer>
+    <ParallaxLayer id="909" updateable="true">
+        <position z="5" y="310.174" x="-1503.74" rotation="0" />
+        <dimensions breadth="0" height="1024" width="319" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="0.7" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\waterfall_3.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+        <cameraparallaxmultiplierx value="0" />
+        <cameraparallaxmultipliery value="0" />
+        <repeatwidth value="1920" />
+        <followcamy value="false" />
+        <followcamx value="false" />
+        <autoscrollx value="false" />
+        <autoscrolly value="true" />
+        <autoscrollxspeed value="0" />
+        <autoscrollyspeed value="10" />
+    </ParallaxLayer>
+    <ParallaxLayer id="910" updateable="true">
+        <position z="5" y="309.174" x="-1384.74" rotation="0" />
+        <dimensions breadth="0" height="1024" width="319" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="0.7" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\waterfall_3.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+        <cameraparallaxmultiplierx value="0" />
+        <cameraparallaxmultipliery value="0" />
+        <repeatwidth value="1920" />
+        <followcamy value="false" />
+        <followcamx value="false" />
+        <autoscrollx value="false" />
+        <autoscrolly value="true" />
+        <autoscrollxspeed value="0" />
+        <autoscrollyspeed value="8.5" />
+    </ParallaxLayer>
+    <ParallaxLayer id="911" updateable="true">
+        <position z="5" y="311.174" x="-1604.74" rotation="0" />
+        <dimensions breadth="0" height="1024" width="319" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="0.8" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\waterfall_3.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+        <cameraparallaxmultiplierx value="0" />
+        <cameraparallaxmultipliery value="0" />
+        <repeatwidth value="1920" />
+        <followcamy value="false" />
+        <followcamx value="false" />
+        <autoscrollx value="false" />
+        <autoscrolly value="true" />
+        <autoscrollxspeed value="0" />
+        <autoscrollyspeed value="16" />
+    </ParallaxLayer>
+    <ParallaxLayer id="912" updateable="true">
+        <position z="4.5" y="313.174" x="-1518.74" rotation="0" />
+        <dimensions breadth="0" height="1024" width="560" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="0.3" />
+        <effect name="effectnoise" />
+        <texture filename="Media\\waterfall_2.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+        <cameraparallaxmultiplierx value="0" />
+        <cameraparallaxmultipliery value="0" />
+        <repeatwidth value="1920" />
+        <followcamy value="false" />
+        <followcamx value="false" />
+        <autoscrollx value="false" />
+        <autoscrolly value="true" />
+        <autoscrollxspeed value="0" />
+        <autoscrollyspeed value="4" />
+    </ParallaxLayer>
+    <Sprite id="913" updateable="true">
+        <position z="3.1" y="-220" x="-1500" rotation="0" />
+        <dimensions breadth="0" height="300" width="400" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="0.75" />
+        <effect name="effectlighttexturevertexwobble" />
+        <texture filename="Media\\waterfall_steam.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="914" updateable="true">
+        <position z="3.1" y="-200" x="-1700" rotation="0" />
+        <dimensions breadth="0" height="300" width="400" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="0.75" />
+        <effect name="effectlighttexturevertexwobble" />
+        <texture filename="Media\\waterfall_steam.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="915" updateable="true">
+        <position z="3.1" y="-200" x="-1300" rotation="0" />
+        <dimensions breadth="0" height="300" width="400" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="0.8" />
+        <effect name="effectlighttexturevertexwobble" />
+        <texture filename="Media\\waterfall_steam.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="true" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="916" updateable="true">
+        <position z="5" y="-220" x="-1500" rotation="0" />
+        <dimensions breadth="0" height="280" width="370" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="0.9" />
+        <effect name="effectlighttexturevertexwobble" />
+        <texture filename="Media\\waterfall_steam.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="917" updateable="true">
+        <position z="5" y="-200" x="-1700" rotation="0" />
+        <dimensions breadth="0" height="280" width="370" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="0.9" />
+        <effect name="effectlighttexturevertexwobble" />
+        <texture filename="Media\\waterfall_steam.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="918" updateable="true">
+        <position z="5" y="-200" x="-1300" rotation="0" />
+        <dimensions breadth="0" height="280" width="370" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="0.9" />
+        <effect name="effectlighttexturevertexwobble" />
+        <texture filename="Media\\waterfall_steam.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="true" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <ParticleSpray id="919" updateable="false">
+        <position z="3.5" y="-200" x="-1700" rotation="0" />
+        <dimensions breadth="0" height="600" width="1000" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <numparticles value="15.000000" />
+        <texture filename="Media\\large_splash.png" />
+        <direction x="0.000000" y="1.000000" />
+        <spread value="0.500000" />
+        <speed min="3.000000" max="5.000000" />
+        <livetime min="800.000000" max="1500.000000" />
+        <size min="75.000000" max="150.000000" scaleto="true" scaletovalue="3.500000" />
+        <gravity value="1.900000" />
+        <loop value="true" looptime="-1.000000" />
+        <brightness min="0.900000" max="1.000000" />
+    </ParticleSpray>
+    <ParticleSpray id="920" updateable="false">
+        <position z="3.5" y="-200" x="-1500" rotation="0" />
+        <dimensions breadth="0" height="600" width="1000" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <numparticles value="15.000000" />
+        <texture filename="Media\\large_splash.png" />
+        <direction x="0.200000" y="0.800000" />
+        <spread value="0.500000" />
+        <speed min="3.000000" max="5.000000" />
+        <livetime min="800.000000" max="1500.000000" />
+        <size min="75.000000" max="150.000000" scaleto="true" scaletovalue="3.500000" />
+        <gravity value="1.900000" />
+        <loop value="true" looptime="-1.000000" />
+        <brightness min="0.900000" max="1.000000" />
+    </ParticleSpray>
+    <ParticleSpray id="921" updateable="false">
+        <position z="3.5" y="-200" x="-1300" rotation="0" />
+        <dimensions breadth="0" height="600" width="1000" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <numparticles value="15.000000" />
+        <texture filename="Media\\large_splash.png" />
+        <direction x="0.400000" y="0.600000" />
+        <spread value="0.500000" />
+        <speed min="3.000000" max="5.000000" />
+        <livetime min="800.000000" max="1500.000000" />
+        <size min="75.000000" max="150.000000" scaleto="true" scaletovalue="3.500000" />
+        <gravity value="1.900000" />
+        <loop value="true" looptime="-1.000000" />
+        <brightness min="0.900000" max="1.000000" />
+    </ParticleSpray>
+    <ParticleSpray id="922" updateable="false">
+        <position z="3.5" y="-180" x="-1700" rotation="0" />
+        <dimensions breadth="0" height="600" width="1000" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <numparticles value="10.000000" />
+        <texture filename="Media\\wetsplashparticle.png" />
+        <direction x="-0.200000" y="0.800000" />
+        <spread value="0.400000" />
+        <speed min="9.000000" max="12.000000" />
+        <livetime min="400.000000" max="700.000000" />
+        <size min="75.000000" max="150.000000" scaleto="true" scaletovalue="2.000000" />
+        <gravity value="2.900000" />
+        <loop value="true" looptime="-1.000000" />
+        <brightness min="0.900000" max="1.000000" />
+    </ParticleSpray>
+    <ParticleSpray id="923" updateable="false">
+        <position z="3.5" y="-180" x="-1300" rotation="0" />
+        <dimensions breadth="0" height="600" width="1000" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <numparticles value="10.000000" />
+        <texture filename="Media\\wetsplashparticle.png" />
+        <direction x="0.200000" y="0.800000" />
+        <spread value="0.400000" />
+        <speed min="9.000000" max="12.000000" />
+        <livetime min="400.000000" max="700.000000" />
+        <size min="75.000000" max="150.000000" scaleto="true" scaletovalue="2.000000" />
+        <gravity value="2.900000" />
+        <loop value="true" looptime="-1.000000" />
+        <brightness min="0.900000" max="1.000000" />
+    </ParticleSpray>
+    <Sprite id="924" updateable="true">
+        <position z="18.2" y="188" x="-356.26" rotation="0.00400127" />
+        <dimensions breadth="0" height="347.009" width="403.116" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\wood_fence.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="925" updateable="true">
+        <position z="18.2" y="45" x="-911.26" rotation="0.00400127" />
+        <dimensions breadth="0" height="162.166" width="147.758" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\lantern.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="926" updateable="true">
+        <position z="7.2" y="1121.73" x="-1577.74" rotation="0.162501" />
+        <dimensions breadth="0" height="415.812" width="316.387" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\tree_leafless.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="927" updateable="true">
+        <position z="18.2" y="316" x="-884.26" rotation="0.00400127" />
+        <dimensions breadth="0" height="306.537" width="355.453" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\floating_platform_1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <SolidMovingSprite id="928" updateable="true">
+        <position z="30" y="98.174" x="1211.26" rotation="0" />
+        <dimensions breadth="0" height="512" width="20480" native="false" repeatX="true" repeatY="false" />
+        <material value="grassground" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\grassfenceground2.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+        <resistance z="0" y="2" x="0.95" />
+        <maxvelocity z="0" y="99999" x="10" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0" y="800" x="20480" offsetX="0" offsetY="-400" />
+        <passive value="true" />
+        <applydamage flag="false" amount="0" />
+        <can_be_damaged value="false" />
+    </SolidMovingSprite>
+    <SolidMovingSprite id="929" updateable="true">
+        <position z="31" y="-130.27" x="9019.26" rotation="0" />
+        <dimensions breadth="0" height="512" width="132" native="true" repeatX="false" repeatY="false" />
+        <material value="grassground" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\grassfencegroundedge.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+        <resistance z="0" y="2" x="0.95" />
+        <maxvelocity z="0" y="99999" x="10" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0" y="450" x="200" offsetX="0" offsetY="-400" />
+        <passive value="true" />
+        <applydamage flag="false" amount="0" />
+        <can_be_damaged value="false" />
+    </SolidMovingSprite>
+    <SolidMovingSprite id="930" updateable="true">
+        <position z="6" y="681.73" x="26.26" rotation="0" />
+        <dimensions breadth="0" height="300" width="300" native="false" repeatX="false" repeatY="false" />
+        <material value="stone" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\objects\stone_block_large.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+        <resistance z="0" y="2" x="0.95" />
+        <maxvelocity z="0" y="99999" x="10" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0" y="260" x="260" offsetX="0" offsetY="0" />
+        <passive value="true" />
+        <applydamage flag="false" amount="0" />
+        <can_be_damaged value="true" />
+    </SolidMovingSprite>
+    <SolidMovingSprite id="931" updateable="true">
+        <position z="6" y="234.56" x="-5240" rotation="0" />
+        <dimensions breadth="0" height="719.12" width="719.12" native="false" repeatX="false" repeatY="false" />
+        <material value="stone" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+        <resistance z="0" y="2" x="0.95" />
+        <maxvelocity z="0" y="99999" x="10" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0" y="2330.93" x="2330.93" offsetX="0" offsetY="0" />
+        <passive value="true" />
+        <applydamage flag="false" amount="0" />
+        <can_be_damaged value="true" />
+    </SolidMovingSprite>
+    <Sprite id="932" updateable="true">
+        <position z="3.1" y="-47" x="-3991" rotation="0.13937" />
+        <dimensions breadth="0" height="887.958" width="887.958" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="933" updateable="true">
+        <position z="18.2" y="86" x="8803" rotation="0.0377991" />
+        <dimensions breadth="0" height="200.051" width="200.051" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="934" updateable="true">
+        <position z="12.2" y="-118" x="5768" rotation="-0.042436" />
+        <dimensions breadth="0" height="255.412" width="255.412" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="935" updateable="true">
+        <position z="10.2" y="-78" x="6194" rotation="0" />
+        <dimensions breadth="0" height="263.997" width="263.997" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone2.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="936" updateable="true">
+        <position z="12.2" y="-108" x="5447" rotation="-0.190036" />
+        <dimensions breadth="0" height="263.997" width="263.997" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone2.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="937" updateable="true">
+        <position z="18.2" y="126" x="5708" rotation="0" />
+        <dimensions breadth="0" height="263.997" width="263.997" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone2.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="938" updateable="true">
+        <position z="16.2" y="25" x="6746" rotation="-0.0900665" />
+        <dimensions breadth="0" height="263.997" width="263.997" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone2.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="939" updateable="true">
+        <position z="17.2" y="107" x="7301" rotation="0" />
+        <dimensions breadth="0" height="263.997" width="263.997" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone2.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="940" updateable="true">
+        <position z="18.2" y="134" x="8002" rotation="-0.109988" />
+        <dimensions breadth="0" height="294.037" width="294.037" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone2.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="941" updateable="true">
+        <position z="10.2" y="-143" x="8817" rotation="0" />
+        <dimensions breadth="0" height="263.997" width="263.997" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone2.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="942" updateable="true">
+        <position z="17.2" y="114" x="9380" rotation="0" />
+        <dimensions breadth="0" height="263.997" width="263.997" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone2.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="943" updateable="true">
+        <position z="9.2" y="-168.556" x="7731" rotation="0.0212747" />
+        <dimensions breadth="0" height="361.443" width="361.443" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone2.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="944" updateable="true">
+        <position z="10.2" y="-115" x="10210" rotation="0" />
+        <dimensions breadth="0" height="263.997" width="263.997" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone2.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="945" updateable="true">
+        <position z="16.2" y="-4" x="6326" rotation="-0.0222009" />
+        <dimensions breadth="0" height="200.051" width="200.051" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="946" updateable="true">
+        <position z="18.2" y="90.4444" x="5339" rotation="-0.0321741" />
+        <dimensions breadth="0" height="171.063" width="171.063" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone3.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="947" updateable="true">
+        <position z="16.2" y="4.4444" x="7514" rotation="-0.0116052" />
+        <dimensions breadth="0" height="148.362" width="148.362" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone3.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="948" updateable="true">
+        <position z="12.2" y="-97.5556" x="7168" rotation="-0.101575" />
+        <dimensions breadth="0" height="148.362" width="148.362" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone3.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="949" updateable="true">
+        <position z="12.2" y="-132.556" x="6471" rotation="0.0477991" />
+        <dimensions breadth="0" height="168.095" width="168.095" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone3.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="950" updateable="true">
+        <position z="16.2" y="78.4444" x="8316" rotation="-0.0222009" />
+        <dimensions breadth="0" height="148.362" width="148.362" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone3.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="951" updateable="true">
+        <position z="16.2" y="14.4444" x="8984" rotation="-0.0222009" />
+        <dimensions breadth="0" height="148.362" width="148.362" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone3.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="952" updateable="true">
+        <position z="17.2" y="73.4444" x="10229" rotation="-0.0222009" />
+        <dimensions breadth="0" height="148.362" width="148.362" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone3.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="953" updateable="true">
+        <position z="10.2" y="-152.556" x="9924" rotation="0.0777991" />
+        <dimensions breadth="0" height="148.362" width="148.362" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone3.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="954" updateable="true">
+        <position z="13.2" y="-86.5556" x="8015" rotation="-0.0222009" />
+        <dimensions breadth="0" height="148.362" width="148.362" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone3.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="955" updateable="true">
+        <position z="18.2" y="100.444" x="6023" rotation="0.0277542" />
+        <dimensions breadth="0" height="148.362" width="148.362" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone3.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="956" updateable="true">
+        <position z="17.2" y="113.444" x="11277" rotation="-0.0020681" />
+        <dimensions breadth="0" height="293.51" width="293.51" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone4.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="957" updateable="true">
+        <position z="18.2" y="85" x="9754" rotation="0.0377991" />
+        <dimensions breadth="0" height="200.051" width="200.051" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="958" updateable="true">
+        <position z="18.2" y="107" x="6484" rotation="0.0377991" />
+        <dimensions breadth="0" height="200.051" width="200.051" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="959" updateable="true">
+        <position z="12.2" y="-100.556" x="6930" rotation="0.0377991" />
+        <dimensions breadth="0" height="200.051" width="200.051" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="960" updateable="true">
+        <position z="18.2" y="98" x="7049" rotation="-0.0322121" />
+        <dimensions breadth="0" height="200.051" width="200.051" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="961" updateable="true">
+        <position z="14.2" y="-76" x="9251" rotation="-0.0122009" />
+        <dimensions breadth="0" height="200.051" width="200.051" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="962" updateable="true">
+        <position z="18.2" y="83" x="7545" rotation="0.0377991" />
+        <dimensions breadth="0" height="200.051" width="200.051" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="963" updateable="true">
+        <position z="12.2" y="-96" x="8268" rotation="-0.0422408" />
+        <dimensions breadth="0" height="234.547" width="234.547" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="964" updateable="true">
+        <position z="18.2" y="82" x="5144" rotation="0.0377991" />
+        <dimensions breadth="0" height="200.051" width="200.051" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gravestone1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="965" updateable="true">
+        <position z="3.1" y="24" x="-5142" rotation="0.0377991" />
+        <dimensions breadth="0" height="753.853" width="753.853" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="966" updateable="true">
+        <position z="3.1" y="40" x="-4382" rotation="-0.160683" />
+        <dimensions breadth="0" height="887.958" width="887.958" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="967" updateable="true">
+        <position z="3.1" y="13" x="-4652" rotation="-0.0506946" />
+        <dimensions breadth="0" height="887.958" width="887.958" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="968" updateable="true">
+        <position z="3.1" y="0" x="-4919" rotation="-0.0506946" />
+        <dimensions breadth="0" height="887.958" width="887.958" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="969" updateable="true">
+        <position z="3.1" y="-138" x="-4145" rotation="-0.0415448" />
+        <dimensions breadth="0" height="751.78" width="751.78" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="970" updateable="true">
+        <position z="18.1" y="249" x="-5024" rotation="-0.0415448" />
+        <dimensions breadth="0" height="528.454" width="528.454" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="971" updateable="true">
+        <position z="18.2" y="292" x="-5098" rotation="-0.201545" />
+        <dimensions breadth="0" height="592.155" width="592.155" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="972" updateable="true">
+        <position z="18.2" y="234" x="-4585" rotation="0.038455" />
+        <dimensions breadth="0" height="482.191" width="482.191" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="973" updateable="true">
+        <position z="14" y="63" x="-4286" rotation="-0.021545" />
+        <dimensions breadth="0" height="451.674" width="451.674" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="974" updateable="true">
+        <position z="18.2" y="258" x="-4063" rotation="-0.0415417" />
+        <dimensions breadth="0" height="544.514" width="544.514" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="975" updateable="true">
+        <position z="18.2" y="208" x="-3909" rotation="0.0384551" />
+        <dimensions breadth="0" height="592.155" width="592.155" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="976" updateable="true">
+        <position z="3.2" y="-40" x="-3564" rotation="0.00810897" />
+        <dimensions breadth="0" height="915.935" width="915.935" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="977" updateable="true">
+        <position z="18.2" y="210" x="-3682" rotation="-0.0015829" />
+        <dimensions breadth="0" height="429.025" width="429.025" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="978" updateable="true">
+        <position z="18.2" y="219" x="-3397" rotation="0.0480963" />
+        <dimensions breadth="0" height="592.155" width="592.155" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="979" updateable="true">
+        <position z="17.2" y="201" x="-3267" rotation="0.0889796" />
+        <dimensions breadth="0" height="592.155" width="592.155" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="980" updateable="true">
+        <position z="18.2" y="239" x="-3038" rotation="-0.10447" />
+        <dimensions breadth="0" height="504.608" width="504.608" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="981" updateable="true">
+        <position z="3.2" y="79" x="-2894" rotation="-0.011545" />
+        <dimensions breadth="0" height="854.438" width="854.438" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="982" updateable="true">
+        <position z="18.2" y="216" x="-4766" rotation="-0.071545" />
+        <dimensions breadth="0" height="592.155" width="592.155" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="983" updateable="true">
+        <position z="18.2" y="207" x="-2809" rotation="0.00972912" />
+        <dimensions breadth="0" height="434.442" width="434.442" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="984" updateable="true">
+        <position z="18.2" y="226" x="-2600" rotation="-0.071545" />
+        <dimensions breadth="0" height="592.155" width="592.155" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="985" updateable="true">
+        <position z="18.2" y="259" x="-3485" rotation="0.00846277" />
+        <dimensions breadth="0" height="592.155" width="592.155" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="986" updateable="true">
+        <position z="3.2" y="77" x="-2725" rotation="-0.011545" />
+        <dimensions breadth="0" height="766.116" width="766.116" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="987" updateable="true">
+        <position z="18.2" y="221" x="-2444" rotation="-0.071545" />
+        <dimensions breadth="0" height="466.98" width="466.98" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="988" updateable="true">
+        <position z="18.2" y="229" x="-4468" rotation="-0.071545" />
+        <dimensions breadth="0" height="592.155" width="592.155" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="989" updateable="true">
+        <position z="3.2" y="15" x="-3095" rotation="-0.00154499" />
+        <dimensions breadth="0" height="795.675" width="795.675" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="990" updateable="true">
+        <position z="18.2" y="262" x="-2252" rotation="-0.071545" />
+        <dimensions breadth="0" height="592.155" width="592.155" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="991" updateable="true">
+        <position z="18.3" y="249" x="-2303" rotation="-0.071545" />
+        <dimensions breadth="0" height="538.513" width="538.513" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="992" updateable="true">
+        <position z="3.2" y="18" x="-2357" rotation="-0.071545" />
+        <dimensions breadth="0" height="643.347" width="643.347" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="993" updateable="true">
+        <position z="18.2" y="237" x="-2087" rotation="0.0885801" />
+        <dimensions breadth="0" height="503.415" width="503.415" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="994" updateable="true">
+        <position z="17" y="-27" x="3178" rotation="0" />
+        <dimensions breadth="0" height="291.677" width="291.677" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\campfire.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <ParticleSpray id="995" updateable="false">
+        <position z="16" y="40" x="3170" rotation="0" />
+        <dimensions breadth="0" height="600" width="1000" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <numparticles value="50.000000" />
+        <texture filename="Media\\smoke.png" />
+        <direction x="0.000000" y="1.000000" />
+        <spread value="0.500000" />
+        <speed min="1.000000" max="2.500000" />
+        <livetime min="3000.000000" max="6000.000000" />
+        <size min="50.000000" max="100.000000" scaleto="true" scaletovalue="5.000000" />
+        <gravity value="0.000000" />
+        <loop value="true" looptime="-1.000000" />
+        <brightness min="0.200000" max="1.000000" />
+    </ParticleSpray>
+    <ParticleSpray id="996" updateable="false">
+        <position z="15.9" y="-10" x="3170" rotation="0" />
+        <dimensions breadth="0" height="600" width="1000" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <numparticles value="15.000000" />
+        <texture filename="Media\\flame3.png" />
+        <direction x="0.000000" y="1.000000" />
+        <spread value="0.300000" />
+        <speed min="3.000000" max="5.500000" />
+        <livetime min="200.000000" max="500.000000" />
+        <size min="40.000000" max="80.000000" scaleto="true" scaletovalue="0.500000" />
+        <gravity value="1.000000" />
+        <loop value="true" looptime="-1.000000" />
+        <brightness min="0.600000" max="1.000000" />
+    </ParticleSpray>
+    <ParticleSpray id="997" updateable="false">
+        <position z="15.9" y="-2" x="3182" rotation="0" />
+        <dimensions breadth="0" height="600" width="1000" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <numparticles value="10.000000" />
+        <texture filename="Media\\flame3.png" />
+        <direction x="0.000000" y="1.000000" />
+        <spread value="0.300000" />
+        <speed min="3.000000" max="5.500000" />
+        <livetime min="200.000000" max="500.000000" />
+        <size min="20.000000" max="40.000000" scaleto="true" scaletovalue="0.500000" />
+        <gravity value="1.000000" />
+        <loop value="true" looptime="-1.000000" />
+        <brightness min="0.600000" max="1.000000" />
+    </ParticleSpray>
+    <ParticleSpray id="998" updateable="false">
+        <position z="15.9" y="2" x="3155" rotation="0" />
+        <dimensions breadth="0" height="600" width="1000" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <numparticles value="10.000000" />
+        <texture filename="Media\\flame3.png" />
+        <direction x="0.000000" y="1.000000" />
+        <spread value="0.300000" />
+        <speed min="3.000000" max="5.500000" />
+        <livetime min="200.000000" max="700.000000" />
+        <size min="35.000000" max="60.000000" scaleto="true" scaletovalue="0.500000" />
+        <gravity value="1.000000" />
+        <loop value="true" looptime="-1.000000" />
+        <brightness min="0.600000" max="1.000000" />
+    </ParticleSpray>
+    <Sprite id="999" updateable="true">
+        <position z="15.2" y="-23" x="4401" rotation="0" />
+        <dimensions breadth="0" height="128" width="128" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\pebbles.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1000" updateable="true">
+        <position z="15.2" y="-22" x="4247" rotation="0" />
+        <dimensions breadth="0" height="101.758" width="101.758" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\pebbles.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1001" updateable="true">
+        <position z="15.2" y="-155" x="4421" rotation="0" />
+        <dimensions breadth="0" height="128" width="128" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\pebbles.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1002" updateable="true">
+        <position z="15.8" y="721.73" x="2634.26" rotation="0" />
+        <dimensions breadth="0" height="128" width="128" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\pebbles.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1003" updateable="true">
+        <position z="11.2" y="832.73" x="811.26" rotation="0" />
+        <dimensions breadth="0" height="128" width="128" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\pebbles.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1004" updateable="true">
+        <position z="15.2" y="-85" x="2929" rotation="0" />
+        <dimensions breadth="0" height="128" width="128" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\pebbles.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1005" updateable="true">
+        <position z="15.6" y="-69.778" x="11676" rotation="0" />
+        <dimensions breadth="0" height="512" width="512" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\cobblestone.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1006" updateable="true">
+        <position z="18.1" y="38.222" x="11407" rotation="0" />
+        <dimensions breadth="0" height="512" width="512" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\cobblestone.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1007" updateable="true">
+        <position z="16.1" y="-42.778" x="10879" rotation="0" />
+        <dimensions breadth="0" height="512" width="512" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\cobblestone.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1008" updateable="true">
+        <position z="15.7" y="-45.778" x="11679" rotation="0" />
+        <dimensions breadth="0" height="512" width="512" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\cobblestone.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1009" updateable="true">
+        <position z="16.1" y="-80.778" x="10875" rotation="0" />
+        <dimensions breadth="0" height="512" width="512" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\cobblestone.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1010" updateable="true">
+        <position z="17" y="-4.77802" x="11677" rotation="0" />
+        <dimensions breadth="0" height="512" width="512" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\cobblestone.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1011" updateable="true">
+        <position z="17.9" y="-2.77802" x="10867" rotation="0" />
+        <dimensions breadth="0" height="512" width="512" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\cobblestone.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1012" updateable="true">
+        <position z="18.8" y="36.222" x="11159" rotation="0" />
+        <dimensions breadth="0" height="512" width="512" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\cobblestone.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1013" updateable="true">
+        <position z="10.2" y="-125" x="2805" rotation="0" />
+        <dimensions breadth="0" height="128" width="128" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\pebbles.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1014" updateable="true">
+        <position z="19.2" y="20" x="87" rotation="0" />
+        <dimensions breadth="0" height="113.724" width="113.724" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\pebbles.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1015" updateable="true">
+        <position z="19.2" y="10" x="-71" rotation="0" />
+        <dimensions breadth="0" height="128" width="128" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\pebbles.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1016" updateable="true">
+        <position z="5" y="-61" x="4099" rotation="0" />
+        <dimensions breadth="0" height="385.641" width="385.641" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\stonewall_small.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1017" updateable="true">
+        <position z="4" y="-185" x="4080" rotation="0.11" />
+        <dimensions breadth="0" height="430.434" width="430.434" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\stonewall_small.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1018" updateable="true">
+        <position z="16" y="84" x="4340.5" rotation="0" />
+        <dimensions breadth="0" height="307.131" width="307.131" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gate_fence.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1019" updateable="true">
+        <position z="7" y="-31" x="4325" rotation="0" />
+        <dimensions breadth="0" height="389.428" width="389.428" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gate_fence.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1020" updateable="true">
+        <position z="17" y="91" x="4178.5" rotation="0" />
+        <dimensions breadth="0" height="285.726" width="285.726" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\stonewall_small.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1021" updateable="true">
+        <position z="19" y="816.73" x="564.26" rotation="0" />
+        <dimensions breadth="0" height="123.979" width="123.979" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock3.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1022" updateable="true">
+        <position z="19.9" y="67" x="3213" rotation="0" />
+        <dimensions breadth="0" height="256" width="256" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1023" updateable="true">
+        <position z="19" y="-200" x="-887" rotation="0" />
+        <dimensions breadth="0" height="256" width="256" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1024" updateable="true">
+        <position z="10" y="-198" x="1006" rotation="0" />
+        <dimensions breadth="0" height="144.194" width="144.194" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1025" updateable="true">
+        <position z="20" y="745.73" x="1886.26" rotation="0" />
+        <dimensions breadth="0" height="256" width="256" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1026" updateable="true">
+        <position z="12" y="-211" x="3095" rotation="0" />
+        <dimensions breadth="0" height="188.358" width="188.358" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1027" updateable="true">
+        <position z="19" y="745.73" x="509.26" rotation="0" />
+        <dimensions breadth="0" height="163.113" width="163.113" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1028" updateable="true">
+        <position z="18" y="10" x="3342" rotation="0" />
+        <dimensions breadth="0" height="177.252" width="177.252" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1029" updateable="true">
+        <position z="19" y="786.73" x="682.26" rotation="0" />
+        <dimensions breadth="0" height="77.469" width="77.469" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock2.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1030" updateable="true">
+        <position z="19" y="47" x="4504" rotation="0" />
+        <dimensions breadth="0" height="96.4396" width="96.4396" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock2.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1031" updateable="true">
+        <position z="19" y="829.73" x="1021.26" rotation="0" />
+        <dimensions breadth="0" height="128" width="128" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock2.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1032" updateable="true">
+        <position z="7" y="23.1741" x="1144.26" rotation="0" />
+        <dimensions breadth="0" height="110.018" width="110.018" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock2.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1033" updateable="true">
+        <position z="19" y="44" x="2683.5" rotation="0.0179156" />
+        <dimensions breadth="0" height="109.571" width="109.571" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock2.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1034" updateable="true">
+        <position z="19" y="765.73" x="1197.26" rotation="0" />
+        <dimensions breadth="0" height="81.3573" width="81.3573" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock2.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1035" updateable="true">
+        <position z="12.7" y="-201" x="1380.5" rotation="0" />
+        <dimensions breadth="0" height="128" width="128" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock2.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1036" updateable="true">
+        <position z="19.1" y="13" x="117.5" rotation="0" />
+        <dimensions breadth="0" height="108.285" width="108.285" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock2.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1037" updateable="true">
+        <position z="19" y="-8" x="-14.5" rotation="0.0695804" />
+        <dimensions breadth="0" height="100.372" width="100.372" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock3.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1038" updateable="true">
+        <position z="20.1" y="41" x="64.5" rotation="0" />
+        <dimensions breadth="0" height="105.717" width="105.717" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock3.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1039" updateable="true">
+        <position z="11" y="-151" x="1589.5" rotation="-0.0178881" />
+        <dimensions breadth="0" height="165.476" width="165.476" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock3.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1040" updateable="true">
+        <position z="19" y="-10" x="65.5" rotation="0.05" />
+        <dimensions breadth="0" height="119.96" width="119.96" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock3.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1041" updateable="true">
+        <position z="11" y="775.73" x="633.26" rotation="0" />
+        <dimensions breadth="0" height="117.012" width="117.012" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock3.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1042" updateable="true">
+        <position z="22" y="52" x="2390.5" rotation="0" />
+        <dimensions breadth="0" height="128" width="128" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock3.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1043" updateable="true">
+        <position z="16" y="831.73" x="736.26" rotation="0.06" />
+        <dimensions breadth="0" height="128" width="128" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock3.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1044" updateable="true">
+        <position z="11" y="-135" x="2248.5" rotation="0" />
+        <dimensions breadth="0" height="125.456" width="125.456" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock3.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1045" updateable="true">
+        <position z="20.1" y="33" x="-39.5" rotation="0.119976" />
+        <dimensions breadth="0" height="128" width="128" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock3.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1046" updateable="true">
+        <position z="5.9" y="47.1741" x="743.26" rotation="-0.100208" />
+        <dimensions breadth="0" height="128" width="128" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock3.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1047" updateable="true">
+        <position z="21" y="931.73" x="3060.26" rotation="0" />
+        <dimensions breadth="0" height="555.917" width="555.917" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\lotus_tree.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1048" updateable="true">
+        <position z="18" y="273.222" x="11084" rotation="0" />
+        <dimensions breadth="0" height="741.801" width="741.801" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\lotus_tree.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1049" updateable="true">
+        <position z="17" y="-24.5556" x="11282" rotation="0" />
+        <dimensions breadth="0" height="426.79" width="426.79" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\muckpile2.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1050" updateable="true">
+        <position z="16" y="6.4444" x="5349" rotation="0" />
+        <dimensions breadth="0" height="216.383" width="216.383" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\muckpile.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1051" updateable="true">
+        <position z="6" y="916.73" x="-1563.74" rotation="-0.0401913" />
+        <dimensions breadth="0" height="144.604" width="144.604" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\muckpile.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1052" updateable="true">
+        <position z="17" y="36.4444" x="7046" rotation="0" />
+        <dimensions breadth="0" height="144.888" width="144.888" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\muckpile.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1053" updateable="true">
+        <position z="15.5" y="-68.5556" x="6732" rotation="0" />
+        <dimensions breadth="0" height="125.989" width="125.989" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\muckpile.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1054" updateable="true">
+        <position z="16" y="-45.5556" x="8976" rotation="0" />
+        <dimensions breadth="0" height="177.95" width="177.95" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\muckpile.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1055" updateable="true">
+        <position z="17" y="16.4444" x="7544" rotation="0" />
+        <dimensions breadth="0" height="159.696" width="159.696" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\muckpile.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1056" updateable="true">
+        <position z="17" y="15.4444" x="9754" rotation="-0.0300049" />
+        <dimensions breadth="0" height="154.959" width="154.959" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\muckpile.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1057" updateable="true">
+        <position z="17" y="-9.5556" x="6526" rotation="0" />
+        <dimensions breadth="0" height="258.489" width="258.489" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\muckpile.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1058" updateable="true">
+        <position z="18" y="32.4444" x="8564" rotation="0" />
+        <dimensions breadth="0" height="219.324" width="219.324" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\muckpile.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1059" updateable="true">
+        <position z="14" y="-134.556" x="9584" rotation="0" />
+        <dimensions breadth="0" height="221.964" width="221.964" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\muckpile.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1060" updateable="true">
+        <position z="17" y="17.4444" x="9376" rotation="0" />
+        <dimensions breadth="0" height="118.146" width="118.146" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\muckpile.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1061" updateable="true">
+        <position z="17" y="30" x="5703" rotation="0" />
+        <dimensions breadth="0" height="111.799" width="111.799" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\muckpile.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1062" updateable="true">
+        <position z="17" y="-26.5556" x="2967" rotation="0" />
+        <dimensions breadth="0" height="79.9746" width="79.9746" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\muckpile.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1063" updateable="true">
+        <position z="15.2" y="154.222" x="11477" rotation="0" />
+        <dimensions breadth="0" height="808.025" width="808.025" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\lotus_tree.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1064" updateable="true">
+        <position z="10" y="-6.5556" x="7587" rotation="0" />
+        <dimensions breadth="0" height="654.724" width="654.724" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\lotus_tree.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1065" updateable="true">
+        <position z="18" y="181.444" x="8983" rotation="0" />
+        <dimensions breadth="0" height="551.943" width="551.943" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\lotus_tree.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1066" updateable="true">
+        <position z="11" y="60.4444" x="4893" rotation="0" />
+        <dimensions breadth="0" height="734.483" width="734.483" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\lotus_tree.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1067" updateable="true">
+        <position z="18" y="214.444" x="6621" rotation="0" />
+        <dimensions breadth="0" height="551.943" width="551.943" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\lotus_tree.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1068" updateable="true">
+        <position z="19" y="872.73" x="1807.26" rotation="0" />
+        <dimensions breadth="0" height="632.83" width="632.83" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\lotus_tree.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1069" updateable="true">
+        <position z="19" y="906.73" x="2447.26" rotation="0" />
+        <dimensions breadth="0" height="632.83" width="632.83" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\lotus_tree.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1070" updateable="true">
+        <position z="13" y="-173.556" x="4838" rotation="0" />
+        <dimensions breadth="0" height="98.6334" width="98.6334" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock2.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1071" updateable="true">
+        <position z="11.1" y="-191.556" x="11648" rotation="0" />
+        <dimensions breadth="0" height="128" width="128" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock3.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1072" updateable="true">
+        <position z="13" y="-147.556" x="7315" rotation="0" />
+        <dimensions breadth="0" height="98.6334" width="98.6334" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock3.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1073" updateable="true">
+        <position z="13" y="-152.556" x="7501" rotation="0" />
+        <dimensions breadth="0" height="117.208" width="117.208" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\pebbles.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1074" updateable="true">
+        <position z="19" y="51.4444" x="9268" rotation="0" />
+        <dimensions breadth="0" height="128" width="128" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\pebbles.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1075" updateable="true">
+        <position z="13" y="-134.556" x="8511" rotation="0" />
+        <dimensions breadth="0" height="111.918" width="111.918" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\pebbles.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1076" updateable="true">
+        <position z="17" y="48.222" x="10501" rotation="0" />
+        <dimensions breadth="0" height="128" width="128" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\pebbles.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1077" updateable="true">
+        <position z="17" y="41.4444" x="11988" rotation="0" />
+        <dimensions breadth="0" height="128" width="128" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\pebbles.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1078" updateable="true">
+        <position z="17" y="5.4444" x="8150" rotation="0" />
+        <dimensions breadth="0" height="128" width="128" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock3.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1079" updateable="true">
+        <position z="18" y="53.222" x="9949" rotation="0" />
+        <dimensions breadth="0" height="128" width="128" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock2.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1080" updateable="true">
+        <position z="16.9" y="-30.5556" x="6630" rotation="0" />
+        <dimensions breadth="0" height="128" width="128" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock2.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1081" updateable="true">
+        <position z="18" y="57.4444" x="7896" rotation="0" />
+        <dimensions breadth="0" height="87.9554" width="87.9554" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock2.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1082" updateable="true">
+        <position z="12" y="-134.556" x="5624" rotation="0" />
+        <dimensions breadth="0" height="92.5847" width="92.5847" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock2.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1083" updateable="true">
+        <position z="7" y="-167.111" x="12448" rotation="0" />
+        <dimensions breadth="0" height="108.43" width="108.43" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock2.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1084" updateable="true">
+        <position z="17" y="-80.778" x="12222" rotation="0" />
+        <dimensions breadth="0" height="128" width="128" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock2.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1085" updateable="true">
+        <position z="13" y="1183.73" x="522.26" rotation="0" />
+        <dimensions breadth="0" height="654.824" width="654.824" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\lotus_tree.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1086" updateable="true">
+        <position z="21" y="157" x="2437" rotation="0" />
+        <dimensions breadth="0" height="555.917" width="555.917" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\lotus_tree.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1087" updateable="true">
+        <position z="6" y="985.73" x="1146.26" rotation="0" />
+        <dimensions breadth="0" height="921.907" width="921.907" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\lotus_tree.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1088" updateable="true">
+        <position z="15.9" y="201" x="3278" rotation="0" />
+        <dimensions breadth="0" height="829.866" width="829.866" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\lotus_tree.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1089" updateable="true">
+        <position z="18" y="350" x="3206" rotation="0" />
+        <dimensions breadth="0" height="1024" width="1024" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\lotus_tree.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1090" updateable="true">
+        <position z="17.1" y="81" x="3565" rotation="0.1592" />
+        <dimensions breadth="0" height="325.744" width="325.744" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1091" updateable="true">
+        <position z="17.1" y="118" x="2961" rotation="0.0392" />
+        <dimensions breadth="0" height="325.744" width="325.744" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\bamboo.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1092" updateable="true">
+        <position z="20" y="145" x="57" rotation="0" />
+        <dimensions breadth="0" height="286.533" width="286.533" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\signpost.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1093" updateable="true">
+        <position z="20" y="169" x="-8" rotation="-0.06" />
+        <dimensions breadth="0" height="344.528" width="344.528" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\signpost.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <ParallaxLayer id="1094" updateable="true">
+        <position z="29" y="-98.5556" x="-1458.74" rotation="0" />
+        <dimensions breadth="0" height="512" width="2048" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\ground_rain.xml" />
+        <fade_when_player_occluded value="false" />
+        <cameraparallaxmultiplierx value="0.000488" />
+        <cameraparallaxmultipliery value="0" />
+        <repeatwidth value="1920" />
+        <followcamy value="false" />
+        <followcamx value="true" />
+        <autoscrollx value="false" />
+        <autoscrolly value="false" />
+        <autoscrollxspeed value="0" />
+        <autoscrollyspeed value="0" />
+    </ParallaxLayer>
+    <ParallaxLayer id="1095" updateable="true">
+        <position z="3" y="-300" x="-1458.74" rotation="0" />
+        <dimensions breadth="0" height="512" width="2116" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\shrubbery.dds" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+        <cameraparallaxmultiplierx value="0.0008" />
+        <cameraparallaxmultipliery value="0" />
+        <repeatwidth value="1920" />
+        <followcamy value="false" />
+        <followcamx value="true" />
+        <autoscrollx value="false" />
+        <autoscrolly value="false" />
+        <autoscrollxspeed value="0" />
+        <autoscrollyspeed value="0" />
+    </ParallaxLayer>
+    <ParallaxLayer id="1096" updateable="true">
+        <position z="3.5" y="598" x="-1458.74" rotation="0" />
+        <dimensions breadth="0" height="2048" width="2048" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\rainlayer.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+        <cameraparallaxmultiplierx value="0.000488" />
+        <cameraparallaxmultipliery value="0" />
+        <repeatwidth value="2048" />
+        <followcamy value="false" />
+        <followcamx value="true" />
+        <autoscrollx value="false" />
+        <autoscrolly value="true" />
+        <autoscrollxspeed value="0" />
+        <autoscrollyspeed value="5.5" />
+    </ParallaxLayer>
+    <ParallaxLayer id="1097" updateable="true">
+        <position z="3.5" y="2650" x="-1458.74" rotation="0" />
+        <dimensions breadth="0" height="2048" width="2048" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="0.9" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\rainlayer.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+        <cameraparallaxmultiplierx value="0.000488" />
+        <cameraparallaxmultipliery value="0" />
+        <repeatwidth value="1920" />
+        <followcamy value="false" />
+        <followcamx value="true" />
+        <autoscrollx value="false" />
+        <autoscrolly value="true" />
+        <autoscrollxspeed value="0" />
+        <autoscrollyspeed value="5.5" />
+    </ParallaxLayer>
+    <ParallaxLayer id="1098" updateable="true">
+        <position z="35" y="4000" x="-1458.74" rotation="0" />
+        <dimensions breadth="0" height="766" width="1920" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="0.75" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\clouds_top.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+        <cameraparallaxmultiplierx value="0.00035" />
+        <cameraparallaxmultipliery value="0" />
+        <repeatwidth value="1920" />
+        <followcamy value="false" />
+        <followcamx value="true" />
+        <autoscrollx value="false" />
+        <autoscrolly value="false" />
+        <autoscrollxspeed value="0.4" />
+        <autoscrollyspeed value="0" />
+    </ParallaxLayer>
+    <ParallaxLayer id="1099" updateable="true">
+        <position z="1" y="3900" x="-1458.74" rotation="0" />
+        <dimensions breadth="0" height="766" width="1920" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="0.75" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\clouds_top.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+        <cameraparallaxmultiplierx value="0.0006" />
+        <cameraparallaxmultipliery value="0" />
+        <repeatwidth value="1920" />
+        <followcamy value="false" />
+        <followcamx value="true" />
+        <autoscrollx value="false" />
+        <autoscrolly value="false" />
+        <autoscrollxspeed value="0.4" />
+        <autoscrollyspeed value="0" />
+    </ParallaxLayer>
+    <ParallaxLayer id="1100" updateable="true">
+        <position z="50" y="230" x="-1458.74" rotation="0" />
+        <dimensions breadth="0" height="512" width="3257" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\snowmountains.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+        <cameraparallaxmultiplierx value="5e-005" />
+        <cameraparallaxmultipliery value="0" />
+        <repeatwidth value="1920" />
+        <followcamy value="false" />
+        <followcamx value="true" />
+        <autoscrollx value="false" />
+        <autoscrolly value="false" />
+        <autoscrollxspeed value="0" />
+        <autoscrollyspeed value="0" />
+    </ParallaxLayer>
+    <ParallaxLayer id="1101" updateable="true">
+        <position z="45" y="170" x="-1458.74" rotation="0" />
+        <dimensions breadth="0" height="540" width="1920" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\fog.dds" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+        <cameraparallaxmultiplierx value="9e-005" />
+        <cameraparallaxmultipliery value="0" />
+        <repeatwidth value="1920" />
+        <followcamy value="false" />
+        <followcamx value="true" />
+        <autoscrollx value="false" />
+        <autoscrolly value="false" />
+        <autoscrollxspeed value="0" />
+        <autoscrollyspeed value="0" />
+    </ParallaxLayer>
+    <ParallaxLayer id="1102" updateable="true">
+        <position z="3.5" y="-300" x="-1458.74" rotation="0" />
+        <dimensions breadth="0" height="540" width="1920" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\fog.dds" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+        <cameraparallaxmultiplierx value="0.0007" />
+        <cameraparallaxmultipliery value="0" />
+        <repeatwidth value="1920" />
+        <followcamy value="false" />
+        <followcamx value="true" />
+        <autoscrollx value="false" />
+        <autoscrolly value="false" />
+        <autoscrollxspeed value="0" />
+        <autoscrollyspeed value="0" />
+    </ParallaxLayer>
+    <ParallaxLayer id="1103" updateable="true">
+        <position z="2" y="-350" x="-1458.74" rotation="0" />
+        <dimensions breadth="0" height="540" width="1920" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="0.6" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\fog.dds" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+        <cameraparallaxmultiplierx value="0.00099" />
+        <cameraparallaxmultipliery value="0" />
+        <repeatwidth value="1920" />
+        <followcamy value="false" />
+        <followcamx value="true" />
+        <autoscrollx value="false" />
+        <autoscrolly value="false" />
+        <autoscrollxspeed value="0" />
+        <autoscrollyspeed value="0" />
+    </ParallaxLayer>
+    <ParallaxLayer id="1104" updateable="true">
+        <position z="40" y="100" x="-1458.74" rotation="0" />
+        <dimensions breadth="0" height="512" width="3257" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\snowmountains.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+        <cameraparallaxmultiplierx value="6e-005" />
+        <cameraparallaxmultipliery value="0" />
+        <repeatwidth value="1920" />
+        <followcamy value="false" />
+        <followcamx value="true" />
+        <autoscrollx value="false" />
+        <autoscrolly value="false" />
+        <autoscrollxspeed value="0" />
+        <autoscrollyspeed value="0" />
+    </ParallaxLayer>
+    <Sprite id="1105" updateable="true">
+        <position z="16" y="-14.5556" x="9526" rotation="0" />
+        <dimensions breadth="0" height="291.677" width="291.677" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\campfire.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <ParticleSpray id="1106" updateable="false">
+        <position z="15.9" y="50" x="9526" rotation="0" />
+        <dimensions breadth="0" height="600" width="1000" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <numparticles value="50.000000" />
+        <texture filename="Media\\smoke.png" />
+        <direction x="0.000000" y="1.000000" />
+        <spread value="0.500000" />
+        <speed min="1.000000" max="2.500000" />
+        <livetime min="3000.000000" max="6000.000000" />
+        <size min="50.000000" max="100.000000" scaleto="true" scaletovalue="5.000000" />
+        <gravity value="0.000000" />
+        <loop value="true" looptime="-1.000000" />
+        <brightness min="0.200000" max="1.000000" />
+    </ParticleSpray>
+    <ParticleSpray id="1107" updateable="false">
+        <position z="15.8" y="10" x="9526" rotation="0" />
+        <dimensions breadth="0" height="600" width="1000" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <numparticles value="15.000000" />
+        <texture filename="Media\\flame3.png" />
+        <direction x="0.000000" y="1.000000" />
+        <spread value="0.300000" />
+        <speed min="3.000000" max="5.500000" />
+        <livetime min="200.000000" max="500.000000" />
+        <size min="40.000000" max="80.000000" scaleto="true" scaletovalue="0.500000" />
+        <gravity value="1.000000" />
+        <loop value="true" looptime="-1.000000" />
+        <brightness min="0.600000" max="1.000000" />
+    </ParticleSpray>
+    <Sprite id="1108" updateable="true">
+        <position z="5" y="-59.5556" x="13485" rotation="0" />
+        <dimensions breadth="0" height="385.641" width="385.641" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\stonewall_small.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1109" updateable="true">
+        <position z="18" y="147.444" x="13035" rotation="0" />
+        <dimensions breadth="0" height="300.642" width="300.642" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\stonewall_small.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1110" updateable="true">
+        <position z="18" y="151.444" x="13446" rotation="0" />
+        <dimensions breadth="0" height="316.101" width="316.101" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\stonewall_small.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1111" updateable="true">
+        <position z="5" y="-77.5556" x="13038" rotation="0" />
+        <dimensions breadth="0" height="385.641" width="385.641" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\stonewall_small.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1112" updateable="true">
+        <position z="7" y="-67.5556" x="13431" rotation="0" />
+        <dimensions breadth="0" height="325.518" width="325.518" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gate_fence.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1113" updateable="true">
+        <position z="17" y="111.444" x="13357" rotation="0" />
+        <dimensions breadth="0" height="263.673" width="263.673" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gate_fence.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1114" updateable="true">
+        <position z="6" y="-67.5556" x="13173" rotation="0" />
+        <dimensions breadth="0" height="324.92" width="324.92" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gate_fence.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1115" updateable="true">
+        <position z="17" y="112.444" x="13150" rotation="0" />
+        <dimensions breadth="0" height="263.673" width="263.673" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gate_fence.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1116" updateable="true">
+        <position z="6.2" y="-83.1112" x="12584" rotation="0.0699827" />
+        <dimensions breadth="0" height="329.583" width="329.583" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gate_fence.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1117" updateable="true">
+        <position z="6.2" y="-121.111" x="14030" rotation="-0.14006" />
+        <dimensions breadth="0" height="400.14" width="400.14" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gate_fence.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1118" updateable="true">
+        <position z="6.2" y="-87.1112" x="13713" rotation="0.0699827" />
+        <dimensions breadth="0" height="400.14" width="400.14" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gate_fence.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1119" updateable="true">
+        <position z="6.1" y="-64.1112" x="12840" rotation="0.050009" />
+        <dimensions breadth="0" height="329.583" width="329.583" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\gate_fence.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1120" updateable="true">
+        <position z="17" y="8.88879" x="13248" rotation="0" />
+        <dimensions breadth="0" height="110.672" width="110.672" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\muckpile.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1121" updateable="true">
+        <position z="17" y="7.88879" x="13357" rotation="0" />
+        <dimensions breadth="0" height="70.6987" width="70.6987" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\muckpile.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1122" updateable="true">
+        <position z="17" y="10.8888" x="13156" rotation="0" />
+        <dimensions breadth="0" height="61.1687" width="61.1687" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\muckpile.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1123" updateable="true">
+        <position z="16" y="-14.1112" x="11301" rotation="0.0499593" />
+        <dimensions breadth="0" height="227.886" width="227.886" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\katana_in_ground.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1124" updateable="true">
+        <position z="16.1" y="-15.1112" x="11295" rotation="0.0499593" />
+        <dimensions breadth="0" height="227.886" width="227.886" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\katana_in_ground.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1125" updateable="true">
+        <position z="16" y="22.8888" x="3291" rotation="-0.0401952" />
+        <dimensions breadth="0" height="207.44" width="207.44" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\katana_in_ground.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1126" updateable="true">
+        <position z="15.9" y="-49.6668" x="3080" rotation="-0.0401952" />
+        <dimensions breadth="0" height="75.3777" width="75.3777" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\log3.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1127" updateable="true">
+        <position z="16.1" y="8.33319" x="3064" rotation="-0.0401952" />
+        <dimensions breadth="0" height="76.761" width="76.761" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\log.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1128" updateable="true">
+        <position z="16" y="-23.6668" x="3045" rotation="-0.0401952" />
+        <dimensions breadth="0" height="106.789" width="106.789" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\log2.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1129" updateable="true">
+        <position z="16.8" y="56.3332" x="9595" rotation="0.0198048" />
+        <dimensions breadth="0" height="181.208" width="181.208" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\katana_in_ground.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1130" updateable="true">
+        <position z="15.9" y="6.33319" x="9521" rotation="0.19979" />
+        <dimensions breadth="0" height="85.5105" width="85.5105" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\log3.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1131" updateable="true">
+        <position z="12.9" y="9.77759" x="5838" rotation="0.0100267" />
+        <dimensions breadth="0" height="540" width="1920" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="0.8" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\fog.dds" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1132" updateable="true">
+        <position z="11.6" y="32.7776" x="10365" rotation="0.0100267" />
+        <dimensions breadth="0" height="540" width="1920" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="0.7" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\fog.dds" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1133" updateable="true">
+        <position z="12.9" y="166.778" x="8224" rotation="0.0100267" />
+        <dimensions breadth="0" height="540" width="1920" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="0.7" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\fog.dds" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1134" updateable="true">
+        <position z="15.9" y="165.778" x="9615" rotation="0" />
+        <dimensions breadth="0" height="250" width="250" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="0.3" />
+        <effect name="effectlighttexturevertexwobble" />
+        <texture filename="Media\\ghost3.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1135" updateable="true">
+        <position z="13" y="213.778" x="6030" rotation="0" />
+        <dimensions breadth="0" height="166.222" width="166.222" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="0.5" />
+        <effect name="effectlighttexturevertexwobble" />
+        <texture filename="Media\\ghost2.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1136" updateable="true">
+        <position z="16.9" y="358.778" x="11281" rotation="0.0199582" />
+        <dimensions breadth="0" height="282.242" width="282.242" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="0.5" />
+        <effect name="effectlighttexturevertexwobble" />
+        <texture filename="Media\\ghost2.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1137" updateable="true">
+        <position z="12.9" y="90.222" x="-3231" rotation="0.0100267" />
+        <dimensions breadth="0" height="540" width="1920" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="0.8" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\fog.dds" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1138" updateable="true">
+        <position z="2.9" y="103.222" x="-4454" rotation="0.0100267" />
+        <dimensions breadth="0" height="540" width="1920" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="0.8" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\fog.dds" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1139" updateable="true">
+        <position z="3.1" y="139.222" x="-2708" rotation="0.0100267" />
+        <dimensions breadth="0" height="540" width="1920" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="0.8" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\fog.dds" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1140" updateable="true">
+        <position z="17.1" y="51.1108" x="14893" rotation="0.0100267" />
+        <dimensions breadth="0" height="325.344" width="325.344" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\cart.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1141" updateable="true">
+        <position z="18.5" y="-4.88922" x="15217" rotation="-0.00997329" />
+        <dimensions breadth="0" height="512" width="512" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\cobblestone.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1142" updateable="true">
+        <position z="19.1" y="211.111" x="15215" rotation="-0.00997329" />
+        <dimensions breadth="0" height="416.378" width="567.336" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\buildings\\stable.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1143" updateable="true">
+        <position z="19.5" y="31.1108" x="15205" rotation="-0.00997329" />
+        <dimensions breadth="0" height="512" width="512" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\cobblestone.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1144" updateable="true">
+        <position z="8.1" y="9.11078" x="15605" rotation="-0.00997329" />
+        <dimensions breadth="0" height="565.161" width="770.061" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\buildings\\stable.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1145" updateable="true">
+        <position z="17.1" y="496.111" x="14049" rotation="-0.00997329" />
+        <dimensions breadth="0" height="1006.6" width="731.77" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\buildings\\watchtower.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1146" updateable="true">
+        <position z="16.1" y="189.111" x="16015" rotation="-0.00997329" />
+        <dimensions breadth="0" height="461.132" width="628.316" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\buildings\\stable.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1147" updateable="true">
+        <position z="16.1" y="-34.8892" x="16199" rotation="-0.00997329" />
+        <dimensions breadth="0" height="153.316" width="153.316" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock3.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1148" updateable="true">
+        <position z="16.1" y="10.1108" x="13808" rotation="-0.00997329" />
+        <dimensions breadth="0" height="128" width="128" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock3.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1149" updateable="true">
+        <position z="16.1" y="13.1108" x="14209" rotation="-0.00997329" />
+        <dimensions breadth="0" height="128" width="128" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\objects\\rock3.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1150" updateable="true">
+        <position z="16.1" y="-20.8892" x="15840" rotation="-0.00997329" />
+        <dimensions breadth="0" height="398.317" width="398.317" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\\objects\\muckpile2.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <Sprite id="1151" updateable="true">
+        <position z="16.1" y="418.111" x="17938" rotation="1.77506e-005" />
+        <dimensions breadth="0" height="907.811" width="907.811" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexturebump" />
+        <texture filename="Media\\buildings\\house.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+    </Sprite>
+    <ParallaxLayer id="1152" updateable="true">
+        <position z="200" y="500" x="-1458.74" rotation="0" />
+        <dimensions breadth="0" height="256" width="2048" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\moon.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+        <cameraparallaxmultiplierx value="1e-005" />
+        <cameraparallaxmultipliery value="0" />
+        <repeatwidth value="1920" />
+        <followcamy value="false" />
+        <followcamx value="true" />
+        <autoscrollx value="false" />
+        <autoscrolly value="false" />
+        <autoscrollxspeed value="0" />
+        <autoscrollyspeed value="0" />
+    </ParallaxLayer>
+    <ParallaxLayer id="1153" updateable="true">
+        <position z="35" y="0" x="-1458.74" rotation="0" />
+        <dimensions breadth="0" height="540" width="1920" native="true" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" />
+        <texture filename="Media\fog.dds" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" />
+        <cameraparallaxmultiplierx value="0.0002" />
+        <cameraparallaxmultipliery value="0" />
+        <repeatwidth value="1920" />
+        <followcamy value="false" />
+        <followcamx value="true" />
+        <autoscrollx value="false" />
+        <autoscrolly value="false" />
+        <autoscrollxspeed value="0" />
+        <autoscrollyspeed value="0" />
+    </ParallaxLayer>
+
+  <AudioObject id="22" updateable="true">
+    <position z="11" y="-50" x="3000" rotation="0" />
+    <dimensions breadth="0" height="300" width="500" />
+    <material value="" />
+    <audiofile value="character\scream.wav" />
+    <adjustvolumetocamera value="true" />
+    <repeat value="true" />
+    <volumeadjustmultiplier value="10.000000" />
+  </AudioObject>
+</level>

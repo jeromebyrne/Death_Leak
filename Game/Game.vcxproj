@@ -1,0 +1,310 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DXUT\DXUT.cpp" />
+    <ClCompile Include="DXUT\DXUTenum.cpp" />
+    <ClCompile Include="DXUT\DXUTmisc.cpp" />
+    <ClCompile Include="DXUT\SDKmisc.cpp" />
+    <ClCompile Include="src\AI\AIState.cpp" />
+    <ClCompile Include="src\AI\AIStateFollow.cpp" />
+    <ClCompile Include="src\Animation\Animation.cpp" />
+    <ClCompile Include="src\Animation\AnimationPart.cpp" />
+    <ClCompile Include="src\Animation\AnimationSequence.cpp" />
+    <ClCompile Include="src\Audio\AudioManager.cpp" />
+    <ClCompile Include="src\Audio\AudioObject.cpp" />
+    <ClCompile Include="src\Core\Camera2D.cpp" />
+    <ClCompile Include="src\Core\CollisionManager.cpp" />
+    <ClCompile Include="src\Core\DXWindow.cpp" />
+    <ClCompile Include="src\Core\GamePad.cpp" />
+    <ClCompile Include="src\Core\Graphics.cpp" />
+    <ClCompile Include="src\Core\SimpleFontManager.cpp" />
+    <ClCompile Include="src\Core\TextureManager.cpp" />
+    <ClCompile Include="src\Core\Timing.cpp" />
+    <ClCompile Include="src\Core\Vector2.cpp" />
+    <ClCompile Include="src\Core\Vector3.cpp" />
+    <ClCompile Include="src\Core\Vector4.cpp" />
+    <ClCompile Include="src\Core\XmlDocument.cpp" />
+    <ClCompile Include="src\Effects\EffectBasic.cpp" />
+    <ClCompile Include="src\Effects\EffectBloodParticleSpray.cpp" />
+    <ClCompile Include="src\Effects\EffectLightTexture.cpp" />
+    <ClCompile Include="src\Effects\EffectLightTextureBump.cpp" />
+    <ClCompile Include="src\Effects\EffectLightTexturePixelWobble.cpp" />
+    <ClCompile Include="src\Effects\EffectLightTextureVertexWobble.cpp" />
+    <ClCompile Include="src\Effects\EffectManager.cpp" />
+    <ClCompile Include="src\Effects\EffectMonochrome.cpp" />
+    <ClCompile Include="src\Effects\EffectMonochromeRed.cpp" />
+    <ClCompile Include="src\Effects\EffectNoise.cpp" />
+    <ClCompile Include="src\Effects\EffectParticleSpray.cpp" />
+    <ClCompile Include="src\Effects\EffectReflection.cpp" />
+    <ClCompile Include="src\Effects\EffectSepia.cpp" />
+    <ClCompile Include="src\Environment.cpp" />
+    <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="src\GameObjects\BlackHole.cpp" />
+    <ClCompile Include="src\GameObjects\BombProjectile.cpp" />
+    <ClCompile Include="src\GameObjects\Character.cpp" />
+    <ClCompile Include="src\GameObjects\DrawableObject.cpp" />
+    <ClCompile Include="src\GameObjects\Explosion.cpp" />
+    <ClCompile Include="src\GameObjects\FallingPlatform.cpp" />
+    <ClCompile Include="src\GameObjects\GameObject.cpp" />
+    <ClCompile Include="src\GameObjects\GameObjectManager.cpp" />
+    <ClCompile Include="src\GameObjects\LevelTrigger.cpp" />
+    <ClCompile Include="src\GameObjects\Material.cpp" />
+    <ClCompile Include="src\GameObjects\MaterialManager.cpp" />
+    <ClCompile Include="src\GameObjects\MovingSprite.cpp" />
+    <ClCompile Include="src\GameObjects\NinjaSpawner.cpp" />
+    <ClCompile Include="src\GameObjects\NPC.cpp" />
+    <ClCompile Include="src\GameObjects\NPCManager.cpp" />
+    <ClCompile Include="src\GameObjects\Orb.cpp" />
+    <ClCompile Include="src\GameObjects\ParallaxLayer.cpp" />
+    <ClCompile Include="src\GameObjects\PathingPlatform.cpp" />
+    <ClCompile Include="src\GameObjects\Platform.cpp" />
+    <ClCompile Include="src\GameObjects\Player.cpp" />
+    <ClCompile Include="src\GameObjects\Projectile.cpp" />
+    <ClCompile Include="src\GameObjects\Rabbit.cpp" />
+    <ClCompile Include="src\GameObjects\ScreenAlignedTexture.cpp" />
+    <ClCompile Include="src\GameObjects\SolidMovingSprite.cpp" />
+    <ClCompile Include="src\GameObjects\Sprite.cpp" />
+    <ClCompile Include="src\GameObjects\WaterBlock.cpp" />
+    <ClCompile Include="src\GameObjects\WeatherManager.cpp" />
+    <ClCompile Include="src\LevelEditor.cpp" />
+    <ClCompile Include="src\Particles\ParticleEmitterManager.cpp" />
+    <ClCompile Include="src\Particles\ParticleSpray.cpp" />
+    <ClCompile Include="src\precompiled.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\program.cpp" />
+    <ClCompile Include="src\UI\UIAnimatedSprite.cpp" />
+    <ClCompile Include="src\UI\UIButton.cpp" />
+    <ClCompile Include="src\UI\UICheckbox.cpp" />
+    <ClCompile Include="src\UI\UIGameHudScreen.cpp" />
+    <ClCompile Include="src\UI\UIManager.cpp" />
+    <ClCompile Include="src\UI\UIMeter.cpp" />
+    <ClCompile Include="src\UI\UIScreen.cpp" />
+    <ClCompile Include="src\UI\UISprite.cpp" />
+    <ClCompile Include="src\UI\UIWidget.cpp" />
+    <ClCompile Include="tinyxml\tinystr.cpp" />
+    <ClCompile Include="tinyxml\tinyxml.cpp" />
+    <ClCompile Include="tinyxml\tinyxmlerror.cpp" />
+    <ClCompile Include="tinyxml\tinyxmlparser.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DXUT\DXUT.h" />
+    <ClInclude Include="DXUT\DXUTenum.h" />
+    <ClInclude Include="DXUT\DXUTmisc.h" />
+    <ClInclude Include="DXUT\SDKmisc.h" />
+    <ClInclude Include="src\AI\AIState.h" />
+    <ClInclude Include="src\AI\AIStateFollow.h" />
+    <ClInclude Include="src\Animation\Animation.h" />
+    <ClInclude Include="src\Animation\AnimationPart.h" />
+    <ClInclude Include="src\Animation\AnimationSequence.h" />
+    <ClInclude Include="src\Audio\AudioManager.h" />
+    <ClInclude Include="src\Audio\AudioObject.h" />
+    <ClInclude Include="src\Core\Camera2D.h" />
+    <ClInclude Include="src\Core\CollisionManager.h" />
+    <ClInclude Include="src\Core\DXWindow.h" />
+    <ClInclude Include="src\Core\GamePad.h" />
+    <ClInclude Include="src\Core\Graphics.h" />
+    <ClInclude Include="src\Core\InputLayoutDescriptions.h" />
+    <ClInclude Include="src\Core\SimpleFontManager.h" />
+    <ClInclude Include="src\Core\TextureManager.h" />
+    <ClInclude Include="src\Core\Timing.h" />
+    <ClInclude Include="src\Core\Vector2.h" />
+    <ClInclude Include="src\Core\Vector3.h" />
+    <ClInclude Include="src\Core\Vector4.h" />
+    <ClInclude Include="src\Core\VertexTypes.h" />
+    <ClInclude Include="src\Core\XmlDocument.h" />
+    <ClInclude Include="src\Core\XmlUtilities.h" />
+    <ClInclude Include="src\Effects\EffectAbstract.h" />
+    <ClInclude Include="src\Effects\EffectBasic.h" />
+    <ClInclude Include="src\Effects\EffectBloodParticleSpray.h" />
+    <ClInclude Include="src\Effects\EffectLightTexture.h" />
+    <ClInclude Include="src\Effects\EffectLightTextureBump.h" />
+    <ClInclude Include="src\Effects\EffectLightTexturePixelWobble.h" />
+    <ClInclude Include="src\Effects\EffectLightTextureVertexWobble.h" />
+    <ClInclude Include="src\Effects\EffectManager.h" />
+    <ClInclude Include="src\Effects\EffectMonochrome.h" />
+    <ClInclude Include="src\Effects\EffectMonochromeRed.h" />
+    <ClInclude Include="src\Effects\EffectNoise.h" />
+    <ClInclude Include="src\Effects\EffectParticleSpray.h" />
+    <ClInclude Include="src\Effects\EffectReflection.h" />
+    <ClInclude Include="src\Effects\EffectSepia.h" />
+    <ClInclude Include="src\Environment.h" />
+    <ClInclude Include="src\Game.h" />
+    <ClInclude Include="src\GameObjects\BlackHole.h" />
+    <ClInclude Include="src\GameObjects\BombProjectile.h" />
+    <ClInclude Include="src\GameObjects\Character.h" />
+    <ClInclude Include="src\GameObjects\DrawableObject.h" />
+    <ClInclude Include="src\GameObjects\Explosion.h" />
+    <ClInclude Include="src\GameObjects\FallingPlatform.h" />
+    <ClInclude Include="src\GameObjects\GameObject.h" />
+    <ClInclude Include="src\GameObjects\GameObjectManager.h" />
+    <ClInclude Include="src\GameObjects\LevelTrigger.h" />
+    <ClInclude Include="src\GameObjects\Material.h" />
+    <ClInclude Include="src\GameObjects\MaterialManager.h" />
+    <ClInclude Include="src\GameObjects\MovingSprite.h" />
+    <ClInclude Include="src\GameObjects\NinjaSpawner.h" />
+    <ClInclude Include="src\GameObjects\NPC.h" />
+    <ClInclude Include="src\GameObjects\NPCManager.h" />
+    <ClInclude Include="src\GameObjects\NPCSpawner.h" />
+    <ClInclude Include="src\GameObjects\Orb.h" />
+    <ClInclude Include="src\GameObjects\ParallaxLayer.h" />
+    <ClInclude Include="src\GameObjects\PathingPlatform.h" />
+    <ClInclude Include="src\GameObjects\Platform.h" />
+    <ClInclude Include="src\GameObjects\Player.h" />
+    <ClInclude Include="src\GameObjects\Projectile.h" />
+    <ClInclude Include="src\GameObjects\Rabbit.h" />
+    <ClInclude Include="src\GameObjects\ScreenAlignedTexture.h" />
+    <ClInclude Include="src\GameObjects\SolidMovingSprite.h" />
+    <ClInclude Include="src\GameObjects\Sprite.h" />
+    <ClInclude Include="src\GameObjects\WaterBlock.h" />
+    <ClInclude Include="src\GameObjects\WeatherManager.h" />
+    <ClInclude Include="src\LevelEditor.h" />
+    <ClInclude Include="src\Particles\Particle.h" />
+    <ClInclude Include="src\Particles\ParticleEmitterManager.h" />
+    <ClInclude Include="src\Particles\ParticleSpray.h" />
+    <ClInclude Include="src\precompiled.h" />
+    <ClInclude Include="src\Resource.h" />
+    <ClInclude Include="src\UI\UIAnimatedSprite.h" />
+    <ClInclude Include="src\UI\UIButton.h" />
+    <ClInclude Include="src\UI\UICheckbox.h" />
+    <ClInclude Include="src\UI\UIGameHudScreen.h" />
+    <ClInclude Include="src\UI\UIManager.h" />
+    <ClInclude Include="src\UI\UIMeter.h" />
+    <ClInclude Include="src\UI\UIScreen.h" />
+    <ClInclude Include="src\UI\UISprite.h" />
+    <ClInclude Include="src\UI\UIWidget.h" />
+    <ClInclude Include="src\Utils\DrawUtilities.h" />
+    <ClInclude Include="src\Utils\Utilities.h" />
+    <ClInclude Include="tinyxml\tinystr.h" />
+    <ClInclude Include="tinyxml\tinyxml.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{B09D5975-BA6E-4BFD-A9DF-35827CC583C4}</ProjectGuid>
+    <RootNamespace>Game</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>irrKlang-1.4.0/include;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;C:\Program Files %28x86%29\Visual Leak Detector\include;</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>irrKlang-1.4.0/lib/x64;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>dxerr.lib;dxguid.lib;d3dx9.lib;d3d9.lib;winmm.lib;comctl32.lib;d3dx10d.lib;d3d10.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>tinyxml;src/Utils;src/UI;src/Particles;src/Misc;src/GameObjects;src/Effects;src/Core;src/Audio;src/Animation;src/AI;src;DXUT;irrKlang-1.4.0/include;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;C:\Program Files %28x86%29\Visual Leak Detector\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>irrKlang-1.4.0/lib/x64;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64</AdditionalLibraryDirectories>
+      <AdditionalDependencies>dxerr.lib;dxguid.lib;d3dx9.lib;d3d9.lib;winmm.lib;comctl32.lib;d3dx10d.lib;d3d10.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

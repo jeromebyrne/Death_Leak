@@ -1,0 +1,120 @@
+<uiscreen>
+
+  <sprite name="1_title_background"
+          process_input="false"
+          posX ="-970" posY ="-540" width="1939.2" height ="1090.8"
+          image="Media\\UI\\main_menu_bg.png"
+          hflip="false" vflip="false"
+          alpha="1.0">
+  </sprite>
+  <sprite name="2_title_death_leak"
+          process_input="false"
+          posX ="-50" posY ="100" width="909" height ="241"
+          image="Media\UI\buttons\title.png"
+          hflip="false" vflip="false"
+          alpha="1.0">
+  </sprite>
+  <button name="3_new_game"
+          process_input="true"
+          posX ="185" posY ="-80" width="432" height ="177"
+          image="Media\\UI\\buttons\\play1.png"
+          image_focus="Media\\UI\\buttons\\play2.png"
+          image_click="Media\\UI\\buttons\\play3.png"
+          hflip="false" vflip="false"
+          alpha="1.0">
+    
+    <actionspressup>
+      <fadeout time="150"/>
+      <popui ui="mainmenu" />
+      <pushui ui="gameloading" />
+      <fadein time="150"/>
+      <stopallsounds />
+      <loadlevel level="XmlFiles\level1.xml" />
+      <popui ui="gameloading" />
+      <pushui ui="game_hud" />
+    </actionspressup>
+    
+    <actionspressdown>
+      <playsoundeffect sound="UI\\click.mp3" />
+    </actionspressdown>
+    
+  </button>
+
+  <button name="5_level_editor"
+          process_input="true"
+          posX ="130" posY ="-290" width="394" height ="246"
+          image="Media\\UI\\buttons\\edit1.png"
+          image_focus="Media\\UI\\buttons\\edit2.png"
+          image_click="Media\\UI\\buttons\\edit3.png"
+          hflip="false" vflip="false"
+          alpha="1.0">
+    <actionspressup>
+      <fadeout time="150"/>
+      <popui ui="mainmenu" />
+      <pushui ui="gameloading" />
+      <fadein time="150"/>
+      <stopallsounds />
+      <leveledit level="XmlFiles\level1.xml" />
+      <popui ui="gameloading" />
+      <pushui ui="game_hud" />
+    </actionspressup>
+
+    <actionspressdown>
+      <playsoundeffect sound="UI\\click.mp3"/>
+    </actionspressdown>
+  </button>
+   
+  <button name="6_options"
+          process_input="true"
+          posX ="80" posY ="-480" width="326" height ="220"
+          image="Media\\UI\\buttons\\settings1.png"
+          image_focus="Media\\UI\\buttons\\settings2.png"
+          image_click="Media\\UI\\buttons\\settings3.png"
+          hflip="false" vflip="false"
+          alpha="1.0">
+    <actionspressup>
+      <popui ui="mainmenu" />
+      <pushui ui="options" />
+    </actionspressup>
+    
+    <actionspressdown>
+      <playsoundeffect sound="UI\\click.mp3"/>
+    </actionspressdown>
+  </button>
+  
+  <button name="7_quit"
+           process_input="true"
+           posX ="-940" posY ="-470" width="285" height ="162"
+           image="Media\\UI\\buttons\\back1.png"
+           image_focus="Media\\UI\\buttons\\back2.png"
+           image_click="Media\\UI\\buttons\\back3.png"
+           hflip="false" vflip="false"
+           alpha="1.0">
+
+    <actionspressup>
+      <quittodesktop />
+    </actionspressup>
+
+    <actionspressdown>
+      <playsoundeffect sound="UI\\click.mp3" />
+    </actionspressdown>
+
+  </button>
+
+  <sprite name="8_gamepad_warning"
+          process_input="false"
+          posX ="-875" posY ="-140" width="500" height ="125"
+          image="Media\\UI\\gamepadwarning.png"
+          hflip="false" vflip="false"
+          alpha="1.0">
+  </sprite>
+
+  <sprite name="9_player_icon"
+          process_input="false"
+          posX ="-770" posY ="-60" width="256" height ="256"
+          image="Media\\UI\\player_silhouette_2.png"
+          hflip="false" vflip="false"
+          alpha="1.0">
+  </sprite>
+  
+</uiscreen>

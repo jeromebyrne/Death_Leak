@@ -1,0 +1,263 @@
+<materials>
+
+  <!--default orb material-->
+  <material name="default_orb">
+    <particletextures>
+      <texture file="Media\bloodparticle.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="character\replenish.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffect file="blood\\blood2.wav"/>
+  </material>
+
+  <!--cave rock-->
+  <material name="caverock">  
+    <particletextures>
+      <texture file="Media\wetsplashparticle.png"/>
+    </particletextures>
+      
+    <damagesoundeffects>
+      <sound file="stonehit.wav" />
+      <sound file="stonehit2.wav" />
+      <sound file="stonehit3.wav" />
+    </damagesoundeffects>
+       
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+      <sound file="Footstep2.wav" />
+      <sound file="Footstep3.wav" />
+      <sound file="Footstep4.wav" />
+      <sound file="Footstep5.wav" />
+      <sound file="Footstep6.wav" />
+      <sound file="Footstep7.wav" />
+      <sound file="Footstep8.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffect file="stonehit.wav"/>
+  </material>
+
+  <material name="softwood">
+    <particletextures>
+      <texture file="Media\softwoodparticle.png"/>
+      <texture file="Media\softwoodparticle2.png" />
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="woodhit.wav" />
+      <sound file="woodhit2.wav" />
+      <sound file="woodhit3.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+      <sound file="Footstep2.wav" />
+      <sound file="Footstep3.wav" />
+      <sound file="Footstep4.wav" />
+      <sound file="Footstep5.wav" />
+      <sound file="Footstep6.wav" />
+      <sound file="Footstep7.wav" />
+      <sound file="Footstep8.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffect file="blood\\blood2.wav"/>
+  </material>
+
+  <!--Grass Ground-->
+  <material name="grassground">
+    <particletextures>
+      <!--<texture file="Media\grassParticle.png"/>-->
+      <texture file="Media\wetsplashparticle.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="woodhit.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+      <sound file="Footstep2.wav" />
+      <sound file="Footstep3.wav" />
+      <sound file="Footstep4.wav" />
+      <sound file="Footstep5.wav" />
+      <sound file="Footstep6.wav" />
+      <sound file="Footstep7.wav" />
+      <sound file="Footstep8.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffect file="blood\\blood2.wav"/>
+  </material>
+
+  <!--Metal-->
+  <material name="metal">
+    <particletextures>
+      <texture file="Media\smoke.dds"/>
+      <texture file="Media\spark.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="metalhit.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+      <sound file="Footstep2.wav" />
+      <sound file="Footstep3.wav" />
+      <sound file="Footstep4.wav" />
+      <sound file="Footstep5.wav" />
+      <sound file="Footstep6.wav" />
+      <sound file="Footstep7.wav" />
+      <sound file="Footstep8.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffect file="blood\\blood2.wav"/>
+  </material>
+
+  <material name="stone">
+    <particletextures>
+      <texture file="Media\smoke.dds"/>
+      <texture file="Media\spark.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="stonehit.wav" />
+      <sound file="stonehit2.wav" />
+      <sound file="stonehit3.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+      <sound file="Footstep2.wav" />
+      <sound file="Footstep3.wav" />
+      <sound file="Footstep4.wav" />
+      <sound file="Footstep5.wav" />
+      <sound file="Footstep6.wav" />
+      <sound file="Footstep7.wav" />
+      <sound file="Footstep8.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffect file="blood\\blood2.wav"/>
+  </material>
+
+  <!--Flesh-->
+  <material name="flesh">
+    <particletextures>
+      <texture file="Media\bloodparticle.png"/>
+      <texture file="Media\bloodparticle2.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="Blood1.wav" />
+      <sound file="Blood2.wav" />
+      <sound file="Blood3.wav" />
+      <sound file="Blood4.wav" />
+      <sound file="Blood5.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+      <sound file="Footstep2.wav" />
+      <sound file="Footstep3.wav" />
+      <sound file="Footstep4.wav" />
+      <sound file="Footstep5.wav" />
+      <sound file="Footstep6.wav" />
+      <sound file="Footstep7.wav" />
+      <sound file="Footstep8.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffect file="blood\\blood2.wav"/>
+  </material>
+
+  <!--male ninja-->
+  <material name="maleninja">
+    <particletextures>
+      <texture file="Media\bloodparticle.png"/>
+      <texture file="Media\bloodparticle2.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="character\male_ninja\damage\damage1.wav" />
+      <sound file="character\male_ninja\damage\damage3.wav" />
+      <sound file="character\male_ninja\damage\damage4.wav" />
+      <sound file="character\male_ninja\damage\damage6.wav" />
+      <sound file="character\male_ninja\damage\damage7.wav" />
+      <sound file="character\male_ninja\damage\damage8.wav" />
+      <sound file="character\male_ninja\damage\damage9.wav" />
+      <sound file="character\male_ninja\damage\damage10.wav" />
+      <sound file="character\male_ninja\damage\damage11.wav" />
+      <sound file="character\male_ninja\damage\damage12.wav" />
+      <sound file="character\male_ninja\damage\damage13.wav" />
+      <sound file="character\male_ninja\damage\damage14.wav" />
+      <sound file="character\male_ninja\damage\damage15.wav" />
+      <sound file="character\male_ninja\damage\damage16.wav" />
+      <sound file="character\male_ninja\damage\damage17.wav" />
+      <sound file="character\male_ninja\damage\damage18.wav" />
+      <sound file="character\male_ninja\damage\damage21.wav" />
+      <sound file="character\male_ninja\damage\damage22.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+      <sound file="Footstep2.wav" />
+      <sound file="Footstep3.wav" />
+      <sound file="Footstep4.wav" />
+      <sound file="Footstep5.wav" />
+      <sound file="Footstep6.wav" />
+      <sound file="Footstep7.wav" />
+      <sound file="Footstep8.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffect file="blood\\blood2.wav"/>
+  </material>
+
+  <!--rabbit-->
+  <material name="rabbit">
+    <particletextures>
+      <texture file="Media\bloodparticle.png"/>
+      <texture file="Media\bloodparticle2.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+    </footstepsoundeffects>
+
+    <destroysoundeffect file="blood\\blood2.wav"/>
+  </material>
+  
+  <!-- demon 1-->
+  <material name="demon1">
+    <particletextures>
+      <texture file="Media\bloodparticle.png"/>
+      <texture file="Media\bloodparticle2.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="character\demon1\damage\damage1.wav" />
+      <sound file="character\demon1\damage\damage2.wav" />
+      <sound file="character\demon1\damage\damage3.wav" />
+      <sound file="character\demon1\damage\damage4.wav" />
+      <sound file="character\demon1\damage\damage5.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+      <sound file="Footstep2.wav" />
+      <sound file="Footstep3.wav" />
+      <sound file="Footstep4.wav" />
+      <sound file="Footstep5.wav" />
+      <sound file="Footstep6.wav" />
+      <sound file="Footstep7.wav" />
+      <sound file="Footstep8.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffect file="blood\blood2.wav"/>
+  </material>
+</materials>

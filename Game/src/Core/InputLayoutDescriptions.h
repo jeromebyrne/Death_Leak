@@ -1,0 +1,58 @@
+#ifndef INPULAYOUTDESCRIPTIONS_H
+#define INPULAYOUTDESCRIPTIONS_H
+
+class InputLayoutDescriptions
+{
+public:
+	
+	D3D10_INPUT_ELEMENT_DESC POS_COLOR[2];
+	D3D10_INPUT_ELEMENT_DESC POS_TEXCOORD_NORM[3];
+	D3D10_INPUT_ELEMENT_DESC POS_TEXCOORD_NORM_TAN_BINORM[5];
+
+	InputLayoutDescriptions(void)
+	{
+		//***=======================================
+		D3D10_INPUT_ELEMENT_DESC posColLayout[] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D10_INPUT_PER_VERTEX_DATA, 0 },
+			{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12,  D3D10_INPUT_PER_VERTEX_DATA, 0 },
+		};
+
+		POS_COLOR[0] = posColLayout[0];
+		POS_COLOR[1] = posColLayout[1];
+		
+		//***=========================================
+		D3D10_INPUT_ELEMENT_DESC posTexNormLayout[] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D10_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12,  D3D10_INPUT_PER_VERTEX_DATA, 0 }, 
+			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 20, D3D10_INPUT_PER_VERTEX_DATA, 0 },
+		};
+
+		POS_TEXCOORD_NORM[0] = posTexNormLayout[0];
+		POS_TEXCOORD_NORM[1] = posTexNormLayout[1];
+		POS_TEXCOORD_NORM[2] = posTexNormLayout[2];
+
+		//***=========================================
+		D3D10_INPUT_ELEMENT_DESC posTexNormTanBinormLayout[] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D10_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12,  D3D10_INPUT_PER_VERTEX_DATA, 0 }, 
+			{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 20, D3D10_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 32, D3D10_INPUT_PER_VERTEX_DATA, 0 },
+			{ "BINORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 44, D3D10_INPUT_PER_VERTEX_DATA, 0 },
+		};
+
+		POS_TEXCOORD_NORM_TAN_BINORM[0] = posTexNormTanBinormLayout[0];
+		POS_TEXCOORD_NORM_TAN_BINORM[1] = posTexNormTanBinormLayout[1];
+		POS_TEXCOORD_NORM_TAN_BINORM[2] = posTexNormTanBinormLayout[2];
+		POS_TEXCOORD_NORM_TAN_BINORM[3] = posTexNormTanBinormLayout[3];
+		POS_TEXCOORD_NORM_TAN_BINORM[4] = posTexNormTanBinormLayout[4];
+	}
+
+	~InputLayoutDescriptions(void)
+	{
+	}
+};
+
+#endif

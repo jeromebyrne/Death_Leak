@@ -1,0 +1,53 @@
+<level audio="">
+  <Player id="1" updateable="true">
+    <position z="50" y="-140.54" x="634.102" rotation="0" />
+    <dimensions breadth="0" height="200" width="200" native="true" repeatX="false" repeatY="false" />
+    <material value="maleninja" />
+    <alpha value="1" />
+    <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" />
+    <texture filename="Media\subzero\still1.png" />
+    <horizontalflip value="false" />
+    <verticalflip value="false" />
+    <isanimated value="true" />
+    <animationfile value="XmlFiles\ninjaAnimation.xml" />
+    <fade_when_player_occluded value="false" alphawhenoccluding="0.5" alphawhennotoccluding="1" />
+    <resistance z="0" y="0.6" x="0.9" />
+    <maxvelocity z="0" y="99999" x="8" />
+    <applygravity value="true" />
+    <collisionboxdimensions z="0" y="197.814" x="126.136" offsetX="0" offsetY="0" />
+    <passive value="false" />
+    <applydamage flag="false" amount="0" />
+    <can_be_damaged value="true" />
+    <maxjumpspeed value="25" />
+    <xaccelrate value="1" />
+    <projectileoffsetx value="15" />
+    <projectileoffsety value="20" />
+  </Player>
+
+  <LevelTrigger id="58" updateable="true">
+    <position z="11" y="-140.54" x="3000.102" rotation="0" />
+    <dimensions breadth="0" height="500" width="500" />
+    <material value="" />
+    <level_to_load file="XmlFiles\level1.xml" />
+  </LevelTrigger>
+
+  <SolidMovingSprite id="2" updateable="true">
+    <position z="100" y="-241" x="7642" rotation="0" />
+    <dimensions breadth="0" height="512" width="16384" native="false" repeatX="true" repeatY="false" />
+    <material value="grassground" />
+    <alpha value="1" />
+    <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" />
+    <texture filename="Media\grassfenceground2.png" />
+    <horizontalflip value="false" />
+    <verticalflip value="false" />
+    <isanimated value="false" />
+    <fade_when_player_occluded value="false" alphawhenoccluding="0.5" alphawhennotoccluding="1" />
+    <resistance z="0" y="2" x="0.95" />
+    <maxvelocity z="0" y="99999" x="10" />
+    <applygravity value="false" />
+    <collisionboxdimensions z="0" y="800" x="16384" offsetX="0" offsetY="-400" />
+    <passive value="true" />
+    <applydamage flag="false" amount="0" />
+    <can_be_damaged value="false" />
+  </SolidMovingSprite>
+</level>

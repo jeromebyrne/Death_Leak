@@ -1,0 +1,15 @@
+<data BoxDimensionsX="32" BoxDimensionsY="48" EllipseDimensionsX="32" EllipseDimensionsY="48">
+
+
+	<body OffsetX="0" OffsetY="8" SizeX="40" SizeY="80">
+
+		<Still FrameRate="10" MaxFrameRate="10" MinFrameRate="10">
+      <frame filename="Media\\Ninja_run_1.dds"/>
+      <frame filename="Media\\Ninja_run_2.dds"/>
+      <frame filename="Media\\Ninja_run_3.dds"/>
+      <frame filename="Media\\Ninja_run_4.dds"/>
+    </Still>
+	</body>
+
+
+</data>

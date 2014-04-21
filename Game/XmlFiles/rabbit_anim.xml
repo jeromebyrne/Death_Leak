@@ -1,0 +1,44 @@
+<data BoxDimensionsX="32" BoxDimensionsY="48" EllipseDimensionsX="32" EllipseDimensionsY="48">
+
+
+	<body OffsetX="0" OffsetY="8" SizeX="40" SizeY="80">
+
+		<Still FrameRate="2" MaxFrameRate="2" MinFrameRate="0">
+      <frame filename="Media\characters\rabbit\bunny_still1.png"/>
+      <frame filename="Media\characters\rabbit\\bunny_still2.png"/>
+      <frame filename="Media\characters\rabbit\\bunny_still1.png"/>
+      <frame filename="Media\characters\rabbit\\bunny_still1.png"/>
+      <frame filename="Media\characters\rabbit\\bunny_still1.png"/>
+      <frame filename="Media\characters\rabbit\\bunny_still1.png"/>
+    </Still>
+
+		<Running FrameRate="10" MaxFrameRate="10" MinFrameRate="0">
+
+      <frame filename="Media\characters\rabbit\\bunny1.png"/>
+      <frame filename="Media\characters\rabbit\\bunny2.png"/>
+      <frame filename="Media\characters\rabbit\\bunny3.png"/>
+      <frame filename="Media\characters\rabbit\\bunny4.png"/>
+
+		</Running>
+
+    <JumpingUp FrameRate="4" MaxFrameRate="4" MinFrameRate="0">
+      <frame filename="Media\characters\rabbit\\bunny2.png"/>
+		</JumpingUp>
+
+    <JumpingDown FrameRate="4" MaxFrameRate="4" MinFrameRate="0">
+      <frame filename="Media\characters\rabbit\\bunny2.png"/>
+    </JumpingDown>
+
+    <SlidingDown FrameRate="0" MaxFrameRate="0" MinFrameRate="0">
+      <frame filename="Media\characters\rabbit\\bunny2.png"/>
+    </SlidingDown>
+
+	</body>
+
+	<arm OffsetX="6" OffsetY="24" SizeX="32" SizeY="30">
+		<Still FrameRate="0" MaxFrameRate="0" MinFrameRate="0">
+      <frame filename="Media\characters\rabbit\\bunny2.png"/>
+		</Still>
+	</arm>
+
+</data>

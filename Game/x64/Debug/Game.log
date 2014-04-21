@@ -1,0 +1,95 @@
+﻿Build started 20/04/2014 18:35:17.
+     1>Project "C:\Users\jerome\Documents\GitHub\2DPlatformer\Game\Game.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64\CL.exe /c /Itinyxml /Isrc/Utils /Isrc/UI /Isrc/Particles /Isrc/Misc /Isrc/GameObjects /Isrc/Effects /Isrc/Core /Isrc/Audio /Isrc/Animation /Isrc/AI /Isrc /IDXUT /I"irrKlang-1.4.0/include" /I"C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include" /I"C:\Program Files (x86)\Visual Leak Detector\include" /Zi /nologo /W3 /WX- /sdl /Od /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"precompiled.h" /Fp"x64\Debug\Game.pch" /Fo"x64\Debug\\" /Fd"x64\Debug\vc110.pdb" /Gd /TP /errorReport:prompt src\Core\Graphics.cpp
+         Graphics.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\jerome\Documents\GitHub\2DPlatformer\x64\Debug\Game.exe" /INCREMENTAL /NOLOGO /LIBPATH:"irrKlang-1.4.0/lib/x64" /LIBPATH:"C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64" dxerr.lib dxguid.lib d3dx9.lib d3d9.lib winmm.lib comctl32.lib d3dx10d.lib d3d10.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\jerome\Documents\GitHub\2DPlatformer\x64\Debug\Game.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\jerome\Documents\GitHub\2DPlatformer\x64\Debug\Game.lib" /MACHINE:X64 x64\Debug\DXUT.obj
+         x64\Debug\DXUTenum.obj
+         x64\Debug\DXUTmisc.obj
+         x64\Debug\SDKmisc.obj
+         x64\Debug\AIState.obj
+         x64\Debug\AIStateFollow.obj
+         x64\Debug\Animation.obj
+         x64\Debug\AnimationPart.obj
+         x64\Debug\AnimationSequence.obj
+         x64\Debug\AudioManager.obj
+         x64\Debug\AudioObject.obj
+         x64\Debug\Camera2D.obj
+         x64\Debug\CollisionManager.obj
+         x64\Debug\DXWindow.obj
+         x64\Debug\GamePad.obj
+         x64\Debug\Graphics.obj
+         x64\Debug\SimpleFontManager.obj
+         x64\Debug\TextureManager.obj
+         x64\Debug\Timing.obj
+         x64\Debug\Vector2.obj
+         x64\Debug\Vector3.obj
+         x64\Debug\Vector4.obj
+         x64\Debug\XmlDocument.obj
+         x64\Debug\EffectBasic.obj
+         x64\Debug\EffectBloodParticleSpray.obj
+         x64\Debug\EffectLightTexture.obj
+         x64\Debug\EffectLightTextureBump.obj
+         x64\Debug\EffectLightTexturePixelWobble.obj
+         x64\Debug\EffectLightTextureVertexWobble.obj
+         x64\Debug\EffectManager.obj
+         x64\Debug\EffectMonochrome.obj
+         x64\Debug\EffectMonochromeRed.obj
+         x64\Debug\EffectNoise.obj
+         x64\Debug\EffectParticleSpray.obj
+         x64\Debug\EffectReflection.obj
+         x64\Debug\EffectSepia.obj
+         x64\Debug\Environment.obj
+         x64\Debug\Game.obj
+         x64\Debug\BlackHole.obj
+         x64\Debug\BombProjectile.obj
+         x64\Debug\Character.obj
+         x64\Debug\DrawableObject.obj
+         x64\Debug\Explosion.obj
+         x64\Debug\FallingPlatform.obj
+         x64\Debug\GameObject.obj
+         x64\Debug\GameObjectManager.obj
+         x64\Debug\LevelTrigger.obj
+         x64\Debug\Material.obj
+         x64\Debug\MaterialManager.obj
+         x64\Debug\MovingSprite.obj
+         x64\Debug\NinjaSpawner.obj
+         x64\Debug\NPC.obj
+         x64\Debug\NPCManager.obj
+         x64\Debug\Orb.obj
+         x64\Debug\ParallaxLayer.obj
+         x64\Debug\PathingPlatform.obj
+         x64\Debug\Platform.obj
+         x64\Debug\Player.obj
+         x64\Debug\Projectile.obj
+         x64\Debug\Rabbit.obj
+         x64\Debug\ScreenAlignedTexture.obj
+         x64\Debug\SolidMovingSprite.obj
+         x64\Debug\Sprite.obj
+         x64\Debug\WaterBlock.obj
+         x64\Debug\WeatherManager.obj
+         x64\Debug\LevelEditor.obj
+         x64\Debug\ParticleEmitterManager.obj
+         x64\Debug\ParticleSpray.obj
+         x64\Debug\precompiled.obj
+         x64\Debug\program.obj
+         x64\Debug\UIAnimatedSprite.obj
+         x64\Debug\UIButton.obj
+         x64\Debug\UICheckbox.obj
+         x64\Debug\UIGameHudScreen.obj
+         x64\Debug\UIManager.obj
+         x64\Debug\UIMeter.obj
+         x64\Debug\UIScreen.obj
+         x64\Debug\UISprite.obj
+         x64\Debug\UIWidget.obj
+         x64\Debug\tinystr.obj
+         x64\Debug\tinyxml.obj
+         x64\Debug\tinyxmlerror.obj
+         x64\Debug\tinyxmlparser.obj
+         Game.vcxproj -> C:\Users\jerome\Documents\GitHub\2DPlatformer\x64\Debug\Game.exe
+     1>Done Building Project "C:\Users\jerome\Documents\GitHub\2DPlatformer\Game\Game.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.17

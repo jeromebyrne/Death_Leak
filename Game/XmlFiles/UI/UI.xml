@@ -1,0 +1,9 @@
+<!--Contains the names and locations of all the xml files-->
+<ui base_width="1920" base_height="1080">
+  <uiscreen name="mainmenu" filepath="XmlFiles\\UI\\mainmenu.xml"/>
+  <uiscreen name="game_hud" filepath="XmlFiles\\UI\\game_hud.xml"/>
+  <uiscreen name="options" filepath="XmlFiles\\UI\\options.xml"/>
+  <uiscreen name="gameloading" filepath="XmlFiles\\UI\\gameloading.xml"/>
+  <uiscreen name="pause_menu" filepath="XmlFiles\\UI\\pause_menu.xml"/>
+  <uiscreen name="fullscreen_fade" filepath="XmlFiles\\UI\\fullscreen_fade.xml"/>
+</ui>

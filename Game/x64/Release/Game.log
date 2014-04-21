@@ -1,0 +1,179 @@
+﻿Build started 20/04/2014 18:35:02.
+     1>Project "C:\Users\jerome\Documents\GitHub\2DPlatformer\Game\Game.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc110.pdb" /Gd /TP /errorReport:prompt DXUT\DXUT.cpp DXUT\DXUTenum.cpp DXUT\DXUTmisc.cpp DXUT\SDKmisc.cpp src\AI\AIState.cpp src\AI\AIStateFollow.cpp src\Animation\Animation.cpp src\Animation\AnimationPart.cpp src\Animation\AnimationSequence.cpp src\Audio\AudioManager.cpp src\Audio\AudioObject.cpp src\Core\Camera2D.cpp src\Core\CollisionManager.cpp src\Core\DXWindow.cpp src\Core\GamePad.cpp src\Core\Graphics.cpp src\Core\SimpleFontManager.cpp src\Core\TextureManager.cpp src\Core\Timing.cpp src\Core\Vector2.cpp src\Core\Vector3.cpp src\Core\Vector4.cpp src\Core\XmlDocument.cpp src\Effects\EffectBasic.cpp src\Effects\EffectBloodParticleSpray.cpp src\Effects\EffectLightTexture.cpp src\Effects\EffectLightTextureBump.cpp src\Effects\EffectLightTexturePixelWobble.cpp src\Effects\EffectLightTextureVertexWobble.cpp src\Effects\EffectManager.cpp src\Effects\EffectMonochrome.cpp src\Effects\EffectMonochromeRed.cpp src\Effects\EffectNoise.cpp src\Effects\EffectParticleSpray.cpp src\Effects\EffectReflection.cpp src\Effects\EffectSepia.cpp src\Environment.cpp src\Game.cpp src\GameObjects\BlackHole.cpp src\GameObjects\BombProjectile.cpp src\GameObjects\Character.cpp src\GameObjects\DrawableObject.cpp src\GameObjects\Explosion.cpp src\GameObjects\FallingPlatform.cpp src\GameObjects\GameObject.cpp src\GameObjects\GameObjectManager.cpp src\GameObjects\LevelTrigger.cpp src\GameObjects\Material.cpp src\GameObjects\MaterialManager.cpp src\GameObjects\MovingSprite.cpp src\GameObjects\NinjaSpawner.cpp src\GameObjects\NPC.cpp src\GameObjects\NPCManager.cpp src\GameObjects\Orb.cpp src\GameObjects\ParallaxLayer.cpp src\GameObjects\PathingPlatform.cpp src\GameObjects\Platform.cpp src\GameObjects\Player.cpp src\GameObjects\Projectile.cpp src\GameObjects\Rabbit.cpp src\GameObjects\ScreenAlignedTexture.cpp src\GameObjects\SolidMovingSprite.cpp src\GameObjects\Sprite.cpp src\GameObjects\WaterBlock.cpp src\GameObjects\WeatherManager.cpp src\LevelEditor.cpp src\Particles\ParticleEmitterManager.cpp src\Particles\ParticleSpray.cpp src\precompiled.cpp src\program.cpp src\UI\UIAnimatedSprite.cpp src\UI\UIButton.cpp src\UI\UICheckbox.cpp src\UI\UIGameHudScreen.cpp src\UI\UIManager.cpp src\UI\UIMeter.cpp src\UI\UIScreen.cpp src\UI\UISprite.cpp src\UI\UIWidget.cpp tinyxml\tinystr.cpp tinyxml\tinyxml.cpp tinyxml\tinyxmlerror.cpp tinyxml\tinyxmlparser.cpp
+         DXUT.cpp
+     1>DXUT\DXUT.cpp(6): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         DXUTenum.cpp
+     1>DXUT\DXUTenum.cpp(8): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         DXUTmisc.cpp
+     1>DXUT\DXUTmisc.cpp(8): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         SDKmisc.cpp
+     1>DXUT\SDKmisc.cpp(8): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         AIState.cpp
+     1>src\AI\AIState.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         AIStateFollow.cpp
+     1>src\AI\AIStateFollow.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         Animation.cpp
+     1>src\Animation\Animation.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         AnimationPart.cpp
+     1>src\Animation\AnimationPart.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         AnimationSequence.cpp
+     1>src\Animation\AnimationSequence.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         AudioManager.cpp
+     1>src\Audio\AudioManager.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         AudioObject.cpp
+     1>src\Audio\AudioObject.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         Camera2D.cpp
+     1>src\Core\Camera2D.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         CollisionManager.cpp
+     1>src\Core\CollisionManager.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         DXWindow.cpp
+     1>src\Core\DXWindow.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         GamePad.cpp
+     1>src\Core\GamePad.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         Graphics.cpp
+     1>src\Core\Graphics.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         SimpleFontManager.cpp
+     1>src\Core\SimpleFontManager.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         TextureManager.cpp
+     1>src\Core\TextureManager.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         Timing.cpp
+     1>src\Core\Timing.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         Vector2.cpp
+     1>src\Core\Vector2.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         Compiling...
+         Vector3.cpp
+     1>src\Core\Vector3.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         Vector4.cpp
+     1>src\Core\Vector4.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         XmlDocument.cpp
+     1>src\Core\XmlDocument.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         EffectBasic.cpp
+     1>src\Effects\EffectBasic.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         EffectBloodParticleSpray.cpp
+     1>src\Effects\EffectBloodParticleSpray.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         EffectLightTexture.cpp
+     1>src\Effects\EffectLightTexture.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         EffectLightTextureBump.cpp
+     1>src\Effects\EffectLightTextureBump.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         EffectLightTexturePixelWobble.cpp
+     1>src\Effects\EffectLightTexturePixelWobble.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         EffectLightTextureVertexWobble.cpp
+     1>src\Effects\EffectLightTextureVertexWobble.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         EffectManager.cpp
+     1>src\Effects\EffectManager.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         EffectMonochrome.cpp
+     1>src\Effects\EffectMonochrome.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         EffectMonochromeRed.cpp
+     1>src\Effects\EffectMonochromeRed.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         EffectNoise.cpp
+     1>src\Effects\EffectNoise.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         EffectParticleSpray.cpp
+     1>src\Effects\EffectParticleSpray.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         EffectReflection.cpp
+     1>src\Effects\EffectReflection.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         EffectSepia.cpp
+     1>src\Effects\EffectSepia.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         Environment.cpp
+     1>c:\users\jerome\documents\github\2dplatformer\game\src\precompiled.h(10): fatal error C1083: Cannot open include file: 'dxut.h': No such file or directory
+         Game.cpp
+     1>c:\users\jerome\documents\github\2dplatformer\game\src\precompiled.h(10): fatal error C1083: Cannot open include file: 'dxut.h': No such file or directory
+         BlackHole.cpp
+     1>src\GameObjects\BlackHole.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         BombProjectile.cpp
+     1>src\GameObjects\BombProjectile.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         Compiling...
+         Character.cpp
+     1>src\GameObjects\Character.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         DrawableObject.cpp
+     1>src\GameObjects\DrawableObject.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         Explosion.cpp
+     1>src\GameObjects\Explosion.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         FallingPlatform.cpp
+     1>src\GameObjects\FallingPlatform.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         GameObject.cpp
+     1>src\GameObjects\GameObject.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         GameObjectManager.cpp
+     1>src\GameObjects\GameObjectManager.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         LevelTrigger.cpp
+     1>src\GameObjects\LevelTrigger.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         Material.cpp
+     1>src\GameObjects\Material.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         MaterialManager.cpp
+     1>src\GameObjects\MaterialManager.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         MovingSprite.cpp
+     1>src\GameObjects\MovingSprite.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         NinjaSpawner.cpp
+     1>src\GameObjects\NinjaSpawner.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         NPC.cpp
+     1>src\GameObjects\NPC.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         NPCManager.cpp
+     1>src\GameObjects\NPCManager.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         Orb.cpp
+     1>src\GameObjects\Orb.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         ParallaxLayer.cpp
+     1>src\GameObjects\ParallaxLayer.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         PathingPlatform.cpp
+     1>src\GameObjects\PathingPlatform.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         Platform.cpp
+     1>src\GameObjects\Platform.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         Player.cpp
+     1>src\GameObjects\Player.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         Projectile.cpp
+     1>src\GameObjects\Projectile.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         Rabbit.cpp
+     1>src\GameObjects\Rabbit.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         Compiling...
+         ScreenAlignedTexture.cpp
+     1>src\GameObjects\ScreenAlignedTexture.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         SolidMovingSprite.cpp
+     1>src\GameObjects\SolidMovingSprite.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         Sprite.cpp
+     1>src\GameObjects\Sprite.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         WaterBlock.cpp
+     1>src\GameObjects\WaterBlock.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         WeatherManager.cpp
+     1>src\GameObjects\WeatherManager.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         LevelEditor.cpp
+     1>c:\users\jerome\documents\github\2dplatformer\game\src\precompiled.h(10): fatal error C1083: Cannot open include file: 'dxut.h': No such file or directory
+         ParticleEmitterManager.cpp
+     1>src\Particles\ParticleEmitterManager.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         ParticleSpray.cpp
+     1>src\Particles\ParticleSpray.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         precompiled.cpp
+     1>c:\users\jerome\documents\github\2dplatformer\game\src\precompiled.h(10): fatal error C1083: Cannot open include file: 'dxut.h': No such file or directory
+         program.cpp
+     1>c:\users\jerome\documents\github\2dplatformer\game\src\precompiled.h(10): fatal error C1083: Cannot open include file: 'dxut.h': No such file or directory
+         UIAnimatedSprite.cpp
+     1>src\UI\UIAnimatedSprite.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         UIButton.cpp
+     1>src\UI\UIButton.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         UICheckbox.cpp
+     1>src\UI\UICheckbox.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         UIGameHudScreen.cpp
+     1>src\UI\UIGameHudScreen.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         UIManager.cpp
+     1>src\UI\UIManager.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         UIMeter.cpp
+     1>src\UI\UIMeter.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         UIScreen.cpp
+     1>src\UI\UIScreen.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         UISprite.cpp
+     1>src\UI\UISprite.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         UIWidget.cpp
+     1>src\UI\UIWidget.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         tinystr.cpp
+     1>tinyxml\tinystr.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         Compiling...
+         tinyxml.cpp
+     1>tinyxml\tinyxml.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         tinyxmlerror.cpp
+     1>tinyxml\tinyxmlerror.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         tinyxmlparser.cpp
+     1>tinyxml\tinyxmlparser.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+     1>Done Building Project "C:\Users\jerome\Documents\GitHub\2DPlatformer\Game\Game.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:04.39

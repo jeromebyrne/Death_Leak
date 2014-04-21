@@ -1,9 +1,0 @@
-<uiscreen>
-  <sprite name="1_fade"
-          process_input="false"
-          posX ="-1024" posY ="-540" width="2048" height ="2048"
-          image="Media\\UI\\blank_dark.png"
-          hflip="false" vflip="false"
-          alpha="0.0">
-  </sprite>
-</uiscreen>

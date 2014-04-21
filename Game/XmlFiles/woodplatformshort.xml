@@ -1,0 +1,15 @@
+<data>
+  <body OffsetX="0" OffsetY="8" SizeX="40" SizeY="80">
+    <Still FrameRate="0" MaxFrameRate="0" MinFrameRate="0">
+      <frame filename="Media\\objects\\wood_platform_short.png">
+        <skeletonparts>
+          <part xoffset="100" yoffset="25" radius="50"/>
+          <part xoffset="50" yoffset="25" radius="50"/>
+          <part xoffset="0" yoffset="25" radius="50"/>
+          <part xoffset="-50" yoffset="25" radius="50"/>
+          <part xoffset="-100" yoffset="25" radius="50"/>
+        </skeletonparts>
+      </frame>
+    </Still>
+  </body>
+</data>
