@@ -1,179 +1,479 @@
-﻿Build started 20/04/2014 18:35:02.
+﻿Build started 20/04/2014 18:54:41.
      1>Project "C:\Users\jerome\Documents\GitHub\2DPlatformer\Game\Game.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc110.pdb" /Gd /TP /errorReport:prompt DXUT\DXUT.cpp DXUT\DXUTenum.cpp DXUT\DXUTmisc.cpp DXUT\SDKmisc.cpp src\AI\AIState.cpp src\AI\AIStateFollow.cpp src\Animation\Animation.cpp src\Animation\AnimationPart.cpp src\Animation\AnimationSequence.cpp src\Audio\AudioManager.cpp src\Audio\AudioObject.cpp src\Core\Camera2D.cpp src\Core\CollisionManager.cpp src\Core\DXWindow.cpp src\Core\GamePad.cpp src\Core\Graphics.cpp src\Core\SimpleFontManager.cpp src\Core\TextureManager.cpp src\Core\Timing.cpp src\Core\Vector2.cpp src\Core\Vector3.cpp src\Core\Vector4.cpp src\Core\XmlDocument.cpp src\Effects\EffectBasic.cpp src\Effects\EffectBloodParticleSpray.cpp src\Effects\EffectLightTexture.cpp src\Effects\EffectLightTextureBump.cpp src\Effects\EffectLightTexturePixelWobble.cpp src\Effects\EffectLightTextureVertexWobble.cpp src\Effects\EffectManager.cpp src\Effects\EffectMonochrome.cpp src\Effects\EffectMonochromeRed.cpp src\Effects\EffectNoise.cpp src\Effects\EffectParticleSpray.cpp src\Effects\EffectReflection.cpp src\Effects\EffectSepia.cpp src\Environment.cpp src\Game.cpp src\GameObjects\BlackHole.cpp src\GameObjects\BombProjectile.cpp src\GameObjects\Character.cpp src\GameObjects\DrawableObject.cpp src\GameObjects\Explosion.cpp src\GameObjects\FallingPlatform.cpp src\GameObjects\GameObject.cpp src\GameObjects\GameObjectManager.cpp src\GameObjects\LevelTrigger.cpp src\GameObjects\Material.cpp src\GameObjects\MaterialManager.cpp src\GameObjects\MovingSprite.cpp src\GameObjects\NinjaSpawner.cpp src\GameObjects\NPC.cpp src\GameObjects\NPCManager.cpp src\GameObjects\Orb.cpp src\GameObjects\ParallaxLayer.cpp src\GameObjects\PathingPlatform.cpp src\GameObjects\Platform.cpp src\GameObjects\Player.cpp src\GameObjects\Projectile.cpp src\GameObjects\Rabbit.cpp src\GameObjects\ScreenAlignedTexture.cpp src\GameObjects\SolidMovingSprite.cpp src\GameObjects\Sprite.cpp src\GameObjects\WaterBlock.cpp src\GameObjects\WeatherManager.cpp src\LevelEditor.cpp src\Particles\ParticleEmitterManager.cpp src\Particles\ParticleSpray.cpp src\precompiled.cpp src\program.cpp src\UI\UIAnimatedSprite.cpp src\UI\UIButton.cpp src\UI\UICheckbox.cpp src\UI\UIGameHudScreen.cpp src\UI\UIManager.cpp src\UI\UIMeter.cpp src\UI\UIScreen.cpp src\UI\UISprite.cpp src\UI\UIWidget.cpp tinyxml\tinystr.cpp tinyxml\tinyxml.cpp tinyxml\tinyxmlerror.cpp tinyxml\tinyxmlparser.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64\CL.exe /c /Itinyxml /Isrc/Utils /Isrc/UI /Isrc/Particles /Isrc/Misc /Isrc/GameObjects /Isrc/Effects /Isrc/Core /Isrc/Audio /Isrc/Animation /Isrc/AI /Isrc /IDXUT /I"irrKlang-1.4.0/include" /I"C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include" /I"C:\Program Files (x86)\Visual Leak Detector\include" /Zi /nologo /W3 /WX- /sdl /O2 /Oi /GL /D WIN32 /D _RELEASE /D _WINDOWS /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yc"precompiled.h" /Fp"x64\Release\Game.pch" /Fo"x64\Release\\" /Fd"x64\Release\vc110.pdb" /Gd /TP /errorReport:prompt src\precompiled.cpp
+         precompiled.cpp
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(12): warning C4005: 'DXGI_STATUS_OCCLUDED' : macro redefinition
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49449) : see previous definition of 'DXGI_STATUS_OCCLUDED'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(13): warning C4005: 'DXGI_STATUS_CLIPPED' : macro redefinition
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49458) : see previous definition of 'DXGI_STATUS_CLIPPED'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(14): warning C4005: 'DXGI_STATUS_NO_REDIRECTION' : macro redefinition
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49467) : see previous definition of 'DXGI_STATUS_NO_REDIRECTION'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(15): warning C4005: 'DXGI_STATUS_NO_DESKTOP_ACCESS' : macro redefinition
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49476) : see previous definition of 'DXGI_STATUS_NO_DESKTOP_ACCESS'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(16): warning C4005: 'DXGI_STATUS_GRAPHICS_VIDPN_SOURCE_IN_USE' : macro redefinition
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49485) : see previous definition of 'DXGI_STATUS_GRAPHICS_VIDPN_SOURCE_IN_USE'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(17): warning C4005: 'DXGI_STATUS_MODE_CHANGED' : macro redefinition
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49494) : see previous definition of 'DXGI_STATUS_MODE_CHANGED'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(18): warning C4005: 'DXGI_STATUS_MODE_CHANGE_IN_PROGRESS' : macro redefinition
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49503) : see previous definition of 'DXGI_STATUS_MODE_CHANGE_IN_PROGRESS'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(21): warning C4005: 'DXGI_ERROR_INVALID_CALL' : macro redefinition
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49518) : see previous definition of 'DXGI_ERROR_INVALID_CALL'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(22): warning C4005: 'DXGI_ERROR_NOT_FOUND' : macro redefinition
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49527) : see previous definition of 'DXGI_ERROR_NOT_FOUND'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(23): warning C4005: 'DXGI_ERROR_MORE_DATA' : macro redefinition
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49536) : see previous definition of 'DXGI_ERROR_MORE_DATA'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(24): warning C4005: 'DXGI_ERROR_UNSUPPORTED' : macro redefinition
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49545) : see previous definition of 'DXGI_ERROR_UNSUPPORTED'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(25): warning C4005: 'DXGI_ERROR_DEVICE_REMOVED' : macro redefinition
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49554) : see previous definition of 'DXGI_ERROR_DEVICE_REMOVED'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(26): warning C4005: 'DXGI_ERROR_DEVICE_HUNG' : macro redefinition
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49563) : see previous definition of 'DXGI_ERROR_DEVICE_HUNG'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(27): warning C4005: 'DXGI_ERROR_DEVICE_RESET' : macro redefinition
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49573) : see previous definition of 'DXGI_ERROR_DEVICE_RESET'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(28): warning C4005: 'DXGI_ERROR_WAS_STILL_DRAWING' : macro redefinition
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49582) : see previous definition of 'DXGI_ERROR_WAS_STILL_DRAWING'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(29): warning C4005: 'DXGI_ERROR_FRAME_STATISTICS_DISJOINT' : macro redefinition
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49592) : see previous definition of 'DXGI_ERROR_FRAME_STATISTICS_DISJOINT'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(30): warning C4005: 'DXGI_ERROR_GRAPHICS_VIDPN_SOURCE_IN_USE' : macro redefinition
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49601) : see previous definition of 'DXGI_ERROR_GRAPHICS_VIDPN_SOURCE_IN_USE'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(31): warning C4005: 'DXGI_ERROR_DRIVER_INTERNAL_ERROR' : macro redefinition
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49611) : see previous definition of 'DXGI_ERROR_DRIVER_INTERNAL_ERROR'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(32): warning C4005: 'DXGI_ERROR_NONEXCLUSIVE' : macro redefinition
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49620) : see previous definition of 'DXGI_ERROR_NONEXCLUSIVE'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(33): warning C4005: 'DXGI_ERROR_NOT_CURRENTLY_AVAILABLE' : macro redefinition
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49629) : see previous definition of 'DXGI_ERROR_NOT_CURRENTLY_AVAILABLE'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(34): warning C4005: 'DXGI_ERROR_REMOTE_CLIENT_DISCONNECTED' : macro redefinition
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49639) : see previous definition of 'DXGI_ERROR_REMOTE_CLIENT_DISCONNECTED'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\dxgitype.h(35): warning C4005: 'DXGI_ERROR_REMOTE_OUTOFMEMORY' : macro redefinition
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49648) : see previous definition of 'DXGI_ERROR_REMOTE_OUTOFMEMORY'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d10.h(608): warning C4005: 'D3D10_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS' : macro redefinition
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49793) : see previous definition of 'D3D10_ERROR_TOO_MANY_UNIQUE_STATE_OBJECTS'
+     1>c:\program files (x86)\microsoft directx sdk (june 2010)\include\d3d10.h(609): warning C4005: 'D3D10_ERROR_FILE_NOT_FOUND' : macro redefinition
+                 C:\Program Files (x86)\Windows Kits\8.0\Include\shared\winerror.h(49802) : see previous definition of 'D3D10_ERROR_FILE_NOT_FOUND'
+     1>C:\Users\jerome\Documents\GitHub\2DPlatformer\Game\src\Core\Vector4.h(13): warning C4520: 'Vector4' : multiple default constructors specified
+     1>c:\users\jerome\documents\github\2dplatformer\game\src\animation\AnimationPart.h(87): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
+     1>C:\Users\jerome\Documents\GitHub\2DPlatformer\Game\src\GameObjects\solidmovingsprite.h(81): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
+     1>C:\Users\jerome\Documents\GitHub\2DPlatformer\Game\src\Core\camera2d.h(73): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
+     1>C:\Users\jerome\Documents\GitHub\2DPlatformer\Game\src\Core\camera2d.h(77): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
+     1>C:\Users\jerome\Documents\GitHub\2DPlatformer\Game\src\Core\camera2d.h(80): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
+     1>C:\Users\jerome\Documents\GitHub\2DPlatformer\Game\src\Core\camera2d.h(81): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
+     1>C:\Users\jerome\Documents\GitHub\2DPlatformer\Game\src\Core\camera2d.h(82): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
+     1>C:\Users\jerome\Documents\GitHub\2DPlatformer\Game\src\Core\xmlutilities.h(45): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64\CL.exe /c /Itinyxml /Isrc/Utils /Isrc/UI /Isrc/Particles /Isrc/Misc /Isrc/GameObjects /Isrc/Effects /Isrc/Core /Isrc/Audio /Isrc/Animation /Isrc/AI /Isrc /IDXUT /I"irrKlang-1.4.0/include" /I"C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include" /I"C:\Program Files (x86)\Visual Leak Detector\include" /Zi /nologo /W3 /WX- /sdl /O2 /Oi /GL /D WIN32 /D _RELEASE /D _WINDOWS /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"precompiled.h" /Fp"x64\Release\Game.pch" /Fo"x64\Release\\" /Fd"x64\Release\vc110.pdb" /Gd /TP /errorReport:prompt DXUT\DXUT.cpp DXUT\DXUTenum.cpp DXUT\DXUTmisc.cpp DXUT\SDKmisc.cpp src\AI\AIState.cpp src\AI\AIStateFollow.cpp src\Animation\Animation.cpp src\Animation\AnimationPart.cpp src\Animation\AnimationSequence.cpp src\Audio\AudioManager.cpp src\Audio\AudioObject.cpp src\Core\Camera2D.cpp src\Core\CollisionManager.cpp src\Core\DXWindow.cpp src\Core\GamePad.cpp src\Core\Graphics.cpp src\Core\SimpleFontManager.cpp src\Core\TextureManager.cpp src\Core\Timing.cpp src\Core\Vector2.cpp src\Core\Vector3.cpp src\Core\Vector4.cpp src\Core\XmlDocument.cpp src\Effects\EffectBasic.cpp src\Effects\EffectBloodParticleSpray.cpp src\Effects\EffectLightTexture.cpp src\Effects\EffectLightTextureBump.cpp src\Effects\EffectLightTexturePixelWobble.cpp src\Effects\EffectLightTextureVertexWobble.cpp src\Effects\EffectManager.cpp src\Effects\EffectMonochrome.cpp src\Effects\EffectMonochromeRed.cpp src\Effects\EffectNoise.cpp src\Effects\EffectParticleSpray.cpp src\Effects\EffectReflection.cpp src\Effects\EffectSepia.cpp src\Environment.cpp src\Game.cpp src\GameObjects\BlackHole.cpp src\GameObjects\BombProjectile.cpp src\GameObjects\Character.cpp src\GameObjects\DrawableObject.cpp src\GameObjects\Explosion.cpp src\GameObjects\FallingPlatform.cpp src\GameObjects\GameObject.cpp src\GameObjects\GameObjectManager.cpp src\GameObjects\LevelTrigger.cpp src\GameObjects\Material.cpp src\GameObjects\MaterialManager.cpp src\GameObjects\MovingSprite.cpp src\GameObjects\NinjaSpawner.cpp src\GameObjects\NPC.cpp src\GameObjects\NPCManager.cpp src\GameObjects\Orb.cpp src\GameObjects\ParallaxLayer.cpp src\GameObjects\PathingPlatform.cpp src\GameObjects\Platform.cpp src\GameObjects\Player.cpp src\GameObjects\Projectile.cpp src\GameObjects\Rabbit.cpp src\GameObjects\ScreenAlignedTexture.cpp src\GameObjects\SolidMovingSprite.cpp src\GameObjects\Sprite.cpp src\GameObjects\WaterBlock.cpp src\GameObjects\WeatherManager.cpp src\LevelEditor.cpp src\Particles\ParticleEmitterManager.cpp src\Particles\ParticleSpray.cpp src\program.cpp src\UI\UIAnimatedSprite.cpp src\UI\UIButton.cpp src\UI\UICheckbox.cpp src\UI\UIGameHudScreen.cpp src\UI\UIManager.cpp src\UI\UIMeter.cpp src\UI\UIScreen.cpp src\UI\UISprite.cpp src\UI\UIWidget.cpp tinyxml\tinystr.cpp tinyxml\tinyxml.cpp tinyxml\tinyxmlerror.cpp tinyxml\tinyxmlparser.cpp
          DXUT.cpp
-     1>DXUT\DXUT.cpp(6): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          DXUTenum.cpp
-     1>DXUT\DXUTenum.cpp(8): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          DXUTmisc.cpp
-     1>DXUT\DXUTmisc.cpp(8): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          SDKmisc.cpp
-     1>DXUT\SDKmisc.cpp(8): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          AIState.cpp
-     1>src\AI\AIState.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          AIStateFollow.cpp
-     1>src\AI\AIStateFollow.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          Animation.cpp
-     1>src\Animation\Animation.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          AnimationPart.cpp
-     1>src\Animation\AnimationPart.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+     1>src\Animation\AnimationPart.cpp(119): warning C4267: 'return' : conversion from 'size_t' to 'int', possible loss of data
+     1>src\Animation\AnimationPart.cpp(135): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
+     1>src\Animation\AnimationPart.cpp(187): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
+     1>src\Animation\AnimationPart.cpp(219): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
+     1>src\Animation\AnimationPart.cpp(264): warning C4172: returning address of local variable or temporary
          AnimationSequence.cpp
-     1>src\Animation\AnimationSequence.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+     1>src\Animation\AnimationSequence.cpp(98): warning C4244: 'initializing' : conversion from 'int' to 'float', possible loss of data
+     1>src\Animation\AnimationSequence.cpp(99): warning C4244: 'initializing' : conversion from 'int' to 'float', possible loss of data
          AudioManager.cpp
-     1>src\Audio\AudioManager.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          AudioObject.cpp
-     1>src\Audio\AudioObject.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          Camera2D.cpp
-     1>src\Core\Camera2D.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+     1>src\Core\Camera2D.cpp(7): warning C4244: 'initializing' : conversion from 'float' to 'const int', possible loss of data
+     1>src\Core\Camera2D.cpp(22): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+     1>src\Core\Camera2D.cpp(25): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+     1>src\Core\Camera2D.cpp(80): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+     1>src\Core\Camera2D.cpp(152): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+     1>src\Core\Camera2D.cpp(155): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
          CollisionManager.cpp
-     1>src\Core\CollisionManager.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+     1>c:\users\jerome\documents\github\2dplatformer\game\src\core\CollisionManager.h(37): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\jerome\documents\github\2dplatformer\game\src\core\CollisionManager.h(38): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>src\Core\CollisionManager.cpp(15): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>src\Core\CollisionManager.cpp(16): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>src\Core\CollisionManager.cpp(45): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
          DXWindow.cpp
-     1>src\Core\DXWindow.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+     1>src\Core\DXWindow.cpp(100): warning C4244: 'argument' : conversion from 'LONG' to 'float', possible loss of data
          GamePad.cpp
-     1>src\Core\GamePad.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          Graphics.cpp
-     1>src\Core\Graphics.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          SimpleFontManager.cpp
-     1>src\Core\SimpleFontManager.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+     1>src\Core\SimpleFontManager.cpp(46): warning C4244: 'initializing' : conversion from 'float' to 'LONG', possible loss of data
          TextureManager.cpp
-     1>src\Core\TextureManager.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          Timing.cpp
-     1>src\Core\Timing.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          Vector2.cpp
-     1>src\Core\Vector2.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          Compiling...
          Vector3.cpp
-     1>src\Core\Vector3.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          Vector4.cpp
-     1>src\Core\Vector4.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          XmlDocument.cpp
-     1>src\Core\XmlDocument.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          EffectBasic.cpp
-     1>src\Effects\EffectBasic.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          EffectBloodParticleSpray.cpp
-     1>src\Effects\EffectBloodParticleSpray.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          EffectLightTexture.cpp
-     1>src\Effects\EffectLightTexture.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          EffectLightTextureBump.cpp
-     1>src\Effects\EffectLightTextureBump.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          EffectLightTexturePixelWobble.cpp
-     1>src\Effects\EffectLightTexturePixelWobble.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          EffectLightTextureVertexWobble.cpp
-     1>src\Effects\EffectLightTextureVertexWobble.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          EffectManager.cpp
-     1>src\Effects\EffectManager.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          EffectMonochrome.cpp
-     1>src\Effects\EffectMonochrome.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          EffectMonochromeRed.cpp
-     1>src\Effects\EffectMonochromeRed.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          EffectNoise.cpp
-     1>src\Effects\EffectNoise.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          EffectParticleSpray.cpp
-     1>src\Effects\EffectParticleSpray.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          EffectReflection.cpp
-     1>src\Effects\EffectReflection.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          EffectSepia.cpp
-     1>src\Effects\EffectSepia.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          Environment.cpp
-     1>c:\users\jerome\documents\github\2dplatformer\game\src\precompiled.h(10): fatal error C1083: Cannot open include file: 'dxut.h': No such file or directory
          Game.cpp
-     1>c:\users\jerome\documents\github\2dplatformer\game\src\precompiled.h(10): fatal error C1083: Cannot open include file: 'dxut.h': No such file or directory
+     1>C:\Users\jerome\Documents\GitHub\2DPlatformer\Game\src\Core\collisionManager.h(37): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>C:\Users\jerome\Documents\GitHub\2DPlatformer\Game\src\Core\collisionManager.h(38): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>C:\Users\jerome\Documents\GitHub\2DPlatformer\Game\src\GameObjects\screenalignedtexture.h(40): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>C:\Users\jerome\Documents\GitHub\2DPlatformer\Game\src\GameObjects\screenalignedtexture.h(41): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>src\Game.cpp(137): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>src\Game.cpp(176): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
          BlackHole.cpp
-     1>src\GameObjects\BlackHole.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          BombProjectile.cpp
-     1>src\GameObjects\BombProjectile.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+     1>src\GameObjects\BombProjectile.cpp(24): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>src\GameObjects\BombProjectile.cpp(56): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>src\GameObjects\BombProjectile.cpp(58): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>src\GameObjects\BombProjectile.cpp(132): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>src\GameObjects\BombProjectile.cpp(136): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>src\GameObjects\BombProjectile.cpp(145): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>src\GameObjects\BombProjectile.cpp(149): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
          Compiling...
          Character.cpp
-     1>src\GameObjects\Character.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+     1>src\GameObjects\Character.cpp(98): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>src\GameObjects\Character.cpp(121): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>src\GameObjects\Character.cpp(143): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>src\GameObjects\Character.cpp(223): warning C4800: 'Platform *' : forcing value to bool 'true' or 'false' (performance warning)
+     1>src\GameObjects\Character.cpp(258): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>src\GameObjects\Character.cpp(282): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>src\GameObjects\Character.cpp(307): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>src\GameObjects\Character.cpp(449): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>src\GameObjects\Character.cpp(543): warning C4244: 'argument' : conversion from 'unsigned long' to 'float', possible loss of data
+     1>src\GameObjects\Character.cpp(563): warning C4244: 'argument' : conversion from 'unsigned long' to 'float', possible loss of data
+     1>src\GameObjects\Character.cpp(626): warning C4305: '-=' : truncation from 'double' to 'float'
+     1>src\GameObjects\Character.cpp(637): warning C4244: 'initializing' : conversion from 'int' to 'float', possible loss of data
+     1>src\GameObjects\Character.cpp(640): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>src\GameObjects\Character.cpp(674): warning C4305: '-=' : truncation from 'double' to 'float'
+     1>src\GameObjects\Character.cpp(685): warning C4244: 'initializing' : conversion from 'int' to 'float', possible loss of data
+     1>src\GameObjects\Character.cpp(687): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
          DrawableObject.cpp
-     1>src\GameObjects\DrawableObject.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          Explosion.cpp
-     1>src\GameObjects\Explosion.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+     1>src\GameObjects\Explosion.cpp(74): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>src\GameObjects\Explosion.cpp(113): warning C4305: 'argument' : truncation from 'double' to 'float'
          FallingPlatform.cpp
-     1>src\GameObjects\FallingPlatform.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+     1>src\GameObjects\FallingPlatform.cpp(4): warning C4244: 'initializing' : conversion from 'float' to 'const int', possible loss of data
          GameObject.cpp
-     1>src\GameObjects\GameObject.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+     1>src\GameObjects\GameObject.cpp(7): warning C4305: 'initializing' : truncation from 'double' to 'const float'
+     1>src\GameObjects\GameObject.cpp(50): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+     1>src\GameObjects\GameObject.cpp(96): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
          GameObjectManager.cpp
-     1>src\GameObjects\GameObjectManager.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+     1>C:\Users\jerome\Documents\GitHub\2DPlatformer\Game\src\Core\collisionmanager.h(37): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>C:\Users\jerome\Documents\GitHub\2DPlatformer\Game\src\Core\collisionmanager.h(38): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>src\GameObjects\GameObjectManager.cpp(285): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>src\GameObjects\GameObjectManager.cpp(325): warning C4244: 'initializing' : conversion from 'int' to 'float', possible loss of data
+     1>src\GameObjects\GameObjectManager.cpp(326): warning C4244: 'initializing' : conversion from 'int' to 'float', possible loss of data
+     1>src\GameObjects\GameObjectManager.cpp(331): warning C4552: '*' : operator has no effect; expected operator with side-effect
+     1>src\GameObjects\GameObjectManager.cpp(332): warning C4552: '*' : operator has no effect; expected operator with side-effect
+     1>src\GameObjects\GameObjectManager.cpp(579): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>src\GameObjects\GameObjectManager.cpp(644): warning C4244: 'initializing' : conversion from 'int' to 'float', possible loss of data
+     1>src\GameObjects\GameObjectManager.cpp(645): warning C4244: 'initializing' : conversion from 'int' to 'float', possible loss of data
+     1>src\GameObjects\GameObjectManager.cpp(670): warning C4244: 'initializing' : conversion from 'int' to 'float', possible loss of data
+     1>src\GameObjects\GameObjectManager.cpp(671): warning C4244: 'initializing' : conversion from 'int' to 'float', possible loss of data
+     1>src\GameObjects\GameObjectManager.cpp(870): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>src\GameObjects\GameObjectManager.cpp(896): warning C4305: 'argument' : truncation from 'double' to 'float'
          LevelTrigger.cpp
-     1>src\GameObjects\LevelTrigger.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          Material.cpp
-     1>src\GameObjects\Material.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+     1>src\GameObjects\Material.cpp(71): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
+     1>src\GameObjects\Material.cpp(83): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
+     1>src\GameObjects\Material.cpp(95): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
          MaterialManager.cpp
-     1>src\GameObjects\MaterialManager.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          MovingSprite.cpp
-     1>src\GameObjects\MovingSprite.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+     1>src\GameObjects\MovingSprite.cpp(20): warning C4305: '=' : truncation from 'const int' to 'float'
          NinjaSpawner.cpp
-     1>src\GameObjects\NinjaSpawner.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+     1>src\GameObjects\NinjaSpawner.cpp(4): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>src\GameObjects\NinjaSpawner.cpp(18): warning C4244: 'initializing' : conversion from 'int' to 'float', possible loss of data
+     1>src\GameObjects\NinjaSpawner.cpp(19): warning C4305: '*=' : truncation from 'double' to 'float'
+     1>src\GameObjects\NinjaSpawner.cpp(21): warning C4244: 'initializing' : conversion from 'int' to 'float', possible loss of data
+     1>src\GameObjects\NinjaSpawner.cpp(22): warning C4305: '*=' : truncation from 'double' to 'float'
+     1>src\GameObjects\NinjaSpawner.cpp(34): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>src\GameObjects\NinjaSpawner.cpp(57): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>src\GameObjects\NinjaSpawner.cpp(67): warning C4018: '<' : signed/unsigned mismatch
+     1>src\GameObjects\NinjaSpawner.cpp(71): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>src\GameObjects\NinjaSpawner.cpp(76): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
          NPC.cpp
-     1>src\GameObjects\NPC.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+     1>src\GameObjects\NPC.cpp(182): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>src\GameObjects\NPC.cpp(194): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>src\GameObjects\NPC.cpp(206): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>src\GameObjects\NPC.cpp(218): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>src\GameObjects\NPC.cpp(247): warning C4244: 'initializing' : conversion from 'int' to 'float', possible loss of data
+     1>src\GameObjects\NPC.cpp(250): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
          NPCManager.cpp
-     1>src\GameObjects\NPCManager.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          Orb.cpp
-     1>src\GameObjects\Orb.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+     1>src\GameObjects\Orb.cpp(38): warning C4305: '=' : truncation from 'double' to 'float'
+     1>src\GameObjects\Orb.cpp(43): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>src\GameObjects\Orb.cpp(44): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>src\GameObjects\Orb.cpp(46): warning C4244: 'initializing' : conversion from 'int' to 'float', possible loss of data
+     1>src\GameObjects\Orb.cpp(48): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>src\GameObjects\Orb.cpp(102): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>src\GameObjects\Orb.cpp(111): warning C4244: '=' : conversion from 'float' to 'unsigned long', possible loss of data
+     1>src\GameObjects\Orb.cpp(165): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
          ParallaxLayer.cpp
-     1>src\GameObjects\ParallaxLayer.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          PathingPlatform.cpp
-     1>src\GameObjects\PathingPlatform.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+     1>src\GameObjects\PathingPlatform.cpp(13): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
+     1>src\GameObjects\PathingPlatform.cpp(188): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
+     1>src\GameObjects\PathingPlatform.cpp(259): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
+     1>src\GameObjects\PathingPlatform.cpp(300): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
+     1>src\GameObjects\PathingPlatform.cpp(353): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
+     1>src\GameObjects\PathingPlatform.cpp(421): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
+     1>src\GameObjects\PathingPlatform.cpp(473): warning C4244: 'argument' : conversion from 'const int' to 'float', possible loss of data
+     1>src\GameObjects\PathingPlatform.cpp(482): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
          Platform.cpp
-     1>src\GameObjects\Platform.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          Player.cpp
-     1>src\GameObjects\Player.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+     1>src\GameObjects\Player.cpp(57): warning C4305: '=' : truncation from 'double' to 'float'
          Projectile.cpp
-     1>src\GameObjects\Projectile.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+     1>src\GameObjects\Projectile.cpp(25): warning C4244: 'initializing' : conversion from 'int' to 'float', possible loss of data
+     1>src\GameObjects\Projectile.cpp(102): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>src\GameObjects\Projectile.cpp(104): warning C4129: 's' : unrecognized character escape sequence
+     1>src\GameObjects\Projectile.cpp(104): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>src\GameObjects\Projectile.cpp(120): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>src\GameObjects\Projectile.cpp(257): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>src\GameObjects\Projectile.cpp(356): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
          Rabbit.cpp
-     1>src\GameObjects\Rabbit.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+     1>src\GameObjects\Rabbit.cpp(61): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>src\GameObjects\Rabbit.cpp(73): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>src\GameObjects\Rabbit.cpp(85): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>src\GameObjects\Rabbit.cpp(97): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>src\GameObjects\Rabbit.cpp(116): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
          Compiling...
          ScreenAlignedTexture.cpp
-     1>src\GameObjects\ScreenAlignedTexture.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+     1>c:\users\jerome\documents\github\2dplatformer\game\src\gameobjects\ScreenAlignedTexture.h(40): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\jerome\documents\github\2dplatformer\game\src\gameobjects\ScreenAlignedTexture.h(41): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>src\GameObjects\ScreenAlignedTexture.cpp(24): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
          SolidMovingSprite.cpp
-     1>src\GameObjects\SolidMovingSprite.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+     1>C:\Users\jerome\Documents\GitHub\2DPlatformer\Game\src\Core\CollisionManager.h(37): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>C:\Users\jerome\Documents\GitHub\2DPlatformer\Game\src\Core\CollisionManager.h(38): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>src\GameObjects\SolidMovingSprite.cpp(47): warning C4305: '=' : truncation from 'double' to 'float'
+     1>src\GameObjects\SolidMovingSprite.cpp(358): warning C4244: 'argument' : conversion from 'double' to 'FLOAT', possible loss of data
+     1>src\GameObjects\SolidMovingSprite.cpp(399): warning C4305: 'argument' : truncation from 'double' to 'float'
          Sprite.cpp
-     1>src\GameObjects\Sprite.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+     1>src\GameObjects\Sprite.cpp(131): warning C4244: 'argument' : conversion from 'UINT' to 'float', possible loss of data
+     1>src\GameObjects\Sprite.cpp(425): warning C4305: '-=' : truncation from 'double' to 'float'
+     1>src\GameObjects\Sprite.cpp(436): warning C4305: '+=' : truncation from 'double' to 'float'
          WaterBlock.cpp
-     1>src\GameObjects\WaterBlock.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          WeatherManager.cpp
-     1>src\GameObjects\WeatherManager.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+     1>src\GameObjects\WeatherManager.cpp(94): warning C4305: '=' : truncation from 'double' to 'float'
+     1>src\GameObjects\WeatherManager.cpp(115): warning C4305: '=' : truncation from 'double' to 'float'
+     1>src\GameObjects\WeatherManager.cpp(138): warning C4305: '=' : truncation from 'double' to 'float'
+     1>src\GameObjects\WeatherManager.cpp(194): warning C4305: '=' : truncation from 'double' to 'float'
+     1>src\GameObjects\WeatherManager.cpp(216): warning C4305: '=' : truncation from 'double' to 'float'
+     1>src\GameObjects\WeatherManager.cpp(273): warning C4102: 'deafult' : unreferenced label
+     1>src\GameObjects\WeatherManager.cpp(307): warning C4305: '=' : truncation from 'double' to 'float'
+     1>src\GameObjects\WeatherManager.cpp(333): warning C4305: '=' : truncation from 'double' to 'float'
+     1>src\GameObjects\WeatherManager.cpp(361): warning C4305: '=' : truncation from 'double' to 'float'
+     1>src\GameObjects\WeatherManager.cpp(420): warning C4244: 'initializing' : conversion from 'const float' to 'unsigned int', possible loss of data
+     1>src\GameObjects\WeatherManager.cpp(421): warning C4244: 'initializing' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>src\GameObjects\WeatherManager.cpp(422): warning C4305: '*=' : truncation from 'double' to 'float'
+     1>src\GameObjects\WeatherManager.cpp(438): warning C4244: 'initializing' : conversion from 'const float' to 'unsigned int', possible loss of data
+     1>src\GameObjects\WeatherManager.cpp(439): warning C4244: 'initializing' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>src\GameObjects\WeatherManager.cpp(442): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>src\GameObjects\WeatherManager.cpp(481): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>src\GameObjects\WeatherManager.cpp(483): warning C4244: 'initializing' : conversion from 'const float' to 'unsigned int', possible loss of data
+     1>src\GameObjects\WeatherManager.cpp(484): warning C4244: 'initializing' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>src\GameObjects\WeatherManager.cpp(485): warning C4305: '*=' : truncation from 'double' to 'float'
+     1>src\GameObjects\WeatherManager.cpp(487): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>src\GameObjects\WeatherManager.cpp(495): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>src\GameObjects\WeatherManager.cpp(498): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>src\GameObjects\WeatherManager.cpp(505): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>src\GameObjects\WeatherManager.cpp(514): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>src\GameObjects\WeatherManager.cpp(536): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>src\GameObjects\WeatherManager.cpp(555): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>src\GameObjects\WeatherManager.cpp(558): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>src\GameObjects\WeatherManager.cpp(565): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>src\GameObjects\WeatherManager.cpp(573): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>src\GameObjects\WeatherManager.cpp(673): warning C4305: '=' : truncation from 'double' to 'float'
+     1>src\GameObjects\WeatherManager.cpp(699): warning C4305: '=' : truncation from 'double' to 'float'
+     1>src\GameObjects\WeatherManager.cpp(730): warning C4244: 'initializing' : conversion from 'const float' to 'unsigned int', possible loss of data
+     1>src\GameObjects\WeatherManager.cpp(731): warning C4244: 'initializing' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>src\GameObjects\WeatherManager.cpp(732): warning C4305: '*=' : truncation from 'double' to 'float'
          LevelEditor.cpp
-     1>c:\users\jerome\documents\github\2dplatformer\game\src\precompiled.h(10): fatal error C1083: Cannot open include file: 'dxut.h': No such file or directory
          ParticleEmitterManager.cpp
-     1>src\Particles\ParticleEmitterManager.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+     1>src\Particles\ParticleEmitterManager.cpp(11): warning C4244: 'initializing' : conversion from 'float' to 'const unsigned int', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(18): warning C4244: 'initializing' : conversion from 'float' to 'const unsigned int', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(19): warning C4244: 'initializing' : conversion from 'float' to 'const unsigned int', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(24): warning C4244: 'initializing' : conversion from 'double' to 'const unsigned int', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(80): warning C4018: '<' : signed/unsigned mismatch
+     1>src\Particles\ParticleEmitterManager.cpp(85): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(86): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(110): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(111): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(112): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(114): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(126): warning C4244: 'argument' : conversion from 'float' to 'unsigned long', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(160): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(167): warning C4244: '=' : conversion from 'const unsigned int' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(173): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(174): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(175): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(177): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(188): warning C4244: 'argument' : conversion from 'float' to 'unsigned long', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(193): warning C4244: 'argument' : conversion from 'const unsigned int' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(194): warning C4244: 'argument' : conversion from 'const unsigned int' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(195): warning C4244: 'argument' : conversion from 'const unsigned int' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(196): warning C4244: 'argument' : conversion from 'const unsigned int' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(197): warning C4244: 'argument' : conversion from 'const unsigned int' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(200): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(257): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(258): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(290): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(291): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(292): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(302): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(315): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(321): warning C4244: 'argument' : conversion from 'float' to 'unsigned long', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(388): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(408): warning C4305: '+=' : truncation from 'double' to 'float'
+     1>src\Particles\ParticleEmitterManager.cpp(426): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(427): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(428): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(438): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(451): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(457): warning C4244: 'argument' : conversion from 'float' to 'unsigned long', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(469): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(519): warning C4244: 'initializing' : conversion from 'float' to 'unsigned long', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(528): warning C4244: '=' : conversion from 'unsigned long' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(532): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(552): warning C4305: '+=' : truncation from 'double' to 'float'
+     1>src\Particles\ParticleEmitterManager.cpp(568): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(569): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(570): warning C4244: '=' : conversion from 'int' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(580): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(593): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(599): warning C4244: 'argument' : conversion from 'float' to 'unsigned long', possible loss of data
+     1>src\Particles\ParticleEmitterManager.cpp(611): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
          ParticleSpray.cpp
-     1>src\Particles\ParticleSpray.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
-         precompiled.cpp
-     1>c:\users\jerome\documents\github\2dplatformer\game\src\precompiled.h(10): fatal error C1083: Cannot open include file: 'dxut.h': No such file or directory
+     1>src\Particles\ParticleSpray.cpp(31): warning C4244: 'initializing' : conversion from 'unsigned long' to 'float', possible loss of data
+     1>src\Particles\ParticleSpray.cpp(53): warning C4267: 'argument' : conversion from 'size_t' to 'unsigned int', possible loss of data
+     1>src\Particles\ParticleSpray.cpp(123): warning C4244: 'argument' : conversion from 'double' to 'FLOAT', possible loss of data
+     1>src\Particles\ParticleSpray.cpp(156): warning C4305: '*=' : truncation from 'double' to 'float'
          program.cpp
-     1>c:\users\jerome\documents\github\2dplatformer\game\src\precompiled.h(10): fatal error C1083: Cannot open include file: 'dxut.h': No such file or directory
+     1>src\program.cpp(141): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>src\program.cpp(145): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>src\program.cpp(148): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
          UIAnimatedSprite.cpp
-     1>src\UI\UIAnimatedSprite.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          UIButton.cpp
-     1>src\UI\UIButton.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          UICheckbox.cpp
-     1>src\UI\UICheckbox.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          UIGameHudScreen.cpp
-     1>src\UI\UIGameHudScreen.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          UIManager.cpp
-     1>src\UI\UIManager.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+     1>src\UI\UIManager.cpp(99): warning C4244: 'argument' : conversion from 'int' to 'FLOAT', possible loss of data
+     1>src\UI\UIManager.cpp(181): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+     1>src\UI\UIManager.cpp(182): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+     1>src\UI\UIManager.cpp(243): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+     1>src\UI\UIManager.cpp(244): warning C4244: 'initializing' : conversion from 'float' to 'int', possible loss of data
+     1>src\UI\UIManager.cpp(361): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>src\UI\UIManager.cpp(380): warning C4305: '+=' : truncation from 'double' to 'float'
+     1>src\UI\UIManager.cpp(401): warning C4305: '-=' : truncation from 'double' to 'float'
          UIMeter.cpp
-     1>src\UI\UIMeter.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+     1>src\UI\UIMeter.cpp(56): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>src\UI\UIMeter.cpp(99): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>src\UI\UIMeter.cpp(119): warning C4244: '=' : conversion from 'UINT' to 'float', possible loss of data
+     1>src\UI\UIMeter.cpp(120): warning C4244: '=' : conversion from 'UINT' to 'float', possible loss of data
+     1>src\UI\UIMeter.cpp(121): warning C4244: '=' : conversion from 'UINT' to 'float', possible loss of data
          UIScreen.cpp
-     1>src\UI\UIScreen.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+     1>src\UI\UIScreen.cpp(210): warning C4244: 'argument' : conversion from 'LONG' to 'float', possible loss of data
          UISprite.cpp
-     1>src\UI\UISprite.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          UIWidget.cpp
-     1>src\UI\UIWidget.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          tinystr.cpp
-     1>tinyxml\tinystr.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
-         Compiling...
          tinyxml.cpp
-     1>tinyxml\tinyxml.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
+         Compiling...
          tinyxmlerror.cpp
-     1>tinyxml\tinyxmlerror.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
          tinyxmlparser.cpp
-     1>tinyxml\tinyxmlparser.cpp(1): fatal error C1083: Cannot open include file: 'precompiled.h': No such file or directory
-     1>Done Building Project "C:\Users\jerome\Documents\GitHub\2DPlatformer\Game\Game.vcxproj" (Build target(s)) -- FAILED.
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\jerome\Documents\GitHub\2DPlatformer\x64\Release\Game.exe" /NOLOGO /LIBPATH:"irrKlang-1.4.0/lib/x64" /LIBPATH:"C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Lib\x64" dxerr.lib dxguid.lib d3dx9.lib d3d9.lib winmm.lib comctl32.lib d3dx10d.lib d3d10.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\jerome\Documents\GitHub\2DPlatformer\x64\Release\Game.pdb" /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\jerome\Documents\GitHub\2DPlatformer\x64\Release\Game.lib" /MACHINE:X64 x64\Release\DXUT.obj
+         x64\Release\DXUTenum.obj
+         x64\Release\DXUTmisc.obj
+         x64\Release\SDKmisc.obj
+         x64\Release\AIState.obj
+         x64\Release\AIStateFollow.obj
+         x64\Release\Animation.obj
+         x64\Release\AnimationPart.obj
+         x64\Release\AnimationSequence.obj
+         x64\Release\AudioManager.obj
+         x64\Release\AudioObject.obj
+         x64\Release\Camera2D.obj
+         x64\Release\CollisionManager.obj
+         x64\Release\DXWindow.obj
+         x64\Release\GamePad.obj
+         x64\Release\Graphics.obj
+         x64\Release\SimpleFontManager.obj
+         x64\Release\TextureManager.obj
+         x64\Release\Timing.obj
+         x64\Release\Vector2.obj
+         x64\Release\Vector3.obj
+         x64\Release\Vector4.obj
+         x64\Release\XmlDocument.obj
+         x64\Release\EffectBasic.obj
+         x64\Release\EffectBloodParticleSpray.obj
+         x64\Release\EffectLightTexture.obj
+         x64\Release\EffectLightTextureBump.obj
+         x64\Release\EffectLightTexturePixelWobble.obj
+         x64\Release\EffectLightTextureVertexWobble.obj
+         x64\Release\EffectManager.obj
+         x64\Release\EffectMonochrome.obj
+         x64\Release\EffectMonochromeRed.obj
+         x64\Release\EffectNoise.obj
+         x64\Release\EffectParticleSpray.obj
+         x64\Release\EffectReflection.obj
+         x64\Release\EffectSepia.obj
+         x64\Release\Environment.obj
+         x64\Release\Game.obj
+         x64\Release\BlackHole.obj
+         x64\Release\BombProjectile.obj
+         x64\Release\Character.obj
+         x64\Release\DrawableObject.obj
+         x64\Release\Explosion.obj
+         x64\Release\FallingPlatform.obj
+         x64\Release\GameObject.obj
+         x64\Release\GameObjectManager.obj
+         x64\Release\LevelTrigger.obj
+         x64\Release\Material.obj
+         x64\Release\MaterialManager.obj
+         x64\Release\MovingSprite.obj
+         x64\Release\NinjaSpawner.obj
+         x64\Release\NPC.obj
+         x64\Release\NPCManager.obj
+         x64\Release\Orb.obj
+         x64\Release\ParallaxLayer.obj
+         x64\Release\PathingPlatform.obj
+         x64\Release\Platform.obj
+         x64\Release\Player.obj
+         x64\Release\Projectile.obj
+         x64\Release\Rabbit.obj
+         x64\Release\ScreenAlignedTexture.obj
+         x64\Release\SolidMovingSprite.obj
+         x64\Release\Sprite.obj
+         x64\Release\WaterBlock.obj
+         x64\Release\WeatherManager.obj
+         x64\Release\LevelEditor.obj
+         x64\Release\ParticleEmitterManager.obj
+         x64\Release\ParticleSpray.obj
+         x64\Release\precompiled.obj
+         x64\Release\program.obj
+         x64\Release\UIAnimatedSprite.obj
+         x64\Release\UIButton.obj
+         x64\Release\UICheckbox.obj
+         x64\Release\UIGameHudScreen.obj
+         x64\Release\UIManager.obj
+         x64\Release\UIMeter.obj
+         x64\Release\UIScreen.obj
+         x64\Release\UISprite.obj
+         x64\Release\UIWidget.obj
+         x64\Release\tinystr.obj
+         x64\Release\tinyxml.obj
+         x64\Release\tinyxmlerror.obj
+         x64\Release\tinyxmlparser.obj
+         Generating code
+     1>c:\users\jerome\documents\github\2dplatformer\game\src\core\camera2d.cpp(88): warning C4723: potential divide by 0
+         Finished generating code
+         Game.vcxproj -> C:\Users\jerome\Documents\GitHub\2DPlatformer\x64\Release\Game.exe
+     1>Done Building Project "C:\Users\jerome\Documents\GitHub\2DPlatformer\Game\Game.vcxproj" (Build target(s)).
 
-Build FAILED.
+Build succeeded.
 
-Time Elapsed 00:00:04.39
+Time Elapsed 00:00:14.55
