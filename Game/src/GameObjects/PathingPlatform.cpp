@@ -7,7 +7,7 @@ Platform(x, y, z, width, height, breadth, groundFriction, airResistance),
 mCurrentPathState(kNotPathing),
 mCurrentPathIndex(0),
 mPlatformSpeed(8),
-mClosestPointToNextTarget(kLargestInt, kLargestInt, 0.f),
+mClosestPointToNextTarget((numeric_limits<int>::max)(), (numeric_limits<int>::max)(), 0.f),
 mPathingType(kAlwaysPathing),
 mPathForward(true)
 {
@@ -185,7 +185,7 @@ void PathingPlatform::OnCollision(SolidMovingSprite * object)
 	{
 		if(object->Bottom() > Y () && object->X() > Left() && object->X() < Right() && object->VelocityY() <= 0.0)
 		{
-			mClosestPointToNextTarget = Vector3(kLargestInt, kLargestInt, 0);
+			mClosestPointToNextTarget = Vector3((numeric_limits<int>::max)(), (numeric_limits<int>::max)(), 0);
 
 			if (mPathForward)
 			{
@@ -256,7 +256,7 @@ void PathingPlatform::Update(float delta)
 						// the player is not colliding with us so let's start moving back to the start
 						mCurrentPathState = kReturningToStart;
 
-						mClosestPointToNextTarget = Vector3(kLargestInt, kLargestInt, 0);
+						mClosestPointToNextTarget = Vector3((numeric_limits<int>::max)(), (numeric_limits<int>::max)(), 0);
 
 						// we take 1 away from the current index
 						if (mPathForward)
@@ -297,7 +297,7 @@ void PathingPlatform::Update(float delta)
 						// the player is not colliding with us so let's start moving back to the start
 						mCurrentPathState = kReturningToStart;
 
-						mClosestPointToNextTarget = Vector3(kLargestInt, kLargestInt, 0);
+						mClosestPointToNextTarget = Vector3((numeric_limits<int>::max)(), (numeric_limits<int>::max)(), 0);
 
 						// we take 1 away from the current index
 						if (mPathForward)
@@ -350,7 +350,7 @@ void PathingPlatform::ReturnToStart()
 
 		if (direction.LengthSquared() < 10 * 10 || direction.LengthSquared() > mClosestPointToNextTarget.LengthSquared())
 		{
-			mClosestPointToNextTarget = Vector3(kLargestInt, kLargestInt, 0);
+			mClosestPointToNextTarget = Vector3((numeric_limits<int>::max)(), (numeric_limits<int>::max)(), 0);
 			
 			if (mCurrentPathIndex == 0)
 			{
@@ -418,7 +418,7 @@ void PathingPlatform::PathForward()
 
 			if (direction.LengthSquared() < 10 * 10 || direction.LengthSquared() > mClosestPointToNextTarget.LengthSquared())
 			{
-				mClosestPointToNextTarget = Vector3(kLargestInt, kLargestInt, 0);
+				mClosestPointToNextTarget = Vector3((numeric_limits<int>::max)(), (numeric_limits<int>::max)(), 0);
 
 				if (mCurrentPathIndex < mPathPoints.size()-1)
 				{
@@ -470,7 +470,7 @@ void PathingPlatform::PathBackward()
 
 			if (direction.LengthSquared() < 10 * 10 || direction.LengthSquared() > mClosestPointToNextTarget.LengthSquared())
 			{
-				mClosestPointToNextTarget = Vector3(kLargestInt, kLargestInt, 0);
+				mClosestPointToNextTarget = Vector3((numeric_limits<int>::max)(), (numeric_limits<int>::max)(), 0);
 
 				if (mCurrentPathIndex > 0)
 				{

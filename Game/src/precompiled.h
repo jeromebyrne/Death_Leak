@@ -4,6 +4,7 @@
 #define _CRT_SECURE_NO_DEPRECATE
 
 #include <windows.h>
+#include <limits>
 #include <Mmsystem.h>
 #include <typeinfo.h>
 #include "resource.h"
@@ -30,8 +31,7 @@ using namespace std;
 #include "effectmanager.h"
 #include "Environment.h"
 #include "Camera2D.h"
-
-const int kLargestInt = 2147483646;
+#include "Logger.h"
 
 // used for sprite drawing
 enum EffectTypesEnum {EFFECT_BASIC, EFFECT_LIGHT_TEXTURE, EFFECT_VERTEX_WOBBLE, EFFECT_REFLECT, EFFECT_PARTICLE_SPRAY, EFFECT_BUMP, EFFECT_NOISE, EFFECT_PIXEL_WOBBLE };
@@ -49,5 +49,31 @@ public:
 	string EventName;
 	list<string> EventParams;
 };
+
+#ifndef GAME_ASSERT_ENABLED
+	#ifdef _RELEASE
+		#define GAME_ASSERT_ENABLED 0
+	#else
+		#define GAME_ASSERT_ENABLED 1
+	#endif
+#endif
+
+#if GAME_ASSERT_ENABLED == 1
+	
+	#define GAME_ASSERT(CONDITION)\
+		\
+		do\
+		{\
+			if (!CONDITION)\
+			{\
+				LOG_ERROR("*** GameAssert FAILED! ***: %s \nFile: %s, Line: %i\n", #CONDITION, __FILE__, __LINE__ );\
+				assert(0);\
+				exit(EXIT_FAILURE);\
+			}\
+		\
+		} while (0)
+#else
+	#define GAME_ASSERT(CONDITION)
+#endif
 
 #endif

@@ -6,6 +6,8 @@
 #include "camera2d.h"
 #include <sstream>
 
+const unsigned int kMaxFormatStringBufferSize = 64000;
+
 class Utilities
 {
 public:
@@ -163,6 +165,22 @@ public:
 	static double ConvertStringToDouble(const char * value)
 	{
 		return atof(value);
+	}
+
+	static string getFormattedString(const char * stringToFormat, ...)
+	{
+		if (!stringToFormat)
+		{
+			return "";
+		}
+
+		char buffer[kMaxFormatStringBufferSize];
+		va_list args;
+		va_start (args, stringToFormat);
+		vsnprintf(buffer, kMaxFormatStringBufferSize, stringToFormat, args);
+		va_end(args);
+
+		return buffer;
 	}
 };
 

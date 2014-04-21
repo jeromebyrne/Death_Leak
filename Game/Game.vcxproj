@@ -35,6 +35,7 @@
     <ClCompile Include="src\Core\DXWindow.cpp" />
     <ClCompile Include="src\Core\GamePad.cpp" />
     <ClCompile Include="src\Core\Graphics.cpp" />
+    <ClCompile Include="src\Core\Logger.cpp" />
     <ClCompile Include="src\Core\SimpleFontManager.cpp" />
     <ClCompile Include="src\Core\TextureManager.cpp" />
     <ClCompile Include="src\Core\Timing.cpp" />
@@ -124,6 +125,7 @@
     <ClInclude Include="src\Core\GamePad.h" />
     <ClInclude Include="src\Core\Graphics.h" />
     <ClInclude Include="src\Core\InputLayoutDescriptions.h" />
+    <ClInclude Include="src\Core\Logger.h" />
     <ClInclude Include="src\Core\SimpleFontManager.h" />
     <ClInclude Include="src\Core\TextureManager.h" />
     <ClInclude Include="src\Core\Timing.h" />
@@ -246,11 +248,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -270,7 +272,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>tinyxml;src/Utils;src/UI;src/Particles;src/Misc;src/GameObjects;src/Effects;src/Core;src/Audio;src/Animation;src/AI;src;DXUT;irrKlang-1.4.0/include;C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;C:\Program Files %28x86%29\Visual Leak Detector\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;tinyxml;src/Utils;src/UI;src/Particles;src/Misc;src/GameObjects;src/Effects;src/Core;src/Audio;src/Animation;src/AI;src;DXUT;irrKlang-1.4.0/include;C:\Program Files %28x86%29\Visual Leak Detector\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>

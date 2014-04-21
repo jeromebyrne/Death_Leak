@@ -17,7 +17,7 @@ mIsInWater(false)
 {
 	if (m_maxVelocity.Y < 0)  // less than 0 actually signifies no maximum
 	{
-		m_maxVelocity.Y = kLargestInt;
+		m_maxVelocity.Y = (numeric_limits<int>::max)();
 	}
 }
 
