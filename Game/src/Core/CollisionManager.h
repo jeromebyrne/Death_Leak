@@ -30,8 +30,8 @@ public:
 	}
 
 	void Initialise(int collisionAreaWidth, int collisionAreaHeight, int numXDivisions, int numYDivisions);
-	void AddObject(SolidMovingSprite * object);
-	void RemoveObject(SolidMovingSprite * object);
+	// void AddObject(SolidMovingSprite * object);
+	// void RemoveObject(SolidMovingSprite * object);
 	void DetectAndResolve(int camX, int camY);
 
 	void SetCollisionArea(int width, int height) { m_detectAreaDimensions.X = width; 

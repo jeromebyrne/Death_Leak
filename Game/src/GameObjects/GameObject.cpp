@@ -21,7 +21,8 @@ mClonedXml(nullptr)
 	static int GAME_OBJECT_ID = 1; 
 	m_id = GAME_OBJECT_ID;
 	GAME_OBJECT_ID++;
-	GameObjectManager::Instance()->AddGameObject(this);
+	LOG_INFO("Refactor GameObject constructor");
+	// GameObjectManager::Instance()->AddGameObject(this);
 	m_updateable = true; // default to not update
 }
 
@@ -41,7 +42,8 @@ void GameObject::Initialise()
 	m_lastPosition = m_position;
 	if(m_updateable)
 	{
-		GameObjectManager::Instance()->AddUpdateableObject(this);
+		LOG_INFO("refactor GameObject Initialise");
+		//GameObjectManager::Instance()->AddUpdateableObject(this);
 	}
 
 	// initialise our world matrix

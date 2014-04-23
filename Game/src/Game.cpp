@@ -149,9 +149,10 @@ void Game::Update(float delta)
 			// update all of our game objects
 			GameObjectManager::Instance()->Update(mPaused, delta);
 #if _DEBUG
-		}
+		/*}
 		else
 		{
+			LOG_INFO("Refactor Game::Update")
 			static bool hasUpdatedOnce = false;
 			if (!hasUpdatedOnce)
 			{
@@ -167,6 +168,7 @@ void Game::Update(float delta)
 			}
 
 			mlevelEditor->Update();
+			*/	
 		}
 #endif
 		bool pressing_pause_gamepad = false;

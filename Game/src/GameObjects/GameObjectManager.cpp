@@ -73,7 +73,8 @@ void GameObjectManager::OrderDrawable_pushBack(DrawableObject* object)
 
 void GameObjectManager::RemoveGameObject_RunTime(GameObject * object, bool defer)
 {
-	if (!object)
+	LOG_INFO("Refactor RemoveGameObject_RunTime");
+	/*if (!object)
 	{
 		GAME_ASSERT(object);
 		return;
@@ -92,7 +93,7 @@ void GameObjectManager::RemoveGameObject_RunTime(GameObject * object, bool defer
 		SolidMovingSprite * sms = dynamic_cast<SolidMovingSprite*>(object);
 		if(sms != 0)
 		{
-			CollisionManager::Instance()->RemoveObject(sms); // remove from list of collidables
+			// CollisionManager::Instance()->RemoveObject(sms); // remove from list of collidables
 			m_drawableObjects.remove(static_cast<DrawableObject*>(sms));
 		}
 		else
@@ -113,21 +114,22 @@ void GameObjectManager::RemoveGameObject_RunTime(GameObject * object, bool defer
 		delete object;
 		object = nullptr;
 	}
+	*/
 }
 
-GameObject * GameObjectManager::GetObjectByID(int id)
+unique_ptr<GameObject> & GameObjectManager::GetObjectByID(int id)
 {
-	list<GameObject*>::iterator current = m_gameObjects.begin();
-
-	for(; current!= m_gameObjects.end(); current++)
+	for (auto & obj : m_gameObjects)
 	{
-		if((*current)->ID() == id)
+		if(obj->ID() == id)
 		{
-			return (*current);
+			return obj;
 		}
 	}
 
-	return nullptr;
+	LOG_INFO("Did not find object with id: %i", id);
+	GAME_ASSERT(false);
+	return unique_ptr<GameObject>(nullptr);
 }
 
 // this is to be called before initialise
@@ -146,11 +148,13 @@ void GameObjectManager::LoadContent(ID3D10Device * device)
 
 void GameObjectManager::Initialise()
 {
-	list<GameObject*>::iterator current = m_gameObjects.begin();
-
-	for(; current!= m_gameObjects.end(); current++)
+	for(auto &obj : m_gameObjects)
 	{
-		(*current)->Initialise();
+		GAME_ASSERT(obj);
+		if (obj)
+		{
+			obj->Initialise();
+		}
 
 		// refresh the UI
 		UIManager::Instance()->RefreshUI();
@@ -220,11 +224,13 @@ void GameObjectManager::Update(bool paused, float delta)
 
 void GameObjectManager::ScaleObjects(float xScale, float yScale)
 {
-	list<GameObject*>::iterator iter = m_gameObjects.begin();
-
-	for (; iter != m_gameObjects.end(); iter++)
+	for (auto &obj : m_gameObjects)
 	{
-		(*iter)->Scale(xScale, yScale);
+		GAME_ASSERT(obj);
+		if (obj)
+		{
+			obj->Scale(xScale, yScale);
+		}
 	}
 }
 
@@ -267,13 +273,19 @@ void GameObjectManager::Draw(ID3D10Device *  device)
 
 	if (mShowDebugInfo)
 	{
-		for (GameObject * g : m_gameObjects)
+		for (auto & obj : m_gameObjects)
 		{
+			GAME_ASSERT(obj);
+			if (!obj)
+			{
+				continue;
+			}
+			LOG_INFO("Refactor GameObjectManager::Draw");
 			// only draw if we are in view
-			if(m_camera->IsObjectInView(g))
+			/*if(m_camera->IsObjectInView(obj))
 			{
 				g->DebugDraw(device);
-			}
+			}*/
 		}
 	}
 #endif
@@ -311,7 +323,9 @@ void GameObjectManager::LoadObjectsFromFile(const char* filename)
 	while(child)
 	{
 		// create our game object
-		CreateObject(child);
+		unique_ptr<GameObject> obj(CreateObject(child));
+
+		m_gameObjects.push_back(std::move(obj));
 
 		// move to the next game object
 		child = child->NextSiblingElement();
@@ -377,10 +391,11 @@ void GameObjectManager::SwitchToLevel(const char * level, bool defer)
 
 void GameObjectManager::SaveObjectsToFile(const char* filename)
 {
+	LOG_INFO("Refactor SaveObjectsToFile");
 	// loop through the game objects and make sur ethere are no duplicates
-	list<GameObject *> checkedList;
+	/*list<GameObject *> checkedList;
 
-	for (auto obj : m_gameObjects)
+	for (auto &obj : m_gameObjects)
 	{
 		for (auto checked : checkedList)
 		{
@@ -392,17 +407,15 @@ void GameObjectManager::SaveObjectsToFile(const char* filename)
 		}
 
 		checkedList.push_back(obj);
-	}
+	}*/
 
-	XmlDocument doc;
+	/*XmlDocument doc;
 	TiXmlElement * root = new TiXmlElement( "level" );
 	root->SetAttribute("audio", ""); 
 
-	for (list<GameObject*>::iterator iter = m_gameObjects.begin();
-		iter != m_gameObjects.end();
-		++iter)
+	for (auto & obj : m_gameObjects)
 	{
-		TiXmlElement * objElem = SaveObject((*iter));
+		TiXmlElement * objElem = SaveObject(obj);
 
 		if (objElem)
 		{
@@ -411,6 +424,7 @@ void GameObjectManager::SaveObjectsToFile(const char* filename)
 	}
 
 	doc.Save(filename, root);
+	*/
 }
 
 TiXmlElement * GameObjectManager::SaveObject(GameObject * object)
@@ -569,7 +583,7 @@ ParticleSpray * GameObjectManager::ReadParticleSpray(TiXmlElement * element)
 void GameObjectManager::DeleteGameObjects()
 {
 	// traverse through the object list and delete
-	list<GameObject*>::iterator current = m_gameObjects.begin();
+	/*list<GameObject*>::iterator current = m_gameObjects.begin();
 
 	for(;current != m_gameObjects.end(); current++)
 	{
@@ -593,11 +607,14 @@ void GameObjectManager::DeleteGameObjects()
 	ParticleEmitterManager::Instance()->ClearParticles();
 	
 	mSlowMotionLayer = nullptr;
+	*/
+
+	LOG_INFO("Refactor GameObjectManager::DeleteGameObjects");
 
 	m_levelLoaded = false;
 }
 
-void GameObjectManager::AddGameObject(GameObject * object)
+/*void GameObjectManager::AddGameObject(GameObject * object)
 {
 	m_gameObjects.push_back(object);
 }
@@ -610,7 +627,7 @@ void GameObjectManager::AddDrawableObject(DrawableObject *object)
 void GameObjectManager::AddUpdateableObject(GameObject * object)
 {
 	m_updateableObjects.push_back(object);
-}
+}*/
 
 void GameObjectManager::AddDrawableObject_RunTime(DrawableObject * object, bool editModeAdd)
 {
@@ -1001,9 +1018,12 @@ GameObject * GameObjectManager::CopyObject(GameObject * toCopy)
 		return nullptr;
 	}
 
-	GameObject * returnObj = CreateObject(xmlElement);
+	// GameObject returnObj = CreateObject(xmlElement);
 
-	return returnObj;
+	// return returnObj;
+
+	LOG_INFO("refactor GameObjectManager::CopyObject");
+	return nullptr;
 }
 
 void GameObjectManager::AddSlowMotionLayer()

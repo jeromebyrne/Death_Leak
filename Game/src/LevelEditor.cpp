@@ -21,6 +21,8 @@ LevelEditor::~LevelEditor(void)
 
 void LevelEditor::Update()
 {
+	LOG_INFO("Refactor LevelEditor::Update");
+	/*
 	UpdateParallaxLayers();
 
 	list<GameObject*> gameObjects = GameObjectManager::Instance()->GetGameObjectList();
@@ -129,6 +131,8 @@ void LevelEditor::Update()
 	CheckForSavePressed();
 
 	CheckForCopy();
+
+	*/
 }
 
 GameObject * LevelEditor::GetGameObjectClickedOn(list<GameObject*> gameObjects)
@@ -192,6 +196,8 @@ Sprite * LevelEditor::GetAsSprite(GameObject * object)
 
 void LevelEditor::UpdateParallaxLayers()
 {
+	LOG_INFO("Refactor LevelEditor::UpdateParallaxLayers");
+	/*
 	list<GameObject*> gameObjects = GameObjectManager::Instance()->GetGameObjectList();
 
 	for (list<GameObject*>::iterator iter = gameObjects.begin();
@@ -205,6 +211,7 @@ void LevelEditor::UpdateParallaxLayers()
 			pLayer->Update(0);
 		}
 	}
+	*/
 }
 
 ParallaxLayer * LevelEditor::GetAsParallaxLayer(GameObject * object)

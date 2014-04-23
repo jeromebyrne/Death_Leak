@@ -24,7 +24,8 @@ mCollisionBoxOffset(0,0),
 mCanBeDamaged(true)
 {
 	// add this to the collision manager
-	CollisionManager::Instance()->AddObject(this);
+	LOG_INFO("refactor SolidMovingSprite constructor");
+	// CollisionManager::Instance()->AddObject(this);
 }
 
 SolidMovingSprite::~SolidMovingSprite(void)

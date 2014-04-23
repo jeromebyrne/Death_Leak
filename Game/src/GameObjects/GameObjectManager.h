@@ -14,7 +14,7 @@ class GameObjectManager
 private:
 	Camera2D * m_camera; //store teh camera
 	static GameObjectManager* m_instance;
-	list<GameObject *> m_gameObjects;
+	list<unique_ptr<GameObject> > m_gameObjects;
 	list<GameObject *> m_updateableObjects; // a list of all updateable objects
 	list<DrawableObject *> m_drawableObjects; // a list of all the drawable objects
 	list<GameObject*> m_killList; // a list of all objects which need to be removed
@@ -75,14 +75,14 @@ public:
 	// this function also acts as a public initialise
 	void LoadObjectsFromFile(const char* filename);// load game objects via xml file
 	void SaveObjectsToFile(const char* filename);
-	void AddGameObject(GameObject* object);
-	void AddDrawableObject(DrawableObject* object);
-	void AddUpdateableObject(GameObject* object);
+	// void AddGameObject(GameObject* object);
+	// void AddDrawableObject(DrawableObject* object);
+	// void AddUpdateableObject(GameObject* object);
 	void AddDrawableObject_RunTime(DrawableObject * object, bool editModeAdd = false);
 	void RemoveGameObject_RunTime(GameObject * object, bool defer = true); // remove aan object from it's appropriate lists and releases it's memory
 	void AddAudioObject_RunTime(AudioObject * audioObject, bool editModeAdd = false);
 
-	GameObject * GetObjectByID(int id);
+	unique_ptr<GameObject> & GetObjectByID(int id);
 
 	void DeleteGameObjects();
 
@@ -90,7 +90,10 @@ public:
 
 #if _DEBUG
 	// for level editor
-	list<GameObject*> GetGameObjectList() { return m_gameObjects; }
+	list<unique_ptr<GameObject> > & GetGameObjectList() 
+	{ 
+		return m_gameObjects; 
+	}
 #endif
 
 	void OrderDrawablesByDepth(); // reorders the drawables list by depth
@@ -99,7 +102,7 @@ public:
 
 	template <class T> void GetTypesOnScreen (std::list<T*> & toPopulate)
 	{
-		toPopulate.clear();
+		/*toPopulate.clear();
 
 		Camera2D * cam = Camera2D::GetInstance();
 
@@ -113,7 +116,7 @@ public:
 					toPopulate.push_back(t);
 				}
 			}
-		}
+		}*/
 	}
 
 	// only works in debug, designed for level editor

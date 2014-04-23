@@ -16,10 +16,10 @@ void CollisionManager::Initialise(int collisionAreaWidth, int collisionAreaHeigh
 	m_dimensionDivisions = Vector2(numXDivisions, numYDivisions);
 }
 
-void CollisionManager::AddObject(SolidMovingSprite * object)
+/*void CollisionManager::AddObject(SolidMovingSprite * object)
 {
 	m_collisionObjects.push_back(object);
-}
+}*/
 
 // do collision detection and then resolve collisions
 void CollisionManager::DetectAndResolve(int camX, int camY)
@@ -109,8 +109,8 @@ void CollisionManager::Resolve()
 	}
 }
 
-void CollisionManager::RemoveObject(SolidMovingSprite * object)
+/*void CollisionManager::RemoveObject(SolidMovingSprite * object)
 {
 	m_collisionObjects.remove(object);
-}
+}*/
 
