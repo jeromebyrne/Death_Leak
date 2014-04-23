@@ -424,104 +424,84 @@ TiXmlElement * GameObjectManager::SaveObject(GameObject * object)
 GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement)
 {
 	// what type of object is this
-	char* gameObjectTypeName = (char*)objectElement->Value();
-	Utilities::ToLower(gameObjectTypeName);
+	const char* gameObjectTypeName = objectElement->Value();
+	Utilities::ToLower((char *)gameObjectTypeName); // TODO: this is nasty, pass a const char * and return a new std::string
 	
+	GameObject * newGameObject = nullptr;
+
 	// start looking at what object we need to make
 	if(strcmp(gameObjectTypeName, "player") == 0)
 	{
 		if (!m_player) // only create 1 player
 		{
-			Player * p = new Player();
-			p->XmlRead(objectElement);
-			m_player = p;
-			return p;
+			newGameObject = new Player();
+			m_player = static_cast<Player*>(newGameObject);
 		}
 	}
 	else if (strcmp(gameObjectTypeName, "character") == 0)
 	{
-		Character * c = new Character();
-		c->XmlRead(objectElement);
-		return c;
+		newGameObject = new Character();
 	}
 	else if (strcmp(gameObjectTypeName, "npc") == 0)
 	{
-		NPC * npc = new NPC();
-		npc->XmlRead(objectElement);
-		return npc;
+		newGameObject = new NPC();
 	}
 	else if (strcmp(gameObjectTypeName, "solidmovingsprite") == 0)
 	{
-		SolidMovingSprite * s = new SolidMovingSprite();
-		s->XmlRead(objectElement);
-		return s;
+		newGameObject = new SolidMovingSprite();
 	}
 	else if (strcmp(gameObjectTypeName, "sprite") == 0)
 	{
-		Sprite * s = new Sprite();
-		s->XmlRead(objectElement);
-		return s;
+		newGameObject = new Sprite();
 	}
 	else if (strcmp(gameObjectTypeName, "movingsprite") == 0)
 	{
-		MovingSprite * ms = new MovingSprite();
-		ms->XmlRead(objectElement);
-		return ms;
+		newGameObject = new MovingSprite();
 	}
 	else if (strcmp(gameObjectTypeName, "parallaxlayer") == 0)
 	{
-		ParallaxLayer * pl = new ParallaxLayer(m_camera);
-		pl->XmlRead(objectElement);
-		return pl;
+		newGameObject = new ParallaxLayer(m_camera);
 	}
 	else if (strcmp(gameObjectTypeName, "platform") == 0)
 	{
-		Platform * p = new Platform();
-		p->XmlRead(objectElement);
-		return p;
+		newGameObject = new Platform();
 	}
 	else if (strcmp(gameObjectTypeName, "pathingplatform") == 0)
 	{
-		PathingPlatform * p = new PathingPlatform();
-		p->XmlRead(objectElement);
-		return p;
+		newGameObject = new PathingPlatform();
 	}
 	else if (strcmp(gameObjectTypeName, "fallingplatform") == 0)
 	{
-		FallingPlatform * fp = new FallingPlatform();
-		fp->XmlRead(objectElement);
-		return fp;
+		newGameObject = new FallingPlatform();
 	}
 	else if(strcmp(gameObjectTypeName, "particlespray") == 0)
 	{
-		return ReadParticleSpray(objectElement);
+		newGameObject = ReadParticleSpray(objectElement);
 	}
 	else if (strcmp(gameObjectTypeName, "audioobject") == 0)
 	{
-		AudioObject * audioObject = new AudioObject();
-		audioObject->XmlRead(objectElement);
-		return audioObject;
+		newGameObject = new AudioObject();
 	}
 	else if (strcmp(gameObjectTypeName, "rabbit") == 0)
 	{
-		Rabbit * rabbit = new Rabbit();
-		rabbit->XmlRead(objectElement);
-		return rabbit;
+		newGameObject = new Rabbit();
 	}
 	else if (strcmp(gameObjectTypeName, "leveltrigger") == 0)
 	{
-		LevelTrigger * trigger = new LevelTrigger();
-		trigger->XmlRead(objectElement);
-		return trigger;
+		newGameObject = new LevelTrigger();
 	}
 	else if (strcmp(gameObjectTypeName, "waterblock") == 0)
 	{
-		WaterBlock * waterBlock = new WaterBlock();
-		waterBlock->XmlRead(objectElement);
-		return waterBlock;
+		newGameObject = new WaterBlock();
 	}
 
-	return nullptr;
+	GAME_ASSERT(newGameObject);
+	if (newGameObject && !dynamic_cast<ParticleSpray*>(newGameObject))
+	{
+		newGameObject->XmlRead(objectElement);
+	}
+	
+	return newGameObject;
 }
 
 ParticleSpray * GameObjectManager::ReadParticleSpray(TiXmlElement * element)

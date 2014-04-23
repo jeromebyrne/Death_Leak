@@ -101,7 +101,7 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 				objAsProj->m_timeBecameInactive = Timing::Instance()->GetTotalTimeSeconds();
 				objAsProj->SetVelocityXYZ(-m_velocity.X * 0.5, -5, 0);
 
-				ParticleEmitterManager::Instance()->CreateRadialSpray(10, m_position, Vector3(3000,3000, 1), "Media\spark.png", 2, 5, 0.4f, 0.6f, 30, 40, 2.0, false, 0.8,0.9,0,true, 4.0);
+				ParticleEmitterManager::Instance()->CreateRadialSpray(10, m_position, Vector3(3000,3000, 1), "Media\\spark.png", 2, 5, 0.4f, 0.6f, 30, 40, 2.0, false, 0.8,0.9,0,true, 4.0);
 				AudioManager::Instance()->PlaySoundEffect("metalclink.wav");
 
 				objAsProj->mCollidedWithProjectile = true;

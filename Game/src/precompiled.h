@@ -4,6 +4,7 @@
 #define _CRT_SECURE_NO_DEPRECATE
 
 #include <windows.h>
+#include <memory>
 #include <limits>
 #include <Mmsystem.h>
 #include <typeinfo.h>
