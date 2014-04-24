@@ -46,7 +46,8 @@ GameObjectManager::~GameObjectManager(void)
 
 void GameObjectManager::OrderDrawable_pushBack(DrawableObject* object)
 {
-	m_drawableObjects.remove(object); // remove it first, we don't want to add it twice
+	LOG_INFO("Refactor GameObjectManager::OrderDrawable_pushBack");
+	/*m_drawableObjects.remove(object); // remove it first, we don't want to add it twice
 
 	float objZ = object->Z();
 	list<DrawableObject*>::iterator current = m_drawableObjects.begin();
@@ -69,6 +70,8 @@ void GameObjectManager::OrderDrawable_pushBack(DrawableObject* object)
 	{
 		m_drawableObjects.push_back(object);
 	}
+
+	*/
 }
 
 void GameObjectManager::RemoveGameObject_RunTime(GameObject * object, bool defer)
@@ -135,7 +138,8 @@ unique_ptr<GameObject> & GameObjectManager::GetObjectByID(int id)
 // this is to be called before initialise
 void GameObjectManager::LoadContent(ID3D10Device * device)
 {
-	list<DrawableObject*>::iterator current = m_drawableObjects.begin();
+	LOG_INFO("Refactor GameObject::LoadContent");
+	/*list<DrawableObject*>::iterator current = m_drawableObjects.begin();
 
 	for(; current!= m_drawableObjects.end(); current++)
 	{
@@ -143,7 +147,7 @@ void GameObjectManager::LoadContent(ID3D10Device * device)
 
 		// refresh the ui 
 		UIManager::Instance()->RefreshUI();
-	}
+	}*/
 }
 
 void GameObjectManager::Initialise()
@@ -169,7 +173,8 @@ void GameObjectManager::Initialise()
 
 void GameObjectManager::Update(bool paused, float delta)
 {
-	if (!paused)
+	LOG_INFO("Refactor GameObjectManager::Update");
+	/*if (!paused)
 	{
 		float camX = m_camera->X();
 		float camY = m_camera->Y();
@@ -220,6 +225,7 @@ void GameObjectManager::Update(bool paused, float delta)
 		mLevelToSwitch = "";
 		mSwitchToLevel = false;
 	}
+	*/
 }
 
 void GameObjectManager::ScaleObjects(float xScale, float yScale)
@@ -236,6 +242,8 @@ void GameObjectManager::ScaleObjects(float xScale, float yScale)
 
 void GameObjectManager::Draw(ID3D10Device *  device)
 {
+	LOG_INFO("Refactor GameObjectManager::Draw");
+	/*
 	for (DrawableObject * d : m_drawableObjects)
 	{
 		// only draw if object is in view
@@ -280,15 +288,16 @@ void GameObjectManager::Draw(ID3D10Device *  device)
 			{
 				continue;
 			}
-			LOG_INFO("Refactor GameObjectManager::Draw");
+			
 			// only draw if we are in view
-			/*if(m_camera->IsObjectInView(obj))
+			if(m_camera->IsObjectInView(obj))
 			{
 				g->DebugDraw(device);
-			}*/
+			}
 		}
 	}
 #endif
+	*/
 }
 
 // load game objects via xml file
@@ -354,11 +363,12 @@ void GameObjectManager::LoadObjectsFromFile(const char* filename)
 
 	ScaleObjects(scaleX, scaleY);
 
+	LOG_INFO("GameObjectManager::LoadObjectsFromFile");
 	// update all the objects at least once at the start
-	for (auto obj : m_updateableObjects)
+	/* (auto obj : m_updateableObjects)
 	{
 		obj->Update(0);
-	}
+	}*/
 
 	WeatherManager::GetInstance()->RefreshAssets();
 
@@ -684,8 +694,9 @@ void GameObjectManager::AddAudioObject_RunTime(AudioObject * audioObject, bool e
 
 // order our drawable list by depth - this a once off that should be done at initialise stage
 void GameObjectManager::OrderDrawablesByDepth()
-{ 
-	list<DrawableObject*>::iterator current = m_drawableObjects.begin();
+{
+	LOG_INFO("Refactor GameObjectManager::OrderDrawablesByDepth");
+	/*list<DrawableObject*>::iterator current = m_drawableObjects.begin();
 	list<DrawableObject*>::iterator oneBehind = m_drawableObjects.begin();
 	
 	for(;current != m_drawableObjects.end(); current++)
@@ -710,6 +721,7 @@ void GameObjectManager::OrderDrawablesByDepth()
 			}
 		}// end of inner for
 	}// end of outer for
+	*/
 }
 
 void GameObjectManager::CheckPlayerInput()
