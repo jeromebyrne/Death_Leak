@@ -7,23 +7,25 @@
 const float kMaxRadians = 6.28318531; // 360 degrees
 
 GameObject::GameObject(float x, float y , float z, float width, float height, float breadth):
-m_position(x,y,z),
-m_lastPosition(x,y,z),
-m_dimensions(width, height, breadth), 
-m_material(0),
-m_rotationAngle(0),
-mShowDebugText(0),
-m_matScaleX(1.0),
-m_matScaleY(1.0),
-m_debugDrawVBuffer(0),
-mClonedXml(nullptr)
+	m_position(x,y,z),
+	m_lastPosition(x,y,z),
+	m_dimensions(width, height, breadth), 
+	m_material(0),
+	m_rotationAngle(0),
+	mShowDebugText(0),
+	m_matScaleX(1.0),
+	m_matScaleY(1.0),
+	m_debugDrawVBuffer(0),
+	mClonedXml(nullptr),
+	mDrawable(false),
+	m_updateable(true),
+	mIsSolidSprite(false)
 {
 	static int GAME_OBJECT_ID = 1; 
 	m_id = GAME_OBJECT_ID;
 	GAME_OBJECT_ID++;
 	LOG_INFO("Refactor GameObject constructor");
 	// GameObjectManager::Instance()->AddGameObject(this);
-	m_updateable = true; // default to not update
 }
 
 GameObject::~GameObject(void)
@@ -64,9 +66,9 @@ void GameObject::Initialise()
 void GameObject::SetupDebugDraw()
 {
 	// vertices
-	float randR = 1;// ((rand()%100) + 0.1) * 0.01;
-	float randG = 1;//((rand()%100) + 0.1) * 0.01;
-	float randB = 1;//((rand()%100) + 0.1) * 0.01;
+	float randR = 1;
+	float randG = 1;
+	float randB = 1;
 
 	VertexPositionColor vertices[] =
     {

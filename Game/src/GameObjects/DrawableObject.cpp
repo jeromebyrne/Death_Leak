@@ -10,7 +10,7 @@
 #include "EffectNoise.h"
 #include "EffectLightTexturePixelWobble.h"
 
-DrawableObject::DrawableObject(float x, float y, float z, float width, float height, float breadth, char* effectName): GameObject(x,y,z,width,height,breadth),
+DrawableObject::DrawableObject(float x, float y, float z, float width, float height, float breadth, const char * effectName): GameObject(x,y,z,width,height,breadth),
 EffectName(effectName), 
 m_applyChange(false), 
 m_alpha(1),
@@ -23,20 +23,10 @@ m_effectNoise(nullptr)
 	LOG_INFO("Refactor DrawableObject constructor");
 	// GameObjectManager::Instance()->AddDrawableObject(this);
 	m_currentEffectType = EFFECT_LIGHT_TEXTURE; // set default effect
+	mDrawable = true;
 }
 
 DrawableObject::~DrawableObject(void)
-{
-	// TODO: stuff to release?
-}
-
-void DrawableObject:: Initialise()
-{
-	// init the base
-	GameObject::Initialise();
-}
-
-void DrawableObject::Draw(ID3D10Device * device, Camera2D * camera)
 {
 }
 

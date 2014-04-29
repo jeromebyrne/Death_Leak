@@ -1,48 +1,23 @@
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 
-class Material;// forward declaration
+class Material;
+class Camera2D;
 
 class GameObject
 {
-private:
-	int m_id; // our game object ID (this is unique)
-
-	D3DXMATRIX m_translation;
-	D3DXMATRIX m_rotation;
-	D3DXMATRIX m_matScale;
-
-	VertexPositionColor m_debugDrawVertices[8]; 
-	// create a vertex buffer
-	ID3D10Buffer* m_debugDrawVBuffer;
-
-	// used in the level editor for copying objects,
-	// not valid in release mode
-	TiXmlNode * mClonedXml;
-
-protected:
-	Vector3 m_position;
-	float m_rotationAngle;
-	float m_matScaleX;
-	float m_matScaleY;
-	Vector3 m_lastPosition; // stores the objects last position before update
-	Vector3 m_dimensions;
-	bool m_updateable; // should this object be updated
-	D3DXMATRIX m_world; // world matrix
-	Material * m_material; // the objects material
-	virtual void SetupDebugDraw();
-
-	bool mShowDebugText;
-
-	virtual void DrawDebugText();
 public:
+	typedef unique_ptr<GameObject> & GameObjectPtrRef;
 
 	GameObject(float x = 0, float y = 0, float z = 0, float width = 1, float height = 1, float breadth = 1);
 	virtual ~GameObject(void);
 
+	virtual void Draw(ID3D10Device * device, Camera2D * camera) { }
+	virtual void LoadContent(ID3D10Device * graphicsdevice) { }
+
 	bool IsUpdateable() const { return m_updateable; }
 
-	inline int ID() const 
+	inline int ID() const
 	{
 		return m_id;
 	}
@@ -53,33 +28,33 @@ public:
 
 	inline void SetXYZ(float x, float y, float z)
 	{
-		m_position = Vector3(x,y,z);
+		m_position = Vector3(x, y, z);
 	}
 	inline Vector3 Position() const
 	{
 		return m_position;
 	}
-	inline Vector3 LastPosition() const 
+	inline Vector3 LastPosition() const
 	{
 		return m_lastPosition;
 	}
-	inline Vector3 Dimensions() const 
+	inline Vector3 Dimensions() const
 	{
 		return m_dimensions;
 	}
 	inline void SetDimensionsXYZ(float x, float y, float z)
 	{
-		m_dimensions = Vector3(x,y,z);
+		m_dimensions = Vector3(x, y, z);
 	}
-	inline float X() const 
+	inline float X() const
 	{
 		return m_position.X;
 	}
-	inline float Y() const 
+	inline float Y() const
 	{
 		return m_position.Y;
 	}
-	inline float Z() const 
+	inline float Z() const
 	{
 		return m_position.Z;
 	}
@@ -95,19 +70,19 @@ public:
 	{
 		m_position.Z = value;
 	}
-	inline float Left() const 
+	inline float Left() const
 	{
 		return m_position.X - (m_dimensions.X * 0.5f);
 	}
-	inline float Right() const 
+	inline float Right() const
 	{
 		return m_position.X + (m_dimensions.X * 0.5f);
 	}
-	inline float Top() const 
+	inline float Top() const
 	{
 		return m_position.Y + (m_dimensions.Y * 0.5f);
 	}
-	inline float Bottom() const 
+	inline float Bottom() const
 	{
 		return m_position.Y - (m_dimensions.Y * 0.5f);
 	}
@@ -124,7 +99,7 @@ public:
 		return m_material;
 	}
 
-	void SetMaterial(Material * material ) { m_material = material; }
+	void SetMaterial(Material * material) { m_material = material; }
 
 	virtual void Scale(float xScale, float yScale, bool scalePosition = true);
 
@@ -133,6 +108,42 @@ public:
 
 	void ShowDebugText(bool value) { mShowDebugText = value; }
 
+	bool IsDrawable() const { return mDrawable; }
+
+	bool IsSolidSprite() const { return mIsSolidSprite; }
+
+protected:
+
+	virtual void SetupDebugDraw();
+	virtual void DrawDebugText();
+
+	Vector3 m_position;
+	float m_rotationAngle;
+	float m_matScaleX;
+	float m_matScaleY;
+	Vector3 m_lastPosition;
+	Vector3 m_dimensions;
+	bool m_updateable;
+	D3DXMATRIX m_world; 
+	Material * m_material;
+	bool mShowDebugText;
+	bool mDrawable;
+	bool mIsSolidSprite;
+
+private:
+
+	int m_id; // our game object ID (this is unique)
+
+	D3DXMATRIX m_translation;
+	D3DXMATRIX m_rotation;
+	D3DXMATRIX m_matScale;
+
+	VertexPositionColor m_debugDrawVertices[8];
+	ID3D10Buffer* m_debugDrawVBuffer;
+
+	// used in the level editor for copying objects,
+	// not valid in release mode
+	TiXmlNode * mClonedXml;
 };
 
 #endif

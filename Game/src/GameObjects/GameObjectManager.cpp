@@ -120,7 +120,7 @@ void GameObjectManager::RemoveGameObject_RunTime(GameObject * object, bool defer
 	*/
 }
 
-unique_ptr<GameObject> & GameObjectManager::GetObjectByID(int id)
+shared_ptr<GameObject> & GameObjectManager::GetObjectByID(int id)
 {
 	for (auto & obj : m_gameObjects)
 	{
@@ -132,22 +132,33 @@ unique_ptr<GameObject> & GameObjectManager::GetObjectByID(int id)
 
 	LOG_INFO("Did not find object with id: %i", id);
 	GAME_ASSERT(false);
-	return unique_ptr<GameObject>(nullptr);
+	return shared_ptr<GameObject>(nullptr);
 }
 
 // this is to be called before initialise
 void GameObjectManager::LoadContent(ID3D10Device * device)
 {
-	LOG_INFO("Refactor GameObject::LoadContent");
-	/*list<DrawableObject*>::iterator current = m_drawableObjects.begin();
-
-	for(; current!= m_drawableObjects.end(); current++)
+	for(auto & obj : m_gameObjects)
 	{
-		(*current)->LoadContent(device);
+		if (!obj)
+		{
+			GAME_ASSERT(obj);
+			continue;
+		}
+
+		if (!obj->IsDrawable())
+		{
+			continue;
+		}
+
+		GAME_ASSERT(dynamic_cast<DrawableObject*>(obj.get()));
+		DrawableObject * drawObj = static_cast<DrawableObject*>(obj.get());
+
+		drawObj->LoadContent(device);
 
 		// refresh the ui 
 		UIManager::Instance()->RefreshUI();
-	}*/
+	}
 }
 
 void GameObjectManager::Initialise()
@@ -174,7 +185,7 @@ void GameObjectManager::Initialise()
 void GameObjectManager::Update(bool paused, float delta)
 {
 	LOG_INFO("Refactor GameObjectManager::Update");
-	/*if (!paused)
+	if (!paused)
 	{
 		float camX = m_camera->X();
 		float camY = m_camera->Y();
@@ -186,35 +197,47 @@ void GameObjectManager::Update(bool paused, float delta)
 		// update the weather
 		WeatherManager::GetInstance()->Update(delta);
 
-		list<GameObject*>::iterator current = m_updateableObjects.begin();
-		list<GameObject*>::iterator end = m_updateableObjects.end();
-
-		for(; current!= end; current++) 
+		for(auto & obj : m_gameObjects) 
 		{
-			// if the object is in the update zone
-			if(Utilities::IsObjectInRectangle((*current), camX, camY, m_updateZoneDimensions.X, m_updateZoneDimensions.Y))
+			if (!obj)
 			{
-				(*current)->Update(delta);
+				GAME_ASSERT(obj);
+				continue;
 			}
-			else if(dynamic_cast<ParallaxLayer *>((*current)) || dynamic_cast<AudioObject *>((*current)) || dynamic_cast<Orb *>((*current))) // OPTIMISE
+
+			if (!obj->IsUpdateable())
 			{
-				(*current)->Update(delta); // always update parralax layers
+				continue;
+			}
+
+			LOG_INFO("Optimise GameObjectManager::Update");
+
+			// if the object is in the update zone
+			if (Utilities::IsObjectInRectangle(obj.get(), camX, camY, m_updateZoneDimensions.X, m_updateZoneDimensions.Y))
+			{
+				obj->Update(delta);
+			}
+			else if(dynamic_cast<ParallaxLayer *>(obj.get()) || 
+					dynamic_cast<AudioObject *>(obj.get()) || 
+					dynamic_cast<Orb *>(obj.get())) // TODO: optimise with flag
+			{
+				obj->Update(delta); // always update parralax layers
 			}
 			else // objects outside the update area
 			{
 				// if a projectile has gone outsid ethe bounds then just remove it
-				if(dynamic_cast<Projectile*>((*current))) // add checks for other projectile class names as needed
+				if(dynamic_cast<Projectile*>(obj.get())) // add checks for other projectile class names as needed
 				{
-					RemoveGameObject_RunTime((*current));
+					// RemoveGameObject_RunTime(obj.get());
 				}
 			}
 		}
 	} // end of if paused
 
 	// kill any objects in the kill list
-	for (GameObject * g : m_killList)
+	for (auto & obj : m_killList)
 	{
-		RemoveGameObject_RunTime(g, false);
+		// RemoveGameObject_RunTime(g, false);
 	}
 
 	m_killList.clear(); // remove our objects
@@ -225,7 +248,7 @@ void GameObjectManager::Update(bool paused, float delta)
 		mLevelToSwitch = "";
 		mSwitchToLevel = false;
 	}
-	*/
+	
 }
 
 void GameObjectManager::ScaleObjects(float xScale, float yScale)
@@ -243,18 +266,32 @@ void GameObjectManager::ScaleObjects(float xScale, float yScale)
 void GameObjectManager::Draw(ID3D10Device *  device)
 {
 	LOG_INFO("Refactor GameObjectManager::Draw");
-	/*
-	for (DrawableObject * d : m_drawableObjects)
+	
+	for (auto & obj : m_gameObjects)
 	{
+		GAME_ASSERT(obj);
+		if (!obj)
+		{
+			continue;
+		}
+
+		if (!obj->IsDrawable())
+		{
+			continue;
+		}
+
+		GAME_ASSERT(dynamic_cast<DrawableObject*>(obj.get()));
+		DrawableObject * drawObj = static_cast<DrawableObject*>(obj.get());
+
 		// only draw if object is in view
-		if ( d && d->Alpha() > 0 && m_camera->IsObjectInView(d))
+		if (drawObj->Alpha() > 0.0f && m_camera->IsObjectInView(drawObj))
 		{
 			// apply any changes needed
-			if(d->IsChangeRequired())
+			if (drawObj->IsChangeRequired())
 			{
-				d->ApplyChange(device);
+				drawObj->ApplyChange(device);
 			}
-			d->Draw(device, m_camera);
+			drawObj->Draw(device, m_camera);
 		}
 	}
 
@@ -288,16 +325,23 @@ void GameObjectManager::Draw(ID3D10Device *  device)
 			{
 				continue;
 			}
+
+			if (!obj->IsDrawable())
+			{
+				continue;
+			}
+
+			GAME_ASSERT(dynamic_cast<DrawableObject*>(obj.get()));
+			DrawableObject * drawObj = static_cast<DrawableObject*>(obj.get());
 			
 			// only draw if we are in view
-			if(m_camera->IsObjectInView(obj))
+			if (m_camera->IsObjectInView(drawObj))
 			{
-				g->DebugDraw(device);
+				drawObj->DebugDraw(device);
 			}
 		}
 	}
 #endif
-	*/
 }
 
 // load game objects via xml file
@@ -331,15 +375,11 @@ void GameObjectManager::LoadObjectsFromFile(const char* filename)
 	// loop through our game objects
 	while(child)
 	{
-		// create our game object
-		unique_ptr<GameObject> obj(CreateObject(child));
+		m_gameObjects.push_back(shared_ptr<GameObject>(CreateObject(child)));
 
-		m_gameObjects.push_back(std::move(obj));
-
-		// move to the next game object
 		child = child->NextSiblingElement();
 
-		// refresh the UI
+		// refresh the UI 
 		UIManager::Instance()->RefreshUI();
 	}
 

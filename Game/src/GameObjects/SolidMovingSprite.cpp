@@ -9,23 +9,21 @@
 static const float kVisualDamageMaxTime = 0.6f;
 
 SolidMovingSprite::SolidMovingSprite(float x, float y , float z , float width , float height , float breadth , float groundFriction , float airResistance ):
-MovingSprite(x,y,z,width, height, breadth,groundFriction, airResistance),
-m_collisionBoxDimensions(width, height, breadth),
-m_passive(false), 
-m_onTopOfOtherSolidObject(false), 
-m_collidingAtSideOfObject(false),
-m_applyDamage(false),
-m_applyDamageAmount(0),
-m_isBeingDamaged(false),
-m_beingDamagedStartTime(0.0f),
-mBouncable(false),
-mBounceDampening(1.0f),
-mCollisionBoxOffset(0,0),
-mCanBeDamaged(true)
+	MovingSprite(x,y,z,width, height, breadth,groundFriction, airResistance),
+	m_collisionBoxDimensions(width, height, breadth),
+	m_passive(false), 
+	m_onTopOfOtherSolidObject(false), 
+	m_collidingAtSideOfObject(false),
+	m_applyDamage(false),
+	m_applyDamageAmount(0),
+	m_isBeingDamaged(false),
+	m_beingDamagedStartTime(0.0f),
+	mBouncable(false),
+	mBounceDampening(1.0f),
+	mCollisionBoxOffset(0,0),
+	mCanBeDamaged(true)
 {
-	// add this to the collision manager
-	LOG_INFO("refactor SolidMovingSprite constructor");
-	// CollisionManager::Instance()->AddObject(this);
+	mIsSolidSprite = true;
 }
 
 SolidMovingSprite::~SolidMovingSprite(void)

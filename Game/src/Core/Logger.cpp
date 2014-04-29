@@ -1,7 +1,7 @@
 #include "precompiled.h"
 #include "Logger.h"
 
-const unsigned int kMaxLogBufferSize = 64000;
+const unsigned int kMaxLogBufferSize = 4096;
 
 void Logger::LogInfo(string info, ...)
 {

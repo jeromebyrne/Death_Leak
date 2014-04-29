@@ -11,11 +11,79 @@ class ParallaxLayer;
 
 class GameObjectManager
 {
+public:
+
+	void CheckPlayerInput();
+	void ProcessKeyboardMouse();
+	void ProcessGamePad();
+
+	bool IsLevelLoaded() { return m_levelLoaded; }
+
+	inline static GameObjectManager* Instance()
+	{
+		if (m_instance == 0)
+		{
+			m_instance = new GameObjectManager();
+		}
+		return m_instance;
+	}
+
+	void Update(bool paused, float delta); // call update function on all game objects
+	void Draw(ID3D10Device * device); // call Draw on all drawable objects
+
+	// this function also acts as a public initialise
+	void LoadObjectsFromFile(const char* filename);// load game objects via xml file
+	void SaveObjectsToFile(const char* filename);
+	void AddDrawableObject_RunTime(DrawableObject * object, bool editModeAdd = false);
+	void RemoveGameObject_RunTime(GameObject * object, bool defer = true); // remove aan object from it's appropriate lists and releases it's memory
+	void AddAudioObject_RunTime(AudioObject * audioObject, bool editModeAdd = false);
+
+	shared_ptr<GameObject> & GetObjectByID(int id);
+
+	void DeleteGameObjects();
+	Player * GetPlayer() const { return m_player; }
+
+	list<shared_ptr<GameObject> > & GetGameObjectList()
+	{
+		return m_gameObjects;
+	}
+
+	void OrderDrawablesByDepth(); // reorders the drawables list by depth
+
+	void SetShowDebugInfo(bool value) { mShowDebugInfo = value; };
+
+	template <class T> void GetTypesOnScreen(std::list<T*> & toPopulate)
+	{
+		/*toPopulate.clear();
+
+		Camera2D * cam = Camera2D::GetInstance();
+
+		for (auto obj : m_gameObjects)
+		{
+		if (cam->IsObjectInView(obj))
+		{
+		T * t = dynamic_cast<T*>(obj);
+		if (t)
+		{
+		toPopulate.push_back(t);
+		}
+		}
+		}*/
+	}
+
+	// only works in debug, designed for level editor
+	GameObject * CopyObject(GameObject * toCopy);
+
+	void SwitchToLevel(const char * level, bool defer = true);
+
+	bool mSwitchToLevel;
+	std::string mLevelToSwitch;
+
 private:
 	Camera2D * m_camera;
 	static GameObjectManager* m_instance;
-	list<unique_ptr<GameObject> > m_gameObjects;
-	list<GameObject*> m_killList; // a list of all objects which need to be removed
+	list<shared_ptr<GameObject> > m_gameObjects;
+	list<shared_ptr<GameObject> > m_killList; // a list of all objects which need to be removed
 	GameObject * CreateObject(TiXmlElement * object);
 	TiXmlElement * SaveObject(GameObject * object);
 	void LoadContent(ID3D10Device * device); // load graphics content for drawable objects
@@ -49,78 +117,6 @@ private:
 	float mCamYOffset; // if mCamYShouldOffset = true then this decides up or down 
 
 	ParallaxLayer * mSlowMotionLayer;
-
-public:
-
-	void CheckPlayerInput();
-	void ProcessKeyboardMouse();
-	void ProcessGamePad();
-
-	bool IsLevelLoaded() { return m_levelLoaded; }
-	
-	inline static GameObjectManager* Instance()
-	{
-		if(m_instance == 0)
-		{
-			m_instance = new GameObjectManager();
-		}
-		return m_instance;
-	}
-
-	void Update(bool paused, float delta); // call update function on all game objects
-	void Draw(ID3D10Device * device); // call Draw on all drawable objects
-
-	// this function also acts as a public initialise
-	void LoadObjectsFromFile(const char* filename);// load game objects via xml file
-	void SaveObjectsToFile(const char* filename);
-	void AddDrawableObject_RunTime(DrawableObject * object, bool editModeAdd = false);
-	void RemoveGameObject_RunTime(GameObject * object, bool defer = true); // remove aan object from it's appropriate lists and releases it's memory
-	void AddAudioObject_RunTime(AudioObject * audioObject, bool editModeAdd = false);
-
-	unique_ptr<GameObject> & GetObjectByID(int id);
-
-	void DeleteGameObjects();
-
-	Player * GetPlayer() const { return m_player; }
-
-#if _DEBUG
-	// for level editor
-	list<unique_ptr<GameObject> > & GetGameObjectList() 
-	{ 
-		return m_gameObjects; 
-	}
-#endif
-
-	void OrderDrawablesByDepth(); // reorders the drawables list by depth
-
-	void SetShowDebugInfo(bool value) { mShowDebugInfo = value; };
-
-	template <class T> void GetTypesOnScreen (std::list<T*> & toPopulate)
-	{
-		/*toPopulate.clear();
-
-		Camera2D * cam = Camera2D::GetInstance();
-
-		for (auto obj : m_gameObjects)
-		{
-			if (cam->IsObjectInView(obj))
-			{
-				T * t = dynamic_cast<T*>(obj);
-				if (t)
-				{
-					toPopulate.push_back(t);
-				}
-			}
-		}*/
-	}
-
-	// only works in debug, designed for level editor
-	GameObject * CopyObject(GameObject * toCopy);
-
-	void SwitchToLevel(const char * level, bool defer = true);
-
-	bool mSwitchToLevel;
-	std::string mLevelToSwitch;
 };
 
 #endif

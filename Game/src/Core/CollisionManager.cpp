@@ -16,54 +16,56 @@ void CollisionManager::Initialise(int collisionAreaWidth, int collisionAreaHeigh
 	m_dimensionDivisions = Vector2(numXDivisions, numYDivisions);
 }
 
-/*void CollisionManager::AddObject(SolidMovingSprite * object)
-{
-	m_collisionObjects.push_back(object);
-}*/
-
 // do collision detection and then resolve collisions
 void CollisionManager::DetectAndResolve(int camX, int camY)
 {
-	// detect and store collidables
-	Detect(camX, camY);
+	list<shared_ptr<GameObject> > & objList = GameObjectManager::Instance()->GetGameObjectList();
 
-	// resolve our collsions
-	Resolve();
-}
-
-void CollisionManager::Detect(int camX, int camY)
-{
-	// TODO: possible optimisation, keep objects in map and only remove if need to
-	m_collisionMap.clear();
-
-	// loop through our collision objects and determine if they are in the colision zone
-	list<SolidMovingSprite*>::iterator current = m_collisionObjects.begin();
-
-	for(; current != m_collisionObjects.end(); current++)
+	for (auto & obj : objList)
 	{
-		// check if it's in the collision zone
-		if(Utilities::IsSolidSpriteInRectangle((*current), camX, camY, m_detectAreaDimensions.X, m_detectAreaDimensions.Y))
+		if (!obj)
 		{
-			list<SolidMovingSprite*>::iterator other = m_collisionObjects.begin();
-			for(; other != m_collisionObjects.end(); other++)
-			{
-				// dont check against itself
-				if((*current) != (*other))
-				{
-					// check if there is a collision
-					if(IsColliding((*current), (*other)))
-					{
-						// add to the current objects collision map
-						m_collisionMap[(*current)].push_back((*other));
-					}
-					else
-					{
-						(*current)->SetNotColliding();
-					}
-				}
-			}// end inner for
+			GAME_ASSERT(obj);
+			continue;
 		}
-	}// end outer for
+
+		if (!obj->IsSolidSprite())
+		{
+			continue;
+		}
+
+		SolidMovingSprite * solidSprite = static_cast<SolidMovingSprite*>(obj.get());
+		GAME_ASSERT(dynamic_cast<SolidMovingSprite *>(obj.get()));
+
+		if (!Utilities::IsSolidSpriteInRectangle(solidSprite, camX, camY, m_detectAreaDimensions.X, m_detectAreaDimensions.Y))
+		{
+			continue;
+		}
+
+		for (auto & otherObj : objList)
+		{
+			if (!otherObj)
+			{
+				GAME_ASSERT(otherObj);
+				continue;
+			}
+
+			if (!otherObj->IsSolidSprite())
+			{
+				continue;
+			}
+
+			SolidMovingSprite * otherSolidSprite = static_cast<SolidMovingSprite*>(otherObj.get());
+			GAME_ASSERT(dynamic_cast<SolidMovingSprite *>(otherObj.get()));
+
+			if (IsColliding(solidSprite, otherSolidSprite))
+			{
+				// TODO: check the OnCollision functions for safety 
+				// best to pass the shared pointers rather than raw pointers
+				solidSprite->OnCollision(otherSolidSprite);
+			}
+		}
+	}// end outer for	
 }
 
 bool CollisionManager::IsColliding(SolidMovingSprite* first, SolidMovingSprite* second)
@@ -93,24 +95,4 @@ bool CollisionManager::IsColliding(SolidMovingSprite* first, SolidMovingSprite* 
 	return colliding;
 }
 
-void CollisionManager::Resolve()
-{
-	map<SolidMovingSprite*, list<SolidMovingSprite*>>::iterator current = m_collisionMap.begin();
-
-	for(; current != m_collisionMap.end(); current++)
-	{
-		list<SolidMovingSprite*>::iterator listCurrent = (*current).second.begin();
-
-		for(; listCurrent != (*current).second.end(); listCurrent++)
-		{
-			// call objects on collision function
-			(*current).first->OnCollision((*listCurrent));
-		}
-	}
-}
-
-/*void CollisionManager::RemoveObject(SolidMovingSprite * object)
-{
-	m_collisionObjects.remove(object);
-}*/
 
