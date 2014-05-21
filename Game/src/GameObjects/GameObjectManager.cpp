@@ -26,6 +26,14 @@
 #include "LevelTrigger.h"
 #include "WaterBlock.h"
 
+struct DepthSortPredicate
+{
+	bool operator() (const shared_ptr<GameObject> & lhs, const shared_ptr<GameObject> & rhs) 
+	{
+		return lhs->Z() > rhs->Z();
+	}
+};
+
 GameObjectManager* GameObjectManager::m_instance = 0;
 
 GameObjectManager::GameObjectManager(): 
@@ -44,10 +52,11 @@ GameObjectManager::~GameObjectManager(void)
 {
 }
 
+/*
 void GameObjectManager::OrderDrawable_pushBack(DrawableObject* object)
 {
 	LOG_INFO("Refactor GameObjectManager::OrderDrawable_pushBack");
-	/*m_drawableObjects.remove(object); // remove it first, we don't want to add it twice
+	m_drawableObjects.remove(object); // remove it first, we don't want to add it twice
 
 	float objZ = object->Z();
 	list<DrawableObject*>::iterator current = m_drawableObjects.begin();
@@ -70,54 +79,47 @@ void GameObjectManager::OrderDrawable_pushBack(DrawableObject* object)
 	{
 		m_drawableObjects.push_back(object);
 	}
-
-	*/
 }
+*/
 
-void GameObjectManager::RemoveGameObject_RunTime(GameObject * object, bool defer)
+void GameObjectManager::RemoveGameObject(GameObject * object, bool defer)
 {
-	LOG_INFO("Refactor RemoveGameObject_RunTime");
-	/*if (!object)
+	if (!object)
 	{
 		GAME_ASSERT(object);
 		return;
 	}
+	
 	if (defer)
 	{
-		GAME_ASSERT((std::find(m_killList.begin(), m_killList.end(), object) == m_killList.end()));
-		m_killList.push_back(object); // add to the kill list
+		m_killList.push_back(object);
 	}
 	else
 	{
-		GAME_ASSERT((std::find(m_gameObjects.begin(), m_gameObjects.end(), object) != m_gameObjects.end()));
-		m_gameObjects.remove(object);
-
-		// try and cast to a solid object
-		SolidMovingSprite * sms = dynamic_cast<SolidMovingSprite*>(object);
-		if(sms != 0)
+		auto iter = m_gameObjects.begin();
+		for (auto & obj : m_gameObjects)
 		{
-			// CollisionManager::Instance()->RemoveObject(sms); // remove from list of collidables
-			m_drawableObjects.remove(static_cast<DrawableObject*>(sms));
-		}
-		else
-		{
-			// try and cast to a drawable
-			DrawableObject* d = dynamic_cast<DrawableObject*>(object);
-			if(d != 0)
+			if (obj.get() == object)
 			{
-				m_drawableObjects.remove(d);
+				break;
 			}
+			++iter;
 		}
 
-		if (object->IsUpdateable())
+		if (iter != m_gameObjects.end())
 		{
-			m_updateableObjects.remove(object);
+#if _DEBUG
+			// the ref count should only be 1 when removing an object from the master list
+			long refCount = (*iter).use_count();
+			if (refCount > 1)
+			{
+				LOG_ERROR("MEMORY LEAK!!! GameObject with ID: %u is being removed but still has a ref count greater than 1.", (*iter)->ID());
+				GAME_ASSERT(false);
+			}
+#endif
+			m_gameObjects.remove(*iter);
 		}
-
-		delete object;
-		object = nullptr;
 	}
-	*/
 }
 
 shared_ptr<GameObject> & GameObjectManager::GetObjectByID(int id)
@@ -184,7 +186,6 @@ void GameObjectManager::Initialise()
 
 void GameObjectManager::Update(bool paused, float delta)
 {
-	LOG_INFO("Refactor GameObjectManager::Update");
 	if (!paused)
 	{
 		float camX = m_camera->X();
@@ -210,8 +211,6 @@ void GameObjectManager::Update(bool paused, float delta)
 				continue;
 			}
 
-			LOG_INFO("Optimise GameObjectManager::Update");
-
 			// if the object is in the update zone
 			if (Utilities::IsObjectInRectangle(obj.get(), camX, camY, m_updateZoneDimensions.X, m_updateZoneDimensions.Y))
 			{
@@ -228,16 +227,16 @@ void GameObjectManager::Update(bool paused, float delta)
 				// if a projectile has gone outsid ethe bounds then just remove it
 				if(dynamic_cast<Projectile*>(obj.get())) // add checks for other projectile class names as needed
 				{
-					// RemoveGameObject_RunTime(obj.get());
+					RemoveGameObject(obj.get());
 				}
 			}
 		}
 	} // end of if paused
 
 	// kill any objects in the kill list
-	for (auto & obj : m_killList)
+	for (auto obj : m_killList)
 	{
-		// RemoveGameObject_RunTime(g, false);
+		RemoveGameObject(obj, false);
 	}
 
 	m_killList.clear(); // remove our objects
@@ -248,7 +247,6 @@ void GameObjectManager::Update(bool paused, float delta)
 		mLevelToSwitch = "";
 		mSwitchToLevel = false;
 	}
-	
 }
 
 void GameObjectManager::ScaleObjects(float xScale, float yScale)
@@ -265,8 +263,6 @@ void GameObjectManager::ScaleObjects(float xScale, float yScale)
 
 void GameObjectManager::Draw(ID3D10Device *  device)
 {
-	LOG_INFO("Refactor GameObjectManager::Draw");
-	
 	for (auto & obj : m_gameObjects)
 	{
 		GAME_ASSERT(obj);
@@ -664,23 +660,15 @@ void GameObjectManager::DeleteGameObjects()
 	m_levelLoaded = false;
 }
 
-/*void GameObjectManager::AddGameObject(GameObject * object)
+void GameObjectManager::AddGameObject(GameObject * object, bool editModeAdd)
 {
-	m_gameObjects.push_back(object);
-}
+	GAME_ASSERT(object);
 
-void GameObjectManager::AddDrawableObject(DrawableObject *object)
-{
-	m_drawableObjects.push_back(object);
-}
+	if (!object)
+	{
+		return;
+	}
 
-void GameObjectManager::AddUpdateableObject(GameObject * object)
-{
-	m_updateableObjects.push_back(object);
-}*/
-
-void GameObjectManager::AddDrawableObject_RunTime(DrawableObject * object, bool editModeAdd)
-{
 #if _DEBUG
 	// don't let any new objects be created unless we purposely added them
 	if (Game::GetIsLevelEditMode() && !editModeAdd)
@@ -705,63 +693,18 @@ void GameObjectManager::AddDrawableObject_RunTime(DrawableObject * object, bool 
 	// it is always assumed you are giving a valid position during the game
 	object->Scale(scaleX, scaleY, false);
 
-	// order this object by depth in an efficient manner - TODO may need further optimising
-	OrderDrawable_pushBack(object);
-	// OrderDrawablesByDepth();
-}
+	m_gameObjects.push_back(shared_ptr<GameObject>(object));
 
-void GameObjectManager::AddAudioObject_RunTime(AudioObject * audioObject, bool editModeAdd)
-{
-#if _DEBUG
-	// don't let any new objects be created unless we purposely added them
-	if (Game::GetIsLevelEditMode() && !editModeAdd)
-	{
-		return;
-	}
-#endif
-	audioObject->Initialise();
+	// TODO: Optimise, huge bottleneck
+	LOG_INFO("optimise AddGameObject");
 
-	float bbWidth = Graphics::GetInstance()->BackBufferWidth();
-	float bbHeight = Graphics::GetInstance()->BackBufferHeight();
-
-	float scaleX = bbWidth / 1920;
-	float scaleY = bbHeight / 1080;
-
-	// never scale position during the game, only before
-	// it is always assumed you are giving a valid position during the game
-	audioObject->Scale(scaleX, scaleY, false);
+	OrderDrawablesByDepth();
 }
 
 // order our drawable list by depth - this a once off that should be done at initialise stage
 void GameObjectManager::OrderDrawablesByDepth()
 {
-	LOG_INFO("Refactor GameObjectManager::OrderDrawablesByDepth");
-	/*list<DrawableObject*>::iterator current = m_drawableObjects.begin();
-	list<DrawableObject*>::iterator oneBehind = m_drawableObjects.begin();
-	
-	for(;current != m_drawableObjects.end(); current++)
-	{
-		list<DrawableObject*>::iterator other = current;
-		for(; other != m_drawableObjects.end(); other++)
-		{
-			// dont check against the same object
-			if(other!=current)
-			{
-				float otherZ = (*other)->Position().Z;
-				float currentZ = (*current)->Position().Z;
-				if(otherZ > currentZ)
-				{
-					// swap them
-					DrawableObject * currentTemp = (*current);
-					DrawableObject * otherTemp = (*other);
-
-					(*current) = otherTemp;
-					(*other) = currentTemp;
-				}
-			}
-		}// end of inner for
-	}// end of outer for
-	*/
+	m_gameObjects.sort(DepthSortPredicate());
 }
 
 void GameObjectManager::CheckPlayerInput()
@@ -965,7 +908,7 @@ void GameObjectManager::ProcessGamePad()
 			
 			if (p)
 			{
-				GameObjectManager::Instance()->AddDrawableObject_RunTime(p);
+				GameObjectManager::Instance()->AddGameObject(p);
 			}
 		}
 		pressing_weapon = false;
@@ -1000,7 +943,7 @@ void GameObjectManager::ProcessGamePad()
 			
 			if (p)
 			{
-				GameObjectManager::Instance()->AddDrawableObject_RunTime(p);
+				GameObjectManager::Instance()->AddGameObject(p);
 			}
 		}
 		pressing_bomb = false;
@@ -1053,13 +996,17 @@ void GameObjectManager::ProcessGamePad()
 	else
 	{
 		Timing::Instance()->SetTimeModifier(1.0f);
-	}
-
-		
+	}		
 }
 
 GameObject * GameObjectManager::CopyObject(GameObject * toCopy)
 {
+	GAME_ASSERT(toCopy);
+	if (!toCopy)
+	{
+		return nullptr;
+	}
+
 	TiXmlNode * xmlNode = toCopy->GetClonedXml();
 
 	// clone again in case we do multiple copies
@@ -1070,12 +1017,7 @@ GameObject * GameObjectManager::CopyObject(GameObject * toCopy)
 		return nullptr;
 	}
 
-	// GameObject returnObj = CreateObject(xmlElement);
-
-	// return returnObj;
-
-	LOG_INFO("refactor GameObjectManager::CopyObject");
-	return nullptr;
+	return CreateObject(xmlElement);
 }
 
 void GameObjectManager::AddSlowMotionLayer()
@@ -1108,5 +1050,5 @@ void GameObjectManager::AddSlowMotionLayer()
 	mSlowMotionLayer->m_alpha = 0.0f;
 	mSlowMotionLayer->mNoiseShaderIntensity = 0.01f;
 
-	GameObjectManager::Instance()->AddDrawableObject_RunTime(mSlowMotionLayer);
+	GameObjectManager::Instance()->AddGameObject(mSlowMotionLayer);
 }

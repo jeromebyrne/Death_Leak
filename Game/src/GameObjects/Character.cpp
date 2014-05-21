@@ -585,7 +585,7 @@ void Character::OnDamage(float damageAmount, Vector3 pointOfContact, bool should
 				// mark ourselves for deletion (only if we are not a player)
 				if (GameObjectManager::Instance()->GetPlayer() != this)
 				{
-					GameObjectManager::Instance()->RemoveGameObject_RunTime(this);
+					GameObjectManager::Instance()->RemoveGameObject(this);
 				}
 			}
 		}

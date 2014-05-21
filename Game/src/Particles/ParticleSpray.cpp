@@ -286,7 +286,7 @@ void ParticleSpray::Draw(ID3D10Device* device, Camera2D * camera)
 	else
 	{
 		// we have no more particles to show, delete this spray
-		GameObjectManager::Instance()->RemoveGameObject_RunTime(this);
+		GameObjectManager::Instance()->RemoveGameObject(this);
 	}
 	/*else if(m_vertexBuffer)
 	{

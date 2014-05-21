@@ -76,7 +76,7 @@ void Orb::OnCollideWithTarget()
 
 	if (currentTime > mCreationTime + kMinLiveTimeUntilCollisionsActive)
 	{
-		GameObjectManager::Instance()->RemoveGameObject_RunTime(this);
+		GameObjectManager::Instance()->RemoveGameObject(this);
 		
 		if (m_material)
 		{

@@ -23,7 +23,7 @@ BombProjectile::~BombProjectile(void)
 {
 	Explosion * explosion = new Explosion(m_damage, 700, m_position.X, m_position.Y, m_position.Z - 0.1);
 
-	GameObjectManager::Instance()->AddDrawableObject_RunTime(explosion);
+	GameObjectManager::Instance()->AddGameObject(explosion);
 }
 
 void BombProjectile::OnCollision(SolidMovingSprite* object)
@@ -158,7 +158,7 @@ void BombProjectile::Update(float delta)
 		if(currentTime > timeToDie)
 		{
 			// time to kill ourselves
-			GameObjectManager::Instance()->RemoveGameObject_RunTime(this);
+			GameObjectManager::Instance()->RemoveGameObject(this);
 		}
 	}
 }

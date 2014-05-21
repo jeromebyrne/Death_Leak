@@ -27,13 +27,13 @@ Explosion::~Explosion(void)
 void Explosion::ApplyDamage()
 {
 	// loop through all of the NPCs in the game and damage them
-	list<SolidMovingSprite*> objects;
+	list<shared_ptr<GameObject> > objects;
 	GameObjectManager::Instance()->GetTypesOnScreen<SolidMovingSprite>(objects);
 
 	Player * player = GameObjectManager::Instance()->GetPlayer();
-	for (auto * obj : objects)
+	for (auto & obj : objects)
 	{
-		if (obj == player)
+		if (obj.get() == player)
 		{
 			// don't want to damage ourselves
 			continue;
@@ -51,15 +51,23 @@ void Explosion::ApplyDamage()
 
 void Explosion::ApplyForceToApplicable()
 {
-	list<DrawableObject*> objects;
+	list<shared_ptr<GameObject> > objects;
 	GameObjectManager::Instance()->GetTypesOnScreen<DrawableObject>(objects);
 
-	for (auto obj : objects)
+	for (auto & obj : objects)
 	{
-		if (dynamic_cast<Orb*>(obj) ||
-			dynamic_cast<Projectile*>(obj))
+		if (!obj)
 		{
-			MovingSprite * moveable = static_cast<MovingSprite *>(obj); // has to be a movingsprite if it's one of the above
+			GAME_ASSERT(obj);
+			continue;
+		}
+
+		GameObject * rawPointer = obj.get();
+
+		if (dynamic_cast<Orb*>(rawPointer) ||
+			dynamic_cast<Projectile*>(rawPointer))
+		{
+			MovingSprite * moveable = static_cast<MovingSprite *>(rawPointer); // has to be a movingsprite if it's one of the above
 
 			Vector3 direction =  obj->Position() - m_position;
 
@@ -85,7 +93,7 @@ void Explosion::Update(float delta)
 	}
 	else if (mFramesActive == 2)
 	{
-		GameObjectManager::Instance()->RemoveGameObject_RunTime(this, true);
+		GameObjectManager::Instance()->RemoveGameObject(this, true);
 	}
 
 	++mFramesActive;

@@ -371,7 +371,7 @@ void Projectile::Update(float delta)
 			if(currentTime > timeToDie)
 			{
 				// time to kill ourselves
-				GameObjectManager::Instance()->RemoveGameObject_RunTime(this, true);
+				GameObjectManager::Instance()->RemoveGameObject(this, true);
 			}
 		//}
 	}

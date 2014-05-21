@@ -35,7 +35,7 @@ void NinjaSpawner::SpawnNPC(const float posX, const float posY, bool playSoundEf
 	npc->setAccelXRate(1.0);
 	npc->SetMaterial(MaterialManager::Instance()->GetMaterial("demon1"));
 	npc->SetMaxJumpSpeed(randJumpSpeed);
-	GameObjectManager::Instance()->AddDrawableObject_RunTime(npc);
+	GameObjectManager::Instance()->AddGameObject(npc);
 
 	// show some effects when we spawn - smoke
 	ParticleEmitterManager::Instance()->CreateRadialSpray(5,

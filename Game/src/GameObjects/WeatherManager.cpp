@@ -101,7 +101,7 @@ void WeatherManager::RefreshAssets()
 				mBottomRainLayer->m_autoScrollYSpeed = 6.5f;
 				mBottomRainLayer->EffectName = "effectlighttexture";
 				mBottomRainLayer->m_alpha = 1.0f;
-				GameObjectManager::Instance()->AddDrawableObject_RunTime(mBottomRainLayer);
+				GameObjectManager::Instance()->AddGameObject(mBottomRainLayer);
 
 				mTopRainLayer = new ParallaxLayer(Camera2D::GetInstance());
 				mTopRainLayer->m_textureFilename = "Media\\rainlayer.png";
@@ -122,7 +122,7 @@ void WeatherManager::RefreshAssets()
 				mTopRainLayer->m_autoScrollYSpeed = 6.5f;
 				mTopRainLayer->EffectName = "effectlighttexture";
 				mTopRainLayer->m_alpha = 1.0f;
-				GameObjectManager::Instance()->AddDrawableObject_RunTime(mTopRainLayer);
+				GameObjectManager::Instance()->AddGameObject(mTopRainLayer);
 
 				mGroundRainLayer = new ParallaxLayer(Camera2D::GetInstance());
 				mGroundRainLayer->m_textureFilename = "";
@@ -145,7 +145,7 @@ void WeatherManager::RefreshAssets()
 				mGroundRainLayer->m_autoScrollYSpeed = 0;
 				mGroundRainLayer->EffectName = "effectlighttexture";
 				mGroundRainLayer->m_alpha = 1.0f;
-				GameObjectManager::Instance()->AddDrawableObject_RunTime(mGroundRainLayer);
+				GameObjectManager::Instance()->AddGameObject(mGroundRainLayer);
 
 				mRainSFX = new AudioObject(0, 1500,0,50000, 3000);
 				mRainSFX->SetAdjustVolumeToCamera(false);
@@ -153,7 +153,7 @@ void WeatherManager::RefreshAssets()
 				mRainSFX->SetRepeat(true);
 				mRainSFX->SetVolumeFadeDimensions(Vector2(50000, 3000));
 		
-				GameObjectManager::Instance()->AddAudioObject_RunTime(mRainSFX);
+				GameObjectManager::Instance()->AddGameObject(mRainSFX);
 
 				mLightningLayer = new ParallaxLayer(Camera2D::GetInstance());
 				mLightningLayer->m_textureFilename = "Media\\lightning_layer.png";
@@ -176,7 +176,7 @@ void WeatherManager::RefreshAssets()
 				mLightningLayer->m_autoScrollYSpeed = 0;
 				mLightningLayer->EffectName = "effectlighttexture";
 				mLightningLayer->m_alpha = 0.0f;
-				GameObjectManager::Instance()->AddDrawableObject_RunTime(mLightningLayer);
+				GameObjectManager::Instance()->AddGameObject(mLightningLayer);
 
 				break;
 			}
@@ -202,7 +202,7 @@ void WeatherManager::RefreshAssets()
 				mBottomSnowLayer->EffectName = "effectnoise";
 				mBottomSnowLayer->m_alpha = 1.0f;
 				mBottomSnowLayer->mNoiseShaderIntensity = 0.001f;
-				GameObjectManager::Instance()->AddDrawableObject_RunTime(mBottomSnowLayer);
+				GameObjectManager::Instance()->AddGameObject(mBottomSnowLayer);
 
 				mTopSnowLayer = new ParallaxLayer(Camera2D::GetInstance());
 				mTopSnowLayer->m_textureFilename = "Media\\snowlayer.png";
@@ -224,14 +224,14 @@ void WeatherManager::RefreshAssets()
 				mTopSnowLayer->EffectName = "effectnoise";
 				mTopSnowLayer->m_alpha = 1.0f;
 				mTopSnowLayer->mNoiseShaderIntensity = 0.001f;
-				GameObjectManager::Instance()->AddDrawableObject_RunTime(mTopSnowLayer);
+				GameObjectManager::Instance()->AddGameObject(mTopSnowLayer);
 
 				mSnowSFX = new AudioObject(0, 1500,0,50000, 3000);
 				mSnowSFX->SetAdjustVolumeToCamera(false);
 				mSnowSFX->SetAudioFilename("weather\\wind.mp3");
 				mSnowSFX->SetRepeat(true);
 				mSnowSFX->SetVolumeFadeDimensions(Vector2(50000, 3000));
-				GameObjectManager::Instance()->AddAudioObject_RunTime(mSnowSFX);
+				GameObjectManager::Instance()->AddGameObject(mSnowSFX);
 				break;
 			}
 		};
@@ -315,7 +315,7 @@ void WeatherManager::StartRaining()
 		mBottomRainLayer->EffectName = "effectlighttexture";
 		mBottomRainLayer->m_alpha = 1.0f;
 
-		GameObjectManager::Instance()->AddDrawableObject_RunTime(mBottomRainLayer);
+		GameObjectManager::Instance()->AddGameObject(mBottomRainLayer);
 	}
 
 	if (!mTopRainLayer)
@@ -341,7 +341,7 @@ void WeatherManager::StartRaining()
 		mTopRainLayer->EffectName = "effectlighttexture";
 		mTopRainLayer->m_alpha = 1.0f;
 
-		GameObjectManager::Instance()->AddDrawableObject_RunTime(mTopRainLayer);
+		GameObjectManager::Instance()->AddGameObject(mTopRainLayer);
 	}
 
 	if (!mGroundRainLayer)
@@ -369,7 +369,7 @@ void WeatherManager::StartRaining()
 		mGroundRainLayer->EffectName = "effectlighttexture";
 		mGroundRainLayer->m_alpha = 1.0f;
 
-		GameObjectManager::Instance()->AddDrawableObject_RunTime(mGroundRainLayer);
+		GameObjectManager::Instance()->AddGameObject(mGroundRainLayer);
 	}
 
 	// add the audio object
@@ -381,7 +381,7 @@ void WeatherManager::StartRaining()
 		mRainSFX->SetRepeat(true);
 		mRainSFX->SetVolumeFadeDimensions(Vector2(50000, 3000));
 		
-		GameObjectManager::Instance()->AddAudioObject_RunTime(mRainSFX);
+		GameObjectManager::Instance()->AddGameObject(mRainSFX);
 	}
 
 	if (!mLightningLayer)
@@ -409,7 +409,7 @@ void WeatherManager::StartRaining()
 		mLightningLayer->EffectName = "effectlighttexture";
 		mLightningLayer->m_alpha = 0.0f;
 
-		GameObjectManager::Instance()->AddDrawableObject_RunTime(mLightningLayer);
+		GameObjectManager::Instance()->AddGameObject(mLightningLayer);
 	}
 
 	if (!HasCurrentWeatherState(kRaining))
@@ -446,27 +446,27 @@ void WeatherManager::StopRaining()
 {
 	if (mTopRainLayer)
 	{
-		GameObjectManager::Instance()->RemoveGameObject_RunTime(mTopRainLayer);
+		GameObjectManager::Instance()->RemoveGameObject(mTopRainLayer);
 		mTopRainLayer = nullptr;
 	}
 	if (mBottomRainLayer)
 	{
-		GameObjectManager::Instance()->RemoveGameObject_RunTime(mBottomRainLayer);
+		GameObjectManager::Instance()->RemoveGameObject(mBottomRainLayer);
 		mBottomRainLayer = nullptr;
 	}
 	if (mGroundRainLayer)
 	{
-		GameObjectManager::Instance()->RemoveGameObject_RunTime(mGroundRainLayer);
+		GameObjectManager::Instance()->RemoveGameObject(mGroundRainLayer);
 		mGroundRainLayer = nullptr;
 	}
 	if (mRainSFX)
 	{
-		GameObjectManager::Instance()->RemoveGameObject_RunTime(mRainSFX);
+		GameObjectManager::Instance()->RemoveGameObject(mRainSFX);
 		mRainSFX = nullptr;
 	}
 	if (mLightningLayer)
 	{
-		GameObjectManager::Instance()->RemoveGameObject_RunTime(mLightningLayer);
+		GameObjectManager::Instance()->RemoveGameObject(mLightningLayer);
 		mLightningLayer = nullptr;
 	}
 
@@ -681,7 +681,7 @@ void WeatherManager::StartSnowing()
 		mBottomSnowLayer->EffectName = "effectlighttexture";
 		mBottomSnowLayer->m_alpha = 1.0f;
 
-		GameObjectManager::Instance()->AddDrawableObject_RunTime(mBottomSnowLayer);
+		GameObjectManager::Instance()->AddGameObject(mBottomSnowLayer);
 	}
 
 	if (!mTopSnowLayer)
@@ -707,7 +707,7 @@ void WeatherManager::StartSnowing()
 		mTopSnowLayer->EffectName = "effectlighttexture";
 		mTopSnowLayer->m_alpha = 1.0f;
 
-		GameObjectManager::Instance()->AddDrawableObject_RunTime(mTopSnowLayer);
+		GameObjectManager::Instance()->AddGameObject(mTopSnowLayer);
 	}
 
 	// add the audio object
@@ -719,7 +719,7 @@ void WeatherManager::StartSnowing()
 		mSnowSFX->SetRepeat(true);
 		mSnowSFX->SetVolumeFadeDimensions(Vector2(50000, 3000));
 		
-		GameObjectManager::Instance()->AddAudioObject_RunTime(mSnowSFX);
+		GameObjectManager::Instance()->AddGameObject(mSnowSFX);
 	}
 
 	if (!HasCurrentWeatherState(kSnowing))
@@ -739,17 +739,17 @@ void WeatherManager::StopSnowing()
 {
 	if (mTopSnowLayer)
 	{
-		GameObjectManager::Instance()->RemoveGameObject_RunTime(mTopSnowLayer);
+		GameObjectManager::Instance()->RemoveGameObject(mTopSnowLayer);
 		mTopSnowLayer = nullptr;
 	}
 	if (mBottomSnowLayer)
 	{
-		GameObjectManager::Instance()->RemoveGameObject_RunTime(mBottomSnowLayer);
+		GameObjectManager::Instance()->RemoveGameObject(mBottomSnowLayer);
 		mBottomSnowLayer = nullptr;
 	}
 	if (mSnowSFX)
 	{
-		GameObjectManager::Instance()->RemoveGameObject_RunTime(mSnowSFX);
+		GameObjectManager::Instance()->RemoveGameObject(mSnowSFX);
 		mSnowSFX = nullptr;
 	}
 

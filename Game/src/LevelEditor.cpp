@@ -290,7 +290,7 @@ void LevelEditor::CheckForDeleting()
 
 		if (!isPressingDelete && GetAsyncKeyState(VK_DELETE) < 0)
 		{
-			GameObjectManager::Instance()->RemoveGameObject_RunTime(mSelectedObject, false);
+			GameObjectManager::Instance()->RemoveGameObject(mSelectedObject, false);
 			mSelectedObject = nullptr;
 			isPressingDelete = true;
 		}
@@ -317,11 +317,11 @@ void LevelEditor::CheckForCopy()
 				AudioObject * audiobj = dynamic_cast<AudioObject*>(newObject);
 				if (drawable)
 				{
-					GameObjectManager::Instance()->AddDrawableObject_RunTime(drawable, true);
+					GameObjectManager::Instance()->AddGameObject(drawable, true);
 				}
 				else if (audiobj)
 				{
-					GameObjectManager::Instance()->AddAudioObject_RunTime(audiobj, true);
+					GameObjectManager::Instance()->AddGameObject(audiobj, true);
 				}
 				else 
 				{

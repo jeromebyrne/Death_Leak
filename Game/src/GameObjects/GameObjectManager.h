@@ -1,5 +1,6 @@
 #ifndef GAMEOBJECTMANAGER_H
 #define GAMEOBJECTMANAGER_H
+
 #include "gameObject.h"
 #include "drawableobject.h"
 #include "player.h"
@@ -34,9 +35,8 @@ public:
 	// this function also acts as a public initialise
 	void LoadObjectsFromFile(const char* filename);// load game objects via xml file
 	void SaveObjectsToFile(const char* filename);
-	void AddDrawableObject_RunTime(DrawableObject * object, bool editModeAdd = false);
-	void RemoveGameObject_RunTime(GameObject * object, bool defer = true); // remove aan object from it's appropriate lists and releases it's memory
-	void AddAudioObject_RunTime(AudioObject * audioObject, bool editModeAdd = false);
+	void AddGameObject(GameObject * object, bool editModeAdd = false);
+	void RemoveGameObject(GameObject * object, bool defer = true);
 
 	shared_ptr<GameObject> & GetObjectByID(int id);
 
@@ -52,23 +52,30 @@ public:
 
 	void SetShowDebugInfo(bool value) { mShowDebugInfo = value; };
 
-	template <class T> void GetTypesOnScreen(std::list<T*> & toPopulate)
+	template <class T> void GetTypesOnScreen(std::list<shared_ptr<GameObject> > & toPopulate)
 	{
-		/*toPopulate.clear();
+		toPopulate.clear();
 
 		Camera2D * cam = Camera2D::GetInstance();
 
-		for (auto obj : m_gameObjects)
+		for (auto & obj : m_gameObjects)
 		{
-		if (cam->IsObjectInView(obj))
-		{
-		T * t = dynamic_cast<T*>(obj);
-		if (t)
-		{
-		toPopulate.push_back(t);
+			//GAME_ASSERT(obj);
+			if (!obj)
+			{
+				continue;
+			}
+
+			GameObject * rawPointer = obj.get();
+			if (cam->IsObjectInView(rawPointer))
+			{
+				T * t = dynamic_cast<T*>(rawPointer);
+				if (t)
+				{
+					toPopulate.push_back(obj);
+				}
+			}
 		}
-		}
-		}*/
 	}
 
 	// only works in debug, designed for level editor
@@ -83,7 +90,7 @@ private:
 	Camera2D * m_camera;
 	static GameObjectManager* m_instance;
 	list<shared_ptr<GameObject> > m_gameObjects;
-	list<shared_ptr<GameObject> > m_killList; // a list of all objects which need to be removed
+	list<GameObject *> m_killList; // a list of all objects which need to be removed
 	GameObject * CreateObject(TiXmlElement * object);
 	TiXmlElement * SaveObject(GameObject * object);
 	void LoadContent(ID3D10Device * device); // load graphics content for drawable objects
@@ -92,8 +99,6 @@ private:
 	Graphics * m_graphicsSystem; // a pointer to the graphics system
 	ID3D10Device * m_graphicsDevice; // a pointer to the graphics device
 	Vector2 m_updateZoneDimensions; // screen space dimensions (+ more) in which we update objects, if outside then dont update
-
-	void OrderDrawable_pushBack(DrawableObject* object); // call this in a drawables constructor
 
 	ParticleSpray * ReadParticleSpray(TiXmlElement * element);
 

@@ -42,6 +42,9 @@ void CollisionManager::DetectAndResolve(int camX, int camY)
 			continue;
 		}
 
+		// set the object to not collide before we determine anything
+		solidSprite->SetNotColliding();
+
 		for (auto & otherObj : objList)
 		{
 			if (!otherObj)

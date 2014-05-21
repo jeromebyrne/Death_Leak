@@ -126,7 +126,7 @@ ParticleSpray * ParticleEmitterManager::CreateRadialBloodSpray(unsigned int numP
 	ParticleSpray * spray = new ParticleSpray(true, position, Vector3(3200, 1200, 0), (char *) kBloodTextureFileName, particleList, loop, loopTime, true, kBloodRadialScaleTo * gameScale);
 
 	// add the spray to the game world
-	GameObjectManager::Instance()->AddDrawableObject_RunTime(spray);
+	GameObjectManager::Instance()->AddGameObject(spray);
 
 	return spray;
 }
@@ -200,7 +200,7 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedBloodSpray(int numParticle
 	spray->SetNumParticlesValue(numParticles);
 
 	// add the spray to the game world
-	GameObjectManager::Instance()->AddDrawableObject_RunTime(spray);
+	GameObjectManager::Instance()->AddGameObject(spray);
 
 	return spray;
 }
@@ -321,7 +321,7 @@ void ParticleEmitterManager::CreateRadialSpray(int numParticles,
 	ParticleSpray * spray = new ParticleSpray(false, position, drawBoundingBox, (char*)textureFileName.c_str(), particleList, loop, loopTime, scalesByLiveTime, scaleTo * gameScale);
 
 	// add the spray to the game world
-	GameObjectManager::Instance()->AddDrawableObject_RunTime(spray);
+	GameObjectManager::Instance()->AddGameObject(spray);
 }
 
 ParticleSpray * ParticleEmitterManager::CreateDirectedSpray(int numParticles,
@@ -469,7 +469,7 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSpray(int numParticles,
 	spray->SetNumParticlesValue(numParticles);
 
 	// add the spray to the game world
-	GameObjectManager::Instance()->AddDrawableObject_RunTime(spray);
+	GameObjectManager::Instance()->AddGameObject(spray);
 
 	return spray;
 }

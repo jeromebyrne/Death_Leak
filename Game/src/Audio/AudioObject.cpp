@@ -41,7 +41,7 @@ void AudioObject::Update(float delta)
 	{
 		if (!mRepeat && mSoundInstance->isFinished())
 		{
-			GameObjectManager::Instance()->RemoveGameObject_RunTime(this);
+			GameObjectManager::Instance()->RemoveGameObject(this);
 		}
 
 		if (mAdjustVolumeToCamera)
