@@ -27,13 +27,13 @@ Explosion::~Explosion(void)
 void Explosion::ApplyDamage()
 {
 	// loop through all of the NPCs in the game and damage them
-	list<shared_ptr<GameObject> > objects;
+	list<GameObject*> objects;
 	GameObjectManager::Instance()->GetTypesOnScreen<SolidMovingSprite>(objects);
 
 	Player * player = GameObjectManager::Instance()->GetPlayer();
-	for (auto & obj : objects)
+	for (auto obj : objects)
 	{
-		if (obj.get() == player)
+		if (obj == player)
 		{
 			// don't want to damage ourselves
 			continue;
@@ -51,10 +51,10 @@ void Explosion::ApplyDamage()
 
 void Explosion::ApplyForceToApplicable()
 {
-	list<shared_ptr<GameObject> > objects;
+	list<GameObject *> objects;
 	GameObjectManager::Instance()->GetTypesOnScreen<DrawableObject>(objects);
 
-	for (auto & obj : objects)
+	for (auto obj : objects)
 	{
 		if (!obj)
 		{
@@ -62,12 +62,10 @@ void Explosion::ApplyForceToApplicable()
 			continue;
 		}
 
-		GameObject * rawPointer = obj.get();
-
-		if (dynamic_cast<Orb*>(rawPointer) ||
-			dynamic_cast<Projectile*>(rawPointer))
+		if (dynamic_cast<Orb*>(obj) ||
+			dynamic_cast<Projectile*>(obj))
 		{
-			MovingSprite * moveable = static_cast<MovingSprite *>(rawPointer); // has to be a movingsprite if it's one of the above
+			MovingSprite * moveable = static_cast<MovingSprite *>(obj); // has to be a movingsprite if it's one of the above
 
 			Vector3 direction =  obj->Position() - m_position;
 

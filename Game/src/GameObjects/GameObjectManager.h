@@ -52,7 +52,7 @@ public:
 
 	void SetShowDebugInfo(bool value) { mShowDebugInfo = value; };
 
-	template <class T> void GetTypesOnScreen(std::list<shared_ptr<GameObject> > & toPopulate)
+	template <class T> void GetTypesOnScreen(std::list<GameObject *> & toPopulate)
 	{
 		toPopulate.clear();
 
@@ -60,7 +60,7 @@ public:
 
 		for (auto & obj : m_gameObjects)
 		{
-			//GAME_ASSERT(obj);
+			// GAME_ASSERT(obj);
 			if (!obj)
 			{
 				continue;
@@ -72,7 +72,7 @@ public:
 				T * t = dynamic_cast<T*>(rawPointer);
 				if (t)
 				{
-					toPopulate.push_back(obj);
+					toPopulate.push_back(rawPointer);
 				}
 			}
 		}

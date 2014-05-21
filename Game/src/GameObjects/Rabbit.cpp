@@ -24,7 +24,7 @@ void Rabbit::OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExp
 	int particleNUmPerOrb = 25;
 	if (mHasExploded)
 	{
-		list<shared_ptr<GameObject> > drawables;
+		list<GameObject *> drawables;
 		GameObjectManager::Instance()->GetTypesOnScreen<DrawableObject>(drawables);
 
 		float orbCountMultiplier = 1.0f;
