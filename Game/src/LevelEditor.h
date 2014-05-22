@@ -32,7 +32,7 @@ private:
 
 	void CheckForCopy();
 
-	GameObject * GetGameObjectClickedOn(list<GameObject*> gameObjects);
+	GameObject * GetGameObjectClickedOn(list<shared_ptr<GameObject> > & gameObjects);
 
 	GameObject * mSelectedObject;
 

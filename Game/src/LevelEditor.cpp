@@ -21,11 +21,9 @@ LevelEditor::~LevelEditor(void)
 
 void LevelEditor::Update()
 {
-	LOG_INFO("Refactor LevelEditor::Update");
-	/*
 	UpdateParallaxLayers();
 
-	list<GameObject*> gameObjects = GameObjectManager::Instance()->GetGameObjectList();
+	list<shared_ptr<GameObject> > & gameObjects = GameObjectManager::Instance()->GetGameObjectList();
 
 	static bool pressingSelect = false;
 	static bool pressingPlace = false;
@@ -132,10 +130,9 @@ void LevelEditor::Update()
 
 	CheckForCopy();
 
-	*/
 }
 
-GameObject * LevelEditor::GetGameObjectClickedOn(list<GameObject*> gameObjects)
+GameObject * LevelEditor::GetGameObjectClickedOn(list<shared_ptr<GameObject> > & gameObjects)
 {
 	POINT currentMouse;
 	GetCursorPos(&currentMouse);
@@ -148,27 +145,25 @@ GameObject * LevelEditor::GetGameObjectClickedOn(list<GameObject*> gameObjects)
 	Vector2 worldPos = Utilities::ScreenToWorld(Vector2(currentMouse.x * scaleX, currentMouse.y * scaleY));
 
 	GameObject * selectedObj = nullptr;
-	for (list<GameObject*>::iterator iter = gameObjects.begin();
-		iter != gameObjects.end();
-		++iter)
+	for (auto & obj : gameObjects)
 	{
 		// ignore
-		ParallaxLayer * paraLayer = dynamic_cast<ParallaxLayer*>(*iter);
-		if (dynamic_cast<ParticleSpray*>(*iter) || (paraLayer && paraLayer->FollowCamX()))
+		ParallaxLayer * paraLayer = dynamic_cast<ParallaxLayer*>(obj.get());
+		if (dynamic_cast<ParticleSpray*>(obj.get()) || (paraLayer && paraLayer->FollowCamX()))
 		{
 			continue;
 		}
 
-		if (worldPos.X > (*iter)->Left() &&
-			worldPos.X < (*iter)->Right() &&
-			worldPos.Y > (*iter)->Bottom() &&
-			worldPos.Y < (*iter)->Top())
+		if (worldPos.X > obj->Left() &&
+			worldPos.X < obj->Right() &&
+			worldPos.Y > obj->Bottom() &&
+			worldPos.Y < obj->Top())
 		{
 			if (selectedObj)
 			{
 				// check if the area of this object is smaller,
 				// if it is then we pick this instead
-				GameObject * newObj = (*iter);
+				GameObject * newObj = obj.get();
 				float newArea = (newObj->Right() - newObj->Left()) * (newObj->Top() - newObj->Bottom());
 				float selectedObjArea = (selectedObj->Right() - selectedObj->Left()) * (selectedObj->Top() - selectedObj->Bottom());
 
@@ -179,7 +174,7 @@ GameObject * LevelEditor::GetGameObjectClickedOn(list<GameObject*> gameObjects)
 			}
 			else 
 			{
-				selectedObj = (*iter);
+				selectedObj = obj.get();
 			}
 		}
 	}
@@ -196,22 +191,17 @@ Sprite * LevelEditor::GetAsSprite(GameObject * object)
 
 void LevelEditor::UpdateParallaxLayers()
 {
-	LOG_INFO("Refactor LevelEditor::UpdateParallaxLayers");
-	/*
-	list<GameObject*> gameObjects = GameObjectManager::Instance()->GetGameObjectList();
+	list<shared_ptr<GameObject> > gameObjects = GameObjectManager::Instance()->GetGameObjectList();
 
-	for (list<GameObject*>::iterator iter = gameObjects.begin();
-		iter != gameObjects.end();
-		++iter)
+	for (auto & obj : gameObjects)
 	{
-		ParallaxLayer * pLayer = GetAsParallaxLayer(*iter);
+		ParallaxLayer * pLayer = GetAsParallaxLayer(obj.get());
 
 		if (pLayer)
 		{
 			pLayer->Update(0);
 		}
 	}
-	*/
 }
 
 ParallaxLayer * LevelEditor::GetAsParallaxLayer(GameObject * object)

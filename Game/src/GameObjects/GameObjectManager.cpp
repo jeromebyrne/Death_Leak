@@ -437,31 +437,30 @@ void GameObjectManager::SwitchToLevel(const char * level, bool defer)
 
 void GameObjectManager::SaveObjectsToFile(const char* filename)
 {
-	LOG_INFO("Refactor SaveObjectsToFile");
-	// loop through the game objects and make sur ethere are no duplicates
-	/*list<GameObject *> checkedList;
+	// loop through the game objects and make sure there are no duplicates
+	list<GameObject *> checkedList;
 
-	for (auto &obj : m_gameObjects)
+	for (auto & obj : m_gameObjects)
 	{
 		for (auto checked : checkedList)
 		{
-			if (checked == obj)
+			if (checked == obj.get())
 			{
 				// duplicate
 				return;
 			}
 		}
 
-		checkedList.push_back(obj);
-	}*/
+		checkedList.push_back(obj.get());
+	}
 
-	/*XmlDocument doc;
+	XmlDocument doc;
 	TiXmlElement * root = new TiXmlElement( "level" );
 	root->SetAttribute("audio", ""); 
 
 	for (auto & obj : m_gameObjects)
 	{
-		TiXmlElement * objElem = SaveObject(obj);
+		TiXmlElement * objElem = SaveObject(obj.get());
 
 		if (objElem)
 		{
@@ -470,7 +469,6 @@ void GameObjectManager::SaveObjectsToFile(const char* filename)
 	}
 
 	doc.Save(filename, root);
-	*/
 }
 
 TiXmlElement * GameObjectManager::SaveObject(GameObject * object)
@@ -628,34 +626,12 @@ ParticleSpray * GameObjectManager::ReadParticleSpray(TiXmlElement * element)
 
 void GameObjectManager::DeleteGameObjects()
 {
-	// traverse through the object list and delete
-	/*list<GameObject*>::iterator current = m_gameObjects.begin();
-
-	for(;current != m_gameObjects.end(); current++)
-	{
-		if ((*current))
-		{
-#ifdef _DEBUG
-			string typeName = typeid((**current)).name();
-#endif
-			delete (*current);
-			(*current)  = nullptr;
-		}
-	}
-
-	m_player = 0;
+	m_player = nullptr;
 
 	m_gameObjects.clear();
-	m_drawableObjects.clear();
-	m_updateableObjects.clear();
-	m_drawableObjects.clear();
-	CollisionManager::Instance()->ClearObjects();
 	ParticleEmitterManager::Instance()->ClearParticles();
 	
 	mSlowMotionLayer = nullptr;
-	*/
-
-	LOG_INFO("Refactor GameObjectManager::DeleteGameObjects");
 
 	m_levelLoaded = false;
 }

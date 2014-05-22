@@ -149,26 +149,22 @@ void Game::Update(float delta)
 			// update all of our game objects
 			GameObjectManager::Instance()->Update(mPaused, delta);
 #if _DEBUG
-		/*}
+		}
 		else
 		{
-			LOG_INFO("Refactor Game::Update")
 			static bool hasUpdatedOnce = false;
 			if (!hasUpdatedOnce)
 			{
 				// update all of our game objects once
-				list<GameObject*> objects = GameObjectManager::Instance()->GetGameObjectList();
-				for (auto iter = objects.begin();
-					iter != objects.end();
-					++iter)
+				auto objects = GameObjectManager::Instance()->GetGameObjectList();
+				for (auto & obj : objects)
 				{
-					(*iter)->Update(delta);
+					obj->Update(delta);
 				}
 				hasUpdatedOnce = true;
 			}
 
 			mlevelEditor->Update();
-			*/	
 		}
 #endif
 		bool pressing_pause_gamepad = false;
