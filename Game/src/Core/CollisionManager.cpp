@@ -47,6 +47,11 @@ void CollisionManager::DetectAndResolve(int camX, int camY)
 
 		for (auto & otherObj : objList)
 		{
+			if (obj == otherObj)
+			{
+				continue;
+			}
+
 			if (!otherObj)
 			{
 				GAME_ASSERT(otherObj);

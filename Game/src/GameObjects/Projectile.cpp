@@ -9,10 +9,17 @@
 
 int Projectile::NUM_PROJECTILES_ACTIVE = 0;
 
-Projectile::Projectile(const char* textureFileName, const char * impactTextureFilename, GameObject * owner, Vector3 position, Vector2 dimensions, Vector2 collisionDimensions,
-					   Vector2 direction,float damage, float speed, int maxTimeInActive)
+Projectile::Projectile(ProjectileOwnerType ownerType, 
+						const char* textureFileName,
+						const char * impactTextureFilename,
+						Vector3 position,
+						Vector2 dimensions,
+						Vector2 collisionDimensions,
+						Vector2 direction,
+						float damage,
+						float speed,
+						int maxTimeInActive)
 :SolidMovingSprite(position.X,position.Y,position.Z,dimensions.X,dimensions.Y), 
-m_owner(owner), 
 m_isActive(true),
 m_wasActiveLastFrame(true),
 m_maxTimeInActive(maxTimeInActive),
@@ -21,9 +28,9 @@ m_impactTexture(NULL),
 m_impactTextureFilename(impactTextureFilename),
 mCollidedWithProjectile(false),
 mSpinningMovement(false),
-m_timeBecameInactive(0)
+m_timeBecameInactive(0),
+mOwnerType(ownerType)
 {
-
 	NUM_PROJECTILES_ACTIVE++; // increase our world projectile count
 
 	m_direction.X = direction.X;
@@ -36,32 +43,35 @@ m_timeBecameInactive(0)
 
 	m_collisionBoxDimensions.X = collisionDimensions.X;
 	m_collisionBoxDimensions.Y = collisionDimensions.Y;
-	
 }
 
-Projectile::~Projectile(void)
+Projectile::~Projectile()
 {
-	if (m_owner)
-	{
-		Character * character = dynamic_cast<Character *>(m_owner);
-		if (character)
-		{
-			character->RemoveProjectileFromActiveList(this);
-		}
-	}
-	m_owner = nullptr;
-	--NUM_PROJECTILES_ACTIVE;
 }
 
 void Projectile::OnCollision(SolidMovingSprite* object)
 {
-  	if(m_isActive && 
-		m_owner &&
-		object != m_owner)
+	GAME_ASSERT((object != this));
+
+  	if(m_isActive)
 	{
+		//GAME_ASSERT(mOwnerType != Projectile::kUnknownProjectile);
+
+		Player * player = GameObjectManager::Instance()->GetPlayer();
+		if (object == player && mOwnerType == Projectile::kPlayerProjectile)
+		{
+			// Player projectiles don't affect the player
+			return;
+		}
+
 		NPC * objAsNPC = dynamic_cast<NPC *>(object);
-		if (objAsNPC && dynamic_cast<NPC *>(m_owner) ||
-			dynamic_cast<WaterBlock*>(object))
+		if (objAsNPC && mOwnerType == Projectile::kNPCProjectile)
+		{
+			// NPC projectiles don't affect NPCs
+			return;
+		}
+
+		if (dynamic_cast<WaterBlock*>(object))
 		{
 			// npc projectiles don't damage other npc's
 			return;
@@ -70,12 +80,14 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 		Projectile * objAsProj = dynamic_cast<Projectile *>(object);
 		if (objAsProj)
 		{
-			Player * player = GameObjectManager::Instance()->GetPlayer();
-			if (objAsProj->m_owner == player && 
-				this->m_owner != player)
+			return;
+
+			LOG_INFO("TODO: come back to this when refactor is over");
+			/*
+			if (objAsProj->getOwnerType() != getOwnerType())
 			{
 				// set the player as the owner of the projectile and fire it back at the enemy
-				Vector3 enemyPosition = m_owner->Position();
+				Vector3 enemyPosition = ->Position();
 				
 				Vector3 ownerCollisionBounds;
 
@@ -108,6 +120,7 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 				m_owner = player;
 			}
 			return;
+			*/
 		}
 
 		if (mSpinningMovement)
@@ -178,7 +191,7 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 		}
 		
 		// attach the projectile to the hit object
-		AttachToSprite(object, offset);
+		AttachTo(GameObjectManager::Instance()->GetObjectByID(object->ID()), Vector3(0, 0, 0));
 
 		// stop the projectile
 		m_velocity.X = 0;
@@ -226,7 +239,7 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 																											1.4f);
 					if (spray)
 					{
-						// spray->AttachToSprite(object, Vector2(-offset.X, -offset.Y));
+						spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(object->ID()), Vector3(-offset.X, -offset.Y, 0));
 					}
 				}
 				else
@@ -407,7 +420,3 @@ void Projectile::LoadContent(ID3D10Device * graphicsdevice)
 	m_impactTexture = TextureManager::Instance()->LoadTexture(m_impactTextureFilename.c_str());
 }
 
-void Projectile::OnOwnerDead()
-{
-	m_owner = nullptr;
-}

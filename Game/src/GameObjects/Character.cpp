@@ -10,8 +10,6 @@
 #include "WaterBlock.h"
 
 float Character::mLastTimePlayedDeathSFX = 0;
-
-static const char * kBombTextureFile = "Media/bomb.png";
 static const float kMinTimeBetweenDeathSFX = 0.1f;
 
 Character::Character(float x, float y, float z, float width, float height, float breadth): 
@@ -40,10 +38,6 @@ mPlayFootsteps(true)
 
 Character::~Character(void)
 {
-	for (Projectile * p : mActiveProjectiles)
-	{
-		p->OnOwnerDead();
-	}
 }
 
 void Character::Scale(float xScale, float yScale, bool scalePosition)
@@ -618,101 +612,6 @@ void Character::DebugDraw(ID3D10Device *  device)
 	SolidMovingSprite::DebugDraw(device);
 }
 
-Projectile * Character::FireWeapon(Vector2 direction)
-{
-	Vector3 pos = m_position;
-	pos.X = (direction.X > 0) ? pos.X + m_projectileOffset.X : pos.X -= m_projectileOffset.X;
-	pos.Y += m_projectileOffset.Y;
-	pos.Z -= 0.1;
-	
-	if (direction.X > 0)
-	{
-		pos.X += m_projectileOffset.X;
-	}
-	else
-	{
-		pos.X -= m_projectileOffset.X;
-	}
-	
-	float speed = mSprintActive ? 40 : 30;
-
-	// TODO: ideally want these properties configurable per character
-	Projectile * p = new Projectile(mProjectileFilePath.c_str(), mProjectileImpactFilePath.c_str(), this, pos, Vector2(30,8), Vector2(30 * 1.2,8), direction, 5, speed, 1.8f);
-
-	mActiveProjectiles.insert(p);
-
-	if (m_isAnimated && m_animation)
-	{
-		AnimationPart * armPart = m_animation->GetPart("arm");
-
-		if (armPart)
-		{
-			armPart->Restart();
-			armPart->Animate(); // get's updated in UpdateAnimations()
-		}
-	}
-
-	if (direction.X > 0)
-	{
-		p->UnFlipVertical();
-	}
-	else
-	{
-		p->FlipVertical();
-	}
-
-	PlayRandomWeaponFireSound();
-
-	return p;
-}
-
-Projectile * Character::FireBomb(Vector2 direction)
-{
-	Vector3 pos = m_position;
-	pos.X = (direction.X > 0) ? pos.X + m_projectileOffset.X : pos.X -= m_projectileOffset.X;
-	pos.Y += m_projectileOffset.Y;
-	pos.Z -= 0.1;
-	
-	if (direction.X > 0)
-	{
-		pos.X += m_projectileOffset.X;
-	}
-	else
-	{
-		pos.X -= m_projectileOffset.X;
-	}
-
-	float speed = mSprintActive ? 20 : 15;
-	
-	Projectile * p = new BombProjectile(kBombTextureFile, mProjectileImpactFilePath.c_str(), this, pos, Vector2(30,8), Vector2(30,30), direction, 50, speed, 2.0f);
-
-	mActiveProjectiles.insert(p);
-
-	if (m_isAnimated && m_animation)
-	{
-		AnimationPart * armPart = m_animation->GetPart("arm");
-
-		if (armPart)
-		{
-			armPart->Restart();
-			armPart->Animate(); // get's updated in UpdateAnimations()
-		}
-	}
-
-	/*if (direction.X > 0)
-	{
-		p->UnFlipVertical();
-	}
-	else
-	{
-		p->FlipVertical();
-	}*/
-
-	PlayRandomWeaponFireSound();
-
-	return p;
-}
-
 void Character::PlayRandomWeaponFireSound()
 {
 	srand(timeGetTime());
@@ -767,13 +666,4 @@ void Character::Draw(ID3D10Device * device, Camera2D * camera)
 bool Character::IsOnSolidSurface()
 {
 	return IsOnGround() || GetIsCollidingOnTopOfObject();
-}
-
-void Character::RemoveProjectileFromActiveList(Projectile * projectile)
-{
-	if (!projectile)
-	{
-		GAME_ASSERT(projectile);
-	}
-	mActiveProjectiles.erase(projectile);
 }

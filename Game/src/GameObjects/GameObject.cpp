@@ -19,13 +19,13 @@ GameObject::GameObject(float x, float y , float z, float width, float height, fl
 	mClonedXml(nullptr),
 	mDrawable(false),
 	m_updateable(true),
-	mIsSolidSprite(false)
+	mIsSolidSprite(false),
+	mAttachedTo(nullptr),
+	mAttachedToOffset(0,0,0)
 {
 	static int GAME_OBJECT_ID = 1; 
 	m_id = GAME_OBJECT_ID;
 	GAME_OBJECT_ID++;
-	LOG_INFO("Refactor GameObject constructor");
-	// GameObjectManager::Instance()->AddGameObject(this);
 }
 
 GameObject::~GameObject(void)
@@ -36,17 +36,14 @@ GameObject::~GameObject(void)
 		m_debugDrawVBuffer->Release();
 	}
 #endif
+
+	Detach();
 }
 
 void GameObject::Initialise()
 {
 	srand(timeGetTime());
 	m_lastPosition = m_position;
-	if(m_updateable)
-	{
-		LOG_INFO("refactor GameObject Initialise");
-		//GameObjectManager::Instance()->AddUpdateableObject(this);
-	}
 
 	// initialise our world matrix
     D3DXMatrixIdentity( &m_world );
@@ -105,6 +102,8 @@ void GameObject::Update(float delta)
 	D3DXMatrixMultiply( &m_world, &m_rotation, &m_world);
 
 	m_lastPosition = m_position;
+
+	UpdateToParent();
 }
 
 void GameObject:: XmlRead(TiXmlElement * element)
@@ -285,3 +284,24 @@ string GameObject::GetTypeName()
 	return typeName;
 }
 
+void GameObject::AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset)
+{
+	GAME_ASSERT(parent);
+	if (!parent)
+	{
+		return;
+	}
+
+	mAttachedTo = parent;
+	mAttachedToOffset = offset;
+}
+
+void GameObject::Detach()
+{
+	mAttachedTo = nullptr;
+	mAttachedToOffset = Vector3(0, 0, 0);
+}
+
+void GameObject::UpdateToParent()
+{
+}

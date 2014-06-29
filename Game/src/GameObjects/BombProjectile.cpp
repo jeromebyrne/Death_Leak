@@ -7,10 +7,25 @@
 #include "AudioManager.h"
 #include "waterblock.h"
 
-BombProjectile::BombProjectile(const char* textureFileName , const char * impactTextureFilename, GameObject * owner, Vector3 position, Vector2 dimensions, Vector2 collisionDimensions,
-				Vector2 direction,float damage, float speed, int maxTimeInActive):
-Projectile(textureFileName , impactTextureFilename, owner, position, dimensions, collisionDimensions,
-			 direction, damage, speed, maxTimeInActive)
+BombProjectile::BombProjectile(ProjectileOwnerType ownerType, 
+								const char* textureFileName, 
+								const char * impactTextureFilename,
+								Vector3 position, 
+								Vector2 dimensions,
+								Vector2 collisionDimensions,
+								Vector2 direction,
+								float damage,
+								float speed,
+								int maxTimeInActive):
+Projectile(ownerType,textureFileName, 
+			impactTextureFilename,
+			position,
+			dimensions,
+			collisionDimensions,
+			 direction, 
+			 damage,
+			 speed,
+			 maxTimeInActive)
 {
 	mSpinningMovement = true;
 	mBouncable = true;
@@ -28,13 +43,11 @@ BombProjectile::~BombProjectile(void)
 
 void BombProjectile::OnCollision(SolidMovingSprite* object)
 {
-	if(m_owner &&
-		object != m_owner && 
-		!dynamic_cast<Orb*>(object))
+	if(!dynamic_cast<Orb*>(object))
 	{
+		LOG_INFO("Come back to this after refactor");
 		NPC * objAsNPC = dynamic_cast<NPC *>(object);
-		if (objAsNPC && dynamic_cast<NPC *>(m_owner) ||
-			dynamic_cast<WaterBlock*>(object))
+		if (dynamic_cast<WaterBlock*>(object))
 		{
 			// npc projectiles don't damage other npc's
 			return;
@@ -43,6 +56,7 @@ void BombProjectile::OnCollision(SolidMovingSprite* object)
 		Projectile * objAsProj = dynamic_cast<Projectile *>(object);
 		if (objAsProj)
 		{
+			/*
 			Player * player = GameObjectManager::Instance()->GetPlayer();
 			if (objAsProj->m_owner == player && 
 				this->m_owner != player)
@@ -62,6 +76,7 @@ void BombProjectile::OnCollision(SolidMovingSprite* object)
 				m_owner = player;
 			}
 			return;
+			*/
 		}
 
 		if (!dynamic_cast<Character *> (object))

@@ -113,8 +113,8 @@ void GameObjectManager::RemoveGameObject(GameObject * object, bool defer)
 			long refCount = (*iter).use_count();
 			if (refCount > 1)
 			{
-				LOG_ERROR("MEMORY LEAK!!! GameObject with ID: %u is being removed but still has a ref count greater than 1.", (*iter)->ID());
-				GAME_ASSERT(false);
+				LOG_ERROR("POSSIBLE MEMORY LEAK!!! GameObject with ID: %u is being removed but still has a ref count greater than 1.", (*iter)->ID());
+				// GAME_ASSERT(false);
 			}
 #endif
 			m_gameObjects.remove(*iter);
@@ -399,12 +399,11 @@ void GameObjectManager::LoadObjectsFromFile(const char* filename)
 
 	ScaleObjects(scaleX, scaleY);
 
-	LOG_INFO("GameObjectManager::LoadObjectsFromFile");
 	// update all the objects at least once at the start
-	/* (auto obj : m_updateableObjects)
+	for (auto & obj : m_gameObjects)
 	{
 		obj->Update(0);
-	}*/
+	}
 
 	WeatherManager::GetInstance()->RefreshAssets();
 
@@ -495,10 +494,6 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement)
 			newGameObject = new Player();
 			m_player = static_cast<Player*>(newGameObject);
 		}
-	}
-	else if (strcmp(gameObjectTypeName, "character") == 0)
-	{
-		newGameObject = new Character();
 	}
 	else if (strcmp(gameObjectTypeName, "npc") == 0)
 	{

@@ -30,10 +30,8 @@ VertexBuffer(nullptr),
 VertexBufferBump(nullptr),
 IndexBuffer(nullptr),
 m_isAnimated(false),
-m_attachedTo(nullptr),
-m_attachedToOffset(0,0,0),
-m_parentHFlipInitial(false),
-m_hflippedOnAttach(true),
+mParentHFlipInitial(false),
+mHflippedOnAttach(true),
 m_drawAtNativeDimensions(true),
 m_texture(nullptr),
 m_textureBump(nullptr),
@@ -52,8 +50,6 @@ mPixelWobbleSpeedMod(0.0f)
 
 Sprite::~Sprite(void)
 {
-	NotifyParticlesDetach();
-
 	if(VertexBuffer) 
 	{
 		VertexBuffer->Release();
@@ -316,88 +312,9 @@ void Sprite::ApplyChange(ID3D10Device * device)
 	m_applyChange = false;
 }
 
-void Sprite::AttachToSprite(Sprite * parent, Vector3 offset)
-{
-	m_attachedTo = parent;
-	m_attachedToOffset = offset;
-	
-	m_parentHFlipInitial = parent->IsHFlipped();
-	m_hflippedOnAttach = m_horizontalFlip;
-}
-
-void Sprite::DetachFromSprite()
-{
-	m_attachedTo = 0;
-	m_attachedToOffset = Vector3(0,0,0);
-}
-
-void Sprite::UpdateToParent()
-{
-	if (m_attachedTo)
-	{
-		m_position.Y = m_attachedTo->Position().Y + m_attachedToOffset.Y;
-		if (m_attachedTo->IsHFlipped())
-		{
-			if (m_parentHFlipInitial)
-			{
-				m_position.X = m_attachedTo->Position().X + m_attachedToOffset.X;
-				if (m_hflippedOnAttach)
-				{
-					FlipHorizontal();
-				}
-				else 
-				{
-					UnFlipHorizontal();
-				}
-			}
-			else
-			{
-				m_position.X  = m_attachedTo->Position().X - m_attachedToOffset.X;
-				if (m_hflippedOnAttach)
-				{
-					UnFlipHorizontal();
-				}
-				else 
-				{
-					FlipHorizontal();
-				}
-			}
-		}
-		else
-		{
-			if (m_parentHFlipInitial)
-			{
-				m_position.X  = m_attachedTo->Position().X - m_attachedToOffset.X;
-				if (m_hflippedOnAttach)
-				{
-					UnFlipHorizontal();
-				}
-				else 
-				{
-					FlipHorizontal();
-				}
-			}
-			else
-			{
-				m_position.X  = m_attachedTo->Position().X + m_attachedToOffset.X;
-				if (m_hflippedOnAttach)
-				{
-					FlipHorizontal();
-				}
-				else 
-				{
-					UnFlipHorizontal();
-				}
-			}
-		}
-	}
-}
-
 void Sprite::Update(float delta)
 {
 	DrawableObject::Update(delta);
-
-	UpdateToParent();
 
 	// update our animations
 	if(m_isAnimated)
@@ -982,46 +899,85 @@ void Sprite::CalculateNormal(Vector3 tangent, Vector3 binormal, Vector3 &normal)
 	normal.Z = normal.Z / length;
 }
 
-void Sprite::NotifyParticlesDetach()
+void Sprite::UpdateToParent()
 {
-	for (auto s : mParticlesAttachedToUs)
+	if (mAttachedTo)
 	{
-		if (s)
+		GAME_ASSERT(dynamic_cast<Sprite*>(mAttachedTo.get()));
+
+		Sprite * parentSprite = static_cast<Sprite *>(mAttachedTo.get());
+
+		m_position.Y = mAttachedTo->Position().Y + mAttachedToOffset.Y;
+		if (parentSprite->IsHFlipped())
 		{
-			s->DetachFromSprite();
+			if (mParentHFlipInitial)
+			{
+				m_position.X = mAttachedTo->Position().X + mAttachedToOffset.X;
+				if (mHflippedOnAttach)
+				{
+					FlipHorizontal();
+				}
+				else
+				{
+					UnFlipHorizontal();
+				}
+			}
+			else
+			{
+				m_position.X = mAttachedTo->Position().X - mAttachedToOffset.X;
+				if (mHflippedOnAttach)
+				{
+					UnFlipHorizontal();
+				}
+				else
+				{
+					FlipHorizontal();
+				}
+			}
 		}
 		else
 		{
-			GAME_ASSERT(s);
+			if (mParentHFlipInitial)
+			{
+				m_position.X = mAttachedTo->Position().X - mAttachedToOffset.X;
+				if (mHflippedOnAttach)
+				{
+					UnFlipHorizontal();
+				}
+				else
+				{
+					FlipHorizontal();
+				}
+			}
+			else
+			{
+				m_position.X = mAttachedTo->Position().X + mAttachedToOffset.X;
+				if (mHflippedOnAttach)
+				{
+					FlipHorizontal();
+				}
+				else
+				{
+					UnFlipHorizontal();
+				}
+			}
 		}
 	}
-
-	mParticlesAttachedToUs.clear();
 }
 
-void Sprite::OnParticleAttached(ParticleSpray * spray)
+void Sprite::AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset)
 {
-	if (!spray)
+	DrawableObject::AttachTo(parent, offset);
+
+	Sprite * sprite = dynamic_cast<Sprite *>(parent.get());
+	GAME_ASSERT(sprite);
+	if (!sprite)
 	{
-		GAME_ASSERT(spray);
 		return;
 	}
-	mParticlesAttachedToUs.push_back(spray);
+
+	mParentHFlipInitial = sprite->IsHFlipped();
+	mHflippedOnAttach = m_horizontalFlip;
 }
 
-void Sprite::OnParticleSprayDead(ParticleSpray * spray)
-{
-	if (spray)
-	{
-		std::list<ParticleSpray *>::iterator findIter = std::find(mParticlesAttachedToUs.begin(), mParticlesAttachedToUs.end(), spray);
-		if (findIter != mParticlesAttachedToUs.end())
-		{
-			mParticlesAttachedToUs.remove(spray);
-		}
-	}
-	else
-	{
-		GAME_ASSERT(spray);
-	}
-}
 

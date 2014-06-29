@@ -61,7 +61,7 @@ void Rabbit::OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExp
 						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(orb_pos.X, orb_pos.Y, orb_pos.Z - 0.1), true, 2.0f);
 						if (spray)
 						{
-							spray->AttachToSprite(orb, Vector2(0,0));
+							spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(orb->ID()), Vector3(0, 0, 0));
 						}
 						break;
 					}
@@ -73,7 +73,7 @@ void Rabbit::OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExp
 						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(orb_pos.X, orb_pos.Y, orb_pos.Z - 0.1), true, 2.0f);
 						if (spray)
 						{
-							spray->AttachToSprite(orb, Vector2(0,0));
+							spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(orb->ID()), Vector3(0, 0, 0));
 						}
 						break;
 					}
@@ -85,7 +85,7 @@ void Rabbit::OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExp
 						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(orb_pos.X, orb_pos.Y, orb_pos.Z - 0.1), true, 2.0f);
 						if (spray)
 						{
-							spray->AttachToSprite(orb, Vector2(0,0));
+							spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(orb->ID()), Vector3(0, 0, 0));
 						}
 						break;
 					}
@@ -97,7 +97,7 @@ void Rabbit::OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExp
 						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(orb_pos.X, orb_pos.Y, orb_pos.Z - 0.1), true, 2.0f);
 						if (spray)
 						{
-							spray->AttachToSprite(orb, Vector2(0,0));
+							spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(orb->ID()), Vector3(0, 0, 0));
 						}
 
 						break;

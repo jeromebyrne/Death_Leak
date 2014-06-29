@@ -112,6 +112,9 @@ public:
 
 	bool IsSolidSprite() const { return mIsSolidSprite; }
 
+	virtual void AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset);
+	void Detach();
+
 protected:
 
 	virtual void SetupDebugDraw();
@@ -130,7 +133,12 @@ protected:
 	bool mDrawable;
 	bool mIsSolidSprite;
 
+	std::shared_ptr<GameObject> mAttachedTo;
+	Vector3 mAttachedToOffset;
+
 private:
+
+	virtual void UpdateToParent();
 
 	int m_id; // our game object ID (this is unique)
 

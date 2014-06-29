@@ -31,8 +31,6 @@ protected:
 	std::string mProjectileFilePath;
 	std::string mProjectileImpactFilePath;
 
-	set<Projectile *> mActiveProjectiles;
-
 	void PlayRandomWeaponFireSound();
 
 	static float mLastTimePlayedDeathSFX;
@@ -75,12 +73,10 @@ public:
 	void SetSprintActive(bool value);
 	bool GetIsSprintActive() { return mSprintActive; }
 
-	virtual Projectile * FireWeapon(Vector2 direction);
-	virtual Projectile * FireBomb(Vector2 direction);
+	virtual Projectile * FireWeapon(Vector2 direction) = 0;
+	virtual Projectile * FireBomb(Vector2 direction) = 0;
 
 	bool IsOnSolidSurface();
-
-	void RemoveProjectileFromActiveList(Projectile * projectile);
 };
 
 #endif

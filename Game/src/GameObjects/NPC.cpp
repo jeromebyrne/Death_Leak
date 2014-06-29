@@ -188,7 +188,7 @@ void NPC::OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplod
 						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(orb_pos.X, orb_pos.Y, orb_pos.Z - 0.1), true, 2.0f);
 						if (spray)
 						{
-							spray->AttachToSprite(orb, Vector2(0,0));
+							spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(orb->ID()), Vector3(0,0,0));
 						}
 						break;
 					}
@@ -200,7 +200,7 @@ void NPC::OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplod
 						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(orb_pos.X, orb_pos.Y, orb_pos.Z - 0.1), true, 2.0f);
 						if (spray)
 						{
-							spray->AttachToSprite(orb, Vector2(0,0));
+							spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(orb->ID()), Vector3(0, 0, 0));
 						}
 						break;
 					}
@@ -212,7 +212,7 @@ void NPC::OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplod
 						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(orb_pos.X, orb_pos.Y, orb_pos.Z - 0.1), true, 2.0f);
 						if (spray)
 						{
-							spray->AttachToSprite(orb, Vector2(0,0));
+							spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(orb->ID()), Vector3(0, 0, 0));
 						}
 						break;
 					}
@@ -224,7 +224,7 @@ void NPC::OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplod
 						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(orb_pos.X, orb_pos.Y, orb_pos.Z - 0.1), true, 2.0f);
 						if (spray)
 						{
-							spray->AttachToSprite(orb, Vector2(0,0));
+							spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(orb->ID()), Vector3(0, 0, 0));
 						}
 
 						break;
@@ -253,10 +253,18 @@ Projectile * NPC::FireWeapon(Vector2 direction)
 	float speed = mSprintActive ? 45 : 35;
 
 	// TODO: ideally want these properties configurable per character
-	Projectile * p = new Projectile(mProjectileFilePath.c_str(), mProjectileImpactFilePath.c_str(), this, pos, Vector2(20,20), Vector2(30 * 1.2,8), direction, 5, speed, 2.5f);
-	p->SetSpinningMovement(true); // spinning for ninja stars 
+	Projectile * p = new Projectile(Projectile::kNPCProjectile,
+									mProjectileFilePath.c_str(),
+									mProjectileImpactFilePath.c_str(), 
+									pos,
+									Vector2(20,20),
+									Vector2(30 * 1.2,8),
+									direction,
+									5,
+									speed,
+									2.5f);
 
-	mActiveProjectiles.insert(p);
+	p->SetSpinningMovement(true); // spinning for ninja stars 
 	
 	if (m_isAnimated && m_animation)
 	{

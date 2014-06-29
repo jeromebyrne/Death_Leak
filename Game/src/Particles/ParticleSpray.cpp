@@ -14,8 +14,6 @@ ParticleSpray::ParticleSpray(bool isBloodSpray, Vector3 position, Vector3 dimens
 	m_loopTime(loopTime), 
 	m_scalesByLiveTime(scaleByLiveTime), 
 	m_scaleTo(scaleTo),
-	m_parent(0),
-	m_parentOffset(0,0),
 	mIsBloodSpray(isBloodSpray),
 	m_direction(1,0),
 	m_spread(1.0),
@@ -28,7 +26,8 @@ ParticleSpray::ParticleSpray(bool isBloodSpray, Vector3 position, Vector3 dimens
 	m_gravity(1),
 	m_minBrightness(1.0),
 	m_maxBrightness(1.0),
-	m_numParticles(10)
+	m_numParticles(10),
+	mParentHFlipInitial(false)
 {
 	m_textureFilename = textureFileName;
 	m_startedLooping = Timing::Instance()->GetTotalTimeSeconds();
@@ -38,17 +37,11 @@ ParticleSpray::~ParticleSpray(void)
 {
 	m_particleList.clear();
 
-	if (m_parent)
-	{
-		m_parent->OnParticleSprayDead(this);
-		DetachFromSprite();
-	}
-
 	ParticleEmitterManager::DecrementParticleWorldCount(m_particleList.size());
 	if(m_vertexBuffer)
 	{
 		m_vertexBuffer->Release();
-		m_vertexBuffer = 0;
+		m_vertexBuffer = nullptr;
 	}
 }
 
@@ -185,42 +178,18 @@ void ParticleSpray::Draw(ID3D10Device* device, Camera2D * camera)
 
 			if(time_left <= 0)
 			{
-				if(m_isLooping)
+				if (m_isLooping)
 				{
-					if (m_parent) // we are attached to another object
+					if (mAttachedTo)
 					{
-						if (m_parentHFlipInitial)
-						{
-							if (m_parent->IsHFlipped())
-							{
-								currentParticle.PosX = m_parent->X() - m_parentOffset.X;
-								currentParticle.PosY = m_parent->Y() - m_parentOffset.Y;
-							}
-							else
-							{
-								currentParticle.PosX = m_parent->X() + m_parentOffset.X;
-								currentParticle.PosY = m_parent->Y() - m_parentOffset.Y;
-							}
-						}
-						else
-						{
-							if (m_parent->IsHFlipped())
-							{
-								currentParticle.PosX = m_parent->X() + m_parentOffset.X;
-								currentParticle.PosY = m_parent->Y() - m_parentOffset.Y;
-							}
-							else
-							{
-								currentParticle.PosX = m_parent->X() - m_parentOffset.X;
-								currentParticle.PosY = m_parent->Y() - m_parentOffset.Y;
-							}
-						}
+						UpdateParticleToParent(currentParticle);
 					}
 					else
 					{
 						currentParticle.PosX = currentParticle.StartPosX;
 						currentParticle.PosY = currentParticle.StartPosY;
 					}
+					
 					currentParticle.Speed = currentParticle.StartSpeed;
 					currentParticle.Size = currentParticle.StartSize;
 					currentParticle.StartTime = Timing::Instance()->GetTotalTimeSeconds();
@@ -391,25 +360,53 @@ void ParticleSpray::LoadContent(ID3D10Device* device)
 	m_texture = TextureManager::Instance()->LoadTexture(m_textureFilename.c_str());
 }
 
-void ParticleSpray::AttachToSprite(Sprite * parent, Vector2 offset)
+void ParticleSpray::AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset)
 {
-	if (!parent)
+	DrawableObject::AttachTo(parent, offset);
+
+	Sprite * sprite = dynamic_cast<Sprite *>(parent.get());
+	GAME_ASSERT(sprite);
+	if (!sprite)
 	{
-		GAME_ASSERT(parent);
 		return;
 	}
 
-	GAME_ASSERT((!dynamic_cast<Projectile*>(parent)));
-
-	m_parent = parent;
-	m_parentOffset = offset;
-	m_parentHFlipInitial = parent->IsHFlipped();
-
-	m_parent->OnParticleAttached(this);
+	mParentHFlipInitial = sprite->IsHFlipped();
 }
 
-void ParticleSpray::DetachFromSprite()
+void ParticleSpray::UpdateParticleToParent(Particle & particle)
 {
-	m_parent = nullptr;
-	m_parentOffset = Vector2(0,0);
+	if (mAttachedTo)
+	{
+		GAME_ASSERT(dynamic_cast<Sprite*>(mAttachedTo.get()));
+
+		Sprite * parentSprite = static_cast<Sprite *>(mAttachedTo.get());
+
+		if (mParentHFlipInitial)
+		{
+			if (parentSprite->IsHFlipped())
+			{
+				particle.PosX = parentSprite->X() - mAttachedToOffset.X;
+				particle.PosY = parentSprite->Y() - mAttachedToOffset.Y;
+			}
+			else
+			{
+				particle.PosX = parentSprite->X() + mAttachedToOffset.X;
+				particle.PosY = parentSprite->Y() - mAttachedToOffset.Y;
+			}
+		}
+		else
+		{
+			if (parentSprite->IsHFlipped())
+			{
+				particle.PosX = parentSprite->X() + mAttachedToOffset.X;
+				particle.PosY = parentSprite->Y() - mAttachedToOffset.Y;
+			}
+			else
+			{
+				particle.PosX = parentSprite->X() - mAttachedToOffset.X;
+				particle.PosY = parentSprite->Y() - mAttachedToOffset.Y;
+			}
+		}
+	}
 }

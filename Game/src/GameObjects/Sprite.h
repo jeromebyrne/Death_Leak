@@ -4,16 +4,13 @@
 #include "drawableobject.h"
 #include "Animation.h"
 
-class ParticleSpray;
-
 class Sprite : public DrawableObject
 {
 private:
 
-	// if we are attched to another sprite then update the logic for atatching
-	virtual void UpdateToParent();
-
 	friend class NinjaSpawner;
+
+	virtual void UpdateToParent() override;
 
 protected:
 	ID3D10ShaderResourceView* m_texture;
@@ -43,7 +40,6 @@ protected:
 	void Draw_effectPixelWobble(ID3D10Device * graphicsdevice);
 
 	void SetDimensionsAsNative();
-	void NotifyParticlesDetach();
 
 	Vector2 GetTextureDimensions();
 
@@ -56,13 +52,6 @@ protected:
 	Animation * m_animation;
 	std::string m_animationFile;
 	virtual void UpdateAnimations();
-
-	Sprite * m_attachedTo; // attached to this object
-	Vector3 m_attachedToOffset; 
-	bool m_parentHFlipInitial; // was the parent flipped on the initial attach
-	bool m_hflippedOnAttach; // were we h-flipped when we first attached
-
-	list<ParticleSpray *> mParticlesAttachedToUs;
 
 	// buffers
 	ID3D10Buffer* VertexBuffer;
@@ -86,7 +75,11 @@ protected:
 	float mPixelWobbleIntensity;
 	float mPixelWobbleSpeedMod;
 
+	bool mParentHFlipInitial;
+	bool mHflippedOnAttach;
+
 public:
+
 	Sprite(float x = 0, float y = 0, float z = 0, float width = 1, float height = 1, float breadth = 1);
 	virtual ~Sprite(void);
 
@@ -100,10 +93,6 @@ public:
 
 	bool GetDoesRepeatX() { return mRepeatTextureX; } 
 	bool GetDoesRepeatY() { return mRepeatTextureY; } 
-
-	// updates another objects position 
-	void AttachToSprite(Sprite * parent, Vector3 offset);
-	void DetachFromSprite();
 
 	void SetNoiseSHaderIntensity(float value) { mNoiseShaderIntensity = value; }
 
@@ -131,8 +120,7 @@ public:
 
 	void RecalculateVertices();
 
-	void OnParticleAttached(ParticleSpray * spray);
-	void OnParticleSprayDead(ParticleSpray * spray);
+	virtual void AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset) override;
 };
 
 #endif

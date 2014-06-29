@@ -37,7 +37,9 @@ public:
 
 	virtual void OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) override;
 
-	virtual Projectile * FireWeapon(Vector2 direction); 
+	virtual Projectile * FireWeapon(Vector2 direction) override; 
+
+	virtual Projectile * FireBomb(Vector2 direction) override { GAME_ASSERT(false); return nullptr; }
 
 	void AddToNPCResolvedList(NPC * otherNPC ) { m_resolvedNPCCollisionSet.insert(otherNPC); } 
 

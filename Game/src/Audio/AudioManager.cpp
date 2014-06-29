@@ -92,6 +92,7 @@ void AudioManager::Update()
 
 	for (auto sound : killList)
 	{
+		LOG_INFO("TODO: for some reason this was crashing");
 		mSloMoUntrackedSounds.remove(sound);
 		sound->drop();
 		sound = nullptr;

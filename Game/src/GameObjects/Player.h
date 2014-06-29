@@ -15,6 +15,8 @@ public:
 	virtual void XmlWrite(TiXmlElement * element) override;
 	void OnCollision(SolidMovingSprite * object) override;
 	virtual void OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) override;
+	virtual Projectile * FireWeapon(Vector2 direction) override;
+	virtual Projectile * FireBomb(Vector2 direction) override;
 };
 
 #endif

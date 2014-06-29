@@ -20,8 +20,6 @@ m_effectLightTextureWobble(nullptr),
 m_effectLightTextureBump(nullptr),
 m_effectNoise(nullptr)
 {
-	LOG_INFO("Refactor DrawableObject constructor");
-	// GameObjectManager::Instance()->AddDrawableObject(this);
 	m_currentEffectType = EFFECT_LIGHT_TEXTURE; // set default effect
 	mDrawable = true;
 }
