@@ -521,11 +521,11 @@ void Character::OnDamage(float damageAmount, Vector3 pointOfContact, bool should
 																		Vector3(0.2f, 0.8f, 0),
 																		0.25f,
 																		Vector3(3200, 2000, 0),
-																		"Media\\bloodparticle.png",
+																		"Media\\bloodparticle3.png",
 																		4,
 																		12,
-																		2.0f,
-																		3.0f,
+																		1.0f,
+																		1.5f,
 																		30,
 																		50,
 																		3,
@@ -534,7 +534,7 @@ void Character::OnDamage(float damageAmount, Vector3 pointOfContact, bool should
 																		1.0f,
 																		loopTime,
 																		true,
-																		30);
+																		15);
 
 					ParticleEmitterManager::Instance()->CreateDirectedSpray(20,
 																		pos,

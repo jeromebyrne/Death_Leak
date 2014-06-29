@@ -47,7 +47,6 @@ mOwnerType(ownerType)
 
 Projectile::~Projectile()
 {
-	LOG_INFO("Projectile destructor");
 }
 
 void Projectile::OnCollision(SolidMovingSprite* object)
@@ -82,18 +81,23 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 		if (objAsProj)
 		{
 			if (objAsProj->getOwnerType() != getOwnerType() &&
+				objAsProj->getOwnerType() == kPlayerProjectile &&
 				!mCollidedWithProjectile &&
 				!objAsProj->mCollidedWithProjectile)
 			{
- 				/*int yOffset = rand() % 10;
+				int yOffset = rand() % 200;
 				int randOffsetSign = rand() % 2;
 				if (randOffsetSign == 0)
 				{
 					yOffset *= -1;
-				}*/
+				}
 
-				Vector3 direction = Vector3(-m_direction.X, m_direction.Y, 0);
-				//direction.Normalise();
+				// pick a position behind the projectile to fire back at 
+				int objDirXNormal = objAsProj->DirectionX() > 0 ? 1 : -1;
+				Vector3 targetPos = Vector3(objAsProj->X() - 200 * objDirXNormal, objAsProj->Y() + yOffset, objAsProj->Z());
+
+				Vector3 direction = objAsProj->Position() - targetPos;
+				direction.Normalise();
 				m_direction = direction;
 				m_velocity = Vector3(direction.X * 25, direction.Y * 25, 1);
 
@@ -101,7 +105,24 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 				objAsProj->m_timeBecameInactive = Timing::Instance()->GetTotalTimeSeconds();
 				objAsProj->SetVelocityXYZ(-m_velocity.X * 0.7, -5, 0);
 
-				ParticleEmitterManager::Instance()->CreateRadialSpray(10, m_position, Vector3(3000,3000, 1), "Media\\spark.png", 2, 5, 0.4f, 0.6f, 30, 40, 2.0, false, 0.8,0.9,0,true, 4.0);
+				ParticleEmitterManager::Instance()->CreateRadialSpray(6, 
+																	  m_position,
+																	  Vector3(3000,3000, 1),
+																	  "Media\\spark.png",
+																	  0.2f,
+																	  1.0f,
+																	  0.2f,
+																	  0.4f,
+																	  24,
+																	  36,
+																	  0.0f,
+																	  false,
+																	  1.0f,
+																	  1.0f,
+																	  0,
+																	  true,
+																	  5.0);
+
 				AudioManager::Instance()->PlaySoundEffect("metalclink.wav");
 
 				objAsProj->mCollidedWithProjectile = true;

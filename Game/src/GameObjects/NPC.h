@@ -9,15 +9,8 @@ class AIStateFollow;
 
 class NPC : public Character
 {
-private:
-	AIState * m_currentState;
-	std::set<NPC *> m_resolvedNPCCollisionSet;
-protected:
-	Player * m_player;
-	AIStateFollow * m_friendlyFollowState;
-	bool mCheckNPCOverlapCollisions;
 public:
-	
+
 	// let the state classes access private data as they are an extension
 	// of the NPC class 
 	friend class AIStateFollow;
@@ -37,17 +30,28 @@ public:
 
 	virtual void OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) override;
 
-	virtual Projectile * FireWeapon(Vector2 direction) override; 
+	virtual Projectile * FireWeapon(Vector2 direction) override;
 
 	virtual Projectile * FireBomb(Vector2 direction) override { GAME_ASSERT(false); return nullptr; }
 
-	void AddToNPCResolvedList(NPC * otherNPC ) { m_resolvedNPCCollisionSet.insert(otherNPC); } 
+	void AddToNPCResolvedList(NPC * otherNPC) { m_resolvedNPCCollisionSet.insert(otherNPC); }
 
 	bool NPCCollisionSetContains(NPC * npc) { return m_resolvedNPCCollisionSet.find(npc) != m_resolvedNPCCollisionSet.end(); }
 
-	void ClearNPCCollisionSet() { m_resolvedNPCCollisionSet.clear();  }
+	void ClearNPCCollisionSet() { m_resolvedNPCCollisionSet.clear(); }
 
 	bool GetCheckNPCOverlapCollisions() { return mCheckNPCOverlapCollisions; }
+
+protected:
+	Player * m_player;
+	AIStateFollow * m_friendlyFollowState;
+	bool mCheckNPCOverlapCollisions;
+
+private:
+	AIState * m_currentState;
+	std::set<NPC *> m_resolvedNPCCollisionSet;
+	float mLastFireTime;
+	float mNextFireTime;
 };
 
 #endif

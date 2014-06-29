@@ -11,7 +11,7 @@
         <isanimated value="true" />
         <animationfile value="XmlFiles\ninjaAnimation.xml" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.5" alphawhennotoccluding="1" />
-        <resistance z="0" y="0.6" x="0.9" />
+        <resistance z="0" y="0.6" x="0.88" />
         <maxvelocity z="0" y="99999" x="8" />
         <applygravity value="true" />
         <collisionboxdimensions z="0" y="197.814" x="126.136" offsetX="0" offsetY="0" />
@@ -1964,7 +1964,7 @@
         <alpha value="1" />
         <effect name="effectlighttexture" />
         <numparticles value="25.000000" />
-        <texture filename="Media\\smoke.png" />
+        <texture filename="Media\\smoke3.png" />
         <direction x="0.000000" y="1.000000" />
         <spread value="0.400000" />
         <speed min="1.600000" max="3.000000" />
@@ -1976,15 +1976,15 @@
     </ParticleSpray>
     <ParticleSpray id="136" updateable="false">
         <position z="58.5" y="-40.54" x="9424.94" rotation="0" />
-        <dimensions breadth="0" height="600" width="1000" />
+        <dimensions breadth="0" height="2000" width="4000" />
         <material value="" />
         <alpha value="1" />
         <effect name="effectlighttexture" />
-        <numparticles value="20.000000" />
-        <texture filename="Media\\smoke2.png" />
+        <numparticles value="50.000000" />
+        <texture filename="Media\\smoke4.png" />
         <direction x="0.000000" y="1.000000" />
         <spread value="0.350000" />
-        <speed min="0.800000" max="1.500000" />
+        <speed min="0.500000" max="2.000000" />
         <livetime min="2.000000" max="4.000000" />
         <size min="50.000000" max="90.000000" scaleto="true" scaletovalue="3.000000" />
         <gravity value="0.000000" />
@@ -1997,7 +1997,7 @@
         <material value="" />
         <alpha value="1" />
         <effect name="effectlighttexture" />
-        <numparticles value="15.000000" />
+        <numparticles value="10.000000" />
         <texture filename="Media\\flame3.png" />
         <direction x="0.000000" y="1.000000" />
         <spread value="0.300000" />

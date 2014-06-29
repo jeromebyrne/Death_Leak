@@ -9,18 +9,28 @@
 #include "particleemittermanager.h"
 #include "NPCManager.h"
 
+static float kMinReloadTime = 0.8f;
+static float kMaxReloadTime = 2.0f;
+
 NPC::NPC(float x, float y, float z, float width, float height, float breadth):
 Character(x, y, z, width, height, breadth),
 m_player(0),
 m_friendlyFollowState(nullptr),
 m_currentState(nullptr),
-mCheckNPCOverlapCollisions(true)
+mCheckNPCOverlapCollisions(true),
+mLastFireTime(0),
+mNextFireTime(0)
 {
 	mHealth = 30.0f;
 	mProjectileFilePath = "Media/ninjastar.png";
 	mProjectileImpactFilePath = "Media/ninjastar_impact.png";
 
 	NPCManager::Instance()->AddNPC(this);
+
+	mLastFireTime = Timing::Instance()->GetTotalTimeSeconds();
+
+	mNextFireTime = (rand() % ((int)((kMaxReloadTime - kMinReloadTime) * 100)) + kMinReloadTime * 100.0f);
+	mNextFireTime *= 0.01f;
 }
 
 NPC::~NPC(void)
@@ -83,26 +93,24 @@ void NPC::SetState(AIState::AIStateType state)
 
 void NPC::FireProjectileAtObject(GameObject * target)
 {
-	/*
 	if (!target)
 	{
 		GAME_ASSERT(target);
 		return;
 	}
 
-	// just using this static for testing, fire time should be determined by weapon type (not implemented)
-	static float last_fire_time = 0.0f;
-
-	if (last_fire_time + 0.3f < Timing::Instance()->GetTotalTimeSeconds())
+	if (mLastFireTime + mNextFireTime < Timing::Instance()->GetTotalTimeSeconds())
 	{
 		Vector2 dir = Vector2(target->Position().X - m_position.X, target->Position().Y - m_position.Y);
 		dir.Normalise();
 
 		GameObjectManager::Instance()->AddGameObject(FireWeapon(dir));
 
-		last_fire_time = Timing::Instance()->GetTotalTimeSeconds();
+		mLastFireTime = Timing::Instance()->GetTotalTimeSeconds();
+
+		mNextFireTime = (rand() % ((int)((kMaxReloadTime - kMinReloadTime) * 100)) + kMinReloadTime * 100.0f);
+		mNextFireTime *= 0.01f;
 	}
-	*/
 }
 
 void NPC::OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode)
