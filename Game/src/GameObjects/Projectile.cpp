@@ -47,6 +47,7 @@ mOwnerType(ownerType)
 
 Projectile::~Projectile()
 {
+	LOG_INFO("Projectile destructor");
 }
 
 void Projectile::OnCollision(SolidMovingSprite* object)
@@ -80,47 +81,35 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 		Projectile * objAsProj = dynamic_cast<Projectile *>(object);
 		if (objAsProj)
 		{
-			return;
-
-			LOG_INFO("TODO: come back to this when refactor is over");
-			/*
-			if (objAsProj->getOwnerType() != getOwnerType())
+			if (objAsProj->getOwnerType() != getOwnerType() &&
+				!mCollidedWithProjectile &&
+				!objAsProj->mCollidedWithProjectile)
 			{
-				// set the player as the owner of the projectile and fire it back at the enemy
-				Vector3 enemyPosition = ->Position();
-				
-				Vector3 ownerCollisionBounds;
-
-				// offset a little rather than straight back at the enemy origin
-				Character * ownerAsCharacter = dynamic_cast<Character *>(m_owner);
-				if (ownerAsCharacter)
-				{
-					ownerCollisionBounds = ownerAsCharacter->CollisionDimensions();
-				}
- 				int yOffset = rand() % (int)(ownerCollisionBounds.Y * 0.7);
+ 				/*int yOffset = rand() % 10;
 				int randOffsetSign = rand() % 2;
 				if (randOffsetSign == 0)
 				{
 					yOffset *= -1;
-				}
-				enemyPosition.Y = enemyPosition.Y + yOffset + ownerAsCharacter->CollisionBoxOffset().Y;
+				}*/
 
-				Vector3 direction = enemyPosition - m_position;
-				direction.Normalise();
-				m_velocity = Vector3(direction.X * 17, direction.Y * 17, 1);
+				Vector3 direction = Vector3(-m_direction.X, m_direction.Y, 0);
+				//direction.Normalise();
+				m_direction = direction;
+				m_velocity = Vector3(direction.X * 25, direction.Y * 25, 1);
 
 				objAsProj->m_isActive = false;
 				objAsProj->m_timeBecameInactive = Timing::Instance()->GetTotalTimeSeconds();
-				objAsProj->SetVelocityXYZ(-m_velocity.X * 0.5, -5, 0);
+				objAsProj->SetVelocityXYZ(-m_velocity.X * 0.7, -5, 0);
 
 				ParticleEmitterManager::Instance()->CreateRadialSpray(10, m_position, Vector3(3000,3000, 1), "Media\\spark.png", 2, 5, 0.4f, 0.6f, 30, 40, 2.0, false, 0.8,0.9,0,true, 4.0);
 				AudioManager::Instance()->PlaySoundEffect("metalclink.wav");
 
 				objAsProj->mCollidedWithProjectile = true;
-				m_owner = player;
+				
+				// never want to damage the player so set as a player projectile
+				mOwnerType = kPlayerProjectile;
 			}
 			return;
-			*/
 		}
 
 		if (mSpinningMovement)
@@ -191,7 +180,7 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 		}
 		
 		// attach the projectile to the hit object
-		AttachTo(GameObjectManager::Instance()->GetObjectByID(object->ID()), Vector3(0, 0, 0));
+		AttachTo(GameObjectManager::Instance()->GetObjectByID(object->ID()), offset);
 
 		// stop the projectile
 		m_velocity.X = 0;
@@ -366,7 +355,7 @@ void Projectile::Update(float delta)
 
 		if (mCollidedWithProjectile)
 		{
-			SetRotationAngle(GetRotationAngle() + 0.3);
+			SetRotationAngle(GetRotationAngle() + 0.3f);
 		}
 
 		/*if(NUM_PROJECTILES_ACTIVE > MAX_PROJECTLES_ALLOWED)

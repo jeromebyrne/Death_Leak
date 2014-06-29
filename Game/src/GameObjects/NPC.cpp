@@ -83,6 +83,7 @@ void NPC::SetState(AIState::AIStateType state)
 
 void NPC::FireProjectileAtObject(GameObject * target)
 {
+	/*
 	if (!target)
 	{
 		GAME_ASSERT(target);
@@ -101,6 +102,7 @@ void NPC::FireProjectileAtObject(GameObject * target)
 
 		last_fire_time = Timing::Instance()->GetTotalTimeSeconds();
 	}
+	*/
 }
 
 void NPC::OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode)
