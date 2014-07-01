@@ -21,7 +21,6 @@ void AIStateFollow::OnTransition()
 
 void AIStateFollow::Update()
 {
-	// just prototyping the basic following here
 	if (m_npc->m_player)
 	{
 		// get the distance to the player
@@ -42,7 +41,6 @@ void AIStateFollow::Update()
 		else
 		{
 			m_npc->StopXAccelerating();
-			m_npc->FireProjectileAtObject(m_npc->m_player);
 		}
 	}
 }

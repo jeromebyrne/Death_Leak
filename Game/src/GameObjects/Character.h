@@ -42,6 +42,7 @@ protected:
 	bool mPlayFootsteps;
 
 public:
+
 	Character(float x = 0, float y = 0, float z = 0, float width = 10, float height = 10, float breadth = 0);
 	virtual ~Character(void);
 	virtual void Update(float delta) override;
@@ -77,6 +78,8 @@ public:
 	virtual Projectile * FireBomb(Vector2 direction) = 0;
 
 	bool IsOnSolidSurface();
+
+	virtual void DoMeleeAttack();
 };
 
 #endif

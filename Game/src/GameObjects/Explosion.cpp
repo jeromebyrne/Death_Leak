@@ -7,9 +7,6 @@
 #include "Projectile.h"
 
 static const unsigned int kExplosionAliveTime = 2000;
-static const char * kExplosionTexture1 = "";
-static const char * kExplosionTexture2 = "";
-static const char * kExplosionTexture3 = "";
 
 Explosion::Explosion(float damage,float radius, float x, float y, float z, float width, float height, float breadth, char* effectName) :
 	DrawableObject(x, y, z, width, height, breadth, effectName),
@@ -156,23 +153,23 @@ void Explosion::Display()
 															8);
 
 
-	ParticleEmitterManager::Instance()->CreateRadialSpray(30,
+	ParticleEmitterManager::Instance()->CreateRadialSpray(40,
 															m_position,
 															Vector3(3200, 1200, 0),
-															"Media\\smoke.png",
-															3,
-															7,
+															"Media\\smoke3.png",
+															1.0f,
+															4.0f,
 															1.0f,
 															1.75f,
-															50,
-															120,
+															20,
+															40,
 															0.5f,
 															false,
 															0.2f,
 															0.7f,
 															-1,
 															true,
-															6);
+															20);
 
 	ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
 															m_position,
@@ -194,10 +191,10 @@ void Explosion::Display()
 															true,
 															70);
 
-	ParticleEmitterManager::Instance()->CreateRadialSpray(20,
+	/*ParticleEmitterManager::Instance()->CreateRadialSpray(20,
 															m_position,
 															Vector3(3200, 1200, 0),
-															"Media\\flame.dds",
+															"Media\\smoke4.png",
 															10,
 															20,
 															0.75f,
@@ -210,7 +207,7 @@ void Explosion::Display()
 															1.0f,
 															-1,
 															true,
-															3);
+															3);*/
 }
 
 void Explosion::Inflict()

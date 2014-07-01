@@ -120,35 +120,28 @@
 
 	</body>
 
-	<arm OffsetX="6" OffsetY="24" SizeX="32" SizeY="30">
-		<Still FrameRate="8" MaxFrameRate="8" MinFrameRate="0">
-       <frame filename="Media\\characters\\player\\arm_throw_still1.png" />
-       <frame filename="Media\\characters\\player\\arm_throw_still2.png" />
-      <frame filename="Media\\characters\\player\\arm_throw_still3.png" />
+	<arm OffsetX="50" OffsetY="24" SizeX="10" SizeY="10">
+		<Still FrameRate="10" MaxFrameRate="10" MinFrameRate="0">
+       <frame filename="Media\\characters\\player\\arm_throw_1.png" />
+       <frame filename="Media\\characters\\player\\arm_throw_2.png" />
 		</Still>
 
-    <Running FrameRate="8" MaxFrameRate="8" MinFrameRate="0">
-      <frame filename="Media\\characters\\player\\arm_throw_run1.png" />
-      <frame filename="Media\\characters\\player\\arm_throw_run2.png" />
-      <frame filename="Media\\characters\\player\\arm_throw_run3.png" />
+    <Running FrameRate="10" MaxFrameRate="10" MinFrameRate="0">
+      <frame filename="Media\\characters\\player\\arm_throw_1.png" />
+      <frame filename="Media\\characters\\player\\arm_throw_2.png" />
     </Running>
 
-    <JumpingUp FrameRate="8" MaxFrameRate="8" MinFrameRate="0">
-      <frame filename="Media\\characters\\player\\arm_throw_still1.png" />
-      <frame filename="Media\\characters\\player\\arm_throw_still2.png" />
-      <frame filename="Media\\characters\\player\\arm_throw_still3.png" />
+    <JumpingUp FrameRate="4" MaxFrameRate="8" MinFrameRate="0">
     </JumpingUp>
 
-    <JumpingDown FrameRate="8" MaxFrameRate="8" MinFrameRate="0">
-      <frame filename="Media\\characters\\player\\arm_throw_still1.png" />
-      <frame filename="Media\\characters\\player\\arm_throw_still2.png" />
-      <frame filename="Media\\characters\\player\\arm_throw_still3.png" />
+    <JumpingDown FrameRate="10" MaxFrameRate="10" MinFrameRate="0">
+      <frame filename="Media\\characters\\player\\arm_throw_jump_1.png" />
+      <frame filename="Media\\characters\\player\\arm_throw_jump_2.png" />
     </JumpingDown>
 
-    <SlidingDown FrameRate="8" MaxFrameRate="8" MinFrameRate="0">
-      <frame filename="Media\\characters\\player\\arm_throw_still1.png" />
-      <frame filename="Media\\characters\\player\\arm_throw_still2.png" />
-      <frame filename="Media\\characters\\player\\arm_throw_still3.png" />
+    <SlidingDown FrameRate="10" MaxFrameRate="10" MinFrameRate="0">
+      <frame filename="Media\\characters\\player\\arm_throw_1.png" />
+      <frame filename="Media\\characters\\player\\arm_throw_2.png" />
     </SlidingDown>
 	</arm>
 

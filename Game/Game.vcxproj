@@ -25,6 +25,8 @@
     <ClCompile Include="DXUT\SDKmisc.cpp" />
     <ClCompile Include="src\AI\AIState.cpp" />
     <ClCompile Include="src\AI\AIStateFollow.cpp" />
+    <ClCompile Include="src\AI\AIStateRangeAttack.cpp" />
+    <ClCompile Include="src\AI\AIStateRepel.cpp" />
     <ClCompile Include="src\Animation\Animation.cpp" />
     <ClCompile Include="src\Animation\AnimationPart.cpp" />
     <ClCompile Include="src\Animation\AnimationSequence.cpp" />
@@ -114,6 +116,8 @@
     <ClInclude Include="DXUT\SDKmisc.h" />
     <ClInclude Include="src\AI\AIState.h" />
     <ClInclude Include="src\AI\AIStateFollow.h" />
+    <ClInclude Include="src\AI\AIStateRangeAttack.h" />
+    <ClInclude Include="src\AI\AIStateRepel.h" />
     <ClInclude Include="src\Animation\Animation.h" />
     <ClInclude Include="src\Animation\AnimationPart.h" />
     <ClInclude Include="src\Animation\AnimationSequence.h" />

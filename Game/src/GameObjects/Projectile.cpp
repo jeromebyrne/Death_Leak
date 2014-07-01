@@ -29,7 +29,8 @@ m_impactTextureFilename(impactTextureFilename),
 mCollidedWithProjectile(false),
 mSpinningMovement(false),
 m_timeBecameInactive(0),
-mOwnerType(ownerType)
+mOwnerType(ownerType),
+mType(kUnknownProjectileType)
 {
 	NUM_PROJECTILES_ACTIVE++; // increase our world projectile count
 
@@ -43,6 +44,9 @@ mOwnerType(ownerType)
 
 	m_collisionBoxDimensions.X = collisionDimensions.X;
 	m_collisionBoxDimensions.Y = collisionDimensions.Y;
+
+	// blade projectile by default
+	mType = kBladeProjectile;
 }
 
 Projectile::~Projectile()
@@ -80,6 +84,39 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 		Projectile * objAsProj = dynamic_cast<Projectile *>(object);
 		if (objAsProj)
 		{
+			if (objAsProj->getOwnerType() == kPlayerProjectile &&
+				getOwnerType() == kPlayerProjectile)
+			{
+				if (getProjectileType() == kBladeProjectile &&
+					objAsProj->getProjectileType() == kBombProjectile)
+				{
+					// the player has fired a blade at their own bomb to blow it up
+
+					GameObjectManager::Instance()->RemoveGameObject(objAsProj);
+
+					ParticleEmitterManager::Instance()->CreateRadialSpray(6,
+																			m_position,
+																			Vector3(3000, 3000, 1),
+																			"Media\\spark.png",
+																			0.2f,
+																			1.0f,
+																			0.2f,
+																			0.4f,
+																			24,
+																			36,
+																			0.0f,
+																			false,
+																			1.0f,
+																			1.0f,
+																			0,
+																			true,
+																			5.0);
+
+					AudioManager::Instance()->PlaySoundEffect("metalclink.wav");
+					return;
+				}
+			}
+
 			if (objAsProj->getOwnerType() != getOwnerType() &&
 				objAsProj->getOwnerType() == kPlayerProjectile &&
 				!mCollidedWithProjectile &&
@@ -125,7 +162,11 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 
 				AudioManager::Instance()->PlaySoundEffect("metalclink.wav");
 
-				objAsProj->mCollidedWithProjectile = true;
+				// 50/50 chance of the players projectile being discarded in a collision
+				if (randOffsetSign == 0) 
+				{
+					objAsProj->mCollidedWithProjectile = true;
+				}
 				
 				// never want to damage the player so set as a player projectile
 				mOwnerType = kPlayerProjectile;

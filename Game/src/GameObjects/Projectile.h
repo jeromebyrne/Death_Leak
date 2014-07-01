@@ -8,6 +8,13 @@ class Projectile : public SolidMovingSprite
 {
 public:
 
+	enum ProjectileType
+	{
+		kUnknownProjectileType,
+		kBladeProjectile,
+		kBombProjectile
+	};
+
 	enum ProjectileOwnerType
 	{
 		kPlayerProjectile,
@@ -38,6 +45,7 @@ public:
 
 	void SetSpinningMovement(bool value) { mSpinningMovement = value; }
 
+	ProjectileType getProjectileType() const { return mType; }
 	ProjectileOwnerType getOwnerType() const { return mOwnerType; }
 
 protected:
@@ -56,6 +64,7 @@ protected:
 	bool mCollidedWithProjectile;
 	bool mSpinningMovement; 
 
+	ProjectileType mType;
 	ProjectileOwnerType mOwnerType;
 };
 

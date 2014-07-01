@@ -1,7 +1,7 @@
 <level audio="">
     <Player id="1" updateable="true">
-        <position z="50" y="-140.54" x="634.102" rotation="0" />
-        <dimensions breadth="0" height="200" width="200" native="true" repeatX="false" repeatY="false" />
+        <position z="50" y="-140.54" x="4634.102" rotation="0" />
+        <dimensions breadth="0" height="300" width="150" native="false" repeatX="false" repeatY="false" />
         <material value="maleninja" />
         <alpha value="1" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
@@ -14,14 +14,14 @@
         <resistance z="0" y="0.6" x="0.88" />
         <maxvelocity z="0" y="99999" x="8" />
         <applygravity value="true" />
-        <collisionboxdimensions z="0" y="197.814" x="126.136" offsetX="0" offsetY="0" />
+        <collisionboxdimensions z="0" y="200" x="120" offsetX="0" offsetY="-50" />
         <passive value="false" />
         <applydamage flag="false" amount="0" />
         <can_be_damaged value="true" />
         <maxjumpspeed value="25" />
         <xaccelrate value="1" />
-        <projectileoffsetx value="15" />
-        <projectileoffsety value="20" />
+        <projectileoffsetx value="40" />
+        <projectileoffsety value="0" />
     </Player>
 
   <LevelTrigger id="59" updateable="true">

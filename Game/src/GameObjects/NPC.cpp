@@ -1,6 +1,8 @@
 #include "precompiled.h"
 #include "NPC.h"
 #include "AIStateFollow.h"
+#include "AIStateRepel.h"
+#include "AIStateRangeAttack.h"
 #include "AudioManager.h"
 #include "projectile.h"
 #include "timing.h"
@@ -19,7 +21,9 @@ m_friendlyFollowState(nullptr),
 m_currentState(nullptr),
 mCheckNPCOverlapCollisions(true),
 mLastFireTime(0),
-mNextFireTime(0)
+mNextFireTime(0),
+m_repelState(nullptr),
+m_rangeAttackState(nullptr)
 {
 	mHealth = 30.0f;
 	mProjectileFilePath = "Media/ninjastar.png";
@@ -31,6 +35,14 @@ mNextFireTime(0)
 
 	mNextFireTime = (rand() % ((int)((kMaxReloadTime - kMinReloadTime) * 100)) + kMinReloadTime * 100.0f);
 	mNextFireTime *= 0.01f;
+
+	// initialise the states
+	m_friendlyFollowState = new AIStateFollow(this);
+	m_repelState = new AIStateRepel(this);
+	m_rangeAttackState = new AIStateRangeAttack(this);
+
+	// set to default state
+	SetState(AIState::kRangeAttack);
 }
 
 NPC::~NPC(void)
@@ -56,12 +68,6 @@ void NPC::Update(float delta)
 void NPC::Initialise()
 {
 	Character::Initialise();
-
-	// initialise the states
-	m_friendlyFollowState = new AIStateFollow(this);
-
-	// initialise the current state
-	SetState(AIState::kFriendlyFollowing);
 }
 
 void NPC::XmlRead(TiXmlElement * element)
@@ -79,15 +85,31 @@ void NPC::SetState(AIState::AIStateType state)
 	switch (state)
 	{
 		case AIState::kFriendlyFollowing:
-			{
-				m_currentState = m_friendlyFollowState;
-				m_currentState->OnTransition();
-				break;
-			}
+		{
+			GAME_ASSERT(m_friendlyFollowState);
+			m_currentState = m_friendlyFollowState;
+			m_currentState->OnTransition();
+			break;
+		}
+		case AIState::kRepel:
+		{
+			GAME_ASSERT(m_repelState);
+			m_currentState = m_repelState;
+			m_currentState->OnTransition();
+			break;
+		}
+		case AIState::kRangeAttack:
+		{
+			GAME_ASSERT(m_rangeAttackState);
+			m_currentState = m_rangeAttackState;
+			m_currentState->OnTransition();
+			break;
+		}
 		default:
-			{
-				break;
-			}
+		{
+			GAME_ASSERT(false);
+			break;
+		}
 	}
 }
 
@@ -101,7 +123,15 @@ void NPC::FireProjectileAtObject(GameObject * target)
 
 	if (mLastFireTime + mNextFireTime < Timing::Instance()->GetTotalTimeSeconds())
 	{
-		Vector2 dir = Vector2(target->Position().X - m_position.X, target->Position().Y - m_position.Y);
+		float randYOffset = rand() % 100;
+
+		unsigned randSign = rand() % 2;
+		if (randSign == 1)
+		{
+			randYOffset *= -1;
+		}
+
+		Vector2 dir = Vector2(target->Position().X - m_position.X, (target->Position().Y + randYOffset) - m_position.Y);
 		dir.Normalise();
 
 		GameObjectManager::Instance()->AddGameObject(FireWeapon(dir));

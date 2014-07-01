@@ -5,6 +5,7 @@
 #include "material.h"
 #include "Orb.h"
 #include "AIStateFollow.h"
+#include "AIStateRepel.h"
 
 Rabbit::Rabbit(void) :
 	NPC()
@@ -115,10 +116,14 @@ void Rabbit::Initialise()
 
 	m_friendlyFollowState->SetStopDistance(120 + randStopDistance);
 	m_friendlyFollowState->SetFollowRadius(500);
+	m_repelState->SetStopDistance(120 + randStopDistance);
+	m_repelState->SetFollowRadius(500);
 
 	mRunAnimFramerateMultiplier = 3.5f;
 
 	mCheckNPCOverlapCollisions = false;
 
 	mPlayFootsteps = false;
+
+	SetState(AIState::kRepel);
 }

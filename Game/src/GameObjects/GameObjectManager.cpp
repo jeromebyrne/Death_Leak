@@ -854,7 +854,7 @@ void GameObjectManager::ProcessGamePad()
 	// weapon ============================
 
 	static bool pressing_weapon = false;
-	if (pad_state.Gamepad.wButtons & XINPUT_GAMEPAD_X)
+	if (pad_state.Gamepad.wButtons & XINPUT_GAMEPAD_B)
 	{
 		pressing_weapon = true;
 	}
@@ -863,7 +863,7 @@ void GameObjectManager::ProcessGamePad()
 		if(pressing_weapon)
 		{
 			// get aim direction 
-			Vector2 dir = Vector2(m_player->DirectionX(), 0.1);
+			Vector2 dir = Vector2(m_player->DirectionX(), 0.1f);
 
 			if (pad_state.Gamepad.sThumbLX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
 				pad_state.Gamepad.sThumbLX > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
@@ -886,10 +886,47 @@ void GameObjectManager::ProcessGamePad()
 	}
 	// ==========================
 
+	// melee ============================
+
+	static bool pressing_melee = false;
+	if (pad_state.Gamepad.wButtons & XINPUT_GAMEPAD_X)
+	{
+		pressing_melee = true;
+	}
+	else
+	{
+		if (pressing_melee)
+		{
+			/*
+			// get aim direction 
+			Vector2 dir = Vector2(m_player->DirectionX(), 0.1f);
+
+			if (pad_state.Gamepad.sThumbLX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
+				pad_state.Gamepad.sThumbLX > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
+				pad_state.Gamepad.sThumbLY < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
+				pad_state.Gamepad.sThumbLY > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+			{
+				dir = Vector2(pad_state.Gamepad.sThumbLX, pad_state.Gamepad.sThumbLY);
+				dir.Normalise();
+			}
+
+			// let the player fire and return a projectile object which is added to the world
+			Projectile * p = m_player->FireWeapon(dir);
+
+			if (p)
+			{
+				GameObjectManager::Instance()->AddGameObject(p);
+			}
+			*/
+		}
+		pressing_melee = false;
+	}
+	// ==========================
+
 	// Bomb ============================
 
 	static bool pressing_bomb = false;
-	if (pad_state.Gamepad.wButtons & XINPUT_GAMEPAD_B)
+	if (pad_state.Gamepad.wButtons & XINPUT_GAMEPAD_Y)
 	{
 		pressing_bomb = true;
 	}
@@ -960,13 +997,26 @@ void GameObjectManager::ProcessGamePad()
 	}
 
 	// slow motion
+	static bool pressing_slo_mo = false;
 	if (pad_state.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
 	{
-		Timing::Instance()->SetTimeModifier(0.1f);
+		pressing_slo_mo = true;
 	}
 	else
 	{
-		Timing::Instance()->SetTimeModifier(1.0f);
+		if (pressing_slo_mo)
+		{
+			LOG_INFO("This is a really bad way to do this. Come back later.");
+			if (Timing::Instance()->GetTimeModifier() == 1.0f)
+			{
+				Timing::Instance()->SetTimeModifier(0.1f);
+			}
+			else
+			{
+				Timing::Instance()->SetTimeModifier(1.0f);
+			}
+		}
+		pressing_slo_mo = false;
 	}		
 }
 

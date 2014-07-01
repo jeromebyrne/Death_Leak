@@ -6,6 +6,7 @@
 #include <set>
 
 class AIStateFollow;
+class AIStateRepel;
 
 class NPC : public Character
 {
@@ -14,6 +15,8 @@ public:
 	// let the state classes access private data as they are an extension
 	// of the NPC class 
 	friend class AIStateFollow;
+	friend class AIStateRepel;
+	friend class AIStateRangeAttack;
 
 	NPC(float x = 0, float y = 0, float z = 0, float width = 10, float height = 10, float breadth = 0);
 	virtual ~NPC(void);
@@ -45,6 +48,8 @@ public:
 protected:
 	Player * m_player;
 	AIStateFollow * m_friendlyFollowState;
+	AIStateRepel * m_repelState;
+	AIStateRangeAttack * m_rangeAttackState;
 	bool mCheckNPCOverlapCollisions;
 
 private:

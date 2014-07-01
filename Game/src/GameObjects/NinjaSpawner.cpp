@@ -20,7 +20,7 @@ void NinjaSpawner::SpawnNPC(const float posX, const float posY, bool playSoundEf
 	randJumpSpeed += 20;
 	float randMaxXVelocity = rand() % 3000;
 	randMaxXVelocity *= 0.001;
-	randMaxXVelocity += 7;
+	randMaxXVelocity += 10;
 
 	int randZ = rand() % 20;
 
@@ -31,10 +31,11 @@ void NinjaSpawner::SpawnNPC(const float posX, const float posY, bool playSoundEf
 	npc->SetMaxVelocityXYZ(randMaxXVelocity, 99999, 0);
 	npc->SetCollisionDimensions(Vector3(100,200,0));
 	npc->SetPlayer(GameObjectManager::Instance()->GetPlayer());
-	npc->SetResistanceXYZ(0.98, 2.2, 0);
+	npc->SetResistanceXYZ(0.88, 2.2, 0);
 	npc->setAccelXRate(1.0);
 	npc->SetMaterial(MaterialManager::Instance()->GetMaterial("demon1"));
 	npc->SetMaxJumpSpeed(randJumpSpeed);
+
 	GameObjectManager::Instance()->AddGameObject(npc);
 
 	// show some effects when we spawn - smoke

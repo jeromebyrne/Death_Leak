@@ -31,6 +31,8 @@ Projectile(ownerType,textureFileName,
 	mBouncable = true;
 	mBounceDampening = 0.35f;
 
+	mType = kBombProjectile;
+
 	AudioManager::Instance()->PlaySoundEffect("fuse_burning.wav");
 }
 

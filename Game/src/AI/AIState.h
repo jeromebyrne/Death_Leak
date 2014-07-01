@@ -11,7 +11,9 @@ public:
 	{
 		kAbstract = 0, // this is given to the abstract base class 
 		kStill,
-		kFriendlyFollowing
+		kFriendlyFollowing,
+		kRepel,
+		kRangeAttack
 	};
 
 	AIState(NPC * npc);

@@ -181,6 +181,7 @@ void Character::XmlRead(TiXmlElement * element)
 	mAccelXRate = XmlUtilities::ReadAttributeAsFloat(element, "xaccelrate", "value");
 
 	m_projectileOffset.X = XmlUtilities::ReadAttributeAsFloat(element, "projectileoffsetx", "value");
+	
 	m_projectileOffset.Y = XmlUtilities::ReadAttributeAsFloat(element, "projectileoffsety", "value");
 }
 
@@ -516,45 +517,45 @@ void Character::OnDamage(float damageAmount, Vector3 pointOfContact, bool should
 					bool loop = false;
 					unsigned long loopTime = -1;
 
-					ParticleEmitterManager::Instance()->CreateDirectedSpray(15,
-																		pos,
-																		Vector3(0.2f, 0.8f, 0),
-																		0.25f,
-																		Vector3(3200, 2000, 0),
-																		"Media\\bloodparticle3.png",
-																		4,
-																		12,
-																		1.0f,
-																		1.5f,
-																		30,
-																		50,
-																		3,
-																		loop,
-																		0.1f,
-																		1.0f,
-																		loopTime,
-																		true,
-																		15);
+					ParticleEmitterManager::Instance()->CreateDirectedSpray(40,
+																			pos,
+																			Vector3(0.2f, 0.8f, 0),
+																			0.15f,
+																			Vector3(3200, 2000, 0),
+																			"Media\\bloodparticle2.png",
+																			6,
+																			18,
+																			1.5f,
+																			3.0f,
+																			200,
+																			300,
+																			5,
+																			loop,
+																			0.4f,
+																			1.0f,
+																			loopTime,
+																			true,
+																			0.3f);
 
-					ParticleEmitterManager::Instance()->CreateDirectedSpray(20,
-																		pos,
-																		Vector3(0.2f, 0.8f, 0),
-																		0.15f,
-																		Vector3(3200, 2000, 0),
-																		"Media\\bloodparticle2.png",
-																		8,
-																		20,
-																		1.5f,
-																		3.0f,
-																		200,
-																		400,
-																		5,
-																		loop,
-																		0.4f,
-																		1.0f,
-																		loopTime,
-																		true,
-																		0.3f);
+					ParticleEmitterManager::Instance()->CreateDirectedSpray(40,
+																			pos,
+																			Vector3(0.2f, 0.8f, 0),
+																			0.15f,
+																			Vector3(3200, 2000, 0),
+																			"Media\\bloodparticle3.png",
+																			17,
+																			27,
+																			3.0f,
+																			3.0f,
+																			50,
+																			100,
+																			5,
+																			loop,
+																			0.4f,
+																			1.0f,
+																			loopTime,
+																			true,
+																			4.5f);
 				}
 
 
@@ -666,4 +667,9 @@ void Character::Draw(ID3D10Device * device, Camera2D * camera)
 bool Character::IsOnSolidSurface()
 {
 	return IsOnGround() || GetIsCollidingOnTopOfObject();
+}
+
+void Character::DoMeleeAttack()
+{
+
 }
