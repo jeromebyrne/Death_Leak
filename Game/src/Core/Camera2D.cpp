@@ -34,7 +34,8 @@ Camera2D::~Camera2D(void)
 bool Camera2D::IsObjectInView(GameObject * object)
 {
 	bool inView = false;
-	float objectX = object->X();
+
+	float objectX = object->X() - object->GetCurrentParallaxOffsetX();
 	float objectY = object->Y();
 	float screenLeft = (m_position.X - m_width/2);
 	float screenRight = (m_position.X + m_width/2);
@@ -50,8 +51,8 @@ bool Camera2D::IsObjectInView(GameObject * object)
 	// ok so the origin might not be in view but part of the object may be in view
 	if(!inView)
 	{
-		float objectRight = object->Right();
-		float objectLeft = object->Left();
+		float objectRight = object->Right() - object->GetCurrentParallaxOffsetX();
+		float objectLeft = object->Left() - object->GetCurrentParallaxOffsetX();
 		float objectTop = object->Top();
 		float objectBottom = object->Bottom();
 

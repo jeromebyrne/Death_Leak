@@ -43,7 +43,7 @@ public:
 	{
 		bool inRect = false;
 	
-		float objectX = object->X();
+		float objectX = object->X() - object->GetCurrentParallaxOffsetX();
 		float objectY = object->Y();
 		float rectLeft = (rectCentreX - rectWidth/2);
 		float rectRight = (rectCentreX + rectWidth/2);
@@ -59,8 +59,8 @@ public:
 		// origin might not be in view but object could still be partially in view
 		if(!inRect)
 		{
-			float objectRight = object->Right();
-			float objectLeft = object->Left();
+			float objectRight = object->Right() - object->GetCurrentParallaxOffsetX();
+			float objectLeft = object->Left() - object->GetCurrentParallaxOffsetX();
 			float objectTop = object->Top();
 			float objectBottom = object->Bottom();
 

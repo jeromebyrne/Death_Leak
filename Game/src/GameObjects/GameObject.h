@@ -115,6 +115,8 @@ public:
 	virtual void AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset);
 	void Detach();
 
+	float GetCurrentParallaxOffsetX() const { return mCurrentParallaxOffsetX; }
+
 protected:
 
 	virtual void SetupDebugDraw();
