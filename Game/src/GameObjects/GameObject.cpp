@@ -3,6 +3,7 @@
 #include "Material.h"
 #include "MaterialManager.h"
 #include "DrawUtilities.h"
+#include "Game.h"
 
 const float kMaxRadians = 6.28318531; // 360 degrees
 
@@ -21,7 +22,9 @@ GameObject::GameObject(float x, float y , float z, float width, float height, fl
 	m_updateable(true),
 	mIsSolidSprite(false),
 	mAttachedTo(nullptr),
-	mAttachedToOffset(0,0,0)
+	mAttachedToOffset(0,0,0),
+	mParallaxMultiplierX(1.0f),
+	mCurrentParallaxOffsetX(0.0f)
 {
 	static int GAME_OBJECT_ID = 1; 
 	m_id = GAME_OBJECT_ID;
@@ -93,13 +96,25 @@ void GameObject::Update(float delta)
 	// reset the world matrix and recalculate transformations
 	D3DXMatrixIdentity( &m_world ); 
 
-	D3DXMatrixScaling(&m_matScale, m_matScaleX, m_matScaleY, 1.0);
-	D3DXMatrixTranslation(&m_translation, (int)m_position.X, (int)m_position.Y, m_position.Z);
-	D3DXMatrixRotationZ( &m_rotation, m_rotationAngle);
+	if (mParallaxMultiplierX != 1.0f && !Game::GetIsLevelEditMode())
+	{
+		float diff = Camera2D::GetInstance()->X() - m_position.X;
+		mCurrentParallaxOffsetX = (diff * mParallaxMultiplierX) - diff;
 
-	D3DXMatrixMultiply( &m_world, &m_translation, &m_world);
-	D3DXMatrixMultiply( &m_world, &m_matScale, &m_world);
-	D3DXMatrixMultiply( &m_world, &m_rotation, &m_world);
+		D3DXMatrixScaling(&m_matScale, m_matScaleX, m_matScaleY, 1.0);
+		D3DXMatrixTranslation(&m_translation, m_position.X - mCurrentParallaxOffsetX, m_position.Y, m_position.Z);
+		D3DXMatrixRotationZ(&m_rotation, m_rotationAngle);
+	}
+	else
+	{
+		D3DXMatrixScaling(&m_matScale, m_matScaleX, m_matScaleY, 1.0);
+		D3DXMatrixTranslation(&m_translation, m_position.X, m_position.Y, m_position.Z);
+		D3DXMatrixRotationZ(&m_rotation, m_rotationAngle);
+	}
+
+	D3DXMatrixMultiply(&m_world, &m_translation, &m_world);
+	D3DXMatrixMultiply(&m_world, &m_matScale, &m_world);
+	D3DXMatrixMultiply(&m_world, &m_rotation, &m_world);
 
 	m_lastPosition = m_position;
 
@@ -125,6 +140,8 @@ void GameObject:: XmlRead(TiXmlElement * element)
 	m_dimensions.Y = XmlUtilities::ReadAttributeAsFloat(element, "dimensions", "height");
 	m_dimensions.Z = XmlUtilities::ReadAttributeAsFloat(element, "dimensions", "breadth");
 
+	mParallaxMultiplierX = XmlUtilities::ReadAttributeAsFloat(element, "", "parallax_x");
+
 	//// read material
 	string matStr = string(XmlUtilities::ReadAttributeAsString(element, "material", "value"));
 	if(matStr != "null" && matStr != "")
@@ -139,6 +156,8 @@ void GameObject:: XmlRead(TiXmlElement * element)
 void GameObject::XmlWrite(TiXmlElement * element)
 {
 	element->SetAttribute("id", Utilities::ConvertDoubleToString(m_id).c_str());
+
+	element->SetAttribute("parallax_x", Utilities::ConvertDoubleToString(mParallaxMultiplierX).c_str());
 
 	const char * updateableFlag = m_updateable ? "true" : "false";
 	element->SetAttribute("updateable", updateableFlag);

@@ -132,9 +132,10 @@ protected:
 	bool mShowDebugText;
 	bool mDrawable;
 	bool mIsSolidSprite;
-
 	std::shared_ptr<GameObject> mAttachedTo;
 	Vector3 mAttachedToOffset;
+	float mParallaxMultiplierX;
+	float mCurrentParallaxOffsetX;
 
 private:
 

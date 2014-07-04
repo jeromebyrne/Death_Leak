@@ -35,7 +35,7 @@ void LevelTrigger::XmlRead(TiXmlElement * element)
 	GameObject::XmlRead(element);
 
 	// level_to_load
-	mLevelToLoad = XmlUtilities::ReadAttributeAsString(element, "level_to_load", "file");
+	mLevelToLoad = XmlUtilities::ReadAttributeAsString(element, "level_to_load", "value");
 }
 
 void LevelTrigger::XmlWrite(TiXmlElement * element)
