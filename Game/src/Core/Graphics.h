@@ -49,7 +49,9 @@ private:
 	 static Graphics * mInstance;
 
 	 SimpleFontManager * mSimpleFontManager;
+
 public:
+
 	InputLayoutDescriptions InputDescriptions;
 	Graphics(void);
 	~Graphics(void);

@@ -11,6 +11,8 @@ public:
 
 	void Update();
 
+	void SetLevelFile(const char * level) { mCurrentLevel = level; }
+
 private:
 
 	void CheckForSavePressed();
@@ -45,6 +47,8 @@ private:
 	SolidMovingSprite * GetAsSolidMovingSprite(GameObject * object);
 
 	void UpdateParallaxLayers();
+
+	std::string mCurrentLevel;
 };
 
 #endif

@@ -30,6 +30,8 @@
 #include "WeatherManager.h"
 #include "EffectLightTexturePixelWobble.h"
 
+Game * Game::mInstance = nullptr;
+
 static const float kPixelWobbleReverseDelay = 40.0f;
 
 bool Game::mPaused = false;
@@ -326,4 +328,31 @@ void Game::Cleanup()
 	m_screenAlignedPostProcTex1->Release();
 }
 
+#if _DEBUG
+void Game::SetLevelEditFilename(const char * file) 
+{ 
+	GAME_ASSERT(mlevelEditor);
+	mlevelEditor->SetLevelFile(file);
+}
+#endif
+
+void Game::Create()
+{
+	GAME_ASSERT(!mInstance);
+
+	mInstance = new Game(Graphics::GetInstance());
+}
+
+void Game::Destroy()
+{
+	GAME_ASSERT(mInstance);
+
+	if (mInstance)
+	{
+		mInstance->Cleanup();
+	}
+
+	delete mInstance;
+	mInstance = nullptr;
+}
 

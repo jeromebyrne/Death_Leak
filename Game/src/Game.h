@@ -47,7 +47,7 @@ private:
 	static bool mLevelEditMode;
 	ScreenAlignedTexture * m_screenAlignedPostProcTex1;
 	static Vector2 mGameScale;
-
+	static Game * mInstance;
 public:
 
 	Game(Graphics * pGraphics);
@@ -62,6 +62,14 @@ public:
 	static void UnPauseGame();
 	static void SetIsLevelEditMode(bool value) { mLevelEditMode = value; }
 	static bool GetIsLevelEditMode() { return mLevelEditMode; }
+
+	static Game * GetInstance() { return mInstance; }
+	static void Create();
+	static void Destroy();
+
+#if _DEBUG
+	void SetLevelEditFilename(const char * file);
+#endif
 
 	static Vector2 GetGameScale() { return mGameScale; }
 };

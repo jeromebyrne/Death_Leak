@@ -5,8 +5,6 @@
 #include "parallaxlayer.h"
 #include "AudioObject.h"
 
-const char * kCurrentLevel = "XmlFiles//level1.xml";
-
 #if _DEBUG
 
 LevelEditor::LevelEditor(void):
@@ -130,6 +128,14 @@ void LevelEditor::Update()
 
 	CheckForCopy();
 
+	for (auto & obj : gameObjects)
+	{
+		if (obj->GetParallaxMultiplierX() != 1.0f ||
+			obj->GetParallaxMultiplierY() != 1.0f)
+		{
+			obj->Update(1.0f);
+		}
+	}
 }
 
 GameObject * LevelEditor::GetGameObjectClickedOn(list<shared_ptr<GameObject> > & gameObjects)
@@ -229,7 +235,7 @@ void LevelEditor::CheckForSavePressed()
 {
 	if (GetAsyncKeyState(VK_CONTROL) < 0 && GetAsyncKeyState('S') < 0)
 	{
-		GameObjectManager::Instance()->SaveObjectsToFile(kCurrentLevel);
+		GameObjectManager::Instance()->SaveObjectsToFile(mCurrentLevel.c_str());
 	}
 }
 

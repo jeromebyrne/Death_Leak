@@ -44,7 +44,7 @@ public:
 		bool inRect = false;
 	
 		float objectX = object->X() - object->GetCurrentParallaxOffsetX();
-		float objectY = object->Y();
+		float objectY = object->Y() - object->GetCurrentParallaxOffsetY();
 		float rectLeft = (rectCentreX - rectWidth/2);
 		float rectRight = (rectCentreX + rectWidth/2);
 		float rectBottom = (rectCentreY - rectHeight/2);
@@ -61,8 +61,8 @@ public:
 		{
 			float objectRight = object->Right() - object->GetCurrentParallaxOffsetX();
 			float objectLeft = object->Left() - object->GetCurrentParallaxOffsetX();
-			float objectTop = object->Top();
-			float objectBottom = object->Bottom();
+			float objectTop = object->Top() - object->GetCurrentParallaxOffsetY();
+			float objectBottom = object->Bottom() - object->GetCurrentParallaxOffsetY();
 
 			// check if we are partially in view on the x plane
 			if(objectRight > rectLeft && objectLeft < rectRight)

@@ -343,6 +343,12 @@ void GameObjectManager::Draw(ID3D10Device *  device)
 // load game objects via xml file
 void GameObjectManager::LoadObjectsFromFile(const char* filename)
 {
+#if _DEBUG
+	if (Game::GetIsLevelEditMode())
+	{
+		Game::GetInstance()->SetLevelEditFilename(filename);
+	}
+#endif
 	Graphics * graphics = Graphics::GetInstance();
 	Camera2D * camera = Camera2D::GetInstance();
 

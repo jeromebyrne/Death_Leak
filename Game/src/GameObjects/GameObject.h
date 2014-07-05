@@ -115,7 +115,10 @@ public:
 	virtual void AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset);
 	void Detach();
 
+	float GetParallaxMultiplierX() const { return mParallaxMultiplierX; }
+	float GetParallaxMultiplierY() const { return mParallaxMultiplierY; }
 	float GetCurrentParallaxOffsetX() const { return mCurrentParallaxOffsetX; }
+	float GetCurrentParallaxOffsetY() const { return mCurrentParallaxOffsetY; }
 
 protected:
 
@@ -137,7 +140,9 @@ protected:
 	std::shared_ptr<GameObject> mAttachedTo;
 	Vector3 mAttachedToOffset;
 	float mParallaxMultiplierX;
+	float mParallaxMultiplierY;
 	float mCurrentParallaxOffsetX;
+	float mCurrentParallaxOffsetY;
 
 private:
 

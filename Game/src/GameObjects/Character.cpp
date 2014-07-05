@@ -13,24 +13,24 @@ float Character::mLastTimePlayedDeathSFX = 0;
 static const float kMinTimeBetweenDeathSFX = 0.1f;
 
 Character::Character(float x, float y, float z, float width, float height, float breadth): 
-SolidMovingSprite(x,y,z,width, height, breadth),
-m_isJumping(false), 
-m_maxJumpSpeed(10), 
-m_lastTimePlayedFootstep(0.0f), 
-m_footstepTime(0.3f),
-m_sprintFootstepTime(0.15f),
-mAccelXRate(0),
-mHealth(100),
-mMaxHealth(100),
-mSprintVelocityX(30),
-mSprintActive(false),
-mHasExploded(false),
-m_mainBodyTexture(0),
-m_projectileOffset(0,0),
-mLastTimePlayedDamageSound(0.0f),
-mDamageSoundDelayMilli(0.15f),
-mRunAnimFramerateMultiplier(1.0f),
-mPlayFootsteps(true)
+	SolidMovingSprite(x,y,z,width, height, breadth),
+	m_isJumping(false), 
+	m_maxJumpSpeed(10), 
+	m_lastTimePlayedFootstep(0.0f), 
+	m_footstepTime(0.3f),
+	m_sprintFootstepTime(0.15f),
+	mAccelXRate(0),
+	mHealth(100),
+	mMaxHealth(100),
+	mSprintVelocityX(30),
+	mSprintActive(false),
+	mHasExploded(false),
+	m_mainBodyTexture(0),
+	m_projectileOffset(0,0),
+	mLastTimePlayedDamageSound(0.0f),
+	mDamageSoundDelayMilli(0.15f),
+	mRunAnimFramerateMultiplier(1.0f),
+	mPlayFootsteps(true)
 {
 	mProjectileFilePath = "Media/knife.png";
 	mProjectileImpactFilePath = "Media/knife_impact.png";

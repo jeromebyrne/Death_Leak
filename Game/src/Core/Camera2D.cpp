@@ -36,7 +36,7 @@ bool Camera2D::IsObjectInView(GameObject * object)
 	bool inView = false;
 
 	float objectX = object->X() - object->GetCurrentParallaxOffsetX();
-	float objectY = object->Y();
+	float objectY = object->Y() - object->GetCurrentParallaxOffsetY();
 	float screenLeft = (m_position.X - m_width/2);
 	float screenRight = (m_position.X + m_width/2);
 	float screenBottom = (m_position.Y - m_height/2);
@@ -53,8 +53,8 @@ bool Camera2D::IsObjectInView(GameObject * object)
 	{
 		float objectRight = object->Right() - object->GetCurrentParallaxOffsetX();
 		float objectLeft = object->Left() - object->GetCurrentParallaxOffsetX();
-		float objectTop = object->Top();
-		float objectBottom = object->Bottom();
+		float objectTop = object->Top() - object->GetCurrentParallaxOffsetY();
+		float objectBottom = object->Bottom() - object->GetCurrentParallaxOffsetY();
 
 		// check if we are partially in view on the x plane
 		if(objectRight > screenLeft && objectLeft < screenRight)

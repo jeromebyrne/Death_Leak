@@ -14,8 +14,8 @@ GameObject::GameObject(float x, float y , float z, float width, float height, fl
 	m_material(0),
 	m_rotationAngle(0),
 	mShowDebugText(0),
-	m_matScaleX(1.0),
-	m_matScaleY(1.0),
+	m_matScaleX(1.0f),
+	m_matScaleY(1.0f),
 	m_debugDrawVBuffer(0),
 	mClonedXml(nullptr),
 	mDrawable(false),
@@ -24,7 +24,9 @@ GameObject::GameObject(float x, float y , float z, float width, float height, fl
 	mAttachedTo(nullptr),
 	mAttachedToOffset(0,0,0),
 	mParallaxMultiplierX(1.0f),
-	mCurrentParallaxOffsetX(0.0f)
+	mCurrentParallaxOffsetX(0.0f),
+	mParallaxMultiplierY(1.0f),
+	mCurrentParallaxOffsetY(0.0f)
 {
 	static int GAME_OBJECT_ID = 1; 
 	m_id = GAME_OBJECT_ID;
@@ -51,7 +53,7 @@ void GameObject::Initialise()
 	// initialise our world matrix
     D3DXMatrixIdentity( &m_world );
 	D3DXMATRIX translation;
-	D3DXMatrixTranslation(&translation, (int)m_position.X, (int)m_position.Y, m_position.Z);
+	D3DXMatrixTranslation(&translation, m_position.X, m_position.Y, m_position.Z);
 	D3DXMatrixMultiply( &m_world, &translation, &m_world); // take the global world into account
 
 	D3DXMatrixIdentity( &m_translation);
@@ -96,21 +98,20 @@ void GameObject::Update(float delta)
 	// reset the world matrix and recalculate transformations
 	D3DXMatrixIdentity( &m_world ); 
 
-	if (mParallaxMultiplierX != 1.0f && !Game::GetIsLevelEditMode())
+	if (mParallaxMultiplierX != 1.0f)
 	{
 		float diff = Camera2D::GetInstance()->X() - m_position.X;
 		mCurrentParallaxOffsetX = (diff * mParallaxMultiplierX) - diff;
-
-		D3DXMatrixScaling(&m_matScale, m_matScaleX, m_matScaleY, 1.0);
-		D3DXMatrixTranslation(&m_translation, m_position.X - mCurrentParallaxOffsetX, m_position.Y, m_position.Z);
-		D3DXMatrixRotationZ(&m_rotation, m_rotationAngle);
 	}
-	else
+	if (mParallaxMultiplierY != 1.0f)
 	{
-		D3DXMatrixScaling(&m_matScale, m_matScaleX, m_matScaleY, 1.0);
-		D3DXMatrixTranslation(&m_translation, m_position.X, m_position.Y, m_position.Z);
-		D3DXMatrixRotationZ(&m_rotation, m_rotationAngle);
+		float diff = Camera2D::GetInstance()->Y() - m_position.Y;
+		mCurrentParallaxOffsetY = (diff * mParallaxMultiplierY) - diff;
 	}
+
+	D3DXMatrixScaling(&m_matScale, m_matScaleX, m_matScaleY, 1.0);
+	D3DXMatrixTranslation(&m_translation, m_position.X - mCurrentParallaxOffsetX, m_position.Y - mCurrentParallaxOffsetY, m_position.Z);
+	D3DXMatrixRotationZ(&m_rotation, m_rotationAngle);
 
 	D3DXMatrixMultiply(&m_world, &m_translation, &m_world);
 	D3DXMatrixMultiply(&m_world, &m_matScale, &m_world);
@@ -141,6 +142,7 @@ void GameObject:: XmlRead(TiXmlElement * element)
 	m_dimensions.Z = XmlUtilities::ReadAttributeAsFloat(element, "dimensions", "breadth");
 
 	mParallaxMultiplierX = XmlUtilities::ReadAttributeAsFloat(element, "", "parallax_x");
+	mParallaxMultiplierY = XmlUtilities::ReadAttributeAsFloat(element, "", "parallax_y");
 
 	//// read material
 	string matStr = string(XmlUtilities::ReadAttributeAsString(element, "material", "value"));
@@ -158,6 +160,7 @@ void GameObject::XmlWrite(TiXmlElement * element)
 	element->SetAttribute("id", Utilities::ConvertDoubleToString(m_id).c_str());
 
 	element->SetAttribute("parallax_x", Utilities::ConvertDoubleToString(mParallaxMultiplierX).c_str());
+	element->SetAttribute("parallax_y", Utilities::ConvertDoubleToString(mParallaxMultiplierY).c_str());
 
 	const char * updateableFlag = m_updateable ? "true" : "false";
 	element->SetAttribute("updateable", updateableFlag);

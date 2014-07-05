@@ -2,7 +2,7 @@
 #include "Graphics.h"
 #include "simplefontmanager.h"
 
-Graphics * Graphics::mInstance = 0;
+Graphics * Graphics::mInstance = nullptr;
 
 // clear color
 static const float clearColor[4] = { 0.3f, 0.3f, 0.3f, 1.0f };
@@ -26,6 +26,7 @@ Graphics::Graphics(void):
 	InputDescriptions = InputLayoutDescriptions();
 	m_alphaToCoverageEnabled = false;
 
+	GAME_ASSERT(!mInstance);
 	mInstance = this;
 }
 

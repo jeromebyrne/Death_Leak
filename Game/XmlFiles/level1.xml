@@ -251,7 +251,7 @@
         <material value="grassground" />
         <alpha value="1" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <texture filename="Media\grassfenceground2.png" />
+        <texture filename="Media\ground\village_ground.png" />
         <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="false" />
@@ -270,7 +270,7 @@
         <material value="grassground" />
         <alpha value="1" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <texture filename="Media\grassfenceground2.png" />
+      <texture filename="Media\ground\village_ground.png" />
         <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="false" />
@@ -346,7 +346,7 @@
         <material value="grassground" />
         <alpha value="1" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <texture filename="Media\grassfenceground2.png" />
+      <texture filename="Media\ground\village_ground.png" />
         <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="false" />
@@ -377,7 +377,7 @@
         <material value="grassground" />
         <alpha value="1" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <texture filename="Media\grassfenceground2.png" />
+      <texture filename="Media\ground\village_ground.png" />
         <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="false" />
@@ -468,7 +468,7 @@
         <material value="grassground" />
         <alpha value="1" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <texture filename="Media\grassfenceground2.png" />
+      <texture filename="Media\ground\village_ground.png" />
         <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="false" />
@@ -607,7 +607,7 @@
         <material value="grassground" />
         <alpha value="1" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <texture filename="Media\grassfenceground2.png" />
+      <texture filename="Media\ground\village_ground.png" />
         <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="false" />
@@ -650,7 +650,7 @@
         <material value="grassground" />
         <alpha value="1" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <texture filename="Media\grassfenceground2.png" />
+      <texture filename="Media\ground\village_ground.png" />
         <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="false" />
@@ -681,7 +681,7 @@
         <material value="grassground" />
         <alpha value="1" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <texture filename="Media\grassfenceground2.png" />
+      <texture filename="Media\ground\village_ground.png" />
         <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="false" />

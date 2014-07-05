@@ -11,9 +11,9 @@
 
 unsigned int gBackBufferWidth = 1920;
 unsigned int gBackBufferHeight = 1080;
-DXWindow * g_pWindow = new DXWindow("Death Leak", "Death Leak", 1920, 1080);
-Graphics * g_pGraphics = new Graphics();
-Game * g_pGame = new Game(g_pGraphics);
+DXWindow * g_pWindow = nullptr;
+Graphics * g_pGraphics = nullptr;
+Game * g_pGame = nullptr;
 
 //--------------------------------------------------------------------------------------
 // Forward declarations
@@ -181,6 +181,11 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 
 HRESULT Initialise(HINSTANCE hInstance, int nCmdShow)
 {
+	g_pWindow = new DXWindow("Death Leak", "Death Leak", 1920, 1080);
+	g_pGraphics = new Graphics();
+	Game::Create();
+	g_pGame = Game::GetInstance();
+
 	HRESULT result = S_OK;
 	
 	// initialise window
@@ -226,8 +231,7 @@ void KillGame()
 {
 	g_pGraphics->CleanupDevice();
 	delete g_pGraphics;
-	g_pGame->Cleanup();
-	delete g_pGame;
+	g_pGame->Destroy();
     PostQuitMessage( 0 );
 }
 
