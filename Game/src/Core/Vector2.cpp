@@ -20,3 +20,9 @@ void Vector2::Normalise()
 	X /= length;
 	Y /= length;
 }
+
+float Vector2::LengthSquared()
+{
+	float value = X*X + Y*Y;
+	return value;
+}

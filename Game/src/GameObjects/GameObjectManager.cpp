@@ -25,6 +25,7 @@
 #include "Orb.h"
 #include "LevelTrigger.h"
 #include "WaterBlock.h"
+#include "SolidLine.h"
 
 struct DepthSortPredicate
 {
@@ -452,6 +453,7 @@ void GameObjectManager::SaveObjectsToFile(const char* filename)
 			if (checked == obj.get())
 			{
 				// duplicate
+				GAME_ASSERT(false);
 				return;
 			}
 		}
@@ -459,13 +461,32 @@ void GameObjectManager::SaveObjectsToFile(const char* filename)
 		checkedList.push_back(obj.get());
 	}
 
+	std::map<int, GameObject *> sortedObjects;
+
+	list<int> addedIDs;
+
+	for (auto & obj : m_gameObjects)
+	{
+		for (auto i : addedIDs)
+		{
+			if (i == obj->ID())
+			{
+				// make sure IDs are unique
+				GAME_ASSERT(i != obj->ID());
+				return;
+			}
+		}
+		sortedObjects[obj->ID()] = obj.get();
+		addedIDs.push_back(obj->ID());
+	}
+
 	XmlDocument doc;
 	TiXmlElement * root = new TiXmlElement( "level" );
 	root->SetAttribute("audio", ""); 
 
-	for (auto & obj : m_gameObjects)
+	for (auto obj : sortedObjects)
 	{
-		TiXmlElement * objElem = SaveObject(obj.get());
+		TiXmlElement * objElem = SaveObject(obj.second);
 
 		if (objElem)
 		{
@@ -479,7 +500,7 @@ void GameObjectManager::SaveObjectsToFile(const char* filename)
 TiXmlElement * GameObjectManager::SaveObject(GameObject * object)
 {
 	string objectType = object->GetTypeName();
-	TiXmlElement * element = new TiXmlElement(objectType.c_str()/*object->GetObjectType()*/); // TODO: delete
+	TiXmlElement * element = new TiXmlElement(objectType.c_str()); // TODO: delete
 	object->XmlWrite(element);
 	return element;
 }
@@ -552,6 +573,10 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement)
 	else if (strcmp(gameObjectTypeName, "waterblock") == 0)
 	{
 		newGameObject = new WaterBlock();
+	}
+	else if (strcmp(gameObjectTypeName, "solidline") == 0)
+	{
+		newGameObject = new SolidLine();
 	}
 
 	GAME_ASSERT(newGameObject);

@@ -16,7 +16,7 @@ private:
 	~Vector3(void);
 
 
-	inline Vector3 operator - ( Vector3  v )
+	inline Vector3 operator - ( Vector3  & v )
 	{
 		float newX = X - v.X;
 		float newY = Y - v.Y;
@@ -24,7 +24,7 @@ private:
 
 		return Vector3(newX, newY, newZ);
 	}
-	inline Vector3 operator + ( Vector3  v )
+	inline Vector3 operator + ( Vector3  & v )
 	{
 		float newX = X + v.X;
 		float newY = Y + v.Y;
@@ -42,7 +42,7 @@ private:
 		return Vector3 (newX, newY, newZ);
 	}
 
-	inline Vector3 operator * (Vector3 value)
+	inline Vector3 operator * (Vector3 & value)
 	{
 		Vector3 returnValue(X * value.X, Y * value.Y, Z * value.Z);
 
@@ -58,32 +58,32 @@ private:
 		return Vector3 (newX, newY, newZ);
 	}
 
-	inline void operator += (Vector3 value)
+	inline void operator += (Vector3 & value)
 	{
 		X += value.X;
 		Y += value.Y;
 		Z += value.Z;
 	}
 
-	inline void operator -= (Vector3 value)
+	inline void operator -= (Vector3 & value)
 	{
 		X -= value.X;
 		Y -= value.Y;
 		Z -= value.Z;
 	}
 
-	inline float Dot(Vector3 v)
+	inline float Dot(Vector3 & v)
 	{
 		float value = X * v.X + Y * v.Y + Z * v.Z;
 		return value;
 	}
 	
-	inline Vector3 Cross(Vector3 v)
+	inline Vector3 Cross(Vector3 & v)
 	{
 		return Vector3(Y * v.Z - Z * v.Y, Z * v.X - X * v.Z, X * v.Y - Y * v.X);
 	}
 
-	inline static Vector3 Cross(Vector3 v1, Vector3 v2)
+	inline static Vector3 Cross(Vector3 & v1, Vector3 & v2)
 	{
 		return Vector3(v1.Y * v2.Z - v1.Z * v2.Y, v1.Z * v2.X - v1.X * v2.Z, v1.X * v2.Y - v1.Y * v2.X);
 	}

@@ -1,5 +1,26 @@
 <level audio="">
-    <Sprite id="1" parallax_x="0.9" parallax_y="0.85" updateable="true">
+    <SolidLine id="1" parallax_x="1" parallax_y="1" updateable="true">
+        <position z="100" y="-94.0293" x="5748.56" rotation="0" />
+        <dimensions breadth="0" height="50" width="50" native="false" repeatX="false" repeatY="false" />
+        <material value="grassground" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <texture filename="Media\blank_alpha.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.5" alphawhennotoccluding="1" />
+        <resistance z="0" y="2" x="0.95" />
+        <maxvelocity z="0" y="99999" x="10" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0" y="200" x="160" offsetX="-40" offsetY="0" />
+        <passive value="true" />
+        <applydamage flag="false" amount="0" />
+        <can_be_damaged value="false" />
+        <line_start x="-100" y="20" />
+        <line_end x="100" y="20" />
+    </SolidLine>
+    <Sprite id="2" parallax_x="0.9" parallax_y="0.85" updateable="true">
         <position z="140" y="-117.076" x="2882.5" rotation="0" />
         <dimensions breadth="0" height="438.862" width="1755.45" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -11,7 +32,7 @@
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.5" alphawhennotoccluding="1" />
     </Sprite>
-    <Sprite id="2" parallax_x="0.9" parallax_y="0.85" updateable="true">
+    <Sprite id="3" parallax_x="0.9" parallax_y="0.85" updateable="true">
         <position z="140" y="-114.508" x="4831.25" rotation="0" />
         <dimensions breadth="0" height="438.862" width="1755.45" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -23,7 +44,7 @@
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.5" alphawhennotoccluding="1" />
     </Sprite>
-    <Sprite id="3" parallax_x="0.9" parallax_y="0.85" updateable="true">
+    <Sprite id="4" parallax_x="0.9" parallax_y="0.85" updateable="true">
         <position z="140" y="-110.655" x="6776.25" rotation="0" />
         <dimensions breadth="0" height="438.862" width="1755.45" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -35,7 +56,7 @@
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.5" alphawhennotoccluding="1" />
     </Sprite>
-    <SolidMovingSprite id="4" parallax_x="1" parallax_y="1" updateable="true">
+    <SolidMovingSprite id="5" parallax_x="1" parallax_y="1" updateable="true">
         <position z="100" y="-241" x="5000" rotation="0" />
         <dimensions breadth="0" height="512" width="2048" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -54,7 +75,7 @@
         <applydamage flag="false" amount="0" />
         <can_be_damaged value="false" />
     </SolidMovingSprite>
-    <SolidMovingSprite id="5" parallax_x="1" parallax_y="1" updateable="true">
+    <SolidMovingSprite id="6" parallax_x="1" parallax_y="1" updateable="true">
         <position z="100" y="-241.202" x="2956.25" rotation="0" />
         <dimensions breadth="0" height="512" width="2048" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -73,7 +94,7 @@
         <applydamage flag="false" amount="0" />
         <can_be_damaged value="false" />
     </SolidMovingSprite>
-    <SolidMovingSprite id="6" parallax_x="1" parallax_y="1" updateable="true">
+    <SolidMovingSprite id="7" parallax_x="1" parallax_y="1" updateable="true">
         <position z="100" y="-239.917" x="7043.75" rotation="0" />
         <dimensions breadth="0" height="512" width="2048" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -92,7 +113,7 @@
         <applydamage flag="false" amount="0" />
         <can_be_damaged value="false" />
     </SolidMovingSprite>
-    <Sprite id="7" parallax_x="1" parallax_y="1.08" updateable="true">
+    <Sprite id="8" parallax_x="1" parallax_y="1.08" updateable="true">
         <position z="90" y="30.9143" x="6312.5" rotation="0" />
         <dimensions breadth="0" height="538.33" width="298.605" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -104,8 +125,20 @@
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.5" alphawhennotoccluding="1" />
     </Sprite>
-    <Player id="8" parallax_x="1" parallax_y="1" updateable="true">
-        <position z="50" y="-90.4412" x="4942.5" rotation="0" />
+    <Sprite id="9" parallax_x="1" parallax_y="1.05" updateable="true">
+        <position z="80" y="147.831" x="4432.27" rotation="0" />
+        <dimensions breadth="0" height="1140.37" width="2138.19" native="false" repeatX="false" repeatY="false" />
+        <material value="grassground" />
+        <alpha value="1" />
+        <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.100000" pixelwobblespeedmod="0.100000" />
+        <texture filename="Media\fog2.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="true" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.5" alphawhennotoccluding="1" />
+    </Sprite>
+    <Player id="10" parallax_x="1" parallax_y="1" updateable="true">
+        <position z="50" y="-40.8067" x="5334.54" rotation="0" />
         <dimensions breadth="0" height="300" width="150" native="false" repeatX="false" repeatY="false" />
         <material value="maleninja" />
         <alpha value="1" />
@@ -128,7 +161,7 @@
         <projectileoffsetx value="40" />
         <projectileoffsety value="0" />
     </Player>
-    <Sprite id="9" parallax_x="1.05" parallax_y="1.2" updateable="true">
+    <Sprite id="11" parallax_x="1.05" parallax_y="1.2" updateable="true">
         <position z="10" y="-109.966" x="6258.75" rotation="0" />
         <dimensions breadth="0" height="593.632" width="329.28" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -140,7 +173,31 @@
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.5" alphawhennotoccluding="1" />
     </Sprite>
-    <Sprite id="10" parallax_x="1.4" parallax_y="1.25" updateable="true">
+    <Sprite id="12" parallax_x="1.4" parallax_y="1.25" updateable="true">
+        <position z="7" y="-161.737" x="3325.59" rotation="0" />
+        <dimensions breadth="0" height="1600" width="3000" native="false" repeatX="false" repeatY="false" />
+        <material value="grassground" />
+        <alpha value="1" />
+        <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.100000" pixelwobblespeedmod="0.100000" />
+        <texture filename="Media\fog2.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.5" alphawhennotoccluding="1" />
+    </Sprite>
+    <Sprite id="13" parallax_x="1.4" parallax_y="1.25" updateable="true">
+        <position z="7" y="-150.973" x="4947.04" rotation="0" />
+        <dimensions breadth="0" height="1600" width="3000" native="false" repeatX="false" repeatY="false" />
+        <material value="grassground" />
+        <alpha value="1" />
+        <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.100000" pixelwobblespeedmod="0.100000" />
+        <texture filename="Media\fog2.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.5" alphawhennotoccluding="1" />
+    </Sprite>
+    <Sprite id="14" parallax_x="1.4" parallax_y="1.25" updateable="true">
         <position z="5" y="-258.717" x="3155" rotation="0" />
         <dimensions breadth="0" height="512" width="2116" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -152,7 +209,7 @@
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.5" alphawhennotoccluding="1" />
     </Sprite>
-    <Sprite id="11" parallax_x="1.4" parallax_y="1.25" updateable="true">
+    <Sprite id="15" parallax_x="1.4" parallax_y="1.25" updateable="true">
         <position z="5" y="-258.717" x="4663.75" rotation="0" />
         <dimensions breadth="0" height="512" width="2116" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -164,7 +221,7 @@
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.5" alphawhennotoccluding="1" />
     </Sprite>
-    <Sprite id="12" parallax_x="1.4" parallax_y="1.25" updateable="true">
+    <Sprite id="16" parallax_x="1.4" parallax_y="1.25" updateable="true">
         <position z="5" y="-258.717" x="6171.25" rotation="0" />
         <dimensions breadth="0" height="512" width="2116" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />

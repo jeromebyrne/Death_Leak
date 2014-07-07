@@ -50,7 +50,7 @@ void SolidMovingSprite::Update(float delta)
 void SolidMovingSprite::SetupDebugDraw()
 {
 	MovingSprite::SetupDebugDraw();
-	// vertices
+
 	//srand(Timing::Instance()->TotalGameTime());
 	float randR = 0; //((rand()%100) + 0.1) * 0.01;
 	float randG = 0; //((rand()%100) + 0.1) * 0.01;
@@ -76,7 +76,7 @@ void SolidMovingSprite::SetupDebugDraw()
 		m_collisionBoxVertices[i].Pos.y += mCollisionBoxOffset.Y;
 	}
     
-	m_collisionBoxVBuffer = 0;
+	m_collisionBoxVBuffer = nullptr;
 }
 
 void SolidMovingSprite::DebugDraw(ID3D10Device *  device)
