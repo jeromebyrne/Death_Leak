@@ -284,7 +284,7 @@ void SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 		else
 		{
 			m_onTopOfOtherSolidObject = false;
-			mObjectMovingWith = 0;
+			mObjectMovingWith = nullptr;
 		}
 
 		float tempXoverlap = xOverlap;

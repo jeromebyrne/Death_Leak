@@ -423,7 +423,6 @@ void Character::Jump(int percent)
 	m_velocity.Y = 0;
 	m_direction.Y = 1;
 	m_acceleration.Y = (m_maxJumpSpeed/100) * percent;
-
 }
 
 void Character::WallJump(int percent)

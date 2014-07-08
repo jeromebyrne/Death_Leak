@@ -873,11 +873,11 @@ void GameObjectManager::ProcessGamePad()
 	}
 	else
 	{
-		if (m_player->GetIsCollidingOnTopOfObject() || m_player->IsOnGround())
-		{
+		// if (m_player->GetIsCollidingOnTopOfObject() || m_player->IsOnGround())
+		//{
 			startedPressingJump = false;
 			startedPressing = 0;
-		}
+		//}
 	}
 	// ===================================
 

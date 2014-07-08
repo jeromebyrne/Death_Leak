@@ -28,6 +28,7 @@ public:
 
 	bool GetIsCollidingAtObjectSide() const { return m_collidingAtSideOfObject; }
 	bool GetIsCollidingOnTopOfObject() const { return m_onTopOfOtherSolidObject; }
+	void SetIsCollidingOnTopOfObject(bool value) { m_onTopOfOtherSolidObject = value; }
 	virtual void Scale(float xScale, float yScale, bool scalePosition = true) override;
 
 	// the left side of our bounding box

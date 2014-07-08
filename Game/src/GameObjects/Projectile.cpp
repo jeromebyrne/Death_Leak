@@ -20,17 +20,17 @@ Projectile::Projectile(ProjectileOwnerType ownerType,
 						float speed,
 						int maxTimeInActive)
 :SolidMovingSprite(position.X,position.Y,position.Z,dimensions.X,dimensions.Y), 
-m_isActive(true),
-m_wasActiveLastFrame(true),
-m_maxTimeInActive(maxTimeInActive),
-m_damage(damage),
-m_impactTexture(NULL),
-m_impactTextureFilename(impactTextureFilename),
-mCollidedWithProjectile(false),
-mSpinningMovement(false),
-m_timeBecameInactive(0),
-mOwnerType(ownerType),
-mType(kUnknownProjectileType)
+	m_isActive(true),
+	m_wasActiveLastFrame(true),
+	m_maxTimeInActive(maxTimeInActive),
+	m_damage(damage),
+	m_impactTexture(NULL),
+	m_impactTextureFilename(impactTextureFilename),
+	mCollidedWithProjectile(false),
+	mSpinningMovement(false),
+	m_timeBecameInactive(0),
+	mOwnerType(ownerType),
+	mType(kUnknownProjectileType)
 {
 	NUM_PROJECTILES_ACTIVE++; // increase our world projectile count
 
@@ -55,6 +55,11 @@ Projectile::~Projectile()
 
 void Projectile::OnCollision(SolidMovingSprite* object)
 {
+	if (object->IsSolidLine())
+	{
+		return;
+	}
+
 	GAME_ASSERT((object != this));
 
   	if(m_isActive)

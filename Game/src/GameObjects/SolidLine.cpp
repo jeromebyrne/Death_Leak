@@ -64,23 +64,23 @@ void SolidLine::LoadContent(ID3D10Device * graphicsdevice)
 
 void SolidLine::OnCollision(SolidMovingSprite * object)
 {
-	Player * player = GameObjectManager::Instance()->GetPlayer();
-
-	if (player == object)
+	if (!object->IsPassive())
 	{
 		Vector2 intersectPoint;
-		bool intersect = Intersect(Vector2(player->CollisionCentreX(), player->CollisionCentreY()), 
-								   Vector2(player->CollisionCentreX(), player->CollisionBottom()), intersectPoint);
+		bool intersect = Intersect(Vector2(object->CollisionCentreX(), object->CollisionCentreY()),
+									Vector2(object->CollisionCentreX(), object->CollisionBottom()), intersectPoint);
 
 		if (intersect)
 		{
-			if (player->VelocityY() <= 0.0f) // if not moving upwards (example: jumping)
+			if (object->VelocityY() <= 0.0f) // if not moving upwards (example: jumping)
 			{
-				float diffY = intersectPoint.Y - player->CollisionBottom();
+				float diffY = intersectPoint.Y - object->CollisionBottom();
 
-				player->SetY(player->Y() + diffY);
+				object->SetY(object->Y() + diffY);
 
-				player->StopYAccelerating();
+				object->SetIsCollidingOnTopOfObject(true);
+
+				object->StopYAccelerating();
 			}
 		}
 	}
