@@ -21,6 +21,7 @@ GameObject::GameObject(float x, float y , float z, float width, float height, fl
 	mDrawable(false),
 	m_updateable(true),
 	mIsSolidSprite(false),
+	mIsSolidLine(false),
 	mAttachedTo(nullptr),
 	mAttachedToOffset(0,0,0),
 	mParallaxMultiplierX(1.0f),

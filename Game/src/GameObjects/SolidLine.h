@@ -33,6 +33,8 @@ private:
 	float mLength;
 	Vector2 mLineDirection;
 	Vector2 mNormal;
+	Vector2 mWorldStartPos;
+	Vector2 mWorldEndPos;
 
 	VertexPositionColor mDebugLineVertices[2];
 	ID3D10Buffer* mDebugLineVBuffer;

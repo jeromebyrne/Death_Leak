@@ -229,6 +229,10 @@ void SolidMovingSprite::XmlWrite(TiXmlElement * element)
 
 void SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 {
+	if (object->IsSolidLine())
+	{
+		return;
+	}
 	// if we are not passive then push ourselves away from the object
 	// remember this behaviour can be overwritten in derived function
 	if(!m_passive && !dynamic_cast<Projectile*>(object)) // by default we don't want to be pushed by a projectile

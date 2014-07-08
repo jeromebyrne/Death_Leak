@@ -6,6 +6,7 @@ SolidLine::SolidLine(float x, float y, float z, float width, float height, float
 	mLength(0.0f),
 	mDebugLineVBuffer(nullptr)
 {
+	mIsSolidLine = true;
 }
 
 SolidLine::~SolidLine(void)
@@ -20,9 +21,6 @@ void SolidLine::Scale(float xScale, float yScale, bool scalePosition)
 void SolidLine::Update(float delta)
 {
 	SolidMovingSprite::Update(delta);
-
-	Vector2 intersectPoint;
-	bool intersect = Intersect(Vector2(0, -50), Vector2(0, 50), intersectPoint);
 }
 
 void SolidLine::Initialise()
@@ -66,6 +64,26 @@ void SolidLine::LoadContent(ID3D10Device * graphicsdevice)
 
 void SolidLine::OnCollision(SolidMovingSprite * object)
 {
+	Player * player = GameObjectManager::Instance()->GetPlayer();
+
+	if (player == object)
+	{
+		Vector2 intersectPoint;
+		bool intersect = Intersect(Vector2(player->CollisionCentreX(), player->CollisionCentreY()), 
+								   Vector2(player->CollisionCentreX(), player->CollisionBottom()), intersectPoint);
+
+		if (intersect)
+		{
+			if (player->VelocityY() <= 0.0f) // if not moving upwards (example: jumping)
+			{
+				float diffY = intersectPoint.Y - player->CollisionBottom();
+
+				player->SetY(player->Y() + diffY);
+
+				player->StopYAccelerating();
+			}
+		}
+	}
 }
 
 void SolidLine::DebugDraw(ID3D10Device *  device)
@@ -161,6 +179,9 @@ void SolidLine::CalculateVariables()
 
 	mCollisionBoxOffset.X = (mEndPos.X + mStartPos.X) * 0.5f;
 	mCollisionBoxOffset.Y = (mEndPos.Y + mStartPos.Y) * 0.5f;
+
+	mWorldStartPos = Vector2(m_position.X + mStartPos.X, m_position.Y + mStartPos.Y);
+	mWorldEndPos = Vector2(m_position.X + mEndPos.X, m_position.Y + mEndPos.Y);
 }
 
 void SolidLine::SetupDebugDraw()
@@ -183,63 +204,22 @@ void SolidLine::SetupDebugDraw()
 
 bool SolidLine::Intersect(Vector2 & otherStart, Vector2 & otherEnd, Vector2 & intersectPointOut)
 {
-	//'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-	// Method at mathworld:
-	//
-	// x = | | x1 y1 | x1 - x2 |
-	//     | | x2 y2 |         |
-	//     |                   |
-	//     | | x3 y3 | x3 - x4 |
-	//     | | x4 x4 |         |
-	//
-	//     _____________________
-	//
-	//     | x1 - x2   y1 - y2 |
-	//     | x3 - x4   y3 - y4 |
-	//
-	// y = | | x1 y1 | y1 - y2 |
-	//     | | x2 y2 |         |
-	//     |                   |
-	//     | | x3 y3 | y3 - y4 |
-	//     | | x4 x4 |         |
-	//
-	//     _____________________
-	//
-	//     | x1 - x2   y1 - y2 |
-	//     | x3 - x4   y3 - y4 |
-	//
-	//
-	// x = | det1  x1 - x2 |
-	//     | det2  x3 - x4 |
-	//     _________________
-	//
-	//           det3
-	// 
-	// y = | det1  y1 - y2 |
-	//     | det2  y3 - y4 |
-	//     _________________
-	//
-	//           det3
-	// 
-	// 
-	//'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
 	// Calculate matrix determinants
-	float det1 = (mStartPos.X * mEndPos.Y) - (mStartPos.Y * mEndPos.X);
+	float det1 = (mWorldStartPos.X * mWorldEndPos.Y) - (mWorldStartPos.Y * mWorldEndPos.X);
 	float det2 = (otherStart.X * otherEnd.Y) - (otherStart.Y * otherEnd.X);
-	float det3 = ((mStartPos.X - mEndPos.X) * (otherStart.Y - otherEnd.Y)) - ((mStartPos.Y - mEndPos.Y) * (otherStart.X - otherEnd.X));
+	float det3 = ((mWorldStartPos.X - mWorldEndPos.X) * (otherStart.Y - otherEnd.Y)) - ((mWorldStartPos.Y - mWorldEndPos.Y) * (otherStart.X - otherEnd.X));
 
 	// If third determinant is close to zero then abort: two lines are nearly parallel:
 	if (det3 >= -0.00000001f && det3 <= 0.00000001f) return false;
 
 	// Otherwise calculate the point of intersection:
-	intersectPointOut.X = (det1 * (otherStart.X - otherEnd.X)) - ((mStartPos.X - mEndPos.X) * det2);
+	intersectPointOut.X = (det1 * (otherStart.X - otherEnd.X)) - ((mWorldStartPos.X - mWorldEndPos.X) * det2);
 	intersectPointOut.X /= det3;
-	intersectPointOut.Y = (det1 * (otherStart.Y - otherEnd.Y)) - ((otherStart.Y - otherEnd.Y) * det2);
+	intersectPointOut.Y = (det1 * (otherStart.Y - otherEnd.Y)) - ((mWorldStartPos.Y - mWorldEndPos.Y) * det2);
 	intersectPointOut.Y /= det3;
 
 	// Make sure the point is along both lines: get it relative to the start point of both lines
-	Vector2 r1 = intersectPointOut - mStartPos;
+	Vector2 r1 = intersectPointOut - mWorldStartPos;
 	Vector2 r2 = intersectPointOut - otherStart;
 
 	Vector2 otherLineDistance = otherEnd - otherStart;
@@ -251,10 +231,21 @@ bool SolidLine::Intersect(Vector2 & otherStart, Vector2 & otherEnd, Vector2 & in
 	float dot2 = r2.Dot(otherLineDirection);
 
 	// If either dot is negative then the point is past the beginning of one of the lines:
-	if (dot1 < 0) return false;
-	if (dot2 < 0) return false;
+	if (dot1 < 0 || dot2 < 0)
+	{
+		return false;
+	}
 
 	// If either dot exceeds the length of the line then point is past the end of the line:
-	if (dot1 > mLength) return false;
-	if (dot2 > otherLineDistance.Length()) return false; // TODO: optimise this
+	if (dot1 > mLength)
+	{
+		return false;
+	}
+
+	if (dot2 > otherLineDistance.Length())
+	{
+		return false;
+	}
+
+	return true;
 }

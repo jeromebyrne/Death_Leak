@@ -31,24 +31,34 @@ public:
 	virtual void Scale(float xScale, float yScale, bool scalePosition = true) override;
 
 	// the left side of our bounding box
-	inline float CollisionLeft()
+	inline float CollisionLeft() const
 	{
 		return (m_position.X - (m_collisionBoxDimensions.X * 0.5f)) + mCollisionBoxOffset.X;
 	}
 	// the right side of our bounding box
-	inline float CollisionRight()
+	inline float CollisionRight() const
 	{
 		return (m_position.X + (m_collisionBoxDimensions.X * 0.5f)) + mCollisionBoxOffset.X;
 	}
 	// the top of our bounding box
-	inline float CollisionTop()
+	inline float CollisionTop() const
 	{
 		return (m_position.Y + (m_collisionBoxDimensions.Y * 0.5f)) + mCollisionBoxOffset.Y;
 	}
 	// the bottom of our bounding box
-	inline float CollisionBottom()
+	inline float CollisionBottom() const
 	{
 		return (m_position.Y - (m_collisionBoxDimensions.Y * 0.5)) + mCollisionBoxOffset.Y;
+	}
+
+	inline float CollisionCentreX() const
+	{
+		return m_position.X + mCollisionBoxOffset.X;
+	}
+
+	inline float CollisionCentreY() const
+	{
+		return m_position.Y + mCollisionBoxOffset.Y;
 	}
 
 	inline bool IsPassive()

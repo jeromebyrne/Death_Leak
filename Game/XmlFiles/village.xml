@@ -1,6 +1,6 @@
 <level audio="">
     <SolidLine id="1" parallax_x="1" parallax_y="1" updateable="true">
-        <position z="100" y="-94.0293" x="5748.56" rotation="0" />
+        <position z="100" y="-189.976" x="5765.47" rotation="0" />
         <dimensions breadth="0" height="50" width="50" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <alpha value="1" />
@@ -13,12 +13,12 @@
         <resistance z="0" y="2" x="0.95" />
         <maxvelocity z="0" y="99999" x="10" />
         <applygravity value="false" />
-        <collisionboxdimensions z="0" y="200" x="160" offsetX="-40" offsetY="0" />
+        <collisionboxdimensions z="0" y="100" x="400" offsetX="0" offsetY="0" />
         <passive value="true" />
         <applydamage flag="false" amount="0" />
         <can_be_damaged value="false" />
-        <line_start x="-100" y="20" />
-        <line_end x="100" y="20" />
+        <line_start x="-200" y="-100" />
+        <line_end x="1200" y="1000" />
     </SolidLine>
     <Sprite id="2" parallax_x="0.9" parallax_y="0.85" updateable="true">
         <position z="140" y="-117.076" x="2882.5" rotation="0" />

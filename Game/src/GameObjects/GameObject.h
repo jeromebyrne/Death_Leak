@@ -112,6 +112,8 @@ public:
 
 	bool IsSolidSprite() const { return mIsSolidSprite; }
 
+	bool IsSolidLine() const { return mIsSolidLine; }
+
 	virtual void AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset);
 	void Detach();
 
@@ -137,6 +139,7 @@ protected:
 	bool mShowDebugText;
 	bool mDrawable;
 	bool mIsSolidSprite;
+	bool mIsSolidLine;
 	std::shared_ptr<GameObject> mAttachedTo;
 	Vector3 mAttachedToOffset;
 	float mParallaxMultiplierX;
