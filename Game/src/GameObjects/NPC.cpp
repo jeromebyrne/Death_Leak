@@ -14,10 +14,10 @@
 static float kMinReloadTime = 0.8f;
 static float kMaxReloadTime = 2.0f;
 
-static const unsigned kHealthBarDimensionsX = 70;
-static const unsigned kHealthBarDimensionsY = 6;
-static const unsigned kHealthBarOverlayDimensionsX = 70;
-static const unsigned kHealthBarOverlayDimensionsY = 8;
+static const float kHealthBarDimensionsX = 73.0f;
+static const float kHealthBarDimensionsY = 7.2f;
+static const float kHealthBarOverlayDimensionsX = 75.0f;
+static const float kHealthBarOverlayDimensionsY = 7.5f;
 
 static const D3DXVECTOR2 kDefaultTex1 = D3DXVECTOR2(0, 0);
 static const D3DXVECTOR2 kDefaultTex2 = D3DXVECTOR2(1, 0);
@@ -33,7 +33,8 @@ NPC::NPC(float x, float y, float z, float width, float height, float breadth) :
 	mLastFireTime(0),
 	mNextFireTime(0),
 	m_repelState(nullptr),
-	m_rangeAttackState(nullptr)
+	m_rangeAttackState(nullptr),
+	mCurrentHealthMeterScale(1.0f)
 {
 	mHealth = 40.0f;
 	mMaxHealth = 40.0f;
@@ -84,6 +85,17 @@ void NPC::Update(float delta)
 	{
 		mHealthBarOverlaySprite->Update(delta);
 	}
+
+	if (mCurrentHealthMeterScale != 1.0f)
+	{
+		mCurrentHealthMeterScale -= delta * 4.0f;
+		if (mCurrentHealthMeterScale < 1.0f)
+		{
+			mCurrentHealthMeterScale = 1.0f;
+		}
+
+		UpdateHealthBar();
+	}
 }
 
 void NPC::Initialise()
@@ -91,6 +103,8 @@ void NPC::Initialise()
 	Character::Initialise();
 
 	AddHealthBar();
+
+	UpdateHealthBar();
 }
 
 void NPC::XmlRead(TiXmlElement * element)
@@ -169,6 +183,8 @@ void NPC::FireProjectileAtObject(GameObject * target)
 void NPC::OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode)
 {
 	Character::OnDamage(damageAmount, pointOfContact, shouldExplode);
+
+	mCurrentHealthMeterScale = 2.0f;
 
 	UpdateHealthBar();
 
@@ -389,7 +405,6 @@ void NPC::AddHealthBar()
 		mHealthBarSprite->SetIsNativeDimensions(false);
 		mHealthBarSprite->SetDimensionsXYZ(kHealthBarDimensionsX, kHealthBarDimensionsY, 0);
 		mHealthBarSprite->SetXYZ(X(), Y(), Z() - 1);
-
 		mHealthBarSprite->LoadContent(Graphics::GetInstance()->Device());
 		mHealthBarSprite->Initialise();
 
@@ -398,7 +413,8 @@ void NPC::AddHealthBar()
 			false);
 
 		mHealthBarSprite->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), 
-									Vector3(0,((m_collisionBoxDimensions.Y * 0.5f) + mCollisionBoxOffset.Y) + 20, 0));
+									Vector3(0,((m_collisionBoxDimensions.Y * 0.5f) + mCollisionBoxOffset.Y) + 20, 0),
+									false);
 	}
 	if (!mHealthBarOverlaySprite)
 	{
@@ -407,7 +423,6 @@ void NPC::AddHealthBar()
 		mHealthBarOverlaySprite->SetIsNativeDimensions(false);
 		mHealthBarOverlaySprite->SetDimensionsXYZ(kHealthBarOverlayDimensionsX, kHealthBarOverlayDimensionsY, 0);
 		mHealthBarOverlaySprite->SetXYZ(X(), Y(), Z() - 1);
-
 		mHealthBarOverlaySprite->LoadContent(Graphics::GetInstance()->Device());
 		mHealthBarOverlaySprite->Initialise();
 
@@ -416,7 +431,8 @@ void NPC::AddHealthBar()
 									   false);
 
 		mHealthBarOverlaySprite->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()),
-											Vector3(0, ((m_collisionBoxDimensions.Y * 0.5f) + mCollisionBoxOffset.Y) + 20, 0));
+											Vector3(0, ((m_collisionBoxDimensions.Y * 0.5f) + mCollisionBoxOffset.Y) + 20, 0),
+											false);
 	}
 }
 
@@ -462,7 +478,13 @@ void NPC::UpdateHealthBar()
 	}
 
 	float percentHealth = mHealth / mMaxHealth;
+	mHealthBarSprite->SetMatrixScaleX(percentHealth * mCurrentHealthMeterScale);
+	mHealthBarSprite->SetMatrixScaleY(mCurrentHealthMeterScale);
+	mHealthBarSprite->SetAttachmentOffsetX(-((((kHealthBarDimensionsX - (kHealthBarDimensionsX * percentHealth))) * mCurrentHealthMeterScale) * 0.5f) );
 
-	mHealthBarSprite->SetMatrixScaleX(percentHealth);
-	mHealthBarSprite->SetAttachmentOffsetX((kHealthBarDimensionsX - (kHealthBarDimensionsX * percentHealth)) * 0.5f);
+	if (mHealthBarOverlaySprite)
+	{
+		mHealthBarOverlaySprite->SetMatrixScaleX(mCurrentHealthMeterScale);
+		mHealthBarOverlaySprite->SetMatrixScaleY(mCurrentHealthMeterScale);
+	}
 }

@@ -45,7 +45,7 @@ public:
 	void SetMaxBrightnessValue(float value) { m_maxBrightness = value; }
 	void SetNumParticlesValue(float value) { m_numParticles = value; }
 
-	virtual void AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset) override;
+	virtual void AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset, bool trackParentsOrientation = true) override;
 
 protected:
 

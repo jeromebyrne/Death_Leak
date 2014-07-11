@@ -903,66 +903,73 @@ void Sprite::UpdateToParent()
 		Sprite * parentSprite = static_cast<Sprite *>(mAttachedTo.get());
 
 		m_position.Y = mAttachedTo->Position().Y + mAttachedToOffset.Y;
-		if (parentSprite->IsHFlipped())
+		if (mUpdateToParentsOrientation)
 		{
-			if (mParentHFlipInitial)
+			if (parentSprite->IsHFlipped())
 			{
-				m_position.X = mAttachedTo->Position().X + mAttachedToOffset.X;
-				if (mHflippedOnAttach)
+				if (mParentHFlipInitial)
 				{
-					FlipHorizontal();
+					m_position.X = mAttachedTo->Position().X + mAttachedToOffset.X;
+					if (mHflippedOnAttach)
+					{
+						FlipHorizontal();
+					}
+					else
+					{
+						UnFlipHorizontal();
+					}
 				}
 				else
 				{
-					UnFlipHorizontal();
+					m_position.X = mAttachedTo->Position().X - mAttachedToOffset.X;
+					if (mHflippedOnAttach)
+					{
+						UnFlipHorizontal();
+					}
+					else
+					{
+						FlipHorizontal();
+					}
 				}
 			}
 			else
 			{
-				m_position.X = mAttachedTo->Position().X - mAttachedToOffset.X;
-				if (mHflippedOnAttach)
+				if (mParentHFlipInitial)
 				{
-					UnFlipHorizontal();
+					m_position.X = mAttachedTo->Position().X - mAttachedToOffset.X;
+					if (mHflippedOnAttach)
+					{
+						UnFlipHorizontal();
+					}
+					else
+					{
+						FlipHorizontal();
+					}
 				}
 				else
 				{
-					FlipHorizontal();
+					m_position.X = mAttachedTo->Position().X + mAttachedToOffset.X;
+					if (mHflippedOnAttach)
+					{
+						FlipHorizontal();
+					}
+					else
+					{
+						UnFlipHorizontal();
+					}
 				}
 			}
 		}
 		else
 		{
-			if (mParentHFlipInitial)
-			{
-				m_position.X = mAttachedTo->Position().X - mAttachedToOffset.X;
-				if (mHflippedOnAttach)
-				{
-					UnFlipHorizontal();
-				}
-				else
-				{
-					FlipHorizontal();
-				}
-			}
-			else
-			{
-				m_position.X = mAttachedTo->Position().X + mAttachedToOffset.X;
-				if (mHflippedOnAttach)
-				{
-					FlipHorizontal();
-				}
-				else
-				{
-					UnFlipHorizontal();
-				}
-			}
+			m_position.X = mAttachedTo->Position().X + mAttachedToOffset.X;
 		}
 	}
 }
 
-void Sprite::AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset)
+void Sprite::AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset, bool trackParentsOrientation)
 {
-	DrawableObject::AttachTo(parent, offset);
+	DrawableObject::AttachTo(parent, offset, trackParentsOrientation);
 
 	Sprite * sprite = dynamic_cast<Sprite *>(parent.get());
 	GAME_ASSERT(sprite);

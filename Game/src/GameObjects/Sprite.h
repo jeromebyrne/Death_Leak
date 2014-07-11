@@ -48,7 +48,7 @@ public:
 
 	void RecalculateVertices();
 
-	virtual void AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset) override;
+	virtual void AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset, bool trackParentsOrientation = true) override;
 
 	void SetTextureFilename(const char * fileName) { m_textureFilename = fileName; }
 

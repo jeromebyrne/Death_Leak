@@ -69,6 +69,7 @@ private:
 
 	unique_ptr<Sprite> mHealthBarSprite;
 	unique_ptr<Sprite> mHealthBarOverlaySprite;
+	float mCurrentHealthMeterScale;
 };
 
 #endif

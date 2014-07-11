@@ -112,7 +112,7 @@ public:
 
 	bool IsSolidLine() const { return mIsSolidLine; }
 
-	virtual void AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset);
+	virtual void AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset, bool trackOrientation = true);
 	void Detach();
 
 	float GetParallaxMultiplierX() const { return mParallaxMultiplierX; }
@@ -150,6 +150,7 @@ protected:
 	float mParallaxMultiplierY;
 	float mCurrentParallaxOffsetX;
 	float mCurrentParallaxOffsetY;
+	bool mUpdateToParentsOrientation;
 
 private:
 

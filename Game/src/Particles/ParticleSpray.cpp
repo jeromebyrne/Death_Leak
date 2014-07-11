@@ -360,9 +360,9 @@ void ParticleSpray::LoadContent(ID3D10Device* device)
 	m_texture = TextureManager::Instance()->LoadTexture(m_textureFilename.c_str());
 }
 
-void ParticleSpray::AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset)
+void ParticleSpray::AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset, bool trackParentsOrientation)
 {
-	DrawableObject::AttachTo(parent, offset);
+	DrawableObject::AttachTo(parent, offset, trackParentsOrientation);
 
 	Sprite * sprite = dynamic_cast<Sprite *>(parent.get());
 	GAME_ASSERT(sprite);
