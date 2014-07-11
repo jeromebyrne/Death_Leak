@@ -8,9 +8,49 @@ class Projectile;
 
 class Character : public SolidMovingSprite
 {
-private:
-	
+
+public:
+
+	Character(float x = 0, float y = 0, float z = 0, float width = 10, float height = 10, float breadth = 0);
+	virtual ~Character(void);
+	virtual void Update(float delta) override;
+	virtual void Initialise() override;
+	virtual void Draw(ID3D10Device * device, Camera2D * camera) override;
+	virtual void XmlRead(TiXmlElement * element) override;
+	virtual void XmlWrite(TiXmlElement * element) override;
+	virtual void OnCollision(SolidMovingSprite * object) override;
+	virtual void Scale(float xScale, float yScale, bool scalePosition = true) override;
+	virtual void LoadContent(ID3D10Device * graphicsdevice) override;
+	inline void SetMaxJumpSpeed(float value)
+	{
+		m_maxJumpSpeed = value;
+	}
+	virtual void Jump(int percent);
+	virtual void WallJump(int percent);
+	virtual void AccelerateX(float directionX);
+	virtual void OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) override;
+
+	void setAccelXRate(const float accelRate) { mAccelXRate = accelRate; }
+
+	float GetHealth() const { return mHealth; }
+	float GetMaxHealth() const { return mMaxHealth; }
+
+	void IncreaseHealth(float value);
+
+	virtual void DebugDraw(ID3D10Device *  device);
+
+	void SetSprintActive(bool value);
+	bool GetIsSprintActive() { return mSprintActive; }
+
+	virtual Projectile * FireWeapon(Vector2 direction) = 0;
+	virtual Projectile * FireBomb(Vector2 direction) = 0;
+
+	bool IsOnSolidSurface();
+
+	virtual void DoMeleeAttack();
+
 protected:
+
 	bool m_isJumping;
 	float m_maxJumpSpeed;
 	float m_lastTimePlayedFootstep; // the last time in ms when we played a footstep sound
@@ -40,46 +80,6 @@ protected:
 	float mRunAnimFramerateMultiplier;
 
 	bool mPlayFootsteps;
-
-public:
-
-	Character(float x = 0, float y = 0, float z = 0, float width = 10, float height = 10, float breadth = 0);
-	virtual ~Character(void);
-	virtual void Update(float delta) override;
-	virtual void Initialise() override;
-	virtual void Draw(ID3D10Device * device, Camera2D * camera) override;
-	virtual void XmlRead(TiXmlElement * element) override;
-	virtual void XmlWrite(TiXmlElement * element) override;
-	virtual void OnCollision(SolidMovingSprite * object) override;
-	virtual void Scale(float xScale, float yScale, bool scalePosition = true) override;
-	virtual void LoadContent(ID3D10Device * graphicsdevice) override;
-	inline void SetMaxJumpSpeed(float value)
-	{
-		m_maxJumpSpeed = value;
-	}
-	virtual void Jump(int percent);
-	virtual void WallJump(int percent);
-	virtual void AccelerateX(float directionX);
-	virtual void OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) override; 
-
-	void setAccelXRate(const float accelRate) { mAccelXRate = accelRate; }
-
-	float GetHealth() const { return mHealth; }
-	float GetMaxHealth() const { return mMaxHealth; }
-
-	void IncreaseHealth(float value);
-
-	virtual void DebugDraw(ID3D10Device *  device);
-
-	void SetSprintActive(bool value);
-	bool GetIsSprintActive() { return mSprintActive; }
-
-	virtual Projectile * FireWeapon(Vector2 direction) = 0;
-	virtual Projectile * FireBomb(Vector2 direction) = 0;
-
-	bool IsOnSolidSurface();
-
-	virtual void DoMeleeAttack();
 };
 
 #endif

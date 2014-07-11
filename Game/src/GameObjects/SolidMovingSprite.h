@@ -72,10 +72,10 @@ public:
 	virtual void Draw(ID3D10Device * device, Camera2D * camera) override;
 
 	virtual void OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) override;
-	
-protected:
 
 	virtual void SetupDebugDraw() override;
+	
+protected:
 
 	bool m_passive; // is this an active collision object or passive?
 

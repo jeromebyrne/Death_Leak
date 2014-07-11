@@ -14,18 +14,29 @@
 static float kMinReloadTime = 0.8f;
 static float kMaxReloadTime = 2.0f;
 
-NPC::NPC(float x, float y, float z, float width, float height, float breadth):
-Character(x, y, z, width, height, breadth),
-m_player(0),
-m_friendlyFollowState(nullptr),
-m_currentState(nullptr),
-mCheckNPCOverlapCollisions(true),
-mLastFireTime(0),
-mNextFireTime(0),
-m_repelState(nullptr),
-m_rangeAttackState(nullptr)
+static const unsigned kHealthBarDimensionsX = 70;
+static const unsigned kHealthBarDimensionsY = 6;
+static const unsigned kHealthBarOverlayDimensionsX = 70;
+static const unsigned kHealthBarOverlayDimensionsY = 8;
+
+static const D3DXVECTOR2 kDefaultTex1 = D3DXVECTOR2(0, 0);
+static const D3DXVECTOR2 kDefaultTex2 = D3DXVECTOR2(1, 0);
+static const D3DXVECTOR2 kDefaultTex3 = D3DXVECTOR2(1, 1);
+static const D3DXVECTOR2 kDefaultTex4 = D3DXVECTOR2(0, 1);
+
+NPC::NPC(float x, float y, float z, float width, float height, float breadth) :
+	Character(x, y, z, width, height, breadth),
+	m_player(0),
+	m_friendlyFollowState(nullptr),
+	m_currentState(nullptr),
+	mCheckNPCOverlapCollisions(true),
+	mLastFireTime(0),
+	mNextFireTime(0),
+	m_repelState(nullptr),
+	m_rangeAttackState(nullptr)
 {
-	mHealth = 30.0f;
+	mHealth = 40.0f;
+	mMaxHealth = 40.0f;
 	mProjectileFilePath = "Media/ninjastar.png";
 	mProjectileImpactFilePath = "Media/ninjastar_impact.png";
 
@@ -63,11 +74,23 @@ void NPC::Update(float delta)
 	{
 		m_currentState->Update();
 	}
+
+	if (mHealthBarSprite)
+	{
+		mHealthBarSprite->Update(delta);
+	}
+
+	if (mHealthBarOverlaySprite)
+	{
+		mHealthBarOverlaySprite->Update(delta);
+	}
 }
 
 void NPC::Initialise()
 {
 	Character::Initialise();
+
+	AddHealthBar();
 }
 
 void NPC::XmlRead(TiXmlElement * element)
@@ -146,6 +169,8 @@ void NPC::FireProjectileAtObject(GameObject * target)
 void NPC::OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode)
 {
 	Character::OnDamage(damageAmount, pointOfContact, shouldExplode);
+
+	UpdateHealthBar();
 
 	// throw out some orbs
 	int particleNUmPerOrb = 25;
@@ -329,4 +354,115 @@ Projectile * NPC::FireWeapon(Vector2 direction)
 	PlayRandomWeaponFireSound();
 
 	return p;
+}
+
+void NPC::Draw(ID3D10Device * device, Camera2D * camera)
+{
+	Character::Draw(device, camera);
+
+	if (mHealthBarSprite)
+	{
+		// apply any changes needed
+		if (mHealthBarSprite->IsChangeRequired())
+		{
+			mHealthBarSprite->ApplyChange(device);
+		}
+		mHealthBarSprite->Draw(device, camera);
+	}
+	if (mHealthBarOverlaySprite)
+	{
+		// apply any changes needed
+		if (mHealthBarOverlaySprite->IsChangeRequired())
+		{
+			mHealthBarOverlaySprite->ApplyChange(device);
+		}
+		mHealthBarOverlaySprite->Draw(device, camera);
+	}
+}
+
+void NPC::AddHealthBar()
+{
+	if (!mHealthBarSprite)
+	{
+		mHealthBarSprite = unique_ptr<Sprite>(new Sprite());
+		mHealthBarSprite->SetTextureFilename("Media\\characters\\health_bar.png");
+		mHealthBarSprite->SetIsNativeDimensions(false);
+		mHealthBarSprite->SetDimensionsXYZ(kHealthBarDimensionsX, kHealthBarDimensionsY, 0);
+		mHealthBarSprite->SetXYZ(X(), Y(), Z() - 1);
+
+		mHealthBarSprite->LoadContent(Graphics::GetInstance()->Device());
+		mHealthBarSprite->Initialise();
+
+		mHealthBarSprite->Scale(Graphics::GetInstance()->BackBufferWidth() / 1920,
+			Graphics::GetInstance()->BackBufferHeight() / 1080,
+			false);
+
+		mHealthBarSprite->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), 
+									Vector3(0,((m_collisionBoxDimensions.Y * 0.5f) + mCollisionBoxOffset.Y) + 20, 0));
+	}
+	if (!mHealthBarOverlaySprite)
+	{
+		mHealthBarOverlaySprite = unique_ptr<Sprite>(new Sprite());
+		mHealthBarOverlaySprite->SetTextureFilename("Media\\characters\\health_bar_overlay.png");
+		mHealthBarOverlaySprite->SetIsNativeDimensions(false);
+		mHealthBarOverlaySprite->SetDimensionsXYZ(kHealthBarOverlayDimensionsX, kHealthBarOverlayDimensionsY, 0);
+		mHealthBarOverlaySprite->SetXYZ(X(), Y(), Z() - 1);
+
+		mHealthBarOverlaySprite->LoadContent(Graphics::GetInstance()->Device());
+		mHealthBarOverlaySprite->Initialise();
+
+		mHealthBarOverlaySprite->Scale(Graphics::GetInstance()->BackBufferWidth() / 1920,
+									   Graphics::GetInstance()->BackBufferHeight() / 1080,
+									   false);
+
+		mHealthBarOverlaySprite->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()),
+											Vector3(0, ((m_collisionBoxDimensions.Y * 0.5f) + mCollisionBoxOffset.Y) + 20, 0));
+	}
+}
+
+void NPC::DebugDraw(ID3D10Device *  device)
+{
+	Character::DebugDraw(device);
+
+	if (mHealthBarSprite)
+	{
+		mHealthBarSprite->DebugDraw(device);
+	}
+	if (mHealthBarOverlaySprite)
+	{
+		mHealthBarOverlaySprite->DebugDraw(device);
+	}
+}
+
+void NPC::SetupDebugDraw()
+{
+	Character::SetupDebugDraw();
+
+	if (mHealthBarSprite)
+	{
+		mHealthBarSprite->SetupDebugDraw();
+	}
+	if (mHealthBarOverlaySprite)
+	{
+		mHealthBarOverlaySprite->SetupDebugDraw();
+	}
+}
+
+void NPC::UpdateHealthBar()
+{
+	if (!mHealthBarSprite)
+	{
+		return;
+	}
+
+	GAME_ASSERT(mMaxHealth > 0.0f);
+	if (mMaxHealth <= 0.0f)
+	{
+		return;
+	}
+
+	float percentHealth = mHealth / mMaxHealth;
+
+	mHealthBarSprite->SetMatrixScaleX(percentHealth);
+	mHealthBarSprite->SetAttachmentOffsetX((kHealthBarDimensionsX - (kHealthBarDimensionsX * percentHealth)) * 0.5f);
 }

@@ -24,14 +24,10 @@ public:
 	virtual void XmlRead(TiXmlElement * element) override;
 	virtual void XmlWrite(TiXmlElement * element) override;
 	virtual void ApplyChange(ID3D10Device * device) {}
-	bool IsChangeRequired()
-	{
-		return m_applyChange;
-	}
-	D3DXMATRIX World()
-	{
-		return m_world;
-	}
+	bool IsChangeRequired() { return m_applyChange; }
+	void SetChangeRequired() { m_applyChange = true; }
+	D3DXMATRIX World() { return m_world; }
+
 	void SetAlpha(float value)
 	{
 		if (value > 1.0f)

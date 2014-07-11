@@ -23,47 +23,47 @@ static const D3DXVECTOR3 kDefaultTangent = D3DXVECTOR3(0,1,0);
 static const D3DXVECTOR3 kDefaultBiNormal = D3DXVECTOR3(1,1,1);
 
 Sprite::Sprite(float x, float y, float z, float width, float height, float breadth)
-:DrawableObject(x,y,z,width,height,breadth),
-m_horizontalFlip(false),
-m_verticalFlip(false), 
-VertexBuffer(nullptr), 
-VertexBufferBump(nullptr),
-IndexBuffer(nullptr),
-m_isAnimated(false),
-mParentHFlipInitial(false),
-mHflippedOnAttach(true),
-m_drawAtNativeDimensions(true),
-m_texture(nullptr),
-m_textureBump(nullptr),
-m_fadeAlphaWhenPlayerOccluded(false),
-m_alphaWhenOccluding(0.5),
-m_alphaWhenNotOccluding(1.0),
-mRepeatTextureX(false),
-mRepeatTextureY(false),
-mTextureDimensions(0,0),
-mNoiseShaderIntensity(0.0f),
-mWobbleShaderIntensity(0.0f),
-mPixelWobbleIntensity(0.0f),
-mPixelWobbleSpeedMod(0.0f)
+	:DrawableObject(x,y,z,width,height,breadth),
+	m_horizontalFlip(false),
+	m_verticalFlip(false), 
+	mVertexBuffer(nullptr), 
+	mVertexBufferBump(nullptr),
+	mIndexBuffer(nullptr),
+	m_isAnimated(false),
+	mParentHFlipInitial(false),
+	mHflippedOnAttach(true),
+	m_drawAtNativeDimensions(true),
+	m_texture(nullptr),
+	m_textureBump(nullptr),
+	m_fadeAlphaWhenPlayerOccluded(false),
+	m_alphaWhenOccluding(0.5),
+	m_alphaWhenNotOccluding(1.0),
+	mRepeatTextureX(false),
+	mRepeatTextureY(false),
+	mTextureDimensions(0,0),
+	mNoiseShaderIntensity(0.0f),
+	mWobbleShaderIntensity(0.0f),
+	mPixelWobbleIntensity(0.0f),
+	mPixelWobbleSpeedMod(0.0f)
 {
 }
 
 Sprite::~Sprite(void)
 {
-	if(VertexBuffer) 
+	if(mVertexBuffer) 
 	{
-		VertexBuffer->Release();
-		VertexBuffer = nullptr;
+		mVertexBuffer->Release();
+		mVertexBuffer = nullptr;
 	}
-	if(VertexBufferBump) 
+	if(mVertexBufferBump) 
 	{
-		VertexBufferBump->Release();
-		VertexBufferBump = nullptr;
+		mVertexBufferBump->Release();
+		mVertexBufferBump = nullptr;
 	}
-	if(IndexBuffer)
+	if(mIndexBuffer)
 	{
-		IndexBuffer->Release();
-		IndexBuffer = nullptr;
+		mIndexBuffer->Release();
+		mIndexBuffer = nullptr;
 	}
 }
 
@@ -93,8 +93,6 @@ void Sprite::Initialise()
 	}
 	
 	mTextureDimensions = GetTextureDimensions();
-
-	//RecalculateVertices();
 }
 
 Vector2 Sprite::GetTextureDimensions()
@@ -525,13 +523,13 @@ void Sprite::SetVertexBuffer(ID3D10Device* device, UINT byteSize, VertexPosition
     D3D10_SUBRESOURCE_DATA InitData;
     InitData.pSysMem = vertices;
     
-	if(VertexBuffer)
+	if(mVertexBuffer)
 	{
-		VertexBuffer->Release();
+		mVertexBuffer->Release();
 	}
 	
-	device->CreateBuffer( &bd, &InitData, &VertexBuffer );
-	GAME_ASSERT(VertexBuffer);
+	device->CreateBuffer( &bd, &InitData, &mVertexBuffer );
+	GAME_ASSERT(mVertexBuffer);
 }
 
 void Sprite::SetVertexBufferBump(ID3D10Device* device, UINT byteSize, VertexPositionTextureNormalTanBiNorm vertices[])
@@ -545,13 +543,13 @@ void Sprite::SetVertexBufferBump(ID3D10Device* device, UINT byteSize, VertexPosi
     D3D10_SUBRESOURCE_DATA InitData;
     InitData.pSysMem = vertices;
     
-	if(VertexBufferBump)
+	if(mVertexBufferBump)
 	{
-		VertexBufferBump->Release();
+		mVertexBufferBump->Release();
 	}
 	
-	device->CreateBuffer( &bd, &InitData, &VertexBufferBump );
-	GAME_ASSERT(VertexBufferBump);
+	device->CreateBuffer( &bd, &InitData, &mVertexBufferBump );
+	GAME_ASSERT(mVertexBufferBump);
 }
 
 void Sprite::SetIndexBuffer(ID3D10Device* device, UINT byteSize, DWORD indices[])
@@ -565,8 +563,8 @@ void Sprite::SetIndexBuffer(ID3D10Device* device, UINT byteSize, DWORD indices[]
 	D3D10_SUBRESOURCE_DATA InitData;
     InitData.pSysMem = indices;
 
-	device->CreateBuffer( &bd, &InitData, &IndexBuffer );
-	GAME_ASSERT(IndexBuffer);
+	device->CreateBuffer( &bd, &InitData, &mIndexBuffer );
+	GAME_ASSERT(mIndexBuffer);
 }
 
 void Sprite::Draw_effectBasic(ID3D10Device * graphicsdevice)
@@ -583,10 +581,10 @@ void Sprite::Draw_effectBasic(ID3D10Device * graphicsdevice)
     // Set vertex buffer
 	UINT stride = sizeof(VertexPositionColor);
 	UINT offset = 0;
-	graphicsdevice->IASetVertexBuffers(0,1, &VertexBuffer, &stride, &offset);
+	graphicsdevice->IASetVertexBuffers(0,1, &mVertexBuffer, &stride, &offset);
 
 	//// set the index buffer
-	graphicsdevice->IASetIndexBuffer(IndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	graphicsdevice->IASetIndexBuffer(mIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
 	//// Set primitive topology
 	graphicsdevice->IASetPrimitiveTopology( D3D10_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP );
@@ -602,11 +600,8 @@ void Sprite::Draw_effectBasic(ID3D10Device * graphicsdevice)
 
 void Sprite::Draw_effectLightTexture(ID3D10Device * device)
 {
-	if (!m_effectLightTexture)
-	{
-		LOG_INFO("EffectLightTexture is null for GameObject with id: %u", ID());
-		GAME_ASSERT(m_effectLightTexture);
-	}
+	GAME_ASSERT(m_effectLightTexture);
+	
 	//// set the world matrix
 	m_effectLightTexture->SetWorld((float*)&m_world);
 
@@ -622,10 +617,10 @@ void Sprite::Draw_effectLightTexture(ID3D10Device * device)
     // Set vertex buffer
 	UINT stride = sizeof(VertexPositionTextureNormal);
 	UINT offset = 0;
-	device->IASetVertexBuffers(0,1, &VertexBuffer, &stride, &offset);
+	device->IASetVertexBuffers(0,1, &mVertexBuffer, &stride, &offset);
 
 	//// set the index buffer
-	device->IASetIndexBuffer(IndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	device->IASetIndexBuffer(mIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
 	//// Set primitive topology
 	device->IASetPrimitiveTopology( D3D10_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP );
@@ -660,10 +655,10 @@ void Sprite::Draw_effectPixelWobble(ID3D10Device * device)
     // Set vertex buffer
 	UINT stride = sizeof(VertexPositionTextureNormal);
 	UINT offset = 0;
-	device->IASetVertexBuffers(0,1, &VertexBuffer, &stride, &offset);
+	device->IASetVertexBuffers(0,1, &mVertexBuffer, &stride, &offset);
 
 	//// set the index buffer
-	device->IASetIndexBuffer(IndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	device->IASetIndexBuffer(mIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
 	//// Set primitive topology
 	device->IASetPrimitiveTopology( D3D10_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP );
@@ -696,10 +691,10 @@ void Sprite::Draw_effectNoise(ID3D10Device * device)
     // Set vertex buffer
 	UINT stride = sizeof(VertexPositionTextureNormal);
 	UINT offset = 0;
-	device->IASetVertexBuffers(0,1, &VertexBuffer, &stride, &offset);
+	device->IASetVertexBuffers(0,1, &mVertexBuffer, &stride, &offset);
 
 	//// set the index buffer
-	device->IASetIndexBuffer(IndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	device->IASetIndexBuffer(mIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
 	//// Set primitive topology
 	device->IASetPrimitiveTopology( D3D10_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP );
@@ -740,10 +735,10 @@ void Sprite::Draw_effectBump(ID3D10Device * device)
     // Set vertex buffer
 	UINT stride = sizeof(VertexPositionTextureNormalTanBiNorm);
 	UINT offset = 0;
-	device->IASetVertexBuffers(0,1, &VertexBufferBump, &stride, &offset);
+	device->IASetVertexBuffers(0,1, &mVertexBufferBump, &stride, &offset);
 
 	//// set the index buffer
-	device->IASetIndexBuffer(IndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	device->IASetIndexBuffer(mIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
 	//// Set primitive topology
 	device->IASetPrimitiveTopology( D3D10_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP );
@@ -777,10 +772,10 @@ void Sprite::Draw_effectLightTexWobble(ID3D10Device * device)
     // Set vertex buffer
 	UINT stride = sizeof(VertexPositionTextureNormal);
 	UINT offset = 0;
-	device->IASetVertexBuffers(0,1, &VertexBuffer, &stride, &offset);
+	device->IASetVertexBuffers(0,1, &mVertexBuffer, &stride, &offset);
 
 	//// set the index buffer 
-	device->IASetIndexBuffer(IndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	device->IASetIndexBuffer(mIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
 	//// Set primitive topology
 	device->IASetPrimitiveTopology( D3D10_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP );

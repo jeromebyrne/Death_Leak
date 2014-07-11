@@ -91,9 +91,7 @@ public:
 	virtual void XmlRead(TiXmlElement * element);
 	virtual void XmlWrite(TiXmlElement * element);
 	virtual void DebugDraw(ID3D10Device *  device);
-	virtual void OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode = true)
-	{
-	}
+	virtual void OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) {}
 	inline Material* GetMaterial()
 	{
 		return m_material;
@@ -122,9 +120,15 @@ public:
 	float GetCurrentParallaxOffsetX() const { return mCurrentParallaxOffsetX; }
 	float GetCurrentParallaxOffsetY() const { return mCurrentParallaxOffsetY; }
 
+	virtual void SetupDebugDraw();
+
+	void SetMatrixScaleX(float value) { m_matScaleX = value; }
+	void SetMatrixScaleY(float value) { m_matScaleY = value; }
+
+	void SetAttachmentOffsetX(float x) { mAttachedToOffset.X = x; }
+
 protected:
 
-	virtual void SetupDebugDraw();
 	virtual void DrawDebugText();
 
 	Vector3 m_position;

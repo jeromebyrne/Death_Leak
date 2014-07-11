@@ -21,6 +21,7 @@ public:
 	NPC(float x = 0, float y = 0, float z = 0, float width = 10, float height = 10, float breadth = 0);
 	virtual ~NPC(void);
 	virtual void Update(float delta) override;
+	virtual void Draw(ID3D10Device * device, Camera2D * camera) override;
 	virtual void Initialise() override;
 	virtual void XmlRead(TiXmlElement * element) override;
 	virtual void XmlWrite(TiXmlElement * element) override;
@@ -46,6 +47,7 @@ public:
 	bool GetCheckNPCOverlapCollisions() { return mCheckNPCOverlapCollisions; }
 
 protected:
+
 	Player * m_player;
 	AIStateFollow * m_friendlyFollowState;
 	AIStateRepel * m_repelState;
@@ -53,10 +55,20 @@ protected:
 	bool mCheckNPCOverlapCollisions;
 
 private:
+
+	void AddHealthBar();
+	void UpdateHealthBar();
+
+	virtual void DebugDraw(ID3D10Device *  device) override;
+	virtual void SetupDebugDraw() override;
+
 	AIState * m_currentState;
 	std::set<NPC *> m_resolvedNPCCollisionSet;
 	float mLastFireTime;
 	float mNextFireTime;
+
+	unique_ptr<Sprite> mHealthBarSprite;
+	unique_ptr<Sprite> mHealthBarOverlaySprite;
 };
 
 #endif

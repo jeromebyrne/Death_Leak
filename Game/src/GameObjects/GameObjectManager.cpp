@@ -677,6 +677,9 @@ void GameObjectManager::AddGameObject(GameObject * object, bool editModeAdd)
 		return;
 	}
 #endif
+
+	m_gameObjects.push_back(shared_ptr<GameObject>(object));
+
 	// no need to manually add it to gameObject list as this is done automatically in the constructor
 	object->LoadContent(Graphics::GetInstance()->Device());
 	object->Initialise();
@@ -693,8 +696,6 @@ void GameObjectManager::AddGameObject(GameObject * object, bool editModeAdd)
 	// never scale position during the game, only before
 	// it is always assumed you are giving a valid position during the game
 	object->Scale(scaleX, scaleY, false);
-
-	m_gameObjects.push_back(shared_ptr<GameObject>(object));
 
 	// TODO: Optimise, huge bottleneck
 	LOG_INFO("optimise AddGameObject");

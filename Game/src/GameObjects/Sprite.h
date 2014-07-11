@@ -6,13 +6,54 @@
 
 class Sprite : public DrawableObject
 {
-private:
+public:
 
-	friend class NinjaSpawner;
+	Sprite(float x = 0, float y = 0, float z = 0, float width = 1, float height = 1, float breadth = 1);
+	virtual ~Sprite(void);
 
-	virtual void UpdateToParent() override;
+	virtual void Initialise() override;
+	virtual void LoadContent(ID3D10Device * graphicsdevice) override;
+	virtual void Update(float delta) override;
+	virtual void Draw(ID3D10Device * device, Camera2D * camera) override;
+	virtual void XmlRead(TiXmlElement * element) override;
+	virtual void XmlWrite(TiXmlElement * element) override;
+	virtual void ApplyChange(ID3D10Device * device) override;
+
+	bool GetDoesRepeatX() { return mRepeatTextureX; }
+	bool GetDoesRepeatY() { return mRepeatTextureY; }
+
+	void SetNoiseSHaderIntensity(float value) { mNoiseShaderIntensity = value; }
+
+	Animation * GetAnimation();
+	bool GetIsAnimated()
+	{
+		return m_isAnimated;
+	}
+
+	// these functions determine texture coords
+	void FlipHorizontal();
+	void UnFlipHorizontal();
+	void FlipVertical();
+	void UnFlipVertical();
+
+	bool IsHFlipped() const { return m_horizontalFlip; }
+	bool IsVFlipped() const { return m_verticalFlip; }
+
+	virtual void Scale(float xScale, float yScale, bool scalePosition = true) override;
+
+	// should only be calling this in level editor code, not in-game
+	void ScaleSpriteOnly(float xScale, float yScale);
+
+	void SetIsNativeDimensions(bool value);
+
+	void RecalculateVertices();
+
+	virtual void AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset) override;
+
+	void SetTextureFilename(const char * fileName) { m_textureFilename = fileName; }
 
 protected:
+
 	ID3D10ShaderResourceView* m_texture;
 	std::string m_textureFilename;
 
@@ -54,9 +95,9 @@ protected:
 	virtual void UpdateAnimations();
 
 	// buffers
-	ID3D10Buffer* VertexBuffer;
-	ID3D10Buffer* VertexBufferBump;
-	ID3D10Buffer* IndexBuffer;
+	ID3D10Buffer* mVertexBuffer;
+	ID3D10Buffer* mVertexBufferBump;
+	ID3D10Buffer* mIndexBuffer;
 	
 	bool m_drawAtNativeDimensions;
 
@@ -78,49 +119,11 @@ protected:
 	bool mParentHFlipInitial;
 	bool mHflippedOnAttach;
 
-public:
+private:
 
-	Sprite(float x = 0, float y = 0, float z = 0, float width = 1, float height = 1, float breadth = 1);
-	virtual ~Sprite(void);
+	friend class NinjaSpawner;
 
-	virtual void Initialise() override;
-	virtual void LoadContent(ID3D10Device * graphicsdevice) override;
-	virtual void Update(float delta) override;
-	virtual void Draw(ID3D10Device * device, Camera2D * camera) override;
-	virtual void XmlRead(TiXmlElement * element) override;
-	virtual void XmlWrite(TiXmlElement * element) override;
-	virtual void ApplyChange(ID3D10Device * device) override;
-
-	bool GetDoesRepeatX() { return mRepeatTextureX; } 
-	bool GetDoesRepeatY() { return mRepeatTextureY; } 
-
-	void SetNoiseSHaderIntensity(float value) { mNoiseShaderIntensity = value; }
-
-	Animation * GetAnimation();
-	bool GetIsAnimated()
-	{
-		return m_isAnimated;
-	}
-	
-	// these functions determine texture coords
-	void FlipHorizontal();
-	void UnFlipHorizontal();
-	void FlipVertical();
-	void UnFlipVertical();
-
-	bool IsHFlipped() const { return m_horizontalFlip; }
-	bool IsVFlipped() const { return m_verticalFlip; }
-
-	virtual void Scale(float xScale, float yScale, bool scalePosition = true) override;
-
-	// should only be calling this in level editor code, not in-game
-	void ScaleSpriteOnly(float xScale, float yScale);
-
-	void SetIsNativeDimensions(bool value);
-
-	void RecalculateVertices();
-
-	virtual void AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset) override;
+	virtual void UpdateToParent() override;
 };
 
 #endif
