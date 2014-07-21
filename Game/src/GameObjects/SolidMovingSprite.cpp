@@ -21,7 +21,8 @@ SolidMovingSprite::SolidMovingSprite(float x, float y , float z , float width , 
 	mBouncable(false),
 	mBounceDampening(1.0f),
 	mCollisionBoxOffset(0,0),
-	mCanBeDamaged(true)
+	mCanBeDamaged(true),
+	mIsOnSolidLine(false)
 {
 	mIsSolidSprite = true;
 }
@@ -325,6 +326,11 @@ void SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 			{
 				m_position.Y += yOverlap;
 				StopYAccelerating();
+			}
+			else
+			{
+				m_position.Y += yOverlap;
+				//StopYAccelerating();
 			}
 
 			if (mBouncable)

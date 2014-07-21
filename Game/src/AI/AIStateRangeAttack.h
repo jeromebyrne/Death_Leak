@@ -10,8 +10,8 @@ public:
 	AIStateRangeAttack(NPC * npc);
 	virtual ~AIStateRangeAttack(void);
 
-	virtual void OnTransition();
-	virtual void Update();
+	virtual void OnTransition() override;
+	virtual void Update(float delta) override;
 
 	void SetDesiredRange(float value) { mDesiredRange = value; }
 

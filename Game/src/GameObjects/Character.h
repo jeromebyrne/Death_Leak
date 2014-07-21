@@ -56,7 +56,7 @@ protected:
 	float m_lastTimePlayedFootstep; // the last time in ms when we played a footstep sound
 	float m_footstepTime; // the time in between each footstep
 	float m_sprintFootstepTime; // the time between each footstep when sprinting
-	virtual void UpdateAnimations(); // override sprite update animations
+	virtual void UpdateAnimations() override; // override sprite update animations
 	float mAccelXRate;
 	float mHealth;
 	float mMaxHealth;
@@ -80,6 +80,8 @@ protected:
 	float mRunAnimFramerateMultiplier;
 
 	bool mPlayFootsteps;
+
+	bool mMatchAnimFrameRateWithMovement;
 };
 
 #endif

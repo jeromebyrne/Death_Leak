@@ -5,6 +5,26 @@
 
 class Orb :public MovingSprite
 {
+
+public:
+
+	Orb(void);
+	Orb(SolidMovingSprite * target,
+		Vector3 position,
+		Vector3 dimensions,
+		Vector3 collisionDimensions,
+		const char * textureFile,
+		bool nativeDimensions,
+		float speedMultiplier);
+	virtual ~Orb(void);
+
+	virtual void Update(float delta) override;
+	const float GetValue() const { return mValue; }
+
+protected:
+
+	SolidMovingSprite * m_physicalTarget;
+
 private:
 	
 	// the closest distance the orb has come to it's target
@@ -17,24 +37,6 @@ private:
 	static unsigned long mLastTimePlayedSFX;
 
 	virtual void OnCollideWithTarget();
-
-protected:
-
-	SolidMovingSprite * m_physicalTarget;
-
-public:
-
-	Orb(void);
-	Orb(SolidMovingSprite * target,
-		Vector3 position,
-		Vector3 dimensions, 
-		Vector3 collisionDimensions, 
-		const char * textureFile,
-		bool nativeDimensions);
-	virtual ~Orb(void);
-
-	virtual void Update(float delta) override;
-	const float GetValue() const { return mValue; }
 };
 
 #endif

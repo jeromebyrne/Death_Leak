@@ -46,14 +46,19 @@ void SolidLine::XmlWrite(TiXmlElement * element)
 {
 	SolidMovingSprite::XmlWrite(element);
 
+	float startX = mStartPos.X;
+	float endX = mEndPos.X;
+	float startY = mStartPos.Y;
+	float endY = mEndPos.Y;
+
 	TiXmlElement * lineStartElem = new TiXmlElement("line_start");
-	lineStartElem->SetAttribute("x", Utilities::ConvertDoubleToString(mStartPos.X).c_str());
-	lineStartElem->SetAttribute("y", Utilities::ConvertDoubleToString(mStartPos.Y).c_str());
+	lineStartElem->SetAttribute("x", Utilities::ConvertDoubleToString(startX).c_str());
+	lineStartElem->SetAttribute("y", Utilities::ConvertDoubleToString(startY).c_str());
 	element->LinkEndChild(lineStartElem);
 
 	TiXmlElement * lineEndElem = new TiXmlElement("line_end");
-	lineEndElem->SetAttribute("x", Utilities::ConvertDoubleToString(mEndPos.X).c_str());
-	lineEndElem->SetAttribute("y", Utilities::ConvertDoubleToString(mEndPos.Y).c_str());
+	lineEndElem->SetAttribute("x", Utilities::ConvertDoubleToString(endX).c_str());
+	lineEndElem->SetAttribute("y", Utilities::ConvertDoubleToString(endY).c_str());
 	element->LinkEndChild(lineEndElem);
 }
 
@@ -64,6 +69,10 @@ void SolidLine::LoadContent(ID3D10Device * graphicsdevice)
 
 void SolidLine::OnCollision(SolidMovingSprite * object)
 {
+	if (object->IsButterfly())
+	{
+		return;
+	}
 	if (!object->IsPassive())
 	{
 		Vector2 intersectPoint;
@@ -81,7 +90,13 @@ void SolidLine::OnCollision(SolidMovingSprite * object)
 				object->SetIsCollidingOnTopOfObject(true);
 
 				object->StopYAccelerating();
+
+				object->SetIsOnSolidLine(true);
 			}
+		}
+		else
+		{
+			object->SetIsOnSolidLine(false);
 		}
 	}
 }
@@ -89,6 +104,14 @@ void SolidLine::OnCollision(SolidMovingSprite * object)
 void SolidLine::DebugDraw(ID3D10Device *  device)
 {
 	SolidMovingSprite::DebugDraw(device);
+
+	if (m_horizontalFlip)
+	{
+		/*D3DXMATRIX scaleMatrix;
+		D3DXMatrixIdentity(&scaleMatrix);
+		D3DXMatrixScaling(&scaleMatrix, -1, 1, 1.0);
+		D3DXMatrixMultiply(&m_world, &scaleMatrix, &m_world);*/
+	}
 
 	EffectBasic * basicEffect = static_cast<EffectBasic*>(EffectManager::Instance()->GetEffect("effectbasic"));
 
@@ -139,15 +162,6 @@ void SolidLine::Draw(ID3D10Device * device, Camera2D * camera)
 
 void SolidLine::CalculateVariables()
 {
-	if (mStartPos.X >= 0.0f)
-	{
-		GAME_ASSERT(mEndPos.X < 0.0f);
-	}
-	else
-	{
-		GAME_ASSERT(mEndPos.X > 0.0f);
-	}
-
 	if (mStartPos.Y >= 0.0f)
 	{
 		GAME_ASSERT(mEndPos.Y < 0.0f);
@@ -157,7 +171,20 @@ void SolidLine::CalculateVariables()
 		GAME_ASSERT(mEndPos.Y > 0.0f);
 	}
 
-	Vector2 lineDirection  = mEndPos - mStartPos;
+	Vector2 startPosTemp = mStartPos;
+	Vector2 endPosTemp = mEndPos;
+
+	if (m_horizontalFlip)
+	{
+		Vector2 tempEnd = endPosTemp;
+		endPosTemp.X = -startPosTemp.X;
+		endPosTemp.Y = startPosTemp.Y;
+
+		startPosTemp.X = -tempEnd.X;
+		startPosTemp.Y = tempEnd.Y;
+	}
+
+	Vector2 lineDirection = endPosTemp - startPosTemp;
 
 	mLength = lineDirection.Length();
 
@@ -174,14 +201,19 @@ void SolidLine::CalculateVariables()
 	mNormal.Y = mLineDirection.X;
 
 	// figure out the collision box dimensions based on the line start and end points
-	m_collisionBoxDimensions.X = std::abs(mEndPos.X - mStartPos.X);
-	m_collisionBoxDimensions.Y = std::abs(mEndPos.Y - mStartPos.Y);
+	m_collisionBoxDimensions.X = std::abs(endPosTemp.X - startPosTemp.X);
+	m_collisionBoxDimensions.Y = std::abs(endPosTemp.Y - startPosTemp.Y);
 
-	mCollisionBoxOffset.X = (mEndPos.X + mStartPos.X) * 0.5f;
-	mCollisionBoxOffset.Y = (mEndPos.Y + mStartPos.Y) * 0.5f;
+	if (m_collisionBoxDimensions.Y < 400)
+	{
+		m_collisionBoxDimensions.Y = 400;
+	}
 
-	mWorldStartPos = Vector2(m_position.X + mStartPos.X, m_position.Y + mStartPos.Y);
-	mWorldEndPos = Vector2(m_position.X + mEndPos.X, m_position.Y + mEndPos.Y);
+	mCollisionBoxOffset.X = (endPosTemp.X + startPosTemp.X) * 0.5f;
+	mCollisionBoxOffset.Y = (endPosTemp.Y + startPosTemp.Y) * 0.5f;
+
+	mWorldStartPos = Vector2(m_position.X + startPosTemp.X, m_position.Y + startPosTemp.Y);
+	mWorldEndPos = Vector2(m_position.X + endPosTemp.X, m_position.Y + endPosTemp.Y);
 }
 
 void SolidLine::SetupDebugDraw()

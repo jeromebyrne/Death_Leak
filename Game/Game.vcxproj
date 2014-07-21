@@ -24,6 +24,7 @@
     <ClCompile Include="DXUT\DXUTmisc.cpp" />
     <ClCompile Include="DXUT\SDKmisc.cpp" />
     <ClCompile Include="src\AI\AIState.cpp" />
+    <ClCompile Include="src\AI\AIStateButterflyWander.cpp" />
     <ClCompile Include="src\AI\AIStateFollow.cpp" />
     <ClCompile Include="src\AI\AIStateRangeAttack.cpp" />
     <ClCompile Include="src\AI\AIStateRepel.cpp" />
@@ -62,6 +63,7 @@
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\GameObjects\BlackHole.cpp" />
     <ClCompile Include="src\GameObjects\BombProjectile.cpp" />
+    <ClCompile Include="src\GameObjects\butterfly.cpp" />
     <ClCompile Include="src\GameObjects\Character.cpp" />
     <ClCompile Include="src\GameObjects\DrawableObject.cpp" />
     <ClCompile Include="src\GameObjects\Explosion.cpp" />
@@ -116,6 +118,7 @@
     <ClInclude Include="DXUT\DXUTmisc.h" />
     <ClInclude Include="DXUT\SDKmisc.h" />
     <ClInclude Include="src\AI\AIState.h" />
+    <ClInclude Include="src\AI\AIStateButterflyWander.h" />
     <ClInclude Include="src\AI\AIStateFollow.h" />
     <ClInclude Include="src\AI\AIStateRangeAttack.h" />
     <ClInclude Include="src\AI\AIStateRepel.h" />
@@ -158,6 +161,7 @@
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\GameObjects\BlackHole.h" />
     <ClInclude Include="src\GameObjects\BombProjectile.h" />
+    <ClInclude Include="src\GameObjects\butterfly.h" />
     <ClInclude Include="src\GameObjects\Character.h" />
     <ClInclude Include="src\GameObjects\DrawableObject.h" />
     <ClInclude Include="src\GameObjects\Explosion.h" />

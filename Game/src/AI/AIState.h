@@ -13,14 +13,15 @@ public:
 		kStill,
 		kFriendlyFollowing,
 		kRepel,
-		kRangeAttack
+		kRangeAttack,
+		kButterflyWander
 	};
 
 	AIState(NPC * npc);
 	~AIState(void);
 
 	virtual void OnTransition() = 0;
-	virtual void Update() = 0;
+	virtual void Update(float delta) = 0;
 
 protected:
 

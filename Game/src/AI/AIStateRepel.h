@@ -9,8 +9,8 @@ public:
 	AIStateRepel(NPC * npc);
 	virtual ~AIStateRepel(void);
 
-	virtual void OnTransition();
-	virtual void Update();
+	virtual void OnTransition() override;
+	virtual void Update(float delta) override;
 
 	void SetStopDistance(float value) { mStopDistance = value; }
 	void SetFollowRadius(float value) { mFollowRadius = value; }

@@ -17,6 +17,7 @@ public:
 	friend class AIStateFollow;
 	friend class AIStateRepel;
 	friend class AIStateRangeAttack;
+	friend class AIStateButterflyWander;
 
 	NPC(float x = 0, float y = 0, float z = 0, float width = 10, float height = 10, float breadth = 0);
 	virtual ~NPC(void);
@@ -52,7 +53,9 @@ protected:
 	AIStateFollow * m_friendlyFollowState;
 	AIStateRepel * m_repelState;
 	AIStateRangeAttack * m_rangeAttackState;
+	AIStateButterflyWander * m_butterflyWander;
 	bool mCheckNPCOverlapCollisions;
+	bool mAddHealthBar;
 
 private:
 

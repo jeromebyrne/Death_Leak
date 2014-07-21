@@ -4,13 +4,13 @@
 DXWindow * DXWindow::mInstance = 0;
 
 DXWindow::DXWindow(char * winClassName, char * windowTitle, int width, int height) : 
-m_winClassName(winClassName),
-m_windowTitle(windowTitle),
-m_width(width),
-m_height(height),
-m_topLeftX(0),
-m_topLeftY(0),
-m_isFullscreen(false)
+	m_winClassName(winClassName),
+	m_windowTitle(windowTitle),
+	m_width(width),
+	m_height(height),
+	m_topLeftX(0),
+	m_topLeftY(0),
+	m_isFullscreen(false)
 {
 	m_pGraphicsDevice = NULL;
 	m_pGraphicsSwapChain = NULL;

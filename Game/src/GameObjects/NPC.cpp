@@ -10,14 +10,15 @@
 #include "orb.h"
 #include "particleemittermanager.h"
 #include "NPCManager.h"
+#include "AIStateButterflyWander.h"
 
 static float kMinReloadTime = 0.8f;
 static float kMaxReloadTime = 2.0f;
 
-static const float kHealthBarDimensionsX = 73.0f;
-static const float kHealthBarDimensionsY = 7.2f;
-static const float kHealthBarOverlayDimensionsX = 75.0f;
-static const float kHealthBarOverlayDimensionsY = 7.5f;
+static const float kHealthBarDimensionsX = 128.0f * 0.5f;
+static const float kHealthBarDimensionsY = 8.0f;
+static const float kHealthBarOverlayDimensionsX = 128.0f * 0.5f;
+static const float kHealthBarOverlayDimensionsY = 8.0f;
 
 static const D3DXVECTOR2 kDefaultTex1 = D3DXVECTOR2(0, 0);
 static const D3DXVECTOR2 kDefaultTex2 = D3DXVECTOR2(1, 0);
@@ -34,7 +35,9 @@ NPC::NPC(float x, float y, float z, float width, float height, float breadth) :
 	mNextFireTime(0),
 	m_repelState(nullptr),
 	m_rangeAttackState(nullptr),
-	mCurrentHealthMeterScale(1.0f)
+	mCurrentHealthMeterScale(1.0f),
+	m_butterflyWander(nullptr),
+	mAddHealthBar(true)
 {
 	mHealth = 40.0f;
 	mMaxHealth = 40.0f;
@@ -52,6 +55,7 @@ NPC::NPC(float x, float y, float z, float width, float height, float breadth) :
 	m_friendlyFollowState = new AIStateFollow(this);
 	m_repelState = new AIStateRepel(this);
 	m_rangeAttackState = new AIStateRangeAttack(this);
+	m_butterflyWander = new AIStateButterflyWander(this);
 
 	// set to default state
 	SetState(AIState::kRangeAttack);
@@ -73,7 +77,7 @@ void NPC::Update(float delta)
 
 	if (m_currentState)
 	{
-		m_currentState->Update();
+		m_currentState->Update(delta);
 	}
 
 	if (mHealthBarSprite)
@@ -102,9 +106,12 @@ void NPC::Initialise()
 {
 	Character::Initialise();
 
-	AddHealthBar();
+	if (mAddHealthBar)
+	{
+		AddHealthBar();
 
-	UpdateHealthBar();
+		UpdateHealthBar();
+	}
 }
 
 void NPC::XmlRead(TiXmlElement * element)
@@ -139,6 +146,13 @@ void NPC::SetState(AIState::AIStateType state)
 		{
 			GAME_ASSERT(m_rangeAttackState);
 			m_currentState = m_rangeAttackState;
+			m_currentState->OnTransition();
+			break;
+		}
+		case AIState::kButterflyWander:
+		{
+			GAME_ASSERT(m_butterflyWander);
+			m_currentState = m_butterflyWander;
 			m_currentState->OnTransition();
 			break;
 		}
@@ -196,38 +210,38 @@ void NPC::OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplod
 		if (m_isAnimated && m_animationFile == "XmlFiles\\ninjaAnimation2.xml")
 		{
 
-			Orb * head = new Orb(m_player, Vector3(m_position.X, m_position.Y + 250, m_position.Z - 1.1f), Vector3(54, 60, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\decapitated_head.png", true);
+			Orb * head = new Orb(m_player, Vector3(m_position.X, m_position.Y + 250, m_position.Z - 1.1f), Vector3(54, 60, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\decapitated_head.png", true, 1.0f);
 			GameObjectManager::Instance()->AddGameObject(head);
 
-			Orb * arm1 = new Orb(m_player, Vector3(m_position.X - 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\arm_destroyed.png", true);
+			Orb * arm1 = new Orb(m_player, Vector3(m_position.X - 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\arm_destroyed.png", true, 1.0f);
 			GameObjectManager::Instance()->AddGameObject(arm1);
 
-			Orb * arm2 = new Orb(m_player, Vector3(m_position.X + 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\arm_destroyed.png", true);
+			Orb * arm2 = new Orb(m_player, Vector3(m_position.X + 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\arm_destroyed.png", true, 1.0f);
 			GameObjectManager::Instance()->AddGameObject(arm2);
 
-			Orb * leg1 = new Orb(m_player, Vector3(m_position.X + 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\leg_destroyed.png", true);
+			Orb * leg1 = new Orb(m_player, Vector3(m_position.X + 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\leg_destroyed.png", true, 1.0f);
 			GameObjectManager::Instance()->AddGameObject(leg1);
 
-			Orb * leg2 = new Orb(m_player, Vector3(m_position.X - 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\leg_destroyed.png", true);
+			Orb * leg2 = new Orb(m_player, Vector3(m_position.X - 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\leg_destroyed.png", true, 1.0f);
 			GameObjectManager::Instance()->AddGameObject(leg2);
 		}
 
 		if (m_isAnimated && m_animationFile == "XmlFiles\\player_female_animation.xml")
 		{
 
-			Orb * head = new Orb(m_player, Vector3(m_position.X, m_position.Y + 250, m_position.Z - 1.1f), Vector3(54, 60, 0), Vector3(15, 15, 0), "Media\\characters\\female\\decapitated_head.png", true);
+			Orb * head = new Orb(m_player, Vector3(m_position.X, m_position.Y + 250, m_position.Z - 1.1f), Vector3(54, 60, 0), Vector3(15, 15, 0), "Media\\characters\\female\\decapitated_head.png", true, 1.0f);
 			GameObjectManager::Instance()->AddGameObject(head);
 
-			Orb * arm1 = new Orb(m_player, Vector3(m_position.X - 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\female\\arm_destroyed.png", true);
+			Orb * arm1 = new Orb(m_player, Vector3(m_position.X - 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\female\\arm_destroyed.png", true, 1.0f);
 			GameObjectManager::Instance()->AddGameObject(arm1);
 
-			Orb * arm2 = new Orb(m_player, Vector3(m_position.X + 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\female\\arm_destroyed.png", true);
+			Orb * arm2 = new Orb(m_player, Vector3(m_position.X + 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\female\\arm_destroyed.png", true, 1.0f);
 			GameObjectManager::Instance()->AddGameObject(arm2);
 
-			Orb * leg1 = new Orb(m_player, Vector3(m_position.X + 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\female\\leg_destroyed.png", true);
+			Orb * leg1 = new Orb(m_player, Vector3(m_position.X + 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\female\\leg_destroyed.png", true, 1.0f);
 			GameObjectManager::Instance()->AddGameObject(leg1);
 
-			Orb * leg2 = new Orb(m_player, Vector3(m_position.X - 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\female\\leg_destroyed.png", true);
+			Orb * leg2 = new Orb(m_player, Vector3(m_position.X - 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\female\\leg_destroyed.png", true, 1.0f);
 			GameObjectManager::Instance()->AddGameObject(leg2);
 		}
 
@@ -263,7 +277,7 @@ void NPC::OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplod
 			{
 				case 0:
 					{
-						Orb * orb = new Orb(m_player, orb_pos, Vector3(40, 40, 0), Vector3(15, 15, 0), "Media\\orb.png", false);
+						  Orb * orb = new Orb(m_player, orb_pos, Vector3(40, 40, 0), Vector3(15, 15, 0), "Media\\orb.png", false, 1.0f);
 						GameObjectManager::Instance()->AddGameObject(orb);
 
 						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(orb_pos.X, orb_pos.Y, orb_pos.Z - 0.1), true, 2.0f);
@@ -275,7 +289,7 @@ void NPC::OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplod
 					}
 				case 1:
 					{
-						Orb * orb = new Orb(m_player, orb_pos , Vector3(50, 50, 0), Vector3(25, 25, 0), "Media\\orb2.png", false);
+						 Orb * orb = new Orb(m_player, orb_pos, Vector3(50, 50, 0), Vector3(25, 25, 0), "Media\\orb2.png", false, 1.0f);
 						GameObjectManager::Instance()->AddGameObject(orb);
 
 						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(orb_pos.X, orb_pos.Y, orb_pos.Z - 0.1), true, 2.0f);
@@ -287,7 +301,7 @@ void NPC::OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplod
 					}
 				case 2:
 					{
-						Orb * orb = new Orb(m_player, orb_pos , Vector3(60, 60, 0), Vector3(30, 30, 0), "Media\\orb3.png", false);
+						Orb * orb = new Orb(m_player, orb_pos, Vector3(60, 60, 0), Vector3(30, 30, 0), "Media\\orb3.png", false, 1.0f);
 						GameObjectManager::Instance()->AddGameObject(orb);
 
 						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(orb_pos.X, orb_pos.Y, orb_pos.Z - 0.1), true, 2.0f);
@@ -299,7 +313,7 @@ void NPC::OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplod
 					}
 				default:
 					{
-						Orb * orb = new Orb(m_player, orb_pos , Vector3(45, 45, 0), Vector3(15, 15, 0), "Media\\orb.png", false);
+						Orb * orb = new Orb(m_player, orb_pos, Vector3(45, 45, 0), Vector3(15, 15, 0), "Media\\orb.png", false, 1.0f);
 						GameObjectManager::Instance()->AddGameObject(orb);
 
 						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(orb_pos.X, orb_pos.Y, orb_pos.Z - 0.1), true, 2.0f);
@@ -398,6 +412,7 @@ void NPC::Draw(ID3D10Device * device, Camera2D * camera)
 
 void NPC::AddHealthBar()
 {
+	int randYOffset = rand() % 15;
 	if (!mHealthBarSprite)
 	{
 		mHealthBarSprite = unique_ptr<Sprite>(new Sprite());
@@ -413,7 +428,7 @@ void NPC::AddHealthBar()
 			false);
 
 		mHealthBarSprite->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), 
-									Vector3(0,((m_collisionBoxDimensions.Y * 0.5f) + mCollisionBoxOffset.Y) + 20, 0),
+									Vector3(0,((m_collisionBoxDimensions.Y * 0.5f) + mCollisionBoxOffset.Y) + 5 + randYOffset, 0),
 									false);
 	}
 	if (!mHealthBarOverlaySprite)
@@ -431,7 +446,7 @@ void NPC::AddHealthBar()
 									   false);
 
 		mHealthBarOverlaySprite->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()),
-											Vector3(0, ((m_collisionBoxDimensions.Y * 0.5f) + mCollisionBoxOffset.Y) + 20, 0),
+											Vector3(0, ((m_collisionBoxDimensions.Y * 0.5f) + mCollisionBoxOffset.Y) + 5 + randYOffset, 0),
 											false);
 	}
 }

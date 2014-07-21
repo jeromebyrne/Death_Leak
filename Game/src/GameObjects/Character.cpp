@@ -30,7 +30,8 @@ Character::Character(float x, float y, float z, float width, float height, float
 	mLastTimePlayedDamageSound(0.0f),
 	mDamageSoundDelayMilli(0.15f),
 	mRunAnimFramerateMultiplier(1.0f),
-	mPlayFootsteps(true)
+	mPlayFootsteps(true),
+	mMatchAnimFrameRateWithMovement(true)
 {
 	mProjectileFilePath = "Media/knife.png";
 	mProjectileImpactFilePath = "Media/knife_impact.png";
@@ -319,7 +320,8 @@ void Character::OnCollision(SolidMovingSprite * object)
 void Character::UpdateAnimations()
 {
 	AnimationPart * bodyPart = m_animation->GetPart("body");
-	
+	GAME_ASSERT(bodyPart);
+
 	if (bodyPart)
 	{
 		string current_body_sequence_name = bodyPart->CurrentSequence()->Name();
@@ -344,22 +346,25 @@ void Character::UpdateAnimations()
 			bodyPart->Animate();
 			m_texture = bodyPart->CurrentFrame(); // set the current texture
 		}
-		else if((m_velocity.X > 1 || m_velocity.X < -1) && !m_collidingAtSideOfObject) // we are moving left or right and not colliding with the side of an object
+		else if ((m_velocity.X > 1 || m_velocity.X < -1) && !m_collidingAtSideOfObject) // we are moving left or right and not colliding with the side of an object
 		{
-			if(current_body_sequence_name != "Running")
+			if (current_body_sequence_name != "Running")
 			{
 				bodyPart->SetSequence("Running");
 			}
 
 			bodyPart->AnimateLooped();
-			
-			float animFramerate = mSprintActive ? (m_velocity.X * 1.6f) * mRunAnimFramerateMultiplier :  (m_velocity.X * 1.4f) * mRunAnimFramerateMultiplier;
 
-			if(animFramerate < 0)
+			if (mMatchAnimFrameRateWithMovement)
 			{
-				animFramerate *= -1;
+				float animFramerate = mSprintActive ? (m_velocity.X * 1.6f) * mRunAnimFramerateMultiplier : (m_velocity.X * 1.4f) * mRunAnimFramerateMultiplier;
+
+				if (animFramerate < 0)
+				{
+					animFramerate *= -1;
+				}
+				bodyPart->CurrentSequence()->SetFrameRate(animFramerate);
 			}
-			bodyPart->CurrentSequence()->SetFrameRate(animFramerate);
 			
 			m_texture = bodyPart->CurrentFrame(); // set the current texture
 		}
@@ -665,7 +670,7 @@ void Character::Draw(ID3D10Device * device, Camera2D * camera)
 
 bool Character::IsOnSolidSurface()
 {
-	return IsOnGround() || GetIsCollidingOnTopOfObject();
+	return IsOnGround() || GetIsCollidingOnTopOfObject() || IsOnSolidLine();
 }
 
 void Character::DoMeleeAttack()

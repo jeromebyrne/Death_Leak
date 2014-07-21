@@ -35,10 +35,4 @@
 
 	</body>
 
-	<arm OffsetX="6" OffsetY="24" SizeX="32" SizeY="30">
-		<Still FrameRate="0" MaxFrameRate="0" MinFrameRate="0">
-      <frame filename="Media\characters\rabbit\\bunny2.png"/>
-		</Still>
-	</arm>
-
 </data>

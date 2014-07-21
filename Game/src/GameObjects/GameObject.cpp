@@ -28,7 +28,8 @@ GameObject::GameObject(float x, float y , float z, float width, float height, fl
 	mCurrentParallaxOffsetX(0.0f),
 	mParallaxMultiplierY(1.0f),
 	mCurrentParallaxOffsetY(0.0f),
-	mUpdateToParentsOrientation(false)
+	mUpdateToParentsOrientation(false),
+	mIsButterfly(false)
 {
 	static int GAME_OBJECT_ID = 1; 
 	m_id = GAME_OBJECT_ID;

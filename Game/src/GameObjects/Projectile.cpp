@@ -60,6 +60,15 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 		return;
 	}
 
+	if (object->IsButterfly())
+	{
+		if (!mIsInWater)
+		{
+			object->OnDamage(m_damage, Vector3(0,0,0));
+		}
+		return;
+	}
+
 	GAME_ASSERT((object != this));
 
   	if(m_isActive)
@@ -388,11 +397,11 @@ void Projectile::Update(float delta)
 		{
 			if (!mIsInWater)
 			{
-				SetRotationAngle((GetRotationAngle() + m_velocity.LengthSquared() * 0.001f));
+				SetRotationAngle((GetRotationAngle() - (20.0f * delta)));
 			}
 			else
 			{
-				SetRotationAngle((GetRotationAngle() + m_velocity.LengthSquared() * 0.0002f));
+				SetRotationAngle((GetRotationAngle() - (20.0f * delta)));
 			}
 		}
 

@@ -1,0 +1,51 @@
+<data BoxDimensionsX="32" BoxDimensionsY="48" EllipseDimensionsX="32" EllipseDimensionsY="48">
+
+	<body OffsetX="0" OffsetY="8" SizeX="40" SizeY="80">
+
+		<Still FrameRate="45" MaxFrameRate="45" MinFrameRate="0">
+      <frame filename="Media\characters\butterfly\1.png"/>
+      <frame filename="Media\characters\butterfly\\2.png"/>
+      <frame filename="Media\characters\butterfly\\3.png"/>
+      <frame filename="Media\characters\butterfly\\4.png"/>
+      <frame filename="Media\characters\butterfly\\5.png"/>
+      <frame filename="Media\characters\butterfly\\6.png"/>
+      <frame filename="Media\characters\butterfly\7.png"/>
+      <frame filename="Media\characters\butterfly\\8.png"/>
+      <frame filename="Media\characters\butterfly\\9.png"/>
+      <frame filename="Media\characters\butterfly\\10.png"/>
+      <frame filename="Media\characters\butterfly\\11.png"/>
+      <frame filename="Media\characters\butterfly\\12.png"/>
+    </Still>
+
+		<Running FrameRate="45" MaxFrameRate="45" MinFrameRate="0">
+
+      <frame filename="Media\characters\butterfly\1.png"/>
+      <frame filename="Media\characters\butterfly\\2.png"/>
+      <frame filename="Media\characters\butterfly\\3.png"/>
+      <frame filename="Media\characters\butterfly\\4.png"/>
+      <frame filename="Media\characters\butterfly\\5.png"/>
+      <frame filename="Media\characters\butterfly\\6.png"/>
+      <frame filename="Media\characters\butterfly\7.png"/>
+      <frame filename="Media\characters\butterfly\\8.png"/>
+      <frame filename="Media\characters\butterfly\\9.png"/>
+      <frame filename="Media\characters\butterfly\\10.png"/>
+      <frame filename="Media\characters\butterfly\\11.png"/>
+      <frame filename="Media\characters\butterfly\\12.png"/>
+
+		</Running>
+
+    <JumpingUp FrameRate="4" MaxFrameRate="4" MinFrameRate="0">
+      <frame filename="Media\characters\butterfly\1.png"/>
+		</JumpingUp>
+
+    <JumpingDown FrameRate="4" MaxFrameRate="4" MinFrameRate="0">
+      <frame filename="Media\characters\butterfly\1.png"/>
+    </JumpingDown>
+
+    <SlidingDown FrameRate="0" MaxFrameRate="0" MinFrameRate="0">
+      <frame filename="Media\characters\butterfly\1.png"/>
+    </SlidingDown>
+
+	</body>
+
+</data>

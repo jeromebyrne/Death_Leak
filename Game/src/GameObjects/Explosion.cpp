@@ -16,7 +16,6 @@ Explosion::Explosion(float damage,float radius, float x, float y, float z, float
 {
 }
 
-
 Explosion::~Explosion(void)
 {
 }
@@ -25,7 +24,7 @@ void Explosion::ApplyDamage()
 {
 	// loop through all of the NPCs in the game and damage them
 	list<GameObject*> objects;
-	GameObjectManager::Instance()->GetTypesOnScreen<SolidMovingSprite>(objects);
+	GameObjectManager::Instance()->GetSolidSpritesOnScreen(objects);
 
 	Player * player = GameObjectManager::Instance()->GetPlayer();
 	for (auto obj : objects)

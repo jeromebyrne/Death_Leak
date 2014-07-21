@@ -19,12 +19,13 @@ Orb::Orb(SolidMovingSprite * target,
 		 Vector3 dimensions, 
 		 Vector3 collisionDimensions, 
 		 const char * textureFile,
-		 bool nativeDimensions):
-MovingSprite(position.X, position.Y, position.Z, dimensions.X, dimensions.Y, dimensions.Z),
-m_physicalTarget(target),
-m_closestDistanceToTarget(2000000000, 2000000000, 2000000000),
-mValue(1),
-mCreationTime(0.0f)
+		 bool nativeDimensions,
+		 float speedMultiplier) :
+	MovingSprite(position.X, position.Y, position.Z, dimensions.X, dimensions.Y, dimensions.Z),
+	m_physicalTarget(target),
+	m_closestDistanceToTarget(2000000000, 2000000000, 2000000000),
+	mValue(1),
+	mCreationTime(0.0f)
 {
 	// TODO: notify the target that it has orbs following it so that it can cancel before it dies
 	// m_collisionBoxDimensions = collisionDimensions;
@@ -33,7 +34,7 @@ mCreationTime(0.0f)
 	// m_passive = true;
 	m_applyGravity = true;
 
-	SetMaxVelocityXYZ(25,25,0);
+	SetMaxVelocityXYZ(25 * speedMultiplier, 25 * speedMultiplier, 0);
 	
 	m_resistance.X = 0.99;
 	m_resistance.Y = 2.5;
@@ -43,7 +44,7 @@ mCreationTime(0.0f)
 	float directionX = ((rand()%99) + 1) * 0.01;
 	float directionY = ((rand()%99) + 1) * 0.01;
 
-	float rand_speed = (rand()%25) + 1;
+	float rand_speed = ((rand()%25) + 1) * speedMultiplier;
 
 	bool plus_sign = (bool)(rand()%2);
 

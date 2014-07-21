@@ -52,6 +52,8 @@ public:
 
 	void SetShowDebugInfo(bool value) { mShowDebugInfo = value; };
 
+	void GetSolidSpritesOnScreen(std::list<GameObject *> & toPopulate);
+
 	template <class T> void GetTypesOnScreen(std::list<GameObject *> & toPopulate)
 	{
 		toPopulate.clear();

@@ -74,6 +74,10 @@ public:
 	virtual void OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) override;
 
 	virtual void SetupDebugDraw() override;
+
+	virtual bool IsOnSolidLine() const { return mIsOnSolidLine; }
+
+	virtual void SetIsOnSolidLine(bool value) { mIsOnSolidLine = value; }
 	
 protected:
 
@@ -96,6 +100,8 @@ protected:
 	Vector2 mCollisionBoxOffset;
 
 	bool mCanBeDamaged;
+
+	bool mIsOnSolidLine;
 
 private:
 

@@ -26,7 +26,7 @@ void AIStateRangeAttack::OnTransition()
 	mRandOffset = rand() % 150;
 }
 
-void AIStateRangeAttack::Update()
+void AIStateRangeAttack::Update(float delta)
 {
 	if (m_npc->m_player)
 	{

@@ -19,7 +19,7 @@ void AIStateRepel::OnTransition()
 	// do stuff
 }
 
-void AIStateRepel::Update()
+void AIStateRepel::Update(float delta)
 {
 	if (m_npc->m_player)
 	{

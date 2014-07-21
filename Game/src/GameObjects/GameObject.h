@@ -112,6 +112,8 @@ public:
 
 	bool IsSolidLine() const { return mIsSolidLine; }
 
+	bool IsButterfly() const { return mIsButterfly; }
+
 	virtual void AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset, bool trackOrientation = true);
 	void Detach();
 
@@ -144,6 +146,7 @@ protected:
 	bool mDrawable;
 	bool mIsSolidSprite;
 	bool mIsSolidLine;
+	bool mIsButterfly;
 	std::shared_ptr<GameObject> mAttachedTo;
 	Vector3 mAttachedToOffset;
 	float mParallaxMultiplierX;

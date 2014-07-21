@@ -26,6 +26,7 @@
 #include "LevelTrigger.h"
 #include "WaterBlock.h"
 #include "SolidLine.h"
+#include "butterfly.h"
 
 struct DepthSortPredicate
 {
@@ -577,6 +578,10 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement)
 	{
 		newGameObject = new SolidLine();
 	}
+	else if (strcmp(gameObjectTypeName, "butterfly") == 0)
+	{
+		newGameObject = new Butterfly();
+	}
 
 	GAME_ASSERT(newGameObject);
 	if (newGameObject && !dynamic_cast<ParticleSpray*>(newGameObject))
@@ -785,6 +790,10 @@ void GameObjectManager::ProcessKeyboardMouse()
 	}
 	else
 	{
+		if (!m_player->IsOnSolidSurface())
+		{
+			pressingJump = false;
+		}
 		if(pressingJump) // we just released the jump key
 		{
 			if(jumpPower < defaultJumpPower)
@@ -851,17 +860,14 @@ void GameObjectManager::ProcessGamePad()
 	if (pad_state.Gamepad.wButtons & XINPUT_GAMEPAD_A)
 	{
 		float currentTime = Timing::Instance()->GetTotalTimeSeconds();
-		if (!startedPressingJump)
+		if (!startedPressingJump && m_player->IsOnSolidSurface())
 		{
 			startedPressing = currentTime;
 			startedPressingJump = true;
 
-			if (m_player->IsOnGround() || m_player->GetIsCollidingOnTopOfObject())
-			{
-				m_player->Jump(50); // 50 % jump to begin with
-			}
+			m_player->Jump(50); // 50 % jump to begin with
 		}
-		else
+		else if (startedPressingJump)
 		{
 			float diff = currentTime - startedPressing;
 
@@ -874,11 +880,8 @@ void GameObjectManager::ProcessGamePad()
 	}
 	else
 	{
-		// if (m_player->GetIsCollidingOnTopOfObject() || m_player->IsOnGround())
-		//{
-			startedPressingJump = false;
-			startedPressing = 0;
-		//}
+		startedPressingJump = false;
+		startedPressing = 0;
 	}
 	// ===================================
 
@@ -1103,4 +1106,23 @@ void GameObjectManager::AddSlowMotionLayer()
 	mSlowMotionLayer->mNoiseShaderIntensity = 0.01f;
 
 	GameObjectManager::Instance()->AddGameObject(mSlowMotionLayer);
+}
+
+void GameObjectManager::GetSolidSpritesOnScreen(std::list<GameObject *> & toPopulate)
+{
+	toPopulate.clear();
+
+	Camera2D * cam = Camera2D::GetInstance();
+
+	for (auto & obj : m_gameObjects)
+	{
+		GameObject * objRawPtr = obj.get();
+		GAME_ASSERT(objRawPtr);
+
+		if (objRawPtr->IsSolidSprite() &&
+			cam->IsObjectInView(objRawPtr))
+		{
+			toPopulate.push_back(objRawPtr);
+		}
+	}
 }

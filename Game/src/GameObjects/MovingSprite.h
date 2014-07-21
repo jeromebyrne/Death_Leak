@@ -7,26 +7,9 @@
 // we just copy all of the properties of MovingObject (not as messy as its just one object to update etc...)
 class MovingSprite : public Sprite
 {
-private:
-protected:
-	Vector3 m_velocity;
-	Vector3 m_maxVelocity;
-	Vector3 m_direction;
-	Vector3 m_resistance;
-	Vector3 m_acceleration;
-	bool m_applyGravity;
-
-	// are we moving within the space of anothe rmoving object
-	MovingSprite * mObjectMovingWith;
-
-	float mCurrentYResistance; // this can change dynamically
-
-	bool m_isOnGround;
-
-	bool mIsInWater;
-
 public:
-	MovingSprite(float x = 0, float y = 0, float z = 0, float width = 10, float height = 10, float breadth = 0, 
+
+	MovingSprite(float x = 0, float y = 0, float z = 0, float width = 10, float height = 10, float breadth = 0,
 		float groundFriction = 1, float airResistance = 1);
 	virtual ~MovingSprite(void);
 	virtual void Update(float delta) override;
@@ -34,7 +17,7 @@ public:
 	virtual void XmlRead(TiXmlElement * element) override;
 	virtual void XmlWrite(TiXmlElement * element) override;
 	virtual void Scale(float xScale, float yScale, bool scalePosition = true) override;
-	
+
 	inline float DirectionX()
 	{
 		return m_direction.X;
@@ -87,7 +70,7 @@ public:
 	}
 	inline void SetVelocityXYZ(float x, float y, float z)
 	{
-		m_velocity = Vector3(x,y,z);
+		m_velocity = Vector3(x, y, z);
 	}
 	inline Vector3 GetMaxVelocity()
 	{
@@ -95,11 +78,11 @@ public:
 	}
 	inline void SetMaxVelocityXYZ(float x, float y, float z)
 	{
-		m_maxVelocity = Vector3( x,  y,  z);
+		m_maxVelocity = Vector3(x, y, z);
 	}
 	inline void SetAccelerationXYZ(float x, float y, float z)
 	{
-		m_acceleration = Vector3(x,y,z);
+		m_acceleration = Vector3(x, y, z);
 	}
 
 	bool IsOnGround() const { return m_isOnGround; }
@@ -113,6 +96,24 @@ public:
 
 	void SetIsInWater(bool value) { mIsInWater = value; }
 	bool GetIsInWater() const { return mIsInWater; }
+
+protected:
+
+	Vector3 m_velocity;
+	Vector3 m_maxVelocity;
+	Vector3 m_direction;
+	Vector3 m_resistance;
+	Vector3 m_acceleration;
+	bool m_applyGravity;
+
+	// are we moving within the space of anothe rmoving object
+	MovingSprite * mObjectMovingWith;
+
+	float mCurrentYResistance; // this can change dynamically
+
+	bool m_isOnGround;
+
+	bool mIsInWater;
 };
 
 #endif

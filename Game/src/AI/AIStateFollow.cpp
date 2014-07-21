@@ -19,7 +19,7 @@ void AIStateFollow::OnTransition()
 	// do stuff
 }
 
-void AIStateFollow::Update()
+void AIStateFollow::Update(float delta)
 {
 	if (m_npc->m_player)
 	{
