@@ -218,16 +218,16 @@ void GameObjectManager::Update(bool paused, float delta)
 			{
 				obj->Update(delta);
 			}
-			else if(dynamic_cast<ParallaxLayer *>(obj.get()) || 
-					dynamic_cast<AudioObject *>(obj.get()) || 
-					dynamic_cast<Orb *>(obj.get())) // TODO: optimise with flag
+			else if(obj->IsParallaxLayer() || 
+					obj->IsAudioObject() || 
+					obj->IsOrb())
 			{
 				obj->Update(delta); // always update parralax layers
 			}
 			else // objects outside the update area
 			{
 				// if a projectile has gone outsid ethe bounds then just remove it
-				if(dynamic_cast<Projectile*>(obj.get())) // add checks for other projectile class names as needed
+				if(obj->IsProjectile()) // add checks for other projectile class names as needed
 				{
 					RemoveGameObject(obj.get());
 				}

@@ -58,8 +58,8 @@ void Explosion::ApplyForceToApplicable()
 			continue;
 		}
 
-		if (dynamic_cast<Orb*>(obj) ||
-			dynamic_cast<Projectile*>(obj))
+		if (obj->IsOrb() ||
+			obj->IsProjectile())
 		{
 			MovingSprite * moveable = static_cast<MovingSprite *>(obj); // has to be a movingsprite if it's one of the above
 

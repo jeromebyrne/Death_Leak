@@ -114,6 +114,20 @@ public:
 
 	bool IsButterfly() const { return mIsButterfly; }
 
+	bool IsProjectile() const { return mIsProjectile; }
+
+	bool IsOrb() const { return mIsOrb; }
+
+	bool IsCharacter() const { return mIsCharacter; }
+
+	bool IsParallaxLayer() const { return mIsParallaxLayer; }
+
+	bool IsAudioObject() const { return mIsAudioObject; }
+
+	bool IsWaterBlock() const { return mIsWaterBlock; }
+
+	bool IsPlatform() const { return mIsPlatform; }
+
 	virtual void AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset, bool trackOrientation = true);
 	void Detach();
 
@@ -147,6 +161,13 @@ protected:
 	bool mIsSolidSprite;
 	bool mIsSolidLine;
 	bool mIsButterfly;
+	bool mIsProjectile;
+	bool mIsOrb;
+	bool mIsCharacter;
+	bool mIsParallaxLayer;
+	bool mIsAudioObject;
+	bool mIsWaterBlock;
+	bool mIsPlatform;
 	std::shared_ptr<GameObject> mAttachedTo;
 	Vector3 mAttachedToOffset;
 	float mParallaxMultiplierX;

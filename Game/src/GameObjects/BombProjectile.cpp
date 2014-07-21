@@ -45,43 +45,15 @@ BombProjectile::~BombProjectile(void)
 
 void BombProjectile::OnCollision(SolidMovingSprite* object)
 {
-	if(!dynamic_cast<Orb*>(object))
+	if(!object->IsOrb())
 	{
-		LOG_INFO("Come back to this after refactor");
-		NPC * objAsNPC = dynamic_cast<NPC *>(object);
-		if (dynamic_cast<WaterBlock*>(object))
+		if (object->IsWaterBlock())
 		{
 			// npc projectiles don't damage other npc's
 			return;
 		}
 
-		Projectile * objAsProj = dynamic_cast<Projectile *>(object);
-		if (objAsProj)
-		{
-			/*
-			Player * player = GameObjectManager::Instance()->GetPlayer();
-			if (objAsProj->m_owner == player && 
-				this->m_owner != player)
-			{
-				// set the player as the owner of the projectile and fire it back at the enemy
-				Vector3 enemyPosition = m_owner->Position();
-
-				Vector3 direction = enemyPosition - m_position;
-				direction.Normalise();
-				m_velocity = Vector3(direction.X * 17, direction.Y * 17, 1);
-				objAsProj->SetVelocityXYZ(-m_velocity.X * 0.5, -5, 0);
-
-				ParticleEmitterManager::Instance()->CreateRadialSpray(10, m_position, Vector3(3000,3000, 1), "Media/spark.png", 2, 5, 0.4f, 0.6f, 30, 40, 2.0, false, 0.8,0.9,0,true, 4.0);
-				AudioManager::Instance()->PlaySoundEffect("metalclink.wav");
-
-				objAsProj->mCollidedWithProjectile = true;
-				m_owner = player;
-			}
-			return;
-			*/
-		}
-
-		if (!dynamic_cast<Character *> (object))
+		if (!object->IsCharacter())
 		{
 			if (m_isActive)
 			{

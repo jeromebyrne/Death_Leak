@@ -29,7 +29,14 @@ GameObject::GameObject(float x, float y , float z, float width, float height, fl
 	mParallaxMultiplierY(1.0f),
 	mCurrentParallaxOffsetY(0.0f),
 	mUpdateToParentsOrientation(false),
-	mIsButterfly(false)
+	mIsButterfly(false),
+	mIsProjectile(false),
+	mIsOrb(false),
+	mIsCharacter(false),
+	mIsParallaxLayer(false),
+	mIsAudioObject(false),
+	mIsWaterBlock(false),
+	mIsPlatform(false)
 {
 	static int GAME_OBJECT_ID = 1; 
 	m_id = GAME_OBJECT_ID;

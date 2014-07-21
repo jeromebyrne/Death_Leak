@@ -27,6 +27,8 @@ Orb::Orb(SolidMovingSprite * target,
 	mValue(1),
 	mCreationTime(0.0f)
 {
+	mIsOrb = true;
+
 	// TODO: notify the target that it has orbs following it so that it can cancel before it dies
 	// m_collisionBoxDimensions = collisionDimensions;
 	m_textureFilename = (char *)textureFile;

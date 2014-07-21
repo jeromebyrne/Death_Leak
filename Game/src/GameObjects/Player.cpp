@@ -43,12 +43,6 @@ void Player::OnCollision(SolidMovingSprite * object)
 {
 	// update the base classes
 	Character::OnCollision(object);
-
-	Orb * orb = dynamic_cast<Orb*>(object);
-	if (orb)
-	{
-		IncreaseHealth(orb->GetValue());
-	}
 }
 
 void Player::OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode)

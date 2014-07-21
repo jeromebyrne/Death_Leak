@@ -3,6 +3,7 @@
 
 WaterBlock::WaterBlock(void)
 {
+	mIsWaterBlock = true;
 }
 
 WaterBlock::~WaterBlock(void)

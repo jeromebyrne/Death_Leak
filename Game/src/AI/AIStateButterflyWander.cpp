@@ -2,7 +2,7 @@
 #include "AIStateButterflyWander.h"
 #include "NPC.h"
 
-static const float kDirectionChangeDelay = 0.2f;
+static const float kYVelocityChangeDelay = 0.2f;
 
 AIStateButterflyWander::AIStateButterflyWander(NPC * npc) :
 AIState(npc),
@@ -49,12 +49,12 @@ void AIStateButterflyWander::Update(float delta)
 	{
 		m_npc->StopYAccelerating();
 
-		mLastYVelocityBurst = 2000 + (rand() % 3000);
+		mLastYVelocityBurst = 1000 + (rand() % 2500);
 		mLastYVelocityBurst *= 0.001;
 
 		m_npc->SetVelocityY(mLastYVelocityBurst);
 
-		mCurrentYVelocityDelay = kDirectionChangeDelay;
+		mCurrentYVelocityDelay = kYVelocityChangeDelay;
 	}
 
 	mCurrentDirectionChangeDelay -= delta;
@@ -65,12 +65,10 @@ void AIStateButterflyWander::Update(float delta)
 		if (randSign == 0)
 		{
 			m_npc->m_direction.X = -1;
-			m_npc->m_direction.Y = 1;
 		}
 		else
 		{
 			m_npc->m_direction.X = 1;
-			m_npc->m_direction.Y = -1;
 		}
 
 		mCurrentDirectionChangeDelay = 500 + (rand() % 1500);
@@ -80,5 +78,4 @@ void AIStateButterflyWander::Update(float delta)
 	}
 
 	m_npc->AccelerateX(m_npc->m_direction.X);
-	// m_npc->AccelerateY(m_npc->m_direction.Y, 0.2f);
 }

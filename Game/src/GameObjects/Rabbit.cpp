@@ -11,6 +11,7 @@ Rabbit::Rabbit(void) :
 	NPC()
 {
 	mHealth = 1; // 1 hit kills for rabbits
+	mAddHealthBar = false;
 }
 
 

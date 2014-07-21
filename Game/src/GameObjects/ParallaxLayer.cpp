@@ -2,18 +2,19 @@
 #include "ParallaxLayer.h"
 
 ParallaxLayer::ParallaxLayer(Camera2D * camera):Sprite(), 
-m_camera(camera), 
-m_repeatWidth(128), 
-m_cameraParallaxMultiplierX(0),
-m_cameraParallaxMultiplierY(0), 
-m_followCamYPos(false), 
-m_followCamXPos(true), 
-m_autoScrollX(false), 
-m_autoScrollY(false), 
-m_autoScrollXSpeed(0), 
-m_autoScrollYSpeed(0), 
-m_lastCamPosY(0)
+	m_camera(camera), 
+	m_repeatWidth(128), 
+	m_cameraParallaxMultiplierX(0),
+	m_cameraParallaxMultiplierY(0), 
+	m_followCamYPos(false), 
+	m_followCamXPos(true), 
+	m_autoScrollX(false), 
+	m_autoScrollY(false), 
+	m_autoScrollXSpeed(0), 
+	m_autoScrollYSpeed(0), 
+	m_lastCamPosY(0)
 {
+	mIsParallaxLayer = true;
 }
 
 ParallaxLayer::~ParallaxLayer(void)

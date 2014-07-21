@@ -69,7 +69,8 @@ void SolidLine::LoadContent(ID3D10Device * graphicsdevice)
 
 void SolidLine::OnCollision(SolidMovingSprite * object)
 {
-	if (object->IsButterfly())
+	if (object->IsButterfly() ||
+		object->IsProjectile())
 	{
 		return;
 	}
@@ -104,14 +105,6 @@ void SolidLine::OnCollision(SolidMovingSprite * object)
 void SolidLine::DebugDraw(ID3D10Device *  device)
 {
 	SolidMovingSprite::DebugDraw(device);
-
-	if (m_horizontalFlip)
-	{
-		/*D3DXMATRIX scaleMatrix;
-		D3DXMatrixIdentity(&scaleMatrix);
-		D3DXMatrixScaling(&scaleMatrix, -1, 1, 1.0);
-		D3DXMatrixMultiply(&m_world, &scaleMatrix, &m_world);*/
-	}
 
 	EffectBasic * basicEffect = static_cast<EffectBasic*>(EffectManager::Instance()->GetEffect("effectbasic"));
 

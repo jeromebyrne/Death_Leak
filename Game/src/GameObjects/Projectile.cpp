@@ -47,6 +47,8 @@ Projectile::Projectile(ProjectileOwnerType ownerType,
 
 	// blade projectile by default
 	mType = kBladeProjectile;
+
+	mIsProjectile = true;
 }
 
 Projectile::~Projectile()
@@ -89,15 +91,17 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 			return;
 		}
 
-		if (dynamic_cast<WaterBlock*>(object))
+		if (object->IsWaterBlock())
 		{
 			// npc projectiles don't damage other npc's
 			return;
 		}
 
-		Projectile * objAsProj = dynamic_cast<Projectile *>(object);
-		if (objAsProj)
+		if (object->IsProjectile())
 		{
+			GAME_ASSERT(dynamic_cast<Projectile *>(object));
+			Projectile * objAsProj = static_cast<Projectile *>(object);
+
 			if (objAsProj->getOwnerType() == kPlayerProjectile &&
 				getOwnerType() == kPlayerProjectile)
 			{
@@ -294,7 +298,7 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 					maxLive = 0.7f;
 				}
 			
-				if (dynamic_cast<Character*>(object))
+				if (object->IsCharacter())
 				{
 					ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateDirectedBloodSpray(40,
 																											particlePos,

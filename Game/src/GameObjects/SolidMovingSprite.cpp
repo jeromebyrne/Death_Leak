@@ -236,7 +236,7 @@ void SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 	}
 	// if we are not passive then push ourselves away from the object
 	// remember this behaviour can be overwritten in derived function
-	if(!m_passive && !dynamic_cast<Projectile*>(object)) // by default we don't want to be pushed by a projectile
+	if(!m_passive && !object->IsProjectile()) // by default we don't want to be pushed by a projectile
 	{
 		float otherLeft = object->CollisionLeft();
 		float otherRight = object->CollisionRight();
@@ -342,11 +342,10 @@ void SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 
 	if (m_applyDamage)
 	{
-		// check if this object should apply damage to any characters
-		Character * character = dynamic_cast<Character*>(object);
-
-		if (character)
+		if (object->IsCharacter())
 		{
+			GAME_ASSERT(dynamic_cast<Character*>(object));
+			Character * character = static_cast<Character*>(object);
 			character->OnDamage(m_applyDamageAmount, Vector3(0,0,0));
 		}
 	}

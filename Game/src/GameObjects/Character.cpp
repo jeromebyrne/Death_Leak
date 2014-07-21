@@ -35,6 +35,7 @@ Character::Character(float x, float y, float z, float width, float height, float
 {
 	mProjectileFilePath = "Media/knife.png";
 	mProjectileImpactFilePath = "Media/knife_impact.png";
+	mIsCharacter = true;
 }
 
 Character::~Character(void)
@@ -216,11 +217,10 @@ void Character::LoadContent(ID3D10Device * graphicsdevice)
 
 void Character::OnCollision(SolidMovingSprite * object)
 {
-	bool isPlatformType = dynamic_cast<Platform *>(object);
-	if( !dynamic_cast<Character *>(object) &&  
-		!dynamic_cast<Orb *>(object) &&
-		!isPlatformType &&
-		!dynamic_cast<WaterBlock*>(object))
+	if( !object->IsCharacter() &&  
+		!object->IsOrb() &&
+		!object->IsPlatform() &&
+		!object->IsWaterBlock())
 	{
 		// update the base classes
 		SolidMovingSprite::OnCollision(object);
@@ -307,7 +307,7 @@ void Character::OnCollision(SolidMovingSprite * object)
 			}
 		}
 	}
-	else if (isPlatformType)
+	else if (object->IsPlatform())
 	{
 		if (Bottom() > object->Y()) // is the bottom of the character above the platform centre point?
 		{
