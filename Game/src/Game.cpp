@@ -268,34 +268,35 @@ void Game::Draw()
 void Game::PostDraw() // post processsing effects here
 {
 	m_pGraphics->DisableAlphaBlending();
-	
-	//m_effectLightTexture->SetTexture(m_pGraphics->GetPreProcessSRV());
-	//m_effectLightTextureVertexWobble->SetTexture(m_pGraphics->GetPreProcessSRV());
-	//m_effectSepia->SetTexture(m_pGraphics->GetPreProcessSRV());
-	//m_effectMonochrome->SetTexture(m_pGraphics->GetPreProcessSRV());
-	m_effectMonochromeRed->SetTexture(m_pGraphics->GetPreProcessSRV());
+
+	// m_effectLightTexture->SetTexture(m_pGraphics->GetPreProcessSRV());
+	// m_effectLightTextureVertexWobble->SetTexture(m_pGraphics->GetPreProcessSRV());
+	m_effectSepia->SetTexture(m_pGraphics->GetPreProcessSRV());
+	// m_effectMonochrome->SetTexture(m_pGraphics->GetPreProcessSRV());
+	// m_effectMonochromeRed->SetTexture(m_pGraphics->GetPreProcessSRV());
 
 	// draw the scene to a texture
 	//m_screenAlignedPostProcTex1->SetEffect(m_effectLightTexture);
 	//m_screenAlignedPostProcTex1->SetEffect(m_effectLightTextureVertexWobble);
-	//m_screenAlignedPostProcTex1->SetEffect(m_effectSepia);
+	m_screenAlignedPostProcTex1->SetEffect(m_effectSepia);
 	//m_screenAlignedPostProcTex1->SetEffect(m_effectMonochrome);
-	m_screenAlignedPostProcTex1->SetEffect(m_effectMonochromeRed);
+	// m_screenAlignedPostProcTex1->SetEffect(m_effectMonochromeRed);
 
 	m_screenAlignedPostProcTex1->Draw();
+
 
 	// we need to unbind the texture as we will be writing to it on the next frame
 	//m_effectLightTexture->SetTexture(NULL);
 	//m_effectLightTexture->CurrentTechnique->GetPassByIndex(0)->Apply(0);
 
-	//m_effectSepia->SetTexture(NULL);
-	//m_effectSepia->CurrentTechnique->GetPassByIndex( 0 )->Apply(0);
+	m_effectSepia->SetTexture(nullptr);
+	m_effectSepia->CurrentTechnique->GetPassByIndex( 0 )->Apply(0);
 
 	//m_effectMonochrome->SetTexture(NULL);
 	//m_effectMonochrome->CurrentTechnique->GetPassByIndex( 0 )->Apply(0);
 
-	m_effectMonochromeRed->SetTexture(NULL);
-	m_effectMonochromeRed->CurrentTechnique->GetPassByIndex( 0 )->Apply(0);
+	// m_effectMonochromeRed->SetTexture(nullptr);
+	// m_effectMonochromeRed->CurrentTechnique->GetPassByIndex( 0 )->Apply(0);
 
 	//m_effectLightTextureVertexWobble->SetTexture(NULL);
 	//m_effectLightTextureVertexWobble->CurrentTechnique->GetPassByIndex( 0 )->Apply(0);

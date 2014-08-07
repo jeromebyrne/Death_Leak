@@ -195,7 +195,8 @@ void GameObjectManager::Update(bool paused, float delta)
 
 		NPCManager::Instance()->Update();
 
-		m_camera->FollowObjectWithOffset(m_player, 0, 150);
+		//m_camera->FollowObjectWithOffset(m_player, 0, 150);
+		m_camera->FollowMovingObjectWithLag(m_player, 30, 10, 0, 150);
 
 		// update the weather
 		WeatherManager::GetInstance()->Update(delta);

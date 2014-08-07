@@ -5,6 +5,17 @@
 
 class UISprite : public UIWidget
 {
+public:
+
+	UISprite(void);
+	virtual ~UISprite(void);
+	virtual void Release();
+	virtual void LoadContent(ID3D10Device * graphicsdevice);
+	virtual void XmlRead(TiXmlElement * element);
+	virtual void Draw(ID3D10Device * graphicsdevice);
+	virtual void Initialise();
+	virtual void Reset();
+
 protected:
 
 	ID3D10ShaderResourceView* m_texture;
@@ -28,16 +39,8 @@ protected:
 	bool m_applyChange;
 
 	D3DXMATRIX m_world; // world matrix
-public:
-	UISprite(void);
-	virtual ~UISprite(void);
-	virtual void Release();
-	virtual void LoadContent(ID3D10Device * graphicsdevice);
-	virtual void XmlRead(TiXmlElement * element);
-	virtual void Draw(ID3D10Device * graphicsdevice);
-	virtual void Initialise();
 
-	virtual void Reset();
+	bool mUseStandardEffect;
 };
 
 #endif

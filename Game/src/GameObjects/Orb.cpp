@@ -120,7 +120,7 @@ void Orb::Update(float delta)
 {
 	MovingSprite::Update(delta);
 
-	if (Timing::Instance()->GetTotalTimeSeconds() > mCreationTime + kMinLiveTimeUntilCollisionsActive)
+	if (m_physicalTarget && Timing::Instance()->GetTotalTimeSeconds() > mCreationTime + kMinLiveTimeUntilCollisionsActive)
 	{
 		// accelerate towards the target
 		Vector3 direction = m_physicalTarget->Position() - m_position;

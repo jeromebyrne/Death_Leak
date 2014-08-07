@@ -4,11 +4,12 @@
 #include "EffectLightTextureVertexWobble.h"
 
 UISprite::UISprite(void) : UIWidget(),
-m_horizontalFlip(false),
-m_verticalFlip(false),
-m_applyChange(false),
-VertexBuffer(0),
-IndexBuffer(0)
+	m_horizontalFlip(false),
+	m_verticalFlip(false),
+	m_applyChange(false),
+	VertexBuffer(0),
+	IndexBuffer(0),
+	mUseStandardEffect(false)
 {
 }
 
@@ -24,6 +25,13 @@ void UISprite::XmlRead(TiXmlElement * element)
 	m_horizontalFlip = XmlUtilities::ReadAttributeAsBool(element, "", "hflip");
 	m_verticalFlip = XmlUtilities::ReadAttributeAsBool(element, "", "vflip");
 	m_alpha = XmlUtilities::ReadAttributeAsFloat(element, "", "alpha");
+
+	bool attribExists = XmlUtilities::AttributeExists(element, "", "use_standard_effect");
+
+	if (attribExists)
+	{
+		mUseStandardEffect = XmlUtilities::ReadAttributeAsBool(element, "", "use_standard_effect");
+	}
 }
 
 
@@ -225,7 +233,12 @@ void UISprite::Initialise()
 
 void UISprite::Draw(ID3D10Device * graphicsdevice)
 {
-	EffectLightTextureVertexWobble * effect = UIManager::Instance()->GetDefaultEffect();
+	EffectLightTexture * effect = UIManager::Instance()->GetDefaultEffect();
+
+	if (mUseStandardEffect)
+	{
+		effect = UIManager::Instance()->GetStandardEffect();
+	}
 
 	// set the texture
 	effect->SetTexture(m_texture);

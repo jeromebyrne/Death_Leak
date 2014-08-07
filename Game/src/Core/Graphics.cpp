@@ -444,7 +444,7 @@ void Graphics::SwitchToPreProcessRenderTarget()
 
 void Graphics::SwitchToBackBufferRenderTarget()
 {
-	m_pd3dDevice->OMSetRenderTargets( 1, &m_pBackBufferRenderTargetView , NULL );
+	m_pd3dDevice->OMSetRenderTargets( 1, &m_pBackBufferRenderTargetView , nullptr );
 }
 
 void Graphics::DrawDebugText(const char * text, float top, float left)

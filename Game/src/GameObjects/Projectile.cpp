@@ -301,11 +301,11 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 				if (object->IsCharacter())
 				{
 					ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateDirectedBloodSpray(40,
-																											particlePos,
-																											Vector3(-m_direction.X, 0, 0),
-																											0.15f,
-																											true,
-																											1.4f);
+																										particlePos,
+																										Vector3(-m_direction.X, 0, 0),
+																										0.15f,
+																										true,
+																										1.4f);
 					if (spray)
 					{
 						spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(object->ID()), Vector3(-offset.X, -offset.Y, 0));

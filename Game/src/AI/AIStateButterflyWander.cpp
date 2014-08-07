@@ -5,11 +5,11 @@
 static const float kYVelocityChangeDelay = 0.2f;
 
 AIStateButterflyWander::AIStateButterflyWander(NPC * npc) :
-AIState(npc),
-mCurrentYVelocityDelay(0.0f),
-mLastYVelocityBurst(0.0f),
-mCurrentDirectionChangeDelay(0.0f),
-mLastDirectionChangeDelay(0.0f)
+	AIState(npc),
+	mCurrentYVelocityDelay(0.0f),
+	mLastYVelocityBurst(0.0f),
+	mCurrentDirectionChangeDelay(0.0f),
+	mLastDirectionChangeDelay(0.0f)
 {
 	mStateType = kButterflyWander;
 }
@@ -25,24 +25,28 @@ void AIStateButterflyWander::OnTransition()
 
 void AIStateButterflyWander::Update(float delta)
 {
-	/*
 	if (m_npc->m_player)
 	{
 		// get the distance to the player
-		Vector3 distanceSquaredVector =  m_npc->m_player->Position() - m_npc->Position();
+		Vector3 distanceSquaredVector = m_npc->m_player->Position() - m_npc->Position();
 		float distanceSquared = distanceSquaredVector.LengthSquared();
-		if (distanceSquared < mFollowRadius * mFollowRadius)
+		if (distanceSquared < 130 * 130)
 		{
 			distanceSquaredVector.Normalise();
-			m_npc->AccelerateX(-distanceSquaredVector.X);
+			m_npc->AccelerateY(1, 2.5f);
 		}
-		else
-		{
-			m_npc->StopXAccelerating();
-		}
-	}
-	*/
 
+		DoWander(delta);
+	}
+	else
+	{
+		m_npc->SetSprintActive(false);
+		DoWander(delta);
+	}
+}
+
+void AIStateButterflyWander::DoWander(float delta)
+{
 	mCurrentYVelocityDelay -= delta;
 
 	if (mCurrentYVelocityDelay < 0.0f && m_npc->VelocityY() < -mLastYVelocityBurst)

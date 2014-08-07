@@ -12,9 +12,10 @@ extern void PostDestroyMessage();
 UIManager * UIManager::m_instance = 0;
 
 UIManager::UIManager(void):
-m_defaultEffect(0),
-mBaseHeight(600),
-mBaseWidth(800)
+	m_defaultEffect(nullptr),
+	mBaseHeight(600),
+	mBaseWidth(800),
+	mStandardEffect(nullptr)
 {
 }
 
@@ -90,6 +91,10 @@ void UIManager::LoadContent(Graphics * graphicsSystem)
 	m_defaultEffect->Load(graphicsSystem->Device());
 	m_defaultEffect->SetInputLayout(m_defaultEffect->CurrentTechnique, graphicsSystem->Device(), graphicsSystem->InputDescriptions.POS_TEXCOORD_NORM, 3);
 
+	mStandardEffect = new EffectLightTexture();
+	mStandardEffect->Load(graphicsSystem->Device());
+	mStandardEffect->SetInputLayout(mStandardEffect->CurrentTechnique, graphicsSystem->Device(), graphicsSystem->InputDescriptions.POS_TEXCOORD_NORM, 3);
+
 	// set the world view projection matrix for the default shader here, it shouldnt change for UI items
 	D3DXMATRIX world, view, projection;
 
@@ -100,6 +105,8 @@ void UIManager::LoadContent(Graphics * graphicsSystem)
 	
 	m_defaultEffect->SetWorldViewProjection(world, view, projection);
 	m_defaultEffect->SetWobbleIntensity(4.0f);
+
+	mStandardEffect->SetWorldViewProjection(world, view, projection);
 
 	// load UI
 	map<string, UIScreen*>::iterator current = m_allScreens.begin();

@@ -28,10 +28,10 @@ void Butterfly::OnDamage(float damageAmount, Vector3 pointOfContact, bool should
 
 	GameObjectManager::Instance()->RemoveGameObject(this);
 
-	Orb * wing1 = new Orb(m_player, Vector3(m_position.X, m_position.Y, m_position.Z - 1.1f), Vector3(32, 32, 0), Vector3(15, 15, 0), "Media\\characters\\butterfly\\dead_wing_1.png", true, 0.15f);
+	Orb * wing1 = new Orb(nullptr, Vector3(m_position.X, m_position.Y, m_position.Z - 1.1f), Vector3(32, 32, 0), Vector3(15, 15, 0), "Media\\characters\\butterfly\\dead_wing_1.png", true, 0.15f);
 	GameObjectManager::Instance()->AddGameObject(wing1);
 
-	Orb * wing2 = new Orb(m_player, Vector3(m_position.X + 10, m_position.Y, m_position.Z - 1.1f), Vector3(32, 32, 0), Vector3(15, 15, 0), "Media\\characters\\butterfly\\dead_wing_2.png", true, 0.15f);
+	Orb * wing2 = new Orb(nullptr, Vector3(m_position.X + 10, m_position.Y, m_position.Z - 1.1f), Vector3(32, 32, 0), Vector3(15, 15, 0), "Media\\characters\\butterfly\\dead_wing_2.png", true, 0.15f);
 	GameObjectManager::Instance()->AddGameObject(wing2);
 }
 
@@ -46,8 +46,11 @@ void Butterfly::Initialise()
 	SetState(AIState::kButterflyWander);
 
 	m_applyGravity = true;
-	m_resistance.Y = 8.0f;
+	m_resistance.X = 0.99f;
+	m_resistance.Y = 6.0f;
 	m_maxVelocity.X = 0.5f;
+	m_maxVelocity.Y = 5.0f;
+	mAccelXRate = 0.5f;
 }
 
 void Butterfly::UpdateAnimations()

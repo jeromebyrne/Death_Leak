@@ -15,6 +15,8 @@ public:
 
 private:
 
+	void DoWander(float delta);
+
 	float mCurrentYVelocityDelay;
 	float mLastYVelocityBurst;
 	float mCurrentDirectionChangeDelay;

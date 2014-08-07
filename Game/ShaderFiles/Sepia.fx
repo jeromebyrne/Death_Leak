@@ -54,18 +54,21 @@ PS_INPUT VS( VS_INPUT input )
 float4 PS( PS_INPUT input) : SV_Target
 {
 	// Use our new texture coordinate to look-up a pixel in ColorMapSampler.
-	float4 Color = txDiffuse.Sample( samLinear, input.Tex);
+	float4 color = txDiffuse.Sample( samLinear, input.Tex);
 	
-	float4 finalColor;
-	// Apply Sepia after distortion
-	finalColor.r = (Color.r * 0.393) + (Color.g * 0.769) + (Color.b * 0.189);
-    finalColor.g = (Color.r * 0.349) + (Color.g * 0.686) + (Color.b * 0.168);    
-    finalColor.b = (Color.r * 0.272) + (Color.g * 0.534) + (Color.b * 0.131);
-	
-	// Keep our alphachannel at 1.
-	finalColor.a = alpha;
-   
-    return finalColor;
+	if ((color.r - (color.g + color.b)) < 0.5)
+	{
+		float4 finalColor;
+
+		// Apply Sepia 
+		finalColor.r = (color.r * 0.393) + (color.g * 0.769) + (color.b * 0.189);
+		finalColor.g = (color.r * 0.349) + (color.g * 0.686) + (color.b * 0.168);
+		finalColor.b = (color.r * 0.272) + (color.g * 0.534) + (color.b * 0.131);
+
+		return finalColor;
+	}
+
+	return color;
 }
 //--------------------------------------------------------------------------------------
 technique10 Render
