@@ -29,6 +29,7 @@
 #include "GamePad.h"
 #include "WeatherManager.h"
 #include "EffectLightTexturePixelWobble.h"
+#include "EffectFoliageSway.h"
 
 Game * Game::mInstance = nullptr;
 
@@ -39,23 +40,24 @@ bool Game::mLevelEditMode = false;
 Vector2 Game::mGameScale = Vector2(1.0f, 1.0f);
 
 Game::Game(Graphics * pGraphics) : 
-m_pGraphics(pGraphics),
-m_pCam2d(nullptr),
-m_effectLightTexture(nullptr),
-m_effectLightTextureVertexWobble(nullptr),
-m_effectParticleSpray(nullptr),
-m_effectBloodParticleSpray(nullptr),
-m_effectLightTextureBump(nullptr),
-#if _DEBUG
-	m_effectBasic(nullptr),
-	mlevelEditor(nullptr),
-#endif
-m_effectSepia(nullptr),
-m_effectMonochrome(nullptr),
-m_effectMonochromeRed(nullptr),
-m_screenAlignedPostProcTex1(nullptr),
-m_effectNoise(nullptr),
-m_effectPixelWobble(nullptr)
+	m_pGraphics(pGraphics),
+	m_pCam2d(nullptr),
+	m_effectLightTexture(nullptr),
+	m_effectLightTextureVertexWobble(nullptr),
+	m_effectParticleSpray(nullptr),
+	m_effectBloodParticleSpray(nullptr),
+	m_effectLightTextureBump(nullptr),
+	#if _DEBUG
+		m_effectBasic(nullptr),
+		mlevelEditor(nullptr),
+	#endif
+	m_effectSepia(nullptr),
+	m_effectMonochrome(nullptr),
+	m_effectMonochromeRed(nullptr),
+	m_screenAlignedPostProcTex1(nullptr),
+	m_effectNoise(nullptr),
+	m_effectPixelWobble(nullptr),
+	m_effectFoliageSway(nullptr)
 {
 }
 
@@ -93,6 +95,7 @@ void Game::Initialise()
 	m_effectLightTextureBump = static_cast<EffectLightTextureBump*>(EffectManager::Instance()->GetEffect("effectlighttexturebump"));
 	m_effectNoise = static_cast<EffectNoise*>(EffectManager::Instance()->GetEffect("effectnoise"));
 	m_effectPixelWobble = static_cast<EffectLightTexturePixelWobble*>(EffectManager::Instance()->GetEffect("effectpixelwobble"));
+	m_effectFoliageSway = static_cast<EffectFoliageSway*>(EffectManager::Instance()->GetEffect("effectfoliagesway"));
 
 	m_effectNoise->SetSeed(5);
 	m_effectLightTextureVertexWobble->SetWobbleIntensity(30);
@@ -227,11 +230,13 @@ void Game::Draw()
 	m_effectLightTextureBump->SetLightColor((float*)D3DXVECTOR4(1.0,1.0,1.0,1.0f));
 	m_effectNoise->SetWorldViewProjection((float*)camWorld,(float*)camView, (float*)camProjection);
 	m_effectPixelWobble->SetWorldViewProjection((float*)camWorld,(float*)camView, (float*)camProjection);
+	m_effectFoliageSway->SetWorldViewProjection((float*)camWorld, (float*)camView, (float*)camProjection);
 
 	float shaderTime = Timing::Instance()->GetTotalTimeSeconds();
 
 	m_effectLightTextureVertexWobble->SetTimeVariable(shaderTime);
 	m_effectNoise->SetTimer(shaderTime);
+	m_effectFoliageSway->SetTimeVariable(shaderTime);
 
 	static float pixelWobbleShaderTime = 0;
 	static bool inReverse = false;

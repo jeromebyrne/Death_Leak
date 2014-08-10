@@ -11,6 +11,7 @@ class EffectReflection;
 class EffectLightTextureBump;
 class EffectNoise;
 class EffectLightTexturePixelWobble;
+class EffectFoliageSway;
 
 class DrawableObject : public GameObject
 {
@@ -58,6 +59,7 @@ protected:
 	EffectLightTextureBump * m_effectLightTextureBump;
 	EffectNoise * m_effectNoise;
 	EffectLightTexturePixelWobble * m_effectPixelWobble;
+	EffectFoliageSway * m_effectFoliageSway;
 
 	enum EffectTypesEnum m_currentEffectType;
 	float m_alpha;

@@ -48,6 +48,7 @@
     <ClCompile Include="src\Core\XmlDocument.cpp" />
     <ClCompile Include="src\Effects\EffectBasic.cpp" />
     <ClCompile Include="src\Effects\EffectBloodParticleSpray.cpp" />
+    <ClCompile Include="src\Effects\EffectFoliageSway.cpp" />
     <ClCompile Include="src\Effects\EffectLightTexture.cpp" />
     <ClCompile Include="src\Effects\EffectLightTextureBump.cpp" />
     <ClCompile Include="src\Effects\EffectLightTexturePixelWobble.cpp" />
@@ -146,6 +147,7 @@
     <ClInclude Include="src\Effects\EffectAbstract.h" />
     <ClInclude Include="src\Effects\EffectBasic.h" />
     <ClInclude Include="src\Effects\EffectBloodParticleSpray.h" />
+    <ClInclude Include="src\Effects\EffectFoliageSway.h" />
     <ClInclude Include="src\Effects\EffectLightTexture.h" />
     <ClInclude Include="src\Effects\EffectLightTextureBump.h" />
     <ClInclude Include="src\Effects\EffectLightTexturePixelWobble.h" />

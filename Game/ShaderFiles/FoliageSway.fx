@@ -1,25 +1,4 @@
-//#define threshold 0.04
-//SamplerState texSampler : register(s0);
-//Texture2D<float> depthTex : register(t0);
-
-//float4 EdgeDetectionPS(float4 position : SV_POSITION, float2 texcoord : TEXCOORD0) : SV_TARGET {
-        //float fCenter = depthTex.Sample(texSampler, texcoord);
-        //float4 fEdges = {
-          //      depthTex.Sample(texSampler, texcoord, int2(-1, 0)),
-           //     depthTex.Sample(texSampler, texcoord, int2(0, -1)),
-            //    depthTex.Sample(texSampler, texcoord, int2(1, 0)),
-             //   depthTex.Sample(texSampler, texcoord, int2(0, 1)) // Line 11
-        //};
-
-        //float4 delta = abs(fCenter.xxxx - fEdges);
-        //float4 edges = step(threshold / 10.0, delta);
-
-        //if (dot(edges, 1.0) == 0.0)
-          //      discard;
-
-        //return edges;}
-
-//--------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
 // Constant Buffer Variables
 //--------------------------------------------------------------------------------------
 matrix World;
@@ -30,7 +9,6 @@ float3 lightDir;
 float4 lightColor;
 
 float Time;
-float Waviness;
 
 Texture2D txDiffuse;
 SamplerState samLinear
@@ -64,8 +42,8 @@ PS_INPUT VS( VS_INPUT input )
     PS_INPUT output = (PS_INPUT)0;
     output.Pos = mul( input.Pos, World );
     
-    output.Pos.x += sin( output.Pos.y*0.1f + Time ) * Waviness; // wobble algorithm
-    output.Pos.y += sin( output.Pos.x*0.1f + Time ) * Waviness; // wobble algorithm
+    output.Pos.x += sin( output.Pos.y*0.1f + Time ) * input.Norm.x; // wobble algorithm
+    output.Pos.y += sin( output.Pos.x*0.1f + Time ) * input.Norm.y; // wobble algorithm
     
     output.Pos = mul( output.Pos, View );
     output.Pos = mul( output.Pos, Projection );

@@ -12,6 +12,7 @@
 #include "EffectLightTextureBump.h"
 #include "EffectNoise.h"
 #include "EffectLightTexturePixelWobble.h"
+#include "EffectFoliageSway.h"
 
 EffectManager* EffectManager::m_instance = nullptr;
 
@@ -56,6 +57,7 @@ void EffectManager::Initialise(Graphics * graphicsSystem)
 	EffectLightTextureBump * effectLightTextureBump = new EffectLightTextureBump();
 	EffectNoise * effectNoise = new EffectNoise();
 	EffectLightTexturePixelWobble * effectLightTexturePIxelWobble = new EffectLightTexturePixelWobble();
+	EffectFoliageSway * effectFoliageSway = new EffectFoliageSway();
 
 	// load them
 	effectBasic->Load(device);
@@ -70,6 +72,7 @@ void EffectManager::Initialise(Graphics * graphicsSystem)
 	effectLightTextureBump->Load(device);
 	effectNoise->Load(device);
 	effectLightTexturePIxelWobble->Load(device);
+	effectFoliageSway->Load(device);
 
 	// set input layouts
 	effectBasic->SetInputLayout(effectBasic->CurrentTechnique, device, graphicsSystem->InputDescriptions.POS_COLOR, 2); 
@@ -83,7 +86,8 @@ void EffectManager::Initialise(Graphics * graphicsSystem)
 	effectBloodParticleSpray->SetInputLayout(effectBloodParticleSpray->CurrentTechnique, device, graphicsSystem->InputDescriptions.POS_TEXCOORD_NORM, 3);
 	effectLightTextureBump->SetInputLayout(effectLightTextureBump->CurrentTechnique, device, graphicsSystem->InputDescriptions.POS_TEXCOORD_NORM_TAN_BINORM, 5);
 	effectNoise->SetInputLayout(effectNoise->CurrentTechnique, device, graphicsSystem->InputDescriptions.POS_TEXCOORD_NORM, 3);
-	effectLightTexturePIxelWobble->SetInputLayout(effectLightTexture->CurrentTechnique, device, graphicsSystem->InputDescriptions.POS_TEXCOORD_NORM, 3);
+	effectLightTexturePIxelWobble->SetInputLayout(effectLightTexturePIxelWobble->CurrentTechnique, device, graphicsSystem->InputDescriptions.POS_TEXCOORD_NORM, 3);
+	effectFoliageSway->SetInputLayout(effectFoliageSway->CurrentTechnique, device, graphicsSystem->InputDescriptions.POS_TEXCOORD_NORM, 3);
 
 	// add to map
 	m_effectMap["effectbasic"] = effectBasic;
@@ -98,4 +102,5 @@ void EffectManager::Initialise(Graphics * graphicsSystem)
 	m_effectMap["effectlighttexturebump"] = effectLightTextureBump;
 	m_effectMap["effectnoise"] = effectNoise;
 	m_effectMap["effectpixelwobble"] = effectLightTexturePIxelWobble;
+	m_effectMap["effectfoliagesway"] = effectFoliageSway;
 }

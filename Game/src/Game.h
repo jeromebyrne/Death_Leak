@@ -13,6 +13,7 @@ class EffectSepia;
 class EffectMonochrome;
 class EffectMonochromeRed;
 class EffectLightTexturePixelWobble;
+class EffectFoliageSway;
 class ScreenAlignedTexture;
 class LevelEditor;
 class ScreenAlignedTexture;
@@ -21,33 +22,6 @@ class Graphics;
 
 class Game
 {
-private:
-	// graphics manager
-	Graphics * m_pGraphics;
-
-	// 2D camera
-	Camera2D * m_pCam2d;
-
-	// Our effects
-	EffectLightTexture * m_effectLightTexture;
-	EffectLightTextureVertexWobble * m_effectLightTextureVertexWobble;
-	EffectParticleSpray * m_effectParticleSpray;
-	EffectBloodParticleSpray * m_effectBloodParticleSpray;
-	EffectLightTextureBump * m_effectLightTextureBump;
-#if _DEBUG
-	EffectBasic * m_effectBasic;
-	LevelEditor * mlevelEditor;
-#endif
-	EffectSepia * m_effectSepia;
-	EffectMonochrome * m_effectMonochrome;
-	EffectMonochromeRed * m_effectMonochromeRed;
-	EffectNoise * m_effectNoise;
-	EffectLightTexturePixelWobble * m_effectPixelWobble;
-	static bool mPaused;
-	static bool mLevelEditMode;
-	ScreenAlignedTexture * m_screenAlignedPostProcTex1;
-	static Vector2 mGameScale;
-	static Game * mInstance;
 public:
 
 	Game(Graphics * pGraphics);
@@ -72,6 +46,35 @@ public:
 #endif
 
 	static Vector2 GetGameScale() { return mGameScale; }
+
+private:
+	// graphics manager
+	Graphics * m_pGraphics;
+
+	// 2D camera
+	Camera2D * m_pCam2d;
+
+	// Our effects
+	EffectLightTexture * m_effectLightTexture;
+	EffectLightTextureVertexWobble * m_effectLightTextureVertexWobble;
+	EffectParticleSpray * m_effectParticleSpray;
+	EffectBloodParticleSpray * m_effectBloodParticleSpray;
+	EffectLightTextureBump * m_effectLightTextureBump;
+#if _DEBUG
+	EffectBasic * m_effectBasic;
+	LevelEditor * mlevelEditor;
+#endif
+	EffectSepia * m_effectSepia;
+	EffectMonochrome * m_effectMonochrome;
+	EffectMonochromeRed * m_effectMonochromeRed;
+	EffectNoise * m_effectNoise;
+	EffectLightTexturePixelWobble * m_effectPixelWobble;
+	EffectFoliageSway * m_effectFoliageSway;
+	static bool mPaused;
+	static bool mLevelEditMode;
+	ScreenAlignedTexture * m_screenAlignedPostProcTex1;
+	static Vector2 mGameScale;
+	static Game * mInstance;
 };
 
 #endif

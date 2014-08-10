@@ -11,6 +11,7 @@
 #include "EffectLightTextureBump.h"
 #include "effectNoise.h"
 #include "EffectLightTexturePixelWobble.h"
+#include "EffectFoliageSway.h"
 
 static const D3DXVECTOR2 kDefaultTex1 = D3DXVECTOR2(0,0);
 static const D3DXVECTOR2 kDefaultTex2 = D3DXVECTOR2(1,0);
@@ -182,12 +183,25 @@ void Sprite::RecalculateVertices()
 
 	if (m_currentEffectType != EFFECT_BUMP)
 	{
-		VertexPositionTextureNormal vertices[]=
+		D3DXVECTOR3 normal1 = kDefaultNormal;
+		D3DXVECTOR3 normal2 = kDefaultNormal;
+		D3DXVECTOR3 normal3 = kDefaultNormal;
+		D3DXVECTOR3 normal4 = kDefaultNormal;
+
+		if (m_currentEffectType == EFFECT_FOLIAGE_SWAY)
 		{
-			{ D3DXVECTOR3( -m_dimensions.X/2, -m_dimensions.Y/2, m_dimensions.Z ), kDefaultTex1, kDefaultNormal}, // 0
-			{ D3DXVECTOR3( m_dimensions.X/2, -m_dimensions.Y/2, m_dimensions.Z ), kDefaultTex2, kDefaultNormal}, // 1
-			{ D3DXVECTOR3( m_dimensions.X/2, m_dimensions.Y/2, m_dimensions.Z), kDefaultTex3, kDefaultNormal},// 2
-			{ D3DXVECTOR3( -m_dimensions.X/2, m_dimensions.Y/2, m_dimensions.Z ), kDefaultTex4, kDefaultNormal},// 3
+			normal1 = D3DXVECTOR3(mFoliageSwayProperties.BottomLeftSwayIntensity.X, mFoliageSwayProperties.BottomLeftSwayIntensity.Y, 1);
+			normal2 = D3DXVECTOR3(mFoliageSwayProperties.BottomRightSwayIntensity.X, mFoliageSwayProperties.BottomRightSwayIntensity.Y, 1);
+			normal3 = D3DXVECTOR3(mFoliageSwayProperties.TopLeftSwayIntensity.X, mFoliageSwayProperties.TopLeftSwayIntensity.Y, 1);
+			normal4 = D3DXVECTOR3(mFoliageSwayProperties.TopRightSwayIntensity.X, mFoliageSwayProperties.TopRightSwayIntensity.Y, 1);
+		}
+
+		VertexPositionTextureNormal vertices[] =
+		{
+			{ D3DXVECTOR3( -m_dimensions.X/2, -m_dimensions.Y/2, m_dimensions.Z ), kDefaultTex1, normal1 }, // 0
+			{ D3DXVECTOR3( m_dimensions.X/2, -m_dimensions.Y/2, m_dimensions.Z ), kDefaultTex2, normal2 }, // 1
+			{ D3DXVECTOR3( m_dimensions.X/2, m_dimensions.Y/2, m_dimensions.Z), kDefaultTex3, normal3 },// 2
+			{ D3DXVECTOR3( -m_dimensions.X/2, m_dimensions.Y/2, m_dimensions.Z ), kDefaultTex4, normal4 },// 3
 		};
 
 		for(int i = 0; i < 4; i++)
@@ -385,6 +399,11 @@ void Sprite::Draw(ID3D10Device * device, Camera2D * camera)
 				Draw_effectLightTexWobble(device);
 				break;
 			}
+		case EFFECT_FOLIAGE_SWAY:
+			{
+				Draw_effectFoliageSway(device);
+				break;
+			}
 		case EFFECT_NOISE:
 			{
 				Draw_effectNoise(device);
@@ -456,6 +475,17 @@ void Sprite::XmlRead(TiXmlElement * element)
 		mPixelWobbleIntensity = XmlUtilities::ReadAttributeAsFloat(element, "effect", "pixelwobbleintensity");
 		mPixelWobbleSpeedMod = XmlUtilities::ReadAttributeAsFloat(element, "effect", "pixelwobblespeedmod");
 	}
+	else if (EffectName == "effectfoliagesway")
+	{
+		mFoliageSwayProperties.BottomLeftSwayIntensity.X = XmlUtilities::ReadAttributeAsFloat(element, "foliage_sway_props", "bottom_left_intensity_x");
+		mFoliageSwayProperties.BottomLeftSwayIntensity.Y = XmlUtilities::ReadAttributeAsFloat(element, "foliage_sway_props", "bottom_left_intensity_y");
+		mFoliageSwayProperties.BottomRightSwayIntensity.X = XmlUtilities::ReadAttributeAsFloat(element, "foliage_sway_props", "bottom_right_intensity_x");
+		mFoliageSwayProperties.BottomRightSwayIntensity.Y = XmlUtilities::ReadAttributeAsFloat(element, "foliage_sway_props", "bottom_right_intensity_y");
+		mFoliageSwayProperties.TopLeftSwayIntensity.X = XmlUtilities::ReadAttributeAsFloat(element, "foliage_sway_props", "top_left_intensity_x");
+		mFoliageSwayProperties.TopLeftSwayIntensity.Y = XmlUtilities::ReadAttributeAsFloat(element, "foliage_sway_props", "top_left_intensity_y");
+		mFoliageSwayProperties.TopRightSwayIntensity.X = XmlUtilities::ReadAttributeAsFloat(element, "foliage_sway_props", "top_right_intensity_x");
+		mFoliageSwayProperties.TopRightSwayIntensity.Y = XmlUtilities::ReadAttributeAsFloat(element, "foliage_sway_props", "top_right_intensity_y");
+	}
 }
 
 void Sprite::XmlWrite(TiXmlElement * element)
@@ -510,6 +540,22 @@ void Sprite::XmlWrite(TiXmlElement * element)
 	effectElement->SetDoubleAttribute("wobbleintensity", mWobbleShaderIntensity);
 	effectElement->SetDoubleAttribute("pixelwobbleintensity", mPixelWobbleIntensity);
 	effectElement->SetDoubleAttribute("pixelwobblespeedmod", mPixelWobbleSpeedMod);
+
+	if (EffectName == "effectfoliagesway")
+	{
+		TiXmlElement * foliageSwayElement = new TiXmlElement("foliage_sway_props");
+
+		foliageSwayElement->SetAttribute("bottom_left_intensity_x", mFoliageSwayProperties.BottomLeftSwayIntensity.X);
+		foliageSwayElement->SetAttribute("bottom_left_intensity_y", mFoliageSwayProperties.BottomLeftSwayIntensity.Y);
+		foliageSwayElement->SetAttribute("bottom_right_intensity_x", mFoliageSwayProperties.BottomRightSwayIntensity.X);
+		foliageSwayElement->SetAttribute("bottom_right_intensity_y", mFoliageSwayProperties.BottomRightSwayIntensity.Y);
+		foliageSwayElement->SetAttribute("top_left_intensity_x", mFoliageSwayProperties.TopLeftSwayIntensity.X);
+		foliageSwayElement->SetAttribute("top_left_intensity_y", mFoliageSwayProperties.TopLeftSwayIntensity.Y);
+		foliageSwayElement->SetAttribute("top_right_intensity_x", mFoliageSwayProperties.TopRightSwayIntensity.X);
+		foliageSwayElement->SetAttribute("top_right_intensity_y", mFoliageSwayProperties.TopRightSwayIntensity.Y);
+
+		element->LinkEndChild(foliageSwayElement);
+	}
 }
 
 void Sprite::SetVertexBuffer(ID3D10Device* device, UINT byteSize, VertexPositionTextureNormal vertices[])
@@ -786,6 +832,40 @@ void Sprite::Draw_effectLightTexWobble(ID3D10Device * device)
 	{
 		m_effectLightTextureWobble->CurrentTechnique->GetPassByIndex(p)->Apply(0);
 		device->DrawIndexed(4, 0 , 0);
+	}
+}
+
+void Sprite::Draw_effectFoliageSway(ID3D10Device * device)
+{
+	//// set the world matrix
+	m_effectFoliageSway->SetWorld((float*)&m_world);
+
+	// set the texture. TODO: optimise this i.e not have to set the texture every time
+	m_effectFoliageSway->SetTexture(m_texture);
+
+	// set the alpha value on the shader
+	m_effectFoliageSway->SetAlpha(m_alpha);
+
+	//// Set the input layout on the device
+	device->IASetInputLayout(m_effectFoliageSway->InputLayout);
+
+	// Set vertex buffer
+	UINT stride = sizeof(VertexPositionTextureNormal);
+	UINT offset = 0;
+	device->IASetVertexBuffers(0, 1, &mVertexBuffer, &stride, &offset);
+
+	//// set the index buffer 
+	device->IASetIndexBuffer(mIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+
+	//// Set primitive topology
+	device->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+
+	D3D10_TECHNIQUE_DESC techDesc;
+	m_effectFoliageSway->CurrentTechnique->GetDesc(&techDesc);
+	for (UINT p = 0; p < techDesc.Passes; ++p)
+	{
+		m_effectFoliageSway->CurrentTechnique->GetPassByIndex(p)->Apply(0);
+		device->DrawIndexed(4, 0, 0);
 	}
 }
 

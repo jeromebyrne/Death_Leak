@@ -9,16 +9,18 @@
 #include "EffectLightTextureBump.h"
 #include "EffectNoise.h"
 #include "EffectLightTexturePixelWobble.h"
+#include "EffectFoliageSway.h"
 
 DrawableObject::DrawableObject(float x, float y, float z, float width, float height, float breadth, const char * effectName): GameObject(x,y,z,width,height,breadth),
-EffectName(effectName), 
-m_applyChange(false), 
-m_alpha(1),
-m_effectBasic(nullptr),
-m_effectLightTexture(nullptr),
-m_effectLightTextureWobble(nullptr),
-m_effectLightTextureBump(nullptr),
-m_effectNoise(nullptr)
+	EffectName(effectName), 
+	m_applyChange(false), 
+	m_alpha(1),
+	m_effectBasic(nullptr),
+	m_effectLightTexture(nullptr),
+	m_effectLightTextureWobble(nullptr),
+	m_effectLightTextureBump(nullptr),
+	m_effectNoise(nullptr),
+	m_effectFoliageSway(nullptr)
 {
 	m_currentEffectType = EFFECT_LIGHT_TEXTURE; // set default effect
 	mDrawable = true;
@@ -43,6 +45,7 @@ void DrawableObject::LoadContent(ID3D10Device * graphicsdevice)
 	m_effectLightTextureBump = static_cast<EffectLightTextureBump*>(EffectManager::Instance()->GetEffect("effectlighttexturebump"));
 	m_effectNoise = static_cast<EffectNoise*>(EffectManager::Instance()->GetEffect("effectnoise"));
 	m_effectPixelWobble = static_cast<EffectLightTexturePixelWobble*>(EffectManager::Instance()->GetEffect("effectpixelwobble"));
+	m_effectFoliageSway = static_cast<EffectFoliageSway*>(EffectManager::Instance()->GetEffect("effectfoliagesway"));
 
 	//set our effect enum
 	if(EffectName == "effectbasic")
@@ -72,6 +75,10 @@ void DrawableObject::LoadContent(ID3D10Device * graphicsdevice)
 	else if (EffectName == "effectpixelwobble")
 	{
 		m_currentEffectType = EFFECT_PIXEL_WOBBLE;
+	}
+	else if (EffectName == "effectfoliagesway")
+	{
+		m_currentEffectType = EFFECT_FOLIAGE_SWAY;
 	}
 }
 

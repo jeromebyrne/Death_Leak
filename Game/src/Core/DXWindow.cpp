@@ -10,7 +10,7 @@ DXWindow::DXWindow(char * winClassName, char * windowTitle, int width, int heigh
 	m_height(height),
 	m_topLeftX(0),
 	m_topLeftY(0),
-	m_isFullscreen(true)
+	m_isFullscreen(false)
 {
 	m_pGraphicsDevice = NULL;
 	m_pGraphicsSwapChain = NULL;

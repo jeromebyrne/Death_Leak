@@ -1,6 +1,6 @@
 <level audio="">
     <Rabbit id="1" parallax_x="1" parallax_y="1" updateable="true">
-        <position z="50" y="-165.129" x="6820.04" rotation="0" />
+        <position z="50" y="-165.129" x="6810.24" rotation="0" />
         <dimensions breadth="0" height="81.7677" width="77.225" native="false" repeatX="false" repeatY="false" />
         <material value="rabbit" />
         <alpha value="1" />
@@ -24,31 +24,7 @@
         <projectileoffsety value="20" />
     </Rabbit>
     <Butterfly id="2" parallax_x="1" parallax_y="1" updateable="true">
-        <position z="50" y="-19.2546" x="6502.19" rotation="0" />
-        <dimensions breadth="0" height="64" width="64" native="true" repeatX="false" repeatY="false" />
-        <material value="rabbit" />
-        <alpha value="1" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="true" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\butterfly_anim.xml" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.5" alphawhennotoccluding="1" />
-        <resistance z="0" y="6" x="0.99" />
-        <maxvelocity z="0" y="5" x="0.5" />
-        <applygravity value="true" />
-        <collisionboxdimensions z="0" y="32" x="32" offsetX="0" offsetY="0" />
-        <passive value="false" />
-        <applydamage flag="false" amount="0" />
-        <can_be_damaged value="true" />
-        <maxjumpspeed value="25" />
-        <xaccelrate value="0.5" />
-        <projectileoffsetx value="15" />
-        <projectileoffsety value="20" />
-    </Butterfly>
-    <Butterfly id="3" parallax_x="1" parallax_y="1" updateable="true">
-        <position z="50" y="150.258" x="6774.69" rotation="0" />
+        <position z="50" y="-19.2546" x="6507.09" rotation="0" />
         <dimensions breadth="0" height="64" width="64" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
         <alpha value="1" />
@@ -71,8 +47,32 @@
         <projectileoffsetx value="15" />
         <projectileoffsety value="20" />
     </Butterfly>
+    <Butterfly id="3" parallax_x="1" parallax_y="1" updateable="true">
+        <position z="50" y="150.258" x="6779.59" rotation="0" />
+        <dimensions breadth="0" height="64" width="64" native="true" repeatX="false" repeatY="false" />
+        <material value="rabbit" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\butterfly_anim.xml" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.5" alphawhennotoccluding="1" />
+        <resistance z="0" y="6" x="0.99" />
+        <maxvelocity z="0" y="5" x="0.5" />
+        <applygravity value="true" />
+        <collisionboxdimensions z="0" y="32" x="32" offsetX="0" offsetY="0" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0" />
+        <can_be_damaged value="true" />
+        <maxjumpspeed value="25" />
+        <xaccelrate value="0.5" />
+        <projectileoffsetx value="15" />
+        <projectileoffsety value="20" />
+    </Butterfly>
     <Butterfly id="4" parallax_x="1" parallax_y="1" updateable="true">
-        <position z="50" y="-29.1476" x="6603.19" rotation="0" />
+        <position z="50" y="-29.1476" x="6608.09" rotation="0" />
         <dimensions breadth="0" height="64" width="64" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
         <alpha value="1" />
@@ -96,7 +96,7 @@
         <projectileoffsety value="20" />
     </Butterfly>
     <Butterfly id="5" parallax_x="1" parallax_y="1" updateable="true">
-        <position z="50" y="56.5124" x="6520.94" rotation="0" />
+        <position z="50" y="56.5124" x="6525.84" rotation="0" />
         <dimensions breadth="0" height="64" width="64" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
         <alpha value="1" />
@@ -120,7 +120,7 @@
         <projectileoffsety value="20" />
     </Butterfly>
     <Butterfly id="6" parallax_x="1" parallax_y="1" updateable="true">
-        <position z="50" y="182.743" x="6328.19" rotation="0" />
+        <position z="50" y="182.743" x="6333.09" rotation="0" />
         <dimensions breadth="0" height="64" width="64" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
         <alpha value="1" />
@@ -144,7 +144,7 @@
         <projectileoffsety value="20" />
     </Butterfly>
     <Butterfly id="7" parallax_x="1" parallax_y="1" updateable="true">
-        <position z="50" y="137.797" x="6653.19" rotation="0" />
+        <position z="50" y="137.797" x="6658.09" rotation="0" />
         <dimensions breadth="0" height="64" width="64" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
         <alpha value="1" />
@@ -168,31 +168,7 @@
         <projectileoffsety value="20" />
     </Butterfly>
     <Butterfly id="8" parallax_x="1" parallax_y="1" updateable="true">
-        <position z="50" y="216.132" x="6545.69" rotation="0" />
-        <dimensions breadth="0" height="64" width="64" native="true" repeatX="false" repeatY="false" />
-        <material value="rabbit" />
-        <alpha value="1" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\butterfly_anim.xml" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.5" alphawhennotoccluding="1" />
-        <resistance z="0" y="6" x="0.99" />
-        <maxvelocity z="0" y="5" x="0.5" />
-        <applygravity value="true" />
-        <collisionboxdimensions z="0" y="32" x="32" offsetX="0" offsetY="0" />
-        <passive value="false" />
-        <applydamage flag="false" amount="0" />
-        <can_be_damaged value="true" />
-        <maxjumpspeed value="25" />
-        <xaccelrate value="0.5" />
-        <projectileoffsetx value="15" />
-        <projectileoffsety value="20" />
-    </Butterfly>
-    <Butterfly id="9" parallax_x="1" parallax_y="1" updateable="true">
-        <position z="50" y="242.719" x="6643.89" rotation="0" />
+        <position z="50" y="216.132" x="6550.59" rotation="0" />
         <dimensions breadth="0" height="64" width="64" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
         <alpha value="1" />
@@ -215,8 +191,32 @@
         <projectileoffsetx value="15" />
         <projectileoffsety value="20" />
     </Butterfly>
+    <Butterfly id="9" parallax_x="1" parallax_y="1" updateable="true">
+        <position z="50" y="340.317" x="7120.24" rotation="0" />
+        <dimensions breadth="0" height="64" width="64" native="true" repeatX="false" repeatY="false" />
+        <material value="rabbit" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\butterfly_anim.xml" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.5" alphawhennotoccluding="1" />
+        <resistance z="0" y="6" x="0.99" />
+        <maxvelocity z="0" y="5" x="0.5" />
+        <applygravity value="true" />
+        <collisionboxdimensions z="0" y="32" x="32" offsetX="0" offsetY="0" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0" />
+        <can_be_damaged value="true" />
+        <maxjumpspeed value="25" />
+        <xaccelrate value="0.5" />
+        <projectileoffsetx value="15" />
+        <projectileoffsety value="20" />
+    </Butterfly>
     <ParallaxLayer id="10" parallax_x="1" parallax_y="1" updateable="true">
-        <position z="10000" y="750" x="7082.04" rotation="0" />
+        <position z="10000" y="750" x="7202.04" rotation="0" />
         <dimensions breadth="0" height="400" width="2048" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <alpha value="1" />
@@ -237,7 +237,7 @@
         <autoscrollyspeed value="0" />
     </ParallaxLayer>
     <ParallaxLayer id="11" parallax_x="1" parallax_y="1" updateable="true">
-        <position z="20000" y="191.661" x="7082.04" rotation="0" />
+        <position z="20000" y="-8.33898" x="7202.04" rotation="0" />
         <dimensions breadth="0" height="1080" width="1920" native="false" repeatX="false" repeatY="false" />
         <material value="" />
         <alpha value="1" />
@@ -258,7 +258,7 @@
         <autoscrollyspeed value="0" />
     </ParallaxLayer>
     <ParallaxLayer id="12" parallax_x="1" parallax_y="1" updateable="true">
-        <position z="10000" y="300" x="7082.04" rotation="0" />
+        <position z="10000" y="300" x="7202.04" rotation="0" />
         <dimensions breadth="0" height="1080" width="1920" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <alpha value="1" />
@@ -393,8 +393,8 @@
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.5" alphawhennotoccluding="1" />
     </Sprite>
-    <Sprite id="19" parallax_x="0.9" parallax_y="0.85" updateable="true">
-        <position z="75" y="244.884" x="7485.34" rotation="0" />
+    <Sprite id="19" parallax_x="1" parallax_y="1" updateable="true">
+        <position z="75" y="219.604" x="7454.54" rotation="0" />
         <dimensions breadth="0" height="800" width="600" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <alpha value="1" />
@@ -607,13 +607,13 @@
         <fade_when_player_occluded value="false" alphawhenoccluding="0.5" alphawhennotoccluding="1" />
     </Sprite>
     <Butterfly id="34" parallax_x="1" parallax_y="1" updateable="true">
-        <position z="50" y="80.9119" x="6465.14" rotation="0" />
+        <position z="50" y="80.9119" x="6470.04" rotation="0" />
         <dimensions breadth="0" height="64" width="64" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
         <alpha value="1" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="false" />
+        <horizontalflip value="true" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
@@ -631,7 +631,7 @@
         <projectileoffsety value="20" />
     </Butterfly>
     <Butterfly id="35" parallax_x="1" parallax_y="1" updateable="true">
-        <position z="50" y="71.9226" x="6100.94" rotation="0" />
+        <position z="50" y="71.9226" x="6105.84" rotation="0" />
         <dimensions breadth="0" height="64" width="64" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
         <alpha value="1" />
@@ -655,31 +655,7 @@
         <projectileoffsety value="20" />
     </Butterfly>
     <Butterfly id="36" parallax_x="1" parallax_y="1" updateable="true">
-        <position z="50" y="-30.8123" x="6722.19" rotation="0" />
-        <dimensions breadth="0" height="64" width="64" native="true" repeatX="false" repeatY="false" />
-        <material value="rabbit" />
-        <alpha value="1" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\butterfly_anim.xml" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.5" alphawhennotoccluding="1" />
-        <resistance z="0" y="6" x="0.99" />
-        <maxvelocity z="0" y="5" x="0.5" />
-        <applygravity value="true" />
-        <collisionboxdimensions z="0" y="32" x="32" offsetX="0" offsetY="0" />
-        <passive value="false" />
-        <applydamage flag="false" amount="0" />
-        <can_be_damaged value="true" />
-        <maxjumpspeed value="25" />
-        <xaccelrate value="0.5" />
-        <projectileoffsetx value="15" />
-        <projectileoffsety value="20" />
-    </Butterfly>
-    <Butterfly id="37" parallax_x="1" parallax_y="1" updateable="true">
-        <position z="50" y="-70.622" x="6429.69" rotation="0" />
+        <position z="50" y="-30.8123" x="6727.09" rotation="0" />
         <dimensions breadth="0" height="64" width="64" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
         <alpha value="1" />
@@ -702,8 +678,32 @@
         <projectileoffsetx value="15" />
         <projectileoffsety value="20" />
     </Butterfly>
+    <Butterfly id="37" parallax_x="1" parallax_y="1" updateable="true">
+        <position z="50" y="-70.622" x="6434.59" rotation="0" />
+        <dimensions breadth="0" height="64" width="64" native="true" repeatX="false" repeatY="false" />
+        <material value="rabbit" />
+        <alpha value="1" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\butterfly_anim.xml" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.5" alphawhennotoccluding="1" />
+        <resistance z="0" y="6" x="0.99" />
+        <maxvelocity z="0" y="5" x="0.5" />
+        <applygravity value="true" />
+        <collisionboxdimensions z="0" y="32" x="32" offsetX="0" offsetY="0" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0" />
+        <can_be_damaged value="true" />
+        <maxjumpspeed value="25" />
+        <xaccelrate value="0.5" />
+        <projectileoffsetx value="15" />
+        <projectileoffsety value="20" />
+    </Butterfly>
     <Butterfly id="38" parallax_x="1" parallax_y="1" updateable="true">
-        <position z="50" y="-5.12854" x="5974.69" rotation="0" />
+        <position z="50" y="-5.12854" x="5979.59" rotation="0" />
         <dimensions breadth="0" height="64" width="64" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
         <alpha value="1" />
@@ -727,7 +727,7 @@
         <projectileoffsety value="20" />
     </Butterfly>
     <Butterfly id="39" parallax_x="1" parallax_y="1" updateable="true">
-        <position z="50" y="32.4933" x="6830.69" rotation="0" />
+        <position z="50" y="32.4933" x="6835.59" rotation="0" />
         <dimensions breadth="0" height="64" width="64" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
         <alpha value="1" />
@@ -799,7 +799,7 @@
         <projectileoffsety value="20" />
     </Rabbit>
     <Rabbit id="42" parallax_x="1" parallax_y="1" updateable="true">
-        <position z="50" y="-194.475" x="7192.54" rotation="0" />
+        <position z="50" y="-194.475" x="7182.74" rotation="0" />
         <dimensions breadth="0" height="81.7677" width="77.225" native="false" repeatX="false" repeatY="false" />
         <material value="rabbit" />
         <alpha value="1" />
@@ -846,4 +846,43 @@
         <projectileoffsetx value="15" />
         <projectileoffsety value="20" />
     </Rabbit>
+    <Sprite id="44" parallax_x="1" parallax_y="1" updateable="true">
+        <position z="70" y="-130.979" x="7519.54" rotation="0" />
+        <dimensions breadth="0" height="93.6561" width="132.786" native="false" repeatX="false" repeatY="false" />
+        <material value="grassground" />
+        <alpha value="1" />
+        <effect name="effectfoliagesway" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <texture filename="Media\objects\grass_tuft.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.5" alphawhennotoccluding="1" />
+        <foliage_sway_props bottom_left_intensity_x="0" bottom_left_intensity_y="0" bottom_right_intensity_x="0" bottom_right_intensity_y="0" top_left_intensity_x="20" top_left_intensity_y="0" top_right_intensity_x="20" top_right_intensity_y="0" />
+    </Sprite>
+    <Sprite id="45" parallax_x="1" parallax_y="1" updateable="true">
+        <position z="73" y="-128.41" x="7490.79" rotation="0" />
+        <dimensions breadth="0" height="104.237" width="147.789" native="false" repeatX="false" repeatY="false" />
+        <material value="grassground" />
+        <alpha value="1" />
+        <effect name="effectfoliagesway" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <texture filename="Media\objects\grass_tuft.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.5" alphawhennotoccluding="1" />
+        <foliage_sway_props bottom_left_intensity_x="0" bottom_left_intensity_y="0" bottom_right_intensity_x="0" bottom_right_intensity_y="0" top_left_intensity_x="0" top_left_intensity_y="0" top_right_intensity_x="0" top_right_intensity_y="0" />
+    </Sprite>
+    <Sprite id="46" parallax_x="1" parallax_y="1" updateable="true">
+        <position z="92" y="-119.421" x="7493.29" rotation="0" />
+        <dimensions breadth="0" height="131.441" width="186.358" native="false" repeatX="false" repeatY="false" />
+        <material value="grassground" />
+        <alpha value="1" />
+        <effect name="effectfoliagesway" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <texture filename="Media\objects\grass_tuft.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.5" alphawhennotoccluding="1" />
+        <foliage_sway_props bottom_left_intensity_x="0" bottom_left_intensity_y="0" bottom_right_intensity_x="0" bottom_right_intensity_y="0" top_left_intensity_x="0" top_left_intensity_y="0" top_right_intensity_x="0" top_right_intensity_y="0" />
+    </Sprite>
 </level>

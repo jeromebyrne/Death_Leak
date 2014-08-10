@@ -79,6 +79,7 @@ protected:
 	void Draw_effectBump(ID3D10Device * graphicsdevice);
 	void Draw_effectNoise(ID3D10Device * graphicsdevice);
 	void Draw_effectPixelWobble(ID3D10Device * graphicsdevice);
+	void Draw_effectFoliageSway(ID3D10Device * graphicsdevice);
 
 	void SetDimensionsAsNative();
 
@@ -124,6 +125,16 @@ private:
 	friend class NinjaSpawner;
 
 	virtual void UpdateToParent() override;
+
+	struct FoliageSwayProperties
+	{
+		Vector2 TopLeftSwayIntensity;
+		Vector2 TopRightSwayIntensity;
+		Vector2 BottomLeftSwayIntensity;
+		Vector2 BottomRightSwayIntensity;
+	};
+
+	FoliageSwayProperties mFoliageSwayProperties;
 };
 
 #endif
