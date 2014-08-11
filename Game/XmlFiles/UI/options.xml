@@ -29,7 +29,7 @@
                    posX ="-960" posY ="-540" width="1920" height ="1080"
                    image="Media\UI\noise_layer.png"
                    hflip="false" vflip="false"
-                   alpha="0.15"
+                   alpha="0.25"
                    fps ="10">
     <frames frame1="Media\UI\noise_layer.png"
             frame2="Media\UI\noise_layer_2.png"
