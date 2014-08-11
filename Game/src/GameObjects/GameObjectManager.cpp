@@ -632,6 +632,9 @@ ParticleSpray * GameObjectManager::ReadParticleSpray(TiXmlElement * element)
 	float minBrightness = XmlUtilities::ReadAttributeAsFloat(element, "brightness", "min");
 	float maxBrightness = XmlUtilities::ReadAttributeAsFloat(element, "brightness", "max"); 
 
+	float spawnSpreadX = XmlUtilities::ReadAttributeAsFloat(element, "position", "spawn_spread_x");
+	float spawnSpreadY = XmlUtilities::ReadAttributeAsFloat(element, "position", "spawn_spread_y");
+
 	Vector3 pos = Vector3(0, -23, 16);
 
 	return ParticleEmitterManager::Instance()->CreateDirectedSprayLoadTime(numParticles,
@@ -652,7 +655,9 @@ ParticleSpray * GameObjectManager::ReadParticleSpray(TiXmlElement * element)
 																			maxBrightness,
 																			loopTime,
 																			scaleto,
-																			scaletoValue);
+																			scaletoValue,
+																			spawnSpreadX,
+																			spawnSpreadY);
 }
 
 void GameObjectManager::DeleteGameObjects()

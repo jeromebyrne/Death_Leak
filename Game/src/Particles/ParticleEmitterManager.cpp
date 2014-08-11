@@ -123,7 +123,17 @@ ParticleSpray * ParticleEmitterManager::CreateRadialBloodSpray(unsigned int numP
 	}
 
 	// create spray
-	ParticleSpray * spray = new ParticleSpray(true, position, Vector3(3200, 1200, 0), (char *) kBloodTextureFileName, particleList, loop, loopTime, true, kBloodRadialScaleTo * gameScale);
+	ParticleSpray * spray = new ParticleSpray(true,
+											position,
+											Vector3(3200, 1200, 0), 
+											(char *) kBloodTextureFileName,
+											particleList,
+											loop,
+											loopTime,
+											true,
+											kBloodRadialScaleTo * gameScale,
+											0.0f,
+											0.0f);
 
 	// add the spray to the game world
 	GameObjectManager::Instance()->AddGameObject(spray);
@@ -132,11 +142,11 @@ ParticleSpray * ParticleEmitterManager::CreateRadialBloodSpray(unsigned int numP
 }
 
 ParticleSpray * ParticleEmitterManager::CreateDirectedBloodSpray(int numParticles,
-							 Vector3 position, 
-							 Vector3 direction,
-							 float spread,
-							 bool loop,
-							 float loopTime)
+																 Vector3 position, 
+																 Vector3 direction,
+																 float spread,
+																 bool loop,
+																 float loopTime)
 {
 	if (sNumParticlesInWorld > kMaxParticlesInWorld)
 	{
@@ -185,7 +195,18 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedBloodSpray(int numParticle
 	}
 
 	// create spray
-	ParticleSpray * spray = new ParticleSpray(true, position, Vector3(3200, 1200, 0), kBloodTextureFileName, particleList, loop, loopTime, true, kBloodDirectedScaleTo * gameScale);
+	ParticleSpray * spray = new ParticleSpray(true,
+												position,
+												Vector3(3200, 1200, 0),
+												kBloodTextureFileName,
+												particleList,
+												loop,
+												loopTime,
+												true,
+												kBloodDirectedScaleTo * gameScale,
+												0.0f,
+												0.0f);
+
 	spray->SetGeneralDirectionValue(Vector2(direction.X, direction.Y));
 	spray->SetSpreadValue(spread);
 	spray->SetMinSpeedValue(kBloodDirectedMinSpeed);
@@ -206,22 +227,22 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedBloodSpray(int numParticle
 }
 
 void ParticleEmitterManager::CreateRadialSpray(int numParticles,
-										 Vector3 position, 
-										 Vector3 drawBoundingBox, // determines when we stop drawing particles (camera stops seeing them)
-										 string textureFileName,
-										 float minSpeed,
-										 float maxSpeed,
-										 float minLiveTime,
-										 float maxLiveTime,
-										 float minSize,
-										 float maxSize,
-										 float gravity,
-										 bool loop,
-										 float minBrightness,
-										 float maxBrightness,
-										 float loopTime,
-										 bool scalesByLiveTime,
-										 float scaleTo) 
+												 Vector3 position, 
+												 Vector3 drawBoundingBox, // determines when we stop drawing particles (camera stops seeing them)
+												 string textureFileName,
+												 float minSpeed,
+												 float maxSpeed,
+												 float minLiveTime,
+												 float maxLiveTime,
+												 float minSize,
+												 float maxSize,
+												 float gravity,
+												 bool loop,
+												 float minBrightness,
+												 float maxBrightness,
+												 float loopTime,
+												 bool scalesByLiveTime,
+												 float scaleTo) 
 {
 	if (sNumParticlesInWorld > kMaxParticlesInWorld)
 	{
@@ -318,31 +339,43 @@ void ParticleEmitterManager::CreateRadialSpray(int numParticles,
 		particleList.push_back(p);
 	}
 	// create spray
-	ParticleSpray * spray = new ParticleSpray(false, position, drawBoundingBox, (char*)textureFileName.c_str(), particleList, loop, loopTime, scalesByLiveTime, scaleTo * gameScale);
+	ParticleSpray * spray = new ParticleSpray(false,
+												position,
+												drawBoundingBox,
+												(char*)textureFileName.c_str(),
+												particleList, 
+												loop,
+												loopTime,
+												scalesByLiveTime, 
+												scaleTo * gameScale,
+												0.0f,
+												0.0f);
 
 	// add the spray to the game world
 	GameObjectManager::Instance()->AddGameObject(spray);
 }
 
 ParticleSpray * ParticleEmitterManager::CreateDirectedSpray(int numParticles,
-							 Vector3 position, 
-							 Vector3 direction,
-							 float spread,
-							 Vector3 drawBoundingBox, // determines when we stop drawing particles (camera stops seeing them)
-							 string textureFileName,
-							 float minSpeed,
-							 float maxSpeed,
-							 float minLiveTime,
-							 float maxLiveTime,
-							 float minSize,
-							 float maxSize,
-							 float gravity,
-							 bool loop,
-							 float minBrightness,
-							 float maxBrightness,
-							 float loopTime,
-							 bool scalesByLiveTime,
-							 float scaleTo)
+															 Vector3 position, 
+															 Vector3 direction,
+															 float spread,
+															 Vector3 drawBoundingBox, // determines when we stop drawing particles (camera stops seeing them)
+															 string textureFileName,
+															 float minSpeed,
+															 float maxSpeed,
+															 float minLiveTime,
+															 float maxLiveTime,
+															 float minSize,
+															 float maxSize,
+															 float gravity,
+															 bool loop,
+															 float minBrightness,
+															 float maxBrightness,
+															 float loopTime,
+															 bool scalesByLiveTime,
+															 float scaleTo,
+															 float spawnSpreadX,
+															 float spawnSpreadY)
 {
 	if (sNumParticlesInWorld > kMaxParticlesInWorld)
 	{
@@ -408,13 +441,43 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSpray(int numParticles,
 			maxLiveTime += 0.1;
 		}
 
-		//int val = (int)(maxLiveTime  - minLiveTime) + minLiveTime;
-
 		p.MaxLiveTime = maxLiveTime - (((maxLiveTime - minLiveTime) / numParticles) * i);
-		p.PosX = position.X;
-		p.PosY = position.Y;
-		p.StartPosX = position.X; // our original start position
-		p.StartPosY = position.Y;
+
+		if (spawnSpreadX == 0.0f)
+		{
+			p.PosX = position.X;
+			p.StartPosX = position.X; // our original start position
+		}
+		else
+		{
+			float posXOffset = rand() % ((unsigned)(spawnSpreadX * 10.0f) + 1);
+
+			if (flippedHorizontal)
+			{
+				posXOffset *= -1;
+			}
+
+			p.PosX = position.X + posXOffset;
+			p.StartPosX = position.X + posXOffset;
+		}
+
+		if (spawnSpreadY == 0.0f)
+		{
+			p.PosY = position.Y;
+			p.StartPosY = position.Y;
+		}
+		else
+		{
+			float posYOffset = rand() % ((unsigned)(spawnSpreadY * 10.0f) + 1);
+
+			if (flippedVertical)
+			{
+				posYOffset *= -1;
+			}
+
+			p.PosY = position.Y + posYOffset;
+			p.StartPosY = position.Y + posYOffset;
+		}
 		
 		if(maxSize <= minSize)
 		{
@@ -454,7 +517,17 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSpray(int numParticles,
 		particleList.push_back(p);
 	}
 	// create spray
-	ParticleSpray * spray = new ParticleSpray(false, position, drawBoundingBox, (char*)textureFileName.c_str(), particleList, loop, loopTime, scalesByLiveTime, scaleTo * gameScale);
+	ParticleSpray * spray = new ParticleSpray(false,
+											position, 
+											drawBoundingBox,
+											(char*)textureFileName.c_str(),
+											particleList,
+											loop,
+											loopTime,
+											scalesByLiveTime, scaleTo * gameScale,
+											spawnSpreadX,
+											spawnSpreadY);
+
 	spray->SetGeneralDirectionValue(Vector2(direction.X, direction.Y));
 	spray->SetSpreadValue(spread);
 	spray->SetMinSpeedValue(minSpeed);
@@ -493,7 +566,9 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSprayLoadTime(int numParti
 																	 float maxBrightness,
 																	 float loopTime,
 																	 bool scalesByLiveTime,
-																	 float scaleTo)
+																	 float scaleTo,
+																	 float spawnSpreadX,
+																	 float spawnSpreadY)
 {
 	// seed the random number generator
 	srand(timeGetTime());
@@ -529,7 +604,11 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSprayLoadTime(int numParti
 		
 		int flippedVertical = rand() % 2;
 		int flippedHorizontal = rand() % 2;
-		float randSpread = ((rand() % (int)(spread * 100)) * 0.01);
+		float randSpread = 0.0f; 
+		if (spread > 0.0f)
+		{
+			((rand() % (int)(spread * 100)) * 0.01);
+		}
 
 		if(flippedVertical == 0)
 		{
@@ -553,11 +632,43 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSprayLoadTime(int numParti
 		}
 
 		p.MaxLiveTime = maxLiveTime - (((maxLiveTime - minLiveTime) / numParticles) * i);
-		p.PosX = position.X;
-		p.PosY = position.Y;
-		p.StartPosX = position.X * gameScale; // our original start position
-		p.StartPosY = position.Y * gameScale;
 		
+		if (spawnSpreadX == 0.0f)
+		{
+			p.PosX = position.X;
+			p.StartPosX = position.X; // our original start position
+		}
+		else
+		{
+			float posXOffset = rand() % ((unsigned)(spawnSpreadX * 10.0f) + 1);
+
+			if (flippedHorizontal)
+			{
+				posXOffset *= -1;
+			}
+
+			p.PosX = position.X + posXOffset;
+			p.StartPosX = position.X + posXOffset;
+		}
+
+		if (spawnSpreadY == 0.0f)
+		{
+			p.PosY = position.Y;
+			p.StartPosY = position.Y;
+		}
+		else
+		{
+			float posYOffset = rand() % ((unsigned)(spawnSpreadY * 10.0f) + 1);
+
+			if (flippedVertical)
+			{
+				posYOffset *= -1;
+			}
+
+			p.PosY = position.Y + posYOffset;
+			p.StartPosY = position.Y + posYOffset;
+		}
+
 		if(maxSize <= minSize)
 		{
 			p.Size = maxSize * gameScale;
@@ -596,7 +707,18 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSprayLoadTime(int numParti
 		particleList.push_back(p);
 	}
 	// create spray
-	ParticleSpray * spray = new ParticleSpray(false, position, drawBoundingBox, (char*)textureFileName.c_str(), particleList, loop, loopTime, scalesByLiveTime, scaleTo * gameScale);
+	ParticleSpray * spray = new ParticleSpray(false,
+												position,
+												drawBoundingBox,
+												(char*)textureFileName.c_str(),
+												particleList, 
+												loop,
+												loopTime,
+												scalesByLiveTime,
+												scaleTo * gameScale,
+												spawnSpreadX,
+												spawnSpreadY);
+
 	spray->SetGeneralDirectionValue(Vector2(direction.X, direction.Y));
 	spray->SetSpreadValue(spread);
 	spray->SetMinSpeedValue(minSpeed);

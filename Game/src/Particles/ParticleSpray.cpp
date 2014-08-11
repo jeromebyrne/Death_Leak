@@ -5,8 +5,17 @@
 
 static const unsigned int kMaxParticlesPerSpray = 100;
 
-ParticleSpray::ParticleSpray(bool isBloodSpray, Vector3 position, Vector3 dimensions, const char* textureFileName, list<Particle> particles, bool isLooping, unsigned long loopTime,
-							 bool scaleByLiveTime, float scaleTo)
+ParticleSpray::ParticleSpray(bool isBloodSpray, 
+							Vector3 position,
+							Vector3 dimensions, 
+							const char* textureFileName,
+							list<Particle> particles,
+							bool isLooping, 
+							unsigned long loopTime,
+							bool scaleByLiveTime, 
+							float scaleTo, 
+							float spawnSpreadX,
+							float spawnSpreadY)
 	: DrawableObject(position.X, position.Y, position.Z, dimensions.X, dimensions.Y, dimensions.Z), 
 	m_vertexBuffer(0), 
 	m_isLooping(isLooping), 
@@ -27,7 +36,9 @@ ParticleSpray::ParticleSpray(bool isBloodSpray, Vector3 position, Vector3 dimens
 	m_minBrightness(1.0),
 	m_maxBrightness(1.0),
 	m_numParticles(10),
-	mParentHFlipInitial(false)
+	mParentHFlipInitial(false),
+	mSpawnSpread(spawnSpreadX, spawnSpreadY)
+
 {
 	m_textureFilename = textureFileName;
 	m_startedLooping = Timing::Instance()->GetTotalTimeSeconds();
@@ -330,6 +341,10 @@ void ParticleSpray::XmlWrite(TiXmlElement * element)
 	brightness->SetDoubleAttribute("min", m_minBrightness);
 	brightness->SetDoubleAttribute("max", m_maxBrightness);
 	element->LinkEndChild(brightness);
+
+	TiXmlElement * positionElement = element->FirstChildElement("position");
+	positionElement->SetDoubleAttribute("spawn_spread_x", mSpawnSpread.X);
+	positionElement->SetDoubleAttribute("spawn_spread_y", mSpawnSpread.Y);
 }
 
 void ParticleSpray::Initialise()

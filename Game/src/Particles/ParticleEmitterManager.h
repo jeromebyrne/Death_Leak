@@ -60,7 +60,7 @@ public:
 						 float maxBrightness,
 						 float loopTime,
 						 bool scalesByLiveTime = false,
-						 float scaleTo = 1); 
+						 float scaleTo = 1.0f); 
 
 
 	ParticleSpray * CreateDirectedSpray(int numParticles,
@@ -81,7 +81,9 @@ public:
 										 float maxBrightness,
 										 float loopTime,
 										 bool scalesByLiveTime = false,
-										 float scaleTo = 1); 
+										 float scaleTo = 1.0f,
+										 float spawnSpreadX = 0.0f,
+										 float spawnSpreadY = 0.0f);
 
 	
 
@@ -103,7 +105,9 @@ public:
 												 float maxBrightness,
 												 float loopTime,
 												 bool scalesByLiveTime = false,
-												 float scaleTo = 1);
+												 float scaleTo = 1.0f,
+												 float spawnSpreadX = 0.0f,
+												 float spawnSpreadY = 0.0f);
 	
 };
 

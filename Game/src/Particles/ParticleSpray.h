@@ -18,7 +18,9 @@ public:
 					bool isLooping,
 					unsigned long loopTime,
 					bool scaleByLiveTime, 
-					float scaleTo);
+					float scaleTo,
+					float spawnSpreadX,
+					float spawnSpreadY);
 
 	ParticleSpray();
 	virtual ~ParticleSpray(void);
@@ -84,6 +86,7 @@ protected:
 	float m_maxBrightness;
 	float m_numParticles;
 	bool mParentHFlipInitial;
+	Vector2 mSpawnSpread;
 
 private:
 
