@@ -21,18 +21,38 @@
           posX ="-1024" posY ="-540" width="2048" height ="2048"
           image="Media\\UI\\blank_dark.png"
           hflip="false" vflip="false"
-          alpha="0.35">
+          alpha="0.6">
   </sprite>
 
   <sprite name="2_menu_backing"
          process_input="false"
-         posX ="-235" posY ="-260" width="469" height ="497"
-         image="Media\\UI\\pause_menu_backing.png"
+         posX ="-390" posY ="-220" width="800" height ="650"
+         image="Media\\UI\\pause_menu_backing2.png"
          hflip="false" vflip="false"
-         alpha="1">
+         alpha="1.0"
+          use_standard_effect="false">
   </sprite>
+
+  <button name="3_resume"
+           process_input="true"
+           posX ="-125" posY ="100" width="275" height ="100"
+           image="Media\\UI\\buttons\\resume.dds"
+           image_focus="Media\\UI\\buttons\\resume2.dds"
+           image_click="Media\\UI\\buttons\\resume3.dds"
+           hflip="false" vflip="false"
+           alpha="1.0">
+
+    <actionspressup>
+      <unpausegame />
+    </actionspressup>
+
+    <actionspressdown>
+      <playsoundeffect sound="UI\\click.mp3" />
+    </actionspressdown>
+
+  </button>
   
-  <button name="3_quit"
+  <button name="4_quit"
            process_input="true"
            posX ="-75" posY ="0" width="150" height ="75"
            image="Media\\UI\\buttons\\quit.dds"
@@ -51,25 +71,6 @@
       <pushui ui="mainmenu"/>
       <playmusic sound="" loop="true"/>
       <fadein time="750"/>
-    </actionspressup>
-
-    <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3" />
-    </actionspressdown>
-
-  </button>
-  
-  <button name="4_resume"
-           process_input="true"
-           posX ="-125" posY ="-100" width="275" height ="100"
-           image="Media\\UI\\buttons\\resume.dds"
-           image_focus="Media\\UI\\buttons\\resume2.dds"
-           image_click="Media\\UI\\buttons\\resume3.dds"
-           hflip="false" vflip="false"
-           alpha="1.0">
-
-    <actionspressup>
-      <unpausegame />
     </actionspressup>
 
     <actionspressdown>
