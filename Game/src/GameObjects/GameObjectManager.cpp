@@ -635,6 +635,9 @@ ParticleSpray * GameObjectManager::ReadParticleSpray(TiXmlElement * element)
 	float spawnSpreadX = XmlUtilities::ReadAttributeAsFloat(element, "position", "spawn_spread_x");
 	float spawnSpreadY = XmlUtilities::ReadAttributeAsFloat(element, "position", "spawn_spread_y");
 
+	float fadeInPercentTime = XmlUtilities::ReadAttributeAsFloat(element, "fade_time_percent", "in");
+	float fadeOutPercentTime = XmlUtilities::ReadAttributeAsFloat(element, "fade_time_percent", "out");
+
 	Vector3 pos = Vector3(0, -23, 16);
 
 	return ParticleEmitterManager::Instance()->CreateDirectedSprayLoadTime(numParticles,
@@ -657,7 +660,9 @@ ParticleSpray * GameObjectManager::ReadParticleSpray(TiXmlElement * element)
 																			scaleto,
 																			scaletoValue,
 																			spawnSpreadX,
-																			spawnSpreadY);
+																			spawnSpreadY,
+																			fadeInPercentTime,
+																			fadeOutPercentTime);
 }
 
 void GameObjectManager::DeleteGameObjects()

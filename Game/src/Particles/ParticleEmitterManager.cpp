@@ -242,7 +242,9 @@ void ParticleEmitterManager::CreateRadialSpray(int numParticles,
 												 float maxBrightness,
 												 float loopTime,
 												 bool scalesByLiveTime,
-												 float scaleTo) 
+												 float scaleTo,
+												 float fadeInPercentTime,
+												 float fadeOutPercentTime)
 {
 	if (sNumParticlesInWorld > kMaxParticlesInWorld)
 	{
@@ -351,6 +353,9 @@ void ParticleEmitterManager::CreateRadialSpray(int numParticles,
 												0.0f,
 												0.0f);
 
+	spray->SetFadeInPercentTime(fadeInPercentTime);
+	spray->SetFadeOutPercentTime(fadeOutPercentTime);
+
 	// add the spray to the game world
 	GameObjectManager::Instance()->AddGameObject(spray);
 }
@@ -375,7 +380,9 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSpray(int numParticles,
 															 bool scalesByLiveTime,
 															 float scaleTo,
 															 float spawnSpreadX,
-															 float spawnSpreadY)
+															 float spawnSpreadY,
+															 float fadeInPercentTime,
+															 float fadeOutPercentTime)
 {
 	if (sNumParticlesInWorld > kMaxParticlesInWorld)
 	{
@@ -540,6 +547,8 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSpray(int numParticles,
 	spray->SetMinBrightnessValue(minBrightness);
 	spray->SetMaxBrightnessValue(maxBrightness);
 	spray->SetNumParticlesValue(numParticles);
+	spray->SetFadeInPercentTime(fadeInPercentTime);
+	spray->SetFadeOutPercentTime(fadeOutPercentTime);
 
 	// add the spray to the game world
 	GameObjectManager::Instance()->AddGameObject(spray);
@@ -568,7 +577,9 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSprayLoadTime(int numParti
 																	 bool scalesByLiveTime,
 																	 float scaleTo,
 																	 float spawnSpreadX,
-																	 float spawnSpreadY)
+																	 float spawnSpreadY,
+																	 float fadeInPercentTime,
+																	 float fadeOutPercentTime)
 {
 	// seed the random number generator
 	srand(timeGetTime());
@@ -731,6 +742,8 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSprayLoadTime(int numParti
 	spray->SetMinBrightnessValue(minBrightness);
 	spray->SetMaxBrightnessValue(maxBrightness);
 	spray->SetNumParticlesValue(numParticles);
+	spray->SetFadeInPercentTime(fadeInPercentTime);
+	spray->SetFadeOutPercentTime(fadeOutPercentTime);
 
 	return spray;
 }

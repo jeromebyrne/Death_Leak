@@ -128,7 +128,9 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 																			1.0f,
 																			0,
 																			true,
-																			5.0);
+																			5.0,
+																			0.1f,
+																			0.8f);
 
 					AudioManager::Instance()->PlaySoundEffect("metalclink.wav");
 					return;
@@ -176,7 +178,9 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 																	  1.0f,
 																	  0,
 																	  true,
-																	  5.0);
+																	  5.0,
+																	  0.1f,
+																	  0.8f);
 
 				AudioManager::Instance()->PlaySoundEffect("metalclink.wav");
 
@@ -336,7 +340,11 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 																			1.0,
 																			10.0f,
 																			true,
-																			2.5);
+																			2.5,
+																			0.0f,
+																			0.0f,
+																			0.15f,
+																			0.8f);
 				}
 			}
 		}

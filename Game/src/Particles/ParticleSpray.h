@@ -46,6 +46,30 @@ public:
 	void SetMinBrightnessValue(float value) { m_minBrightness = value; }
 	void SetMaxBrightnessValue(float value) { m_maxBrightness = value; }
 	void SetNumParticlesValue(float value) { m_numParticles = value; }
+	void SetFadeOutPercentTime(float value)
+	{
+		mFadeOutPercentTime = value;
+		if (mFadeOutPercentTime < 0.0f)
+		{
+			mFadeOutPercentTime = 0.0f;
+		}
+		else if (mFadeOutPercentTime > 1.0f)
+		{
+			mFadeOutPercentTime = 1.0f;
+		}
+	}
+	void SetFadeInPercentTime(float value)
+	{
+		mFadeInPercentTime = value;
+		if (mFadeInPercentTime < 0.0f)
+		{
+			mFadeInPercentTime = 0.0f;
+		}
+		else if (mFadeInPercentTime > 1.0f)
+		{
+			mFadeInPercentTime = 1.0f;
+		}
+	}
 
 	virtual void AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset, bool trackParentsOrientation = true) override;
 
@@ -87,6 +111,8 @@ protected:
 	float m_numParticles;
 	bool mParentHFlipInitial;
 	Vector2 mSpawnSpread;
+	float mFadeOutPercentTime;
+	float mFadeInPercentTime;
 
 private:
 

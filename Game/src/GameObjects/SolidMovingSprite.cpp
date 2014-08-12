@@ -404,6 +404,10 @@ void SolidMovingSprite::OnDamage(float damageAmount, Vector3 pointOfContact, boo
 																1.0,
 																10000,
 																true,
-																20);
+																20,
+																0.0f,
+																0.0f,
+																0.2f,
+																0.8f);
 	}
 }

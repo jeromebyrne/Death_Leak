@@ -55,7 +55,9 @@ void NinjaSpawner::SpawnNPC(const float posX, const float posY, bool playSoundEf
 														1.0,
 														800,
 														true, 
-														2.0);
+														2.0,
+														0.15f,
+														0.8f);
 
 	if (playSoundEffect)
 	{

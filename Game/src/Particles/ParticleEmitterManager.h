@@ -59,8 +59,10 @@ public:
 						 float minBrightness,
 						 float maxBrightness,
 						 float loopTime,
-						 bool scalesByLiveTime = false,
-						 float scaleTo = 1.0f); 
+						 bool scalesByLiveTime,
+						 float scaleTo,
+						 float fadeInPercentTime,
+						 float fadeOutPercentTime); 
 
 
 	ParticleSpray * CreateDirectedSpray(int numParticles,
@@ -80,10 +82,12 @@ public:
 										 float minBrightness,
 										 float maxBrightness,
 										 float loopTime,
-										 bool scalesByLiveTime = false,
-										 float scaleTo = 1.0f,
-										 float spawnSpreadX = 0.0f,
-										 float spawnSpreadY = 0.0f);
+										 bool scalesByLiveTime,
+										 float scaleTo,
+										 float spawnSpreadX,
+										 float spawnSpreadY,
+										 float fadeInPercentTime,
+										 float fadeOutPercentTime);
 
 	
 
@@ -104,10 +108,12 @@ public:
 												 float minBrightness,
 												 float maxBrightness,
 												 float loopTime,
-												 bool scalesByLiveTime = false,
-												 float scaleTo = 1.0f,
-												 float spawnSpreadX = 0.0f,
-												 float spawnSpreadY = 0.0f);
+												 bool scalesByLiveTime,
+												 float scaleTo,
+												 float spawnSpreadX,
+												 float spawnSpreadY,
+												 float fadeInPercentTime,
+												 float fadeOutPercentTime);
 	
 };
 

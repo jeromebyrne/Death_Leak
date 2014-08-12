@@ -114,7 +114,11 @@ void Character::Update(float delta)
 																		1.0,
 																		1,
 																		true,
-																		40);
+																		40,
+																		0.0f,
+																		0.0f,
+																		0.15f,
+																		0.8f);
 				}
 				else
 				{
@@ -136,7 +140,11 @@ void Character::Update(float delta)
 																		1.0,
 																		1,
 																		true,
-																		50);
+																		50,
+																		0.0f,
+																		0.0f,
+																		0.15f,
+																		0.8f);
 				}
 				
 
@@ -247,7 +255,6 @@ void Character::OnCollision(SolidMovingSprite * object)
 						particleFile = objectMaterial->GetRandomParticleTexture();
 					}
 
-
 					// show ground particles - TODO, should we show the same particles for all objects?
 					//Material* groundMaterial = Environment::Instance()->GroundMaterial();
 					Vector3 pos(m_position.X, Bottom(), m_position.Z - 1);
@@ -275,7 +282,11 @@ void Character::OnCollision(SolidMovingSprite * object)
 																				1.0,
 																				1,
 																				true,
-																				40);
+																				40,
+																				0.0f,
+																				0.0f,
+																				0.15f,
+																				0.8f);
 						}
 					}
 					else
@@ -300,7 +311,11 @@ void Character::OnCollision(SolidMovingSprite * object)
 																				1.0,
 																				1,
 																				true,
-																				50);
+																				50,
+																				0.0f,
+																				0.0f,
+																				0.15f,
+																				0.8f);
 						}
 					}
 				}
@@ -539,7 +554,11 @@ void Character::OnDamage(float damageAmount, Vector3 pointOfContact, bool should
 																			1.0f,
 																			loopTime,
 																			true,
-																			0.3f);
+																			0.3f,
+																			0.0f,
+																			0.0f,
+																			0.15f,
+																			0.8f);
 
 					ParticleEmitterManager::Instance()->CreateDirectedSpray(40,
 																			pos,
@@ -559,7 +578,11 @@ void Character::OnDamage(float damageAmount, Vector3 pointOfContact, bool should
 																			1.0f,
 																			loopTime,
 																			true,
-																			4.5f);
+																			4.5f,
+																			0.0f,
+																			0.0f,
+																			0.15f,
+																			0.8f);
 				}
 
 

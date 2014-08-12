@@ -149,7 +149,11 @@ void Explosion::Display()
 															1.0,
 															10000,
 															true,
-															8);
+															10,
+															0.0f,
+															0.0f,
+															0.15f,
+															0.8f);
 
 
 	ParticleEmitterManager::Instance()->CreateRadialSpray(40,
@@ -168,7 +172,9 @@ void Explosion::Display()
 															0.7f,
 															-1,
 															true,
-															20);
+															20,
+															0.15f,
+															0.8f);
 
 	ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
 															m_position,
@@ -188,7 +194,11 @@ void Explosion::Display()
 															1.0,
 															10000,
 															true,
-															70);
+															70,
+															0.0f,
+															0.0f,
+															0.15f,
+															0.8f);
 
 	/*ParticleEmitterManager::Instance()->CreateRadialSpray(20,
 															m_position,

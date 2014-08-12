@@ -37,8 +37,9 @@ ParticleSpray::ParticleSpray(bool isBloodSpray,
 	m_maxBrightness(1.0),
 	m_numParticles(10),
 	mParentHFlipInitial(false),
-	mSpawnSpread(spawnSpreadX, spawnSpreadY)
-
+	mSpawnSpread(spawnSpreadX, spawnSpreadY),
+	mFadeOutPercentTime(0.6f),
+	mFadeInPercentTime(0.1f)
 {
 	m_textureFilename = textureFileName;
 	m_startedLooping = Timing::Instance()->GetTotalTimeSeconds();
@@ -151,14 +152,28 @@ void ParticleSpray::Draw(ID3D10Device* device, Camera2D * camera)
 			float death_time = currentParticle.StartTime + currentParticle.MaxLiveTime;
 			float time_left = death_time - currentTime;
 
-			// set alpha                                                    
-			float alpha = (float)time_left / (float)currentParticle.MaxLiveTime;
-			vertices[currentVerts].Normal.x = alpha;
-			vertices[currentVerts + 1].Normal.x = alpha;
-			vertices[currentVerts + 2].Normal.x = alpha;
-			vertices[currentVerts + 3].Normal.x = alpha;
-			vertices[currentVerts + 4].Normal.x = alpha;
-			vertices[currentVerts + 5].Normal.x = alpha;
+			// set alpha 
+			float percentTimeLeft = time_left / currentParticle.MaxLiveTime;
+			if (mFadeOutPercentTime > 0.0f && percentTimeLeft < (1.0f - mFadeOutPercentTime))
+			{
+				float alpha = percentTimeLeft / (1.0f - mFadeOutPercentTime);
+				vertices[currentVerts].Normal.x = alpha; 
+				vertices[currentVerts + 1].Normal.x = alpha;
+				vertices[currentVerts + 2].Normal.x = alpha;
+				vertices[currentVerts + 3].Normal.x = alpha;
+				vertices[currentVerts + 4].Normal.x = alpha;
+				vertices[currentVerts + 5].Normal.x = alpha;
+			}
+			else if (mFadeInPercentTime > 0.0f && (1.0f - percentTimeLeft) < mFadeInPercentTime)
+			{
+				float alpha =  (1.0f - percentTimeLeft) / mFadeInPercentTime;
+				vertices[currentVerts].Normal.x = alpha;
+				vertices[currentVerts + 1].Normal.x = alpha;
+				vertices[currentVerts + 2].Normal.x = alpha;
+				vertices[currentVerts + 3].Normal.x = alpha;
+				vertices[currentVerts + 4].Normal.x = alpha;
+				vertices[currentVerts + 5].Normal.x = alpha;
+			}
 
 			// set the brightness
 			float brightness = currentParticle.Brightness;
@@ -345,6 +360,11 @@ void ParticleSpray::XmlWrite(TiXmlElement * element)
 	TiXmlElement * positionElement = element->FirstChildElement("position");
 	positionElement->SetDoubleAttribute("spawn_spread_x", mSpawnSpread.X);
 	positionElement->SetDoubleAttribute("spawn_spread_y", mSpawnSpread.Y);
+
+	TiXmlElement * fadePercentTime = new TiXmlElement("fade_time_percent");
+	fadePercentTime->SetDoubleAttribute("out", mFadeOutPercentTime);
+	fadePercentTime->SetDoubleAttribute("in", mFadeInPercentTime); 
+	element->LinkEndChild(fadePercentTime);
 }
 
 void ParticleSpray::Initialise()
