@@ -204,11 +204,11 @@ void SolidMovingSprite::XmlWrite(TiXmlElement * element)
 	MovingSprite::XmlWrite(element);
 
 	TiXmlElement * collisionboxdimensions = new TiXmlElement("collisionboxdimensions");
-	collisionboxdimensions->SetAttribute("z", Utilities::ConvertDoubleToString(m_collisionBoxDimensions.Z).c_str());
-	collisionboxdimensions->SetAttribute("y", Utilities::ConvertDoubleToString(m_collisionBoxDimensions.Y).c_str());
-	collisionboxdimensions->SetAttribute("x", Utilities::ConvertDoubleToString(m_collisionBoxDimensions.X).c_str());
-	collisionboxdimensions->SetAttribute("offsetX", Utilities::ConvertDoubleToString(mCollisionBoxOffset.X).c_str());
-	collisionboxdimensions->SetAttribute("offsetY", Utilities::ConvertDoubleToString(mCollisionBoxOffset.Y).c_str());
+	collisionboxdimensions->SetDoubleAttribute("z", m_collisionBoxDimensions.Z);
+	collisionboxdimensions->SetDoubleAttribute("y", m_collisionBoxDimensions.Y);
+	collisionboxdimensions->SetDoubleAttribute("x", m_collisionBoxDimensions.X);
+	collisionboxdimensions->SetDoubleAttribute("offsetX", mCollisionBoxOffset.X);
+	collisionboxdimensions->SetDoubleAttribute("offsetY", mCollisionBoxOffset.Y);
 	element->LinkEndChild(collisionboxdimensions);
 
 	const char * passiveAsStr = m_passive ? "true" : "false";
@@ -219,7 +219,7 @@ void SolidMovingSprite::XmlWrite(TiXmlElement * element)
 	const char * applydamageAsStr = m_applyDamage ? "true" : "false";
 	TiXmlElement * applydamage = new TiXmlElement("applydamage");
 	applydamage->SetAttribute("flag", applydamageAsStr);
-	applydamage->SetAttribute("amount", Utilities::ConvertDoubleToString(m_applyDamageAmount).c_str());
+	applydamage->SetDoubleAttribute("amount", m_applyDamageAmount);
 	element->LinkEndChild(applydamage);
 
 	const char * isDamagedAsStr = mCanBeDamaged ? "true" : "false";

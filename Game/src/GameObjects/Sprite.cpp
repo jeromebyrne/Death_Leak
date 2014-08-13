@@ -530,8 +530,8 @@ void Sprite::XmlWrite(TiXmlElement * element)
 	TiXmlElement * fade_when_player_occluded = new TiXmlElement("fade_when_player_occluded");
 	fade_when_player_occluded->SetAttribute("value", ifade_when_player_occludedAsStr);
 
-	fade_when_player_occluded->SetAttribute("alphawhenoccluding", Utilities::ConvertDoubleToString(m_alphaWhenOccluding).c_str());
-	fade_when_player_occluded->SetAttribute("alphawhennotoccluding", Utilities::ConvertDoubleToString(m_alphaWhenNotOccluding).c_str());
+	fade_when_player_occluded->SetDoubleAttribute("alphawhenoccluding", m_alphaWhenOccluding);
+	fade_when_player_occluded->SetDoubleAttribute("alphawhennotoccluding", m_alphaWhenNotOccluding);
 
 	element->LinkEndChild(fade_when_player_occluded);
 
@@ -545,14 +545,14 @@ void Sprite::XmlWrite(TiXmlElement * element)
 	{
 		TiXmlElement * foliageSwayElement = new TiXmlElement("foliage_sway_props");
 
-		foliageSwayElement->SetAttribute("bottom_left_intensity_x", mFoliageSwayProperties.BottomLeftSwayIntensity.X);
-		foliageSwayElement->SetAttribute("bottom_left_intensity_y", mFoliageSwayProperties.BottomLeftSwayIntensity.Y);
-		foliageSwayElement->SetAttribute("bottom_right_intensity_x", mFoliageSwayProperties.BottomRightSwayIntensity.X);
-		foliageSwayElement->SetAttribute("bottom_right_intensity_y", mFoliageSwayProperties.BottomRightSwayIntensity.Y);
-		foliageSwayElement->SetAttribute("top_left_intensity_x", mFoliageSwayProperties.TopLeftSwayIntensity.X);
-		foliageSwayElement->SetAttribute("top_left_intensity_y", mFoliageSwayProperties.TopLeftSwayIntensity.Y);
-		foliageSwayElement->SetAttribute("top_right_intensity_x", mFoliageSwayProperties.TopRightSwayIntensity.X);
-		foliageSwayElement->SetAttribute("top_right_intensity_y", mFoliageSwayProperties.TopRightSwayIntensity.Y);
+		foliageSwayElement->SetDoubleAttribute("bottom_left_intensity_x", mFoliageSwayProperties.BottomLeftSwayIntensity.X);
+		foliageSwayElement->SetDoubleAttribute("bottom_left_intensity_y", mFoliageSwayProperties.BottomLeftSwayIntensity.Y);
+		foliageSwayElement->SetDoubleAttribute("bottom_right_intensity_x", mFoliageSwayProperties.BottomRightSwayIntensity.X);
+		foliageSwayElement->SetDoubleAttribute("bottom_right_intensity_y", mFoliageSwayProperties.BottomRightSwayIntensity.Y);
+		foliageSwayElement->SetDoubleAttribute("top_left_intensity_x", mFoliageSwayProperties.TopLeftSwayIntensity.X);
+		foliageSwayElement->SetDoubleAttribute("top_left_intensity_y", mFoliageSwayProperties.TopLeftSwayIntensity.Y);
+		foliageSwayElement->SetDoubleAttribute("top_right_intensity_x", mFoliageSwayProperties.TopRightSwayIntensity.X);
+		foliageSwayElement->SetDoubleAttribute("top_right_intensity_y", mFoliageSwayProperties.TopRightSwayIntensity.Y);
 
 		element->LinkEndChild(foliageSwayElement);
 	}

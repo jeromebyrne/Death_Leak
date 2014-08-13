@@ -5,7 +5,7 @@
                    posX ="-960" posY ="-540" width="1920" height ="1080"
                    image="Media\UI\noise_layer.png"
                    hflip="false" vflip="false"
-                   alpha="0.15"
+                   alpha="0.5"
                    fps ="10">
     <frames frame1="Media\UI\noise_layer.png"
             frame2="Media\UI\noise_layer_2.png"
@@ -26,7 +26,7 @@
 
   <sprite name="2_menu_backing"
          process_input="false"
-         posX ="-390" posY ="-220" width="800" height ="650"
+         posX ="-390" posY ="-295" width="800" height ="800"
          image="Media\\UI\\pause_menu_backing2.png"
          hflip="false" vflip="false"
          alpha="1.0"

@@ -36,7 +36,8 @@ GameObject::GameObject(float x, float y , float z, float width, float height, fl
 	mIsParallaxLayer(false),
 	mIsAudioObject(false),
 	mIsWaterBlock(false),
-	mIsPlatform(false)
+	mIsPlatform(false),
+	mAutoRotationValue(0.0f)
 {
 	static int GAME_OBJECT_ID = 1; 
 	m_id = GAME_OBJECT_ID;
@@ -108,6 +109,11 @@ void GameObject::Update(float delta)
 	// reset the world matrix and recalculate transformations
 	D3DXMatrixIdentity( &m_world ); 
 
+	if (mAutoRotationValue != 0.0f)
+	{
+		SetRotationAngle(m_rotationAngle + mAutoRotationValue);
+	}
+
 	if (mParallaxMultiplierX != 1.0f)
 	{
 		float diff = Camera2D::GetInstance()->X() - m_position.X;
@@ -163,31 +169,33 @@ void GameObject:: XmlRead(TiXmlElement * element)
 
 	// read rotation
 	m_rotationAngle = XmlUtilities::ReadAttributeAsFloat(element, "position", "rotation");
+	mAutoRotationValue = XmlUtilities::ReadAttributeAsFloat(element, "position", "auto_rotate_value");
 }
 
 void GameObject::XmlWrite(TiXmlElement * element)
 {
 	element->SetAttribute("id", Utilities::ConvertDoubleToString(m_id).c_str());
 
-	element->SetAttribute("parallax_x", Utilities::ConvertDoubleToString(mParallaxMultiplierX).c_str());
-	element->SetAttribute("parallax_y", Utilities::ConvertDoubleToString(mParallaxMultiplierY).c_str());
+	element->SetDoubleAttribute("parallax_x", mParallaxMultiplierX);
+	element->SetDoubleAttribute("parallax_y", mParallaxMultiplierY);
 
 	const char * updateableFlag = m_updateable ? "true" : "false";
 	element->SetAttribute("updateable", updateableFlag);
 
 	// position
 	TiXmlElement * posElem = new TiXmlElement("position");
-	posElem->SetAttribute("z", Utilities::ConvertDoubleToString(m_position.Z).c_str());
-	posElem->SetAttribute("y", Utilities::ConvertDoubleToString(m_position.Y).c_str());
-	posElem->SetAttribute("x", Utilities::ConvertDoubleToString(m_position.X).c_str());
-	posElem->SetAttribute("rotation", Utilities::ConvertDoubleToString(m_rotationAngle).c_str());
+	posElem->SetDoubleAttribute("z", m_position.Z);
+	posElem->SetDoubleAttribute("y", m_position.Y);
+	posElem->SetDoubleAttribute("x", m_position.X);
+	posElem->SetDoubleAttribute("rotation", m_rotationAngle);
+	posElem->SetDoubleAttribute("auto_rotate_value", mAutoRotationValue); 
 	element->LinkEndChild(posElem);
 
 	// dimensions
 	TiXmlElement * dimensionsElem = new TiXmlElement("dimensions");
-	dimensionsElem->SetAttribute("breadth", Utilities::ConvertDoubleToString(m_dimensions.Z).c_str());
-	dimensionsElem->SetAttribute("height", Utilities::ConvertDoubleToString(m_dimensions.Y).c_str());
-	dimensionsElem->SetAttribute("width", Utilities::ConvertDoubleToString(m_dimensions.X).c_str());
+	dimensionsElem->SetDoubleAttribute("breadth", m_dimensions.Z);
+	dimensionsElem->SetDoubleAttribute("height", m_dimensions.Y);
+	dimensionsElem->SetDoubleAttribute("width", m_dimensions.X);
 	element->LinkEndChild(dimensionsElem);
 
 
@@ -279,7 +287,7 @@ void GameObject::SetRotationAngle(float radians)
 
 	if (m_rotationAngle > kMaxRadians || m_rotationAngle < -kMaxRadians)
 	{
-		m_rotationAngle = 0;
+		m_rotationAngle = 0.0f;
 	}
 }
 

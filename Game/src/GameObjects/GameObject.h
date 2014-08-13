@@ -175,6 +175,7 @@ protected:
 	float mCurrentParallaxOffsetX;
 	float mCurrentParallaxOffsetY;
 	bool mUpdateToParentsOrientation;
+	float mAutoRotationValue;
 
 private:
 

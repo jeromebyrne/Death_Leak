@@ -3,17 +3,17 @@
 #include "Environment.h"
 
 MovingSprite::MovingSprite(float x, float y, float z, float width, float height, float breadth, float groundFriction, float airResistance):
-Sprite(x,y,z, width, height, breadth), 
-m_resistance(groundFriction, airResistance, 0), 
-m_velocity(0,0,0),
-m_maxVelocity(0,0,0),
-m_acceleration(0,0,0),
-m_direction(1,0,0), 
-m_applyGravity(true),
-mObjectMovingWith(0),
-mCurrentYResistance(1),
-m_isOnGround(true),
-mIsInWater(false)
+	Sprite(x,y,z, width, height, breadth), 
+	m_resistance(groundFriction, airResistance, 0), 
+	m_velocity(0,0,0),
+	m_maxVelocity(0,0,0),
+	m_acceleration(0,0,0),
+	m_direction(1,0,0), 
+	m_applyGravity(true),
+	mObjectMovingWith(0),
+	mCurrentYResistance(1),
+	m_isOnGround(true),
+	mIsInWater(false)
 {
 	if (m_maxVelocity.Y < 0)  // less than 0 actually signifies no maximum
 	{
@@ -181,15 +181,15 @@ void MovingSprite::XmlWrite(TiXmlElement * element)
 	Sprite::XmlWrite(element);
 
 	TiXmlElement * resistanceElem = new TiXmlElement("resistance");
-	resistanceElem->SetAttribute("z", Utilities::ConvertDoubleToString(m_resistance.Z).c_str());
-	resistanceElem->SetAttribute("y", Utilities::ConvertDoubleToString(m_resistance.Y).c_str());
-	resistanceElem->SetAttribute("x", Utilities::ConvertDoubleToString(m_resistance.X).c_str());
+	resistanceElem->SetDoubleAttribute("z", m_resistance.Z);
+	resistanceElem->SetDoubleAttribute("y", m_resistance.Y);
+	resistanceElem->SetDoubleAttribute("x", m_resistance.X);
 	element->LinkEndChild(resistanceElem);
 
 	TiXmlElement * maxvelocityElem = new TiXmlElement("maxvelocity");
-	maxvelocityElem->SetAttribute("z", Utilities::ConvertDoubleToString(m_maxVelocity.Z).c_str());
-	maxvelocityElem->SetAttribute("y", Utilities::ConvertDoubleToString(m_maxVelocity.Y).c_str());
-	maxvelocityElem->SetAttribute("x", Utilities::ConvertDoubleToString(m_maxVelocity.X).c_str());
+	maxvelocityElem->SetDoubleAttribute("z", m_maxVelocity.Z);
+	maxvelocityElem->SetDoubleAttribute("y", m_maxVelocity.Y);
+	maxvelocityElem->SetDoubleAttribute("x", m_maxVelocity.X);
 	element->LinkEndChild(maxvelocityElem);
 
 	const char * applGravValAsStr = m_applyGravity ? "true" : "false";
