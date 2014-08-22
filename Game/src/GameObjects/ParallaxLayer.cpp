@@ -178,15 +178,15 @@ void ParallaxLayer::XmlWrite(TiXmlElement * element)
 	Sprite::XmlWrite(element);
 
 	TiXmlElement * cameraparallaxmultiplierxElem = new TiXmlElement("cameraparallaxmultiplierx");
-	cameraparallaxmultiplierxElem->SetAttribute("value", Utilities::ConvertDoubleToString(m_cameraParallaxMultiplierX).c_str());
+	cameraparallaxmultiplierxElem->SetDoubleAttribute("value", m_cameraParallaxMultiplierX);
 	element->LinkEndChild(cameraparallaxmultiplierxElem);
 
 	TiXmlElement * cameraparallaxmultiplieryElem = new TiXmlElement("cameraparallaxmultipliery");
-	cameraparallaxmultiplieryElem->SetAttribute("value", Utilities::ConvertDoubleToString(m_cameraParallaxMultiplierY).c_str());
+	cameraparallaxmultiplieryElem->SetDoubleAttribute("value", m_cameraParallaxMultiplierY);
 	element->LinkEndChild(cameraparallaxmultiplieryElem);
 
 	TiXmlElement * repeatwidth = new TiXmlElement("repeatwidth");
-	repeatwidth->SetAttribute("value", Utilities::ConvertDoubleToString(m_repeatWidth).c_str());
+	repeatwidth->SetDoubleAttribute("value", m_repeatWidth);
 	element->LinkEndChild(repeatwidth);
 
 	TiXmlElement * followcamy = new TiXmlElement("followcamy");
@@ -210,11 +210,11 @@ void ParallaxLayer::XmlWrite(TiXmlElement * element)
 	element->LinkEndChild(autoscrolly);
 
 	TiXmlElement * autoscrollxspeed = new TiXmlElement("autoscrollxspeed");
-	autoscrollxspeed->SetAttribute("value", Utilities::ConvertDoubleToString(m_autoScrollXSpeed).c_str());
+	autoscrollxspeed->SetDoubleAttribute("value", m_autoScrollXSpeed);
 	element->LinkEndChild(autoscrollxspeed);
 
 	TiXmlElement * autoscrollyspeed = new TiXmlElement("autoscrollyspeed");
-	autoscrollyspeed->SetAttribute("value", Utilities::ConvertDoubleToString(m_autoScrollYSpeed).c_str());
+	autoscrollyspeed->SetDoubleAttribute("value", m_autoScrollYSpeed);
 	element->LinkEndChild(autoscrollyspeed);
 }
 

@@ -90,7 +90,7 @@ void Sprite::Initialise()
 	}
 	if (m_verticalFlip)
 	{
-		m_matScaleY *= 1;
+		m_matScaleY *= -1;
 	}
 	
 	mTextureDimensions = GetTextureDimensions();
@@ -541,21 +541,18 @@ void Sprite::XmlWrite(TiXmlElement * element)
 	effectElement->SetDoubleAttribute("pixelwobbleintensity", mPixelWobbleIntensity);
 	effectElement->SetDoubleAttribute("pixelwobblespeedmod", mPixelWobbleSpeedMod);
 
-	if (EffectName == "effectfoliagesway")
-	{
-		TiXmlElement * foliageSwayElement = new TiXmlElement("foliage_sway_props");
+	TiXmlElement * foliageSwayElement = new TiXmlElement("foliage_sway_props");
 
-		foliageSwayElement->SetDoubleAttribute("bottom_left_intensity_x", mFoliageSwayProperties.BottomLeftSwayIntensity.X);
-		foliageSwayElement->SetDoubleAttribute("bottom_left_intensity_y", mFoliageSwayProperties.BottomLeftSwayIntensity.Y);
-		foliageSwayElement->SetDoubleAttribute("bottom_right_intensity_x", mFoliageSwayProperties.BottomRightSwayIntensity.X);
-		foliageSwayElement->SetDoubleAttribute("bottom_right_intensity_y", mFoliageSwayProperties.BottomRightSwayIntensity.Y);
-		foliageSwayElement->SetDoubleAttribute("top_left_intensity_x", mFoliageSwayProperties.TopLeftSwayIntensity.X);
-		foliageSwayElement->SetDoubleAttribute("top_left_intensity_y", mFoliageSwayProperties.TopLeftSwayIntensity.Y);
-		foliageSwayElement->SetDoubleAttribute("top_right_intensity_x", mFoliageSwayProperties.TopRightSwayIntensity.X);
-		foliageSwayElement->SetDoubleAttribute("top_right_intensity_y", mFoliageSwayProperties.TopRightSwayIntensity.Y);
+	foliageSwayElement->SetDoubleAttribute("bottom_left_intensity_x", mFoliageSwayProperties.BottomLeftSwayIntensity.X);
+	foliageSwayElement->SetDoubleAttribute("bottom_left_intensity_y", mFoliageSwayProperties.BottomLeftSwayIntensity.Y);
+	foliageSwayElement->SetDoubleAttribute("bottom_right_intensity_x", mFoliageSwayProperties.BottomRightSwayIntensity.X);
+	foliageSwayElement->SetDoubleAttribute("bottom_right_intensity_y", mFoliageSwayProperties.BottomRightSwayIntensity.Y);
+	foliageSwayElement->SetDoubleAttribute("top_left_intensity_x", mFoliageSwayProperties.TopLeftSwayIntensity.X);
+	foliageSwayElement->SetDoubleAttribute("top_left_intensity_y", mFoliageSwayProperties.TopLeftSwayIntensity.Y);
+	foliageSwayElement->SetDoubleAttribute("top_right_intensity_x", mFoliageSwayProperties.TopRightSwayIntensity.X);
+	foliageSwayElement->SetDoubleAttribute("top_right_intensity_y", mFoliageSwayProperties.TopRightSwayIntensity.Y);
 
-		element->LinkEndChild(foliageSwayElement);
-	}
+	element->LinkEndChild(foliageSwayElement);
 }
 
 void Sprite::SetVertexBuffer(ID3D10Device* device, UINT byteSize, VertexPositionTextureNormal vertices[])
