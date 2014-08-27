@@ -24,8 +24,8 @@ static const float kMinWeatherIntervalTime = 90.0f;
 static const float kMaxWeatherIntervalTime = 200.0f;
 
 static const float kNormalFoliageSwayMultiplier = 1.0f;
-static const float kRainFoliageSwayMultiplier = 1.5f;
-static const float kSnowFoliageSwayMultiplier = 3.0f;
+static const float kRainFoliageSwayMultiplier = 2.0f;
+static const float kSnowFoliageSwayMultiplier = 4.0f;
 
 WeatherManager * WeatherManager::mInstance = nullptr;
 

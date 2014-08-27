@@ -27,6 +27,7 @@
 #include "WaterBlock.h"
 #include "SolidLine.h"
 #include "butterfly.h"
+#include "scrollingsprite.h"
 
 struct DepthSortPredicate
 {
@@ -582,6 +583,10 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement)
 	else if (strcmp(gameObjectTypeName, "butterfly") == 0)
 	{
 		newGameObject = new Butterfly();
+	}
+	else if (strcmp(gameObjectTypeName, "scrollingsprite") == 0)
+	{
+		newGameObject = new ScrollingSprite();
 	}
 
 	GAME_ASSERT(newGameObject);
