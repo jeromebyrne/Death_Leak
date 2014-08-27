@@ -24,6 +24,8 @@ public:
 	// called after we switch levels
 	void RefreshAssets();
 
+	float GetFoliageSwayMultiplier() const { return mFoliageSwayMultiplier; }
+
 private:
 
 	WeatherManager(void);
@@ -86,6 +88,8 @@ private:
 
 	bool mPLayingLightningEffect;
 	float mTimeUntilNextLightning;
+
+	float mFoliageSwayMultiplier;
 };
 
 #endif

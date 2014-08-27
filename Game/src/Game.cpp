@@ -238,6 +238,8 @@ void Game::Draw()
 	m_effectNoise->SetTimer(shaderTime);
 	m_effectFoliageSway->SetTimeVariable(shaderTime);
 
+	m_effectFoliageSway->SetGlobalTimeMultiplier(WeatherManager::GetInstance()->GetFoliageSwayMultiplier());
+
 	static float pixelWobbleShaderTime = 0;
 	static bool inReverse = false;
 

@@ -485,6 +485,7 @@ void Sprite::XmlRead(TiXmlElement * element)
 		mFoliageSwayProperties.TopLeftSwayIntensity.Y = XmlUtilities::ReadAttributeAsFloat(element, "foliage_sway_props", "top_left_intensity_y");
 		mFoliageSwayProperties.TopRightSwayIntensity.X = XmlUtilities::ReadAttributeAsFloat(element, "foliage_sway_props", "top_right_intensity_x");
 		mFoliageSwayProperties.TopRightSwayIntensity.Y = XmlUtilities::ReadAttributeAsFloat(element, "foliage_sway_props", "top_right_intensity_y");
+		mFoliageSwayProperties.TimeMultiplier = XmlUtilities::ReadAttributeAsFloat(element, "foliage_sway_props", "time_multiplier");
 	}
 }
 
@@ -551,6 +552,7 @@ void Sprite::XmlWrite(TiXmlElement * element)
 	foliageSwayElement->SetDoubleAttribute("top_left_intensity_y", mFoliageSwayProperties.TopLeftSwayIntensity.Y);
 	foliageSwayElement->SetDoubleAttribute("top_right_intensity_x", mFoliageSwayProperties.TopRightSwayIntensity.X);
 	foliageSwayElement->SetDoubleAttribute("top_right_intensity_y", mFoliageSwayProperties.TopRightSwayIntensity.Y);
+	foliageSwayElement->SetDoubleAttribute("time_multiplier", mFoliageSwayProperties.TimeMultiplier);
 
 	element->LinkEndChild(foliageSwayElement);
 }
@@ -842,6 +844,8 @@ void Sprite::Draw_effectFoliageSway(ID3D10Device * device)
 
 	// set the alpha value on the shader
 	m_effectFoliageSway->SetAlpha(m_alpha);
+
+	m_effectFoliageSway->SetTimeMultiplier(mFoliageSwayProperties.TimeMultiplier);
 
 	//// Set the input layout on the device
 	device->IASetInputLayout(m_effectFoliageSway->InputLayout);

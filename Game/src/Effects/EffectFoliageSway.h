@@ -11,14 +11,26 @@ public:
 	virtual ~EffectFoliageSway(void);
 	virtual void Load(ID3D10Device * device);
 
-	void SetTimeVariable(float delta)
+	void SetTimeVariable(float time)
 	{
-		m_pTimeVariable->SetFloat(delta);
+		mTimeVariable->SetFloat(time);
+	}
+
+	void SetTimeMultiplier(float multiplier)
+	{
+		mTimeMultiplier->SetFloat(multiplier);
+	}
+
+	void SetGlobalTimeMultiplier(float multiplier)
+	{
+		mGlobalTimeMultiplier->SetFloat(multiplier);
 	}
 
 private:
 
-	ID3D10EffectScalarVariable*         m_pTimeVariable;
+	ID3D10EffectScalarVariable*         mTimeVariable;
+	ID3D10EffectScalarVariable*         mTimeMultiplier;
+	ID3D10EffectScalarVariable*         mGlobalTimeMultiplier;
 };
 
 #endif

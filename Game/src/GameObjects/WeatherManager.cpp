@@ -23,6 +23,10 @@ static const float kSnowOutroTime = 8.0f;
 static const float kMinWeatherIntervalTime = 90.0f;
 static const float kMaxWeatherIntervalTime = 200.0f;
 
+static const float kNormalFoliageSwayMultiplier = 1.0f;
+static const float kRainFoliageSwayMultiplier = 1.5f;
+static const float kSnowFoliageSwayMultiplier = 3.0f;
+
 WeatherManager * WeatherManager::mInstance = nullptr;
 
 WeatherManager * WeatherManager::GetInstance()
@@ -56,7 +60,8 @@ WeatherManager::WeatherManager(void):
 	mLightningLayer(nullptr),
 	mLightningStartTime(0),
 	mPLayingLightningEffect(false),
-	mTimeUntilNextLightning(0)
+	mTimeUntilNextLightning(0),
+	mFoliageSwayMultiplier(1.0f)
 {
 	// preload large textures
 	/*TextureManager::Instance()->LoadTexture("Media\\rainlayer.png");
@@ -288,6 +293,8 @@ void WeatherManager::Update(float delta)
 
 void WeatherManager::StartRaining()
 {
+	mFoliageSwayMultiplier = kRainFoliageSwayMultiplier;
+
 	mHasRained = true;
 
 	float gameScale = Game::GetGameScale().X;
@@ -444,6 +451,8 @@ void WeatherManager::DoLightningEffect()
 
 void WeatherManager::StopRaining()
 {
+	mFoliageSwayMultiplier = kNormalFoliageSwayMultiplier;
+
 	if (mTopRainLayer)
 	{
 		GameObjectManager::Instance()->RemoveGameObject(mTopRainLayer);
@@ -654,6 +663,8 @@ bool WeatherManager::HasCurrentWeatherState(WeatherState state)
 
 void WeatherManager::StartSnowing()
 {
+	mFoliageSwayMultiplier = kSnowFoliageSwayMultiplier;
+
 	mHasSnowed = true;
 
 	float gameScale = Game::GetGameScale().X;
@@ -737,6 +748,8 @@ void WeatherManager::StartSnowing()
 
 void WeatherManager::StopSnowing()
 {
+	mFoliageSwayMultiplier = kNormalFoliageSwayMultiplier;
+
 	if (mTopSnowLayer)
 	{
 		GameObjectManager::Instance()->RemoveGameObject(mTopSnowLayer);

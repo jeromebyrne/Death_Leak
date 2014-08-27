@@ -132,6 +132,13 @@ private:
 		Vector2 TopRightSwayIntensity;
 		Vector2 BottomLeftSwayIntensity;
 		Vector2 BottomRightSwayIntensity;
+		float TimeMultiplier;
+		float GlobalTimeMultiplier;
+	
+		FoliageSwayProperties()
+		{
+			TimeMultiplier = 1.0f;
+		}
 	};
 
 	FoliageSwayProperties mFoliageSwayProperties;

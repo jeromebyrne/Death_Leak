@@ -11,7 +11,7 @@
         <isanimated value="true" />
         <animationfile value="XmlFiles\rabbit_anim.xml" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="0.900000" x="0.900000" />
         <maxvelocity z="0.000000" y="99999.000000" x="4.000000" />
         <applygravity value="true" />
@@ -25,18 +25,18 @@
         <projectileoffsety value="20" />
     </Rabbit>
     <Butterfly id="2" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
-        <position z="50.000000" y="-19.254601" x="6702.589844" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="50.000000" y="-19.254601" x="6704.690430" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="64.000000" width="64.000000" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
         <alpha value="1" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="false" />
+        <horizontalflip value="true" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="6.000000" x="0.990000" />
         <maxvelocity z="0.000000" y="5.000000" x="0.500000" />
         <applygravity value="true" />
@@ -50,7 +50,7 @@
         <projectileoffsety value="20" />
     </Butterfly>
     <Butterfly id="3" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
-        <position z="50.000000" y="150.257996" x="6820.197266" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="50.000000" y="150.257996" x="6822.297852" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="64.000000" width="64.000000" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
         <alpha value="1" />
@@ -61,7 +61,7 @@
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="6.000000" x="0.990000" />
         <maxvelocity z="0.000000" y="5.000000" x="0.500000" />
         <applygravity value="true" />
@@ -75,18 +75,18 @@
         <projectileoffsety value="20" />
     </Butterfly>
     <Butterfly id="4" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
-        <position z="50.000000" y="-29.147600" x="6702.589844" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="50.000000" y="-29.147600" x="6704.690430" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="64.000000" width="64.000000" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
         <alpha value="1" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="true" />
+        <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="6.000000" x="0.990000" />
         <maxvelocity z="0.000000" y="5.000000" x="0.500000" />
         <applygravity value="true" />
@@ -100,18 +100,18 @@
         <projectileoffsety value="20" />
     </Butterfly>
     <Butterfly id="5" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
-        <position z="50.000000" y="56.512402" x="6702.589844" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="50.000000" y="56.512402" x="6704.690430" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="64.000000" width="64.000000" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
         <alpha value="1" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="false" />
+        <horizontalflip value="true" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="6.000000" x="0.990000" />
         <maxvelocity z="0.000000" y="5.000000" x="0.500000" />
         <applygravity value="true" />
@@ -125,7 +125,7 @@
         <projectileoffsety value="20" />
     </Butterfly>
     <Butterfly id="6" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
-        <position z="50.000000" y="204.124634" x="6373.697266" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="50.000000" y="204.124634" x="6375.797852" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="64.000000" width="64.000000" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
         <alpha value="1" />
@@ -136,7 +136,7 @@
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="6.000000" x="0.990000" />
         <maxvelocity z="0.000000" y="5.000000" x="0.500000" />
         <applygravity value="true" />
@@ -150,18 +150,18 @@
         <projectileoffsety value="20" />
     </Butterfly>
     <Butterfly id="7" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
-        <position z="50.000000" y="137.796997" x="6702.589844" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="50.000000" y="137.796997" x="6704.690430" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="64.000000" width="64.000000" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
         <alpha value="1" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="true" />
+        <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="6.000000" x="0.990000" />
         <maxvelocity z="0.000000" y="5.000000" x="0.500000" />
         <applygravity value="true" />
@@ -175,18 +175,18 @@
         <projectileoffsety value="20" />
     </Butterfly>
     <Butterfly id="8" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
-        <position z="50.000000" y="216.132004" x="6591.197266" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="50.000000" y="216.132004" x="6593.297852" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="64.000000" width="64.000000" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
         <alpha value="1" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="true" />
+        <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="6.000000" x="0.990000" />
         <maxvelocity z="0.000000" y="5.000000" x="0.500000" />
         <applygravity value="true" />
@@ -200,7 +200,7 @@
         <projectileoffsety value="20" />
     </Butterfly>
     <Butterfly id="9" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
-        <position z="50.000000" y="299.133057" x="7795.246094" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="50.000000" y="299.133057" x="7797.346680" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="64.000000" width="64.000000" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
         <alpha value="1" />
@@ -211,7 +211,7 @@
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="6.000000" x="0.990000" />
         <maxvelocity z="0.000000" y="5.000000" x="0.500000" />
         <applygravity value="true" />
@@ -225,7 +225,7 @@
         <projectileoffsety value="20" />
     </Butterfly>
     <ParallaxLayer id="10" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
-        <position z="10000.000000" y="500.000000" x="5313.032227" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="10000.000000" y="500.000000" x="2400.042480" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="400.000000" width="2048.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <alpha value="1" />
@@ -235,7 +235,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <cameraparallaxmultiplierx value="0.000010" />
         <cameraparallaxmultipliery value="0.000000" />
         <repeatwidth value="1920.000000" />
@@ -247,7 +247,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="11" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
-        <position z="1900.000000" y="-320.000000" x="5313.032227" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="1900.000000" y="-320.000000" x="2400.042480" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="450.000000" width="2048.000000" native="false" repeatX="false" repeatY="false" />
         <material value="" />
         <alpha value="0.3" />
@@ -257,7 +257,7 @@
         <verticalflip value="true" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <cameraparallaxmultiplierx value="0.000010" />
         <cameraparallaxmultipliery value="0.000000" />
         <repeatwidth value="1920.000000" />
@@ -279,7 +279,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="2.000000" x="0.950000" />
         <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
         <applygravity value="false" />
@@ -299,7 +299,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="2.000000" x="0.950000" />
         <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
         <applygravity value="false" />
@@ -321,7 +321,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="2.000000" x="0.950000" />
         <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
         <applygravity value="false" />
@@ -343,7 +343,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="2.000000" x="0.950000" />
         <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
         <applygravity value="false" />
@@ -365,7 +365,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="2.000000" x="0.950000" />
         <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
         <applygravity value="false" />
@@ -387,7 +387,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="18" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="75.000000" y="219.604004" x="7454.540039" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -400,10 +400,10 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="19" parallax_x="0.900000" parallax_y="0.850000" updateable="true">
-        <position z="140.000000" y="-358.154480" x="5279.630371" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="140.000000" y="-116.294067" x="4833.032227" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="438.862000" width="1755.449951" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <alpha value="1" />
@@ -413,7 +413,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="20" parallax_x="0.900000" parallax_y="0.850000" updateable="true">
         <position z="140.000000" y="-110.654999" x="6776.250000" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -426,10 +426,10 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <SolidMovingSprite id="21" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
-        <position z="100.000000" y="-478.686035" x="5305.609375" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="100.000000" y="-287.855530" x="5004.578613" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="512.000000" width="2048.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <alpha value="1" />
@@ -439,7 +439,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="2.000000" x="0.950000" />
         <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
         <applygravity value="false" />
@@ -459,7 +459,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="2.000000" x="0.950000" />
         <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
         <applygravity value="false" />
@@ -479,7 +479,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="2.000000" x="0.950000" />
         <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
         <applygravity value="false" />
@@ -499,7 +499,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="25" parallax_x="1.000000" parallax_y="1.050000" updateable="true">
         <position z="75.000000" y="147.830994" x="4432.270020" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -512,10 +512,10 @@
         <verticalflip value="true" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Player id="26" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
-        <position z="50.000000" y="140.516617" x="5313.032227" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="50.000000" y="-55.031616" x="2400.042480" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="300.000000" width="150.000000" native="false" repeatX="false" repeatY="false" />
         <material value="maleninja" />
         <alpha value="1" />
@@ -526,7 +526,7 @@
         <isanimated value="true" />
         <animationfile value="XmlFiles\ninjaAnimation.xml" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="0.600000" x="0.880000" />
         <maxvelocity z="0.000000" y="99999.000000" x="8.000000" />
         <applygravity value="true" />
@@ -550,7 +550,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="28" parallax_x="1.400000" parallax_y="1.250000" updateable="true">
         <position z="7.000000" y="-161.737000" x="3325.590088" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -563,7 +563,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="29" parallax_x="1.400000" parallax_y="1.250000" updateable="true">
         <position z="7.000000" y="1868.124634" x="5470.145508" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -576,7 +576,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="30" parallax_x="1.400000" parallax_y="1.250000" updateable="true">
         <position z="5.000000" y="-258.717010" x="3155.000000" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -589,21 +589,21 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Butterfly id="31" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
-        <position z="50.000000" y="204.124634" x="6510.647461" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="50.000000" y="204.124634" x="6512.748047" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="64.000000" width="64.000000" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
         <alpha value="1" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="true" />
+        <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="6.000000" x="0.990000" />
         <maxvelocity z="0.000000" y="5.000000" x="0.500000" />
         <applygravity value="true" />
@@ -617,7 +617,7 @@
         <projectileoffsety value="20" />
     </Butterfly>
     <Butterfly id="32" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
-        <position z="50.000000" y="204.124634" x="6146.447266" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="50.000000" y="204.124634" x="6148.547852" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="64.000000" width="64.000000" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
         <alpha value="1" />
@@ -628,7 +628,7 @@
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="6.000000" x="0.990000" />
         <maxvelocity z="0.000000" y="5.000000" x="0.500000" />
         <applygravity value="true" />
@@ -642,18 +642,18 @@
         <projectileoffsety value="20" />
     </Butterfly>
     <Butterfly id="33" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
-        <position z="50.000000" y="-30.812300" x="6767.697266" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="50.000000" y="-30.812300" x="6769.797852" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="64.000000" width="64.000000" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
         <alpha value="1" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="false" />
+        <horizontalflip value="true" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="6.000000" x="0.990000" />
         <maxvelocity z="0.000000" y="5.000000" x="0.500000" />
         <applygravity value="true" />
@@ -667,7 +667,7 @@
         <projectileoffsety value="20" />
     </Butterfly>
     <Butterfly id="34" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
-        <position z="50.000000" y="-55.410278" x="6702.589844" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="50.000000" y="-55.410278" x="6704.690430" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="64.000000" width="64.000000" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
         <alpha value="1" />
@@ -678,7 +678,7 @@
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="6.000000" x="0.990000" />
         <maxvelocity z="0.000000" y="5.000000" x="0.500000" />
         <applygravity value="true" />
@@ -692,7 +692,7 @@
         <projectileoffsety value="20" />
     </Butterfly>
     <Butterfly id="35" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
-        <position z="50.000000" y="204.124634" x="6020.197266" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="50.000000" y="204.124634" x="6022.297852" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="64.000000" width="64.000000" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
         <alpha value="1" />
@@ -703,7 +703,7 @@
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="6.000000" x="0.990000" />
         <maxvelocity z="0.000000" y="5.000000" x="0.500000" />
         <applygravity value="true" />
@@ -717,7 +717,7 @@
         <projectileoffsety value="20" />
     </Butterfly>
     <Butterfly id="36" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
-        <position z="50.000000" y="32.493301" x="6876.197266" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="50.000000" y="32.493301" x="6878.297852" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="64.000000" width="64.000000" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
         <alpha value="1" />
@@ -728,7 +728,7 @@
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="6.000000" x="0.990000" />
         <maxvelocity z="0.000000" y="5.000000" x="0.500000" />
         <applygravity value="true" />
@@ -753,7 +753,7 @@
         <isanimated value="true" />
         <animationfile value="XmlFiles\rabbit_anim.xml" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="0.900000" x="0.900000" />
         <maxvelocity z="0.000000" y="99999.000000" x="4.000000" />
         <applygravity value="true" />
@@ -778,7 +778,7 @@
         <isanimated value="true" />
         <animationfile value="XmlFiles\rabbit_anim.xml" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="0.900000" x="0.900000" />
         <maxvelocity z="0.000000" y="99999.000000" x="4.000000" />
         <applygravity value="true" />
@@ -803,7 +803,7 @@
         <isanimated value="true" />
         <animationfile value="XmlFiles\rabbit_anim.xml" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="0.900000" x="0.900000" />
         <maxvelocity z="0.000000" y="99999.000000" x="4.000000" />
         <applygravity value="true" />
@@ -817,7 +817,7 @@
         <projectileoffsety value="20" />
     </Rabbit>
     <Rabbit id="40" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
-        <position z="50.000000" y="213.820282" x="5646.089355" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="50.000000" y="213.820282" x="5648.889160" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="81.767700" width="77.224998" native="false" repeatX="false" repeatY="false" />
         <material value="rabbit" />
         <alpha value="1" />
@@ -828,7 +828,7 @@
         <isanimated value="true" />
         <animationfile value="XmlFiles\rabbit_anim.xml" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="0.900000" x="0.900000" />
         <maxvelocity z="0.000000" y="99999.000000" x="4.000000" />
         <applygravity value="true" />
@@ -852,7 +852,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="20.000000" top_left_intensity_y="0.000000" top_right_intensity_x="20.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="20.000000" top_left_intensity_y="0.000000" top_right_intensity_x="20.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="42" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="73.000000" y="-128.410004" x="7490.790039" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -865,7 +865,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="43" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="92.000000" y="144.193726" x="3474.540039" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -878,7 +878,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="44" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="93.000000" y="324.502899" x="3362.040039" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -891,7 +891,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="10.000000" bottom_left_intensity_y="30.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="10.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="10.000000" bottom_left_intensity_y="30.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="10.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="45" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="47.000000" y="477.130707" x="2223.290039" rotation="0.560000" auto_rotate_value="0.000000" />
@@ -904,7 +904,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <ParticleSpray id="46" parallax_x="1.000000" parallax_y="1.000000" updateable="false">
         <position z="10.000000" y="-50.000000" x="7200.939941" rotation="0.000000" auto_rotate_value="0.000000" spawn_spread_x="30.000000" spawn_spread_y="15.000000" />
@@ -935,7 +935,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="5.000000" top_right_intensity_y="5.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="5.000000" top_right_intensity_y="5.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="48" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="55.000000" y="426.596008" x="7299.540039" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -948,7 +948,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="10.000000" bottom_left_intensity_y="10.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="10.000000" bottom_left_intensity_y="10.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="49" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="55.000000" y="344.407990" x="7609.540039" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -961,10 +961,10 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="10.000000" bottom_left_intensity_y="10.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="10.000000" bottom_left_intensity_y="10.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="50" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
-        <position z="109.000000" y="252.208008" x="3240.790039" rotation="-2.585018" auto_rotate_value="0.005000" />
+        <position z="109.000000" y="252.208008" x="3240.790039" rotation="-2.555018" auto_rotate_value="0.005000" />
         <dimensions breadth="0.000000" height="530.226196" width="530.226196" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <alpha value="1" />
@@ -974,7 +974,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="51" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="110.000000" y="176.060547" x="3219.540039" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -987,10 +987,10 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="52" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
-        <position z="48.000000" y="449.116455" x="4303.290039" rotation="5.475073" auto_rotate_value="0.005000" />
+        <position z="48.000000" y="449.116455" x="4303.290039" rotation="5.505073" auto_rotate_value="0.005000" />
         <dimensions breadth="0.000000" height="1699.599121" width="1699.599121" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <alpha value="1" />
@@ -1000,7 +1000,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="53" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="60.000000" y="202.885742" x="4323.290039" rotation="-0.020112" auto_rotate_value="0.000000" />
@@ -1013,7 +1013,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="54" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="60.000000" y="-42.250977" x="2873.290039" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -1026,7 +1026,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="55" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="150.000000" y="325.263855" x="3639.540039" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -1039,7 +1039,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="56" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="152.000000" y="399.746643" x="2737.040039" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -1052,7 +1052,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="57" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="149.000000" y="259.580139" x="3104.540039" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -1065,7 +1065,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="58" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="149.000000" y="152.992798" x="3612.040039" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -1078,7 +1078,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="59" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="150.000000" y="201.791809" x="4157.040039" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -1091,7 +1091,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="60" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="149.000000" y="109.330444" x="3240.790039" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -1104,7 +1104,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="61" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="149.000000" y="156.845337" x="2438.290039" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -1117,7 +1117,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="62" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="154.000000" y="422.671722" x="2985.790039" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -1130,7 +1130,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="63" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="150.000000" y="334.062927" x="2270.790039" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -1143,7 +1143,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="64" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="142.000000" y="155.370911" x="2912.040039" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -1156,7 +1156,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="65" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="153.000000" y="425.953552" x="2864.540039" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -1169,7 +1169,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="66" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="154.000000" y="487.974945" x="3602.040039" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -1182,7 +1182,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="67" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="154.000000" y="528.165161" x="2025.790039" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -1195,7 +1195,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="68" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="156.000000" y="626.143799" x="2784.540039" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -1208,7 +1208,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="69" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="70.000000" y="468.664612" x="6049.540039" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -1221,7 +1221,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="70" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="70.000000" y="563.694336" x="6552.040039" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -1234,7 +1234,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="71" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="69.000000" y="389.259155" x="6905.790039" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -1247,7 +1247,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="72" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="70.000000" y="184.645569" x="5804.540039" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -1260,7 +1260,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="73" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="70.000000" y="388.640839" x="5890.790039" rotation="-3.276865" auto_rotate_value="0.000000" />
@@ -1273,7 +1273,7 @@
         <verticalflip value="true" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="74" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="70.000000" y="852.184204" x="6908.290039" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -1286,7 +1286,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="75" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="70.000000" y="931.232971" x="5865.790039" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -1299,7 +1299,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="76" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
         <position z="70.000000" y="696.179443" x="6290.790039" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -1312,10 +1312,10 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <ParallaxLayer id="77" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
-        <position z="999.000000" y="200.000000" x="5313.032227" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="999.000000" y="200.000000" x="2400.042480" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="472.000000" width="2048.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <alpha value="1" />
@@ -1325,7 +1325,7 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <cameraparallaxmultiplierx value="0.000040" />
         <cameraparallaxmultipliery value="0.000000" />
         <repeatwidth value="2048.000000" />
@@ -1337,7 +1337,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="78" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
-        <position z="1100.000000" y="200.000000" x="5313.032227" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="1100.000000" y="200.000000" x="2400.042480" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="1060.000000" width="2048.000000" native="false" repeatX="false" repeatY="false" />
         <material value="" />
         <alpha value="0.15" />
@@ -1347,7 +1347,7 @@
         <verticalflip value="true" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <cameraparallaxmultiplierx value="0.000040" />
         <cameraparallaxmultipliery value="0.000000" />
         <repeatwidth value="2048.000000" />
@@ -1359,17 +1359,17 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="79" parallax_x="1.000000" parallax_y="1.000000" updateable="true">
-        <position z="1050.000000" y="-200.000000" x="5313.032227" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="1050.000000" y="-200.000000" x="2400.042480" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="800.000000" width="2048.000000" native="false" repeatX="false" repeatY="false" />
         <material value="" />
         <alpha value="0.15" />
-        <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.00400" pixelwobblespeedmod="2.000000" />
+        <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.004000" pixelwobblespeedmod="2.000000" />
         <texture filename="Media\backgrounds\water_body.png" />
         <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <cameraparallaxmultiplierx value="0.000040" />
         <cameraparallaxmultipliery value="0.000000" />
         <repeatwidth value="2048.000000" />
