@@ -134,8 +134,8 @@ void AudioObject::XmlWrite(TiXmlElement * element)
 	element->LinkEndChild(repeat);
 
 	TiXmlElement * fadeDimElem = new TiXmlElement("fadedimensions");
-	fadeDimElem->SetAttribute("x", Utilities::ConvertDoubleToString(mFadeDimensions.X).c_str());
-	fadeDimElem->SetAttribute("y", Utilities::ConvertDoubleToString(mFadeDimensions.Y).c_str());
+	fadeDimElem->SetDoubleAttribute("x", mFadeDimensions.X);
+	fadeDimElem->SetDoubleAttribute("y", mFadeDimensions.Y);
 	element->LinkEndChild(fadeDimElem);
 }
 

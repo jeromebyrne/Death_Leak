@@ -2,6 +2,7 @@
 #define LEVELEDITOR_H
 
 class ParallaxLayer;
+class ScrollingSprite;
 
 class LevelEditor
 {
@@ -45,6 +46,8 @@ private:
 	ParallaxLayer * GetAsParallaxLayer(GameObject * object);
 
 	SolidMovingSprite * GetAsSolidMovingSprite(GameObject * object);
+
+	ScrollingSprite * GetAsScrollingSprite(GameObject * object);
 
 	void UpdateParallaxLayers();
 

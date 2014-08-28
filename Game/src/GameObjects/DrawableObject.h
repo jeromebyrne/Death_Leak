@@ -24,6 +24,7 @@ public:
 	virtual void LoadContent(ID3D10Device * graphicsdevice) override;
 	virtual void XmlRead(TiXmlElement * element) override;
 	virtual void XmlWrite(TiXmlElement * element) override;
+	virtual void Initialise() override;
 	virtual void ApplyChange(ID3D10Device * device) {}
 	bool IsChangeRequired() { return m_applyChange; }
 	void SetChangeRequired() { m_applyChange = true; }
@@ -63,6 +64,7 @@ protected:
 
 	enum EffectTypesEnum m_currentEffectType;
 	float m_alpha;
+	float mOriginalAlpha;
 	bool m_applyChange;
 };
 

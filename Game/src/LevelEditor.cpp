@@ -4,6 +4,7 @@
 #include "dxwindow.h"
 #include "parallaxlayer.h"
 #include "AudioObject.h"
+#include "ScrollingSprite.h"
 
 #if _DEBUG
 
@@ -80,6 +81,12 @@ void LevelEditor::Update()
 				if (movingSprite)
 				{
 					movingSprite->SetVelocityXYZ(0,0,0); 
+				}
+
+				ScrollingSprite * scrollingSprite = GetAsScrollingSprite(mSelectedObject);
+				if (scrollingSprite)
+				{
+					scrollingSprite->SetLerpStartPos(worldPos);
 				}
 
 				pressingPlace = true;
@@ -229,6 +236,13 @@ SolidMovingSprite * LevelEditor::GetAsSolidMovingSprite(GameObject * object)
 	SolidMovingSprite * sms = dynamic_cast<SolidMovingSprite*>(object);
 
 	return sms;
+}
+
+ScrollingSprite * LevelEditor::GetAsScrollingSprite(GameObject * object)
+{
+	ScrollingSprite * ss = dynamic_cast<ScrollingSprite*>(object);
+
+	return ss;
 }
 
 void LevelEditor::CheckForSavePressed()

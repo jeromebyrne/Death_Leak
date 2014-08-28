@@ -20,7 +20,8 @@ DrawableObject::DrawableObject(float x, float y, float z, float width, float hei
 	m_effectLightTextureWobble(nullptr),
 	m_effectLightTextureBump(nullptr),
 	m_effectNoise(nullptr),
-	m_effectFoliageSway(nullptr)
+	m_effectFoliageSway(nullptr),
+	mOriginalAlpha(1.0f)
 {
 	m_currentEffectType = EFFECT_LIGHT_TEXTURE; // set default effect
 	mDrawable = true;
@@ -100,7 +101,7 @@ void DrawableObject::XmlWrite(TiXmlElement * element)
 	GameObject::XmlWrite(element);
 
 	TiXmlElement * alphaElem = new TiXmlElement("alpha");
-	alphaElem->SetAttribute("value", Utilities::ConvertDoubleToString(m_alpha).c_str());
+	alphaElem->SetDoubleAttribute("value", mOriginalAlpha);
 	element->LinkEndChild(alphaElem);
 
 	TiXmlElement * effectElem = new TiXmlElement("effect");
@@ -113,4 +114,11 @@ void DrawableObject::Scale(float xScale, float yScale, bool scalePosition)
 	GameObject::Scale(xScale, yScale, scalePosition);
 	// we're scaling swo must need to change some stuff
 	m_applyChange = true;
+}
+
+void DrawableObject::Initialise()
+{
+	GameObject::Initialise();
+
+	mOriginalAlpha = m_alpha;
 }
