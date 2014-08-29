@@ -390,6 +390,7 @@ void Projectile::Update(float delta)
 					else
 					{
 						SetRotationAngle( acos(dir.Dot(Vector2(1,0))));
+						FlipVertical();
 					}
 				}
 				else
@@ -401,6 +402,7 @@ void Projectile::Update(float delta)
 					else
 					{
 						SetRotationAngle( -acos(dir.Dot(Vector2(1,0))));
+						FlipVertical();
 					}
 				}
 			}

@@ -147,7 +147,8 @@ Projectile * Player::FireWeapon(Vector2 direction)
 	}
 	else
 	{
-		p->FlipVertical();
+		//p->FlipVertical();
+		p->FlipHorizontal();
 	}
 
 	PlayRandomWeaponFireSound();

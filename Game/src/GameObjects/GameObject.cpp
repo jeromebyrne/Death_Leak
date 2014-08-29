@@ -109,9 +109,17 @@ void GameObject::Update(float delta)
 	// reset the world matrix and recalculate transformations
 	D3DXMatrixIdentity( &m_world ); 
 
+	float targetDelta = Timing::Instance()->GetTargetDelta();
+	float percentDelta = delta / targetDelta;
+
+	if (percentDelta > 1.4f)
+	{
+		percentDelta = 1.4f;
+	}
+
 	if (mAutoRotationValue != 0.0f)
 	{
-		SetRotationAngle(m_rotationAngle + mAutoRotationValue);
+		SetRotationAngle(m_rotationAngle + (mAutoRotationValue * percentDelta));
 	}
 
 	if (mParallaxMultiplierX != 1.0f)
