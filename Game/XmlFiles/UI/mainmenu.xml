@@ -3,7 +3,7 @@
   <sprite name="1_title_background"
           process_input="false"
           posX ="-970" posY ="-540" width="1939.2" height ="1090.8"
-          image="Media\\UI\\main_menu_bg.png"
+          image="Media\UI\sepia\main_menu_bg.png"
           hflip="false" vflip="false"
           alpha="1.0"
           use_standard_effect="false">
@@ -11,10 +11,10 @@
   
   <sprite name="21_title_background"
            process_input="false"
-           posX ="-965" posY ="-535" width="1979.2" height ="1120.8"
+           posX ="-970" posY ="-540" width="1979.2" height ="1120.8"
            image="Media\\UI\\main_menu_bg_2.png"
            hflip="false" vflip="false"
-           alpha="0.5">
+           alpha="0.45">
   </sprite>
   
   <sprite name="22_title_death_leak"
@@ -44,7 +44,7 @@
                    posX ="-960" posY ="-540" width="1920" height ="1080"
                    image="Media\UI\noise_layer.png"
                    hflip="false" vflip="false"
-                   alpha="0.25"
+                   alpha="0.2"
                    fps ="10">
     <frames frame1="Media\UI\noise_layer.png"
             frame2="Media\UI\noise_layer_3.png"
@@ -57,9 +57,9 @@
   <button name="3_new_game"
           process_input="true"
           posX ="185" posY ="-80" width="432" height ="177"
-          image="Media\\UI\\buttons\\play1.png"
-          image_focus="Media\\UI\\buttons\\play2.png"
-          image_click="Media\\UI\\buttons\\play3.png"
+          image="Media\UI\buttons\sepia\play1.png"
+          image_focus="Media\UI\buttons\sepia\play2.png"
+          image_click="Media\UI\buttons\sepia\play3.png"
           hflip="false" vflip="false"
           alpha="1.0">
     
@@ -69,7 +69,7 @@
       <pushui ui="gameloading" />
       <fadein time="150"/>
       <stopallsounds />
-      <loadlevel level="XmlFiles\village.xml" />
+      <loadlevel level="XmlFiles\village_outskirts_left_night.xml" />
       <popui ui="gameloading" />
       <pushui ui="game_hud" />
     </actionspressup>
@@ -83,9 +83,9 @@
   <button name="5_level_editor"
           process_input="true"
           posX ="130" posY ="-290" width="394" height ="246"
-          image="Media\\UI\\buttons\\edit1.png"
-          image_focus="Media\\UI\\buttons\\edit2.png"
-          image_click="Media\\UI\\buttons\\edit3.png"
+          image="Media\\UI\\buttons\\sepia\edit1.png"
+          image_focus="Media\\UI\\buttons\\sepia\edit2.png"
+          image_click="Media\\UI\\buttons\\sepia\edit3.png"
           hflip="false" vflip="false"
           alpha="1.0">
     <actionspressup>
@@ -94,7 +94,7 @@
       <pushui ui="gameloading" />
       <fadein time="150"/>
       <stopallsounds />
-      <leveledit level="XmlFiles\village.xml" />
+      <leveledit level="XmlFiles\village_outskirts_left_night.xml" />
       <popui ui="gameloading" />
       <pushui ui="game_hud" />
     </actionspressup>
@@ -107,9 +107,9 @@
   <button name="6_options"
           process_input="true"
           posX ="120" posY ="-500" width="326" height ="220"
-          image="Media\\UI\\buttons\\settings1.png"
-          image_focus="Media\\UI\\buttons\\settings2.png"
-          image_click="Media\\UI\\buttons\\settings3.png"
+          image="Media\\UI\\buttons\\sepia\settings1.png"
+          image_focus="Media\\UI\\buttons\\sepia\settings2.png"
+          image_click="Media\\UI\\buttons\\sepia\settings3.png"
           hflip="false" vflip="false"
           alpha="1.0">
     <actionspressup>
@@ -125,9 +125,9 @@
   <button name="7_quit"
            process_input="true"
            posX ="-940" posY ="-470" width="285" height ="162"
-           image="Media\\UI\\buttons\\back1.png"
-           image_focus="Media\\UI\\buttons\\back2.png"
-           image_click="Media\\UI\\buttons\\back3.png"
+           image="Media\\UI\\buttons\\sepia\back1.png"
+           image_focus="Media\\UI\\buttons\\sepia\back2.png"
+           image_click="Media\\UI\\buttons\\sepia\back3.png"
            hflip="false" vflip="false"
            alpha="1.0">
 

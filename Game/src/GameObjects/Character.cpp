@@ -22,7 +22,7 @@ Character::Character(float x, float y, float z, float width, float height, float
 	mAccelXRate(0),
 	mHealth(100),
 	mMaxHealth(100),
-	mSprintVelocityX(30),
+	mSprintVelocityX(10),
 	mSprintActive(false),
 	mHasExploded(false),
 	m_mainBodyTexture(0),
@@ -60,7 +60,7 @@ void Character::Update(float delta)
 	if (m_velocity.Y > 0 && m_collidingAtSideOfObject && mSprintActive)
 	{
 		// sliding on the side of an object so reduce gravity resistance
-		mCurrentYResistance = m_resistance.Y * 2; // TODO: read this from xml
+		mCurrentYResistance = m_resistance.Y * 3; // TODO: read this from xml
 	}
 	else
 	{
@@ -372,12 +372,8 @@ void Character::UpdateAnimations()
 
 			if (mMatchAnimFrameRateWithMovement)
 			{
-				float animFramerate = mSprintActive ? (m_velocity.X * 1.6f) * mRunAnimFramerateMultiplier : (m_velocity.X * 1.4f) * mRunAnimFramerateMultiplier;
+				float animFramerate = std::abs(mSprintActive ? (m_velocity.X * 1.6f) * mRunAnimFramerateMultiplier : (m_velocity.X * 1.4f) * mRunAnimFramerateMultiplier);
 
-				if (animFramerate < 0)
-				{
-					animFramerate *= -1;
-				}
 				bodyPart->CurrentSequence()->SetFrameRate(animFramerate);
 			}
 			
