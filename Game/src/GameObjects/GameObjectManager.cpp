@@ -28,6 +28,7 @@
 #include "SolidLine.h"
 #include "butterfly.h"
 #include "scrollingsprite.h"
+#include "SolidLineStrip.h"
 
 struct DepthSortPredicate
 {
@@ -313,9 +314,10 @@ void GameObjectManager::Draw(ID3D10Device *  device)
 		}
 		mSlowMotionLayer->SetAlpha(alpha);
 	}
+}
 
-#ifdef DEBUG
-
+void GameObjectManager::DebugDraw()
+{
 	if (mShowDebugInfo)
 	{
 		for (auto & obj : m_gameObjects)
@@ -326,21 +328,15 @@ void GameObjectManager::Draw(ID3D10Device *  device)
 				continue;
 			}
 
-			if (!obj->IsDrawable())
-			{
-				continue;
-			}
-
 			DrawableObject * drawObj = static_cast<DrawableObject*>(obj.get());
-			
+
 			// only draw if we are in view
 			// if (m_camera->IsObjectInView(drawObj))
 			//{
-				drawObj->DebugDraw(device);
+			drawObj->DebugDraw(Graphics::GetInstance()->Device());
 			//}
 		}
 	}
-#endif
 }
 
 // load game objects via xml file
@@ -587,6 +583,10 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement)
 	else if (strcmp(gameObjectTypeName, "scrollingsprite") == 0)
 	{
 		newGameObject = new ScrollingSprite();
+	}
+	else if (strcmp(gameObjectTypeName, "solidlinestrip") == 0)
+	{
+		newGameObject = new SolidLineStrip();
 	}
 
 	GAME_ASSERT(newGameObject);

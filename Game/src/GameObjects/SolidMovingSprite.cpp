@@ -234,6 +234,17 @@ void SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 	{
 		return;
 	}
+
+	if (IsPassive() && object->IsCharacter() && object->IsOnSolidLine())
+	{
+		return;
+	}
+
+	if (IsCharacter() && IsOnSolidLine())
+	{
+		return;
+	}
+
 	// if we are not passive then push ourselves away from the object
 	// remember this behaviour can be overwritten in derived function
 	if(!m_passive && !object->IsProjectile()) // by default we don't want to be pushed by a projectile

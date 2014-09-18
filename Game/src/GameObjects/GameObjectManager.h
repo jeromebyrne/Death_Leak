@@ -31,6 +31,7 @@ public:
 
 	void Update(bool paused, float delta); // call update function on all game objects
 	void Draw(ID3D10Device * device); // call Draw on all drawable objects
+	void DebugDraw();
 
 	// this function also acts as a public initialise
 	void LoadObjectsFromFile(const char* filename);// load game objects via xml file

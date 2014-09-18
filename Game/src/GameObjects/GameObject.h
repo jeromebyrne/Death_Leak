@@ -143,6 +143,10 @@ public:
 
 	void SetAttachmentOffsetX(float x) { mAttachedToOffset.X = x; }
 
+	bool IsLevelEditLocked() const { return mLevelEditLocked; }
+
+	Vector2 GetLevelEditSelectionDimensions() const { return mLevelEditSelectionDimensions; }
+
 protected:
 
 	virtual void DrawDebugText();
@@ -193,6 +197,10 @@ private:
 	// used in the level editor for copying objects,
 	// not valid in release mode
 	TiXmlNode * mClonedXml;
+
+	bool mLevelEditLocked;
+
+	Vector2 mLevelEditSelectionDimensions;
 };
 
 #endif

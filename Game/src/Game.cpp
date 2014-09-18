@@ -270,6 +270,10 @@ void Game::Draw()
 
 	// draw all of our gameObjects
 	GameObjectManager::Instance()->Draw(m_pGraphics->Device());
+
+#if _DEBUG
+	GameObjectManager::Instance()->DebugDraw();
+#endif
 }
 
 void Game::PostDraw() // post processsing effects here

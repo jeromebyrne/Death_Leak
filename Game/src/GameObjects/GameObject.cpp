@@ -37,7 +37,9 @@ GameObject::GameObject(float x, float y , float z, float width, float height, fl
 	mIsAudioObject(false),
 	mIsWaterBlock(false),
 	mIsPlatform(false),
-	mAutoRotationValue(0.0f)
+	mAutoRotationValue(0.0f),
+	mLevelEditLocked(false),
+	mLevelEditSelectionDimensions(150,150)
 {
 	static int GAME_OBJECT_ID = 1; 
 	m_id = GAME_OBJECT_ID;
@@ -155,6 +157,8 @@ void GameObject:: XmlRead(TiXmlElement * element)
 	// updateable
 	m_updateable = XmlUtilities::ReadAttributeAsBool(element, "", "updateable");
 
+	mLevelEditLocked = XmlUtilities::ReadAttributeAsBool(element, "", "level_edit_locked");
+
 	// position 
 	m_position.X = XmlUtilities::ReadAttributeAsFloat(element, "position", "x");
 	m_position.Y = XmlUtilities::ReadAttributeAsFloat(element, "position", "y");
@@ -186,6 +190,9 @@ void GameObject::XmlWrite(TiXmlElement * element)
 
 	element->SetDoubleAttribute("parallax_x", mParallaxMultiplierX);
 	element->SetDoubleAttribute("parallax_y", mParallaxMultiplierY);
+
+	const char * levelEditLockedFlag = mLevelEditLocked ? "true" : "false";
+	element->SetAttribute("level_edit_locked", levelEditLockedFlag);
 
 	const char * updateableFlag = m_updateable ? "true" : "false";
 	element->SetAttribute("updateable", updateableFlag);
@@ -287,6 +294,13 @@ void GameObject::DebugDraw(ID3D10Device *  device)
 	{
 		DrawDebugText();
 	}
+
+	if (mLevelEditLocked)
+	{
+		DrawUtilities::DrawTexture(m_position, Vector2(100, 100), "Media\\editor\\lock.png");
+	}
+
+	DrawUtilities::DrawTexture(m_position, Vector2(mLevelEditSelectionDimensions.X, mLevelEditSelectionDimensions.Y), "Media\\editor\\selection.png");
 }
 
 void GameObject::SetRotationAngle(float radians) 

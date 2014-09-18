@@ -160,17 +160,26 @@ GameObject * LevelEditor::GetGameObjectClickedOn(list<shared_ptr<GameObject> > &
 	GameObject * selectedObj = nullptr;
 	for (auto & obj : gameObjects)
 	{
-		// ignore
+		if (obj->IsLevelEditLocked())
+		{
+			continue;
+		}
+
 		ParallaxLayer * paraLayer = dynamic_cast<ParallaxLayer*>(obj.get());
 		if (dynamic_cast<ParticleSpray*>(obj.get()) || (paraLayer && paraLayer->FollowCamX()))
 		{
 			continue;
 		}
 
-		if (worldPos.X > obj->Left() &&
-			worldPos.X < obj->Right() &&
-			worldPos.Y > obj->Bottom() &&
-			worldPos.Y < obj->Top())
+		float left = obj->Position().X - (obj->GetLevelEditSelectionDimensions().X * 0.5f);
+		float right = obj->Position().X + (obj->GetLevelEditSelectionDimensions().X * 0.5f);
+		float top = obj->Position().Y + (obj->GetLevelEditSelectionDimensions().Y * 0.5f);
+		float bottom = obj->Position().Y - (obj->GetLevelEditSelectionDimensions().Y * 0.5f);
+
+		if (worldPos.X > left &&
+			worldPos.X < right &&
+			worldPos.Y > bottom &&
+			worldPos.Y < top)
 		{
 			if (selectedObj)
 			{
