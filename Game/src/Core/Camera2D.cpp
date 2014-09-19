@@ -177,6 +177,11 @@ void Camera2D::FollowMovingObjectPanMode(MovingSprite * object, float xOffset, f
 
 bool Camera2D::IsCameraOriginInsideObject(GameObject * object)
 {
+	float right = object->Right();
+	float left = object->Left();
+	float top = object->Top();
+	float bottom = object->Bottom();
+
 	if (m_position.X < object->Right() &&
 		m_position.X > object->Left() &&
 		m_position.Y < object->Top() &&

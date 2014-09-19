@@ -56,7 +56,7 @@ void AudioObject::Update(float delta)
 			{
 				mSoundInstance->setVolume(1.0f);
 			}
-			else if (camera->IsCameraOriginInsideRect(m_position, Vector2(mFadeDimensions.X * 2.0f, m_dimensions.Y)))
+			else if (camera->IsCameraOriginInsideRect(m_position, Vector2(mFadeDimensions.X, m_dimensions.Y)))
 			{
 				Vector3 camPos = camera->Position();
 				float distX = 0;
@@ -70,13 +70,13 @@ void AudioObject::Update(float delta)
 					distX = camPos.X - Right();
 				}
 
-				float fadeLenghtX = mFadeDimensions.X - m_dimensions.X;
+				float fadeLenghtX = (mFadeDimensions.X - m_dimensions.X) * 0.5f;
 
-				float percent = 1.0f - distX / fadeLenghtX;
+				float percent = distX / fadeLenghtX;
 
-				mSoundInstance->setVolume(percent);
+				mSoundInstance->setVolume(1.0f - percent);
 			}
-			else if (camera->IsCameraOriginInsideRect(m_position, Vector2(m_dimensions.X, mFadeDimensions.Y * 2.0f)))
+			else if (camera->IsCameraOriginInsideRect(m_position, Vector2(m_dimensions.X, mFadeDimensions.Y)))
 			{
 				Vector3 camPos = camera->Position();
 				float distY = 0;
@@ -90,11 +90,61 @@ void AudioObject::Update(float delta)
 					distY = camPos.Y - Top();
 				}
 
-				float fadeLenghtY = mFadeDimensions.Y - m_dimensions.Y;
+				float fadeLenghtY = (mFadeDimensions.Y - m_dimensions.Y) * 0.5f;
 
-				float percent = 1.0f - distY / fadeLenghtY;
+				float percent =  distY / fadeLenghtY;
 
-				mSoundInstance->setVolume(percent);
+				mSoundInstance->setVolume(1.0f - percent);
+			}
+			else if (camera->IsCameraOriginInsideRect(m_position, Vector2(mFadeDimensions.X, mFadeDimensions.Y)))
+			{
+				float fadeLenghtX = (mFadeDimensions.X - m_dimensions.X) * 0.5f;
+				float fadeLenghtY = (mFadeDimensions.Y - m_dimensions.Y) * 0.5f;
+
+				Vector3 camPos = camera->Position();
+
+				float offsetX = 0;
+				float offsetY = 0; 
+
+				float xPercent = 0.0f;
+				float yPercent = 0.0f;
+
+				if (camPos.X > Right())
+				{
+					offsetX = camPos.X - Right();
+				}
+				else if (camPos.X < Left())
+				{
+					offsetX = std::abs(camPos.X - Left());
+				}
+
+				if (fadeLenghtX > 0.0f)
+				{
+					xPercent = 1.0f - (offsetX / fadeLenghtX);
+				}
+
+				if (camPos.Y > Top())
+				{
+					offsetY = camPos.Y - Top();
+				}
+				else if (camPos.Y < Bottom())
+				{
+					offsetY = std::abs(camPos.Y - Bottom());
+				}
+
+				if (fadeLenghtY > 0.0f)
+				{
+					yPercent = 1.0f - (offsetY / fadeLenghtY);
+				}
+
+				if (xPercent < yPercent)
+				{
+					mSoundInstance->setVolume(xPercent);
+				}
+				else
+				{
+					mSoundInstance->setVolume(yPercent);
+				}
 			}
 			else
 			{
