@@ -12,6 +12,7 @@
 #include "effectNoise.h"
 #include "EffectLightTexturePixelWobble.h"
 #include "EffectFoliageSway.h"
+#include "DrawUtilities.h"
 
 static const D3DXVECTOR2 kDefaultTex1 = D3DXVECTOR2(0,0);
 static const D3DXVECTOR2 kDefaultTex2 = D3DXVECTOR2(1,0);
@@ -257,6 +258,16 @@ void Sprite::RecalculateVertices()
 #ifdef _DEBUG
 	SetupDebugDraw();
 #endif
+}
+
+void Sprite::DebugDraw(ID3D10Device * graphicsdevice)
+{
+	DrawableObject::DebugDraw(graphicsdevice);
+
+	if (!IsDrawable())
+	{
+		DrawUtilities::DrawTexture(m_position, Vector2(GetLevelEditSelectionDimensions().X, GetLevelEditSelectionDimensions().Y), "Media\\editor\\not_drawable.png");
+	}
 }
 
 void Sprite::Scale(float xScale, float yScale, bool scalePosition)

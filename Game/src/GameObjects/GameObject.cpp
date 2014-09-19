@@ -39,7 +39,8 @@ GameObject::GameObject(float x, float y , float z, float width, float height, fl
 	mIsPlatform(false),
 	mAutoRotationValue(0.0f),
 	mLevelEditLocked(false),
-	mLevelEditSelectionDimensions(150,150)
+	mLevelEditSelectionDimensions(100,100),
+	mLevelEditShowSelected(false)
 {
 	static int GAME_OBJECT_ID = 1; 
 	m_id = GAME_OBJECT_ID;
@@ -76,6 +77,15 @@ void GameObject::Initialise()
 #ifdef DEBUG
 	SetupDebugDraw();
 #endif
+
+	if (m_dimensions.X < mLevelEditSelectionDimensions.X)
+	{
+		mLevelEditSelectionDimensions.X = m_dimensions.X;
+	}
+	if (m_dimensions.Y < mLevelEditSelectionDimensions.Y)
+	{
+		mLevelEditSelectionDimensions.Y = m_dimensions.Y;
+	}
 }
 
 void GameObject::SetupDebugDraw()
@@ -294,13 +304,28 @@ void GameObject::DebugDraw(ID3D10Device *  device)
 	{
 		DrawDebugText();
 	}
-
-	if (mLevelEditLocked)
+	else
 	{
-		DrawUtilities::DrawTexture(m_position, Vector2(100, 100), "Media\\editor\\lock.png");
+		//  always show the id
+		const int bufferSize = 50;
+		char array[bufferSize];
+		memset(array, 0, bufferSize);
+		sprintf(array, "ID: %i", m_id);
+		Vector2 pos = Utilities::WorldToScreen(Vector2(m_position.X - mLevelEditSelectionDimensions.X * 0.5f, m_position.Y + (mLevelEditSelectionDimensions.Y * 0.5f) + 25));
+		Graphics::GetInstance()->DrawDebugText(array, pos.X, pos.Y);
+	}
+
+	if (mLevelEditShowSelected)
+	{
+		DrawUtilities::DrawTexture(m_position, Vector2(m_dimensions.X, m_dimensions.Y), "Media\\editor\\selected.png");
 	}
 
 	DrawUtilities::DrawTexture(m_position, Vector2(mLevelEditSelectionDimensions.X, mLevelEditSelectionDimensions.Y), "Media\\editor\\selection.png");
+
+	if (mLevelEditLocked)
+	{
+		DrawUtilities::DrawTexture(Vector3(m_position.X + (mLevelEditSelectionDimensions.X * 0.5f), m_position.Y - (mLevelEditSelectionDimensions.X * 0.5f), m_position.Z), Vector2((mLevelEditSelectionDimensions.X * 0.5f), (mLevelEditSelectionDimensions.X * 0.5f)), "Media\\editor\\lock.png");
+	}
 }
 
 void GameObject::SetRotationAngle(float radians) 
@@ -320,19 +345,19 @@ void GameObject::DrawDebugText()
 	char array[bufferSize];
 	memset(array, 0, bufferSize);
 	sprintf(array, "ID: %i", m_id);
-	Vector2 pos = Utilities::WorldToScreen(Vector2(m_position.X, m_position.Y + 50));
+	Vector2 pos = Utilities::WorldToScreen(Vector2(m_position.X - 75, m_position.Y + 175));
 	Graphics::GetInstance()->DrawDebugText(array, pos.X, pos.Y);
 
 	// show x,y position
 	memset(array, 0, bufferSize);
 	sprintf(array, "X: %.02f, Y: %.02f", m_position.X, m_position.Y);
-	pos = Utilities::WorldToScreen(Vector2(m_position.X, m_position.Y + 25));
+	pos = Utilities::WorldToScreen(Vector2(m_position.X - 75, m_position.Y + 150));
 	Graphics::GetInstance()->DrawDebugText(array, pos.X, pos.Y);
 
 	// show our z depth
 	memset(array, 0, bufferSize);
 	sprintf(array, "Depth: %.02f", m_position.Z);
-	pos = Utilities::WorldToScreen(Vector2(m_position.X, m_position.Y));
+	pos = Utilities::WorldToScreen(Vector2(m_position.X - 75, m_position.Y + 125));
 	Graphics::GetInstance()->DrawDebugText(array, pos.X, pos.Y);
 }
 

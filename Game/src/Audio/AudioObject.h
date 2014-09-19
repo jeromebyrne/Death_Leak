@@ -22,6 +22,8 @@ public:
 
 private:
 
+	virtual void DebugDraw(ID3D10Device *  device) override;
+
 	string mAudioFilename;
 	bool mAdjustVolumeToCamera;
 	bool mRepeat;

@@ -52,6 +52,8 @@ public:
 
 	void SetTextureFilename(const char * fileName) { m_textureFilename = fileName; }
 
+	virtual void DebugDraw(ID3D10Device * graphicsdevice) override;
+
 protected:
 
 	ID3D10ShaderResourceView* m_texture;

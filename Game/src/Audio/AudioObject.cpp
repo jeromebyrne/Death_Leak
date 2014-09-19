@@ -1,6 +1,7 @@
 #include "precompiled.h"
 #include "AudioObject.h"
 #include "AudioManager.h"
+#include "DrawUtilities.h"
 
 AudioObject::AudioObject(float x, float y, float z, float width, float height):
 	GameObject(x,y,z,width,height),
@@ -145,4 +146,11 @@ void AudioObject::SetVolume(float value)
 	{
 		mSoundInstance->setVolume(value);
 	}
+}
+
+void AudioObject::DebugDraw(ID3D10Device *  device)
+{
+	GameObject::DebugDraw(device);
+
+	DrawUtilities::DrawTexture(m_position, Vector2(GetLevelEditSelectionDimensions().X, GetLevelEditSelectionDimensions().Y), "Media\\editor\\audio.png");
 }

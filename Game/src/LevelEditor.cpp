@@ -39,13 +39,16 @@ void LevelEditor::Update()
 				{
 					// deselect
 					mSelectedObject->ShowDebugText(false);
+					mSelectedObject->SetLevelEditShowSelected(false);
 					mSelectedObject = 0;
 				}
 				else
 				{
 					mSelectedObject->ShowDebugText(false);
+					mSelectedObject->SetLevelEditShowSelected(false);
 					mSelectedObject = obj;
 					mSelectedObject->ShowDebugText(true);
+					mSelectedObject->SetLevelEditShowSelected(true);
 				}
 			}
 
@@ -102,6 +105,7 @@ void LevelEditor::Update()
 			if (mSelectedObject)	
 			{
 				mSelectedObject->ShowDebugText(true);
+				mSelectedObject->SetLevelEditShowSelected(true);
 			}
 		
 			pressingSelect = true;
@@ -351,7 +355,9 @@ void LevelEditor::CheckForCopy()
 				newObject->SetY(mSelectedObject->Y() + 50);
 
 				mSelectedObject->ShowDebugText(false);
+				mSelectedObject->SetLevelEditShowSelected(false);
 				newObject->ShowDebugText(true);
+				newObject->SetLevelEditShowSelected(true);
 
 				mSelectedObject = newObject;
 

@@ -147,6 +147,8 @@ public:
 
 	Vector2 GetLevelEditSelectionDimensions() const { return mLevelEditSelectionDimensions; }
 
+	void SetLevelEditShowSelected(bool value) { mLevelEditShowSelected = value; }
+
 protected:
 
 	virtual void DrawDebugText();
@@ -201,6 +203,8 @@ private:
 	bool mLevelEditLocked;
 
 	Vector2 mLevelEditSelectionDimensions;
+
+	bool mLevelEditShowSelected;
 };
 
 #endif
