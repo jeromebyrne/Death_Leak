@@ -121,6 +121,65 @@ public:
 	{
 		DrawTexture(centrePoint, Vector2(radius, radius), "Media\\debug\\circle.png");
 	}
+
+	static void DrawLine(Vector2 & startPos, Vector2 &endPos)
+	{
+		EffectBasic * basicEffect = static_cast<EffectBasic*>(EffectManager::Instance()->GetEffect("effectbasic"));
+
+		// reset world matrix
+		D3DXMATRIX identity;
+		D3DXMatrixIdentity(&identity);
+		basicEffect->SetWorld((float*)&identity);
+
+		// set the alpha value
+		basicEffect->SetAlpha(1.0f);
+
+		// get the graphics device
+		ID3D10Device * device = Graphics::GetInstance()->Device();
+
+		// Set the input layout on the device
+		device->IASetInputLayout(basicEffect->InputLayout);
+
+		ID3D10Buffer * debugLineVBuffer = nullptr;
+
+		VertexPositionColor lineVertices[] =
+		{
+			{ D3DXVECTOR3(startPos.X, startPos.Y, 0), D3DXVECTOR4(1.0f, 1.0f, 1.0f, 1.0f) },
+			{ D3DXVECTOR3(endPos.X, endPos.Y, 0), D3DXVECTOR4(1.0f, 1.0f, 1.0f, 1.0f) }
+		};
+
+		if (debugLineVBuffer == nullptr)
+		{
+			D3D10_BUFFER_DESC bd;
+			bd.Usage = D3D10_USAGE_DEFAULT;
+			bd.ByteWidth = sizeof(lineVertices[0]) * 8;
+			bd.BindFlags = D3D10_BIND_VERTEX_BUFFER;
+			bd.CPUAccessFlags = 0;
+			bd.MiscFlags = 0;
+			D3D10_SUBRESOURCE_DATA InitData;
+			InitData.pSysMem = lineVertices;
+
+			device->CreateBuffer(&bd, &InitData, &debugLineVBuffer);
+		}
+
+		// Set vertex buffer
+		UINT stride = sizeof(VertexPositionColor);
+		UINT offset = 0;
+		device->IASetVertexBuffers(0, 1, &debugLineVBuffer, &stride, &offset);
+
+		// Set primitive topology
+		device->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_LINELIST);
+
+		D3D10_TECHNIQUE_DESC techDesc;
+		basicEffect->CurrentTechnique->GetDesc(&techDesc);
+		for (UINT p = 0; p < techDesc.Passes; ++p)
+		{
+			basicEffect->CurrentTechnique->GetPassByIndex(p)->Apply(0);
+			device->Draw(2, 0);
+		}
+
+		debugLineVBuffer->Release();
+	}
 };
 
 #endif

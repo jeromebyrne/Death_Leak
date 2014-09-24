@@ -3,13 +3,13 @@
 #include "gameobjectmanager.h"
 
 PathingPlatform::PathingPlatform(float x, float y, float z, float width, float height, float breadth,float groundFriction, float airResistance):
-Platform(x, y, z, width, height, breadth, groundFriction, airResistance),
-mCurrentPathState(kNotPathing),
-mCurrentPathIndex(0),
-mPlatformSpeed(8),
-mClosestPointToNextTarget((numeric_limits<int>::max)(), (numeric_limits<int>::max)(), 0.f),
-mPathingType(kAlwaysPathing),
-mPathForward(true)
+	Platform(x, y, z, width, height, breadth, groundFriction, airResistance),
+	mCurrentPathState(kNotPathing),
+	mCurrentPathIndex(0),
+	mPlatformSpeed(8),
+	mClosestPointToNextTarget((numeric_limits<int>::max)(), (numeric_limits<int>::max)(), 0.f),
+	mPathingType(kAlwaysPathing),
+	mPathForward(true)
 {
 }
 
@@ -153,10 +153,11 @@ void PathingPlatform::XmlWrite(TiXmlElement * element)
 	for (int i = 0; i < mPathPoints.size(); ++i)
 	{
 		TiXmlElement * point = new TiXmlElement("point");
-		point->SetAttribute("x", Utilities::ConvertDoubleToString(mPathPoints[i].X).c_str());
-		point->SetAttribute("y", Utilities::ConvertDoubleToString(mPathPoints[i].Y).c_str());
+		point->SetDoubleAttribute("x", mPathPoints[i].X);
+		point->SetDoubleAttribute("y", mPathPoints[i].Y);
 		pathpoints->LinkEndChild(point);
 	}
+
 	element->LinkEndChild(pathpoints);
 }
 

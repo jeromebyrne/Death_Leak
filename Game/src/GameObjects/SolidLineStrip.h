@@ -12,7 +12,6 @@ public:
 	virtual ~SolidLineStrip(void);
 	virtual void Update(float delta) override;
 	virtual void Initialise() override;
-	virtual void Draw(ID3D10Device * device, Camera2D * camera) override;
 	virtual void XmlRead(TiXmlElement * element) override;
 	virtual void XmlWrite(TiXmlElement * element) override;
 	virtual void OnCollision(SolidMovingSprite * object) override;
@@ -22,22 +21,28 @@ public:
 
 private:
 
-	virtual void SetupDebugDraw() override;
+	struct SolidLinePoint
+	{
+		Vector2 LocalPosition;
+		Vector2 WorldPosition;
+	};
 
-	void CalculateVariables();
+	struct SolidLine
+	{
+		SolidLinePoint StartPoint;
+		SolidLinePoint EndPoint;
+		Vector2 Normal;
+		Vector2 BoundingBox;
+		Vector2 LineDirection;
+		float Length;
+	};
 
-	bool Intersect(Vector2 & otherStart, Vector2 & otherEnd, Vector2 & intersectPointOut);
+	void CalculateLines();
 
-	Vector2 mStartPos;
-	Vector2 mEndPos;
-	float mLength;
-	Vector2 mLineDirection;
-	Vector2 mNormal;
-	Vector2 mWorldStartPos;
-	Vector2 mWorldEndPos;
+	bool Intersect(SolidLine & solidLine, Vector2 & otherStart, Vector2 & otherEnd, Vector2 & intersectPointOut);
 
-	VertexPositionColor mDebugLineVertices[2];
-	ID3D10Buffer* mDebugLineVBuffer;
+	vector<SolidLinePoint> mPoints;
+	vector<SolidLine> mLines;
 };
 
 #endif
