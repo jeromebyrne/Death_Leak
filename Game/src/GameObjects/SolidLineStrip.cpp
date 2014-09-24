@@ -133,9 +133,22 @@ void SolidLineStrip::DebugDraw(ID3D10Device *  device)
 {
 	SolidMovingSprite::DebugDraw(device);
 
+	unsigned count = 0;
 	for (auto & l : mLines)
 	{
 		DrawUtilities::DrawLine(l.StartPoint.WorldPosition, l.EndPoint.WorldPosition);
+
+		if (count == 0)
+		{
+			DrawUtilities::DrawTexture(Vector3(l.StartPoint.WorldPosition.X, l.StartPoint.WorldPosition.Y, 3),
+										Vector2(50, 50),
+										"Media\\editor\\circle.png");
+		}
+
+		DrawUtilities::DrawTexture(Vector3(l.EndPoint.WorldPosition.X, l.EndPoint.WorldPosition.Y, 3),
+									Vector2(50, 50),
+									"Media\\editor\\circle.png");
+		++count;
 	}
 }
 
