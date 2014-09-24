@@ -40,7 +40,8 @@ GameObject::GameObject(float x, float y , float z, float width, float height, fl
 	mAutoRotationValue(0.0f),
 	mLevelEditLocked(false),
 	mLevelEditSelectionDimensions(100,100),
-	mLevelEditShowSelected(false)
+	mLevelEditShowSelected(false),
+	mIsSolidLineStrip(false)
 {
 	static int GAME_OBJECT_ID = 1; 
 	m_id = GAME_OBJECT_ID;

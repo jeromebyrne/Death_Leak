@@ -46,6 +46,14 @@ public:
 		return Vector2(newX, newY);
 	}
 
+	inline Vector2 operator * (float value)
+	{
+		float newX = X * value;
+		float newY = Y * value;
+
+		return Vector2(newX, newY);
+	}
+
 	float LengthSquared();
 };
 

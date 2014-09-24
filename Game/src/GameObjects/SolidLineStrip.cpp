@@ -6,8 +6,8 @@ SolidLineStrip::SolidLineStrip(float x, float y, float z, float width, float hei
 	SolidMovingSprite(x, y, z, width, height, breadth)
 {
 	mIsSolidLine = true;
-
 	mDrawable = false;
+	mIsSolidLineStrip = true;
 }
 
 SolidLineStrip::~SolidLineStrip(void)
@@ -94,6 +94,12 @@ void SolidLineStrip::OnCollision(SolidMovingSprite * object)
 	{
 		for (auto & l : mLines)
 		{
+			if (!BoxHitCheck(l, object))
+			{
+				object->SetIsOnSolidLine(false);
+				continue;
+			}
+
 			Vector2 intersectPoint;
 			bool intersect = Intersect(l,
 										Vector2(object->CollisionCentreX(), object->CollisionCentreY()),
@@ -127,21 +133,9 @@ void SolidLineStrip::DebugDraw(ID3D10Device *  device)
 {
 	SolidMovingSprite::DebugDraw(device);
 
-	if (mLines.size() < 2)
-	{
-		return;
-	}
-
-	unsigned count = 0;
 	for (auto & l : mLines)
 	{
-		if (count == 0)
-		{
-			++count;
-			continue;
-		}
-
-		DrawUtilities::DrawLine(l.StartPoint.LocalPosition, l.EndPoint.LocalPosition);
+		DrawUtilities::DrawLine(l.StartPoint.WorldPosition, l.EndPoint.WorldPosition);
 	}
 }
 
@@ -156,12 +150,38 @@ void SolidLineStrip::CalculateLines()
 	}
 
 	int count = 0;
+	float maxX = 0;
+	float minX = 0;
+	float maxY = 0;
+	float minY = 0;
+
 	for (auto & p : mPoints)
 	{
 		if (count == 0)
 		{
+			maxX = p.LocalPosition.X;
+			minX = p.LocalPosition.X;
+			maxY = p.LocalPosition.Y;
+			minY = p.LocalPosition.Y;
 			++count;
 			continue;
+		}
+
+		if (p.LocalPosition.X < minX)
+		{
+			minX = p.LocalPosition.X;
+		}
+		if (p.LocalPosition.X > maxX)
+		{
+			maxX = p.LocalPosition.X;
+		}
+		if (p.LocalPosition.Y > maxY)
+		{
+			maxY = p.LocalPosition.Y;
+		}
+		if (p.LocalPosition.Y < minY)
+		{
+			minY = p.LocalPosition.Y;
 		}
 
 		SolidLinePoint startPoint = mPoints[count -1];
@@ -190,15 +210,26 @@ void SolidLineStrip::CalculateLines()
 		solidLine.BoundingBox.X = std::abs(endPoint.LocalPosition.X - startPoint.LocalPosition.X);
 		solidLine.BoundingBox.Y = std::abs(endPoint.LocalPosition.Y - startPoint.LocalPosition.Y);
 
+		solidLine.MidPointWorld = solidLine.StartPoint.WorldPosition + (solidLine.LineDirection * (solidLine.Length * 0.5f));
+
 		mLines.push_back(solidLine);
 
 		++count;
 	}
 
-	// TODO: calculate overall collision dimensions
-	m_collisionBoxDimensions = Vector3(99999, 99999, 3);
-}
+	m_collisionBoxDimensions.X = std::abs(maxX - minX);
+	m_collisionBoxDimensions.Y = std::abs(maxY - minY);
 
+	if (m_collisionBoxDimensions.Y < 400)
+	{
+		m_collisionBoxDimensions.Y = 400;
+	}
+
+	mCollisionBoxOffset.X = (maxX + minX) * 0.5f;
+	mCollisionBoxOffset.Y = (maxY + minY) * 0.5f;
+
+	m_dimensions = Vector3(maxX, maxY, 1);
+}
 
 bool SolidLineStrip::Intersect(SolidLine & solidLine, Vector2 & otherStart, Vector2 & otherEnd, Vector2 & intersectPointOut)
 {
@@ -248,4 +279,13 @@ bool SolidLineStrip::Intersect(SolidLine & solidLine, Vector2 & otherStart, Vect
 	}
 
 	return true;
+}
+
+bool SolidLineStrip::BoxHitCheck(SolidLine & solidLine, SolidMovingSprite * object)
+{
+	return Utilities::IsSolidSpriteInRectangle(object,
+												solidLine.MidPointWorld.X,
+												solidLine.MidPointWorld.Y,
+												solidLine.BoundingBox.X,
+												solidLine.BoundingBox.Y);
 }

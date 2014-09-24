@@ -45,10 +45,10 @@ public:
 	
 		float objectX = object->X() - object->GetCurrentParallaxOffsetX();
 		float objectY = object->Y() - object->GetCurrentParallaxOffsetY();
-		float rectLeft = (rectCentreX - rectWidth/2);
-		float rectRight = (rectCentreX + rectWidth/2);
-		float rectBottom = (rectCentreY - rectHeight/2);
-		float rectTop = (rectCentreY + rectHeight/2);
+		float rectLeft = (rectCentreX - rectWidth * 0.5f);
+		float rectRight = (rectCentreX + rectWidth * 0.5f);
+		float rectBottom = (rectCentreY - rectHeight * 0.5f);
+		float rectTop = (rectCentreY + rectHeight * 0.5f);
 
 		// first check if the objects origin is in the zone
 		if(objectX > rectLeft && objectX < rectRight &&
@@ -68,7 +68,7 @@ public:
 			if(objectRight > rectLeft && objectLeft < rectRight)
 			{
 				// now check if we are partially in view on the y plane
-				if(objectTop > rectBottom && rectTop < rectTop)
+				if (objectTop > rectBottom && objectBottom < rectTop)
 				{
 					// we are viewable
 					inRect = true;
@@ -109,7 +109,7 @@ public:
 			if(objectRight > rectLeft && objectLeft < rectRight)
 			{
 				// now check if we are partially in view on the y plane
-				if(objectTop > rectBottom && rectTop < rectTop)
+				if(objectTop > rectBottom && objectBottom < rectTop)
 				{
 					// we are viewable
 					inRect = true;

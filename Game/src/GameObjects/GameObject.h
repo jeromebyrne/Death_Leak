@@ -128,6 +128,8 @@ public:
 
 	bool IsPlatform() const { return mIsPlatform; }
 
+	bool IsSolidLineStrip() const { return mIsSolidLineStrip; }
+
 	virtual void AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset, bool trackOrientation = true);
 	void Detach();
 
@@ -174,6 +176,7 @@ protected:
 	bool mIsAudioObject;
 	bool mIsWaterBlock;
 	bool mIsPlatform;
+	bool mIsSolidLineStrip;
 	std::shared_ptr<GameObject> mAttachedTo;
 	Vector3 mAttachedToOffset;
 	float mParallaxMultiplierX;

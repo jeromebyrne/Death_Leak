@@ -35,11 +35,14 @@ private:
 		Vector2 BoundingBox;
 		Vector2 LineDirection;
 		float Length;
+		Vector2 MidPointWorld;
 	};
 
 	void CalculateLines();
 
 	bool Intersect(SolidLine & solidLine, Vector2 & otherStart, Vector2 & otherEnd, Vector2 & intersectPointOut);
+
+	bool BoxHitCheck(SolidLine & solidLine, SolidMovingSprite * object);
 
 	vector<SolidLinePoint> mPoints;
 	vector<SolidLine> mLines;

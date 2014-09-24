@@ -19,7 +19,8 @@ public:
 
 	void DetectAndResolve(int camX, int camY);
 
-	void SetCollisionArea(int width, int height) {
+	void SetCollisionArea(int width, int height) 
+	{
 		m_detectAreaDimensions.X = width;
 		m_detectAreaDimensions.Y = height;
 	}
