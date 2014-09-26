@@ -12,9 +12,17 @@ public:
 
 	void Update();
 
+	void Draw();
+
 	void SetLevelFile(const char * level) { mCurrentLevel = level; }
 
+	bool IsTerrainEditing() const { return mTerrainEditing; }
+
 private:
+
+	void CheckInput_TerrainEditing();
+
+	void CheckInput_Regular();
 
 	void CheckForSavePressed();
 
@@ -52,6 +60,8 @@ private:
 	void UpdateParallaxLayers();
 
 	std::string mCurrentLevel;
+
+	bool mTerrainEditing;
 };
 
 #endif

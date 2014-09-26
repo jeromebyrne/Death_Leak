@@ -41,6 +41,8 @@ public:
 	static void Create();
 	static void Destroy();
 
+	bool IsLevelEditTerrainMode() const;
+
 #if _DEBUG
 	void SetLevelEditFilename(const char * file);
 #endif

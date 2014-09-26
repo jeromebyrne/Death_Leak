@@ -1,15 +1,16 @@
-
 #include "precompiled.h"
 #include "LevelEditor.h"
 #include "dxwindow.h"
 #include "parallaxlayer.h"
 #include "AudioObject.h"
 #include "ScrollingSprite.h"
+#include "Graphics.h"
 
 #if _DEBUG
 
 LevelEditor::LevelEditor(void):
-	mSelectedObject(0)
+	mSelectedObject(nullptr),
+	mTerrainEditing(false)
 {
 }
 
@@ -20,125 +21,38 @@ LevelEditor::~LevelEditor(void)
 
 void LevelEditor::Update()
 {
+	static bool isPressingTerrainEdit = false;
+
+	if (!isPressingTerrainEdit && GetAsyncKeyState('T') < 0)
+	{
+		isPressingTerrainEdit = true;
+
+		if (mTerrainEditing)
+		{
+			mTerrainEditing = false;
+		}
+		else
+		{
+			mTerrainEditing = true;
+		}
+	}
+	if (GetAsyncKeyState('T') >= 0)
+	{
+		isPressingTerrainEdit = false;
+	}
+
 	UpdateParallaxLayers();
 
-	list<shared_ptr<GameObject> > & gameObjects = GameObjectManager::Instance()->GetGameObjectList();
-
-	static bool pressingSelect = false;
-	static bool pressingPlace = false;
-
-	if (mSelectedObject)
+	if (mTerrainEditing)
 	{
-		if (!pressingSelect && GetAsyncKeyState(VK_RBUTTON) < 0 && GetAsyncKeyState('R') >= 0)
-		{
-			GameObject * obj = GetGameObjectClickedOn(gameObjects);
-
-			if (obj)
-			{
-				if (obj == mSelectedObject)
-				{
-					// deselect
-					mSelectedObject->ShowDebugText(false);
-					mSelectedObject->SetLevelEditShowSelected(false);
-					mSelectedObject = 0;
-				}
-				else
-				{
-					mSelectedObject->ShowDebugText(false);
-					mSelectedObject->SetLevelEditShowSelected(false);
-					mSelectedObject = obj;
-					mSelectedObject->ShowDebugText(true);
-					mSelectedObject->SetLevelEditShowSelected(true);
-				}
-			}
-
-			pressingSelect = true;
-		}
-
-		if (mSelectedObject)
-		{
-			if (GetAsyncKeyState(VK_LBUTTON) < 0 && GetAsyncKeyState('X') >= 0  && GetAsyncKeyState('C') >= 0 && GetAsyncKeyState('R') >= 0)
-			{
-				// drag
-				// get the mouse in world coordinates and set the game objects position
-				POINT currentMouse;
-				GetCursorPos(&currentMouse);
-				ScreenToClient(DXWindow::GetInstance()->Hwnd(), &currentMouse);
-
-				// the backbuffer may be larger in size than the the window (Windows scaling) so scale accordingly
-				float scaleX = Graphics::GetInstance()->BackBufferWidth() / DXWindow::GetInstance()->GetWindowDimensions().X;
-				float scaleY = Graphics::GetInstance()->BackBufferHeight() / DXWindow::GetInstance()->GetWindowDimensions().Y;
-
-				Vector2 worldPos = Utilities::ScreenToWorld(Vector2(currentMouse.x * scaleX, currentMouse.y * scaleY));
-
-				mSelectedObject->SetX(worldPos.X);
-				mSelectedObject->SetY(worldPos.Y);
-
-				Sprite * sprite = GetAsSprite(mSelectedObject);
-				if (sprite)
-				{
-					sprite->ApplyChange(Graphics::GetInstance()->Device());
-					sprite->Update(0);
-				}
-				MovingSprite * movingSprite = GetAsMovingSprite(mSelectedObject);
-				if (movingSprite)
-				{
-					movingSprite->SetVelocityXYZ(0,0,0); 
-				}
-
-				ScrollingSprite * scrollingSprite = GetAsScrollingSprite(mSelectedObject);
-				if (scrollingSprite)
-				{
-					scrollingSprite->SetLerpStartPos(worldPos);
-				}
-
-				pressingPlace = true;
-			}
-		}
+		CheckInput_TerrainEditing();
 	}
 	else
 	{
-		if (!pressingSelect && GetAsyncKeyState(VK_RBUTTON) < 0 && GetAsyncKeyState('R') >= 0)
-		{
-			mSelectedObject = GetGameObjectClickedOn(gameObjects);
-
-			if (mSelectedObject)	
-			{
-				mSelectedObject->ShowDebugText(true);
-				mSelectedObject->SetLevelEditShowSelected(true);
-			}
-		
-			pressingSelect = true;
-		}
+		CheckInput_Regular();
 	}
 
-	if (GetAsyncKeyState(VK_RBUTTON) >= 0)
-	{
-		pressingSelect = false;
-	}
-	if (GetAsyncKeyState(VK_LBUTTON) >= 0)
-	{
-		pressingPlace = false;
-	}
-
-	CheckForZChange();
-
-	CheckForSpriteScaling();
-
-	CheckForCollisionBoxScaling();
-
-	CheckFlippingSprite();
-
-	CheckForSettingNativeRes();
-
-	CheckForRotating();
-
-	CheckForDeleting();
-
-	CheckForSavePressed();
-
-	CheckForCopy();
-
+	list<shared_ptr<GameObject> > & gameObjects = GameObjectManager::Instance()->GetGameObjectList();
 	for (auto & obj : gameObjects)
 	{
 		if (obj->GetParallaxMultiplierX() != 1.0f ||
@@ -627,4 +541,138 @@ void LevelEditor::CheckForRotating()
 		}
 	}
 }
+
+void LevelEditor::CheckInput_TerrainEditing()
+{
+	CheckForSavePressed();
+}
+
+void LevelEditor::CheckInput_Regular()
+{
+	list<shared_ptr<GameObject> > & gameObjects = GameObjectManager::Instance()->GetGameObjectList();
+
+	static bool pressingSelect = false;
+	static bool pressingPlace = false;
+
+	if (mSelectedObject)
+	{
+		if (!pressingSelect && GetAsyncKeyState(VK_RBUTTON) < 0 && GetAsyncKeyState('R') >= 0)
+		{
+			GameObject * obj = GetGameObjectClickedOn(gameObjects);
+
+			if (obj)
+			{
+				if (obj == mSelectedObject)
+				{
+					// deselect
+					mSelectedObject->ShowDebugText(false);
+					mSelectedObject->SetLevelEditShowSelected(false);
+					mSelectedObject = 0;
+				}
+				else
+				{
+					mSelectedObject->ShowDebugText(false);
+					mSelectedObject->SetLevelEditShowSelected(false);
+					mSelectedObject = obj;
+					mSelectedObject->ShowDebugText(true);
+					mSelectedObject->SetLevelEditShowSelected(true);
+				}
+			}
+
+			pressingSelect = true;
+		}
+
+		if (mSelectedObject)
+		{
+			if (GetAsyncKeyState(VK_LBUTTON) < 0 && GetAsyncKeyState('X') >= 0 && GetAsyncKeyState('C') >= 0 && GetAsyncKeyState('R') >= 0)
+			{
+				// drag
+				// get the mouse in world coordinates and set the game objects position
+				POINT currentMouse;
+				GetCursorPos(&currentMouse);
+				ScreenToClient(DXWindow::GetInstance()->Hwnd(), &currentMouse);
+
+				// the backbuffer may be larger in size than the the window (Windows scaling) so scale accordingly
+				float scaleX = Graphics::GetInstance()->BackBufferWidth() / DXWindow::GetInstance()->GetWindowDimensions().X;
+				float scaleY = Graphics::GetInstance()->BackBufferHeight() / DXWindow::GetInstance()->GetWindowDimensions().Y;
+
+				Vector2 worldPos = Utilities::ScreenToWorld(Vector2(currentMouse.x * scaleX, currentMouse.y * scaleY));
+
+				mSelectedObject->SetX(worldPos.X);
+				mSelectedObject->SetY(worldPos.Y);
+
+				Sprite * sprite = GetAsSprite(mSelectedObject);
+				if (sprite)
+				{
+					sprite->ApplyChange(Graphics::GetInstance()->Device());
+					sprite->Update(0);
+				}
+				MovingSprite * movingSprite = GetAsMovingSprite(mSelectedObject);
+				if (movingSprite)
+				{
+					movingSprite->SetVelocityXYZ(0, 0, 0);
+				}
+
+				ScrollingSprite * scrollingSprite = GetAsScrollingSprite(mSelectedObject);
+				if (scrollingSprite)
+				{
+					scrollingSprite->SetLerpStartPos(worldPos);
+				}
+
+				pressingPlace = true;
+			}
+		}
+	}
+	else
+	{
+		if (!pressingSelect && GetAsyncKeyState(VK_RBUTTON) < 0 && GetAsyncKeyState('R') >= 0)
+		{
+			mSelectedObject = GetGameObjectClickedOn(gameObjects);
+
+			if (mSelectedObject)
+			{
+				mSelectedObject->ShowDebugText(true);
+				mSelectedObject->SetLevelEditShowSelected(true);
+			}
+
+			pressingSelect = true;
+		}
+	}
+
+	if (GetAsyncKeyState(VK_RBUTTON) >= 0)
+	{
+		pressingSelect = false;
+	}
+	if (GetAsyncKeyState(VK_LBUTTON) >= 0)
+	{
+		pressingPlace = false;
+	}
+
+	CheckForZChange();
+
+	CheckForSpriteScaling();
+
+	CheckForCollisionBoxScaling();
+
+	CheckFlippingSprite();
+
+	CheckForSettingNativeRes();
+
+	CheckForRotating();
+
+	CheckForDeleting();
+
+	CheckForSavePressed();
+
+	CheckForCopy();
+}
+
+void LevelEditor::Draw()
+{
+	if (mTerrainEditing)
+	{
+		Graphics::GetInstance()->DrawDebugText("Terrain Edit Mode", 100, 100);
+	}
+}
+
 #endif

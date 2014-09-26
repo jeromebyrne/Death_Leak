@@ -273,6 +273,11 @@ void Game::Draw()
 
 #if _DEBUG
 	GameObjectManager::Instance()->DebugDraw();
+
+	if (mLevelEditMode && mlevelEditor)
+	{
+		mlevelEditor->Draw();
+	}
 #endif
 }
 
@@ -366,5 +371,15 @@ void Game::Destroy()
 
 	delete mInstance;
 	mInstance = nullptr;
+}
+
+bool Game::IsLevelEditTerrainMode() const
+{
+	if (mlevelEditor && mlevelEditor->IsTerrainEditing())
+	{
+		return true;
+	}
+
+	return false;
 }
 

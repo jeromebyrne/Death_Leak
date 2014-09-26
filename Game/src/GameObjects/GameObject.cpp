@@ -4,6 +4,7 @@
 #include "MaterialManager.h"
 #include "DrawUtilities.h"
 #include "Game.h"
+#include "SolidLineStrip.h"
 
 const float kMaxRadians = 6.28318531; // 360 degrees
 
@@ -259,6 +260,12 @@ void GameObject::Scale(float xScale, float yScale, bool scalePosition)
 
 void GameObject::DebugDraw(ID3D10Device *  device)
 {
+	if (Game::GetInstance()->IsLevelEditTerrainMode() && !dynamic_cast<SolidLineStrip*>(this))
+	{
+		// If we are terrain editing then just highlight the terrain (SolidLineStrip)
+		return;
+	}
+
 	// get our basic effect to draw our lines
 	EffectBasic * basicEffect = static_cast<EffectBasic*>(EffectManager::Instance()->GetEffect("effectbasic"));
 
