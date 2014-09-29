@@ -241,7 +241,11 @@ void SolidLineStrip::CalculateLines()
 	mCollisionBoxOffset.X = (maxX + minX) * 0.5f;
 	mCollisionBoxOffset.Y = (maxY + minY) * 0.5f;
 
-	m_dimensions = Vector3(maxX, maxY, 1);
+	m_dimensions = Vector3(m_collisionBoxDimensions.X + std::abs(mCollisionBoxOffset.X) * 2.0f, 
+							m_collisionBoxDimensions.Y + std::abs(mCollisionBoxOffset.Y) * 2.0f, 
+							1);
+
+	bool brk = true;
 }
 
 bool SolidLineStrip::Intersect(SolidLine & solidLine, Vector2 & otherStart, Vector2 & otherEnd, Vector2 & intersectPointOut)

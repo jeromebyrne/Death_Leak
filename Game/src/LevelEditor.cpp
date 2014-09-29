@@ -5,12 +5,14 @@
 #include "AudioObject.h"
 #include "ScrollingSprite.h"
 #include "Graphics.h"
+#include "SolidLineStrip.h"
 
 #if _DEBUG
 
 LevelEditor::LevelEditor(void):
 	mSelectedObject(nullptr),
-	mTerrainEditing(false)
+	mTerrainEditing(false),
+	mSelectedLineStrip(nullptr)
 {
 }
 
@@ -65,15 +67,7 @@ void LevelEditor::Update()
 
 GameObject * LevelEditor::GetGameObjectClickedOn(list<shared_ptr<GameObject> > & gameObjects)
 {
-	POINT currentMouse;
-	GetCursorPos(&currentMouse);
-	ScreenToClient(DXWindow::GetInstance()->Hwnd(), &currentMouse);
-
-	// the backbuffer may be larger in size than the the window (Windows scaling) so scale accordingly
-	float scaleX = Graphics::GetInstance()->BackBufferWidth() / DXWindow::GetInstance()->GetWindowDimensions().X;
-	float scaleY = Graphics::GetInstance()->BackBufferHeight() / DXWindow::GetInstance()->GetWindowDimensions().Y;
-
-	Vector2 worldPos = Utilities::ScreenToWorld(Vector2(currentMouse.x * scaleX, currentMouse.y * scaleY));
+	Vector2 worldPos = GetMouseWorldPos();
 
 	GameObject * selectedObj = nullptr;
 	for (auto & obj : gameObjects)
@@ -544,6 +538,58 @@ void LevelEditor::CheckForRotating()
 
 void LevelEditor::CheckInput_TerrainEditing()
 {
+	list<shared_ptr<GameObject> > & gameObjects = GameObjectManager::Instance()->GetGameObjectList();
+
+	static bool pressingSelect = false;
+
+	if (mSelectedLineStrip)
+	{
+		if (!pressingSelect && GetAsyncKeyState(VK_RBUTTON) < 0)
+		{
+			SolidLineStrip * obj = GetSolidLineStripClickedOn(gameObjects);
+
+			if (obj)
+			{
+				if (obj == mSelectedLineStrip)
+				{
+					mSelectedLineStrip->ShowDebugText(false);
+					mSelectedLineStrip->SetLevelEditShowSelected(false);
+					mSelectedLineStrip = nullptr;
+				}
+				else
+				{
+					mSelectedLineStrip->ShowDebugText(false);
+					mSelectedLineStrip->SetLevelEditShowSelected(false);
+					mSelectedLineStrip = obj;
+					mSelectedLineStrip->ShowDebugText(true);
+					mSelectedLineStrip->SetLevelEditShowSelected(true);
+				}
+
+				pressingSelect = false;
+			}
+		}
+	}
+	else
+	{
+		if (!pressingSelect && GetAsyncKeyState(VK_RBUTTON) < 0)
+		{
+			mSelectedLineStrip = GetSolidLineStripClickedOn(gameObjects);
+
+			if (mSelectedLineStrip)
+			{
+				mSelectedLineStrip->ShowDebugText(true);
+				mSelectedLineStrip->SetLevelEditShowSelected(true);
+			}
+
+			pressingSelect = true;
+		}
+	}
+
+	if (GetAsyncKeyState(VK_RBUTTON) >= 0)
+	{
+		pressingSelect = false;
+	}
+
 	CheckForSavePressed();
 }
 
@@ -567,7 +613,7 @@ void LevelEditor::CheckInput_Regular()
 					// deselect
 					mSelectedObject->ShowDebugText(false);
 					mSelectedObject->SetLevelEditShowSelected(false);
-					mSelectedObject = 0;
+					mSelectedObject = nullptr;
 				}
 				else
 				{
@@ -673,6 +719,79 @@ void LevelEditor::Draw()
 	{
 		Graphics::GetInstance()->DrawDebugText("Terrain Edit Mode", 100, 100);
 	}
+
+	Vector2 mousePos = GetMouseWorldPos();
+
+	Graphics::GetInstance()->DrawDebugText(Utilities::getFormattedString("Mouse X,Y: %f %f", mousePos.X, mousePos.Y).c_str(), 100, 150);
+}
+
+SolidLineStrip * LevelEditor::GetSolidLineStripClickedOn(list<shared_ptr<GameObject> > & gameObjects)
+{
+	Vector2 worldPosClicked = GetMouseWorldPos();
+
+	for (auto & g : gameObjects)
+	{
+		SolidLineStrip * solidLineStrip = dynamic_cast<SolidLineStrip*>(g.get());
+
+		if (!solidLineStrip)
+		{
+			continue;
+		}
+
+		if (solidLineStrip->IsLevelEditLocked())
+		{
+			continue;
+		}
+		
+		float left = solidLineStrip->Position().X - (solidLineStrip->Dimensions().X * 0.5f);
+		float right = solidLineStrip->Position().X + (solidLineStrip->Dimensions().X * 0.5f);
+		float top = solidLineStrip->Position().Y + (solidLineStrip->Dimensions().Y * 0.5f);
+		float bottom = solidLineStrip->Position().Y - (solidLineStrip->Dimensions().Y * 0.5f);
+
+		if (!(worldPosClicked.X > left &&
+			worldPosClicked.X < right &&
+			worldPosClicked.Y > bottom &&
+			worldPosClicked.Y < top))
+		{
+			continue;
+		}
+
+		const vector<SolidLineStrip::SolidLinePoint> points = solidLineStrip->GetLinePoints();
+		for (auto & p : points)
+		{
+			float pointLeft = solidLineStrip->Position().X - 50;
+			float pointRight = solidLineStrip->Position().X + 50;
+			float pointTop = solidLineStrip->Position().Y + 50;
+			float pointBottom = solidLineStrip->Position().Y - 50;
+
+			if (!(worldPosClicked.X > pointLeft &&
+				worldPosClicked.X < pointRight &&
+				worldPosClicked.Y > pointBottom &&
+				worldPosClicked.Y < pointTop))
+			{
+				continue;
+			}
+
+			LOG_INFO("Clicking on a solid line point");
+		}
+	}
+
+	return nullptr;
+}
+
+Vector2 LevelEditor::GetMouseWorldPos()
+{
+	POINT currentMouse;
+	GetCursorPos(&currentMouse);
+	ScreenToClient(DXWindow::GetInstance()->Hwnd(), &currentMouse);
+
+	// the backbuffer may be larger in size than the the window (Windows scaling) so scale accordingly
+	float scaleX = Graphics::GetInstance()->BackBufferWidth() / DXWindow::GetInstance()->GetWindowDimensions().X;
+	float scaleY = Graphics::GetInstance()->BackBufferHeight() / DXWindow::GetInstance()->GetWindowDimensions().Y;
+
+	Vector2 worldPos = Utilities::ScreenToWorld(Vector2(currentMouse.x * scaleX, currentMouse.y * scaleY));
+
+	return worldPos;
 }
 
 #endif

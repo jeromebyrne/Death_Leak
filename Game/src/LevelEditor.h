@@ -3,6 +3,7 @@
 
 class ParallaxLayer;
 class ScrollingSprite;
+class SolidLineStrip;
 
 class LevelEditor
 {
@@ -45,8 +46,6 @@ private:
 
 	GameObject * GetGameObjectClickedOn(list<shared_ptr<GameObject> > & gameObjects);
 
-	GameObject * mSelectedObject;
-
 	Sprite * GetAsSprite(GameObject * object);
 
 	MovingSprite * GetAsMovingSprite(GameObject * object);
@@ -57,11 +56,19 @@ private:
 
 	ScrollingSprite * GetAsScrollingSprite(GameObject * object);
 
+	SolidLineStrip * GetSolidLineStripClickedOn(list<shared_ptr<GameObject> > & gameObjects);
+
+	Vector2 GetMouseWorldPos();
+
 	void UpdateParallaxLayers();
 
 	std::string mCurrentLevel;
 
 	bool mTerrainEditing;
+
+	GameObject * mSelectedObject;
+
+	SolidLineStrip * mSelectedLineStrip;
 };
 
 #endif

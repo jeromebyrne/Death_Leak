@@ -8,6 +8,12 @@ class SolidLineStrip : public SolidMovingSprite
 {
 public:
 
+	struct SolidLinePoint
+	{
+		Vector2 LocalPosition;
+		Vector2 WorldPosition;
+	};
+
 	SolidLineStrip(float x = 0, float y = 0, float z = 0, float width = 10, float height = 10, float breadth = 0);
 	virtual ~SolidLineStrip(void);
 	virtual void Update(float delta) override;
@@ -19,13 +25,9 @@ public:
 	virtual void LoadContent(ID3D10Device * graphicsdevice) override;
 	virtual void DebugDraw(ID3D10Device *  device) override;
 
-private:
+	const vector<SolidLinePoint> GetLinePoints()  const { return mPoints; }
 
-	struct SolidLinePoint
-	{
-		Vector2 LocalPosition;
-		Vector2 WorldPosition;
-	};
+private:
 
 	struct SolidLine
 	{
