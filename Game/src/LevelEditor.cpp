@@ -6,6 +6,7 @@
 #include "ScrollingSprite.h"
 #include "Graphics.h"
 #include "SolidLineStrip.h"
+#include "DrawUtilities.h"
 
 #if _DEBUG
 
@@ -33,6 +34,14 @@ void LevelEditor::Update()
 		if (mTerrainEditing)
 		{
 			mTerrainEditing = false;
+
+			if (mSelectedLineStrip)
+			{
+				mSelectedLineStrip->ShowDebugText(false);
+				mSelectedLineStrip->SetLevelEditShowSelected(false);
+				mSelectedLineStrip = nullptr;
+				mSelectedLinePointIndex = -1;
+			}
 		}
 		else
 		{
@@ -547,10 +556,18 @@ void LevelEditor::CheckForTerrainPointSelect()
 	{
 		if (!pressingSelect && GetAsyncKeyState(VK_RBUTTON) < 0)
 		{
-			mSelectedLineStrip->ShowDebugText(false);
-			mSelectedLineStrip->SetLevelEditShowSelected(false);
-			mSelectedLineStrip = nullptr;
-			mSelectedLinePointIndex = -1;
+			mSelectedLineStrip = GetSolidLineStripClickedOn(gameObjects);
+
+			if (mSelectedLineStrip)
+			{
+				mSelectedLineStrip->ShowDebugText(true);
+				mSelectedLineStrip->SetLevelEditShowSelected(true);
+			}
+			else
+			{
+				mSelectedLineStrip = nullptr;
+				mSelectedLinePointIndex = -1;
+			}
 
 			pressingSelect = true;
 		}
@@ -602,11 +619,82 @@ void LevelEditor::CheckForTerrainPointMove()
 	}
 }
 
+void LevelEditor::CheckForTerrainNewPoint()
+{
+	static bool pressingNewPoint = false;
+
+	if (mSelectedLineStrip && mSelectedLinePointIndex > -1)
+	{
+		if (!pressingNewPoint && GetAsyncKeyState('P') < 0)
+		{
+			pressingNewPoint = true;
+
+			SolidLineStrip::SolidLinePoint newPoint;
+
+			std::vector<SolidLineStrip::SolidLinePoint> points = mSelectedLineStrip->GetLinePoints();
+
+			GAME_ASSERT(points.size() > 0 && mSelectedLinePointIndex < points.size());
+
+			newPoint.WorldPosition = Vector2(points[mSelectedLinePointIndex].WorldPosition.X, points[mSelectedLinePointIndex].WorldPosition.Y + 150.0f);
+			newPoint.LocalPosition = Vector2(points[mSelectedLinePointIndex].LocalPosition.X, points[mSelectedLinePointIndex].LocalPosition.Y + 150.0f);
+
+			points.insert(points.begin() + (mSelectedLinePointIndex + 1), newPoint);
+			++mSelectedLinePointIndex;
+
+			mSelectedLineStrip->RecalculateLines(points);
+		}
+	}
+
+	if (GetAsyncKeyState('P') >= 0)
+	{
+		pressingNewPoint = false;
+	}
+}
+
+void LevelEditor::CheckForTerrainPointDelete()
+{
+	static bool pressingDelete = false;
+
+	if (mSelectedLineStrip && mSelectedLinePointIndex > -1)
+	{
+		if (!pressingDelete && GetAsyncKeyState(VK_DELETE) < 0)
+		{
+			pressingDelete = true;
+
+			std::vector<SolidLineStrip::SolidLinePoint> points = mSelectedLineStrip->GetLinePoints();
+
+			if (points.size() < 3)
+			{
+				// should always be 2 points (1 line)
+				return;
+			}
+
+			points.erase(points.begin() + mSelectedLinePointIndex);
+
+			if (mSelectedLinePointIndex > 0)
+			{
+				--mSelectedLinePointIndex;
+			}
+
+			mSelectedLineStrip->RecalculateLines(points);
+		}
+	}
+
+	if (GetAsyncKeyState(VK_DELETE) >= 0)
+	{
+		pressingDelete = false;
+	}
+}
+
 void LevelEditor::CheckInput_TerrainEditing()
 {
 	CheckForTerrainPointSelect();
 
 	CheckForTerrainPointMove();
+
+	CheckForTerrainNewPoint();
+
+	CheckForTerrainPointDelete();
 
 	CheckForSavePressed();
 }
@@ -736,6 +824,17 @@ void LevelEditor::Draw()
 	if (mTerrainEditing)
 	{
 		Graphics::GetInstance()->DrawDebugText("Terrain Edit Mode", 100, 100);
+
+		if (mSelectedLineStrip && mSelectedLinePointIndex > -1)
+		{
+			std::vector<SolidLineStrip::SolidLinePoint> points = mSelectedLineStrip->GetLinePoints();
+
+			GAME_ASSERT(points.size() > 0 && mSelectedLinePointIndex < points.size());
+
+			DrawUtilities::DrawTexture(Vector3(points[mSelectedLinePointIndex].WorldPosition.X, points[mSelectedLinePointIndex].WorldPosition.Y, 3),
+										Vector2(50, 50),
+										"Media\\editor\\circle_selected.png");
+		}
 	}
 
 	Vector2 mousePos = GetMouseWorldPos();

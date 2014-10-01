@@ -48,6 +48,10 @@ private:
 
 	void CheckForTerrainPointMove();
 
+	void CheckForTerrainNewPoint();
+
+	void CheckForTerrainPointDelete();
+
 	GameObject * GetGameObjectClickedOn(list<shared_ptr<GameObject> > & gameObjects);
 
 	Sprite * GetAsSprite(GameObject * object);
