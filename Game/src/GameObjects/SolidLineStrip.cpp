@@ -203,6 +203,10 @@ void SolidLineStrip::CalculateLines()
 		startPoint.WorldPosition = Vector2(m_position.X + startPoint.LocalPosition.X, m_position.Y + startPoint.LocalPosition.Y);
 		endPoint.WorldPosition = Vector2(m_position.X + endPoint.LocalPosition.X, m_position.Y + endPoint.LocalPosition.Y);
 
+		// assign back
+		mPoints[count -1].WorldPosition = startPoint.WorldPosition;
+		p.WorldPosition = endPoint.WorldPosition;
+
 		SolidLine solidLine;
 		solidLine.StartPoint = startPoint;
 		solidLine.EndPoint = endPoint;
@@ -305,4 +309,13 @@ bool SolidLineStrip::BoxHitCheck(SolidLine & solidLine, SolidMovingSprite * obje
 												solidLine.MidPointWorld.Y,
 												solidLine.BoundingBox.X,
 												solidLine.BoundingBox.Y);
+}
+
+void SolidLineStrip::RecalculateLines(std::vector<SolidLinePoint> & points)
+{
+	mPoints.clear();
+	mLines.clear();
+
+	mPoints = points;
+	CalculateLines();
 }

@@ -27,6 +27,8 @@ public:
 
 	const vector<SolidLinePoint> GetLinePoints()  const { return mPoints; }
 
+	void RecalculateLines(std::vector<SolidLinePoint> & points);
+
 private:
 
 	struct SolidLine

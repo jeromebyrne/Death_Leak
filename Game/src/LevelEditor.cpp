@@ -12,7 +12,8 @@
 LevelEditor::LevelEditor(void):
 	mSelectedObject(nullptr),
 	mTerrainEditing(false),
-	mSelectedLineStrip(nullptr)
+	mSelectedLineStrip(nullptr),
+	mSelectedLinePointIndex(-1)
 {
 }
 
@@ -536,7 +537,7 @@ void LevelEditor::CheckForRotating()
 	}
 }
 
-void LevelEditor::CheckInput_TerrainEditing()
+void LevelEditor::CheckForTerrainPointSelect()
 {
 	list<shared_ptr<GameObject> > & gameObjects = GameObjectManager::Instance()->GetGameObjectList();
 
@@ -546,27 +547,12 @@ void LevelEditor::CheckInput_TerrainEditing()
 	{
 		if (!pressingSelect && GetAsyncKeyState(VK_RBUTTON) < 0)
 		{
-			SolidLineStrip * obj = GetSolidLineStripClickedOn(gameObjects);
+			mSelectedLineStrip->ShowDebugText(false);
+			mSelectedLineStrip->SetLevelEditShowSelected(false);
+			mSelectedLineStrip = nullptr;
+			mSelectedLinePointIndex = -1;
 
-			if (obj)
-			{
-				if (obj == mSelectedLineStrip)
-				{
-					mSelectedLineStrip->ShowDebugText(false);
-					mSelectedLineStrip->SetLevelEditShowSelected(false);
-					mSelectedLineStrip = nullptr;
-				}
-				else
-				{
-					mSelectedLineStrip->ShowDebugText(false);
-					mSelectedLineStrip->SetLevelEditShowSelected(false);
-					mSelectedLineStrip = obj;
-					mSelectedLineStrip->ShowDebugText(true);
-					mSelectedLineStrip->SetLevelEditShowSelected(true);
-				}
-
-				pressingSelect = false;
-			}
+			pressingSelect = true;
 		}
 	}
 	else
@@ -589,6 +575,38 @@ void LevelEditor::CheckInput_TerrainEditing()
 	{
 		pressingSelect = false;
 	}
+}
+
+void LevelEditor::CheckForTerrainPointMove()
+{
+	if (mSelectedLineStrip && mSelectedLinePointIndex > -1)
+	{
+		if (GetAsyncKeyState(VK_LBUTTON) >= 0)
+		{
+			return;
+		}
+
+		Vector2 mousePos = GetMouseWorldPos();
+
+		std::vector<SolidLineStrip::SolidLinePoint> points = mSelectedLineStrip->GetLinePoints();
+
+		GAME_ASSERT(points.size() > 0 && mSelectedLinePointIndex < points.size());
+
+		points[mSelectedLinePointIndex].WorldPosition = mousePos;
+
+		Vector2 LocalPos = Vector2(mousePos.X - mSelectedLineStrip->Position().X, mousePos.Y - mSelectedLineStrip->Position().Y);
+
+		points[mSelectedLinePointIndex].LocalPosition = LocalPos;
+
+		mSelectedLineStrip->RecalculateLines(points);
+	}
+}
+
+void LevelEditor::CheckInput_TerrainEditing()
+{
+	CheckForTerrainPointSelect();
+
+	CheckForTerrainPointMove();
 
 	CheckForSavePressed();
 }
@@ -757,22 +775,25 @@ SolidLineStrip * LevelEditor::GetSolidLineStripClickedOn(list<shared_ptr<GameObj
 		}
 
 		const vector<SolidLineStrip::SolidLinePoint> points = solidLineStrip->GetLinePoints();
+		unsigned index = 0;
 		for (auto & p : points)
 		{
-			float pointLeft = solidLineStrip->Position().X - 50;
-			float pointRight = solidLineStrip->Position().X + 50;
-			float pointTop = solidLineStrip->Position().Y + 50;
-			float pointBottom = solidLineStrip->Position().Y - 50;
+			float pointLeft = p.WorldPosition.X - 50;
+			float pointRight = p.WorldPosition.X + 50;
+			float pointTop = p.WorldPosition.Y + 50;
+			float pointBottom = p.WorldPosition.Y - 50;
 
 			if (!(worldPosClicked.X > pointLeft &&
 				worldPosClicked.X < pointRight &&
 				worldPosClicked.Y > pointBottom &&
 				worldPosClicked.Y < pointTop))
 			{
+				++index;
 				continue;
 			}
 
-			LOG_INFO("Clicking on a solid line point");
+			mSelectedLinePointIndex = index;
+			return solidLineStrip;
 		}
 	}
 

@@ -44,6 +44,10 @@ private:
 
 	void CheckForCopy();
 
+	void CheckForTerrainPointSelect();
+
+	void CheckForTerrainPointMove();
+
 	GameObject * GetGameObjectClickedOn(list<shared_ptr<GameObject> > & gameObjects);
 
 	Sprite * GetAsSprite(GameObject * object);
@@ -69,6 +73,8 @@ private:
 	GameObject * mSelectedObject;
 
 	SolidLineStrip * mSelectedLineStrip;
+
+	int mSelectedLinePointIndex;
 };
 
 #endif
