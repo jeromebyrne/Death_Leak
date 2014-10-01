@@ -557,6 +557,46 @@ void LevelEditor::CheckForRotating()
 	}
 }
 
+void LevelEditor::CheckForNewTerrainObject()
+{
+	static bool pressingNew = false;
+
+	if (!pressingNew && GetAsyncKeyState('N') < 0)
+	{
+		pressingNew = true;
+
+		Vector3 cameraPos = Camera2D::GetInstance()->Position();
+
+		SolidLineStrip * solidLineStrip = new SolidLineStrip();
+
+		solidLineStrip->SetXYZ(cameraPos.X, cameraPos.Y, 3);
+		
+		SolidLineStrip::SolidLinePoint startPoint;
+		SolidLineStrip::SolidLinePoint endPoint;
+
+		startPoint.WorldPosition = Vector2(solidLineStrip->Position().X, solidLineStrip->Position().Y);
+		startPoint.LocalPosition = Vector2(0, 0);
+
+		endPoint.WorldPosition = Vector2(solidLineStrip->Position().X + 200, solidLineStrip->Position().Y + 100);
+		endPoint.LocalPosition = Vector2(0, 200);
+
+		std::vector<SolidLineStrip::SolidLinePoint> pointVec;
+		pointVec.reserve(2);
+
+		pointVec.push_back(startPoint);
+		pointVec.push_back(endPoint);
+
+		solidLineStrip->RecalculateLines(pointVec);
+
+		GameObjectManager::Instance()->AddGameObject(solidLineStrip, true);
+	}
+
+	if (GetAsyncKeyState('N') >= 0)
+	{
+		pressingNew = false;
+	}
+}
+
 void LevelEditor::CheckForTerrainPointSelect()
 {
 	list<shared_ptr<GameObject> > & gameObjects = GameObjectManager::Instance()->GetGameObjectList();
@@ -707,6 +747,8 @@ void LevelEditor::CheckInput_TerrainEditing()
 
 	CheckForTerrainPointDelete();
 
+	CheckForNewTerrainObject();
+
 	CheckForSavePressed();
 }
 
@@ -782,6 +824,13 @@ void LevelEditor::CheckInput_Regular()
 					scrollingSprite->SetLerpStartPos(worldPos);
 				}
 
+				SolidLineStrip * solidLineStrip = GetAsSolidLineStrip(mSelectedObject);
+				if (solidLineStrip)
+				{
+					vector<SolidLineStrip::SolidLinePoint> points = solidLineStrip->GetLinePoints();
+					solidLineStrip->RecalculateLines(points);
+				}
+
 				pressingPlace = true;
 			}
 		}
@@ -828,6 +877,13 @@ void LevelEditor::CheckInput_Regular()
 	CheckForSavePressed();
 
 	CheckForCopy();
+}
+
+SolidLineStrip * LevelEditor::GetAsSolidLineStrip(GameObject * object)
+{
+	SolidLineStrip * solidLineStrip = dynamic_cast<SolidLineStrip*>(object);
+
+	return solidLineStrip;
 }
 
 void LevelEditor::Draw()

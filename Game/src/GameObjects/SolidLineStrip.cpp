@@ -8,6 +8,7 @@ SolidLineStrip::SolidLineStrip(float x, float y, float z, float width, float hei
 	mIsSolidLine = true;
 	mDrawable = false;
 	mIsSolidLineStrip = true;
+	m_drawAtNativeDimensions = false;
 }
 
 SolidLineStrip::~SolidLineStrip(void)
@@ -240,6 +241,10 @@ void SolidLineStrip::CalculateLines()
 	if (m_collisionBoxDimensions.Y < 400)
 	{
 		m_collisionBoxDimensions.Y = 400;
+	}
+	if (m_collisionBoxDimensions.X < 100)
+	{
+		m_collisionBoxDimensions.X = 100;
 	}
 
 	mCollisionBoxOffset.X = (maxX + minX) * 0.5f;

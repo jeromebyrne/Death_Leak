@@ -54,6 +54,8 @@ private:
 
 	void CheckForTerrainPointDelete();
 
+	void CheckForNewTerrainObject();
+
 	GameObject * GetGameObjectClickedOn(list<shared_ptr<GameObject> > & gameObjects);
 
 	Sprite * GetAsSprite(GameObject * object);
@@ -65,6 +67,8 @@ private:
 	SolidMovingSprite * GetAsSolidMovingSprite(GameObject * object);
 
 	ScrollingSprite * GetAsScrollingSprite(GameObject * object);
+
+	SolidLineStrip * GetAsSolidLineStrip(GameObject * object);
 
 	SolidLineStrip * GetSolidLineStripClickedOn(list<shared_ptr<GameObject> > & gameObjects);
 

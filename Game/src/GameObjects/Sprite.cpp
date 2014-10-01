@@ -99,6 +99,12 @@ void Sprite::Initialise()
 
 Vector2 Sprite::GetTextureDimensions()
 {
+	if (!IsDrawable() && m_textureFilename.empty())
+	{
+		// it's okay if a non drawable object doesn't have a texture (see SolidLineStrip)
+		return Vector2(0, 0);
+	}
+
 	ID3D10ShaderResourceView * srv; 
 	if (m_isAnimated)
 	{

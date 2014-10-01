@@ -385,7 +385,7 @@ void UIManager::HandleEvent(string eventName, list<string> params)
 			{
 				screen->ApplyAlpha(count);
 				RefreshUI();
-				Sleep(milliseconds/10);
+				Sleep(milliseconds/10); // TODO: this is terrible bleugh, get rid of this crap
 				count+= 0.05;
 			}
 
@@ -452,10 +452,8 @@ void UIManager::HandleEvent(string eventName, list<string> params)
 				GameObjectManager::Instance()->SetShowDebugInfo(true);
 				GameObjectManager::Instance()->LoadObjectsFromFile(level);
 			}
-			break;
-			
+			break;			
 		}
-
 
 	default:
 		break;

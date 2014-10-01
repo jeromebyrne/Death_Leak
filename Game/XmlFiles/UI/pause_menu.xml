@@ -63,14 +63,14 @@
 
     <actionspressup>
       <stopallsounds/>
-      <fadeout time="50"/>
+      <fadeout time="150"/>
       <unpausegame />
       <destroylevel />
       <popui ui="pause_menu"/>
       <popui ui="game_hud"/>
       <pushui ui="mainmenu"/>
       <playmusic sound="" loop="true"/>
-      <fadein time="750"/>
+      <fadein time="150"/>
     </actionspressup>
 
     <actionspressdown>

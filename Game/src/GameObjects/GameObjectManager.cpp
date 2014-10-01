@@ -702,7 +702,10 @@ void GameObjectManager::AddGameObject(GameObject * object, bool editModeAdd)
 	m_gameObjects.push_back(shared_ptr<GameObject>(object));
 
 	// no need to manually add it to gameObject list as this is done automatically in the constructor
-	object->LoadContent(Graphics::GetInstance()->Device());
+	if (object->IsDrawable())
+	{
+		object->LoadContent(Graphics::GetInstance()->Device());
+	}
 	object->Initialise();
 	
 	// SCALE
@@ -711,8 +714,8 @@ void GameObjectManager::AddGameObject(GameObject * object, bool editModeAdd)
 	float bbWidth = Graphics::GetInstance()->BackBufferWidth();
 	float bbHeight = Graphics::GetInstance()->BackBufferHeight();
 
-	float scaleX = bbWidth / 1920;
-	float scaleY = bbHeight / 1080;
+	float scaleX = bbWidth / 1920.0f;
+	float scaleY = bbHeight / 1080.0f;
 
 	// never scale position during the game, only before
 	// it is always assumed you are giving a valid position during the game
