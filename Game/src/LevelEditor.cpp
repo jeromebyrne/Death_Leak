@@ -23,6 +23,17 @@ LevelEditor::~LevelEditor(void)
 {
 }
 
+void LevelEditor::Reset()
+{
+	mTerrainEditing = false;
+
+	mSelectedObject = nullptr;
+
+	mSelectedLineStrip = nullptr;
+
+	mSelectedLinePointIndex = -1;
+}
+
 void LevelEditor::Update()
 {
 	static bool isPressingTerrainEdit = false;
@@ -55,15 +66,6 @@ void LevelEditor::Update()
 
 	UpdateParallaxLayers();
 
-	if (mTerrainEditing)
-	{
-		CheckInput_TerrainEditing();
-	}
-	else
-	{
-		CheckInput_Regular();
-	}
-
 	list<shared_ptr<GameObject> > & gameObjects = GameObjectManager::Instance()->GetGameObjectList();
 	for (auto & obj : gameObjects)
 	{
@@ -72,6 +74,15 @@ void LevelEditor::Update()
 		{
 			obj->Update(1.0f);
 		}
+	}
+
+	if (mTerrainEditing)
+	{
+		CheckInput_TerrainEditing();
+	}
+	else
+	{
+		CheckInput_Regular();
 	}
 }
 
@@ -875,7 +886,7 @@ SolidLineStrip * LevelEditor::GetSolidLineStripClickedOn(list<shared_ptr<GameObj
 
 		const vector<SolidLineStrip::SolidLinePoint> points = solidLineStrip->GetLinePoints();
 		unsigned index = 0;
-		for (auto & p : points)
+		for (auto p : points)
 		{
 			float pointLeft = p.WorldPosition.X - 50;
 			float pointRight = p.WorldPosition.X + 50;

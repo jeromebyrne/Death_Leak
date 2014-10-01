@@ -35,6 +35,7 @@ public:
 	static void PauseGame();
 	static void UnPauseGame();
 	static void SetIsLevelEditMode(bool value) { mLevelEditMode = value; }
+
 	static bool GetIsLevelEditMode() { return mLevelEditMode; }
 
 	static Game * GetInstance() { return mInstance; }
@@ -43,11 +44,11 @@ public:
 
 	bool IsLevelEditTerrainMode() const;
 
-#if _DEBUG
 	void SetLevelEditFilename(const char * file);
-#endif
 
 	static Vector2 GetGameScale() { return mGameScale; }
+
+	void ResetLevelEditor();
 
 private:
 	// graphics manager

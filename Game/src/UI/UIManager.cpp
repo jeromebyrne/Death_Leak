@@ -351,6 +351,8 @@ void UIManager::HandleEvent(string eventName, list<string> params)
 		}
 	case DESTROY_LEVEL:
 		{
+			Game::SetIsLevelEditMode(false);
+			Game::GetInstance()->ResetLevelEditor();
 			GameObjectManager::Instance()->DeleteGameObjects();
 			break;
 		}
@@ -438,6 +440,7 @@ void UIManager::HandleEvent(string eventName, list<string> params)
 		}
 	case LEVEL_EDIT:
 		{
+			Game::GetInstance()->ResetLevelEditor();
 			// only allow level editing if the back buffer is 1920x1080
 			// this needs to be fixed at a later time
 			if (Graphics::GetInstance()->BackBufferWidth() == 1920 &&

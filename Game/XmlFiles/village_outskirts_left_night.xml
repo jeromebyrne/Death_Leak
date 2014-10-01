@@ -1,5 +1,5 @@
 <level audio="">
-    <Player id="1" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <Player id="16" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="576.777344" x="1493.996094" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="300.000000" width="150.000000" native="false" repeatX="false" repeatY="false" />
         <material value="maleninja" />
@@ -24,14 +24,14 @@
         <projectileoffsetx value="40" />
         <projectileoffsety value="0" />
     </Player>
-    <Butterfly id="2" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="true" updateable="true">
-        <position z="30.000000" y="290.679260" x="4739.417480" rotation="0.000000" auto_rotate_value="0.000000" />
+    <Butterfly id="17" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="true" updateable="true">
+        <position z="30.000000" y="290.679260" x="4740.117676" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="64.000000" width="64.000000" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="true" />
+        <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
@@ -49,7 +49,7 @@
         <projectileoffsetx value="15" />
         <projectileoffsety value="20" />
     </Butterfly>
-    <AudioObject id="3" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <AudioObject id="18" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="11.000000" y="-261.081543" x="2288.635254" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="750.056519" width="1000.641602" />
         <material value="" />
@@ -58,9 +58,9 @@
         <repeat value="true" />
         <fadedimensions x="4000.000000" y="3000.000000" />
     </AudioObject>
-    <SolidLineStrip id="4" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidLineStrip id="19" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="101.000000" y="0.000000" x="2873.790039" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="1.000000" height="944.713989" width="5451.546875" native="false" repeatX="false" repeatY="false" />
+        <dimensions breadth="1.000000" height="632.750122" width="5451.546875" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
@@ -73,19 +73,33 @@
         <resistance z="0.000000" y="2.000000" x="0.950000" />
         <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
         <applygravity value="false" />
-        <collisionboxdimensions z="3.000000" y="400.000000" x="5371.546387" offsetX="-40.000244" offsetY="-272.356995" />
+        <collisionboxdimensions z="3.000000" y="594.614197" x="5371.546387" offsetX="-40.000244" offsetY="-19.067963" />
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="false" />
         <points>
             <point x="-2725.773438" y="-316.375061" />
             <point x="-2324.124023" y="-259.131836" />
-            <point x="-1978.969238" y="-219.663391" />
-            <point x="-1636.288818" y="-261.827332" />
-            <point x="-1392.165039" y="-232.325684" />
-            <point x="-452.371338" y="-208.006714" />
-            <point x="-213.608398" y="-230.731018" />
-            <point x="1363.298828" y="-336.707275" />
+            <point x="-2320.412598" y="-44.684448" />
+            <point x="-1674.639404" y="-41.096436" />
+            <point x="-1390.103271" y="62.956726" />
+            <point x="-1195.876465" y="12.724182" />
+            <point x="-1095.670288" y="-153.521667" />
+            <point x="-965.360962" y="-201.362244" />
+            <point x="-779.793945" y="-103.289124" />
+            <point x="-601.237305" y="-109.269165" />
+            <point x="-504.742432" y="-187.010071" />
+            <point x="-411.958984" y="-202.558228" />
+            <point x="-305.567139" y="-192.990112" />
+            <point x="-243.711426" y="-154.717712" />
+            <point x="-188.041504" y="-90.132996" />
+            <point x="-141.031250" y="27.076324" />
+            <point x="-23.505371" y="181.362061" />
+            <point x="44.535889" y="242.358734" />
+            <point x="134.845215" y="278.239136" />
+            <point x="252.371094" y="249.534805" />
+            <point x="309.278320" y="202.890289" />
+            <point x="1011.133789" y="-265.946960" />
             <point x="1680.000000" y="-308.471863" />
             <point x="1918.762695" y="-298.903748" />
             <point x="2116.700684" y="-314.451904" />
@@ -93,7 +107,7 @@
             <point x="2645.772949" y="-304.883789" />
         </points>
     </SolidLineStrip>
-    <SolidMovingSprite id="5" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidMovingSprite id="20" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="100.699989" y="2128.984863" x="-64.766724" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="789.000000" width="1523.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -113,7 +127,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="false" />
     </SolidMovingSprite>
-    <SolidMovingSprite id="6" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidMovingSprite id="21" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="101.000000" y="-495.300781" x="3870.490723" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="622.000000" width="1505.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -133,7 +147,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="false" />
     </SolidMovingSprite>
-    <SolidMovingSprite id="7" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidMovingSprite id="22" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="101.000000" y="-394.885620" x="1613.171387" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="622.000000" width="3010.000000" native="false" repeatX="true" repeatY="false" />
         <material value="grassground" />
@@ -153,7 +167,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="false" />
     </SolidMovingSprite>
-    <Sprite id="8" parallax_x="0.050000" parallax_y="1.000000" level_edit_locked="true" updateable="true">
+    <Sprite id="23" parallax_x="0.050000" parallax_y="1.000000" level_edit_locked="true" updateable="true">
         <position z="156.000000" y="360.048126" x="3887.052734" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="324.000000" width="339.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -166,7 +180,7 @@
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="9" parallax_x="0.050000" parallax_y="1.000000" level_edit_locked="true" updateable="true">
+    <Sprite id="24" parallax_x="0.050000" parallax_y="1.000000" level_edit_locked="true" updateable="true">
         <position z="156.000000" y="0.048126" x="3887.052734" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="600.000000" width="1024.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -179,8 +193,8 @@
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <ParallaxLayer id="10" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9999.000000" y="-120.000000" x="1493.996094" rotation="0.000000" auto_rotate_value="0.000000" />
+    <ParallaxLayer id="25" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="9999.000000" y="-120.000000" x="3493.996094" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="523.000000" width="2048.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <alpha value="1.000000" />
@@ -201,8 +215,8 @@
         <autoscrollxspeed value="0.000000" />
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
-    <ParallaxLayer id="11" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9990.000000" y="-50.000000" x="1493.996094" rotation="0.000000" auto_rotate_value="0.000000" />
+    <ParallaxLayer id="26" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="9990.000000" y="-50.000000" x="3493.996094" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="596.000000" width="1999.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <alpha value="0.100000" />
@@ -223,8 +237,8 @@
         <autoscrollxspeed value="0.000000" />
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
-    <ParallaxLayer id="12" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9999.900391" y="230.000000" x="1493.996094" rotation="0.000000" auto_rotate_value="0.000000" />
+    <ParallaxLayer id="27" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="9999.900391" y="230.000000" x="3493.996094" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="243.000000" width="4083.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <alpha value="0.400000" />
@@ -245,8 +259,8 @@
         <autoscrollxspeed value="0.000000" />
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
-    <ParallaxLayer id="13" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9990.000000" y="45.000000" x="1493.996094" rotation="0.000000" auto_rotate_value="0.000000" />
+    <ParallaxLayer id="28" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="9990.000000" y="45.000000" x="3493.996094" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="243.000000" width="4083.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <alpha value="0.150000" />
@@ -267,8 +281,8 @@
         <autoscrollxspeed value="0.000000" />
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
-    <ParallaxLayer id="14" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9999.999023" y="600.000000" x="1493.996094" rotation="0.000000" auto_rotate_value="0.000000" />
+    <ParallaxLayer id="29" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="9999.999023" y="600.000000" x="3493.996094" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="900.000000" width="2048.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <alpha value="0.400000" />

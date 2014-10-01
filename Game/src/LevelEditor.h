@@ -19,6 +19,8 @@ public:
 
 	bool IsTerrainEditing() const { return mTerrainEditing; }
 
+	void Reset();
+
 private:
 
 	void CheckInput_TerrainEditing();

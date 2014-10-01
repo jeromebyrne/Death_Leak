@@ -85,8 +85,8 @@ void Game::Initialise()
 	m_effectLightTextureVertexWobble = static_cast<EffectLightTextureVertexWobble*>(EffectManager::Instance()->GetEffect("effectlighttexturevertexwobble"));
 	m_effectParticleSpray = static_cast<EffectParticleSpray*>(EffectManager::Instance()->GetEffect("effectparticlespray"));
 	m_effectBloodParticleSpray = static_cast<EffectBloodParticleSpray*>(EffectManager::Instance()->GetEffect("effectbloodparticlespray"));
-#if _DEBUG
 	m_effectBasic = static_cast<EffectBasic*>(EffectManager::Instance()->GetEffect("effectbasic"));
+#if _DEBUG
 	mlevelEditor = new LevelEditor();
 #endif
 	m_effectSepia = static_cast<EffectSepia*>(EffectManager::Instance()->GetEffect("effectsepia"));
@@ -381,5 +381,13 @@ bool Game::IsLevelEditTerrainMode() const
 	}
 
 	return false;
+}
+
+void Game::ResetLevelEditor()
+{
+	if (mlevelEditor)
+	{
+		mlevelEditor->Reset();
+	}
 }
 
