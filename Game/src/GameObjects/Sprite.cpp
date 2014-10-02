@@ -272,7 +272,7 @@ void Sprite::DebugDraw(ID3D10Device * graphicsdevice)
 
 	if (!IsDrawable())
 	{
-		DrawUtilities::DrawTexture(m_position, Vector2(GetLevelEditSelectionDimensions().X, GetLevelEditSelectionDimensions().Y), "Media\\editor\\not_drawable.png");
+		DrawUtilities::DrawTexture(Vector3(m_position.X, m_position.Y, 3), Vector2(GetLevelEditSelectionDimensions().X, GetLevelEditSelectionDimensions().Y), "Media\\editor\\not_drawable.png");
 	}
 }
 

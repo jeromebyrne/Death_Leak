@@ -5,7 +5,7 @@
 #include "AudioObject.h"
 #include "Game.h"
 
-static const float kTimeUntilFirstWeather = 15.0f;
+static const float kTimeUntilFirstWeather = 2.0f;
 static const float kRainSessionMinTime = 70.0f;
 static const float kRainSessionMaxTime = 120.0f;
 static const float kRainIntroTime = 10.0f;
@@ -87,159 +87,219 @@ void WeatherManager::RefreshAssets()
 		{
 		case kRaining:
 			{
-				mBottomRainLayer = new ParallaxLayer(Camera2D::GetInstance());
-				mBottomRainLayer->m_textureFilename = "Media\\rainlayer.png";
-				mBottomRainLayer->m_drawAtNativeDimensions = true;
-				mBottomRainLayer->m_updateable = true;
-				mBottomRainLayer->m_position = Vector3(0, 598 * gameScale, 15);
-				mBottomRainLayer->m_dimensions = Vector3(2048, 2048, 0);
-				mBottomRainLayer->mRepeatTextureX = false;
-				mBottomRainLayer->mRepeatTextureY = false;
-				mBottomRainLayer->m_repeatWidth = 2048;
-				mBottomRainLayer->m_cameraParallaxMultiplierX = 0.000488;
-				mBottomRainLayer->m_cameraParallaxMultiplierY = 0;
-				mBottomRainLayer->m_followCamXPos = true;
-				mBottomRainLayer->m_followCamYPos = false;
-				mBottomRainLayer->m_autoScrollY = true;
-				mBottomRainLayer->m_autoScrollX = false;
-				mBottomRainLayer->m_autoScrollXSpeed = 0;
-				mBottomRainLayer->m_autoScrollYSpeed = 6.5f;
-				mBottomRainLayer->EffectName = "effectlighttexture";
-				mBottomRainLayer->m_alpha = 1.0f;
-				GameObjectManager::Instance()->AddGameObject(mBottomRainLayer);
-
-				mTopRainLayer = new ParallaxLayer(Camera2D::GetInstance());
-				mTopRainLayer->m_textureFilename = "Media\\rainlayer.png";
-				mTopRainLayer->m_drawAtNativeDimensions = true;
-				mTopRainLayer->m_updateable = true;
-				mTopRainLayer->m_position = Vector3(0, 2650 * gameScale, 15);
-				mTopRainLayer->m_dimensions = Vector3(2048, 2048, 0);
-				mTopRainLayer->mRepeatTextureX = false;
-				mTopRainLayer->mRepeatTextureY = false;
-				mTopRainLayer->m_repeatWidth = 1920;
-				mTopRainLayer->m_cameraParallaxMultiplierX = 0.000488;
-				mTopRainLayer->m_cameraParallaxMultiplierY = 0;
-				mTopRainLayer->m_followCamXPos = true;
-				mTopRainLayer->m_followCamYPos = false;
-				mTopRainLayer->m_autoScrollY = true;
-				mTopRainLayer->m_autoScrollX = false;
-				mTopRainLayer->m_autoScrollXSpeed = 0;
-				mTopRainLayer->m_autoScrollYSpeed = 6.5f;
-				mTopRainLayer->EffectName = "effectlighttexture";
-				mTopRainLayer->m_alpha = 1.0f;
-				GameObjectManager::Instance()->AddGameObject(mTopRainLayer);
-
-				mGroundRainLayer = new ParallaxLayer(Camera2D::GetInstance());
-				mGroundRainLayer->m_textureFilename = "";
-				mGroundRainLayer->m_isAnimated = true;
-				mGroundRainLayer->m_animationFile = "XmlFiles\\ground_rain.xml";
-				mGroundRainLayer->m_drawAtNativeDimensions = true;
-				mGroundRainLayer->m_updateable = true;
-				mGroundRainLayer->m_position = Vector3(0, -220 * gameScale, 99);
-				mGroundRainLayer->m_dimensions = Vector3(2048, 2048, 0);
-				mGroundRainLayer->mRepeatTextureX = false;
-				mGroundRainLayer->mRepeatTextureY = false;
-				mGroundRainLayer->m_repeatWidth = 2048;
-				mGroundRainLayer->m_cameraParallaxMultiplierX = 0.000488;
-				mGroundRainLayer->m_cameraParallaxMultiplierY = 0;
-				mGroundRainLayer->m_followCamXPos = true;
-				mGroundRainLayer->m_followCamYPos = false;
-				mGroundRainLayer->m_autoScrollY = false;
-				mGroundRainLayer->m_autoScrollX = false;
-				mGroundRainLayer->m_autoScrollXSpeed = 0;
-				mGroundRainLayer->m_autoScrollYSpeed = 0;
-				mGroundRainLayer->EffectName = "effectlighttexture";
-				mGroundRainLayer->m_alpha = 1.0f;
-				GameObjectManager::Instance()->AddGameObject(mGroundRainLayer);
-
-				mRainSFX = new AudioObject(0, 1500,0,50000, 3000);
-				mRainSFX->SetAdjustVolumeToCamera(false);
-				mRainSFX->SetAudioFilename("weather\\heavy_rain.wav");
-				mRainSFX->SetRepeat(true);
-				mRainSFX->SetVolumeFadeDimensions(Vector2(50000, 3000));
-		
-				GameObjectManager::Instance()->AddGameObject(mRainSFX);
-
-				mLightningLayer = new ParallaxLayer(Camera2D::GetInstance());
-				mLightningLayer->m_textureFilename = "Media\\lightning_layer.png";
-				mLightningLayer->m_isAnimated = false;
-				mLightningLayer->m_animationFile = "";
-				mLightningLayer->m_drawAtNativeDimensions = true;
-				mLightningLayer->m_updateable = true;
-				mLightningLayer->m_position = Vector3(0, -220 * gameScale, 1);
-				mLightningLayer->m_dimensions = Vector3(2048, 2048, 0);
-				mLightningLayer->mRepeatTextureX = false;
-				mLightningLayer->mRepeatTextureY = false;
-				mLightningLayer->m_repeatWidth = 2048;
-				mLightningLayer->m_cameraParallaxMultiplierX = 0.0f;
-				mLightningLayer->m_cameraParallaxMultiplierY = 0.0f;
-				mLightningLayer->m_followCamXPos = true;
-				mLightningLayer->m_followCamYPos = true;
-				mLightningLayer->m_autoScrollY = false;
-				mLightningLayer->m_autoScrollX = false;
-				mLightningLayer->m_autoScrollXSpeed = 0;
-				mLightningLayer->m_autoScrollYSpeed = 0;
-				mLightningLayer->EffectName = "effectlighttexture";
-				mLightningLayer->m_alpha = 0.0f;
-				GameObjectManager::Instance()->AddGameObject(mLightningLayer);
+				mBottomRainLayer = nullptr;
+				mTopRainLayer = nullptr;
+				mGroundRainLayer = nullptr;
+				mRainSFX = nullptr;
+				mLightningLayer = nullptr;
+				CreateRainAssets();
 
 				break;
 			}
 		case kSnowing:
 			{
-				mBottomSnowLayer = new ParallaxLayer(Camera2D::GetInstance());
-				mBottomSnowLayer->m_textureFilename = "Media\\snowlayer.png";
-				mBottomSnowLayer->m_drawAtNativeDimensions = true;
-				mBottomSnowLayer->m_updateable = true;
-				mBottomSnowLayer->m_position = Vector3(0, 598 * gameScale, 15);
-				mBottomSnowLayer->m_dimensions = Vector3(2048, 2048, 0);
-				mBottomSnowLayer->mRepeatTextureX = false;
-				mBottomSnowLayer->mRepeatTextureY = false;
-				mBottomSnowLayer->m_repeatWidth = 2048;
-				mBottomSnowLayer->m_cameraParallaxMultiplierX = 0.000588;
-				mBottomSnowLayer->m_cameraParallaxMultiplierY = 0;
-				mBottomSnowLayer->m_followCamXPos = true;
-				mBottomSnowLayer->m_followCamYPos = false;
-				mBottomSnowLayer->m_autoScrollY = true;
-				mBottomSnowLayer->m_autoScrollX = false;
-				mBottomSnowLayer->m_autoScrollXSpeed = 0;
-				mBottomSnowLayer->m_autoScrollYSpeed = 6.0f;
-				mBottomSnowLayer->EffectName = "effectnoise";
-				mBottomSnowLayer->m_alpha = 1.0f;
-				mBottomSnowLayer->mNoiseShaderIntensity = 0.001f;
-				GameObjectManager::Instance()->AddGameObject(mBottomSnowLayer);
+				mBottomSnowLayer = nullptr;
+				mTopSnowLayer = nullptr;
+				mSnowSFX = nullptr;
+				CreateSnowAssets();
 
-				mTopSnowLayer = new ParallaxLayer(Camera2D::GetInstance());
-				mTopSnowLayer->m_textureFilename = "Media\\snowlayer.png";
-				mTopSnowLayer->m_drawAtNativeDimensions = true;
-				mTopSnowLayer->m_updateable = true;
-				mTopSnowLayer->m_position = Vector3(0, 2650 * gameScale, 15);
-				mTopSnowLayer->m_dimensions = Vector3(2048, 2048, 0);
-				mTopSnowLayer->mRepeatTextureX = false;
-				mTopSnowLayer->mRepeatTextureY = false;
-				mTopSnowLayer->m_repeatWidth = 2048;
-				mTopSnowLayer->m_cameraParallaxMultiplierX = 0.000588;
-				mTopSnowLayer->m_cameraParallaxMultiplierY = 0;
-				mTopSnowLayer->m_followCamXPos = true;
-				mTopSnowLayer->m_followCamYPos = false;
-				mTopSnowLayer->m_autoScrollY = true;
-				mTopSnowLayer->m_autoScrollX = false;
-				mTopSnowLayer->m_autoScrollXSpeed = 0;
-				mTopSnowLayer->m_autoScrollYSpeed = 6.0f;
-				mTopSnowLayer->EffectName = "effectnoise";
-				mTopSnowLayer->m_alpha = 1.0f;
-				mTopSnowLayer->mNoiseShaderIntensity = 0.001f;
-				GameObjectManager::Instance()->AddGameObject(mTopSnowLayer);
-
-				mSnowSFX = new AudioObject(0, 1500,0,50000, 3000);
-				mSnowSFX->SetAdjustVolumeToCamera(false);
-				mSnowSFX->SetAudioFilename("weather\\wind.mp3");
-				mSnowSFX->SetRepeat(true);
-				mSnowSFX->SetVolumeFadeDimensions(Vector2(50000, 3000));
-				GameObjectManager::Instance()->AddGameObject(mSnowSFX);
 				break;
 			}
 		};
+	}
+}
+
+void WeatherManager::CreateRainAssets()
+{
+	float gameScale = Game::GetGameScale().X;
+
+	if (!mBottomRainLayer)
+	{
+		mBottomRainLayer = new ParallaxLayer(Camera2D::GetInstance());
+
+		mBottomRainLayer->m_textureFilename = "Media\\rainlayer.png";
+		mBottomRainLayer->m_drawAtNativeDimensions = true;
+		mBottomRainLayer->m_updateable = true;
+		mBottomRainLayer->m_position = Vector3(0, 578 * gameScale, 15);
+		mBottomRainLayer->m_dimensions = Vector3(2048, 2048, 0);
+		mBottomRainLayer->mRepeatTextureX = false;
+		mBottomRainLayer->mRepeatTextureY = false;
+		mBottomRainLayer->m_repeatWidth = 2048;
+		mBottomRainLayer->m_cameraParallaxMultiplierX = 0.000488;
+		mBottomRainLayer->m_cameraParallaxMultiplierY = 0;
+		mBottomRainLayer->m_followCamXPos = true;
+		mBottomRainLayer->m_followCamYPos = false;
+		mBottomRainLayer->m_autoScrollY = true;
+		mBottomRainLayer->m_autoScrollX = false;
+		mBottomRainLayer->m_autoScrollXSpeed = 0;
+		mBottomRainLayer->m_autoScrollYSpeed = 6.5f;
+		mBottomRainLayer->EffectName = "effectlighttexture";
+		mBottomRainLayer->m_alpha = 1.0f;
+
+		GameObjectManager::Instance()->AddGameObject(mBottomRainLayer);
+	}
+
+	if (!mTopRainLayer)
+	{
+		mTopRainLayer = new ParallaxLayer(Camera2D::GetInstance());
+
+		mTopRainLayer->m_textureFilename = "Media\\rainlayer.png";
+		mTopRainLayer->m_drawAtNativeDimensions = true;
+		mTopRainLayer->m_updateable = true;
+		mTopRainLayer->m_position = Vector3(0, 2630 * gameScale, 15);
+		mTopRainLayer->m_dimensions = Vector3(2048, 2048, 0);
+		mTopRainLayer->mRepeatTextureX = false;
+		mTopRainLayer->mRepeatTextureY = false;
+		mTopRainLayer->m_repeatWidth = 1920;
+		mTopRainLayer->m_cameraParallaxMultiplierX = 0.000488;
+		mTopRainLayer->m_cameraParallaxMultiplierY = 0;
+		mTopRainLayer->m_followCamXPos = true;
+		mTopRainLayer->m_followCamYPos = false;
+		mTopRainLayer->m_autoScrollY = true;
+		mTopRainLayer->m_autoScrollX = false;
+		mTopRainLayer->m_autoScrollXSpeed = 0;
+		mTopRainLayer->m_autoScrollYSpeed = 6.5f;
+		mTopRainLayer->EffectName = "effectlighttexture";
+		mTopRainLayer->m_alpha = 1.0f;
+
+		GameObjectManager::Instance()->AddGameObject(mTopRainLayer);
+	}
+
+	if (!mGroundRainLayer)
+	{
+		mGroundRainLayer = new ParallaxLayer(Camera2D::GetInstance());
+
+		mGroundRainLayer->m_textureFilename = "";
+		mGroundRainLayer->m_isAnimated = true;
+		mGroundRainLayer->m_animationFile = "XmlFiles\\ground_rain.xml";
+		mGroundRainLayer->m_drawAtNativeDimensions = true;
+		mGroundRainLayer->m_updateable = true;
+		mGroundRainLayer->m_position = Vector3(0, -340 * gameScale, 99);
+		mGroundRainLayer->m_dimensions = Vector3(2048, 2048, 0);
+		mGroundRainLayer->mRepeatTextureX = false;
+		mGroundRainLayer->mRepeatTextureY = false;
+		mGroundRainLayer->m_repeatWidth = 2048;
+		mGroundRainLayer->m_cameraParallaxMultiplierX = 0.000488;
+		mGroundRainLayer->m_cameraParallaxMultiplierY = 0;
+		mGroundRainLayer->m_followCamXPos = true;
+		mGroundRainLayer->m_followCamYPos = false;
+		mGroundRainLayer->m_autoScrollY = false;
+		mGroundRainLayer->m_autoScrollX = false;
+		mGroundRainLayer->m_autoScrollXSpeed = 0;
+		mGroundRainLayer->m_autoScrollYSpeed = 0;
+		mGroundRainLayer->EffectName = "effectlighttexture";
+		mGroundRainLayer->m_alpha = 1.0f;
+
+		GameObjectManager::Instance()->AddGameObject(mGroundRainLayer);
+	}
+
+	// add the audio object
+	if (!mRainSFX)
+	{
+		mRainSFX = new AudioObject(0, 1500, 0, 50000, 3000);
+		mRainSFX->SetAdjustVolumeToCamera(false);
+		mRainSFX->SetAudioFilename("weather\\heavy_rain.wav");
+		mRainSFX->SetRepeat(true);
+		mRainSFX->SetVolumeFadeDimensions(Vector2(50000, 3000));
+
+		GameObjectManager::Instance()->AddGameObject(mRainSFX);
+	}
+
+	if (!mLightningLayer)
+	{
+		mLightningLayer = new ParallaxLayer(Camera2D::GetInstance());
+
+		mLightningLayer->m_textureFilename = "Media\\lightning_layer.png";
+		mLightningLayer->m_isAnimated = false;
+		mLightningLayer->m_animationFile = "";
+		mLightningLayer->m_drawAtNativeDimensions = true;
+		mLightningLayer->m_updateable = true;
+		mLightningLayer->m_position = Vector3(0, -220 * gameScale, 1);
+		mLightningLayer->m_dimensions = Vector3(2048, 2048, 0);
+		mLightningLayer->mRepeatTextureX = false;
+		mLightningLayer->mRepeatTextureY = false;
+		mLightningLayer->m_repeatWidth = 2048;
+		mLightningLayer->m_cameraParallaxMultiplierX = 0.0f;
+		mLightningLayer->m_cameraParallaxMultiplierY = 0.0f;
+		mLightningLayer->m_followCamXPos = true;
+		mLightningLayer->m_followCamYPos = true;
+		mLightningLayer->m_autoScrollY = false;
+		mLightningLayer->m_autoScrollX = false;
+		mLightningLayer->m_autoScrollXSpeed = 0;
+		mLightningLayer->m_autoScrollYSpeed = 0;
+		mLightningLayer->EffectName = "effectlighttexture";
+		mLightningLayer->m_alpha = 0.0f;
+
+		GameObjectManager::Instance()->AddGameObject(mLightningLayer);
+	}
+}
+
+void WeatherManager::CreateSnowAssets()
+{
+	float gameScale = Game::GetGameScale().X;
+
+	if (!mBottomSnowLayer)
+	{
+		mBottomSnowLayer = new ParallaxLayer(Camera2D::GetInstance());
+
+		mBottomSnowLayer->m_textureFilename = "Media\\snowlayer.png";
+		mBottomSnowLayer->m_drawAtNativeDimensions = true;
+		mBottomSnowLayer->m_updateable = true;
+		mBottomSnowLayer->m_position = Vector3(0, 598 * gameScale, 15);
+		mBottomSnowLayer->m_dimensions = Vector3(2048, 2048, 0);
+		mBottomSnowLayer->mRepeatTextureX = false;
+		mBottomSnowLayer->mRepeatTextureY = false;
+		mBottomSnowLayer->m_repeatWidth = 2048;
+		mBottomSnowLayer->m_cameraParallaxMultiplierX = 0.000588;
+		mBottomSnowLayer->m_cameraParallaxMultiplierY = 0;
+		mBottomSnowLayer->m_followCamXPos = true;
+		mBottomSnowLayer->m_followCamYPos = false;
+		mBottomSnowLayer->m_autoScrollY = true;
+		mBottomSnowLayer->m_autoScrollX = false;
+		mBottomSnowLayer->m_autoScrollXSpeed = 0;
+		mBottomSnowLayer->m_autoScrollYSpeed = 6.0f;
+		mBottomSnowLayer->EffectName = "effectlighttexture";
+		mBottomSnowLayer->m_alpha = 1.0f;
+
+		GameObjectManager::Instance()->AddGameObject(mBottomSnowLayer);
+	}
+
+	if (!mTopSnowLayer)
+	{
+		mTopSnowLayer = new ParallaxLayer(Camera2D::GetInstance());
+
+		mTopSnowLayer->m_textureFilename = "Media\\snowlayer.png";
+		mTopSnowLayer->m_drawAtNativeDimensions = true;
+		mTopSnowLayer->m_updateable = true;
+		mTopSnowLayer->m_position = Vector3(0, 2650 * gameScale, 15);
+		mTopSnowLayer->m_dimensions = Vector3(2048, 2048, 0);
+		mTopSnowLayer->mRepeatTextureX = false;
+		mTopSnowLayer->mRepeatTextureY = false;
+		mTopSnowLayer->m_repeatWidth = 2048;
+		mTopSnowLayer->m_cameraParallaxMultiplierX = 0.000588;
+		mTopSnowLayer->m_cameraParallaxMultiplierY = 0;
+		mTopSnowLayer->m_followCamXPos = true;
+		mTopSnowLayer->m_followCamYPos = false;
+		mTopSnowLayer->m_autoScrollY = true;
+		mTopSnowLayer->m_autoScrollX = false;
+		mTopSnowLayer->m_autoScrollXSpeed = 0;
+		mTopSnowLayer->m_autoScrollYSpeed = 6.0f;
+		mTopSnowLayer->EffectName = "effectlighttexture";
+		mTopSnowLayer->m_alpha = 1.0f;
+
+		GameObjectManager::Instance()->AddGameObject(mTopSnowLayer);
+	}
+
+	// add the audio object
+	if (!mSnowSFX)
+	{
+		mSnowSFX = new AudioObject(0, 1500, 0, 50000, 3000);
+		mSnowSFX->SetAdjustVolumeToCamera(false);
+		mSnowSFX->SetAudioFilename("weather\\wind.mp3");
+		mSnowSFX->SetRepeat(true);
+		mSnowSFX->SetVolumeFadeDimensions(Vector2(50000, 3000));
+
+		GameObjectManager::Instance()->AddGameObject(mSnowSFX);
 	}
 }
 
@@ -297,128 +357,8 @@ void WeatherManager::StartRaining()
 
 	mHasRained = true;
 
-	float gameScale = Game::GetGameScale().X;
-
-	if (!mBottomRainLayer)
-	{
-		mBottomRainLayer = new ParallaxLayer(Camera2D::GetInstance());
-
-		mBottomRainLayer->m_textureFilename = "Media\\rainlayer.png";
-		mBottomRainLayer->m_drawAtNativeDimensions = true;
-		mBottomRainLayer->m_updateable = true;
-		mBottomRainLayer->m_position = Vector3(0, 598 * gameScale, 15);
-		mBottomRainLayer->m_dimensions = Vector3(2048, 2048, 0);
-		mBottomRainLayer->mRepeatTextureX = false;
-		mBottomRainLayer->mRepeatTextureY = false;
-		mBottomRainLayer->m_repeatWidth = 2048;
-		mBottomRainLayer->m_cameraParallaxMultiplierX = 0.000488;
-		mBottomRainLayer->m_cameraParallaxMultiplierY = 0;
-		mBottomRainLayer->m_followCamXPos = true;
-		mBottomRainLayer->m_followCamYPos = false;
-		mBottomRainLayer->m_autoScrollY = true;
-		mBottomRainLayer->m_autoScrollX = false;
-		mBottomRainLayer->m_autoScrollXSpeed = 0;
-		mBottomRainLayer->m_autoScrollYSpeed = 6.5f;
-		mBottomRainLayer->EffectName = "effectlighttexture";
-		mBottomRainLayer->m_alpha = 1.0f;
-
-		GameObjectManager::Instance()->AddGameObject(mBottomRainLayer);
-	}
-
-	if (!mTopRainLayer)
-	{
-		mTopRainLayer = new ParallaxLayer(Camera2D::GetInstance());
-
-		mTopRainLayer->m_textureFilename = "Media\\rainlayer.png";
-		mTopRainLayer->m_drawAtNativeDimensions = true;
-		mTopRainLayer->m_updateable = true;
-		mTopRainLayer->m_position = Vector3(0, 2650 * gameScale, 15);
-		mTopRainLayer->m_dimensions = Vector3(2048, 2048, 0);
-		mTopRainLayer->mRepeatTextureX = false;
-		mTopRainLayer->mRepeatTextureY = false;
-		mTopRainLayer->m_repeatWidth = 1920;
-		mTopRainLayer->m_cameraParallaxMultiplierX = 0.000488;
-		mTopRainLayer->m_cameraParallaxMultiplierY = 0;
-		mTopRainLayer->m_followCamXPos = true;
-		mTopRainLayer->m_followCamYPos = false;
-		mTopRainLayer->m_autoScrollY = true;
-		mTopRainLayer->m_autoScrollX = false;
-		mTopRainLayer->m_autoScrollXSpeed = 0;
-		mTopRainLayer->m_autoScrollYSpeed = 6.5f;
-		mTopRainLayer->EffectName = "effectlighttexture";
-		mTopRainLayer->m_alpha = 1.0f;
-
-		GameObjectManager::Instance()->AddGameObject(mTopRainLayer);
-	}
-
-	if (!mGroundRainLayer)
-	{
-		mGroundRainLayer = new ParallaxLayer(Camera2D::GetInstance());
-
-		mGroundRainLayer->m_textureFilename = "";
-		mGroundRainLayer->m_isAnimated = true;
-		mGroundRainLayer->m_animationFile = "XmlFiles\\ground_rain.xml";
-		mGroundRainLayer->m_drawAtNativeDimensions = true;
-		mGroundRainLayer->m_updateable = true;
-		mGroundRainLayer->m_position = Vector3(0, -220 * gameScale, 99);
-		mGroundRainLayer->m_dimensions = Vector3(2048, 2048, 0);
-		mGroundRainLayer->mRepeatTextureX = false;
-		mGroundRainLayer->mRepeatTextureY = false;
-		mGroundRainLayer->m_repeatWidth = 2048;
-		mGroundRainLayer->m_cameraParallaxMultiplierX = 0.000488;
-		mGroundRainLayer->m_cameraParallaxMultiplierY = 0;
-		mGroundRainLayer->m_followCamXPos = true;
-		mGroundRainLayer->m_followCamYPos = false;
-		mGroundRainLayer->m_autoScrollY = false;
-		mGroundRainLayer->m_autoScrollX = false;
-		mGroundRainLayer->m_autoScrollXSpeed = 0;
-		mGroundRainLayer->m_autoScrollYSpeed = 0;
-		mGroundRainLayer->EffectName = "effectlighttexture";
-		mGroundRainLayer->m_alpha = 1.0f;
-
-		GameObjectManager::Instance()->AddGameObject(mGroundRainLayer);
-	}
-
-	// add the audio object
-	if (!mRainSFX)
-	{
-		mRainSFX = new AudioObject(0, 1500,0,50000, 3000);
-		mRainSFX->SetAdjustVolumeToCamera(false);
-		mRainSFX->SetAudioFilename("weather\\heavy_rain.wav");
-		mRainSFX->SetRepeat(true);
-		mRainSFX->SetVolumeFadeDimensions(Vector2(50000, 3000));
-		
-		GameObjectManager::Instance()->AddGameObject(mRainSFX);
-	}
-
-	if (!mLightningLayer)
-	{
-		mLightningLayer = new ParallaxLayer(Camera2D::GetInstance());
-
-		mLightningLayer->m_textureFilename = "Media\\lightning_layer.png";
-		mLightningLayer->m_isAnimated = false;
-		mLightningLayer->m_animationFile = "";
-		mLightningLayer->m_drawAtNativeDimensions = true;
-		mLightningLayer->m_updateable = true;
-		mLightningLayer->m_position = Vector3(0, -220 * gameScale, 1);
-		mLightningLayer->m_dimensions = Vector3(2048, 2048, 0);
-		mLightningLayer->mRepeatTextureX = false;
-		mLightningLayer->mRepeatTextureY = false;
-		mLightningLayer->m_repeatWidth = 2048;
-		mLightningLayer->m_cameraParallaxMultiplierX = 0.0f;
-		mLightningLayer->m_cameraParallaxMultiplierY = 0.0f;
-		mLightningLayer->m_followCamXPos = true;
-		mLightningLayer->m_followCamYPos = true;
-		mLightningLayer->m_autoScrollY = false;
-		mLightningLayer->m_autoScrollX = false;
-		mLightningLayer->m_autoScrollXSpeed = 0;
-		mLightningLayer->m_autoScrollYSpeed = 0;
-		mLightningLayer->EffectName = "effectlighttexture";
-		mLightningLayer->m_alpha = 0.0f;
-
-		GameObjectManager::Instance()->AddGameObject(mLightningLayer);
-	}
-
+	CreateRainAssets();
+	
 	if (!HasCurrentWeatherState(kRaining))
 	{
 		mCurrentStates.push_back(kRaining);
@@ -667,71 +607,7 @@ void WeatherManager::StartSnowing()
 
 	mHasSnowed = true;
 
-	float gameScale = Game::GetGameScale().X;
-
-	if (!mBottomSnowLayer)
-	{
-		mBottomSnowLayer = new ParallaxLayer(Camera2D::GetInstance());
-
-		mBottomSnowLayer->m_textureFilename = "Media\\snowlayer.png";
-		mBottomSnowLayer->m_drawAtNativeDimensions = true;
-		mBottomSnowLayer->m_updateable = true;
-		mBottomSnowLayer->m_position = Vector3(0, 598 * gameScale, 15);
-		mBottomSnowLayer->m_dimensions = Vector3(2048, 2048, 0);
-		mBottomSnowLayer->mRepeatTextureX = false;
-		mBottomSnowLayer->mRepeatTextureY = false;
-		mBottomSnowLayer->m_repeatWidth = 2048;
-		mBottomSnowLayer->m_cameraParallaxMultiplierX = 0.000588;
-		mBottomSnowLayer->m_cameraParallaxMultiplierY = 0;
-		mBottomSnowLayer->m_followCamXPos = true;
-		mBottomSnowLayer->m_followCamYPos = false;
-		mBottomSnowLayer->m_autoScrollY = true;
-		mBottomSnowLayer->m_autoScrollX = false;
-		mBottomSnowLayer->m_autoScrollXSpeed = 0;
-		mBottomSnowLayer->m_autoScrollYSpeed = 6.0f;
-		mBottomSnowLayer->EffectName = "effectlighttexture";
-		mBottomSnowLayer->m_alpha = 1.0f;
-
-		GameObjectManager::Instance()->AddGameObject(mBottomSnowLayer);
-	}
-
-	if (!mTopSnowLayer)
-	{
-		mTopSnowLayer = new ParallaxLayer(Camera2D::GetInstance());
-
-		mTopSnowLayer->m_textureFilename = "Media\\snowlayer.png";
-		mTopSnowLayer->m_drawAtNativeDimensions = true;
-		mTopSnowLayer->m_updateable = true;
-		mTopSnowLayer->m_position = Vector3(0, 2650 * gameScale, 15);
-		mTopSnowLayer->m_dimensions = Vector3(2048, 2048, 0);
-		mTopSnowLayer->mRepeatTextureX = false;
-		mTopSnowLayer->mRepeatTextureY = false;
-		mTopSnowLayer->m_repeatWidth = 2048;
-		mTopSnowLayer->m_cameraParallaxMultiplierX = 0.000588;
-		mTopSnowLayer->m_cameraParallaxMultiplierY = 0;
-		mTopSnowLayer->m_followCamXPos = true;
-		mTopSnowLayer->m_followCamYPos = false;
-		mTopSnowLayer->m_autoScrollY = true;
-		mTopSnowLayer->m_autoScrollX = false;
-		mTopSnowLayer->m_autoScrollXSpeed = 0;
-		mTopSnowLayer->m_autoScrollYSpeed = 6.0f;
-		mTopSnowLayer->EffectName = "effectlighttexture";
-		mTopSnowLayer->m_alpha = 1.0f;
-
-		GameObjectManager::Instance()->AddGameObject(mTopSnowLayer);
-	}
-
-	// add the audio object
-	if (!mSnowSFX)
-	{
-		mSnowSFX = new AudioObject(0, 1500,0,50000, 3000);
-		mSnowSFX->SetAdjustVolumeToCamera(false);
-		mSnowSFX->SetAudioFilename("weather\\wind.mp3");
-		mSnowSFX->SetRepeat(true);
-		mSnowSFX->SetVolumeFadeDimensions(Vector2(50000, 3000));
-		
-		GameObjectManager::Instance()->AddGameObject(mSnowSFX);
-	}
+	CreateSnowAssets();
 
 	if (!HasCurrentWeatherState(kSnowing))
 	{

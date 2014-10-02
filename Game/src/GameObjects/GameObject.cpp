@@ -325,14 +325,14 @@ void GameObject::DebugDraw(ID3D10Device *  device)
 
 	if (mLevelEditShowSelected)
 	{
-		DrawUtilities::DrawTexture(m_position, Vector2(m_dimensions.X, m_dimensions.Y), "Media\\editor\\selected.png");
+		DrawUtilities::DrawTexture(Vector3(m_position.X, m_position.Y, 3), Vector2(m_dimensions.X, m_dimensions.Y), "Media\\editor\\selected.png");
 	}
 
-	DrawUtilities::DrawTexture(m_position, Vector2(mLevelEditSelectionDimensions.X, mLevelEditSelectionDimensions.Y), "Media\\editor\\selection.png");
+	DrawUtilities::DrawTexture(Vector3(m_position.X, m_position.Y, 3), Vector2(mLevelEditSelectionDimensions.X, mLevelEditSelectionDimensions.Y), "Media\\editor\\selection.png");
 
 	if (mLevelEditLocked)
 	{
-		DrawUtilities::DrawTexture(Vector3(m_position.X + (mLevelEditSelectionDimensions.X * 0.5f), m_position.Y - (mLevelEditSelectionDimensions.X * 0.5f), m_position.Z), Vector2((mLevelEditSelectionDimensions.X * 0.5f), (mLevelEditSelectionDimensions.X * 0.5f)), "Media\\editor\\lock.png");
+		DrawUtilities::DrawTexture(Vector3(m_position.X + (mLevelEditSelectionDimensions.X * 0.5f), m_position.Y - (mLevelEditSelectionDimensions.X * 0.5f),3), Vector2((mLevelEditSelectionDimensions.X * 0.5f), (mLevelEditSelectionDimensions.X * 0.5f)), "Media\\editor\\lock.png");
 	}
 }
 

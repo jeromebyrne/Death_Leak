@@ -57,6 +57,10 @@ private:
 
 	void RemoveState(WeatherState state);
 
+	void CreateRainAssets();
+
+	void CreateSnowAssets();
+
 	list<WeatherState> mCurrentStates;
 
 	double mElapsedTime;
