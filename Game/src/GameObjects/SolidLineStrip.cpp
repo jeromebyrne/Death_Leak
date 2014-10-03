@@ -326,7 +326,7 @@ void SolidLineStrip::RecalculateLines(std::vector<SolidLinePoint> & points)
 	CalculateLines();
 }
 
-bool SolidLineStrip::GetProjectileCollisionData(Projectile * projectile, Vector2 & position)
+bool SolidLineStrip::GetProjectileCollisionData(Projectile * projectile, Vector3 & position)
 {
 	Vector2 projectileRayStart = projectile->GetCollisionRayStart();
 	Vector2 projectileRayEnd = projectile->GetCollisionRayEnd();
@@ -358,6 +358,10 @@ bool SolidLineStrip::GetProjectileCollisionData(Projectile * projectile, Vector2
 		if (intersect)
 		{
 			projectile->SetIsOnSolidLine(true);
+
+			position.X = m_position.X - projectileRayEnd.X;
+			position.Y = m_position.Y - projectileRayEnd.Y;
+			position.Z = projectile->Z();
 
 			return true;	
 		}

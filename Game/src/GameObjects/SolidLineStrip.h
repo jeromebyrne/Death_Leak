@@ -29,7 +29,7 @@ public:
 
 	void RecalculateLines(std::vector<SolidLinePoint> & points);
 
-	bool GetProjectileCollisionData(Projectile * projectile, Vector2 & position);
+	bool GetProjectileCollisionData(Projectile * projectile, Vector3 & position);
 
 private:
 

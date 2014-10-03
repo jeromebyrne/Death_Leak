@@ -51,6 +51,8 @@ public:
 
 protected:
 
+	void Character::UpdateFootsteps(SolidMovingSprite * solidObject);
+
 	bool m_isJumping;
 	float m_maxJumpSpeed;
 	float m_lastTimePlayedFootstep; // the last time in ms when we played a footstep sound

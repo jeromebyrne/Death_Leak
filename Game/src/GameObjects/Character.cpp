@@ -70,90 +70,6 @@ void Character::Update(float delta)
 
 	// update the base classes
 	SolidMovingSprite::Update(delta);
-
-	if (Camera2D::GetInstance()->IsObjectInView(this)) // adding this in to disable annoying footstep sounds when a character is far away
-	{
-		// update footsteps 
-		if(mPlayFootsteps && (m_acceleration.X > 0.0 || m_acceleration.X < -0.0) && (m_acceleration.Y <= 0 && !m_onTopOfOtherSolidObject) && !m_collidingAtSideOfObject)
-		{
-			// update footsteps sound
-			float currentTime = Timing::Instance()->GetTotalTimeSeconds();
-
-			float footstep_delay = mSprintActive ? m_sprintFootstepTime : m_footstepTime;
-
-			if(currentTime > m_lastTimePlayedFootstep + footstep_delay)
-			{
-				// get the ground material
-				Material* groundMaterial = Environment::Instance()->GroundMaterial();
-				
-				// play footstep sounds
-				string footstepFile = groundMaterial->GetRandomFootstepSoundFilename();
-				AudioManager::Instance()->PlaySoundEffect(footstepFile);
-
-				// show ground particles
-				Vector3 pos(m_position.X, Bottom(), m_position.Z);
-				Vector3 dir(0.1, 0.9, 0);
-				string groundParticleFile = groundMaterial->GetRandomParticleTexture();
-
-				if (!mSprintActive)
-				{
-					ParticleEmitterManager::Instance()->CreateDirectedSpray(5,
-																		pos,
-																		dir,
-																		0.25,
-																		Vector3(1200, 720, 0),
-																		groundParticleFile,
-																		1,
-																		4,
-																		0.6f,
-																		0.8f,
-																		2,
-																		5,
-																		0.2,
-																		false,
-																		0.4,
-																		1.0,
-																		1,
-																		true,
-																		40,
-																		0.0f,
-																		0.0f,
-																		0.15f,
-																		0.8f);
-				}
-				else
-				{
-					ParticleEmitterManager::Instance()->CreateDirectedSpray(15,
-																		pos,
-																		dir,
-																		0.5,
-																		Vector3(1200, 720, 0),
-																		groundParticleFile,
-																		2,
-																		6,
-																		0.6f,
-																		1.0f,
-																		2,
-																		5,
-																		0.2,
-																		false,
-																		0.4,
-																		1.0,
-																		1,
-																		true,
-																		50,
-																		0.0f,
-																		0.0f,
-																		0.15f,
-																		0.8f);
-				}
-				
-
-				m_lastTimePlayedFootstep = currentTime;
-				
-			}
-		}
-	}
 }
 
 void Character::SetSprintActive(bool value)
@@ -234,38 +150,49 @@ void Character::OnCollision(SolidMovingSprite * object)
 		// update the base classes
 		SolidMovingSprite::OnCollision(object);
 
-		// play footstep sounds if we are running on top the object
-		if(mPlayFootsteps && m_onTopOfOtherSolidObject && !m_collidingAtSideOfObject)
+		UpdateFootsteps(object);
+	}
+	else if (object->IsPlatform())
+	{
+		if (Bottom() > object->Y()) // is the bottom of the character above the platform centre point?
 		{
-			if(m_acceleration.X != 0)
+			SolidMovingSprite::OnCollision(object);
+		}
+	}
+}
+
+void Character::UpdateFootsteps(SolidMovingSprite * solidObject)
+{
+	// play footstep sounds if we are running on top the object
+	if (mPlayFootsteps && IsOnSolidSurface() && !m_collidingAtSideOfObject)
+	{
+		if (m_acceleration.X != 0)
+		{
+			float currentTime = Timing::Instance()->GetTotalTimeSeconds();
+
+			float footstep_delay = mSprintActive ? m_sprintFootstepTime : m_footstepTime;
+
+			if (currentTime > m_lastTimePlayedFootstep + footstep_delay)
 			{
-				float currentTime = Timing::Instance()->GetTotalTimeSeconds();
-				
-				float footstep_delay = mSprintActive ? m_sprintFootstepTime : m_footstepTime;
+				m_lastTimePlayedFootstep = currentTime;
 
-				if(currentTime > m_lastTimePlayedFootstep + footstep_delay)
+				Material * objectMaterial = solidObject->GetMaterial();
+				string particleFile = "";
+				if (objectMaterial != 0)
 				{
-					m_lastTimePlayedFootstep = currentTime;
+					string soundfile = objectMaterial->GetRandomFootstepSoundFilename();
+					AudioManager::Instance()->PlaySoundEffect(soundfile);
+					particleFile = objectMaterial->GetRandomParticleTexture();
+				}
 
-					Material * objectMaterial = object->GetMaterial();
-					string particleFile = ""; 
-					if(objectMaterial != 0)
+				Vector3 pos(m_position.X, Bottom(), m_position.Z - 1);
+				Vector3 dir(0.1, 0.9, 0);
+
+				if (!mSprintActive)
+				{
+					if (particleFile != "")
 					{
-						string soundfile = objectMaterial->GetRandomFootstepSoundFilename();
-						AudioManager::Instance()->PlaySoundEffect(soundfile);
-						particleFile = objectMaterial->GetRandomParticleTexture();
-					}
-
-					// show ground particles - TODO, should we show the same particles for all objects?
-					//Material* groundMaterial = Environment::Instance()->GroundMaterial();
-					Vector3 pos(m_position.X, Bottom(), m_position.Z - 1);
-					Vector3 dir(0.1, 0.9, 0);
-
-					if (!mSprintActive)
-					{
-						if (particleFile != "")
-						{
-							ParticleEmitterManager::Instance()->CreateDirectedSpray(5,
+						ParticleEmitterManager::Instance()->CreateDirectedSpray(5,
 																				pos,
 																				dir,
 																				0.25,
@@ -288,49 +215,40 @@ void Character::OnCollision(SolidMovingSprite * object)
 																				0.0f,
 																				0.15f,
 																				0.8f);
-						}
 					}
-					else
+				}
+				else
+				{
+					if (particleFile != "")
 					{
-						if (particleFile != "")
-						{
-							ParticleEmitterManager::Instance()->CreateDirectedSpray(15,
-																				pos,
-																				dir,
-																				0.5,
-																				Vector3(1200, 720, 0),
-																				particleFile,
-																				2,
-																				6,
-																				0.6f,
-																				1.0f,
-																				2,
-																				5,
-																				0.2,
-																				false,
-																				0.4,
-																				1.0,
-																				1,
-																				true,
-																				50,
-																				0.0f,
-																				0.0f,
-																				0.15f,
-																				0.8f);
-						}
+						ParticleEmitterManager::Instance()->CreateDirectedSpray(15,
+							pos,
+							dir,
+							0.5,
+							Vector3(1200, 720, 0),
+							particleFile,
+							2,
+							6,
+							0.6f,
+							1.0f,
+							2,
+							5,
+							0.2,
+							false,
+							0.4,
+							1.0,
+							1,
+							true,
+							50,
+							0.0f,
+							0.0f,
+							0.15f,
+							0.8f);
 					}
 				}
 			}
 		}
 	}
-	else if (object->IsPlatform())
-	{
-		if (Bottom() > object->Y()) // is the bottom of the character above the platform centre point?
-		{
-			SolidMovingSprite::OnCollision(object);
-		}
-	}
-	
 }
 
 void Character::UpdateAnimations()

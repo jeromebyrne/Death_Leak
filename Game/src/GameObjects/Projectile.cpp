@@ -503,7 +503,7 @@ void Projectile::LoadContent(ID3D10Device * graphicsdevice)
 
 void Projectile::HandleSolidLineStripCollision(SolidLineStrip * solidLineStrip)
 {
-	Vector2 collisionPosition;
+	Vector3 collisionPosition;
 
 	if (solidLineStrip->GetProjectileCollisionData(this, collisionPosition))
 	{
@@ -526,7 +526,7 @@ void Projectile::HandleSolidLineStripCollision(SolidLineStrip * solidLineStrip)
 		}*/
 
 		// attach the projectile to the hit object
-		// AttachTo(GameObjectManager::Instance()->GetObjectByID(object->ID()), offset);
+		// AttachTo(GameObjectManager::Instance()->GetObjectByID(object->ID()), collisionPosition);
 
 		// stop the projectile
 		m_velocity.X = 0;
@@ -534,55 +534,45 @@ void Projectile::HandleSolidLineStripCollision(SolidLineStrip * solidLineStrip)
 		m_isActive = false;
 		m_timeBecameInactive = Timing::Instance()->GetTotalTimeSeconds();
 
-		Material * objectMaterial = GetMaterial();
-		if (objectMaterial != 0)
+		Material * objectMaterial = solidLineStrip->GetMaterial();
+		if (objectMaterial != nullptr)
 		{
 			// where should the particles spray from
-			Vector3 particlePos;
-			if (m_direction.X > 0)
-			{
-				//particlePos = Vector3(Right(),m_position.Y, m_position.Z -1 );
-				particlePos = Vector3(m_position.X, m_position.Y, m_position.Z - 1);
-			}
-			else
-			{
-				//particlePos = Vector3(Left(),m_position.Y, m_position.Z -1 );
-				particlePos = Vector3(m_position.X, m_position.Y, m_position.Z - 1);
-			}
+			Vector3 particlePos = solidLineStrip->Position() - collisionPosition;
 
 			// show particles
 			bool loop = false;
-			float minLive = 0.5f;
-			float maxLive = 1.0f;
+			float minLive = 0.35f;
+			float maxLive = 0.75f;
 
 			// play sound for non-characters, characters handle their sounds in OnDamage
 			string soundFile = objectMaterial->GetRandomDamageSoundFilename();
 			AudioManager::Instance()->PlaySoundEffect(soundFile);
 
 			string particleTexFile = objectMaterial->GetRandomParticleTexture();
-			ParticleEmitterManager::Instance()->CreateDirectedSpray(15,
-				particlePos,
-				Vector3(-m_direction.X, 0, 0),
-				0.4,
-				Vector3(3200, 1200, 0),
-				particleTexFile,
-				0.5,
-				2.5,
-				minLive,
-				maxLive,
-				15,
-				30,
-				1.5,
-				loop,
-				0.7,
-				1.0,
-				10.0f,
-				true,
-				2.5,
-				0.0f,
-				0.0f,
-				0.15f,
-				0.8f);
+			ParticleEmitterManager::Instance()->CreateDirectedSpray(10,
+																	particlePos,
+																	Vector3(-m_direction.X, -m_direction.Y, 0),
+																	0.4,
+																	Vector3(3200, 1200, 0),
+																	particleTexFile,
+																	1.0f,
+																	4.0f,
+																	minLive,
+																	maxLive,
+																	10,
+																	30,
+																	0.7,
+																	loop,
+																	0.7f,
+																	1.0f,
+																	10.0f,
+																	true,
+																	3.5f,
+																	1.5f,
+																	3.0f,
+																	0.15f,
+																	0.6f);
 		}
 	}
 }
