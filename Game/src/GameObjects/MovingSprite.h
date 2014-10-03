@@ -18,27 +18,27 @@ public:
 	virtual void XmlWrite(TiXmlElement * element) override;
 	virtual void Scale(float xScale, float yScale, bool scalePosition = true) override;
 
-	inline float DirectionX()
+	float DirectionX() const
 	{
 		return m_direction.X;
 	}
-	inline float DirectionY()
+	float DirectionY() const
 	{
 		return m_direction.Y;
 	}
-	inline Vector3 GetVelocity()
+	Vector3 GetVelocity() const
 	{
 		return m_velocity;
 	}
-	inline float VelocityX()
+	float VelocityX() const
 	{
 		return m_velocity.X;
 	}
-	inline float VelocityY()
+	float VelocityY() const
 	{
 		return m_velocity.Y;
 	}
-	inline void SetVelocityX(float value)
+	void SetVelocityX(float value)
 	{
 		m_velocity.X = value;
 	}
@@ -47,11 +47,11 @@ public:
 		m_velocity.Y = value;
 	}
 
-	float GetAccelX()
+	float GetAccelX() const
 	{
 		return m_acceleration.X;
 	}
-	float GetAccelY()
+	float GetAccelY() const
 	{
 		return m_acceleration.Y;
 	}

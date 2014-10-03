@@ -6,6 +6,8 @@
 #include "NPC.h"
 #include "orb.h"
 #include "waterblock.h"
+#include "SolidLineStrip.h"
+#include "DrawUtilities.h"
 
 int Projectile::NUM_PROJECTILES_ACTIVE = 0;
 
@@ -57,11 +59,6 @@ Projectile::~Projectile()
 
 void Projectile::OnCollision(SolidMovingSprite* object)
 {
-	if (object->IsSolidLine())
-	{
-		return;
-	}
-
 	if (object->IsButterfly())
 	{
 		if (!mIsInWater)
@@ -75,7 +72,12 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 
   	if(m_isActive)
 	{
-		//GAME_ASSERT(mOwnerType != Projectile::kUnknownProjectile);
+		if (object->IsSolidLineStrip())
+		{
+			SolidLineStrip * lineStrip = static_cast<SolidLineStrip*>(object);
+			HandleSolidLineStripCollision(lineStrip);
+			return;
+		}
 
 		Player * player = GameObjectManager::Instance()->GetPlayer();
 		if (object == player && mOwnerType == Projectile::kPlayerProjectile)
@@ -84,7 +86,7 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 			return;
 		}
 
-		NPC * objAsNPC = dynamic_cast<NPC *>(object);
+		NPC * objAsNPC = dynamic_cast<NPC *>(object); // TODO: optimise with NPC flag
 		if (objAsNPC && mOwnerType == Projectile::kNPCProjectile)
 		{
 			// NPC projectiles don't affect NPCs
@@ -363,6 +365,9 @@ void Projectile::Update(float delta)
 
 	if(m_isActive)
 	{
+		// we dont need complicated movement so we'll ignore the MovingSprite class
+		Sprite::Update(delta);
+
 		// apply gravity to the velocity
 		if (!mIsInWater)
 		{
@@ -426,9 +431,6 @@ void Projectile::Update(float delta)
 			m_velocity.Y *= 0.9f; // slow down significantly
 		}
 		m_position += m_velocity * percentDelta;
-
-		// we dont need complicated movement so we'll ignore the MovingSprite class
-		Sprite::Update(delta);
 	}
 	else
 	{
@@ -499,3 +501,121 @@ void Projectile::LoadContent(ID3D10Device * graphicsdevice)
 	m_impactTexture = TextureManager::Instance()->LoadTexture(m_impactTextureFilename.c_str());
 }
 
+void Projectile::HandleSolidLineStripCollision(SolidLineStrip * solidLineStrip)
+{
+	Vector2 collisionPosition;
+
+	if (solidLineStrip->GetProjectileCollisionData(this, collisionPosition))
+	{
+		if (mSpinningMovement)
+		{
+			SetRotationAngle(0);
+		}
+
+		// get the offset and attach to the hit object
+		// Vector3 offset = m_position - object->Position();
+		// offset.Z = object->Position().Z - 0.1; // want to show damage effects on front of the object
+
+		// change our sprite to the impact sprite 
+		m_texture = m_impactTexture;
+
+		// damage the other object
+		/*if (!mIsInWater)
+		{
+			OnDamage(m_damage, offset);
+		}*/
+
+		// attach the projectile to the hit object
+		// AttachTo(GameObjectManager::Instance()->GetObjectByID(object->ID()), offset);
+
+		// stop the projectile
+		m_velocity.X = 0;
+		m_velocity.Y = 0;
+		m_isActive = false;
+		m_timeBecameInactive = Timing::Instance()->GetTotalTimeSeconds();
+
+		Material * objectMaterial = GetMaterial();
+		if (objectMaterial != 0)
+		{
+			// where should the particles spray from
+			Vector3 particlePos;
+			if (m_direction.X > 0)
+			{
+				//particlePos = Vector3(Right(),m_position.Y, m_position.Z -1 );
+				particlePos = Vector3(m_position.X, m_position.Y, m_position.Z - 1);
+			}
+			else
+			{
+				//particlePos = Vector3(Left(),m_position.Y, m_position.Z -1 );
+				particlePos = Vector3(m_position.X, m_position.Y, m_position.Z - 1);
+			}
+
+			// show particles
+			bool loop = false;
+			float minLive = 0.5f;
+			float maxLive = 1.0f;
+
+			// play sound for non-characters, characters handle their sounds in OnDamage
+			string soundFile = objectMaterial->GetRandomDamageSoundFilename();
+			AudioManager::Instance()->PlaySoundEffect(soundFile);
+
+			string particleTexFile = objectMaterial->GetRandomParticleTexture();
+			ParticleEmitterManager::Instance()->CreateDirectedSpray(15,
+				particlePos,
+				Vector3(-m_direction.X, 0, 0),
+				0.4,
+				Vector3(3200, 1200, 0),
+				particleTexFile,
+				0.5,
+				2.5,
+				minLive,
+				maxLive,
+				15,
+				30,
+				1.5,
+				loop,
+				0.7,
+				1.0,
+				10.0f,
+				true,
+				2.5,
+				0.0f,
+				0.0f,
+				0.15f,
+				0.8f);
+		}
+	}
+}
+
+void Projectile::DebugDraw(ID3D10Device * graphicsdevice)
+{
+	SolidMovingSprite::DebugDraw(graphicsdevice);
+
+	DrawUtilities::DrawLine(GetCollisionRayStart(), GetCollisionRayEnd());
+}
+
+Vector2 Projectile::GetCollisionRayStart() const
+{
+	return Vector2(CollisionCentreX(), CollisionCentreY());
+}
+
+Vector2 Projectile::GetCollisionRayEnd() const
+{
+	return Vector2(CollisionCentreX() + (DirectionX() * CollisionDimensions().X * 0.5f),
+					CollisionCentreY() + (DirectionY() * CollisionDimensions().X * 0.5f));
+}
+
+Vector2 Projectile::GetLastFrameCollisionRayStart()
+{
+	Vector3 posDiff = m_position - m_lastPosition;
+
+	return Vector2(CollisionCentreX() - posDiff.X, CollisionCentreY() - posDiff.Y);
+}
+
+Vector2 Projectile::GetLastFrameCollisionRayEnd()
+{
+	Vector3 posDiff = m_position - m_lastPosition;
+
+	return Vector2((CollisionCentreX() - posDiff.X) + (DirectionX() * CollisionDimensions().X * 0.5f),
+					(CollisionCentreY() - posDiff.Y) + (DirectionY() * CollisionDimensions().X * 0.5f));
+}

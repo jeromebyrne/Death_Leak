@@ -124,7 +124,7 @@ Projectile * Player::FireWeapon(Vector2 direction)
 									mProjectileImpactFilePath.c_str(),
 									pos,
 									Vector2(30,8),
-									Vector2(30 * 1.2,8),
+									Vector2(80,80),
 									direction,
 									5,
 									speed,

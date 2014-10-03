@@ -29,6 +29,8 @@ public:
 
 	void RecalculateLines(std::vector<SolidLinePoint> & points);
 
+	bool GetProjectileCollisionData(Projectile * projectile, Vector2 & position);
+
 private:
 
 	struct SolidLine

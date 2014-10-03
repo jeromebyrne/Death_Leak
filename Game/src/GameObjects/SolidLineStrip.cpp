@@ -1,6 +1,7 @@
 #include "precompiled.h"
 #include "SolidLineStrip.h"
 #include "DrawUtilities.h"
+#include "Projectile.h"
 
 SolidLineStrip::SolidLineStrip(float x, float y, float z, float width, float height, float breadth) :
 	SolidMovingSprite(x, y, z, width, height, breadth)
@@ -87,7 +88,7 @@ void SolidLineStrip::LoadContent(ID3D10Device * graphicsdevice)
 void SolidLineStrip::OnCollision(SolidMovingSprite * object)
 {
 	if (object->IsButterfly() ||
-		object->IsProjectile()) // TODO: we want to handle projectiles in the future
+		object->IsProjectile())
 	{
 		return;
 	}
@@ -324,3 +325,49 @@ void SolidLineStrip::RecalculateLines(std::vector<SolidLinePoint> & points)
 	mPoints = points;
 	CalculateLines();
 }
+
+bool SolidLineStrip::GetProjectileCollisionData(Projectile * projectile, Vector2 & position)
+{
+	Vector2 projectileRayStart = projectile->GetCollisionRayStart();
+	Vector2 projectileRayEnd = projectile->GetCollisionRayEnd();
+
+	for (auto & l : mLines)
+	{
+		if (!BoxHitCheck(l, projectile))
+		{
+			projectile->SetIsOnSolidLine(false);
+			continue;
+		}
+
+		Vector2 intersectPoint;
+		bool intersect = Intersect(l,
+									projectileRayStart,
+									projectileRayEnd,
+									intersectPoint);
+
+		if (!intersect)
+		{
+			// The current ray check may fail but check the last frames ray to make sure we didn't skip the collision
+			Vector2 projectileRayStart = projectile->GetLastFrameCollisionRayStart();
+
+			intersect = Intersect(l,
+									projectileRayStart,
+									projectileRayEnd,
+									intersectPoint);
+		}
+		if (intersect)
+		{
+			projectile->SetIsOnSolidLine(true);
+
+			return true;	
+		}
+		else
+		{
+			projectile->SetIsOnSolidLine(false);
+		}
+	}
+
+	return false;
+}
+
+

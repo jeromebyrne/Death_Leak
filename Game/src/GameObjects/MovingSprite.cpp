@@ -154,7 +154,6 @@ void MovingSprite::Initialise()
 	mCurrentYResistance = m_resistance.Y;
 }
 
-
 void MovingSprite::XmlRead(TiXmlElement * element)
 {
 	Sprite::XmlRead(element);

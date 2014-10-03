@@ -4,6 +4,8 @@
 #include "solidmovingsprite.h"
 #define MAX_PROJECTLES_ALLOWED 20 // the maximum number of projectiles we want alive
 
+class SolidLineStrip;
+
 class Projectile : public SolidMovingSprite
 {
 public:
@@ -42,13 +44,22 @@ public:
 	virtual void Draw(ID3D10Device * device, Camera2D * camera) override;
 	virtual void Scale(float xScale, float yScale, bool scalePosition = true) override;
 	virtual void LoadContent(ID3D10Device * graphicsdevice) override;
+	virtual void DebugDraw(ID3D10Device * graphicsdevice) override;
 
 	void SetSpinningMovement(bool value) { mSpinningMovement = value; }
 
 	ProjectileType getProjectileType() const { return mType; }
 	ProjectileOwnerType getOwnerType() const { return mOwnerType; }
 
+	Vector2 GetCollisionRayStart() const;
+	Vector2 GetCollisionRayEnd() const;
+
+	Vector2 GetLastFrameCollisionRayStart();
+	Vector2 GetLastFrameCollisionRayEnd();
+
 protected:
+
+	void HandleSolidLineStripCollision(SolidLineStrip * solidLineStrip);
 
 	static int NUM_PROJECTILES_ACTIVE; // the number of projectiles currently alive
 
