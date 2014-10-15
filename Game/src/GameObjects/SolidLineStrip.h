@@ -31,6 +31,8 @@ public:
 
 	bool GetProjectileCollisionData(Projectile * projectile, Vector3 & position);
 
+	bool GetBombProjectileCollisionData(Projectile * projectile, Vector3 & position);
+
 private:
 
 	struct SolidLine

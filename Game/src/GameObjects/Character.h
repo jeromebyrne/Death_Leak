@@ -45,8 +45,6 @@ public:
 	virtual Projectile * FireWeapon(Vector2 direction) = 0;
 	virtual Projectile * FireBomb(Vector2 direction) = 0;
 
-	bool IsOnSolidSurface();
-
 	virtual void DoMeleeAttack();
 
 protected:
@@ -84,6 +82,7 @@ protected:
 	bool mPlayFootsteps;
 
 	bool mMatchAnimFrameRateWithMovement;
+
 };
 
 #endif

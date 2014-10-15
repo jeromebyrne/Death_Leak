@@ -422,3 +422,8 @@ void SolidMovingSprite::OnDamage(float damageAmount, Vector3 pointOfContact, boo
 																0.8f);
 	}
 }
+
+bool SolidMovingSprite::IsOnSolidSurface()
+{
+	return IsOnGround() || GetIsCollidingOnTopOfObject() || IsOnSolidLine();
+}

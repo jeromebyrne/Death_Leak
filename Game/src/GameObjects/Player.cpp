@@ -78,7 +78,7 @@ Projectile * Player::FireBomb(Vector2 direction)
 										mProjectileImpactFilePath.c_str(),
 										pos,
 										Vector2(30,8),
-										Vector2(30,30),
+										Vector2(60,60),
 										direction,
 										50,
 										speed,

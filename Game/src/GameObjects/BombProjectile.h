@@ -23,6 +23,12 @@ public:
 	virtual void OnCollision(SolidMovingSprite* object) override;
 
 	virtual void Update(float delta) override;
+
+	void HandleSolidLineStripCollision(SolidLineStrip * solidLineStrip);
+
+private:
+
+	float mTimeUntilNextParticleSpray;
 };
 
 #endif

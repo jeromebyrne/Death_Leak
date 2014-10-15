@@ -512,21 +512,15 @@ void Projectile::HandleSolidLineStripCollision(SolidLineStrip * solidLineStrip)
 			SetRotationAngle(0);
 		}
 
-		// get the offset and attach to the hit object
-		// Vector3 offset = m_position - object->Position();
-		// offset.Z = object->Position().Z - 0.1; // want to show damage effects on front of the object
-
 		// change our sprite to the impact sprite 
 		m_texture = m_impactTexture;
 
 		// damage the other object
-		/*if (!mIsInWater)
+		if (!mIsInWater)
 		{
-			OnDamage(m_damage, offset);
-		}*/
-
-		// attach the projectile to the hit object
-		// AttachTo(GameObjectManager::Instance()->GetObjectByID(object->ID()), collisionPosition);
+			// TODO: the particle offset is notworking properly
+			//OnDamage(m_damage, collisionPosition);
+		}
 
 		// stop the projectile
 		m_velocity.X = 0;
@@ -539,6 +533,7 @@ void Projectile::HandleSolidLineStripCollision(SolidLineStrip * solidLineStrip)
 		{
 			// where should the particles spray from
 			Vector3 particlePos = solidLineStrip->Position() - collisionPosition;
+			particlePos.Z = m_position.Z - 0.01f;
 
 			// show particles
 			bool loop = false;

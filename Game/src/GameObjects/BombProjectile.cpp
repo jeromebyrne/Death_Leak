@@ -6,6 +6,10 @@
 #include "Orb.h"
 #include "AudioManager.h"
 #include "waterblock.h"
+#include "SolidLineStrip.h"
+#include "Material.h"
+
+static const float kParticleDelay = 0.1f;
 
 BombProjectile::BombProjectile(ProjectileOwnerType ownerType, 
 								const char* textureFileName, 
@@ -25,7 +29,8 @@ Projectile(ownerType,textureFileName,
 			 direction, 
 			 damage,
 			 speed,
-			 maxTimeInActive)
+			 maxTimeInActive),
+			 mTimeUntilNextParticleSpray(0.0f)
 {
 	mSpinningMovement = true;
 	mBouncable = true;
@@ -45,25 +50,35 @@ BombProjectile::~BombProjectile(void)
 
 void BombProjectile::OnCollision(SolidMovingSprite* object)
 {
-	if(!object->IsOrb())
+	if (object->IsOrb())
 	{
-		if (object->IsWaterBlock())
-		{
-			// npc projectiles don't damage other npc's
-			return;
-		}
-
-		if (!object->IsCharacter())
-		{
-			if (m_isActive)
-			{
-				m_isActive = false;
-				m_timeBecameInactive = Timing::Instance()->GetTotalTimeSeconds();
-			}
-
-			SolidMovingSprite::OnCollision(object);
-		}
+		return;
 	}
+
+	if (object->IsWaterBlock())
+	{
+		return;
+	}
+
+	if (object->IsCharacter())
+	{
+		return;
+	}
+
+	if (object->IsSolidLineStrip())
+	{
+		SolidLineStrip * lineStrip = static_cast<SolidLineStrip*>(object);
+		HandleSolidLineStripCollision(lineStrip);
+		return;
+	}
+
+	if (m_isActive)
+	{
+		m_isActive = false;
+		m_timeBecameInactive = Timing::Instance()->GetTotalTimeSeconds();
+	}
+
+	SolidMovingSprite::OnCollision(object);
 }
 
 void BombProjectile::Update(float delta)
@@ -76,16 +91,18 @@ void BombProjectile::Update(float delta)
 		percentDelta = 1.4f; 
 	}
 
-	// apply gravity to the velocity
-	if (!mIsInWater)
+	// apply gravity to the 
+	if (!mIsOnSolidLine)
 	{
-		m_velocity.Y -= 0.3f * percentDelta;
+		if (!mIsInWater)
+		{
+			m_velocity.Y -= 0.3f * percentDelta;
+		}
+		else
+		{
+			m_velocity.Y -= 0.06f * percentDelta;
+		}
 	}
-	else
-	{
-		m_velocity.Y -= 0.06f * percentDelta;
-	}
-
 
 	// nice simple update
 	if (mIsInWater)
@@ -93,28 +110,18 @@ void BombProjectile::Update(float delta)
 		m_velocity.X *= 0.92f; // slow down significantly
 		//m_velocity.Y *= 0.9f; // slow down significantly
 	}
+
+	m_direction = m_velocity;
+	m_direction.Normalise();
+
 	m_position += m_velocity * percentDelta;
 
 	// we dont need complicated movement so we'll ignore the MovingSprite class
 	Sprite::Update(delta);
 
-	int groundLevel = Environment::Instance()->GroundLevel();
-	
-	float bottom = Bottom();
-	if (bottom <= groundLevel || GetIsCollidingOnTopOfObject())
+	if (IsOnSolidSurface())
 	{
-		if (m_isActive)
-		{
-			m_isActive = false;
-			m_timeBecameInactive = Timing::Instance()->GetTotalTimeSeconds();
-		}
-		m_isOnGround = true;
-		if(bottom < groundLevel) // if below ground level then set at ground level
-		{
-			m_position.Y = (groundLevel + m_dimensions.Y/2);
-			StopYAccelerating();
-			m_velocity.Y = 0;
-		}
+		StopYAccelerating();
 
 		if (!mIsInWater)
 		{
@@ -127,8 +134,6 @@ void BombProjectile::Update(float delta)
 	}
 	else
 	{
-		m_isOnGround = false;
-
 		if (!mIsInWater)
 		{
 			SetRotationAngle(GetRotationAngle() + ((m_velocity.X * -0.01) * percentDelta));
@@ -149,5 +154,103 @@ void BombProjectile::Update(float delta)
 			// time to kill ourselves
 			GameObjectManager::Instance()->RemoveGameObject(this);
 		}
+	}
+
+	if (mTimeUntilNextParticleSpray > 0.0f)
+	{
+		mTimeUntilNextParticleSpray -= delta;
+
+		if (mTimeUntilNextParticleSpray < 0.0f)
+		{
+			mTimeUntilNextParticleSpray = 0.0f;
+		}
+	}
+}
+
+void BombProjectile::HandleSolidLineStripCollision(SolidLineStrip * solidLineStrip)
+{
+	Vector3 collisionPosition;
+
+	if (solidLineStrip->GetBombProjectileCollisionData(this, collisionPosition))
+	{
+		if (m_velocity.Y < 0.0f)
+		{
+			// bounce
+			m_velocity.X *= 0.85f;
+			m_velocity.Y *= -0.5f;
+		}
+
+		float diffY = collisionPosition.Y - CollisionBottom();
+
+		SetY(solidLineStrip->Position().Y - collisionPosition.Y);
+
+		if (m_isActive)
+		{
+			m_timeBecameInactive = Timing::Instance()->GetTotalTimeSeconds();
+		}
+		
+		if (mSpinningMovement)
+		{
+			SetRotationAngle(0);
+		}
+
+		// damage the other object
+		if (!mIsInWater)
+		{
+			// OnDamage(m_damage, collisionPosition);
+		}
+
+		Material * objectMaterial = solidLineStrip->GetMaterial();
+		if (objectMaterial != nullptr)
+		{
+			// where should the particles spray from
+			Vector3 particlePos = solidLineStrip->Position() - collisionPosition;
+			particlePos.Z = m_position.Z - 0.01f;
+
+			// show particles
+			bool loop = false;
+			float minLive = 0.35f;
+			float maxLive = 0.75f;
+
+			if (m_isActive)
+			{
+				// play sound for non-characters, characters handle their sounds in OnDamage
+				string soundFile = objectMaterial->GetRandomDamageSoundFilename();
+				AudioManager::Instance()->PlaySoundEffect(soundFile);
+			}
+			
+			if (m_velocity.X > 5.0f && mTimeUntilNextParticleSpray == 0.0f)
+			{
+				string particleTexFile = objectMaterial->GetRandomParticleTexture();
+				ParticleEmitterManager::Instance()->CreateDirectedSpray(5,
+																		particlePos,
+																		Vector3(-m_direction.X, -m_direction.Y, 0),
+																		0.4,
+																		Vector3(3200, 1200, 0),
+																		particleTexFile,
+																		1.0f,
+																		4.0f,
+																		minLive,
+																		maxLive,
+																		10,
+																		30,
+																		0.7,
+																		loop,
+																		0.7f,
+																		1.0f,
+																		10.0f,
+																		true,
+																		3.5f,
+																		1.5f,
+																		3.0f,
+																		0.15f,
+																		0.6f);
+
+				mTimeUntilNextParticleSpray = kParticleDelay;
+			}
+			
+		}
+
+		m_isActive = false;
 	}
 }

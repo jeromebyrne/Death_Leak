@@ -192,7 +192,7 @@ void Character::UpdateFootsteps(SolidMovingSprite * solidObject)
 				{
 					if (particleFile != "")
 					{
-						ParticleEmitterManager::Instance()->CreateDirectedSpray(5,
+						ParticleEmitterManager::Instance()->CreateDirectedSpray(3,
 																				pos,
 																				dir,
 																				0.25,
@@ -210,11 +210,11 @@ void Character::UpdateFootsteps(SolidMovingSprite * solidObject)
 																				1.0,
 																				1,
 																				true,
-																				40,
-																				0.0f,
-																				0.0f,
+																				25,
+																				3.0f,
+																				1.0f,
 																				0.15f,
-																				0.8f);
+																				0.7f);
 					}
 				}
 				else
@@ -222,28 +222,28 @@ void Character::UpdateFootsteps(SolidMovingSprite * solidObject)
 					if (particleFile != "")
 					{
 						ParticleEmitterManager::Instance()->CreateDirectedSpray(15,
-							pos,
-							dir,
-							0.5,
-							Vector3(1200, 720, 0),
-							particleFile,
-							2,
-							6,
-							0.6f,
-							1.0f,
-							2,
-							5,
-							0.2,
-							false,
-							0.4,
-							1.0,
-							1,
-							true,
-							50,
-							0.0f,
-							0.0f,
-							0.15f,
-							0.8f);
+																				pos,
+																				dir,
+																				0.5,
+																				Vector3(1200, 720, 0),
+																				particleFile,
+																				2,
+																				6,
+																				0.6f,
+																				1.0f,
+																				2,
+																				5,
+																				0.2,
+																				false,
+																				0.4,
+																				1.0,
+																				1,
+																				true,
+																				30,
+																				2.0f,
+																				1.0f,
+																				0.15f,
+																				0.5f);
 					}
 				}
 			}
@@ -610,11 +610,6 @@ void Character::Draw(ID3D10Device * device, Camera2D * camera)
 	m_texture = m_mainBodyTexture;
 
 	SolidMovingSprite::Draw(device, camera);
-}
-
-bool Character::IsOnSolidSurface()
-{
-	return IsOnGround() || GetIsCollidingOnTopOfObject() || IsOnSolidLine();
 }
 
 void Character::DoMeleeAttack()

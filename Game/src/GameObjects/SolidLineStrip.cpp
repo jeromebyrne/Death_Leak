@@ -374,4 +374,63 @@ bool SolidLineStrip::GetProjectileCollisionData(Projectile * projectile, Vector3
 	return false;
 }
 
+bool SolidLineStrip::GetBombProjectileCollisionData(Projectile * projectile, Vector3 & position)
+{
+	Vector2 projectileRayStart = projectile->GetCollisionRayStart();
+	Vector2 projectileRayEnd = projectile->GetCollisionRayEnd();
+
+	// for the bomb projectile, also get the down vector as it will bounce off the ground
+
+	for (auto & l : mLines)
+	{
+		if (!BoxHitCheck(l, projectile))
+		{
+			projectile->SetIsOnSolidLine(false);
+			continue;
+		}
+
+		Vector2 intersectPoint;
+		bool intersect = Intersect(l,
+			projectileRayStart,
+			projectileRayEnd,
+			intersectPoint);
+
+		if (!intersect)
+		{
+			// The current ray check may fail but check the last frames ray to make sure we didn't skip the collision
+			Vector2 projectileRayStart = projectile->GetLastFrameCollisionRayStart();
+
+			intersect = Intersect(l,
+									projectileRayStart,
+									projectileRayEnd,
+									intersectPoint);
+		}
+		if (!intersect)
+		{
+			// check the down vector
+
+			intersect = Intersect(l,
+									Vector2(projectile->X(), projectile->CollisionTop()),
+									Vector2(projectile->X(), projectile->CollisionBottom()),
+									intersectPoint);
+			
+		}
+		if (intersect)
+		{
+			projectile->SetIsOnSolidLine(true);
+
+			position.X = m_position.X - projectileRayEnd.X;
+			position.Y = m_position.Y - projectileRayEnd.Y;
+			position.Z = projectile->Z();
+
+			return true;
+		}
+		else
+		{
+			projectile->SetIsOnSolidLine(false);
+		}
+	}
+
+	return false;
+}
 

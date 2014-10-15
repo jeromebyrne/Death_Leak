@@ -78,6 +78,8 @@ public:
 	virtual bool IsOnSolidLine() const { return mIsOnSolidLine; }
 
 	virtual void SetIsOnSolidLine(bool value) { mIsOnSolidLine = value; }
+
+	bool IsOnSolidSurface();
 	
 protected:
 
