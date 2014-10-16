@@ -62,7 +62,9 @@ public:
 						 bool scalesByLiveTime,
 						 float scaleTo,
 						 float fadeInPercentTime,
-						 float fadeOutPercentTime); 
+						 float fadeOutPercentTime,
+						 float spawnOffsetX,
+						 float spawnOffsetY); 
 
 
 	ParticleSpray * CreateDirectedSpray(int numParticles,

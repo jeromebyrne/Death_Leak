@@ -345,13 +345,11 @@ void Game::Cleanup()
 	m_screenAlignedPostProcTex1->Release();
 }
 
-#if _DEBUG
 void Game::SetLevelEditFilename(const char * file) 
 { 
 	GAME_ASSERT(mlevelEditor);
 	mlevelEditor->SetLevelFile(file);
 }
-#endif
 
 void Game::Create()
 {

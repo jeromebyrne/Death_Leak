@@ -244,7 +244,9 @@ void ParticleEmitterManager::CreateRadialSpray(int numParticles,
 												 bool scalesByLiveTime,
 												 float scaleTo,
 												 float fadeInPercentTime,
-												 float fadeOutPercentTime)
+												 float fadeOutPercentTime,
+												 float spawnOffsetX,
+												 float spawnOffsetY)
 {
 	if (sNumParticlesInWorld > kMaxParticlesInWorld)
 	{
@@ -350,8 +352,8 @@ void ParticleEmitterManager::CreateRadialSpray(int numParticles,
 												loopTime,
 												scalesByLiveTime, 
 												scaleTo * gameScale,
-												0.0f,
-												0.0f);
+												spawnOffsetX,
+												spawnOffsetY);
 
 	spray->SetFadeInPercentTime(fadeInPercentTime);
 	spray->SetFadeOutPercentTime(fadeOutPercentTime);

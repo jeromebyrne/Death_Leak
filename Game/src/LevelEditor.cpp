@@ -8,8 +8,6 @@
 #include "SolidLineStrip.h"
 #include "DrawUtilities.h"
 
-#if _DEBUG
-
 LevelEditor::LevelEditor(void):
 	mSelectedObject(nullptr),
 	mTerrainEditing(false),
@@ -980,5 +978,3 @@ Vector2 LevelEditor::GetMouseWorldPos()
 
 	return worldPos;
 }
-
-#endif

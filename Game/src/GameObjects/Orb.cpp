@@ -104,7 +104,9 @@ void Orb::OnCollideWithTarget()
 																  true, 
 																  0.1,
 																  0.15f,
-																  0.8f);
+																  0.8f,
+																  5,
+																  5);
 		}
 
 		// play sound effect

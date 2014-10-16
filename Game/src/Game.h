@@ -63,10 +63,8 @@ private:
 	EffectParticleSpray * m_effectParticleSpray;
 	EffectBloodParticleSpray * m_effectBloodParticleSpray;
 	EffectLightTextureBump * m_effectLightTextureBump;
-#if _DEBUG
 	EffectBasic * m_effectBasic;
 	LevelEditor * mlevelEditor;
-#endif
 	EffectSepia * m_effectSepia;
 	EffectMonochrome * m_effectMonochrome;
 	EffectMonochromeRed * m_effectMonochromeRed;

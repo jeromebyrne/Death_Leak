@@ -114,7 +114,7 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 
 					GameObjectManager::Instance()->RemoveGameObject(objAsProj);
 
-					ParticleEmitterManager::Instance()->CreateRadialSpray(6,
+					ParticleEmitterManager::Instance()->CreateRadialSpray(1,
 																			m_position,
 																			Vector3(3000, 3000, 1),
 																			"Media\\spark.png",
@@ -132,7 +132,9 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 																			true,
 																			5.0,
 																			0.1f,
-																			0.8f);
+																			0.8f,
+																			0.0f,
+																			0.0f);
 
 					AudioManager::Instance()->PlaySoundEffect("metalclink.wav");
 					return;
@@ -164,7 +166,7 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 				objAsProj->m_timeBecameInactive = Timing::Instance()->GetTotalTimeSeconds();
 				objAsProj->SetVelocityXYZ(-m_velocity.X * 0.7, -5, 0);
 
-				ParticleEmitterManager::Instance()->CreateRadialSpray(6, 
+				ParticleEmitterManager::Instance()->CreateRadialSpray(1, 
 																	  m_position,
 																	  Vector3(3000,3000, 1),
 																	  "Media\\spark.png",
@@ -182,7 +184,9 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 																	  true,
 																	  5.0,
 																	  0.1f,
-																	  0.8f);
+																	  0.8f,
+																	  0.0f,
+																	  0.0f);
 
 				AudioManager::Instance()->PlaySoundEffect("metalclink.wav");
 
