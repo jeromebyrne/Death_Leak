@@ -121,7 +121,7 @@ void BombProjectile::Update(float delta)
 
 	if (IsOnSolidSurface())
 	{
-		StopYAccelerating();
+		// StopYAccelerating();
 
 		if (!mIsInWater)
 		{
@@ -176,8 +176,8 @@ void BombProjectile::HandleSolidLineStripCollision(SolidLineStrip * solidLineStr
 		if (m_velocity.Y < 0.0f)
 		{
 			// bounce
-			m_velocity.X *= 0.85f;
-			m_velocity.Y *= -0.5f;
+			m_velocity.X *= 0.9f;
+			m_velocity.Y *= -0.7f;
 		}
 
 		float diffY = collisionPosition.Y - CollisionBottom();

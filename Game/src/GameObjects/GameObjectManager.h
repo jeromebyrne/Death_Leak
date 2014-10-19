@@ -5,6 +5,7 @@
 #include "drawableobject.h"
 #include "player.h"
 #include "particleSpray.h"
+#include "LevelProperties.h"
 
 class Camera2D;
 class AudioObject;
@@ -90,6 +91,7 @@ public:
 	std::string mLevelToSwitch;
 
 private:
+
 	Camera2D * m_camera;
 	static GameObjectManager* m_instance;
 	list<shared_ptr<GameObject> > m_gameObjects;
@@ -104,6 +106,8 @@ private:
 	Vector2 m_updateZoneDimensions; // screen space dimensions (+ more) in which we update objects, if outside then dont update
 
 	ParticleSpray * ReadParticleSpray(TiXmlElement * element);
+
+	void ParseLevelProperties(TiXmlElement * element);
 
 	void AddSlowMotionLayer();
 
@@ -125,6 +129,8 @@ private:
 	float mCamYOffset; // if mCamYShouldOffset = true then this decides up or down 
 
 	ParallaxLayer * mSlowMotionLayer;
+
+	LevelProperties mLevelProperties;
 };
 
 #endif

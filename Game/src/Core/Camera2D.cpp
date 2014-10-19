@@ -70,10 +70,47 @@ bool Camera2D::IsObjectInView(GameObject * object)
 	return inView;
 }
 
+void Camera2D::SetBounds(float left, float right, float top, float bottom)
+{
+	mBoundsTopLeft.X = left;
+	mBoundsTopLeft.Y = top;
+	mBoundsBottomRight.X = right;
+	mBoundsBottomRight.Y = bottom;
+}
+
 void Camera2D::FollowObjectWithOffset(GameObject * object, float xOffset, float yOffset)
 {
-	m_position.X = object->X() + xOffset;
-	m_position.Y = object->Y() + yOffset;
+	if (UpdateBoundsX(object->X() + xOffset))
+	{
+		m_position.X = object->X() + xOffset;
+	}
+
+	if (UpdateBoundsY(object->Y() + yOffset))
+	{
+		m_position.Y = object->Y() + yOffset;
+	}
+}
+
+bool Camera2D::UpdateBoundsX(float newPositionX)
+{
+	if (newPositionX < mBoundsBottomRight.X &&
+		newPositionX > mBoundsTopLeft.X)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool Camera2D::UpdateBoundsY(float newPositionY)
+{
+	if (newPositionY > mBoundsBottomRight.Y &&
+		newPositionY < mBoundsTopLeft.Y)
+	{
+		return true;
+	}
+
+	return false;
 }
 
 void Camera2D::Update()
@@ -140,8 +177,16 @@ void Camera2D::FollowMovingObjectWithLag(MovingSprite * object, float xLag, floa
 	}
 
 	distanceY = m_position.Y - (object->Y() + yOffset);
-	m_position.X -= distanceX / xLag;
-	m_position.Y -= distanceY / yLag;
+
+	if (UpdateBoundsX(m_position.X - distanceX / xLag))
+	{
+		m_position.X -= distanceX / xLag;
+	}
+
+	if (UpdateBoundsY(m_position.Y - distanceY / yLag))
+	{
+		m_position.Y -= distanceY / yLag;
+	}
 }
 
 void Camera2D::FollowMovingObjectPanMode(MovingSprite * object, float xOffset, float yOffset, float xPanWindowMargin )

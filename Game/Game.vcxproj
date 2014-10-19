@@ -94,6 +94,7 @@
     <ClCompile Include="src\GameObjects\WaterBlock.cpp" />
     <ClCompile Include="src\GameObjects\WeatherManager.cpp" />
     <ClCompile Include="src\LevelEditor.cpp" />
+    <ClCompile Include="src\LevelProperties.cpp" />
     <ClCompile Include="src\Particles\ParticleEmitterManager.cpp" />
     <ClCompile Include="src\Particles\ParticleSpray.cpp" />
     <ClCompile Include="src\precompiled.cpp">
@@ -196,6 +197,7 @@
     <ClInclude Include="src\GameObjects\WaterBlock.h" />
     <ClInclude Include="src\GameObjects\WeatherManager.h" />
     <ClInclude Include="src\LevelEditor.h" />
+    <ClInclude Include="src\LevelProperties.h" />
     <ClInclude Include="src\Particles\Particle.h" />
     <ClInclude Include="src\Particles\ParticleEmitterManager.h" />
     <ClInclude Include="src\Particles\ParticleSpray.h" />

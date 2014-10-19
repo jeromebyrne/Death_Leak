@@ -161,9 +161,6 @@ void GameObjectManager::LoadContent(ID3D10Device * device)
 		DrawableObject * drawObj = static_cast<DrawableObject*>(obj.get());
 
 		drawObj->LoadContent(device);
-
-		// refresh the ui 
-		UIManager::Instance()->RefreshUI();
 	}
 }
 
@@ -176,9 +173,6 @@ void GameObjectManager::Initialise()
 		{
 			obj->Initialise();
 		}
-
-		// refresh the UI
-		UIManager::Instance()->RefreshUI();
 	}
 
 	if (m_player)
@@ -375,13 +369,19 @@ void GameObjectManager::LoadObjectsFromFile(const char* filename)
 	// loop through our game objects
 	while(child)
 	{
-		m_gameObjects.push_back(shared_ptr<GameObject>(CreateObject(child)));
-
+		GameObject * object = CreateObject(child);
+		if (object)
+		{
+			m_gameObjects.push_back(shared_ptr<GameObject>(object));
+		}
+		
 		child = child->NextSiblingElement();
 
 		// refresh the UI 
-		UIManager::Instance()->RefreshUI();
+		// UIManager::Instance()->RefreshUI();
 	}
+
+	ParseLevelProperties(root);
 
 	// initialise all objects
 	LoadContent(graphics->Device());
@@ -415,6 +415,34 @@ void GameObjectManager::LoadObjectsFromFile(const char* filename)
 
 	// loaded a level
 	m_levelLoaded = true;
+}
+
+void GameObjectManager::ParseLevelProperties(TiXmlElement * element)
+{
+	TiXmlElement * child = element->FirstChildElement();
+
+	bool foundLevelProperties = false;
+	// loop through our game objects
+	while (child)
+	{
+		// what type of object is this
+		const char* objName = child->Value();
+		Utilities::ToLower((char *)objName); // TODO: this is nasty, pass a const char * and return a new std::string
+
+		// start looking at what object we need to make
+		if (strcmp(objName, "levelproperties") == 0)
+		{
+			mLevelProperties.XmlRead(child);
+
+			foundLevelProperties = true;
+
+			return;
+		}
+
+		child = child->NextSiblingElement();
+	}
+
+	GAME_ASSERT(foundLevelProperties);
 }
 
 void GameObjectManager::SwitchToLevel(const char * level, bool defer)
@@ -481,6 +509,12 @@ void GameObjectManager::SaveObjectsToFile(const char* filename)
 	TiXmlElement * root = new TiXmlElement( "level" );
 	root->SetAttribute("audio", ""); 
 
+	TiXmlElement * levelPropsElement = new TiXmlElement("LevelProperties");
+
+	mLevelProperties.XmlWrite(levelPropsElement);
+
+	root->LinkEndChild(levelPropsElement);
+
 	for (auto obj : sortedObjects)
 	{
 		TiXmlElement * objElem = SaveObject(obj.second);
@@ -497,7 +531,7 @@ void GameObjectManager::SaveObjectsToFile(const char* filename)
 TiXmlElement * GameObjectManager::SaveObject(GameObject * object)
 {
 	string objectType = object->GetTypeName();
-	TiXmlElement * element = new TiXmlElement(objectType.c_str()); // TODO: delete
+	TiXmlElement * element = new TiXmlElement(objectType.c_str());
 	object->XmlWrite(element);
 	return element;
 }
@@ -588,7 +622,6 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement)
 		newGameObject = new SolidLineStrip();
 	}
 
-	GAME_ASSERT(newGameObject);
 	if (newGameObject && !dynamic_cast<ParticleSpray*>(newGameObject))
 	{
 		newGameObject->XmlRead(objectElement);

@@ -379,13 +379,13 @@ void UIManager::HandleEvent(string eventName, list<string> params)
 			// start fading out - we do 10 passes 
 			UIScreen * screen = PushUI("fullscreen_fade");
 			screen->ApplyAlpha(0.0);
-			float count = 0.0;
+			float count = 0.0f;
 
-			while (count < 1)
+			while (count < 1.0f)
 			{
 				screen->ApplyAlpha(count);
 				RefreshUI();
-				Sleep(milliseconds/10); // TODO: this is terrible bleugh, get rid of this crap
+				Sleep(milliseconds * 0.05f); // TODO: this is terrible bleugh, get rid of this crap
 				count+= 0.05;
 			}
 

@@ -5,29 +5,15 @@ class MovingSprite;
 
 class Camera2D
 {
-private:
-	// wvp matrices
-	D3DXMATRIX                  m_world;
-    D3DXMATRIX                  m_view;
-    D3DXMATRIX                  m_projection;
-
-	Vector3 m_position;
-	int m_width;
-	int m_height;
-
-	static Camera2D * mInstance;
-
-	bool mPanningX; // are we panning to a point
-	float mPanTargetX;
-	float mPanStartX;
-	float mPanStartTime;
 
 public:
 
 	static Camera2D * GetInstance() { return mInstance; }
-	
+
 	Camera2D(int screenWidth, int screenHeight, float x = 0, float y = 0, float z = 0);
 	~Camera2D(void);
+
+	void SetBounds(float left, float right, float top, float bottom);
 
 	bool IsObjectInView(GameObject * object);
 	inline D3DXMATRIX World()
@@ -66,7 +52,7 @@ public:
 
 	void FollowMovingObjectWithLag(MovingSprite * object, float xLag, float yLag, float xOffset, float yOffset);
 
-	void FollowMovingObjectPanMode(MovingSprite * object, float xOffset, float yOffset, float xPanWindowMargin );
+	void FollowMovingObjectPanMode(MovingSprite * object, float xOffset, float yOffset, float xPanWindowMargin);
 
 	inline float ViewWidth()
 	{
@@ -85,6 +71,30 @@ public:
 
 	bool IsCameraOriginInsideRect(Vector3 pos, Vector2 dimensions);
 
+	Vector2 mBoundsTopLeft;
+	Vector2 mBoundsBottomRight;
+
+private:
+
+	bool UpdateBoundsX(float newPositionX);
+
+	bool UpdateBoundsY(float newPositionY);
+
+	// wvp matrices
+	D3DXMATRIX                  m_world;
+    D3DXMATRIX                  m_view;
+    D3DXMATRIX                  m_projection;
+
+	Vector3 m_position;
+	int m_width;
+	int m_height;
+
+	static Camera2D * mInstance;
+
+	bool mPanningX; // are we panning to a point
+	float mPanTargetX;
+	float mPanStartX;
+	float mPanStartTime;
 };
 
 #endif
