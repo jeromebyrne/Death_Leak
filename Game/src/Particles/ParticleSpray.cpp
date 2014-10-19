@@ -77,6 +77,48 @@ void ParticleSpray::SetVertexBuffer(ID3D10Device* device, UINT byteSize, VertexP
 	GAME_ASSERT(m_vertexBuffer);
 }
 
+void ParticleSpray::Reset()
+{
+	// This function exists for the level editor
+	for (auto & currentParticle : m_particleList)
+	{
+		int flippedVertical = rand() % 2;
+		int flippedHorizontal = rand() % 2;
+
+		if (mSpawnSpread.X == 0.0f)
+		{
+			currentParticle.StartPosX = m_position.X; // our original start position
+		}
+		else
+		{
+			float posXOffset = rand() % ((unsigned)(mSpawnSpread.X * 10.0f) + 1);
+
+			if (flippedHorizontal)
+			{
+				posXOffset *= -1;
+			}
+
+			currentParticle.StartPosX = m_position.X + posXOffset;
+		}
+
+		if (mSpawnSpread.Y == 0.0f)
+		{
+			currentParticle.StartPosY = m_position.Y;
+		}
+		else
+		{
+			float posYOffset = rand() % ((unsigned)(mSpawnSpread.Y * 10.0f) + 1);
+
+			if (flippedVertical)
+			{
+				posYOffset *= -1;
+			}
+			currentParticle.StartPosY = m_position.Y + posYOffset;
+		}
+
+	}
+}
+
 void ParticleSpray::Draw(ID3D10Device* device, Camera2D * camera)
 {
 	D3DXVECTOR2 tex1 = D3DXVECTOR2(1,1);

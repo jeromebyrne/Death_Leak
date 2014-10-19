@@ -70,6 +70,8 @@ private:
 
 	SolidLineStrip * GetAsSolidLineStrip(GameObject * object);
 
+	ParticleSpray * GetAsParticleSpray(GameObject * object);
+
 	SolidLineStrip * GetSolidLineStripClickedOn(list<shared_ptr<GameObject> > & gameObjects);
 
 	Vector2 GetMouseWorldPos();

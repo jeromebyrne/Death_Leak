@@ -32,8 +32,6 @@ public:
 	virtual void XmlRead(TiXmlElement * element) override;
 	virtual void XmlWrite(TiXmlElement * element) override;
 
-	virtual void DebugDraw(ID3D10Device *  device) override { /*Don't draw debug info for particles as it's too confusing*/ }
-
 	void SetGeneralDirectionValue(Vector2 value) { m_direction = value; }
 	void SetSpreadValue(float value) { m_spread = value; }
 	void SetMinSpeedValue(float value) { m_minSpeed = value; }
@@ -70,6 +68,8 @@ public:
 			mFadeInPercentTime = 1.0f;
 		}
 	}
+
+	void Reset();
 
 	virtual void AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset, bool trackParentsOrientation = true) override;
 

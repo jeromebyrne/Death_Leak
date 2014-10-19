@@ -97,7 +97,7 @@ GameObject * LevelEditor::GetGameObjectClickedOn(list<shared_ptr<GameObject> > &
 		}
 
 		ParallaxLayer * paraLayer = dynamic_cast<ParallaxLayer*>(obj.get());
-		if (dynamic_cast<ParticleSpray*>(obj.get()) || (paraLayer && paraLayer->FollowCamX()))
+		if (paraLayer && paraLayer->FollowCamX())
 		{
 			continue;
 		}
@@ -829,6 +829,12 @@ void LevelEditor::CheckInput_Regular()
 					solidLineStrip->RecalculateLines(points);
 				}
 
+				ParticleSpray * particleSpray = GetAsParticleSpray(mSelectedObject);
+				if (particleSpray)
+				{
+					particleSpray->Reset();
+				}
+
 				pressingPlace = true;
 			}
 		}
@@ -882,6 +888,13 @@ SolidLineStrip * LevelEditor::GetAsSolidLineStrip(GameObject * object)
 	SolidLineStrip * solidLineStrip = dynamic_cast<SolidLineStrip*>(object);
 
 	return solidLineStrip;
+}
+
+ParticleSpray * LevelEditor::GetAsParticleSpray(GameObject * object)
+{
+	ParticleSpray * particleSpray = dynamic_cast<ParticleSpray*>(object);
+
+	return particleSpray;
 }
 
 void LevelEditor::Draw()
