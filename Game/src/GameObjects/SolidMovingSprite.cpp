@@ -402,7 +402,7 @@ void SolidMovingSprite::OnDamage(float damageAmount, Vector3 pointOfContact, boo
 																Vector3(-m_direction.X, 0, 0),
 																0.4,
 																Vector3(3200, 1200, 0),
-																"Media\\explosion_lines.png",
+																"Media\\blast_circle.png",
 																0.01,
 																0.01,
 																0.25f,

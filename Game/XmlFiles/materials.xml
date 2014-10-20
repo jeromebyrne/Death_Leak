@@ -17,6 +17,25 @@
     <destroysoundeffect file="blood\\blood2.wav"/>
   </material>
 
+  <material name="water">
+    <particletextures>
+      <texture file="Media\large_splash.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="water\water_splash_projectile_1.wav" />
+      <sound file="water\water_splash_projectile_2.wav" />
+      <!--<sound file="water\water_splash_projectile_3.wav" />-->
+      <sound file="water\water_splash_projectile_4.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffect file="blood\\blood2.wav"/>
+  </material>
+
   <!--cave rock-->
   <material name="caverock">  
     <particletextures>

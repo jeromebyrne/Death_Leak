@@ -185,7 +185,7 @@ void Character::UpdateFootsteps(SolidMovingSprite * solidObject)
 					particleFile = objectMaterial->GetRandomParticleTexture();
 				}
 
-				if (!GetIsInWater())
+				if (!GetIsInWater() && !WasInWaterLastFrame())
 				{
 					Vector3 pos(m_position.X, Bottom(), m_position.Z - 1);
 					Vector3 dir(0.1, 0.9, 0);

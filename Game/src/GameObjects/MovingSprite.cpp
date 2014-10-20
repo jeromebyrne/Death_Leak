@@ -13,7 +13,8 @@ MovingSprite::MovingSprite(float x, float y, float z, float width, float height,
 	mObjectMovingWith(0),
 	mCurrentYResistance(1),
 	m_isOnGround(true),
-	mIsInWater(false)
+	mIsInWater(false),
+	mWasInWaterLastFrame(false)
 {
 	if (m_maxVelocity.Y < 0)  // less than 0 actually signifies no maximum
 	{
@@ -144,6 +145,11 @@ void MovingSprite::Update(float delta)
 		m_velocity.Y = -m_maxVelocity.Y;
 	}
 
+	if (mIsInWater == false)
+	{
+		mWasInWaterLastFrame = false;
+	}
+
 	mIsInWater = false;// let the collision manager handle this again
 }
 
@@ -257,4 +263,14 @@ void MovingSprite::StopXAccelerating()
 void MovingSprite::StopYAccelerating()
 {
 	m_acceleration.Y = 0;
+}
+
+void MovingSprite::SetIsInWater(bool value)
+{
+	mIsInWater = value;
+
+	if (mIsInWater)
+	{
+		mWasInWaterLastFrame = true;
+	}
 }

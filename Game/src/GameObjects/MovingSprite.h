@@ -94,8 +94,10 @@ public:
 
 	const MovingSprite * GetObjectMovingWith() const { return mObjectMovingWith; }
 
-	void SetIsInWater(bool value) { mIsInWater = value; }
+	void SetIsInWater(bool value);
 	bool GetIsInWater() const { return mIsInWater; }
+
+	bool WasInWaterLastFrame() const { return mWasInWaterLastFrame; }
 
 protected:
 
@@ -114,6 +116,8 @@ protected:
 	bool m_isOnGround;
 
 	bool mIsInWater;
+
+	bool mWasInWaterLastFrame;
 };
 
 #endif

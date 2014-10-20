@@ -282,7 +282,7 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 		if (!mIsInWater)
 		{
 			Material * objectMaterial = object->GetMaterial();
-			if(objectMaterial != 0)
+			if(objectMaterial != nullptr)
 			{
 				// where should the particles spray from
 				Vector3 particlePos;
@@ -301,7 +301,7 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 				bool loop = false;
 				float minLive = 0.5f;
 				float maxLive = 1.0f;
-				if (dynamic_cast<Player*>(object) || dynamic_cast<NPC*>(object))
+				if (dynamic_cast<Player*>(object) || dynamic_cast<NPC*>(object)) // TODO: optimise with flag
 				{
 					loop = true;
 					minLive = 0.3f;
