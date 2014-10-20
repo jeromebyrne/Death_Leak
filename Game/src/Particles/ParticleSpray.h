@@ -31,6 +31,7 @@ public:
 	virtual void Initialise() override;
 	virtual void XmlRead(TiXmlElement * element) override;
 	virtual void XmlWrite(TiXmlElement * element) override;
+	virtual void DebugDraw(ID3D10Device *  device) override;
 
 	void SetGeneralDirectionValue(Vector2 value) { m_direction = value; }
 	void SetSpreadValue(float value) { m_spread = value; }

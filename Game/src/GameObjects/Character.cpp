@@ -185,65 +185,68 @@ void Character::UpdateFootsteps(SolidMovingSprite * solidObject)
 					particleFile = objectMaterial->GetRandomParticleTexture();
 				}
 
-				Vector3 pos(m_position.X, Bottom(), m_position.Z - 1);
-				Vector3 dir(0.1, 0.9, 0);
+				if (!GetIsInWater())
+				{
+					Vector3 pos(m_position.X, Bottom(), m_position.Z - 1);
+					Vector3 dir(0.1, 0.9, 0);
 
-				if (!mSprintActive)
-				{
-					if (particleFile != "")
+					if (!mSprintActive)
 					{
-						ParticleEmitterManager::Instance()->CreateDirectedSpray(3,
-																				pos,
-																				dir,
-																				0.25,
-																				Vector3(1200, 720, 0),
-																				particleFile,
-																				1,
-																				4,
-																				0.6f,
-																				0.8f,
-																				2,
-																				5,
-																				0.2,
-																				false,
-																				0.4,
-																				1.0,
-																				1,
-																				true,
-																				25,
-																				3.0f,
-																				1.0f,
-																				0.15f,
-																				0.7f);
+						if (particleFile != "")
+						{
+							ParticleEmitterManager::Instance()->CreateDirectedSpray(3,
+								pos,
+								dir,
+								0.25,
+								Vector3(1200, 720, 0),
+								particleFile,
+								1,
+								4,
+								0.6f,
+								0.8f,
+								2,
+								5,
+								0.2,
+								false,
+								0.4,
+								1.0,
+								1,
+								true,
+								25,
+								3.0f,
+								1.0f,
+								0.15f,
+								0.7f);
+						}
 					}
-				}
-				else
-				{
-					if (particleFile != "")
+					else
 					{
-						ParticleEmitterManager::Instance()->CreateDirectedSpray(15,
-																				pos,
-																				dir,
-																				0.5,
-																				Vector3(1200, 720, 0),
-																				particleFile,
-																				2,
-																				6,
-																				0.6f,
-																				1.0f,
-																				2,
-																				5,
-																				0.2,
-																				false,
-																				0.4,
-																				1.0,
-																				1,
-																				true,
-																				30,
-																				2.0f,
-																				1.0f,
-																				0.15f,
-																				0.5f);
+						if (particleFile != "")
+						{
+							ParticleEmitterManager::Instance()->CreateDirectedSpray(15,
+								pos,
+								dir,
+								0.5,
+								Vector3(1200, 720, 0),
+								particleFile,
+								2,
+								6,
+								0.6f,
+								1.0f,
+								2,
+								5,
+								0.2,
+								false,
+								0.4,
+								1.0,
+								1,
+								true,
+								30,
+								2.0f,
+								1.0f,
+								0.15f,
+								0.5f);
+						}
 					}
 				}
 			}

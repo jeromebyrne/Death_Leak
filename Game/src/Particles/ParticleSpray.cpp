@@ -2,6 +2,7 @@
 #include "ParticleSpray.h"
 #include "particleEmitterManager.h"
 #include "Projectile.h"
+#include "DrawUtilities.h"
 
 static const unsigned int kMaxParticlesPerSpray = 100;
 
@@ -487,3 +488,11 @@ void ParticleSpray::UpdateParticleToParent(Particle & particle)
 		}
 	}
 }
+
+void ParticleSpray::DebugDraw(ID3D10Device *  device)
+{
+	DrawableObject::DebugDraw(device);
+
+	DrawUtilities::DrawTexture(Vector3(m_position.X, m_position.Y, 3), Vector2(GetLevelEditSelectionDimensions().X, GetLevelEditSelectionDimensions().Y), "Media\\editor\\particles.png");
+}
+

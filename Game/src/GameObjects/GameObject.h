@@ -151,6 +151,8 @@ public:
 
 	void SetLevelEditShowSelected(bool value) { mLevelEditShowSelected = value; }
 
+	void SetXmlForCloning(TiXmlElement * element);
+
 protected:
 
 	virtual void DrawDebugText();

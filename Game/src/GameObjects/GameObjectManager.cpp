@@ -677,29 +677,32 @@ ParticleSpray * GameObjectManager::ReadParticleSpray(TiXmlElement * element)
 
 	Vector3 pos = Vector3(0, -23, 16);
 
-	return ParticleEmitterManager::Instance()->CreateDirectedSprayLoadTime(numParticles,
-																			Vector3(posX, posY, posZ),
-																			Vector3(dirX, dirY, 0),
-																			spread,
-																			Vector3(dimX, dimY, dimZ),
-																			texFileName.c_str(),
-																			minSpeed,
-																			maxSpeed,
-																			minLive,
-																			maxLive,
-																			minSize,
-																			maxSize,
-																			gravity,
-																			loop,
-																			minBrightness,
-																			maxBrightness,
-																			loopTime,
-																			scaleto,
-																			scaletoValue,
-																			spawnSpreadX,
-																			spawnSpreadY,
-																			fadeInPercentTime,
-																			fadeOutPercentTime);
+	ParticleSpray * p = ParticleEmitterManager::Instance()->CreateDirectedSprayLoadTime(numParticles,
+																						Vector3(posX, posY, posZ),
+																						Vector3(dirX, dirY, 0),
+																						spread,
+																						Vector3(dimX, dimY, dimZ),
+																						texFileName.c_str(),
+																						minSpeed,
+																						maxSpeed,
+																						minLive,
+																						maxLive,
+																						minSize,
+																						maxSize,
+																						gravity,
+																						loop,
+																						minBrightness,
+																						maxBrightness,
+																						loopTime,
+																						scaleto,
+																						scaletoValue,
+																						spawnSpreadX,
+																						spawnSpreadY,
+																						fadeInPercentTime,
+																						fadeOutPercentTime);
+	p->SetXmlForCloning(element);
+
+	return p;
 }
 
 void GameObjectManager::DeleteGameObjects()
@@ -1114,6 +1117,12 @@ GameObject * GameObjectManager::CopyObject(GameObject * toCopy)
 	}
 
 	TiXmlNode * xmlNode = toCopy->GetClonedXml();
+
+	if (!xmlNode)
+	{
+		GAME_ASSERT(false);
+		return nullptr;
+	}
 
 	// clone again in case we do multiple copies
 	TiXmlElement * xmlElement = dynamic_cast<TiXmlElement*>(xmlNode->Clone());

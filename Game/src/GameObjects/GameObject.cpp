@@ -160,11 +160,30 @@ void GameObject::Update(float delta)
 	UpdateToParent();
 }
 
+void GameObject::SetXmlForCloning(TiXmlElement * element)
+{
+	GAME_ASSERT(element);
+	if (!element)
+	{
+		return;
+	}
+
+	if (mClonedXml)
+	{
+		LOG_INFO("This object already has a cloned xml node");
+		GAME_ASSERT(false);
+		return;
+	}
+
+	mClonedXml = element->Clone();
+}
+
 void GameObject:: XmlRead(TiXmlElement * element)
 {
-#if _DEBUG
-	mClonedXml = element->Clone();
-#endif
+	if (Game::GetIsLevelEditMode())
+	{
+		SetXmlForCloning(element);
+	}
 
 	// updateable
 	m_updateable = XmlUtilities::ReadAttributeAsBool(element, "", "updateable");
