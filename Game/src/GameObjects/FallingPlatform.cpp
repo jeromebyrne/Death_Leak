@@ -25,7 +25,7 @@ void FallingPlatform::OnCollision(SolidMovingSprite * object)
 {
 	Platform::OnCollision(object);
 	
-	if (dynamic_cast<Player*>(object))
+	if (dynamic_cast<Player*>(object)) // TODO: optimise with flag
 	{
 		if(object->Bottom() > Y () && object->X() > Left() && object->X() < Right() && object->VelocityY() <= 0.0)
 		{
@@ -64,11 +64,11 @@ void FallingPlatform::XmlWrite(TiXmlElement * element)
 	Platform::XmlWrite(element);
 	
 	TiXmlElement * maxtriggertimeElem = new TiXmlElement("maxtriggertime");
-	maxtriggertimeElem->SetAttribute("value", Utilities::ConvertDoubleToString(mMaxTriggerTime).c_str());
+	maxtriggertimeElem->SetDoubleAttribute("value", mMaxTriggerTime);
 	element->LinkEndChild(maxtriggertimeElem);
 
 	TiXmlElement * timeuntilreturnElem = new TiXmlElement("timeuntilreturn");
-	timeuntilreturnElem->SetAttribute("value", Utilities::ConvertDoubleToString(mTimeUntilReturn).c_str());
+	timeuntilreturnElem->SetDoubleAttribute("value", mTimeUntilReturn);
 	element->LinkEndChild(timeuntilreturnElem);
 }
 
@@ -180,5 +180,19 @@ void FallingPlatform::DoFallingLogic()
 		m_velocity = Vector3(0,0,0);
 		StopYAccelerating();
 		StopXAccelerating();
+	}
+}
+
+void FallingPlatform::OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode)
+{
+	Platform::OnDamage(damageAmount, pointOfContact, shouldExplode);
+
+	if (shouldExplode)
+	{
+		if (mCurrentState == kStatic)
+		{
+			mCurrentState = kTriggered;
+			mTriggerStartTime = Timing::Instance()->GetTotalTimeSeconds();
+		}
 	}
 }

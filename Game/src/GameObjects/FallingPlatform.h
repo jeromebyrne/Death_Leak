@@ -27,6 +27,8 @@ public:
 
 	virtual void Scale(float x, float y, bool ScalePosition = true);
 
+	virtual void OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode = true);
+
 private:
 
 	void DoTriggerLogic();
