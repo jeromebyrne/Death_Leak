@@ -39,7 +39,7 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 
 	MSG mssg;                // message from queue
 	// LONGLONG cur_time;       // current time
-	float  target_delta = 1.0f/60.0f; 
+	float  target_delta = 1.0f/59.0f; 
 	//LONGLONG perf_cnt;       // performance timer frequency
 	//BOOL perf_flag=FALSE;    // flag determining which timer to use
 	//LONGLONG next_time=0;    // time to render next frame

@@ -7,13 +7,14 @@ Camera2D * Camera2D::mInstance = 0;
 const int kPanXtime = 0.55f;
 
 Camera2D::Camera2D(int screenWidth, int screenHeight, float x, float y, float z): 
-m_position(x,y,z), 
-m_width(screenWidth),
-m_height(screenHeight),
-mPanningX(false),
-mPanStartX(0),
-mPanTargetX(0),
-mPanStartTime(0.0f)
+	m_position(x,y,z), 
+	m_width(screenWidth),
+	m_height(screenHeight),
+	mPanningX(false),
+	mPanStartX(0),
+	mPanTargetX(0),
+	mPanStartTime(0.0f),
+	mZoomInPercent(1.0f)
 {
 	// Initialize the world matrix
     D3DXMatrixIdentity( &m_world );
@@ -22,7 +23,7 @@ mPanStartTime(0.0f)
 	D3DXMatrixTranslation(&m_view, (int)-m_position.X, (int)-m_position.Y, m_position.Z);
 
 	// create orthographic projection
-	D3DXMatrixOrthoLH(&m_projection, screenWidth, screenHeight, 0.1f, 100000.0f);
+	D3DXMatrixOrthoLH(&m_projection, screenWidth, screenHeight, 0.0f, (std::numeric_limits<float>::max)());
 
 	mInstance = this;
 }
@@ -164,19 +165,21 @@ void Camera2D::Update()
 void Camera2D::FollowMovingObjectWithLag(MovingSprite * object, float xLag, float yLag, float xOffset, float yOffset)
 {
 	// get the x and y distance between the camera and the object
-	float distanceX;
-	float distanceY;
+	float distanceX = 0.0f;
+	float distanceY = 0.0f;
+
+	xLag *= mZoomInPercent;
 
 	if(object->DirectionX() > 0)
 	{
-		distanceX = m_position.X - (object->X() + xOffset);
+		distanceX = m_position.X - (object->X() + xOffset * mZoomInPercent);
 	}
 	else
 	{
-		distanceX = m_position.X - (object->X() - xOffset);
+		distanceX = m_position.X - (object->X() - xOffset * mZoomInPercent);
 	}
 
-	distanceY = m_position.Y - (object->Y() + yOffset);
+	distanceY = m_position.Y - (object->Y() + yOffset * mZoomInPercent);
 
 	if (UpdateBoundsX(m_position.X - distanceX / xLag))
 	{
@@ -249,5 +252,22 @@ bool Camera2D::IsCameraOriginInsideRect(Vector3 pos, Vector2 dimensions)
 	}
 
 	return false;
+}
+
+void Camera2D::SetZoomInLevel(float value)
+{
+	if (value > 1.0f)
+	{
+		value = 1.0f;
+	}
+
+	if (value < 0.2f)
+	{
+		value = 0.2f;
+	}
+
+	mZoomInPercent = value;
+
+	D3DXMatrixOrthoLH(&m_projection, m_width * value, m_height * value, 0.0f, (std::numeric_limits<float>::max)());
 }
 

@@ -71,8 +71,7 @@ public:
 
 	bool IsCameraOriginInsideRect(Vector3 pos, Vector2 dimensions);
 
-	Vector2 mBoundsTopLeft;
-	Vector2 mBoundsBottomRight;
+	void SetZoomInLevel(float value);
 
 private:
 
@@ -95,6 +94,11 @@ private:
 	float mPanTargetX;
 	float mPanStartX;
 	float mPanStartTime;
+
+	Vector2 mBoundsTopLeft;
+	Vector2 mBoundsBottomRight;
+
+	float mZoomInPercent;
 };
 
 #endif

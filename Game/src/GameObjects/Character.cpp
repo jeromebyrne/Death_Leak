@@ -12,6 +12,7 @@
 
 float Character::mLastTimePlayedDeathSFX = 0;
 static const float kMinTimeBetweenDeathSFX = 0.1f;
+static const float kJumpDelay = 0.2f;
 
 Character::Character(float x, float y, float z, float width, float height, float breadth): 
 	SolidMovingSprite(x,y,z,width, height, breadth),
@@ -34,7 +35,11 @@ Character::Character(float x, float y, float z, float width, float height, float
 	mRunAnimFramerateMultiplier(1.0f),
 	mPlayFootsteps(true),
 	mMatchAnimFrameRateWithMovement(true),
-	m_lastTimePlayedWaterWadeSFX(0.0f)
+	m_lastTimePlayedWaterWadeSFX(0.0f),
+	mIsMidAirMovingDown(false),
+	mIsMidAirMovingUp(false),
+	mMidAirMovingUpStartTime(0.0f),
+	mMidAirMovingDownStartTime(0.0f)
 {
 	mProjectileFilePath = "Media/knife.png";
 	mProjectileImpactFilePath = "Media/knife_impact.png";
@@ -68,6 +73,33 @@ void Character::Update(float delta)
 	else
 	{
 		mCurrentYResistance = m_resistance.Y;
+	}
+
+	if (m_acceleration.Y > 0 && !m_onTopOfOtherSolidObject && !m_collidingAtSideOfObject) // we are accelerating vertically and not on top of another object
+	{
+		if (m_velocity.Y > -0.5)
+		{
+			if (!mIsMidAirMovingUp)
+			{
+				mMidAirMovingUpStartTime = Timing::Instance()->GetTotalTimeSeconds();
+			}
+			mIsMidAirMovingUp = true;
+			mIsMidAirMovingDown = false;
+		}
+		else if (m_velocity.Y <= -0.5)
+		{
+			if (!mIsMidAirMovingDown)
+			{
+				mMidAirMovingDownStartTime = Timing::Instance()->GetTotalTimeSeconds();
+			}
+			mIsMidAirMovingDown = true;
+			mIsMidAirMovingUp = false;
+		}
+	}
+	else
+	{
+		mIsMidAirMovingUp = false;
+		mIsMidAirMovingDown = false;
 	}
 
 	// update the base classes
@@ -316,23 +348,29 @@ void Character::UpdateAnimations()
 	{
 		string current_body_sequence_name = bodyPart->CurrentSequence()->Name();
 
-		if(m_acceleration.Y > 0 && !m_onTopOfOtherSolidObject && !m_collidingAtSideOfObject) // we are accelerating vertically and not on top of another object
+		if(mIsMidAirMovingDown) // we are accelerating vertically and not on top of another object
 		{
-			if (m_velocity.Y > -0.5)
+			if (Timing::Instance()->GetTotalTimeSeconds() > mMidAirMovingDownStartTime + kJumpDelay)
 			{
-				if(current_body_sequence_name != "JumpingUp")
-				{
-					bodyPart->SetSequence("JumpingUp");
-				}
-			}
-			else if (m_velocity.Y <= -0.5)
-			{
-				if(current_body_sequence_name != "JumpingDown")
+				if (current_body_sequence_name != "JumpingDown")
 				{
 					bodyPart->SetSequence("JumpingDown");
 				}
 			}
 
+			bodyPart->Animate();
+			m_texture = bodyPart->CurrentFrame(); // set the current texture
+		}
+		else if (mIsMidAirMovingUp)
+		{
+			if (Timing::Instance()->GetTotalTimeSeconds() > mMidAirMovingUpStartTime + kJumpDelay)
+			{
+				if (current_body_sequence_name != "JumpingUp")
+				{
+					bodyPart->SetSequence("JumpingUp");
+				}
+			}
+			
 			bodyPart->Animate();
 			m_texture = bodyPart->CurrentFrame(); // set the current texture
 		}
@@ -420,6 +458,13 @@ void Character::Jump(float percent)
 	{
 		// play jump sound
 		AudioManager::Instance()->PlaySoundEffect("jump.wav");
+	}
+
+	if (!mIsMidAirMovingUp)
+	{
+		mIsMidAirMovingUp = true;
+		// force the jump anim to trigger straight away by saying it happened slightly in the past
+		mMidAirMovingUpStartTime = Timing::Instance()->GetTotalTimeSeconds() - kJumpDelay;
 	}
 
 	m_velocity.Y = 0;
@@ -657,7 +702,7 @@ void Character::Draw(ID3D10Device * device, Camera2D * camera)
 	if (IsOnSolidSurface())
 	{
 		// TODO: this is a temporary function, just testing the shadow- REMOVE
-		DrawUtilities::DrawTexture(Vector3(m_position.X, m_position.Y - 150, m_position.Z), Vector2(200, 150), "Media\\characters\\player\\shadow.png");
+		// DrawUtilities::DrawTexture(Vector3(m_position.X, m_position.Y - 150, m_position.Z), Vector2(200, 150), "Media\\characters\\player\\shadow.png");
 	}
 	
 	// draw the arm first because it should be behind the body

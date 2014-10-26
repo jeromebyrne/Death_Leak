@@ -232,6 +232,8 @@ void Game::Draw()
 	D3DXMATRIX camView = m_pCam2d->View();
 	D3DXMATRIX camProjection = m_pCam2d->Projection();
 
+	m_pCam2d->SetZoomInLevel(0.65f);
+
 	m_effectLightTexture->SetWorldViewProjection((float*)camWorld,(float*)camView, (float*)camProjection);
 	m_effectLightTextureVertexWobble->SetWorldViewProjection((float*)camWorld,(float*)camView, (float*)camProjection);
 	m_effectParticleSpray->SetWorldViewProjection((float*)camWorld,(float*)camView, (float*)camProjection);

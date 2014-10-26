@@ -86,6 +86,14 @@ protected:
 	bool mPlayFootsteps;
 
 	bool mMatchAnimFrameRateWithMovement;
+
+	bool mIsMidAirMovingDown;
+
+	bool mIsMidAirMovingUp;
+
+	float mMidAirMovingUpStartTime;
+
+	float mMidAirMovingDownStartTime;
 };
 
 #endif
