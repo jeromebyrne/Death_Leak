@@ -8,6 +8,7 @@
 #include "waterblock.h"
 #include "SolidLineStrip.h"
 #include "DrawUtilities.h"
+#include "Game.h"
 
 int Projectile::NUM_PROJECTILES_ACTIVE = 0;
 
@@ -137,6 +138,9 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 																			0.0f);
 
 					AudioManager::Instance()->PlaySoundEffect("metalclink.wav");
+
+					Game::GetInstance()->DoDamagePauseEffect();
+
 					return;
 				}
 			}
@@ -198,6 +202,8 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 				
 				// never want to damage the player so set as a player projectile
 				mOwnerType = kPlayerProjectile;
+
+				Game::GetInstance()->DoDamagePauseEffect();
 			}
 			return;
 		}
@@ -264,7 +270,7 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 		m_texture = m_impactTexture;
 
 		// damage the other object
-		if (!mIsInWater)
+		if (!WasInWaterLastFrame())
 		{
 			object->OnDamage(m_damage, offset);
 		}
@@ -354,6 +360,8 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 				}
 			}
 		}
+
+		Game::GetInstance()->DoDamagePauseEffect();
 	}
 }
 

@@ -34,6 +34,7 @@
 Game * Game::mInstance = nullptr;
 
 static const float kPixelWobbleReverseDelay = 40.0f;
+static const float kPauseDamageEffectDelay = 0.05f;
 
 bool Game::mPaused = false;
 bool Game::mLevelEditMode = false;
@@ -47,17 +48,16 @@ Game::Game(Graphics * pGraphics) :
 	m_effectParticleSpray(nullptr),
 	m_effectBloodParticleSpray(nullptr),
 	m_effectLightTextureBump(nullptr),
-	#if _DEBUG
-		m_effectBasic(nullptr),
-		mlevelEditor(nullptr),
-	#endif
+	m_effectBasic(nullptr),
+	mlevelEditor(nullptr),
 	m_effectSepia(nullptr),
 	m_effectMonochrome(nullptr),
 	m_effectMonochromeRed(nullptr),
 	m_screenAlignedPostProcTex1(nullptr),
 	m_effectNoise(nullptr),
 	m_effectPixelWobble(nullptr),
-	m_effectFoliageSway(nullptr)
+	m_effectFoliageSway(nullptr),
+	mLastTimeDamagePauseEffect(0.0f)
 {
 }
 
@@ -134,12 +134,18 @@ void Game::Update(float delta)
 
 	AudioManager::Instance()->Update();
 
+	bool damageEffectPauseActive = Timing::Instance()->GetTotalTimeSeconds() < (mLastTimeDamagePauseEffect + 
+																			(kPauseDamageEffectDelay * Timing::Instance()->GetTimeModifier()));
+
 	if (GameObjectManager::Instance()->IsLevelLoaded())
 	{
 		if (!mPaused)
 		{
 			// do collision detection
-			CollisionManager::Instance()->DetectAndResolve(m_pCam2d->X(), m_pCam2d->Y());
+			if (!damageEffectPauseActive)
+			{
+				CollisionManager::Instance()->DetectAndResolve(m_pCam2d->X(), m_pCam2d->Y());
+			}
 			
 			// NOTE: NEED to check input AFTER we do collision detection, MUST BE IN THIS ORDER
 
@@ -147,13 +153,13 @@ void Game::Update(float delta)
 			GameObjectManager::Instance()->CheckPlayerInput();
 		}
 
-#if _DEBUG
 		if (!mLevelEditMode)
 		{
-#endif
-			// update all of our game objects
-			GameObjectManager::Instance()->Update(mPaused, delta);
-#if _DEBUG
+			if (!damageEffectPauseActive)
+			{
+				// update all of our game objects
+				GameObjectManager::Instance()->Update(mPaused, delta);
+			}
 		}
 		else
 		{
@@ -169,9 +175,13 @@ void Game::Update(float delta)
 				hasUpdatedOnce = true;
 			}
 
-			mlevelEditor->Update();
+			if (mlevelEditor)
+			{
+				mlevelEditor->Update();
+			}
 		}
-#endif
+
+		// TODO: move to the check input function
 		bool pressing_pause_gamepad = false;
 		GamePad * game_pad = GamePad::GetPad1();
 		if (game_pad && game_pad->IsConnected())
@@ -387,5 +397,10 @@ void Game::ResetLevelEditor()
 	{
 		mlevelEditor->Reset();
 	}
+}
+
+void Game::DoDamagePauseEffect()
+{
+	mLastTimeDamagePauseEffect = Timing::Instance()->GetTotalTimeSeconds();
 }
 
