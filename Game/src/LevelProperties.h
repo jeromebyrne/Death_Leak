@@ -4,7 +4,7 @@
 class LevelProperties
 {
 public:
-	LevelProperties(void) {}
+	LevelProperties(void);
 	~LevelProperties(void) {}
 
 	void XmlRead(TiXmlElement * element);
@@ -15,6 +15,8 @@ private:
 
 	Vector2 mCamBoundsTopLeft;
 	Vector2 mCamBoundsBottomRight;
+
+	float mCameraZoomInPercent;
 
 };
 
