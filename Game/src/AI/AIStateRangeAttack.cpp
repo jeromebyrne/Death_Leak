@@ -2,11 +2,14 @@
 #include "AIStateRangeAttack.h"
 #include "NPC.h"
 
+static float kRunAwayDelay = 2.0f;
+
 AIStateRangeAttack::AIStateRangeAttack(NPC * npc) :
 	AIState(npc),
 	mDesiredRange(650),
 	mFollowRange(800),
-	mRandOffset(0.0f)
+	mRandOffset(0.0f),
+	mLastTimeRanAway(0)
 {
 	mStateType = kRangeAttack;
 }
@@ -30,18 +33,41 @@ void AIStateRangeAttack::Update(float delta)
 {
 	if (m_npc->m_player)
 	{
-		// get the distance to the player
-		Vector3 distanceSquaredVector =  m_npc->m_player->Position() - m_npc->Position();
-		float distanceSquared = distanceSquaredVector.LengthSquared();
-		if (distanceSquared < (mDesiredRange + mRandOffset) * (mDesiredRange + mRandOffset))
+		Vector3 distanceSquaredVector = m_npc->m_player->Position() - m_npc->Position();
+		float currentTime = Timing::Instance()->GetTotalTimeSeconds();
+		if (currentTime > mLastTimeRanAway + kRunAwayDelay)
 		{
-			distanceSquaredVector.Normalise();
-			m_npc->AccelerateX(-distanceSquaredVector.X);
-		}
-		else if (distanceSquared > (mFollowRange + mRandOffset) * (mFollowRange + mRandOffset))
-		{
-			distanceSquaredVector.Normalise();
-			m_npc->AccelerateX(distanceSquaredVector.X);
+			// get the distance to the player
+			float distanceSquared = distanceSquaredVector.LengthSquared();
+			if (distanceSquared < (mDesiredRange + mRandOffset) * (mDesiredRange + mRandOffset))
+			{
+				distanceSquaredVector.Normalise();
+				m_npc->AccelerateX(-distanceSquaredVector.X);
+			}
+			else if (distanceSquared >(mFollowRange + mRandOffset) * (mFollowRange + mRandOffset))
+			{
+				distanceSquaredVector.Normalise();
+				m_npc->AccelerateX(distanceSquaredVector.X);
+			}
+			else
+			{
+				m_npc->StopXAccelerating();
+				GAME_ASSERT(GameObjectManager::Instance()->GetPlayer());
+				m_npc->FireProjectileAtObject(GameObjectManager::Instance()->GetPlayer());
+
+				if (distanceSquaredVector.X < 0)
+				{
+					// flip the sprite horizontally
+					m_npc->FlipHorizontal();
+				}
+				else if (distanceSquaredVector.X > 0)
+				{
+					// unflip
+					m_npc->UnFlipHorizontal();
+				}
+
+				mLastTimeRanAway = currentTime;
+			}
 		}
 		else
 		{

@@ -30,7 +30,7 @@
     </damagesoundeffects>
 
     <footstepsoundeffects>
-      <sound file="Footstep1.wav" />
+      <sound file="water\water_wade.wav" />
     </footstepsoundeffects>
 
     <destroysoundeffect file="blood\\blood2.wav"/>

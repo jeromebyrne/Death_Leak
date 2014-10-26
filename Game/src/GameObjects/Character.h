@@ -25,8 +25,8 @@ public:
 	{
 		m_maxJumpSpeed = value;
 	}
-	virtual void Jump(int percent);
-	virtual void WallJump(int percent);
+	virtual void Jump(float percent);
+	virtual void WallJump(float percent);
 	virtual void AccelerateX(float directionX);
 	virtual void OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) override;
 
@@ -49,13 +49,17 @@ public:
 
 protected:
 
-	void Character::UpdateFootsteps(SolidMovingSprite * solidObject);
+	void UpdateFootsteps(SolidMovingSprite * solidObject);
+
+	void UpdateWaterWadeSFX();
 
 	bool m_isJumping;
 	float m_maxJumpSpeed;
 	float m_lastTimePlayedFootstep; // the last time in ms when we played a footstep sound
+	float m_lastTimePlayedWaterWadeSFX; 
 	float m_footstepTime; // the time in between each footstep
 	float m_sprintFootstepTime; // the time between each footstep when sprinting
+	float m_waterWadeSFXTime;
 	virtual void UpdateAnimations() override; // override sprite update animations
 	float mAccelXRate;
 	float mHealth;
@@ -82,7 +86,6 @@ protected:
 	bool mPlayFootsteps;
 
 	bool mMatchAnimFrameRateWithMovement;
-
 };
 
 #endif

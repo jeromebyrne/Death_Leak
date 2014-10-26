@@ -1048,10 +1048,10 @@ void GameObjectManager::ProcessGamePad()
 
 	// Sprint ====================
 	
-	// only sprint if on solid ground or wall running
-	if ((m_player->GetAccelY() > -0.1 && m_player->GetAccelY() < 0.1) || m_player->GetIsCollidingAtObjectSide())
+	// only sprint if on solid ground or wall running and not in water
+	if (!m_player->WasInWaterLastFrame() && ((m_player->GetAccelY() > -0.1f && m_player->GetAccelY() < 0.1f) || m_player->GetIsCollidingAtObjectSide()))
 	{
-		if (pad_state.Gamepad.bLeftTrigger > 75)
+		if (pad_state.Gamepad.bLeftTrigger > 75.0f)
 		{
 			m_player->SetSprintActive(true);
 		}

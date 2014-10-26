@@ -20,6 +20,8 @@ private:
 	float mDesiredRange;
 	float mFollowRange;
 	float mRandOffset;
+
+	float mLastTimeRanAway;
 };
 
 #endif

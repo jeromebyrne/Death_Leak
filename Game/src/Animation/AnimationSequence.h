@@ -24,14 +24,14 @@ public:
 
 	void ReadXml(TiXmlElement * element);
 
-	void SetFrameRate(float value)
+	void SetFrameRate(float value, bool overrideMinFramerate = false)
 	{
 		m_framerate = value;
 		if(m_framerate > m_maxFramerate)
 		{
 			m_framerate = m_maxFramerate;
 		}
-		else if(m_framerate < m_minFramerate)
+		else if(m_framerate < m_minFramerate && !overrideMinFramerate)
 		{
 			m_framerate = m_minFramerate;
 		}

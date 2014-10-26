@@ -20,6 +20,7 @@ Character::Character(float x, float y, float z, float width, float height, float
 	m_lastTimePlayedFootstep(0.0f), 
 	m_footstepTime(0.3f),
 	m_sprintFootstepTime(0.15f),
+	m_waterWadeSFXTime(1.6f),
 	mAccelXRate(0),
 	mHealth(100),
 	mMaxHealth(100),
@@ -32,7 +33,8 @@ Character::Character(float x, float y, float z, float width, float height, float
 	mDamageSoundDelayMilli(0.15f),
 	mRunAnimFramerateMultiplier(1.0f),
 	mPlayFootsteps(true),
-	mMatchAnimFrameRateWithMovement(true)
+	mMatchAnimFrameRateWithMovement(true),
+	m_lastTimePlayedWaterWadeSFX(0.0f)
 {
 	mProjectileFilePath = "Media/knife.png";
 	mProjectileImpactFilePath = "Media/knife_impact.png";
@@ -70,6 +72,8 @@ void Character::Update(float delta)
 
 	// update the base classes
 	SolidMovingSprite::Update(delta);
+
+	UpdateWaterWadeSFX();
 }
 
 void Character::SetSprintActive(bool value)
@@ -157,6 +161,55 @@ void Character::OnCollision(SolidMovingSprite * object)
 		if (Bottom() > object->Y()) // is the bottom of the character above the platform centre point?
 		{
 			SolidMovingSprite::OnCollision(object);
+		}
+	}
+}
+
+void Character::UpdateWaterWadeSFX()
+{
+	if (GetAccelX() > 0.0f && mPlayFootsteps && (WasInWaterLastFrame() || GetIsInWater()))
+	{
+		float currentTime = Timing::Instance()->GetTotalTimeSeconds();
+
+		if (currentTime > m_lastTimePlayedWaterWadeSFX + m_waterWadeSFXTime)
+		{
+			const char * fileName = "water/water_wade.wav";
+			int randNum = rand() % 5;
+
+			switch (randNum)
+			{
+				case 0:
+				{
+					fileName = "water/water_wade.wav";
+					break;
+				}
+				case 1:
+				{
+					fileName = "water/water_wade_2.wav";
+					break;
+				}
+				case 2:
+				{
+					fileName = "water/water_wade_3.wav";
+					break;
+				}
+				case 3:
+				{
+					fileName = "water/water_wade_4.wav";
+					break;
+				}
+				case 4:
+				{
+					fileName = "water/water_wade_5.wav";
+					break;
+				}
+				default:
+					break;
+			}
+
+			AudioManager::Instance()->PlaySoundEffect(fileName);
+
+			m_lastTimePlayedWaterWadeSFX = currentTime;
 		}
 	}
 }
@@ -294,9 +347,16 @@ void Character::UpdateAnimations()
 
 			if (mMatchAnimFrameRateWithMovement)
 			{
-				float animFramerate = std::abs(mSprintActive ? (m_velocity.X * 1.6f) * mRunAnimFramerateMultiplier : (m_velocity.X * 1.4f) * mRunAnimFramerateMultiplier);
+				if (WasInWaterLastFrame())
+				{
+					bodyPart->CurrentSequence()->SetFrameRate(std::abs((m_velocity.X * 0.75f) * mRunAnimFramerateMultiplier), true);
+				}
+				else
+				{
+					float animFramerate = std::abs(mSprintActive ? (m_velocity.X * 1.6f) * mRunAnimFramerateMultiplier : (m_velocity.X * 1.4f) * mRunAnimFramerateMultiplier);
 
-				bodyPart->CurrentSequence()->SetFrameRate(animFramerate);
+					bodyPart->CurrentSequence()->SetFrameRate(animFramerate);
+				}
 			}
 			
 			m_texture = bodyPart->CurrentFrame(); // set the current texture
@@ -341,8 +401,12 @@ void Character::UpdateAnimations()
 	m_mainBodyTexture = m_texture;
 }
 
-void Character::Jump(int percent)
+void Character::Jump(float percent)
 {
+	if (WasInWaterLastFrame())
+	{
+		percent *= 0.3f;
+	}
 	if(percent > 100)
 	{
 		percent = 100;
@@ -363,15 +427,15 @@ void Character::Jump(int percent)
 	m_acceleration.Y = (m_maxJumpSpeed/100) * percent;
 }
 
-void Character::WallJump(int percent)
+void Character::WallJump(float percent)
 {
-	if(percent > 100)
+	if(percent > 100.0f)
 	{
-		percent = 100;
+		percent = 100.0f;
 	}
 	else if(percent <= 0)
 	{
-		percent = 1;
+		percent = 1.0f;
 	}
 	
 	m_velocity.Y = 0;
