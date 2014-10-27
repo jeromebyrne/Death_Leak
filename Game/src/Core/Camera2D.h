@@ -46,13 +46,11 @@ public:
 		m_position.Y = object->Y();
 	}
 
-	void FollowObjectWithOffset(GameObject * object, float xOffset, float yOffset);
+	void FollowObjectWithOffset(GameObject * object);
 
 	Vector3 Position() const { return m_position; }
 
-	void FollowMovingObjectWithLag(MovingSprite * object, float xLag, float yLag, float xOffset, float yOffset);
-
-	void FollowMovingObjectPanMode(MovingSprite * object, float xOffset, float yOffset, float xPanWindowMargin);
+	void FollowMovingObjectWithLag(MovingSprite * object);
 
 	inline float ViewWidth()
 	{
@@ -73,6 +71,10 @@ public:
 
 	void SetZoomInLevel(float value);
 
+	void SetTargetOffset(Vector2 offset) { mTargetOffset = offset; };
+
+	void SetTargetLag(Vector2 lag) { mTargetLag = lag; };
+
 private:
 
 	bool UpdateBoundsX(float newPositionX);
@@ -90,15 +92,13 @@ private:
 
 	static Camera2D * mInstance;
 
-	bool mPanningX; // are we panning to a point
-	float mPanTargetX;
-	float mPanStartX;
-	float mPanStartTime;
-
 	Vector2 mBoundsTopLeft;
 	Vector2 mBoundsBottomRight;
 
 	float mZoomInPercent;
+
+	Vector2 mTargetOffset;
+	Vector2 mTargetLag;
 };
 
 #endif

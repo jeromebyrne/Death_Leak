@@ -1,6 +1,7 @@
 <level audio="">
     <LevelProperties>
         <level_bounds left="-5800.000000" right="16800.000000" top="3000.000000" bottom="-500.000000" />
+      <camera_properties zoom_in_percent="1.0" xOffset="500" yOffset="50" xLag="30" yLag="1" />
     </LevelProperties>
     <Player id="421" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="-85.761215" x="-4758.477051" rotation="0.000000" auto_rotate_value="0.000000" />

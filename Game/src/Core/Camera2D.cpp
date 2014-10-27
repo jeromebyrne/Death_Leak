@@ -10,10 +10,6 @@ Camera2D::Camera2D(int screenWidth, int screenHeight, float x, float y, float z)
 	m_position(x,y,z), 
 	m_width(screenWidth),
 	m_height(screenHeight),
-	mPanningX(false),
-	mPanStartX(0),
-	mPanTargetX(0),
-	mPanStartTime(0.0f),
 	mZoomInPercent(1.0f)
 {
 	// Initialize the world matrix
@@ -79,16 +75,16 @@ void Camera2D::SetBounds(float left, float right, float top, float bottom)
 	mBoundsBottomRight.Y = bottom;
 }
 
-void Camera2D::FollowObjectWithOffset(GameObject * object, float xOffset, float yOffset)
+void Camera2D::FollowObjectWithOffset(GameObject * object)
 {
-	if (UpdateBoundsX(object->X() + xOffset))
+	if (UpdateBoundsX(object->X() + mTargetOffset.X))
 	{
-		m_position.X = object->X() + xOffset;
+		m_position.X = object->X() + mTargetOffset.X;
 	}
 
-	if (UpdateBoundsY(object->Y() + yOffset))
+	if (UpdateBoundsY(object->Y() + mTargetOffset.Y))
 	{
-		m_position.Y = object->Y() + yOffset;
+		m_position.Y = object->Y() + mTargetOffset.Y;
 	}
 }
 
@@ -117,28 +113,6 @@ bool Camera2D::UpdateBoundsY(float newPositionY)
 void Camera2D::Update()
 {
 	D3DXMatrixTranslation(&m_view, (int)-m_position.X, (int)-m_position.Y, m_position.Z);
-
-	if (mPanningX)
-	{
-		float time_spent = Timing::Instance()->GetTotalTimeSeconds() - mPanStartTime;
-
-		if (time_spent)
-		{
-			float total_percent_time = (float)(min(time_spent, kPanXtime)) / (float)(kPanXtime);
-
-			// moving to the right
-			float progress_diff= mPanTargetX - mPanStartX;
-
-			m_position.X = mPanStartX + (progress_diff * total_percent_time);
-
-			if (total_percent_time >= 1)
-			{
-				m_position.X = mPanTargetX;
-				mPanningX = false;
-			}
-		}
-	}
-
 #if _DEBUG
 	int movespeed = 40;
 	// test
@@ -162,64 +136,43 @@ void Camera2D::Update()
 #endif
 }
 
-void Camera2D::FollowMovingObjectWithLag(MovingSprite * object, float xLag, float yLag, float xOffset, float yOffset)
+void Camera2D::FollowMovingObjectWithLag(MovingSprite * object)
 {
 	// get the x and y distance between the camera and the object
 	float distanceX = 0.0f;
 	float distanceY = 0.0f;
 
-	xLag *= mZoomInPercent;
+	float xLag = mTargetLag.X * mZoomInPercent;
+
+	if (xLag < 1.0f)
+	{
+		xLag = 1.0f;
+	}
+
+	if (mTargetLag.Y < 1.0f)
+	{
+		mTargetLag.Y = 1.0f;
+	}
 
 	if(object->DirectionX() > 0)
 	{
-		distanceX = m_position.X - (object->X() + xOffset * mZoomInPercent);
+		distanceX = m_position.X - (object->X() + mTargetOffset.X * mZoomInPercent);
 	}
 	else
 	{
-		distanceX = m_position.X - (object->X() - xOffset * mZoomInPercent);
+		distanceX = m_position.X - (object->X() - mTargetOffset.X * mZoomInPercent);
 	}
 
-	distanceY = m_position.Y - (object->Y() + yOffset * mZoomInPercent);
+	distanceY = m_position.Y - (object->Y() + mTargetOffset.Y * mZoomInPercent);
 
 	if (UpdateBoundsX(m_position.X - distanceX / xLag))
 	{
 		m_position.X -= distanceX / xLag;
 	}
 
-	if (UpdateBoundsY(m_position.Y - distanceY / yLag))
+	if (UpdateBoundsY(m_position.Y - distanceY / mTargetLag.Y))
 	{
-		m_position.Y -= distanceY / yLag;
-	}
-}
-
-void Camera2D::FollowMovingObjectPanMode(MovingSprite * object, float xOffset, float yOffset, float xPanWindowMargin )
-{
-	// follow the object on the Y at all times
-	m_position.Y = object->Y() + yOffset;
-
-	// TODO: scale xPanWindowMargin somewhere
-	int pan_window_width = Graphics::GetInstance()->BackBufferWidth() - (xPanWindowMargin * 2);
-
-	// get the x difference between the camera origin and the moving object
-	int diff_x = abs(m_position.X - object->X());
-
-	if (diff_x > pan_window_width * 0.5)
-	{
-		if (!mPanningX)
-		{
-			mPanningX = true;
-			mPanStartX = m_position.X;
-			mPanStartTime = Timing::Instance()->GetTotalTimeSeconds();
-			
-			if (object->DirectionX() > 0)
-			{
-				mPanTargetX = object->X() + xOffset;
-			}
-			else
-			{
-				mPanTargetX = object->X() - xOffset;
-			}
-		}
+		m_position.Y -= distanceY / mTargetLag.Y;
 	}
 }
 

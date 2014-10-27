@@ -15,9 +15,9 @@ private:
 
 	Vector2 mCamBoundsTopLeft;
 	Vector2 mCamBoundsBottomRight;
-
 	float mCameraZoomInPercent;
-
+	Vector2 mTargetOffset;
+	Vector2 mTargetLag;
 };
 
 #endif
