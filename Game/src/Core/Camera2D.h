@@ -75,11 +75,17 @@ public:
 
 	void SetTargetLag(Vector2 lag) { mTargetLag = lag; };
 
+	void DoSmallShake();
+
+	void DoBigShake();
+
 private:
 
 	bool UpdateBoundsX(float newPositionX);
 
 	bool UpdateBoundsY(float newPositionY);
+
+	void Camera2D::DoShake(float intensity, float shakeDuration);
 
 	// wvp matrices
 	D3DXMATRIX                  m_world;
@@ -99,6 +105,11 @@ private:
 
 	Vector2 mTargetOffset;
 	Vector2 mTargetLag;
+
+	bool mCurrentlyShaking;
+	float mCurrentShakeIntensity;
+	float mShakeStartTime;
+	float mCurrentShakeDuration;
 };
 
 #endif

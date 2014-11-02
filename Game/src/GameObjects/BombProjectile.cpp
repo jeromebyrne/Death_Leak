@@ -46,6 +46,11 @@ BombProjectile::~BombProjectile(void)
 	Explosion * explosion = new Explosion(m_damage, 700, m_position.X, m_position.Y, m_position.Z - 0.1);
 
 	GameObjectManager::Instance()->AddGameObject(explosion);
+
+	if (Camera2D::GetInstance()->IsObjectInView(this))
+	{
+		Camera2D::GetInstance()->DoBigShake();
+	}
 }
 
 void BombProjectile::OnCollision(SolidMovingSprite* object)

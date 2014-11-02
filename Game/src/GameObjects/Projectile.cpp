@@ -204,6 +204,11 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 				mOwnerType = kPlayerProjectile;
 
 				Game::GetInstance()->DoDamagePauseEffect();
+
+				if (Camera2D::GetInstance()->IsObjectInView(this))
+				{
+					Camera2D::GetInstance()->DoSmallShake();
+				}
 			}
 			return;
 		}
@@ -362,6 +367,11 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 		}
 
 		Game::GetInstance()->DoDamagePauseEffect();
+
+		if (Camera2D::GetInstance()->IsObjectInView(this))
+		{
+			Camera2D::GetInstance()->DoSmallShake();
+		}
 	}
 }
 

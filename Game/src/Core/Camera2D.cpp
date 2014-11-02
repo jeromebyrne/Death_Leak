@@ -4,13 +4,15 @@
 
 Camera2D * Camera2D::mInstance = 0;
 
-const int kPanXtime = 0.55f;
-
 Camera2D::Camera2D(int screenWidth, int screenHeight, float x, float y, float z): 
 	m_position(x,y,z), 
 	m_width(screenWidth),
 	m_height(screenHeight),
-	mZoomInPercent(1.0f)
+	mZoomInPercent(1.0f),
+	mCurrentlyShaking(false),
+	mCurrentShakeIntensity(1.0f),
+	mShakeStartTime(0.0f),
+	mCurrentShakeDuration(0.0f)
 {
 	// Initialize the world matrix
     D3DXMatrixIdentity( &m_world );
@@ -100,7 +102,7 @@ bool Camera2D::UpdateBoundsX(float newPositionX)
 }
 
 bool Camera2D::UpdateBoundsY(float newPositionY)
-{
+{	
 	if (newPositionY > mBoundsBottomRight.Y &&
 		newPositionY < mBoundsTopLeft.Y)
 	{
@@ -113,6 +115,44 @@ bool Camera2D::UpdateBoundsY(float newPositionY)
 void Camera2D::Update()
 {
 	D3DXMatrixTranslation(&m_view, (int)-m_position.X, (int)-m_position.Y, m_position.Z);
+
+	if (mCurrentlyShaking)
+	{
+		float currentTime = Timing::Instance()->GetTotalTimeSeconds();
+
+		float timeDiff = (mShakeStartTime + mCurrentShakeDuration) - currentTime;
+
+		if (timeDiff <= 0.0f)
+		{
+			mCurrentlyShaking = false;
+		}
+		else
+		{
+			float shakePercentTime = timeDiff / mCurrentShakeDuration;
+
+			bool minusX = (rand() % 2) == 1;
+			bool minusY = (rand() % 2) == 1;
+
+			if (minusX)
+			{
+				m_position.X += mCurrentShakeIntensity * shakePercentTime;
+			}
+			else
+			{
+				m_position.X -= mCurrentShakeIntensity * shakePercentTime;
+			}
+			
+			if (minusY)
+			{
+				m_position.Y += mCurrentShakeIntensity * shakePercentTime;
+			}
+			else
+			{
+				m_position.Y -= mCurrentShakeIntensity * shakePercentTime;
+			}
+		}
+	}
+
 #if _DEBUG
 	int movespeed = 40;
 	// test
@@ -222,5 +262,28 @@ void Camera2D::SetZoomInLevel(float value)
 	mZoomInPercent = value;
 
 	D3DXMatrixOrthoLH(&m_projection, m_width * value, m_height * value, 0.0f, (std::numeric_limits<float>::max)());
+}
+
+void Camera2D::DoSmallShake()
+{
+	DoShake(3.0f, 0.2f);
+}
+
+void Camera2D::DoBigShake()
+{
+	DoShake(60.0f, 0.45f);
+}
+
+void Camera2D::DoShake(float intensity, float shakeDuration)
+{
+	if (mCurrentlyShaking)
+	{
+		return;
+	}
+
+	mCurrentShakeDuration = shakeDuration;
+	mCurrentlyShaking = true;
+	mShakeStartTime = Timing::Instance()->GetTotalTimeSeconds();
+	mCurrentShakeIntensity = intensity;
 }
 
