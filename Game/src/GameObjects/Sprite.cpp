@@ -350,12 +350,6 @@ void Sprite::Update(float delta)
 	{
 		UpdateAnimations();
 	}
-}
-
-void Sprite::Draw(ID3D10Device * device, Camera2D * camera)
-{
-	// draw base first
-	DrawableObject::Draw(device, camera);
 
 	if (m_fadeAlphaWhenPlayerOccluded)
 	{
@@ -366,14 +360,14 @@ void Sprite::Draw(ID3D10Device * device, Camera2D * camera)
 		{
 			// check is the player inside the bounds of this sprite
 			// if so then fade alpha
-			if(player->X() > Left() &&
-			   player->X() < Right()	&&
-			   player->Y() > Bottom()  &&
-			   player->Y() < Top())
+			if (player->X() > Left() &&
+				player->X() < Right() &&
+				player->Y() > Bottom() &&
+				player->Y() < Top())
 			{
 				if (m_alpha > m_alphaWhenOccluding)
 				{
-					m_alpha -= 0.04; // TODO: use LERP 
+					m_alpha -= 0.06; // TODO: use LERP 
 				}
 				else
 				{
@@ -384,7 +378,7 @@ void Sprite::Draw(ID3D10Device * device, Camera2D * camera)
 			{
 				if (m_alpha < m_alphaWhenNotOccluding)
 				{
-					m_alpha += 0.04;
+					m_alpha += 0.06;
 				}
 				else
 				{
@@ -393,6 +387,12 @@ void Sprite::Draw(ID3D10Device * device, Camera2D * camera)
 			}
 		}
 	}
+}
+
+void Sprite::Draw(ID3D10Device * device, Camera2D * camera)
+{
+	// draw base first
+	DrawableObject::Draw(device, camera);
 
 	switch(m_currentEffectType)
 	{
