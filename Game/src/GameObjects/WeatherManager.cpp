@@ -120,7 +120,7 @@ void WeatherManager::CreateRainAssets()
 		mBottomRainLayer->m_textureFilename = "Media\\rainlayer.png";
 		mBottomRainLayer->m_drawAtNativeDimensions = true;
 		mBottomRainLayer->m_updateable = true;
-		mBottomRainLayer->m_position = Vector3(0, 578 * gameScale, 15);
+		mBottomRainLayer->m_position = Vector3(0, 450 * gameScale, 15);
 		mBottomRainLayer->m_dimensions = Vector3(2048, 2048, 0);
 		mBottomRainLayer->mRepeatTextureX = false;
 		mBottomRainLayer->mRepeatTextureY = false;
@@ -146,7 +146,7 @@ void WeatherManager::CreateRainAssets()
 		mTopRainLayer->m_textureFilename = "Media\\rainlayer.png";
 		mTopRainLayer->m_drawAtNativeDimensions = true;
 		mTopRainLayer->m_updateable = true;
-		mTopRainLayer->m_position = Vector3(0, 2630 * gameScale, 15);
+		mTopRainLayer->m_position = Vector3(0, 2502 * gameScale, 15);
 		mTopRainLayer->m_dimensions = Vector3(2048, 2048, 0);
 		mTopRainLayer->mRepeatTextureX = false;
 		mTopRainLayer->mRepeatTextureY = false;
@@ -245,7 +245,7 @@ void WeatherManager::CreateSnowAssets()
 		mBottomSnowLayer->m_textureFilename = "Media\\snowlayer.png";
 		mBottomSnowLayer->m_drawAtNativeDimensions = true;
 		mBottomSnowLayer->m_updateable = true;
-		mBottomSnowLayer->m_position = Vector3(0, 598 * gameScale, 15);
+		mBottomSnowLayer->m_position = Vector3(0, 450 * gameScale, 15);
 		mBottomSnowLayer->m_dimensions = Vector3(2048, 2048, 0);
 		mBottomSnowLayer->mRepeatTextureX = false;
 		mBottomSnowLayer->mRepeatTextureY = false;
@@ -271,7 +271,7 @@ void WeatherManager::CreateSnowAssets()
 		mTopSnowLayer->m_textureFilename = "Media\\snowlayer.png";
 		mTopSnowLayer->m_drawAtNativeDimensions = true;
 		mTopSnowLayer->m_updateable = true;
-		mTopSnowLayer->m_position = Vector3(0, 2650 * gameScale, 15);
+		mTopSnowLayer->m_position = Vector3(0, 2502 * gameScale, 15);
 		mTopSnowLayer->m_dimensions = Vector3(2048, 2048, 0);
 		mTopSnowLayer->mRepeatTextureX = false;
 		mTopSnowLayer->mRepeatTextureY = false;
