@@ -134,6 +134,9 @@ void ParticleSpray::Draw(ID3D10Device* device, Camera2D * camera)
 	float currentTime = Timing::Instance()->GetTotalTimeSeconds();
 	int numAliveParticles = 0; // the total number of particles we actually need to render
 
+	float targetDelta = Timing::Instance()->GetTargetDelta();
+	float percentDelta = Timing::Instance()->GetLastUpdateDelta() / targetDelta;
+
 	int currentVerts = 0;
 	for (auto & currentParticle : m_particleList)
 	{
@@ -153,7 +156,7 @@ void ParticleSpray::Draw(ID3D10Device* device, Camera2D * camera)
 			
 			//NOTE: We store individual particle alpha value in the Normal.X component
 			// 1 vertex
-			vertices[currentVerts].Pos = D3DXVECTOR3( posX - size, posY - size, depth + (currentVerts * 0.01));
+			vertices[currentVerts].Pos = D3DXVECTOR3( posX - size, posY - size, depth + (currentVerts * 0.01f));
 			vertices[currentVerts].TexCoord = tex1;
 			vertices[currentVerts].Normal = normal;
 
@@ -188,9 +191,11 @@ void ParticleSpray::Draw(ID3D10Device* device, Camera2D * camera)
 				// slow our particles down (air resistance)
 				currentParticle.Speed *= 0.99;
 			}
-			currentParticle.PosX = posX + (currentParticle.DirectionX * currentParticle.Speed);
-			currentParticle.PosY = posY + (currentParticle.DirectionY * currentParticle.Speed);
-			currentParticle.PosY -= currentParticle.Gravity; // apply gravity
+			// TODO: speed should be determined by delta time
+
+			currentParticle.PosX = posX + (currentParticle.DirectionX * currentParticle.Speed) * percentDelta;
+			currentParticle.PosY = posY + (currentParticle.DirectionY * currentParticle.Speed) * percentDelta;
+			currentParticle.PosY -= currentParticle.Gravity * percentDelta; // apply gravity
 
 			float death_time = currentParticle.StartTime + currentParticle.MaxLiveTime;
 			float time_left = death_time - currentTime;

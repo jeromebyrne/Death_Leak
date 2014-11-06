@@ -135,20 +135,20 @@ void Camera2D::Update()
 
 			if (minusX)
 			{
-				m_position.X += mCurrentShakeIntensity * shakePercentTime;
+				m_position.X += mCurrentShakeIntensity * shakePercentTime * Timing::Instance()->GetTimeModifier();
 			}
 			else
 			{
-				m_position.X -= mCurrentShakeIntensity * shakePercentTime;
+				m_position.X -= mCurrentShakeIntensity * shakePercentTime * Timing::Instance()->GetTimeModifier();
 			}
 			
 			if (minusY)
 			{
-				m_position.Y += mCurrentShakeIntensity * shakePercentTime;
+				m_position.Y += mCurrentShakeIntensity * shakePercentTime * Timing::Instance()->GetTimeModifier();
 			}
 			else
 			{
-				m_position.Y -= mCurrentShakeIntensity * shakePercentTime;
+				m_position.Y -= mCurrentShakeIntensity * shakePercentTime  * Timing::Instance()->GetTimeModifier();
 			}
 		}
 	}

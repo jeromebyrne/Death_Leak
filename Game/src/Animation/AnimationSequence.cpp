@@ -42,7 +42,7 @@ void AnimationSequence::ReadXml(TiXmlElement * element)
 	// loop through children
 	while(child)
 	{
-		char* textureName = XmlUtilities::ReadAttributeAsString(child, "", "filename");
+		const char * textureName = XmlUtilities::ReadAttributeAsString(child, "", "filename");
 
 		ID3D10ShaderResourceView* texture = TextureManager::Instance()->LoadTexture(textureName);
 

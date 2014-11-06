@@ -138,6 +138,9 @@ public:
 	float GetCurrentParallaxOffsetX() const { return mCurrentParallaxOffsetX; }
 	float GetCurrentParallaxOffsetY() const { return mCurrentParallaxOffsetY; }
 
+	void SetParallaxMultiplierX(float value) { mParallaxMultiplierX = value; }
+	void SetParallaxMultiplierY(float value) { mParallaxMultiplierY = value; }
+
 	virtual void SetupDebugDraw();
 
 	void SetMatrixScaleX(float value) { m_matScaleX = value; }

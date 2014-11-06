@@ -35,7 +35,7 @@ void MaterialManager::Initialise(char *materialXMLFile)
 	while(child)
 	{
 		// get the name of the material 
-		char* matName = XmlUtilities::ReadAttributeAsString(child, "", "name");
+		const char * matName = XmlUtilities::ReadAttributeAsString(child, "", "name");
 		
 		// create the new material
 		Material* mat = new Material(matName);

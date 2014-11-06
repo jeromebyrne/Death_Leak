@@ -23,7 +23,7 @@ void Material::ReadXml(TiXmlElement * element)
 
 	while(currentTexture)
 	{
-		char* texFile = XmlUtilities::ReadAttributeAsString(currentTexture, "", "file");
+		const char * texFile = XmlUtilities::ReadAttributeAsString(currentTexture, "", "file");
 
 		m_particleTextures.push_back(string(texFile));
 
@@ -36,7 +36,7 @@ void Material::ReadXml(TiXmlElement * element)
 
 	while(currentDamageSound)
 	{
-		char* soundFile = XmlUtilities::ReadAttributeAsString(currentDamageSound, "", "file");
+		const char * soundFile = XmlUtilities::ReadAttributeAsString(currentDamageSound, "", "file");
 		
 		m_damageSoundEffects.push_back(string(soundFile));
 
@@ -49,7 +49,7 @@ void Material::ReadXml(TiXmlElement * element)
 
 	while(currentFootstepSound)
 	{
-		char* soundFile = XmlUtilities::ReadAttributeAsString(currentFootstepSound, "", "file");
+		const char * soundFile = XmlUtilities::ReadAttributeAsString(currentFootstepSound, "", "file");
 		
 		m_footstepSoundEffects.push_back(string(soundFile));
 

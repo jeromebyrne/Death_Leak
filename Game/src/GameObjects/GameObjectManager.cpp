@@ -359,7 +359,7 @@ void GameObjectManager::LoadObjectsFromFile(const char* filename)
 	TiXmlElement * root = hdoc->FirstChildElement().Element();
 
 	// get the audio track for this level
-	char * audio_track = XmlUtilities::ReadAttributeAsString(root, "", "audio");
+	const char * audio_track = XmlUtilities::ReadAttributeAsString(root, "", "audio");
 	
 	// start playing level music as we load the objects
 	// AudioManager::Instance()->PlayMusic(audio_track, true); // always loop level music

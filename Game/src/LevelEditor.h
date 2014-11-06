@@ -56,6 +56,8 @@ private:
 
 	void CheckForNewTerrainObject();
 
+	void CheckForLayerAssign();
+
 	GameObject * GetGameObjectClickedOn(list<shared_ptr<GameObject> > & gameObjects);
 
 	Sprite * GetAsSprite(GameObject * object);

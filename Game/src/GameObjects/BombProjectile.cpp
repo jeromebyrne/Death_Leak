@@ -178,12 +178,18 @@ void BombProjectile::HandleSolidLineStripCollision(SolidLineStrip * solidLineStr
 
 	if (solidLineStrip->GetBombProjectileCollisionData(this, collisionPosition))
 	{
-		if (m_velocity.Y < 0.0f)
+		if (m_velocity.Y < 0.0f && !WasInWaterLastFrame())
 		{
 			// bounce
 			m_velocity.X *= 0.9f;
-			m_velocity.Y *= -0.7f;
+			m_velocity.Y *= -0.5f;
 		}
+		else if (WasInWaterLastFrame())
+		{
+			m_velocity.X *= 0.3f;
+			m_velocity.Y *= -0.2f;
+		}
+
 
 		float diffY = collisionPosition.Y - CollisionBottom();
 

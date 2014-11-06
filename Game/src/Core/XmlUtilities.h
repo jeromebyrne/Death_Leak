@@ -17,8 +17,8 @@ public:
 	{
 		bool returnValue = false;
 
-		char* boolAsString = ReadAttributeAsString(element, subElementName, key);
-		Utilities::ToLower(boolAsString); // convert to lower
+		const char * boolAsString = ReadAttributeAsString(element, subElementName, key);
+		Utilities::ToLower((char *)boolAsString); // convert to lower
 
 		if(strcmp(boolAsString, "true") == 0)
 		{
@@ -47,7 +47,7 @@ public:
 		return value;
 	}
 
-	static char* ReadAttributeAsString(TiXmlElement * element, const char* subElementName, const char * key)
+	static const char * ReadAttributeAsString(TiXmlElement * element, const char* subElementName, const char * key)
 	{
 		TiXmlElement * attributeElement;
 
@@ -61,8 +61,7 @@ public:
 			attributeElement = element;
 		}
 		
-		char* returnString = (char*)attributeElement->Attribute(key);
-		return returnString;
+		return attributeElement->Attribute(key);
 	}
 
 	static TiXmlElement * GetChildElement(TiXmlElement * element, const char * childName)

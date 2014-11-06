@@ -881,6 +881,8 @@ void LevelEditor::CheckInput_Regular()
 	CheckForSavePressed();
 
 	CheckForCopy();
+
+	CheckForLayerAssign();
 }
 
 SolidLineStrip * LevelEditor::GetAsSolidLineStrip(GameObject * object)
@@ -990,4 +992,34 @@ Vector2 LevelEditor::GetMouseWorldPos()
 	Vector2 worldPos = Utilities::ScreenToWorld(Vector2(currentMouse.x * scaleX, currentMouse.y * scaleY));
 
 	return worldPos;
+}
+
+void LevelEditor::CheckForLayerAssign()
+{
+	if (!mSelectedObject)
+	{
+		return;
+	}
+
+	if (GetAsyncKeyState('1') < 0)
+	{
+		mSelectedObject->SetParallaxMultiplierX(1.0f);
+		mSelectedObject->SetParallaxMultiplierY(1.07f);
+	}
+	else if (GetAsyncKeyState('2') < 0)
+	{
+		mSelectedObject->SetParallaxMultiplierX(0.8f);
+		mSelectedObject->SetParallaxMultiplierY(1.04f);
+	}
+	else if (GetAsyncKeyState('3') < 0)
+	{
+		mSelectedObject->SetParallaxMultiplierX(0.65f);
+		mSelectedObject->SetParallaxMultiplierY(1.01f);
+	}
+	if (GetAsyncKeyState('0') < 0)
+	{
+		// reset
+		mSelectedObject->SetParallaxMultiplierX(1.0f);
+		mSelectedObject->SetParallaxMultiplierY(1.0f);
+	}
 }
