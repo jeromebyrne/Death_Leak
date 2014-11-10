@@ -191,7 +191,6 @@ void ParticleSpray::Draw(ID3D10Device* device, Camera2D * camera)
 				// slow our particles down (air resistance)
 				currentParticle.Speed *= 0.99;
 			}
-			// TODO: speed should be determined by delta time
 
 			currentParticle.PosX = posX + (currentParticle.DirectionX * currentParticle.Speed) * percentDelta;
 			currentParticle.PosY = posY + (currentParticle.DirectionY * currentParticle.Speed) * percentDelta;
