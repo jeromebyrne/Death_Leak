@@ -186,7 +186,10 @@ void Character::OnCollision(SolidMovingSprite * object)
 		// update the base classes
 		SolidMovingSprite::OnCollision(object);
 
-		UpdateFootsteps(object);
+		if (!WasInWaterLastFrame())
+		{
+			UpdateFootsteps(object);
+		}
 	}
 	else if (object->IsPlatform())
 	{

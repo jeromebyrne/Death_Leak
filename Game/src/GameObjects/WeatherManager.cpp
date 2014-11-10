@@ -5,7 +5,7 @@
 #include "AudioObject.h"
 #include "Game.h"
 
-static const float kTimeUntilFirstWeather = 2.0f;
+static const float kTimeUntilFirstWeather = 25.0f;
 static const float kRainSessionMinTime = 70.0f;
 static const float kRainSessionMaxTime = 120.0f;
 static const float kRainIntroTime = 10.0f;
@@ -23,9 +23,9 @@ static const float kSnowOutroTime = 8.0f;
 static const float kMinWeatherIntervalTime = 90.0f;
 static const float kMaxWeatherIntervalTime = 200.0f;
 
-static const float kNormalFoliageSwayMultiplier = 1.0f;
-static const float kRainFoliageSwayMultiplier = 2.0f;
-static const float kSnowFoliageSwayMultiplier = 4.0f;
+static const float kNormalFoliageSwayMultiplier = 2.5f;
+static const float kRainFoliageSwayMultiplier = 4.0f;
+static const float kSnowFoliageSwayMultiplier = 6.0f;
 
 WeatherManager * WeatherManager::mInstance = nullptr;
 

@@ -20,7 +20,8 @@ public:
 		const char * boolAsString = ReadAttributeAsString(element, subElementName, key);
 		Utilities::ToLower((char *)boolAsString); // convert to lower
 
-		if(strcmp(boolAsString, "true") == 0)
+		if(strcmp(boolAsString, "true") == 0 ||
+			strcmp(boolAsString, "1") == 0)
 		{
 			returnValue = true;
 		}

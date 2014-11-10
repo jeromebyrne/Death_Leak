@@ -96,7 +96,8 @@
     </particletextures>
 
     <damagesoundeffects>
-      <sound file="woodhit.wav" />
+      <!--<sound file="woodhit.wav" />-->
+      <sound file="Footstep3.wav" />
     </damagesoundeffects>
 
     <footstepsoundeffects>

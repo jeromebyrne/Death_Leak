@@ -98,7 +98,7 @@ void Explosion::PlaySFX()
 	bool loop = false;
 	unsigned long loopTime = -1;
 
-	int randBang = rand() % 4;
+	int randBang = rand() % 3;
 	switch (randBang)
 	{
 		case 0:
@@ -114,11 +114,6 @@ void Explosion::PlaySFX()
 		case 2:
 			{
 				AudioManager::Instance()->PlaySoundEffect("explosion\\bang3.wav");
-				break;
-			}
-		case 3:
-			{
-				AudioManager::Instance()->PlaySoundEffect("explosion\\bang4.wav");
 				break;
 			}
 		default:
