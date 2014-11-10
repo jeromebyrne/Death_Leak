@@ -30,6 +30,9 @@ void SolidLineStrip::Initialise()
 {
 	// update the base classes
 	SolidMovingSprite::Initialise();
+
+	// all solid line strips should be passive 
+	m_passive = true;
 }
 void SolidLineStrip::XmlRead(TiXmlElement * element)
 {

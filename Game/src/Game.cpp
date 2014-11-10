@@ -30,6 +30,7 @@
 #include "WeatherManager.h"
 #include "EffectLightTexturePixelWobble.h"
 #include "EffectFoliageSway.h"
+#include "Settings.h"
 
 Game * Game::mInstance = nullptr;
 
@@ -69,6 +70,8 @@ void Game::Initialise()
 {
 	HRESULT hr = S_OK;
 
+	Settings::GetInstance()->ReadSettingsFile();
+
 	// initialise audio
 	AudioManager::Instance()->Initialise();
 
@@ -103,6 +106,8 @@ void Game::Initialise()
 	// initialise Materials
 	MaterialManager::Instance()->Initialise("XmlFiles\\materials.xml");
 
+	Settings::GetInstance()->ApplySettings();
+
 	// initialise the collision manager, set to 1280 * 4 and 720 * 5 as default, is reset in gameobjectmanager load function
 	CollisionManager::Instance()->Initialise(m_pGraphics->BackBufferWidth() * 4, m_pGraphics->BackBufferHeight() * 5, 8, 4);
 	
@@ -124,8 +129,6 @@ void Game::Initialise()
 
 	mGameScale.X = (float)m_pGraphics->BackBufferWidth() / 1920.f;
 	mGameScale.Y = (float)m_pGraphics->BackBufferHeight() / 1080.f;
-
-	// AddSlowMotionLayer();
 }
 
 void Game::Update(float delta)

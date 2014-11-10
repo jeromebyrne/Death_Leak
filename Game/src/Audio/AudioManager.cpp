@@ -4,8 +4,8 @@
 AudioManager* AudioManager::m_instance = 0;
 
 AudioManager::AudioManager(void):
-m_musicMuted(false),
-m_effectsMuted(false)
+	mMusicEnabled(true),
+	mSfxEnabled(true)
 {
 }
 
@@ -28,7 +28,7 @@ void AudioManager::Release()
 
 ISound * AudioManager::PlaySoundEffect(string fileName, bool loop, bool track)
 {
-	if (!m_effectsMuted)
+	if (mSfxEnabled)
 	{
 		string file = m_audioPath + fileName;
 
@@ -62,7 +62,7 @@ ISound * AudioManager::PlaySoundEffect(string fileName, bool loop, bool track)
 
 void AudioManager::PlayMusic(string fileName, bool loop)
 {
-	if (!m_musicMuted)
+	if (mMusicEnabled)
 	{
 		string file = m_audioPath + fileName;
 		m_irrKlangEngine->play2D(file.c_str(), loop);

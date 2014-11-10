@@ -9,19 +9,22 @@ XmlDocument::~XmlDocument(void)
 {
 }
 
-void XmlDocument::Load(const char * filename)
+bool XmlDocument::Load(const char * filename)
 {
 	bool loadOkay = m_document.LoadFile(filename);
 
 	if ( !loadOkay )
 	{
-		printf( "Could not load xml file. Error='%s'. Exiting.\n", m_document.ErrorDesc() );
+		LOG_ERROR("Unable to open xml file %s. Check that the file exists", filename);
+		GAME_ASSERT(loadOkay);
 	}
 	else
 	{
 		// create the handle
 		m_pHandle = new TiXmlHandle(&m_document);
 	}
+
+	return loadOkay;
 }
 
 void XmlDocument::Save(const char * filename, TiXmlElement * root)

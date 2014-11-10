@@ -7,21 +7,6 @@ using namespace irrklang;
 
 class AudioManager
 {
-private:
-	static AudioManager * m_instance;
-
-	string m_audioPath;
-
-	// irrKlang sound engine
-	ISoundEngine * m_irrKlangEngine;
-
-	bool m_musicMuted;
-	bool m_effectsMuted;
-
-	// when slow mo is active we want to modify the playback speed
-	// however you need to manually track the sound in that case
-	list<ISound*> mSloMoUntrackedSounds;
-
 public:
 	AudioManager(void);
 	~AudioManager(void);
@@ -45,10 +30,24 @@ public:
 
 	void Update();
 	
-	void MuteSoundEffects() { m_effectsMuted = true; }
-	void UnMuteSoundEffects(){ m_effectsMuted = false; }
-	void MuteMusic() { m_musicMuted = true; StopAllSounds();}
-	void UnMuteMusic() { m_musicMuted = false; }
+	void SetMusicEnabled(bool value) { mMusicEnabled = value; }
+
+	void SetSfxEnabled(bool value) { mSfxEnabled = value; }
+
+private:
+	static AudioManager * m_instance;
+
+	string m_audioPath;
+
+	// irrKlang sound engine
+	ISoundEngine * m_irrKlangEngine;
+
+	bool mMusicEnabled;
+	bool mSfxEnabled;
+
+	// when slow mo is active we want to modify the playback speed
+	// however you need to manually track the sound in that case
+	list<ISound*> mSloMoUntrackedSounds;
 };
 
 #endif

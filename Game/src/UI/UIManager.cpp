@@ -6,6 +6,7 @@
 #include "dxwindow.h"
 #include "uigamehudscreen.h"
 #include "EffectLightTextureVertexWobble.h"
+#include "Settings.h"
 
 extern void PostDestroyMessage();
 
@@ -231,8 +232,8 @@ void UIManager::XmlRead(const char * uiRootPath)
 	list<string> params;
 	params.push_back("mainmenu");
 	PushBackEvent("pushui", params);
-	// AudioManager::Instance()->PlayMusic("weather\\2minutestorm.mp3");
-	AudioManager::Instance()->PlayMusic("mainmenu_theme.mp3");
+	AudioManager::Instance()->PlayMusic("weather\\2minutestorm.mp3");
+	// AudioManager::Instance()->PlayMusic("mainmenu_theme.mp3");
 }
 
 void UIManager::PushBackEvent(string eventName, list<string> eventParams)
@@ -415,22 +416,26 @@ void UIManager::HandleEvent(string eventName, list<string> params)
 		}
 	case MUTE_SOUND_EFFECTS:
 		{
-			AudioManager::Instance()->MuteSoundEffects();
+			AudioManager::Instance()->SetSfxEnabled(false);
+			Settings::GetInstance()->SetSfxEnabled(false, true);
 			break;
 		}
 	case MUTE_MUSIC:
 		{
-			AudioManager::Instance()->MuteMusic();
+			AudioManager::Instance()->SetMusicEnabled(false);
+			Settings::GetInstance()->SetMusicEnabled(false, true);
 			break;
 		}
 	case UNMUTE_MUSIC:
 		{
-			AudioManager::Instance()->UnMuteMusic();
+			AudioManager::Instance()->SetMusicEnabled(false);
+			Settings::GetInstance()->SetMusicEnabled(true, true);
 			break;
 		}
 	case UNMUTE_SOUND_EFFECTS:
 		{
-			AudioManager::Instance()->UnMuteSoundEffects();
+			AudioManager::Instance()->SetSfxEnabled(true);
+			Settings::GetInstance()->SetSfxEnabled(true, true);
 			break;
 		}
 	case QUIT_TO_DESKTOP:
