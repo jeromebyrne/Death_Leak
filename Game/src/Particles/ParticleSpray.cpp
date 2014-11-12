@@ -4,7 +4,7 @@
 #include "Projectile.h"
 #include "DrawUtilities.h"
 
-static const unsigned int kMaxParticlesPerSpray = 100;
+static const unsigned int kMaxParticlesPerSpray = 500;
 
 ParticleSpray::ParticleSpray(bool isBloodSpray, 
 							Vector3 position,
