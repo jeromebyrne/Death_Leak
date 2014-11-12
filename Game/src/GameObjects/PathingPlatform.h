@@ -57,6 +57,8 @@ protected:
 
 	bool mPathForward; // move forward or backward
 
+	Vector3 mOriginalPosition;
+
 };
 
 #endif

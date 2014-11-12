@@ -21,6 +21,8 @@ void PathingPlatform::XmlRead(TiXmlElement * element)
 {
 	Platform::XmlRead(element);
 
+	mOriginalPosition = m_position;
+
 	mPlatformSpeed = XmlUtilities::ReadAttributeAsFloat(element, "platformspeed", "value");
 
 	string platform_type = XmlUtilities::ReadAttributeAsString(element, "platformpathtype", "value");
@@ -62,8 +64,8 @@ void PathingPlatform::XmlRead(TiXmlElement * element)
 			{
 				Vector3 point = Vector3(0,0,0);
 				
-				point.X = XmlUtilities::ReadAttributeAsFloat(path_point, "", "x");
-				point.Y = XmlUtilities::ReadAttributeAsFloat(path_point, "", "y");
+				point.X = mOriginalPosition.X + XmlUtilities::ReadAttributeAsFloat(path_point, "", "x");
+				point.Y = mOriginalPosition.Y + XmlUtilities::ReadAttributeAsFloat(path_point, "", "y");
 				mPathPoints.push_back(point);
 				path_point = path_point->NextSiblingElement();
 			}
@@ -153,8 +155,8 @@ void PathingPlatform::XmlWrite(TiXmlElement * element)
 	for (int i = 0; i < mPathPoints.size(); ++i)
 	{
 		TiXmlElement * point = new TiXmlElement("point");
-		point->SetDoubleAttribute("x", mPathPoints[i].X);
-		point->SetDoubleAttribute("y", mPathPoints[i].Y);
+		point->SetDoubleAttribute("x", mPathPoints[i].X - mOriginalPosition.X);
+		point->SetDoubleAttribute("y", mPathPoints[i].Y  - mOriginalPosition.Y);
 		pathpoints->LinkEndChild(point);
 	}
 

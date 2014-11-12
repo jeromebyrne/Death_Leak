@@ -21,11 +21,15 @@ AIStateButterflyWander::~AIStateButterflyWander(void)
 void AIStateButterflyWander::OnTransition()
 {
 	// do stuff
+	if (m_npc && m_npc->m_position.Z > 99)
+	{
+		m_npc->m_resistance.Y = 20.1f;
+	}
 }
 
 void AIStateButterflyWander::Update(float delta)
 {
-	if (m_npc->m_player)
+	if (m_npc->m_player && m_npc->m_position.Z < 99) // Hack: don;t be affceted if in the background
 	{
 		// get the distance to the player
 		Vector3 distanceSquaredVector = m_npc->m_player->Position() - m_npc->Position();

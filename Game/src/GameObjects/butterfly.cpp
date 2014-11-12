@@ -23,6 +23,11 @@ Butterfly::~Butterfly(void)
 
 void Butterfly::OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode)
 {
+	if (m_position.Z > 99)
+	{
+		// hack to stop butterfly's in the background being affected
+		return;
+	}
 	m_alpha = 0.0f;
 	mHasExploded = true;
 
@@ -51,6 +56,12 @@ void Butterfly::Initialise()
 	m_maxVelocity.X = 0.5f;
 	m_maxVelocity.Y = 5.0f;
 	mAccelXRate = 0.5f;
+
+	if (m_position.Z > 99)
+	{
+		// hack to stop butterfly's in the background being affected
+		m_passive = true;
+	}
 }
 
 void Butterfly::UpdateAnimations()
@@ -85,4 +96,15 @@ void Butterfly::UpdateAnimations()
 	}
 
 	m_mainBodyTexture = m_texture;
+}
+
+void Butterfly::OnCollision(SolidMovingSprite * object)
+{
+	if (m_position.Z > 99)
+	{
+		// hack to stop butterfly's in the background being affected
+		return;
+	}
+
+	NPC::OnCollision(object);
 }
