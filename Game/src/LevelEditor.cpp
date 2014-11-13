@@ -64,16 +64,6 @@ void LevelEditor::Update()
 
 	UpdateParallaxLayers();
 
-	list<shared_ptr<GameObject> > & gameObjects = GameObjectManager::Instance()->GetGameObjectList();
-	for (auto & obj : gameObjects)
-	{
-		if (obj->GetParallaxMultiplierX() != 1.0f ||
-			obj->GetParallaxMultiplierY() != 1.0f)
-		{
-			obj->Update(1.0f);
-		}
-	}
-
 	if (mTerrainEditing)
 	{
 		CheckInput_TerrainEditing();
@@ -883,6 +873,14 @@ void LevelEditor::CheckInput_Regular()
 	CheckForCopy();
 
 	CheckForLayerAssign();
+
+	for (auto & obj : gameObjects)
+	{
+		if (dynamic_cast<ParticleSpray*>(obj.get()))
+		{
+			obj->Update(Timing::Instance()->GetLastUpdateDelta());
+		}
+	}
 }
 
 SolidLineStrip * LevelEditor::GetAsSolidLineStrip(GameObject * object)

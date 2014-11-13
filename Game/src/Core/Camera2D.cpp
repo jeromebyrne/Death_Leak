@@ -1,6 +1,7 @@
 #include "precompiled.h"
 #include "Camera2D.h"
 #include "MovingSprite.h"
+#include "Game.h"
 
 Camera2D * Camera2D::mInstance = 0;
 
@@ -159,19 +160,68 @@ void Camera2D::Update()
 	if(GetAsyncKeyState('D') < 0)
 	{
 		m_position.X+= movespeed;
+
+		if (Game::GetInstance()->GetIsLevelEditMode())
+		{
+			list<shared_ptr<GameObject> > & gameObjects = GameObjectManager::Instance()->GetGameObjectList();
+			for (auto & obj : gameObjects)
+			{
+				if (obj->GetParallaxMultiplierX() != 1.0f ||
+					obj->GetParallaxMultiplierY() != 1.0f)
+				{
+					obj->Update(1.0f);
+				}
+			}
+		}
 	}
 	else if(GetAsyncKeyState('A') < 0)
 	{
 		m_position.X-=movespeed;
+		if (Game::GetInstance()->GetIsLevelEditMode())
+		{
+			list<shared_ptr<GameObject> > & gameObjects = GameObjectManager::Instance()->GetGameObjectList();
+			for (auto & obj : gameObjects)
+			{
+				if (obj->GetParallaxMultiplierX() != 1.0f ||
+					obj->GetParallaxMultiplierY() != 1.0f)
+				{
+					obj->Update(1.0f);
+				}
+			}
+		}
 	}
 
 	if(GetAsyncKeyState('W') < 0)
 	{ 
 		m_position.Y+= movespeed;
+		if (Game::GetInstance()->GetIsLevelEditMode())
+		{
+			list<shared_ptr<GameObject> > & gameObjects = GameObjectManager::Instance()->GetGameObjectList();
+			for (auto & obj : gameObjects)
+			{
+				if (obj->GetParallaxMultiplierX() != 1.0f ||
+					obj->GetParallaxMultiplierY() != 1.0f)
+				{
+					obj->Update(1.0f);
+				}
+			}
+		}
 	}
 	else if(GetAsyncKeyState('S') < 0 && GetAsyncKeyState(VK_CONTROL) >= 0)
 	{
 		m_position.Y-=movespeed;
+		if (Game::GetInstance()->GetIsLevelEditMode())
+		{
+			list<shared_ptr<GameObject> > & gameObjects = GameObjectManager::Instance()->GetGameObjectList();
+			for (auto & obj : gameObjects)
+			{
+				if (obj->GetParallaxMultiplierX() != 1.0f ||
+					obj->GetParallaxMultiplierY() != 1.0f)
+				{
+					obj->Update(1.0f);
+				}
+			}
+		}
 	}
 #endif
 }

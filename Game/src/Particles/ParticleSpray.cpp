@@ -4,8 +4,6 @@
 #include "Projectile.h"
 #include "DrawUtilities.h"
 
-static const unsigned int kMaxParticlesPerSpray = 500;
-
 ParticleSpray::ParticleSpray(bool isBloodSpray, 
 							Vector3 position,
 							Vector3 dimensions, 
@@ -116,33 +114,63 @@ void ParticleSpray::Reset()
 			}
 			currentParticle.StartPosY = m_position.Y + posYOffset;
 		}
-
 	}
 }
 
 void ParticleSpray::Draw(ID3D10Device* device, Camera2D * camera)
 {
-	D3DXVECTOR2 tex1 = D3DXVECTOR2(1,1);
-	D3DXVECTOR2 tex2 = D3DXVECTOR2(0,1);
-	D3DXVECTOR2 tex3 = D3DXVECTOR2(0,0);
-	D3DXVECTOR2 tex4 = D3DXVECTOR2(1,0);
+	SetVertexBuffer(device, sizeof(mVertices[0]) * (m_particleList.size() * 6), mVertices);
+	//-----------------------------
 
-	D3DXVECTOR3 normal = D3DXVECTOR3(1,1,1);
+	// set the texture.
+	m_currentEffect->SetTexture(m_texture);
 
-	VertexPositionTextureNormal vertices[kMaxParticlesPerSpray * 6];
+	// set the alpha value
+	m_currentEffect->SetAlpha(m_alpha);
+
+	//// Set the input layout on the device
+	device->IASetInputLayout(m_currentEffect->InputLayout);
+
+	// Set vertex buffer
+	UINT stride = sizeof(VertexPositionTextureNormal);
+	UINT offset = 0;
+	device->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
+
+	//// Set primitive topology
+	device->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	D3D10_TECHNIQUE_DESC techDesc;
+	m_currentEffect->CurrentTechnique->GetDesc(&techDesc);
+	for (UINT p = 0; p < techDesc.Passes; ++p)
+	{
+		m_currentEffect->CurrentTechnique->GetPassByIndex(p)->Apply(0);
+		device->Draw(m_particleList.size() * 6, 0);
+	}
+}
+
+void ParticleSpray::Update(float delta)
+{
+	DrawableObject::Update(delta);
+
+	D3DXVECTOR2 tex1 = D3DXVECTOR2(1, 1);
+	D3DXVECTOR2 tex2 = D3DXVECTOR2(0, 1);
+	D3DXVECTOR2 tex3 = D3DXVECTOR2(0, 0);
+	D3DXVECTOR2 tex4 = D3DXVECTOR2(1, 0);
+
+	D3DXVECTOR3 normal = D3DXVECTOR3(1, 1, 1);
 
 	float currentTime = Timing::Instance()->GetTotalTimeSeconds();
 	int numAliveParticles = 0; // the total number of particles we actually need to render
 
 	float targetDelta = Timing::Instance()->GetTargetDelta();
-	float percentDelta = Timing::Instance()->GetLastUpdateDelta() / targetDelta;
+	float percentDelta = delta / targetDelta;
 
 	int currentVerts = 0;
 	for (auto & currentParticle : m_particleList)
 	{
-		if(!currentParticle.IsDead)
+		if (!currentParticle.IsDead)
 		{
-			float size = currentParticle.Size/2;
+			float size = currentParticle.Size / 2;
 			float posX = currentParticle.PosX;
 			float posY = currentParticle.PosY;
 			float depth = 1;
@@ -153,40 +181,40 @@ void ParticleSpray::Draw(ID3D10Device* device, Camera2D * camera)
 
 			if (currentParticle.FlippedVertical)	{ tex1.y = 0; tex2.y = 0; tex3.y = 1; tex4.y = 1; }
 			else									{ tex1.y = 1; tex2.y = 1; tex3.y = 0; tex4.y = 0; }
-			
+
 			//NOTE: We store individual particle alpha value in the Normal.X component
 			// 1 vertex
-			vertices[currentVerts].Pos = D3DXVECTOR3( posX - size, posY - size, depth + (currentVerts * 0.01f));
-			vertices[currentVerts].TexCoord = tex1;
-			vertices[currentVerts].Normal = normal;
+			mVertices[currentVerts].Pos = D3DXVECTOR3(posX - size, posY - size, depth + (currentVerts * 0.01f));
+			mVertices[currentVerts].TexCoord = tex1;
+			mVertices[currentVerts].Normal = normal;
 
 			// 2 vertex
-			vertices[currentVerts + 1].Pos = D3DXVECTOR3( posX + size, posY - size, depth + (currentVerts) );
-			vertices[currentVerts + 1].TexCoord = tex2;
-			vertices[currentVerts + 1].Normal = normal;
+			mVertices[currentVerts + 1].Pos = D3DXVECTOR3(posX + size, posY - size, depth + (currentVerts));
+			mVertices[currentVerts + 1].TexCoord = tex2;
+			mVertices[currentVerts + 1].Normal = normal;
 
 			// 3 vertex 
-			vertices[currentVerts + 2].Pos = D3DXVECTOR3( posX + size, posY + size, depth);
-			vertices[currentVerts + 2].TexCoord = tex3;
-			vertices[currentVerts + 2].Normal = normal;
+			mVertices[currentVerts + 2].Pos = D3DXVECTOR3(posX + size, posY + size, depth);
+			mVertices[currentVerts + 2].TexCoord = tex3;
+			mVertices[currentVerts + 2].Normal = normal;
 
 			// 4 vertex
-			vertices[currentVerts + 3].Pos = D3DXVECTOR3( posX - size, posY - size, depth);
-			vertices[currentVerts + 3].TexCoord = tex1;
-			vertices[currentVerts + 3].Normal = normal;
+			mVertices[currentVerts + 3].Pos = D3DXVECTOR3(posX - size, posY - size, depth);
+			mVertices[currentVerts + 3].TexCoord = tex1;
+			mVertices[currentVerts + 3].Normal = normal;
 
 			// 5 vertex
-			vertices[currentVerts + 4].Pos = D3DXVECTOR3( posX - size, posY + size, depth);
-			vertices[currentVerts + 4].TexCoord = tex4;
-			vertices[currentVerts + 4].Normal = normal;
+			mVertices[currentVerts + 4].Pos = D3DXVECTOR3(posX - size, posY + size, depth);
+			mVertices[currentVerts + 4].TexCoord = tex4;
+			mVertices[currentVerts + 4].Normal = normal;
 
 			// 6 vertex
-			vertices[currentVerts + 5].Pos = D3DXVECTOR3( posX + size, posY + size, depth);
-			vertices[currentVerts + 5].TexCoord = tex3;
-			vertices[currentVerts + 5].Normal = normal;
+			mVertices[currentVerts + 5].Pos = D3DXVECTOR3(posX + size, posY + size, depth);
+			mVertices[currentVerts + 5].TexCoord = tex3;
+			mVertices[currentVerts + 5].Normal = normal;
 
 			// just do our particle update logic here rather than looping through all again
-			if(currentParticle.Gravity > 0)
+			if (currentParticle.Gravity > 0)
 			{
 				// slow our particles down (air resistance)
 				currentParticle.Speed *= 0.99;
@@ -204,35 +232,35 @@ void ParticleSpray::Draw(ID3D10Device* device, Camera2D * camera)
 			if (mFadeOutPercentTime > 0.0f && percentTimeLeft < (1.0f - mFadeOutPercentTime))
 			{
 				float alpha = percentTimeLeft / (1.0f - mFadeOutPercentTime);
-				vertices[currentVerts].Normal.x = alpha; 
-				vertices[currentVerts + 1].Normal.x = alpha;
-				vertices[currentVerts + 2].Normal.x = alpha;
-				vertices[currentVerts + 3].Normal.x = alpha;
-				vertices[currentVerts + 4].Normal.x = alpha;
-				vertices[currentVerts + 5].Normal.x = alpha;
+				mVertices[currentVerts].Normal.x = alpha;
+				mVertices[currentVerts + 1].Normal.x = alpha;
+				mVertices[currentVerts + 2].Normal.x = alpha;
+				mVertices[currentVerts + 3].Normal.x = alpha;
+				mVertices[currentVerts + 4].Normal.x = alpha;
+				mVertices[currentVerts + 5].Normal.x = alpha;
 			}
 			else if (mFadeInPercentTime > 0.0f && (1.0f - percentTimeLeft) < mFadeInPercentTime)
 			{
-				float alpha =  (1.0f - percentTimeLeft) / mFadeInPercentTime;
-				vertices[currentVerts].Normal.x = alpha;
-				vertices[currentVerts + 1].Normal.x = alpha;
-				vertices[currentVerts + 2].Normal.x = alpha;
-				vertices[currentVerts + 3].Normal.x = alpha;
-				vertices[currentVerts + 4].Normal.x = alpha;
-				vertices[currentVerts + 5].Normal.x = alpha;
+				float alpha = (1.0f - percentTimeLeft) / mFadeInPercentTime;
+				mVertices[currentVerts].Normal.x = alpha;
+				mVertices[currentVerts + 1].Normal.x = alpha;
+				mVertices[currentVerts + 2].Normal.x = alpha;
+				mVertices[currentVerts + 3].Normal.x = alpha;
+				mVertices[currentVerts + 4].Normal.x = alpha;
+				mVertices[currentVerts + 5].Normal.x = alpha;
 			}
 
 			// set the brightness
 			float brightness = currentParticle.Brightness;
-			vertices[currentVerts].Normal.y = brightness;
-			vertices[currentVerts + 1].Normal.y = brightness;
-			vertices[currentVerts + 2].Normal.y = brightness;
-			vertices[currentVerts + 3].Normal.y = brightness;
-			vertices[currentVerts + 4].Normal.y = brightness;
-			vertices[currentVerts + 5].Normal.y = brightness;
+			mVertices[currentVerts].Normal.y = brightness;
+			mVertices[currentVerts + 1].Normal.y = brightness;
+			mVertices[currentVerts + 2].Normal.y = brightness;
+			mVertices[currentVerts + 3].Normal.y = brightness;
+			mVertices[currentVerts + 4].Normal.y = brightness;
+			mVertices[currentVerts + 5].Normal.y = brightness;
 
 			// increment size if scalable
-			if(m_scalesByLiveTime)
+			if (m_scalesByLiveTime)
 			{
 				float startSize = currentParticle.StartSize;
 				float finalSize = currentParticle.StartSize * m_scaleTo;
@@ -241,15 +269,15 @@ void ParticleSpray::Draw(ID3D10Device* device, Camera2D * camera)
 				float currentLive = currentTime - currentParticle.StartTime;
 
 				// get the current size as a percentage of the final size
-				float livePercent = ((float)currentLive/ (float)currentParticle.MaxLiveTime);
-				
+				float livePercent = ((float)currentLive / (float)currentParticle.MaxLiveTime);
+
 				float toAdd = sizeDifference * livePercent;
 
 				// get the percentage  value of the size difference and add it
 				currentParticle.Size = currentParticle.StartSize + toAdd;
 			}
 
-			if(time_left <= 0)
+			if (time_left <= 0)
 			{
 				if (m_isLooping)
 				{
@@ -262,11 +290,11 @@ void ParticleSpray::Draw(ID3D10Device* device, Camera2D * camera)
 						currentParticle.PosX = currentParticle.StartPosX;
 						currentParticle.PosY = currentParticle.StartPosY;
 					}
-					
+
 					currentParticle.Speed = currentParticle.StartSpeed;
 					currentParticle.Size = currentParticle.StartSize;
 					currentParticle.StartTime = Timing::Instance()->GetTotalTimeSeconds();
-					
+
 					numAliveParticles++;
 				}
 				else
@@ -283,64 +311,28 @@ void ParticleSpray::Draw(ID3D10Device* device, Camera2D * camera)
 		}
 		currentVerts += 6;
 	}
-	
+
 	// is it time to break our particle loop?
-	if(m_isLooping && m_loopTime > 0)
+	if (m_isLooping && m_loopTime > 0)
 	{
 		float currentTime = Timing::Instance()->GetTotalTimeSeconds();
 
-		if((m_startedLooping + m_loopTime) < currentTime)
+		if ((m_startedLooping + m_loopTime) < currentTime)
 		{
 			m_isLooping = false;
 		}
 	}
 
-	if(numAliveParticles > 0)
+	if (numAliveParticles > 0)
 	{
-		SetVertexBuffer(device, sizeof(vertices[0]) * (numAliveParticles * 6), vertices);
-		//-----------------------------
-
-		// set the texture.
-		m_currentEffect->SetTexture(m_texture);
-
-		// set the alpha value
-		m_currentEffect->SetAlpha(m_alpha);
-
-		//// Set the input layout on the device
-		device->IASetInputLayout(m_currentEffect->InputLayout);
-
-		// Set vertex buffer
-		UINT stride = sizeof(VertexPositionTextureNormal);
-		UINT offset = 0;
-		device->IASetVertexBuffers(0,1, &m_vertexBuffer, &stride, &offset);
-
-		//// Set primitive topology
-		device->IASetPrimitiveTopology( D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
-
-		D3D10_TECHNIQUE_DESC techDesc;
-		m_currentEffect->CurrentTechnique->GetDesc(&techDesc);
-		for(UINT p = 0; p < techDesc.Passes; ++p)
-		{
-			m_currentEffect->CurrentTechnique->GetPassByIndex(p)->Apply(0);
-			device->Draw(numAliveParticles * 6, 0);
-		}
+		// Draw
 	}
-	else
+
+	if (numAliveParticles < 1)
 	{
 		// we have no more particles to show, delete this spray
 		GameObjectManager::Instance()->RemoveGameObject(this);
 	}
-	/*else if(m_vertexBuffer)
-	{
-		m_vertexBuffer->Release();
-	}*/
-}
-
-void ParticleSpray::Update(float delta)
-{
-	DrawableObject::Update(delta);
-
-	// See Draw() for update logic
 }
 
 void ParticleSpray::XmlRead(TiXmlElement * element)
@@ -416,10 +408,6 @@ void ParticleSpray::XmlWrite(TiXmlElement * element)
 
 void ParticleSpray::Initialise()
 {
-	// particles are never updaetable
-	// we do our updates in the draw function so we dont have to traverse a potentially huge amount of particles again
-	m_updateable = false;
-
 	DrawableObject::Initialise();
 
 	m_effectParticleSpray = static_cast<EffectParticleSpray*>(EffectManager::Instance()->GetEffect("effectparticlespray"));

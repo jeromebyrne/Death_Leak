@@ -248,7 +248,7 @@ void Graphics::SetSwapChainProperties(HWND hWnd, int bufferWidth, int bufferHeig
     m_swapChainDescription.BufferDesc.Width = bufferWidth;
     m_swapChainDescription.BufferDesc.Height = bufferHeight;
     m_swapChainDescription.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-    m_swapChainDescription.BufferDesc.RefreshRate.Numerator = 60;
+	m_swapChainDescription.BufferDesc.RefreshRate.Numerator = 0;//60;
     m_swapChainDescription.BufferDesc.RefreshRate.Denominator = 1;
     m_swapChainDescription.BufferUsage = D3D10_BIND_RENDER_TARGET | D3D10_BIND_SHADER_RESOURCE;
     m_swapChainDescription.OutputWindow = hWnd;

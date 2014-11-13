@@ -5,6 +5,7 @@
 #include "particle.h"
 #include "effectbloodparticlespray.h"
 
+static const unsigned int kMaxParticlesPerSpray = 500;
 
 class ParticleSpray : public DrawableObject
 {
@@ -87,7 +88,6 @@ protected:
 	EffectParticleSpray * m_currentEffect;
 
 	list<Particle> m_particleList; // a list of particle structures
-	int m_numAliveParticles; // the number of particles still alive
 
 	bool m_isLooping; // do we do a continous spray of particles?
 	float m_loopTime; // how long should we loop for? if 0 then we loop forever
@@ -118,6 +118,8 @@ protected:
 private:
 
 	void UpdateParticleToParent(Particle & particle);
+
+	VertexPositionTextureNormal mVertices[kMaxParticlesPerSpray * 6];
 };
 
 #endif
