@@ -1,6 +1,7 @@
 #include "precompiled.h"
 #include "AIStateButterflyWander.h"
 #include "NPC.h"
+#include "Game.h"
 
 static const float kYVelocityChangeDelay = 0.2f;
 
@@ -51,6 +52,12 @@ void AIStateButterflyWander::Update(float delta)
 
 void AIStateButterflyWander::DoWander(float delta)
 {
+	/*if (Game::GetInstance()->GetIsLevelEditMode())
+	{
+		// hack  for level editor
+		m_npc->m_velocity.Y = 0.0f;
+		m_npc->StopYAccelerating();
+	}*/
 	mCurrentYVelocityDelay -= delta;
 
 	if (mCurrentYVelocityDelay < 0.0f && m_npc->VelocityY() < -mLastYVelocityBurst)

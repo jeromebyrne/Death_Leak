@@ -72,6 +72,18 @@ void LevelEditor::Update()
 	{
 		CheckInput_Regular();
 	}
+
+	list<shared_ptr<GameObject> > & gameObjects = GameObjectManager::Instance()->GetGameObjectList();
+	for (auto & obj : gameObjects)
+	{
+		MovingSprite * mo = GetAsMovingSprite(obj.get());
+		if (mo)
+		{
+			mo->SetVelocityXYZ(0, 0, 0);
+			mo->StopYAccelerating();
+			mo->StopXAccelerating();
+		}
+	}
 }
 
 GameObject * LevelEditor::GetGameObjectClickedOn(list<shared_ptr<GameObject> > & gameObjects)

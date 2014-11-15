@@ -8,22 +8,23 @@ Graphics * Graphics::mInstance = nullptr;
 static const float clearColor[4] = { 0.3f, 0.3f, 0.3f, 1.0f };
 
 Graphics::Graphics(void):
-	mSimpleFontManager(0)
+	mSimpleFontManager(0),
+	mIsFullScreen(true),
+	mVSyncEnabled(true)
 {
-	m_pd3dDevice = NULL;
-	m_pBackBufferRenderTargetView = NULL;
-	m_pSwapChain = NULL;
+	// TODO: add these to member initialiser
+	m_pd3dDevice = nullptr;
+	m_pBackBufferRenderTargetView = nullptr;
+	m_pSwapChain = nullptr;
 	m_driverType= D3D10_DRIVER_TYPE_NULL;
-	m_pPreProcessRenderTargetView = NULL;
-	m_pPreProcessTexture = NULL;
-	m_preProcessSRV = NULL;
+	m_pPreProcessRenderTargetView = nullptr;
+	m_pPreProcessTexture = nullptr;
+	m_preProcessSRV = nullptr;
 	
-	m_pBackBuffer = NULL;
-	m_alphaDisabledBlendState = NULL;
-	m_alphaEnabledBlendState = NULL;
-	m_defaultRasterState = NULL;
-
-	InputDescriptions = InputLayoutDescriptions();
+	m_pBackBuffer = nullptr;
+	m_alphaDisabledBlendState = nullptr;
+	m_alphaEnabledBlendState = nullptr;
+	m_defaultRasterState = nullptr;
 	m_alphaToCoverageEnabled = false;
 
 	GAME_ASSERT(!mInstance);
@@ -163,9 +164,6 @@ HRESULT Graphics::SetupDevice(HWND hWnd, int bufferWidth, int bufferHeight)
     {
         D3D10_DRIVER_TYPE_HARDWARE,
 		D3D10_DRIVER_TYPE_REFERENCE,
-		// D3D10_DRIVER_TYPE_NULL,
-		// D3D10_DRIVER_TYPE_SOFTWARE,
-		// D3D10_DRIVER_TYPE_WARP
     };
 
     UINT numDriverTypes = sizeof( driverTypes ) / sizeof( driverTypes[0] );
@@ -175,8 +173,14 @@ HRESULT Graphics::SetupDevice(HWND hWnd, int bufferWidth, int bufferHeight)
     for( UINT driverTypeIndex = 0; driverTypeIndex < numDriverTypes; driverTypeIndex++ )
     {
         m_driverType = driverTypes[driverTypeIndex];
-        hr = D3D10CreateDeviceAndSwapChain( NULL, m_driverType, NULL, createDeviceFlags,
-			D3D10_SDK_VERSION, &m_swapChainDescription, &m_pSwapChain, &m_pd3dDevice );
+        hr = D3D10CreateDeviceAndSwapChain( nullptr, 
+											m_driverType,
+											nullptr, 
+											createDeviceFlags,
+											D3D10_SDK_VERSION,
+											&m_swapChainDescription,
+											&m_pSwapChain, 
+											&m_pd3dDevice );
         if( SUCCEEDED( hr ) )
             break;
     }
@@ -202,13 +206,16 @@ HRESULT Graphics::SetupDevice(HWND hWnd, int bufferWidth, int bufferHeight)
 }
 void Graphics::CleanupDevice()
 {
-	if( m_pd3dDevice ) m_pd3dDevice->ClearState();
-
     if( m_pBackBufferRenderTargetView ) m_pBackBufferRenderTargetView->Release();
 	if( m_pPreProcessRenderTargetView ) m_pPreProcessRenderTargetView->Release();
 	if ( m_preProcessSRV ) m_preProcessSRV->Release();
 
-    if( m_pSwapChain ) m_pSwapChain->Release();
+	if (m_pSwapChain)
+	{
+		m_pSwapChain->SetFullscreenState(false, nullptr);
+		m_pSwapChain->Release();
+	}
+	if (m_pd3dDevice) m_pd3dDevice->ClearState();
     if( m_pd3dDevice ) m_pd3dDevice->Release();
 }
 
@@ -237,25 +244,27 @@ void Graphics::Clear()
 }
 void Graphics::SwapBuffers()
 {
-	m_pSwapChain->Present(0,0);
+	m_pSwapChain->Present(mVSyncEnabled ? 1 : 0, 0);
 }
 
 void Graphics::SetSwapChainProperties(HWND hWnd, int bufferWidth, int bufferHeight)
 {
 	// set back buffer properties
     ZeroMemory( &m_swapChainDescription, sizeof(m_swapChainDescription) );
-    m_swapChainDescription.BufferCount = 1;
+
+    m_swapChainDescription.BufferCount = 2;
     m_swapChainDescription.BufferDesc.Width = bufferWidth;
     m_swapChainDescription.BufferDesc.Height = bufferHeight;
     m_swapChainDescription.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	m_swapChainDescription.BufferDesc.RefreshRate.Numerator = 0;//60;
+	m_swapChainDescription.BufferDesc.RefreshRate.Numerator = 0;
     m_swapChainDescription.BufferDesc.RefreshRate.Denominator = 1;
     m_swapChainDescription.BufferUsage = D3D10_BIND_RENDER_TARGET | D3D10_BIND_SHADER_RESOURCE;
     m_swapChainDescription.OutputWindow = hWnd;
     m_swapChainDescription.SampleDesc.Count = 1;
     m_swapChainDescription.SampleDesc.Quality = 0;
-    m_swapChainDescription.Windowed = true;
-	m_swapChainDescription.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+	m_swapChainDescription.Windowed = !mIsFullScreen;
+	m_swapChainDescription.SwapEffect = DXGI_SWAP_EFFECT_SEQUENTIAL;
+	m_swapChainDescription.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 }
 
 HRESULT Graphics::CreateRenderTargetViews(int bufferWidth, int bufferHeight)

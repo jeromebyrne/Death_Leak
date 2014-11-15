@@ -23,8 +23,6 @@ private:
 
 	static DXWindow * mInstance;
 
-	bool m_isFullscreen;
-
 public:
 	DXWindow(char * winClassName, char * windowTitle, int windowWidth = 640, int windowHeight = 480);
 	~DXWindow(void);
@@ -52,8 +50,6 @@ public:
 	static DXWindow * GetInstance() { return mInstance; }
 	
 	Vector2 GetWindowDimensions();
-
-	bool GetIsFullScreen() { return m_isFullscreen; }
 };
 
 #endif

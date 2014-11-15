@@ -9,11 +9,10 @@ DXWindow::DXWindow(char * winClassName, char * windowTitle, int width, int heigh
 	m_width(width),
 	m_height(height),
 	m_topLeftX(0),
-	m_topLeftY(0),
-	m_isFullscreen(true)
+	m_topLeftY(0)
 {
-	m_pGraphicsDevice = NULL;
-	m_pGraphicsSwapChain = NULL;
+	m_pGraphicsDevice = nullptr;
+	m_pGraphicsSwapChain = nullptr;
 
 	mInstance = this;
 }
@@ -42,30 +41,15 @@ HRESULT DXWindow::Initialise(HINSTANCE hInstance, int nCmdShow, WNDPROC wndproc)
     if( !RegisterClassEx( &wcex ) )
         return E_FAIL;
 
-	if (m_isFullscreen)
-	{
-		// we run full resolution when full screen
-		RECT rc;
-		GetWindowRect(GetDesktopWindow(), &rc);
-
-		m_width = rc.right; 
-		m_height = rc.bottom;
-	}
-
     // Create window
     m_hInstance = hInstance;
     RECT rc = { 0, 0, m_width, m_height };
     AdjustWindowRect( &rc, WS_OVERLAPPEDWINDOW, FALSE );
 	
 	DWORD dwStyle;
-	if (m_isFullscreen)
-	{
-		dwStyle = WS_POPUP;
-	}
-	else
-	{
-		dwStyle = WS_OVERLAPPED | WS_MINIMIZEBOX | WS_SYSMENU | WS_MAXIMIZE;
-	}
+
+	dwStyle = WS_OVERLAPPED | WS_MINIMIZEBOX | WS_SYSMENU | WS_MAXIMIZE;
+
 
 	m_hWnd = CreateWindow(
 							(LPCWSTR)m_winClassName, 
