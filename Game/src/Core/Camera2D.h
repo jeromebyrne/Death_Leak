@@ -46,11 +46,13 @@ public:
 		m_position.Y = object->Y();
 	}
 
+	void SetTargetObject(MovingSprite * target) { mTargetObject = target; }
+
 	void FollowObjectWithOffset(GameObject * object);
 
 	Vector3 Position() const { return m_position; }
 
-	void FollowMovingObjectWithLag(MovingSprite * object);
+	void FollowTargetObjectWithLag();
 
 	inline float ViewWidth()
 	{
@@ -81,9 +83,9 @@ public:
 
 private:
 
-	bool UpdateBoundsX(float newPositionX);
+	bool UpdateBoundsX(GameObject * target);
 
-	bool UpdateBoundsY(float newPositionY);
+	bool UpdateBoundsY(GameObject * target);
 
 	void Camera2D::DoShake(float intensity, float shakeDuration);
 
@@ -110,6 +112,8 @@ private:
 	float mCurrentShakeIntensity;
 	float mShakeStartTime;
 	float mCurrentShakeDuration;
+
+	MovingSprite * mTargetObject;
 };
 
 #endif

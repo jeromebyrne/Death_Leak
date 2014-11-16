@@ -175,10 +175,14 @@ void GameObjectManager::Initialise()
 		}
 	}
 
+	GAME_ASSERT(m_player);
 	if (m_player)
 	{
-		// sync with the players position
+		// set the camera to the players position initially
 		m_camera->FollowObjectsOrigin(m_player);
+
+		// now tell teh camera that the player is the object we should follow
+		m_camera->SetTargetObject(m_player);
 	}
 }
 
@@ -191,7 +195,7 @@ void GameObjectManager::Update(bool paused, float delta)
 
 		NPCManager::Instance()->Update();
 
-		m_camera->FollowMovingObjectWithLag(m_player);
+		m_camera->FollowTargetObjectWithLag();
 
 		// update the weather
 		WeatherManager::GetInstance()->Update(delta);

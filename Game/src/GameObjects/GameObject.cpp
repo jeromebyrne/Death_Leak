@@ -83,11 +83,24 @@ void GameObject::Initialise()
 	if (m_dimensions.X < mLevelEditSelectionDimensions.X)
 	{
 		mLevelEditSelectionDimensions.X = m_dimensions.X;
+
+		if (mLevelEditSelectionDimensions.X < 10)
+		{
+			mLevelEditSelectionDimensions.X = 10;
+		}
 	}
 	if (m_dimensions.Y < mLevelEditSelectionDimensions.Y)
 	{
 		mLevelEditSelectionDimensions.Y = m_dimensions.Y;
+
+		if (mLevelEditSelectionDimensions.Y < 10)
+		{
+			mLevelEditSelectionDimensions.Y = 10;
+		}
 	}
+
+	float maxWidth = (std::max)(m_dimensions.X, m_dimensions.Y);
+	mLargestPossibleDimensions = Vector2(maxWidth, maxWidth);
 }
 
 void GameObject::SetupDebugDraw()

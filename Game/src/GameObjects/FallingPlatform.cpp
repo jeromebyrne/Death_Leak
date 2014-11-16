@@ -21,6 +21,13 @@ FallingPlatform::~FallingPlatform(void)
 {
 }
 
+void FallingPlatform::Initialise()
+{
+	Platform::Initialise();
+
+	m_applyGravity = false;
+}
+
 void FallingPlatform::OnCollision(SolidMovingSprite * object)
 {
 	Platform::OnCollision(object);
@@ -78,6 +85,7 @@ void FallingPlatform::Update(float delta)
 	{
 		case kStatic:
 			{
+				m_applyGravity = false;
 				break;
 			}
 		case kTriggered:

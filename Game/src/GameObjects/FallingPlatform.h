@@ -31,6 +31,8 @@ public:
 
 private:
 
+	virtual void Initialise() override;
+
 	void DoTriggerLogic();
 
 	void DoReturnLogic();

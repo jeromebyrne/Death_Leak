@@ -86,6 +86,24 @@ public:
 	{
 		return m_position.Y - (m_dimensions.Y * 0.5f);
 	}
+
+	float GetRightRotated() const
+	{
+		return m_position.X + (mLargestPossibleDimensions.X * 0.5f);
+	}
+	float GetLeftRotated() const
+	{
+		return m_position.X - (mLargestPossibleDimensions.X * 0.5f);
+	}
+	float GetTopRotated() const
+	{
+		return m_position.Y + (mLargestPossibleDimensions.Y * 0.5f);
+	}
+	float GetBottomRotated() const
+	{
+		return m_position.Y - (mLargestPossibleDimensions.Y * 0.5f);
+	}
+
 	virtual void Initialise();
 	virtual void Update(float delta);
 	virtual void XmlRead(TiXmlElement * element);
@@ -156,6 +174,9 @@ public:
 
 	void SetXmlForCloning(TiXmlElement * element);
 
+	// used for occlusion checks
+	Vector2 GetLargestPossibleDimensions() const { return mLargestPossibleDimensions; }
+
 protected:
 
 	virtual void DrawDebugText();
@@ -213,6 +234,9 @@ private:
 	Vector2 mLevelEditSelectionDimensions;
 
 	bool mLevelEditShowSelected;
+
+	// when objects are rotated their bounding boxes will be larger
+	Vector2 mLargestPossibleDimensions; 
 };
 
 #endif

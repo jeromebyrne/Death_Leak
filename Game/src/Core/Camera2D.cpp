@@ -13,7 +13,8 @@ Camera2D::Camera2D(int screenWidth, int screenHeight, float x, float y, float z)
 	mCurrentlyShaking(false),
 	mCurrentShakeIntensity(1.0f),
 	mShakeStartTime(0.0f),
-	mCurrentShakeDuration(0.0f)
+	mCurrentShakeDuration(0.0f),
+	mTargetObject(nullptr)
 {
 	// Initialize the world matrix
     D3DXMatrixIdentity( &m_world );
@@ -51,10 +52,10 @@ bool Camera2D::IsObjectInView(GameObject * object)
 	// ok so the origin might not be in view but part of the object may be in view
 	if(!inView)
 	{
-		float objectRight = object->Right() - object->GetCurrentParallaxOffsetX();
-		float objectLeft = object->Left() - object->GetCurrentParallaxOffsetX();
-		float objectTop = object->Top() - object->GetCurrentParallaxOffsetY();
-		float objectBottom = object->Bottom() - object->GetCurrentParallaxOffsetY();
+		float objectRight = (object->GetRotationAngle() == 0.0f  ? object->Right() : object->GetRightRotated()) - object->GetCurrentParallaxOffsetX();
+		float objectLeft = (object->GetRotationAngle() == 0.0f ? object->Left() : object->GetLeftRotated()) - object->GetCurrentParallaxOffsetX();
+		float objectTop = (object->GetRotationAngle() == 0.0f ? object->Top() : object->GetTopRotated()) - object->GetCurrentParallaxOffsetY();
+		float objectBottom = (object->GetRotationAngle() == 0.0f ? object->Bottom() : object->GetBottomRotated()) - object->GetCurrentParallaxOffsetY();
 
 		// check if we are partially in view on the x plane
 		if(objectRight > screenLeft && objectLeft < screenRight)
@@ -80,37 +81,49 @@ void Camera2D::SetBounds(float left, float right, float top, float bottom)
 
 void Camera2D::FollowObjectWithOffset(GameObject * object)
 {
-	if (UpdateBoundsX(object->X() + mTargetOffset.X))
+	if (UpdateBoundsX(object))
 	{
 		m_position.X = object->X() + mTargetOffset.X;
 	}
 
-	if (UpdateBoundsY(object->Y() + mTargetOffset.Y))
+	if (UpdateBoundsY(object))
 	{
 		m_position.Y = object->Y() + mTargetOffset.Y;
 	}
 }
 
-bool Camera2D::UpdateBoundsX(float newPositionX)
+bool Camera2D::UpdateBoundsX(GameObject * object)
 {
-	if (newPositionX < mBoundsBottomRight.X &&
-		newPositionX > mBoundsTopLeft.X)
+	float targetXLeft = (object->X() - mTargetOffset.X * mZoomInPercent);
+	float targetXRight = (object->X() + mTargetOffset.X * mZoomInPercent);
+
+	if (targetXLeft < mBoundsTopLeft.X)
 	{
-		return true;
+		return false;
+	}
+	else if (targetXRight > mBoundsBottomRight.X)
+	{
+		return false;
 	}
 
-	return false;
+	return true;
 }
 
-bool Camera2D::UpdateBoundsY(float newPositionY)
+bool Camera2D::UpdateBoundsY(GameObject * target)
 {	
-	if (newPositionY > mBoundsBottomRight.Y &&
-		newPositionY < mBoundsTopLeft.Y)
+	float targetYTop = (target->Y() + mTargetOffset.Y * mZoomInPercent);
+	float targetYBottom = (target->Y() - mTargetOffset.Y * mZoomInPercent);
+
+	if (targetYTop > mBoundsTopLeft.Y)
 	{
-		return true;
+		return false;
+	}
+	else if (targetYBottom < mBoundsBottomRight.Y)
+	{
+		return false;
 	}
 
-	return false;
+	return true;
 }
 
 void Camera2D::Update()
@@ -134,22 +147,29 @@ void Camera2D::Update()
 			bool minusX = (rand() % 2) == 1;
 			bool minusY = (rand() % 2) == 1;
 
-			if (minusX)
+			GAME_ASSERT(mTargetObject);
+			if (UpdateBoundsX(mTargetObject))
 			{
-				m_position.X += mCurrentShakeIntensity * shakePercentTime * Timing::Instance()->GetTimeModifier();
-			}
-			else
-			{
-				m_position.X -= mCurrentShakeIntensity * shakePercentTime * Timing::Instance()->GetTimeModifier();
+				if (minusX)
+				{
+					m_position.X += mCurrentShakeIntensity * shakePercentTime * Timing::Instance()->GetTimeModifier();
+				}
+				else
+				{
+					m_position.X -= mCurrentShakeIntensity * shakePercentTime * Timing::Instance()->GetTimeModifier();
+				}
 			}
 			
-			if (minusY)
+			if (UpdateBoundsY(mTargetObject))
 			{
-				m_position.Y += mCurrentShakeIntensity * shakePercentTime * Timing::Instance()->GetTimeModifier();
-			}
-			else
-			{
-				m_position.Y -= mCurrentShakeIntensity * shakePercentTime  * Timing::Instance()->GetTimeModifier();
+				if (minusY)
+				{
+					m_position.Y += mCurrentShakeIntensity * shakePercentTime * Timing::Instance()->GetTimeModifier();
+				}
+				else
+				{
+					m_position.Y -= mCurrentShakeIntensity * shakePercentTime  * Timing::Instance()->GetTimeModifier();
+				}
 			}
 		}
 	}
@@ -226,42 +246,47 @@ void Camera2D::Update()
 #endif
 }
 
-void Camera2D::FollowMovingObjectWithLag(MovingSprite * object)
+void Camera2D::FollowTargetObjectWithLag()
 {
-	// get the x and y distance between the camera and the object
-	float distanceX = 0.0f;
-	float distanceY = 0.0f;
+	GAME_ASSERT(mTargetObject);
 
-	float xLag = mTargetLag.X * mZoomInPercent;
-
-	if (xLag < 1.0f)
+	if (!mTargetObject)
 	{
-		xLag = 1.0f;
+		return;
 	}
 
-	if (mTargetLag.Y < 1.0f)
+	if (UpdateBoundsX(mTargetObject))
 	{
-		mTargetLag.Y = 1.0f;
-	}
+		// get the x and y distance between the camera and the object
+		float distanceX = 0.0f;
 
-	if(object->DirectionX() > 0)
-	{
-		distanceX = m_position.X - (object->X() + mTargetOffset.X * mZoomInPercent);
-	}
-	else
-	{
-		distanceX = m_position.X - (object->X() - mTargetOffset.X * mZoomInPercent);
-	}
+		if (mTargetObject->DirectionX() > 0)
+		{
+			distanceX = m_position.X - (mTargetObject->X() + mTargetOffset.X * mZoomInPercent);
+		}
+		else
+		{
+			distanceX = m_position.X - (mTargetObject->X() - mTargetOffset.X * mZoomInPercent);
+		}
 
-	distanceY = m_position.Y - (object->Y() + mTargetOffset.Y * mZoomInPercent);
+		float xLag = mTargetLag.X * mZoomInPercent;
 
-	if (UpdateBoundsX(m_position.X - distanceX / xLag))
-	{
+		if (xLag < 1.0f)
+		{
+			xLag = 1.0f;
+		}
 		m_position.X -= distanceX / xLag;
 	}
 
-	if (UpdateBoundsY(m_position.Y - distanceY / mTargetLag.Y))
+	if (UpdateBoundsY(mTargetObject))
 	{
+		if (mTargetLag.Y < 1.0f)
+		{
+			mTargetLag.Y = 1.0f;
+		}
+
+		float distanceY = m_position.Y - (mTargetObject->Y() + mTargetOffset.Y * mZoomInPercent);
+
 		m_position.Y -= distanceY / mTargetLag.Y;
 	}
 }

@@ -5,6 +5,7 @@
 #include "orb.h"
 #include "particleemittermanager.h"
 #include "BombProjectile.h"
+#include "Game.h"
 
 static const char * kBombTextureFile = "Media/bomb.png";
 
@@ -154,4 +155,14 @@ Projectile * Player::FireWeapon(Vector2 direction)
 	PlayRandomWeaponFireSound();
 
 	return p;
+}
+
+void Player::DebugDraw(ID3D10Device *  device)
+{
+	if (!Game::GetInstance()->GetIsLevelEditMode())
+	{
+		mShowDebugText = true;
+	}
+
+	Character::DebugDraw(device);
 }

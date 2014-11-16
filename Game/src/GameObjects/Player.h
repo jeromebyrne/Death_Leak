@@ -4,7 +4,6 @@
 
 class Player : public Character
 {
-private:
 
 public:
 	Player(float x = 0, float y = 0, float z = 0, float width = 10, float height = 10, float breadth = 0);
@@ -17,6 +16,10 @@ public:
 	virtual void OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) override;
 	virtual Projectile * FireWeapon(Vector2 direction) override;
 	virtual Projectile * FireBomb(Vector2 direction) override;
+
+private:
+
+	virtual void DebugDraw(ID3D10Device *  device) override;
 };
 
 #endif
