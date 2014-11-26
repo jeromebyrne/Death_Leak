@@ -228,3 +228,11 @@ void ParallaxLayer::Scale(float x, float y, bool scalePosition)
 	if (m_autoScrollXSpeed > 0)				m_autoScrollXSpeed = m_autoScrollXSpeed * x;
 	if (m_autoScrollYSpeed > 0)				m_autoScrollYSpeed = m_autoScrollYSpeed * y;
 }
+
+void ParallaxLayer::DebugDraw(ID3D10Device *  device)
+{
+	if (!FollowCamX())
+	{
+		Sprite::DebugDraw(device);
+	}
+}
