@@ -16,7 +16,7 @@ int iSeed;
 Texture2D txDiffuse;
 SamplerState samLinear
 {
-    Filter = MIN_MAG_MIP_LINEAR;
+	Filter = MIN_MAG_MIP_POINT;
     AddressU = Wrap;
     AddressV = Wrap;
 };

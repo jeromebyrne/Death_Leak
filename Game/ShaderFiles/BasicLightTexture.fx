@@ -11,9 +11,9 @@ float4 lightColor;
 Texture2D txDiffuse;
 SamplerState samLinear
 {
-    Filter = MIN_MAG_MIP_LINEAR;
-    AddressU = Wrap;
-    AddressV = Wrap;
+	Filter = MIN_LINEAR_MAG_POINT_MIP_LINEAR;
+    AddressU = WRAP;
+	AddressV = WRAP;
 };
 
 //--------------------------------------------------------------------------------------
