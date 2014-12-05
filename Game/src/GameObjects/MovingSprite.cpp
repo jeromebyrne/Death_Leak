@@ -63,7 +63,7 @@ void MovingSprite::Update(float delta)
 	{
 		m_velocity.Y = m_maxVelocity.Y;
 	}
-	else if(m_velocity.Y < -m_maxVelocity.Y)
+	else if (m_velocity.Y < -m_maxVelocity.Y)
 	{
 		m_velocity.Y = -m_maxVelocity.Y;
 	}
@@ -175,6 +175,7 @@ void MovingSprite::XmlRead(TiXmlElement * element)
 
 	if (m_maxVelocity.Y < 0) // less than 0 actually signifies no maximum
 	{
+		// TODO: This is a very bad idea, no idea why I originally wanted this
 		m_maxVelocity.Y = 99999.f;
 	}
 

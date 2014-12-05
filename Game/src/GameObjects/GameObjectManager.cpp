@@ -219,15 +219,14 @@ void GameObjectManager::Update(bool paused, float delta)
 				obj->Update(delta);
 			}
 			else if(obj->IsParallaxLayer() || 
-					obj->IsAudioObject() || 
-					obj->IsOrb())
+					obj->IsAudioObject())
 			{
 				obj->Update(delta); // always update parralax layers
 			}
 			else // objects outside the update area
 			{
 				// if a projectile has gone outsid ethe bounds then just remove it
-				if(obj->IsProjectile()) // add checks for other projectile class names as needed
+				if (obj->IsProjectile() || obj->IsOrb()) // add checks for other projectile class names as needed
 				{
 					RemoveGameObject(obj.get());
 				}
@@ -945,36 +944,31 @@ void GameObjectManager::ProcessGamePad()
 
 	// weapon ============================
 
-	static bool pressing_weapon = false;
 	if (pad_state.Gamepad.wButtons & XINPUT_GAMEPAD_B)
 	{
-		pressing_weapon = true;
+		// get aim direction 
+		Vector2 dir = Vector2(m_player->DirectionX(), 0.1f);
+
+		if (pad_state.Gamepad.sThumbLX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
+			pad_state.Gamepad.sThumbLX > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
+			pad_state.Gamepad.sThumbLY < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
+			pad_state.Gamepad.sThumbLY > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+		{
+			dir = Vector2(pad_state.Gamepad.sThumbLX, pad_state.Gamepad.sThumbLY);
+			dir.Normalise();
+		}
+
+		// let the player fire and return a projectile object which is added to the world
+		Projectile * p = m_player->FireWeapon(dir);
+
+		if (p)
+		{
+			GameObjectManager::Instance()->AddGameObject(p);
+		}
 	}
 	else
 	{
-		if(pressing_weapon)
-		{
-			// get aim direction 
-			Vector2 dir = Vector2(m_player->DirectionX(), 0.1f);
-
-			if (pad_state.Gamepad.sThumbLX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
-				pad_state.Gamepad.sThumbLX > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
-				pad_state.Gamepad.sThumbLY < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
-				pad_state.Gamepad.sThumbLY > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
-			{
-				dir = Vector2(pad_state.Gamepad.sThumbLX, pad_state.Gamepad.sThumbLY);
-				dir.Normalise();
-			}
-			
-			// let the player fire and return a projectile object which is added to the world
-			Projectile * p = m_player->FireWeapon(dir);
-			
-			if (p)
-			{
-				GameObjectManager::Instance()->AddGameObject(p);
-			}
-		}
-		pressing_weapon = false;
+		m_player->ResetProjectileFireDelay();
 	}
 	// ==========================
 

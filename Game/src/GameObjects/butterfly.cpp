@@ -21,7 +21,7 @@ Butterfly::~Butterfly(void)
 {
 }
 
-void Butterfly::OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode)
+void Butterfly::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode)
 {
 	if (m_position.Z > 99)
 	{

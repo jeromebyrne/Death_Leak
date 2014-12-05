@@ -191,9 +191,9 @@ void FallingPlatform::DoFallingLogic()
 	}
 }
 
-void FallingPlatform::OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode)
+void FallingPlatform::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode)
 {
-	Platform::OnDamage(damageAmount, pointOfContact, shouldExplode);
+	Platform::OnDamage(damageDealer, damageAmount, pointOfContact, shouldExplode);
 
 	if (shouldExplode)
 	{

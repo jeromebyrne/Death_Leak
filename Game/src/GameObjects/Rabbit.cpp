@@ -19,9 +19,9 @@ Rabbit::~Rabbit(void)
 {
 }
 
-void Rabbit::OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode)
+void Rabbit::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode)
 {
-	Character::OnDamage(damageAmount, pointOfContact, false);
+	Character::OnDamage(damageDealer, damageAmount, pointOfContact, false);
 
 	int particleNUmPerOrb = 25;
 	if (mHasExploded)

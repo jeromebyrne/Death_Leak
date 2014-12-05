@@ -64,7 +64,7 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 	{
 		if (!mIsInWater)
 		{
-			object->OnDamage(m_damage, Vector3(0,0,0));
+			object->OnDamage(this, m_damage, Vector3(0,0,0));
 		}
 		return;
 	}
@@ -277,7 +277,7 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 		// damage the other object
 		if (!WasInWaterLastFrame())
 		{
-			object->OnDamage(m_damage, offset);
+			object->OnDamage(this, m_damage, offset);
 		}
 		
 		// attach the projectile to the hit object

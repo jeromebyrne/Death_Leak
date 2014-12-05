@@ -18,16 +18,16 @@ public:
 	FallingPlatform(float x = 0, float y = 0, float z = 0, float width = 10, float height = 10, float breadth = 0,float groundFriction = 1, float airResistance = 1);
 	virtual ~FallingPlatform(void);
 
-	virtual void OnCollision(SolidMovingSprite * object);
+	virtual void OnCollision(SolidMovingSprite * object) override;
 
-	virtual void XmlRead(TiXmlElement * element);
-	virtual void XmlWrite(TiXmlElement * element);
+	virtual void XmlRead(TiXmlElement * element) override;
+	virtual void XmlWrite(TiXmlElement * element) override;
 
 	virtual void Update(float delta) override;
 
-	virtual void Scale(float x, float y, bool ScalePosition = true);
+	virtual void Scale(float x, float y, bool ScalePosition = true) override;
 
-	virtual void OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode = true);
+	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) override;
 
 private:
 

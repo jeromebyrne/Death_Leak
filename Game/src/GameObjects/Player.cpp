@@ -9,10 +9,15 @@
 
 static const char * kBombTextureFile = "Media/bomb.png";
 
-Player::Player(float x, float y, float z, float width, float height, float breadth):
-Character(x,y,z,width,height,breadth)
+float mProjectileFireDelay;
+float mLastTimeProjectileFired;
+
+Player::Player(float x, float y, float z, float width, float height, float breadth) :
+Character(x, y, z, width, height, breadth),
+	mProjectileFireDelay(0.1f),
+	mTimeUntilProjectileReady(0.0f)
 {
-	mHealth = 100;
+	mHealth = 100.0f;
 }
 
 Player::~Player(void)
@@ -23,6 +28,18 @@ void Player::Update(float delta)
 {
 	// update base classes
 	Character::Update(delta);
+
+	float projectileReloadDelta = delta;
+	if (Timing::Instance()->GetTimeModifier() < 1.0f)
+	{
+		projectileReloadDelta *= 5.0f;
+	}
+	mTimeUntilProjectileReady -= projectileReloadDelta;
+
+	if (mTimeUntilProjectileReady < 0.0f)
+	{
+		mTimeUntilProjectileReady = 0.0f;
+	}
 }
 void Player::Initialise()
 {
@@ -46,13 +63,13 @@ void Player::OnCollision(SolidMovingSprite * object)
 	Character::OnCollision(object);
 }
 
-void Player::OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode)
+void Player::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode)
 {
-	Character::OnDamage(damageAmount, pointOfContact, shouldExplode);
+	Character::OnDamage(damageDealer, damageAmount, pointOfContact, shouldExplode);
 
-	if (mHealth <= 0)
+	if (mHealth <= 0.0f)
 	{
-		m_alpha = 0.2; 
+		m_alpha = 0.2f; 
 	}
 }
 
@@ -104,6 +121,13 @@ Projectile * Player::FireBomb(Vector2 direction)
 
 Projectile * Player::FireWeapon(Vector2 direction)
 {
+	if (mTimeUntilProjectileReady > 0.0f)
+	{
+		return nullptr;
+	}
+
+	mTimeUntilProjectileReady = mProjectileFireDelay;
+
 	Vector3 pos = m_position;
 	pos.X = (direction.X > 0) ? pos.X + m_projectileOffset.X : pos.X -= m_projectileOffset.X;
 	pos.Y += m_projectileOffset.Y;

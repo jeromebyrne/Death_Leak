@@ -28,7 +28,7 @@ public:
 	virtual void Jump(float percent);
 	virtual void WallJump(float percent);
 	virtual void AccelerateX(float directionX);
-	virtual void OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) override;
+	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) override;
 
 	void setAccelXRate(const float accelRate) { mAccelXRate = accelRate; }
 

@@ -109,7 +109,7 @@ public:
 	virtual void XmlRead(TiXmlElement * element);
 	virtual void XmlWrite(TiXmlElement * element);
 	virtual void DebugDraw(ID3D10Device *  device);
-	virtual void OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) {}
+	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) {}
 	inline Material* GetMaterial()
 	{
 		return m_material;

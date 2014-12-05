@@ -71,7 +71,7 @@ public:
 
 	virtual void Draw(ID3D10Device * device, Camera2D * camera) override;
 
-	virtual void OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) override;
+	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) override;
 
 	virtual void SetupDebugDraw() override;
 

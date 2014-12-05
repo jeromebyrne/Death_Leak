@@ -40,7 +40,7 @@ void Explosion::ApplyDamage()
 
 		if (distSquared < (mRadius * mRadius))
 		{
-			obj->OnDamage(mDamage, Vector3());
+			obj->OnDamage(this, mDamage, Vector3());
 		}
 	}
 }

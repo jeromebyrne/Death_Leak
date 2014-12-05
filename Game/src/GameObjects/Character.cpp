@@ -13,6 +13,7 @@
 float Character::mLastTimePlayedDeathSFX = 0;
 static const float kMinTimeBetweenDeathSFX = 0.1f;
 static const float kJumpDelay = 0.2f;
+static const int kDamageKickback = 20;
 
 Character::Character(float x, float y, float z, float width, float height, float breadth): 
 	SolidMovingSprite(x,y,z,width, height, breadth),
@@ -531,11 +532,21 @@ void Character::AccelerateX(float directionX)
 	}
 }
 
-void Character::OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode)
+void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode)
 {
 	if (mCanBeDamaged)
 	{
 		mHealth -= damageAmount;
+
+		if (damageDealer && damageDealer->IsProjectile() && GameObjectManager::Instance()->GetPlayer() != this)
+		{
+			Projectile * asProjectile = static_cast<Projectile *>(damageDealer);
+
+			// do a kickback in the x direction
+			int dir = (asProjectile->DirectionX() < 0.0f) ? -1 : 1;
+
+			m_position.X += dir * kDamageKickback;
+		}
 
 		// play sound effect
 		float current_time = Timing::Instance()->GetTotalTimeSeconds();
@@ -631,9 +642,6 @@ void Character::OnDamage(float damageAmount, Vector3 pointOfContact, bool should
 				m_alpha = 0.0f;
 				mHasExploded = true;
 
-				// remove any objects we are attached to
-				// TODO:
-
 				// mark ourselves for deletion (only if we are not a player)
 				if (GameObjectManager::Instance()->GetPlayer() != this)
 				{
@@ -642,7 +650,7 @@ void Character::OnDamage(float damageAmount, Vector3 pointOfContact, bool should
 			}
 		}
 
-		SolidMovingSprite::OnDamage(damageAmount, pointOfContact);
+		SolidMovingSprite::OnDamage(damageDealer, damageAmount, pointOfContact);
 
 		// blood explosion by default
 		Vector3 point = m_position + pointOfContact;

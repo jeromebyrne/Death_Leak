@@ -357,7 +357,7 @@ void SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 		{
 			GAME_ASSERT(dynamic_cast<Character*>(object));
 			Character * character = static_cast<Character*>(object);
-			character->OnDamage(m_applyDamageAmount, Vector3(0,0,0));
+			character->OnDamage(this, m_applyDamageAmount, Vector3(0,0,0));
 		}
 	}
 }
@@ -386,11 +386,11 @@ void SolidMovingSprite::Draw(ID3D10Device * device, Camera2D * camera)
 	}
 }
 
-void SolidMovingSprite::OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode)
+void SolidMovingSprite::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode)
 {
 	if (mCanBeDamaged)
 	{
-		MovingSprite::OnDamage(damageAmount, pointOfContact);
+		MovingSprite::OnDamage(damageDealer, damageAmount, pointOfContact);
 
 		m_isBeingDamaged = true;
 		m_beingDamagedStartTime = Timing::Instance()->GetTotalTimeSeconds();

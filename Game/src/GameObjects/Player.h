@@ -13,13 +13,18 @@ public:
 	void XmlRead(TiXmlElement * element) override;
 	virtual void XmlWrite(TiXmlElement * element) override;
 	void OnCollision(SolidMovingSprite * object) override;
-	virtual void OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) override;
+	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) override;
 	virtual Projectile * FireWeapon(Vector2 direction) override;
 	virtual Projectile * FireBomb(Vector2 direction) override;
+
+	void ResetProjectileFireDelay() { mTimeUntilProjectileReady = 0.0f; }
 
 private:
 
 	virtual void DebugDraw(ID3D10Device *  device) override;
+
+	float mProjectileFireDelay;
+	float mTimeUntilProjectileReady;
 };
 
 #endif

@@ -194,9 +194,9 @@ void NPC::FireProjectileAtObject(GameObject * target)
 	}
 }
 
-void NPC::OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode)
+void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode)
 {
-	Character::OnDamage(damageAmount, pointOfContact, shouldExplode);
+	Character::OnDamage(damageDealer, damageAmount, pointOfContact, shouldExplode);
 
 	mCurrentHealthMeterScale = 2.0f;
 

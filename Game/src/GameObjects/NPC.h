@@ -33,7 +33,7 @@ public:
 
 	void FireProjectileAtObject(GameObject * target);
 
-	virtual void OnDamage(float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) override;
+	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) override;
 
 	virtual Projectile * FireWeapon(Vector2 direction) override;
 
