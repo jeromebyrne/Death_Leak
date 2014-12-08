@@ -2,6 +2,7 @@
 #define ANIMATION_H
 
 #include "AnimationPart.h"
+#include "AnimationSkeleton.h"
 
 class Animation
 {
@@ -19,7 +20,7 @@ public:
 	AnimationPart* GetPart(string partName);
 	void SetPartSequence(string partName, string sequenceName);
 
-	vector<AnimationSequence::SkeletonPart> & GetSkeletonPartsCurrentFrame(string bodyPart);
+	AnimationSkeleton * GetSkeletonForCurrentSequence(const char * bodyPart);
 };
 
 #endif

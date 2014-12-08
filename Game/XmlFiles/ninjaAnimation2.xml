@@ -3,85 +3,33 @@
 
 		<Still FrameRate="0" MaxFrameRate="0" MinFrameRate="0">
       <frame filename="Media\\characters\\ninja_enemy_1\\still_1.png">
-        <skeletonparts>
-          <part xoffset="0" yoffset="75" radius="25"/>
-          <part xoffset="0" yoffset="50" radius="25"/>
-          <part xoffset="-3" yoffset="25" radius="30"/>
-          <part xoffset="-7" yoffset="0" radius="30"/>
-          <part xoffset="-5" yoffset="-25" radius="28"/>
-          <part xoffset="-8" yoffset="-50" radius="24"/>
-          <part xoffset="-9" yoffset="-75" radius="22"/>
-          <part xoffset="-9" yoffset="-90" radius="15"/>
-        </skeletonparts>
       </frame>
     </Still>
 
 		<Running FrameRate="10" MaxFrameRate="15" MinFrameRate="0">
       <frame filename="Media\\characters\\ninja_enemy_1\\run_1.png">
-        <skeletonparts>
-          <part xoffset="20" yoffset="55" radius="25"/>
-          <part xoffset="0" yoffset="30" radius="35"/>
-          <part xoffset="-13" yoffset="5" radius="25"/>
-          <part xoffset="-13" yoffset="-20" radius="25"/>
-        </skeletonparts>
        </frame>
       <frame filename="Media\\characters\\ninja_enemy_1\\run_2.png">
-        <skeletonparts>
-          <part xoffset="20" yoffset="55" radius="25"/>
-          <part xoffset="0" yoffset="30" radius="35"/>
-          <part xoffset="-13" yoffset="5" radius="25"/>
-          <part xoffset="-13" yoffset="-20" radius="25"/>
-        </skeletonparts>
       </frame>
       <frame filename="Media\\characters\\ninja_enemy_1\\run_3.png">
-        <skeletonparts>
-          <part xoffset="20" yoffset="55" radius="25"/>
-          <part xoffset="0" yoffset="30" radius="35"/>
-          <part xoffset="-13" yoffset="5" radius="25"/>
-          <part xoffset="-13" yoffset="-20" radius="25"/>
-        </skeletonparts>
       </frame>
       <frame filename="Media\\characters\\ninja_enemy_1\\run_4.png">
-        <skeletonparts>
-          <part xoffset="20" yoffset="55" radius="25"/>
-          <part xoffset="0" yoffset="30" radius="35"/>
-          <part xoffset="-13" yoffset="5" radius="25"/>
-          <part xoffset="-13" yoffset="-20" radius="25"/>
-        </skeletonparts>
       </frame>
       <frame filename="Media\\characters\\ninja_enemy_1\\run_5.png">
-        <skeletonparts>
-          <part xoffset="20" yoffset="55" radius="25"/>
-          <part xoffset="0" yoffset="30" radius="35"/>
-          <part xoffset="-13" yoffset="5" radius="25"/>
-          <part xoffset="-13" yoffset="-20" radius="25"/>
-        </skeletonparts>
       </frame>
 		</Running>
 
 		<JumpingUp FrameRate="8" MaxFrameRate="8" MinFrameRate="0">
       <frame filename="Media\\characters\\ninja_enemy_1\\jump_1.png">
-        <skeletonparts>
-          <part xoffset="20" yoffset="55" radius="25"/>
-        </skeletonparts>
       </frame>
       <frame filename="Media\\characters\\ninja_enemy_1\\jump_2.png">
-        <skeletonparts>
-          <part xoffset="20" yoffset="55" radius="25"/>
-        </skeletonparts>
       </frame>
 		</JumpingUp>
 
     <JumpingDown FrameRate="6" MaxFrameRate="6" MinFrameRate="0">
       <frame filename="Media\\characters\\ninja_enemy_1\\jump_3.png">
-        <skeletonparts>
-          <part xoffset="20" yoffset="55" radius="25"/>
-        </skeletonparts>
       </frame>
       <frame filename="Media\\characters\\ninja_enemy_1\\jump_4.png">
-        <skeletonparts>
-          <part xoffset="20" yoffset="55" radius="25"/>
-        </skeletonparts>
       </frame>
     </JumpingDown>
 

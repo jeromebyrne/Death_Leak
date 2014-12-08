@@ -35,7 +35,6 @@ void Animation::ReadXml(const char* filename)
 		{
 			// whats the name of this part
 			string partName = (string)child->Value();
-			//Utilities::ToLower((char*)partName);
 
 			// add this part to the part map
 			m_animationParts[partName] = new AnimationPart(child);
@@ -83,7 +82,15 @@ void Animation::SetPartSequence(string partName, string sequenceName)
 	}
 }
 
-vector<AnimationSequence::SkeletonPart> & Animation::GetSkeletonPartsCurrentFrame(string bodyPart)
+AnimationSkeleton * Animation::GetSkeletonForCurrentSequence(const char * bodyPart)
 {
-	return m_animationParts[bodyPart]->GetSkeletonPartsCurrentSequenceFrame();
+	AnimationSequence * currentSequence = m_animationParts[bodyPart]->CurrentSequence();
+	GAME_ASSERT(currentSequence);
+
+	if (!currentSequence)
+	{
+		return nullptr;
+	}
+
+	return currentSequence->GetSkeleton();
 }

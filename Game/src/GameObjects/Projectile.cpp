@@ -223,9 +223,28 @@ void Projectile::OnCollision(SolidMovingSprite* object)
   		offset.Z = object->Position().Z - 0.1; // want to show damage effects on front of the object
 
 		// check if it's a character with skeleton animtion
-		if (object->GetAnimation())
+		Animation * objAnimation = object->GetAnimation();
+		if (objAnimation)
  		{
- 			bool skel_collision = false;
+			bool skeletonCollision = false;
+
+			AnimationPart * animPart = objAnimation->GetPart("body");
+			AnimationSkeleton * skeleton = objAnimation->GetSkeletonForCurrentSequence("body");
+			auto skeletonFrameData = skeleton->GetDataForFrame(animPart->FrameNumber());
+
+
+
+			/*
+			bool skelton_collision = false;
+			auto skeleton = object->GetAnimation()->GetSkeletonPartsCurrentFrame("body");
+
+			for (auto & bone : skeleton)
+			{
+				Vector2 bone_world_pos;
+			}
+			*/
+
+ 			/*bool skel_collision = false;
 			vector<AnimationSequence::SkeletonPart> skeleton = object->GetAnimation()->GetSkeletonPartsCurrentFrame("body");
 			vector<AnimationSequence::SkeletonPart>::const_iterator iter = skeleton.begin();
 			for (;iter != skeleton.end(); ++iter)
@@ -268,7 +287,7 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 			if (!skel_collision && skeleton.size() > 0)
 			{
  				return;
-			}
+			}*/
 		}
 
 		// change our sprite to the impact sprite 

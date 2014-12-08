@@ -1,10 +1,13 @@
 #include "precompiled.h"
 #include "AnimationSequence.h"
+#include "AnimationSkeleton.h"
 
-AnimationSequence::AnimationSequence(TiXmlElement * element)
+AnimationSequence::AnimationSequence(TiXmlElement * element) :
+	mSkeleton(nullptr)
 {
+	mSkeleton = new AnimationSkeleton();
 	m_frames = new list<ID3D10ShaderResourceView*>();
-	if(element == 0)
+	if(element == nullptr)
 	{
 		throw new exception("cannot load animation part, null element");
 	}
@@ -16,6 +19,11 @@ AnimationSequence::AnimationSequence(TiXmlElement * element)
 
 AnimationSequence::~AnimationSequence(void)
 {
+	if (mSkeleton)
+	{
+		delete mSkeleton;
+		mSkeleton = nullptr;
+	}
 }
 
 void AnimationSequence::ReadXml(TiXmlElement * element)
@@ -54,7 +62,7 @@ void AnimationSequence::ReadXml(TiXmlElement * element)
 		// read skeleton data
 		TiXmlElement * skeleton_root = child->FirstChildElement();
 
-		vector<SkeletonPart> skel_parts_vector;
+		list<AnimationSkeleton::AnimationSkeletonFramePiece> skeletonPiecesList;
 		if (skeleton_root )
 		{
 			string root_name = skeleton_root->Value();
@@ -65,19 +73,24 @@ void AnimationSequence::ReadXml(TiXmlElement * element)
 
 				while (skeleton_part)
 				{
-					SkeletonPart part;
-					part.Offset.X = XmlUtilities::ReadAttributeAsFloat(skeleton_part, "", "xoffset");
-					part.Offset.Y = XmlUtilities::ReadAttributeAsFloat(skeleton_part, "", "yoffset");
-					part.Radius = XmlUtilities::ReadAttributeAsFloat(skeleton_part, "", "radius");
+					AnimationSkeleton::AnimationSkeletonFramePiece piece;
+					piece.mStartPos.X = XmlUtilities::ReadAttributeAsFloat(skeleton_part, "", "start_x");
+					piece.mStartPos.Y = XmlUtilities::ReadAttributeAsFloat(skeleton_part, "", "start_y");
+					piece.mEndPos.X = XmlUtilities::ReadAttributeAsFloat(skeleton_part, "", "end_x");
+					piece.mEndPos.Y = XmlUtilities::ReadAttributeAsFloat(skeleton_part, "", "end_y");
 
-					skel_parts_vector.push_back(part);
+					skeletonPiecesList.push_back(piece);
 					
 					skeleton_part = skeleton_part->NextSiblingElement();
 				}
 			}
 		}
 
-		m_skeletonParts[frame_count] = skel_parts_vector; // assign skeleton parts
+		GAME_ASSERT(mSkeleton);
+		if (mSkeleton)
+		{
+			mSkeleton->PopulateFrameData(frame_count, skeletonPiecesList);
+		}
 
 		child = child->NextSiblingElement();
 
@@ -85,13 +98,9 @@ void AnimationSequence::ReadXml(TiXmlElement * element)
 	}
 }
 
-vector<AnimationSequence::SkeletonPart> & AnimationSequence::GetSkeletonParts(int frameNum)
-{
-	return m_skeletonParts[frameNum];
-}
-
 void AnimationSequence::ScaleBones()
 {
+	/*
 	// SCALE
 	// get the backbuffer width and height and determine how much we need to scale by
 	// base width and height are 1920x1080 (need to not hard code this)
@@ -101,9 +110,7 @@ void AnimationSequence::ScaleBones()
 	float scaleX = bbWidth / 1920;
 	float scaleY = bbHeight / 1080;
 
-	map<int, vector<SkeletonPart>>::iterator map_iter = m_skeletonParts.begin();
-
-	for (; map_iter != m_skeletonParts.end(); ++map_iter)
+	for (map<int, vector<SkeletonPart>>::iterator map_iter = m_skeletonParts.begin(); map_iter != m_skeletonParts.end(); ++map_iter)
 	{
 		vector<SkeletonPart>::iterator vec_iter = map_iter->second.begin();
 
@@ -115,4 +122,5 @@ void AnimationSequence::ScaleBones()
 			part.Radius = part.Radius * scaleX;
 		}
 	}
+	*/
 }

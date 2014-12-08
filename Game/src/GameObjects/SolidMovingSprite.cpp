@@ -5,6 +5,7 @@
 #include "drawutilities.h"
 #include "ParticleEmittermanager.h"
 #include "Projectile.h"
+#include "AnimationSkeleton.h"
 
 static const float kVisualDamageMaxTime = 0.6f;
 
@@ -129,28 +130,27 @@ void SolidMovingSprite::DebugDraw(ID3D10Device *  device)
 	// narrow phase collision circles
 	if ( m_isAnimated )
 	{
-		std::vector<AnimationSequence::SkeletonPart> skel_parts = m_animation->GetSkeletonPartsCurrentFrame("body");
-
-		Vector3 pos = Vector3(m_position.X, m_position.Y, 1);
-
-		for (int i = 0; i < skel_parts.size(); ++i)
+		AnimationSkeleton * sequenceSkeleton = m_animation->GetSkeletonForCurrentSequence("body");
+		if (sequenceSkeleton && m_animation)
 		{
-			Vector3 circle_pos;
-			
-			if (!m_horizontalFlip)
-			{
-				circle_pos = Vector3(pos.X + skel_parts[i].Offset.X,
-											 pos.Y + skel_parts[i].Offset.Y,
-											 1);
-			}
-			else
-			{
-				circle_pos = Vector3(pos.X - skel_parts[i].Offset.X,
-											 pos.Y + skel_parts[i].Offset.Y,
-											 1);
-			}
+			 int frameNum = m_animation->GetPart("body")->FrameNumber();
 
-			DrawUtilities::DrawCircle( circle_pos , skel_parts[i].Radius );
+			 vector<AnimationSkeleton::AnimationSkeletonFramePiece> framePieceList = sequenceSkeleton->GetDataForFrame(frameNum);
+			 for (auto & framePiece : framePieceList)
+			 {
+				 if (!m_horizontalFlip)
+				 {
+					 Vector2 startPos(m_position.X + framePiece.mStartPos.X, m_position.Y + framePiece.mStartPos.Y);
+					 Vector2 endPos(m_position.X + framePiece.mEndPos.X, m_position.Y + framePiece.mEndPos.Y);
+					 DrawUtilities::DrawLine(startPos, endPos);
+				 }
+				 else
+				 {
+					 Vector2 startPos(m_position.X - framePiece.mStartPos.X, m_position.Y + framePiece.mStartPos.Y);
+					 Vector2 endPos(m_position.X - framePiece.mEndPos.X, m_position.Y + framePiece.mEndPos.Y);
+					 DrawUtilities::DrawLine(startPos, endPos);
+				 }
+			 }
 		}
 	}
 }

@@ -4,89 +4,35 @@
 
 		<Still FrameRate="0" MaxFrameRate="0" MinFrameRate="0">
       <frame filename="Media\\characters\\female2\\ning_run_01.png">
-        <skeletonparts>
-          <part xoffset="40" yoffset="25" radius="25"/>
-          <part xoffset="30" yoffset="0" radius="30"/>
-          <part xoffset="5" yoffset="-20" radius="22"/>
-          <part xoffset="11" yoffset="-42" radius="28"/>
-        </skeletonparts>
       </frame>
       
     </Still>
 
 		<Running FrameRate="12" MaxFrameRate="14" MinFrameRate="0">
       <frame filename="Media\\characters\\female2\\ning_run_01.png">
-        <skeletonparts>
-          <part xoffset="40" yoffset="25" radius="25"/>
-          <part xoffset="30" yoffset="0" radius="30"/>
-          <part xoffset="5" yoffset="-20" radius="22"/>
-          <part xoffset="11" yoffset="-42" radius="28"/>
-        </skeletonparts>
       </frame>
       <frame filename="Media\\characters\\female2\\ning_run_02.png">
-        <skeletonparts>
-          <part xoffset="40" yoffset="25" radius="25"/>
-          <part xoffset="30" yoffset="0" radius="30"/>
-          <part xoffset="5" yoffset="-20" radius="22"/>
-          <part xoffset="11" yoffset="-42" radius="28"/>
-        </skeletonparts>
       </frame>
       <frame filename="Media\\characters\\female2\\ning_run_03.png">
-        <skeletonparts>
-          <part xoffset="40" yoffset="25" radius="25"/>
-          <part xoffset="30" yoffset="0" radius="30"/>
-          <part xoffset="5" yoffset="-20" radius="22"/>
-          <part xoffset="11" yoffset="-42" radius="28"/>
-        </skeletonparts>
       </frame>
       <frame filename="Media\\characters\\female2\\ning_run_04.png">
-        <skeletonparts>
-          <part xoffset="40" yoffset="25" radius="25"/>
-          <part xoffset="30" yoffset="0" radius="30"/>
-          <part xoffset="5" yoffset="-20" radius="22"/>
-          <part xoffset="11" yoffset="-42" radius="28"/>
-        </skeletonparts>
       </frame>
       <frame filename="Media\\characters\\female2\\ning_run_05.png">
-        <skeletonparts>
-          <part xoffset="40" yoffset="25" radius="25"/>
-          <part xoffset="30" yoffset="0" radius="30"/>
-          <part xoffset="5" yoffset="-20" radius="22"/>
-          <part xoffset="11" yoffset="-42" radius="28"/>
-        </skeletonparts>
       </frame>
 		</Running>
 
     <JumpingUp FrameRate="4" MaxFrameRate="4" MinFrameRate="0">
       <frame filename="Media\\characters\\female2\\ning_jump_01.png">
-        <skeletonparts>
-          <part xoffset="40" yoffset="25" radius="25"/>
-          <part xoffset="30" yoffset="0" radius="30"/>
-          <part xoffset="5" yoffset="-20" radius="22"/>
-          <part xoffset="11" yoffset="-42" radius="28"/>
-        </skeletonparts>
       </frame>
 		</JumpingUp>
 
     <JumpingDown FrameRate="4" MaxFrameRate="4" MinFrameRate="0">
       <frame filename="Media\\characters\\female2\\ning_jump_01.png">
-        <skeletonparts>
-          <part xoffset="40" yoffset="25" radius="25"/>
-          <part xoffset="30" yoffset="0" radius="30"/>
-          <part xoffset="5" yoffset="-20" radius="22"/>
-          <part xoffset="11" yoffset="-42" radius="28"/>
-        </skeletonparts>
       </frame>
     </JumpingDown>
 
     <SlidingDown FrameRate="0" MaxFrameRate="0" MinFrameRate="0">
       <frame filename="Media\\characters\\female2\\ning_jump_01.png">
-        <skeletonparts>
-          <part xoffset="160" yoffset="100" radius="100"/>
-          <part xoffset="120" yoffset="0" radius="120"/>
-          <part xoffset="20" yoffset="-80" radius="90"/>
-          <part xoffset="45" yoffset="-170" radius="110"/>
-        </skeletonparts>
       </frame>
     </SlidingDown>
 
@@ -95,12 +41,6 @@
 	<arm OffsetX="6" OffsetY="24" SizeX="32" SizeY="30">
 		<Still FrameRate="0" MaxFrameRate="0" MinFrameRate="0">
       <frame filename="Media\\characters\\female2\\ning_jump_01.png">
-        <skeletonparts>
-          <part xoffset="160" yoffset="100" radius="100"/>
-          <part xoffset="120" yoffset="0" radius="120"/>
-          <part xoffset="20" yoffset="-80" radius="90"/>
-          <part xoffset="45" yoffset="-170" radius="110"/>
-        </skeletonparts>
       </frame>
 		</Still>
 	</arm>

@@ -31,6 +31,7 @@
     <ClCompile Include="src\Animation\Animation.cpp" />
     <ClCompile Include="src\Animation\AnimationPart.cpp" />
     <ClCompile Include="src\Animation\AnimationSequence.cpp" />
+    <ClCompile Include="src\Animation\AnimationSkeleton.cpp" />
     <ClCompile Include="src\Audio\AudioManager.cpp" />
     <ClCompile Include="src\Audio\AudioObject.cpp" />
     <ClCompile Include="src\Core\Camera2D.cpp" />
@@ -130,6 +131,7 @@
     <ClInclude Include="src\Animation\Animation.h" />
     <ClInclude Include="src\Animation\AnimationPart.h" />
     <ClInclude Include="src\Animation\AnimationSequence.h" />
+    <ClInclude Include="src\Animation\AnimationSkeleton.h" />
     <ClInclude Include="src\Audio\AudioManager.h" />
     <ClInclude Include="src\Audio\AudioObject.h" />
     <ClInclude Include="src\Core\Camera2D.h" />

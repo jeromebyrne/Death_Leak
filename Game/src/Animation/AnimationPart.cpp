@@ -34,24 +34,14 @@ void AnimationPart::ReadXml(TiXmlElement * element)
 	m_offsetX = XmlUtilities::ReadAttributeAsFloat(element, "", "OffsetX");
 	m_offsetY = XmlUtilities::ReadAttributeAsFloat(element, "", "OffsetY");
 
-	try // read the sequences
-    {
-		TiXmlElement * sequence = element->FirstChildElement();
-
-		while(sequence != 0)
-		{
-			string sequenceName = (string)sequence->Value(); //XmlUtilities::ReadAttributeAsString(sequence, "", "filename");
-			//Utilities::ToLower(sequenceName);
-		    m_sequences[sequenceName] = new AnimationSequence(sequence);
-
-			sequence = sequence->NextSiblingElement();
-		}
-    }
-	catch(exception ex)
+	TiXmlElement * sequence = element->FirstChildElement();
+	while(sequence != 0)
 	{
-		// do something?
-	}
+		string sequenceName = (string)sequence->Value();
+		m_sequences[sequenceName] = new AnimationSequence(sequence);
 
+		sequence = sequence->NextSiblingElement();
+	}
 }
 
 bool AnimationPart::IsFinished()
@@ -250,6 +240,7 @@ void AnimationPart::Animate()
 	}
 }
 
+/*
 vector<AnimationSequence::SkeletonPart> & AnimationPart::GetSkeletonPartsCurrentSequenceFrame()
 {
 	if (!IsFinished())
@@ -263,3 +254,4 @@ vector<AnimationSequence::SkeletonPart> & AnimationPart::GetSkeletonPartsCurrent
 
 	return vector<AnimationSequence::SkeletonPart>();
 }
+*/

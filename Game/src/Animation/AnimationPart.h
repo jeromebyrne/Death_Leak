@@ -6,35 +6,6 @@ class AnimationPart
 {
 public:
 	
-private:
-	// a map containing all the animation sequences for thsi part
-	map<string,AnimationSequence*> m_sequences;
-	
-	// the current sequence playing on this part
-	AnimationSequence* m_currentSequence;
-
-	// the current frame being displayed in the current sequence
-	int m_currentFrameNumber;
-
-	// the time since the last frame change.
-	float m_frameTimeElapsed;
-
-	// the x offset of this part from the centre of the parent object
-	float m_offsetX;
-
-	// the y offset of this part from the centre of the parent object
-	float m_offsetY;
-
-	// the x size of the part
-	float m_sizeX;
-
-	// the y size of the part
-	float m_sizeY;
-
-	// the name of this animation part
-	string m_name;
-
-public:
 	AnimationPart(TiXmlElement * element);
 	~AnimationPart(void);
 
@@ -76,19 +47,19 @@ public:
 	{
 		return m_name;
 	}
-	
+
 	// restart the sequence
 	void Restart()
-    {
-        m_currentFrameNumber = 0; m_frameTimeElapsed = 0;
-    }
-	
+	{
+		m_currentFrameNumber = 0; m_frameTimeElapsed = 0;
+	}
+
 	// finish the animation abruptly
-	void Finish() { m_currentFrameNumber = m_currentSequence->Frames()->size(); };
+	void Finish() { m_currentFrameNumber = m_currentSequence->Frames()->size(); }
 
 	// set the current sequence
 	void SetSequence(string name);
-	
+
 	// animate, when we reach the last frame go back to the first
 	void AnimateLooped();
 
@@ -99,7 +70,33 @@ public:
 
 	void Animate(float frameRate);
 
-	vector<AnimationSequence::SkeletonPart> & GetSkeletonPartsCurrentSequenceFrame();
+private:
+	// a map containing all the animation sequences for this part
+	map<string,AnimationSequence*> m_sequences;
+	
+	// the current sequence playing on this part
+	AnimationSequence* m_currentSequence;
+
+	// the current frame being displayed in the current sequence
+	int m_currentFrameNumber;
+
+	// the time since the last frame change.
+	float m_frameTimeElapsed;
+
+	// the x offset of this part from the centre of the parent object
+	float m_offsetX;
+
+	// the y offset of this part from the centre of the parent object
+	float m_offsetY;
+
+	// the x size of the part
+	float m_sizeX;
+
+	// the y size of the part
+	float m_sizeY;
+
+	// the name of this animation part
+	string m_name;
 };
 
 #endif
