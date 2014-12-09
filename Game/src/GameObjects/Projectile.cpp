@@ -226,68 +226,27 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 		Animation * objAnimation = object->GetAnimation();
 		if (objAnimation)
  		{
-			bool skeletonCollision = false;
-
 			AnimationPart * animPart = objAnimation->GetPart("body");
 			AnimationSkeleton * skeleton = objAnimation->GetSkeletonForCurrentSequence("body");
-			auto skeletonFrameData = skeleton->GetDataForFrame(animPart->FrameNumber());
+			
+			int frameNumber = animPart->FrameNumber();
+			bool hasBonesForFrame = skeleton->HasBonesForFrame(frameNumber);
 
-
-
-			/*
-			bool skelton_collision = false;
-			auto skeleton = object->GetAnimation()->GetSkeletonPartsCurrentFrame("body");
-
-			for (auto & bone : skeleton)
+			if (hasBonesForFrame)
 			{
-				Vector2 bone_world_pos;
-			}
-			*/
-
- 			/*bool skel_collision = false;
-			vector<AnimationSequence::SkeletonPart> skeleton = object->GetAnimation()->GetSkeletonPartsCurrentFrame("body");
-			vector<AnimationSequence::SkeletonPart>::const_iterator iter = skeleton.begin();
-			for (;iter != skeleton.end(); ++iter)
-			{
-				Vector3 bone_world_pos;
-				if (object->IsHFlipped())
+				Vector2 intersectPoint; // Not really needed right now
+				bool skeletonCollision = skeleton->HasCollidedOnFrame(frameNumber,
+																		object->IsHFlipped(),
+																		object->Position(),
+																		GetCollisionRayStart(),
+																		GetCollisionRayEnd(),
+																		intersectPoint);
+				if (!skeletonCollision)
 				{
-					bone_world_pos = Vector3(object->Position().X - (*iter).Offset.X,
-											 object->Position().Y + (*iter).Offset.Y,
-											 m_position.Z);
-				}
-				else
-				{
-					bone_world_pos = Vector3(object->Position().X + (*iter).Offset.X,
-											 object->Position().Y + (*iter).Offset.Y,
-											 m_position.Z);
-				}
-
-				float bone_radius = (*iter).Radius;
-
-				Vector3 difference = m_position - bone_world_pos;
-				
-				float diff_length_sqr = difference.LengthSquared();
-				float rad_sqr = bone_radius * bone_radius;
-
-				if (difference.LengthSquared() < bone_radius * bone_radius)
- 				{
-					Vector3 diff_normal = difference;
-					diff_normal.Normalise();
-					skel_collision = true;
-					m_position.X = (bone_world_pos.X + (diff_normal.X * (bone_radius * 0.5f)));
-					m_position.Y = (bone_world_pos.Y + (diff_normal.Y * (bone_radius * 0.5f)));
-					offset.X = m_position.X - object->Position().X;
-					offset.Y = m_position.Y - object->Position().Y;
-					break;
+					// we had a skeleton but there were no collisions so the projectile missed
+					return;
 				}
 			}
-
-			// we had a skeleton specified but no collisions so just return
-			if (!skel_collision && skeleton.size() > 0)
-			{
- 				return;
-			}*/
 		}
 
 		// change our sprite to the impact sprite 

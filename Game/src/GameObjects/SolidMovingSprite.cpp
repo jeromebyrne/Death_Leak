@@ -341,7 +341,6 @@ void SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 			else
 			{
 				m_position.Y += yOverlap;
-				//StopYAccelerating();
 			}
 
 			if (mBouncable)
