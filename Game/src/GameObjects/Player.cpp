@@ -149,11 +149,11 @@ Projectile * Player::FireWeapon(Vector2 direction)
 									mProjectileImpactFilePath.c_str(),
 									pos,
 									Vector2(30,8),
-									Vector2(80,80),
+									Vector2(60,20),
 									direction,
 									5,
 									speed,
-									1.8f);
+									0.25f);
 
 	if (m_isAnimated && m_animation)
 	{

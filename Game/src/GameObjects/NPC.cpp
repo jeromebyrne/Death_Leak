@@ -353,11 +353,11 @@ Projectile * NPC::FireWeapon(Vector2 direction)
 									mProjectileImpactFilePath.c_str(), 
 									pos,
 									Vector2(20,20),
-									Vector2(30 * 1.2,8),
+									Vector2(25,8),
 									direction,
 									5,
 									speed,
-									2.5f);
+									0.25f);
 
 	p->SetSpinningMovement(true); // spinning for ninja stars 
 	

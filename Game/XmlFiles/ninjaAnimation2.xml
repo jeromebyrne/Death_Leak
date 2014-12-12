@@ -3,6 +3,11 @@
 
 		<Still FrameRate="0" MaxFrameRate="0" MinFrameRate="0">
       <frame filename="Media\\characters\\ninja_enemy_1\\still_1.png">
+        <skeletonparts>
+          <part start_x="-15" start_y="-45" end_x="40" end_y="20"/>
+          <part start_x="-15" start_y="-45" end_x="0" end_y="-95"/>
+          <part start_x="0" start_y="-95" end_x="-15" end_y="-147"/>
+        </skeletonparts>
       </frame>
     </Still>
 

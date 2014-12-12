@@ -440,6 +440,16 @@ void Character::UpdateAnimations()
 			}
 		}
 	}
+
+	// DEBUGGING REMOVE ME ===========================
+	/*bodyPart = m_animation->GetPart("body");
+	GAME_ASSERT(bodyPart);
+
+	bodyPart->SetSequence("JumpingDown");
+	bodyPart->SetFrame(1);
+	m_texture = bodyPart->CurrentFrame();*/
+	//================================================
+
 	m_mainBodyTexture = m_texture;
 }
 
@@ -713,7 +723,7 @@ void Character::Draw(ID3D10Device * device, Camera2D * camera)
 	if (IsOnSolidSurface())
 	{
 		// TODO: this is a temporary function, just testing the shadow- REMOVE
-		// DrawUtilities::DrawTexture(Vector3(m_position.X, m_position.Y - 150, m_position.Z), Vector2(200, 150), "Media\\characters\\player\\shadow.png");
+		DrawUtilities::DrawTexture(Vector3(m_position.X, m_position.Y - 150, m_position.Z), Vector2(200, 150), "Media\\characters\\player\\shadow.png");
 	}
 	
 	// draw the arm first because it should be behind the body

@@ -240,18 +240,3 @@ void AnimationPart::Animate()
 	}
 }
 
-/*
-vector<AnimationSequence::SkeletonPart> & AnimationPart::GetSkeletonPartsCurrentSequenceFrame()
-{
-	if (!IsFinished())
-	{
-		return m_currentSequence->GetSkeletonParts(m_currentFrameNumber);
-	}
-	else if (m_currentFrameNumber > 0)
-	{
-		return m_currentSequence->GetSkeletonParts(m_currentFrameNumber - 1);
-	}
-
-	return vector<AnimationSequence::SkeletonPart>();
-}
-*/

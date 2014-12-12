@@ -70,6 +70,13 @@ public:
 
 	void Animate(float frameRate);
 
+#ifdef DEBUG // purely for debugging 
+	void SetFrame(int frame)
+	{
+		m_currentFrameNumber = frame;
+	}
+#endif
+
 private:
 	// a map containing all the animation sequences for this part
 	map<string,AnimationSequence*> m_sequences;

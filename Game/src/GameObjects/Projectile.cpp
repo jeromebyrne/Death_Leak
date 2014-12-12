@@ -21,7 +21,7 @@ Projectile::Projectile(ProjectileOwnerType ownerType,
 						Vector2 direction,
 						float damage,
 						float speed,
-						int maxTimeInActive)
+						float maxTimeInActive)
 :SolidMovingSprite(position.X,position.Y,position.Z,dimensions.X,dimensions.Y), 
 	m_isActive(true),
 	m_wasActiveLastFrame(true),
@@ -170,27 +170,29 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 				objAsProj->m_timeBecameInactive = Timing::Instance()->GetTotalTimeSeconds();
 				objAsProj->SetVelocityXYZ(-m_velocity.X * 0.7, -5, 0);
 
-				ParticleEmitterManager::Instance()->CreateRadialSpray(1, 
-																	  m_position,
-																	  Vector3(3000,3000, 1),
-																	  "Media\\spark.png",
-																	  0.2f,
-																	  1.0f,
-																	  0.2f,
-																	  0.4f,
-																	  24,
-																	  36,
-																	  0.0f,
-																	  false,
-																	  1.0f,
-																	  1.0f,
-																	  0,
-																	  true,
-																	  5.0,
-																	  0.1f,
-																	  0.8f,
-																	  0.0f,
-																	  0.0f);
+				ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
+																		m_position,
+																		Vector3(-m_direction.X, 0, 0),
+																		0.4,
+																		Vector3(3200, 1200, 0),
+																		"Media\\blast_circle.png",
+																		0.01,
+																		0.01,
+																		0.25f,
+																		0.45f,
+																		50,
+																		50,
+																		0,
+																		false,
+																		0.7,
+																		1.0,
+																		10000,
+																		true,
+																		2,
+																		0.0f,
+																		0.0f,
+																		0.0f,
+																		0.8f);
 
 				AudioManager::Instance()->PlaySoundEffect("metalclink.wav");
 
@@ -243,8 +245,18 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 																		intersectPoint);
 				if (!skeletonCollision)
 				{
-					// we had a skeleton but there were no collisions so the projectile missed
-					return;
+					skeletonCollision = skeleton->HasCollidedOnFrame(frameNumber,
+																	object->IsHFlipped(),
+																	object->Position(),
+																	GetLastFrameCollisionRayStart(),
+																	GetCollisionRayEnd(),
+																	intersectPoint);
+
+					if (!skeletonCollision)
+					{
+						// we had a skeleton but there were no collisions so the projectile missed
+						return;
+					}
 				}
 			}
 		}
@@ -259,6 +271,11 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 		}
 		
 		// attach the projectile to the hit object
+		if (mSpinningMovement && m_velocity.X < 0)
+		{
+			// spinning projectiles don't naturally orientate so need to flip it when it attaches
+			FlipHorizontal();
+		}
 		AttachTo(GameObjectManager::Instance()->GetObjectByID(object->ID()), offset);
 
 		// stop the projectile
@@ -277,12 +294,10 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 				Vector3 particlePos;
 				if(m_direction.X > 0)
 				{
-					//particlePos = Vector3(Right(),m_position.Y, m_position.Z -1 );
 					particlePos = Vector3(m_position.X,m_position.Y, m_position.Z -1 );
 				}
 				else
 				{
-					//particlePos = Vector3(Left(),m_position.Y, m_position.Z -1 );
 					particlePos = Vector3(m_position.X,m_position.Y, m_position.Z -1 );
 				}
 			
@@ -597,10 +612,10 @@ Vector2 Projectile::GetLastFrameCollisionRayStart()
 	return Vector2(CollisionCentreX() - posDiff.X, CollisionCentreY() - posDiff.Y);
 }
 
-Vector2 Projectile::GetLastFrameCollisionRayEnd()
+/*Vector2 Projectile::GetLastFrameCollisionRayEnd()
 {
 	Vector3 posDiff = m_position - m_lastPosition;
 
 	return Vector2((CollisionCentreX() - posDiff.X) + (DirectionX() * CollisionDimensions().X * 0.5f),
 					(CollisionCentreY() - posDiff.Y) + (DirectionY() * CollisionDimensions().X * 0.5f));
-}
+}*/

@@ -35,7 +35,7 @@ public:
 				Vector2 direction,
 				float damage = 5,
 				float speed = 10,
-				int maxTimeInActive = 2.0f);
+				float maxTimeInActive = 2.0f);
 
 	virtual ~Projectile(void);
 
@@ -55,7 +55,7 @@ public:
 	Vector2 GetCollisionRayEnd() const;
 
 	Vector2 GetLastFrameCollisionRayStart();
-	Vector2 GetLastFrameCollisionRayEnd();
+	// Vector2 GetLastFrameCollisionRayEnd();
 
 protected:
 

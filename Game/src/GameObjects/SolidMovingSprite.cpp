@@ -396,6 +396,7 @@ void SolidMovingSprite::OnDamage(GameObject * damageDealer, float damageAmount, 
 
 		Vector3 pos = Vector3(m_position.X + pointOfContact.X, m_position.Y + pointOfContact.Y, m_position.Z - 1);
 
+		ParticleSpray * spray =
 		ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
 																pos,
 																Vector3(-m_direction.X, 0, 0),
@@ -406,19 +407,20 @@ void SolidMovingSprite::OnDamage(GameObject * damageDealer, float damageAmount, 
 																0.01,
 																0.25f,
 																0.45f,
-																10,
-																10,
+																40,
+																40,
 																0,
 																false,
 																0.7,
 																1.0,
 																10000,
 																true,
-																20,
+																5,
 																0.0f,
 																0.0f,
-																0.2f,
+																0.0f,
 																0.8f);
+
 	}
 }
 
