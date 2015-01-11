@@ -25,6 +25,7 @@ public:
 	Vector3 CollisionDimensions() const { return m_collisionBoxDimensions; }
 
 	void SetCollisionDimensions(Vector3 value) { m_collisionBoxDimensions = value; }
+	void SetCollisionBoxOffset(Vector2 value) { mCollisionBoxOffset = value; }
 
 	bool GetIsCollidingAtObjectSide() const { return m_collidingAtSideOfObject; }
 	bool GetIsCollidingOnTopOfObject() const { return m_onTopOfOtherSolidObject; }

@@ -216,7 +216,7 @@ void GameObjectManager::Update(bool paused, float delta)
 			// if the object is in the update zone
 			if (Utilities::IsObjectInRectangle(obj.get(), camX, camY, m_updateZoneDimensions.X, m_updateZoneDimensions.Y))
 			{
-				obj->Update(delta);
+				obj->Update(delta); 
 			}
 			else if(obj->IsParallaxLayer() || 
 					obj->IsAudioObject())

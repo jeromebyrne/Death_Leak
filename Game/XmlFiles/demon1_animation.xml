@@ -2,7 +2,7 @@
 
 	<body OffsetX="0" OffsetY="8" SizeX="40" SizeY="80">
 
-		<Still FrameRate="0" MaxFrameRate="0" MinFrameRate="0">
+		<Still FrameRate="0" MaxFrameRate="0" MinFrameRate="0" >
       <frame filename="Media\\characters\\demon1\\ning_run_01.png">
         <skeletonparts>
           <part xoffset="40" yoffset="25" radius="25"/>

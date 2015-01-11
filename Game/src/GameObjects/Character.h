@@ -68,6 +68,7 @@ protected:
 	float mDefaultVelocityX; // max velocity when not sprinting
 	bool mSprintActive; // are we sprinting?
 	bool mHasExploded;
+	bool mExplodesGruesomely;
 	ID3D10ShaderResourceView * m_mainBodyTexture;
 	ID3D10ShaderResourceView * m_armTexture;
 	Vector2 m_projectileOffset; // where does a projectile fire from in relation to the centre?

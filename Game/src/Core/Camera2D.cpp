@@ -52,9 +52,9 @@ bool Camera2D::IsObjectInView(GameObject * object)
 	// ok so the origin might not be in view but part of the object may be in view
 	if(!inView)
 	{
-		float objectRight = (object->GetRotationAngle() == 0.0f  ? object->Right() : object->GetRightRotated()) - object->GetCurrentParallaxOffsetX();
+		float objectRight = (object->GetRotationAngle() == 0.0f ? object->Right() : object->GetRightRotated()) - object->GetCurrentParallaxOffsetX();
 		float objectLeft = (object->GetRotationAngle() == 0.0f ? object->Left() : object->GetLeftRotated()) - object->GetCurrentParallaxOffsetX();
-		float objectTop = (object->GetRotationAngle() == 0.0f ? object->Top() : object->GetTopRotated()) - object->GetCurrentParallaxOffsetY();
+		float objectTop = (object->GetRotationAngle() == 0.0f ? object->Top() : object->GetTopRotated()) + object->GetCurrentParallaxOffsetY();
 		float objectBottom = (object->GetRotationAngle() == 0.0f ? object->Bottom() : object->GetBottomRotated()) - object->GetCurrentParallaxOffsetY();
 
 		// check if we are partially in view on the x plane

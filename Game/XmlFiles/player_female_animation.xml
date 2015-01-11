@@ -1,14 +1,13 @@
-<data>
+<data> 
 <!-- WARNING - DOES NOT HAVE JumpingUp and JumpingDown anims -->
 	<body OffsetX="0" OffsetY="8" SizeX="40" SizeY="80">
 
-		<Still FrameRate="0" MaxFrameRate="0" MinFrameRate="0">
+		<Still FrameRate="0" MaxFrameRate="0" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
       <frame filename="Media\\characters\\female\\ning_run_01.png">
       </frame>
-      
     </Still>
 
-		<Running FrameRate="12" MaxFrameRate="14" MinFrameRate="0">
+		<Running FrameRate="12" MaxFrameRate="14" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
       <frame filename="Media\\characters\\female\\ning_run_01.png">
       </frame>
       <frame filename="Media\\characters\\female\\ning_run_02.png">
@@ -21,25 +20,25 @@
       </frame>
 		</Running>
 
-    <JumpingUp FrameRate="4" MaxFrameRate="4" MinFrameRate="0">
+    <JumpingUp FrameRate="4" MaxFrameRate="4" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
       <frame filename="Media\\characters\\female\\ning_jump_01.png">
       </frame>
 		</JumpingUp>
 
-    <JumpingDown FrameRate="4" MaxFrameRate="4" MinFrameRate="0">
+    <JumpingDown FrameRate="4" MaxFrameRate="4" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
       <frame filename="Media\\characters\\female\\ning_jump_01.png">
       </frame>
     </JumpingDown>
 
-    <SlidingDown FrameRate="0" MaxFrameRate="0" MinFrameRate="0">
+    <SlidingDown FrameRate="0" MaxFrameRate="0" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
       <frame filename="Media\\characters\\female\\ning_jump_01.png">
       </frame>
     </SlidingDown>
-
+    
 	</body>
 
-	<arm OffsetX="6" OffsetY="24" SizeX="32" SizeY="30">
-		<Still FrameRate="0" MaxFrameRate="0" MinFrameRate="0">
+	<arm OffsetX="6" OffsetY="24" SizeX="32" SizeY="30" >
+		<Still FrameRate="0" MaxFrameRate="0" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
       <frame filename="Media\\characters\\female2\\ning_jump_01.png">
       </frame>
 		</Still>

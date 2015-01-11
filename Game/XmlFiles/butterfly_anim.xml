@@ -2,7 +2,7 @@
 
 	<body OffsetX="0" OffsetY="8" SizeX="40" SizeY="80">
 
-		<Still FrameRate="45" MaxFrameRate="45" MinFrameRate="0">
+		<Still FrameRate="45" MaxFrameRate="45" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
       <frame filename="Media\characters\butterfly\1.png"/>
       <frame filename="Media\characters\butterfly\\2.png"/>
       <frame filename="Media\characters\butterfly\\3.png"/>
@@ -17,7 +17,7 @@
       <frame filename="Media\characters\butterfly\\12.png"/>
     </Still>
 
-		<Running FrameRate="45" MaxFrameRate="45" MinFrameRate="0">
+		<Running FrameRate="45" MaxFrameRate="45" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
 
       <frame filename="Media\characters\butterfly\1.png"/>
       <frame filename="Media\characters\butterfly\\2.png"/>
@@ -34,15 +34,15 @@
 
 		</Running>
 
-    <JumpingUp FrameRate="4" MaxFrameRate="4" MinFrameRate="0">
+    <JumpingUp FrameRate="4" MaxFrameRate="4" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
       <frame filename="Media\characters\butterfly\1.png"/>
 		</JumpingUp>
 
-    <JumpingDown FrameRate="4" MaxFrameRate="4" MinFrameRate="0">
+    <JumpingDown FrameRate="4" MaxFrameRate="4" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
       <frame filename="Media\characters\butterfly\1.png"/>
     </JumpingDown>
 
-    <SlidingDown FrameRate="0" MaxFrameRate="0" MinFrameRate="0">
+    <SlidingDown FrameRate="0" MaxFrameRate="0" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
       <frame filename="Media\characters\butterfly\1.png"/>
     </SlidingDown>
 

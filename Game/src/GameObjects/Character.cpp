@@ -40,11 +40,14 @@ Character::Character(float x, float y, float z, float width, float height, float
 	mIsMidAirMovingDown(false),
 	mIsMidAirMovingUp(false),
 	mMidAirMovingUpStartTime(0.0f),
-	mMidAirMovingDownStartTime(0.0f)
+	mMidAirMovingDownStartTime(0.0f),
+	mExplodesGruesomely(false)
 {
 	mProjectileFilePath = "Media/knife.png";
 	mProjectileImpactFilePath = "Media/knife_impact.png";
 	mIsCharacter = true;
+
+	mExplodesGruesomely = (rand() % 6) == 5;
 }
 
 Character::~Character(void)
@@ -578,7 +581,7 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 			// explode
 			if (!mHasExploded)
 			{
-				if (shouldExplode)
+				if (shouldExplode && mExplodesGruesomely)
 				{
 					Vector3 pos = m_position;
 					pos.Y = Bottom();
@@ -634,19 +637,72 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 																			0.0f,
 																			0.15f,
 																			0.8f);
-				}
 
-
-				if (m_material)
-				{
-					// play sound effect
-					if (current_time > mLastTimePlayedDeathSFX + kMinTimeBetweenDeathSFX)
+					if (m_material)
 					{
-						AudioManager::Instance()->PlaySoundEffect(m_material->GetDestroyedSound());
+						// play sound effect
+						if (current_time > mLastTimePlayedDeathSFX + kMinTimeBetweenDeathSFX)
+						{
+							AudioManager::Instance()->PlaySoundEffect(m_material->GetDestroyedSound());
 
-						mLastTimePlayedDeathSFX = current_time;
+							mLastTimePlayedDeathSFX = current_time;
+						}
 					}
-				
+				}
+				else if (shouldExplode && !mExplodesGruesomely)
+				{
+					Vector3 pos = m_position;
+					pos.Y = CollisionBottom();
+					pos.Z = pos.Z - 1;
+
+					float spawnSpreadX = (m_collisionBoxDimensions.X / 100.0f) * 7.0f;
+					float spawnSpreadY = (m_collisionBoxDimensions.Y / 100.0f) * 10.0f;
+
+					ParticleEmitterManager::Instance()->CreateRadialSpray(50,
+																			pos,
+																			Vector3(3200, 2000, 0),
+																			"Media\\smoke4.png",
+																			1.8f,
+																			3.5f,
+																			0.5f,
+																			1.0f,
+																			75,
+																			150,
+																			1,
+																			false,
+																			0.5f,
+																			0.7f,
+																			-1,
+																			true,
+																			3.0f,
+																			0.9f,
+																			0.8f,
+																			spawnSpreadX * 0.7f,
+																			spawnSpreadY * 1.5f);
+
+					ParticleEmitterManager::Instance()->CreateRadialSpray(50,
+																			pos,
+																			Vector3(3200, 2000, 0),
+																			"Media\\smoke.png",
+																			1.0f,
+																			2.0f,
+																			0.5f,
+																			1.0f,
+																			200,
+																			300,
+																			1,
+																			false,
+																			0.7f,
+																			1.0f,
+																			-1,
+																			true,
+																			0.1f,
+																			0.1f,
+																			0.7f,
+																			spawnSpreadX * 1.4f,
+																			spawnSpreadY * 1.0f);
+
+					AudioManager::Instance()->PlaySoundEffect("explosion/smoke_explosion.wav");
 				}
 
 				m_alpha = 0.0f;

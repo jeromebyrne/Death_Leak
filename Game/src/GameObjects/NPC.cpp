@@ -204,29 +204,49 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointO
 
 	// throw out some orbs
 	int particleNUmPerOrb = 25;
-	if (mHasExploded)
+	if (mHasExploded && mExplodesGruesomely)
 	{
 		// decapitate
 		if (m_isAnimated && m_animationFile == "XmlFiles\\ninjaAnimation2.xml")
 		{
 
-			Orb * head = new Orb(nullptr, Vector3(m_position.X, m_position.Y + 250, m_position.Z - 1.1f), Vector3(54, 60, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\decapitated_head.png", true, 1.0f);
+			Orb * head = new Orb(nullptr, Vector3(m_position.X, m_position.Y + 50, m_position.Z - 1.1f), Vector3(54, 60, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\decapitated_head.png", true, 2.0f);
 			GameObjectManager::Instance()->AddGameObject(head);
 
-			Orb * arm1 = new Orb(nullptr, Vector3(m_position.X - 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\arm_destroyed.png", true, 1.0f);
+			Orb * arm1 = new Orb(nullptr, Vector3(m_position.X - 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\arm_destroyed.png", true, 2.0f);
 			GameObjectManager::Instance()->AddGameObject(arm1);
 
-			Orb * arm2 = new Orb(nullptr, Vector3(m_position.X + 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\arm_destroyed.png", true, 1.0f);
+			Orb * arm2 = new Orb(nullptr, Vector3(m_position.X + 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\arm_destroyed.png", true, 2.0f);
 			GameObjectManager::Instance()->AddGameObject(arm2);
 
-			Orb * leg1 = new Orb(nullptr, Vector3(m_position.X + 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\leg_destroyed.png", true, 1.0f);
+			Orb * leg1 = new Orb(nullptr, Vector3(m_position.X + 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\leg_destroyed.png", true, 2.0f);
 			GameObjectManager::Instance()->AddGameObject(leg1);
 
-			Orb * leg2 = new Orb(nullptr, Vector3(m_position.X - 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\leg_destroyed.png", true, 1.0f);
+			Orb * leg2 = new Orb(nullptr, Vector3(m_position.X - 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\leg_destroyed.png", true, 2.0f);
 			GameObjectManager::Instance()->AddGameObject(leg2);
 		}
+		else if (m_isAnimated && m_animationFile == "XmlFiles\\ninjaAnimation3.xml")
+		{
 
-		if (m_isAnimated && m_animationFile == "XmlFiles\\player_female_animation.xml")
+			Orb * head = new Orb(nullptr, Vector3(m_position.X, m_position.Y + 50, m_position.Z - 1.1f), Vector3(54, 60, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_3\\decapitated_head.png", true, 2.0f);
+			GameObjectManager::Instance()->AddGameObject(head);
+
+			Orb * arm1 = new Orb(nullptr, Vector3(m_position.X - 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_3\\arm_destroyed.png", true, 2.0f);
+			GameObjectManager::Instance()->AddGameObject(arm1);
+
+			Orb * arm2 = new Orb(nullptr, Vector3(m_position.X + 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_3\\arm_destroyed.png", true, 2.0f);
+			GameObjectManager::Instance()->AddGameObject(arm2);
+
+			Orb * leg1 = new Orb(nullptr, Vector3(m_position.X + 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_3\\leg_destroyed.png", true, 2.0f);
+			GameObjectManager::Instance()->AddGameObject(leg1);
+
+			Orb * leg2 = new Orb(nullptr, Vector3(m_position.X - 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\leg_destroyed.png", true, 2.0f);
+			GameObjectManager::Instance()->AddGameObject(leg2);
+
+			Orb * hat = new Orb(nullptr, Vector3(m_position.X, m_position.Y + 75, m_position.Z - 1.1f), Vector3(67, 29, 0), Vector3(15, 15, 0), "Media\\objects\\ricehat.png", false, 2.5f);
+			GameObjectManager::Instance()->AddGameObject(hat);
+		}
+		else if (m_isAnimated && m_animationFile == "XmlFiles\\player_female_animation.xml")
 		{
 
 			Orb * head = new Orb(nullptr, Vector3(m_position.X, m_position.Y + 250, m_position.Z - 1.1f), Vector3(54, 60, 0), Vector3(15, 15, 0), "Media\\characters\\female\\decapitated_head.png", true, 1.0f);

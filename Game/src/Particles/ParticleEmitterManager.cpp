@@ -245,8 +245,8 @@ void ParticleEmitterManager::CreateRadialSpray(int numParticles,
 												 float scaleTo,
 												 float fadeInPercentTime,
 												 float fadeOutPercentTime,
-												 float spawnOffsetX,
-												 float spawnOffsetY)
+												 float spawnSpreadX,
+												 float spawnSpreadY)
 {
 	if (sNumParticlesInWorld > kMaxParticlesInWorld)
 	{
@@ -300,10 +300,42 @@ void ParticleEmitterManager::CreateRadialSpray(int numParticles,
 		// =======================================================
 
 		p.MaxLiveTime = maxLiveTime - (((maxLiveTime - minLiveTime) / numParticles) * i);
-		p.PosX = position.X;
-		p.PosY = position.Y;
-		p.StartPosX = position.X; // our original start position
-		p.StartPosY = position.Y;
+		
+		if (spawnSpreadX == 0.0f)
+		{
+			p.PosX = position.X;
+			p.StartPosX = position.X; // our original start position
+		}
+		else
+		{
+			float posXOffset = rand() % ((unsigned)(spawnSpreadX * 10.0f) + 1);
+
+			/*if (flippedHorizontal)
+			{
+				posXOffset *= -1;
+			}*/
+
+			p.PosX = position.X + posXOffset;
+			p.StartPosX = position.X + posXOffset;
+		}
+
+		if (spawnSpreadY == 0.0f)
+		{
+			p.PosY = position.Y;
+			p.StartPosY = position.Y;
+		}
+		else
+		{
+			float posYOffset = rand() % ((unsigned)(spawnSpreadY * 10.0f) + 1);
+
+			/*if (flippedVertical)
+			{
+				posYOffset *= -1;
+			}*/
+
+			p.PosY = position.Y + posYOffset;
+			p.StartPosY = position.Y + posYOffset;
+		}
 		
 		if(maxSize <= minSize)
 		{
@@ -352,8 +384,8 @@ void ParticleEmitterManager::CreateRadialSpray(int numParticles,
 												loopTime,
 												scalesByLiveTime, 
 												scaleTo * gameScale,
-												spawnOffsetX,
-												spawnOffsetY);
+												spawnSpreadX,
+												spawnSpreadY);
 
 	spray->SetFadeInPercentTime(fadeInPercentTime);
 	spray->SetFadeOutPercentTime(fadeOutPercentTime);

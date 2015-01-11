@@ -1,7 +1,7 @@
 <data>
 	<body OffsetX="0" OffsetY="8" SizeX="40" SizeY="80">
 
-		<Still FrameRate="0" MaxFrameRate="0" MinFrameRate="0">
+		<Still FrameRate="0" MaxFrameRate="0" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
       <frame filename="Media\\characters\\player\\player_still_1.png">
         <skeletonparts>
           <part start_x="-15" start_y="-45" end_x="40" end_y="20"/>
@@ -11,7 +11,7 @@
       </frame>
     </Still>
 
-		<Running FrameRate="10" MaxFrameRate="15" MinFrameRate="4">
+		<Running FrameRate="10" MaxFrameRate="15" MinFrameRate="4" skeleton_offset_x="0" skeleton_offset_y="0">
       <frame filename="Media\\characters\\player\\player_run_1.png">
         <skeletonparts>
           <part start_x="-15" start_y="-45" end_x="40" end_y="20"/>
@@ -57,7 +57,7 @@
       </frame>
 		</Running>
 
-		<JumpingUp FrameRate="8" MaxFrameRate="8" MinFrameRate="0">
+		<JumpingUp FrameRate="8" MaxFrameRate="8" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
       <frame filename="Media\\characters\\player\\player_jump_1.png">
         <skeletonparts>
           <part start_x="-10" start_y="-30" end_x="10" end_y="40"/>
@@ -78,7 +78,7 @@
       </frame>
 		</JumpingUp>
 
-    <JumpingDown FrameRate="6" MaxFrameRate="6" MinFrameRate="0">
+    <JumpingDown FrameRate="6" MaxFrameRate="6" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
       <frame filename="Media\\characters\\player\\player_jump_3.png">
         <skeletonparts>
           <part start_x="-15" start_y="-75" end_x="15" end_y="-10"/>
@@ -98,7 +98,7 @@
       </frame>
     </JumpingDown>
 
-    <SlidingDown FrameRate="0" MaxFrameRate="0" MinFrameRate="0">
+    <SlidingDown FrameRate="0" MaxFrameRate="0" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
       <frame filename="Media\\characters\\player\\player_wall_slide.png">
         <skeletonparts>
           <part start_x="-15" start_y="-45" end_x="40" end_y="20"/>
@@ -111,25 +111,25 @@
 	</body>
 
 	<arm OffsetX="50" OffsetY="24" SizeX="10" SizeY="10">
-		<Still FrameRate="10" MaxFrameRate="10" MinFrameRate="0">
+		<Still FrameRate="10" MaxFrameRate="10" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
        <frame filename="Media\\characters\\player\\arm_throw_1.png" />
        <frame filename="Media\\characters\\player\\arm_throw_2.png" />
 		</Still>
 
-    <Running FrameRate="10" MaxFrameRate="10" MinFrameRate="0">
+    <Running FrameRate="10" MaxFrameRate="10" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
       <frame filename="Media\\characters\\player\\arm_throw_1.png" />
       <frame filename="Media\\characters\\player\\arm_throw_2.png" />
     </Running>
 
-    <JumpingUp FrameRate="4" MaxFrameRate="8" MinFrameRate="0">
+    <JumpingUp FrameRate="4" MaxFrameRate="8" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
     </JumpingUp>
 
-    <JumpingDown FrameRate="10" MaxFrameRate="10" MinFrameRate="0">
+    <JumpingDown FrameRate="10" MaxFrameRate="10" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
       <frame filename="Media\\characters\\player\\arm_throw_jump_1.png" />
       <frame filename="Media\\characters\\player\\arm_throw_jump_2.png" />
     </JumpingDown>
 
-    <SlidingDown FrameRate="10" MaxFrameRate="10" MinFrameRate="0">
+    <SlidingDown FrameRate="10" MaxFrameRate="10" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
       <frame filename="Media\\characters\\player\\arm_throw_1.png" />
       <frame filename="Media\\characters\\player\\arm_throw_2.png" />
     </SlidingDown>

@@ -1,0 +1,80 @@
+<data>
+	<body OffsetX="0" OffsetY="8" SizeX="40" SizeY="80">
+
+		<Still FrameRate="0" MaxFrameRate="0" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="40">
+      <frame filename="Media\\characters\\ninja_enemy_3\\still_1.png">
+        <skeletonparts>
+          <part start_x="-15" start_y="-45" end_x="40" end_y="20"/>
+          <part start_x="-15" start_y="-45" end_x="0" end_y="-95"/>
+          <part start_x="0" start_y="-95" end_x="-15" end_y="-147"/>
+        </skeletonparts>
+      </frame>
+    </Still>
+
+		<Running FrameRate="10" MaxFrameRate="15" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="40">
+      <frame filename="Media\\characters\\ninja_enemy_3\\run_1.png">
+       </frame>
+      <frame filename="Media\\characters\\ninja_enemy_3\\run_2.png">
+      </frame>
+      <frame filename="Media\\characters\\ninja_enemy_3\\run_3.png">
+      </frame>
+      <frame filename="Media\\characters\\ninja_enemy_3\\run_4.png">
+      </frame>
+      <frame filename="Media\\characters\\ninja_enemy_3\\run_5.png">
+      </frame>
+		</Running>
+
+		<JumpingUp FrameRate="8" MaxFrameRate="8" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="40">
+      <frame filename="Media\\characters\\ninja_enemy_3\\jump_1.png">
+      </frame>
+      <frame filename="Media\\characters\\ninja_enemy_3\\jump_2.png">
+      </frame>
+		</JumpingUp>
+
+    <JumpingDown FrameRate="6" MaxFrameRate="6" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="40">
+      <frame filename="Media\\characters\\ninja_enemy_3\\jump_3.png">
+      </frame>
+      <frame filename="Media\\characters\\ninja_enemy_3\\jump_4.png">
+      </frame>
+    </JumpingDown>
+
+    <SlidingDown FrameRate="0" MaxFrameRate="0" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="40">
+      <frame filename="Media\\characters\\ninja_enemy_3\\wall_slide.png">
+      </frame>
+    </SlidingDown>
+
+	</body>
+
+	<arm OffsetX="6" OffsetY="24" SizeX="32" SizeY="30">
+		<Still FrameRate="8" MaxFrameRate="8" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="40">
+       <frame filename="Media\\characters\\ninja_enemy_3\\arm_throw_still1.png" />
+       <frame filename="Media\\characters\\ninja_enemy_3\\arm_throw_still2.png" />
+      <frame filename="Media\\characters\\ninja_enemy_3\\arm_throw_still3.png" />
+		</Still>
+
+    <Running FrameRate="8" MaxFrameRate="8" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="40">
+      <frame filename="Media\\characters\\ninja_enemy_3\\arm_throw_run1.png" />
+      <frame filename="Media\\characters\\ninja_enemy_3\\arm_throw_run2.png" />
+      <frame filename="Media\\characters\\ninja_enemy_3\\arm_throw_run3.png" />
+    </Running>
+
+    <JumpingUp FrameRate="8" MaxFrameRate="8" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="40">
+      <frame filename="Media\\characters\\ninja_enemy_3\\arm_throw_still1.png" />
+      <frame filename="Media\\characters\\ninja_enemy_3\\arm_throw_still2.png" />
+      <frame filename="Media\\characters\\ninja_enemy_3\\arm_throw_still3.png" />
+    </JumpingUp>
+
+    <JumpingDown FrameRate="8" MaxFrameRate="8" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="40">
+      <frame filename="Media\\characters\\ninja_enemy_3\\arm_throw_still1.png" />
+      <frame filename="Media\\characters\\ninja_enemy_3\\arm_throw_still2.png" />
+      <frame filename="Media\\characters\\ninja_enemy_3\\arm_throw_still3.png" />
+    </JumpingDown>
+
+    <SlidingDown FrameRate="8" MaxFrameRate="8" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="40">
+      <frame filename="Media\\characters\\ninja_enemy_3\\arm_throw_still1.png" />
+      <frame filename="Media\\characters\\ninja_enemy_3\\arm_throw_still2.png" />
+      <frame filename="Media\\characters\\ninja_enemy_3\\arm_throw_still3.png" />
+    </SlidingDown>
+	</arm>
+
+</data>

@@ -13,7 +13,13 @@ NinjaSpawner::~NinjaSpawner(void)
 {
 }
 
-void NinjaSpawner::SpawnNPC(const float posX, const float posY, bool playSoundEffect, std::string animationFile)
+void NinjaSpawner::SpawnNPC(const float posX,
+							const float posY,
+							bool playSoundEffect, 
+							std::string animationFile, 
+							Vector3 & dimensions, 
+							Vector3 & collisionDimensions, 
+							Vector2 & collisionBoxOffset)
 {
 	float randJumpSpeed = rand() % 4000;
 	randJumpSpeed *= 0.001;
@@ -26,10 +32,12 @@ void NinjaSpawner::SpawnNPC(const float posX, const float posY, bool playSoundEf
 
 	NPC * npc = new NPC(posX, posY, 49 + (randZ * 0.1f));
 	npc->m_animationFile = animationFile;
-	npc->m_drawAtNativeDimensions = true;
+	npc->m_drawAtNativeDimensions = false;
+	npc->m_dimensions = Vector3(dimensions.X, dimensions.Y, 0);
 	npc->m_isAnimated = true;
 	npc->SetMaxVelocityXYZ(randMaxXVelocity, 99999, 0);
-	npc->SetCollisionDimensions(Vector3(100,200,0));
+	npc->SetCollisionDimensions(Vector3(collisionDimensions.X, collisionDimensions.Y, 0));
+	npc->SetCollisionBoxOffset(Vector2(collisionBoxOffset.X, collisionBoxOffset.Y));   
 	npc->SetPlayer(GameObjectManager::Instance()->GetPlayer());
 	npc->SetResistanceXYZ(0.88, 2.2, 0);
 	npc->setAccelXRate(1.0);
@@ -84,33 +92,42 @@ void NinjaSpawner::SpawnMultiple(const unsigned int numNPC, Vector2 boundsPos, V
 		std::string animFile;
 		int randAnim = rand() % 5;
 
+		Vector3 dimensions;
+		Vector3 collisionDimensions;
+		Vector2 collisionOffset;
+
 		switch (randAnim)
 		{
 			case 0:
-				case 1:
-					case 2:
+			case 1:
+			case 2:
 			{
-				animFile = "XmlFiles\\ninjaAnimation2.xml";
+				dimensions = Vector3(220, 220, 0);
+				collisionDimensions = Vector3(100, 200, 0);
+				collisionOffset = Vector2(0, -20);
+				animFile = "XmlFiles\\ninjaAnimation3.xml";
 				break;
 			}
 			case 3:
-			{
-				animFile = "XmlFiles\\player_female_animation.xml";
-				break;
-			}
 			case 4:
 			{
-				animFile = "XmlFiles\\player_female_animation2.xml";
+				dimensions = Vector3(220, 220, 0);
+				collisionDimensions = Vector3(100,200,0);
+				collisionOffset = Vector2(0, -20);
+				animFile = "XmlFiles\\ninjaAnimation2.xml";
 				break;
 			}
 			default:
 			{
+				dimensions = Vector3(50, 50, 0);
+				collisionDimensions = Vector3(200, 200, 0);
+				collisionOffset = Vector2(0, 100);
 				animFile = "XmlFiles\\ninjaAnimation2.xml";
 				break;
 			}
 		}
 
-		SpawnNPC(boundsPos.X + randX, boundsPos.Y + randY, false, animFile);
+		SpawnNPC(boundsPos.X + randX, boundsPos.Y + randY, false, animFile, dimensions, collisionDimensions, collisionOffset);
 	}
 
 	AudioManager::Instance()->PlaySoundEffect("explosion\\smoke_explosion.wav");

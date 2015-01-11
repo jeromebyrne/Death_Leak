@@ -32,7 +32,6 @@ void AnimationSequence::ReadXml(TiXmlElement * element)
 
 	// Read the name of the sequence.
 	m_name = (string)element->Value();
-	//Utilities::ToLower(m_name);
 
 	// get frame rate attrib
 	m_framerate = XmlUtilities::ReadAttributeAsFloat(element, "", "FrameRate");
@@ -42,6 +41,9 @@ void AnimationSequence::ReadXml(TiXmlElement * element)
 
 	// get the min framerate attrib
 	m_minFramerate = XmlUtilities::ReadAttributeAsFloat(element, "", "MinFrameRate");
+
+	float skeletonOffsetX = XmlUtilities::ReadAttributeAsFloat(element, "", "skeleton_offset_x");
+	float skeletonOffsetY = XmlUtilities::ReadAttributeAsFloat(element, "", "skeleton_offset_y");
 	
 	//try loading all of the sequence frames
 	TiXmlElement * child = element->FirstChildElement();
@@ -74,10 +76,10 @@ void AnimationSequence::ReadXml(TiXmlElement * element)
 				while (skeleton_part)
 				{
 					AnimationSkeleton::AnimationSkeletonFramePiece piece;
-					piece.mStartPos.X = XmlUtilities::ReadAttributeAsFloat(skeleton_part, "", "start_x");
-					piece.mStartPos.Y = XmlUtilities::ReadAttributeAsFloat(skeleton_part, "", "start_y");
-					piece.mEndPos.X = XmlUtilities::ReadAttributeAsFloat(skeleton_part, "", "end_x");
-					piece.mEndPos.Y = XmlUtilities::ReadAttributeAsFloat(skeleton_part, "", "end_y");
+					piece.mStartPos.X = XmlUtilities::ReadAttributeAsFloat(skeleton_part, "", "start_x") + skeletonOffsetX;
+					piece.mStartPos.Y = XmlUtilities::ReadAttributeAsFloat(skeleton_part, "", "start_y") + skeletonOffsetY;
+					piece.mEndPos.X = XmlUtilities::ReadAttributeAsFloat(skeleton_part, "", "end_x") + skeletonOffsetX;
+					piece.mEndPos.Y = XmlUtilities::ReadAttributeAsFloat(skeleton_part, "", "end_y") + skeletonOffsetY;
 
 					skeletonPiecesList.push_back(piece);
 					

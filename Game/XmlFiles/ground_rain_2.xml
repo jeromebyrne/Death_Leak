@@ -2,7 +2,7 @@
 
 	<body OffsetX="0" OffsetY="8" SizeX="40" SizeY="80">
 
-		<Still FrameRate="12" MaxFrameRate="12" MinFrameRate="0">
+		<Still FrameRate="12" MaxFrameRate="12" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
 			<frame filename="Media\ground\ground_rain_1.png"/>
      	<frame filename="Media\ground\ground_rain_2.png"/>
       <frame filename="Media\ground\ground_rain_3.png"/>
