@@ -13,33 +13,98 @@
 
 		<Running FrameRate="10" MaxFrameRate="15" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="40">
       <frame filename="Media\\characters\\ninja_enemy_1\\run_1.png">
+        <skeletonparts>
+          <part start_x="-15" start_y="-45" end_x="40" end_y="20"/>
+          <part start_x="-15" start_y="-45" end_x="0" end_y="-95"/>
+          <part start_x="0" start_y="-95" end_x="-15" end_y="-147"/>
+        </skeletonparts>
        </frame>
       <frame filename="Media\\characters\\ninja_enemy_1\\run_2.png">
+        <skeletonparts>
+          <part start_x="-5" start_y="-35" end_x="40" end_y="20"/>
+          <part start_x="-5" start_y="-35" end_x="22" end_y="-77"/>
+          <part start_x="22" start_y="-77" end_x="0" end_y="-117"/>
+          <part start_x="-5" start_y="-35" end_x="-20" end_y="-100"/>
+          <part start_x="-20" start_y="-100" end_x="-45" end_y="-132"/>
+        </skeletonparts>
       </frame>
       <frame filename="Media\\characters\\ninja_enemy_1\\run_3.png">
+        <skeletonparts>
+          <part start_x="-5" start_y="-35" end_x="40" end_y="20"/>
+          <part start_x="-5" start_y="-35" end_x="22" end_y="-77"/>
+          <part start_x="22" start_y="-77" end_x="32" end_y="-140"/>
+          <part start_x="-5" start_y="-35" end_x="-20" end_y="-90"/>
+          <part start_x="-20" start_y="-90" end_x="-55" end_y="-120"/>
+        </skeletonparts>
       </frame>
       <frame filename="Media\\characters\\ninja_enemy_1\\run_4.png">
+        <skeletonparts>
+          <part start_x="-5" start_y="-35" end_x="40" end_y="20"/>
+          <part start_x="-5" start_y="-35" end_x="22" end_y="-77"/>
+          <part start_x="22" start_y="-77" end_x="-15" end_y="-110"/>
+          <part start_x="-5" start_y="-35" end_x="-20" end_y="-90"/>
+          <part start_x="-20" start_y="-90" end_x="-40" end_y="-135"/>
+        </skeletonparts>
       </frame>
       <frame filename="Media\\characters\\ninja_enemy_1\\run_5.png">
+        <skeletonparts>
+          <part start_x="-5" start_y="-35" end_x="40" end_y="20"/>
+          <part start_x="-5" start_y="-35" end_x="22" end_y="-77"/>
+          <part start_x="22" start_y="-77" end_x="26" end_y="-140"/>
+          <part start_x="-5" start_y="-35" end_x="-20" end_y="-90"/>
+          <part start_x="-20" start_y="-90" end_x="-55" end_y="-120"/>
+        </skeletonparts>
       </frame>
 		</Running>
 
 		<JumpingUp FrameRate="8" MaxFrameRate="8" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="40">
       <frame filename="Media\\characters\\ninja_enemy_1\\jump_1.png">
+        <skeletonparts>
+          <part start_x="-10" start_y="-30" end_x="10" end_y="40"/>
+          <part start_x="-10" start_y="-30" end_x="28" end_y="-47"/>
+          <part start_x="28" start_y="-47" end_x="42" end_y="-90"/>
+          <part start_x="-10" start_y="-30" end_x="-10" end_y="-70"/>
+          <part start_x="-10" start_y="-70" end_x="-28" end_y="-130"/>
+        </skeletonparts>
       </frame>
       <frame filename="Media\\characters\\ninja_enemy_1\\jump_2.png">
+        <skeletonparts>
+          <part start_x="-15" start_y="-60" end_x="15" end_y="5"/>
+          <part start_x="-15" start_y="-60" end_x="22" end_y="-56"/>
+          <part start_x="22" start_y="-56" end_x="42" end_y="-90"/>
+          <part start_x="-15" start_y="-60" end_x="-10" end_y="-103"/>
+          <part start_x="-10" start_y="-103" end_x="-40" end_y="-117"/>
+        </skeletonparts>
       </frame>
 		</JumpingUp>
 
     <JumpingDown FrameRate="6" MaxFrameRate="6" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="40">
       <frame filename="Media\\characters\\ninja_enemy_1\\jump_3.png">
+        <skeletonparts>
+          <part start_x="-15" start_y="-75" end_x="15" end_y="-10"/>
+          <part start_x="-15" start_y="-75" end_x="22" end_y="-71"/>
+          <part start_x="22" start_y="-71" end_x="42" end_y="-90"/>
+          <part start_x="-15" start_y="-75" end_x="-5" end_y="-117"/>
+          <part start_x="-5" start_y="-117" end_x="-25" end_y="-125"/>
+        </skeletonparts>
       </frame>
       <frame filename="Media\\characters\\ninja_enemy_1\\jump_4.png">
+        <skeletonparts>
+          <part start_x="-18" start_y="-75" end_x="20" end_y="-30"/>
+          <part start_x="-18" start_y="-75" end_x="16" end_y="-71"/>
+          <part start_x="16" start_y="-71" end_x="10" end_y="-112"/>
+          <part start_x="16" start_y="-95" end_x="50" end_y="-135"/>
+        </skeletonparts>
       </frame>
     </JumpingDown>
 
     <SlidingDown FrameRate="0" MaxFrameRate="0" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="40">
       <frame filename="Media\\characters\\ninja_enemy_1\\wall_slide.png">
+        <skeletonparts>
+          <part start_x="-15" start_y="-45" end_x="40" end_y="20"/>
+          <part start_x="-15" start_y="-45" end_x="0" end_y="-95"/>
+          <part start_x="0" start_y="-95" end_x="-15" end_y="-147"/>
+        </skeletonparts>
       </frame>
     </SlidingDown>
 

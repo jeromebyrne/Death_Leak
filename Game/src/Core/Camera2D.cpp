@@ -246,7 +246,7 @@ void Camera2D::Update()
 #endif
 }
 
-void Camera2D::FollowTargetObjectWithLag()
+void Camera2D::FollowTargetObjectWithLag(bool forceUpdate, float overrideLagX, float overrideLagY)
 {
 	GAME_ASSERT(mTargetObject);
 
@@ -255,7 +255,7 @@ void Camera2D::FollowTargetObjectWithLag()
 		return;
 	}
 
-	if (UpdateBoundsX(mTargetObject))
+	if (UpdateBoundsX(mTargetObject) || forceUpdate)
 	{
 		// get the x and y distance between the camera and the object
 		float distanceX = 0.0f;
@@ -271,6 +271,11 @@ void Camera2D::FollowTargetObjectWithLag()
 
 		float xLag = mTargetLag.X * mZoomInPercent;
 
+		if (overrideLagX != 0.0f)
+		{
+			xLag = overrideLagX;
+		}
+
 		if (xLag < 1.0f)
 		{
 			xLag = 1.0f;
@@ -278,16 +283,23 @@ void Camera2D::FollowTargetObjectWithLag()
 		m_position.X -= distanceX / xLag;
 	}
 
-	if (UpdateBoundsY(mTargetObject))
+	if (UpdateBoundsY(mTargetObject) || forceUpdate)
 	{
-		if (mTargetLag.Y < 1.0f)
+		float yLag = mTargetLag.Y;
+
+		if (overrideLagY != 0.0f)
 		{
-			mTargetLag.Y = 1.0f;
+			yLag = overrideLagY;
+		}
+
+		if (yLag < 1.0f)
+		{
+			yLag = 1.0f;
 		}
 
 		float distanceY = m_position.Y - (mTargetObject->Y() + mTargetOffset.Y * mZoomInPercent);
 
-		m_position.Y -= distanceY / mTargetLag.Y;
+		m_position.Y -= distanceY / yLag;
 	}
 }
 

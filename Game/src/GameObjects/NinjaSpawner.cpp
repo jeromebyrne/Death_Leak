@@ -47,27 +47,27 @@ void NinjaSpawner::SpawnNPC(const float posX,
 	GameObjectManager::Instance()->AddGameObject(npc);
 
 	// show some effects when we spawn - smoke
-	ParticleEmitterManager::Instance()->CreateRadialSpray(20,
-														Vector3(npc->X(), npc->Y(), npc->Z() - 0.1f),
+	ParticleEmitterManager::Instance()->CreateRadialSpray(50,
+														Vector3(npc->X(), npc->Bottom(), npc->Z() - 1.0f),
 														Vector3(3200, 1200, 0),
 														(rand() % 3) > 1 ? "Media\\smoke3.png" : "Media\\smoke4.png",
-														1.5f,
-														4.0f,
+														4.5f,
+														6.0f,
+														0.5f,
 														1.0f,
-														1.5f,
-														150,
-														300,
+														100,
+														200,
 														0.5,
 														false,
 														0.5,
 														1.0,
 														800,
 														true, 
-														2.0,
-														0.15f,
-														0.8f,
+														2.2,
+														0.0f,
+														0.5f,
 														10,
-														10);
+														50);
 
 	if (playSoundEffect)
 	{

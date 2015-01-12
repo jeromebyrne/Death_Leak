@@ -5,7 +5,7 @@
 #include "AudioObject.h"
 #include "Game.h"
 
-static const float kTimeUntilFirstWeather = 50.0f;
+static const float kTimeUntilFirstWeather = 3.0f;
 static const float kRainSessionMinTime = 70.0f;
 static const float kRainSessionMaxTime = 120.0f;
 static const float kRainIntroTime = 10.0f;
@@ -61,7 +61,8 @@ WeatherManager::WeatherManager(void):
 	mLightningStartTime(0),
 	mPLayingLightningEffect(false),
 	mTimeUntilNextLightning(0),
-	mFoliageSwayMultiplier(1.0f)
+	mFoliageSwayMultiplier(1.0f),
+	mRainLayer3(nullptr)
 {
 	// preload large textures
 	/*TextureManager::Instance()->LoadTexture("Media\\rainlayer.png");
@@ -89,6 +90,7 @@ void WeatherManager::RefreshAssets()
 			{
 				mBottomRainLayer = nullptr;
 				mTopRainLayer = nullptr;
+				mRainLayer3 = nullptr;
 				mGroundRainLayer = nullptr;
 				mRainSFX = nullptr;
 				mLightningLayer = nullptr;
@@ -165,7 +167,33 @@ void WeatherManager::CreateRainAssets()
 		GameObjectManager::Instance()->AddGameObject(mTopRainLayer);
 	}
 
-	if (!mGroundRainLayer)
+	if (!mRainLayer3)
+	{
+		mRainLayer3 = new ParallaxLayer(Camera2D::GetInstance());
+
+		mRainLayer3->m_textureFilename = "Media\\rainlayer.png";
+		mRainLayer3->m_drawAtNativeDimensions = true;
+		mRainLayer3->m_updateable = true;
+		mRainLayer3->m_position = Vector3(0, -1598 * gameScale, 15);
+		mRainLayer3->m_dimensions = Vector3(2048, 2048, 0);
+		mRainLayer3->mRepeatTextureX = false;
+		mRainLayer3->mRepeatTextureY = false;
+		mRainLayer3->m_repeatWidth = 2048;
+		mRainLayer3->m_cameraParallaxMultiplierX = 0.000488;
+		mRainLayer3->m_cameraParallaxMultiplierY = 0;
+		mRainLayer3->m_followCamXPos = true;
+		mRainLayer3->m_followCamYPos = false;
+		mRainLayer3->m_autoScrollY = true;
+		mRainLayer3->m_autoScrollX = false;
+		mRainLayer3->m_autoScrollXSpeed = 0;
+		mRainLayer3->m_autoScrollYSpeed = 6.5f;
+		mRainLayer3->EffectName = "effectlighttexture";
+		mRainLayer3->m_alpha = 1.0f;
+
+		GameObjectManager::Instance()->AddGameObject(mRainLayer3);
+	}
+
+	/*if (!mGroundRainLayer)
 	{
 		mGroundRainLayer = new ParallaxLayer(Camera2D::GetInstance());
 
@@ -191,7 +219,7 @@ void WeatherManager::CreateRainAssets()
 		mGroundRainLayer->m_alpha = 1.0f;
 
 		GameObjectManager::Instance()->AddGameObject(mGroundRainLayer);
-	}
+	}*/
 
 	// add the audio object
 	if (!mRainSFX)
@@ -403,6 +431,11 @@ void WeatherManager::StopRaining()
 		GameObjectManager::Instance()->RemoveGameObject(mBottomRainLayer);
 		mBottomRainLayer = nullptr;
 	}
+	if (mRainLayer3)
+	{
+		GameObjectManager::Instance()->RemoveGameObject(mRainLayer3);
+		mRainLayer3 = nullptr;
+	}
 	if (mGroundRainLayer)
 	{
 		GameObjectManager::Instance()->RemoveGameObject(mGroundRainLayer);
@@ -454,7 +487,8 @@ void WeatherManager::UpdateRaining(float delta)
 			float alphaVal = 1.0f - ((mElapsedTime - stopRainingTime) / kRainOutroTime) ;
 			mBottomRainLayer->SetAlpha(alphaVal);
 			mTopRainLayer->SetAlpha(alphaVal);
-			mGroundRainLayer->SetAlpha(alphaVal);
+			mRainLayer3->SetAlpha(alphaVal);
+			// mGroundRainLayer->SetAlpha(alphaVal);
 			mRainSFX->SetVolume(alphaVal);
 		}
 	}
@@ -467,14 +501,16 @@ void WeatherManager::UpdateRaining(float delta)
 			float alphaVal = timeSinceRain / kRainIntroTime;
 			mBottomRainLayer->SetAlpha(alphaVal);
 			mTopRainLayer->SetAlpha(alphaVal);
-			mGroundRainLayer->SetAlpha(alphaVal);
+			mRainLayer3->SetAlpha(alphaVal);
+			// mGroundRainLayer->SetAlpha(alphaVal);
 			mRainSFX->SetVolume(alphaVal);
 		}
 		else 
 		{
 			mBottomRainLayer->SetAlpha(1.0f);
 			mTopRainLayer->SetAlpha(1.0f);
-			mGroundRainLayer->SetAlpha(1.0f);
+			mRainLayer3->SetAlpha(1.0f);
+			// mGroundRainLayer->SetAlpha(1.0f);
 			mRainSFX->SetVolume(1.0f);
 		}
 

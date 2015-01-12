@@ -45,6 +45,7 @@ private:
 
 	ParallaxLayer * mTopRainLayer;
 	ParallaxLayer * mBottomRainLayer;
+	ParallaxLayer * mRainLayer3;
 	ParallaxLayer * mGroundRainLayer;
 
 	ParallaxLayer * mTopSnowLayer;

@@ -280,6 +280,10 @@ void UIManager::HandleEvent(string eventName, list<string> params)
 		{
 			string ui_name = *(params.begin()); // always only 1 parameter
 			PushUI(ui_name); 
+			if (ui_name == "mainmenu")
+			{
+				GameObjectManager::Instance()->SetLevelFreshLaunch(true);
+			}
 			break;
 		}
 	case POP_UI:

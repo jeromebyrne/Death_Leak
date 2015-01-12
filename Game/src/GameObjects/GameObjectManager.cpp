@@ -41,14 +41,15 @@ struct DepthSortPredicate
 GameObjectManager* GameObjectManager::m_instance = 0;
 
 GameObjectManager::GameObjectManager(): 
-m_camera(),
-m_player(0),
-m_levelLoaded(false),
-mShowDebugInfo(false),
-mCamYShouldOffset(false),
-mCamYOffset(0),
-mSwitchToLevel(false),
-mSlowMotionLayer(nullptr)
+	m_camera(),
+	m_player(0),
+	m_levelLoaded(false),
+	mShowDebugInfo(false),
+	mCamYShouldOffset(false),
+	mCamYOffset(0),
+	mSwitchToLevel(false),
+	mSlowMotionLayer(nullptr),
+	mFreshLevelLaunch(true)
 {
 }
 
@@ -406,15 +407,35 @@ void GameObjectManager::LoadObjectsFromFile(const char* filename)
 
 	ScaleObjects(scaleX, scaleY);
 
+	WeatherManager::GetInstance()->RefreshAssets();
+
+	AddSlowMotionLayer();
+
+	if (mFreshLevelLaunch)
+	{
+		mFreshLevelLaunch = false;
+	}
+	else
+	{
+		// this level was triggered by a LevelTrigger
+		GAME_ASSERT(m_player);
+		if (m_player)
+		{
+			m_player->SetX(mPlayerStartPosForLevel.X);
+			m_player->SetY(mPlayerStartPosForLevel.Y);
+			m_player->SetDirectionXYZ(mPlayerStartDirectionXForLevel, 1, 0);
+			m_player->AccelerateX(mPlayerStartDirectionXForLevel);
+			m_camera->SetPositionY(mPlayerStartPosForLevel.Y + 300);
+			m_camera->SetPositionX(-mPlayerStartPosForLevel.X);
+			m_camera->FollowTargetObjectWithLag(true, 1.0f, 2.0f);
+		}
+	}
+
 	// update all the objects at least once at the start
 	for (auto & obj : m_gameObjects)
 	{
 		obj->Update(0);
 	}
-
-	WeatherManager::GetInstance()->RefreshAssets();
-
-	AddSlowMotionLayer();
 
 	// loaded a level
 	m_levelLoaded = true;

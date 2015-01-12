@@ -18,6 +18,8 @@ private:
 
 	std::string mLevelToLoad;
 
+	Vector2 mPlayerStartPos;
+	float mPlayerDirectionX;
 };
 
 #endif

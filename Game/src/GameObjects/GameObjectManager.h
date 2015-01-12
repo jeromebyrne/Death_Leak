@@ -90,6 +90,16 @@ public:
 	bool mSwitchToLevel;
 	std::string mLevelToSwitch;
 
+	Vector2 GetPlayerStartPos() const { return mPlayerStartPosForLevel; }
+
+	void SetPlayerStartPos(Vector2 & position) { mPlayerStartPosForLevel = position; }
+
+	float GetPlayerStartDirectionX() const { return mPlayerStartDirectionXForLevel; }
+
+	void SetPlayerStartDirectionX(float value) { mPlayerStartDirectionXForLevel = value; }
+
+	void SetLevelFreshLaunch(bool value) { mFreshLevelLaunch = value; }
+
 private:
 
 	Camera2D * m_camera;
@@ -131,6 +141,11 @@ private:
 	ParallaxLayer * mSlowMotionLayer;
 
 	LevelProperties mLevelProperties;
+
+	Vector2 mPlayerStartPosForLevel;
+	float mPlayerStartDirectionXForLevel;
+
+	bool mFreshLevelLaunch;
 };
 
 #endif

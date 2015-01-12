@@ -52,7 +52,11 @@ public:
 
 	Vector3 Position() const { return m_position; }
 
-	void FollowTargetObjectWithLag();
+	void SetPositionY(float y) { m_position.Y = y; }
+
+	void SetPositionX(float x) { m_position.X = x; }
+
+	void FollowTargetObjectWithLag(bool forceUpdate = false, float overrideLagX = 0.0f, float overrideLagY = 0.0f);
 
 	inline float ViewWidth()
 	{
