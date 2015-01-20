@@ -376,6 +376,8 @@ void WeatherManager::Update(float delta)
 		UpdateNoWeather(delta);
 	}
 
+	FadeWeatherIfApplicable(delta);
+
 	mElapsedTime += delta;
 }
 
@@ -405,6 +407,12 @@ void WeatherManager::StartRaining()
 
 void WeatherManager::DoLightningEffect()
 {
+	if (mRainLayer3 && Camera2D::GetInstance()->Y() < mRainLayer3->Y())
+	{
+		// if we're below rain layer 3 the we have moved underground
+		// don't show lightning effect if underground
+		return;
+	}
 	mLightningStartTime = mElapsedTime;
 	mPLayingLightningEffect = true;
 
@@ -501,17 +509,19 @@ void WeatherManager::UpdateRaining(float delta)
 			float alphaVal = timeSinceRain / kRainIntroTime;
 			mBottomRainLayer->SetAlpha(alphaVal);
 			mTopRainLayer->SetAlpha(alphaVal);
-			mRainLayer3->SetAlpha(alphaVal);
-			// mGroundRainLayer->SetAlpha(alphaVal);
-			mRainSFX->SetVolume(alphaVal);
+			if (Camera2D::GetInstance()->Y() > mRainLayer3->Y())
+			{
+				mRainSFX->SetVolume(alphaVal);
+				mRainLayer3->SetAlpha(alphaVal);
+			}
 		}
 		else 
 		{
 			mBottomRainLayer->SetAlpha(1.0f);
 			mTopRainLayer->SetAlpha(1.0f);
-			mRainLayer3->SetAlpha(1.0f);
+
 			// mGroundRainLayer->SetAlpha(1.0f);
-			mRainSFX->SetVolume(1.0f);
+			// mRainSFX->SetVolume(1.0f);
 		}
 
 		if (mPLayingLightningEffect)
@@ -528,7 +538,8 @@ void WeatherManager::UpdateRaining(float delta)
 				mPLayingLightningEffect = false;
 			}
 		}
-		else if (mTimeUntilNextLightning < mElapsedTime)
+		else if (mTimeUntilNextLightning < mElapsedTime &&
+				mRainLayer3 && Camera2D::GetInstance()->Y() > mRainLayer3->Y())
 		{
 			DoLightningEffect();
 		}
@@ -547,7 +558,7 @@ void WeatherManager::UpdateSnowing(float delta)
 		}
 		else
 		{
-			float alphaVal = 1.0f - ((mElapsedTime - stopSnowingTime) / kSnowOutroTime) ;
+			float alphaVal = 1.0f - ((mElapsedTime - stopSnowingTime) / kSnowOutroTime);
 			mBottomSnowLayer->SetAlpha(alphaVal);
 			mTopSnowLayer->SetAlpha(alphaVal);
 			mSnowSFX->SetVolume(alphaVal);
@@ -679,4 +690,38 @@ void WeatherManager::StopSnowing()
 	}
 
 	RemoveState(kSnowing);
+}
+
+void WeatherManager::FadeWeatherIfApplicable(float delta)
+{
+	float camPosY = Camera2D::GetInstance()->Position().Y;
+
+	if (HasCurrentWeatherState(kRaining))
+	{
+		// rain layer 3 is the lowest layer and it needs to be faded out before we see the
+		// bottom of it because it will just be cut off
+		if (mRainLayer3)
+		{
+			if (camPosY < mRainLayer3->Y())
+			{
+				float alpha = mRainLayer3->Alpha();
+				if (alpha > 0.0f)
+				{
+					alpha -= delta;
+					mRainLayer3->SetAlpha(alpha);
+					mRainSFX->SetVolume(alpha);
+				}
+			}
+			else
+			{
+				float alpha = mRainLayer3->Alpha();
+				if (alpha < 1.0f)
+				{
+					alpha += delta * 1.5f;
+					mRainLayer3->SetAlpha(alpha);
+					mRainSFX->SetVolume(alpha);
+				}
+			}
+		}
+	}
 }

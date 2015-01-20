@@ -62,6 +62,8 @@ private:
 
 	void CreateSnowAssets();
 
+	void FadeWeatherIfApplicable(float delta);
+
 	list<WeatherState> mCurrentStates;
 
 	double mElapsedTime;
