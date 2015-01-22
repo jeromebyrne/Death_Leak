@@ -497,7 +497,10 @@ void WeatherManager::UpdateRaining(float delta)
 			mTopRainLayer->SetAlpha(alphaVal);
 			mRainLayer3->SetAlpha(alphaVal);
 			// mGroundRainLayer->SetAlpha(alphaVal);
-			mRainSFX->SetVolume(alphaVal);
+			if (Camera2D::GetInstance()->Y() > mRainLayer3->Y())
+			{
+				mRainSFX->SetVolume(alphaVal);
+			}
 		}
 	}
 	else

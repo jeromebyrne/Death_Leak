@@ -89,7 +89,8 @@ public:
 										 float spawnSpreadX,
 										 float spawnSpreadY,
 										 float fadeInPercentTime,
-										 float fadeOutPercentTime);
+										 float fadeOutPercentTime,
+										 bool originalOrientation = false);
 
 	
 

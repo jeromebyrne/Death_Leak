@@ -87,6 +87,7 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 
 		if (delta >= target_delta)
 		{
+			timing->Update(delta);
 			Update(delta * timing->GetTimeModifier());
 			last_update_time = currentTime;
 			timing->IncrementTotalTimeSeconds(delta * timing->GetTimeModifier());

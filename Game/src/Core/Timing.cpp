@@ -3,10 +3,13 @@
 Timing * Timing::m_instance = 0;
 
 Timing::Timing(void) :
-mTargetDelta(0),
-mLastUpdateDelta(0),
-mTotalTimeSeconds(0),
-mTimeModifier(1.0f)
+	mTargetDelta(0),
+	mLastUpdateDelta(0),
+	mTotalTimeSeconds(0),
+	mTimeModifier(1.0f),
+	mTimeModScheduled(false),
+	mScheduledTimeModTimeLeft(0.0f),
+	mTimeModBeforeSchedule(0.0f)
 {
 }
 
@@ -14,33 +17,32 @@ Timing::~Timing(void)
 {
 }
 
-/*void Timing::Update(bool lockFrameRate, int framesPerSecond)
+void Timing::SetTimeModifierForNumSeconds(float timeMod, float seconds)
 {
-	if(lockFrameRate)
+	if (mTimeModScheduled)
 	{
-		TICKS_PER_SECOND = framesPerSecond;
+		// can't have a schedule if already doing one
+		return;
+	}
 
-		long elapsed;
-		elapsed=m_newTime-m_oldTime;
+	mTimeModScheduled = true;
+	mTimeModBeforeSchedule = mTimeModifier;
+	mScheduledTimeModTimeLeft = seconds;
 
-		long frameTime = 1000/TICKS_PER_SECOND;
-		while(elapsed< frameTime)
+	mTimeModifier = timeMod;
+}
+
+void Timing::Update(float delta)
+{
+	if (mTimeModScheduled)
+	{
+		mScheduledTimeModTimeLeft -= delta;
+
+		if (mScheduledTimeModTimeLeft <= 0.0f)
 		{
-			Sleep(1);
-			m_newTime=timeGetTime();
-			elapsed=m_newTime-m_oldTime;
+			mScheduledTimeModTimeLeft = 0.0f;
+			mTimeModScheduled = false;
+			mTimeModifier = mTimeModBeforeSchedule;
 		}
-
-		m_lastFrameTime = elapsed;
-		m_oldTime=m_newTime;
-		m_totalGameTime = m_newTime; // increment total time
 	}
-	else
-	{
-		m_newTime=timeGetTime();
-		m_totalGameTime = m_newTime; // increment total time
-		m_lastFrameTime = m_newTime - m_oldTime;
-		m_oldTime = m_newTime;
-	}
-}*/
-
+}

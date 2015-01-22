@@ -26,7 +26,7 @@ void AudioManager::Release()
 	m_irrKlangEngine->drop();
 }
 
-ISound * AudioManager::PlaySoundEffect(string fileName, bool loop, bool track)
+ISound * AudioManager::PlaySoundEffect(string fileName, bool loop, bool track, bool applyTimeMod)
 {
 	if (mSfxEnabled)
 	{
@@ -36,7 +36,10 @@ ISound * AudioManager::PlaySoundEffect(string fileName, bool loop, bool track)
 		float timeMod = Timing::Instance()->GetTimeModifier();
 		if (!track)
 		{
-			manuallyTrackSloMo = true;
+			if (applyTimeMod)
+			{
+				manuallyTrackSloMo = true;
+			}
 			track = true;
 		}
 		ISound * sound = m_irrKlangEngine->play2D(file.c_str(), loop, false, track);
@@ -47,7 +50,10 @@ ISound * AudioManager::PlaySoundEffect(string fileName, bool loop, bool track)
 		}
 		else
 		{
-			sound->setPlaybackSpeed(timeMod);
+			if (applyTimeMod)
+			{
+				sound->setPlaybackSpeed(timeMod);
+			}
 
 			if (manuallyTrackSloMo)
 			{

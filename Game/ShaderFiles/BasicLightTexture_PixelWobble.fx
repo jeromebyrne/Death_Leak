@@ -15,7 +15,7 @@ float Intensity;
 Texture2D txDiffuse;
 SamplerState samLinear
 {
-	Filter = MIN_MAG_MIP_POINT;
+	Filter = MIN_LINEAR_MAG_POINT_MIP_LINEAR;
     AddressU = Wrap;
     AddressV = Wrap;
 };

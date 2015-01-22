@@ -6,41 +6,49 @@
 */
 class Timing
 {
-	private:
-
-		static Timing * m_instance; ///< static instance of the class
-		double mTimeStep;
-
-		Timing(void);
-		~Timing(void);
-
-		float mLastUpdateDelta;
-		float mTargetDelta;
-		float mTotalTimeSeconds;
-		float mTimeModifier;
-
-	public:
+public:
 		 
-		inline static Timing * Instance()
+	inline static Timing * Instance()
+	{
+		if(m_instance == 0)
 		{
-			if(m_instance == 0)
-			{
-				m_instance = new Timing();
-			}
-			return m_instance;
+			m_instance = new Timing();
 		}
+		return m_instance;
+	}
 
-		void SetTargetDelta(float target) { mTargetDelta = target; }
-		float GetTargetDelta() const { return mTargetDelta; } 
+	void SetTargetDelta(float target) { mTargetDelta = target; }
+	float GetTargetDelta() const { return mTargetDelta; } 
 
-		void SetLastUpdateDelta(float value) { mLastUpdateDelta = value; }
-		float GetLastUpdateDelta() const { return mLastUpdateDelta; }
+	void SetLastUpdateDelta(float value) { mLastUpdateDelta = value; }
+	float GetLastUpdateDelta() const { return mLastUpdateDelta; }
 
-		float GetTotalTimeSeconds() const { return mTotalTimeSeconds; }
-		void IncrementTotalTimeSeconds(float delta) { mTotalTimeSeconds += delta; }
+	float GetTotalTimeSeconds() const { return mTotalTimeSeconds; }
+	void IncrementTotalTimeSeconds(float delta) { mTotalTimeSeconds += delta; }
 
-		float GetTimeModifier() const { return mTimeModifier; }
-		void SetTimeModifier(float value) { mTimeModifier = value; }
+	float GetTimeModifier() const { return mTimeModifier; }
+	void SetTimeModifier(float value) { mTimeModifier = value; }
+
+	void SetTimeModifierForNumSeconds(float timeMod, float seconds);
+
+	void Update(float delta);
+
+private:
+
+	static Timing * m_instance; ///< static instance of the class
+	double mTimeStep;
+
+	Timing(void);
+	~Timing(void);
+
+	float mLastUpdateDelta;
+	float mTargetDelta;
+	float mTotalTimeSeconds;
+	float mTimeModifier;
+
+	bool mTimeModScheduled;
+	float mScheduledTimeModTimeLeft;
+	float mTimeModBeforeSchedule;
 };
 
 #endif

@@ -416,7 +416,8 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSpray(int numParticles,
 															 float spawnSpreadX,
 															 float spawnSpreadY,
 															 float fadeInPercentTime,
-															 float fadeOutPercentTime)
+															 float fadeOutPercentTime,
+															 bool originalOrientation)
 {
 	if (sNumParticlesInWorld > kMaxParticlesInWorld)
 	{
@@ -463,7 +464,11 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSpray(int numParticles,
 
 		if(flippedVertical == 0)
 		{
-			p.FlippedHorizontal = true; 
+			if (!originalOrientation)
+			{
+				p.FlippedHorizontal = true;
+			}
+			
 			p.DirectionX = direction.X + randSpread;
 			p.DirectionY = direction.Y - randSpread;
 		}
@@ -474,7 +479,10 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSpray(int numParticles,
 		}
 		if(flippedHorizontal == 0)
 		{
-			p.FlippedVertical = true; 
+			if (!originalOrientation)
+			{
+				p.FlippedVertical = true;
+			}
 		}
 			
 		if(maxLiveTime == minLiveTime)

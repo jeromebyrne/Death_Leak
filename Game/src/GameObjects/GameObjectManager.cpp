@@ -964,20 +964,14 @@ void GameObjectManager::ProcessGamePad()
 	// ===================================
 
 	// weapon ============================
-
-	if (pad_state.Gamepad.wButtons & XINPUT_GAMEPAD_B)
+	if (pad_state.Gamepad.sThumbRX < -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE ||
+		pad_state.Gamepad.sThumbRX > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE ||
+		pad_state.Gamepad.sThumbRY < -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE ||
+		pad_state.Gamepad.sThumbRY > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
 	{
 		// get aim direction 
-		Vector2 dir = Vector2(m_player->DirectionX(), 0.1f);
-
-		if (pad_state.Gamepad.sThumbLX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
-			pad_state.Gamepad.sThumbLX > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
-			pad_state.Gamepad.sThumbLY < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
-			pad_state.Gamepad.sThumbLY > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
-		{
-			dir = Vector2(pad_state.Gamepad.sThumbLX, pad_state.Gamepad.sThumbLY);
-			dir.Normalise();
-		}
+		Vector2 dir = Vector2(pad_state.Gamepad.sThumbRX, pad_state.Gamepad.sThumbRY);
+		dir.Normalise();
 
 		// let the player fire and return a projectile object which is added to the world
 		Projectile * p = m_player->FireWeapon(dir);
@@ -991,6 +985,7 @@ void GameObjectManager::ProcessGamePad()
 	{
 		m_player->ResetProjectileFireDelay();
 	}
+	
 	// ==========================
 
 	// melee ============================
@@ -1086,6 +1081,7 @@ void GameObjectManager::ProcessGamePad()
 
 	// ===========================
 
+	// Ninja spawning
 	static bool pressingLeftShoulder = false;
 	if (pad_state.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
 	{
@@ -1096,8 +1092,34 @@ void GameObjectManager::ProcessGamePad()
 		if (pressingLeftShoulder)
 		{
 			// testing
+			Timing::Instance()->SetTimeModifierForNumSeconds(0.1f, 3.5f);
 			NinjaSpawner * spawner = new NinjaSpawner();
 			spawner->SpawnMultiple(5, Vector2(m_player->X(), m_player->Y()), Vector2(1200, 1200)); 
+
+			ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
+																	Vector3(Camera2D::GetInstance()->X(), Camera2D::GetInstance()->Y(), 2),
+																	Vector3(0, 1, 0),
+																	0.1,
+																	Vector3(3200, 1200, 0),
+																	"Media\\exclamation.png",
+																	1.0f,
+																	1.0f,
+																	0.5f,
+																	0.5f,
+																	300.0f,
+																	300.0f,
+																	0.0f,
+																	false,
+																	1.0f,
+																	1.0f,
+																	0.0f,
+																	true,
+																	2.5f,
+																	0.0f,
+																	0.0f,
+																	0.05f,
+																	0.5f,
+																	true);
 		}
 
 		pressingLeftShoulder = false;

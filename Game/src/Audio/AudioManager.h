@@ -22,7 +22,7 @@ public:
 
 	void Initialise();
 	void Release();
-	ISound * PlaySoundEffect(string fileName, bool loop = false, bool track = false);
+	ISound * PlaySoundEffect(string fileName, bool loop = false, bool track = false, bool applyTimeMod = true);
 	void PlayMusic(string fileName, bool loop = false);
 	ISound* GetSound(string filename); // get a sound object
 
