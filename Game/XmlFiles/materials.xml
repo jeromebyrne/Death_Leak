@@ -23,10 +23,12 @@
     </particletextures>
 
     <damagesoundeffects>
-      <sound file="water\water_splash_projectile_1.wav" />
-      <sound file="water\water_splash_projectile_2.wav" />
+      <!--<sound file="water\water_splash_projectile_1.wav" />-->
+      <!--<sound file="water\water_splash_projectile_2.wav" />-->
       <!--<sound file="water\water_splash_projectile_3.wav" />-->
       <sound file="water\water_splash_projectile_4.wav" />
+      <sound file="water\water_splash_projectile_5.wav" />
+      <sound file="water\water_splash_projectile_6.wav" />
     </damagesoundeffects>
 
     <footstepsoundeffects>
@@ -97,18 +99,27 @@
 
     <damagesoundeffects>
       <!--<sound file="woodhit.wav" />-->
-      <sound file="Footstep3.wav" />
+      <sound file="footsteps_2/3.wav" />
+      <sound file="footsteps_2/7.wav" />
+      <sound file="footsteps_2/9.wav" />
     </damagesoundeffects>
 
     <footstepsoundeffects>
-      <sound file="Footstep1.wav" />
-      <sound file="Footstep2.wav" />
-      <sound file="Footstep3.wav" />
-      <sound file="Footstep4.wav" />
-      <sound file="Footstep5.wav" />
-      <sound file="Footstep6.wav" />
-      <sound file="Footstep7.wav" />
-      <sound file="Footstep8.wav" />
+      <!--<sound file="footsteps_2/1.wav" />-->
+      <sound file="footsteps_2/2.wav" />
+      <sound file="footsteps_2/3.wav" />
+      <sound file="footsteps_2/4.wav" />
+      <sound file="footsteps_2/5.wav" />
+      <sound file="footsteps_2/6.wav" />
+      <sound file="footsteps_2/7.wav" />
+      <sound file="footsteps_2/8.wav" />
+      <sound file="footsteps_2/9.wav" />
+      <sound file="footsteps_2/10.wav" />
+      <sound file="footsteps_2/11.wav" />
+      <sound file="footsteps_2/12.wav" />
+      <sound file="footsteps_2/13.wav" />
+      <sound file="footsteps_2/14.wav" />
+      <sound file="footsteps_2/15.wav" />
     </footstepsoundeffects>
 
     <destroysoundeffect file="blood\\blood2.wav"/>
@@ -202,6 +213,7 @@
     </particletextures>
 
     <damagesoundeffects>
+      <!--
       <sound file="character\male_ninja\damage\damage1.wav" />
       <sound file="character\male_ninja\damage\damage3.wav" />
       <sound file="character\male_ninja\damage\damage4.wav" />
@@ -220,6 +232,8 @@
       <sound file="character\male_ninja\damage\damage18.wav" />
       <sound file="character\male_ninja\damage\damage21.wav" />
       <sound file="character\male_ninja\damage\damage22.wav" />
+      -->
+      <sound file="character\replenish.wav" />
     </damagesoundeffects>
 
     <footstepsoundeffects>

@@ -38,6 +38,30 @@ void Butterfly::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 
 	Orb * wing2 = new Orb(nullptr, Vector3(m_position.X + 10, m_position.Y, m_position.Z - 1.1f), Vector3(32, 32, 0), Vector3(15, 15, 0), "Media\\characters\\butterfly\\dead_wing_2.png", true, 0.15f);
 	GameObjectManager::Instance()->AddGameObject(wing2);
+
+	ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
+															m_position,
+															Vector3(-m_direction.X, 0, 0),
+															0.4,
+															Vector3(3200, 1200, 0),
+															"Media\\blast_circle.png",
+															0.01,
+															0.01,
+															0.20f,
+															0.35f,
+															30,
+															30,
+															0,
+															false,
+															0.7,
+															1.0,
+															10000,
+															true,
+															3,
+															0.0f,
+															0.0f,
+															0.1f,
+															0.5f);
 }
 
 void Butterfly::Initialise()

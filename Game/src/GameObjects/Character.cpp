@@ -22,7 +22,7 @@ Character::Character(float x, float y, float z, float width, float height, float
 	m_lastTimePlayedFootstep(0.0f), 
 	m_footstepTime(0.3f),
 	m_sprintFootstepTime(0.15f),
-	m_waterWadeSFXTime(1.6f),
+	m_waterWadeSFXTime(1.0f),
 	mAccelXRate(0),
 	mHealth(100),
 	mMaxHealth(100),
@@ -212,35 +212,70 @@ void Character::UpdateWaterWadeSFX()
 
 		if (currentTime > m_lastTimePlayedWaterWadeSFX + m_waterWadeSFXTime)
 		{
-			const char * fileName = "water/water_wade.wav";
-			int randNum = rand() % 5;
+			const char * fileName = "water/wade_2/1.wav";
+			int randNum = rand() % 12;
 
 			switch (randNum)
 			{
 				case 0:
 				{
-					fileName = "water/water_wade.wav";
+					fileName = "water/wade_2/1.wav";
 					break;
 				}
 				case 1:
 				{
-					fileName = "water/water_wade_2.wav";
+					fileName = "water/wade_2/2.wav";
 					break;
 				}
 				case 2:
 				{
-					fileName = "water/water_wade_3.wav";
+						  fileName = "water/wade_2/3.wav";
 					break;
 				}
 				case 3:
 				{
-					fileName = "water/water_wade_4.wav";
+						  fileName = "water/wade_2/4.wav";
 					break;
 				}
 				case 4:
 				{
-					fileName = "water/water_wade_5.wav";
+						  fileName = "water/wade_2/5.wav";
 					break;
+				}
+				case 5:
+				{
+						  fileName = "water/wade_2/6.wav";
+						  break;
+				}
+				case 6:
+				{
+						  fileName = "water/wade_2/7.wav";
+						  break;
+				}
+				case 7:
+				{
+						  fileName = "water/wade_2/8.wav";
+						  break;
+				}
+				case 8:
+				{
+						  fileName = "water/wade_2/9.wav";
+						  break;
+				}
+				case 9:
+				{
+						  fileName = "water/wade_2/10.wav";
+						  break;
+				}
+				case 10:
+				{
+						  fileName = "water/wade_2/11.wav";
+						  break;
+				}
+				case 11:
+				{
+						  fileName = "water/wade_2/12.wav";
+						  break;
 				}
 				default:
 					break;
@@ -637,6 +672,8 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 																			0.0f,
 																			0.15f,
 																			0.8f);
+
+					Timing::Instance()->SetTimeModifierForNumSeconds(0.2f, 3.0f);
 
 					if (m_material)
 					{

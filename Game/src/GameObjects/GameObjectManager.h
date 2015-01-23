@@ -6,6 +6,7 @@
 #include "player.h"
 #include "particleSpray.h"
 #include "LevelProperties.h"
+#include "MusicManager.h"
 
 class Camera2D;
 class AudioObject;
@@ -146,6 +147,8 @@ private:
 	float mPlayerStartDirectionXForLevel;
 
 	bool mFreshLevelLaunch;
+
+	MusicManager mMusicManager;
 };
 
 #endif

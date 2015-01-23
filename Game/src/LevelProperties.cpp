@@ -2,7 +2,10 @@
 #include "LevelProperties.h"
 
 LevelProperties::LevelProperties(void) :
-	mCameraZoomInPercent(1.0f)
+	mCameraZoomInPercent(1.0f),
+	mMusicInitialDelay(0.0f),
+	mMusicLength(0.0f),
+	mMusicTimeBetween(0.0f)
 {
 
 }
@@ -19,6 +22,11 @@ void LevelProperties::XmlRead(TiXmlElement * element)
 	mTargetOffset.Y = XmlUtilities::ReadAttributeAsFloat(element, "camera_properties", "yOffset");
 	mTargetLag.X = XmlUtilities::ReadAttributeAsFloat(element, "camera_properties", "xLag");
 	mTargetLag.Y = XmlUtilities::ReadAttributeAsFloat(element, "camera_properties", "yLag");
+
+	mLevelMusic = XmlUtilities::ReadAttributeAsString(element, "music", "file");
+	mMusicInitialDelay = XmlUtilities::ReadAttributeAsFloat(element, "music", "initial_delay");
+	mMusicLength = XmlUtilities::ReadAttributeAsFloat(element, "music", "length");
+	mMusicTimeBetween = XmlUtilities::ReadAttributeAsFloat(element, "music", "time_between");
 
 	Camera2D * cam2d = Camera2D::GetInstance();
 	if (cam2d)
@@ -46,5 +54,17 @@ void LevelProperties::XmlWrite(TiXmlElement * element)
 	camBounds->SetDoubleAttribute("top", mCamBoundsTopLeft.Y);
 	camBounds->SetDoubleAttribute("bottom", mCamBoundsBottomRight.Y);
 	element->LinkEndChild(camBounds);
+
+	mMusicInitialDelay = XmlUtilities::ReadAttributeAsFloat(element, "music", "initial_delay");
+	mMusicLength = XmlUtilities::ReadAttributeAsFloat(element, "music", "length");
+	mMusicTimeBetween = XmlUtilities::ReadAttributeAsFloat(element, "music", "time_between");
+
+	TiXmlElement * music = new TiXmlElement("music");
+	music->SetAttribute("file", mLevelMusic.c_str());
+	music->SetDoubleAttribute("initial_delay", mMusicInitialDelay);
+	music->SetDoubleAttribute("length", mMusicLength);
+	music->SetDoubleAttribute("time_between", mMusicTimeBetween);
+	element->LinkEndChild(music);
+
 }
 

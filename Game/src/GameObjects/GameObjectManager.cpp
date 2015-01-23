@@ -189,6 +189,8 @@ void GameObjectManager::Initialise()
 
 void GameObjectManager::Update(bool paused, float delta)
 {
+	mMusicManager.Update(delta); // TODO: delta should not have time modifier
+
 	if (!paused)
 	{
 		float camX = m_camera->X();
@@ -345,6 +347,10 @@ void GameObjectManager::LoadObjectsFromFile(const char* filename)
 		Game::GetInstance()->SetLevelEditFilename(filename);
 	}
 #endif
+
+	// play opening stinger
+	AudioManager::Instance()->StopAllSounds();
+
 	Graphics * graphics = Graphics::GetInstance();
 	Camera2D * camera = Camera2D::GetInstance();
 
@@ -361,12 +367,6 @@ void GameObjectManager::LoadObjectsFromFile(const char* filename)
 
 	TiXmlHandle * hdoc = doc.Handle();
 	TiXmlElement * root = hdoc->FirstChildElement().Element();
-
-	// get the audio track for this level
-	const char * audio_track = XmlUtilities::ReadAttributeAsString(root, "", "audio");
-	
-	// start playing level music as we load the objects
-	// AudioManager::Instance()->PlayMusic(audio_track, true); // always loop level music
 
 	TiXmlElement * child = root->FirstChildElement();
 
@@ -386,6 +386,12 @@ void GameObjectManager::LoadObjectsFromFile(const char* filename)
 	}
 
 	ParseLevelProperties(root);
+
+	mMusicManager = MusicManager();
+	mMusicManager.Initialise(mLevelProperties.GetLevelMusic(), 
+							 mLevelProperties.GetMusicLength(),
+							 mLevelProperties.GetMusicInitialDelay(), 
+							 mLevelProperties.GetMusicTimeBetween());
 
 	// initialise all objects
 	LoadContent(graphics->Device());
@@ -1104,21 +1110,21 @@ void GameObjectManager::ProcessGamePad()
 																	"Media\\exclamation.png",
 																	1.0f,
 																	1.0f,
-																	0.5f,
-																	0.5f,
-																	300.0f,
-																	300.0f,
+																	0.3f,
+																	0.3f,
+																	273.5f,
+																	273.5f,
 																	0.0f,
 																	false,
 																	1.0f,
 																	1.0f,
 																	0.0f,
 																	true,
-																	2.5f,
+																	2.0f,
 																	0.0f,
 																	0.0f,
 																	0.05f,
-																	0.5f,
+																	0.6f,
 																	true);
 		}
 

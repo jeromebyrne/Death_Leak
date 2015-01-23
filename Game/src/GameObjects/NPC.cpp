@@ -347,6 +347,40 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointO
 			}
 		}
 	}
+	else
+	{
+		// randomly cry
+		int randNum = rand() % 100;
+
+		if (randNum > 80)
+		{
+			int otherRandNum = rand() % 3;
+
+			switch (otherRandNum)
+			{
+				case 0:
+				{
+					AudioManager::Instance()->PlaySoundEffect("character\\male_ninja\\damage_2\\1.wav");
+					break;
+				}
+				case 1:
+				{
+					AudioManager::Instance()->PlaySoundEffect("character\\male_ninja\\damage_2\\2.wav");
+					break;
+				}
+				case 2:
+				{
+					AudioManager::Instance()->PlaySoundEffect("character\\male_ninja\\damage_2\\3.wav");
+					break;
+				}
+				default:
+				{
+					GAME_ASSERT(false);
+					break;
+				}
+			};
+		}
+	}
 }
 
 Projectile * NPC::FireWeapon(Vector2 direction)

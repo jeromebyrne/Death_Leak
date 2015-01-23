@@ -2,6 +2,7 @@
     <LevelProperties>
         <camera_properties zoom_in_percent="1.000000" xOffset="500.000000" yOffset="50.000000" xLag="15.000000" yLag="0.000000" />
         <level_bounds left="-8400.000000" right="-2700.000000" top="2000.000000" bottom="-4700.000000" />
+        <music file="music\japanese2.mp3" initial_delay="20" length="96" time_between="60"/>
     </LevelProperties>
     <Player id="1" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="820.506226" x="-7120.450195" rotation="0.000000" auto_rotate_value="0.000000" />
