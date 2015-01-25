@@ -39,8 +39,8 @@ NPC::NPC(float x, float y, float z, float width, float height, float breadth) :
 	m_butterflyWander(nullptr),
 	mAddHealthBar(true)
 {
-	mHealth = 40.0f;
-	mMaxHealth = 40.0f;
+	mHealth = 20.0f;
+	mMaxHealth = 20.0f;
 	mProjectileFilePath = "Media/ninjastar.png";
 	mProjectileImpactFilePath = "Media/ninjastar_impact.png";
 
@@ -399,7 +399,7 @@ Projectile * NPC::FireWeapon(Vector2 direction)
 		pos.X -= m_projectileOffset.X;
 	}
 	
-	float speed = mSprintActive ? 45 : 35;
+	float speed = mSprintActive ? 35 : 30;
 
 	// TODO: ideally want these properties configurable per character
 	Projectile * p = new Projectile(Projectile::kNPCProjectile,

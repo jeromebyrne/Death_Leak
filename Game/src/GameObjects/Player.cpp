@@ -15,7 +15,11 @@ float mLastTimeProjectileFired;
 Player::Player(float x, float y, float z, float width, float height, float breadth) :
 Character(x, y, z, width, height, breadth),
 	mProjectileFireDelay(0.1f),
-	mTimeUntilProjectileReady(0.0f)
+	mTimeUntilProjectileReady(0.0f),
+	mFireBurstNum(5),
+	mCurrentBurstNum(0),
+	mFireBurstDelay(0.5f),
+	mTimeUntilFireBurstAvailable(0.0f)
 {
 	mHealth = 100.0f;
 }
@@ -24,23 +28,6 @@ Player::~Player(void)
 {
 }
 
-void Player::Update(float delta)
-{
-	// update base classes
-	Character::Update(delta);
-
-	float projectileReloadDelta = delta;
-	if (Timing::Instance()->GetTimeModifier() < 1.0f)
-	{
-		projectileReloadDelta *= 5.0f;
-	}
-	mTimeUntilProjectileReady -= projectileReloadDelta;
-
-	if (mTimeUntilProjectileReady < 0.0f)
-	{
-		mTimeUntilProjectileReady = 0.0f;
-	}
-}
 void Player::Initialise()
 {
 	// update the base classes
@@ -118,14 +105,50 @@ Projectile * Player::FireBomb(Vector2 direction)
 	return p;
 }
 
+void Player::Update(float delta)
+{
+	// update base classes
+	Character::Update(delta);
+
+	if (mCurrentBurstNum >= mFireBurstNum)
+	{
+		mCurrentBurstNum = 0;
+		mTimeUntilFireBurstAvailable = mFireBurstDelay;
+	}
+	else if (mTimeUntilFireBurstAvailable > 0.0f)
+	{
+		mTimeUntilFireBurstAvailable -= delta;
+
+		if (mTimeUntilFireBurstAvailable <= 0.0f)
+		{
+			mTimeUntilFireBurstAvailable = 0.0f;
+		}
+	}
+	else if (mTimeUntilProjectileReady > 0.0f)
+	{
+		float projectileReloadDelta = delta;
+		if (Timing::Instance()->GetTimeModifier() < 1.0f)
+		{
+			projectileReloadDelta *= 5.0f;
+		}
+
+		mTimeUntilProjectileReady -= projectileReloadDelta;
+
+		if (mTimeUntilProjectileReady <= 0.0f)
+		{
+			mTimeUntilProjectileReady = 0.0f;
+		}
+	}
+}
 
 Projectile * Player::FireWeapon(Vector2 direction)
 {
-	if (mTimeUntilProjectileReady > 0.0f)
+	if ( mCurrentBurstNum >= mFireBurstNum || mTimeUntilProjectileReady > 0.0f)
 	{
 		return nullptr;
 	}
 
+	++mCurrentBurstNum;
 	mTimeUntilProjectileReady = mProjectileFireDelay;
 
 	Vector3 pos = m_position;
@@ -142,7 +165,7 @@ Projectile * Player::FireWeapon(Vector2 direction)
 		pos.X -= m_projectileOffset.X;
 	}
 
-	float speed = mSprintActive ? 40 : 30;
+	float speed = mSprintActive ? 38 : 28;
 
 	Projectile * p = new Projectile(Projectile::kPlayerProjectile,
 									mProjectileFilePath.c_str(),
@@ -189,4 +212,11 @@ void Player::DebugDraw(ID3D10Device *  device)
 	}
 
 	Character::DebugDraw(device);
+}
+
+void Player::ResetProjectileFireDelay()
+{
+	mTimeUntilProjectileReady = 0.0f;
+	mTimeUntilFireBurstAvailable = 0.0f;
+	mCurrentBurstNum = 0;
 }

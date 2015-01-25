@@ -17,7 +17,7 @@ public:
 	virtual Projectile * FireWeapon(Vector2 direction) override;
 	virtual Projectile * FireBomb(Vector2 direction) override;
 
-	void ResetProjectileFireDelay() { mTimeUntilProjectileReady = 0.0f; }
+	void ResetProjectileFireDelay();
 
 private:
 
@@ -25,6 +25,12 @@ private:
 
 	float mProjectileFireDelay;
 	float mTimeUntilProjectileReady;
+
+	unsigned mFireBurstNum;
+	unsigned int mCurrentBurstNum;
+	float mFireBurstDelay;
+	float mTimeUntilFireBurstAvailable;
+
 };
 
 #endif
