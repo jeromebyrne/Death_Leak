@@ -55,10 +55,6 @@ void LevelProperties::XmlWrite(TiXmlElement * element)
 	camBounds->SetDoubleAttribute("bottom", mCamBoundsBottomRight.Y);
 	element->LinkEndChild(camBounds);
 
-	mMusicInitialDelay = XmlUtilities::ReadAttributeAsFloat(element, "music", "initial_delay");
-	mMusicLength = XmlUtilities::ReadAttributeAsFloat(element, "music", "length");
-	mMusicTimeBetween = XmlUtilities::ReadAttributeAsFloat(element, "music", "time_between");
-
 	TiXmlElement * music = new TiXmlElement("music");
 	music->SetAttribute("file", mLevelMusic.c_str());
 	music->SetDoubleAttribute("initial_delay", mMusicInitialDelay);

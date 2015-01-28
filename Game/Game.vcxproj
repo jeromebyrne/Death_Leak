@@ -80,6 +80,7 @@
     <ClCompile Include="src\GameObjects\NinjaSpawner.cpp" />
     <ClCompile Include="src\GameObjects\NPC.cpp" />
     <ClCompile Include="src\GameObjects\NPCManager.cpp" />
+    <ClCompile Include="src\GameObjects\NPCTrigger.cpp" />
     <ClCompile Include="src\GameObjects\Orb.cpp" />
     <ClCompile Include="src\GameObjects\ParallaxLayer.cpp" />
     <ClCompile Include="src\GameObjects\PathingPlatform.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="src\GameObjects\NPC.h" />
     <ClInclude Include="src\GameObjects\NPCManager.h" />
     <ClInclude Include="src\GameObjects\NPCSpawner.h" />
+    <ClInclude Include="src\GameObjects\NPCTrigger.h" />
     <ClInclude Include="src\GameObjects\Orb.h" />
     <ClInclude Include="src\GameObjects\ParallaxLayer.h" />
     <ClInclude Include="src\GameObjects\PathingPlatform.h" />
