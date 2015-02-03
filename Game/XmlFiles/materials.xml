@@ -66,7 +66,6 @@
 
   <material name="softwood">
     <particletextures>
-      <texture file="Media\softwoodparticle.png"/>
       <texture file="Media\softwoodparticle2.png" />
     </particletextures>
 

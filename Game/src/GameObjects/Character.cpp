@@ -20,13 +20,13 @@ Character::Character(float x, float y, float z, float width, float height, float
 	m_isJumping(false), 
 	m_maxJumpSpeed(10), 
 	m_lastTimePlayedFootstep(0.0f), 
-	m_footstepTime(0.3f),
-	m_sprintFootstepTime(0.15f),
+	m_footstepTime(0.35f),
+	m_sprintFootstepTime(0.25f),
 	m_waterWadeSFXTime(1.0f),
 	mAccelXRate(0),
 	mHealth(100),
 	mMaxHealth(100),
-	mSprintVelocityX(10),
+	mSprintVelocityX(8),
 	mSprintActive(false),
 	mHasExploded(false),
 	m_mainBodyTexture(0),
@@ -319,7 +319,7 @@ void Character::UpdateFootsteps(SolidMovingSprite * solidObject)
 
 					if (!mSprintActive)
 					{
-						if (particleFile != "")
+						if (!particleFile.empty())
 						{
 							ParticleEmitterManager::Instance()->CreateDirectedSpray(3,
 								pos,
@@ -348,16 +348,16 @@ void Character::UpdateFootsteps(SolidMovingSprite * solidObject)
 					}
 					else
 					{
-						if (particleFile != "")
+						if (!particleFile.empty())
 						{
-							ParticleEmitterManager::Instance()->CreateDirectedSpray(15,
+							ParticleEmitterManager::Instance()->CreateDirectedSpray(8,
 								pos,
 								dir,
 								0.5,
 								Vector3(1200, 720, 0),
 								particleFile,
 								2,
-								6,
+								4,
 								0.6f,
 								1.0f,
 								2,
@@ -368,7 +368,7 @@ void Character::UpdateFootsteps(SolidMovingSprite * solidObject)
 								1.0,
 								1,
 								true,
-								30,
+								25,
 								2.0f,
 								1.0f,
 								0.15f,

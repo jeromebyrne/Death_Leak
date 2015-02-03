@@ -1049,6 +1049,14 @@ void LevelEditor::CheckForLayerAssign()
 	if (GetAsyncKeyState('0') < 0)
 	{
 		// reset
+		/*for (auto & object : GameObjectManager::Instance()->GetGameObjectList())
+		{
+			if (object->GetParallaxMultiplierY() == 1.07f)
+			{
+				object->SetParallaxMultiplierY(1.0f);
+			}
+		}*/
+
 		mSelectedObject->SetParallaxMultiplierX(1.0f);
 		mSelectedObject->SetParallaxMultiplierY(1.0f);
 	}
