@@ -7,6 +7,7 @@
 #include "Graphics.h"
 #include "SolidLineStrip.h"
 #include "DrawUtilities.h"
+#include "MaterialManager.h"
 
 LevelEditor::LevelEditor(void):
 	mSelectedObject(nullptr),
@@ -749,6 +750,10 @@ void LevelEditor::CheckInput_TerrainEditing()
 
 	CheckForNewTerrainObject();
 
+	CheckForMaterialAssign();
+
+	CheckForSolidLineStripEdgeAssign();
+
 	CheckForSavePressed();
 }
 
@@ -886,6 +891,8 @@ void LevelEditor::CheckInput_Regular()
 
 	CheckForLayerAssign();
 
+	CheckForMaterialAssign();
+
 	for (auto & obj : gameObjects)
 	{
 		if (dynamic_cast<ParticleSpray*>(obj.get()))
@@ -924,6 +931,19 @@ void LevelEditor::Draw()
 			DrawUtilities::DrawTexture(Vector3(points[mSelectedLinePointIndex].WorldPosition.X, points[mSelectedLinePointIndex].WorldPosition.Y, 3),
 										Vector2(50, 50),
 										"Media\\editor\\circle_selected.png");
+
+			std::string materialName;
+			if (mSelectedLineStrip->GetMaterial())
+			{
+				materialName = mSelectedLineStrip->GetMaterial()->GetMaterialName();
+			}
+
+			const int bufferSize = 100;
+			char array[bufferSize];
+			memset(array, 0, bufferSize);
+			sprintf(array, "Selected Line Material: %s", materialName.empty() ? "none" : materialName.c_str());
+
+			Graphics::GetInstance()->DrawDebugText(array, 100, 200);
 		}
 	}
 
@@ -1031,5 +1051,127 @@ void LevelEditor::CheckForLayerAssign()
 		// reset
 		mSelectedObject->SetParallaxMultiplierX(1.0f);
 		mSelectedObject->SetParallaxMultiplierY(1.0f);
+	}
+}
+
+void LevelEditor::CheckForMaterialAssign()
+{
+	GameObject * object = mTerrainEditing ? mSelectedLineStrip : mSelectedObject;
+
+	if (!object)
+	{
+		return;
+	}
+
+	if (GetAsyncKeyState('5') < 0)
+	{
+		Material * material = MaterialManager::Instance()->GetMaterial("grassground");
+		GAME_ASSERT(material);
+
+		if (material)
+		{
+			object->SetMaterial(material);
+		}
+	}
+	else if (GetAsyncKeyState('6') < 0)
+	{
+		Material * material = MaterialManager::Instance()->GetMaterial("softwood");
+		GAME_ASSERT(material);
+
+		if (material)
+		{
+			object->SetMaterial(material);
+		}
+	}
+	else if (GetAsyncKeyState('7') < 0)
+	{
+		Material * material = MaterialManager::Instance()->GetMaterial("caverock");
+		GAME_ASSERT(material);
+
+		if (material)
+		{
+			object->SetMaterial(material);
+		}
+	}
+	else if (GetAsyncKeyState('8') < 0)
+	{
+		Material * material = MaterialManager::Instance()->GetMaterial("metal");
+		GAME_ASSERT(material);
+
+		if (material)
+		{
+			object->SetMaterial(material);
+		}
+	}
+	else if (GetAsyncKeyState('9') < 0)
+	{
+		Material * material = MaterialManager::Instance()->GetMaterial("water");
+		GAME_ASSERT(material);
+
+		if (material)
+		{
+			object->SetMaterial(material);
+		}
+	}
+}
+
+void LevelEditor::CheckForSolidLineStripEdgeAssign()
+{
+	GAME_ASSERT(mTerrainEditing);
+
+	if (!mTerrainEditing)
+	{
+		return;
+	}
+
+	if (!mSelectedLineStrip)
+	{
+		return;
+	}
+
+	static bool pressingLeft = false;
+
+	if (!pressingLeft && GetAsyncKeyState(VK_LEFT) < 0)
+	{
+		pressingLeft = true;
+
+		if (mSelectedLineStrip->GetHasHardLeftEdge())
+		{
+			mSelectedLineStrip->SetHasHardLeftEdge(false);
+			mSelectedLineStrip->SetHardLeftEdgeOffsetX(0.0f);
+		}
+		else
+		{
+			mSelectedLineStrip->SetHasHardLeftEdge(true);
+			mSelectedLineStrip->SetHardLeftEdgeOffsetX(20.0f);
+		}
+	}
+
+	if (GetAsyncKeyState(VK_LEFT) >= 0)
+	{
+		pressingLeft = false;
+	}
+
+	static bool pressingRight = false;
+
+	if (!pressingRight && GetAsyncKeyState(VK_RIGHT) < 0)
+	{
+		pressingRight = true;
+
+		if (mSelectedLineStrip->GetHasHardRightEdge())
+		{
+			mSelectedLineStrip->SetHasHardRightEdge(false);
+			mSelectedLineStrip->SetHardRightEdgeOffsetX(0.0f);
+		}
+		else
+		{
+			mSelectedLineStrip->SetHasHardRightEdge(true);
+			mSelectedLineStrip->SetHardRightEdgeOffsetX(20.0f);
+		}
+	}
+
+	if (GetAsyncKeyState(VK_RIGHT) >= 0)
+	{
+		pressingRight = false;
 	}
 }

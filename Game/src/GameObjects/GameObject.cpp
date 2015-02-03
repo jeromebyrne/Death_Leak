@@ -42,7 +42,8 @@ GameObject::GameObject(float x, float y , float z, float width, float height, fl
 	mLevelEditLocked(false),
 	mLevelEditSelectionDimensions(100,100),
 	mLevelEditShowSelected(false),
-	mIsSolidLineStrip(false)
+	mIsSolidLineStrip(false),
+	mAlwaysUpdate(false)
 {
 	static int GAME_OBJECT_ID = 1; 
 	m_id = GAME_OBJECT_ID;
@@ -398,6 +399,17 @@ void GameObject::DrawDebugText()
 	memset(array, 0, bufferSize);
 	sprintf(array, "Depth: %.02f", m_position.Z);
 	pos = Utilities::WorldToScreen(Vector2(m_position.X - 75, m_position.Y + 125));
+	Graphics::GetInstance()->DrawDebugText(array, pos.X, pos.Y);
+
+	// material type
+	string materialName;
+	if (m_material)
+	{
+		materialName = m_material->GetMaterialName();
+	}
+	memset(array, 0, bufferSize);
+	sprintf(array, "Material: %s", materialName.empty() ? "none" : materialName.c_str());
+	pos = Utilities::WorldToScreen(Vector2(m_position.X - 75, m_position.Y + 100));
 	Graphics::GetInstance()->DrawDebugText(array, pos.X, pos.Y);
 }
 

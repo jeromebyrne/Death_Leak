@@ -68,6 +68,9 @@ void Character::Scale(float xScale, float yScale, bool scalePosition)
 
 void Character::Update(float delta)
 {
+	// update the base classes
+	SolidMovingSprite::Update(delta);
+
 	// Game feature - Characters face less friction if they are sprinting whilst on the side of an object
 	if (m_velocity.Y > 0 && m_collidingAtSideOfObject && mSprintActive)
 	{
@@ -105,9 +108,6 @@ void Character::Update(float delta)
 		mIsMidAirMovingUp = false;
 		mIsMidAirMovingDown = false;
 	}
-
-	// update the base classes
-	SolidMovingSprite::Update(delta);
 
 	UpdateWaterWadeSFX();
 }

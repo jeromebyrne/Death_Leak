@@ -90,7 +90,6 @@
     <ClCompile Include="src\GameObjects\Rabbit.cpp" />
     <ClCompile Include="src\GameObjects\ScreenAlignedTexture.cpp" />
     <ClCompile Include="src\GameObjects\ScrollingSprite.cpp" />
-    <ClCompile Include="src\GameObjects\SolidLine.cpp" />
     <ClCompile Include="src\GameObjects\SolidLineStrip.cpp" />
     <ClCompile Include="src\GameObjects\SolidMovingSprite.cpp" />
     <ClCompile Include="src\GameObjects\Sprite.cpp" />
@@ -197,7 +196,6 @@
     <ClInclude Include="src\GameObjects\Rabbit.h" />
     <ClInclude Include="src\GameObjects\ScreenAlignedTexture.h" />
     <ClInclude Include="src\GameObjects\ScrollingSprite.h" />
-    <ClInclude Include="src\GameObjects\SolidLine.h" />
     <ClInclude Include="src\GameObjects\SolidLineStrip.h" />
     <ClInclude Include="src\GameObjects\SolidMovingSprite.h" />
     <ClInclude Include="src\GameObjects\Sprite.h" />

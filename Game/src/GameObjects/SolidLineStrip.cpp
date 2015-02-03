@@ -4,7 +4,11 @@
 #include "Projectile.h"
 
 SolidLineStrip::SolidLineStrip(float x, float y, float z, float width, float height, float breadth) :
-	SolidMovingSprite(x, y, z, width, height, breadth)
+	SolidMovingSprite(x, y, z, width, height, breadth),
+	mHasHardRightEdge(false),
+	mHasHardLeftEdge(false),
+	mHardRightEdgeOffsetX(0.0f),
+	mHardLeftEdgeOffsetX(0.0f)
 {
 	mIsSolidLine = true;
 	mDrawable = false;
@@ -65,6 +69,11 @@ void SolidLineStrip::XmlRead(TiXmlElement * element)
 	}
 
 	CalculateLines();
+
+	mHasHardRightEdge = XmlUtilities::ReadAttributeAsBool(element, "edge_properties", "has_right_hard_edge");
+	mHasHardLeftEdge = XmlUtilities::ReadAttributeAsBool(element, "edge_properties", "has_left_hard_edge");
+	mHardRightEdgeOffsetX = XmlUtilities::ReadAttributeAsFloat(element, "edge_properties", "right_hard_edge_offset_x");
+	mHardLeftEdgeOffsetX = XmlUtilities::ReadAttributeAsFloat(element, "edge_properties", "left_hard_edge_offset_x");
 }
 
 void SolidLineStrip::XmlWrite(TiXmlElement * element)
@@ -81,6 +90,13 @@ void SolidLineStrip::XmlWrite(TiXmlElement * element)
 		points->LinkEndChild(point);
 	}
 	element->LinkEndChild(points);
+
+	TiXmlElement * edgeProperties = new TiXmlElement("edge_properties");
+	edgeProperties->SetAttribute("has_right_hard_edge", mHasHardRightEdge ? "true" : "false");
+	edgeProperties->SetAttribute("has_left_hard_edge", mHasHardLeftEdge ? "true" : "false");
+	edgeProperties->SetDoubleAttribute("right_hard_edge_offset_x", mHardRightEdgeOffsetX);
+	edgeProperties->SetDoubleAttribute("left_hard_edge_offset_x", mHardLeftEdgeOffsetX);
+	element->LinkEndChild(edgeProperties);
 }
 
 void SolidLineStrip::LoadContent(ID3D10Device * graphicsdevice)
@@ -101,7 +117,7 @@ void SolidLineStrip::OnCollision(SolidMovingSprite * object)
 		{
 			if (!BoxHitCheck(l, object))
 			{
-				object->SetIsOnSolidLine(false);
+				object->SetIsOnSolidLine(false, nullptr);
 				continue;
 			}
 
@@ -122,13 +138,13 @@ void SolidLineStrip::OnCollision(SolidMovingSprite * object)
 
 					object->StopYAccelerating();
 
-					object->SetIsOnSolidLine(true);
+					object->SetIsOnSolidLine(true, this);
 				}
 				break;
 			}
 			else
 			{
-				object->SetIsOnSolidLine(false);
+				object->SetIsOnSolidLine(false, nullptr);
 			}
 		}
 	}
@@ -142,6 +158,15 @@ void SolidLineStrip::DebugDraw(ID3D10Device *  device)
 	for (auto & l : mLines)
 	{
 		DrawUtilities::DrawLine(l.StartPoint.WorldPosition, l.EndPoint.WorldPosition);
+
+		if (count == 0 && GetHasHardLeftEdge())
+		{
+			DrawUtilities::DrawLine(l.StartPoint.WorldPosition, Vector2(l.StartPoint.WorldPosition.X - 10, l.StartPoint.WorldPosition.Y + 50));
+		}
+		if (count == (mLines.size() - 1) && GetHasHardRightEdge())
+		{
+			DrawUtilities::DrawLine(l.EndPoint.WorldPosition, Vector2(l.EndPoint.WorldPosition.X + 10, l.EndPoint.WorldPosition.Y + 50));
+		}
 
 		if (count == 0)
 		{
@@ -338,7 +363,7 @@ bool SolidLineStrip::GetProjectileCollisionData(Projectile * projectile, Vector3
 	{
 		if (!BoxHitCheck(l, projectile))
 		{
-			projectile->SetIsOnSolidLine(false);
+			projectile->SetIsOnSolidLine(false, nullptr);
 			continue;
 		}
 
@@ -360,7 +385,7 @@ bool SolidLineStrip::GetProjectileCollisionData(Projectile * projectile, Vector3
 		}
 		if (intersect)
 		{
-			projectile->SetIsOnSolidLine(true);
+			projectile->SetIsOnSolidLine(true, this);
 
 			position.X = m_position.X - projectileRayEnd.X;
 			position.Y = m_position.Y - projectileRayEnd.Y;
@@ -370,7 +395,7 @@ bool SolidLineStrip::GetProjectileCollisionData(Projectile * projectile, Vector3
 		}
 		else
 		{
-			projectile->SetIsOnSolidLine(false);
+			projectile->SetIsOnSolidLine(false, nullptr);
 		}
 	}
 
@@ -388,7 +413,7 @@ bool SolidLineStrip::GetBombProjectileCollisionData(Projectile * projectile, Vec
 	{
 		if (!BoxHitCheck(l, projectile))
 		{
-			projectile->SetIsOnSolidLine(false);
+			projectile->SetIsOnSolidLine(false, nullptr);
 			continue;
 		}
 
@@ -420,7 +445,7 @@ bool SolidLineStrip::GetBombProjectileCollisionData(Projectile * projectile, Vec
 		}
 		if (intersect)
 		{
-			projectile->SetIsOnSolidLine(true);
+			projectile->SetIsOnSolidLine(true, this);
 
 			position.X = m_position.X - projectileRayEnd.X;
 			position.Y = m_position.Y - projectileRayEnd.Y;
@@ -430,10 +455,38 @@ bool SolidLineStrip::GetBombProjectileCollisionData(Projectile * projectile, Vec
 		}
 		else
 		{
-			projectile->SetIsOnSolidLine(false);
+			projectile->SetIsOnSolidLine(false, nullptr);
 		}
 	}
 
 	return false;
+}
+
+Vector2 SolidLineStrip::GetRightMostPoint() const
+{
+	unsigned int linesSize = mLines.size();
+	GAME_ASSERT(linesSize > 0);
+
+	if (linesSize == 0)
+	{
+		return Vector2(0, 0);
+	}
+
+	SolidLine solidLine = mLines[linesSize - 1];
+	return solidLine.EndPoint.WorldPosition;
+}
+
+Vector2 SolidLineStrip::GetLeftMostPoint() const
+{
+	unsigned int linesSize = mLines.size();
+	GAME_ASSERT(linesSize > 0);
+
+	if (linesSize == 0)
+	{
+		return Vector2(0, 0);
+	}
+
+	SolidLine solidLine = mLines[0];
+	return solidLine.StartPoint.WorldPosition; 
 }
 

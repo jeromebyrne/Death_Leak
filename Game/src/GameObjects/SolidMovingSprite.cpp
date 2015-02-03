@@ -6,6 +6,7 @@
 #include "ParticleEmittermanager.h"
 #include "Projectile.h"
 #include "AnimationSkeleton.h"
+#include "SolidLineStrip.h"
 
 static const float kVisualDamageMaxTime = 0.6f;
 
@@ -23,7 +24,8 @@ SolidMovingSprite::SolidMovingSprite(float x, float y , float z , float width , 
 	mBounceDampening(1.0f),
 	mCollisionBoxOffset(0,0),
 	mCanBeDamaged(true),
-	mIsOnSolidLine(false)
+	mIsOnSolidLine(false),
+	mCurrentSolidLineStrip(nullptr)
 {
 	mIsSolidSprite = true;
 }
@@ -427,4 +429,19 @@ void SolidMovingSprite::OnDamage(GameObject * damageDealer, float damageAmount, 
 bool SolidMovingSprite::IsOnSolidSurface()
 {
 	return IsOnGround() || GetIsCollidingOnTopOfObject() || IsOnSolidLine();
+}
+
+void SolidMovingSprite::SetIsOnSolidLine(bool value, SolidLineStrip * lineStrip)
+{
+	mIsOnSolidLine = value;
+
+	if (mIsOnSolidLine)
+	{
+		GAME_ASSERT(lineStrip);
+		mCurrentSolidLineStrip = lineStrip;
+	}
+	else
+	{
+		mCurrentSolidLineStrip = nullptr;
+	}
 }

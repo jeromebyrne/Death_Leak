@@ -58,6 +58,10 @@ private:
 
 	void CheckForLayerAssign();
 
+	void CheckForMaterialAssign();
+
+	void CheckForSolidLineStripEdgeAssign();
+
 	GameObject * GetGameObjectClickedOn(list<shared_ptr<GameObject> > & gameObjects);
 
 	Sprite * GetAsSprite(GameObject * object);

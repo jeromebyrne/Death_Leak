@@ -33,6 +33,26 @@ public:
 
 	bool GetBombProjectileCollisionData(Projectile * projectile, Vector3 & position);
 
+	Vector2 GetRightMostPoint() const;
+
+	Vector2 GetLeftMostPoint() const;
+
+	bool GetHasHardRightEdge() const { return mHasHardRightEdge; }
+
+	bool GetHasHardLeftEdge() const { return mHasHardLeftEdge; }
+
+	float GetHardRightEdgeOffsetX() const { return mHardRightEdgeOffsetX; }
+
+	float GetHardLeftEdgeOffsetX() const { return mHardLeftEdgeOffsetX; }
+
+	void SetHasHardRightEdge(bool value) { mHasHardRightEdge = value; }
+
+	void SetHasHardLeftEdge(bool value) { mHasHardLeftEdge = value; }
+
+	void SetHardRightEdgeOffsetX(float value) { mHardRightEdgeOffsetX = value; }
+
+	void SetHardLeftEdgeOffsetX(float value) { mHardLeftEdgeOffsetX = value; }
+
 private:
 
 	struct SolidLine
@@ -54,6 +74,11 @@ private:
 
 	vector<SolidLinePoint> mPoints;
 	vector<SolidLine> mLines;
+
+	bool mHasHardRightEdge;
+	bool mHasHardLeftEdge;
+	float mHardRightEdgeOffsetX;
+	float mHardLeftEdgeOffsetX;
 };
 
 #endif

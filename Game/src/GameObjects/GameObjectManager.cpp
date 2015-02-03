@@ -25,7 +25,6 @@
 #include "Orb.h"
 #include "LevelTrigger.h"
 #include "WaterBlock.h"
-#include "SolidLine.h"
 #include "butterfly.h"
 #include "scrollingsprite.h"
 #include "SolidLineStrip.h"
@@ -222,8 +221,7 @@ void GameObjectManager::Update(bool paused, float delta)
 			{
 				obj->Update(delta); 
 			}
-			else if(obj->IsParallaxLayer() || 
-					obj->IsAudioObject())
+			else if(obj->AlwaysUpdate())
 			{
 				obj->Update(delta); // always update parralax layers
 			}
@@ -635,10 +633,6 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement)
 	else if (strcmp(gameObjectTypeName, "waterblock") == 0)
 	{
 		newGameObject = new WaterBlock();
-	}
-	else if (strcmp(gameObjectTypeName, "solidline") == 0)
-	{
-		newGameObject = new SolidLine();
 	}
 	else if (strcmp(gameObjectTypeName, "butterfly") == 0)
 	{

@@ -128,7 +128,7 @@
   <!--Metal-->
   <material name="metal">
     <particletextures>
-      <texture file="Media\smoke.dds"/>
+      <texture file="Media\smoke.png"/>
       <texture file="Media\spark.png"/>
     </particletextures>
 

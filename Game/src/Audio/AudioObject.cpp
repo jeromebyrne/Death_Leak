@@ -12,6 +12,7 @@ AudioObject::AudioObject(float x, float y, float z, float width, float height):
 { 
 	mFadeDimensions = Vector2(m_dimensions.X * 2.0f, m_dimensions.Y * 2.0f);
 	mIsAudioObject = true;
+	mAlwaysUpdate = true;
 }
 
 AudioObject::~AudioObject(void)

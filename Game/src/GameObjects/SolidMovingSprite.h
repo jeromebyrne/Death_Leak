@@ -1,7 +1,8 @@
 #ifndef SOLIDMOVINGSPRITE_H
 #define SOLIDMOVINGSPRITE_H
-
 #include "movingsprite.h"
+
+class SolidLineStrip;
 
 class SolidMovingSprite : public MovingSprite
 {
@@ -78,9 +79,11 @@ public:
 
 	virtual bool IsOnSolidLine() const { return mIsOnSolidLine; }
 
-	virtual void SetIsOnSolidLine(bool value) { mIsOnSolidLine = value; }
+	virtual void SetIsOnSolidLine(bool value, SolidLineStrip * lineStrip);
 
 	bool IsOnSolidSurface();
+
+	SolidLineStrip * GetCurrentSolidLineStrip() const { return mCurrentSolidLineStrip; }
 	
 protected:
 
@@ -111,6 +114,8 @@ private:
 	VertexPositionColor m_collisionBoxVertices[12];
 	// create a vertex buffer
 	ID3D10Buffer* m_collisionBoxVBuffer;
+
+	SolidLineStrip * mCurrentSolidLineStrip;
 };
 
 #endif

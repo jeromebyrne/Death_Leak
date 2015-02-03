@@ -1,6 +1,7 @@
 #include "precompiled.h"
 #include "MovingSprite.h"
 #include "Environment.h"
+#include "SolidLineStrip.h"
 
 MovingSprite::MovingSprite(float x, float y, float z, float width, float height, float breadth, float groundFriction, float airResistance):
 	Sprite(x,y,z, width, height, breadth), 
@@ -46,27 +47,57 @@ void MovingSprite::Update(float delta)
 	Sprite::Update(delta);
 
 	float velocityMod = mIsInWater ? 0.3f : 1.0f;
+	Vector3 nextVelocity = m_velocity + (m_acceleration * m_direction) * velocityMod;
+
+	if (nextVelocity.X > m_maxVelocity.X)
+	{
+		nextVelocity.X = m_maxVelocity.X;
+	}
+	else if (nextVelocity.X < -m_maxVelocity.X)
+	{
+		nextVelocity.X = -m_maxVelocity.X;
+	}
+
+	if (nextVelocity.Y > m_maxVelocity.Y)
+	{
+		nextVelocity.Y = m_maxVelocity.Y;
+	}
+	else if (nextVelocity.Y < -m_maxVelocity.Y)
+	{
+		nextVelocity.Y = -m_maxVelocity.Y;
+	}
+
+	if (IsCharacter())
+	{
+		Character * character = static_cast<Character *>(this);
+		if (character->IsOnSolidLine())
+		{
+			SolidLineStrip * solidLineStrip = character->GetCurrentSolidLineStrip();
+			GAME_ASSERT(solidLineStrip);
+
+			if (solidLineStrip)
+			{
+				Vector2 rightMostPoint = solidLineStrip->GetRightMostPoint();
+				Vector2 leftMostPoint = solidLineStrip->GetLeftMostPoint();
+
+				float nextPositionX = m_position.X + nextVelocity.X;
+
+				if ((solidLineStrip->GetHasHardRightEdge() && 
+					nextVelocity.X > 0 &&
+					nextPositionX > rightMostPoint.X - solidLineStrip->GetHardRightEdgeOffsetX()) ||
+					(solidLineStrip->GetHasHardLeftEdge() && 
+					nextVelocity.X < 0 &&
+					nextPositionX < leftMostPoint.X + solidLineStrip->GetHardLeftEdgeOffsetX()))
+				{
+					nextVelocity.X = 0.0f;
+					StopXAccelerating();
+				}
+			}
+		}
+	}
 
 	// increase velocity
-	m_velocity += (m_acceleration * m_direction) * velocityMod;
-
-	if(m_velocity.X > m_maxVelocity.X)
-	{
-		m_velocity.X = m_maxVelocity.X;
-	}
-	else if(m_velocity.X < -m_maxVelocity.X)
-	{
-		m_velocity.X = -m_maxVelocity.X;
-	}
-
-	if(m_velocity.Y > m_maxVelocity.Y)
-	{
-		m_velocity.Y = m_maxVelocity.Y;
-	}
-	else if (m_velocity.Y < -m_maxVelocity.Y)
-	{
-		m_velocity.Y = -m_maxVelocity.Y;
-	}
+	m_velocity = nextVelocity;
 
 	float targetDelta =  Timing::Instance()->GetTargetDelta();
 	float percentDelta = delta / targetDelta;

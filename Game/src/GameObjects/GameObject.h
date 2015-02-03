@@ -177,6 +177,8 @@ public:
 	// used for occlusion checks
 	Vector2 GetLargestPossibleDimensions() const { return mLargestPossibleDimensions; }
 
+	bool AlwaysUpdate() const { return mAlwaysUpdate; }
+
 protected:
 
 	virtual void DrawDebugText();
@@ -211,6 +213,8 @@ protected:
 	float mCurrentParallaxOffsetY;
 	bool mUpdateToParentsOrientation;
 	float mAutoRotationValue;
+
+	bool mAlwaysUpdate;
 
 private:
 

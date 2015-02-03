@@ -9,12 +9,9 @@
 
 static const char * kBombTextureFile = "Media/bomb.png";
 
-float mProjectileFireDelay;
-float mLastTimeProjectileFired;
-
 Player::Player(float x, float y, float z, float width, float height, float breadth) :
 Character(x, y, z, width, height, breadth),
-	mProjectileFireDelay(0.1f),
+	mProjectileFireDelay(0.2f),
 	mTimeUntilProjectileReady(0.0f),
 	mFireBurstNum(5),
 	mCurrentBurstNum(0),

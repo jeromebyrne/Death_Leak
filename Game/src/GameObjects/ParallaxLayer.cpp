@@ -15,6 +15,7 @@ ParallaxLayer::ParallaxLayer(Camera2D * camera):Sprite(),
 	m_lastCamPosY(0)
 {
 	mIsParallaxLayer = true;
+	mAlwaysUpdate = true;
 }
 
 ParallaxLayer::~ParallaxLayer(void)

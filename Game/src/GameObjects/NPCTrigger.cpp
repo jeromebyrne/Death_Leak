@@ -7,9 +7,11 @@
 NPCTrigger::NPCTrigger() :
 	GameObject(),
 	mCooldownTime(7.0f),
-	mCurrentCooldownTime(0.0f)
-{
+	mCurrentCooldownTime(0.0f),
+	mNumEnemies(0)
 
+{
+	mAlwaysUpdate = true;
 }
 
 void NPCTrigger::Update(float delta) 
@@ -36,7 +38,7 @@ void NPCTrigger::Update(float delta)
 	if (playerCollision)
 	{
 		NinjaSpawner ninjaSpawner;
-		ninjaSpawner.SpawnMultiple(5, Vector2(player->X(), player->Y()), Vector2(1200, 1200));
+		ninjaSpawner.SpawnMultiple(mNumEnemies, Vector2(player->X(), player->Y()), Vector2(1200, 1200));
 		Timing::Instance()->SetTimeModifierForNumSeconds(0.1f, 3.5f);
 		ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
 																Vector3(Camera2D::GetInstance()->X(), Camera2D::GetInstance()->Y(), 2),
@@ -62,7 +64,27 @@ void NPCTrigger::Update(float delta)
 																0.05f,
 																0.6f,
 																true);
-
 		mCurrentCooldownTime = mCooldownTime;
 	}
+}
+
+void NPCTrigger::XmlRead(TiXmlElement * element) 
+{
+	GameObject::XmlRead(element);
+
+	mCooldownTime = XmlUtilities::ReadAttributeAsFloat(element, "cooldown_time", "value");
+	mNumEnemies = XmlUtilities::ReadAttributeAsFloat(element, "num_enemies", "value");
+}
+
+void NPCTrigger::XmlWrite(TiXmlElement * element) 
+{
+	GameObject::XmlWrite(element);
+
+	TiXmlElement * cooldownElem = new TiXmlElement("cooldown_time");
+	cooldownElem->SetDoubleAttribute("value", mCooldownTime);
+	element->LinkEndChild(cooldownElem);
+
+	TiXmlElement * numEnemiesElem = new TiXmlElement("num_enemies");
+	numEnemiesElem->SetDoubleAttribute("value", mNumEnemies);
+	element->LinkEndChild(numEnemiesElem);
 }

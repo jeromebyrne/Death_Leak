@@ -13,8 +13,12 @@ public:
 
 private:
 
+	void XmlRead(TiXmlElement * element) override;
+	void XmlWrite(TiXmlElement * element) override;
+
 	float mCooldownTime;
 	float mCurrentCooldownTime;
+	unsigned int mNumEnemies;
 };
 
 #endif

@@ -5,10 +5,8 @@
 
 class MaterialManager
 {
-private:
-	static MaterialManager* m_instance;
-	map<string, Material*> m_materialMap;
 public:
+
 	MaterialManager(void);
 	~MaterialManager(void);
 
@@ -17,6 +15,11 @@ public:
 	void Initialise(char* materialXMLFile);
 	void Release();
 	Material * GetMaterial(string name);
+
+private:
+
+	static MaterialManager* m_instance;
+	map<string, Material*> m_materialMap;
 };
 
 #endif
