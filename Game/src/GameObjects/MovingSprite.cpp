@@ -46,7 +46,7 @@ void MovingSprite::Update(float delta)
 	// update our base class 
 	Sprite::Update(delta);
 
-	float velocityMod = mIsInWater ? 0.3f : 1.0f;
+	float velocityMod = mIsInWater ? 0.6f : 1.0f;
 	Vector3 nextVelocity = m_velocity + (m_acceleration * m_direction) * velocityMod;
 
 	if (nextVelocity.X > m_maxVelocity.X)
@@ -145,7 +145,7 @@ void MovingSprite::Update(float delta)
 		}
 		else
 		{
-			AccelerateY(-1, ((float)fakeGravity/mCurrentYResistance * 0.3f) * percentDelta );
+			AccelerateY(-1, ((float)fakeGravity/mCurrentYResistance * 0.6f) * percentDelta );
 		}
 	}
 

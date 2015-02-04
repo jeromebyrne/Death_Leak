@@ -5,7 +5,7 @@
 #include "AudioObject.h"
 #include "Game.h"
 
-static const float kTimeUntilFirstWeather = 12.0f;
+static const float kTimeUntilFirstWeather = 80.0f;
 static const float kRainSessionMinTime = 70.0f;
 static const float kRainSessionMaxTime = 120.0f;
 static const float kRainIntroTime = 10.0f;
@@ -62,7 +62,8 @@ WeatherManager::WeatherManager(void):
 	mPLayingLightningEffect(false),
 	mTimeUntilNextLightning(0),
 	mFoliageSwayMultiplier(1.0f),
-	mRainLayer3(nullptr)
+	mRainLayer3(nullptr),
+	mSnowLayer3(nullptr)
 {
 	// preload large textures
 	/*TextureManager::Instance()->LoadTexture("Media\\rainlayer.png");
@@ -103,6 +104,7 @@ void WeatherManager::RefreshAssets()
 				mBottomSnowLayer = nullptr;
 				mTopSnowLayer = nullptr;
 				mSnowSFX = nullptr;
+				mSnowLayer3 = nullptr;
 				CreateSnowAssets();
 
 				break;
@@ -192,34 +194,6 @@ void WeatherManager::CreateRainAssets()
 
 		GameObjectManager::Instance()->AddGameObject(mRainLayer3);
 	}
-
-	/*if (!mGroundRainLayer)
-	{
-		mGroundRainLayer = new ParallaxLayer(Camera2D::GetInstance());
-
-		mGroundRainLayer->m_textureFilename = "";
-		mGroundRainLayer->m_isAnimated = true;
-		mGroundRainLayer->m_animationFile = "XmlFiles\\ground_rain.xml";
-		mGroundRainLayer->m_drawAtNativeDimensions = true;
-		mGroundRainLayer->m_updateable = true;
-		mGroundRainLayer->m_position = Vector3(0, -340 * gameScale, 99);
-		mGroundRainLayer->m_dimensions = Vector3(2048, 2048, 0);
-		mGroundRainLayer->mRepeatTextureX = false;
-		mGroundRainLayer->mRepeatTextureY = false;
-		mGroundRainLayer->m_repeatWidth = 2048;
-		mGroundRainLayer->m_cameraParallaxMultiplierX = 0.000488;
-		mGroundRainLayer->m_cameraParallaxMultiplierY = 0;
-		mGroundRainLayer->m_followCamXPos = true;
-		mGroundRainLayer->m_followCamYPos = false;
-		mGroundRainLayer->m_autoScrollY = false;
-		mGroundRainLayer->m_autoScrollX = false;
-		mGroundRainLayer->m_autoScrollXSpeed = 0;
-		mGroundRainLayer->m_autoScrollYSpeed = 0;
-		mGroundRainLayer->EffectName = "effectlighttexture";
-		mGroundRainLayer->m_alpha = 1.0f;
-
-		GameObjectManager::Instance()->AddGameObject(mGroundRainLayer);
-	}*/
 
 	// add the audio object
 	if (!mRainSFX)
@@ -316,6 +290,32 @@ void WeatherManager::CreateSnowAssets()
 		mTopSnowLayer->m_alpha = 1.0f;
 
 		GameObjectManager::Instance()->AddGameObject(mTopSnowLayer);
+	}
+
+	if (!mSnowLayer3)
+	{
+		mSnowLayer3 = new ParallaxLayer(Camera2D::GetInstance());
+
+		mSnowLayer3->m_textureFilename = "Media\\snowlayer.png";
+		mSnowLayer3->m_drawAtNativeDimensions = true;
+		mSnowLayer3->m_updateable = true;
+		mSnowLayer3->m_position = Vector3(0, -1598 * gameScale, 15);
+		mSnowLayer3->m_dimensions = Vector3(2048, 2048, 0);
+		mSnowLayer3->mRepeatTextureX = false;
+		mSnowLayer3->mRepeatTextureY = false;
+		mSnowLayer3->m_repeatWidth = 2048;
+		mSnowLayer3->m_cameraParallaxMultiplierX = 0.000488;
+		mSnowLayer3->m_cameraParallaxMultiplierY = 0;
+		mSnowLayer3->m_followCamXPos = true;
+		mSnowLayer3->m_followCamYPos = false;
+		mSnowLayer3->m_autoScrollY = true;
+		mSnowLayer3->m_autoScrollX = false;
+		mSnowLayer3->m_autoScrollXSpeed = 0;
+		mSnowLayer3->m_autoScrollYSpeed = 6.5f;
+		mSnowLayer3->EffectName = "effectlighttexture";
+		mSnowLayer3->m_alpha = 1.0f;
+
+		GameObjectManager::Instance()->AddGameObject(mSnowLayer3);
 	}
 
 	// add the audio object
@@ -522,9 +522,6 @@ void WeatherManager::UpdateRaining(float delta)
 		{
 			mBottomRainLayer->SetAlpha(1.0f);
 			mTopRainLayer->SetAlpha(1.0f);
-
-			// mGroundRainLayer->SetAlpha(1.0f);
-			// mRainSFX->SetVolume(1.0f);
 		}
 
 		if (mPLayingLightningEffect)
@@ -565,6 +562,11 @@ void WeatherManager::UpdateSnowing(float delta)
 			mBottomSnowLayer->SetAlpha(alphaVal);
 			mTopSnowLayer->SetAlpha(alphaVal);
 			mSnowSFX->SetVolume(alphaVal);
+			mSnowLayer3->SetAlpha(alphaVal);
+			if (Camera2D::GetInstance()->Y() > mSnowLayer3->Y())
+			{
+				mSnowSFX->SetVolume(alphaVal);
+			}
 		}
 	}
 	else
@@ -577,8 +579,13 @@ void WeatherManager::UpdateSnowing(float delta)
 			mBottomSnowLayer->SetAlpha(alphaVal);
 			mTopSnowLayer->SetAlpha(alphaVal);
 			mSnowSFX->SetVolume(alphaVal);
+			if (Camera2D::GetInstance()->Y() > mSnowLayer3->Y())
+			{
+				mSnowSFX->SetVolume(alphaVal);
+				mSnowLayer3->SetAlpha(alphaVal);
+			}
 		}
-		else 
+		else
 		{
 			mBottomSnowLayer->SetAlpha(1.0f);
 			mTopSnowLayer->SetAlpha(1.0f);
@@ -586,6 +593,8 @@ void WeatherManager::UpdateSnowing(float delta)
 		}
 	}
 }
+
+
 void WeatherManager::UpdateNoWeather(float delta)
 {
 	// always start raining after 20 seconds the first time you play
@@ -593,7 +602,7 @@ void WeatherManager::UpdateNoWeather(float delta)
 	{
 		StartRaining();
 		
-		// StartSnowing();
+		//StartSnowing();
 
 		mHasHadWeather = true;
 	}
@@ -686,6 +695,11 @@ void WeatherManager::StopSnowing()
 		GameObjectManager::Instance()->RemoveGameObject(mBottomSnowLayer);
 		mBottomSnowLayer = nullptr;
 	}
+	if (mSnowLayer3)
+	{
+		GameObjectManager::Instance()->RemoveGameObject(mSnowLayer3);
+		mSnowLayer3 = nullptr;
+	}
 	if (mSnowSFX)
 	{
 		GameObjectManager::Instance()->RemoveGameObject(mSnowSFX);
@@ -723,6 +737,32 @@ void WeatherManager::FadeWeatherIfApplicable(float delta)
 					alpha += delta * 1.5f;
 					mRainLayer3->SetAlpha(alpha);
 					mRainSFX->SetVolume(alpha);
+				}
+			}
+		}
+	}
+	else if (HasCurrentWeatherState(kSnowing))
+	{
+		if (mSnowLayer3)
+		{
+			if (camPosY < mSnowLayer3->Y())
+			{
+				float alpha = mSnowLayer3->Alpha();
+				if (alpha > 0.0f)
+				{
+					alpha -= delta;
+					mSnowLayer3->SetAlpha(alpha);
+					mSnowSFX->SetVolume(alpha);
+				}
+			}
+			else
+			{
+				float alpha = mSnowLayer3->Alpha();
+				if (alpha < 1.0f)
+				{
+					alpha += delta * 1.5f;
+					mSnowLayer3->SetAlpha(alpha);
+					mSnowSFX->SetVolume(alpha);
 				}
 			}
 		}

@@ -50,6 +50,7 @@ private:
 
 	ParallaxLayer * mTopSnowLayer;
 	ParallaxLayer * mBottomSnowLayer;
+	ParallaxLayer * mSnowLayer3;
 	ParallaxLayer * mLightningLayer;
 
 	void UpdateRaining(float delta);

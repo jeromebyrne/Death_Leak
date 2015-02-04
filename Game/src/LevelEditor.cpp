@@ -8,6 +8,7 @@
 #include "SolidLineStrip.h"
 #include "DrawUtilities.h"
 #include "MaterialManager.h"
+#include "NPCTrigger.h"
 
 LevelEditor::LevelEditor(void):
 	mSelectedObject(nullptr),
@@ -268,6 +269,7 @@ void LevelEditor::CheckForCopy()
 			{
 				DrawableObject * drawable = dynamic_cast<DrawableObject*>(newObject);
 				AudioObject * audiobj = dynamic_cast<AudioObject*>(newObject);
+				NPCTrigger * npcTrigger = dynamic_cast<NPCTrigger*>(newObject);
 				if (drawable)
 				{
 					GameObjectManager::Instance()->AddGameObject(drawable, true);
@@ -275,6 +277,10 @@ void LevelEditor::CheckForCopy()
 				else if (audiobj)
 				{
 					GameObjectManager::Instance()->AddGameObject(audiobj, true);
+				}
+				else if (npcTrigger)
+				{
+					GameObjectManager::Instance()->AddGameObject(npcTrigger, true);
 				}
 				else 
 				{
