@@ -29,7 +29,7 @@ public:
 
 	void RecalculateLines(std::vector<SolidLinePoint> & points);
 
-	bool GetProjectileCollisionData(Projectile * projectile, Vector3 & position);
+	bool GetProjectileCollisionData(Projectile * projectile, Vector3 & position, unsigned int & lineIndex);
 
 	bool GetBombProjectileCollisionData(Projectile * projectile, Vector3 & position);
 
@@ -52,6 +52,8 @@ public:
 	void SetHardRightEdgeOffsetX(float value) { mHardRightEdgeOffsetX = value; }
 
 	void SetHardLeftEdgeOffsetX(float value) { mHardLeftEdgeOffsetX = value; }
+
+	Vector2 & const GetNormalForLineIndex(unsigned int lineIndex);
 
 private:
 

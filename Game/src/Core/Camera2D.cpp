@@ -353,7 +353,7 @@ void Camera2D::SetZoomInLevel(float value)
 
 void Camera2D::DoSmallShake()
 {
-	DoShake(5.0f, 0.1f);
+	DoShake(8.0f, 0.12f);
 }
 
 void Camera2D::DoBigShake()

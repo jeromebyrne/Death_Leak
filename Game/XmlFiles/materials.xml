@@ -15,6 +15,8 @@
     </footstepsoundeffects>
 
     <destroysoundeffect file="blood\\blood2.wav"/>
+
+    <is_pierceable value="true" />
   </material>
 
   <material name="water">
@@ -36,6 +38,8 @@
     </footstepsoundeffects>
 
     <destroysoundeffect file="blood\\blood2.wav"/>
+
+    <is_pierceable value="true" />
   </material>
 
   <!--cave rock-->
@@ -62,6 +66,8 @@
     </footstepsoundeffects>
 
     <destroysoundeffect file="stonehit.wav"/>
+
+    <is_pierceable value="false" />
   </material>
 
   <material name="softwood">
@@ -87,6 +93,8 @@
     </footstepsoundeffects>
 
     <destroysoundeffect file="blood\\blood2.wav"/>
+
+    <is_pierceable value="true" />
   </material>
 
   <!--Grass Ground-->
@@ -122,6 +130,8 @@
     </footstepsoundeffects>
 
     <destroysoundeffect file="blood\\blood2.wav"/>
+
+    <is_pierceable value="true" />
   </material>
 
   <!--Metal-->
@@ -147,6 +157,8 @@
     </footstepsoundeffects>
 
     <destroysoundeffect file="blood\\blood2.wav"/>
+
+    <is_pierceable value="false" />
   </material>
 
   <material name="stone">
@@ -173,6 +185,8 @@
     </footstepsoundeffects>
 
     <destroysoundeffect file="blood\\blood2.wav"/>
+
+    <is_pierceable value="false" />
   </material>
 
   <!--Flesh-->
@@ -202,6 +216,8 @@
     </footstepsoundeffects>
 
     <destroysoundeffect file="blood\\blood2.wav"/>
+
+    <is_pierceable value="true" />
   </material>
 
   <!--male ninja-->
@@ -212,26 +228,6 @@
     </particletextures>
 
     <damagesoundeffects>
-      <!--
-      <sound file="character\male_ninja\damage\damage1.wav" />
-      <sound file="character\male_ninja\damage\damage3.wav" />
-      <sound file="character\male_ninja\damage\damage4.wav" />
-      <sound file="character\male_ninja\damage\damage6.wav" />
-      <sound file="character\male_ninja\damage\damage7.wav" />
-      <sound file="character\male_ninja\damage\damage8.wav" />
-      <sound file="character\male_ninja\damage\damage9.wav" />
-      <sound file="character\male_ninja\damage\damage10.wav" />
-      <sound file="character\male_ninja\damage\damage11.wav" />
-      <sound file="character\male_ninja\damage\damage12.wav" />
-      <sound file="character\male_ninja\damage\damage13.wav" />
-      <sound file="character\male_ninja\damage\damage14.wav" />
-      <sound file="character\male_ninja\damage\damage15.wav" />
-      <sound file="character\male_ninja\damage\damage16.wav" />
-      <sound file="character\male_ninja\damage\damage17.wav" />
-      <sound file="character\male_ninja\damage\damage18.wav" />
-      <sound file="character\male_ninja\damage\damage21.wav" />
-      <sound file="character\male_ninja\damage\damage22.wav" />
-      -->
       <sound file="character\replenish.wav" />
     </damagesoundeffects>
 
@@ -247,6 +243,8 @@
     </footstepsoundeffects>
 
     <destroysoundeffect file="blood\\blood2.wav"/>
+
+    <is_pierceable value="true" />
   </material>
 
   <!--rabbit-->
@@ -265,6 +263,8 @@
     </footstepsoundeffects>
 
     <destroysoundeffect file="blood\\blood2.wav"/>
+
+    <is_pierceable value="true" />
   </material>
   
   <!-- demon 1-->
@@ -294,5 +294,7 @@
     </footstepsoundeffects>
 
     <destroysoundeffect file="blood\blood2.wav"/>
+
+    <is_pierceable value="true" />
   </material>
 </materials>

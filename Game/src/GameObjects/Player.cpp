@@ -107,6 +107,11 @@ void Player::Update(float delta)
 	// update base classes
 	Character::Update(delta);
 
+	/*if (mSprintActive)
+	{
+		Camera2D::GetInstance()->DoSmallShake();
+	}*/
+
 	if (mCurrentBurstNum >= mFireBurstNum)
 	{
 		mCurrentBurstNum = 0;

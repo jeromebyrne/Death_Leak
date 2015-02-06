@@ -16,6 +16,8 @@ public:
 	string GetDestroyedSound() const { return m_destroySound; }
 	string GetMaterialName() const { return mMaterialName; }
 
+	bool GetIsPierceable() const { return mPierceable; }
+
 private:
 
 	vector<string> m_particleTextures;
@@ -23,6 +25,8 @@ private:
 	vector<string> m_footstepSoundEffects;
 	string m_destroySound;
 	string mMaterialName;
+
+	bool mPierceable;
 };
 
 #endif

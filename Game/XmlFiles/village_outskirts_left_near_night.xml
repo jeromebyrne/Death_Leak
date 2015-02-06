@@ -1,6 +1,6 @@
 <level audio="">
     <LevelProperties>
-        <camera_properties zoom_in_percent="1.000000" xOffset="500.000000" yOffset="50.000000" xLag="15.000000" yLag="0.000000" />
+        <camera_properties zoom_in_percent="1.000000" xOffset="500.000000" yOffset="50.000000" xLag="15.000000" yLag="2.000000" />
         <level_bounds left="-8400.000000" right="-2700.000000" top="2000.000000" bottom="-4700.000000" />
         <music file="music\japanese2.mp3" initial_delay="30.000000" length="96.000000" time_between="200.000000" />
     </LevelProperties>

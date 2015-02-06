@@ -132,11 +132,19 @@ void SolidLineStrip::OnCollision(SolidMovingSprite * object)
 				{
 					float diffY = intersectPoint.Y - object->CollisionBottom();
 
-					object->SetY(object->Y() + diffY);
+					if (object->VelocityY() > -1.0f &&
+						diffY > 20)
+					{
+						object->AccelerateY(1, diffY * 0.25f);
+					}
+					else
+					{
+						object->SetY(object->Y() + diffY);
+
+						object->StopYAccelerating();
+					}
 
 					object->SetIsCollidingOnTopOfObject(true);
-
-					object->StopYAccelerating();
 
 					object->SetIsOnSolidLine(true, this);
 				}
@@ -354,11 +362,12 @@ void SolidLineStrip::RecalculateLines(std::vector<SolidLinePoint> & points)
 	CalculateLines();
 }
 
-bool SolidLineStrip::GetProjectileCollisionData(Projectile * projectile, Vector3 & position)
+bool SolidLineStrip::GetProjectileCollisionData(Projectile * projectile, Vector3 & position, unsigned int & lineIndex)
 {
-	Vector2 projectileRayStart = projectile->GetCollisionRayStart();
+	Vector2 projectileRayStart = projectile->GetLastFrameCollisionRayStart();
 	Vector2 projectileRayEnd = projectile->GetCollisionRayEnd();
 
+	unsigned int count = 0;
 	for (auto & l : mLines)
 	{
 		if (!BoxHitCheck(l, projectile))
@@ -372,17 +381,6 @@ bool SolidLineStrip::GetProjectileCollisionData(Projectile * projectile, Vector3
 									projectileRayStart,
 									projectileRayEnd,
 									intersectPoint);
-
-		if (!intersect)
-		{
-			// The current ray check may fail but check the last frames ray to make sure we didn't skip the collision
-			Vector2 projectileRayStart = projectile->GetLastFrameCollisionRayStart();
-
-			intersect = Intersect(l,
-									projectileRayStart,
-									projectileRayEnd,
-									intersectPoint);
-		}
 		if (intersect)
 		{
 			projectile->SetIsOnSolidLine(true, this);
@@ -391,12 +389,16 @@ bool SolidLineStrip::GetProjectileCollisionData(Projectile * projectile, Vector3
 			position.Y = m_position.Y - projectileRayEnd.Y;
 			position.Z = projectile->Z();
 
+			lineIndex = count;
+
 			return true;	
 		}
 		else
 		{
 			projectile->SetIsOnSolidLine(false, nullptr);
 		}
+
+		++count;
 	}
 
 	return false;
@@ -488,5 +490,16 @@ Vector2 SolidLineStrip::GetLeftMostPoint() const
 
 	SolidLine solidLine = mLines[0];
 	return solidLine.StartPoint.WorldPosition; 
+}
+
+Vector2 & const SolidLineStrip::GetNormalForLineIndex(unsigned int lineIndex)
+{
+	if (lineIndex >= mLines.size())
+	{
+		Vector2 vec(0,1);
+		return vec;
+	}
+
+	return mLines[lineIndex].Normal;
 }
 

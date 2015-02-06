@@ -33,7 +33,8 @@ Projectile::Projectile(ProjectileOwnerType ownerType,
 	mSpinningMovement(false),
 	m_timeBecameInactive(0),
 	mOwnerType(ownerType),
-	mType(kUnknownProjectileType)
+	mType(kUnknownProjectileType),
+	mReboundRotateRate(0.3f)
 {
 	NUM_PROJECTILES_ACTIVE++; // increase our world projectile count
 
@@ -449,40 +450,29 @@ void Projectile::Update(float delta)
 	}
 	else
 	{
-		//if(m_wasActiveLastFrame)
-		//{
-			// nice simple update
-			m_position += m_velocity * percentDelta;
+		// nice simple update
+		m_position += m_velocity * percentDelta;
 
-			// we dont need complicated movement so we'll ignore the MovingSprite class
-			Sprite::Update(delta);
-
-			//m_wasActiveLastFrame = false;
-		//}
+		// we dont need complicated movement so we'll ignore the MovingSprite class
+		Sprite::Update(delta);
 
 		if (mCollidedWithProjectile)
 		{
-			SetRotationAngle(GetRotationAngle() + 0.3f);
+			SetRotationAngle(GetRotationAngle() + mReboundRotateRate);
+			m_position.Y -= 2 * percentDelta; // fake gravity
 		}
 
-		/*if(NUM_PROJECTILES_ACTIVE > MAX_PROJECTLES_ALLOWED)
+		float currentTime = Timing::Instance()->GetTotalTimeSeconds();
+		float timeToDie = m_timeBecameInactive + m_maxTimeInActive;
+
+		float timeToLive = timeToDie - currentTime;                                                      
+		m_alpha = timeToLive / m_maxTimeInActive;
+
+		if(currentTime > timeToDie)
 		{
-			GameObjectManager::Instance()->RemoveGameObject_RunTime(this); // just kill straight away
+			// time to kill ourselves
+			GameObjectManager::Instance()->RemoveGameObject(this, true);
 		}
-		else // else we fade out of existance
-		{*/
-			float currentTime = Timing::Instance()->GetTotalTimeSeconds();
-			float timeToDie = m_timeBecameInactive + m_maxTimeInActive;
-
-			float timeToLive = timeToDie - currentTime;                                                      
-			m_alpha = timeToLive / m_maxTimeInActive;
-
-			if(currentTime > timeToDie)
-			{
-				// time to kill ourselves
-				GameObjectManager::Instance()->RemoveGameObject(this, true);
-			}
-		//}
 	}
 
 	if (!m_isActive)
@@ -520,15 +510,13 @@ void Projectile::HandleSolidLineStripCollision(SolidLineStrip * solidLineStrip)
 {
 	Vector3 collisionPosition;
 
-	if (solidLineStrip->GetProjectileCollisionData(this, collisionPosition))
+	unsigned int collisionLineIndex = 0;
+	if (solidLineStrip->GetProjectileCollisionData(this, collisionPosition, collisionLineIndex))
 	{
 		if (mSpinningMovement)
 		{
 			SetRotationAngle(0);
 		}
-
-		// change our sprite to the impact sprite 
-		m_texture = m_impactTexture;
 
 		// damage the other object
 		if (!mIsInWater)
@@ -583,8 +571,65 @@ void Projectile::HandleSolidLineStripCollision(SolidLineStrip * solidLineStrip)
 																	3.0f,
 																	0.15f,
 																	0.6f);
+
+			if (objectMaterial->GetIsPierceable())
+			{
+				// change our sprite to the impact sprite 
+				m_texture = m_impactTexture;
+			}
+			else
+			{
+				ReboundOffSolidLine(solidLineStrip, collisionLineIndex);
+			}
+		}
+		else
+		{
+			// change our sprite to the impact sprite 
+			m_texture = m_impactTexture;
 		}
 	}
+}
+
+void Projectile::ReboundOffSolidLine(SolidLineStrip * solidLine, unsigned lineIndex)
+{
+	GAME_ASSERT(solidLine);
+	if (!solidLine)
+	{
+		return;
+	}
+
+	const Vector2 lineNormal = solidLine->GetNormalForLineIndex(lineIndex);
+
+	m_direction.X = lineNormal.X;
+	m_direction.Y = lineNormal.Y;
+
+	if ((m_direction.Y < 0 &&
+		lineNormal.Y > 0) ||
+		m_direction.Y > 0 &&
+		lineNormal.Y < 0)
+	{
+		m_direction.Y *= -1.0f;
+	}
+	
+	int randOffsetY = rand() % 20;
+	int randOffsetX = rand() % 20;
+	int randOffsetSign = rand() % 2;
+	if (randOffsetSign == 0)
+	{
+		randOffsetX *= -1;
+	}
+
+	m_direction.X += randOffsetX;
+	m_direction.Y += randOffsetY;
+
+	m_direction.Normalise();
+
+	m_velocity = Vector3(m_direction.X * 7, m_direction.Y * 10, 1);
+	m_isActive = false;
+	m_timeBecameInactive = Timing::Instance()->GetTotalTimeSeconds();
+	mCollidedWithProjectile = true; // this makes it spin away
+	m_maxTimeInActive = 0.75f;
+	mReboundRotateRate = 0.2f;
 }
 
 void Projectile::DebugDraw(ID3D10Device * graphicsdevice)
@@ -611,11 +656,3 @@ Vector2 Projectile::GetLastFrameCollisionRayStart()
 
 	return Vector2(CollisionCentreX() - posDiff.X, CollisionCentreY() - posDiff.Y);
 }
-
-/*Vector2 Projectile::GetLastFrameCollisionRayEnd()
-{
-	Vector3 posDiff = m_position - m_lastPosition;
-
-	return Vector2((CollisionCentreX() - posDiff.X) + (DirectionX() * CollisionDimensions().X * 0.5f),
-					(CollisionCentreY() - posDiff.Y) + (DirectionY() * CollisionDimensions().X * 0.5f));
-}*/

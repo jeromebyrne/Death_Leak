@@ -2,7 +2,8 @@
 #include "Material.h"
 
 Material::Material(const char * materialName):
-	mMaterialName(materialName)
+	mMaterialName(materialName),
+	mPierceable(false)
 {
 }
 
@@ -12,11 +13,6 @@ Material::~Material(void)
 
 void Material::ReadXml(TiXmlElement * element)
 {
-	// we assume an element which contains 3 children
-	//1st child contains particle textures
-	//2nd child contains damage sounds
-	//3rd child contains footstep sounds
-
 	// 1st child - particle textures
 	TiXmlElement * particleChild = element->FirstChildElement();
 	TiXmlElement * currentTexture = particleChild->FirstChildElement();
@@ -58,7 +54,7 @@ void Material::ReadXml(TiXmlElement * element)
 
 	m_destroySound = XmlUtilities::ReadAttributeAsString(element, "destroysoundeffect", "file");
 
-	// done
+	mPierceable = XmlUtilities::ReadAttributeAsBool(element, "is_pierceable", "value");
 }
 
 string Material::GetRandomDamageSoundFilename()
