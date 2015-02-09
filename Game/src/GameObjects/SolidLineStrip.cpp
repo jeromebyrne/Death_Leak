@@ -123,7 +123,7 @@ void SolidLineStrip::OnCollision(SolidMovingSprite * object)
 
 			Vector2 intersectPoint;
 			bool intersect = Intersect(l,
-										Vector2(object->CollisionCentreX(), object->CollisionCentreY()),
+										Vector2(object->CollisionCentreX(), object->CollisionBottomLastFrame() + 10),
 										Vector2(object->CollisionCentreX(), object->CollisionBottom()), 
 										intersectPoint);
 			if (intersect)
@@ -132,17 +132,17 @@ void SolidLineStrip::OnCollision(SolidMovingSprite * object)
 				{
 					float diffY = intersectPoint.Y - object->CollisionBottom();
 
-					if (object->VelocityY() > -1.0f &&
-						diffY > 20)
-					{
-						object->AccelerateY(1, diffY * 0.25f);
-					}
-					else
-					{
+					//if (object->VelocityY() > -1.0f &&
+						// diffY > 15)
+					// {
+					//	object->AccelerateY(1, diffY * 0.15f);
+					// }
+					//else
+					//{
 						object->SetY(object->Y() + diffY);
 
 						object->StopYAccelerating();
-					}
+					//}
 
 					object->SetIsCollidingOnTopOfObject(true);
 

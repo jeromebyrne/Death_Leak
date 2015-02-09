@@ -4,8 +4,8 @@
 AudioManager* AudioManager::m_instance = 0;
 
 AudioManager::AudioManager(void):
-	mMusicEnabled(true),
-	mSfxEnabled(true)
+	mMusicEnabled(false),
+	mSfxEnabled(false)
 {
 }
 
@@ -23,7 +23,10 @@ void AudioManager::Initialise()
 
 void AudioManager::Release()
 {
-	m_irrKlangEngine->drop();
+	if (m_irrKlangEngine)
+	{
+		m_irrKlangEngine->drop();
+	}
 }
 
 ISound * AudioManager::PlaySoundEffect(string fileName, bool loop, bool track, bool applyTimeMod)
@@ -77,11 +80,19 @@ void AudioManager::PlayMusic(string fileName, bool loop)
 
 void AudioManager::StopAllSounds()
 {
-	m_irrKlangEngine->stopAllSounds();
+	if (m_irrKlangEngine)
+	{
+		m_irrKlangEngine->stopAllSounds();
+	}
 }
 
 void AudioManager::Update()
 {
+	if (!mSfxEnabled)
+	{
+		return;
+	}
+
 	float timeMod = Timing::Instance()->GetTimeModifier();
 
 	list<ISound *> killList;

@@ -783,7 +783,7 @@ void Character::DebugDraw(ID3D10Device *  device)
 
 void Character::PlayRandomWeaponFireSound()
 {
-	srand(timeGetTime());
+	// srand(timeGetTime());
 	int randnum = rand() % 3;
 
 	switch(randnum)

@@ -1,6 +1,7 @@
 #include "precompiled.h"
 #include "Timing.h"
-Timing * Timing::m_instance = 0;
+
+Timing * Timing::m_instance = nullptr;
 
 Timing::Timing(void) :
 	mTargetDelta(0),
@@ -45,4 +46,15 @@ void Timing::Update(float delta)
 			mTimeModifier = mTimeModBeforeSchedule;
 		}
 	}
+}
+
+void Timing::Create()
+{
+	if (m_instance != nullptr)
+	{
+		GAME_ASSERT(false);
+		return;
+	}
+
+	m_instance = new Timing();
 }

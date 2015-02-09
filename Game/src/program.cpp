@@ -40,6 +40,7 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 	MSG mssg;                // message from queue
 	float  target_delta = 1.0f/60.0f; 
 
+	Timing::Create();
 	Timing::Instance()->SetTargetDelta(target_delta);
 
 	double last_update_time = 0.0;

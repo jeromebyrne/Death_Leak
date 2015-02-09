@@ -64,7 +64,7 @@ GameObject::~GameObject(void)
 
 void GameObject::Initialise()
 {
-	srand(timeGetTime());
+	// srand(timeGetTime());
 	m_lastPosition = m_position;
 
 	// initialise our world matrix

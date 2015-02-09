@@ -1,19 +1,14 @@
 #ifndef TIMING_H
 #define TIMING_H
 
-///Timing Class
-/** Used to control the frame rate.
-*/
 class Timing
 {
 public:
-		 
+	
+	static void Create();
+
 	inline static Timing * Instance()
 	{
-		if(m_instance == 0)
-		{
-			m_instance = new Timing();
-		}
 		return m_instance;
 	}
 

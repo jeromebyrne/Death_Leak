@@ -112,8 +112,11 @@ void Orb::OnCollideWithTarget()
 		// play sound effect
 		if (currentTime > mLastTimePlayedSFX + kMinTimeBetweenSFX)
 		{
-			string soundFile = m_material->GetRandomDamageSoundFilename();
-			AudioManager::Instance()->PlaySoundEffect(soundFile);
+			if (m_material)
+			{
+				string soundFile = m_material->GetRandomDamageSoundFilename();
+				AudioManager::Instance()->PlaySoundEffect(soundFile);
+			}
 
 			mLastTimePlayedSFX = currentTime;
 		}

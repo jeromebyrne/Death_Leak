@@ -9,7 +9,7 @@ static const float clearColor[4] = { 0.3f, 0.3f, 0.3f, 1.0f };
 
 Graphics::Graphics(void):
 	mSimpleFontManager(nullptr),
-	mIsFullScreen(false),
+	mIsFullScreen(true),
 	mVSyncEnabled(true)
 {
 	// TODO: add these to member initialiser
@@ -365,12 +365,14 @@ void Graphics::SetDefaultRasterState()
 
 void Graphics::EnableAlphaBlending()
 {
-	m_pd3dDevice->OMSetBlendState(m_alphaEnabledBlendState, 0, 0xffffffff);
+	float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	m_pd3dDevice->OMSetBlendState(m_alphaEnabledBlendState, blendFactor, 0xffffffff);
 }
 
 void Graphics::DisableAlphaBlending()
 {
-	m_pd3dDevice->OMSetBlendState(m_alphaDisabledBlendState, 0, 0xffffffff);
+	float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	m_pd3dDevice->OMSetBlendState(m_alphaDisabledBlendState, blendFactor, 0xffffffff);
 }
 
 void Graphics::CreateAlphaEnabledBlendState()

@@ -399,7 +399,7 @@ Projectile * NPC::FireWeapon(Vector2 direction)
 		pos.X -= m_projectileOffset.X;
 	}
 	
-	float speed = mSprintActive ? 35 : 30;
+	float speed = mSprintActive ? 25 : 20;
 
 	// TODO: ideally want these properties configurable per character
 	Projectile * p = new Projectile(Projectile::kNPCProjectile,

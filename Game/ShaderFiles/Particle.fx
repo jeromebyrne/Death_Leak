@@ -62,11 +62,6 @@ float4 PS( PS_INPUT input) : SV_Target
         
     // we store this individual particles alpha in the NORMAL vector.X component
     finalColor.a = textureSample.a * input.Norm.x;
-	
-	// TODO: for blood shader
-	//finalColor.r = 0.8;
-	//finalColor.g = 0;
-	//finalColor.b = 0;
 
     return finalColor;
 }

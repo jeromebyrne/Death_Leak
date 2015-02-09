@@ -73,6 +73,7 @@ float4 PS( PS_INPUT input) : SV_Target
 	// Use our new texture coordinate to look-up a pixel in ColorMapSampler.
 	float4 Color = txDiffuse.Sample( samLinear, input.Tex + DistortTex);
 
+	// TODO: can be optimised with step()
 	if ((Color.r + Color.b + Color.g) > 3.0) // if the color is completely black then we can assume alpha so clear it out
 	{
 		Color.a = 0;

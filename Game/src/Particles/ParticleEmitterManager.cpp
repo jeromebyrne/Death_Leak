@@ -71,7 +71,7 @@ ParticleSpray * ParticleEmitterManager::CreateRadialBloodSpray(unsigned int numP
 
 	sNumParticlesInWorld += numParticles;
 
-	srand(timeGetTime());
+	// srand(timeGetTime());
 	float creationTime = Timing::Instance()->GetTotalTimeSeconds();
 
 	float gameScale = Game::GetGameScale().X;
@@ -155,7 +155,7 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedBloodSpray(int numParticle
 
 	sNumParticlesInWorld += numParticles;
 
-	srand(timeGetTime());
+	// srand(timeGetTime());
 
 	float creationTime = Timing::Instance()->GetTotalTimeSeconds();
 
@@ -256,7 +256,7 @@ void ParticleEmitterManager::CreateRadialSpray(int numParticles,
 	sNumParticlesInWorld += numParticles;
 
 	// seed the random number generator
-	srand(timeGetTime());
+	// srand(timeGetTime());
 
 	if(maxBrightness > 1)
 	{
@@ -427,7 +427,7 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSpray(int numParticles,
 	sNumParticlesInWorld += numParticles;
 
 	// seed the random number generator
-	srand(timeGetTime());
+	// srand(timeGetTime());
 
 	if(maxBrightness > 1)
 	{
@@ -624,7 +624,7 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSprayLoadTime(int numParti
 																	 float fadeOutPercentTime)
 {
 	// seed the random number generator
-	srand(timeGetTime());
+	//srand(timeGetTime());
 
 	if(maxBrightness > 1)
 	{

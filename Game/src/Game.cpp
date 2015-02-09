@@ -361,7 +361,10 @@ void Game::Cleanup()
 void Game::SetLevelEditFilename(const char * file) 
 { 
 	GAME_ASSERT(mlevelEditor);
-	mlevelEditor->SetLevelFile(file);
+	if (mlevelEditor)
+	{
+		mlevelEditor->SetLevelFile(file);
+	}
 }
 
 void Game::Create()

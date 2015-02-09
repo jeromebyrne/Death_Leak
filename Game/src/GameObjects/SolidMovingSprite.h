@@ -54,6 +54,11 @@ public:
 		return (m_position.Y - (m_collisionBoxDimensions.Y * 0.5)) + mCollisionBoxOffset.Y;
 	}
 
+	inline float CollisionBottomLastFrame() const
+	{
+		return (m_lastPosition.Y - (m_collisionBoxDimensions.Y * 0.5)) + mCollisionBoxOffset.Y;
+	}
+
 	inline float CollisionCentreX() const
 	{
 		return m_position.X + mCollisionBoxOffset.X;

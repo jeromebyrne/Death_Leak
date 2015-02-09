@@ -56,19 +56,20 @@ float4 PS( PS_INPUT input) : SV_Target
 	// Use our new texture coordinate to look-up a pixel in ColorMapSampler.
 	float4 color = txDiffuse.Sample( samLinear, input.Tex);
 	
-	if ((color.r - (color.g + color.b)) < 0.5)
-	{
-		float4 finalColor;
+	float4 sepiaColor;
+	sepiaColor.r = (color.r * 0.393) + (color.g * 0.769) + (color.b * 0.189);
+	sepiaColor.g = (color.r * 0.349) + (color.g * 0.686) + (color.b * 0.168);
+	sepiaColor.b = (color.r * 0.272) + (color.g * 0.534) + (color.b * 0.131);
 
-		// Apply Sepia 
-		finalColor.r = (color.r * 0.393) + (color.g * 0.769) + (color.b * 0.189);
-		finalColor.g = (color.r * 0.349) + (color.g * 0.686) + (color.b * 0.168);
-		finalColor.b = (color.r * 0.272) + (color.g * 0.534) + (color.b * 0.131);
+	float4 finalColor = { 1.0, 1.0, 1.0, 1.0 };
 
-		return finalColor;
-	}
+	float sepiaTrue = step((color.r - (color.g + color.b)), 0.5);
+	float redTrue = step(0.5, (color.r - (color.g + color.b)));
+	finalColor.r = (sepiaTrue * sepiaColor.r) + (redTrue * color.r);
+	finalColor.g = (sepiaTrue * sepiaColor.g) + (redTrue * color.g);
+	finalColor.b = (sepiaTrue * sepiaColor.b) + (redTrue * color.b);
 
-	return color;
+	return finalColor;
 }
 //--------------------------------------------------------------------------------------
 technique10 Render
