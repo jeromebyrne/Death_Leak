@@ -2,12 +2,12 @@
 #include "AIStateRangeAttack.h"
 #include "NPC.h"
 
-static float kRunAwayDelay = 2.0f;
+static float kRunAwayDelay = 1.0f;
 
 AIStateRangeAttack::AIStateRangeAttack(NPC * npc) :
 	AIState(npc),
 	mDesiredRange(650),
-	mFollowRange(800),
+	mFollowRange(900),
 	mRandOffset(0.0f),
 	mLastTimeRanAway(0)
 {

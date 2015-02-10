@@ -5,6 +5,24 @@
 
 class UIMeter : public UISprite
 {
+
+public:
+	UIMeter(void);
+	virtual ~UIMeter(void);
+
+	virtual void Release();
+	virtual void LoadContent(ID3D10Device * graphicsdevice);
+	virtual void XmlRead(TiXmlElement * element);
+	virtual void Draw(ID3D10Device * graphicsdevice);
+	virtual void Initialise();
+
+	virtual void Reset();
+	virtual void Update();
+
+	virtual void SetProgress(float percent);
+
+	virtual void Scale(float x, float y);
+
 private:
 
 	enum State
@@ -40,22 +58,7 @@ private:
 
 	float mBarNativeHeight;
 
-public:
-	UIMeter(void);
-	virtual ~UIMeter(void);
-
-	virtual void Release();
-	virtual void LoadContent(ID3D10Device * graphicsdevice);
-	virtual void XmlRead(TiXmlElement * element);
-	virtual void Draw(ID3D10Device * graphicsdevice);
-	virtual void Initialise();
-
-	virtual void Reset();
-	virtual void Update();
-
-	virtual void SetProgress(float percent);
-
-	virtual void Scale(float x, float y);
+	float mExtraScale;
 };
 
 #endif

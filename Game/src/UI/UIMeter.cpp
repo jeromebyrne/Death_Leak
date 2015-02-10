@@ -1,19 +1,20 @@
 #include "precompiled.h"
 #include "UIMeter.h"
 
-static const float kBarIncreaseTime = 0.3f; // time it takes to increase the bar from current progress to target progress
+static const float kBarIncreaseTime = 0.2f; // time it takes to increase the bar from current progress to target progress
 
 UIMeter::UIMeter(void): 
-UISprite(),
-mMeterLength(500),
-mProgress(1.0),
-mCurrentState(kNormal),
-mTargetProgress(0),
-mProgressBeforeMovement(0),
-mTimeBeforeMovement(0.0f),
-mScaleX(1),
-mScaleY(1),
-mBarNativeHeight(0)
+	UISprite(),
+	mMeterLength(500),
+	mProgress(1.0),
+	mCurrentState(kNormal),
+	mTargetProgress(0),
+	mProgressBeforeMovement(0),
+	mTimeBeforeMovement(0.0f),
+	mScaleX(1),
+	mScaleY(1),
+	mBarNativeHeight(0),
+	mExtraScale(1.0f)
 {
 }
 
@@ -46,14 +47,14 @@ void UIMeter::XmlRead(TiXmlElement * element)
 
 void UIMeter::Draw(ID3D10Device * graphicsdevice)
 {
-	m_dimensions.Y = mBarNativeHeight * mScaleY;
+	m_dimensions.Y = mBarNativeHeight * mScaleY * mExtraScale;
 
 	// draw the bar first
 	m_bottomLeft.X = mInitialPosition.X;
 	m_bottomLeft.Y = mInitialPosition.Y;
-	m_bottomLeft.X += (mMeterEdgeWidth * 0.9f) * mScaleX;
+	m_bottomLeft.X += (mMeterEdgeWidth * 0.9f) * mScaleX * mExtraScale;
 	m_horizontalFlip = false;
-	m_dimensions.X = ((mMeterLength - (mMeterEdgeWidth * 0.8)) * mProgress) * mScaleX;
+	m_dimensions.X = ((mMeterLength - (mMeterEdgeWidth * 0.8)) * mProgress) * mScaleX * mExtraScale;
 	m_texture = m_meterBarMiddleTexture;
 
 	// unbind the vertex buffer before deleting it in Reset();
@@ -68,7 +69,7 @@ void UIMeter::Draw(ID3D10Device * graphicsdevice)
 	m_bottomLeft.X = mInitialPosition.X;
 	m_bottomLeft.Y = mInitialPosition.Y;
 	m_horizontalFlip = false;
-	m_dimensions.X = mMeterEdgeWidth * mScaleX;
+	m_dimensions.X = mMeterEdgeWidth * mScaleX * mExtraScale;
 	m_texture = m_meterEdgeTexture;
 	
 	// unbind the vertex buffer before deleting it in Reset();
@@ -81,8 +82,8 @@ void UIMeter::Draw(ID3D10Device * graphicsdevice)
 	m_bottomLeft.X = mInitialPosition.X;
 	m_bottomLeft.Y = mInitialPosition.Y;
 	m_horizontalFlip = true;
-	m_bottomLeft.X += mMeterLength * mScaleX;
-	m_dimensions.X = mMeterEdgeWidth * mScaleX;
+	m_bottomLeft.X += mMeterLength * mScaleX * mExtraScale;
+	m_dimensions.X = mMeterEdgeWidth * mScaleX * mExtraScale;
 	m_texture = m_meterEdgeTexture;
 
 	// unbind the vertex buffer before deleting it in Reset();
@@ -95,8 +96,8 @@ void UIMeter::Draw(ID3D10Device * graphicsdevice)
 	m_bottomLeft.X = mInitialPosition.X;
 	m_bottomLeft.Y = mInitialPosition.Y;
 	m_horizontalFlip = false;
-	m_bottomLeft.X += mMeterEdgeWidth * mScaleX;
-	m_dimensions.X = (mMeterLength - mMeterEdgeWidth * 0.95) * mScaleX;
+	m_bottomLeft.X += mMeterEdgeWidth * mScaleX * mExtraScale;
+	m_dimensions.X = (mMeterLength - mMeterEdgeWidth * 0.95) * mScaleX * mExtraScale;
 	m_texture = m_meterMiddleTexture;
 
 	// unbind the vertex buffer before deleting it in Reset();
@@ -178,6 +179,8 @@ void UIMeter::Update()
 						mProgress = mTargetProgress;
 						mCurrentState = kNormal;
 					}
+
+					mExtraScale = 1.0f + ((1.0f - total_percent_time) * 0.1f);
 				}
 
 				break;

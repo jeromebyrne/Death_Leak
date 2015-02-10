@@ -123,7 +123,7 @@ void SolidLineStrip::OnCollision(SolidMovingSprite * object)
 
 			Vector2 intersectPoint;
 			bool intersect = Intersect(l,
-										Vector2(object->CollisionCentreX(), object->CollisionBottomLastFrame() + 10),
+										Vector2(object->CollisionCentreX(), object->CollisionBottomLastFrame() + 20),
 										Vector2(object->CollisionCentreX(), object->CollisionBottom()), 
 										intersectPoint);
 			if (intersect)

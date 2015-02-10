@@ -167,7 +167,7 @@ Projectile * Player::FireWeapon(Vector2 direction)
 		pos.X -= m_projectileOffset.X;
 	}
 
-	float speed = mSprintActive ? 38 : 28;
+	float speed = mSprintActive ? 23 : 15;
 
 	Projectile * p = new Projectile(Projectile::kPlayerProjectile,
 									mProjectileFilePath.c_str(),
