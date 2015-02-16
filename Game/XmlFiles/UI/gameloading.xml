@@ -9,16 +9,17 @@
 
   <animatedsprite name="2_anim"
                    process_input="false"
-                   posX ="500" posY ="-450" width="300" height ="600"
+                   posX ="500" posY ="-600" width="512" height ="512"
                    image="Media\\characters\\player\\player_run_1.png"
                    hflip="false" vflip="false"
                    alpha="1.0"
-                   fps ="15">
-    <frames frame1="Media\\characters\\player\\player_run_1.png"
-            frame2="Media\\characters\\player\\player_run_2.png"
-            frame3="Media\\characters\\player\\player_run_3.png"
-            frame4="Media\\characters\\player\\player_run_4.png"
-            frame5="Media\\characters\\player\\player_run_5.png"
+                   fps ="12">
+    <frames frame1="Media\\UI\\loading_spinner\\1.png"
+            frame2="Media\\UI\\loading_spinner\\2.png"
+            frame3="Media\\UI\\loading_spinner\\3.png"
+            frame4="Media\\UI\\loading_spinner\\4.png"
+            frame5="Media\\UI\\loading_spinner\\5.png"
+            frame6="Media\\UI\\loading_spinner\\6.png"
     />
   </animatedsprite>
 

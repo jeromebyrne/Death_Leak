@@ -370,6 +370,7 @@ void GameObjectManager::LoadObjectsFromFile(const char* filename)
 	TiXmlElement * child = root->FirstChildElement();
 
 	// loop through our game objects
+	unsigned int objLoadCount = 0;
 	while(child)
 	{
 		GameObject * object = CreateObject(child);
@@ -380,8 +381,14 @@ void GameObjectManager::LoadObjectsFromFile(const char* filename)
 		
 		child = child->NextSiblingElement();
 
-		// refresh the UI 
-		// UIManager::Instance()->RefreshUI();
+		++objLoadCount;
+
+		if (objLoadCount > 5)
+		{
+			// I should really look into loading textures on a thread, but for now...
+			UIManager::Instance()->RefreshUI();
+			objLoadCount = 0;
+		}
 	}
 
 	ParseLevelProperties(root);
