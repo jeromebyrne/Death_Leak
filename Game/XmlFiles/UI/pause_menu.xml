@@ -26,21 +26,22 @@
 
   <sprite name="2_menu_backing"
          process_input="false"
-         posX ="-390" posY ="-295" width="800" height ="800"
-         image="Media\\UI\\pause_menu_backing2.png"
+         posX ="-100" posY ="-130" width="175" height ="370"
+         image="Media\\UI\\pause_backing_2.png"
          hflip="false" vflip="false"
-         alpha="1.0"
-          use_standard_effect="false">
+         alpha="0.8"
+          use_standard_effect="true">
   </sprite>
 
   <button name="3_resume"
            process_input="true"
-           posX ="-125" posY ="100" width="275" height ="100"
-           image="Media\\UI\\buttons\\resume.dds"
-           image_focus="Media\\UI\\buttons\\resume2.dds"
-           image_click="Media\\UI\\buttons\\resume3.dds"
+           posX ="-75" posY ="100" width="120" height ="120"
+           image="Media\\UI\\buttons\\play1.png"
+           image_focus="Media\\UI\\buttons\\play2.png"
+           image_click="Media\\UI\\buttons\\play2.png"
            hflip="false" vflip="false"
-           alpha="1.0">
+           alpha="1.0"
+          use_standard_effect="true">
 
     <actionspressup>
       <unpausegame />
@@ -54,12 +55,13 @@
   
   <button name="4_quit"
            process_input="true"
-           posX ="-75" posY ="0" width="150" height ="75"
-           image="Media\\UI\\buttons\\quit.dds"
-           image_focus="Media\\UI\\buttons\\quit2.dds"
-           image_click="Media\\UI\\buttons\\quit3.dds"
+           posX ="-75" posY ="-100" width="120" height ="120"
+           image="Media\\UI\\buttons\\back1.png"
+           image_focus="Media\\UI\\buttons\\back2.png"
+           image_click="Media\\UI\\buttons\\back2.png"
            hflip="false" vflip="false"
-           alpha="1.0">
+           alpha="1.0"
+          use_standard_effect="true">
 
     <actionspressup>
       <stopallsounds/>

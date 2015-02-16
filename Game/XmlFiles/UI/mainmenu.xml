@@ -70,7 +70,7 @@
       <pushui ui="gameloading" />
       <fadein time="150"/>
       <stopallsounds />
-      <loadlevel level="XmlFiles\village_outskirts_left_near_night.xml" />
+      <loadlevel level="XmlFiles\village_outskirts_left_night.xml" />
       <popui ui="gameloading" />
       <pushui ui="game_hud" />
     </actionspressup>
@@ -96,7 +96,7 @@
       <pushui ui="gameloading" />
       <fadein time="150"/>
       <stopallsounds />
-      <leveledit level="XmlFiles\village_outskirts_left_near_night.xml" />
+      <leveledit level="XmlFiles\village_outskirts_left_night.xml" />
       <popui ui="gameloading" />
       <pushui ui="game_hud" />
     </actionspressup>
