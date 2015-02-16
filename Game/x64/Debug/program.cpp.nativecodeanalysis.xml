@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<DEFECTS><DEFECT><SFA><FILEPATH>c:\users\jerome\documents\github\2dplatformer\game\src\</FILEPATH><FILENAME>program.cpp</FILENAME><LINE>35</LINE><COLUMN>11</COLUMN></SFA><DEFECTCODE>28251</DEFECTCODE><DESCRIPTION>Inconsistent annotation for 'wWinMain': this instance has no annotations. See c:\program files (x86)\windows kits\8.0\include\um\winbase.h(2201). </DESCRIPTION><FUNCTION>wWinMain</FUNCTION><DECORATED>wWinMain</DECORATED><FUNCLINE>35</FUNCLINE><PATH/></DEFECT></DEFECTS>

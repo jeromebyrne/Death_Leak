@@ -663,9 +663,9 @@ void Sprite::Draw_effectBasic(ID3D10Device * graphicsdevice)
 void Sprite::Draw_effectLightTexture(ID3D10Device * device)
 {
 	GAME_ASSERT(m_effectLightTexture);
-	
+
 	//// set the world matrix
-	m_effectLightTexture->SetWorld((float*)&m_world);
+ 	m_effectLightTexture->SetWorld((float*)&m_world);
 
 	// set the texture.
 	m_effectLightTexture->SetTexture(m_texture);

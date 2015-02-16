@@ -3,7 +3,7 @@
   <sprite name="1_title_background"
           process_input="false"
           posX ="-970" posY ="-540" width="1939.2" height ="1090.8"
-          image="Media\UI\sepia\main_menu_bg.png"
+          image="Media\UI\main_menu_2.png"
           hflip="false" vflip="false"
           alpha="1.0"
           use_standard_effect="false">
@@ -12,22 +12,22 @@
   <sprite name="21_title_background"
            process_input="false"
            posX ="-970" posY ="-540" width="1979.2" height ="1120.8"
-           image="Media\\UI\\main_menu_bg_2.png"
+           image="Media\UI\main_menu_2.png"
            hflip="false" vflip="false"
            alpha="0.45">
   </sprite>
   
   <sprite name="22_title_death_leak"
           process_input="false"
-          posX ="-60" posY ="104" width="939" height ="247"
-          image="Media\UI\buttons\title_2.png"
+          posX ="-750" posY ="300" width="753" height ="194"
+          image="Media\UI\title.png"
           hflip="false" vflip="false"
           alpha="0.5">
   </sprite>
   <sprite name="23_title_death_leak"
           process_input="false"
-          posX ="-50" posY ="100" width="909" height ="241"
-          image="Media\UI\buttons\title.png"
+          posX ="-754" posY ="307" width="753" height ="194"
+          image="Media\UI\title.png"
           hflip="false" vflip="false"
           alpha="1.0">
   </sprite>
@@ -56,12 +56,13 @@
   </animatedsprite>
   <button name="3_new_game"
           process_input="true"
-          posX ="185" posY ="-80" width="432" height ="177"
-          image="Media\UI\buttons\sepia\play1.png"
-          image_focus="Media\UI\buttons\sepia\play2.png"
-          image_click="Media\UI\buttons\sepia\play3.png"
+          posX ="-500" posY ="-150" width="150" height ="150"
+          image="Media\UI\buttons\play1.png"
+          image_focus="Media\UI\buttons\play2.png"
+          image_click="Media\UI\buttons\play2.png"
           hflip="false" vflip="false"
-          alpha="1.0">
+          alpha="1.0"
+          use_standard_effect="true">
     
     <actionspressup>
       <fadeout time="150"/>
@@ -82,12 +83,13 @@
 
   <button name="5_level_editor"
           process_input="true"
-          posX ="130" posY ="-290" width="394" height ="246"
-          image="Media\\UI\\buttons\\sepia\edit1.png"
-          image_focus="Media\\UI\\buttons\\sepia\edit2.png"
-          image_click="Media\\UI\\buttons\\sepia\edit3.png"
+          posX ="-165" posY ="-260" width="150" height ="150"
+          image="Media\\UI\\buttons\\edit1.png"
+          image_focus="Media\\UI\\buttons\\edit2.png"
+          image_click="Media\\UI\\buttons\\edit2.png"
           hflip="false" vflip="false"
-          alpha="1.0">
+          alpha="1.0"
+          use_standard_effect="true">
     <actionspressup>
       <fadeout time="150"/>
       <popui ui="mainmenu" />
@@ -106,12 +108,13 @@
    
   <button name="6_options"
           process_input="true"
-          posX ="120" posY ="-500" width="326" height ="220"
-          image="Media\\UI\\buttons\\sepia\settings1.png"
-          image_focus="Media\\UI\\buttons\\sepia\settings2.png"
-          image_click="Media\\UI\\buttons\\sepia\settings3.png"
+          posX ="175" posY ="-400" width="150" height ="150"
+          image="Media\\UI\\buttons\\settings1.png"
+          image_focus="Media\\UI\\buttons\settings2.png"
+          image_click="Media\\UI\\buttons\settings2.png"
           hflip="false" vflip="false"
-          alpha="1.0">
+          alpha="1.0"
+          use_standard_effect="true">
     <actionspressup>
       <popui ui="mainmenu" />
       <pushui ui="options" />
@@ -124,12 +127,13 @@
   
   <button name="7_quit"
            process_input="true"
-           posX ="-940" posY ="-470" width="285" height ="162"
-           image="Media\\UI\\buttons\\sepia\back1.png"
-           image_focus="Media\\UI\\buttons\\sepia\back2.png"
-           image_click="Media\\UI\\buttons\\sepia\back3.png"
+           posX ="520" posY ="-470" width="150" height ="150"
+           image="Media\\UI\\buttons\\back1.png"
+           image_focus="Media\\UI\\buttons\back2.png"
+           image_click="Media\\UI\\buttons\back2.png"
            hflip="false" vflip="false"
-           alpha="1.0">
+           alpha="1.0"
+          use_standard_effect="true">
 
     <actionspressup>
       <quittodesktop />
@@ -143,24 +147,8 @@
 
   <sprite name="8_gamepad_warning"
           process_input="false"
-          posX ="-875" posY ="-140" width="500" height ="125"
+          posX ="-300" posY ="150" width="500" height ="125"
           image="Media\\UI\\gamepadwarning.png"
-          hflip="false" vflip="false"
-          alpha="1.0">
-  </sprite>
-
-  <sprite name="9_player_icon"
-          process_input="false"
-          posX ="-770" posY ="-60" width="256" height ="256"
-          image="Media\\UI\\player_silhouette_2.png"
-          hflip="false" vflip="false"
-          alpha="1.0">
-  </sprite>
-
-  <sprite name="91_player_icon"
-          process_input="false"
-          posX ="-770" posY ="-60" width="256" height ="256"
-          image="Media\\UI\\player_silhouette_3.png"
           hflip="false" vflip="false"
           alpha="1.0">
   </sprite>
