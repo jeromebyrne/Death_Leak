@@ -201,7 +201,10 @@ Projectile * Player::FireWeapon(Vector2 direction)
 		p->FlipHorizontal();
 	}
 
-	PlayRandomWeaponFireSound();
+	if (!WasInWaterLastFrame())
+	{
+		PlayRandomWeaponFireSound();
+	}
 
 	return p;
 }

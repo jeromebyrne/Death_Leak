@@ -784,10 +784,10 @@ void Sprite::Draw_effectBump(ID3D10Device * device)
 	m_effectLightTextureBump->SetAlpha(m_alpha);
 
 	// calculate light direction (camera is light position)
-	Vector3 camPos = Camera2D::GetInstance()->Position();
+	Vector3 camPos = GameObjectManager::Instance()->GetPlayer()->Position();//Camera2D::GetInstance()->Position();
 	Vector3 dir = camPos - m_position;
-	dir.Z = -800; // TODO: scale based on frame buffer
-	dir.Y = 0;
+	dir.Z = -700; // TODO: scale based on frame buffer
+	//dir.Y = 0;
 	dir.Normalise();
 	m_effectLightTextureBump->SetLightDirection((float*)D3DXVECTOR4(-dir.X, dir.Y , dir.Z, 1.0f));
 

@@ -749,6 +749,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="false" />
+        <is_deep_water value="false" />
     </WaterBlock>
     <Sprite id="48" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="35.099998" y="-250.797791" x="10391.625000" rotation="0.000000" auto_rotate_value="0.000000" />

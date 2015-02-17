@@ -109,7 +109,10 @@ void Character::Update(float delta)
 		mIsMidAirMovingDown = false;
 	}
 
-	UpdateWaterWadeSFX();
+	if (!GetWaterIsDeep())
+	{
+		UpdateWaterWadeSFX();
+	}
 }
 
 void Character::SetSprintActive(bool value)
@@ -506,7 +509,7 @@ void Character::Jump(float percent)
 		percent = 1;
 	}
 
-	if(m_acceleration.Y == 0)
+	if(m_acceleration.Y == 0 && !WasInWaterLastFrame())
 	{
 		// play jump sound
 		AudioManager::Instance()->PlaySoundEffect("jump.wav");

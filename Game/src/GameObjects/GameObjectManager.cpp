@@ -880,7 +880,7 @@ void GameObjectManager::ProcessKeyboardMouse()
 	}
 	else
 	{
-		if (!m_player->IsOnSolidSurface())
+		if (!m_player->IsOnSolidSurface() && !(m_player->WasInWaterLastFrame() && m_player->GetWaterIsDeep()))
 		{
 			pressingJump = false;
 		}
@@ -950,7 +950,7 @@ void GameObjectManager::ProcessGamePad()
 	if (pad_state.Gamepad.wButtons & XINPUT_GAMEPAD_A)
 	{
 		float currentTime = Timing::Instance()->GetTotalTimeSeconds();
-		if (!startedPressingJump && m_player->IsOnSolidSurface())
+		if (!startedPressingJump && (m_player->IsOnSolidSurface() || (m_player->WasInWaterLastFrame() && m_player->GetWaterIsDeep())))
 		{
 			startedPressing = currentTime;
 			startedPressingJump = true;

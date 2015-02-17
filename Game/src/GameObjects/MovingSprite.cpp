@@ -15,7 +15,8 @@ MovingSprite::MovingSprite(float x, float y, float z, float width, float height,
 	mCurrentYResistance(1),
 	m_isOnGround(true),
 	mIsInWater(false),
-	mWasInWaterLastFrame(false)
+	mWasInWaterLastFrame(false),
+	mIsDeepWater(false)
 {
 	if (m_maxVelocity.Y < 0)  // less than 0 actually signifies no maximum
 	{
@@ -297,9 +298,10 @@ void MovingSprite::StopYAccelerating()
 	m_acceleration.Y = 0;
 }
 
-void MovingSprite::SetIsInWater(bool value)
+void MovingSprite::SetIsInWater(bool value, bool isDeepWater)
 {
 	mIsInWater = value;
+	mIsDeepWater = isDeepWater;
 
 	if (mIsInWater)
 	{

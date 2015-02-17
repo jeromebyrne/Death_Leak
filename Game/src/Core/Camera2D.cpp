@@ -348,7 +348,15 @@ void Camera2D::SetZoomInLevel(float value)
 
 	mZoomInPercent = value;
 
-	D3DXMatrixOrthoLH(&m_projection, m_width * value, m_height * value, 0.0f, (std::numeric_limits<float>::max)());
+	// want to have a 1.0 scale for level editing
+	if (!Game::GetIsLevelEditMode())
+	{
+		D3DXMatrixOrthoLH(&m_projection, m_width * value, m_height * value, 0.0f, (std::numeric_limits<float>::max)());
+	}
+	else
+	{
+		D3DXMatrixOrthoLH(&m_projection, m_width, m_height, 0.0f, (std::numeric_limits<float>::max)());
+	}
 }
 
 void Camera2D::DoSmallShake()

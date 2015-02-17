@@ -422,7 +422,7 @@ Projectile * NPC::FireWeapon(Vector2 direction)
 		if (armPart)
 		{
 			armPart->Restart();
-			armPart->Animate(); // get's updated in UpdateAnimations()
+			armPart->Animate();
 		}
 	}
 
@@ -435,7 +435,10 @@ Projectile * NPC::FireWeapon(Vector2 direction)
 		p->FlipVertical();
 	}
 
-	PlayRandomWeaponFireSound();
+	if (!WasInWaterLastFrame())
+	{
+		PlayRandomWeaponFireSound();
+	}
 
 	return p;
 }
