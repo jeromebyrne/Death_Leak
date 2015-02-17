@@ -379,6 +379,11 @@ void Projectile::Update(float delta)
 		percentDelta = 1.2f; 
 	}
 
+	if (GetIsInWater())
+	{
+		DoWaterAccelerationBubbles();
+	}
+
 	if(m_isActive)
 	{
 		// we dont need complicated movement so we'll ignore the MovingSprite class

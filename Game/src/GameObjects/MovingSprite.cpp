@@ -2,6 +2,7 @@
 #include "MovingSprite.h"
 #include "Environment.h"
 #include "SolidLineStrip.h"
+#include "ParticleEmitterManager.h"
 
 MovingSprite::MovingSprite(float x, float y, float z, float width, float height, float breadth, float groundFriction, float airResistance):
 	Sprite(x,y,z, width, height, breadth), 
@@ -16,7 +17,8 @@ MovingSprite::MovingSprite(float x, float y, float z, float width, float height,
 	m_isOnGround(true),
 	mIsInWater(false),
 	mWasInWaterLastFrame(false),
-	mIsDeepWater(false)
+	mIsDeepWater(false),
+	mTimeUntilCanSpawnWaterBubbles(0.0f)
 {
 	if (m_maxVelocity.Y < 0)  // less than 0 actually signifies no maximum
 	{
@@ -47,7 +49,7 @@ void MovingSprite::Update(float delta)
 	// update our base class 
 	Sprite::Update(delta);
 
-	float velocityMod = mIsInWater ? 0.6f : 1.0f;
+	float velocityMod = mIsInWater ? (GetWaterIsDeep() ? 0.35f : 0.6f) : 1.0f;
 	Vector3 nextVelocity = m_velocity + (m_acceleration * m_direction) * velocityMod;
 
 	if (nextVelocity.X > m_maxVelocity.X)
@@ -146,7 +148,7 @@ void MovingSprite::Update(float delta)
 		}
 		else
 		{
-			AccelerateY(-1, ((float)fakeGravity/mCurrentYResistance * 0.6f) * percentDelta );
+			AccelerateY(-1, ((float)fakeGravity/mCurrentYResistance * 0.1f) * percentDelta );
 		}
 	}
 
@@ -183,6 +185,11 @@ void MovingSprite::Update(float delta)
 	}
 
 	mIsInWater = false;// let the collision manager handle this again
+
+	if (mTimeUntilCanSpawnWaterBubbles > 0.0f)
+	{
+		mTimeUntilCanSpawnWaterBubbles -= delta;
+	}
 }
 
 void MovingSprite::Initialise()
@@ -261,6 +268,11 @@ void MovingSprite::AccelerateX(float directionX, float rate)
 		m_direction.X = directionX;
 		m_acceleration.X = rate;
 	}
+
+	if (GetIsInWater())
+	{
+		DoWaterAccelerationBubbles();
+	}
 }
 
 void MovingSprite::AccelerateY(float directionY, float rate)
@@ -307,4 +319,37 @@ void MovingSprite::SetIsInWater(bool value, bool isDeepWater)
 	{
 		mWasInWaterLastFrame = true;
 	}
+}
+
+void MovingSprite::DoWaterAccelerationBubbles()
+{
+	if (mTimeUntilCanSpawnWaterBubbles <= 0.0f)
+	{
+		ParticleEmitterManager::Instance()->CreateDirectedSpray(30,
+																Vector3(m_position.X - (m_direction.X < 0.0f ? 30 : -30), m_position.Y, m_position.Z),
+																Vector3(-m_direction.X, -m_direction.Y, 0),
+																0.15f,
+																Vector3(3200, 2000, 0),
+																"Media\\Ambient\\bubble.png",
+																0.3f,
+																1.5f,
+																1.5f,
+																3.0f,
+																2,
+																4,
+																-0.2f,
+																false,
+																1.0f,
+																1.0f,
+																-1,
+																true,
+																2.0f,
+																0.01f * Dimensions().X,
+																0.03f * Dimensions().Y,
+																0.0f,
+																0.9f);
+
+		mTimeUntilCanSpawnWaterBubbles = 0.2f;
+	}
+
 }

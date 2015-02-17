@@ -103,6 +103,8 @@ public:
 
 protected:
 
+	void DoWaterAccelerationBubbles();
+
 	Vector3 m_velocity;
 	Vector3 m_maxVelocity;
 	Vector3 m_direction;
@@ -122,6 +124,8 @@ protected:
 	bool mWasInWaterLastFrame;
 
 	bool mIsDeepWater;
+
+	float mTimeUntilCanSpawnWaterBubbles;
 };
 
 #endif
