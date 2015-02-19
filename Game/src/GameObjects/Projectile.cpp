@@ -390,14 +390,16 @@ void Projectile::Update(float delta)
 		Sprite::Update(delta);
 
 		// apply gravity to the velocity
-		if (!mIsInWater)
+		/*if (!mIsInWater)
 		{
-			m_velocity.Y -= 0.5f * percentDelta;
+			m_velocity.Y -= 0.1f * percentDelta;
 		}
 		else
 		{
-			m_velocity.Y -= 0.10f * percentDelta;
-		}
+			m_velocity.Y -= 0.05f * percentDelta;
+		}*/
+
+		m_velocity.Y -= 0.1f * percentDelta;
 		
 		// rotate appropriately
 		Vector2 dir = Vector2(m_velocity.X, m_velocity.Y);
