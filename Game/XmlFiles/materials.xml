@@ -303,7 +303,7 @@
   <!--Underwater sand-->
   <material name="underwater_sand">
     <particletextures>
-      <texture file="Media\wetsplashparticle.png"/>
+      <texture file="Media\sand_water_particle.png"/>
     </particletextures>
 
     <damagesoundeffects>

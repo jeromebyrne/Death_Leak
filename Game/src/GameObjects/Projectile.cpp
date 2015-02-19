@@ -392,7 +392,7 @@ void Projectile::Update(float delta)
 		// apply gravity to the velocity
 		if (!mIsInWater)
 		{
-			m_velocity.Y -= 0.15f * percentDelta;
+			m_velocity.Y -= 0.5f * percentDelta;
 		}
 		else
 		{
@@ -549,20 +549,25 @@ void Projectile::HandleSolidLineStripCollision(SolidLineStrip * solidLineStrip)
 			float maxLive = 0.75f;
 
 			// play sound for non-characters, characters handle their sounds in OnDamage
-			string soundFile = objectMaterial->GetRandomDamageSoundFilename();
-			AudioManager::Instance()->PlaySoundEffect(soundFile);
+
+			if (!GetIsInWater())
+			{
+				string soundFile = objectMaterial->GetRandomDamageSoundFilename();
+				AudioManager::Instance()->PlaySoundEffect(soundFile);
+			}
 
 			string particleTexFile = objectMaterial->GetRandomParticleTexture();
+			bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
 			ParticleEmitterManager::Instance()->CreateDirectedSpray(10,
 																	particlePos,
 																	Vector3(-m_direction.X, -m_direction.Y, 0),
 																	0.4,
 																	Vector3(3200, 1200, 0),
 																	particleTexFile,
-																	1.0f,
-																	4.0f,
-																	minLive,
-																	maxLive,
+																	isInDeepWater ? 0.4f : 1.0f,
+																	isInDeepWater ? 1.5f : 4.0f,
+																	isInDeepWater ? 1.4f : minLive,
+																	isInDeepWater ? 2.5f : maxLive,
 																	10,
 																	30,
 																	0.7,

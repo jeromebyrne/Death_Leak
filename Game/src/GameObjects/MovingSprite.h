@@ -103,7 +103,7 @@ public:
 
 protected:
 
-	void DoWaterAccelerationBubbles();
+	virtual void DoWaterAccelerationBubbles();
 
 	Vector3 m_velocity;
 	Vector3 m_maxVelocity;

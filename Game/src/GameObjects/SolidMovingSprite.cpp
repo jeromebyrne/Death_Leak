@@ -445,3 +445,37 @@ void SolidMovingSprite::SetIsOnSolidLine(bool value, SolidLineStrip * lineStrip)
 		mCurrentSolidLineStrip = nullptr;
 	}
 }
+
+void SolidMovingSprite::DoWaterAccelerationBubbles()
+{
+	if (mTimeUntilCanSpawnWaterBubbles <= 0.0f)
+	{
+		ParticleEmitterManager::Instance()->CreateDirectedSpray(30,
+																Vector3((m_position.X - (m_direction.X < 0.0f ? 30 : -30)) + mCollisionBoxOffset.X, 
+																		m_position.Y + mCollisionBoxOffset.Y, 
+																		m_position.Z),
+																Vector3(-m_direction.X, -m_direction.Y, 0),
+																0.15f,
+																Vector3(3200, 2000, 0),
+																"Media\\Ambient\\bubble.png",
+																0.15f,
+																0.75f,
+																1.5f,
+																3.0f,
+																2,
+																4,
+																-0.2f,
+																false,
+																1.0f,
+																1.0f,
+																-1,
+																true,
+																2.0f,
+																0.01f * Dimensions().X,
+																0.03f * Dimensions().Y,
+																0.0f,
+																0.9f);
+
+		mTimeUntilCanSpawnWaterBubbles = 0.2f;
+	}
+}

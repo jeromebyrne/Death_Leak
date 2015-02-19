@@ -193,10 +193,7 @@ void Character::OnCollision(SolidMovingSprite * object)
 		// update the base classes
 		SolidMovingSprite::OnCollision(object);
 
-		if (!WasInWaterLastFrame())
-		{
-			UpdateFootsteps(object);
-		}
+		UpdateFootsteps(object);
 	}
 	else if (object->IsPlatform())
 	{
@@ -310,73 +307,75 @@ void Character::UpdateFootsteps(SolidMovingSprite * solidObject)
 				string particleFile = "";
 				if (objectMaterial != 0)
 				{
-					string soundfile = objectMaterial->GetRandomFootstepSoundFilename();
-					AudioManager::Instance()->PlaySoundEffect(soundfile);
+					if (!GetIsInWater() && !WasInWaterLastFrame())
+					{
+						string soundfile = objectMaterial->GetRandomFootstepSoundFilename();
+						AudioManager::Instance()->PlaySoundEffect(soundfile);
+					}
 					particleFile = objectMaterial->GetRandomParticleTexture();
 				}
 
-				if (!GetIsInWater() && !WasInWaterLastFrame())
-				{
-					Vector3 pos(m_position.X, Bottom(), m_position.Z - 1);
-					Vector3 dir(0.1, 0.9, 0);
+				Vector3 pos(m_position.X, Bottom(), m_position.Z - 1);
+				Vector3 dir(0.1, 0.9, 0);
 
-					if (!mSprintActive)
+				if (!mSprintActive)
+				{
+					bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
+					if (!particleFile.empty())
 					{
-						if (!particleFile.empty())
-						{
-							ParticleEmitterManager::Instance()->CreateDirectedSpray(3,
-								pos,
-								dir,
-								0.25,
-								Vector3(1200, 720, 0),
-								particleFile,
-								1,
-								4,
-								0.6f,
-								0.8f,
-								2,
-								5,
-								0.2,
-								false,
-								0.4,
-								1.0,
-								1,
-								true,
-								25,
-								3.0f,
-								1.0f,
-								0.15f,
-								0.7f);
-						}
+						ParticleEmitterManager::Instance()->CreateDirectedSpray(3,
+																				pos,
+																				dir,
+																				0.25,
+																				Vector3(1200, 720, 0),
+																				particleFile,
+																				isInDeepWater ? 0.4f : 1.0f,
+																				isInDeepWater ? 1.5f : 4.0f,
+																				isInDeepWater ? 1.4f : 0.6f,
+																				isInDeepWater ? 2.5f : 0.8f,
+																				2,
+																				5,
+																				0.2,
+																				false,
+																				0.8,
+																				1.0,
+																				1,
+																				true,
+																				isInDeepWater ? 35 : 25,
+																				3.0f,
+																				1.0f,
+																				0.15f,
+																				0.7f);
 					}
-					else
+				}
+				else
+				{
+					bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
+					if (!particleFile.empty())
 					{
-						if (!particleFile.empty())
-						{
-							ParticleEmitterManager::Instance()->CreateDirectedSpray(8,
-								pos,
-								dir,
-								0.5,
-								Vector3(1200, 720, 0),
-								particleFile,
-								2,
-								4,
-								0.6f,
-								1.0f,
-								2,
-								5,
-								0.2,
-								false,
-								0.4,
-								1.0,
-								1,
-								true,
-								25,
-								2.0f,
-								1.0f,
-								0.15f,
-								0.5f);
-						}
+						ParticleEmitterManager::Instance()->CreateDirectedSpray(8,
+																				pos,
+																				dir,
+																				0.5,
+																				Vector3(1200, 720, 0),
+																				particleFile,
+																				isInDeepWater ? 0.4f : 2,
+																				isInDeepWater ? 1.5f : 4,
+																				isInDeepWater ? 1.4f : 0.6f,
+																				isInDeepWater ? 2.5f : 1.0f,
+																				2,
+																				5,
+																				0.2,
+																				false,
+																				0.8,
+																				1.0,
+																				1,
+																				true,
+																				isInDeepWater ? 35 : 25,
+																				2.0f,
+																				1.0f,
+																				0.15f,
+																				0.5f);
 					}
 				}
 			}
@@ -562,13 +561,15 @@ void Character::WallJump(float percent)
 
 void Character::AccelerateX(float directionX)
 {
+	float deepWaterModifier = (WasInWaterLastFrame() && GetWaterIsDeep()) ? 0.5f : 1.0f;
+
 	if (GetIsSprintActive())
 	{
-		MovingSprite::AccelerateX(directionX, mAccelXRate * 2);
+		MovingSprite::AccelerateX(directionX, (mAccelXRate * 2) * deepWaterModifier);
 	}
 	else
 	{
-		MovingSprite::AccelerateX(directionX, mAccelXRate);
+		MovingSprite::AccelerateX(directionX, mAccelXRate * deepWaterModifier);
 	}
 
 	if(directionX < 0)

@@ -92,6 +92,8 @@ public:
 	
 protected:
 
+	virtual void DoWaterAccelerationBubbles() override;
+
 	bool m_passive; // is this an active collision object or passive?
 
 	Vector3 m_collisionBoxDimensions;

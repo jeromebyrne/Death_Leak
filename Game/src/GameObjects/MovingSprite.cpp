@@ -49,6 +49,13 @@ void MovingSprite::Update(float delta)
 	// update our base class 
 	Sprite::Update(delta);
 
+	if (GetIsInWater() &&
+			(std::abs(m_velocity.X) > 0.1f || (std::abs(m_velocity.Y) > 1.0f &&
+			!(IsCharacter() && static_cast<Character *>(this)->IsOnSolidSurface() ))))
+	{
+		DoWaterAccelerationBubbles();
+	}
+
 	float velocityMod = mIsInWater ? (GetWaterIsDeep() ? 0.35f : 0.6f) : 1.0f;
 	Vector3 nextVelocity = m_velocity + (m_acceleration * m_direction) * velocityMod;
 
@@ -148,7 +155,7 @@ void MovingSprite::Update(float delta)
 		}
 		else
 		{
-			AccelerateY(-1, ((float)fakeGravity/mCurrentYResistance * 0.1f) * percentDelta );
+			AccelerateY(-1, ((float)fakeGravity/mCurrentYResistance * 0.05f) * percentDelta );
 		}
 	}
 
@@ -268,11 +275,6 @@ void MovingSprite::AccelerateX(float directionX, float rate)
 		m_direction.X = directionX;
 		m_acceleration.X = rate;
 	}
-
-	if (GetIsInWater())
-	{
-		DoWaterAccelerationBubbles();
-	}
 }
 
 void MovingSprite::AccelerateY(float directionY, float rate)
@@ -331,8 +333,8 @@ void MovingSprite::DoWaterAccelerationBubbles()
 																0.15f,
 																Vector3(3200, 2000, 0),
 																"Media\\Ambient\\bubble.png",
-																0.3f,
-																1.5f,
+																0.03f,
+																0.15f,
 																1.5f,
 																3.0f,
 																2,
@@ -351,5 +353,4 @@ void MovingSprite::DoWaterAccelerationBubbles()
 
 		mTimeUntilCanSpawnWaterBubbles = 0.2f;
 	}
-
 }
