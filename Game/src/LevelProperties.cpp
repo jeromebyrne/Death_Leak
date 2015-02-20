@@ -1,11 +1,13 @@
 #include "precompiled.h"
 #include "LevelProperties.h"
+#include "WeatherManager.h"
 
 LevelProperties::LevelProperties(void) :
 	mCameraZoomInPercent(1.0f),
 	mMusicInitialDelay(0.0f),
 	mMusicLength(0.0f),
-	mMusicTimeBetween(0.0f)
+	mMusicTimeBetween(0.0f),
+	mAllowWeather(true)
 {
 
 }
@@ -36,6 +38,9 @@ void LevelProperties::XmlRead(TiXmlElement * element)
 		cam2d->SetTargetOffset(mTargetOffset);
 		cam2d->SetTargetLag(mTargetLag);
 	}
+
+	mAllowWeather = XmlUtilities::ReadAttributeAsBool(element, "weather_properties", "allow_weather");
+	WeatherManager::GetInstance()->SetAllowWeather(mAllowWeather);
 }
 
 void LevelProperties::XmlWrite(TiXmlElement * element)
@@ -61,6 +66,10 @@ void LevelProperties::XmlWrite(TiXmlElement * element)
 	music->SetDoubleAttribute("length", mMusicLength);
 	music->SetDoubleAttribute("time_between", mMusicTimeBetween);
 	element->LinkEndChild(music);
+
+	TiXmlElement * weather = new TiXmlElement("weather_properties");
+	weather->SetAttribute("allow_weather", mAllowWeather ? "true" : "false");
+	element->LinkEndChild(weather);
 
 }
 

@@ -19,6 +19,7 @@ Character(x, y, z, width, height, breadth),
 	mTimeUntilFireBurstAvailable(0.0f)
 {
 	mHealth = 100.0f;
+	mAlwaysUpdate = true;
 }
 
 Player::~Player(void)

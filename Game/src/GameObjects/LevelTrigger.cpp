@@ -4,6 +4,7 @@
 LevelTrigger::LevelTrigger(float x, float y, float z, float width, float height):
 	GameObject(x, y, z, width, height)
 {
+	mAlwaysUpdate = true;
 }
 
 LevelTrigger::~LevelTrigger(void)

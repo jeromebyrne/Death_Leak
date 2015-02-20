@@ -26,6 +26,8 @@ public:
 
 	float GetFoliageSwayMultiplier() const { return mFoliageSwayMultiplier; }
 
+	void SetAllowWeather(bool value) { mAllowWeather = value; }
+
 private:
 
 	WeatherManager(void);
@@ -98,6 +100,8 @@ private:
 	float mTimeUntilNextLightning;
 
 	float mFoliageSwayMultiplier;
+
+	bool mAllowWeather;
 };
 
 #endif

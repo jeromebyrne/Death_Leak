@@ -28,6 +28,7 @@ private:
 	float mMusicLength;
 	float mMusicInitialDelay;
 	float mMusicTimeBetween;
+	bool mAllowWeather;
 };
 
 #endif

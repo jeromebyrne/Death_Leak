@@ -3,12 +3,13 @@
         <camera_properties zoom_in_percent="1.000000" xOffset="500.000000" yOffset="50.000000" xLag="15.000000" yLag="1.000000" />
         <level_bounds left="-5100.000000" right="14300.000000" top="2000.000000" bottom="-50.000000" />
         <music file="music\japanese2.mp3" initial_delay="20.000000" length="96.000000" time_between="120.000000" />
+        <weather_properties allow_weather="true" />
     </LevelProperties>
     <LevelTrigger id="1" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="4.000000" y="742.267029" x="-6446.959473" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="2000.000000" width="1000.000000" />
         <material value="" />
-        <level_to_load value="XmlFiles\village_outskirts_left_near_night.xml" />
+        <level_to_load value="XmlFiles\waterfall_level.xml" />
         <player_start_pos x="-2400.000000" y="420.000000" />
         <player_direction x="-1.000000" />
     </LevelTrigger>

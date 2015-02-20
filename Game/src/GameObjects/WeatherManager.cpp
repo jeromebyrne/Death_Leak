@@ -63,7 +63,8 @@ WeatherManager::WeatherManager(void):
 	mTimeUntilNextLightning(0),
 	mFoliageSwayMultiplier(1.0f),
 	mRainLayer3(nullptr),
-	mSnowLayer3(nullptr)
+	mSnowLayer3(nullptr),
+	mAllowWeather(true)
 {
 	// preload large textures
 	/*TextureManager::Instance()->LoadTexture("Media\\rainlayer.png");
@@ -342,6 +343,11 @@ void WeatherManager::Destroy()
 
 void WeatherManager::Update(float delta)
 {
+	if (!mAllowWeather)
+	{
+		// pause all weather while weather is not allowed
+		return;
+	}
 	for (auto state : mStateKillList)
 	{
 		mCurrentStates.remove(state);

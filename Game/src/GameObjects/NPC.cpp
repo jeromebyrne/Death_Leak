@@ -59,6 +59,8 @@ NPC::NPC(float x, float y, float z, float width, float height, float breadth) :
 
 	// set to default state
 	SetState(AIState::kRangeAttack);
+
+	mAlwaysUpdate = true;
 }
 
 NPC::~NPC(void)
