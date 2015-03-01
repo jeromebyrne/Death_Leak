@@ -5,7 +5,7 @@
 #include "AudioObject.h"
 #include "Game.h"
 
-static const float kTimeUntilFirstWeather = 80.0f;
+static const float kTimeUntilFirstWeather = 5.0f;
 static const float kRainSessionMinTime = 70.0f;
 static const float kRainSessionMaxTime = 120.0f;
 static const float kRainIntroTime = 10.0f;
@@ -343,16 +343,17 @@ void WeatherManager::Destroy()
 
 void WeatherManager::Update(float delta)
 {
-	if (!mAllowWeather)
-	{
-		// pause all weather while weather is not allowed
-		return;
-	}
 	for (auto state : mStateKillList)
 	{
 		mCurrentStates.remove(state);
 	}
 	mStateKillList.clear();
+
+	if (!mAllowWeather)
+	{
+		// pause all weather while weather is not allowed
+		return;
+	}
 
 	for (auto state : mCurrentStates)
 	{
@@ -465,7 +466,6 @@ void WeatherManager::StopRaining()
 		GameObjectManager::Instance()->RemoveGameObject(mLightningLayer);
 		mLightningLayer = nullptr;
 	}
-
 
 	RemoveState(kRaining);
 }
@@ -773,4 +773,13 @@ void WeatherManager::FadeWeatherIfApplicable(float delta)
 			}
 		}
 	}
+}
+
+void WeatherManager::StopAllWeather()
+{
+	StopRaining();
+	StopSnowing();
+
+	mStateKillList.clear();
+	mCurrentStates.clear();
 }

@@ -28,6 +28,8 @@ public:
 
 	void SetAllowWeather(bool value) { mAllowWeather = value; }
 
+	void StopAllWeather();
+
 private:
 
 	WeatherManager(void);

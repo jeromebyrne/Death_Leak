@@ -41,6 +41,11 @@ void LevelProperties::XmlRead(TiXmlElement * element)
 
 	mAllowWeather = XmlUtilities::ReadAttributeAsBool(element, "weather_properties", "allow_weather");
 	WeatherManager::GetInstance()->SetAllowWeather(mAllowWeather);
+
+	if (!mAllowWeather)
+	{
+		WeatherManager::GetInstance()->StopAllWeather();
+	}
 }
 
 void LevelProperties::XmlWrite(TiXmlElement * element)
