@@ -6,18 +6,18 @@
         <weather_properties allow_weather="false" />
     </LevelProperties>
     <Player id="1" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="50.000000" y="937.053101" x="-5411.565918" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="50.000000" y="1230.813843" x="-4989.503418" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="300.000000" width="150.000000" native="false" repeatX="false" repeatY="false" />
         <material value="maleninja" />
         <alpha value="1.000000" />
-        <effect name="effectnoise" noiseintensity="0.00500" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <effect name="effectnoise" noiseintensity="0.005000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <texture filename="Media\subzero\still1.png" />
         <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\ninjaAnimation.xml" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="3.000000" bottom_left_intensity_y="3.000000" bottom_right_intensity_x="3.000000" bottom_right_intensity_y="3.000000" top_left_intensity_x="3.000000" top_left_intensity_y="3.000000" top_right_intensity_x="3.000000" top_right_intensity_y="3.000000" time_multiplier="0.001000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="1.400000" x="0.880000" />
         <maxvelocity z="0.000000" y="99999.000000" x="6.000000" />
         <applygravity value="true" />
@@ -35,13 +35,13 @@
         <dimensions breadth="0.000000" height="1990.618286" width="2973.586670" native="false" repeatX="false" repeatY="false" />
         <material value="water" />
         <alpha value="0.800000" />
-        <effect name="effectfoliagesway" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <effect name="effectlightetxure" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <texture filename="Media\levels\underwater_cave\water_layer.png" />
         <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="false" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <foliage_sway_props bottom_left_intensity_x="5.000000" bottom_left_intensity_y="5.000000" bottom_right_intensity_x="5.000000" bottom_right_intensity_y="5.000000" top_left_intensity_x="5.000000" top_left_intensity_y="5.000000" top_right_intensity_x="5.000000" top_right_intensity_y="5.000000" time_multiplier="0.800000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="2.000000" x="0.950000" />
         <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
         <applygravity value="false" />
@@ -79,7 +79,7 @@
     </Sprite>
     <SolidLineStrip id="5" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="283.266541" x="-5291.315430" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="1.000000" height="409.722473" width="3518.746094" native="false" repeatX="false" repeatY="false" />
+        <dimensions breadth="1.000000" height="409.658447" width="4694.420898" native="false" repeatX="false" repeatY="false" />
         <material value="underwater_sand" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
@@ -92,18 +92,19 @@
         <resistance z="0.000000" y="1.000000" x="1.000000" />
         <maxvelocity z="0.000000" y="0.000000" x="0.000000" />
         <applygravity value="true" />
-        <collisionboxdimensions z="0.000000" y="400.000000" x="3241.253906" offsetX="138.746094" offsetY="-4.861237" />
+        <collisionboxdimensions z="0.000000" y="400.000000" x="4643.009766" offsetX="25.705566" offsetY="-4.829224" />
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
         <points>
-            <point x="-1481.880859" y="-49.301453" />
+            <point x="-2295.799316" y="-79.208679" />
+            <point x="-1481.253418" y="-71.974182" />
             <point x="-973.291504" y="38.545441" />
             <point x="-692.413574" y="69.550232" />
             <point x="-229.592773" y="36.465942" />
             <point x="235.360352" y="-32.459229" />
             <point x="715.861816" y="-58.296570" />
-            <point x="1759.373047" y="-79.272705" />
+            <point x="2347.210449" y="-78.175171" />
         </points>
         <edge_properties has_right_hard_edge="true" has_left_hard_edge="true" right_hard_edge_offset_x="20.000000" left_hard_edge_offset_x="20.000000" />
     </SolidLineStrip>
@@ -235,7 +236,7 @@
         <fade_time_percent out="0.900000" in="0.050000" />
     </ParticleSpray>
     <ParallaxLayer id="15" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="2.000000" y="257.053101" x="-5531.565918" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="2.000000" y="870.813843" x="-4029.503418" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="972.000000" width="1728.000000" native="false" repeatX="false" repeatY="false" />
         <material value="" />
         <alpha value="1.000000" />
@@ -283,7 +284,7 @@
         <brightness min="0.600000" max="1.000000" />
         <fade_time_percent out="0.900000" in="0.050000" />
     </ParticleSpray>
-    <ParticleSpray id="19" parallax_x="0.650000" parallax_y="1.010000" level_edit_locked="false" updateable="true">
+    <ParticleSpray id="18" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="60.000000" y="370.220581" x="-5891.691406" rotation="0.000000" auto_rotate_value="0.000000" spawn_spread_x="70.000000" spawn_spread_y="45.000000" />
         <dimensions breadth="0.000000" height="2000.000000" width="4000.000000" />
         <material value="" />
@@ -291,7 +292,7 @@
         <effect name="effectlighttexture" />
         <numparticles value="200.000000" />
         <texture filename="Media\Ambient\bubble.png" />
-        <direction x="0.00000" y="1.000000" />
+        <direction x="0.000000" y="1.000000" />
         <spread value="0.700000" />
         <speed min="0.150000" max="1.200000" />
         <livetime min="4.500000" max="10.100006" />
@@ -301,4 +302,121 @@
         <brightness min="0.600000" max="1.000000" />
         <fade_time_percent out="0.900000" in="0.050000" />
     </ParticleSpray>
+    <Sprite id="19" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+        <position z="5.099998" y="254.392822" x="-4876.644531" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="733.074280" width="977.432373" native="false" repeatX="false" repeatY="false" />
+        <material value="grassground" />
+        <alpha value="1.000000" />
+        <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.070000" pixelwobblespeedmod="0.500000" />
+        <texture filename="Media\levels\underwater_cave\blood.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+    </Sprite>
+    <Sprite id="20" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+        <position z="18.099998" y="264.498108" x="-4647.051758" rotation="-0.420000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="569.069885" width="758.759827" native="false" repeatX="false" repeatY="false" />
+        <material value="grassground" />
+        <alpha value="1.000000" />
+        <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.090000" pixelwobblespeedmod="0.500000" />
+        <texture filename="Media\levels\underwater_cave\blood.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+    </Sprite>
+    <Sprite id="21" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+        <position z="20.099998" y="275.139221" x="-4943.478027" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="106.150696" width="310.787781" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <alpha value="1.000000" />
+        <effect name="effectnoise" noiseintensity="0.010000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <texture filename="Media\levels\village_outskirt_left\character_dead_1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+    </Sprite>
+    <ParticleSpray id="22" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="22.000000" y="299.866516" x="-4977.459473" rotation="0.000000" auto_rotate_value="0.000000" spawn_spread_x="20.000000" spawn_spread_y="5.000000" />
+        <dimensions breadth="0.000000" height="2000.000000" width="4000.000000" />
+        <material value="" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" />
+        <numparticles value="50.000000" />
+        <texture filename="Media\levels\underwater_cave\blood.png" />
+        <direction x="-0.200000" y="0.800000" />
+        <spread value="0.700000" />
+        <speed min="0.200000" max="0.600000" />
+        <livetime min="5.500000" max="10.100006" />
+        <size min="50.000000" max="100.000000" scaleto="true" scaletovalue="4.000000" />
+        <gravity value="0.000000" />
+        <loop value="true" looptime="0.000000" />
+        <brightness min="1.000000" max="1.000000" />
+        <fade_time_percent out="0.800000" in="0.200000" />
+    </ParticleSpray>
+    <SolidMovingSprite id="23" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+        <position z="5.000000" y="1949.550537" x="-5228.870117" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="1.865897" width="1.865897" native="false" repeatX="false" repeatY="false" />
+        <material value="grassground" />
+        <alpha value="0.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <texture filename="Media\blank_alpha.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="2.000000" x="0.950000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="422.822998" x="4199.830078" offsetX="0.000000" offsetY="0.000000" />
+        <passive value="true" />
+        <applydamage flag="false" amount="100.000000" />
+        <can_be_damaged value="false" />
+    </SolidMovingSprite>
+    <SolidMovingSprite id="24" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+        <position z="5.000000" y="999.062622" x="-6916.274414" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="1.620120" width="1.620120" native="false" repeatX="false" repeatY="false" />
+        <material value="grassground" />
+        <alpha value="0.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <texture filename="Media\blank_alpha.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="2.000000" x="0.950000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="2891.644287" x="344.829407" offsetX="0.000000" offsetY="0.000000" />
+        <passive value="true" />
+        <applydamage flag="false" amount="100.000000" />
+        <can_be_damaged value="false" />
+    </SolidMovingSprite>
+    <SolidMovingSprite id="25" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+        <position z="5.000000" y="405.799500" x="-3469.377930" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="2.000000" width="2.000000" native="true" repeatX="false" repeatY="false" />
+        <material value="grassground" />
+        <alpha value="0.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <texture filename="Media\blank_alpha.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="2.000000" x="0.950000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="4199.822754" x="500.830078" offsetX="0.000000" offsetY="0.000000" />
+        <passive value="true" />
+        <applydamage flag="false" amount="100.000000" />
+        <can_be_damaged value="false" />
+    </SolidMovingSprite>
 </level>
