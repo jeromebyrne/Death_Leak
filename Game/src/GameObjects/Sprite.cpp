@@ -198,9 +198,9 @@ void Sprite::RecalculateVertices()
 		if (m_currentEffectType == EFFECT_FOLIAGE_SWAY)
 		{
 			normal1 = D3DXVECTOR3(mFoliageSwayProperties.BottomLeftSwayIntensity.X, mFoliageSwayProperties.BottomLeftSwayIntensity.Y, 1);
-			normal2 = D3DXVECTOR3(mFoliageSwayProperties.TopLeftSwayIntensity.X, mFoliageSwayProperties.TopLeftSwayIntensity.Y, 1);
+			normal2 = D3DXVECTOR3(mFoliageSwayProperties.BottomRightSwayIntensity.X, mFoliageSwayProperties.BottomRightSwayIntensity.Y, 1);
 			normal3 = D3DXVECTOR3(mFoliageSwayProperties.TopRightSwayIntensity.X, mFoliageSwayProperties.TopRightSwayIntensity.Y, 1);
-			normal4 = D3DXVECTOR3(mFoliageSwayProperties.BottomRightSwayIntensity.X, mFoliageSwayProperties.BottomRightSwayIntensity.Y, 1);
+			normal4 = D3DXVECTOR3(mFoliageSwayProperties.TopLeftSwayIntensity.X, mFoliageSwayProperties.TopLeftSwayIntensity.Y, 1);
 		}
 
 		VertexPositionTextureNormal vertices[] =

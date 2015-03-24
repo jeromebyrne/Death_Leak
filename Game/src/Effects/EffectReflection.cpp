@@ -27,8 +27,8 @@ void EffectReflection::Load(ID3D10Device * device)
 	m_pEnvMapVariable = m_pEffect->GetVariableByName( "txEnvMap" )->AsShaderResource();
 	
 	// load the environment map file
-	m_pEnvMapSRV = TextureManager::Instance()->LoadTexture(EnvironmentMapFile);
+	// m_pEnvMapSRV = TextureManager::Instance()->LoadTexture(EnvironmentMapFile);
 
     // Set the Environment Map
-    m_pEnvMapVariable->SetResource( m_pEnvMapSRV );
+    // m_pEnvMapVariable->SetResource( m_pEnvMapSRV );
 }
