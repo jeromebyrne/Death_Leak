@@ -10,8 +10,8 @@
 
   <sprite name="21_title_background"
            process_input="false"
-           posX ="-970" posY ="-540" width="1979.2" height ="1120.8"
-           image="Media\UI\main_menu_2.png"
+           posX ="-970" posY ="-540" width="1969.2" height ="1115.8"
+           image="Media\UI\main_menu_blur.png"
            hflip="false" vflip="false"
            alpha="0.45">
   </sprite>
