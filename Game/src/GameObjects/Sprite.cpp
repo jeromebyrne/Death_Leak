@@ -24,6 +24,8 @@ static const D3DXVECTOR3 kDefaultBumpNormal = D3DXVECTOR3(0,0,-1);
 static const D3DXVECTOR3 kDefaultTangent = D3DXVECTOR3(0,1,0);
 static const D3DXVECTOR3 kDefaultBiNormal = D3DXVECTOR3(1,1,1);
 
+static const float kOcclusionFadeOutMultiplier = 1.5f;
+
 Sprite::Sprite(float x, float y, float z, float width, float height, float breadth)
 	:DrawableObject(x,y,z,width,height,breadth),
 	m_horizontalFlip(false),
@@ -367,7 +369,7 @@ void Sprite::Update(float delta)
 			{
 				if (m_alpha > m_alphaWhenOccluding)
 				{
-					m_alpha -= 0.06; // TODO: use LERP 
+					m_alpha -= kOcclusionFadeOutMultiplier * delta;
 				}
 				else
 				{
@@ -378,7 +380,7 @@ void Sprite::Update(float delta)
 			{
 				if (m_alpha < m_alphaWhenNotOccluding)
 				{
-					m_alpha += 0.06;
+					m_alpha += kOcclusionFadeOutMultiplier * delta;
 				}
 				else
 				{

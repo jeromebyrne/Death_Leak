@@ -30,6 +30,8 @@ void Player::Initialise()
 {
 	// update the base classes
 	Character::Initialise();
+
+	mRunAnimFramerateMultiplier = 1.5f;
 }
 void Player::XmlRead(TiXmlElement * element)
 {

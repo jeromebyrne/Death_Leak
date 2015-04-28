@@ -431,7 +431,7 @@ void Character::UpdateAnimations()
 			{
 				if (WasInWaterLastFrame())
 				{
-					bodyPart->CurrentSequence()->SetFrameRate(std::abs((m_velocity.X * 0.75f) * mRunAnimFramerateMultiplier), true);
+					bodyPart->CurrentSequence()->SetFrameRate(std::abs((m_velocity.X * 2.0f) * mRunAnimFramerateMultiplier), true);
 				}
 				else
 				{

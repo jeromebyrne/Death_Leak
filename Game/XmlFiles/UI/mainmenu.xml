@@ -70,7 +70,7 @@
       <pushui ui="gameloading" />
       <fadein time="150"/>
       <stopallsounds />
-      <loadlevel level="XmlFiles\waterfall_level.xml" />
+      <loadlevel level="XmlFiles\village.xml" />
       <popui ui="gameloading" />
       <pushui ui="game_hud" />
     </actionspressup>
@@ -96,7 +96,7 @@
       <pushui ui="gameloading" />
       <fadein time="150"/>
       <stopallsounds />
-      <leveledit level="XmlFiles\waterfall_level.xml" />
+      <leveledit level="XmlFiles\village.xml" />
       <popui ui="gameloading" />
       <pushui ui="game_hud" />
     </actionspressup>
