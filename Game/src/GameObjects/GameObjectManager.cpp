@@ -326,13 +326,14 @@ void GameObjectManager::DebugDraw()
 				continue;
 			}
 
+			GAME_ASSERT(dynamic_cast<DrawableObject*>(obj.get()));
 			DrawableObject * drawObj = static_cast<DrawableObject*>(obj.get());
 
 			// only draw if we are in view
-			// if (m_camera->IsObjectInView(drawObj))
-			//{
-			drawObj->DebugDraw(Graphics::GetInstance()->Device());
-			//}
+			if (m_camera->IsObjectInView(drawObj))
+			{
+				drawObj->DebugDraw(Graphics::GetInstance()->Device());
+			}
 		}
 	}
 }
