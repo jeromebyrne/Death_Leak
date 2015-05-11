@@ -120,7 +120,7 @@ protected:
 	bool m_isOnGround;
 
 	bool mIsInWater;
-
+ 
 	bool mWasInWaterLastFrame;
 
 	bool mIsDeepWater;

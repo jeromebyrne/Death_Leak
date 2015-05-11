@@ -29,6 +29,7 @@
 #include "scrollingsprite.h"
 #include "SolidLineStrip.h"
 #include "NPCTrigger.h"
+#include "ForceBox.h"
 
 struct DepthSortPredicate
 {
@@ -182,7 +183,7 @@ void GameObjectManager::Initialise()
 		// set the camera to the players position initially
 		m_camera->FollowObjectsOrigin(m_player);
 
-		// now tell teh camera that the player is the object we should follow
+		// now tell the camera that the player is the object we should follow
 		m_camera->SetTargetObject(m_player);
 	}
 }
@@ -227,7 +228,7 @@ void GameObjectManager::Update(bool paused, float delta)
 			}
 			else // objects outside the update area
 			{
-				// if a projectile has gone outsid ethe bounds then just remove it
+				// if a projectile has gone outside the bounds then just remove it
 				if (obj->IsProjectile() || obj->IsOrb()) // add checks for other projectile class names as needed
 				{
 					RemoveGameObject(obj.get());
@@ -283,7 +284,7 @@ void GameObjectManager::Draw(ID3D10Device *  device)
 		DrawableObject * drawObj = static_cast<DrawableObject*>(obj.get());
 
 		// only draw if object is in view
-		if (drawObj->Alpha() > 0.0f && m_camera->IsObjectInView(drawObj))
+		if (drawObj->Alpha() > 0.0f && (m_camera->IsObjectInView(drawObj) || drawObj->GetParallaxMultiplierX() > 1.0f)) // Parallax multiplier X hack (keeps poping into view)
 		{
 			// apply any changes needed
 			if (drawObj->IsChangeRequired())
@@ -654,6 +655,10 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement)
 	else if (strcmp(gameObjectTypeName, "npctrigger") == 0)
 	{
 		newGameObject = new NPCTrigger();
+	}
+	else if (strcmp(gameObjectTypeName, "forcebox") == 0)
+	{
+		newGameObject = new ForceBox();
 	}
 
 	if (newGameObject && !dynamic_cast<ParticleSpray*>(newGameObject))

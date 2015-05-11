@@ -45,7 +45,7 @@
   <!--cave rock-->
   <material name="caverock">  
     <particletextures>
-      <texture file="Media\wetsplashparticle.png"/>
+      <texture file="Media\rock_particle.png"/>
     </particletextures>
       
     <damagesoundeffects>
@@ -100,8 +100,8 @@
   <!--Grass Ground-->
   <material name="grassground">
     <particletextures>
-      <!--<texture file="Media\grassParticle.png"/>-->
-      <texture file="Media\wetsplashparticle.png"/>
+      <texture file="Media\grassParticle4.png"/>
+      <!--<texture file="Media\wetsplashparticle.png"/>-->
     </particletextures>
 
     <damagesoundeffects>
@@ -373,5 +373,36 @@
     <destroysoundeffect file="blood\\blood2.wav"/>
 
     <is_pierceable value="true" />
+  </material>
+
+  <!--cave rock-->
+  <material name="ethereal_walkway">
+    <particletextures>
+      <texture file="Media\bloodparticle3.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="blood\\blood1.wav" />
+      <sound file="blood\\blood2.wav" />
+      <sound file="blood\\blood3.wav" />
+      <sound file="blood\\blood4.wav" />
+      <sound file="blood\\blood5.wav" />
+      <sound file="blood\\blood6.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+      <sound file="Footstep2.wav" />
+      <sound file="Footstep3.wav" />
+      <sound file="Footstep4.wav" />
+      <sound file="Footstep5.wav" />
+      <sound file="Footstep6.wav" />
+      <sound file="Footstep7.wav" />
+      <sound file="Footstep8.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffect file="stonehit.wav"/>
+
+    <is_pierceable value="false" />
   </material>
 </materials>

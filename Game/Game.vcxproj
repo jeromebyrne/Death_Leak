@@ -71,6 +71,7 @@
     <ClCompile Include="src\GameObjects\DrawableObject.cpp" />
     <ClCompile Include="src\GameObjects\Explosion.cpp" />
     <ClCompile Include="src\GameObjects\FallingPlatform.cpp" />
+    <ClCompile Include="src\GameObjects\ForceBox.cpp" />
     <ClCompile Include="src\GameObjects\GameObject.cpp" />
     <ClCompile Include="src\GameObjects\GameObjectManager.cpp" />
     <ClCompile Include="src\GameObjects\LevelTrigger.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="src\GameObjects\DrawableObject.h" />
     <ClInclude Include="src\GameObjects\Explosion.h" />
     <ClInclude Include="src\GameObjects\FallingPlatform.h" />
+    <ClInclude Include="src\GameObjects\ForceBox.h" />
     <ClInclude Include="src\GameObjects\GameObject.h" />
     <ClInclude Include="src\GameObjects\GameObjectManager.h" />
     <ClInclude Include="src\GameObjects\LevelTrigger.h" />

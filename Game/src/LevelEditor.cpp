@@ -1119,7 +1119,7 @@ void LevelEditor::CheckForMaterialAssign()
 	}
 	else if (GetAsyncKeyState('9') < 0)
 	{
-		Material * material = MaterialManager::Instance()->GetMaterial("water");
+		Material * material = MaterialManager::Instance()->GetMaterial("ethereal_walkway");
 		GAME_ASSERT(material);
 
 		if (material)
