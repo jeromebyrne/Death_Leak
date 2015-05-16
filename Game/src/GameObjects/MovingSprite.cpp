@@ -13,7 +13,7 @@ MovingSprite::MovingSprite(float x, float y, float z, float width, float height,
 	m_direction(1,0,0), 
 	m_applyGravity(true),
 	mObjectMovingWith(0),
-	mCurrentYResistance(1),
+	mCurrentYResistance(1.0f),
 	m_isOnGround(true),
 	mIsInWater(false),
 	mWasInWaterLastFrame(false),
@@ -146,16 +146,16 @@ void MovingSprite::Update(float delta)
 	}
 
 	// apply gravity?
-	int fakeGravity = 1; // must be greater than 1
+	float fakeGravity = 1.0f; // must be greater than 1
 	if(m_applyGravity && bottom > groundLevel) //if above ground level then apply gravity
 	{
 		if (!mIsInWater)
 		{
-			AccelerateY(-1, ((float)fakeGravity/mCurrentYResistance) * percentDelta );
+			AccelerateY(-1, (fakeGravity/mCurrentYResistance) * percentDelta);
 		}
 		else
 		{
-			AccelerateY(-1, ((float)fakeGravity/mCurrentYResistance * 0.05f) * percentDelta );
+			AccelerateY(-1, (fakeGravity/(mCurrentYResistance * 0.05f)) * percentDelta );
 		}
 	}
 

@@ -85,6 +85,8 @@ public:
 		m_acceleration = Vector3(x, y, z);
 	}
 
+	float GetYResistance() const { return m_resistance.Y; }
+
 	bool IsOnGround() const { return m_isOnGround; }
 
 	virtual void AccelerateX(float directionX, float rate);
@@ -100,6 +102,8 @@ public:
 	bool WasInWaterLastFrame() const { return mWasInWaterLastFrame; }
 
 	bool GetWaterIsDeep() const { return mIsDeepWater; }
+
+	void SetCurrentYResistance(float value) { mCurrentYResistance = value; }
 
 protected:
 

@@ -29,8 +29,12 @@ void ForceBox::Update(float delta)
 			{
 				player->SetVelocityY(1.0f);
 			}
+			
+			float yDiff = Top() - player->Bottom();
+			float percent = yDiff / m_dimensions.Y;
+
 			// player->AccelerateX(mForceDirection.X, mForce * delta);
-			player->AccelerateY(mForceDirection.Y, mForce * delta);
+			player->AccelerateY(mForceDirection.Y, (mForce * percent) * delta);
 		}
 	}
 }

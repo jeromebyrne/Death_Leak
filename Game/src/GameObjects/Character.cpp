@@ -75,7 +75,7 @@ void Character::Update(float delta)
 	if (m_velocity.Y > 0 && m_collidingAtSideOfObject && mSprintActive)
 	{
 		// sliding on the side of an object so reduce gravity resistance
-		mCurrentYResistance = m_resistance.Y * 3; // TODO: read this from xml
+		mCurrentYResistance = m_resistance.Y * 3.0f; // TODO: read this from xml
 	}
 	else
 	{
