@@ -52,21 +52,6 @@ AnimationPart* Animation::GetPart(string partName)
 		AnimationPart * part = m_animationParts[partName];
 
 		return part; 
-
-		//map<string, AnimationPart*>::iterator current = m_animationParts.begin();
-
-		/*for(; current != m_animationParts.end(); current++)
-		{GetSkeletonPartsCurrentSequenceFrame
-			string currentName = current->first;
-
-			if(partName == currentName)
-			{
-				return current->second;
-			}
-		}
-		
-		return 0;*/
-
 	}
 
 	return 0;

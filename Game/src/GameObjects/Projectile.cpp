@@ -240,7 +240,7 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 				Vector2 intersectPoint; // Not really needed right now
 				bool skeletonCollision = skeleton->HasCollidedOnFrame(frameNumber,
 																		object->IsHFlipped(),
-																		object->Position(),
+																		object->LastPosition(),
 																		GetCollisionRayStart(),
 																		GetCollisionRayEnd(),
 																		intersectPoint);
@@ -248,7 +248,7 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 				{
 					skeletonCollision = skeleton->HasCollidedOnFrame(frameNumber,
 																	object->IsHFlipped(),
-																	object->Position(),
+																	object->LastPosition(),
 																	GetLastFrameCollisionRayStart(),
 																	GetCollisionRayEnd(),
 																	intersectPoint);

@@ -30,6 +30,7 @@
 #include "SolidLineStrip.h"
 #include "NPCTrigger.h"
 #include "ForceBox.h"
+#include "TextObject.h"
 
 struct DepthSortPredicate
 {
@@ -659,6 +660,10 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement)
 	else if (strcmp(gameObjectTypeName, "forcebox") == 0)
 	{
 		newGameObject = new ForceBox();
+	}
+	else if (strcmp(gameObjectTypeName, "textobject") == 0)
+	{
+		newGameObject = new TextObject();
 	}
 
 	if (newGameObject && !dynamic_cast<ParticleSpray*>(newGameObject))

@@ -14,6 +14,17 @@ public:
 		Vector2 WorldPosition;
 	};
 
+	struct SolidLine
+	{
+		SolidLinePoint StartPoint;
+		SolidLinePoint EndPoint;
+		Vector2 Normal;
+		Vector2 BoundingBox;
+		Vector2 LineDirection;
+		float Length;
+		Vector2 MidPointWorld;
+	};
+
 	SolidLineStrip(float x = 0, float y = 0, float z = 0, float width = 10, float height = 10, float breadth = 0);
 	virtual ~SolidLineStrip(void);
 	virtual void Update(float delta) override;
@@ -55,22 +66,11 @@ public:
 
 	Vector2 & const GetNormalForLineIndex(unsigned int lineIndex);
 
+	static bool Intersect(SolidLine & solidLine, Vector2 & otherStart, Vector2 & otherEnd, Vector2 & intersectPointOut);
+
 private:
 
-	struct SolidLine
-	{
-		SolidLinePoint StartPoint;
-		SolidLinePoint EndPoint;
-		Vector2 Normal;
-		Vector2 BoundingBox;
-		Vector2 LineDirection;
-		float Length;
-		Vector2 MidPointWorld;
-	};
-
 	void CalculateLines();
-
-	bool Intersect(SolidLine & solidLine, Vector2 & otherStart, Vector2 & otherEnd, Vector2 & intersectPointOut);
 
 	bool BoxHitCheck(SolidLine & solidLine, SolidMovingSprite * object);
 

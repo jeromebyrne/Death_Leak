@@ -107,9 +107,9 @@ void GameObject::Initialise()
 void GameObject::SetupDebugDraw()
 {
 	// vertices
-	float randR = 1;
-	float randG = 1;
-	float randB = 1;
+	float randR = 0.0f;
+	float randG = 0.0f;
+	float randB = 0.0f;
 
 	VertexPositionColor vertices[] =
     {

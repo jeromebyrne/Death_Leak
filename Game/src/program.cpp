@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "Timing.h"
 #include "UIManager.h"
+#include "StringManager.h"
 
 //--------------------------------------------------------------------------------------
 // Global Variables
@@ -133,6 +134,9 @@ HRESULT Initialise(HINSTANCE hInstance, int nCmdShow)
 	g_pGraphics = new Graphics();
 	Game::Create();
 	g_pGame = Game::GetInstance();
+
+	StringManager::Create();
+	StringManager::GetInstance()->LoadStringsFile("XmlFiles\\strings.xml");
 
 	HRESULT result = S_OK;
 	

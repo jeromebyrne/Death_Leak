@@ -1,0 +1,10 @@
+<strings>
+  <test_string>
+    <en-gb>I don't understand Portuguese. Dog Biscuits. Ronaldinho.</en-gb>
+    <pt-br>Eu não entendo Português. Biscoitos de cão. Ronaldinho</pt-br>
+  </test_string>
+  <test_string_2>
+    <en-gb>How many cats does it take to eat a bag of marmalade.</en-gb>
+    <pt-br>Quantos gatos leva para comer um saco de marmelada.</pt-br>
+  </test_string_2>
+</strings>

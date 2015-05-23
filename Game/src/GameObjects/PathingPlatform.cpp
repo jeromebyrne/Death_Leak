@@ -180,8 +180,62 @@ void PathingPlatform::Scale(float x, float y, bool scalePosition)
 
 void PathingPlatform::OnCollision(SolidMovingSprite * object)
 {
-	Platform::OnCollision(object);
-	
+	/*
+	if (object->IsSolidLine())
+	{
+		return;
+	}
+
+	// if we are not passive then push ourselves away from the object
+	// remember this behaviour can be overwritten in derived function
+	if (!m_passive && !object->IsProjectile()) // by default we don't want to be pushed by a projectile
+	{
+		float otherTop = object->CollisionTop();
+		float otherBottom = object->CollisionBottom();
+		float otherY = object->Y() + object->CollisionBoxOffset().Y;
+
+		float thisY = this->Y() + CollisionBoxOffset().Y;
+		float thisTop = this->CollisionTop();
+		float thisBottom = this->CollisionBottom();
+
+		// get the overlap
+		float yOverlap = 0.0f;
+
+		// below
+		if (thisBottom > otherBottom && thisBottom < otherTop)
+		{
+			yOverlap = otherBottom - thisTop;
+		}
+		else
+		{
+			mObjectMovingWith = nullptr;
+			return;
+		}
+
+		m_onTopOfOtherSolidObject = true;
+
+		m_position.Y += yOverlap;
+		StopYAccelerating();
+
+		if (mBouncable)
+		{
+			m_velocity.Y = m_velocity.Y * -mBounceDampening;
+		}
+	}
+
+	if (m_applyDamage)
+	{
+		if (object->IsCharacter())
+		{
+			GAME_ASSERT(dynamic_cast<Character*>(object));
+			Character * character = static_cast<Character*>(object);
+			character->OnDamage(this, m_applyDamageAmount, Vector3(0, 0, 0));
+		}
+	}
+	*/
+
+
+	// *** Platform triggers ***
 	if (mPathingType == kPathWhenTriggered &&
 		(mCurrentPathState == kNotPathing || mCurrentPathState == kReturningToStart) && 
 		dynamic_cast<Player*>(object))
