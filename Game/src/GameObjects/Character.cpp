@@ -497,7 +497,7 @@ void Character::Jump(float percent)
 {
 	if (WasInWaterLastFrame())
 	{
-		percent *= 0.3f;
+		percent *= 0.32f;
 	}
 	if(percent > 100)
 	{

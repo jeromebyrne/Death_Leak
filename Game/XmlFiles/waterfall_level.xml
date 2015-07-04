@@ -47,7 +47,7 @@
     </LevelTrigger>
     <LevelTrigger id="4" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="4.000000" y="-4604.486816" x="-557.221680" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="1000.910278" width="6000.820801" />
+        <dimensions breadth="0.000000" height="1000.910278" width="30000.820801" />
         <material value="" />
         <level_to_load value="XmlFiles\underwater_cave.xml" />
         <player_start_pos x="-5411.565918" y="937.053101" />
@@ -58,7 +58,7 @@
         <dimensions breadth="0.000000" height="2000.000000" width="1000.000000" />
         <material value="" />
         <level_to_load value="XmlFiles\field_1.xml" />
-        <player_start_pos x="5150.000000" y="850.000000" />
+        <player_start_pos x="5000.000000" y="850.000000" />
         <player_direction x="-1.000000" />
     </LevelTrigger>
     <WaterBlock id="6" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
