@@ -1,9 +1,8 @@
 #include "precompiled.h"
 #include "SimpleFontManager.h"
 
-
 SimpleFontManager::SimpleFontManager(void):
-	mDebugFont(0)
+	mDebugFont(nullptr)
 {
 }
 

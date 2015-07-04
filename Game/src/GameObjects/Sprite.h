@@ -104,10 +104,6 @@ protected:
 	
 	bool m_drawAtNativeDimensions;
 
-	bool m_fadeAlphaWhenPlayerOccluded;
-	float m_alphaWhenOccluding;
-	float m_alphaWhenNotOccluding;
-
 	bool mRepeatTextureX;
 	bool mRepeatTextureY;
 

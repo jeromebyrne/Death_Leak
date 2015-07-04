@@ -11,6 +11,8 @@
 #include "EffectLightTexturePixelWobble.h"
 #include "EffectFoliageSway.h"
 
+static const float kOcclusionFadeOutMultiplier = 1.5f;
+
 DrawableObject::DrawableObject(float x, float y, float z, float width, float height, float breadth, const char * effectName): GameObject(x,y,z,width,height,breadth),
 	EffectName(effectName), 
 	m_applyChange(false), 
@@ -21,7 +23,10 @@ DrawableObject::DrawableObject(float x, float y, float z, float width, float hei
 	m_effectLightTextureBump(nullptr),
 	m_effectNoise(nullptr),
 	m_effectFoliageSway(nullptr),
-	mOriginalAlpha(1.0f)
+	mOriginalAlpha(1.0f),
+	m_fadeAlphaWhenPlayerOccluded(false),
+	m_alphaWhenOccluding(0.5f),
+	m_alphaWhenNotOccluding(1.0f)
 {
 	m_currentEffectType = EFFECT_LIGHT_TEXTURE; // set default effect
 	mDrawable = true;
@@ -34,6 +39,72 @@ DrawableObject::~DrawableObject(void)
 void DrawableObject::Update(float delta)
 {
 	GameObject::Update(delta);
+
+	if (m_fadeAlphaWhenPlayerOccluded)
+	{
+		// get the distance to the player
+		const Player * player = GameObjectManager::Instance()->GetPlayer();
+
+		if (player && player != this && m_position.Z < player->Z())
+		{
+			// check is the player inside the bounds of this sprite
+			// if so then fade alpha
+			if (player->X() > Left() &&
+				player->X() < Right() &&
+				player->Y() > Bottom() &&
+				player->Y() < Top())
+			{
+				if (m_alphaWhenOccluding < m_alphaWhenNotOccluding)
+				{
+					if (m_alpha > m_alphaWhenOccluding)
+					{
+						m_alpha -= kOcclusionFadeOutMultiplier * delta;
+					}
+					else
+					{
+						m_alpha = m_alphaWhenOccluding;
+					}
+				}
+				else
+				{
+					if (m_alpha < m_alphaWhenOccluding)
+					{
+						m_alpha += kOcclusionFadeOutMultiplier * delta;
+					}
+					else
+					{
+						m_alpha = m_alphaWhenOccluding;
+					}
+				}
+				
+			}
+			else
+			{
+				if (m_alphaWhenOccluding < m_alphaWhenNotOccluding)
+				{
+					if (m_alpha < m_alphaWhenNotOccluding)
+					{
+						m_alpha += kOcclusionFadeOutMultiplier * delta;
+					}
+					else
+					{
+						m_alpha = m_alphaWhenNotOccluding;
+					}
+				}
+				else
+				{
+					if (m_alpha > m_alphaWhenNotOccluding)
+					{
+						m_alpha -= kOcclusionFadeOutMultiplier * delta;
+					}
+					else
+					{
+						m_alpha = m_alphaWhenNotOccluding;
+					}
+				}
+			}
+		}
+	}
 }
 
 void DrawableObject::LoadContent(ID3D10Device * graphicsdevice)
@@ -94,6 +165,10 @@ void DrawableObject::XmlRead(TiXmlElement * element)
 	// go to the effect node
 	// this is used to determine what effect we will use to draw our object
 	EffectName = XmlUtilities::ReadAttributeAsString(element, "effect", "name");
+
+	m_fadeAlphaWhenPlayerOccluded = XmlUtilities::ReadAttributeAsBool(element, "fade_when_player_occluded", "value");
+	m_alphaWhenOccluding = XmlUtilities::ReadAttributeAsFloat(element, "fade_when_player_occluded", "alphawhenoccluding");
+	m_alphaWhenNotOccluding = XmlUtilities::ReadAttributeAsFloat(element, "fade_when_player_occluded", "alphawhennotoccluding");
 }
 
 void DrawableObject::XmlWrite(TiXmlElement * element)
@@ -107,6 +182,15 @@ void DrawableObject::XmlWrite(TiXmlElement * element)
 	TiXmlElement * effectElem = new TiXmlElement("effect");
 	effectElem->SetAttribute("name", EffectName.c_str());
 	element->LinkEndChild(effectElem);
+
+	const char * ifade_when_player_occludedAsStr = m_fadeAlphaWhenPlayerOccluded ? "true" : "false";
+	TiXmlElement * fade_when_player_occluded = new TiXmlElement("fade_when_player_occluded");
+	fade_when_player_occluded->SetAttribute("value", ifade_when_player_occludedAsStr);
+
+	fade_when_player_occluded->SetDoubleAttribute("alphawhenoccluding", m_alphaWhenOccluding);
+	fade_when_player_occluded->SetDoubleAttribute("alphawhennotoccluding", m_alphaWhenNotOccluding);
+
+	element->LinkEndChild(fade_when_player_occluded);
 }
 
 void DrawableObject::Scale(float xScale, float yScale, bool scalePosition)

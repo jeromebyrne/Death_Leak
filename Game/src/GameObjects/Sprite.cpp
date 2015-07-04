@@ -24,8 +24,6 @@ static const D3DXVECTOR3 kDefaultBumpNormal = D3DXVECTOR3(0,0,-1);
 static const D3DXVECTOR3 kDefaultTangent = D3DXVECTOR3(0,1,0);
 static const D3DXVECTOR3 kDefaultBiNormal = D3DXVECTOR3(1,1,1);
 
-static const float kOcclusionFadeOutMultiplier = 1.5f;
-
 Sprite::Sprite(float x, float y, float z, float width, float height, float breadth)
 	:DrawableObject(x,y,z,width,height,breadth),
 	m_horizontalFlip(false),
@@ -39,9 +37,6 @@ Sprite::Sprite(float x, float y, float z, float width, float height, float bread
 	m_drawAtNativeDimensions(true),
 	m_texture(nullptr),
 	m_textureBump(nullptr),
-	m_fadeAlphaWhenPlayerOccluded(false),
-	m_alphaWhenOccluding(0.5),
-	m_alphaWhenNotOccluding(1.0),
 	mRepeatTextureX(false),
 	mRepeatTextureY(false),
 	mTextureDimensions(0,0),
@@ -348,46 +343,9 @@ void Sprite::Update(float delta)
 	DrawableObject::Update(delta);
 
 	// update our animations
-	if(m_isAnimated)
+	if (m_isAnimated)
 	{
 		UpdateAnimations();
-	}
-
-	if (m_fadeAlphaWhenPlayerOccluded)
-	{
-		// get the distance to the player
-		const Player * player = GameObjectManager::Instance()->GetPlayer();
-
-		if (player && player != this && m_position.Z < player->Z())
-		{
-			// check is the player inside the bounds of this sprite
-			// if so then fade alpha
-			if (player->X() > Left() &&
-				player->X() < Right() &&
-				player->Y() > Bottom() &&
-				player->Y() < Top())
-			{
-				if (m_alpha > m_alphaWhenOccluding)
-				{
-					m_alpha -= kOcclusionFadeOutMultiplier * delta;
-				}
-				else
-				{
-					m_alpha = m_alphaWhenOccluding;
-				}
-			}
-			else
-			{
-				if (m_alpha < m_alphaWhenNotOccluding)
-				{
-					m_alpha += kOcclusionFadeOutMultiplier * delta;
-				}
-				else
-				{
-					m_alpha = m_alphaWhenNotOccluding;
-				}
-			}
-		}
 	}
 }
 
@@ -466,11 +424,6 @@ void Sprite::XmlRead(TiXmlElement * element)
 
 	m_drawAtNativeDimensions = XmlUtilities::ReadAttributeAsBool(element, "dimensions", "native");
 
-	m_fadeAlphaWhenPlayerOccluded = XmlUtilities::ReadAttributeAsBool(element, "fade_when_player_occluded", "value");
-
-	m_alphaWhenOccluding = XmlUtilities::ReadAttributeAsFloat(element, "fade_when_player_occluded", "alphawhenoccluding");
-	m_alphaWhenNotOccluding = XmlUtilities::ReadAttributeAsFloat(element, "fade_when_player_occluded", "alphawhennotoccluding");
-
 	if (XmlUtilities::AttributeExists(element, "dimensions", "repeatX"))
 	{
 		mRepeatTextureX = XmlUtilities::ReadAttributeAsBool(element, "dimensions", "repeatX");
@@ -545,15 +498,6 @@ void Sprite::XmlWrite(TiXmlElement * element)
 	dimensionsElem->SetAttribute("repeatX",  repeatXAsStr);
 	const char * repeatYAsStr = mRepeatTextureY ? "true" : "false";
 	dimensionsElem->SetAttribute("repeatY",  repeatYAsStr);
-
-	const char * ifade_when_player_occludedAsStr = m_fadeAlphaWhenPlayerOccluded ? "true" : "false";
-	TiXmlElement * fade_when_player_occluded = new TiXmlElement("fade_when_player_occluded");
-	fade_when_player_occluded->SetAttribute("value", ifade_when_player_occludedAsStr);
-
-	fade_when_player_occluded->SetDoubleAttribute("alphawhenoccluding", m_alphaWhenOccluding);
-	fade_when_player_occluded->SetDoubleAttribute("alphawhennotoccluding", m_alphaWhenNotOccluding);
-
-	element->LinkEndChild(fade_when_player_occluded);
 
 	TiXmlElement * effectElement = element->FirstChildElement("effect");
 	effectElement->SetDoubleAttribute("noiseintensity", mNoiseShaderIntensity);

@@ -155,7 +155,7 @@ void MovingSprite::Update(float delta)
 		}
 		else
 		{
-			AccelerateY(-1, (fakeGravity/(mCurrentYResistance * 0.05f)) * percentDelta );
+			AccelerateY(-1, 0.03f * percentDelta);
 		}
 	}
 

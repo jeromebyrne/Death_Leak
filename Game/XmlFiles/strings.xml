@@ -1,10 +1,16 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
 <strings>
   <test_string>
     <en-gb>I don't understand Portuguese. Dog Biscuits. Ronaldinho.</en-gb>
-    <pt-br>Eu nÃ£o entendo PortuguÃªs. Biscoitos de cÃ£o. Ronaldinho</pt-br>
+    <pt-br>Eu não entendo Português. Biscoitos de cão. Ronaldinho</pt-br>
   </test_string>
   <test_string_2>
-    <en-gb>How many cats does it take to eat a bag of marmalade.</en-gb>
-    <pt-br>Quantos gatos leva para comer um saco de marmelada.</pt-br>
+    <en-gb>How many cats does it take to eat a bag of marmalade. The wasp king has determined that all wasps should be thrown to the wolves when a labyrinth of encyclopedias destroys the ethereal realm, but never forget the Hawk-Lords.</en-gb>
+    <pt-br>Quantos gatos leva para comer um saco de marmelada. O rei vespa determinou que todas as vespas deve ser jogado aos lobos quando um labirinto de enciclopédias destrói o reino etéreo, mas nunca se esqueça o gavião-Lords</pt-br>
   </test_string_2>
+
+  <test_string_3>
+    <en-gb>"Hello?"  </en-gb>
+    <pt-br>Oi?</pt-br>
+  </test_string_3>
 </strings>

@@ -30,7 +30,7 @@ public:
 	void SetChangeRequired() { m_applyChange = true; }
 	D3DXMATRIX World() { return m_world; }
 
-	void SetAlpha(float value)
+	virtual void SetAlpha(float value)
 	{
 		if (value > 1.0f)
 		{
@@ -66,6 +66,10 @@ protected:
 	float m_alpha;
 	float mOriginalAlpha;
 	bool m_applyChange;
+
+	bool m_fadeAlphaWhenPlayerOccluded;
+	float m_alphaWhenOccluding;
+	float m_alphaWhenNotOccluding;
 };
 
 #endif

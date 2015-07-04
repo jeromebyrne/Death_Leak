@@ -13,8 +13,18 @@ public:
 	virtual void XmlRead(TiXmlElement * element) override;
 	virtual void XmlWrite(TiXmlElement * element) override;
 	virtual void Draw(ID3D10Device * device, Camera2D * camera) override;
+	virtual void Initialise() override;
 
 private:
+
+	ID3DX10Font* mFont;
+	D3DXCOLOR mFontColor;
+	std::string mFontName;
+	float mFontSize;
+	std::string mStringId;
+	std::string mLocalisedString;
+
+	wchar_t * mCachedWideString;
 };
 
 #endif

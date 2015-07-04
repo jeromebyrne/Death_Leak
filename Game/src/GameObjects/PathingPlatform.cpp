@@ -278,6 +278,8 @@ void PathingPlatform::Initialise()
 {
 	Platform::Initialise();
 
+	mAlwaysUpdate = true;
+
 	if (mPathingType == kAlwaysPathing)
 	{
 		// if not set then set to looping forward by default
