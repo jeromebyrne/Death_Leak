@@ -31,7 +31,7 @@ public:
 	virtual void Initialise() override;
 	virtual void XmlRead(TiXmlElement * element) override;
 	virtual void XmlWrite(TiXmlElement * element) override;
-	virtual void OnCollision(SolidMovingSprite * object) override;
+	virtual bool OnCollision(SolidMovingSprite * object) override;
 	virtual void Scale(float xScale, float yScale, bool scalePosition = true) override;
 	virtual void LoadContent(ID3D10Device * graphicsdevice) override;
 	virtual void DebugDraw(ID3D10Device *  device) override;

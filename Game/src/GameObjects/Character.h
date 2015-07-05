@@ -18,7 +18,7 @@ public:
 	virtual void Draw(ID3D10Device * device, Camera2D * camera) override;
 	virtual void XmlRead(TiXmlElement * element) override;
 	virtual void XmlWrite(TiXmlElement * element) override;
-	virtual void OnCollision(SolidMovingSprite * object) override;
+	virtual bool OnCollision(SolidMovingSprite * object) override;
 	virtual void Scale(float xScale, float yScale, bool scalePosition = true) override;
 	virtual void LoadContent(ID3D10Device * graphicsdevice) override;
 	inline void SetMaxJumpSpeed(float value)
@@ -47,9 +47,9 @@ public:
 
 	virtual void DoMeleeAttack();
 
-protected:
-
 	void UpdateFootsteps(SolidMovingSprite * solidObject);
+
+protected:
 
 	void UpdateWaterWadeSFX();
 

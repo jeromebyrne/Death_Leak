@@ -104,12 +104,12 @@ void SolidLineStrip::LoadContent(ID3D10Device * graphicsdevice)
 	SolidMovingSprite::LoadContent(graphicsdevice);
 }
 
-void SolidLineStrip::OnCollision(SolidMovingSprite * object)
+bool SolidLineStrip::OnCollision(SolidMovingSprite * object)
 {
 	if (object->IsButterfly() ||
 		object->IsProjectile())
 	{
-		return;
+		return false;
 	}
 	if (!object->IsPassive())
 	{
@@ -132,21 +132,23 @@ void SolidLineStrip::OnCollision(SolidMovingSprite * object)
 				{
 					float diffY = intersectPoint.Y - object->CollisionBottom();
 
-					//if (object->VelocityY() > -1.0f &&
-						// diffY > 15)
-					// {
-					//	object->AccelerateY(1, diffY * 0.15f);
-					// }
-					//else
-					//{
-						object->SetY(object->Y() + diffY);
+					object->SetY(object->Y() + diffY);
 
-						object->StopYAccelerating();
-					//}
+					object->StopYAccelerating();
 
 					object->SetIsCollidingOnTopOfObject(true);
 
 					object->SetIsOnSolidLine(true, this);
+
+					if (object->IsCharacter())
+					{
+						GAME_ASSERT((dynamic_cast<Character *>(object) != nullptr));
+						Character * character = static_cast<Character *>(object);
+
+						character->UpdateFootsteps(this);
+					}
+
+					return true;
 				}
 				break;
 			}
@@ -156,6 +158,8 @@ void SolidLineStrip::OnCollision(SolidMovingSprite * object)
 			}
 		}
 	}
+
+	return true;
 }
 
 void SolidLineStrip::DebugDraw(ID3D10Device *  device)

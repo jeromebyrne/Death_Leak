@@ -178,7 +178,7 @@ void PathingPlatform::Scale(float x, float y, bool scalePosition)
 	}
 }
 
-void PathingPlatform::OnCollision(SolidMovingSprite * object)
+bool PathingPlatform::OnCollision(SolidMovingSprite * object)
 {
 	/*
 	if (object->IsSolidLine())
@@ -272,6 +272,8 @@ void PathingPlatform::OnCollision(SolidMovingSprite * object)
 			}
 		}
 	}
+
+	return true;
 }
 
 void PathingPlatform::Initialise()

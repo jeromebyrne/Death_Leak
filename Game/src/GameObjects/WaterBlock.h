@@ -9,7 +9,7 @@ public:
 	WaterBlock(void);
 	virtual ~WaterBlock(void);
 
-	virtual void OnCollision(SolidMovingSprite * object) override;
+	virtual bool OnCollision(SolidMovingSprite * object) override;
 
 	bool GetIsDeepWater() const { return mIsDeepWater; }
 

@@ -230,11 +230,11 @@ void SolidMovingSprite::XmlWrite(TiXmlElement * element)
 	element->LinkEndChild(canBeDamaged);
 }
 
-void SolidMovingSprite::OnCollision(SolidMovingSprite * object)
+bool SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 {
 	if (object->IsSolidLine())
 	{
-		return;
+		return false;
 	}
 
 	// TODO: figure out why I was doing this

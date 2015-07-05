@@ -13,7 +13,7 @@ public:
 	virtual void Initialise() override;
 	virtual void XmlRead(TiXmlElement * element) override;
 	virtual void XmlWrite(TiXmlElement * element) override;
-	virtual void OnCollision(SolidMovingSprite * object);
+	virtual bool OnCollision(SolidMovingSprite * object);
 	virtual void Update(float delta) override;
 	virtual void SetNotColliding() // sets properties that mean we are not colliding
 	{

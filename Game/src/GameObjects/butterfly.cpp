@@ -122,13 +122,13 @@ void Butterfly::UpdateAnimations()
 	m_mainBodyTexture = m_texture;
 }
 
-void Butterfly::OnCollision(SolidMovingSprite * object)
+bool Butterfly::OnCollision(SolidMovingSprite * object)
 {
 	if (m_position.Z > 99)
 	{
 		// hack to stop butterfly's in the background being affected
-		return;
+		return false;
 	}
 
-	NPC::OnCollision(object);
+	return NPC::OnCollision(object);
 }

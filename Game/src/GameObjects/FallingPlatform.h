@@ -18,7 +18,7 @@ public:
 	FallingPlatform(float x = 0, float y = 0, float z = 0, float width = 10, float height = 10, float breadth = 0,float groundFriction = 1, float airResistance = 1);
 	virtual ~FallingPlatform(void);
 
-	virtual void OnCollision(SolidMovingSprite * object) override;
+	virtual bool OnCollision(SolidMovingSprite * object) override;
 
 	virtual void XmlRead(TiXmlElement * element) override;
 	virtual void XmlWrite(TiXmlElement * element) override;

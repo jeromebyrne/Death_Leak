@@ -44,12 +44,6 @@ void Player::XmlWrite(TiXmlElement * element)
 	Character::XmlWrite(element);
 }
 
-void Player::OnCollision(SolidMovingSprite * object)
-{
-	// update the base classes
-	Character::OnCollision(object);
-}
-
 void Player::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode)
 {
 	Character::OnDamage(damageDealer, damageAmount, pointOfContact, shouldExplode);

@@ -28,7 +28,7 @@ void FallingPlatform::Initialise()
 	m_applyGravity = false;
 }
 
-void FallingPlatform::OnCollision(SolidMovingSprite * object)
+bool FallingPlatform::OnCollision(SolidMovingSprite * object)
 {
 	Platform::OnCollision(object);
 	
@@ -43,6 +43,8 @@ void FallingPlatform::OnCollision(SolidMovingSprite * object)
 			}
 		}
 	}
+
+	return true;
 }
 
 void FallingPlatform::Scale(float x, float y, bool ScalePosition)

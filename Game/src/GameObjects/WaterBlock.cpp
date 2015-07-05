@@ -14,7 +14,7 @@ WaterBlock::~WaterBlock(void)
 {
 }
 
-void WaterBlock::OnCollision(SolidMovingSprite * object)
+bool WaterBlock::OnCollision(SolidMovingSprite * object)
 {
 	bool wasInwater = object->WasInWaterLastFrame();
 
@@ -110,6 +110,8 @@ void WaterBlock::OnCollision(SolidMovingSprite * object)
 			}
 		}
 	}
+
+	return true;
 }
 
 void WaterBlock::XmlRead(TiXmlElement * element)

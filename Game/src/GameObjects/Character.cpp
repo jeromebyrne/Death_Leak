@@ -183,7 +183,7 @@ void Character::LoadContent(ID3D10Device * graphicsdevice)
 	m_mainBodyTexture = m_texture;
 }
 
-void Character::OnCollision(SolidMovingSprite * object)
+bool Character::OnCollision(SolidMovingSprite * object)
 {
 	if( !object->IsCharacter() &&  
 		!object->IsOrb() &&
@@ -191,17 +191,20 @@ void Character::OnCollision(SolidMovingSprite * object)
 		!object->IsWaterBlock())
 	{
 		// update the base classes
-		SolidMovingSprite::OnCollision(object);
-
-		UpdateFootsteps(object);
+		if (SolidMovingSprite::OnCollision(object))
+		{
+			UpdateFootsteps(object);
+		}
 	}
 	else if (object->IsPlatform())
 	{
 		if (Bottom() > object->Y()) // is the bottom of the character above the platform centre point?
 		{
-			SolidMovingSprite::OnCollision(object);
+			return SolidMovingSprite::OnCollision(object);
 		}
 	}
+
+	return true;
 }
 
 void Character::UpdateWaterWadeSFX()

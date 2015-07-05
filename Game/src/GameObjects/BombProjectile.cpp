@@ -53,28 +53,33 @@ BombProjectile::~BombProjectile(void)
 	}
 }
 
-void BombProjectile::OnCollision(SolidMovingSprite* object)
+bool BombProjectile::OnCollision(SolidMovingSprite* object)
 {
+	if (WasInWaterLastFrame() || mIsInWater)
+	{
+		return false;
+	}
+
 	if (object->IsOrb())
 	{
-		return;
+		return false;
 	}
 
 	if (object->IsWaterBlock())
 	{
-		return;
+		return false;
 	}
 
 	if (object->IsCharacter())
 	{
-		return;
+		return false;
 	}
 
 	if (object->IsSolidLineStrip())
 	{
 		SolidLineStrip * lineStrip = static_cast<SolidLineStrip*>(object);
 		HandleSolidLineStripCollision(lineStrip);
-		return;
+		return false;
 	}
 
 	if (m_isActive)
@@ -83,7 +88,7 @@ void BombProjectile::OnCollision(SolidMovingSprite* object)
 		m_timeBecameInactive = Timing::Instance()->GetTotalTimeSeconds();
 	}
 
-	SolidMovingSprite::OnCollision(object);
+	return SolidMovingSprite::OnCollision(object);
 }
 
 void BombProjectile::Update(float delta)

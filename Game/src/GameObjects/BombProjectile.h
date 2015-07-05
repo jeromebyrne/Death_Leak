@@ -20,7 +20,7 @@ public:
 
 	virtual ~BombProjectile(void);
 
-	virtual void OnCollision(SolidMovingSprite* object) override;
+	virtual bool OnCollision(SolidMovingSprite* object) override;
 
 	virtual void Update(float delta) override;
 

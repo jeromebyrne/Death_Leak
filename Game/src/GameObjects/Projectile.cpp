@@ -59,7 +59,7 @@ Projectile::~Projectile()
 {
 }
 
-void Projectile::OnCollision(SolidMovingSprite* object)
+bool Projectile::OnCollision(SolidMovingSprite* object)
 {
 	if (object->IsButterfly())
 	{
@@ -67,7 +67,7 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 		{
 			object->OnDamage(this, m_damage, Vector3(0,0,0));
 		}
-		return;
+		return false;
 	}
 
 	GAME_ASSERT((object != this));
@@ -78,27 +78,27 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 		{
 			SolidLineStrip * lineStrip = static_cast<SolidLineStrip*>(object);
 			HandleSolidLineStripCollision(lineStrip);
-			return;
+			return false;
 		}
 
 		Player * player = GameObjectManager::Instance()->GetPlayer();
 		if (object == player && mOwnerType == Projectile::kPlayerProjectile)
 		{
 			// Player projectiles don't affect the player
-			return;
+			return false;
 		}
 
 		NPC * objAsNPC = dynamic_cast<NPC *>(object); // TODO: optimise with NPC flag
 		if (objAsNPC && mOwnerType == Projectile::kNPCProjectile)
 		{
 			// NPC projectiles don't affect NPCs
-			return;
+			return false;
 		}
 
 		if (object->IsWaterBlock())
 		{
 			// npc projectiles don't damage other npc's
-			return;
+			return false;
 		}
 
 		if (object->IsProjectile())
@@ -142,7 +142,7 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 
 					Game::GetInstance()->DoDamagePauseEffect();
 
-					return;
+					return false;
 				}
 			}
 
@@ -213,7 +213,7 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 					Camera2D::GetInstance()->DoSmallShake();
 				}
 			}
-			return;
+			return false;
 		}
 
 		if (mSpinningMovement)
@@ -256,7 +256,7 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 					if (!skeletonCollision)
 					{
 						// we had a skeleton but there were no collisions so the projectile missed
-						return;
+						return false;
 					}
 				}
 			}
@@ -367,6 +367,8 @@ void Projectile::OnCollision(SolidMovingSprite* object)
 			Camera2D::GetInstance()->DoSmallShake();
 		}
 	}
+
+	return false;
 }
 
 void Projectile::Update(float delta)
