@@ -14,7 +14,8 @@ public:
 		kFriendlyFollowing,
 		kRepel,
 		kRangeAttack,
-		kButterflyWander
+		kButterflyWander,
+		kNone
 	};
 
 	AIState(NPC * npc);

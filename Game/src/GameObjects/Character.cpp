@@ -141,6 +141,7 @@ void Character::Initialise()
 		m_animation->SetPartSequence("arm", "Still");
 	}
 }
+
 void Character::XmlRead(TiXmlElement * element)
 {
 	// update base classes

@@ -31,6 +31,7 @@
 #include "NPCTrigger.h"
 #include "ForceBox.h"
 #include "TextObject.h"
+#include "AmbientBird.h"
 
 struct DepthSortPredicate
 {
@@ -664,6 +665,10 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement)
 	else if (strcmp(gameObjectTypeName, "textobject") == 0)
 	{
 		newGameObject = new TextObject();
+	}
+	else if (strcmp(gameObjectTypeName, "ambientbird") == 0)
+	{
+		newGameObject = new AmbientBird();
 	}
 
 	if (newGameObject && !dynamic_cast<ParticleSpray*>(newGameObject))

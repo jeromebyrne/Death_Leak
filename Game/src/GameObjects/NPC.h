@@ -24,8 +24,6 @@ public:
 	virtual void Update(float delta) override;
 	virtual void Draw(ID3D10Device * device, Camera2D * camera) override;
 	virtual void Initialise() override;
-	virtual void XmlRead(TiXmlElement * element) override;
-	virtual void XmlWrite(TiXmlElement * element) override;
 
 	inline void SetPlayer(Player * player) { m_player = player; }
 

@@ -116,16 +116,6 @@ void NPC::Initialise()
 	}
 }
 
-void NPC::XmlRead(TiXmlElement * element)
-{
-	Character::XmlRead(element);
-}
-
-void NPC::XmlWrite(TiXmlElement * element)
-{
-	Character::XmlWrite(element);
-}
-
 void NPC::SetState(AIState::AIStateType state)
 {
 	switch (state)
@@ -156,6 +146,12 @@ void NPC::SetState(AIState::AIStateType state)
 			GAME_ASSERT(m_butterflyWander);
 			m_currentState = m_butterflyWander;
 			m_currentState->OnTransition();
+			break;
+		}
+		case AIState::kNone:
+		{
+			// do.. nothing
+			m_currentState = nullptr;
 			break;
 		}
 		default:
