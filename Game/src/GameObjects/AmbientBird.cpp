@@ -155,7 +155,14 @@ void AmbientBird::Update(float delta)
 	{
 		if (m_position.X > (mStartPosition.X + mTravelOffset))
 		{
-			if (!Camera2D::GetInstance()->IsObjectInView(this))
+			float diffX = Camera2D::GetInstance()->X() - mStartPosition.X;
+			float startParallaxOffsetX = (diffX * mParallaxMultiplierX) - diffX;
+
+			float diffY = Camera2D::GetInstance()->Y() - mStartPosition.Y;
+			float startParallaxOffsetY = (diffY * mParallaxMultiplierY) - diffY;
+
+			if (!Camera2D::GetInstance()->IsObjectInView(this) &&
+				!Camera2D::GetInstance()->IsWorldPosInView(mStartPosition, startParallaxOffsetX, startParallaxOffsetY))
 			{
 				m_position = mStartPosition;
 			}
@@ -165,7 +172,14 @@ void AmbientBird::Update(float delta)
 	{
 		if (m_position.X < (mStartPosition.X + mTravelOffset))
 		{
-			if (!Camera2D::GetInstance()->IsObjectInView(this))
+			float diffX = Camera2D::GetInstance()->X() - mStartPosition.X;
+			float startParallaxOffsetX = (diffX * mParallaxMultiplierX) - diffX;
+
+			float diffY = Camera2D::GetInstance()->Y() - mStartPosition.Y;
+			float startParallaxOffsetY = (diffY * mParallaxMultiplierY) - diffY;
+
+			if (!Camera2D::GetInstance()->IsObjectInView(this) &&
+				!Camera2D::GetInstance()->IsWorldPosInView(mStartPosition, startParallaxOffsetX, startParallaxOffsetY))
 			{
 				m_position = mStartPosition;
 			}

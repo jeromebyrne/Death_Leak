@@ -75,6 +75,8 @@ public:
 
 	bool IsCameraOriginInsideRect(Vector3 pos, Vector2 dimensions);
 
+	bool IsWorldPosInView(Vector3 & pos, float parallaxXOffset, float parallaxYOffset);
+
 	void SetZoomInLevel(float value);
 
 	void SetTargetOffset(Vector2 offset) { mTargetOffset = offset; };

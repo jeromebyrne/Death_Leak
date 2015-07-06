@@ -2551,7 +2551,7 @@
         <animationfile value="XmlFiles\bird_anim.xml" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="6.000000" x="0.990000" />
-        <maxvelocity z="0.000000" y="5.000000" x="1.900000" />
+        <maxvelocity z="0.000000" y="5.000000" x="3.900000" />
         <applygravity value="false" />
         <collisionboxdimensions z="0.000000" y="32.000000" x="32.000000" offsetX="0.000000" offsetY="0.000000" />
         <passive value="true" />
@@ -2561,7 +2561,7 @@
         <xaccelrate value="0.5" />
         <projectileoffsetx value="15" />
         <projectileoffsety value="20" />
-        <travel_offset value="11000" />
+        <travel_offset value="300" />
     </AmbientBird>
     <AmbientBird id="173" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
         <position z="151.000000" y="363.611023" x="-9233.385742" rotation="0.000000" auto_rotate_value="0.000000" />

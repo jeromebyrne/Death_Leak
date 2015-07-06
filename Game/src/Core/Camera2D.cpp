@@ -38,10 +38,10 @@ bool Camera2D::IsObjectInView(GameObject * object)
 
 	float objectX = object->X() - object->GetCurrentParallaxOffsetX();
 	float objectY = object->Y() - object->GetCurrentParallaxOffsetY();
-	float screenLeft = (m_position.X - m_width/2);
-	float screenRight = (m_position.X + m_width/2);
-	float screenBottom = (m_position.Y - m_height/2);
-	float screenTop = (m_position.Y + m_height/2);
+	float screenLeft = m_position.X - m_width * 0.5f;
+	float screenRight = m_position.X + m_width * 0.5f;
+	float screenBottom = m_position.Y - m_height * 0.5f;
+	float screenTop = m_position.Y + m_height * 0.5f;
 
 	// first check if the objects origin is in view
 	if(objectX > screenLeft && objectX < screenRight &&
@@ -68,6 +68,27 @@ bool Camera2D::IsObjectInView(GameObject * object)
 			}
 		}
 	}
+	return inView;
+}
+
+bool Camera2D::IsWorldPosInView(Vector3 & pos, float parallaxXOffset, float parallaxYOffset)
+{
+	bool inView = false;
+
+	float objectX = pos.X - parallaxXOffset;
+	float objectY = pos.Y - parallaxYOffset;
+	float screenLeft = m_position.X - m_width * 0.5f;
+	float screenRight = m_position.X + m_width * 0.5f;
+	float screenBottom = m_position.Y - m_height * 0.5f;
+	float screenTop = m_position.Y + m_height * 0.5f;
+
+	// first check if the objects origin is in view
+	if (objectX > screenLeft && objectX < screenRight &&
+		objectY > screenBottom && objectY < screenTop)
+	{
+		inView = true;
+	}
+
 	return inView;
 }
 
