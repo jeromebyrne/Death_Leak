@@ -10,6 +10,7 @@
 #include "EffectNoise.h"
 #include "EffectLightTexturePixelWobble.h"
 #include "EffectFoliageSway.h"
+#include "Game.h"
 
 static const float kOcclusionFadeOutMultiplier = 1.5f;
 
@@ -39,6 +40,15 @@ DrawableObject::~DrawableObject(void)
 void DrawableObject::Update(float delta)
 {
 	GameObject::Update(delta);
+
+#ifdef DEBUG
+
+	if (Game::GetIsLevelEditMode())
+	{
+		// always show text if in level editor mode, otherwise it's... annoying
+		return;
+	}
+#endif
 
 	if (m_fadeAlphaWhenPlayerOccluded)
 	{
