@@ -25,6 +25,10 @@ private:
 	std::string mLocalisedString;
 
 	wchar_t * mCachedWideString;
+
+	bool mHasShown;
+
+	float mTimeToShow;
 };
 
 #endif

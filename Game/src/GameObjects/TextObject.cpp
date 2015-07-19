@@ -1,12 +1,15 @@
 #include "precompiled.h"
 #include "TextObject.h"
 #include "StringManager.h"
+#include "AudioManager.h"
 
 TextObject::TextObject(float x, float y, float z, float width, float height) :
 	DrawableObject(x, y, z, width, height),
 	mFont(nullptr),
 	mFontSize(20.0f),
-	mCachedWideString(nullptr)
+	mCachedWideString(nullptr),
+	mHasShown(false),
+	mTimeToShow(5.0f)
 {
 }
 
@@ -41,7 +44,54 @@ void TextObject::Initialise()
 
 void TextObject::Update(float delta)
 {
-	DrawableObject::Update(delta);
+	// get the distance to the player
+	const Player * player = GameObjectManager::Instance()->GetPlayer();
+
+	if (player)
+	{
+		// check is the player inside the bounds of this sprite
+		// if so then fade alpha
+		if (player->X() > Left() &&
+			player->X() < Right() &&
+			player->Y() > Bottom() &&
+			player->Y() < Top())
+		{
+			if (!mHasShown)
+			{
+				mHasShown = true;
+
+				AudioManager::Instance()->PlaySoundEffect("boomy_intro.wav");
+			}
+		}
+
+		if (mHasShown && mTimeToShow > 0.0f)
+		{
+			if (m_alpha < 1.0f)
+			{
+				m_alpha += 1.4f * delta;
+			}
+			else
+			{
+				m_alpha = 1.0f;
+			}
+		}
+		else
+		{
+			if (m_alpha > 0.0f)
+			{
+				m_alpha -= 0.9f * delta;
+			}
+			else
+			{
+				m_alpha = 0.0f;
+			}
+		}
+	}
+
+	if (mHasShown)
+	{
+		mTimeToShow -= delta;
+	}
 }
 
 void TextObject::XmlRead(TiXmlElement * element)
@@ -78,6 +128,11 @@ void TextObject::XmlWrite(TiXmlElement * element)
 void TextObject::Draw(ID3D10Device * device, Camera2D * camera)
 {
 	DrawableObject::Draw(device, camera);
+
+	if (Alpha() <= 0.0f && mHasShown)
+	{
+		return;
+	}
 
 	Vector2 worldPos = Vector2(m_position.X - (m_dimensions.X * 0.5f), m_position.Y);
 	Vector2 screenPos = Utilities::WorldToScreen(worldPos);

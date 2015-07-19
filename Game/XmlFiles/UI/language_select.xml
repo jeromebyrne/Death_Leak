@@ -1,0 +1,111 @@
+<uiscreen>
+
+  <sprite name="0_bg"
+          process_input="false"
+          posX ="-1024" posY ="-540" width="2048" height ="2048"
+          image="Media\\UI\\blank_dark.png"
+          hflip="false" vflip="false"
+          alpha="1.0">
+  </sprite>
+  
+  <animatedsprite name="1_noise_anim"
+                   process_input="false"
+                   posX ="-960" posY ="-540" width="1920" height ="1080"
+                   image="Media\UI\noise_layer.png"
+                   hflip="false" vflip="false"
+                   alpha="0.20"
+                   fps ="10">
+    <frames frame1="Media\UI\noise_layer.png"
+            frame2="Media\UI\noise_layer_2.png"
+            frame3="Media\UI\noise_layer_3.png"
+            frame4="Media\UI\noise_layer_4.png"
+            frame5="Media\UI\noise_layer_5.png"
+            frame6="Media\UI\noise_layer_6.png"
+    />
+  </animatedsprite>
+
+  <button name="21_english"
+          process_input="true"
+          posX ="-180" posY ="300" width="320" height ="180"
+          image="Media\UI\flags\british.png"
+          image_focus="Media\UI\flags\british.png"
+          image_click="Media\UI\flags\british.png"
+          hflip="false" vflip="false"
+          alpha="1.0"
+          use_standard_effect="true">
+    <actionspressup>
+      <fadeout time="150"/>
+      <popui ui="language_select" />
+      <pushui ui="mainmenu" />
+      <fadein time="150"/>
+    </actionspressup>
+
+    <actionspressdown>
+      <playsoundeffect sound="UI\\click.mp3"/>
+    </actionspressdown>
+  </button>
+
+  <button name="22_brazilian"
+          process_input="true"
+          posX ="-180" posY ="80" width="320" height ="180"
+          image="Media\UI\flags\brazil.png"
+          image_focus="Media\UI\flags\brazil.png"
+          image_click="Media\UI\flags\brazil.png"
+          hflip="false" vflip="false"
+          alpha="1.0"
+          use_standard_effect="true">
+    <actionspressup>
+      <fadeout time="150"/>
+      <popui ui="language_select" />
+      <pushui ui="mainmenu" />
+      <fadein time="150"/>
+    </actionspressup>
+
+    <actionspressdown>
+      <playsoundeffect sound="UI\\click.mp3"/>
+    </actionspressdown>
+  </button>
+
+  <button name="23_german"
+          process_input="true"
+          posX ="-180" posY ="-140" width="320" height ="180"
+          image="Media\UI\flags\german.png"
+          image_focus="Media\UI\flags\german.png"
+          image_click="Media\UI\flags\german.png"
+          hflip="false" vflip="false"
+          alpha="1.0"
+          use_standard_effect="true">
+    <actionspressup>
+      <fadeout time="150"/>
+      <popui ui="language_select" />
+      <pushui ui="mainmenu" />
+      <fadein time="150"/>
+    </actionspressup>
+
+    <actionspressdown>
+      <playsoundeffect sound="UI\\click.mp3"/>
+    </actionspressdown>
+  </button>
+
+  <button name="24_french"
+          process_input="true"
+          posX ="-180" posY ="-360" width="320" height ="180"
+          image="Media\UI\flags\french.png"
+          image_focus="Media\UI\flags\french.png"
+          image_click="Media\UI\flags\french.png"
+          hflip="false" vflip="false"
+          alpha="1.0"
+          use_standard_effect="true">
+    <actionspressup>
+      <fadeout time="150"/>
+      <popui ui="language_select" />
+      <pushui ui="mainmenu" />
+      <fadein time="150"/>
+    </actionspressup>
+
+    <actionspressdown>
+      <playsoundeffect sound="UI\\click.mp3"/>
+    </actionspressdown>
+  </button>
+
+</uiscreen>
