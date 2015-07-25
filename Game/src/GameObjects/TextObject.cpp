@@ -2,6 +2,7 @@
 #include "TextObject.h"
 #include "StringManager.h"
 #include "AudioManager.h"
+#include "Game.h"
 
 TextObject::TextObject(float x, float y, float z, float width, float height) :
 	DrawableObject(x, y, z, width, height),
@@ -44,6 +45,12 @@ void TextObject::Initialise()
 
 void TextObject::Update(float delta)
 {
+	if (Game::GetInstance()->GetIsLevelEditMode())
+	{
+		m_alpha = 1.0f;
+		return;
+	}
+
 	// get the distance to the player
 	const Player * player = GameObjectManager::Instance()->GetPlayer();
 

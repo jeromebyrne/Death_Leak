@@ -4,26 +4,30 @@
 #include "uiscreen.h"
 
 // all of the possible UI actions 
-enum UIEventActions {	POP_UI,
-						PUSH_UI,
-						LOAD_LEVEL,
-						PLAY_SOUND_EFFECT,
-						PLAY_MUSIC,
-						REFRESH_UI,
-						STOP_ALL_SOUNDS,
-						PAUSE_GAME,
-						UNPAUSE_GAME,
-						DESTROY_LEVEL,
-						SLEEP,
-						APPLY_ALPHA,
-						FADE_OUT,
-						FADE_IN,
-						MUTE_SOUND_EFFECTS,
-						UNMUTE_SOUND_EFFECTS,
-						UNMUTE_MUSIC,
-						MUTE_MUSIC,
-						QUIT_TO_DESKTOP,
-						LEVEL_EDIT};
+enum UIEventActions 
+{	
+	POP_UI,
+	PUSH_UI,
+	LOAD_LEVEL,
+	PLAY_SOUND_EFFECT,
+	PLAY_MUSIC,
+	REFRESH_UI,
+	STOP_ALL_SOUNDS,
+	PAUSE_GAME,
+	UNPAUSE_GAME,
+	DESTROY_LEVEL,
+	SLEEP,
+	APPLY_ALPHA,
+	FADE_OUT,
+	FADE_IN,
+	MUTE_SOUND_EFFECTS,
+	UNMUTE_SOUND_EFFECTS,
+	UNMUTE_MUSIC,
+	MUTE_MUSIC,
+	QUIT_TO_DESKTOP,
+	LEVEL_EDIT,
+	SET_LANGUAGE		
+};
 
 class UIManager
 {

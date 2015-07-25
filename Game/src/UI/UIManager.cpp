@@ -7,6 +7,7 @@
 #include "uigamehudscreen.h"
 #include "EffectLightTextureVertexWobble.h"
 #include "Settings.h"
+#include "StringManager.h"
 
 extern void PostDestroyMessage();
 
@@ -462,6 +463,13 @@ void UIManager::HandleEvent(string eventName, list<string> params)
 			}
 			break;			
 		}
+	case SET_LANGUAGE:
+		{
+			list<string>::iterator iter = params.begin();
+			std::string lang = (*iter).c_str();
+			StringManager::GetInstance()->SetLocale(lang);
+			break;
+		}
 
 	default:
 		break;
@@ -490,4 +498,5 @@ void UIManager::InitActionStringToEnumMap()
 	m_ActionStringToEnumMap["unmutemusic"] = UNMUTE_MUSIC;
 	m_ActionStringToEnumMap["quittodesktop"] = QUIT_TO_DESKTOP; 
 	m_ActionStringToEnumMap["leveledit"] = LEVEL_EDIT; 
+	m_ActionStringToEnumMap["set_language"] = SET_LANGUAGE;
 }
