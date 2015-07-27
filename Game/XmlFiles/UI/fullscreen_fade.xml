@@ -4,6 +4,7 @@
           posX ="-1024" posY ="-540" width="2048" height ="2048"
           image="Media\\UI\\blank_dark.png"
           hflip="false" vflip="false"
-          alpha="0.0">
+          alpha="0.0"
+          use_standard_effect="true">
   </sprite>
 </uiscreen>

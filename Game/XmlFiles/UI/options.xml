@@ -5,7 +5,7 @@
           image="Media\UI\main_menu_2.png"
           hflip="false" vflip="false"
           alpha="1.0"
-          use_standard_effect="false">
+          use_standard_effect="true">
   </sprite>
 
   <sprite name="21_title_background"
