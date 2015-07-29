@@ -32,6 +32,7 @@
 #include "ForceBox.h"
 #include "TextObject.h"
 #include "AmbientBird.h"
+#include "CurrencyOrb.h"
 
 struct DepthSortPredicate
 {
@@ -669,6 +670,10 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement)
 	else if (strcmp(gameObjectTypeName, "ambientbird") == 0)
 	{
 		newGameObject = new AmbientBird();
+	}
+	else if (strcmp(gameObjectTypeName, "currencyorb") == 0)
+	{
+		newGameObject = new CurrencyOrb();
 	}
 
 	if (newGameObject && !dynamic_cast<ParticleSpray*>(newGameObject))

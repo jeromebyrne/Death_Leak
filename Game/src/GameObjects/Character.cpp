@@ -186,7 +186,8 @@ void Character::LoadContent(ID3D10Device * graphicsdevice)
 
 bool Character::OnCollision(SolidMovingSprite * object)
 {
-	if( !object->IsCharacter() &&  
+	if( !object->IsCharacter() &&
+		!object->IsCurrencyOrb() &&
 		!object->IsOrb() &&
 		!object->IsPlatform() &&
 		!object->IsWaterBlock())

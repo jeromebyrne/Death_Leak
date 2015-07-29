@@ -136,6 +136,8 @@ public:
 
 	bool IsOrb() const { return mIsOrb; }
 
+	bool IsCurrencyOrb() const { return mIsCurrencyOrb; }
+
 	bool IsCharacter() const { return mIsCharacter; }
 
 	bool IsParallaxLayer() const { return mIsParallaxLayer; }
@@ -199,6 +201,7 @@ protected:
 	bool mIsButterfly;
 	bool mIsProjectile;
 	bool mIsOrb;
+	bool mIsCurrencyOrb;
 	bool mIsCharacter;
 	bool mIsParallaxLayer;
 	bool mIsAudioObject;

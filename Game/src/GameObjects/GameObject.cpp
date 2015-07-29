@@ -43,7 +43,8 @@ GameObject::GameObject(float x, float y , float z, float width, float height, fl
 	mLevelEditSelectionDimensions(100,100),
 	mLevelEditShowSelected(false),
 	mIsSolidLineStrip(false),
-	mAlwaysUpdate(false)
+	mAlwaysUpdate(false),
+	mIsCurrencyOrb(false)
 {
 	static int GAME_OBJECT_ID = 1; 
 	m_id = GAME_OBJECT_ID;

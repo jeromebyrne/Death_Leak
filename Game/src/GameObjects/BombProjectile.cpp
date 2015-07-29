@@ -60,7 +60,7 @@ bool BombProjectile::OnCollision(SolidMovingSprite* object)
 		return false;
 	}
 
-	if (object->IsOrb())
+	if (object->IsOrb() || object->IsCurrencyOrb())
 	{
 		return false;
 	}

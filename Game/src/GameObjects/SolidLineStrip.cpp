@@ -107,7 +107,8 @@ void SolidLineStrip::LoadContent(ID3D10Device * graphicsdevice)
 bool SolidLineStrip::OnCollision(SolidMovingSprite * object)
 {
 	if (object->IsButterfly() ||
-		object->IsProjectile())
+		object->IsProjectile() ||
+		object->IsCurrencyOrb())
 	{
 		return false;
 	}
