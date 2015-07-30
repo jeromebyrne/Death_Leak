@@ -3,10 +3,10 @@
 #include "ParticleEmitterManager.h"
 #include "AudioManager.h"
 #include "material.h"
+#include "Game.h"
 
-static float kTrackingRangeTrigger = 500.0f;
-static float kAccelerateRate = 1.0f;
-static float kHarshAccelerateRate = 1.1f;
+static float kTrackingRangeTrigger = 250.0f;
+static float kAccelerateRate = 1.2f;
 
 CurrencyOrb::CurrencyOrb(void) :
 	SolidMovingSprite(),
@@ -31,6 +31,7 @@ void CurrencyOrb::Initialise()
 	m_applyGravity = false;
 	m_resistance.X = 1.0f;
 	m_resistance.Y = 3.0f;
+	m_maxVelocity.X = 20.0f;
 }
 
 bool CurrencyOrb::OnCollision(SolidMovingSprite * object)
@@ -42,6 +43,11 @@ bool CurrencyOrb::OnCollision(SolidMovingSprite * object)
 void CurrencyOrb::Update(float delta)
 {
 	SolidMovingSprite::Update(delta);
+
+	if (Game::GetIsLevelEditMode())
+	{
+		return;
+	}
 
 	switch (mCurrentState)
 	{
@@ -95,14 +101,13 @@ void CurrencyOrb::DoTrackPlayer(float delta)
 	if (std::abs(m_direction.X) > std::abs(m_direction.Y))
 	{
 		AccelerateX(m_direction.X, kAccelerateRate);
-
-		// AccelerateY(m_direction.Y, kAccelerateRate);
 	}
 	else
 	{
 		AccelerateY(m_direction.Y, kAccelerateRate);
 	}
 
+	/*
 	if ((m_direction.X < 0 && m_velocity.X > 0) ||
 		(m_direction.X > 0 && m_velocity.X < 0))
 	{
@@ -118,6 +123,7 @@ void CurrencyOrb::DoTrackPlayer(float delta)
 		// let's give it a helping hand to catch up by accelerating harshly
 		AccelerateY(m_direction.Y, kHarshAccelerateRate);
 	}
+	*/
 
 	Vector2 dir = Vector2(m_velocity.X, m_velocity.Y);
 	dir.Normalise();

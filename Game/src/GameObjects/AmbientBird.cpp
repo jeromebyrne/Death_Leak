@@ -109,7 +109,6 @@ void AmbientBird::Update(float delta)
 {
 	NPC::Update(delta);
 
-
 	if (Game::GetIsLevelEditMode())
 	{
 		return;

@@ -6,7 +6,7 @@
         <weather_properties allow_weather="true" />
     </LevelProperties>
     <Player id="1" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="50.000000" y="581.499390" x="2524.911621" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="50.000000" y="671.738586" x="2735.946289" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="300.000000" width="150.000000" native="false" repeatX="false" repeatY="false" />
         <material value="maleninja" />
         <alpha value="1.000000" />
@@ -31,7 +31,7 @@
         <projectileoffsety value="0" />
     </Player>
     <ParallaxLayer id="2" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="99999.000000" y="1900.000000" x="2145.726563" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="99999.000000" y="1900.000000" x="2663.720459" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="2000.000000" width="2560.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <alpha value="0.250000" />
@@ -53,7 +53,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="3" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="99999.000000" y="3900.000000" x="2145.726563" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="99999.000000" y="3900.000000" x="2663.720459" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="2000.000000" width="2560.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <alpha value="0.250000" />
@@ -75,7 +75,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="4" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="300.000000" y="700.000000" x="2145.726563" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="300.000000" y="700.000000" x="2663.720459" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="383.000000" width="1920.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <alpha value="0.500000" />
@@ -97,7 +97,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="5" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9999.000000" y="800.000000" x="2145.726563" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="9999.000000" y="800.000000" x="2663.720459" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="512.000000" width="3257.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <alpha value="1.000000" />
@@ -119,7 +119,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="6" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9999.000000" y="680.000000" x="2145.726563" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="9999.000000" y="680.000000" x="2663.720459" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="512.000000" width="3257.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <alpha value="1.000000" />
@@ -5068,7 +5068,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <ParallaxLayer id="354" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="140.000000" y="3600.000000" x="2145.726563" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="140.000000" y="3600.000000" x="2663.720459" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="383.000000" width="1920.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <alpha value="0.500000" />
@@ -6007,8 +6007,8 @@
         <scroll_properties StartLerpX="17335.376953" StartLerpY="598.336670" LerpDistanceX="300.000000" LerpDistanceY="0.000000" LerpTime="80.000000" FadeInTime="5.000000" FadeOutTime="5.000000" />
     </ScrollingSprite>
     <CurrencyOrb id="406" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="50.000000" y="1111.375000" x="2543.469482" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="75.030365" width="49.137531" native="false" repeatX="false" repeatY="false" />
+        <position z="50.000000" y="1149.441895" x="2086.917969" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="78.641617" width="51.502552" native="false" repeatX="false" repeatY="false" />
         <material value="maleninja" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
@@ -6019,10 +6019,220 @@
         <isanimated value="true" />
         <animationfile value="XmlFiles\orb_anim.xml" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="1.000000" x="1.00000" />
-        <maxvelocity z="0.000000" y="99999.000000" x="6.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
         <applygravity value="false" />
-        <collisionboxdimensions z="0.000000" y="200.000000" x="120.000000" offsetX="0.000000" offsetY="-50.000000" />
+        <collisionboxdimensions z="0.000000" y="25.290789" x="25.290789" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="408" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1204.217041" x="2217.325439" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="78.641617" width="51.502552" native="false" repeatX="false" repeatY="false" />
+        <material value="maleninja" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="25.290789" x="25.290789" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="409" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1246.590332" x="2356.761230" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="78.641617" width="51.502552" native="false" repeatX="false" repeatY="false" />
+        <material value="maleninja" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="25.290789" x="25.290789" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="410" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1250.724243" x="2501.212646" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="78.641617" width="51.502552" native="false" repeatX="false" repeatY="false" />
+        <material value="maleninja" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="25.290789" x="25.290789" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="411" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1224.886963" x="2670.742432" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="78.641617" width="51.502552" native="false" repeatX="false" repeatY="false" />
+        <material value="maleninja" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="25.290789" x="25.290789" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="412" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1179.183594" x="2790.115479" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="78.641617" width="51.502552" native="false" repeatX="false" repeatY="false" />
+        <material value="maleninja" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="25.290789" x="25.290789" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="413" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1166.781616" x="2917.513672" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="78.641617" width="51.502552" native="false" repeatX="false" repeatY="false" />
+        <material value="maleninja" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="25.290789" x="25.290789" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="414" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1228.791260" x="3060.961914" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="78.641617" width="51.502552" native="false" repeatX="false" repeatY="false" />
+        <material value="maleninja" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="25.290789" x="25.290789" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="415" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1264.963501" x="3225.476074" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="78.641617" width="51.502552" native="false" repeatX="false" repeatY="false" />
+        <material value="maleninja" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="25.290789" x="25.290789" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="416" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1243.260132" x="3392.999512" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="78.641617" width="51.502552" native="false" repeatX="false" repeatY="false" />
+        <material value="maleninja" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="25.290789" x="25.290789" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="417" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1184.351074" x="3564.535645" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="78.641617" width="51.502552" native="false" repeatX="false" repeatY="false" />
+        <material value="maleninja" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="25.290789" x="25.290789" offsetX="0.000000" offsetY="10.000000" />
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />

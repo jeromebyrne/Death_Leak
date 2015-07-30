@@ -70,6 +70,11 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 		return false;
 	}
 
+	if (object->IsCurrencyOrb())
+	{
+		return false;
+	}
+
 	GAME_ASSERT((object != this));
 
   	if(m_isActive)
