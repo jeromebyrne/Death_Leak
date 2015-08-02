@@ -14,6 +14,8 @@
 #include "EffectFoliageSway.h"
 #include "DrawUtilities.h"
 
+static const float kBurstTintMaxTime = 0.8f;
+
 static const D3DXVECTOR2 kDefaultTex1 = D3DXVECTOR2(0,0);
 static const D3DXVECTOR2 kDefaultTex2 = D3DXVECTOR2(1,0);
 static const D3DXVECTOR2 kDefaultTex3 = D3DXVECTOR2(1,1);
@@ -43,7 +45,9 @@ Sprite::Sprite(float x, float y, float z, float width, float height, float bread
 	mNoiseShaderIntensity(0.0f),
 	mWobbleShaderIntensity(0.0f),
 	mPixelWobbleIntensity(0.0f),
-	mPixelWobbleSpeedMod(0.0f)
+	mPixelWobbleSpeedMod(0.0f),
+	mShowingBurstTint(false),
+	mBurstTintStartTime(0.0f)
 {
 }
 
@@ -619,6 +623,17 @@ void Sprite::Draw_effectLightTexture(ID3D10Device * device)
 	// set the alpha value
 	m_effectLightTexture->SetAlpha(m_alpha);
 
+	float timeDiff = Timing::Instance()->GetTotalTimeSeconds() - mBurstTintStartTime;
+	if (timeDiff >= kBurstTintMaxTime)
+	{
+		mShowingBurstTint = false;
+	}
+	else
+	{
+		double gb_amount = (double)timeDiff / (double)kBurstTintMaxTime;
+		m_effectLightTexture->SetLightColor((float*)D3DXVECTOR4(1, gb_amount, gb_amount, 1));
+	}
+
 	//// Set the input layout on the device
 	device->IASetInputLayout(m_effectLightTexture->InputLayout);
 
@@ -640,6 +655,8 @@ void Sprite::Draw_effectLightTexture(ID3D10Device * device)
 		m_effectLightTexture->CurrentTechnique->GetPassByIndex(p)->Apply(0);
 		device->DrawIndexed(4, 0 , 0);
 	}
+
+	m_effectLightTexture->SetLightColor((float*)D3DXVECTOR4(1, 1, 1, 1));
 }
 
 void Sprite::Draw_effectPixelWobble(ID3D10Device * device)

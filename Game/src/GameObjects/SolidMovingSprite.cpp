@@ -8,8 +8,6 @@
 #include "AnimationSkeleton.h"
 #include "SolidLineStrip.h"
 
-static const float kVisualDamageMaxTime = 0.6f;
-
 SolidMovingSprite::SolidMovingSprite(float x, float y , float z , float width , float height , float breadth , float groundFriction , float airResistance ):
 	MovingSprite(x,y,z,width, height, breadth,groundFriction, airResistance),
 	m_collisionBoxDimensions(width, height, breadth),
@@ -18,8 +16,6 @@ SolidMovingSprite::SolidMovingSprite(float x, float y , float z , float width , 
 	m_collidingAtSideOfObject(false),
 	m_applyDamage(false),
 	m_applyDamageAmount(0),
-	m_isBeingDamaged(false),
-	m_beingDamagedStartTime(0.0f),
 	mBouncable(false),
 	mBounceDampening(1.0f),
 	mCollisionBoxOffset(0,0),
@@ -366,38 +362,14 @@ bool SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 	}
 }
 
-void SolidMovingSprite::Draw(ID3D10Device * device, Camera2D * camera)
-{
-	if (m_isBeingDamaged && m_currentEffectType == EFFECT_LIGHT_TEXTURE)
-	{
-		float timeDiff = Timing::Instance()->GetTotalTimeSeconds() - m_beingDamagedStartTime;
-		if (timeDiff >= kVisualDamageMaxTime)
-		{
-			m_isBeingDamaged = false;
-		}
-		else
-		{
-			double gb_amount = (double)timeDiff / (double)kVisualDamageMaxTime;
-			m_effectLightTexture->SetLightColor((float*)D3DXVECTOR4(1,gb_amount,gb_amount,1));
-		}
-		
-		MovingSprite::Draw(device, camera);
-		m_effectLightTexture->SetLightColor((float*)D3DXVECTOR4(1,1,1,1));
-	}
-	else
-	{
-		MovingSprite::Draw(device, camera);
-	}
-}
-
 void SolidMovingSprite::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode)
 {
 	if (mCanBeDamaged)
 	{
 		MovingSprite::OnDamage(damageDealer, damageAmount, pointOfContact);
 
-		m_isBeingDamaged = true;
-		m_beingDamagedStartTime = Timing::Instance()->GetTotalTimeSeconds();
+		mShowingBurstTint = true;
+		mBurstTintStartTime = Timing::Instance()->GetTotalTimeSeconds();
 
 		Vector3 pos = Vector3(m_position.X + pointOfContact.X, m_position.Y + pointOfContact.Y, m_position.Z - 1);
 

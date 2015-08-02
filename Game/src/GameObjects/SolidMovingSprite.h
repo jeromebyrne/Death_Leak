@@ -76,8 +76,6 @@ public:
 
 	virtual void DebugDraw(ID3D10Device *  device) override;
 
-	virtual void Draw(ID3D10Device * device, Camera2D * camera) override;
-
 	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) override;
 
 	virtual void SetupDebugDraw() override;
@@ -103,9 +101,6 @@ protected:
 	
 	bool m_applyDamage; // does this obejct apply damage to other objects that hit it?
 	float m_applyDamageAmount;
-
-	bool m_isBeingDamaged;
-	float m_beingDamagedStartTime;
 
 	bool mBouncable; // does this object bounce off other objects when it collides
 	float mBounceDampening;

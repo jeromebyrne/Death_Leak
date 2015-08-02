@@ -4,11 +4,12 @@
 #include "AudioManager.h"
 #include "material.h"
 #include "Game.h"
+#include "MaterialManager.h"
 
 static float kTrackingRangeTrigger = 175.0f;
-static float kAccelerateRate = 1.2f;
-static float kHarshAccelerateRate = 2.6f;
-static float kCollisionRange = 40.0f;
+static float kAccelerateRate = 1.8f;
+static float kHarshAccelerateRate = 3.5f;
+static float kCollisionRange = 50.0f;
 static const float kMinTimeBetweenSFX = 0.5f;
 
 unsigned long CurrencyOrb::mLastTimePlayedSFX = 0;
@@ -16,7 +17,6 @@ unsigned long CurrencyOrb::mLastTimePlayedSFX = 0;
 CurrencyOrb::CurrencyOrb(void) :
 	SolidMovingSprite(),
 	mCurrentState(kIdle)
-
 {
 	mIsCurrencyOrb = true;
 }
@@ -42,6 +42,8 @@ void CurrencyOrb::Initialise()
 	m_resistance.X = 1.0f;
 	m_resistance.Y = 3.0f;
 	m_maxVelocity.X = 20.0f;
+
+	m_material = MaterialManager::Instance()->GetMaterial("flame_orb");
 }
 
 bool CurrencyOrb::OnCollision(SolidMovingSprite * object)
@@ -57,35 +59,58 @@ bool CurrencyOrb::OnCollision(SolidMovingSprite * object)
 	// if within range then move towards the player
 	float distance = direction.LengthSquared();
 
-	// if (distance < (kCollisionRange * kCollisionRange))
-	// {
+	if (distance < (kCollisionRange * kCollisionRange))
+	{
 		if (m_material)
 		{
 			// show particles when we make contact
 			string particleName = m_material->GetRandomParticleTexture();
 
-			ParticleEmitterManager::Instance()->CreateRadialSpray(5,
-																Vector3(m_position.X + player->VelocityX() * 10, m_position.Y + player->VelocityY() * 10, player->Z() - 0.01f),
+			ParticleEmitterManager::Instance()->CreateRadialSpray(10,
+																Vector3(m_position.X + player->VelocityX() * 5, m_position.Y + player->VelocityY() * 2, player->Z() - 0.02f),
 																Vector3(3200, 1200, 0),
 																particleName,
-																0.2,
-																2,
-																0.2f,
-																0.4f,
-																250,
-																300,
+																1.0,
+																2.4,
+																0.3f,
+																0.65f,
+																40,
+																80,
 																0.5,
 																false,
 																0.8,
 																1.0,
 																0.8f,
 																true,
-																0.1,
+																4.0f,
 																0.15f,
 																0.8f,
-																5,
-																5);
+																3,
+																3);
 
+			ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
+																	Vector3(m_position.X + player->VelocityX() * 5, m_position.Y + player->VelocityY() * 2, player->Z() - 0.01f),
+																	Vector3(-m_direction.X, 0, 0),
+																	0.4,
+																	Vector3(3200, 1200, 0),
+																	"Media\\blast_circle.png",
+																	0.01,
+																	0.01,
+																	0.2f,
+																	0.2f,
+																	50,
+																	50,
+																	0,
+																	false,
+																	0.7,
+																	1.0,
+																	10000,
+																	true,
+																	3.0f,
+																	0.0f,
+																	0.0f,
+																	0.0f,
+																	0.8f);
 		}
 
 		float currentTime = Timing::Instance()->GetTotalTimeSeconds();
@@ -102,8 +127,11 @@ bool CurrencyOrb::OnCollision(SolidMovingSprite * object)
 			mLastTimePlayedSFX = currentTime;
 		}
 
+		player->SetShowBurstTint(true);
+		player->SetburstTintStartTime(Timing::Instance()->GetTotalTimeSeconds());
+
 		GameObjectManager::Instance()->RemoveGameObject(this);
-	// }
+	}
 
 	return true;
 }

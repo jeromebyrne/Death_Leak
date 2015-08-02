@@ -54,6 +54,10 @@ public:
 
 	virtual void DebugDraw(ID3D10Device * graphicsdevice) override;
 
+	void SetShowBurstTint(bool value) { mShowingBurstTint = value; }
+
+	void SetburstTintStartTime(float value) { mBurstTintStartTime = value; }
+
 protected:
 
 	ID3D10ShaderResourceView* m_texture;
@@ -117,6 +121,9 @@ protected:
 
 	bool mParentHFlipInitial;
 	bool mHflippedOnAttach;
+
+	bool mShowingBurstTint;
+	float mBurstTintStartTime;
 
 private:
 

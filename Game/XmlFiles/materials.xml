@@ -25,9 +25,6 @@
     </particletextures>
 
     <damagesoundeffects>
-      <!--<sound file="water\water_splash_projectile_1.wav" />-->
-      <!--<sound file="water\water_splash_projectile_2.wav" />-->
-      <!--<sound file="water\water_splash_projectile_3.wav" />-->
       <sound file="water\water_splash_projectile_4.wav" />
       <sound file="water\water_splash_projectile_5.wav" />
       <sound file="water\water_splash_projectile_6.wav" />
@@ -433,4 +430,46 @@
 
     <is_pierceable value="false" />
   </material>
+
+
+  <!--flame orb material-->
+  <material name="flame_orb">
+    <particletextures>
+      <texture file="Media\orb_shatter.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="character\replenish.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffect file="blood\\blood2.wav"/>
+
+    <is_pierceable value="true" />
+  </material>
+
+  <material name="water">
+    <particletextures>
+      <texture file="Media\large_splash.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="water\water_splash_projectile_4.wav" />
+      <sound file="water\water_splash_projectile_5.wav" />
+      <sound file="water\water_splash_projectile_6.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="water\water_wade.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffect file="blood\\blood2.wav"/>
+
+    <is_pierceable value="true" />
+  </material>
+
+
 </materials>
