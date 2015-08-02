@@ -29,6 +29,8 @@ private:
 	void DoTrackPlayer(float delta);
 
 	OrbState mCurrentState;
+
+	static unsigned long mLastTimePlayedSFX;
 };
 
 #endif

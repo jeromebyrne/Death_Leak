@@ -5,12 +5,18 @@
 #include "material.h"
 #include "Game.h"
 
-static float kTrackingRangeTrigger = 250.0f;
+static float kTrackingRangeTrigger = 175.0f;
 static float kAccelerateRate = 1.2f;
+static float kHarshAccelerateRate = 2.6f;
+static float kCollisionRange = 40.0f;
+static const float kMinTimeBetweenSFX = 0.5f;
+
+unsigned long CurrencyOrb::mLastTimePlayedSFX = 0;
 
 CurrencyOrb::CurrencyOrb(void) :
 	SolidMovingSprite(),
 	mCurrentState(kIdle)
+
 {
 	mIsCurrencyOrb = true;
 }
@@ -25,6 +31,10 @@ void CurrencyOrb::OnDamage(GameObject * damageDealer, float damageAmount, Vector
 
 void CurrencyOrb::Initialise()
 {
+	mSineWaveProps.RandomiseInitialStep = true;
+	mSineWaveProps.Amplitude = 2.0f;
+	mSineWaveProps.OffsetY = 20.0f;
+
 	SolidMovingSprite::Initialise();
 
 	m_passive = false;
@@ -36,8 +46,66 @@ void CurrencyOrb::Initialise()
 
 bool CurrencyOrb::OnCollision(SolidMovingSprite * object)
 {
-	// return SolidMovingSprite::OnCollision(object);
-	return false;
+	Player * player = GameObjectManager::Instance()->GetPlayer();
+	if (object != player)
+	{
+		return false;
+	}
+
+	Vector3 direction = player->Position() - m_position;
+
+	// if within range then move towards the player
+	float distance = direction.LengthSquared();
+
+	// if (distance < (kCollisionRange * kCollisionRange))
+	// {
+		if (m_material)
+		{
+			// show particles when we make contact
+			string particleName = m_material->GetRandomParticleTexture();
+
+			ParticleEmitterManager::Instance()->CreateRadialSpray(5,
+																Vector3(m_position.X + player->VelocityX() * 10, m_position.Y + player->VelocityY() * 10, player->Z() - 0.01f),
+																Vector3(3200, 1200, 0),
+																particleName,
+																0.2,
+																2,
+																0.2f,
+																0.4f,
+																250,
+																300,
+																0.5,
+																false,
+																0.8,
+																1.0,
+																0.8f,
+																true,
+																0.1,
+																0.15f,
+																0.8f,
+																5,
+																5);
+
+		}
+
+		float currentTime = Timing::Instance()->GetTotalTimeSeconds();
+
+		// play sound effect
+		if (currentTime > mLastTimePlayedSFX + kMinTimeBetweenSFX)
+		{
+			if (m_material)
+			{
+				string soundFile = m_material->GetRandomDamageSoundFilename();
+				AudioManager::Instance()->PlaySoundEffect(soundFile);
+			}
+
+			mLastTimePlayedSFX = currentTime;
+		}
+
+		GameObjectManager::Instance()->RemoveGameObject(this);
+	// }
+
+	return true;
 }
 
 void CurrencyOrb::Update(float delta)
@@ -80,11 +148,13 @@ void CurrencyOrb::Update(float delta)
 
 void CurrencyOrb::DoIdleHover(float delta)
 {
-
+	mSineWaveProps.DoSineWave = true;
 }
 
 void CurrencyOrb::DoTrackPlayer(float delta)
 {
+	mSineWaveProps.DoSineWave = false;
+
 	Player * player = GameObjectManager::Instance()->GetPlayer();
 	if (!player)
 	{
@@ -98,32 +168,32 @@ void CurrencyOrb::DoTrackPlayer(float delta)
 
 	m_direction = direction;
 
+	bool prioritiseX = false;
 	if (std::abs(m_direction.X) > std::abs(m_direction.Y))
 	{
 		AccelerateX(m_direction.X, kAccelerateRate);
+		prioritiseX = true;
 	}
 	else
 	{
 		AccelerateY(m_direction.Y, kAccelerateRate);
 	}
 
-	/*
-	if ((m_direction.X < 0 && m_velocity.X > 0) ||
-		(m_direction.X > 0 && m_velocity.X < 0))
+	if (prioritiseX && ((m_direction.X < 0 && m_velocity.X > 0) ||
+		(m_direction.X > 0 && m_velocity.X < 0)))
 	{
 		// the velocity of the orb is still moving in the opposite x direction
 		// let's give it a helping hand to catch up by accelerating harshly
 		AccelerateX(m_direction.X, kHarshAccelerateRate);
 	}
 
-	if ((m_direction.Y < 0 && m_velocity.Y > 0) ||
-		(m_direction.Y > 0 && m_velocity.Y < 0))
+	if (!prioritiseX && ((m_direction.Y < 0 && m_velocity.Y > 0) ||
+		(m_direction.Y > 0 && m_velocity.Y < 0)))
 	{
 		// the velocity of the orb is still moving in the opposite y direction
 		// let's give it a helping hand to catch up by accelerating harshly
 		AccelerateY(m_direction.Y, kHarshAccelerateRate);
 	}
-	*/
 
 	Vector2 dir = Vector2(m_velocity.X, m_velocity.Y);
 	dir.Normalise();

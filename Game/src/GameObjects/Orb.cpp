@@ -31,7 +31,7 @@ Orb::Orb(SolidMovingSprite * target,
 
 	// TODO: notify the target that it has orbs following it so that it can cancel before it dies
 	// m_collisionBoxDimensions = collisionDimensions;
-	m_textureFilename = (char *)textureFile;
+	m_textureFilename = textureFile;
 
 	// m_passive = true;
 	m_applyGravity = true;

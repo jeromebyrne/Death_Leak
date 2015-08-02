@@ -342,6 +342,8 @@ void GameObjectManager::DebugDraw()
 // load game objects via xml file
 void GameObjectManager::LoadObjectsFromFile(const char* filename)
 {
+	GameObject::ResetGameIds();
+
 #if _DEBUG
 	if (Game::GetIsLevelEditMode())
 	{

@@ -1,16 +1,11 @@
 #ifndef ENVIRONMENT_H
 #define ENVIRONMENT_H
 
-class Material; // forward declaration
+class Material;
 
 // class which holds level environment data
 class Environment
 {
-private:
-	static Environment * m_instance;
-	int m_groundLevel;
-	Material * m_groundMaterial;
-	
 public:
 	Environment(void);
 	~Environment(void);
@@ -24,8 +19,12 @@ public:
 	{
 		return m_groundMaterial;
 	}
-	
-	
+
+private:
+
+	static Environment * m_instance;
+	int m_groundLevel;
+	Material * m_groundMaterial;
 };
 
 #endif

@@ -1,6 +1,8 @@
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 
+#include "SineWave.h"
+
 class Material;
 class Camera2D;
 
@@ -181,6 +183,8 @@ public:
 
 	bool AlwaysUpdate() const { return mAlwaysUpdate; }
 
+	static void ResetGameIds();
+
 protected:
 
 	virtual void DrawDebugText();
@@ -217,11 +221,29 @@ protected:
 	bool mUpdateToParentsOrientation;
 	float mAutoRotationValue;
 
+	struct SineWaveProps
+	{
+		bool DoSineWave;
+		float OffsetY;
+		float Amplitude;
+		float InitialYPosition;
+		bool RandomiseInitialStep;
+
+		SineWaveProps():
+			OffsetY(0.0f),
+			Amplitude(0.0f),
+			InitialYPosition(0.0f),
+			DoSineWave(false),
+			RandomiseInitialStep(false)
+		{}
+	};
+	SineWaveProps mSineWaveProps;
+
 	bool mAlwaysUpdate;
 
 private:
 
-	virtual void UpdateToParent();
+	virtual void UpdateToParent() { }
 
 	int m_id; // our game object ID (this is unique)
 
@@ -243,7 +265,11 @@ private:
 	bool mLevelEditShowSelected;
 
 	// when objects are rotated their bounding boxes will be larger
-	Vector2 mLargestPossibleDimensions; 
+	Vector2 mLargestPossibleDimensions;
+
+	static unsigned int sGameObjectId;
+
+	SineWave mSinWave;
 };
 
 #endif

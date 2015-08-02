@@ -8,6 +8,8 @@
 
 const float kMaxRadians = 6.28318531; // 360 degrees
 
+unsigned int GameObject::sGameObjectId = 1;
+
 GameObject::GameObject(float x, float y , float z, float width, float height, float breadth):
 	m_position(x,y,z),
 	m_lastPosition(x,y,z),
@@ -46,9 +48,13 @@ GameObject::GameObject(float x, float y , float z, float width, float height, fl
 	mAlwaysUpdate(false),
 	mIsCurrencyOrb(false)
 {
-	static int GAME_OBJECT_ID = 1; 
-	m_id = GAME_OBJECT_ID;
-	GAME_OBJECT_ID++;
+	m_id = sGameObjectId;
+	++sGameObjectId;
+}
+
+void GameObject::ResetGameIds()
+{
+	sGameObjectId = 1;
 }
 
 GameObject::~GameObject(void)
@@ -65,7 +71,6 @@ GameObject::~GameObject(void)
 
 void GameObject::Initialise()
 {
-	// srand(timeGetTime());
 	m_lastPosition = m_position;
 
 	// initialise our world matrix
@@ -103,6 +108,10 @@ void GameObject::Initialise()
 
 	float maxWidth = (std::max)(m_dimensions.X, m_dimensions.Y);
 	mLargestPossibleDimensions = Vector2(maxWidth, maxWidth);
+
+	// sine wave
+	float initialStep = mSineWaveProps.RandomiseInitialStep ? (rand() % 999999) : 0;
+	mSinWave.Initialise(initialStep, mSineWaveProps.OffsetY, mSineWaveProps.Amplitude, mSineWaveProps.InitialYPosition);
 }
 
 void GameObject::SetupDebugDraw()
@@ -160,6 +169,12 @@ void GameObject::Update(float delta)
 	{
 		float diff = Camera2D::GetInstance()->Y() - m_position.Y;
 		mCurrentParallaxOffsetY = (diff * mParallaxMultiplierY) - diff;
+	}
+
+	if (mSineWaveProps.DoSineWave)
+	{
+		mSinWave.Update(delta);
+		m_position.Y = mSinWave.GetValue();
 	}
 
 	D3DXMatrixScaling(&m_matScale, m_matScaleX, m_matScaleY, 1.0);
@@ -228,6 +243,13 @@ void GameObject:: XmlRead(TiXmlElement * element)
 	// read rotation
 	m_rotationAngle = XmlUtilities::ReadAttributeAsFloat(element, "position", "rotation");
 	mAutoRotationValue = XmlUtilities::ReadAttributeAsFloat(element, "position", "auto_rotate_value");
+
+	// sine wave properties
+	mSineWaveProps.InitialYPosition = m_position.Y;
+	mSineWaveProps.Amplitude = XmlUtilities::ReadAttributeAsFloat(element, "sine_wave_props", "amplitude");
+	mSineWaveProps.OffsetY = XmlUtilities::ReadAttributeAsFloat(element, "sine_wave_props", "y_offset");
+	mSineWaveProps.DoSineWave = XmlUtilities::ReadAttributeAsBool(element, "sine_wave_props", "active");
+	mSineWaveProps.RandomiseInitialStep = XmlUtilities::ReadAttributeAsBool(element, "sine_wave_props", "rand_init_step");
 }
 
 void GameObject::XmlWrite(TiXmlElement * element)
@@ -273,6 +295,16 @@ void GameObject::XmlWrite(TiXmlElement * element)
 	}
 
 	element->LinkEndChild(materialElem);
+
+	TiXmlElement * sineWaveElem = new TiXmlElement("sine_wave_props");
+	const char * doSineWaveFlag = mSineWaveProps.DoSineWave ? "true" : "false";
+	sineWaveElem->SetAttribute("active", levelEditLockedFlag);
+
+	sineWaveElem->SetDoubleAttribute("y_offset", mSineWaveProps.OffsetY);
+	sineWaveElem->SetDoubleAttribute("amplitude", mSineWaveProps.Amplitude);
+	sineWaveElem->SetAttribute("rand_init_step", mSineWaveProps.RandomiseInitialStep);
+
+	element->LinkEndChild(sineWaveElem);
 }
 
 void GameObject::Scale(float xScale, float yScale, bool scalePosition)
@@ -443,6 +475,3 @@ void GameObject::Detach()
 	mAttachedToOffset = Vector3(0, 0, 0);
 }
 
-void GameObject::UpdateToParent()
-{
-}

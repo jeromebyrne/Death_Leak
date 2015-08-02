@@ -110,6 +110,7 @@
     </ClCompile>
     <ClCompile Include="src\program.cpp" />
     <ClCompile Include="src\Settings.cpp" />
+    <ClCompile Include="src\SineWave.cpp" />
     <ClCompile Include="src\UI\UIAnimatedSprite.cpp" />
     <ClCompile Include="src\UI\UIButton.cpp" />
     <ClCompile Include="src\UI\UICheckbox.cpp" />
@@ -219,6 +220,7 @@
     <ClInclude Include="src\precompiled.h" />
     <ClInclude Include="src\Resource.h" />
     <ClInclude Include="src\Settings.h" />
+    <ClInclude Include="src\SineWave.h" />
     <ClInclude Include="src\UI\UIAnimatedSprite.h" />
     <ClInclude Include="src\UI\UIButton.h" />
     <ClInclude Include="src\UI\UICheckbox.h" />
