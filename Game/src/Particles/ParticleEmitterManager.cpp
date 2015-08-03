@@ -226,7 +226,7 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedBloodSpray(int numParticle
 	return spray;
 }
 
-void ParticleEmitterManager::CreateRadialSpray(int numParticles,
+ParticleSpray * ParticleEmitterManager::CreateRadialSpray(int numParticles,
 												 Vector3 position, 
 												 Vector3 drawBoundingBox, // determines when we stop drawing particles (camera stops seeing them)
 												 string textureFileName,
@@ -250,13 +250,10 @@ void ParticleEmitterManager::CreateRadialSpray(int numParticles,
 {
 	if (sNumParticlesInWorld > kMaxParticlesInWorld)
 	{
-		return;
+		return nullptr;
 	}
 
 	sNumParticlesInWorld += numParticles;
-
-	// seed the random number generator
-	// srand(timeGetTime());
 
 	if(maxBrightness > 1)
 	{
@@ -392,6 +389,8 @@ void ParticleEmitterManager::CreateRadialSpray(int numParticles,
 
 	// add the spray to the game world
 	GameObjectManager::Instance()->AddGameObject(spray);
+
+	return spray;
 }
 
 ParticleSpray * ParticleEmitterManager::CreateDirectedSpray(int numParticles,

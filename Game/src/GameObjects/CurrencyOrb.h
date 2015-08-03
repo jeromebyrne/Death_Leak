@@ -28,9 +28,19 @@ private:
 
 	void DoTrackPlayer(float delta);
 
+	void AddTrailParticles();
+
+	void DoCollisionSmallType();
+
+	void DoCollisionLargeType();
+
 	OrbState mCurrentState;
 
 	static unsigned long mLastTimePlayedSFX;
+
+	bool mIsLargeType;
+
+	int mParticleTrailObjectId;
 };
 
 #endif

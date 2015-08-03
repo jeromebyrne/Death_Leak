@@ -6,7 +6,7 @@
 #include "Game.h"
 #include "MaterialManager.h"
 
-static float kTrackingRangeTrigger = 175.0f;
+static float kTrackingRangeTrigger = 200.0f;
 static float kAccelerateRate = 1.8f;
 static float kHarshAccelerateRate = 3.5f;
 static float kCollisionRange = 50.0f;
@@ -16,7 +16,9 @@ unsigned long CurrencyOrb::mLastTimePlayedSFX = 0;
 
 CurrencyOrb::CurrencyOrb(void) :
 	SolidMovingSprite(),
-	mCurrentState(kIdle)
+	mCurrentState(kIdle),
+	mIsLargeType(false),
+	mParticleTrailObjectId(-1)
 {
 	mIsCurrencyOrb = true;
 }
@@ -44,6 +46,11 @@ void CurrencyOrb::Initialise()
 	m_maxVelocity.X = 20.0f;
 
 	m_material = MaterialManager::Instance()->GetMaterial("flame_orb");
+
+	if (m_drawAtNativeDimensions)
+	{
+		mIsLargeType = true;
+	}
 }
 
 bool CurrencyOrb::OnCollision(SolidMovingSprite * object)
@@ -82,35 +89,33 @@ bool CurrencyOrb::OnCollision(SolidMovingSprite * object)
 																1.0,
 																0.8f,
 																true,
-																4.0f,
+																2.0f,
 																0.15f,
 																0.8f,
 																3,
 																3);
 
-			ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
-																	Vector3(m_position.X + player->VelocityX() * 5, m_position.Y + player->VelocityY() * 2, player->Z() - 0.01f),
-																	Vector3(-m_direction.X, 0, 0),
-																	0.4,
-																	Vector3(3200, 1200, 0),
-																	"Media\\blast_circle.png",
-																	0.01,
-																	0.01,
-																	0.2f,
-																	0.2f,
-																	50,
-																	50,
-																	0,
-																	false,
-																	0.7,
-																	1.0,
-																	10000,
-																	true,
-																	3.0f,
-																	0.0f,
-																	0.0f,
-																	0.0f,
-																	0.8f);
+			ParticleEmitterManager::Instance()->CreateRadialSpray(1,
+																Vector3(m_position.X + player->VelocityX() * 5, m_position.Y + player->VelocityY() * 2, player->Z() - 0.01f),
+																Vector3(3200, 1200, 0),
+																"Media\\blast_circle.png",
+																1.0,
+																2.4,
+																0.35f,
+																0.35f,
+																20,
+																40,
+																0.5,
+																false,
+																0.8,
+																1.0,
+																0.8f,
+																true,
+																5.5f,
+																0.15f,
+																0.8f,
+																0,
+																0);
 		}
 
 		float currentTime = Timing::Instance()->GetTotalTimeSeconds();
@@ -129,6 +134,17 @@ bool CurrencyOrb::OnCollision(SolidMovingSprite * object)
 
 		player->SetShowBurstTint(true);
 		player->SetburstTintStartTime(Timing::Instance()->GetTotalTimeSeconds());
+
+		if (mParticleTrailObjectId != -1)
+		{
+			shared_ptr<GameObject> & particleObj = GameObjectManager::Instance()->GetObjectByID(mParticleTrailObjectId);
+			if (particleObj)
+			{
+				particleObj->Detach();
+
+				GameObjectManager::Instance()->RemoveGameObject(particleObj.get());
+			}
+		}
 
 		GameObjectManager::Instance()->RemoveGameObject(this);
 	}
@@ -150,26 +166,29 @@ void CurrencyOrb::Update(float delta)
 		case kIdle:
 		{
 			DoIdleHover(delta);
+
+			Player * player = GameObjectManager::Instance()->GetPlayer();
+			if (player)
+			{
+				Vector3 direction = player->Position() - m_position;
+
+				// if within range then move towards the player
+				float distance = direction.LengthSquared();
+				if (distance < kTrackingRangeTrigger * kTrackingRangeTrigger)
+				{
+					// player tracking triggered
+					mCurrentState = kTracking;
+
+					AddTrailParticles();
+				}
+			}
+
 			break;
 		}
 		case kTracking:
 		{
 			DoTrackPlayer(delta);
 			break;
-		}
-	}
-
-	Player * player = GameObjectManager::Instance()->GetPlayer();
-	if (player)
-	{
-		Vector3 direction = player->Position() - m_position;
-
-		// if within range then move towards the player
-		float distance = direction.LengthSquared();
-		if (distance < kTrackingRangeTrigger * kTrackingRangeTrigger)
-		{
-			// player tracking triggered
-			mCurrentState = kTracking;
 		}
 	}
 }
@@ -190,7 +209,7 @@ void CurrencyOrb::DoTrackPlayer(float delta)
 	}
 
 	// accelerate towards the target
-	Vector3 direction = player->Position() - m_position;
+	Vector3 direction = Vector3(player->CollisionCentreX(), player->CollisionCentreY(), player->Z()) - m_position;
 
 	direction.Normalise();
 
@@ -233,5 +252,52 @@ void CurrencyOrb::DoTrackPlayer(float delta)
 	else
 	{
 		SetRotationAngle(acos(dir.Dot(Vector2(0, -1))));
+	}
+}
+
+void CurrencyOrb::DoCollisionSmallType()
+{
+
+}
+
+void CurrencyOrb::DoCollisionLargeType()
+{
+
+}
+
+void CurrencyOrb::AddTrailParticles()
+{
+	if (m_material)
+	{
+		// show particles when we make contact
+		string particleName = m_material->GetRandomParticleTexture();
+
+		ParticleSpray * p = ParticleEmitterManager::Instance()->CreateRadialSpray(40,
+																					m_position,
+																					Vector3(3200, 1200, 0),
+																					particleName,
+																					1.5,
+																					3.4,
+																					0.1f,
+																					0.35f,
+																					50,
+																					100,
+																					0.5,
+																					true,
+																					0.8,
+																					1.0,
+																					-1.0f,
+																					true,
+																					0.1f,
+																					0.15f,
+																					0.8f,
+																					3,
+																					3);
+
+		if (p)
+		{
+			p->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), Vector3(0, 0, 0.1f), true);
+			mParticleTrailObjectId = p->ID();
+		}
 	}
 }

@@ -44,7 +44,7 @@ public:
 								 float loopTime);
 
 	//void Update(); // update all of our particle sprays
-	void CreateRadialSpray(int numParticles,
+	ParticleSpray * CreateRadialSpray(int numParticles,
 						 Vector3 position, 
 						 Vector3 drawBoundingBox, // determines when we stop drawing particles (camera stops seeing them)
 						 string textureFileName,
