@@ -10,7 +10,8 @@ public:
 	enum OrbState
 	{
 		kIdle,
-		kTracking
+		kTracking,
+		kSpawnPeriod
 	};
 
 	CurrencyOrb(void);
@@ -30,9 +31,9 @@ private:
 
 	void AddTrailParticles();
 
-	void DoCollisionSmallType();
+	void DoCollisionSmallType(Player * player);
 
-	void DoCollisionLargeType();
+	void DoCollisionLargeType(Player * player);
 
 	OrbState mCurrentState;
 
@@ -41,6 +42,10 @@ private:
 	bool mIsLargeType;
 
 	int mParticleTrailObjectId;
+
+	float mSpawnPeriodTime;
+
+	float mTimeTracking;
 };
 
 #endif

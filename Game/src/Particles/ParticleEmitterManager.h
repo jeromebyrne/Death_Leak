@@ -4,17 +4,6 @@
 
 class ParticleEmitterManager
 {
-private:
-	static ParticleEmitterManager * m_instance;
-
-	ParticleEmitterManager(void);
-	~ParticleEmitterManager(void);
-
-	list<ParticleSpray*> m_particleSprayList; // a list of all active particle sprays
-	Graphics * m_graphicsSystem; // a pointer to the graphics system
-
-	static unsigned int sNumParticlesInWorld;
-
 public:
 
 	inline static ParticleEmitterManager * Instance()
@@ -28,8 +17,6 @@ public:
 	void ClearParticles();
 
 	void Initialise(Graphics * graphicsSystem); 
-
-	static void DecrementParticleWorldCount(unsigned int numParticles);
 
 	ParticleSpray * CreateRadialBloodSpray(unsigned int numParticles,
 											Vector3 position,
@@ -117,7 +104,16 @@ public:
 												 float spawnSpreadY,
 												 float fadeInPercentTime,
 												 float fadeOutPercentTime);
-	
+
+	private:
+
+		static ParticleEmitterManager * m_instance;
+
+		ParticleEmitterManager(void);
+		~ParticleEmitterManager(void);
+
+		list<ParticleSpray*> m_particleSprayList; // a list of all active particle sprays
+		Graphics * m_graphicsSystem; // a pointer to the graphics system	
 };
 
 #endif

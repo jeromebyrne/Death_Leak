@@ -439,7 +439,29 @@
     </particletextures>
 
     <damagesoundeffects>
-      <sound file="character\replenish.wav" />
+      <sound file="orb\collect_1.wav" />
+      <sound file="orb\collect_2.wav" />
+      <sound file="orb\collect_3.wav" />
+      <sound file="orb\collect_4.wav" />
+      <sound file="orb\collect_5.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffect file="blood\\blood2.wav"/>
+
+    <is_pierceable value="true" />
+  </material>
+
+  <material name="flame_orb_large">
+    <particletextures>
+      <texture file="Media\orb_shatter.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="orb\collect_large.wav" />
     </damagesoundeffects>
 
     <footstepsoundeffects>

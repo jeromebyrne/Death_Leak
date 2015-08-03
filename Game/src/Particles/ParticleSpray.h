@@ -75,6 +75,8 @@ public:
 
 	virtual void AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset, bool trackParentsOrientation = true) override;
 
+	void SetIsLooping(bool value) { m_isLooping = value; }
+
 protected:
 
 	ID3D10ShaderResourceView* m_texture; // the texture being displayed on each quad of this spray

@@ -24,11 +24,6 @@ const float kBloodDirectedMaxSpeed = 8.0f;
 const unsigned int kBloodDirectedGravity = 1.3;
 const float kBloodDirectedScaleTo = 12.0f;
 
-static const unsigned int kMaxParticlesInWorld = 5000;
-
-unsigned int ParticleEmitterManager::sNumParticlesInWorld;
-
-
 ParticleEmitterManager* ParticleEmitterManager::m_instance = 0;
 
 ParticleEmitterManager::ParticleEmitterManager(void)
@@ -64,14 +59,6 @@ ParticleSpray * ParticleEmitterManager::CreateRadialBloodSpray(unsigned int numP
 													bool loop,
 													float loopTime)
 {
-	if (sNumParticlesInWorld > kMaxParticlesInWorld)
-	{
-		return nullptr;
-	}
-
-	sNumParticlesInWorld += numParticles;
-
-	// srand(timeGetTime());
 	float creationTime = Timing::Instance()->GetTotalTimeSeconds();
 
 	float gameScale = Game::GetGameScale().X;
@@ -148,15 +135,6 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedBloodSpray(int numParticle
 																 bool loop,
 																 float loopTime)
 {
-	if (sNumParticlesInWorld > kMaxParticlesInWorld)
-	{
-		return nullptr;
-	}
-
-	sNumParticlesInWorld += numParticles;
-
-	// srand(timeGetTime());
-
 	float creationTime = Timing::Instance()->GetTotalTimeSeconds();
 
 	float gameScale = Game::GetGameScale().X;
@@ -248,13 +226,6 @@ ParticleSpray * ParticleEmitterManager::CreateRadialSpray(int numParticles,
 												 float spawnSpreadX,
 												 float spawnSpreadY)
 {
-	if (sNumParticlesInWorld > kMaxParticlesInWorld)
-	{
-		return nullptr;
-	}
-
-	sNumParticlesInWorld += numParticles;
-
 	if(maxBrightness > 1)
 	{
 		maxBrightness = 1;
@@ -418,13 +389,6 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSpray(int numParticles,
 															 float fadeOutPercentTime,
 															 bool originalOrientation)
 {
-	if (sNumParticlesInWorld > kMaxParticlesInWorld)
-	{
-		return nullptr;
-	}
-
-	sNumParticlesInWorld += numParticles;
-
 	// seed the random number generator
 	// srand(timeGetTime());
 
@@ -789,17 +753,6 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSprayLoadTime(int numParti
 	return spray;
 }
 
-void ParticleEmitterManager::DecrementParticleWorldCount(unsigned int numParticles)
-{
-	if (sNumParticlesInWorld >= numParticles)
-	{
-		sNumParticlesInWorld -= numParticles;
-	}
-	else
-	{
-		sNumParticlesInWorld = 0;
-	}
-}
 
 
 

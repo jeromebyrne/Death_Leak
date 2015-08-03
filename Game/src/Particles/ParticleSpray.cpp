@@ -48,7 +48,6 @@ ParticleSpray::~ParticleSpray(void)
 {
 	m_particleList.clear();
 
-	ParticleEmitterManager::DecrementParticleWorldCount(m_particleList.size());
 	if(m_vertexBuffer)
 	{
 		m_vertexBuffer->Release();
@@ -301,7 +300,6 @@ void ParticleSpray::Update(float delta)
 				{
 					// this particle is dead
 					currentParticle.IsDead = true;
-					ParticleEmitterManager::DecrementParticleWorldCount(1);
 				}
 			}
 			else
