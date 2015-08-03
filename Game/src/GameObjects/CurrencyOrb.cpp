@@ -331,7 +331,7 @@ void CurrencyOrb::AddTrailParticles()
 
 		if (!mIsLargeType)
 		{
-			p = ParticleEmitterManager::Instance()->CreateRadialSpray(20,
+			p = ParticleEmitterManager::Instance()->CreateRadialSpray(30,
 																		m_position,
 																		Vector3(3200, 1200, 0),
 																		particleName,

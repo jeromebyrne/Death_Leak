@@ -11,13 +11,13 @@
         use_standard_effect="true">
   </meter>-
 
-  <!--<sprite name="21_frame"
+  <sprite name="21_frame"
           process_input="false"
           posX ="-960" posY ="-540" width="1920" height ="1080"
           image="Media\UI\frame.png"
           hflip="false" vflip="false"
           alpha="1.0"
           use_standard_effect="true">
-  </sprite>-->
+  </sprite>
   
 </uiscreen>
