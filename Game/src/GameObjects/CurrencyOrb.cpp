@@ -10,7 +10,7 @@ static float kTrackingRangeTrigger = 150.0f;
 static float kAccelerateRate = 2.1f;
 static float kHarshAccelerateRate = 3.8f;
 static float kCollisionRange = 50.0f;
-static const float kMinTimeBetweenSFX = 0.5f;
+static const float kMinTimeBetweenSFX = 0.2f;
 
 unsigned long CurrencyOrb::mLastTimePlayedSFX = 0;
 
@@ -77,20 +77,6 @@ bool CurrencyOrb::OnCollision(SolidMovingSprite * object)
 	{
 		mIsLargeType ? DoCollisionLargeType(player) : DoCollisionSmallType(player);
 
-		float currentTime = Timing::Instance()->GetTotalTimeSeconds();
-
-		// play sound effect
-		if (currentTime > mLastTimePlayedSFX + kMinTimeBetweenSFX)
-		{
-			if (m_material)
-			{
-				string soundFile = m_material->GetRandomDamageSoundFilename();
-				AudioManager::Instance()->PlaySoundEffect(soundFile);
-			}
-
-			mLastTimePlayedSFX = currentTime;
-		}
-
 		player->SetShowBurstTint(true);
 		player->SetburstTintStartTime(Timing::Instance()->GetTotalTimeSeconds());
 
@@ -106,6 +92,11 @@ bool CurrencyOrb::OnCollision(SolidMovingSprite * object)
 		}
 
 		GameObjectManager::Instance()->RemoveGameObject(this);
+
+		if (m_material)
+		{
+			AudioManager::Instance()->PlaySoundEffect(m_material->GetRandomFootstepSoundFilename());
+		}
 	}
 
 	return true;
@@ -142,6 +133,20 @@ void CurrencyOrb::Update(float delta)
 						mCurrentState = kTracking;
 
 						AddTrailParticles();
+
+						float currentTime = Timing::Instance()->GetTotalTimeSeconds();
+
+						// play sound effect
+						if (currentTime > mLastTimePlayedSFX + kMinTimeBetweenSFX)
+						{
+							if (m_material)
+							{
+								string soundFile = m_material->GetRandomDamageSoundFilename();
+								AudioManager::Instance()->PlaySoundEffect(soundFile);
+							}
+
+							mLastTimePlayedSFX = currentTime;
+						}
 					}
 				}
 			}
@@ -331,7 +336,7 @@ void CurrencyOrb::AddTrailParticles()
 
 		if (!mIsLargeType)
 		{
-			p = ParticleEmitterManager::Instance()->CreateRadialSpray(30,
+			p = ParticleEmitterManager::Instance()->CreateRadialSpray(20,
 																		m_position,
 																		Vector3(3200, 1200, 0),
 																		particleName,

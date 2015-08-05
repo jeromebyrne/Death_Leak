@@ -447,7 +447,13 @@
     </damagesoundeffects>
 
     <footstepsoundeffects>
-      <sound file="Footstep1.wav" />
+      <sound file="orb\\shatter1.wav" />
+      <sound file="orb\\shatter2.wav" />
+      <sound file="orb\\shatter3.wav" />
+      <sound file="orb\\shatter4.wav" />
+      <sound file="orb\\shatter5.wav" />
+      <sound file="orb\\shatter6.wav" />
+      <sound file="orb\\shatter7.wav" />
     </footstepsoundeffects>
 
     <destroysoundeffect file="blood\\blood2.wav"/>
@@ -465,7 +471,7 @@
     </damagesoundeffects>
 
     <footstepsoundeffects>
-      <sound file="Footstep1.wav" />
+      <sound file="orb\collect_large.wav" />
     </footstepsoundeffects>
 
     <destroysoundeffect file="blood\\blood2.wav"/>
