@@ -293,35 +293,8 @@ void CurrencyOrb::DoCollisionLargeType(Player * player)
 																0,
 																0);
 
-		// create 10 smaller orbs 
-		std::string animFile = "XmlFiles\\orb_anim.xml";
-
-		for (unsigned int i = 0; i < 5; ++i)
-		{
-			CurrencyOrb * newOrb = new CurrencyOrb();
-			newOrb->m_dimensions.X = 66.095314;
-			newOrb->m_dimensions.Y = 100.923981;
-			newOrb->m_alpha = 0.8f;
-			newOrb->m_drawAtNativeDimensions = false;
-
-			newOrb->m_collisionBoxDimensions.X = 25.290789;
-			newOrb->m_collisionBoxDimensions.Y = 25.290789;
-			newOrb->mCollisionBoxOffset.Y = 20;
-			newOrb->m_isAnimated = true;
-			newOrb->m_animationFile = animFile;
-			newOrb->SetXYZ(m_position.X, m_position.Y, m_position.Z + 0.01f);
-			newOrb->m_maxVelocity.X = 20.0f;
-			newOrb->m_maxVelocity.Y = 99999;
-			newOrb->SetVelocityXYZ((((rand() % 100) * 0.1f)) * ((rand() % 2) == 1 ? -1.0f : 1.0f),
-									(((rand() % 100) * 0.1f) + 30.0f) * ((rand() % 2) == 1 ? -1.0f : 1.0f), 
-									0);
-
-			GameObjectManager::Instance()->AddGameObject(newOrb);
-
-			newOrb->FlipVertical();
-			newOrb->mSpawnPeriodTime = ((rand() % 100) * 0.001f) + 0.01f;
-			newOrb->mCurrentState = kSpawnPeriod;
-		}
+		Vector3 position(m_position.X, m_position.Y, m_position.Z + 0.01f);
+		SpawnOrbs(position, 5);
 	}
 }
 
@@ -388,5 +361,38 @@ void CurrencyOrb::AddTrailParticles()
 			p->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), Vector3(0, 0, 0.1f), true);
 			mParticleTrailObjectId = p->ID();
 		}
+	}
+}
+
+void CurrencyOrb::SpawnOrbs(Vector3 & position, unsigned int numOrbs)
+{
+	// create 10 smaller orbs 
+	std::string animFile = "XmlFiles\\orb_anim.xml";
+
+	for (unsigned int i = 0; i < 5; ++i)
+	{
+		CurrencyOrb * newOrb = new CurrencyOrb();
+		newOrb->m_dimensions.X = 66.095314;
+		newOrb->m_dimensions.Y = 100.923981;
+		newOrb->m_alpha = 0.8f;
+		newOrb->m_drawAtNativeDimensions = false;
+
+		newOrb->m_collisionBoxDimensions.X = 25.290789;
+		newOrb->m_collisionBoxDimensions.Y = 25.290789;
+		newOrb->mCollisionBoxOffset.Y = 20;
+		newOrb->m_isAnimated = true;
+		newOrb->m_animationFile = animFile;
+		newOrb->SetXYZ(position.X, position.Y, position.Z + 0.01f);
+		newOrb->m_maxVelocity.X = 20.0f;
+		newOrb->m_maxVelocity.Y = 99999;
+		newOrb->SetVelocityXYZ((((rand() % 100) * 0.1f)) * ((rand() % 2) == 1 ? -1.0f : 1.0f),
+			(((rand() % 100) * 0.1f) + 30.0f) * ((rand() % 2) == 1 ? -1.0f : 1.0f),
+			0);
+
+		GameObjectManager::Instance()->AddGameObject(newOrb);
+
+		newOrb->FlipVertical();
+		newOrb->mSpawnPeriodTime = ((rand() % 100) * 0.001f) + 0.01f;
+		newOrb->mCurrentState = kSpawnPeriod;
 	}
 }

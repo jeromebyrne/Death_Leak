@@ -23,6 +23,8 @@ public:
 
 	virtual void Update(float delta) override;
 
+	static void SpawnOrbs(Vector3 & position, unsigned int numOrbs);
+
 private:
 
 	void DoIdleHover(float delta);

@@ -9,6 +9,7 @@
 #include "BombProjectile.h"
 #include "WaterBlock.h"
 #include "DrawUtilities.h"
+#include "CurrencyOrb.h"
 
 float Character::mLastTimePlayedDeathSFX = 0;
 static const float kMinTimeBetweenDeathSFX = 0.1f;
@@ -693,6 +694,12 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 
 							mLastTimePlayedDeathSFX = current_time;
 						}
+					}
+
+					// spawn some orbs
+					if (GameObjectManager::Instance()->GetPlayer() != this)
+					{
+						CurrencyOrb::SpawnOrbs(m_position, 5);
 					}
 				}
 				else if (shouldExplode && !mExplodesGruesomely)
