@@ -184,8 +184,8 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 																		"Media\\blast_circle.png",
 																		0.01,
 																		0.01,
-																		0.25f,
-																		0.45f,
+																		0.40f,
+																		0.40f,
 																		50,
 																		50,
 																		0,
@@ -198,7 +198,7 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 																		0.0f,
 																		0.0f,
 																		0.0f,
-																		0.8f);
+																		0.3f);
 
 				AudioManager::Instance()->PlaySoundEffect("metalclink.wav");
 

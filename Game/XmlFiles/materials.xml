@@ -195,8 +195,6 @@
 
     <is_pierceable value="true" />
   </material>
-  
-  
 
   <!--Metal-->
   <material name="metal">

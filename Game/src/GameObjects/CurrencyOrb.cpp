@@ -294,7 +294,7 @@ void CurrencyOrb::DoCollisionLargeType(Player * player)
 																0);
 
 		Vector3 position(m_position.X, m_position.Y, m_position.Z + 0.01f);
-		SpawnOrbs(position, 5);
+		SpawnOrbs(position, 10);
 	}
 }
 
@@ -309,7 +309,7 @@ void CurrencyOrb::AddTrailParticles()
 
 		if (!mIsLargeType)
 		{
-			p = ParticleEmitterManager::Instance()->CreateRadialSpray(20,
+			p = ParticleEmitterManager::Instance()->CreateRadialSpray(15,
 																		m_position,
 																		Vector3(3200, 1200, 0),
 																		particleName,
@@ -317,8 +317,8 @@ void CurrencyOrb::AddTrailParticles()
 																		3.4,
 																		0.1f,
 																		0.35f,
-																		50,
-																		100,
+																		40,
+																		80,
 																		0.5,
 																		true,
 																		0.8,
@@ -369,17 +369,16 @@ void CurrencyOrb::SpawnOrbs(Vector3 & position, unsigned int numOrbs)
 	// create 10 smaller orbs 
 	std::string animFile = "XmlFiles\\orb_anim.xml";
 
-	for (unsigned int i = 0; i < 5; ++i)
+	for (unsigned int i = 0; i < numOrbs; ++i)
 	{
 		CurrencyOrb * newOrb = new CurrencyOrb();
-		newOrb->m_dimensions.X = 66.095314;
-		newOrb->m_dimensions.Y = 100.923981;
+		newOrb->m_dimensions.X = 47.697300;
+		newOrb->m_dimensions.Y = 72.831207;
 		newOrb->m_alpha = 0.8f;
 		newOrb->m_drawAtNativeDimensions = false;
-
-		newOrb->m_collisionBoxDimensions.X = 25.290789;
-		newOrb->m_collisionBoxDimensions.Y = 25.290789;
-		newOrb->mCollisionBoxOffset.Y = 20;
+		newOrb->m_collisionBoxDimensions.X = 20.0f;
+		newOrb->m_collisionBoxDimensions.Y = 20.0f;
+		newOrb->mCollisionBoxOffset.Y = 10;
 		newOrb->m_isAnimated = true;
 		newOrb->m_animationFile = animFile;
 		newOrb->SetXYZ(position.X, position.Y, position.Z + 0.01f);

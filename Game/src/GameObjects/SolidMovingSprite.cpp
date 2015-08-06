@@ -382,10 +382,10 @@ void SolidMovingSprite::OnDamage(GameObject * damageDealer, float damageAmount, 
 																"Media\\blast_circle.png",
 																0.01,
 																0.01,
-																0.25f,
-																0.45f,
-																40,
-																40,
+																0.40f,
+																0.40f,
+																40.0f,
+																40.0f,
 																0,
 																false,
 																0.7,
@@ -396,7 +396,7 @@ void SolidMovingSprite::OnDamage(GameObject * damageDealer, float damageAmount, 
 																0.0f,
 																0.0f,
 																0.0f,
-																0.8f);
+																0.3f);
 
 	}
 }
