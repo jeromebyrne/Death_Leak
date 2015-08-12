@@ -52,7 +52,17 @@ void Material::ReadXml(TiXmlElement * element)
 		currentFootstepSound = currentFootstepSound->NextSiblingElement();
 	}
 
-	m_destroySound = XmlUtilities::ReadAttributeAsString(element, "destroysoundeffect", "file");
+	TiXmlElement * destroyedSoundChild = footstepSoundChild->NextSiblingElement();
+	TiXmlElement * currentDestroyedSound = destroyedSoundChild->FirstChildElement();
+
+	while (currentDestroyedSound)
+	{
+		const char * soundFile = XmlUtilities::ReadAttributeAsString(currentDestroyedSound, "", "file");
+
+		m_destroySoundEffects.push_back(string(soundFile));
+
+		currentDestroyedSound = currentDestroyedSound->NextSiblingElement();
+	}
 
 	mPierceable = XmlUtilities::ReadAttributeAsBool(element, "is_pierceable", "value");
 }
@@ -69,6 +79,20 @@ string Material::GetRandomDamageSoundFilename()
 	int randNum = rand() % soundCount;
 
 	return m_damageSoundEffects[randNum];
+}
+
+string Material::GetRandomDestroyedSound()
+{
+	int soundCount = m_destroySoundEffects.size();
+	if (soundCount == 0)
+	{
+		LOG_ERROR("Damage sound count is 0 for material: %s", mMaterialName.c_str());
+		GAME_ASSERT(soundCount > 0);
+		return "";
+	}
+	int randNum = rand() % soundCount;
+
+	return m_destroySoundEffects[randNum];
 }
 
 string Material::GetRandomFootstepSoundFilename()

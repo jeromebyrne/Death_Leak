@@ -152,6 +152,8 @@ public:
 
 	bool IsSolidLineStrip() const { return mIsSolidLineStrip; }
 
+	bool IsBreakable() const { return mIsBreakable; }
+
 	virtual void AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset, bool trackOrientation = true);
 	void Detach();
 
@@ -212,6 +214,7 @@ protected:
 	bool mIsWaterBlock;
 	bool mIsPlatform;
 	bool mIsSolidLineStrip;
+	bool mIsBreakable;
 	std::shared_ptr<GameObject> mAttachedTo;
 	Vector3 mAttachedToOffset;
 	float mParallaxMultiplierX;

@@ -16,7 +16,6 @@
            alpha="0.45">
   </sprite>
 
-
   <animatedsprite name="25_noise_anim"
                    process_input="false"
                    posX ="-960" posY ="-540" width="1920" height ="1080"

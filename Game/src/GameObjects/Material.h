@@ -13,7 +13,7 @@ public:
 	string GetRandomDamageSoundFilename();
 	string GetRandomFootstepSoundFilename();
 	string GetRandomParticleTexture();
-	string GetDestroyedSound() const { return m_destroySound; }
+	string GetRandomDestroyedSound();
 	string GetMaterialName() const { return mMaterialName; }
 
 	bool GetIsPierceable() const { return mPierceable; }
@@ -23,7 +23,7 @@ private:
 	vector<string> m_particleTextures;
 	vector<string> m_damageSoundEffects;
 	vector<string> m_footstepSoundEffects;
-	string m_destroySound;
+	vector<string> m_destroySoundEffects;
 	string mMaterialName;
 
 	bool mPierceable;

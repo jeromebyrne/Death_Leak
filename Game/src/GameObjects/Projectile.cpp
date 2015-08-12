@@ -9,6 +9,7 @@
 #include "SolidLineStrip.h"
 #include "DrawUtilities.h"
 #include "Game.h"
+#include "Breakable.h"
 
 int Projectile::NUM_PROJECTILES_ACTIVE = 0;
 
@@ -61,6 +62,14 @@ Projectile::~Projectile()
 
 bool Projectile::OnCollision(SolidMovingSprite* object)
 {
+	if (object->IsBreakable())
+	{
+		if (static_cast<Breakable *>(object)->GetBreakableState() == Breakable::kBroken)
+		{
+			return false;
+		}
+	}
+
 	if (object->IsButterfly())
 	{
 		if (!mIsInWater)

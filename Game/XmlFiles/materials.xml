@@ -1,6 +1,5 @@
 <materials>
 
-  <!--default orb material-->
   <material name="default_orb">
     <particletextures>
       <texture file="Media\bloodparticle.png"/>
@@ -14,7 +13,9 @@
       <sound file="Footstep1.wav" />
     </footstepsoundeffects>
 
-    <destroysoundeffect file="blood\\blood2.wav"/>
+    <destroysoundeffects>
+        <sound file="blood\\blood2.wav"/>
+     </destroysoundeffects>
 
     <is_pierceable value="true" />
   </material>
@@ -34,7 +35,9 @@
       <sound file="water\water_wade.wav" />
     </footstepsoundeffects>
 
-    <destroysoundeffect file="blood\\blood2.wav"/>
+    <destroysoundeffects>
+        <sound file="blood\\blood2.wav"/>
+     </destroysoundeffects>
 
     <is_pierceable value="true" />
   </material>
@@ -63,6 +66,10 @@
     </footstepsoundeffects>
 
     <destroysoundeffect file="blood\\blood2.wav"/>
+    
+    <destroysoundeffects>
+        <sound file="blood\\blood2.wav"/>
+     </destroysoundeffects>
 
     <is_pierceable value="true" />
   </material>
@@ -91,6 +98,10 @@
     </footstepsoundeffects>
 
     <destroysoundeffect file="stonehit.wav"/>
+    
+    <destroysoundeffects>
+        <sound file="stonehit.wav"/>
+     </destroysoundeffects>
 
     <is_pierceable value="false" />
   </material>
@@ -117,7 +128,9 @@
       <sound file="Footstep8.wav" />
     </footstepsoundeffects>
 
-    <destroysoundeffect file="blood\\blood2.wav"/>
+    <destroysoundeffects>
+        <sound file="blood\\blood2.wav"/>
+     </destroysoundeffects>
 
     <is_pierceable value="true" />
   </material>
@@ -154,7 +167,9 @@
       <sound file="footsteps_2/15.wav" />
     </footstepsoundeffects>
 
-    <destroysoundeffect file="blood\\blood2.wav"/>
+    <destroysoundeffects>
+        <sound file="blood\\blood2.wav"/>
+     </destroysoundeffects>
 
     <is_pierceable value="true" />
   </material>
@@ -191,7 +206,9 @@
       <sound file="footsteps_2/15.wav" />
     </footstepsoundeffects>
 
-    <destroysoundeffect file="blood\\blood2.wav"/>
+    <destroysoundeffects>
+        <sound file="blood\\blood2.wav"/>
+     </destroysoundeffects>
 
     <is_pierceable value="true" />
   </material>
@@ -218,7 +235,9 @@
       <sound file="Footstep8.wav" />
     </footstepsoundeffects>
 
-    <destroysoundeffect file="blood\\blood2.wav"/>
+    <destroysoundeffects>
+        <sound file="blood\\blood2.wav"/>
+     </destroysoundeffects>
 
     <is_pierceable value="false" />
   </material>
@@ -246,7 +265,9 @@
       <sound file="Footstep8.wav" />
     </footstepsoundeffects>
 
-    <destroysoundeffect file="blood\\blood2.wav"/>
+    <destroysoundeffects>
+        <sound file="blood\\blood2.wav"/>
+     </destroysoundeffects>
 
     <is_pierceable value="false" />
   </material>
@@ -277,7 +298,9 @@
       <sound file="Footstep8.wav" />
     </footstepsoundeffects>
 
-    <destroysoundeffect file="blood\\blood2.wav"/>
+    <destroysoundeffects>
+        <sound file="blood\\blood2.wav"/>
+     </destroysoundeffects>
 
     <is_pierceable value="true" />
   </material>
@@ -304,7 +327,9 @@
       <sound file="Footstep8.wav" />
     </footstepsoundeffects>
 
-    <destroysoundeffect file="blood\\blood2.wav"/>
+    <destroysoundeffects>
+        <sound file="blood\\blood2.wav"/>
+     </destroysoundeffects>
 
     <is_pierceable value="true" />
   </material>
@@ -324,7 +349,9 @@
       <sound file="Footstep1.wav" />
     </footstepsoundeffects>
 
-    <destroysoundeffect file="blood\\blood2.wav"/>
+    <destroysoundeffects>
+        <sound file="blood\\blood2.wav"/>
+     </destroysoundeffects>
 
     <is_pierceable value="true" />
   </material>
@@ -355,7 +382,9 @@
       <sound file="Footstep8.wav" />
     </footstepsoundeffects>
 
-    <destroysoundeffect file="blood\blood2.wav"/>
+    <destroysoundeffects>
+        <sound file="blood\\blood2.wav"/>
+     </destroysoundeffects>
 
     <is_pierceable value="true" />
   </material>
@@ -394,6 +423,10 @@
     </footstepsoundeffects>
 
     <destroysoundeffect file="blood\\blood2.wav"/>
+    
+    <destroysoundeffects>
+        <sound file="blood\\blood2.wav"/>
+     </destroysoundeffects>
 
     <is_pierceable value="true" />
   </material>
@@ -424,7 +457,9 @@
       <sound file="Footstep8.wav" />
     </footstepsoundeffects>
 
-    <destroysoundeffect file="stonehit.wav"/>
+    <destroysoundeffects>
+        <sound file="stonehit.wav"/>
+     </destroysoundeffects>
 
     <is_pierceable value="false" />
   </material>
@@ -454,7 +489,9 @@
       <sound file="orb\\shatter7.wav" />
     </footstepsoundeffects>
 
-    <destroysoundeffect file="blood\\blood2.wav"/>
+    <destroysoundeffects>
+        <sound file="blood\\blood2.wav"/>
+     </destroysoundeffects>
 
     <is_pierceable value="true" />
   </material>
@@ -472,7 +509,44 @@
       <sound file="orb\collect_large.wav" />
     </footstepsoundeffects>
 
-    <destroysoundeffect file="blood\\blood2.wav"/>
+    <destroysoundeffects>
+        <sound file="blood\\blood2.wav"/>
+     </destroysoundeffects>
+
+    <is_pierceable value="true" />
+  </material>
+
+  <material name="crate">
+    <particletextures>
+      <texture file="Media\softwoodparticle.png" />
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="crate\hit_1.wav" />
+      <sound file="crate\hit_2.wav" />
+      <sound file="crate\hit_3.wav" />
+      <sound file="crate\hit_4.wav" />
+      <sound file="crate\hit_5.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+      <sound file="Footstep2.wav" />
+      <sound file="Footstep3.wav" />
+      <sound file="Footstep4.wav" />
+      <sound file="Footstep5.wav" />
+      <sound file="Footstep6.wav" />
+      <sound file="Footstep7.wav" />
+      <sound file="Footstep8.wav" />
+    </footstepsoundeffects>
+
+      <destroysoundeffects>
+        <sound file="crate\damage.wav"/>
+        <sound file="crate\damage_2.wav"/>
+        <sound file="crate\damage_3.wav"/>
+        <sound file="crate\damage_4.wav"/>
+        <sound file="crate\damage_5.wav"/>
+      </destroysoundeffects>
 
     <is_pierceable value="true" />
   </material>
@@ -492,7 +566,9 @@
       <sound file="water\water_wade.wav" />
     </footstepsoundeffects>
 
-    <destroysoundeffect file="blood\\blood2.wav"/>
+    <destroysoundeffects>
+        <sound file="blood\\blood2.wav"/>
+      </destroysoundeffects>
 
     <is_pierceable value="true" />
   </material>

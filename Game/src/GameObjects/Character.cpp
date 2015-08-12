@@ -690,7 +690,7 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 						// play sound effect
 						if (current_time > mLastTimePlayedDeathSFX + kMinTimeBetweenDeathSFX)
 						{
-							AudioManager::Instance()->PlaySoundEffect(m_material->GetDestroyedSound());
+							AudioManager::Instance()->PlaySoundEffect(m_material->GetRandomDestroyedSound());
 
 							mLastTimePlayedDeathSFX = current_time;
 						}

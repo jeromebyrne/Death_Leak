@@ -7,6 +7,7 @@
 #include "Projectile.h"
 #include "AnimationSkeleton.h"
 #include "SolidLineStrip.h"
+#include "Breakable.h"
 
 SolidMovingSprite::SolidMovingSprite(float x, float y , float z , float width , float height , float breadth , float groundFriction , float airResistance ):
 	MovingSprite(x,y,z,width, height, breadth,groundFriction, airResistance),
@@ -230,6 +231,16 @@ bool SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 {
 	if (object->IsSolidLine())
 	{
+		return false;
+	}
+
+	if (object->IsBreakable())
+	{
+		/*if (static_cast<Breakable *>(object)->GetBreakableState() == Breakable::kBroken)
+		{
+			return false;
+		}*/
+
 		return false;
 	}
 

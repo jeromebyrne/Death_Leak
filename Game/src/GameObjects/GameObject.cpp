@@ -46,7 +46,8 @@ GameObject::GameObject(float x, float y , float z, float width, float height, fl
 	mLevelEditShowSelected(false),
 	mIsSolidLineStrip(false),
 	mAlwaysUpdate(false),
-	mIsCurrencyOrb(false)
+	mIsCurrencyOrb(false),
+	mIsBreakable(false)
 {
 	m_id = sGameObjectId;
 	++sGameObjectId;

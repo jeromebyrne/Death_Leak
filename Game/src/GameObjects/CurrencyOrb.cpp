@@ -366,7 +366,6 @@ void CurrencyOrb::AddTrailParticles()
 
 void CurrencyOrb::SpawnOrbs(Vector3 & position, unsigned int numOrbs)
 {
-	// create 10 smaller orbs 
 	std::string animFile = "XmlFiles\\orb_anim.xml";
 
 	for (unsigned int i = 0; i < numOrbs; ++i)
@@ -384,8 +383,8 @@ void CurrencyOrb::SpawnOrbs(Vector3 & position, unsigned int numOrbs)
 		newOrb->SetXYZ(position.X, position.Y, position.Z + 0.01f);
 		newOrb->m_maxVelocity.X = 20.0f;
 		newOrb->m_maxVelocity.Y = 99999;
-		newOrb->SetVelocityXYZ((((rand() % 100) * 0.1f)) * ((rand() % 2) == 1 ? -1.0f : 1.0f),
-			(((rand() % 100) * 0.1f) + 30.0f) * ((rand() % 2) == 1 ? -1.0f : 1.0f),
+		newOrb->SetVelocityXYZ((((rand() % 100) * 0.18f)) * ((rand() % 2) == 1 ? -1.0f : 1.0f),
+			(((rand() % 100) * 0.3f) + 30.0f) * ((rand() % 2) == 1 ? -1.0f : 1.0f),
 			0);
 
 		GameObjectManager::Instance()->AddGameObject(newOrb);
