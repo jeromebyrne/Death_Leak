@@ -518,7 +518,7 @@
 
   <material name="crate">
     <particletextures>
-      <texture file="Media\softwoodparticle.png" />
+      <texture file="Media\crate\particle_5.png" />
     </particletextures>
 
     <damagesoundeffects>

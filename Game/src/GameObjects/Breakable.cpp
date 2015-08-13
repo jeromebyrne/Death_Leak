@@ -152,7 +152,8 @@ void Breakable::UpdateState()
 		}
 	}
 
-	if (previousState != mState)
+	if (previousState != mState &&
+		mState == kBroken)
 	{
 		SpawnDamageTransitionParticles();
 	}
@@ -214,25 +215,27 @@ void Breakable::SpawnDamageTransitionParticles()
 		return;
 	}
 
-	ParticleEmitterManager::Instance()->CreateRadialSpray(30,
-														Vector3(m_position.X - (m_dimensions.X * 0.5f), m_position.Y - (m_dimensions.Y * 0.5f), m_position.Z - 0.01f),
-														Vector3(3200, 1200, 0),
-														m_material->GetRandomParticleTexture(),
-														1.0,
-														6.5,
-														0.4f,
-														0.9f,
-														m_dimensions.X * 0.35f,
-														m_dimensions.X * 0.5f,
-														0.5,
-														false,
-														0.8,
-														1.0,
-														0.8f,
-														true,
-														3.0f,
-														0.15f,
-														0.1f,
-														m_dimensions.X * 0.1f,
-														m_dimensions.Y * 0.1f);
+	ParticleEmitterManager::Instance()->CreateDirectedSpray(30,
+															Vector3(m_position.X, m_position.Y, m_position.Z - 0.02f),
+															Vector3(0, 1, 0),
+															0.7f,
+															Vector3(3200, 1200, 0),
+															m_material->GetRandomParticleTexture(),
+															1.0f,
+															7.0f,
+															0.7f,
+															1.50f,
+															64,
+															64,
+															0,
+															false,
+															0.7,
+															1.0,
+															10000,
+															true,
+															6,
+															m_dimensions.X * 0.07f,
+															m_dimensions.Y * 0.1f,
+															0.1f,
+															0.1f);
 }
