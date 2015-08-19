@@ -33,6 +33,21 @@
     />
   </animatedsprite>
 
+  <animatedsprite name="26_scratch_anim"
+                   process_input="false"
+                   posX ="-960" posY ="-540" width="1920" height ="1080"
+                   image="Media\UI\noise_layer.png"
+                   hflip="false" vflip="false"
+                   alpha="0.24"
+                  use_standard_effect="true"
+                   fps ="10">
+    <frames frame1="Media\UI\film_frame.png"
+            frame2="Media\UI\film_frame_2.png"
+            frame3="Media\UI\film_frame_3.png"
+            frame4="Media\UI\film_frame_4.png"
+    />
+  </animatedsprite>
+
   <button name="31_level_1"
           process_input="true"
           posX ="-880" posY ="200" width="480" height ="270"
