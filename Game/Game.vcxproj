@@ -105,11 +105,13 @@
     <ClCompile Include="src\LevelProperties.cpp" />
     <ClCompile Include="src\Particles\ParticleEmitterManager.cpp" />
     <ClCompile Include="src\Particles\ParticleSpray.cpp" />
+    <ClCompile Include="src\PlayerLevelManager.cpp" />
     <ClCompile Include="src\precompiled.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\program.cpp" />
+    <ClCompile Include="src\SaveManager.cpp" />
     <ClCompile Include="src\Settings.cpp" />
     <ClCompile Include="src\SineWave.cpp" />
     <ClCompile Include="src\UI\UIAnimatedSprite.cpp" />
@@ -219,8 +221,10 @@
     <ClInclude Include="src\Particles\Particle.h" />
     <ClInclude Include="src\Particles\ParticleEmitterManager.h" />
     <ClInclude Include="src\Particles\ParticleSpray.h" />
+    <ClInclude Include="src\PlayerLevelManager.h" />
     <ClInclude Include="src\precompiled.h" />
     <ClInclude Include="src\Resource.h" />
+    <ClInclude Include="src\SaveManager.h" />
     <ClInclude Include="src\Settings.h" />
     <ClInclude Include="src\SineWave.h" />
     <ClInclude Include="src\UI\UIAnimatedSprite.h" />
