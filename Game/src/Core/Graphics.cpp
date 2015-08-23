@@ -265,6 +265,8 @@ void Graphics::SetSwapChainProperties(HWND hWnd, int bufferWidth, int bufferHeig
 	m_swapChainDescription.Windowed = !mIsFullScreen;
 	m_swapChainDescription.SwapEffect = DXGI_SWAP_EFFECT_SEQUENTIAL;
 	m_swapChainDescription.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
+
+	m_swapChainDescription.BufferDesc.Scaling = DXGI_MODE_SCALING_CENTERED;
 }
 
 HRESULT Graphics::CreateRenderTargetViews(int bufferWidth, int bufferHeight)
