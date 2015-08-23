@@ -6,7 +6,9 @@
 #include "camera2d.h"
 #include <sstream>
 
-const unsigned int kMaxFormatStringBufferSize = 64000;
+static const unsigned int kMaxFormatStringBufferSize = 64000;
+
+static const unsigned int kMaxITOA_BufferSize = 256;
 
 class Utilities
 {
@@ -162,9 +164,24 @@ public:
 		return str;
 	}
 
-	static double ConvertStringToDouble(const char * value)
+	static double ConvertStringToDouble(const char * str)
 	{
-		return atof(value);
+		if (str == nullptr)
+		{
+			return 0.0;
+		}
+    
+		char buf[kMaxITOA_BufferSize];
+		strncpy(buf, str, kMaxITOA_BufferSize);
+    
+		// strip string, only remain 7 numbers after '.'
+		char* dot = strchr(buf, '.');
+		if (dot != nullptr && dot - buf + 8 <  kMaxITOA_BufferSize)
+		{
+			dot[8] = '\0';
+		}
+    
+		return ::atof(buf);
 	}
 
 	static string getFormattedString(const char * stringToFormat, ...)
@@ -182,6 +199,27 @@ public:
 
 		return buffer;
 	}
+
+/*
+	double atof(const char* str)
+{
+    if (str == nullptr)
+    {
+        return 0.0;
+    }
+    
+    char buf[MAX_ITOA_BUFFER_SIZE];
+    strncpy(buf, str, MAX_ITOA_BUFFER_SIZE);
+    
+    // strip string, only remain 7 numbers after '.'
+    char* dot = strchr(buf, '.');
+    if (dot != nullptr && dot - buf + 8 <  MAX_ITOA_BUFFER_SIZE)
+    {
+        dot[8] = '\0';
+    }
+    
+    return ::atof(buf);
+}*/
 };
 
 #endif

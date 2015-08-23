@@ -37,6 +37,7 @@
     <ClCompile Include="src\Audio\MusicManager.cpp" />
     <ClCompile Include="src\Core\Camera2D.cpp" />
     <ClCompile Include="src\Core\CollisionManager.cpp" />
+    <ClCompile Include="src\Core\DataValue.cpp" />
     <ClCompile Include="src\Core\DXWindow.cpp" />
     <ClCompile Include="src\Core\GamePad.cpp" />
     <ClCompile Include="src\Core\Graphics.cpp" />
@@ -147,6 +148,7 @@
     <ClInclude Include="src\Audio\MusicManager.h" />
     <ClInclude Include="src\Core\Camera2D.h" />
     <ClInclude Include="src\Core\CollisionManager.h" />
+    <ClInclude Include="src\Core\DataValue.h" />
     <ClInclude Include="src\Core\DXWindow.h" />
     <ClInclude Include="src\Core\GamePad.h" />
     <ClInclude Include="src\Core\Graphics.h" />

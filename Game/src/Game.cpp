@@ -31,6 +31,7 @@
 #include "EffectLightTexturePixelWobble.h"
 #include "EffectFoliageSway.h"
 #include "Settings.h"
+#include "SaveManager.h"
 
 Game * Game::mInstance = nullptr;
 
@@ -69,6 +70,8 @@ Game::~Game(void)
 void Game::Initialise()
 {
 	HRESULT hr = S_OK;
+
+	SaveManager::GetInstance()->ReadSaveFile();
 
 	Settings::GetInstance()->ReadSettingsFile();
 
