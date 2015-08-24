@@ -32,6 +32,7 @@
 #include "EffectFoliageSway.h"
 #include "Settings.h"
 #include "SaveManager.h"
+#include "DataValue.h"
 
 Game * Game::mInstance = nullptr;
 
@@ -72,6 +73,42 @@ void Game::Initialise()
 	HRESULT hr = S_OK;
 
 	SaveManager::GetInstance()->ReadSaveFile();
+
+	// testing ******
+	SaveManager::GetInstance()->AddKeyValuePair("test_int", DataValue(10));
+	SaveManager::GetInstance()->AddKeyValuePair("test_bool", DataValue(true));
+	SaveManager::GetInstance()->AddKeyValuePair("test_bool_2", DataValue(false));
+	SaveManager::GetInstance()->AddKeyValuePair("test_float", DataValue(96.0f));
+	SaveManager::GetInstance()->AddKeyValuePair("test_double", DataValue(109.0));
+
+	std::vector<DataValue> vec;
+	vec.push_back(DataValue(1.0f));
+	vec.push_back(DataValue(1.0));
+	vec.push_back(DataValue(1));
+
+	SaveManager::GetInstance()->AddKeyValuePair("test_vec", DataValue(vec));
+
+	std::map<std::string, DataValue> testMap;
+	testMap["tuggle"] = DataValue("Porridge");
+	testMap["murget"] = DataValue(20);
+
+	std::map<std::string, DataValue> maplet;
+	maplet["ChungletBull"] = DataValue("Mongrel dot Net");
+
+	std::vector<DataValue> punkMink;
+	punkMink.push_back(DataValue("Maker Faire"));
+	punkMink.push_back(DataValue("tunnel"));
+	punkMink.push_back(DataValue(9999));
+
+	maplet["finch"] = DataValue(punkMink);
+
+	testMap["Grouse"] = DataValue(maplet);
+
+	SaveManager::GetInstance()->AddKeyValuePair("test_map", DataValue(testMap));
+
+	SaveManager::GetInstance()->WriteSaveFile();
+	
+	// *** end tetsing
 
 	Settings::GetInstance()->ReadSettingsFile();
 

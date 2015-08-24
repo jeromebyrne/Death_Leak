@@ -12,6 +12,8 @@ public:
 
 	void WriteSaveFile();
 
+	void AddKeyValuePair(const std::string & key, const DataValue & value);
+
 private:
 
 	static SaveManager * mInstance;
@@ -19,7 +21,7 @@ private:
 	SaveManager();
 	~SaveManager(void) { }
 
-	void WriteObject(const DataValue & value, TiXmlElement * xmlElement);
+	void WriteValue(const DataValue & value, TiXmlElement * xmlElement);
 
 	std::map<std::string, DataValue> mSaveMap;
 };
