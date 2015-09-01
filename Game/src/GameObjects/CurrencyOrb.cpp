@@ -5,6 +5,7 @@
 #include "material.h"
 #include "Game.h"
 #include "MaterialManager.h"
+#include "SaveManager.h"
 
 static float kTrackingRangeTrigger = 150.0f;
 static float kAccelerateRate = 2.1f;
@@ -92,6 +93,8 @@ bool CurrencyOrb::OnCollision(SolidMovingSprite * object)
 		}
 
 		GameObjectManager::Instance()->RemoveGameObject(this);
+
+		SaveManager::GetInstance()->SetNumCurrencyOrbsCollected(SaveManager::GetInstance()->GetNumCurrencyOrbsCollected() + 1);
 
 		if (m_material)
 		{

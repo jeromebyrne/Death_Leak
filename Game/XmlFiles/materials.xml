@@ -573,5 +573,34 @@
     <is_pierceable value="true" />
   </material>
 
+  <material name="skype_monkey">
+    <particletextures>
+      <texture file="Media\bloodparticle.png"/>
+      <texture file="Media\bloodparticle2.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="character\replenish.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+      <sound file="Footstep2.wav" />
+      <sound file="Footstep3.wav" />
+      <sound file="Footstep4.wav" />
+      <sound file="Footstep5.wav" />
+      <sound file="Footstep6.wav" />
+      <sound file="Footstep7.wav" />
+      <sound file="Footstep8.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffects>
+      <sound file="chimp_2.wav"/>
+      <sound file="chimp_3.wav"/>
+      <sound file="chimp_4.wav"/>
+    </destroysoundeffects>
+
+    <is_pierceable value="true" />
+  </material>
 
 </materials>

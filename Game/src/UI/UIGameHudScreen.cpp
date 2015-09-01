@@ -4,8 +4,9 @@
 #include "GameObjectManager.h"
 
 UIGameHudScreen::UIGameHudScreen(string name) : 
-UIScreen(name),
-mPlayerHealthMeter(0)
+	UIScreen(name),
+	mPlayerHealthMeter(nullptr),
+	mPlayerXPMeter(nullptr)
 {
 }
 
@@ -33,6 +34,11 @@ void UIGameHudScreen::Update()
 			mPlayerHealthMeter->SetProgress(0);
 		}
 	}
+
+	if (mPlayerXPMeter)
+	{
+		mPlayerXPMeter->SetProgress(1.0f);
+	}
 }
 
 void UIGameHudScreen::Initialise()
@@ -40,15 +46,33 @@ void UIGameHudScreen::Initialise()
 	UIScreen::Initialise();
 
 	// loop through the widgets and get the meter
-	map<string, UIWidget*>::const_iterator iter = m_widgetMap.begin();
-	for (; iter != m_widgetMap.end(); ++iter)
+	for (const auto & kvp : m_widgetMap)
 	{
-		UIMeter * meter = dynamic_cast<UIMeter*>((*iter).second);
+		UIMeter * meter = dynamic_cast<UIMeter*>(kvp.second);
 
 		if (meter)
 		{
-			mPlayerHealthMeter = meter;
-			break;
+			// s1.find(s2) != std::string::npos
+			if ( meter->Name().find("health_meter") != std::string::npos)
+			{
+				mPlayerHealthMeter = meter;
+
+				if (mPlayerXPMeter != nullptr)
+				{
+					break;
+				}
+			}
+
+			if (meter->Name().find("xp_meter") != std::string::npos)
+			{
+				mPlayerXPMeter = meter;
+
+				if (mPlayerHealthMeter != nullptr)
+				{
+					break;
+				}
+			}
 		}
+		
 	}
 }

@@ -5,30 +5,6 @@ struct EventStruct; // forward dec
 
 class UIWidget
 {
-private:
-	string m_name;
-protected:
-	Vector2 m_bottomLeft;
-	Vector2 m_dimensions;
-	bool m_processInput;
-	bool m_visible;
-	// the overall alpha value of the object
-	float m_alpha;
-	
-	// event handler functions
-	virtual void OnPressDown();
-	virtual void OnPressUp();
-	
-	// the actions associated with this widget for pressing up and down
-	list<EventStruct> m_pressUpActions;
-	list<EventStruct> m_pressDownActions;
-
-	// override this o assign different UI actions for different type widgets
-	// string eventType = "actionspressdown", "actionspressup" etc...
-	virtual void AssignEventAction(string eventType, EventStruct eventStruct);
-
-	bool mCurrentlyInFocus; // for gamepad
-
 public:
 	UIWidget(void);
 	~UIWidget(void);
@@ -93,6 +69,32 @@ public:
 	inline float Alpha() { return m_alpha; }
 
 	virtual void Scale(float x, float y);
+
+	protected:
+	Vector2 m_bottomLeft;
+	Vector2 m_dimensions;
+	bool m_processInput;
+	bool m_visible;
+	// the overall alpha value of the object
+	float m_alpha;
+	
+	// event handler functions
+	virtual void OnPressDown();
+	virtual void OnPressUp();
+	
+	// the actions associated with this widget for pressing up and down
+	list<EventStruct> m_pressUpActions;
+	list<EventStruct> m_pressDownActions;
+
+	// override this o assign different UI actions for different type widgets
+	// string eventType = "actionspressdown", "actionspressup" etc...
+	virtual void AssignEventAction(string eventType, EventStruct eventStruct);
+
+	bool mCurrentlyInFocus; // for gamepad
+
+	private:
+	string m_name;
+
 };
 
 #endif

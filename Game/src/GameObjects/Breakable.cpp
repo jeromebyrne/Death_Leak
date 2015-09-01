@@ -88,12 +88,6 @@ void Breakable::UpdateState()
 {
 	BreakableState previousState = mState;
 
-	if (mHealth < 0.0f)
-	{
-		mState = kBroken;
-		return;
-	}
-
 	if (mMaxHealth == 0.0f)
 	{
 		return;
@@ -104,19 +98,19 @@ void Breakable::UpdateState()
 	{
 		mState = kNoDamage;
 	}
-	else if (percentHealthy > 0.75f)
+	else if (percentHealthy > 0.8f)
 	{
 		mState = kSlightDamage;
 	}
-	else if (percentHealthy > 5.0f)
+	else if (percentHealthy > 0.4f)
 	{
 		mState = kDamaged;
 	}
-	else if (percentHealthy > .25f)
+	else if (percentHealthy > .0f)
 	{
 		mState = kHeavyDamaged;
 	}
-	else
+	else if (mState != kBroken)
 	{
 		ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
 																Vector3(m_position.X - (m_dimensions.X * 0.5f), m_position.Y - (m_dimensions.Y * 0.5f), m_position.Z - 0.02f),
@@ -215,7 +209,7 @@ void Breakable::SpawnDamageTransitionParticles()
 		return;
 	}
 
-	ParticleEmitterManager::Instance()->CreateDirectedSpray(30,
+	ParticleEmitterManager::Instance()->CreateDirectedSpray(50,
 															Vector3(m_position.X, m_position.Y, m_position.Z - 0.02f),
 															Vector3(0, 1, 0),
 															0.7f,

@@ -33,7 +33,6 @@ Orb::Orb(SolidMovingSprite * target,
 	// m_collisionBoxDimensions = collisionDimensions;
 	m_textureFilename = textureFile;
 
-	// m_passive = true;
 	m_applyGravity = true;
 
 	SetMaxVelocityXYZ(25 * speedMultiplier, 25 * speedMultiplier, 0);

@@ -12,7 +12,13 @@ public:
 
 	void WriteSaveFile();
 
-	void AddKeyValuePair(const std::string & key, const DataValue & value);
+	int GetPlayerLevel() const;
+
+	void SetPlayerLevel(int value);
+
+	int GetNumCurrencyOrbsCollected() const;
+
+	void SetNumCurrencyOrbsCollected(int value);
 
 private:
 
@@ -21,7 +27,13 @@ private:
 	SaveManager();
 	~SaveManager(void) { }
 
+	int GetIntValue(const std::string & key, int defaultValue = 0) const;
+
+	void AddKeyValuePair(const std::string & key, const DataValue & value);
+
 	void WriteValue(const DataValue & value, TiXmlElement * xmlElement);
+
+	const DataValue ReadValue(TiXmlElement * xmlElement);
 
 	std::map<std::string, DataValue> mSaveMap;
 };

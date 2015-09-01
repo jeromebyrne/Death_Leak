@@ -1,0 +1,78 @@
+<data BoxDimensionsX="32" BoxDimensionsY="48" EllipseDimensionsX="32" EllipseDimensionsY="48">
+
+	<body OffsetX="0" OffsetY="8" SizeX="40" SizeY="80">
+
+		<Still FrameRate="24" MaxFrameRate="24" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\skype_monkey\frame_0.png"/>
+      <frame filename="Media\skype_monkey\frame_1.png"/>
+      <frame filename="Media\skype_monkey\frame_2.png"/>
+      <frame filename="Media\skype_monkey\frame_3.png"/>
+      <frame filename="Media\skype_monkey\frame_4.png"/>
+      <frame filename="Media\skype_monkey\frame_5.png"/>
+      <frame filename="Media\skype_monkey\frame_6.png"/>
+      <frame filename="Media\skype_monkey\frame_7.png"/>
+      <frame filename="Media\skype_monkey\frame_8.png"/>
+      <frame filename="Media\skype_monkey\frame_9.png"/>
+      <frame filename="Media\skype_monkey\frame_10.png"/>
+      <frame filename="Media\skype_monkey\frame_11.png"/>
+      <frame filename="Media\skype_monkey\frame_12.png"/>
+      <frame filename="Media\skype_monkey\frame_13.png"/>
+      <frame filename="Media\skype_monkey\frame_14.png"/>
+      <frame filename="Media\skype_monkey\frame_15.png"/>
+      <frame filename="Media\skype_monkey\frame_16.png"/>
+      <frame filename="Media\skype_monkey\frame_17.png"/>
+      <frame filename="Media\skype_monkey\frame_18.png"/>
+      <frame filename="Media\skype_monkey\frame_19.png"/>
+      <frame filename="Media\skype_monkey\frame_20.png"/>
+      <frame filename="Media\skype_monkey\frame_21.png"/>
+      <frame filename="Media\skype_monkey\frame_22.png"/>
+      <frame filename="Media\skype_monkey\frame_23.png"/>
+      <frame filename="Media\skype_monkey\frame_24.png"/>
+      <frame filename="Media\skype_monkey\frame_25.png"/>
+      <frame filename="Media\skype_monkey\frame_26.png"/>
+      <frame filename="Media\skype_monkey\frame_27.png"/>
+      <frame filename="Media\skype_monkey\frame_28.png"/>
+      <frame filename="Media\skype_monkey\frame_29.png"/>
+      <frame filename="Media\skype_monkey\frame_30.png"/>
+      <frame filename="Media\skype_monkey\frame_31.png"/>
+      <frame filename="Media\skype_monkey\frame_32.png"/>
+      <frame filename="Media\skype_monkey\frame_33.png"/>
+      <frame filename="Media\skype_monkey\frame_34.png"/>
+      <frame filename="Media\skype_monkey\frame_35.png"/>
+      <frame filename="Media\skype_monkey\frame_36.png"/>
+      <frame filename="Media\skype_monkey\frame_37.png"/>
+      <frame filename="Media\skype_monkey\frame_38.png"/>
+      <frame filename="Media\skype_monkey\frame_39.png"/>
+      <frame filename="Media\skype_monkey\frame_40.png"/>
+      <frame filename="Media\skype_monkey\frame_41.png"/>
+      <frame filename="Media\skype_monkey\frame_42.png"/>
+      <frame filename="Media\skype_monkey\frame_43.png"/>
+      <frame filename="Media\skype_monkey\frame_44.png"/>
+      <frame filename="Media\skype_monkey\frame_45.png"/>
+      <frame filename="Media\skype_monkey\frame_46.png"/>
+      <frame filename="Media\skype_monkey\frame_47.png"/>
+      <frame filename="Media\skype_monkey\frame_48.png"/>
+      <frame filename="Media\skype_monkey\frame_49.png"/>
+    </Still>
+
+		<Running FrameRate="24" MaxFrameRate="24" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+
+      <frame filename="Media\skype_monkey\frame_0.png"/>
+
+		</Running>
+
+    <JumpingUp FrameRate="4" MaxFrameRate="4" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\skype_monkey\frame_0.png"/>
+		</JumpingUp>
+
+    <JumpingDown FrameRate="4" MaxFrameRate="4" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\skype_monkey\frame_0.png"/>
+    </JumpingDown>
+
+    <SlidingDown FrameRate="0" MaxFrameRate="0" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\skype_monkey\frame_0.png"/>
+    </SlidingDown>
+
+	</body>
+
+</data>

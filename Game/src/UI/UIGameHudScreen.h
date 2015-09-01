@@ -7,9 +7,7 @@ class UIMeter;
 
 class UIGameHudScreen : public UIScreen
 {
-private:
 
-	UIMeter * mPlayerHealthMeter;
 
 public:
 	UIGameHudScreen(string name);
@@ -18,6 +16,11 @@ public:
 	virtual void Update();
 
 	virtual void Initialise();
+
+private:
+
+	UIMeter * mPlayerHealthMeter;
+	UIMeter * mPlayerXPMeter;
 };
 
 #endif

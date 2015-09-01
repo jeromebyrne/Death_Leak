@@ -34,6 +34,7 @@
 #include "AmbientBird.h"
 #include "CurrencyOrb.h"
 #include "Breakable.h"
+#include "SaveManager.h"
 
 struct DepthSortPredicate
 {
@@ -61,36 +62,6 @@ GameObjectManager::GameObjectManager():
 GameObjectManager::~GameObjectManager(void)
 {
 }
-
-/*
-void GameObjectManager::OrderDrawable_pushBack(DrawableObject* object)
-{
-	LOG_INFO("Refactor GameObjectManager::OrderDrawable_pushBack");
-	m_drawableObjects.remove(object); // remove it first, we don't want to add it twice
-
-	float objZ = object->Z();
-	list<DrawableObject*>::iterator current = m_drawableObjects.begin();
-	bool found = false;
-	for (DrawableObject * d : m_drawableObjects)
-	{
-		float currentObjZ = d->Z();
-
-		if(currentObjZ <= objZ)
-		{
-			m_drawableObjects.insert(current, object);
-			found = true;
-			break;
-		}
-
-		current++;
-	}
-
-	if (!found)
-	{
-		m_drawableObjects.push_back(object);
-	}
-}
-*/
 
 void GameObjectManager::RemoveGameObject(GameObject * object, bool defer)
 {
@@ -494,6 +465,8 @@ void GameObjectManager::SwitchToLevel(const char * level, bool defer)
 		mLevelToSwitch = level;
 		return;
 	}
+
+	SaveManager::GetInstance()->WriteSaveFile();
 
 	UIManager::Instance()->PopUI("game_hud");
 	UIManager::Instance()->PushUI("gameloading");

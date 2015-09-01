@@ -340,7 +340,7 @@ bool DataValue::operator== (const DataValue& v) const
 /// Convert value to a specified type
 unsigned char DataValue::asByte() const
 {
-    GAME_ASSERT(_type != Type::VECTOR && _type != Type::MAP);
+    // GAME_ASSERT(_type != Type::VECTOR && _type != Type::MAP);
 
     if (_type == Type::BYTE)
     {
@@ -377,7 +377,7 @@ unsigned char DataValue::asByte() const
 
 int DataValue::asInt() const
 {
-    GAME_ASSERT(_type != Type::VECTOR && _type != Type::MAP);
+    // GAME_ASSERT(_type != Type::VECTOR && _type != Type::MAP);
     if (_type == Type::INTEGER)
     {
         return _field.intVal;
@@ -413,7 +413,7 @@ int DataValue::asInt() const
 
 float DataValue::asFloat() const
 {
-    GAME_ASSERT(_type != Type::VECTOR && _type != Type::MAP);
+    // GAME_ASSERT(_type != Type::VECTOR && _type != Type::MAP);
     if (_type == Type::FLOAT)
     {
         return _field.floatVal;
@@ -449,7 +449,7 @@ float DataValue::asFloat() const
 
 double DataValue::asDouble() const
 {
-    GAME_ASSERT(_type != Type::VECTOR && _type != Type::MAP);
+    // GAME_ASSERT(_type != Type::VECTOR && _type != Type::MAP);
     if (_type == Type::DOUBLE)
     {
         return _field.doubleVal;
@@ -485,7 +485,8 @@ double DataValue::asDouble() const
 
 bool DataValue::asBool() const
 {
-    GAME_ASSERT(_type != Type::VECTOR && _type != Type::MAP);
+    //GAME_ASSERT(_type != Type::VECTOR && _type != Type::MAP);
+
     if (_type == Type::BOOLEAN)
     {
         return _field.boolVal;
@@ -521,7 +522,7 @@ bool DataValue::asBool() const
 
 std::string DataValue::asString() const
 {
-    GAME_ASSERT(_type != Type::VECTOR && _type != Type::MAP);
+    // GAME_ASSERT(_type != Type::VECTOR && _type != Type::MAP);
 
     if (_type == Type::STRING)
     {
@@ -555,25 +556,25 @@ std::string DataValue::asString() const
 
 std::vector<DataValue>& DataValue::asVector()
 {
-    GAME_ASSERT(_type == Type::VECTOR);
+    // GAME_ASSERT(_type == Type::VECTOR);
     return *_field.vectorVal;
 }
 
 const std::vector<DataValue>& DataValue::asVector() const
 {
-    GAME_ASSERT(_type == Type::VECTOR);
+    // GAME_ASSERT(_type == Type::VECTOR);
     return *_field.vectorVal;
 }
 
 std::map<std::string, DataValue>& DataValue::asMap()
 {
-    GAME_ASSERT(_type == Type::MAP);
+    // GAME_ASSERT(_type == Type::MAP);
     return *_field.mapVal;
 }
 
 const std::map<std::string, DataValue>& DataValue::asMap() const
 {
-    GAME_ASSERT(_type == Type::MAP);
+    // GAME_ASSERT(_type == Type::MAP);
     return *_field.mapVal;
 }
 

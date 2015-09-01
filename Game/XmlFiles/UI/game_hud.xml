@@ -1,11 +1,23 @@
 <uiscreen>
-  <meter name="2_health_bar"
+  <meter name="2_health_meter"
         process_input="false"
-        posX ="325" posY ="-450" width="400" height ="68"
+        posX ="-900" posY ="-480" width="400" height ="68"
         image="Media\\UI\\meter_bar_middle.png"
         meter_edge="Media\\UI\\meter_edge.png"
         meter_middle="Media\\UI\\meter_middle.png"
         meter_bar_middle="Media\\UI\\meter_bar_middle.png"
+        hflip="false" vflip="false"
+        alpha="0.5"
+        use_standard_effect="true">
+  </meter>
+
+  <meter name="21_xp_meter"
+        process_input="false"
+        posX ="-325" posY ="-450" width="200" height ="34"
+        image="Media\\UI\\meter_bar_middle.png"
+        meter_edge="Media\\UI\\meter_edge.png"
+        meter_middle="Media\\UI\\meter_middle.png"
+        meter_bar_middle="Media\\UI\\xp_meter_bar_middle.png"
         hflip="false" vflip="false"
         alpha="0.5"
         use_standard_effect="true">
