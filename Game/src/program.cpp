@@ -113,13 +113,32 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
     switch( message )
     {
         case WM_PAINT:
-            hdc = BeginPaint( hWnd, &ps );
-            EndPaint( hWnd, &ps );			
-            break;
-		
+		{
+			hdc = BeginPaint( hWnd, &ps );
+			EndPaint( hWnd, &ps );			
+			break;
+		}
         case WM_DESTROY:
+		{
 			gDestroyGame = true;
-            break;
+			break;
+		}
+		case WM_SETCURSOR:
+		{
+			WORD ht = LOWORD(lParam); 
+			static bool hiddencursor = false;
+			if (HTCLIENT==ht && !hiddencursor)
+			{
+				hiddencursor = true;
+				ShowCursor(false);
+			}
+			else if (HTCLIENT!=ht && hiddencursor) 
+			{
+				hiddencursor = false;
+				ShowCursor(true);
+			}
+			break;
+		}
 
         default:
             return DefWindowProc( hWnd, message, wParam, lParam );

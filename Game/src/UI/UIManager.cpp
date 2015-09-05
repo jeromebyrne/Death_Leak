@@ -8,6 +8,7 @@
 #include "EffectLightTextureVertexWobble.h"
 #include "Settings.h"
 #include "StringManager.h"
+#include "UISprite.h"
 
 extern void PostDestroyMessage();
 
@@ -15,9 +16,10 @@ UIManager * UIManager::m_instance = 0;
 
 UIManager::UIManager(void):
 	m_defaultEffect(nullptr),
-	mBaseHeight(600),
-	mBaseWidth(800),
-	mStandardEffect(nullptr)
+	mBaseHeight(1920),
+	mBaseWidth(1080),
+	mStandardEffect(nullptr),
+	mCursorSprite(nullptr)
 {
 }
 
@@ -27,25 +29,26 @@ UIManager::~UIManager(void)
 
 void UIManager::Release()
 {
-	list<UIScreen*>::iterator current = m_currentScreens.begin();
-
-	for(;current != m_currentScreens.end(); current++)
+	for (const auto & screen : m_allScreens)
 	{
-		(*current)->Release();
-		(*current) = 0;
+		screen.second->Release();
 	}
+
+	m_allScreens.clear();
+
+	m_currentScreens.clear();
 
 	// delete the default shader effect here
 	if (m_defaultEffect)
 	{
-		//delete m_defaultEffect;
-		//m_defaultEffect = 0;
+		delete m_defaultEffect;
+		m_defaultEffect = nullptr;
 	}
 }
 
 UIManager* UIManager::Instance()
 {
-	if(m_instance == 0)
+	if(m_instance == nullptr)
 	{
 		m_instance = new UIManager();
 	}
@@ -56,32 +59,48 @@ void UIManager::Initialise()
 {
 	InitActionStringToEnumMap();
 
-	map<string, UIScreen*>::iterator current = m_allScreens.begin();
-	for(; current != m_allScreens.end(); current++)
+	for (const auto & screen : m_allScreens)
 	{
-		current->second->Initialise();
+		screen.second->Initialise();
 	}
+
+	mCursorSprite = CreateCursorSprite();
 }
 
 void UIManager::Update()
 {	
 	m_defaultEffect->SetTimeVariable(Timing::Instance()->GetTotalTimeSeconds()); 
 
-	// update the screens
-	list<UIScreen*>::iterator current = m_currentScreens.begin();
-	for(;current != m_currentScreens.end(); current++)
+	bool updateCursor = false;
+	for(const auto & screen : m_currentScreens)
 	{
-		(*current)->Update();
+		screen->Update();
+		updateCursor = screen->GetShowCursor();
+	}
+
+	if (updateCursor && mCursorSprite)
+	{
+		POINT currentMouse;
+		GetCursorPos(&currentMouse);
+		ScreenToClient(DXWindow::GetInstance()->Hwnd(), &currentMouse);
+
+		// translate mouse coords to UI coords
+		Vector2 mouseUICoords = GetPointInUICoords(currentMouse.x, currentMouse.y);
+		
+		mouseUICoords.Y -= mCursorSprite->Dimensions().Y;
+
+		mCursorSprite->SetBottomLeft(mouseUICoords);
+
+		mCursorSprite->RebuildBuffers();
 	}
 }
 
 void UIManager::HandleEvents()
 {
 	// handle any pending UI events
-	list<EventStruct>::iterator eventIter = mCurrentEventList.begin();
-	for (; eventIter != mCurrentEventList.end(); eventIter++)
+	for (const auto & event : mCurrentEventList)
 	{
-		HandleEvent((*eventIter).EventName, (*eventIter).EventParams);
+		HandleEvent(event.EventName, event.EventParams);
 	}
 	mCurrentEventList.clear();
 }
@@ -120,56 +139,56 @@ void UIManager::LoadContent(Graphics * graphicsSystem)
 
 void UIManager::Draw(ID3D10Device * device)
 {
-	list<UIScreen*>::iterator current = m_currentScreens.begin();
-
-	for(;current != m_currentScreens.end(); current++)
+	bool drawCursor = false;
+	for(const auto & screen : m_currentScreens)
 	{
-		(*current)->Draw(device);
+		screen->Draw(device);
+		drawCursor = screen->GetShowCursor();
+	}
+
+	if (drawCursor && mCursorSprite)
+	{
+		mCursorSprite->Draw(device);
 	}
 }
 
 UIScreen * UIManager::PushUI(string uiName)
 {
 	// check that it's not already in the currentUI screen list
-	list<UIScreen*>::iterator current = m_currentScreens.begin();
-
-	for(;current != m_currentScreens.end(); current++)
+	for(const auto & screen : m_currentScreens)
 	{
-		if ((*current)->Name() == uiName)
+		if (screen->Name() == uiName)
 		{
 			// already in the current screens so leave
-			return (*current);
+			return screen;
 		}
 	}
 
 	// it's not in the current screens so let's look in all screens
-	map<string, UIScreen*>::iterator iter = m_allScreens.begin();
-	for(;iter != m_allScreens.end(); iter++)
+	for(const auto & kvp : m_allScreens)
 	{
-		if(iter->first == uiName)
+		if(kvp.first == uiName)
 		{
-			m_currentScreens.push_back(iter->second);
+			m_currentScreens.push_back(kvp.second);
 			// found it an pushed onto current list
-			return iter->second;
+			return kvp.second;
 		}
 	}
 
 	// never found it, wont be pushed onto current list
-	return 0;
+	return nullptr;
 }
 
 void UIManager::PopUI(string uiName)
 {
 	// look for it on the current screens list
-	list<UIScreen*>::iterator current = m_currentScreens.begin();
-	
-	UIScreen * screen_found = 0;
+	UIScreen * screen_found = nullptr;
 
-	for(;current != m_currentScreens.end(); current++)
+	for(const auto & screen : m_currentScreens)
 	{
-		if ((*current)->Name() == uiName)
+		if (screen->Name() == uiName)
 		{
-			screen_found = (*current);
+			screen_found = screen;
 			break;
 		}
 	}
@@ -499,4 +518,21 @@ void UIManager::InitActionStringToEnumMap()
 	m_ActionStringToEnumMap["quittodesktop"] = QUIT_TO_DESKTOP; 
 	m_ActionStringToEnumMap["leveledit"] = LEVEL_EDIT; 
 	m_ActionStringToEnumMap["set_language"] = SET_LANGUAGE;
+}
+
+UISprite * UIManager::CreateCursorSprite()
+{
+	UISprite * cursorSprite = new UISprite();
+
+	cursorSprite->SetImage("Media\\UI\\cursor.png");
+
+	cursorSprite->SetDimensions(Vector2(35, 59));
+
+	cursorSprite->SetUseStandardEffect(true);
+
+	cursorSprite->Initialise();
+
+	cursorSprite->LoadContent(Graphics::GetInstance()->Device());
+
+	return cursorSprite;
 }

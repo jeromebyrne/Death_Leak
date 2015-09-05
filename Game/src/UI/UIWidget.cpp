@@ -4,12 +4,12 @@
 #include "AudioManager.h"
 
 UIWidget::UIWidget(void):
-m_processInput(true),
-m_visible(true),
-m_bottomLeft(0,0), 
-m_dimensions(200,200),
-m_alpha(1.0f),
-mCurrentlyInFocus(false)
+	m_processInput(false),
+	m_visible(true),
+	m_bottomLeft(0,0), 
+	m_dimensions(200,200),
+	m_alpha(1.0f),
+	mCurrentlyInFocus(false)
 {
 }
 

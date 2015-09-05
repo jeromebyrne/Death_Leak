@@ -10,7 +10,11 @@
 #include "gamepad.h"
 #include "Game.h"
 
-UIScreen::UIScreen(string name): m_currentWidgetInFocus(0), m_lastMousePos(0,0), m_name(name)
+UIScreen::UIScreen(string name) : 
+	m_currentWidgetInFocus(0),
+	m_lastMousePos(0,0),
+	m_name(name),
+	mShowCursor(true)
 {
 }
 
@@ -40,6 +44,13 @@ void UIScreen::ScaleScreen(float scaleFactorX, float scaleFactorY)
 
 void UIScreen::XmlRead(TiXmlElement * root)
 {
+	bool attribExists = XmlUtilities::AttributeExists(root, "", "show_cursor");
+
+	if (attribExists)
+	{
+		mShowCursor = XmlUtilities::ReadAttributeAsBool(root, "", "show_cursor");
+	}
+
 	// loop through all of the widgets and add them to the widget map
 	TiXmlElement * child = root->FirstChildElement();
 

@@ -3,6 +3,8 @@
 
 #include "uiscreen.h"
 
+class UISprite;
+
 // all of the possible UI actions 
 enum UIEventActions 
 {	
@@ -91,12 +93,16 @@ private:
 
 	// this is where all UI events get handled (just a big switch statement :/ )
 	void HandleEvent(string eventName, list<string> params);
+
+	UISprite * CreateCursorSprite();
 	
 	// a list of events that need to be processed in the next update loop
 	list<EventStruct> mCurrentEventList;
 
 	int mBaseWidth;
 	int mBaseHeight;
+
+	UISprite * mCursorSprite;
 };
 
 #endif

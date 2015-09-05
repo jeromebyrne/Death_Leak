@@ -16,6 +16,11 @@ public:
 	virtual void Initialise();
 	virtual void Reset();
 
+	void SetImage(const char * filename);
+	void SetUseStandardEffect(bool value) { mUseStandardEffect = value; }
+
+	void RebuildBuffers();
+
 protected:
 
 	ID3D10ShaderResourceView* m_texture;

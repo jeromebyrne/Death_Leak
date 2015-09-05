@@ -34,6 +34,10 @@ void UISprite::XmlRead(TiXmlElement * element)
 	}
 }
 
+void UISprite::SetImage(const char * filename)
+{
+	m_textureFilename = filename;
+}
 
 void UISprite::Release()
 {
@@ -124,10 +128,27 @@ void UISprite::LoadContent(ID3D10Device * graphicsdevice)
 	// load the sprite texture (store in the ui texture cache)
 	m_texture = TextureManager::Instance()->LoadTexture_ui((char*)m_textureFilename.c_str());
 	
-	D3DXVECTOR2 tex1 = D3DXVECTOR2(0,0);
-	D3DXVECTOR2 tex2 = D3DXVECTOR2(0,0);
-	D3DXVECTOR2 tex3 = D3DXVECTOR2(0,0);
-	D3DXVECTOR2 tex4 = D3DXVECTOR2(0,0);
+	RebuildBuffers();
+}
+
+void UISprite::RebuildBuffers()
+{
+	if (VertexBuffer)
+	{
+		VertexBuffer->Release();
+		VertexBuffer = nullptr;
+	}
+
+	if (IndexBuffer)
+	{
+		IndexBuffer->Release();
+		IndexBuffer = nullptr;
+	}
+
+	D3DXVECTOR2 tex1;
+	D3DXVECTOR2 tex2;
+	D3DXVECTOR2 tex3;
+	D3DXVECTOR2 tex4;
 
 	if(m_horizontalFlip)
 	{
@@ -135,7 +156,6 @@ void UISprite::LoadContent(ID3D10Device * graphicsdevice)
 		tex2.x = 0;
 		tex3.x = 0;
 		tex4.x = 1;
-
 	}
 	else
 	{
@@ -183,8 +203,8 @@ void UISprite::LoadContent(ID3D10Device * graphicsdevice)
 		m_indices[i] = indices[i];
 	}
 
-	SetVertexBuffer(graphicsdevice, sizeof(m_vertices[0]) * 4, m_vertices);
-	SetIndexBuffer(graphicsdevice, sizeof(m_indices[0]) * 4, m_indices);
+	SetVertexBuffer(Graphics::GetInstance()->Device(), sizeof(m_vertices[0]) * 4, m_vertices);
+	SetIndexBuffer(Graphics::GetInstance()->Device(), sizeof(m_indices[0]) * 4, m_indices);
 }
 
 void UISprite::SetVertexBuffer(ID3D10Device* device, UINT byteSize, VertexPositionTextureNormal vertices[])

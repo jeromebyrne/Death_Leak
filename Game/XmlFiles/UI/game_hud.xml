@@ -1,29 +1,5 @@
-<uiscreen>
+<uiscreen show_cursor="false">
  
-  <meter name="2_health_meter"
-        process_input="false"
-        posX ="-900" posY ="480" width="300" height ="19"
-        image="Media\\UI\\meter_overlay.png"
-        meter_edge="Media\\UI\\meter_edge_2.png"
-        meter_middle="Media\\UI\\meter_overlay.png"
-        meter_bar_middle="Media\\UI\\meter_bar_middle.png"
-        hflip="false" vflip="false"
-        alpha="0.9"
-        use_standard_effect="true">
-  </meter>
-
-  <meter name="21_xp_meter"
-        process_input="false"
-        posX ="-900" posY ="460" width="150" height ="19"
-        image="Media\\UI\\meter_overlay.png"
-        meter_edge="Media\\UI\\meter_edge_2.png"
-        meter_middle="Media\\UI\\meter_overlay.png"
-        meter_bar_middle="Media\\UI\\xp_meter_bar_middle.png"
-        hflip="false" vflip="true"
-        alpha="0.9"
-        use_standard_effect="true">
-  </meter>
-
   <animatedsprite name="25_noise_anim"
                    process_input="false"
                    posX ="-960" posY ="-540" width="1920" height ="1080"
@@ -91,5 +67,29 @@
           alpha="1.0"
           use_standard_effect="true">
   </sprite>
+
+  <meter name="9_health_meter"
+        process_input="false"
+        posX ="-900" posY ="480" width="300" height ="19"
+        image="Media\\UI\\meter_overlay.png"
+        meter_edge="Media\\UI\\meter_edge_2.png"
+        meter_middle="Media\\UI\\meter_overlay.png"
+        meter_bar_middle="Media\\UI\\meter_bar_middle.png"
+        hflip="false" vflip="false"
+        alpha="0.9"
+        use_standard_effect="true">
+  </meter>
+
+  <meter name="91_xp_meter"
+        process_input="false"
+        posX ="-900" posY ="460" width="150" height ="19"
+        image="Media\\UI\\meter_overlay.png"
+        meter_edge="Media\\UI\\meter_edge_2.png"
+        meter_middle="Media\\UI\\meter_overlay.png"
+        meter_bar_middle="Media\\UI\\xp_meter_bar_middle.png"
+        hflip="false" vflip="true"
+        alpha="0.9"
+        use_standard_effect="true">
+  </meter>
   
 </uiscreen>

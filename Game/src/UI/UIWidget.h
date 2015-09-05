@@ -6,6 +6,7 @@ struct EventStruct; // forward dec
 class UIWidget
 {
 public:
+
 	UIWidget(void);
 	~UIWidget(void);
 
@@ -70,7 +71,8 @@ public:
 
 	virtual void Scale(float x, float y);
 
-	protected:
+protected:
+
 	Vector2 m_bottomLeft;
 	Vector2 m_dimensions;
 	bool m_processInput;
@@ -92,7 +94,7 @@ public:
 
 	bool mCurrentlyInFocus; // for gamepad
 
-	private:
+private:
 	string m_name;
 
 };
