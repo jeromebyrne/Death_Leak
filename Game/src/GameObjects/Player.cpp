@@ -6,6 +6,8 @@
 #include "particleemittermanager.h"
 #include "BombProjectile.h"
 #include "Game.h"
+#include "SaveManager.h"
+#include "PlayerLevelManager.h"
 
 static const char * kBombTextureFile = "Media/bomb.png";
 
@@ -138,6 +140,8 @@ void Player::Update(float delta)
 			mTimeUntilProjectileReady = 0.0f;
 		}
 	}
+
+	CheckForAndDoLevelUp();
 }
 
 Projectile * Player::FireWeapon(Vector2 direction)
@@ -222,4 +226,42 @@ void Player::ResetProjectileFireDelay()
 	mTimeUntilProjectileReady = 0.0f;
 	mTimeUntilFireBurstAvailable = 0.0f;
 	mCurrentBurstNum = 0;
+}
+
+void Player::CheckForAndDoLevelUp()
+{
+	unsigned int playerLevel = SaveManager::GetInstance()->GetPlayerLevel();
+	unsigned int orbsCollected = SaveManager::GetInstance()->GetNumCurrencyOrbsCollected();
+
+	if (PlayerLevelManager::GetInstance()->ShouldLevelUp(playerLevel, orbsCollected))
+	{
+		SaveManager::GetInstance()->SetPlayerLevel(playerLevel + 1);
+
+		// Do effects
+		Timing::Instance()->SetTimeModifierForNumSeconds(0.1f, 3.5f);
+		ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
+																m_position,
+																Vector3(0, 1, 0),
+																0.1,
+																Vector3(3200, 1200, 0),
+																"Media\\blast_circle.png",
+																1.0f,
+																1.0f,
+																0.3f,
+																0.3f,
+																256.0f,
+																256.0f,
+																0.0f,
+																false,
+																1.0f,
+																1.0f,
+																0.0f,
+																true,
+																8.0f,
+																0.0f,
+																0.0f,
+																0.05f,
+																0.1f,
+																true);
+	}
 }

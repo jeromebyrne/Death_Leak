@@ -10,9 +10,29 @@ public:
 
 	static PlayerLevelManager * GetInstance();
 
+	void Initialise();
+	
+	float GetPercentTowardsLevelUp(unsigned int currentLevel, unsigned int currentXPUnits) const;
+
+	bool ShouldLevelUp(unsigned int currentLevel, unsigned int currentXPUnits) const;
+
 private:
 
+	struct PlayerLevelInfo
+	{
+		bool CanLevelUp;
+		unsigned UnitsRequiredToLevelUp;
+
+		/* Add mechanic unlocked */
+	};
+
+	void CreateLevelUpData();
+
+	std::map<unsigned int, PlayerLevelInfo> mPlayerLevelData;
+
 	static PlayerLevelManager * m_instance;
+
+	unsigned int mPlayerCurrentLevel;
 };
 
 #endif

@@ -9,6 +9,7 @@
 #include "Settings.h"
 #include "StringManager.h"
 #include "UISprite.h"
+#include "gamepad.h"
 
 extern void PostDestroyMessage();
 
@@ -80,18 +81,21 @@ void UIManager::Update()
 
 	if (updateCursor && mCursorSprite)
 	{
-		POINT currentMouse;
-		GetCursorPos(&currentMouse);
-		ScreenToClient(DXWindow::GetInstance()->Hwnd(), &currentMouse);
+		if (!(GamePad::GetPad1() && GamePad::GetPad1()->IsConnected()))
+		{
+			POINT currentMouse;
+			GetCursorPos(&currentMouse);
+			ScreenToClient(DXWindow::GetInstance()->Hwnd(), &currentMouse);
 
-		// translate mouse coords to UI coords
-		Vector2 mouseUICoords = GetPointInUICoords(currentMouse.x, currentMouse.y);
+			// translate mouse coords to UI coords
+			Vector2 mouseUICoords = GetPointInUICoords(currentMouse.x, currentMouse.y);
 		
-		mouseUICoords.Y -= mCursorSprite->Dimensions().Y;
+			mouseUICoords.Y -= mCursorSprite->Dimensions().Y;
 
-		mCursorSprite->SetBottomLeft(mouseUICoords);
+			mCursorSprite->SetBottomLeft(mouseUICoords);
 
-		mCursorSprite->RebuildBuffers();
+			mCursorSprite->RebuildBuffers();
+		}
 	}
 }
 
@@ -148,7 +152,10 @@ void UIManager::Draw(ID3D10Device * device)
 
 	if (drawCursor && mCursorSprite)
 	{
-		mCursorSprite->Draw(device);
+		if (!(GamePad::GetPad1() && GamePad::GetPad1()->IsConnected()))
+		{
+			mCursorSprite->Draw(device);
+		}
 	}
 }
 

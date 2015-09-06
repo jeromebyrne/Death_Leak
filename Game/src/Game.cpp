@@ -33,6 +33,7 @@
 #include "Settings.h"
 #include "SaveManager.h"
 #include "DataValue.h"
+#include "PlayerLevelManager.h"
 
 Game * Game::mInstance = nullptr;
 
@@ -133,6 +134,8 @@ void Game::Initialise()
 
 	mGameScale.X = (float)m_pGraphics->BackBufferWidth() / 1920.f;
 	mGameScale.Y = (float)m_pGraphics->BackBufferHeight() / 1080.f;
+
+	PlayerLevelManager::GetInstance()->Initialise();
 }
 
 void Game::Update(float delta)

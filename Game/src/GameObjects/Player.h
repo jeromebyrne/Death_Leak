@@ -6,6 +6,7 @@ class Player : public Character
 {
 
 public:
+
 	Player(float x = 0, float y = 0, float z = 0, float width = 10, float height = 10, float breadth = 0);
 	virtual ~Player(void);
 	virtual void Update(float delta) override;
@@ -21,6 +22,8 @@ public:
 private:
 
 	virtual void DebugDraw(ID3D10Device *  device) override;
+
+	void CheckForAndDoLevelUp();
 
 	float mProjectileFireDelay;
 	float mTimeUntilProjectileReady;

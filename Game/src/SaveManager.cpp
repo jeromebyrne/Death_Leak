@@ -225,7 +225,7 @@ int SaveManager::GetIntValue(const std::string & key, int defaultValue) const
 
 int SaveManager::GetPlayerLevel() const
 {
-	return GetIntValue("player_level");
+	return GetIntValue("player_level", 1);
 }
 
 void SaveManager::SetPlayerLevel(int value)

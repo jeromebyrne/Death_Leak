@@ -2,6 +2,8 @@
 #include "UIGameHudScreen.h"
 #include "UIMeter.h"
 #include "GameObjectManager.h"
+#include "SaveManager.h"
+#include "PlayerLevelManager.h"
 
 UIGameHudScreen::UIGameHudScreen(string name) : 
 	UIScreen(name),
@@ -37,7 +39,12 @@ void UIGameHudScreen::Update()
 
 	if (mPlayerXPMeter)
 	{
-		mPlayerXPMeter->SetProgress(1.0f);
+		unsigned int playerLevel = SaveManager::GetInstance()->GetPlayerLevel();
+		unsigned int orbsCollected = SaveManager::GetInstance()->GetNumCurrencyOrbsCollected();
+
+		float percent = PlayerLevelManager::GetInstance()->GetPercentTowardsLevelUp(playerLevel, orbsCollected);
+
+		mPlayerXPMeter->SetProgress(percent < 0.05f ? 0.05f : percent);
 	}
 }
 
