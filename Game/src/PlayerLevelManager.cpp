@@ -32,7 +32,7 @@ void PlayerLevelManager::CreateLevelUpData()
 
 	// This ideally needs to be read from a config file but just doing this for now
 	unsigned int maxLevel = 5;
-	unsigned unitsRequiredToFirstLevelUp = 20;
+	unsigned unitsRequiredToFirstLevelUp = 5;
 	float levelRampMultiplier = 2.0f;
 	for (unsigned int i = 1; i <= maxLevel; ++i)
 	{

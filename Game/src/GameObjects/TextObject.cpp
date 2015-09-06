@@ -10,7 +10,8 @@ TextObject::TextObject(float x, float y, float z, float width, float height) :
 	mFontSize(20.0f),
 	mCachedWideString(nullptr),
 	mHasShown(false),
-	mTimeToShow(5.0f)
+	mTimeToShow(5.0f),
+	mNoClip(false)
 {
 }
 
@@ -99,6 +100,8 @@ void TextObject::Update(float delta)
 	{
 		mTimeToShow -= delta;
 	}
+
+	UpdateToParent();
 }
 
 void TextObject::XmlRead(TiXmlElement * element)
@@ -144,8 +147,30 @@ void TextObject::Draw(ID3D10Device * device, Camera2D * camera)
 	Vector2 worldPos = Vector2(m_position.X - (m_dimensions.X * 0.5f), m_position.Y);
 	Vector2 screenPos = Utilities::WorldToScreen(worldPos);
 
-	RECT bounds = { screenPos.X, screenPos.Y, screenPos.X + m_dimensions.X, screenPos.Y + m_dimensions.Y };
-
 	mFontColor.a = Alpha();
-	mFont->DrawText(0, mCachedWideString, -1, &bounds, DT_WORDBREAK, mFontColor);
+
+	RECT bounds = { screenPos.X, screenPos.Y, screenPos.X + m_dimensions.X, screenPos.Y + m_dimensions.Y };
+	mFont->DrawText(0, mCachedWideString, -1, &bounds, mNoClip ? DT_NOCLIP : DT_WORDBREAK, mFontColor);
+}
+
+void TextObject::SetStringKey(const char * key)
+{
+	mStringId = key;
+}
+
+void TextObject::SetFont(const char * fontname)
+{
+	mFontName = fontname;
+}
+
+void TextObject::SetFontSize(float size)
+{
+	mFontSize = size;
+}
+
+void TextObject::SetFontColor(float r, float g, float b)
+{
+	mFontColor.r = r;
+	mFontColor.g = g;
+	mFontColor.b = b;
 }

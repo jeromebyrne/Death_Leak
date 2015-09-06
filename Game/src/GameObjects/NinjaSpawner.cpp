@@ -130,6 +130,6 @@ void NinjaSpawner::SpawnMultiple(const unsigned int numNPC, Vector2 boundsPos, V
 		SpawnNPC(boundsPos.X + randX, boundsPos.Y + randY, false, animFile, dimensions, collisionDimensions, collisionOffset);
 	}
 
-	AudioManager::Instance()->PlaySoundEffect("gong.wav", false, false, false);
+	// AudioManager::Instance()->PlaySoundEffect("gong.wav", false, false, false);
 	AudioManager::Instance()->PlaySoundEffect("explosion\\smoke_explosion.wav");
 }

@@ -191,6 +191,8 @@ protected:
 
 	virtual void DrawDebugText();
 
+	virtual void UpdateToParent();
+
 	Vector3 m_position;
 	float m_rotationAngle;
 	float m_matScaleX;
@@ -246,7 +248,7 @@ protected:
 
 private:
 
-	virtual void UpdateToParent() { }
+	
 
 	int m_id; // our game object ID (this is unique)
 

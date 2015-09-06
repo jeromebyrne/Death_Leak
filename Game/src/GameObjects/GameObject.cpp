@@ -476,3 +476,12 @@ void GameObject::Detach()
 	mAttachedToOffset = Vector3(0, 0, 0);
 }
 
+void GameObject::UpdateToParent()
+{
+	if (mAttachedTo)
+	{
+		m_position.Y = mAttachedTo->Position().Y + mAttachedToOffset.Y;
+		m_position.X = mAttachedTo->Position().X + mAttachedToOffset.X;
+	}
+}
+

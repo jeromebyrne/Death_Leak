@@ -8,6 +8,8 @@
 #include "Game.h"
 #include "SaveManager.h"
 #include "PlayerLevelManager.h"
+#include "TextObject.h"
+#include "AudioManager.h"
 
 static const char * kBombTextureFile = "Media/bomb.png";
 
@@ -238,7 +240,10 @@ void Player::CheckForAndDoLevelUp()
 		SaveManager::GetInstance()->SetPlayerLevel(playerLevel + 1);
 
 		// Do effects
-		Timing::Instance()->SetTimeModifierForNumSeconds(0.1f, 3.5f);
+		AudioManager::Instance()->PlaySoundEffect("gong.wav", false, false, false);
+		AudioManager::Instance()->PlaySoundEffect("music\\japanese1.wav", false, false, false);
+		Camera2D::GetInstance()->DoBigShake();
+		Timing::Instance()->SetTimeModifierForNumSeconds(0.04f, 4.0f);
 		ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
 																m_position,
 																Vector3(0, 1, 0),
@@ -247,8 +252,8 @@ void Player::CheckForAndDoLevelUp()
 																"Media\\blast_circle.png",
 																1.0f,
 																1.0f,
-																0.3f,
-																0.3f,
+																0.1f,
+																0.1f,
 																256.0f,
 																256.0f,
 																0.0f,
@@ -263,5 +268,91 @@ void Player::CheckForAndDoLevelUp()
 																0.05f,
 																0.1f,
 																true);
+
+		ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
+																m_position,
+																Vector3(0, 1, 0),
+																0.1,
+																Vector3(3200, 1200, 0),
+																"Media\\explosion_lines.png",
+																1.0f,
+																1.0f,
+																0.1f,
+																0.1f,
+																256.0f,
+																256.0f,
+																0.0f,
+																false,
+																1.0f,
+																1.0f,
+																0.0f,
+																true,
+																12.0f,
+																0.0f,
+																0.0f,
+																0.05f,
+																0.1f,
+																true);
+
+		ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
+																m_position,
+																Vector3(0, 1, 0),
+																0.1,
+																Vector3(3200, 1200, 0),
+																"Media\\explosion_lines.png",
+																1.0f,
+																1.0f,
+																0.15f,
+																0.15f,
+																256.0f,
+																256.0f,
+																0.0f,
+																false,
+																1.0f,
+																1.0f,
+																0.0f,
+																true,
+																6.0f,
+																0.0f,
+																0.0f,
+																0.05f,
+																0.1f,
+																true);
+
+		// *** Level Up! text
+		{
+			TextObject * levelUpText = new TextObject(m_position.X, m_position.Y, 3.0f);
+
+			levelUpText->SetFont("Jing Jing");
+			levelUpText->SetFontColor(1.0f, 0.0f, 0.0f);
+			levelUpText->SetFontSize(50.0f);
+			levelUpText->SetStringKey("level_up_notification");
+			levelUpText->SetNoClip(true);
+
+			levelUpText->SetDimensionsXYZ(200, 250, 1);
+
+			GameObjectManager::Instance()->AddGameObject(levelUpText);
+
+			levelUpText->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), Vector3(0, 125, -30), false);
+		}
+		// ************************
+
+		// *** Game Mechanic unlocked text
+		{
+			TextObject * mechanicDescriptionText = new TextObject(m_position.X, m_position.Y, 3.0f);
+
+			mechanicDescriptionText->SetFont("Jing Jing");
+			mechanicDescriptionText->SetFontColor(0.1f, 0.1f, 0.1f);
+			mechanicDescriptionText->SetFontSize(35.0f);
+			mechanicDescriptionText->SetStringKey("test_string");
+			mechanicDescriptionText->SetNoClip(true);
+
+			mechanicDescriptionText->SetDimensionsXYZ(300, 100, 1);
+
+			GameObjectManager::Instance()->AddGameObject(mechanicDescriptionText);
+
+			mechanicDescriptionText->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), Vector3(0, 80, -30), false);
+		}
+		// ************************************
 	}
 }

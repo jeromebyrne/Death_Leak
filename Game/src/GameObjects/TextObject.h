@@ -6,6 +6,7 @@
 class TextObject : public DrawableObject
 {
 public:
+
 	TextObject(float x = 0, float y = 0, float z = 0, float width = 1, float height = 1);
 	virtual ~TextObject();
 
@@ -14,6 +15,13 @@ public:
 	virtual void XmlWrite(TiXmlElement * element) override;
 	virtual void Draw(ID3D10Device * device, Camera2D * camera) override;
 	virtual void Initialise() override;
+
+	void SetStringKey(const char * key);
+	void SetFont(const char * fontname);
+	void SetFontSize(float size);
+	void SetFontColor(float r, float g, float b);
+
+	void SetNoClip(bool centred) { mNoClip = centred; }
 
 private:
 
@@ -29,6 +37,8 @@ private:
 	bool mHasShown;
 
 	float mTimeToShow;
+
+	bool mNoClip;
 };
 
 #endif
