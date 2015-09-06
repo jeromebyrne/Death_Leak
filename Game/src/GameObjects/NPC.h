@@ -58,7 +58,7 @@ protected:
 private:
 
 	void AddHealthBar();
-	void UpdateHealthBar();
+	void UpdateHealthBar(float delta);
 
 	virtual void DebugDraw(ID3D10Device *  device) override;
 	virtual void SetupDebugDraw() override;
@@ -69,8 +69,10 @@ private:
 	float mNextFireTime;
 
 	unique_ptr<Sprite> mHealthBarSprite;
+	unique_ptr<Sprite> mHealthBarUnderlaySprite;
 	unique_ptr<Sprite> mHealthBarOverlaySprite;
 	float mCurrentHealthMeterScale;
+	float mHealthMeterHealthBeforeDecrease;
 };
 
 #endif

@@ -31,9 +31,10 @@ private:
 		kBarMoving
 	};
 
-	ID3D10ShaderResourceView* m_meterEdgeTexture;
-	ID3D10ShaderResourceView* m_meterMiddleTexture;
-	ID3D10ShaderResourceView* m_meterBarMiddleTexture;
+	ID3D10ShaderResourceView * m_meterEdgeTexture;
+	ID3D10ShaderResourceView * m_meterMiddleTexture;
+	ID3D10ShaderResourceView * m_meterBarMiddleTexture;
+	ID3D10ShaderResourceView * m_meterBarMiddleBackTexture;
 	string m_meterEdgeFilename;
 	string m_meterMiddleFilename;
 	string m_meterBarMiddleFilename;
@@ -57,8 +58,6 @@ private:
 	float mScaleY;
 
 	float mBarNativeHeight;
-
-	float mExtraScale;
 };
 
 #endif

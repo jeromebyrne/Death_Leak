@@ -43,6 +43,7 @@ NPC::NPC(float x, float y, float z, float width, float height, float breadth) :
 	mMaxHealth = 20.0f;
 	mProjectileFilePath = "Media/ninjastar.png";
 	mProjectileImpactFilePath = "Media/ninjastar_impact.png";
+	mHealthMeterHealthBeforeDecrease = mHealth;
 
 	NPCManager::Instance()->AddNPC(this);
 
@@ -82,6 +83,11 @@ void NPC::Update(float delta)
 		m_currentState->Update(delta);
 	}
 
+	if (mHealthBarUnderlaySprite)
+	{
+		mHealthBarUnderlaySprite->Update(delta);
+	}
+
 	if (mHealthBarSprite)
 	{
 		mHealthBarSprite->Update(delta);
@@ -92,6 +98,10 @@ void NPC::Update(float delta)
 		mHealthBarOverlaySprite->Update(delta);
 	}
 
+	UpdateHealthBar(delta);
+
+	// disabling scale because I'm not sure it looks great
+	/*
 	if (mCurrentHealthMeterScale != 1.0f)
 	{
 		mCurrentHealthMeterScale -= delta * 4.0f;
@@ -102,6 +112,7 @@ void NPC::Update(float delta)
 
 		UpdateHealthBar();
 	}
+	*/
 }
 
 void NPC::Initialise()
@@ -112,7 +123,7 @@ void NPC::Initialise()
 	{
 		AddHealthBar();
 
-		UpdateHealthBar();
+		UpdateHealthBar(1.0f);
 	}
 }
 
@@ -196,9 +207,7 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointO
 {
 	Character::OnDamage(damageDealer, damageAmount, pointOfContact, shouldExplode);
 
-	mCurrentHealthMeterScale = 2.0f;
-
-	UpdateHealthBar();
+	// mCurrentHealthMeterScale = 2.0f;
 
 	// throw out some orbs
 	int particleNUmPerOrb = 25;
@@ -445,6 +454,14 @@ void NPC::Draw(ID3D10Device * device, Camera2D * camera)
 {
 	Character::Draw(device, camera);
 
+	if (mHealthMeterHealthBeforeDecrease > mHealth && mHealthBarUnderlaySprite)
+	{
+		if (mHealthBarUnderlaySprite->IsChangeRequired())
+		{
+			mHealthBarUnderlaySprite->ApplyChange(device);
+		}
+		mHealthBarUnderlaySprite->Draw(device, camera);
+	}
 	if (mHealthBarSprite)
 	{
 		// apply any changes needed
@@ -468,6 +485,25 @@ void NPC::Draw(ID3D10Device * device, Camera2D * camera)
 void NPC::AddHealthBar()
 {
 	int randYOffset = rand() % 15;
+
+	if (!mHealthBarUnderlaySprite)
+	{
+		mHealthBarUnderlaySprite = unique_ptr<Sprite>(new Sprite());
+		mHealthBarUnderlaySprite->SetTextureFilename("Media\\characters\\health_bar_back.png");
+		mHealthBarUnderlaySprite->SetIsNativeDimensions(false);
+		mHealthBarUnderlaySprite->SetDimensionsXYZ(kHealthBarDimensionsX, kHealthBarDimensionsY, 0);
+		mHealthBarUnderlaySprite->SetXYZ(X(), Y(), Z() - 1);
+		mHealthBarUnderlaySprite->LoadContent(Graphics::GetInstance()->Device());
+		mHealthBarUnderlaySprite->Initialise();
+
+		mHealthBarUnderlaySprite->Scale(Graphics::GetInstance()->BackBufferWidth() / 1920,
+			Graphics::GetInstance()->BackBufferHeight() / 1080,
+			false);
+
+		mHealthBarUnderlaySprite->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), 
+									Vector3(0,((m_collisionBoxDimensions.Y * 0.5f) + mCollisionBoxOffset.Y) + 5 + randYOffset, 0),
+									false);
+	}
 	if (!mHealthBarSprite)
 	{
 		mHealthBarSprite = unique_ptr<Sprite>(new Sprite());
@@ -510,6 +546,10 @@ void NPC::DebugDraw(ID3D10Device *  device)
 {
 	Character::DebugDraw(device);
 
+	if (mHealthBarUnderlaySprite)
+	{
+		mHealthBarUnderlaySprite->DebugDraw(device);
+	}
 	if (mHealthBarSprite)
 	{
 		mHealthBarSprite->DebugDraw(device);
@@ -524,6 +564,10 @@ void NPC::SetupDebugDraw()
 {
 	Character::SetupDebugDraw();
 
+	if (mHealthBarUnderlaySprite)
+	{
+		mHealthBarUnderlaySprite->SetupDebugDraw();
+	}
 	if (mHealthBarSprite)
 	{
 		mHealthBarSprite->SetupDebugDraw();
@@ -534,8 +578,13 @@ void NPC::SetupDebugDraw()
 	}
 }
 
-void NPC::UpdateHealthBar()
+void NPC::UpdateHealthBar(float delta)
 {
+	if (!mHealthBarUnderlaySprite)
+	{
+		return;
+	}
+
 	if (!mHealthBarSprite)
 	{
 		return;
@@ -551,6 +600,21 @@ void NPC::UpdateHealthBar()
 	mHealthBarSprite->SetMatrixScaleX(percentHealth * mCurrentHealthMeterScale);
 	mHealthBarSprite->SetMatrixScaleY(mCurrentHealthMeterScale);
 	mHealthBarSprite->SetAttachmentOffsetX(-((((kHealthBarDimensionsX - (kHealthBarDimensionsX * percentHealth))) * mCurrentHealthMeterScale) * 0.5f) );
+
+	if (mHealthMeterHealthBeforeDecrease > mHealth)
+	{
+		mHealthMeterHealthBeforeDecrease -= delta * 6.0f;
+		if (mHealthMeterHealthBeforeDecrease < mHealth)
+		{
+			mHealthMeterHealthBeforeDecrease = mHealth;
+		}
+	}
+
+	float percentBefore = mHealthMeterHealthBeforeDecrease / mMaxHealth;
+
+	mHealthBarUnderlaySprite->SetMatrixScaleX(percentBefore * mCurrentHealthMeterScale);
+	mHealthBarUnderlaySprite->SetMatrixScaleY(mCurrentHealthMeterScale);
+	mHealthBarUnderlaySprite->SetAttachmentOffsetX(-((((kHealthBarDimensionsX - (kHealthBarDimensionsX * percentBefore))) * mCurrentHealthMeterScale) * 0.5f) );
 
 	if (mHealthBarOverlaySprite)
 	{

@@ -94,9 +94,7 @@ protected:
 
 	bool mCurrentlyInFocus; // for gamepad
 
-private:
 	string m_name;
-
 };
 
 #endif
