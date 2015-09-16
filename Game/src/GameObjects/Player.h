@@ -16,7 +16,6 @@ public:
 	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) override;
 	virtual Projectile * FireWeapon(Vector2 direction) override;
 	virtual Projectile * FireBomb(Vector2 direction) override;
-
 	void ResetProjectileFireDelay();
 
 private:
