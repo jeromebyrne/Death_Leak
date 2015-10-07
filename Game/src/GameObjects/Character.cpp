@@ -16,6 +16,8 @@ static const float kMinTimeBetweenDeathSFX = 0.1f;
 static const float kJumpDelay = 0.2f;
 static const int kDamageKickback = 20;
 
+static const float kTimeAllowedToJumpAfterLeaveSolidGround = 0.3f;
+
 Character::Character(float x, float y, float z, float width, float height, float breadth): 
 	SolidMovingSprite(x,y,z,width, height, breadth),
 	m_isJumping(false), 
@@ -42,13 +44,16 @@ Character::Character(float x, float y, float z, float width, float height, float
 	mIsMidAirMovingUp(false),
 	mMidAirMovingUpStartTime(0.0f),
 	mMidAirMovingDownStartTime(0.0f),
-	mExplodesGruesomely(false)
+	mExplodesGruesomely(false),
+	mMaxJumpsAllowed(2),
+	mCurrentJumpsBeforeLand(0),
+	mTimeNotOnSolidSurface(0.0f)
 {
 	mProjectileFilePath = "Media/knife.png";
 	mProjectileImpactFilePath = "Media/knife_impact.png";
 	mIsCharacter = true;
 
-	mExplodesGruesomely = (rand() % 6) == 5;
+	mExplodesGruesomely = (rand() % 6) < 3;
 }
 
 Character::~Character(void)
@@ -113,6 +118,18 @@ void Character::Update(float delta)
 	if (!GetWaterIsDeep())
 	{
 		UpdateWaterWadeSFX();
+	}
+
+	if (IsOnSolidSurface())
+	{
+		mTimeNotOnSolidSurface = 0.0f;
+
+		// reset this because we're on solid ground
+		mCurrentJumpsBeforeLand = 0;
+	}
+	else
+	{
+		mTimeNotOnSolidSurface += delta;
 	}
 }
 
@@ -499,12 +516,26 @@ void Character::UpdateAnimations()
 	m_mainBodyTexture = m_texture;
 }
 
-void Character::Jump(float percent)
+bool Character::Jump(float percent)
 {
+	if (mCurrentJumpsBeforeLand >= mMaxJumpsAllowed)
+	{
+		return false;
+	}
+
+	// allow a small amount of time to jump just after being on a solid object
+	if (mCurrentJumpsBeforeLand == 0 &&
+		GetTimeNotOnSolidSurface() > kTimeAllowedToJumpAfterLeaveSolidGround &&
+		!(WasInWaterLastFrame() && GetWaterIsDeep()))
+	{
+		return false;
+	}
+
 	if (WasInWaterLastFrame())
 	{
 		percent *= 0.32f;
 	}
+
 	if(percent > 100)
 	{
 		percent = 100;
@@ -514,7 +545,7 @@ void Character::Jump(float percent)
 		percent = 1;
 	}
 
-	if(m_acceleration.Y == 0 && !WasInWaterLastFrame())
+	if (/*m_acceleration.Y == 0 && */ !WasInWaterLastFrame())
 	{
 		// play jump sound
 		AudioManager::Instance()->PlaySoundEffect("jump.wav");
@@ -530,6 +561,10 @@ void Character::Jump(float percent)
 	m_velocity.Y = 0;
 	m_direction.Y = 1;
 	m_acceleration.Y = (m_maxJumpSpeed/100) * percent;
+	
+	++mCurrentJumpsBeforeLand;
+
+	return true;
 }
 
 void Character::WallJump(float percent)

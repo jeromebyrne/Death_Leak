@@ -21,37 +21,32 @@ public:
 	virtual bool OnCollision(SolidMovingSprite * object) override;
 	virtual void Scale(float xScale, float yScale, bool scalePosition = true) override;
 	virtual void LoadContent(ID3D10Device * graphicsdevice) override;
-	inline void SetMaxJumpSpeed(float value)
-	{
-		m_maxJumpSpeed = value;
-	}
-	virtual void Jump(float percent);
+	inline void SetMaxJumpSpeed(float value) { m_maxJumpSpeed = value; }  
+	virtual bool Jump(float percent);
 	virtual void WallJump(float percent);
 	virtual void AccelerateX(float directionX);
 	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) override;
-
 	void setAccelXRate(const float accelRate) { mAccelXRate = accelRate; }
-
 	float GetHealth() const { return mHealth; }
 	float GetMaxHealth() const { return mMaxHealth; }
-
 	void IncreaseHealth(float value);
-
 	virtual void DebugDraw(ID3D10Device *  device);
-
 	void SetSprintActive(bool value);
 	bool GetIsSprintActive() { return mSprintActive; }
-
 	virtual Projectile * FireWeapon(Vector2 direction) = 0;
 	virtual Projectile * FireBomb(Vector2 direction) = 0;
-
 	virtual void DoMeleeAttack();
-
 	void UpdateFootsteps(SolidMovingSprite * solidObject);
+
+	unsigned GetMaxJumpsAllowed() const { return mMaxJumpsAllowed; }
+	unsigned GetCurrentJumpsBeforeLand() const { return mCurrentJumpsBeforeLand; }
+	float GetTimeNotOnSolidSurface() const { return mTimeNotOnSolidSurface; }
 
 protected:
 
 	void UpdateWaterWadeSFX();
+	virtual void UpdateAnimations() override; // override sprite update animations
+	void PlayRandomWeaponFireSound();
 
 	bool m_isJumping;
 	float m_maxJumpSpeed;
@@ -60,7 +55,6 @@ protected:
 	float m_footstepTime; // the time in between each footstep
 	float m_sprintFootstepTime; // the time between each footstep when sprinting
 	float m_waterWadeSFXTime;
-	virtual void UpdateAnimations() override; // override sprite update animations
 	float mAccelXRate;
 	float mHealth;
 	float mMaxHealth;
@@ -72,29 +66,22 @@ protected:
 	ID3D10ShaderResourceView * m_mainBodyTexture;
 	ID3D10ShaderResourceView * m_armTexture;
 	Vector2 m_projectileOffset; // where does a projectile fire from in relation to the centre?
-
 	std::string mProjectileFilePath;
 	std::string mProjectileImpactFilePath;
-
-	void PlayRandomWeaponFireSound();
-
 	static float mLastTimePlayedDeathSFX;
 	float mLastTimePlayedDamageSound;
 	const float mDamageSoundDelayMilli;
-
 	float mRunAnimFramerateMultiplier;
-
 	bool mPlayFootsteps;
-
 	bool mMatchAnimFrameRateWithMovement;
-
 	bool mIsMidAirMovingDown;
-
 	bool mIsMidAirMovingUp;
-
 	float mMidAirMovingUpStartTime;
-
 	float mMidAirMovingDownStartTime;
+	unsigned mMaxJumpsAllowed;
+	unsigned mCurrentJumpsBeforeLand;
+	float mTimeNotOnSolidSurface;
+
 };
 
 #endif

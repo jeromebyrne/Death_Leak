@@ -936,40 +936,16 @@ void GameObjectManager::ProcessGamePad()
 	// ===================================
 	
 	// JUMP ==============================
-	static bool pressingJump = false;
-	static int jumpPower = 1;
-	int defaultJumpPower = 40; // N percent of our max jump power
-	int jumpPowerIncrement = 3;
-
-	static bool startedPressingJump = false;
-	static float maxJumpTime = 0.2f;
-	static float startedPressing = 0;
-
+	
+	static float jumpPowerPercent = 0.0f;
 	if (pad_state.Gamepad.wButtons & XINPUT_GAMEPAD_A)
 	{
-		float currentTime = Timing::Instance()->GetTotalTimeSeconds();
-		if (!startedPressingJump && (m_player->IsOnSolidSurface() || (m_player->WasInWaterLastFrame() && m_player->GetWaterIsDeep())))
-		{
-			startedPressing = currentTime;
-			startedPressingJump = true;
-
-			m_player->Jump(50); // 50 % jump to begin with
-		}
-		else if (startedPressingJump)
-		{
-			float diff = currentTime - startedPressing;
-
-			if (diff > 0 && diff < maxJumpTime)
-			{
-				float val = (float)diff/(float)maxJumpTime;
-				m_player->Jump(50 + (val * 50));
-			}
-		}
+		jumpPowerPercent = 100.0f;
+		m_player->Jump(jumpPowerPercent);
 	}
 	else
 	{
-		startedPressingJump = false;
-		startedPressing = 0;
+		jumpPowerPercent = 0.0f;
 	}
 	// ===================================
 
