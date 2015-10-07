@@ -65,7 +65,7 @@
       <stopallsounds />
       <leveledit level="XmlFiles\village.xml" />
       <popui ui="gameloading" />
-      <pushui ui="game_hud" />
+      <pushui ui="level_edit_hud" />
     </actionspressup>
 
     <actionspressdown>
@@ -90,7 +90,7 @@
       <stopallsounds />
       <leveledit level="XmlFiles\field_1.xml" />
       <popui ui="gameloading" />
-      <pushui ui="game_hud" />
+      <pushui ui="level_edit_hud" />
     </actionspressup>
 
     <actionspressdown>
@@ -115,7 +115,7 @@
       <stopallsounds />
       <leveledit level="XmlFiles\village_outskirts.xml" />
       <popui ui="gameloading" />
-      <pushui ui="game_hud" />
+      <pushui ui="level_edit_hud" />
     </actionspressup>
 
     <actionspressdown>
@@ -140,7 +140,7 @@
       <stopallsounds />
       <leveledit level="XmlFiles\waterfall_level.xml" />
       <popui ui="gameloading" />
-      <pushui ui="game_hud" />
+      <pushui ui="level_edit_hud" />
     </actionspressup>
 
     <actionspressdown>
@@ -165,7 +165,7 @@
       <stopallsounds />
       <leveledit level="XmlFiles\underwater_cave.xml" />
       <popui ui="gameloading" />
-      <pushui ui="game_hud" />
+      <pushui ui="level_edit_hud" />
     </actionspressup>
 
     <actionspressdown>

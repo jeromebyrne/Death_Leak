@@ -8,4 +8,5 @@
   <uiscreen name="fullscreen_fade" filepath="XmlFiles\\UI\\fullscreen_fade.xml"/>
   <uiscreen name="level_select_edit" filepath="XmlFiles\\UI\\level_select_edit.xml" />
   <uiscreen name="language_select" filepath="XmlFiles\\UI\\language_select.xml" />
+  <uiscreen name="level_edit_hud" filepath="XmlFiles\\UI\\level_edit_hud.xml" />
 </ui>
