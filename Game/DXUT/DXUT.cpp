@@ -4870,6 +4870,7 @@ void WINAPI DXUTSetShortcutKeySettings( bool bAllowWhenFullscreen, bool bAllowWh
 //--------------------------------------------------------------------------------------
 void DXUTAllowShortcutKeys( bool bAllowKeys )
 {
+	/*
     GetDXUTState().SetAllowShortcutKeys( bAllowKeys );
 
     if( bAllowKeys )
@@ -4940,6 +4941,7 @@ void DXUTAllowShortcutKeys( bool bAllowKeys )
             SystemParametersInfo( SPI_SETFILTERKEYS, sizeof( FILTERKEYS ), &fkOff, 0 );
         }
     }
+	*/
 }
 
 

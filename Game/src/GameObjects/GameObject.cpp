@@ -107,7 +107,7 @@ void GameObject::Initialise()
 		}
 	}
 
-	float maxWidth = (std::max)(m_dimensions.X, m_dimensions.Y);
+	float maxWidth = (std::fmax)(m_dimensions.X, m_dimensions.Y);
 	mLargestPossibleDimensions = Vector2(maxWidth, maxWidth);
 
 	// sine wave

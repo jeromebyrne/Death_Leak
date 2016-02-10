@@ -1252,6 +1252,7 @@ typedef HMONITOR ( WINAPI* LPMONITORFROMRECT )( LPCRECT lprcScreenCoords, DWORD 
 
 BOOL WINAPI DXUTGetMonitorInfo( HMONITOR hMonitor, LPMONITORINFO lpMonitorInfo )
 {
+	/*
     static bool s_bInited = false;
     static LPGETMONITORINFO s_pFnGetMonitorInfo = NULL;
     if( !s_bInited )
@@ -1284,6 +1285,7 @@ BOOL WINAPI DXUTGetMonitorInfo( HMONITOR hMonitor, LPMONITORINFO lpMonitorInfo )
         lpMonitorInfo->dwFlags = MONITORINFOF_PRIMARY;
         return TRUE;
     }
+	*/
     return FALSE;
 }
 
