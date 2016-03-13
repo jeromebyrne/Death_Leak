@@ -518,7 +518,8 @@ void Character::UpdateAnimations()
 
 bool Character::Jump(float percent)
 {
-	if (mCurrentJumpsBeforeLand >= mMaxJumpsAllowed)
+	if (mCurrentJumpsBeforeLand >= mMaxJumpsAllowed &&
+		!(WasInWaterLastFrame() && GetWaterIsDeep()))
 	{
 		return false;
 	}
