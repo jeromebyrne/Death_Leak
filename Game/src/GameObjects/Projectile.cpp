@@ -35,7 +35,8 @@ Projectile::Projectile(ProjectileOwnerType ownerType,
 	m_timeBecameInactive(0),
 	mOwnerType(ownerType),
 	mType(kUnknownProjectileType),
-	mReboundRotateRate(0.3f)
+	mReboundRotateRate(0.3f),
+	mTrailParticlesAttached(false)
 {
 	NUM_PROJECTILES_ACTIVE++; // increase our world projectile count
 
@@ -387,12 +388,12 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 
 void Projectile::Update(float delta)
 {
-	float targetDelta =  Timing::Instance()->GetTargetDelta();
+	float targetDelta = Timing::Instance()->GetTargetDelta();
 	float percentDelta = delta / targetDelta;
 
 	if (percentDelta > 1.2f)
 	{
-		percentDelta = 1.2f; 
+		percentDelta = 1.2f;
 	}
 
 	if (GetIsInWater())
@@ -400,23 +401,13 @@ void Projectile::Update(float delta)
 		DoWaterAccelerationBubbles();
 	}
 
-	if(m_isActive)
+	if (m_isActive)
 	{
 		// we dont need complicated movement so we'll ignore the MovingSprite class
 		Sprite::Update(delta);
 
-		// apply gravity to the velocity
-		/*if (!mIsInWater)
-		{
-			m_velocity.Y -= 0.1f * percentDelta;
-		}
-		else
-		{
-			m_velocity.Y -= 0.05f * percentDelta;
-		}*/
-
 		m_velocity.Y -= 0.1f * percentDelta;
-		
+
 		// rotate appropriately
 		Vector2 dir = Vector2(m_velocity.X, m_velocity.Y);
 		dir.Normalise();
@@ -429,11 +420,11 @@ void Projectile::Update(float delta)
 				{
 					if (dir.X > 0)
 					{
-						SetRotationAngle( -acos(dir.Dot(Vector2(1,0))));
+						SetRotationAngle(-acos(dir.Dot(Vector2(1, 0))));
 					}
 					else
 					{
-						SetRotationAngle( acos(dir.Dot(Vector2(1,0))));
+						SetRotationAngle(acos(dir.Dot(Vector2(1, 0))));
 						FlipVertical();
 					}
 				}
@@ -441,11 +432,11 @@ void Projectile::Update(float delta)
 				{
 					if (dir.X > 0)
 					{
-						SetRotationAngle( acos(dir.Dot(Vector2(1,0))));
+						SetRotationAngle(acos(dir.Dot(Vector2(1, 0))));
 					}
 					else
 					{
-						SetRotationAngle( -acos(dir.Dot(Vector2(1,0))));
+						SetRotationAngle(-acos(dir.Dot(Vector2(1, 0))));
 						FlipVertical();
 					}
 				}
@@ -488,14 +479,50 @@ void Projectile::Update(float delta)
 		float currentTime = Timing::Instance()->GetTotalTimeSeconds();
 		float timeToDie = m_timeBecameInactive + m_maxTimeInActive;
 
-		float timeToLive = timeToDie - currentTime;                                                      
+		float timeToLive = timeToDie - currentTime;
 		m_alpha = timeToLive / m_maxTimeInActive;
 
-		if(currentTime > timeToDie)
+		if (currentTime > timeToDie)
 		{
 			// time to kill ourselves
 			GameObjectManager::Instance()->RemoveGameObject(this, true);
 		}
+	}
+
+	if (!mTrailParticlesAttached)
+	{
+		mTrailParticlesAttached = true;
+
+		/*
+		ParticleSpray * spray =
+		ParticleEmitterManager::Instance()->CreateDirectedSpray(10,
+																Vector3(m_position.X, m_position.Y, m_position.Z - 0.01f),
+																Vector3(-m_direction.X, -m_direction.Y, 0),
+																0.25,
+																Vector3(1200, 720, 0),
+																"Media//projectile_trail.png",
+																0.0f,
+																0.0f,
+																0.1f,
+																0.3f,
+																30,
+																30,
+																0.0,
+																true,
+																1.0,
+																1.0,
+																1,
+																true,
+																0.6,
+																2.0f,
+																0.0f,
+																0.15f,
+																0.5f);
+		if (spray)
+		{
+			spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), Vector3(0, 0, 0));
+		}
+		*/
 	}
 
 	if (!m_isActive)

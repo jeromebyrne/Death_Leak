@@ -89,10 +89,15 @@ ParticleSpray * ParticleEmitterManager::CreateRadialBloodSpray(unsigned int numP
 		p.DirectionY = randDirY;
 
 		p.MaxLiveTime = kBloodRadialMaxLiveTime - (((kBloodRadialMaxLiveTime - kBloodRadialMinLiveTime) / numParticles) * i);
-		p.PosX = position.X;
-		p.PosY = position.Y;
-		p.StartPosX = position.X; // our original start position
-		p.StartPosY = position.Y;
+
+		unsigned spawnSpread = 4 * numParticles;
+		float posXOffset = rand() % spawnSpread;
+		p.PosX = position.X + posXOffset;
+		p.StartPosX = position.X + posXOffset;
+
+		float posYOffset = (rand() % spawnSpread) * 1.4f;
+		p.PosY = position.Y + posYOffset;
+		p.StartPosY = position.Y + posYOffset;
 
 		int randSize = ((rand() % (int)(kBloodRadialMaxSize - kBloodRadialMinSize)) + kBloodRadialMinSize + 1) * gameScale;
 		p.Size = randSize;
@@ -278,11 +283,6 @@ ParticleSpray * ParticleEmitterManager::CreateRadialSpray(int numParticles,
 		{
 			float posXOffset = rand() % ((unsigned)(spawnSpreadX * 10.0f) + 1);
 
-			/*if (flippedHorizontal)
-			{
-				posXOffset *= -1;
-			}*/
-
 			p.PosX = position.X + posXOffset;
 			p.StartPosX = position.X + posXOffset;
 		}
@@ -295,11 +295,6 @@ ParticleSpray * ParticleEmitterManager::CreateRadialSpray(int numParticles,
 		else
 		{
 			float posYOffset = rand() % ((unsigned)(spawnSpreadY * 10.0f) + 1);
-
-			/*if (flippedVertical)
-			{
-				posYOffset *= -1;
-			}*/
 
 			p.PosY = position.Y + posYOffset;
 			p.StartPosY = position.Y + posYOffset;

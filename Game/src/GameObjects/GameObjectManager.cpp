@@ -938,14 +938,22 @@ void GameObjectManager::ProcessGamePad()
 	// JUMP ==============================
 	
 	static float jumpPowerPercent = 0.0f;
+	static bool stoppedPressingJump = true;
+
 	if (pad_state.Gamepad.wButtons & XINPUT_GAMEPAD_A)
 	{
-		jumpPowerPercent = 100.0f;
-		m_player->Jump(jumpPowerPercent);
+		if (stoppedPressingJump)
+		{
+			jumpPowerPercent = 100.0f;
+			m_player->Jump(jumpPowerPercent);
+
+			stoppedPressingJump = false;
+		}
 	}
 	else
 	{
 		jumpPowerPercent = 0.0f;
+		stoppedPressingJump = true;
 	}
 	// ===================================
 

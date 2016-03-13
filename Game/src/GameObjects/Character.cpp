@@ -53,7 +53,7 @@ Character::Character(float x, float y, float z, float width, float height, float
 	mProjectileImpactFilePath = "Media/knife_impact.png";
 	mIsCharacter = true;
 
-	mExplodesGruesomely = (rand() % 6) < 3;
+	mExplodesGruesomely = true;
 }
 
 Character::~Character(void)
@@ -678,8 +678,8 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 																			"Media\\bloodparticle2.png",
 																			6,
 																			18,
-																			1.5f,
-																			3.0f,
+																			0.9f,
+																			2.0f,
 																			200,
 																			300,
 																			5,
@@ -688,11 +688,12 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 																			1.0f,
 																			loopTime,
 																			true,
-																			0.3f,
-																			0.0f,
-																			0.0f,
+																			0.6f,
+																			5.0f,
+																			7.0f,
 																			0.15f,
 																			0.8f);
+																			
 
 					ParticleEmitterManager::Instance()->CreateDirectedSpray(40,
 																			pos,
@@ -713,12 +714,17 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 																			loopTime,
 																			true,
 																			4.5f,
-																			0.0f,
-																			0.0f,
+																			10.0f,
+																			12.0f,
 																			0.15f,
 																			0.8f);
 
-					Timing::Instance()->SetTimeModifierForNumSeconds(0.2f, 3.0f);
+					bool slowTime = (rand() % 4) == 1;
+
+					if (slowTime)
+					{
+						Timing::Instance()->SetTimeModifierForNumSeconds(0.2f, 3.0f);
+					}
 
 					if (m_material)
 					{
@@ -734,7 +740,7 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 					// spawn some orbs
 					if (GameObjectManager::Instance()->GetPlayer() != this)
 					{
-						CurrencyOrb::SpawnOrbs(m_position, 5);
+						CurrencyOrb::SpawnOrbs(m_position, 3);
 					}
 				}
 				else if (shouldExplode && !mExplodesGruesomely)

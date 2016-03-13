@@ -96,11 +96,6 @@ void BombProjectile::Update(float delta)
 	float targetDelta =  Timing::Instance()->GetTargetDelta();
 	float percentDelta = delta / targetDelta;
 
-	if (percentDelta > 1.4f)
-	{
-		percentDelta = 1.4f; 
-	}
-
 	// apply gravity to the 
 	if (!mIsOnSolidLine)
 	{

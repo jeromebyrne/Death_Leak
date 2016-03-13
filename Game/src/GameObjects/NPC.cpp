@@ -216,60 +216,177 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointO
 		// decapitate
 		if (m_isAnimated && m_animationFile == "XmlFiles\\ninjaAnimation2.xml")
 		{
+			{
+				Orb * head = new Orb(nullptr, Vector3(m_position.X, m_position.Y + 50, m_position.Z - 1.1f), Vector3(54, 60, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\decapitated_head.png", true, 2.0f);
+				GameObjectManager::Instance()->AddGameObject(head);
 
-			Orb * head = new Orb(nullptr, Vector3(m_position.X, m_position.Y + 50, m_position.Z - 1.1f), Vector3(54, 60, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\decapitated_head.png", true, 2.0f);
-			GameObjectManager::Instance()->AddGameObject(head);
+				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(m_position.X, m_position.Y, 0.1f), true, 2.0f);
+				if (spray)
+				{
+					spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(head->ID()), Vector3(0, 0, 0));
+				}
+			}
 
-			Orb * arm1 = new Orb(nullptr, Vector3(m_position.X - 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\arm_destroyed.png", true, 2.0f);
-			GameObjectManager::Instance()->AddGameObject(arm1);
+			{
+				Orb * arm1 = new Orb(nullptr, Vector3(m_position.X - 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\arm_destroyed.png", true, 2.0f);
+				GameObjectManager::Instance()->AddGameObject(arm1);
 
-			Orb * arm2 = new Orb(nullptr, Vector3(m_position.X + 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\arm_destroyed.png", true, 2.0f);
-			GameObjectManager::Instance()->AddGameObject(arm2);
+				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(m_position.X, m_position.Y, 0.1f), true, 2.0f);
+				if (spray)
+				{
+					spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(arm1->ID()), Vector3(0, 0, 0));
+				}
+			}
 
-			Orb * leg1 = new Orb(nullptr, Vector3(m_position.X + 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\leg_destroyed.png", true, 2.0f);
-			GameObjectManager::Instance()->AddGameObject(leg1);
+			{
+				Orb * arm2 = new Orb(nullptr, Vector3(m_position.X + 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\arm_destroyed.png", true, 2.0f);
+				GameObjectManager::Instance()->AddGameObject(arm2);
 
-			Orb * leg2 = new Orb(nullptr, Vector3(m_position.X - 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\leg_destroyed.png", true, 2.0f);
-			GameObjectManager::Instance()->AddGameObject(leg2);
+				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(m_position.X, m_position.Y, 0.1f), true, 2.0f);
+				if (spray)
+				{
+					spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(arm2->ID()), Vector3(0, 0, 0));
+				}
+			}
+
+			{
+				Orb * leg1 = new Orb(nullptr, Vector3(m_position.X + 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\leg_destroyed.png", true, 2.0f);
+				GameObjectManager::Instance()->AddGameObject(leg1);
+
+				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(m_position.X, m_position.Y, 0.1f), true, 2.0f);
+				if (spray)
+				{
+					spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(leg1->ID()), Vector3(0, 0, 0));
+				}
+			}
+
+			{
+				Orb * leg2 = new Orb(nullptr, Vector3(m_position.X - 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\leg_destroyed.png", true, 2.0f);
+				GameObjectManager::Instance()->AddGameObject(leg2);
+
+				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(m_position.X, m_position.Y, 0.1f), true, 2.0f);
+				if (spray)
+				{
+					spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(leg2->ID()), Vector3(0, 0, 0));
+				}
+			}
 		}
 		else if (m_isAnimated && m_animationFile == "XmlFiles\\ninjaAnimation3.xml")
 		{
+			{
+				Orb * head = new Orb(nullptr, Vector3(m_position.X, m_position.Y + 50, m_position.Z - 1.1f), Vector3(54, 60, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_3\\decapitated_head.png", true, 2.0f);
+				GameObjectManager::Instance()->AddGameObject(head);
 
-			Orb * head = new Orb(nullptr, Vector3(m_position.X, m_position.Y + 50, m_position.Z - 1.1f), Vector3(54, 60, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_3\\decapitated_head.png", true, 2.0f);
-			GameObjectManager::Instance()->AddGameObject(head);
+				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(m_position.X, m_position.Y, 0.1f), true, 2.0f);
+				if (spray)
+				{
+					spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(head->ID()), Vector3(0, 0, 0));
+				}
+			}
 
-			Orb * arm1 = new Orb(nullptr, Vector3(m_position.X - 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_3\\arm_destroyed.png", true, 2.0f);
-			GameObjectManager::Instance()->AddGameObject(arm1);
+			{
+				Orb * arm1 = new Orb(nullptr, Vector3(m_position.X - 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_3\\arm_destroyed.png", true, 2.0f);
+				GameObjectManager::Instance()->AddGameObject(arm1);
 
-			Orb * arm2 = new Orb(nullptr, Vector3(m_position.X + 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_3\\arm_destroyed.png", true, 2.0f);
-			GameObjectManager::Instance()->AddGameObject(arm2);
+				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(m_position.X, m_position.Y, 0.1f), true, 2.0f);
+				if (spray)
+				{
+					spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(arm1->ID()), Vector3(0, 0, 0));
+				}
+			}
 
-			Orb * leg1 = new Orb(nullptr, Vector3(m_position.X + 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_3\\leg_destroyed.png", true, 2.0f);
-			GameObjectManager::Instance()->AddGameObject(leg1);
+			{
+				Orb * arm2 = new Orb(nullptr, Vector3(m_position.X + 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_3\\arm_destroyed.png", true, 2.0f);
+				GameObjectManager::Instance()->AddGameObject(arm2);
 
-			Orb * leg2 = new Orb(nullptr, Vector3(m_position.X - 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\leg_destroyed.png", true, 2.0f);
-			GameObjectManager::Instance()->AddGameObject(leg2);
+				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(m_position.X, m_position.Y, 0.1f), true, 2.0f);
+				if (spray)
+				{
+					spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(arm2->ID()), Vector3(0, 0, 0));
+				}
+			}
+
+			{
+				Orb * leg1 = new Orb(nullptr, Vector3(m_position.X + 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_3\\leg_destroyed.png", true, 2.0f);
+				GameObjectManager::Instance()->AddGameObject(leg1);
+
+				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(m_position.X, m_position.Y, 0.1f), true, 2.0f);
+				if (spray)
+				{
+					spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(leg1->ID()), Vector3(0, 0, 0));
+				}
+			}
+
+			{
+				Orb * leg2 = new Orb(nullptr, Vector3(m_position.X - 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\leg_destroyed.png", true, 2.0f);
+				GameObjectManager::Instance()->AddGameObject(leg2);
+
+				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(m_position.X, m_position.Y, 0.1f), true, 2.0f);
+				if (spray)
+				{
+					spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(leg2->ID()), Vector3(0, 0, 0));
+				}
+			}
 
 			Orb * hat = new Orb(nullptr, Vector3(m_position.X, m_position.Y + 75, m_position.Z - 1.1f), Vector3(67, 29, 0), Vector3(15, 15, 0), "Media\\objects\\ricehat.png", false, 2.5f);
 			GameObjectManager::Instance()->AddGameObject(hat);
 		}
 		else if (m_isAnimated && m_animationFile == "XmlFiles\\player_female_animation.xml")
 		{
+			{
+				Orb * head = new Orb(nullptr, Vector3(m_position.X, m_position.Y + 250, m_position.Z - 1.1f), Vector3(54, 60, 0), Vector3(15, 15, 0), "Media\\characters\\female\\decapitated_head.png", true, 1.0f);
+				GameObjectManager::Instance()->AddGameObject(head);
 
-			Orb * head = new Orb(nullptr, Vector3(m_position.X, m_position.Y + 250, m_position.Z - 1.1f), Vector3(54, 60, 0), Vector3(15, 15, 0), "Media\\characters\\female\\decapitated_head.png", true, 1.0f);
-			GameObjectManager::Instance()->AddGameObject(head);
+				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(m_position.X, m_position.Y, 0.1f), true, 2.0f);
+				if (spray)
+				{
+					spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(head->ID()), Vector3(0, 0, 0));
+				}
+			}
 
-			Orb * arm1 = new Orb(nullptr, Vector3(m_position.X - 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\female\\arm_destroyed.png", true, 1.0f);
-			GameObjectManager::Instance()->AddGameObject(arm1);
+			{
+				Orb * arm1 = new Orb(nullptr, Vector3(m_position.X - 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\female\\arm_destroyed.png", true, 1.0f);
+				GameObjectManager::Instance()->AddGameObject(arm1);
 
-			Orb * arm2 = new Orb(nullptr, Vector3(m_position.X + 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\female\\arm_destroyed.png", true, 1.0f);
-			GameObjectManager::Instance()->AddGameObject(arm2);
+				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(m_position.X, m_position.Y, 0.1f), true, 2.0f);
+				if (spray)
+				{
+					spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(arm1->ID()), Vector3(0, 0, 0));
+				}
+			}
 
-			Orb * leg1 = new Orb(nullptr, Vector3(m_position.X + 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\female\\leg_destroyed.png", true, 1.0f);
-			GameObjectManager::Instance()->AddGameObject(leg1);
+			{
+				Orb * arm2 = new Orb(nullptr, Vector3(m_position.X + 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\female\\arm_destroyed.png", true, 1.0f);
+				GameObjectManager::Instance()->AddGameObject(arm2);
 
-			Orb * leg2 = new Orb(nullptr, Vector3(m_position.X - 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\female\\leg_destroyed.png", true, 1.0f);
-			GameObjectManager::Instance()->AddGameObject(leg2);
+				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(m_position.X, m_position.Y, 0.1f), true, 2.0f);
+				if (spray)
+				{
+					spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(arm2->ID()), Vector3(0, 0, 0));
+				}
+			}
+
+			{
+				Orb * leg1 = new Orb(nullptr, Vector3(m_position.X + 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\female\\leg_destroyed.png", true, 1.0f);
+				GameObjectManager::Instance()->AddGameObject(leg1);
+
+				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(m_position.X, m_position.Y, 0.1f), true, 2.0f);
+				if (spray)
+				{
+					spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(leg1->ID()), Vector3(0, 0, 0));
+				}
+			}
+
+			{
+				Orb * leg2 = new Orb(nullptr, Vector3(m_position.X - 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\female\\leg_destroyed.png", true, 1.0f);
+				GameObjectManager::Instance()->AddGameObject(leg2);
+
+				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(m_position.X, m_position.Y, 0.1f), true, 2.0f);
+				if (spray)
+				{
+					spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(leg2->ID()), Vector3(0, 0, 0));
+				}
+			}
 		}
 
 		// Meat chunks

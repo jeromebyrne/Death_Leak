@@ -112,11 +112,6 @@ void MovingSprite::Update(float delta)
 	float targetDelta =  Timing::Instance()->GetTargetDelta();
 	float percentDelta = delta / targetDelta;
 
-	if (percentDelta > 1.4f)
-	{
-		percentDelta = 1.4f;
-	}
-
 	if (mObjectMovingWith)
 	{
 		m_position += m_velocity * percentDelta;

@@ -81,6 +81,8 @@ protected:
 	ProjectileOwnerType mOwnerType;
 
 	float mReboundRotateRate;
+
+	bool mTrailParticlesAttached;
 };
 
 #endif
