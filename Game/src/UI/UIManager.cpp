@@ -81,7 +81,8 @@ void UIManager::Update()
 
 	if (updateCursor && mCursorSprite)
 	{
-		if (!(GamePad::GetPad1() && GamePad::GetPad1()->IsConnected()))
+		if (!(GamePad::GetPad1() && GamePad::GetPad1()->IsConnected()) ||
+			Game::GetIsLevelEditMode())
 		{
 			POINT currentMouse;
 			GetCursorPos(&currentMouse);
@@ -150,9 +151,10 @@ void UIManager::Draw(ID3D10Device * device)
 		drawCursor = screen->GetShowCursor();
 	}
 
-	if (drawCursor && mCursorSprite)
+	if (drawCursor && mCursorSprite )
 	{
-		if (!(GamePad::GetPad1() && GamePad::GetPad1()->IsConnected()))
+		if (!(GamePad::GetPad1() && GamePad::GetPad1()->IsConnected()) ||
+			Game::GetIsLevelEditMode())
 		{
 			mCursorSprite->Draw(device);
 		}
