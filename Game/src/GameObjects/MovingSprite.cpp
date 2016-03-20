@@ -3,6 +3,7 @@
 #include "Environment.h"
 #include "SolidLineStrip.h"
 #include "ParticleEmitterManager.h"
+#include "Game.h"
 
 MovingSprite::MovingSprite(float x, float y, float z, float width, float height, float breadth, float groundFriction, float airResistance):
 	Sprite(x,y,z, width, height, breadth), 
@@ -48,6 +49,11 @@ void MovingSprite::Update(float delta)
 {	
 	// update our base class 
 	Sprite::Update(delta);
+
+	if (Game::GetInstance()->GetIsLevelEditMode())
+	{
+		return;
+	}
 
 	if (GetIsInWater() &&
 			(std::abs(m_velocity.X) > 0.1f || (std::abs(m_velocity.Y) > 1.0f &&
