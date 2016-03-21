@@ -118,7 +118,7 @@ ParticleSpray * ParticleEmitterManager::CreateRadialBloodSpray(unsigned int numP
 	ParticleSpray * spray = new ParticleSpray(true,
 											position,
 											Vector3(3200, 1200, 0), 
-											(char *) kBloodTextureFileName,
+											kBloodTextureFileName,
 											particleList,
 											loop,
 											loopTime,

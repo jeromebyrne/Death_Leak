@@ -11,7 +11,7 @@
         <material value="" />
         <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <level_to_load value="XmlFiles\waterfall_level.xml" />
-        <player_start_pos x="-2400.000000" y="420.000000" />
+        <player_start_pos x="-3800.000000" y="420.000000" />
         <player_direction x="-1.000000" />
     </LevelTrigger>
     <NPCTrigger id="738" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
