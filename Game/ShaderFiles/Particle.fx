@@ -4,9 +4,7 @@
 matrix World;
 matrix View;
 matrix Projection;
-float alpha;
-float3 lightDir;
-float4 lightColor;		
+float alpha;		
 
 Texture2D txDiffuse;
 SamplerState samLinear
@@ -53,17 +51,12 @@ PS_INPUT VS( VS_INPUT input )
 //--------------------------------------------------------------------------------------
 float4 PS( PS_INPUT input) : SV_Target
 {
-    float4 finalColor = 0;
-    
-    float4 textureSample = txDiffuse.Sample( samLinear, input.Tex );
-    
-    //do NdotL lighting 
-    finalColor += textureSample * input.Norm.y; // store darkness in normal vector.y
+	float4 textureSample = txDiffuse.Sample(samLinear, input.Tex) * input.Norm.y; // store darkness in normal vector.y
         
     // we store this individual particles alpha in the NORMAL vector.X component
-    finalColor.a = textureSample.a * input.Norm.x;
+	textureSample.a *= input.Norm.x;
 
-    return finalColor;
+	return textureSample;
 }
 //--------------------------------------------------------------------------------------
 technique10 Render

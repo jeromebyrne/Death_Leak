@@ -62,19 +62,14 @@ float4 PS( PS_INPUT input) : SV_Target
 	float NoiseX = iSeed * fTimer * sin(input.Tex.x * input.Tex.y + fTimer);
 	NoiseX = fmod(NoiseX,8) * fmod(NoiseX,4);
 	
-	// Use our distortion factor to compute how much it will affect each
-	// texture coordinate
-	float DistortX = fmod(NoiseX,fNoiseAmount);
-	float DistortY = fmod(NoiseX,fNoiseAmount+0.002);
-	
 	// Create our new texture coordinate based on our distortion factor
-	float2 DistortTex = float2(DistortX,DistortY);
+	float2 DistortTex = float2(fmod(NoiseX, fNoiseAmount), fmod(NoiseX, fNoiseAmount + 0.002));
 
 	// Use our new texture coordinate to look-up a pixel in ColorMapSampler.
 	float4 Color = txDiffuse.Sample( samLinear, input.Tex + DistortTex);
 
 	// TODO: can be optimised with step()
-	if ((Color.r + Color.b + Color.g) > 3.0) // if the color is completely black then we can assume alpha so clear it out
+	[branch] if ((Color.r + Color.b + Color.g) > 3.0) // if the color is completely black then we can assume alpha so clear it out
 	{
 		Color.a = 0;
 	}

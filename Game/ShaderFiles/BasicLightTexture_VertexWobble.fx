@@ -114,13 +114,10 @@ float4 PS( PS_INPUT input) : SV_Target
 	
 	return result;*/
 
-	float4 finalColor = 0;
-	float4 textureSample = txDiffuse.Sample( samLinear, input.Tex );
+	float4 textureSample = saturate(lightColor) * txDiffuse.Sample(samLinear, input.Tex);
+	textureSample.a *= alpha;
 
-    finalColor += (saturate( lightColor ) * textureSample);
-    finalColor.a = textureSample.a * alpha; 
-
-	return finalColor;
+	return textureSample;
 }
 //--------------------------------------------------------------------------------------
 technique10 Render

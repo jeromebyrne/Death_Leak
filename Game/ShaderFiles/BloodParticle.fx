@@ -5,7 +5,6 @@ matrix World;
 matrix View;
 matrix Projection;
 float alpha;
-float3 lightDir;
 float4 lightColor;		
 
 Texture2D txDiffuse;
@@ -52,19 +51,13 @@ PS_INPUT VS( VS_INPUT input )
 // Pixel Shader
 //--------------------------------------------------------------------------------------
 float4 PS( PS_INPUT input) : SV_Target
-{
-    float4 finalColor = 0;
-    
+{    
     float4 textureSample = txDiffuse.Sample( samLinear, input.Tex );
-  
+
     // we store this individual particles alpha in the NORMAL vector.X component
-    finalColor.a = textureSample.a * input.Norm.x;
+	textureSample.a *= input.Norm.x;
 
-	finalColor.r = 0.7;
-	finalColor.g = 0.0;
-	finalColor.b = 0.0;
-
-    return finalColor;
+	return textureSample;
 }
 //--------------------------------------------------------------------------------------
 technique10 Render

@@ -5,7 +5,6 @@ matrix World;
 matrix View;
 matrix Projection;
 float alpha;
-float3 lightDir;
 float4 lightColor;
 
 float Time;
@@ -61,13 +60,11 @@ PS_INPUT VS( VS_INPUT input )
 //--------------------------------------------------------------------------------------
 float4 PS( PS_INPUT input) : SV_Target
 {
-	float4 finalColor = 0;
 	float4 textureSample = txDiffuse.Sample( samLinear, input.Tex );
 
-    finalColor += (saturate( lightColor ) * textureSample);
-    finalColor.a = textureSample.a * alpha; 
+	textureSample.a *= alpha;
 
-	return finalColor;
+	return textureSample;
 }
 //--------------------------------------------------------------------------------------
 technique10 Render

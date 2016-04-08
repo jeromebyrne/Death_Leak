@@ -5,8 +5,6 @@ matrix World;
 matrix View;
 matrix Projection;
 float alpha;
-float3 lightDir;
-float4 lightColor;
 
 Texture2D txDiffuse;
 SamplerState samLinear
@@ -52,18 +50,14 @@ PS_INPUT VS( VS_INPUT input )
 // Pixel Shader
 //--------------------------------------------------------------------------------------
 float4 PS( PS_INPUT input) : SV_Target
-{
-    float4 textureSample = txDiffuse.Sample( samLinear, input.Tex );
-    
-    float4 color = textureSample * alpha;
+{    
+	float4 color = txDiffuse.Sample(samLinear, input.Tex);
 
-    if ((color.r - (color.g + color.b)) < 0.5)
+    [branch] if ((color.r - (color.g + color.b)) < 0.5)
     {
 		float value = (color.r + color.g + color.b) * 0.3333;
-    
-		color.r = value;
-		color.g = value;
-		color.b = value;
+
+		color = float4(value, value, value, 1.0f);
     }
     
     return color;
