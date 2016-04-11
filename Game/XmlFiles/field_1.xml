@@ -40,7 +40,7 @@
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="false" />
+        <horizontalflip value="true" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
@@ -58,7 +58,7 @@
         <projectileoffsety value="20" />
     </Butterfly>
     <ParallaxLayer id="3" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9999.000000" y="800.000000" x="3539.704102" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="9999.000000" y="800.000000" x="4485.704102" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="472.000000" width="2048.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -81,7 +81,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="4" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9990.000000" y="740.000000" x="3539.704102" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="9990.000000" y="740.000000" x="4485.704102" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="472.000000" width="2048.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -433,8 +433,8 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="27" parallax_x="0.650000" parallax_y="1.010000" level_edit_locked="false" updateable="true">
-        <position z="138.899994" y="1069.509644" x="1122.070801" rotation="-0.100248" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="686.944580" width="278.524841" native="false" repeatX="false" repeatY="false" />
+        <position z="138.899994" y="1119.033325" x="2883.196289" rotation="-0.100248" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="818.846741" width="332.005127" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
@@ -461,7 +461,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="29" parallax_x="0.650000" parallax_y="1.010000" level_edit_locked="false" updateable="true">
-        <position z="138.899994" y="1058.141235" x="2322.697754" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="138.899994" y="1026.631592" x="2315.045898" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="686.944580" width="278.524841" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -881,7 +881,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="5.000000" bottom_right_intensity_x="7.000000" bottom_right_intensity_y="2.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.500000" />
     </Sprite>
     <Sprite id="59" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
-        <position z="70.899994" y="1601.894775" x="5280.431152" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="70.899994" y="1592.258179" x="5269.779297" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="553.814880" width="553.814880" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -1620,7 +1620,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="103" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
-        <position z="106.900002" y="800.209595" x="2237.722656" rotation="0.040000" auto_rotate_value="0.000000" />
+        <position z="106.900002" y="803.282349" x="2285.829590" rotation="0.040000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="90.908806" width="132.628189" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -1676,7 +1676,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="107" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
-        <position z="105.900002" y="753.702454" x="3027.691406" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="105.900002" y="760.909180" x="3031.911133" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="73.763290" width="107.614357" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -2362,7 +2362,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="156" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="33.900002" y="833.587463" x="2854.023682" rotation="0.447675" auto_rotate_value="0.000000" />
+        <position z="33.900002" y="847.722534" x="2838.306152" rotation="0.447675" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="170.008499" width="91.684792" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -2404,7 +2404,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="159" parallax_x="0.550000" parallax_y="1.005000" level_edit_locked="false" updateable="true">
-        <position z="143.899994" y="812.137634" x="2930.387451" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="143.899994" y="820.851746" x="2941.378174" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="37.105328" width="191.858566" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -2640,7 +2640,7 @@
         <projectileoffsety value="20" />
     </Butterfly>
     <ParticleSpray id="175" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="65.000000" y="771.952576" x="3593.704102" rotation="0.000000" auto_rotate_value="0.000000" spawn_spread_x="300.000000" spawn_spread_y="45.000000" />
+        <position z="65.000000" y="720.373291" x="3350.782715" rotation="0.000000" auto_rotate_value="0.000000" spawn_spread_x="300.000000" spawn_spread_y="45.000000" />
         <dimensions breadth="0.000000" height="4000.000000" width="8000.000000" />
         <material value="" />
         <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -2683,7 +2683,7 @@
         <player_direction x="1.000000" />
     </LevelTrigger>
     <LevelTrigger id="178" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="4.000000" y="1555.084839" x="-1250.556396" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="4.000000" y="1728.411499" x="-1343.637573" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="2000.000000" width="1000.000000" />
         <material value="" />
         <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -2896,21 +2896,6 @@
         <scroll_properties StartLerpX="1301.421875" StartLerpY="1442.766479" LerpDistanceX="3000.000000" LerpDistanceY="0.000000" LerpTime="80.000000" FadeInTime="5.000000" FadeOutTime="5.000000" />
     </ScrollingSprite>
     <ScrollingSprite id="187" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
-        <position z="101.099983" y="1429.560791" x="-1080.020142" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="1939.070801" width="2988.273438" native="false" repeatX="false" repeatY="false" />
-        <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="0.500000" />
-        <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.050000" pixelwobblespeedmod="0.300000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\fog.png" />
-        <horizontalflip value="true" />
-        <verticalflip value="false" />
-        <isanimated value="false" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <scroll_properties StartLerpX="-1080.020142" StartLerpY="1429.560791" LerpDistanceX="3000.000000" LerpDistanceY="0.000000" LerpTime="80.000000" FadeInTime="5.000000" FadeOutTime="5.000000" />
-    </ScrollingSprite>
-    <ScrollingSprite id="188" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
         <position z="101.099983" y="1486.402832" x="3239.101807" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="1939.070801" width="2988.273438" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -2925,22 +2910,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <scroll_properties StartLerpX="3239.101807" StartLerpY="1486.402832" LerpDistanceX="3000.000000" LerpDistanceY="0.000000" LerpTime="80.000000" FadeInTime="5.000000" FadeOutTime="5.000000" />
     </ScrollingSprite>
-    <ScrollingSprite id="189" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
-        <position z="101.099983" y="1274.670044" x="5212.895020" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="1290.000000" width="1988.000000" native="true" repeatX="false" repeatY="false" />
-        <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="0.500000" />
-        <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.050000" pixelwobblespeedmod="0.300000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\fog.png" />
-        <horizontalflip value="true" />
-        <verticalflip value="false" />
-        <isanimated value="false" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <scroll_properties StartLerpX="5212.895020" StartLerpY="1274.670044" LerpDistanceX="-3000.000000" LerpDistanceY="0.000000" LerpTime="80.000000" FadeInTime="5.000000" FadeOutTime="5.000000" />
-    </ScrollingSprite>
-    <ScrollingSprite id="190" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
+    <ScrollingSprite id="188" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
         <position z="101.099983" y="1438.995483" x="3202.738281" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="1315.650391" width="2027.529297" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -2955,7 +2925,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <scroll_properties StartLerpX="3202.738281" StartLerpY="1438.995483" LerpDistanceX="-3000.000000" LerpDistanceY="0.000000" LerpTime="80.000000" FadeInTime="5.000000" FadeOutTime="5.000000" />
     </ScrollingSprite>
-    <ScrollingSprite id="191" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
+    <ScrollingSprite id="189" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
         <position z="101.099983" y="1459.665283" x="810.387207" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="1939.070801" width="2988.273438" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -2970,7 +2940,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <scroll_properties StartLerpX="810.387207" StartLerpY="1459.665283" LerpDistanceX="-3000.000000" LerpDistanceY="0.000000" LerpTime="80.000000" FadeInTime="5.000000" FadeOutTime="5.000000" />
     </ScrollingSprite>
-    <ScrollingSprite id="192" parallax_x="1.000000" parallax_y="1.100000" level_edit_locked="false" updateable="true">
+    <ScrollingSprite id="190" parallax_x="1.000000" parallax_y="1.100000" level_edit_locked="false" updateable="true">
         <position z="7.099983" y="427.136841" x="-615.693970" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="1310.825562" width="2020.093994" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -2985,9 +2955,9 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <scroll_properties StartLerpX="-615.693970" StartLerpY="427.136841" LerpDistanceX="3000.000000" LerpDistanceY="0.000000" LerpTime="70.000000" FadeInTime="5.000000" FadeOutTime="5.000000" />
     </ScrollingSprite>
-    <ScrollingSprite id="193" parallax_x="1.000000" parallax_y="1.100000" level_edit_locked="false" updateable="true">
-        <position z="7.099983" y="279.768372" x="2415.904785" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="2057.356201" width="3170.561279" native="false" repeatX="false" repeatY="false" />
+    <ScrollingSprite id="191" parallax_x="1.000000" parallax_y="1.100000" level_edit_locked="false" updateable="true">
+        <position z="7.099983" y="1819.779785" x="1180.500366" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="1915.356445" width="2951.727539" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.500000" />
@@ -2998,11 +2968,11 @@
         <verticalflip value="true" />
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <scroll_properties StartLerpX="2415.904785" StartLerpY="279.768372" LerpDistanceX="3000.000000" LerpDistanceY="0.000000" LerpTime="70.000000" FadeInTime="5.000000" FadeOutTime="5.000000" />
+        <scroll_properties StartLerpX="1180.500366" StartLerpY="1819.779785" LerpDistanceX="3000.000000" LerpDistanceY="0.000000" LerpTime="70.000000" FadeInTime="5.000000" FadeOutTime="5.000000" />
     </ScrollingSprite>
-    <ScrollingSprite id="194" parallax_x="1.000000" parallax_y="1.100000" level_edit_locked="false" updateable="true">
-        <position z="7.099983" y="-7.580872" x="3982.174316" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="3000.540283" width="4624.088379" native="false" repeatX="false" repeatY="false" />
+    <ScrollingSprite id="192" parallax_x="1.000000" parallax_y="1.100000" level_edit_locked="false" updateable="true">
+        <position z="7.099983" y="1748.966309" x="3085.328125" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="1864.674927" width="2873.623047" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.500000" />
@@ -3013,41 +2983,11 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <scroll_properties StartLerpX="3982.174316" StartLerpY="-7.580872" LerpDistanceX="3000.000000" LerpDistanceY="0.000000" LerpTime="70.000000" FadeInTime="5.000000" FadeOutTime="5.000000" />
+        <scroll_properties StartLerpX="3085.328125" StartLerpY="1748.966309" LerpDistanceX="3000.000000" LerpDistanceY="0.000000" LerpTime="70.000000" FadeInTime="5.000000" FadeOutTime="5.000000" />
     </ScrollingSprite>
-    <ScrollingSprite id="195" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
-        <position z="115.099983" y="880.266113" x="-1.900879" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="1416.812500" width="2183.428711" native="false" repeatX="false" repeatY="false" />
-        <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="0.600000" />
-        <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.050000" pixelwobblespeedmod="0.300000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\fog.png" />
-        <horizontalflip value="true" />
-        <verticalflip value="false" />
-        <isanimated value="false" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <scroll_properties StartLerpX="-1.900879" StartLerpY="880.266113" LerpDistanceX="3000.000000" LerpDistanceY="0.000000" LerpTime="70.000000" FadeInTime="5.000000" FadeOutTime="5.000000" />
-    </ScrollingSprite>
-    <ScrollingSprite id="196" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
-        <position z="115.099983" y="892.246887" x="811.139893" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="1290.000000" width="1988.000000" native="true" repeatX="false" repeatY="false" />
-        <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="0.600000" />
-        <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.050000" pixelwobblespeedmod="0.300000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\fog.png" />
-        <horizontalflip value="true" />
-        <verticalflip value="false" />
-        <isanimated value="false" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <scroll_properties StartLerpX="811.139893" StartLerpY="892.246887" LerpDistanceX="3000.000000" LerpDistanceY="0.000000" LerpTime="70.000000" FadeInTime="5.000000" FadeOutTime="5.000000" />
-    </ScrollingSprite>
-    <ScrollingSprite id="197" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
-        <position z="102.099983" y="939.265991" x="3851.704102" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="2076.820313" width="3200.557617" native="false" repeatX="false" repeatY="false" />
+    <ScrollingSprite id="193" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
+        <position z="102.099983" y="1650.861084" x="4744.136719" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="1891.494507" width="2914.954590" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.600000" />
@@ -3058,9 +2998,9 @@
         <verticalflip value="true" />
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <scroll_properties StartLerpX="3851.704102" StartLerpY="939.265991" LerpDistanceX="3000.000000" LerpDistanceY="0.000000" LerpTime="70.000000" FadeInTime="5.000000" FadeOutTime="5.000000" />
+        <scroll_properties StartLerpX="4744.136719" StartLerpY="1650.861084" LerpDistanceX="3000.000000" LerpDistanceY="0.000000" LerpTime="70.000000" FadeInTime="5.000000" FadeOutTime="5.000000" />
     </ScrollingSprite>
-    <Sprite id="198" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Sprite id="194" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="100.199997" y="1207.478638" x="3484.704102" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="229.644104" width="77.339523" native="false" repeatX="false" repeatY="false" />
         <material value="" />
@@ -3074,7 +3014,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="8.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="8.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="199" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Sprite id="195" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="100.900002" y="1383.554443" x="3497.704102" rotation="1.539999" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="223.546631" width="223.546631" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -3088,7 +3028,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="8.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="8.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="200" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
+    <Sprite id="196" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
         <position z="106.199997" y="1144.236938" x="3603.704102" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="168.001541" width="56.579544" native="false" repeatX="false" repeatY="false" />
         <material value="" />
@@ -3102,7 +3042,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="8.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="8.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="201" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
+    <Sprite id="197" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
         <position z="108.900002" y="1288.957275" x="3613.704102" rotation="1.539999" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="174.389954" width="174.389954" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -3116,7 +3056,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="8.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="8.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="202" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
+    <Sprite id="198" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
         <position z="106.199997" y="1190.871948" x="3529.704102" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="145.502090" width="49.002182" native="false" repeatX="false" repeatY="false" />
         <material value="" />
@@ -3130,7 +3070,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="8.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="8.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="203" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
+    <Sprite id="199" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
         <position z="108.900002" y="1325.052002" x="3537.704102" rotation="1.539999" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="174.389954" width="174.389954" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -3144,7 +3084,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="8.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="8.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="204" parallax_x="0.650000" parallax_y="1.010000" level_edit_locked="false" updateable="true">
+    <Sprite id="200" parallax_x="0.650000" parallax_y="1.010000" level_edit_locked="false" updateable="true">
         <position z="106.199997" y="1124.786621" x="3093.704102" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="119.188637" width="40.140335" native="false" repeatX="false" repeatY="false" />
         <material value="" />
@@ -3158,7 +3098,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="8.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="8.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="205" parallax_x="0.650000" parallax_y="1.010000" level_edit_locked="false" updateable="true">
+    <Sprite id="201" parallax_x="0.650000" parallax_y="1.010000" level_edit_locked="false" updateable="true">
         <position z="108.900002" y="1226.360107" x="3090.704102" rotation="1.539999" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="107.000397" width="107.000397" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -3172,7 +3112,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="8.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="8.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Butterfly id="206" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Butterfly id="202" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="30.000000" y="1178.739258" x="2960.704102" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="64.000000" width="64.000000" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
@@ -3181,7 +3121,7 @@
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="false" />
+        <horizontalflip value="true" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
@@ -3198,7 +3138,7 @@
         <projectileoffsetx value="15" />
         <projectileoffsety value="20" />
     </Butterfly>
-    <Butterfly id="207" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Butterfly id="203" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="30.000000" y="1235.042603" x="4372.704102" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="64.000000" width="64.000000" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
@@ -3224,7 +3164,7 @@
         <projectileoffsetx value="15" />
         <projectileoffsety value="20" />
     </Butterfly>
-    <Butterfly id="208" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Butterfly id="204" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="30.000000" y="1324.028320" x="3257.704102" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="64.000000" width="64.000000" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
@@ -3233,7 +3173,7 @@
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="true" />
+        <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
@@ -3250,7 +3190,7 @@
         <projectileoffsetx value="15" />
         <projectileoffsety value="20" />
     </Butterfly>
-    <Butterfly id="209" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Butterfly id="205" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="30.000000" y="1000.540222" x="3210.704102" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="64.000000" width="64.000000" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
@@ -3259,7 +3199,7 @@
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="true" />
+        <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
@@ -3276,7 +3216,7 @@
         <projectileoffsetx value="15" />
         <projectileoffsety value="20" />
     </Butterfly>
-    <Butterfly id="210" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
+    <Butterfly id="206" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
         <position z="111.000000" y="1060.142090" x="4749.704102" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="45.951408" width="45.951408" native="false" repeatX="false" repeatY="false" />
         <material value="rabbit" />
@@ -3285,7 +3225,7 @@
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="false" />
+        <horizontalflip value="true" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
@@ -3302,7 +3242,7 @@
         <projectileoffsetx value="15" />
         <projectileoffsety value="20" />
     </Butterfly>
-    <Butterfly id="211" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
+    <Butterfly id="207" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
         <position z="111.000000" y="983.781921" x="1881.704102" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="45.951408" width="45.951408" native="false" repeatX="false" repeatY="false" />
         <material value="rabbit" />
@@ -3311,7 +3251,7 @@
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="false" />
+        <horizontalflip value="true" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
@@ -3328,7 +3268,7 @@
         <projectileoffsetx value="15" />
         <projectileoffsety value="20" />
     </Butterfly>
-    <Butterfly id="212" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
+    <Butterfly id="208" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
         <position z="111.000000" y="1101.886230" x="3698.704102" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="45.951408" width="45.951408" native="false" repeatX="false" repeatY="false" />
         <material value="rabbit" />
@@ -3354,7 +3294,7 @@
         <projectileoffsetx value="15" />
         <projectileoffsety value="20" />
     </Butterfly>
-    <Butterfly id="213" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
+    <Butterfly id="209" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
         <position z="111.000000" y="1122.360107" x="2183.704102" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="45.951408" width="45.951408" native="false" repeatX="false" repeatY="false" />
         <material value="rabbit" />
@@ -3380,7 +3320,7 @@
         <projectileoffsetx value="15" />
         <projectileoffsety value="20" />
     </Butterfly>
-    <Butterfly id="214" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
+    <Butterfly id="210" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
         <position z="111.000000" y="1156.521240" x="3357.704102" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="45.951408" width="45.951408" native="false" repeatX="false" repeatY="false" />
         <material value="rabbit" />
@@ -3389,7 +3329,7 @@
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="false" />
+        <horizontalflip value="true" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
@@ -3406,8 +3346,8 @@
         <projectileoffsetx value="15" />
         <projectileoffsety value="20" />
     </Butterfly>
-    <ParticleSpray id="215" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="105.000000" y="681.943054" x="3932.704102" rotation="0.000000" auto_rotate_value="0.000000" spawn_spread_x="300.000000" spawn_spread_y="45.000000" />
+    <ParticleSpray id="211" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="105.000000" y="769.980957" x="3164.575684" rotation="0.000000" auto_rotate_value="0.000000" spawn_spread_x="300.000000" spawn_spread_y="45.000000" />
         <dimensions breadth="0.000000" height="4000.000000" width="8000.000000" />
         <material value="" />
         <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -3426,8 +3366,8 @@
         <brightness min="0.600000" max="1.000000" />
         <fade_time_percent out="0.750000" in="0.250000" />
     </ParticleSpray>
-    <TextObject id="216" parallax_x="0.650000" parallax_y="1.010000" level_edit_locked="false" updateable="true">
-        <position z="47.899994" y="969.677673" x="3509.704102" rotation="0.000000" auto_rotate_value="0.000000" />
+    <TextObject id="212" parallax_x="0.650000" parallax_y="1.010000" level_edit_locked="false" updateable="true">
+        <position z="47.899994" y="1027.550293" x="3505.516113" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="2817.862305" width="1275.623535" />
         <material value="grassground" />
         <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -3437,4 +3377,678 @@
         <font_properties string_id="forest_name" name="Jing Jing" size="148.000000" />
         <font_color r="1" g="0" b="0" />
     </TextObject>
+    <Sprite id="213" parallax_x="0.650000" parallax_y="1.010000" level_edit_locked="false" updateable="true">
+        <position z="138.899994" y="1109.617065" x="1107.020752" rotation="-0.019943" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="863.840271" width="350.248016" native="false" repeatX="false" repeatY="false" />
+        <material value="grassground" />
+        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\objects\tree2.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+    </Sprite>
+    <CurrencyOrb id="215" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1161.100342" x="362.443970" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="216" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1089.789307" x="472.788818" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="217" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1037.081177" x="583.133667" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="218" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1286.152954" x="-239.813110" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="219" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1333.693604" x="-128.465149" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="220" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1166.880127" x="2904.638184" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="221" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1177.215088" x="3052.099121" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="222" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1183.416016" x="3209.591309" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="223" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1161.712769" x="3366.080322" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="224" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1226.822754" x="3880.688477" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="225" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1163.779785" x="4000.061523" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="226" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1070.573975" x="4753.290527" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="227" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1058.172119" x="4960.939453" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="228" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1395.205566" x="5256.613281" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="229" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1428.277344" x="5404.074219" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="230" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1669.310791" x="4585.516113" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="231" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1649.674438" x="4799.183594" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="232" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1160.985474" x="4869.152344" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="235" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="717.387390" x="1322.945557" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="236" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="810.401733" x="1455.233887" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="237" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="861.042847" x="1666.895386" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="238" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="821.770142" x="1863.509766" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="239" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="686.382568" x="1990.907959" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="240" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1219.817993" x="2543.133789" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="241" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1329.368164" x="2544.136719" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="242" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1442.018921" x="2550.155518" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="243" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1560.870605" x="2552.161865" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="246" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1399.224731" x="148.400085" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="255.000000" width="167.000000" native="true" repeatX="false" repeatY="false" />
+        <material value="flame_orb_large" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="80.648979" x="80.648979" offsetX="0.000000" offsetY="40.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="247" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1715.396973" x="2522.945557" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="255.000000" width="167.000000" native="true" repeatX="false" repeatY="false" />
+        <material value="flame_orb_large" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="80.648979" x="80.648979" offsetX="0.000000" offsetY="40.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="248" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1508.162476" x="4414.481445" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="255.000000" width="167.000000" native="true" repeatX="false" repeatY="false" />
+        <material value="flame_orb_large" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="80.648979" x="80.648979" offsetX="0.000000" offsetY="40.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
 </level>

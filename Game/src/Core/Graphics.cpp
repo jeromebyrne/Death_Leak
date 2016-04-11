@@ -10,7 +10,7 @@ static const float clearColor[4] = { 0.3f, 0.3f, 0.3f, 1.0f };
 Graphics::Graphics(void):
 	mSimpleFontManager(nullptr),
 	mIsFullScreen(false),
-	mVSyncEnabled(true)
+	mVSyncEnabled(false)
 {
 	// TODO: add these to member initialiser
 	m_pd3dDevice = nullptr;
