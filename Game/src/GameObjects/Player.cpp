@@ -36,6 +36,8 @@ void Player::Initialise()
 	Character::Initialise();
 
 	mRunAnimFramerateMultiplier = 1.0f;
+
+	m_maxJumpSpeed = 25;
 }
 void Player::XmlRead(TiXmlElement * element)
 {

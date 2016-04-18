@@ -915,17 +915,32 @@ void GameObjectManager::ProcessGamePad()
 	
 	// can't move left or right whilst moving up the side of an object
 	// this helps the player latch on better
+	bool applySprint = false;
 	if (!m_player->GetIsCollidingAtObjectSide() || m_player->GetVelocity().Y <= 0.1)
 	{
 		if (pad_state.Gamepad.sThumbLX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE )
 		{
-			// move left
-			m_player->AccelerateX(-100);
+			if (pad_state.Gamepad.sThumbLX > -30000)
+			{
+				m_player->AccelerateX(-100);
+			}
+			else
+			{
+				m_player->AccelerateX(-100);
+				applySprint = true;
+			}
 		}
 		else if (pad_state.Gamepad.sThumbLX > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
 		{
-			// move right
-			m_player->AccelerateX(100);
+			if (pad_state.Gamepad.sThumbLX < 30000)
+			{
+				m_player->AccelerateX(100);
+			}
+			else
+			{
+				m_player->AccelerateX(100);
+				applySprint = true;
+			}
 		}
 		else
 		{
@@ -933,6 +948,7 @@ void GameObjectManager::ProcessGamePad()
 			m_player->StopXAccelerating();
 		}
 	}
+	m_player->SetSprintActive(applySprint);
 	// ===================================
 	
 	// JUMP ==============================
@@ -1057,6 +1073,7 @@ void GameObjectManager::ProcessGamePad()
 	// Sprint ====================
 	
 	// only sprint if on solid ground or wall running and not in water
+	/*
 	if (!m_player->WasInWaterLastFrame() && ((m_player->GetAccelY() > -0.1f && m_player->GetAccelY() < 0.1f) || m_player->GetIsCollidingAtObjectSide()))
 	{
 		if (pad_state.Gamepad.bLeftTrigger > 75.0f)
@@ -1072,6 +1089,7 @@ void GameObjectManager::ProcessGamePad()
 	{
 		m_player->SetSprintActive(false);
 	}
+	*/
 
 	// ===========================
 
