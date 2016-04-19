@@ -6,7 +6,7 @@
         <weather_properties allow_weather="true" />
     </LevelProperties>
     <Player id="1" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="50.000000" y="1053.601929" x="-846.386719" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="50.000000" y="230.494385" x="-854.348999" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="300.000000" width="150.000000" native="false" repeatX="false" repeatY="false" />
         <material value="maleninja" />
         <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -26,7 +26,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
-        <maxjumpspeed value="20" />
+        <maxjumpspeed value="25" />
         <xaccelrate value="1" />
         <projectileoffsetx value="40" />
         <projectileoffsety value="0" />
@@ -61,7 +61,7 @@
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" />
     </SolidLineStrip>
     <ParallaxLayer id="3" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9999.000000" y="-120.000000" x="-383.386719" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="9999.000000" y="-120.000000" x="-854.348999" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="523.000000" width="2048.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -84,7 +84,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="4" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="99999.000000" y="220.000000" x="-383.386719" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="99999.000000" y="220.000000" x="-854.348999" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="243.000000" width="4083.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -107,7 +107,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="5" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9990.000000" y="70.000000" x="-383.386719" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="9990.000000" y="70.000000" x="-854.348999" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="243.000000" width="4083.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -130,7 +130,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="6" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9990.000000" y="-50.000000" x="-383.386719" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="9990.000000" y="-50.000000" x="-854.348999" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="596.000000" width="1925.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -629,7 +629,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <ParallaxLayer id="41" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9999.999023" y="600.000000" x="-383.386719" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="9999.999023" y="600.000000" x="-854.348999" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="900.000000" width="2048.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -1101,30 +1101,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Breakable id="67" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="52.000000" y="160.105286" x="530.638977" rotation="-0.039880" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="131.680725" width="139.816605" native="false" repeatX="false" repeatY="false" />
-        <material value="crate" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\platform_grass.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\crate_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="2.000000" x="0.950000" />
-        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions z="0.000000" y="89.302910" x="89.302910" offsetX="0.000000" offsetY="-10.000000" />
-        <passive value="true" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <health value="70.000000" delete_on_break="false" />
-    </Breakable>
-    <Sprite id="68" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <Sprite id="67" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="58.199997" y="136.028442" x="180.613831" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="181.563080" width="459.063202" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -1138,7 +1115,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="69" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <Sprite id="68" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="59.199997" y="130.398071" x="580.613770" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="181.563080" width="459.063202" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -1152,7 +1129,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="70" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <Sprite id="69" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="58.199997" y="527.105591" x="-957.386230" rotation="-0.020000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="181.563080" width="459.063202" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -1166,7 +1143,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="71" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <Sprite id="70" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="98.900002" y="303.706177" x="-1345.386230" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="827.000000" width="305.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -1180,7 +1157,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="72" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <Sprite id="71" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="58.199997" y="710.113770" x="-1459.386230" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="181.563080" width="459.063202" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -1194,7 +1171,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="73" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <Sprite id="72" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="58.199997" y="717.279602" x="-1859.386230" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="181.563080" width="459.063202" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -1208,7 +1185,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="74" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <Sprite id="73" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="58.199997" y="724.445496" x="-2260.386230" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="181.563080" width="459.063202" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -1222,7 +1199,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="75" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <Sprite id="74" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="98.900002" y="400.957336" x="-1989.386230" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="827.000000" width="305.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -1236,7 +1213,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <SolidLineStrip id="76" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidLineStrip id="75" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="779.023682" x="-1729.386230" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="505.440735" width="1482.000000" native="false" repeatX="false" repeatY="false" />
         <material value="softwood" />
@@ -1262,7 +1239,7 @@
         </points>
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" />
     </SolidLineStrip>
-    <Sprite id="77" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Sprite id="76" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="123.900002" y="547.649292" x="-1329.386230" rotation="1.539999" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="256.000000" width="256.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -1276,7 +1253,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="24.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="6.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="78" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Sprite id="77" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="123.900002" y="555.857849" x="-1272.386230" rotation="1.539999" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="256.000000" width="256.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -1290,7 +1267,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="24.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="6.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="79" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Sprite id="78" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="131.899994" y="450.037903" x="-791.386719" rotation="1.539999" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="194.625839" width="194.625839" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -1304,7 +1281,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="4.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="4.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="80" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Sprite id="79" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="123.900002" y="375.750122" x="-763.386230" rotation="1.539999" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="256.000000" width="256.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -1318,7 +1295,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="24.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="6.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="81" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Sprite id="80" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="86.900002" y="478.119781" x="-1153.386230" rotation="1.539999" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="213.338287" width="213.338287" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -1332,7 +1309,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="24.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="6.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="82" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Sprite id="81" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="86.900002" y="91.010803" x="-20.386230" rotation="1.539999" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="213.338287" width="213.338287" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -1346,7 +1323,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="24.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="6.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="83" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Sprite id="82" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="86.900002" y="-17.501038" x="20.613770" rotation="1.539999" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="256.000000" width="256.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -1360,7 +1337,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="24.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="6.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="84" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Sprite id="83" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="105.900002" y="248.660095" x="1129.613770" rotation="1.539999" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="256.000000" width="256.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -1374,7 +1351,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="24.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="6.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="85" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <Sprite id="84" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="98.900002" y="138.972839" x="-1027.386230" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="827.000000" width="305.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -1388,7 +1365,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <SolidLineStrip id="86" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidLineStrip id="85" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="530.043945" x="-909.386230" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="418.426575" width="502.000000" native="false" repeatX="false" repeatY="false" />
         <material value="softwood" />
@@ -1414,7 +1391,7 @@
         </points>
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" />
     </SolidLineStrip>
-    <SolidLineStrip id="87" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidLineStrip id="86" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="450.043945" x="-429.386230" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="650.805664" width="199.000000" native="false" repeatX="false" repeatY="false" />
         <material value="" />
@@ -1440,7 +1417,7 @@
         </points>
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" />
     </SolidLineStrip>
-    <ScrollingSprite id="88" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
+    <ScrollingSprite id="87" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
         <position z="100.099976" y="-213.880066" x="-1195.386230" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="2472.751221" width="3810.720459" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -1455,7 +1432,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <scroll_properties StartLerpX="-1195.386230" StartLerpY="-213.880066" LerpDistanceX="1000.000000" LerpDistanceY="0.000000" LerpTime="80.000000" FadeInTime="5.000000" FadeOutTime="5.000000" />
     </ScrollingSprite>
-    <ScrollingSprite id="89" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
+    <ScrollingSprite id="88" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
         <position z="117.099976" y="-179.345947" x="733.613770" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="1290.000000" width="1988.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -1470,7 +1447,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <scroll_properties StartLerpX="733.613770" StartLerpY="-179.345947" LerpDistanceX="-800.000000" LerpDistanceY="0.000000" LerpTime="80.000000" FadeInTime="5.000000" FadeOutTime="5.000000" />
     </ScrollingSprite>
-    <Sprite id="90" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Sprite id="89" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="125.199997" y="312.635071" x="-799.386719" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="165.423584" width="55.711334" native="false" repeatX="false" repeatY="false" />
         <material value="" />
@@ -1484,4 +1461,65 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="8.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="8.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
+    <Sprite id="90" parallax_x="0.970000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+        <position z="54.900002" y="687.611511" x="-141.433716" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="269.734497" width="312.777283" native="false" repeatX="false" repeatY="false" />
+        <material value="grassground" />
+        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\objects\floating_platform_1.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+    </Sprite>
+    <SolidLineStrip id="91" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="3.000000" y="733.601929" x="-126.386719" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="1.000000" height="450.641113" width="256.802368" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="1.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="0.000000" x="0.000000" />
+        <applygravity value="true" />
+        <collisionboxdimensions z="0.000000" y="400.000000" x="231.724182" offsetX="-12.539093" offsetY="-25.320557" />
+        <passive value="true" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+        <points>
+            <point x="-128.401184" y="-26.354065" />
+            <point x="103.322998" y="-24.287048" />
+        </points>
+        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" />
+    </SolidLineStrip>
+    <SolidMovingSprite id="92" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="51.000000" y="474.591797" x="-531.715698" rotation="0.367200" auto_rotate_value="0.120000" />
+        <dimensions breadth="0.000000" height="180.200607" width="180.200607" native="false" repeatX="false" repeatY="false" />
+        <material value="metal" />
+        <sine_wave_props active="true" y_offset="500.000000" amplitude="1.800000" rand_init_step="1" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\objects\saw.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="2.000000" x="0.950000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="110.000000" x="110.000000" offsetX="0.000000" offsetY="0.000000" />
+        <passive value="true" />
+        <applydamage flag="true" amount="15.000000" />
+        <can_be_damaged value="false" />
+    </SolidMovingSprite>
 </level>

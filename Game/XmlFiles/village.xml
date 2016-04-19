@@ -32,7 +32,7 @@
         <projectileoffsety value="0" />
     </Player>
     <ParallaxLayer id="2" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="99999.000000" y="1750.000000" x="3076.287109" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="99999.000000" y="1750.000000" x="6156.287109" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="2000.000000" width="2560.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -55,7 +55,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="3" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="99999.000000" y="3750.000000" x="3076.287109" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="99999.000000" y="3750.000000" x="6156.287109" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="2000.000000" width="2560.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -78,7 +78,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="4" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="300.000000" y="700.000000" x="3076.287109" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="300.000000" y="700.000000" x="6156.287109" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="383.000000" width="1920.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -101,7 +101,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="5" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9999.000000" y="800.000000" x="3076.287109" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="9999.000000" y="800.000000" x="6156.287109" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="512.000000" width="3257.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -124,7 +124,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="6" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9998.000000" y="680.000000" x="3076.287109" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="9998.000000" y="680.000000" x="6156.287109" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="512.000000" width="3257.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -3398,7 +3398,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <ParallaxLayer id="228" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="140.000000" y="3600.000000" x="3076.287109" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="140.000000" y="3600.000000" x="6156.287109" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="383.000000" width="1920.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -5079,7 +5079,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="320" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="319" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="938.941833" x="16795.410156" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -5101,7 +5101,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="321" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="320" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="512.472961" x="17667.634766" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -5123,7 +5123,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="322" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="321" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="499.037537" x="17893.339844" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -5145,7 +5145,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="323" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="322" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="520.740906" x="18162.179688" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -5167,7 +5167,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="324" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="323" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="515.573425" x="18357.791016" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -5189,7 +5189,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="325" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="324" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1213.602173" x="12154.531250" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="255.000000" width="167.000000" native="true" repeatX="false" repeatY="false" />
         <material value="flame_orb_large" />
@@ -5211,7 +5211,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="326" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="325" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1147.707397" x="16796.412109" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="255.000000" width="167.000000" native="true" repeatX="false" repeatY="false" />
         <material value="flame_orb_large" />
@@ -5233,7 +5233,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <SolidLineStrip id="327" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidLineStrip id="326" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="506.884460" x="1388.261475" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="571.559814" width="792.476563" native="false" repeatX="false" repeatY="false" />
         <material value="softwood" />
@@ -5259,7 +5259,7 @@
         </points>
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" />
     </SolidLineStrip>
-    <SolidLineStrip id="328" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidLineStrip id="327" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="1097.563843" x="1972.085938" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="513.722534" width="621.943359" native="false" repeatX="false" repeatY="false" />
         <material value="softwood" />
@@ -5285,7 +5285,7 @@
         </points>
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" />
     </SolidLineStrip>
-    <SolidLineStrip id="329" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidLineStrip id="328" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="697.563843" x="4212.085938" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="544.650696" width="294.921387" native="false" repeatX="false" repeatY="false" />
         <material value="" />
@@ -5311,7 +5311,7 @@
         </points>
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" />
     </SolidLineStrip>
-    <SolidLineStrip id="330" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidLineStrip id="329" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="697.563843" x="3452.085938" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="519.885132" width="431.347656" native="false" repeatX="false" repeatY="false" />
         <material value="" />
@@ -5337,7 +5337,7 @@
         </points>
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" />
     </SolidLineStrip>
-    <CurrencyOrb id="331" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="330" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1346.348633" x="1998.919922" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="255.000000" width="167.000000" native="true" repeatX="false" repeatY="false" />
         <material value="flame_orb_large" />
@@ -5359,7 +5359,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="332" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="331" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1321.870117" x="1360.173828" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="255.000000" width="167.000000" native="true" repeatX="false" repeatY="false" />
         <material value="flame_orb_large" />
@@ -5381,7 +5381,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="333" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="332" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="678.559082" x="4130.205078" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -5403,7 +5403,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="334" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="333" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="857.353333" x="4167.321289" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -5425,7 +5425,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="335" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="334" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="931.764771" x="3377.854004" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -5447,7 +5447,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="336" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="335" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="710.597351" x="3368.825684" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -5469,7 +5469,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="337" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="336" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="824.281555" x="3375.847656" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -5491,7 +5491,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="338" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="337" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="712.664307" x="4242.556152" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -5513,7 +5513,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <Breakable id="339" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Breakable id="338" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="60.000000" y="1227.573486" x="1893.841431" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="112.893822" width="119.868950" native="false" repeatX="false" repeatY="false" />
         <material value="crate" />
@@ -5536,7 +5536,7 @@
         <can_be_damaged value="true" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="340" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Breakable id="339" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="63.000000" y="1234.807861" x="2062.368164" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="112.893822" width="119.868950" native="false" repeatX="false" repeatY="false" />
         <material value="crate" />
@@ -5559,7 +5559,7 @@
         <can_be_damaged value="true" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="341" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Breakable id="340" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="71.000000" y="541.602112" x="4623.496582" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="112.893822" width="119.868950" native="false" repeatX="false" repeatY="false" />
         <material value="crate" />
@@ -5582,7 +5582,7 @@
         <can_be_damaged value="true" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="342" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Breakable id="341" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="71.000000" y="519.515991" x="4723.308594" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="112.893822" width="119.868950" native="false" repeatX="false" repeatY="false" />
         <material value="crate" />
@@ -5605,7 +5605,7 @@
         <can_be_damaged value="true" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="343" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Breakable id="342" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="71.000000" y="534.597351" x="5147.634766" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="112.893822" width="119.868950" native="false" repeatX="false" repeatY="false" />
         <material value="crate" />
@@ -5628,7 +5628,7 @@
         <can_be_damaged value="true" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="344" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Breakable id="343" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="71.000000" y="540.798279" x="5271.020020" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="112.893822" width="119.868950" native="false" repeatX="false" repeatY="false" />
         <material value="crate" />
@@ -5651,7 +5651,7 @@
         <can_be_damaged value="true" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="345" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Breakable id="344" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="71.000000" y="551.133240" x="6646.192383" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="112.893822" width="119.868950" native="false" repeatX="false" repeatY="false" />
         <material value="crate" />
@@ -5674,7 +5674,7 @@
         <can_be_damaged value="true" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="346" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Breakable id="345" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="71.000000" y="567.669128" x="6830.769531" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="112.893822" width="119.868950" native="false" repeatX="false" repeatY="false" />
         <material value="crate" />
@@ -5697,7 +5697,7 @@
         <can_be_damaged value="true" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="347" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Breakable id="346" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="71.000000" y="545.123657" x="2956.788086" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="112.893822" width="119.868950" native="false" repeatX="false" repeatY="false" />
         <material value="crate" />
@@ -5720,7 +5720,7 @@
         <can_be_damaged value="true" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="348" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Breakable id="347" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="71.000000" y="528.587769" x="1087.070313" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="112.893822" width="119.868950" native="false" repeatX="false" repeatY="false" />
         <material value="crate" />
@@ -5743,7 +5743,7 @@
         <can_be_damaged value="true" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="349" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Breakable id="348" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="71.000000" y="907.190674" x="9956.036133" rotation="0.029994" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="172.236740" width="182.878372" native="false" repeatX="false" repeatY="false" />
         <material value="crate" />
@@ -5766,7 +5766,7 @@
         <can_be_damaged value="true" />
         <health value="70.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="350" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Breakable id="349" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="71.000000" y="1000.511230" x="13052.712891" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="172.236740" width="182.878372" native="false" repeatX="false" repeatY="false" />
         <material value="crate" />
@@ -5789,7 +5789,7 @@
         <can_be_damaged value="true" />
         <health value="70.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="351" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Breakable id="350" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="71.000000" y="989.640381" x="13226.004883" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="112.893822" width="119.868950" native="false" repeatX="false" repeatY="false" />
         <material value="crate" />
@@ -5812,7 +5812,7 @@
         <can_be_damaged value="true" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="352" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Breakable id="351" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="72.000000" y="983.439453" x="12934.091797" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="112.893822" width="119.868950" native="false" repeatX="false" repeatY="false" />
         <material value="crate" />
@@ -5835,7 +5835,7 @@
         <can_be_damaged value="true" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="353" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Breakable id="352" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="71.000000" y="1097.889160" x="15998.919922" rotation="-0.050071" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="112.893822" width="119.868950" native="false" repeatX="false" repeatY="false" />
         <material value="crate" />
@@ -5858,7 +5858,7 @@
         <can_be_damaged value="true" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Sprite id="354" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Sprite id="353" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="98.900002" y="1208.855713" x="3925.690918" rotation="0.006318" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="204.816635" width="237.500183" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -5872,7 +5872,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="355" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Sprite id="354" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="98.900002" y="1334.941895" x="3551.521729" rotation="0.006318" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="204.816635" width="237.500183" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -5886,7 +5886,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="356" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Sprite id="355" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="98.900002" y="1484.415527" x="3152.023438" rotation="0.006318" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="204.816635" width="237.500183" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -5900,7 +5900,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="357" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Sprite id="356" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="98.900002" y="1731.171509" x="2356.537354" rotation="0.006318" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="204.816635" width="237.500183" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -5914,7 +5914,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="358" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Sprite id="357" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="98.900002" y="1631.171509" x="2811.960449" rotation="0.006318" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="204.816635" width="237.500183" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -5928,7 +5928,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <SolidLineStrip id="359" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidLineStrip id="358" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="969.200195" x="4156.286621" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="431.004761" width="232.727539" native="false" repeatX="false" repeatY="false" />
         <material value="" />
@@ -5954,7 +5954,7 @@
         </points>
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" />
     </SolidLineStrip>
-    <SolidLineStrip id="360" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidLineStrip id="359" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="1239.075806" x="3896.474609" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="431.004761" width="232.727539" native="false" repeatX="false" repeatY="false" />
         <material value="" />
@@ -5980,7 +5980,7 @@
         </points>
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" />
     </SolidLineStrip>
-    <SolidLineStrip id="361" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidLineStrip id="360" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="1362.712158" x="3527.948242" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="431.004761" width="232.727539" native="false" repeatX="false" repeatY="false" />
         <material value="" />
@@ -6006,7 +6006,7 @@
         </points>
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" />
     </SolidLineStrip>
-    <SolidLineStrip id="362" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidLineStrip id="361" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="1507.937012" x="3126.819580" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="431.004761" width="232.727539" native="false" repeatX="false" repeatY="false" />
         <material value="" />
@@ -6032,7 +6032,7 @@
         </points>
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" />
     </SolidLineStrip>
-    <SolidLineStrip id="363" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidLineStrip id="362" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="1654.501709" x="2785.126709" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="431.004761" width="232.727539" native="false" repeatX="false" repeatY="false" />
         <material value="" />
@@ -6058,7 +6058,7 @@
         </points>
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" />
     </SolidLineStrip>
-    <SolidLineStrip id="364" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidLineStrip id="363" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="1756.090088" x="2328.449707" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="431.004761" width="232.727539" native="false" repeatX="false" repeatY="false" />
         <material value="" />
@@ -6084,7 +6084,7 @@
         </points>
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" />
     </SolidLineStrip>
-    <Sprite id="371" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Sprite id="364" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="98.900002" y="1463.956177" x="16679.044922" rotation="0.006318" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="204.816635" width="237.500183" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -6098,7 +6098,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <SolidLineStrip id="374" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidLineStrip id="365" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="1569.200195" x="16756.287109" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="596.363647" width="339.058594" native="false" repeatX="false" repeatY="false" />
         <material value="" />
@@ -6124,7 +6124,7 @@
         </points>
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" />
     </SolidLineStrip>
-    <SolidLineStrip id="375" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidLineStrip id="366" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="1609.200195" x="17036.287109" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="637.703369" width="286.898438" native="false" repeatX="false" repeatY="false" />
         <material value="" />
@@ -6151,7 +6151,7 @@
         </points>
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="true" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="20.000000" />
     </SolidLineStrip>
-    <CurrencyOrb id="376" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="367" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1576.338989" x="16969.203125" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6173,7 +6173,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="377" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="368" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1558.769531" x="17092.587891" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6195,7 +6195,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="378" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="369" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="2159.152344" x="17517.917969" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6217,7 +6217,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="379" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="370" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="2282.137939" x="17685.441406" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6239,7 +6239,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="380" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="371" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="2399.267090" x="17861.365234" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6261,7 +6261,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="381" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="372" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="2601.142822" x="18093.089844" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6283,7 +6283,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="382" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="373" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="2793.372559" x="17946.632813" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6305,7 +6305,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="383" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="374" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="2995.937012" x="18013.841797" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6327,7 +6327,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="384" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="375" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3177.678711" x="17958.669922" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6349,7 +6349,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="385" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="376" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3375.075684" x="17778.105469" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6371,7 +6371,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="386" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="377" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3610.023193" x="17794.281250" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6393,7 +6393,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="387" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="378" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3629.659668" x="17623.748047" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6415,7 +6415,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="388" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="379" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3657.563965" x="17469.265625" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6437,7 +6437,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="389" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="380" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3708.205078" x="17287.697266" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6459,7 +6459,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="390" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="381" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3785.181152" x="16957.291016" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="255.000000" width="167.000000" native="true" repeatX="false" repeatY="false" />
         <material value="flame_orb_large" />
@@ -6481,7 +6481,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="391" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="382" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3525.774414" x="16957.291016" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="255.000000" width="167.000000" native="true" repeatX="false" repeatY="false" />
         <material value="flame_orb_large" />
@@ -6503,7 +6503,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="392" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="383" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3260.166748" x="16963.308594" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="255.000000" width="167.000000" native="true" repeatX="false" repeatY="false" />
         <material value="flame_orb_large" />
@@ -6525,7 +6525,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="393" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="384" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3631.190674" x="16828.888672" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6547,7 +6547,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="394" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="385" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3650.826904" x="17090.707031" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6569,7 +6569,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="395" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="386" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3369.717041" x="16836.914063" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6591,7 +6591,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="396" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="387" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3357.314941" x="17097.728516" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6613,7 +6613,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="397" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="388" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3928.453857" x="16955.283203" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6635,7 +6635,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="398" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="389" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3056.760010" x="16964.312500" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6657,7 +6657,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="399" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="390" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3400.300781" x="17900.738281" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6679,8 +6679,360 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="400" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="391" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="2799.075684" x="18063.246094" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="393" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1067.707397" x="4182.870117" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="394" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1173.123657" x="4186.882813" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="395" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1280.606934" x="4192.901367" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="396" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1367.649902" x="3929.453369" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="397" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1454.463379" x="3855.221191" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="398" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1543.343750" x="3930.456543" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="399" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1461.697754" x="4007.697754" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="400" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1502.731323" x="3539.860840" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="401" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1647.420288" x="3453.591309" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="402" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1725.965698" x="3269.014404" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="403" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1629.850952" x="3147.635254" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="404" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1750.080566" x="2725.440674" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="405" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1756.281494" x="2854.845215" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="406" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1834.827026" x="2309.390625" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="407" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1928.874878" x="2359.547363" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
+        <material value="flame_orb" />
+        <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
+        <alpha value="0.800000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\orb_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="3.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="20.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="19.667072" x="19.667072" offsetX="0.000000" offsetY="10.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+    </CurrencyOrb>
+    <CurrencyOrb id="408" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="1834.827026" x="2402.682129" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
         <sine_wave_props active="false" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />

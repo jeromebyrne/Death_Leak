@@ -294,7 +294,7 @@ void GameObject::XmlWrite(TiXmlElement * element)
 
 	TiXmlElement * sineWaveElem = new TiXmlElement("sine_wave_props");
 	const char * doSineWaveFlag = mSineWaveProps.DoSineWave ? "true" : "false";
-	sineWaveElem->SetAttribute("active", levelEditLockedFlag);
+	sineWaveElem->SetAttribute("active", doSineWaveFlag);
 
 	sineWaveElem->SetDoubleAttribute("y_offset", mSineWaveProps.OffsetY);
 	sineWaveElem->SetDoubleAttribute("amplitude", mSineWaveProps.Amplitude);
