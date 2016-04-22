@@ -8,7 +8,8 @@ SolidLineStrip::SolidLineStrip(float x, float y, float z, float width, float hei
 	mHasHardRightEdge(false),
 	mHasHardLeftEdge(false),
 	mHardRightEdgeOffsetX(0.0f),
-	mHardLeftEdgeOffsetX(0.0f)
+	mHardLeftEdgeOffsetX(0.0f),
+	mCanDropDown(false)
 {
 	mIsSolidLine = true;
 	mDrawable = false;
@@ -61,7 +62,6 @@ void SolidLineStrip::XmlRead(TiXmlElement * element)
 				mPoints.push_back(point);
 				path_point = path_point->NextSiblingElement();
 			}
-
 			break;
 		}
 
@@ -74,6 +74,8 @@ void SolidLineStrip::XmlRead(TiXmlElement * element)
 	mHasHardLeftEdge = XmlUtilities::ReadAttributeAsBool(element, "edge_properties", "has_left_hard_edge");
 	mHardRightEdgeOffsetX = XmlUtilities::ReadAttributeAsFloat(element, "edge_properties", "right_hard_edge_offset_x");
 	mHardLeftEdgeOffsetX = XmlUtilities::ReadAttributeAsFloat(element, "edge_properties", "left_hard_edge_offset_x");
+
+	mCanDropDown = XmlUtilities::ReadAttributeAsBool(element, "edge_properties", "can_drop_down");
 }
 
 void SolidLineStrip::XmlWrite(TiXmlElement * element)
@@ -96,6 +98,7 @@ void SolidLineStrip::XmlWrite(TiXmlElement * element)
 	edgeProperties->SetAttribute("has_left_hard_edge", mHasHardLeftEdge ? "true" : "false");
 	edgeProperties->SetDoubleAttribute("right_hard_edge_offset_x", mHardRightEdgeOffsetX);
 	edgeProperties->SetDoubleAttribute("left_hard_edge_offset_x", mHardLeftEdgeOffsetX);
+	edgeProperties->SetAttribute("can_drop_down", mCanDropDown ? "true" : "false");
 	element->LinkEndChild(edgeProperties);
 }
 
@@ -112,6 +115,19 @@ bool SolidLineStrip::OnCollision(SolidMovingSprite * object)
 	{
 		return false;
 	}
+
+	if (mCanDropDown && object->IsCharacter())
+	{
+		// get the last solidline strip and uhdccb
+		GAME_ASSERT((dynamic_cast<Character *>(object) != nullptr));
+		Character * character = static_cast<Character *>(object);
+
+		if (character->getCurrentSolidLineDroppingDownThroughId() == ID())
+		{
+			return false;
+		}
+	}
+
 	if (!object->IsPassive())
 	{
 		for (auto & l : mLines)
@@ -145,6 +161,8 @@ bool SolidLineStrip::OnCollision(SolidMovingSprite * object)
 					{
 						GAME_ASSERT((dynamic_cast<Character *>(object) != nullptr));
 						Character * character = static_cast<Character *>(object);
+
+						character->setCurrentSolidLineDroppingDownThroughId(0);
 
 						character->UpdateFootsteps(this);
 					}

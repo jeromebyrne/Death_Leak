@@ -112,7 +112,12 @@ void GameObject::Initialise()
 
 	// sine wave
 	float initialStep = mSineWaveProps.RandomiseInitialStep ? (rand() % 999999) : 0;
-	mSinWave.Initialise(initialStep, mSineWaveProps.OffsetY, mSineWaveProps.Amplitude, mSineWaveProps.InitialYPosition);
+	mSinWave.Initialise(initialStep, 
+						mSineWaveProps.OffsetY, 
+						mSineWaveProps.Amplitude,
+						mSineWaveProps.InitialYPosition,
+						mSineWaveProps.InitialXPosition, 
+						mSineWaveProps.OffsetX);
 }
 
 void GameObject::SetupDebugDraw()
@@ -170,7 +175,8 @@ void GameObject::Update(float delta)
 	if (mSineWaveProps.DoSineWave)
 	{
 		mSinWave.Update(delta);
-		m_position.Y = mSinWave.GetValue();
+		m_position.Y = mSinWave.GetValueY();
+		m_position.X = mSinWave.GetValueX();
 	}
 
 	D3DXMatrixScaling(&m_matScale, m_matScaleX, m_matScaleY, 1.0);
@@ -242,7 +248,9 @@ void GameObject:: XmlRead(TiXmlElement * element)
 
 	// sine wave properties
 	mSineWaveProps.InitialYPosition = m_position.Y;
+	mSineWaveProps.InitialXPosition = m_position.X;
 	mSineWaveProps.Amplitude = XmlUtilities::ReadAttributeAsFloat(element, "sine_wave_props", "amplitude");
+	mSineWaveProps.OffsetX = XmlUtilities::ReadAttributeAsFloat(element, "sine_wave_props", "x_offset");
 	mSineWaveProps.OffsetY = XmlUtilities::ReadAttributeAsFloat(element, "sine_wave_props", "y_offset");
 	mSineWaveProps.DoSineWave = XmlUtilities::ReadAttributeAsBool(element, "sine_wave_props", "active");
 	mSineWaveProps.RandomiseInitialStep = XmlUtilities::ReadAttributeAsBool(element, "sine_wave_props", "rand_init_step");
@@ -296,6 +304,7 @@ void GameObject::XmlWrite(TiXmlElement * element)
 	const char * doSineWaveFlag = mSineWaveProps.DoSineWave ? "true" : "false";
 	sineWaveElem->SetAttribute("active", doSineWaveFlag);
 
+	sineWaveElem->SetDoubleAttribute("x_offset", mSineWaveProps.OffsetX);
 	sineWaveElem->SetDoubleAttribute("y_offset", mSineWaveProps.OffsetY);
 	sineWaveElem->SetDoubleAttribute("amplitude", mSineWaveProps.Amplitude);
 	sineWaveElem->SetAttribute("rand_init_step", mSineWaveProps.RandomiseInitialStep);

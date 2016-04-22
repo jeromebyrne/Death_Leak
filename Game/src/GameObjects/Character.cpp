@@ -10,6 +10,7 @@
 #include "WaterBlock.h"
 #include "DrawUtilities.h"
 #include "CurrencyOrb.h"
+#include "SolidLineStrip.h"
 
 float Character::mLastTimePlayedDeathSFX = 0;
 static const float kMinTimeBetweenDeathSFX = 0.1f;
@@ -47,7 +48,8 @@ Character::Character(float x, float y, float z, float width, float height, float
 	mExplodesGruesomely(false),
 	mMaxJumpsAllowed(2),
 	mCurrentJumpsBeforeLand(0),
-	mTimeNotOnSolidSurface(0.0f)
+	mTimeNotOnSolidSurface(0.0f),
+	mCurrentSolidLineDroppingDownThroughId(0)
 {
 	mProjectileFilePath = "Media/knife.png";
 	mProjectileImpactFilePath = "Media/knife_impact.png";
@@ -897,5 +899,19 @@ void Character::Draw(ID3D10Device * device, Camera2D * camera)
 
 void Character::DoMeleeAttack()
 {
+}
 
+void Character::dropDown()
+{
+	auto solidLine = GetCurrentSolidLineStrip();
+	if (solidLine)
+	{
+		setCurrentSolidLineDroppingDownThroughId(solidLine->ID());
+		if (std::abs(m_velocity.Y < 1.0f))
+		{
+			m_velocity.Y = -1.0f;
+		}
+
+		m_velocity.Y *= 10;
+	}
 }

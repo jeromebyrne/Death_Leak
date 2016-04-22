@@ -9,7 +9,7 @@
         <position z="4.000000" y="742.267029" x="-6446.959473" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="2000.000000" width="1000.000000" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <level_to_load value="XmlFiles\waterfall_level.xml" />
         <player_start_pos x="-3800.000000" y="420.000000" />
         <player_direction x="-1.000000" />
@@ -18,7 +18,7 @@
         <position z="4.000000" y="416.070374" x="5399.718262" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="500.000000" width="1000.000000" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <cooldown_time value="50.000000" />
         <num_enemies value="7.000000" />
     </NPCTrigger>
@@ -26,7 +26,7 @@
         <position z="11.000000" y="551.878967" x="12841.975586" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="800.056641" width="1500.641602" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <audiofile value="ambient\windmill_creak.wav" />
         <adjustvolumetocamera value="true" />
         <repeat value="true" />
@@ -36,7 +36,7 @@
         <position z="11.000000" y="456.299988" x="13087.869141" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="600.056641" width="1300.641602" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <audiofile value="ambient\windmill2.wav" />
         <adjustvolumetocamera value="true" />
         <repeat value="true" />
@@ -46,7 +46,7 @@
         <position z="50.000000" y="663.515259" x="11880.595703" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="300.000000" width="150.000000" native="false" repeatX="false" repeatY="false" />
         <material value="maleninja" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -72,12 +72,12 @@
         <position z="30.000000" y="-47.909790" x="983.516602" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="64.000000" width="64.000000" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="true" />
+        <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
@@ -98,7 +98,7 @@
         <position z="100.000000" y="-462.585815" x="-6248.373535" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="622.000000" width="1505.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -112,7 +112,7 @@
         <position z="100.000000" y="-245.896179" x="2839.824707" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="1099.000000" width="1569.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -126,7 +126,7 @@
         <position z="100.900002" y="-87.097900" x="11560.041016" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="881.000000" width="783.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -140,7 +140,7 @@
         <position z="80.900002" y="436.638428" x="12409.357422" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="209.886719" width="209.886719" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -154,7 +154,7 @@
         <position z="5.000002" y="69.448303" x="-583.354492" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="1964.025879" width="1475.599121" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.750000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.300000" alphawhennotoccluding="0.800000" />
@@ -168,7 +168,7 @@
         <position z="99.900002" y="-797.578613" x="6039.099121" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="1217.940918" width="6372.408691" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -179,10 +179,10 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="13" parallax_x="0.010000" parallax_y="1.000000" level_edit_locked="true" updateable="true">
-        <position z="999.000000" y="360.048126" x="3887.052734" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="999.000000" y="360.048126" x="0.000000" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="324.000000" width="339.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="true" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="true" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -193,10 +193,10 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="14" parallax_x="0.010000" parallax_y="1.000000" level_edit_locked="true" updateable="true">
-        <position z="156.000000" y="0.048126" x="3887.052734" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="156.000000" y="0.048126" x="0.000000" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="600.000000" width="1024.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="true" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="true" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.150000" />
         <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.004000" pixelwobblespeedmod="4.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -207,10 +207,10 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <ParallaxLayer id="15" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9999.000000" y="-120.000000" x="880.595703" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="9999.000000" y="-120.000000" x="11880.595703" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="523.000000" width="2048.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -230,10 +230,10 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="16" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9990.000000" y="-45.000000" x="880.595703" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="9990.000000" y="-45.000000" x="11880.595703" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="596.000000" width="1925.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.150000" />
         <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.001600" pixelwobblespeedmod="5.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -253,10 +253,10 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="17" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9999.900391" y="220.000000" x="880.595703" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="9999.900391" y="220.000000" x="11880.595703" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="243.000000" width="4083.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.400000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -276,10 +276,10 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="18" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9990.000000" y="50.000000" x="880.595703" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="9990.000000" y="50.000000" x="11880.595703" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="243.000000" width="4083.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.100000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -299,10 +299,10 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="19" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9999.999023" y="600.000000" x="880.595703" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="9999.999023" y="600.000000" x="11880.595703" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="900.000000" width="2048.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.400000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -325,7 +325,7 @@
         <position z="100.099998" y="-470.642883" x="-3213.958984" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="637.135742" width="1541.622681" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -339,7 +339,7 @@
         <position z="100.000000" y="-461.788452" x="-1723.425171" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="622.000000" width="1505.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -353,7 +353,7 @@
         <position z="100.000000" y="-391.666626" x="-211.958984" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="789.000000" width="1523.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -367,7 +367,7 @@
         <position z="100.000000" y="-456.046692" x="1296.419067" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="622.000000" width="1505.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -381,7 +381,7 @@
         <position z="100.000000" y="35.897400" x="4361.041016" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="622.000000" width="1505.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -395,7 +395,7 @@
         <position z="100.000000" y="18.494507" x="5857.041016" rotation="0.020026" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="622.000000" width="1505.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -409,7 +409,7 @@
         <position z="100.099998" y="-7.436279" x="7361.935547" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="622.000000" width="1505.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -423,7 +423,7 @@
         <position z="100.199997" y="-286.225800" x="8891.041016" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="1099.000000" width="1569.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -437,7 +437,7 @@
         <position z="110.000000" y="-398.756653" x="10227.041016" rotation="-0.109742" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="622.000000" width="1505.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -451,7 +451,7 @@
         <position z="100.899986" y="143.792938" x="12705.440430" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="789.000000" width="1523.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -465,7 +465,7 @@
         <position z="101.099983" y="-195.685547" x="14243.041016" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="1099.000000" width="1569.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -479,7 +479,7 @@
         <position z="100.000000" y="-400.159454" x="15778.041016" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="622.000000" width="1505.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -493,7 +493,7 @@
         <position z="3.000000" y="-411.661316" x="-2779.870117" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="605.314026" width="9642.060547" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -522,13 +522,13 @@
             <point x="3298.144287" y="98.471741" />
             <point x="3813.608398" y="115.215942" />
         </points>
-        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" />
+        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="false" />
     </SolidLineStrip>
     <SolidLineStrip id="33" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="204.946289" x="5639.511719" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="1005.980103" width="9228.041016" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -561,13 +561,13 @@
             <point x="3633.911133" y="-456.925201" />
             <point x="4036.911133" y="-498.100586" />
         </points>
-        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" />
+        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="false" />
     </SolidLineStrip>
     <Sprite id="34" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="99.900002" y="-621.657104" x="12447.041016" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="757.925049" width="3965.551758" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -581,7 +581,7 @@
         <position z="76.099998" y="134.574707" x="8591.413086" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="178.146225" width="450.424042" native="false" repeatX="false" repeatY="false" />
         <material value="softwood" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -595,7 +595,7 @@
         <position z="75.099998" y="139.742157" x="8989.156250" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="180.114304" width="455.400177" native="false" repeatX="false" repeatY="false" />
         <material value="softwood" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -609,7 +609,7 @@
         <position z="73.199997" y="142.842651" x="9389.407227" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="180.114304" width="455.400177" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -623,7 +623,7 @@
         <position z="75.099998" y="289.202209" x="11720.697266" rotation="0.099987" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="180.114304" width="455.400177" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -637,7 +637,7 @@
         <position z="76.099998" y="66.937561" x="11526.058594" rotation="-1.694313" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="180.114304" width="455.400177" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -651,7 +651,7 @@
         <position z="3.000000" y="183.953003" x="9255.541992" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="458.253296" width="1723.433594" native="false" repeatX="false" repeatY="false" />
         <material value="softwood" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -671,13 +671,13 @@
             <point x="-861.716797" y="-47.078796" />
             <point x="377.154297" y="-11.174500" />
         </points>
-        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" />
+        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="false" />
     </SolidLineStrip>
     <SolidLineStrip id="41" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="315.514496" x="11068.326172" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="433.210815" width="2477.525391" native="false" repeatX="false" repeatY="false" />
         <material value="softwood" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -698,13 +698,13 @@
             <point x="858.968750" y="-36.351013" />
             <point x="1238.762695" y="-41.135071" />
         </points>
-        <edge_properties has_right_hard_edge="false" has_left_hard_edge="true" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="20.000000" />
+        <edge_properties has_right_hard_edge="false" has_left_hard_edge="true" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="20.000000" can_drop_down="false" />
     </SolidLineStrip>
     <Sprite id="42" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="81.099998" y="652.585266" x="12840.285156" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="944.127075" width="711.566345" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -718,7 +718,7 @@
         <position z="40.099998" y="752.651733" x="12884.821289" rotation="4.740647" auto_rotate_value="0.003000" />
         <dimensions breadth="0.000000" height="1195.742188" width="1195.742188" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -732,7 +732,7 @@
         <position z="27.099998" y="-261.419678" x="10425.422852" rotation="-0.019840" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="809.000000" width="2048.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.500000" />
         <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.006800" pixelwobblespeedmod="2.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -746,7 +746,7 @@
         <position z="73.099998" y="-283.030121" x="9816.770508" rotation="0.209916" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="119.166550" width="119.166550" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.020000" pixelwobblespeedmod="1.200000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -760,7 +760,7 @@
         <position z="77.099998" y="-269.709564" x="10946.927734" rotation="0.120187" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="128.000000" width="128.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.020000" pixelwobblespeedmod="1.200000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -774,7 +774,7 @@
         <position z="39.099998" y="-315.355469" x="10219.780273" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="142.624252" width="208.076538" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.010000" pixelwobblespeedmod="1.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -788,7 +788,7 @@
         <position z="29.099998" y="-121.230988" x="11785.852539" rotation="-0.450388" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="286.371216" width="417.791016" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -802,7 +802,7 @@
         <position z="77.099998" y="-52.658264" x="11458.429688" rotation="0.439259" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="185.246063" width="270.258057" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -816,7 +816,7 @@
         <position z="79.099998" y="45.014862" x="11611.418945" rotation="-0.450388" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="162.148499" width="236.560760" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -830,7 +830,7 @@
         <position z="46.099998" y="-11.197784" x="12083.996094" rotation="-0.280570" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="187.094528" width="272.954834" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -844,7 +844,7 @@
         <position z="61.099998" y="52.590912" x="11809.357422" rotation="0.369870" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="172.065323" width="251.028610" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -858,7 +858,7 @@
         <position z="82.099998" y="178.172302" x="11749.975586" rotation="-0.330418" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="195.389145" width="285.056030" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -872,7 +872,7 @@
         <position z="78.099998" y="262.424805" x="12119.459961" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="180.114304" width="455.400177" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -886,7 +886,7 @@
         <position z="98.099998" y="-193.227417" x="9185.439453" rotation="-0.149950" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="431.977783" width="677.985474" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.500000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -900,7 +900,7 @@
         <position z="98.099998" y="-279.340393" x="9290.593750" rotation="-0.140000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="431.977783" width="677.985474" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.500000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -914,7 +914,7 @@
         <position z="98.099998" y="-450.034882" x="10087.617188" rotation="-0.140927" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="668.890076" width="1049.817505" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.500000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -928,7 +928,7 @@
         <position z="98.099998" y="-389.058807" x="10821.786133" rotation="-0.049793" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="855.138000" width="1342.131714" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.500000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -942,7 +942,7 @@
         <position z="98.099998" y="-224.446289" x="11642.347656" rotation="2.890310" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="508.607208" width="798.254700" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.500000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -956,7 +956,7 @@
         <position z="98.099998" y="-27.247375" x="11709.150391" rotation="0.864353" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="531.802612" width="834.659668" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.500000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -970,7 +970,7 @@
         <position z="71.000000" y="134.172241" x="9793.041016" rotation="-0.059924" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="181.310730" width="458.425049" native="false" repeatX="false" repeatY="false" />
         <material value="softwood" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.800000" />
         <effect name="effectlightexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -993,7 +993,7 @@
         <position z="76.000000" y="221.621765" x="13595.749023" rotation="-0.140433" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="194.432770" width="491.602905" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1007,7 +1007,7 @@
         <position z="74.000000" y="97.790039" x="13997.808594" rotation="-0.489845" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="180.114304" width="455.400177" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1021,7 +1021,7 @@
         <position z="73.000000" y="-65.310486" x="14371.225586" rotation="-0.389177" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="180.114304" width="455.400177" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1035,7 +1035,7 @@
         <position z="71.000000" y="-182.095154" x="14762.448242" rotation="-0.239712" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="180.114304" width="455.400177" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1049,7 +1049,7 @@
         <position z="110.000000" y="-255.256622" x="-6337.033203" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="708.095764" width="1366.831299" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1063,7 +1063,7 @@
         <position z="31.099998" y="-358.983887" x="9335.956055" rotation="-0.289374" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="359.509125" width="524.493103" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1077,7 +1077,7 @@
         <position z="110.000000" y="-254.060638" x="-4621.981934" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="714.507996" width="1379.208740" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1091,7 +1091,7 @@
         <position z="110.000000" y="-249.276581" x="-2931.672363" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="690.625732" width="1333.109009" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1105,7 +1105,7 @@
         <position z="111.000000" y="-620.725342" x="-1091.260254" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="1138.920898" width="1625.993652" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1119,7 +1119,7 @@
         <position z="102.900002" y="122.151978" x="-3108.992188" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="720.518860" width="469.391388" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1133,7 +1133,7 @@
         <position z="117.000000" y="-161.967621" x="-5469.816895" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="436.623627" width="842.810791" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1147,7 +1147,7 @@
         <position z="117.000000" y="-228.944366" x="-4076.414795" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="647.899780" width="1250.635498" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1161,7 +1161,7 @@
         <position z="117.000000" y="-286.884583" x="-2007.961182" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="548.807007" width="1059.357544" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1175,7 +1175,7 @@
         <position z="117.000000" y="-340.481750" x="-232.958984" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="647.899780" width="1250.635498" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1189,7 +1189,7 @@
         <position z="117.000000" y="-230.692078" x="1690.182007" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="647.899780" width="1250.635498" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1203,7 +1203,7 @@
         <position z="111.000000" y="-267.768494" x="2527.707764" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="987.683655" width="1410.077881" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1217,7 +1217,7 @@
         <position z="110.000000" y="-384.712036" x="465.027405" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="714.082092" width="1378.386719" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1231,7 +1231,7 @@
         <position z="112.099998" y="-35.456116" x="1570.595215" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="150.290878" width="219.261566" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1245,7 +1245,7 @@
         <position z="112.099998" y="-96.452759" x="247.708496" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="77.758156" width="113.442505" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1259,7 +1259,7 @@
         <position z="112.099998" y="-23.495972" x="-5526.724609" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="76.388412" width="111.444160" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1273,7 +1273,7 @@
         <position z="112.099998" y="-48.612244" x="-5677.240234" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="81.776962" width="119.305603" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1287,7 +1287,7 @@
         <position z="101.900002" y="19.612457" x="-1209.610596" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="697.519409" width="454.408081" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1301,7 +1301,7 @@
         <position z="101.900002" y="43.266937" x="380.080139" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="711.093384" width="463.251038" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1315,7 +1315,7 @@
         <position z="35.900002" y="-139.642090" x="2210.182617" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="1067.000000" width="757.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1329,7 +1329,7 @@
         <position z="112.900002" y="26.470825" x="-925.075073" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="434.491119" width="320.065613" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1343,7 +1343,7 @@
         <position z="112.900002" y="69.527313" x="-2172.910156" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="431.825287" width="318.101868" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1357,7 +1357,7 @@
         <position z="112.900002" y="123.347900" x="1928.945557" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="546.304016" width="402.432068" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1371,7 +1371,7 @@
         <position z="111.000000" y="-343.981201" x="9215.955078" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="987.683655" width="1410.077881" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1385,7 +1385,7 @@
         <position z="111.000000" y="-231.555908" x="11399.460938" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="987.683655" width="1410.077881" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1399,7 +1399,7 @@
         <position z="117.000000" y="-228.898132" x="9620.491211" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="647.899780" width="1250.635498" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1413,7 +1413,7 @@
         <position z="117.000000" y="-228.898132" x="11542.553711" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="647.899780" width="1250.635498" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1427,7 +1427,7 @@
         <position z="112.099998" y="-17.137268" x="9686.470703" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="112.389023" width="163.965973" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1441,7 +1441,7 @@
         <position z="112.099998" y="-29.097412" x="9440.285156" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="70.583649" width="102.975517" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1455,7 +1455,7 @@
         <position z="70.000000" y="-232.736267" x="15176.241211" rotation="-0.040002" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="180.114304" width="455.400177" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1469,7 +1469,7 @@
         <position z="103.099998" y="-182.892181" x="-5365.075684" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="366.249207" width="574.824951" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.500000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1483,7 +1483,7 @@
         <position z="103.099998" y="-219.590210" x="-3056.208496" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="366.249207" width="574.824951" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.500000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1497,7 +1497,7 @@
         <position z="103.099998" y="-79.968567" x="1591.213135" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="75.399940" width="40.662838" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1511,7 +1511,7 @@
         <position z="103.099998" y="-75.184509" x="1717.398682" rotation="0.194821" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="87.856224" width="47.380451" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1525,7 +1525,7 @@
         <position z="114.099998" y="-18.971863" x="1956.161499" rotation="0.330386" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="56.789726" width="30.626432" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1539,7 +1539,7 @@
         <position z="102.099998" y="128.137756" x="2852.656250" rotation="0.112326" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="80.324028" width="43.318378" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1553,7 +1553,7 @@
         <position z="98.099998" y="-168.473572" x="2076.986328" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="117.316696" width="63.268349" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1567,7 +1567,7 @@
         <position z="114.099998" y="-16.579865" x="1685.645996" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="77.274170" width="41.673603" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1581,7 +1581,7 @@
         <position z="103.099998" y="118.569672" x="1930.594482" rotation="0.542638" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="84.278030" width="45.450748" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1595,7 +1595,7 @@
         <position z="102.099998" y="223.818832" x="3290.594482" rotation="0.183208" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="121.520531" width="65.535461" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1609,7 +1609,7 @@
         <position z="102.099998" y="68.337097" x="2967.708008" rotation="0.112326" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="123.264618" width="66.476036" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1623,7 +1623,7 @@
         <position z="112.099998" y="-78.772552" x="2185.852051" rotation="0.194821" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="101.808540" width="54.904873" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1637,7 +1637,7 @@
         <position z="112.099998" y="-42.892151" x="2492.656250" rotation="-0.156206" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="67.475937" width="36.389458" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1651,7 +1651,7 @@
         <position z="103.099998" y="-114.652954" x="2278.223389" rotation="0.194821" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="112.641876" width="60.747238" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1665,7 +1665,7 @@
         <position z="60.099998" y="50.131104" x="11838.222656" rotation="0.904820" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="126.039398" width="131.501114" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.800000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1679,7 +1679,7 @@
         <position z="113.099998" y="-31.757385" x="1476.458008" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="59.567276" width="174.400970" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1693,7 +1693,7 @@
         <position z="44.099998" y="-53.922058" x="12065.851563" rotation="-0.269552" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="55.948479" width="42.136929" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1707,7 +1707,7 @@
         <position z="44.099998" y="-10.865540" x="12020.078125" rotation="-0.179024" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="55.948479" width="42.136929" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1721,7 +1721,7 @@
         <position z="44.099998" y="3.353699" x="12059.666016" rotation="-0.269552" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="49.058628" width="36.947922" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1735,7 +1735,7 @@
         <position z="44.099998" y="-31.330688" x="12116.573242" rotation="-0.269552" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="48.238556" width="36.330292" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1749,7 +1749,7 @@
         <position z="44.099998" y="34.848724" x="12034.099609" rotation="0.490384" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="48.238556" width="36.330292" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1763,7 +1763,7 @@
         <position z="44.099998" y="27.672638" x="12069.975586" rotation="-0.269552" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="48.238556" width="36.330292" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1777,7 +1777,7 @@
         <position z="104.099998" y="-9.669556" x="1590.800293" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="144.894577" width="144.894577" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.800000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1791,7 +1791,7 @@
         <position z="116.099998" y="-93.461273" x="1643.171631" rotation="0.056520" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="236.375549" width="382.464417" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1805,7 +1805,7 @@
         <position z="99.099998" y="-40.898804" x="11947.500977" rotation="0.575829" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="377.000000" width="610.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1819,7 +1819,7 @@
         <position z="24.099998" y="-83.556610" x="11819.666016" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="259.000000" width="300.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.800000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1833,7 +1833,7 @@
         <position z="113.099998" y="69.798889" x="12361.521484" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="95.927071" width="280.855103" native="false" repeatX="false" repeatY="false" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1847,7 +1847,7 @@
         <position z="102.099998" y="433.121155" x="12441.109375" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="619.892700" width="467.198517" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1861,7 +1861,7 @@
         <position z="101.099998" y="339.034790" x="13483.583984" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="796.410339" width="600.235718" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1875,7 +1875,7 @@
         <position z="102.099998" y="440.430115" x="13448.532227" rotation="3.719998" auto_rotate_value="0.002000" />
         <dimensions breadth="0.000000" height="888.391724" width="888.391724" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1889,7 +1889,7 @@
         <position z="104.099998" y="560.989014" x="12452.257813" rotation="4.200001" auto_rotate_value="0.002500" />
         <dimensions breadth="0.000000" height="783.795715" width="783.795715" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1903,7 +1903,7 @@
         <position z="101.199997" y="-438.240967" x="15093.892578" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="1099.000000" width="1569.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1917,7 +1917,7 @@
         <position z="3.000000" y="203.437988" x="13408.945313" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="937.187256" width="6237.527344" native="false" repeatX="false" repeatY="false" />
         <material value="softwood" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1941,13 +1941,13 @@
             <point x="1561.556641" y="-422.582947" />
             <point x="3118.763672" y="-468.593628" />
         </points>
-        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" />
+        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="false" />
     </SolidLineStrip>
     <SolidLineStrip id="129" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="263.880920" x="12888.533203" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="456.642242" width="1157.939453" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1969,13 +1969,13 @@
             <point x="250.997070" y="-29.207703" />
             <point x="489.743164" y="-8.537842" />
         </points>
-        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" />
+        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="false" />
     </SolidLineStrip>
     <Sprite id="130" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="39.900002" y="-187.364258" x="9318.636719" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="492.645325" width="181.689011" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -1989,7 +1989,7 @@
         <position z="38.199997" y="35.359406" x="9404.454102" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="180.114304" width="455.400177" native="false" repeatX="false" repeatY="false" />
         <material value="softwood" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2003,7 +2003,7 @@
         <position z="54.199997" y="31.225433" x="8999.187500" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="180.114304" width="455.400177" native="false" repeatX="false" repeatY="false" />
         <material value="softwood" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2017,7 +2017,7 @@
         <position z="55.199997" y="26.057953" x="8598.936523" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="180.114304" width="455.400177" native="false" repeatX="false" repeatY="false" />
         <material value="softwood" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2031,7 +2031,7 @@
         <position z="79.900002" y="-98.994690" x="9503.388672" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="256.075562" width="105.660004" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2045,12 +2045,12 @@
         <position z="30.000000" y="-71.793488" x="1896.711060" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="64.000000" width="64.000000" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="true" />
+        <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
@@ -2071,7 +2071,7 @@
         <position z="102.000000" y="-2176.557373" x="1876.938599" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="52.413895" width="52.413895" native="false" repeatX="false" repeatY="false" />
         <material value="rabbit" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2097,12 +2097,12 @@
         <position z="30.000000" y="168.605179" x="1602.066650" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="48.175262" width="48.175262" native="false" repeatX="false" repeatY="false" />
         <material value="rabbit" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="true" />
+        <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
@@ -2123,7 +2123,7 @@
         <position z="102.000000" y="-2238.748779" x="1260.563721" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="52.413895" width="52.413895" native="false" repeatX="false" repeatY="false" />
         <material value="rabbit" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2149,7 +2149,7 @@
         <position z="114.000000" y="-2171.773438" x="1742.918701" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="29.668152" width="29.668152" native="false" repeatX="false" repeatY="false" />
         <material value="rabbit" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2175,7 +2175,7 @@
         <position z="112.000000" y="-2119.150146" x="1782.137207" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="29.668152" width="29.668152" native="false" repeatX="false" repeatY="false" />
         <material value="rabbit" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2201,12 +2201,12 @@
         <position z="30.000000" y="56.179932" x="1406.727539" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="46.954659" width="46.954659" native="false" repeatX="false" repeatY="false" />
         <material value="rabbit" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="true" />
+        <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
@@ -2227,7 +2227,7 @@
         <position z="114.000000" y="-2144.265869" x="1421.583252" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="29.668152" width="29.668152" native="false" repeatX="false" repeatY="false" />
         <material value="rabbit" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2253,7 +2253,7 @@
         <position z="102.000000" y="-2280.608398" x="1452.294312" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="52.413895" width="52.413895" native="false" repeatX="false" repeatY="false" />
         <material value="rabbit" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2279,7 +2279,7 @@
         <position z="79.900002" y="-7.962280" x="9054.719727" rotation="-0.140392" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="228.633026" width="94.336884" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2293,7 +2293,7 @@
         <position z="100.000000" y="-392.841980" x="-4736.958984" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="789.000000" width="1523.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2307,7 +2307,7 @@
         <position z="80.900002" y="-11.723450" x="8960.041016" rotation="2.281218" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="207.873810" width="207.873810" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2321,7 +2321,7 @@
         <position z="43.900002" y="-111.154724" x="9196.041016" rotation="2.367137" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="256.000000" width="256.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2335,7 +2335,7 @@
         <position z="81.900002" y="-141.766998" x="9435.956055" rotation="2.274602" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="220.535110" width="220.535110" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2349,7 +2349,7 @@
         <position z="81.900002" y="23.954254" x="9297.041016" rotation="2.274602" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="220.535110" width="220.535110" native="false" repeatX="false" repeatY="false" />
         <material value="softwood" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2363,7 +2363,7 @@
         <position z="43.900002" y="-126.377472" x="9386.041016" rotation="2.138487" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="256.000000" width="256.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2377,7 +2377,7 @@
         <position z="43.900002" y="-97.713959" x="9254.041016" rotation="2.038769" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="256.000000" width="256.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2391,7 +2391,7 @@
         <position z="80.900002" y="-21.960419" x="9122.041016" rotation="2.401218" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="223.035843" width="223.035843" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2405,7 +2405,7 @@
         <position z="79.900002" y="15.688873" x="9569.041016" rotation="1.539999" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="256.000000" width="256.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectfoliagesway" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2419,7 +2419,7 @@
         <position z="79.900002" y="26.949524" x="9276.041016" rotation="1.539999" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="235.673523" width="235.673523" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectfoliagesway" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2433,7 +2433,7 @@
         <position z="41.900002" y="-152.197388" x="9151.041016" rotation="1.539999" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="256.000000" width="256.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectfoliagesway" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2447,7 +2447,7 @@
         <position z="79.900002" y="-5.808746" x="9094.041016" rotation="1.539999" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="236.762741" width="236.762741" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectfoliagesway" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2461,7 +2461,7 @@
         <position z="79.900002" y="255.613007" x="11605.041016" rotation="1.539999" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="213.066162" width="213.066162" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectfoliagesway" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2475,7 +2475,7 @@
         <position z="79.900002" y="293.489807" x="11520.041016" rotation="1.539999" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="177.773300" width="177.773300" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectfoliagesway" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2489,7 +2489,7 @@
         <position z="3.000000" y="-56.178436" x="7743.041016" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="743.425842" width="1781.567383" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2509,13 +2509,13 @@
             <point x="-890.783691" y="150.373199" />
             <point x="652.790039" y="193.052643" />
         </points>
-        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" />
+        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="false" />
     </SolidLineStrip>
     <Sprite id="160" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="99.900002" y="-607.666626" x="6621.041016" rotation="1.552160" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="273.186066" width="1429.341309" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2529,7 +2529,7 @@
         <position z="4.000000" y="552.529541" x="15901.787109" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="2000.000000" width="1000.000000" />
         <material value="" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <level_to_load value="XmlFiles\village.xml" />
         <player_start_pos x="-1100.000000" y="600.000000" />
         <player_direction x="1.000000" />
@@ -2538,7 +2538,7 @@
         <position z="3.000000" y="-94.398560" x="10423.541992" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="779.084900" width="1613.761719" native="false" repeatX="false" repeatY="false" />
         <material value="shallow_water" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2558,13 +2558,13 @@
             <point x="806.880859" y="-181.352905" />
             <point x="-755.119141" y="-197.731995" />
         </points>
-        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" />
+        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="false" />
     </SolidLineStrip>
     <SolidLineStrip id="163" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="-307.125824" x="11425.422852" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="1002.755920" width="2596.363281" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2586,13 +2586,13 @@
             <point x="747.460938" y="370.124390" />
             <point x="1298.181641" y="501.377960" />
         </points>
-        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" />
+        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="false" />
     </SolidLineStrip>
     <AmbientBird id="164" parallax_x="0.650000" parallax_y="1.010000" level_edit_locked="false" updateable="true">
         <position z="151.000000" y="170.003326" x="729.168701" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="20.266809" width="25.549122" native="false" repeatX="false" repeatY="false" />
         <material value="rabbit" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.600000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2619,7 +2619,7 @@
         <position z="151.000000" y="293.295197" x="-2667.020752" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="20.266809" width="25.549122" native="false" repeatX="false" repeatY="false" />
         <material value="rabbit" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.600000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2646,7 +2646,7 @@
         <position z="151.000000" y="115.534424" x="-6040.799805" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="20.266809" width="25.549122" native="false" repeatX="false" repeatY="false" />
         <material value="rabbit" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.600000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2673,7 +2673,7 @@
         <position z="151.000000" y="350.864563" x="5674.081543" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="20.266809" width="25.549122" native="false" repeatX="false" repeatY="false" />
         <material value="rabbit" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.600000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2700,7 +2700,7 @@
         <position z="151.000000" y="181.256927" x="-1304.090210" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="20.266809" width="25.549122" native="false" repeatX="false" repeatY="false" />
         <material value="rabbit" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.600000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2727,7 +2727,7 @@
         <position z="151.000000" y="318.864624" x="11423.166016" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="20.266809" width="25.549122" native="false" repeatX="false" repeatY="false" />
         <material value="rabbit" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.600000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2754,7 +2754,7 @@
         <position z="151.000000" y="123.534485" x="9739.529297" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="20.266809" width="25.549122" native="false" repeatX="false" repeatY="false" />
         <material value="rabbit" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.600000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2781,7 +2781,7 @@
         <position z="12.899994" y="129.582336" x="4278.338379" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="2817.862305" width="1275.623535" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" />
         <fade_when_player_occluded value="true" alphawhenoccluding="1.000000" alphawhennotoccluding="0.000000" />
@@ -2792,7 +2792,7 @@
         <position z="14.000000" y="-536.101929" x="-6940.470703" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="3783.844727" width="5831.227051" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.500000" />
         <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.050000" pixelwobblespeedmod="0.300000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2807,7 +2807,7 @@
         <position z="14.000000" y="1884.950439" x="-3585.360840" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="1290.000000" width="1988.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.500000" />
         <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.050000" pixelwobblespeedmod="0.300000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2822,7 +2822,7 @@
         <position z="14.000000" y="-588.503845" x="-3424.608398" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="3138.125000" width="8180.652832" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.500000" />
         <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.050000" pixelwobblespeedmod="0.300000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2837,7 +2837,7 @@
         <position z="103.000000" y="42.462708" x="-5461.473633" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="1459.099365" width="2248.596680" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.500000" />
         <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.050000" pixelwobblespeedmod="0.300000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2852,7 +2852,7 @@
         <position z="103.000000" y="-32.982239" x="-3662.351563" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="1723.649170" width="2656.290527" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.500000" />
         <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.050000" pixelwobblespeedmod="0.300000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2867,7 +2867,7 @@
         <position z="103.000000" y="-205.460754" x="-2491.567871" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="1723.649170" width="2656.290527" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.500000" />
         <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.050000" pixelwobblespeedmod="0.300000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2878,11 +2878,11 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <scroll_properties StartLerpX="-2491.567871" StartLerpY="-205.460754" LerpDistanceX="3000.000000" LerpDistanceY="0.000000" LerpTime="90.000000" FadeInTime="5.000000" FadeOutTime="5.000000" />
     </ScrollingSprite>
-    <ScrollingSprite id="181" parallax_x="0.650000" parallax_y="1.010000" level_edit_locked="false" updateable="true">
+    <ScrollingSprite id="178" parallax_x="0.650000" parallax_y="1.010000" level_edit_locked="false" updateable="true">
         <position z="121.000000" y="-179.738220" x="-326.050507" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="2782.984863" width="4288.816406" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.500000" />
         <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.050000" pixelwobblespeedmod="0.300000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2893,11 +2893,11 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <scroll_properties StartLerpX="-326.050507" StartLerpY="-179.738220" LerpDistanceX="3000.000000" LerpDistanceY="0.000000" LerpTime="90.000000" FadeInTime="5.000000" FadeOutTime="5.000000" />
     </ScrollingSprite>
-    <ScrollingSprite id="182" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
+    <ScrollingSprite id="179" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
         <position z="112.000000" y="-41.020569" x="9282.601563" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="1706.487671" width="2629.843262" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.500000" />
         <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.050000" pixelwobblespeedmod="0.300000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2908,11 +2908,11 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <scroll_properties StartLerpX="9282.601563" StartLerpY="-41.020569" LerpDistanceX="3000.000000" LerpDistanceY="0.000000" LerpTime="90.000000" FadeInTime="5.000000" FadeOutTime="5.000000" />
     </ScrollingSprite>
-    <ScrollingSprite id="183" parallax_x="0.650000" parallax_y="1.010000" level_edit_locked="false" updateable="true">
+    <ScrollingSprite id="180" parallax_x="0.650000" parallax_y="1.010000" level_edit_locked="false" updateable="true">
         <position z="138.000000" y="-77.613892" x="11722.350586" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="1290.000000" width="1988.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.500000" />
         <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.050000" pixelwobblespeedmod="0.300000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
@@ -2923,11 +2923,11 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <scroll_properties StartLerpX="11722.350586" StartLerpY="-77.613892" LerpDistanceX="-3000.000000" LerpDistanceY="0.000000" LerpTime="90.000000" FadeInTime="5.000000" FadeOutTime="5.000000" />
     </ScrollingSprite>
-    <ScrollingSprite id="186" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
+    <ScrollingSprite id="181" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
         <position z="101.299980" y="202.558350" x="12865.548828" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="1865.331909" width="2874.635498" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
-        <sine_wave_props active="false" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="0.500000" />
         <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.050000" pixelwobblespeedmod="0.300000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />

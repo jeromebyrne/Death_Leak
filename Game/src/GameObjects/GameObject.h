@@ -230,8 +230,10 @@ protected:
 	{
 		bool DoSineWave;
 		float OffsetY;
+		float OffsetX;
 		float Amplitude;
 		float InitialYPosition;
+		float InitialXPosition;
 		bool RandomiseInitialStep;
 
 		SineWaveProps():
@@ -239,7 +241,9 @@ protected:
 			Amplitude(0.0f),
 			InitialYPosition(0.0f),
 			DoSineWave(false),
-			RandomiseInitialStep(false)
+			RandomiseInitialStep(false),
+			OffsetX(0.0f),
+			InitialXPosition(0.0f)
 		{}
 	};
 	SineWaveProps mSineWaveProps;

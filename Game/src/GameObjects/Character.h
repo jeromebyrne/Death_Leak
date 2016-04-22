@@ -42,6 +42,11 @@ public:
 	unsigned GetCurrentJumpsBeforeLand() const { return mCurrentJumpsBeforeLand; }
 	float GetTimeNotOnSolidSurface() const { return mTimeNotOnSolidSurface; }
 
+	void setCurrentSolidLineDroppingDownThroughId(unsigned int value) { mCurrentSolidLineDroppingDownThroughId = value; }
+	unsigned getCurrentSolidLineDroppingDownThroughId() const { return mCurrentSolidLineDroppingDownThroughId; }
+
+	void dropDown();
+
 protected:
 
 	void UpdateWaterWadeSFX();
@@ -82,6 +87,7 @@ protected:
 	unsigned mCurrentJumpsBeforeLand;
 	float mTimeNotOnSolidSurface;
 
+	unsigned int mCurrentSolidLineDroppingDownThroughId;
 };
 
 #endif

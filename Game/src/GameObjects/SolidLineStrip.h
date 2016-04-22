@@ -81,6 +81,8 @@ private:
 	bool mHasHardLeftEdge;
 	float mHardRightEdgeOffsetX;
 	float mHardLeftEdgeOffsetX;
+
+	bool mCanDropDown;
 };
 
 #endif

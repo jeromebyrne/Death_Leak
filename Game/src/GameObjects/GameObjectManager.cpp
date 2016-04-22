@@ -960,9 +960,16 @@ void GameObjectManager::ProcessGamePad()
 	{
 		if (stoppedPressingJump)
 		{
-			jumpPowerPercent = 100.0f;
-			m_player->Jump(jumpPowerPercent);
-
+			if (pad_state.Gamepad.sThumbLY < -30000 && m_player->IsOnSolidSurface())
+			{
+				m_player->dropDown();
+			}
+			else
+			{
+				jumpPowerPercent = 100.0f;
+				m_player->Jump(jumpPowerPercent);
+			}
+			
 			stoppedPressingJump = false;
 		}
 	}
