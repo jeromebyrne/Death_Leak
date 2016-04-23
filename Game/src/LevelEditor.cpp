@@ -760,6 +760,8 @@ void LevelEditor::CheckInput_TerrainEditing()
 
 	CheckForSolidLineStripEdgeAssign();
 
+	CheckForSolidLineSetDropDown();
+
 	CheckForSavePressed();
 }
 
@@ -1187,5 +1189,41 @@ void LevelEditor::CheckForSolidLineStripEdgeAssign()
 	if (GetAsyncKeyState(VK_RIGHT) >= 0)
 	{
 		pressingRight = false;
+	}
+}
+
+void LevelEditor::CheckForSolidLineSetDropDown()
+{
+	GAME_ASSERT(mTerrainEditing);
+
+	if (!mTerrainEditing)
+	{
+		return;
+	}
+
+	if (!mSelectedLineStrip)
+	{
+		return;
+	}
+
+	static bool pressingDown = false;
+
+	if (!pressingDown && GetAsyncKeyState(VK_DOWN) < 0)
+	{
+		pressingDown = true;
+
+		if (mSelectedLineStrip->GetCanDropDown())
+		{
+			mSelectedLineStrip->SetCanDropDown(false);
+		}
+		else
+		{
+			mSelectedLineStrip->SetCanDropDown(true);
+		}
+	}
+
+	if (GetAsyncKeyState(VK_DOWN) >= 0)
+	{
+		pressingDown = false;
 	}
 }

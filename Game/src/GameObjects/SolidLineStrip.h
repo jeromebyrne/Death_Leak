@@ -68,6 +68,10 @@ public:
 
 	static bool Intersect(SolidLine & solidLine, Vector2 & otherStart, Vector2 & otherEnd, Vector2 & intersectPointOut);
 
+	bool GetCanDropDown() const { return mCanDropDown; }
+
+	void SetCanDropDown(bool value) { mCanDropDown = value; }
+
 private:
 
 	void CalculateLines();

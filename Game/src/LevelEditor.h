@@ -62,6 +62,8 @@ private:
 
 	void CheckForSolidLineStripEdgeAssign();
 
+	void CheckForSolidLineSetDropDown();
+
 	GameObject * GetGameObjectClickedOn(list<shared_ptr<GameObject> > & gameObjects);
 
 	Sprite * GetAsSprite(GameObject * object);

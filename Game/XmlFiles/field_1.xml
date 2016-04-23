@@ -40,7 +40,7 @@
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="false" />
+        <horizontalflip value="true" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
@@ -58,7 +58,7 @@
         <projectileoffsety value="20" />
     </Butterfly>
     <ParallaxLayer id="3" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9999.000000" y="800.000000" x="485.704102" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="9999.000000" y="800.000000" x="1005.704102" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="472.000000" width="2048.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -81,7 +81,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="4" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9990.000000" y="740.000000" x="485.704102" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="9990.000000" y="740.000000" x="1005.704102" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="472.000000" width="2048.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -1075,7 +1075,7 @@
             <point x="59.000122" y="-83.431152" />
             <point x="110.000122" y="-83.431152" />
         </points>
-        <edge_properties has_right_hard_edge="false" has_left_hard_edge="true" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="20.000000" can_drop_down="false" />
+        <edge_properties has_right_hard_edge="false" has_left_hard_edge="true" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="20.000000" can_drop_down="true" />
     </SolidLineStrip>
     <SolidLineStrip id="72" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="1282.257324" x="-335.568726" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -1103,7 +1103,7 @@
             <point x="236.000000" y="-17.914551" />
             <point x="286.000000" y="-4.606445" />
         </points>
-        <edge_properties has_right_hard_edge="true" has_left_hard_edge="false" right_hard_edge_offset_x="20.000000" left_hard_edge_offset_x="0.000000" can_drop_down="false" />
+        <edge_properties has_right_hard_edge="true" has_left_hard_edge="false" right_hard_edge_offset_x="20.000000" left_hard_edge_offset_x="0.000000" can_drop_down="true" />
     </SolidLineStrip>
     <Sprite id="73" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="31.900002" y="1066.465820" x="3091.431152" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -1146,7 +1146,7 @@
             <point x="483.134766" y="142.832642" />
             <point x="566.019043" y="118.143677" />
         </points>
-        <edge_properties has_right_hard_edge="true" has_left_hard_edge="false" right_hard_edge_offset_x="20.000000" left_hard_edge_offset_x="0.000000" can_drop_down="false" />
+        <edge_properties has_right_hard_edge="true" has_left_hard_edge="false" right_hard_edge_offset_x="20.000000" left_hard_edge_offset_x="0.000000" can_drop_down="true" />
     </SolidLineStrip>
     <Sprite id="75" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
         <position z="118.900002" y="1129.893799" x="-77.763184" rotation="-0.201053" auto_rotate_value="0.000000" />
@@ -1201,7 +1201,7 @@
             <point x="-10.000000" y="28.663574" />
             <point x="119.000000" y="-56.303345" />
         </points>
-        <edge_properties has_right_hard_edge="false" has_left_hard_edge="true" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="20.000000" can_drop_down="false" />
+        <edge_properties has_right_hard_edge="false" has_left_hard_edge="true" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="20.000000" can_drop_down="true" />
     </SolidLineStrip>
     <SolidLineStrip id="78" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="1008.835571" x="4933.431152" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -1229,7 +1229,7 @@
             <point x="-58.000000" y="16.379150" />
             <point x="109.000000" y="-8.189575" />
         </points>
-        <edge_properties has_right_hard_edge="false" has_left_hard_edge="true" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="20.000000" can_drop_down="false" />
+        <edge_properties has_right_hard_edge="false" has_left_hard_edge="true" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="20.000000" can_drop_down="true" />
     </SolidLineStrip>
     <Sprite id="79" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="84.900002" y="1356.458252" x="5351.202148" rotation="0.400142" auto_rotate_value="0.000000" />
@@ -1285,7 +1285,7 @@
             <point x="73.855957" y="30.507324" />
             <point x="132.037598" y="57.378174" />
         </points>
-        <edge_properties has_right_hard_edge="true" has_left_hard_edge="false" right_hard_edge_offset_x="20.000000" left_hard_edge_offset_x="0.000000" can_drop_down="false" />
+        <edge_properties has_right_hard_edge="true" has_left_hard_edge="false" right_hard_edge_offset_x="20.000000" left_hard_edge_offset_x="0.000000" can_drop_down="true" />
     </SolidLineStrip>
     <SolidLineStrip id="82" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="1556.626953" x="4909.431152" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -1311,7 +1311,7 @@
             <point x="-193.000000" y="24.568848" />
             <point x="124.000000" y="-1.023682" />
         </points>
-        <edge_properties has_right_hard_edge="false" has_left_hard_edge="true" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="20.000000" can_drop_down="false" />
+        <edge_properties has_right_hard_edge="false" has_left_hard_edge="true" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="20.000000" can_drop_down="true" />
     </SolidLineStrip>
     <Sprite id="83" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="33.900002" y="1555.845825" x="3736.280762" rotation="0.430042" auto_rotate_value="0.000000" />
@@ -1352,7 +1352,7 @@
             <point x="-39.247559" y="-15.789429" />
             <point x="452.288574" y="153.703369" />
         </points>
-        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="false" />
+        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="true" />
     </SolidLineStrip>
     <Sprite id="85" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="33.900002" y="1726.372192" x="3015.528320" rotation="0.378918" auto_rotate_value="0.000000" />
@@ -1393,7 +1393,7 @@
             <point x="58.181885" y="68.114868" />
             <point x="127.398193" y="103.253662" />
         </points>
-        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="false" />
+        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="true" />
     </SolidLineStrip>
     <Sprite id="87" parallax_x="0.800000" parallax_y="1.040000" level_edit_locked="false" updateable="true">
         <position z="118.900002" y="1470.257324" x="1918.475098" rotation="-0.093511" auto_rotate_value="0.000000" />
@@ -3147,7 +3147,7 @@
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="false" />
+        <horizontalflip value="true" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
@@ -3173,7 +3173,7 @@
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="false" />
+        <horizontalflip value="true" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
@@ -3251,7 +3251,7 @@
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="false" />
+        <horizontalflip value="true" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
@@ -3303,7 +3303,7 @@
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="false" />
+        <horizontalflip value="true" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />

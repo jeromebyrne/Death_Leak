@@ -61,7 +61,7 @@
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="false" />
     </SolidLineStrip>
     <ParallaxLayer id="3" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9999.000000" y="-120.000000" x="-854.348999" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="9999.000000" y="-120.000000" x="-654.348999" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="523.000000" width="2048.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -84,7 +84,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="4" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="99999.000000" y="220.000000" x="-854.348999" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="99999.000000" y="220.000000" x="-654.348999" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="243.000000" width="4083.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -107,7 +107,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="5" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9990.000000" y="70.000000" x="-854.348999" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="9990.000000" y="70.000000" x="-654.348999" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="243.000000" width="4083.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -130,7 +130,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="6" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9990.000000" y="-50.000000" x="-854.348999" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="9990.000000" y="-50.000000" x="-654.348999" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="596.000000" width="1925.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -629,7 +629,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <ParallaxLayer id="41" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9999.999023" y="600.000000" x="-854.348999" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="9999.999023" y="600.000000" x="-654.348999" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="900.000000" width="2048.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -931,7 +931,7 @@
             <point x="-119.833618" y="-74.066345" />
             <point x="240.166382" y="-80.872009" />
         </points>
-        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="false" />
+        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="true" />
     </SolidLineStrip>
     <Sprite id="55" parallax_x="0.650000" parallax_y="1.010000" level_edit_locked="false" updateable="true">
         <position z="122.900002" y="-60.124390" x="-1076.257813" rotation="1.539999" auto_rotate_value="0.000000" />
@@ -1237,7 +1237,7 @@
             <point x="-741.000000" y="-43.507080" />
             <point x="483.000000" y="-61.933655" />
         </points>
-        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="false" />
+        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="true" />
     </SolidLineStrip>
     <Sprite id="76" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="123.900002" y="547.649292" x="-1329.386230" rotation="1.539999" auto_rotate_value="0.000000" />
@@ -1389,7 +1389,7 @@
             <point x="-251.000000" y="10.748840" />
             <point x="161.000000" y="7.677734" />
         </points>
-        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="false" />
+        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="true" />
     </SolidLineStrip>
     <SolidLineStrip id="86" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="450.043945" x="-429.386230" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -1499,10 +1499,10 @@
             <point x="-128.401184" y="-26.354065" />
             <point x="103.322998" y="-24.287048" />
         </points>
-        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="false" />
+        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="true" />
     </SolidLineStrip>
     <SolidMovingSprite id="92" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="51.000000" y="971.960571" x="19.484222" rotation="0.367200" auto_rotate_value="0.120000" />
+        <position z="51.000000" y="971.960571" x="44.252689" rotation="0.367200" auto_rotate_value="0.120000" />
         <dimensions breadth="0.000000" height="180.200607" width="180.200607" native="false" repeatX="false" repeatY="false" />
         <material value="metal" />
         <sine_wave_props active="true" x_offset="200.000000" y_offset="0.000000" amplitude="1.800000" rand_init_step="1" />

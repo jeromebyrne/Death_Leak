@@ -199,6 +199,11 @@ void SolidLineStrip::DebugDraw(ID3D10Device *  device)
 			DrawUtilities::DrawLine(l.EndPoint.WorldPosition, Vector2(l.EndPoint.WorldPosition.X + 10, l.EndPoint.WorldPosition.Y + 50));
 		}
 
+		if (mCanDropDown)
+		{
+			DrawUtilities::DrawLine(l.EndPoint.WorldPosition, Vector2(l.EndPoint.WorldPosition.X, l.EndPoint.WorldPosition.Y - 70));
+		}
+
 		if (count == 0)
 		{
 			DrawUtilities::DrawTexture(Vector3(l.StartPoint.WorldPosition.X, l.StartPoint.WorldPosition.Y, 3),
