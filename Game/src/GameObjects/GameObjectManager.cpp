@@ -981,44 +981,18 @@ void GameObjectManager::ProcessGamePad()
 	// ===================================
 
 	// weapon ============================
-	if (pad_state.Gamepad.sThumbRX < -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE ||
-		pad_state.Gamepad.sThumbRX > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE ||
-		pad_state.Gamepad.sThumbRY < -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE ||
-		pad_state.Gamepad.sThumbRY > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
-	{
-		// get aim direction 
-		Vector2 dir = Vector2(pad_state.Gamepad.sThumbRX, pad_state.Gamepad.sThumbRY);
-		dir.Normalise();
-
-		// let the player fire and return a projectile object which is added to the world
-		Projectile * p = m_player->FireWeapon(dir);
-
-		if (p)
-		{
-			GameObjectManager::Instance()->AddGameObject(p);
-		}
-	}
-	else
-	{
-		m_player->ResetProjectileFireDelay();
-	}
-	
-	// ==========================
-
-	// melee ============================
-
-	static bool pressing_melee = false;
+	static bool pressingFire = false;
 	if (pad_state.Gamepad.wButtons & XINPUT_GAMEPAD_X)
 	{
-		pressing_melee = true;
+		pressingFire = true;
 	}
 	else
 	{
-		if (pressing_melee)
+		if (pressingFire)
 		{
-			/*
+
 			// get aim direction 
-			Vector2 dir = Vector2(m_player->DirectionX(), 0.1f);
+			Vector2 dir = Vector2(m_player->DirectionX(), 0);
 
 			if (pad_state.Gamepad.sThumbLX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
 				pad_state.Gamepad.sThumbLX > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
@@ -1029,6 +1003,9 @@ void GameObjectManager::ProcessGamePad()
 				dir.Normalise();
 			}
 
+
+			dir.Normalise();
+
 			// let the player fire and return a projectile object which is added to the world
 			Projectile * p = m_player->FireWeapon(dir);
 
@@ -1036,7 +1013,23 @@ void GameObjectManager::ProcessGamePad()
 			{
 				GameObjectManager::Instance()->AddGameObject(p);
 			}
-			*/
+		}
+		pressingFire = false;
+	}
+	
+	// ==========================
+
+	// melee ============================
+
+	static bool pressing_melee = false;
+	if (pad_state.Gamepad.wButtons & XINPUT_GAMEPAD_B)
+	{
+		pressing_melee = true;
+	}
+	else
+	{
+		if (pressing_melee)
+		{
 		}
 		pressing_melee = false;
 	}
@@ -1077,29 +1070,9 @@ void GameObjectManager::ProcessGamePad()
 	}
 	// ==========================
 
-	// Sprint ====================
-	
-	// only sprint if on solid ground or wall running and not in water
-	/*
-	if (!m_player->WasInWaterLastFrame() && ((m_player->GetAccelY() > -0.1f && m_player->GetAccelY() < 0.1f) || m_player->GetIsCollidingAtObjectSide()))
-	{
-		if (pad_state.Gamepad.bLeftTrigger > 75.0f)
-		{
-			m_player->SetSprintActive(true);
-		}
-		else
-		{
-			m_player->SetSprintActive(false);
-		}
-	}
-	else
-	{
-		m_player->SetSprintActive(false);
-	}
-	*/
-
 	// ===========================
 
+#if _DEBUG
 	// Ninja spawning
 	static bool pressingLeftShoulder = false;
 	if (pad_state.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
@@ -1140,7 +1113,9 @@ void GameObjectManager::ProcessGamePad()
 			}
 		}
 		pressing_slo_mo = false;
-	}		
+	}
+
+#endif
 }
 
 GameObject * GameObjectManager::CopyObject(GameObject * toCopy)

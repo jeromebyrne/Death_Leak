@@ -911,7 +911,5 @@ void Character::dropDown()
 		{
 			m_velocity.Y = -1.0f;
 		}
-
-		m_velocity.Y *= 10;
 	}
 }

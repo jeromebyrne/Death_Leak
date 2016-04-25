@@ -15,12 +15,13 @@ static const char * kBombTextureFile = "Media/bomb.png";
 
 Player::Player(float x, float y, float z, float width, float height, float breadth) :
 Character(x, y, z, width, height, breadth),
-	mProjectileFireDelay(0.2f),
+	mProjectileFireDelay(0.1f),
 	mTimeUntilProjectileReady(0.0f),
 	mFireBurstNum(5),
 	mCurrentBurstNum(0),
 	mFireBurstDelay(0.5f),
-	mTimeUntilFireBurstAvailable(0.0f)
+	mTimeUntilFireBurstAvailable(0.0f),
+	mBurstFireEnabled(false)
 {
 	mHealth = 100.0f;
 	mAlwaysUpdate = true;
@@ -110,12 +111,12 @@ void Player::Update(float delta)
 	// update base classes
 	Character::Update(delta);
 
-	if (mCurrentBurstNum >= mFireBurstNum)
+	if (mBurstFireEnabled && mCurrentBurstNum >= mFireBurstNum)
 	{
 		mCurrentBurstNum = 0;
 		mTimeUntilFireBurstAvailable = mFireBurstDelay;
 	}
-	else if (mTimeUntilFireBurstAvailable > 0.0f)
+	else if (mBurstFireEnabled && mTimeUntilFireBurstAvailable > 0.0f)
 	{
 		mTimeUntilFireBurstAvailable -= delta;
 
@@ -145,12 +146,16 @@ void Player::Update(float delta)
 
 Projectile * Player::FireWeapon(Vector2 direction)
 {
-	if ( mCurrentBurstNum >= mFireBurstNum || mTimeUntilProjectileReady > 0.0f)
+	if ((mBurstFireEnabled && mCurrentBurstNum >= mFireBurstNum) || mTimeUntilProjectileReady > 0.0f)
 	{
 		return nullptr;
 	}
 
-	++mCurrentBurstNum;
+	if (mBurstFireEnabled)
+	{
+		++mCurrentBurstNum;
+	}
+
 	mTimeUntilProjectileReady = mProjectileFireDelay;
 
 	Vector3 pos = m_position;
@@ -198,7 +203,6 @@ Projectile * Player::FireWeapon(Vector2 direction)
 	}
 	else
 	{
-		//p->FlipVertical();
 		p->FlipHorizontal();
 	}
 

@@ -31,7 +31,7 @@ private:
 	unsigned int mCurrentBurstNum;
 	float mFireBurstDelay;
 	float mTimeUntilFireBurstAvailable;
-
+	bool mBurstFireEnabled;
 };
 
 #endif
