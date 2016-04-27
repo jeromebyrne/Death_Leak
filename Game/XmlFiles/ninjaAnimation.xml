@@ -57,6 +57,59 @@
       </frame>
 		</Running>
 
+
+    <Strafing FrameRate="20" MaxFrameRate="20" MinFrameRate="4" skeleton_offset_x="0" skeleton_offset_y="0">
+
+      <frame filename="Media\\characters\\player\\player_run_5.png">
+        <skeletonparts>
+          <part start_x="-5" start_y="-35" end_x="40" end_y="20"/>
+          <part start_x="-5" start_y="-35" end_x="22" end_y="-77"/>
+          <part start_x="22" start_y="-77" end_x="26" end_y="-140"/>
+          <part start_x="-5" start_y="-35" end_x="-20" end_y="-90"/>
+          <part start_x="-20" start_y="-90" end_x="-55" end_y="-120"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\\characters\\player\\player_run_4.png">
+        <skeletonparts>
+          <part start_x="-5" start_y="-35" end_x="40" end_y="20"/>
+          <part start_x="-5" start_y="-35" end_x="22" end_y="-77"/>
+          <part start_x="22" start_y="-77" end_x="-15" end_y="-110"/>
+          <part start_x="-5" start_y="-35" end_x="-20" end_y="-90"/>
+          <part start_x="-20" start_y="-90" end_x="-40" end_y="-135"/>
+        </skeletonparts>
+      </frame>
+
+      <frame filename="Media\\characters\\player\\player_run_3.png">
+        <skeletonparts>
+          <part start_x="-5" start_y="-35" end_x="40" end_y="20"/>
+          <part start_x="-5" start_y="-35" end_x="22" end_y="-77"/>
+          <part start_x="22" start_y="-77" end_x="32" end_y="-140"/>
+          <part start_x="-5" start_y="-35" end_x="-20" end_y="-90"/>
+          <part start_x="-20" start_y="-90" end_x="-55" end_y="-120"/>
+        </skeletonparts>
+      </frame>
+      
+      <frame filename="Media\\characters\\player\\player_run_2.png">
+        <skeletonparts>
+          <part start_x="-5" start_y="-35" end_x="40" end_y="20"/>
+          <part start_x="-5" start_y="-35" end_x="22" end_y="-77"/>
+          <part start_x="22" start_y="-77" end_x="0" end_y="-117"/>
+          <part start_x="-5" start_y="-35" end_x="-20" end_y="-100"/>
+          <part start_x="-20" start_y="-100" end_x="-45" end_y="-132"/>
+        </skeletonparts>
+      </frame>
+      
+      <frame filename="Media\\characters\\player\\player_run_1.png">
+        <skeletonparts>
+          <part start_x="-15" start_y="-45" end_x="40" end_y="20"/>
+          <part start_x="-15" start_y="-45" end_x="0" end_y="-95"/>
+          <part start_x="0" start_y="-95" end_x="-15" end_y="-147"/>
+        </skeletonparts>
+      </frame>
+
+    </Strafing>
+    
+
 		<JumpingUp FrameRate="8" MaxFrameRate="8" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
       <frame filename="Media\\characters\\player\\player_jump_1.png">
         <skeletonparts>

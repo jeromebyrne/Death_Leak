@@ -25,6 +25,8 @@ void LevelProperties::XmlRead(TiXmlElement * element)
 	mTargetLag.X = XmlUtilities::ReadAttributeAsFloat(element, "camera_properties", "xLag");
 	mTargetLag.Y = XmlUtilities::ReadAttributeAsFloat(element, "camera_properties", "yLag");
 
+	mOriginalTargetOffset = mTargetOffset;
+
 	mLevelMusic = XmlUtilities::ReadAttributeAsString(element, "music", "file");
 	mMusicInitialDelay = XmlUtilities::ReadAttributeAsFloat(element, "music", "initial_delay");
 	mMusicLength = XmlUtilities::ReadAttributeAsFloat(element, "music", "length");

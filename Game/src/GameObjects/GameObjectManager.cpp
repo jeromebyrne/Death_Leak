@@ -1016,8 +1016,40 @@ void GameObjectManager::ProcessGamePad()
 		}
 		pressingFire = false;
 	}
-	
+
 	// ==========================
+
+	// strafing  =========================
+
+	static bool pressingStrafe = false;
+
+	if (pad_state.Gamepad.bLeftTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
+	{
+		if (!pressingStrafe)
+		{
+			// just started pressing so set the strafe direction
+			m_player->SetStrafeDirectionX(m_player->DirectionX());
+			Vector2 defaultOffset = mLevelProperties.GetOriginalTargetOffset();
+			Camera2D::GetInstance()->SetTargetOffset(Vector2(defaultOffset.X + 200, defaultOffset.Y));
+			Camera2D::GetInstance()->SetOverrideDirection(true, m_player->DirectionX());
+		}
+
+		m_player->SetIsStrafing(true);
+		pressingStrafe = true;
+	}
+	else
+	{
+		if (pressingStrafe)
+		{
+			m_player->SetIsStrafing(false);
+			Camera2D::GetInstance()->SetTargetOffset(mLevelProperties.GetOriginalTargetOffset());
+			Camera2D::GetInstance()->SetOverrideDirection(false, Vector2(0, 0));
+		}
+		
+		pressingStrafe = false;
+	}
+
+	// =======================================
 
 	// melee ============================
 
@@ -1105,7 +1137,7 @@ void GameObjectManager::ProcessGamePad()
 			LOG_INFO("This is a really bad way to do this. Come back later.");
 			if (Timing::Instance()->GetTimeModifier() == 1.0f)
 			{
-				Timing::Instance()->SetTimeModifier(0.1f);
+				Timing::Instance()->SetTimeModifier(3.5f);
 			}
 			else
 			{

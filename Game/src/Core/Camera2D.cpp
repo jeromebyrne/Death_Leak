@@ -14,7 +14,8 @@ Camera2D::Camera2D(int screenWidth, int screenHeight, float x, float y, float z)
 	mCurrentShakeIntensity(1.0f),
 	mShakeStartTime(0.0f),
 	mCurrentShakeDuration(0.0f),
-	mTargetObject(nullptr)
+	mTargetObject(nullptr),
+	mIsOverrideDirection(false)
 {
 	// Initialize the world matrix
     D3DXMatrixIdentity( &m_world );
@@ -281,13 +282,27 @@ void Camera2D::FollowTargetObjectWithLag(bool forceUpdate, float overrideLagX, f
 		// get the x and y distance between the camera and the object
 		float distanceX = 0.0f;
 
-		if (mTargetObject->DirectionX() > 0)
+		if (mIsOverrideDirection)
 		{
-			distanceX = m_position.X - (mTargetObject->X() + mTargetOffset.X * mZoomInPercent);
+			if (mOverrideDirection.X > 0)
+			{
+				distanceX = m_position.X - (mTargetObject->X() + mTargetOffset.X * mZoomInPercent);
+			}
+			else
+			{
+				distanceX = m_position.X - (mTargetObject->X() - mTargetOffset.X * mZoomInPercent);
+			}
 		}
 		else
 		{
-			distanceX = m_position.X - (mTargetObject->X() - mTargetOffset.X * mZoomInPercent);
+			if (mTargetObject->DirectionX() > 0)
+			{
+				distanceX = m_position.X - (mTargetObject->X() + mTargetOffset.X * mZoomInPercent);
+			}
+			else
+			{
+				distanceX = m_position.X - (mTargetObject->X() - mTargetOffset.X * mZoomInPercent);
+			}
 		}
 
 		float xLag = mTargetLag.X * mZoomInPercent;

@@ -49,7 +49,9 @@ Character::Character(float x, float y, float z, float width, float height, float
 	mMaxJumpsAllowed(2),
 	mCurrentJumpsBeforeLand(0),
 	mTimeNotOnSolidSurface(0.0f),
-	mCurrentSolidLineDroppingDownThroughId(0)
+	mCurrentSolidLineDroppingDownThroughId(0),
+	mIsStrafing(false),
+	mStrafeDirectionX(1.0f)
 {
 	mProjectileFilePath = "Media/knife.png";
 	mProjectileImpactFilePath = "Media/knife_impact.png";
@@ -445,9 +447,19 @@ void Character::UpdateAnimations()
 		}
 		else if ((m_velocity.X > 1 || m_velocity.X < -1) && !m_collidingAtSideOfObject) // we are moving left or right and not colliding with the side of an object
 		{
-			if (current_body_sequence_name != "Running")
+			if (mIsStrafing)
 			{
-				bodyPart->SetSequence("Running");
+				if (current_body_sequence_name != "Strafing")
+				{
+					bodyPart->SetSequence("Strafing");
+				}
+			}
+			else
+			{
+				if (current_body_sequence_name != "Running")
+				{
+					bodyPart->SetSequence("Running");
+				}
 			}
 
 			bodyPart->AnimateLooped();
@@ -607,24 +619,40 @@ void Character::AccelerateX(float directionX)
 {
 	float deepWaterModifier = (WasInWaterLastFrame() && GetWaterIsDeep()) ? 0.5f : 1.0f;
 
+	float strafeModifier = mIsStrafing ? 0.4f : 1.0f;
+
 	if (GetIsSprintActive())
 	{
-		MovingSprite::AccelerateX(directionX, (mAccelXRate * 2) * deepWaterModifier);
+		MovingSprite::AccelerateX(directionX, (mAccelXRate * 2) * deepWaterModifier * strafeModifier);
 	}
 	else
 	{
-		MovingSprite::AccelerateX(directionX, mAccelXRate * deepWaterModifier);
+		MovingSprite::AccelerateX(directionX, mAccelXRate * deepWaterModifier * strafeModifier);
 	}
 
-	if(directionX < 0)
+	if (mIsStrafing)
 	{
-		// flip the sprite horizontally
-		FlipHorizontal();
+		if (mStrafeDirectionX > 0.0f)
+		{
+			UnFlipHorizontal();
+		}
+		else
+		{
+			FlipHorizontal();
+		}
 	}
-	else if(directionX > 0)
+	else
 	{
-		// unflip
-		UnFlipHorizontal();
+		if (directionX < 0)
+		{
+			// flip the sprite horizontally
+			FlipHorizontal();
+		}
+		else if (directionX > 0)
+		{
+			// unflip
+			UnFlipHorizontal();
+		}
 	}
 }
 

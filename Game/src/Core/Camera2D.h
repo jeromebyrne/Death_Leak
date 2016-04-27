@@ -87,6 +87,8 @@ public:
 
 	void DoBigShake();
 
+	void SetOverrideDirection(bool shouldOverride, Vector2 direction) { mIsOverrideDirection = shouldOverride; mOverrideDirection = direction; }
+
 private:
 
 	bool UpdateBoundsX(GameObject * target);
@@ -120,6 +122,9 @@ private:
 	float mCurrentShakeDuration;
 
 	MovingSprite * mTargetObject;
+
+	bool mIsOverrideDirection;
+	Vector2 mOverrideDirection;
 };
 
 #endif

@@ -15,6 +15,9 @@ public:
 	float GetMusicLength() const { return mMusicLength; }
 	float GetMusicInitialDelay() const { return mMusicInitialDelay; }
 	float GetMusicTimeBetween() const  { return mMusicTimeBetween; }
+	Vector2 GetTargetOffset() const { return mTargetOffset; }
+	Vector2 GetOriginalTargetOffset() const { return mOriginalTargetOffset; }
+	void SetTargetOffset(Vector2 offset) { mTargetOffset = offset; }
 
 private:
 
@@ -22,6 +25,7 @@ private:
 	Vector2 mCamBoundsBottomRight;
 	float mCameraZoomInPercent;
 	Vector2 mTargetOffset;
+	Vector2 mOriginalTargetOffset;
 	Vector2 mTargetLag;
 
 	string mLevelMusic;

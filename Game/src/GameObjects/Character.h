@@ -37,15 +37,17 @@ public:
 	virtual Projectile * FireBomb(Vector2 direction) = 0;
 	virtual void DoMeleeAttack();
 	void UpdateFootsteps(SolidMovingSprite * solidObject);
-
 	unsigned GetMaxJumpsAllowed() const { return mMaxJumpsAllowed; }
 	unsigned GetCurrentJumpsBeforeLand() const { return mCurrentJumpsBeforeLand; }
 	float GetTimeNotOnSolidSurface() const { return mTimeNotOnSolidSurface; }
-
 	void setCurrentSolidLineDroppingDownThroughId(unsigned int value) { mCurrentSolidLineDroppingDownThroughId = value; }
 	unsigned getCurrentSolidLineDroppingDownThroughId() const { return mCurrentSolidLineDroppingDownThroughId; }
-
 	void dropDown();
+
+	bool IsStrafing() const  { return mIsStrafing; }
+	void SetIsStrafing(bool value) { mIsStrafing = value; }
+	float GetStrafeDirectionX() const { return mStrafeDirectionX; }
+	void SetStrafeDirectionX(float value) { mStrafeDirectionX = value; }
 
 protected:
 
@@ -86,8 +88,9 @@ protected:
 	unsigned mMaxJumpsAllowed;
 	unsigned mCurrentJumpsBeforeLand;
 	float mTimeNotOnSolidSurface;
-
 	unsigned int mCurrentSolidLineDroppingDownThroughId;
+	bool mIsStrafing;
+	float mStrafeDirectionX;
 };
 
 #endif
