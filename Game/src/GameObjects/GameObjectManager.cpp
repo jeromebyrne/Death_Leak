@@ -1068,32 +1068,36 @@ void GameObjectManager::ProcessGamePad()
 
 	static bool pressingStrafeRight = false;
 
-	if (pad_state.Gamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
+	if (!pressingStrafeLeft)
 	{
-		if (!pressingStrafeRight)
+		if (pad_state.Gamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
 		{
-			// just started pressing so set the strafe direction
-			m_player->SetStrafeDirectionX(1.0f);
-			Vector2 defaultOffset = mLevelProperties.GetOriginalTargetOffset();
-			Camera2D::GetInstance()->SetTargetOffset(Vector2(defaultOffset.X + 200, defaultOffset.Y));
-			Camera2D::GetInstance()->SetOverrideDirection(true, 1.0f);
-			m_player->GetStrafeDirectionX() > 0.0f ? m_player->FlipHorizontal() : m_player->UnFlipHorizontal();
-		}
+			if (!pressingStrafeRight)
+			{
+				// just started pressing so set the strafe direction
+				m_player->SetStrafeDirectionX(1.0f);
+				Vector2 defaultOffset = mLevelProperties.GetOriginalTargetOffset();
+				Camera2D::GetInstance()->SetTargetOffset(Vector2(defaultOffset.X + 200, defaultOffset.Y));
+				Camera2D::GetInstance()->SetOverrideDirection(true, 1.0f);
+				m_player->GetStrafeDirectionX() > 0.0f ? m_player->FlipHorizontal() : m_player->UnFlipHorizontal();
+			}
 
-		m_player->SetIsStrafing(true);
-		pressingStrafeRight = true;
-	}
-	else
-	{
-		if (pressingStrafeLeft)
+			m_player->SetIsStrafing(true);
+			pressingStrafeRight = true;
+		}
+		else
 		{
-			m_player->SetIsStrafing(false);
-			Camera2D::GetInstance()->SetTargetOffset(mLevelProperties.GetOriginalTargetOffset());
-			Camera2D::GetInstance()->SetOverrideDirection(false, Vector2(0, 0));
-		}
+			if (pressingStrafeRight)
+			{
+				m_player->SetIsStrafing(false);
+				Camera2D::GetInstance()->SetTargetOffset(mLevelProperties.GetOriginalTargetOffset());
+				Camera2D::GetInstance()->SetOverrideDirection(false, Vector2(0, 0));
+			}
 
-		pressingStrafeRight = false;
+			pressingStrafeRight = false;
+		}
 	}
+	
 	// =======================================
 
 	// melee ============================
