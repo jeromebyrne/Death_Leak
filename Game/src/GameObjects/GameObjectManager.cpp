@@ -1048,7 +1048,7 @@ void GameObjectManager::ProcessGamePad()
 			Vector2 defaultOffset = mLevelProperties.GetOriginalTargetOffset();
 			Camera2D::GetInstance()->SetTargetOffset(Vector2(defaultOffset.X + 200, defaultOffset.Y));
 			Camera2D::GetInstance()->SetOverrideDirection(true, -1.0f);
-			m_player->GetStrafeDirectionX() > 0.0f ? m_player->FlipHorizontal() : m_player->UnFlipHorizontal();
+			m_player->GetStrafeDirectionX() > 0.0f ? m_player->UnFlipHorizontal() : m_player->FlipHorizontal();
 		}
 
 		m_player->SetIsStrafing(true);
@@ -1079,7 +1079,7 @@ void GameObjectManager::ProcessGamePad()
 				Vector2 defaultOffset = mLevelProperties.GetOriginalTargetOffset();
 				Camera2D::GetInstance()->SetTargetOffset(Vector2(defaultOffset.X + 200, defaultOffset.Y));
 				Camera2D::GetInstance()->SetOverrideDirection(true, 1.0f);
-				m_player->GetStrafeDirectionX() > 0.0f ? m_player->FlipHorizontal() : m_player->UnFlipHorizontal();
+				m_player->GetStrafeDirectionX() > 0.0f ? m_player->UnFlipHorizontal() : m_player->FlipHorizontal();
 			}
 
 			m_player->SetIsStrafing(true);
