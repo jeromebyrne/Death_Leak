@@ -1037,35 +1037,66 @@ void GameObjectManager::ProcessGamePad()
 
 	// strafing  =========================
 
-	static bool pressingStrafe = false;
+	static bool pressingStrafeLeft = false;
 
 	if (pad_state.Gamepad.bLeftTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
 	{
-		if (!pressingStrafe)
+		if (!pressingStrafeLeft)
 		{
 			// just started pressing so set the strafe direction
-			m_player->SetStrafeDirectionX(m_player->DirectionX());
+			m_player->SetStrafeDirectionX(1.0f);
 			Vector2 defaultOffset = mLevelProperties.GetOriginalTargetOffset();
 			Camera2D::GetInstance()->SetTargetOffset(Vector2(defaultOffset.X + 200, defaultOffset.Y));
-			Camera2D::GetInstance()->SetOverrideDirection(true, m_player->DirectionX());
-			// m_player->GetStrafeDirectionX() > 0.0f ? m_player->UnFlipHorizontal() : m_player->FlipHorizontal();
+			Camera2D::GetInstance()->SetOverrideDirection(true, 1.0f);
+			m_player->GetStrafeDirectionX() > 0.0f ? m_player->FlipHorizontal() : m_player->UnFlipHorizontal();
 		}
 
 		m_player->SetIsStrafing(true);
-		pressingStrafe = true;
+		pressingStrafeLeft = true;
 	}
 	else
 	{
-		if (pressingStrafe)
+		if (pressingStrafeLeft)
 		{
 			m_player->SetIsStrafing(false);
 			Camera2D::GetInstance()->SetTargetOffset(mLevelProperties.GetOriginalTargetOffset());
 			Camera2D::GetInstance()->SetOverrideDirection(false, Vector2(0, 0));
 		}
 		
-		pressingStrafe = false;
+		pressingStrafeLeft = false;
 	}
 
+	if (!pressingStrafeLeft)
+	{
+		static bool pressingStrafeRight = false;
+
+		if (pad_state.Gamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
+		{
+			if (!pressingStrafeRight)
+			{
+				// just started pressing so set the strafe direction
+				m_player->SetStrafeDirectionX(-1.0f);
+				Vector2 defaultOffset = mLevelProperties.GetOriginalTargetOffset();
+				Camera2D::GetInstance()->SetTargetOffset(Vector2(defaultOffset.X + 200, defaultOffset.Y));
+				Camera2D::GetInstance()->SetOverrideDirection(true, -1.0f);
+				m_player->GetStrafeDirectionX() > 0.0f ? m_player->UnFlipHorizontal() : m_player->FlipHorizontal();
+			}
+
+			m_player->SetIsStrafing(true);
+			pressingStrafeRight = true;
+		}
+		else
+		{
+			if (pressingStrafeLeft)
+			{
+				m_player->SetIsStrafing(false);
+				Camera2D::GetInstance()->SetTargetOffset(mLevelProperties.GetOriginalTargetOffset());
+				Camera2D::GetInstance()->SetOverrideDirection(false, Vector2(0, 0));
+			}
+
+			pressingStrafeRight = false;
+		}
+	}
 	// =======================================
 
 	// melee ============================
