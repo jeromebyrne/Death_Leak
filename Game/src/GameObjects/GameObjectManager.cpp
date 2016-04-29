@@ -379,6 +379,11 @@ void GameObjectManager::LoadObjectsFromFile(const char* filename)
 	LoadContent(graphics->Device());
 	Initialise();
 
+	if (m_player)
+	{
+		m_player->AddAimLineSprite();
+	}
+
 	// now order the objects by z value
 	OrderDrawablesByDepth();
 
@@ -425,7 +430,6 @@ void GameObjectManager::LoadObjectsFromFile(const char* filename)
 		obj->Update(0);
 	}
 
-	// loaded a level
 	m_levelLoaded = true;
 }
 
@@ -981,6 +985,20 @@ void GameObjectManager::ProcessGamePad()
 	// ===================================
 
 	// weapon ============================
+	// get aim direction 
+	Vector2 aimDirection = Vector2(m_player->IsStrafing() ? m_player->GetStrafeDirectionX() : m_player->DirectionX(), 0);
+
+	if (pad_state.Gamepad.sThumbLX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
+		pad_state.Gamepad.sThumbLX > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
+		pad_state.Gamepad.sThumbLY < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
+		pad_state.Gamepad.sThumbLY > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+	{
+		aimDirection = Vector2(pad_state.Gamepad.sThumbLX, pad_state.Gamepad.sThumbLY);
+		aimDirection.Normalise();
+
+		m_player->SetAimLineDirection(aimDirection);
+	}
+
 	static bool pressingFire = false;
 	if (pad_state.Gamepad.wButtons & XINPUT_GAMEPAD_X)
 	{
@@ -990,40 +1008,24 @@ void GameObjectManager::ProcessGamePad()
 	{
 		if (pressingFire)
 		{
-
-			// get aim direction 
-			Vector2 dir = Vector2(m_player->IsStrafing() ? m_player->GetStrafeDirectionX() : m_player->DirectionX(), 0);
-
-			if (pad_state.Gamepad.sThumbLX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
-				pad_state.Gamepad.sThumbLX > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
-				pad_state.Gamepad.sThumbLY < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
-				pad_state.Gamepad.sThumbLY > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+			if (m_player->IsStrafing())
 			{
-				if (m_player->IsStrafing())
-				{
-					bool sameSign = m_player->GetStrafeDirectionX() * pad_state.Gamepad.sThumbLX >= 0.0f;
+				bool sameSign = m_player->GetStrafeDirectionX() * pad_state.Gamepad.sThumbLX >= 0.0f;
 
-					if (sameSign)
-					{
-						dir = Vector2(pad_state.Gamepad.sThumbLX, pad_state.Gamepad.sThumbLY);
-					}
-					else
-					{
-						dir = Vector2(pad_state.Gamepad.sThumbLX * -1.0f, pad_state.Gamepad.sThumbLY * -1.0f);
-					}
+				if (sameSign)
+				{
+					aimDirection = Vector2(pad_state.Gamepad.sThumbLX, pad_state.Gamepad.sThumbLY);
 				}
 				else
 				{
-					dir = Vector2(pad_state.Gamepad.sThumbLX, pad_state.Gamepad.sThumbLY);
+					aimDirection = Vector2(pad_state.Gamepad.sThumbLX * -1.0f, pad_state.Gamepad.sThumbLY * -1.0f);
 				}
 
-				dir.Normalise();
+				aimDirection.Normalise();
 			}
 
-			dir.Normalise();
-
 			// let the player fire and return a projectile object which is added to the world
-			Projectile * p = m_player->FireWeapon(dir);
+			Projectile * p = m_player->FireWeapon(aimDirection);
 
 			if (p)
 			{
@@ -1068,34 +1070,31 @@ void GameObjectManager::ProcessGamePad()
 
 	static bool pressingStrafeRight = false;
 
-	if (!pressingStrafeLeft)
+	if (pad_state.Gamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
 	{
-		if (pad_state.Gamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
+		if (!pressingStrafeRight)
 		{
-			if (!pressingStrafeRight)
-			{
-				// just started pressing so set the strafe direction
-				m_player->SetStrafeDirectionX(1.0f);
-				Vector2 defaultOffset = mLevelProperties.GetOriginalTargetOffset();
-				Camera2D::GetInstance()->SetTargetOffset(Vector2(defaultOffset.X + 200, defaultOffset.Y));
-				Camera2D::GetInstance()->SetOverrideDirection(true, 1.0f);
-				m_player->GetStrafeDirectionX() > 0.0f ? m_player->UnFlipHorizontal() : m_player->FlipHorizontal();
-			}
-
-			m_player->SetIsStrafing(true);
-			pressingStrafeRight = true;
+			// just started pressing so set the strafe direction
+			m_player->SetStrafeDirectionX(1.0f);
+			Vector2 defaultOffset = mLevelProperties.GetOriginalTargetOffset();
+			Camera2D::GetInstance()->SetTargetOffset(Vector2(defaultOffset.X + 200, defaultOffset.Y));
+			Camera2D::GetInstance()->SetOverrideDirection(true, 1.0f);
+			m_player->GetStrafeDirectionX() > 0.0f ? m_player->UnFlipHorizontal() : m_player->FlipHorizontal();
 		}
-		else
+
+		m_player->SetIsStrafing(true);
+		pressingStrafeRight = true;
+	}
+	else
+	{
+		if (pressingStrafeRight && !pressingStrafeLeft)
 		{
-			if (pressingStrafeRight)
-			{
-				m_player->SetIsStrafing(false);
-				Camera2D::GetInstance()->SetTargetOffset(mLevelProperties.GetOriginalTargetOffset());
-				Camera2D::GetInstance()->SetOverrideDirection(false, Vector2(0, 0));
-			}
-
-			pressingStrafeRight = false;
+			m_player->SetIsStrafing(false);
+			Camera2D::GetInstance()->SetTargetOffset(mLevelProperties.GetOriginalTargetOffset());
+			Camera2D::GetInstance()->SetOverrideDirection(false, Vector2(0, 0));
 		}
+
+		pressingStrafeRight = false;
 	}
 	
 	// =======================================

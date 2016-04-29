@@ -457,8 +457,9 @@ void Projectile::Update(float delta)
 		// nice simple update
 		if (mIsInWater)
 		{
-			m_velocity.X *= 0.88f; // slow down significantly
-			m_velocity.Y *= 0.9f; // slow down significantly
+			// TODO: use percent delta
+			m_velocity.X *= 0.91f; // slow down significantly
+			m_velocity.Y *= 0.95f; // slow down significantly
 		}
 		m_position += m_velocity * percentDelta;
 	}

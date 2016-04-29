@@ -10,6 +10,7 @@
 #include "PlayerLevelManager.h"
 #include "TextObject.h"
 #include "AudioManager.h"
+#include "DrawUtilities.h"
 
 static const char * kBombTextureFile = "Media/bomb.png";
 
@@ -21,7 +22,8 @@ Character(x, y, z, width, height, breadth),
 	mCurrentBurstNum(0),
 	mFireBurstDelay(0.5f),
 	mTimeUntilFireBurstAvailable(0.0f),
-	mBurstFireEnabled(false)
+	mBurstFireEnabled(false),
+	mAimLineSprite(nullptr)
 {
 	mHealth = 100.0f;
 	mAlwaysUpdate = true;
@@ -357,3 +359,68 @@ void Player::CheckForAndDoLevelUp()
 		// ************************************
 	}
 }
+
+void Player::AddAimLineSprite()
+{
+	GAME_ASSERT(!mAimLineSprite);
+
+	if (mAimLineSprite)
+	{
+		return;
+	}
+
+	mAimLineSprite = new Sprite();
+	
+	mAimLineSprite->SetDimensionsXYZ(100, 100, 0);
+
+	mAimLineSprite->SetTextureFilename("Media\\aim_line.png");
+
+	mAimLineSprite->EffectName = this->EffectName;
+
+	mAimLineSprite->SetZ(Z() + 0.1f);
+
+	mAimLineSprite->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), Vector3(m_projectileOffset.X , m_projectileOffset.Y , 0), false);
+
+	GameObjectManager::Instance()->AddGameObject(mAimLineSprite);
+}
+
+void Player::SetAimLineDirection(Vector2 & dir)
+{
+	if (!mAimLineSprite)
+	{
+		return;
+	}
+
+	if (dir.Y < 0)
+	{
+		if (dir.X > 0)
+		{
+			mAimLineSprite->SetRotationAngle(-acos(dir.Dot(Vector2(1, 0))));
+			mAimLineSprite->UnFlipVertical();
+			mAimLineSprite->SetAttachmentOffsetX(m_projectileOffset.X);
+		}
+		else
+		{
+			mAimLineSprite->SetRotationAngle(acos(dir.Dot(Vector2(1, 0))));
+			mAimLineSprite->FlipVertical();
+			mAimLineSprite->SetAttachmentOffsetX(-m_projectileOffset.X);
+		}
+	}
+	else
+	{
+		if (dir.X > 0)
+		{
+			mAimLineSprite->SetRotationAngle(acos(dir.Dot(Vector2(1, 0))));
+			mAimLineSprite->UnFlipVertical();
+			mAimLineSprite->SetAttachmentOffsetX(m_projectileOffset.X);
+		}
+		else
+		{
+			mAimLineSprite->SetRotationAngle(-acos(dir.Dot(Vector2(1, 0))));
+			mAimLineSprite->FlipVertical();
+			mAimLineSprite->SetAttachmentOffsetX(-m_projectileOffset.X);
+		}
+	}
+}
+
+

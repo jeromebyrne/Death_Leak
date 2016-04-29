@@ -18,6 +18,9 @@ public:
 	virtual Projectile * FireBomb(Vector2 direction) override;
 	void ResetProjectileFireDelay();
 
+	void AddAimLineSprite();
+	void SetAimLineDirection(Vector2 & dir);
+
 private:
 
 	virtual void DebugDraw(ID3D10Device *  device) override;
@@ -32,6 +35,8 @@ private:
 	float mFireBurstDelay;
 	float mTimeUntilFireBurstAvailable;
 	bool mBurstFireEnabled;
+
+	Sprite * mAimLineSprite;
 };
 
 #endif
