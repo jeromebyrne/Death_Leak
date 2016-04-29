@@ -1044,11 +1044,11 @@ void GameObjectManager::ProcessGamePad()
 		if (!pressingStrafe)
 		{
 			// just started pressing so set the strafe direction
-			m_player->SetStrafeDirectionX(-m_player->DirectionX());
+			m_player->SetStrafeDirectionX(m_player->DirectionX());
 			Vector2 defaultOffset = mLevelProperties.GetOriginalTargetOffset();
 			Camera2D::GetInstance()->SetTargetOffset(Vector2(defaultOffset.X + 200, defaultOffset.Y));
-			Camera2D::GetInstance()->SetOverrideDirection(true, -m_player->DirectionX());
-			m_player->GetStrafeDirectionX() > 0.0f ? m_player->UnFlipHorizontal() : m_player->FlipHorizontal();
+			Camera2D::GetInstance()->SetOverrideDirection(true, m_player->DirectionX());
+			// m_player->GetStrafeDirectionX() > 0.0f ? m_player->UnFlipHorizontal() : m_player->FlipHorizontal();
 		}
 
 		m_player->SetIsStrafing(true);
