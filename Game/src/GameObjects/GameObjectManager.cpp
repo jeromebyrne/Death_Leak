@@ -992,17 +992,33 @@ void GameObjectManager::ProcessGamePad()
 		{
 
 			// get aim direction 
-			Vector2 dir = Vector2(m_player->DirectionX(), 0);
+			Vector2 dir = Vector2(m_player->IsStrafing() ? m_player->GetStrafeDirectionX() : m_player->DirectionX(), 0);
 
 			if (pad_state.Gamepad.sThumbLX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
 				pad_state.Gamepad.sThumbLX > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
 				pad_state.Gamepad.sThumbLY < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
 				pad_state.Gamepad.sThumbLY > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
 			{
-				dir = Vector2(pad_state.Gamepad.sThumbLX, pad_state.Gamepad.sThumbLY);
+				if (m_player->IsStrafing())
+				{
+					bool sameSign = m_player->GetStrafeDirectionX() * pad_state.Gamepad.sThumbLX >= 0.0f;
+
+					if (sameSign)
+					{
+						dir = Vector2(pad_state.Gamepad.sThumbLX, pad_state.Gamepad.sThumbLY);
+					}
+					else
+					{
+						dir = Vector2(pad_state.Gamepad.sThumbLX * -1.0f, pad_state.Gamepad.sThumbLY * -1.0f);
+					}
+				}
+				else
+				{
+					dir = Vector2(pad_state.Gamepad.sThumbLX, pad_state.Gamepad.sThumbLY);
+				}
+
 				dir.Normalise();
 			}
-
 
 			dir.Normalise();
 
@@ -1028,10 +1044,11 @@ void GameObjectManager::ProcessGamePad()
 		if (!pressingStrafe)
 		{
 			// just started pressing so set the strafe direction
-			m_player->SetStrafeDirectionX(m_player->DirectionX());
+			m_player->SetStrafeDirectionX(-m_player->DirectionX());
 			Vector2 defaultOffset = mLevelProperties.GetOriginalTargetOffset();
 			Camera2D::GetInstance()->SetTargetOffset(Vector2(defaultOffset.X + 200, defaultOffset.Y));
-			Camera2D::GetInstance()->SetOverrideDirection(true, m_player->DirectionX());
+			Camera2D::GetInstance()->SetOverrideDirection(true, -m_player->DirectionX());
+			m_player->GetStrafeDirectionX() > 0.0f ? m_player->UnFlipHorizontal() : m_player->FlipHorizontal();
 		}
 
 		m_player->SetIsStrafing(true);
