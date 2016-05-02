@@ -13,6 +13,8 @@
 #include "DrawUtilities.h"
 
 static const char * kBombTextureFile = "Media/bomb.png";
+static const float kAimLineOpacityDecrementDelay = 1.0f;
+static const float kAimLineOpacityDecreaseRate = 1.8f;
 
 Player::Player(float x, float y, float z, float width, float height, float breadth) :
 Character(x, y, z, width, height, breadth),
@@ -23,7 +25,8 @@ Character(x, y, z, width, height, breadth),
 	mFireBurstDelay(0.5f),
 	mTimeUntilFireBurstAvailable(0.0f),
 	mBurstFireEnabled(false),
-	mAimLineSprite(nullptr)
+	mAimLineSprite(nullptr),
+	mTimeUntilAimLineStartDisappearing(0.0f)
 {
 	mHealth = 100.0f;
 	mAlwaysUpdate = true;
@@ -144,10 +147,35 @@ void Player::Update(float delta)
 	}
 
 	CheckForAndDoLevelUp();
+
+	if (mAimLineSprite)
+	{
+		mAimLineSprite->SetY(m_position.Y + m_projectileOffset.Y);
+	}
+
+	if (mIsStrafing)
+	{
+		// always show aim line when strafing
+		mTimeUntilAimLineStartDisappearing = kAimLineOpacityDecrementDelay;
+	}
+	
+	if (mTimeUntilAimLineStartDisappearing > 0.0f)
+	{
+		mTimeUntilAimLineStartDisappearing -= delta;
+		mAimLineSprite->SetAlpha(1.0f);
+	}
+	else
+	{
+		if (mAimLineSprite->Alpha() > 0.0f)
+		{
+			mAimLineSprite->SetAlpha(mAimLineSprite->Alpha() - (kAimLineOpacityDecreaseRate * delta));
+		}
+	}
 }
 
 Projectile * Player::FireWeapon(Vector2 direction)
 {
+	mTimeUntilAimLineStartDisappearing = kAimLineOpacityDecrementDelay;
 	if ((mBurstFireEnabled && mCurrentBurstNum >= mFireBurstNum) || mTimeUntilProjectileReady > 0.0f)
 	{
 		return nullptr;
@@ -382,6 +410,8 @@ void Player::AddAimLineSprite()
 	mAimLineSprite->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), Vector3(m_projectileOffset.X , m_projectileOffset.Y , 0), false);
 
 	GameObjectManager::Instance()->AddGameObject(mAimLineSprite);
+
+	mAimLineSprite->SetAlpha(0.0f);
 }
 
 void Player::SetAimLineDirection(Vector2 & dir)

@@ -391,9 +391,9 @@ void Projectile::Update(float delta)
 	float targetDelta = Timing::Instance()->GetTargetDelta();
 	float percentDelta = delta / targetDelta;
 
-	if (percentDelta > 1.2f)
+	if (percentDelta > 2.0f)
 	{
-		percentDelta = 1.2f;
+		percentDelta = 2.0f;
 	}
 
 	if (GetIsInWater())
@@ -457,7 +457,6 @@ void Projectile::Update(float delta)
 		// nice simple update
 		if (mIsInWater)
 		{
-			// TODO: use percent delta
 			m_velocity.X *= 0.91f; // slow down significantly
 			m_velocity.Y *= 0.95f; // slow down significantly
 		}

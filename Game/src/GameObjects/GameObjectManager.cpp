@@ -995,8 +995,22 @@ void GameObjectManager::ProcessGamePad()
 	{
 		aimDirection = Vector2(pad_state.Gamepad.sThumbLX, pad_state.Gamepad.sThumbLY);
 		aimDirection.Normalise();
+	}
 
-		m_player->SetAimLineDirection(aimDirection);
+	if (m_player->IsStrafing())
+	{
+		bool sameSign = m_player->GetStrafeDirectionX() * pad_state.Gamepad.sThumbLX >= 0.0f;
+
+		if (sameSign)
+		{
+			aimDirection = Vector2(pad_state.Gamepad.sThumbLX, pad_state.Gamepad.sThumbLY);
+		}
+		else
+		{
+			aimDirection = Vector2(pad_state.Gamepad.sThumbLX * -1.0f, pad_state.Gamepad.sThumbLY * -1.0f);
+		}
+
+		aimDirection.Normalise();
 	}
 
 	static bool pressingFire = false;
@@ -1008,22 +1022,6 @@ void GameObjectManager::ProcessGamePad()
 	{
 		if (pressingFire)
 		{
-			if (m_player->IsStrafing())
-			{
-				bool sameSign = m_player->GetStrafeDirectionX() * pad_state.Gamepad.sThumbLX >= 0.0f;
-
-				if (sameSign)
-				{
-					aimDirection = Vector2(pad_state.Gamepad.sThumbLX, pad_state.Gamepad.sThumbLY);
-				}
-				else
-				{
-					aimDirection = Vector2(pad_state.Gamepad.sThumbLX * -1.0f, pad_state.Gamepad.sThumbLY * -1.0f);
-				}
-
-				aimDirection.Normalise();
-			}
-
 			// let the player fire and return a projectile object which is added to the world
 			Projectile * p = m_player->FireWeapon(aimDirection);
 
@@ -1096,6 +1094,8 @@ void GameObjectManager::ProcessGamePad()
 
 		pressingStrafeRight = false;
 	}
+
+	m_player->SetAimLineDirection(aimDirection);
 	
 	// =======================================
 

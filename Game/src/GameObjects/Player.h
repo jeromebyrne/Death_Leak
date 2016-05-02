@@ -37,6 +37,8 @@ private:
 	bool mBurstFireEnabled;
 
 	Sprite * mAimLineSprite;
+
+	float mTimeUntilAimLineStartDisappearing;
 };
 
 #endif
