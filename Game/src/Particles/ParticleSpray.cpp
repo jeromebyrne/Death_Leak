@@ -321,11 +321,6 @@ void ParticleSpray::Update(float delta)
 		}
 	}
 
-	if (numAliveParticles > 0)
-	{
-		// Draw
-	}
-
 	if (numAliveParticles < 1)
 	{
 		// we have no more particles to show, delete this spray

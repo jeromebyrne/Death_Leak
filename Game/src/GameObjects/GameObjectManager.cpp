@@ -970,7 +970,7 @@ void GameObjectManager::ProcessGamePad()
 			}
 			else
 			{
-				jumpPowerPercent = 100.0f;
+				jumpPowerPercent =  m_player->IsStrafing() ? 80.0f : 100.0f;
 				m_player->Jump(jumpPowerPercent);
 			}
 			

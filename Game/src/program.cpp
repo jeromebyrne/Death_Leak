@@ -39,7 +39,7 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
         return 0;
 
 	MSG mssg;                // message from queue
-	float  target_delta = 1.0f/60.0f; 
+	double  target_delta = 1.0/60.0; 
 
 	Timing::Create();
 	Timing::Instance()->SetTargetDelta(target_delta);
@@ -86,9 +86,9 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 
 		double delta = (currentTime - last_update_time) * 0.001f;
 
-		if (delta > 0.017f)
+		if (delta > timing->GetTargetDelta())
 		{
-			delta = 0.017f;
+			delta = timing->GetTargetDelta();
 		}
 
 		timing->SetLastUpdateDelta(delta * timing->GetTimeModifier());

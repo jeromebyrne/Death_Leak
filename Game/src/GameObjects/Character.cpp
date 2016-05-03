@@ -14,9 +14,8 @@
 
 float Character::mLastTimePlayedDeathSFX = 0;
 static const float kMinTimeBetweenDeathSFX = 0.1f;
-static const float kJumpDelay = 0.2f;
+static const float kJumpDelay = 0.13f;
 static const int kDamageKickback = 20;
-
 static const float kTimeAllowedToJumpAfterLeaveSolidGround = 0.3f;
 
 Character::Character(float x, float y, float z, float width, float height, float breadth): 
@@ -702,26 +701,26 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 					unsigned long loopTime = -1;
 
 					ParticleEmitterManager::Instance()->CreateDirectedSpray(40,
-																			pos,
+																			Vector3(pos.X, pos.Y + 30, pos.Z),
 																			Vector3(0.2f, 0.8f, 0),
-																			0.15f,
+																			0.3f,
 																			Vector3(3200, 2000, 0),
-																			"Media\\bloodparticle2.png",
-																			6,
-																			18,
-																			0.9f,
+																			"Media\\bloodparticle.png",
+																			7,
+																			12,
+																			0.8f,
 																			2.0f,
-																			200,
-																			300,
-																			5,
+																			100,
+																			180,
+																			3.4,
 																			loop,
-																			0.4f,
+																			0.3f,
 																			1.0f,
 																			loopTime,
 																			true,
-																			0.6f,
+																			2.6f,
 																			5.0f,
-																			7.0f,
+																			16.0f,
 																			0.15f,
 																			0.8f);
 																			
@@ -729,24 +728,24 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 					ParticleEmitterManager::Instance()->CreateDirectedSpray(40,
 																			pos,
 																			Vector3(0.2f, 0.8f, 0),
-																			0.15f,
+																			0.2f,
 																			Vector3(3200, 2000, 0),
 																			"Media\\bloodparticle3.png",
-																			17,
-																			27,
-																			3.0f,
-																			3.0f,
+																			16,
+																			20,
+																			0.6f,
+																			0.9f,
 																			50,
-																			100,
-																			5,
-																			loop,
-																			0.4f,
+																			120,
+																			1,
+																			false,
+																			0.7f,
 																			1.0f,
-																			loopTime,
+																			1.0f,
 																			true,
-																			4.5f,
-																			10.0f,
-																			12.0f,
+																			2.5f,
+																			4.0f,
+																			16.0f,
 																			0.15f,
 																			0.8f);
 
@@ -845,7 +844,7 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 
 		// blood explosion by default
 		Vector3 point = m_position + pointOfContact;
-		point.Z = pointOfContact.Z;
+		point.Z = m_position.Z;
 
 		if (!mHasExploded || (mHasExploded && !shouldExplode))
 		{

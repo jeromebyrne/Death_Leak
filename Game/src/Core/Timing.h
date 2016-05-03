@@ -12,11 +12,11 @@ public:
 		return m_instance;
 	}
 
-	void SetTargetDelta(float target) { mTargetDelta = target; }
-	float GetTargetDelta() const { return mTargetDelta; } 
+	void SetTargetDelta(double target) { mTargetDelta = target; }
+	double GetTargetDelta() const { return mTargetDelta; } 
 
 	void SetLastUpdateDelta(float value) { mLastUpdateDelta = value; }
-	float GetLastUpdateDelta() const { return mLastUpdateDelta; }
+	double GetLastUpdateDelta() const { return mLastUpdateDelta; }
 
 	float GetTotalTimeSeconds() const { return mTotalTimeSeconds; }
 	void IncrementTotalTimeSeconds(float delta) { mTotalTimeSeconds += delta; }
@@ -36,8 +36,8 @@ private:
 	Timing(void);
 	~Timing(void);
 
-	float mLastUpdateDelta;
-	float mTargetDelta;
+	double mLastUpdateDelta;
+	double mTargetDelta;
 	float mTotalTimeSeconds;
 	float mTimeModifier;
 

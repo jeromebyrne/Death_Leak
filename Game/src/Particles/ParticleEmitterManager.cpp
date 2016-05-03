@@ -90,6 +90,11 @@ ParticleSpray * ParticleEmitterManager::CreateRadialBloodSpray(unsigned int numP
 
 		p.MaxLiveTime = kBloodRadialMaxLiveTime - (((kBloodRadialMaxLiveTime - kBloodRadialMinLiveTime) / numParticles) * i);
 
+		if (loop)
+		{
+			p.StartTime = (rand() % (int)(p.MaxLiveTime * 100.0f)) * 0.01f;
+		}
+
 		unsigned spawnSpread = 4 * numParticles;
 		float posXOffset = rand() % spawnSpread;
 		p.PosX = position.X + posXOffset;
@@ -117,7 +122,7 @@ ParticleSpray * ParticleEmitterManager::CreateRadialBloodSpray(unsigned int numP
 	// create spray
 	ParticleSpray * spray = new ParticleSpray(true,
 											position,
-											Vector3(3200, 1200, 0), 
+											Vector3(3200, 2500, 0), 
 											kBloodTextureFileName,
 											particleList,
 											loop,
