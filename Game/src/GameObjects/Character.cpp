@@ -50,7 +50,8 @@ Character::Character(float x, float y, float z, float width, float height, float
 	mTimeNotOnSolidSurface(0.0f),
 	mCurrentSolidLineDroppingDownThroughId(0),
 	mIsStrafing(false),
-	mStrafeDirectionX(1.0f)
+	mStrafeDirectionX(1.0f),
+	mTimeOnSolidSurface(0.0f)
 {
 	mProjectileFilePath = "Media/knife.png";
 	mProjectileImpactFilePath = "Media/knife_impact.png";
@@ -125,14 +126,23 @@ void Character::Update(float delta)
 
 	if (IsOnSolidSurface())
 	{
-		mTimeNotOnSolidSurface = 0.0f;
-
 		// reset this because we're on solid ground
-		mCurrentJumpsBeforeLand = 0;
+		mTimeOnSolidSurface += delta;
+		if (mCurrentJumpsBeforeLand > 0)
+		{
+			float timeSinceJump = Timing::Instance()->GetTotalTimeSeconds() - mMidAirMovingUpStartTime;
+			if (timeSinceJump > 0.15f )
+			{
+				mCurrentJumpsBeforeLand = 0;
+			}
+		}
+
+		mTimeNotOnSolidSurface = 0.0f;
 	}
 	else
 	{
 		mTimeNotOnSolidSurface += delta;
+		mTimeOnSolidSurface = 0.0f;
 	}
 }
 
@@ -538,8 +548,8 @@ bool Character::Jump(float percent)
 	}
 
 	// allow a small amount of time to jump just after being on a solid object
-	if (mCurrentJumpsBeforeLand == 0 &&
-		GetTimeNotOnSolidSurface() > kTimeAllowedToJumpAfterLeaveSolidGround &&
+	if ((m_velocity.Y < 0.0f && !IsOnSolidSurface() &&
+		GetTimeNotOnSolidSurface() > kTimeAllowedToJumpAfterLeaveSolidGround) &&
 		!(WasInWaterLastFrame() && GetWaterIsDeep()))
 	{
 		return false;
@@ -575,8 +585,9 @@ bool Character::Jump(float percent)
 	m_velocity.Y = 0;
 	m_direction.Y = 1;
 	m_acceleration.Y = (m_maxJumpSpeed/100) * percent;
-	
+
 	++mCurrentJumpsBeforeLand;
+
 
 	return true;
 }

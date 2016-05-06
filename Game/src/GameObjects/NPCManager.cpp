@@ -55,7 +55,7 @@ void NPCManager::ResolveCollisions(NPC * npc, NPC * otherNPC)
 {
 	if (npc->GetCheckNPCOverlapCollisions() && otherNPC->GetCheckNPCOverlapCollisions())
 	{
-		bool colliding = Utilities::IsSolidSpriteInRectangle(npc, otherNPC->X(), otherNPC->Y(), otherNPC->CollisionDimensions().X, otherNPC->CollisionDimensions().Y);
+		bool colliding = Utilities::IsSolidSpriteInRectangle(npc, otherNPC->X(), otherNPC->Y(), otherNPC->CollisionDimensions().X * 3.0f, otherNPC->CollisionDimensions().Y);
 		if (colliding && !npc->NPCCollisionSetContains(otherNPC))
 		{
 			// stop accelerating, this is enough to keep NPCs separated

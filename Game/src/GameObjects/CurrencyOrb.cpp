@@ -252,6 +252,7 @@ void CurrencyOrb::DoCollisionLargeType(Player * player)
 		// show particles when we make contact
 		string particleName = m_material->GetRandomParticleTexture();
 
+		/*
 		ParticleEmitterManager::Instance()->CreateRadialSpray(20,
 																Vector3(m_position.X + player->VelocityX() * 5, m_position.Y + player->VelocityY() * 2, player->Z() - 0.02f),
 																Vector3(3200, 1200, 0),
@@ -273,6 +274,7 @@ void CurrencyOrb::DoCollisionLargeType(Player * player)
 																0.8f,
 																5,
 																5);
+																*/
 
 		ParticleEmitterManager::Instance()->CreateRadialSpray(1,
 																Vector3(m_position.X + player->VelocityX() * 5, m_position.Y + player->VelocityY() * 2, player->Z() - 0.01f),
@@ -292,7 +294,7 @@ void CurrencyOrb::DoCollisionLargeType(Player * player)
 																true,
 																5.5f,
 																0.15f,
-																0.8f,
+																0.5f,
 																0,
 																0);
 

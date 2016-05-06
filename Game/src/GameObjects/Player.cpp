@@ -41,9 +41,11 @@ void Player::Initialise()
 	// update the base classes
 	Character::Initialise();
 
-	mRunAnimFramerateMultiplier = 1.0f;
+	mRunAnimFramerateMultiplier = 1.2f;
 
 	m_maxJumpSpeed = 25;
+
+	mMaxJumpsAllowed = 1;
 }
 void Player::XmlRead(TiXmlElement * element)
 {

@@ -924,27 +924,13 @@ void GameObjectManager::ProcessGamePad()
 	{
 		if (pad_state.Gamepad.sThumbLX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE )
 		{
-			if (pad_state.Gamepad.sThumbLX > -30000)
-			{
-				m_player->AccelerateX(-100);
-			}
-			else
-			{
-				m_player->AccelerateX(-100);
-				applySprint = true;
-			}
+			m_player->AccelerateX(-100);
+			applySprint = true;
 		}
 		else if (pad_state.Gamepad.sThumbLX > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
 		{
-			if (pad_state.Gamepad.sThumbLX < 30000)
-			{
-				m_player->AccelerateX(100);
-			}
-			else
-			{
-				m_player->AccelerateX(100);
-				applySprint = true;
-			}
+			m_player->AccelerateX(100);
+			applySprint = true;
 		}
 		else
 		{

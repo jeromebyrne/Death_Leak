@@ -55,17 +55,6 @@ void AIStateRangeAttack::Update(float delta)
 				GAME_ASSERT(GameObjectManager::Instance()->GetPlayer());
 				m_npc->FireProjectileAtObject(GameObjectManager::Instance()->GetPlayer());
 
-				if (distanceSquaredVector.X < 0)
-				{
-					// flip the sprite horizontally
-					m_npc->FlipHorizontal();
-				}
-				else if (distanceSquaredVector.X > 0)
-				{
-					// unflip
-					m_npc->UnFlipHorizontal();
-				}
-
 				mLastTimeRanAway = currentTime;
 			}
 		}
@@ -74,17 +63,16 @@ void AIStateRangeAttack::Update(float delta)
 			m_npc->StopXAccelerating();
 			GAME_ASSERT(GameObjectManager::Instance()->GetPlayer());
 			m_npc->FireProjectileAtObject(GameObjectManager::Instance()->GetPlayer());
+		}
 
-			if (distanceSquaredVector.X < 0)
-			{
-				// flip the sprite horizontally
-				m_npc->FlipHorizontal();
-			}
-			else if (distanceSquaredVector.X > 0)
-			{
-				// unflip
-				m_npc->UnFlipHorizontal();
-			}
+		m_npc->SetIsStrafing(true);
+		if (distanceSquaredVector.X > 0)
+		{
+			m_npc->SetStrafeDirectionX(1.0f);
+		}
+		else
+		{
+			m_npc->SetStrafeDirectionX(-1.0f);
 		}
 	}
 }

@@ -88,6 +88,7 @@ protected:
 	unsigned mMaxJumpsAllowed;
 	unsigned mCurrentJumpsBeforeLand;
 	float mTimeNotOnSolidSurface;
+	float mTimeOnSolidSurface;
 	unsigned int mCurrentSolidLineDroppingDownThroughId;
 	bool mIsStrafing;
 	float mStrafeDirectionX;
