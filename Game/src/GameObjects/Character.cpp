@@ -45,7 +45,7 @@ Character::Character(float x, float y, float z, float width, float height, float
 	mMidAirMovingUpStartTime(0.0f),
 	mMidAirMovingDownStartTime(0.0f),
 	mExplodesGruesomely(false),
-	mMaxJumpsAllowed(2),
+	mMaxJumpsAllowed(1),
 	mCurrentJumpsBeforeLand(0),
 	mTimeNotOnSolidSurface(0.0f),
 	mCurrentSolidLineDroppingDownThroughId(0),
@@ -588,7 +588,6 @@ bool Character::Jump(float percent)
 
 	++mCurrentJumpsBeforeLand;
 
-
 	return true;
 }
 
@@ -760,11 +759,16 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 																			0.15f,
 																			0.8f);
 
-					bool slowTime = (rand() % 4) == 1;
+					bool slowTime = (rand() % 8) == 1;
 
-					if (slowTime)
+					static float lastTimeWentSlowMo = 0;
+					auto timing = Timing::Instance();
+					if (slowTime &&
+						lastTimeWentSlowMo + 8.0f < timing->GetTotalTimeSeconds() &&
+						Camera2D::GetInstance()->IsObjectInView(this))
 					{
-						Timing::Instance()->SetTimeModifierForNumSeconds(0.2f, 3.0f);
+						timing->SetTimeModifierForNumSeconds(0.2f, 2.5f);
+						lastTimeWentSlowMo = timing->GetTotalTimeSeconds();
 					}
 
 					if (m_material)

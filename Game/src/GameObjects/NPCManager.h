@@ -4,16 +4,6 @@
 
 class NPCManager
 {
-private:
-	NPCManager(void);
-	virtual ~NPCManager(void);
-
-	static NPCManager * mInstance;
-
-	list<NPC *> m_npcList;
-
-	void ResolveCollisions(NPC * npc, NPC * otherNPC);
-
 public:
 
 	static NPCManager * Instance();
@@ -24,7 +14,19 @@ public:
 
 	void Update();
 
-	list<NPC*> GetNPCList() const { return m_npcList; } 
+	void Draw();
+
+	list<NPC*> GetNPCList() const { return m_npcList; }
+
+private:
+	NPCManager(void);
+	virtual ~NPCManager(void);
+
+	static NPCManager * mInstance;
+
+	list<NPC *> m_npcList;
+
+	void ResolveCollisions(NPC * npc, NPC * otherNPC);
 };
 
 #endif

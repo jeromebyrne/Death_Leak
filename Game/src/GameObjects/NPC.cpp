@@ -37,7 +37,8 @@ NPC::NPC(float x, float y, float z, float width, float height, float breadth) :
 	m_rangeAttackState(nullptr),
 	mCurrentHealthMeterScale(1.0f),
 	m_butterflyWander(nullptr),
-	mAddHealthBar(true)
+	mAddHealthBar(true),
+	mIsPlayerEnemy(false)
 {
 	mHealth = 20.0f;
 	mMaxHealth = 20.0f;
@@ -99,20 +100,6 @@ void NPC::Update(float delta)
 	}
 
 	UpdateHealthBar(delta);
-
-	// disabling scale because I'm not sure it looks great
-	/*
-	if (mCurrentHealthMeterScale != 1.0f)
-	{
-		mCurrentHealthMeterScale -= delta * 4.0f;
-		if (mCurrentHealthMeterScale < 1.0f)
-		{
-			mCurrentHealthMeterScale = 1.0f;
-		}
-
-		UpdateHealthBar();
-	}
-	*/
 }
 
 void NPC::Initialise()

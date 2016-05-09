@@ -39,10 +39,11 @@ void NinjaSpawner::SpawnNPC(const float posX,
 	npc->SetCollisionDimensions(Vector3(collisionDimensions.X, collisionDimensions.Y, 0));
 	npc->SetCollisionBoxOffset(Vector2(collisionBoxOffset.X, collisionBoxOffset.Y));   
 	npc->SetPlayer(GameObjectManager::Instance()->GetPlayer());
-	npc->SetResistanceXYZ(0.88, 2.2, 0);
+	npc->SetResistanceXYZ(1.0, 1.4f, 0);
 	npc->setAccelXRate(1.0);
 	npc->SetMaterial(MaterialManager::Instance()->GetMaterial("demon1"));
 	npc->SetMaxJumpSpeed(randJumpSpeed);
+	npc->SetIsPlayerEnemy(true);
 
 	GameObjectManager::Instance()->AddGameObject(npc);
 

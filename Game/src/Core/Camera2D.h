@@ -70,6 +70,7 @@ public:
 	inline float Left() const { return m_position.X - m_width * 0.5; }
 	inline float Right() const { return m_position.X + m_width * 0.5; }
 	inline float Top() const { return m_position.Y + m_height * 0.5; }
+	inline float Bottom() const { return m_position.Y - m_height * 0.5; }
 
 	bool IsCameraOriginInsideObject(GameObject * object);
 

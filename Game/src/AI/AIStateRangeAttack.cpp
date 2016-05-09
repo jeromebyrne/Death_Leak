@@ -4,12 +4,16 @@
 
 static float kRunAwayDelay = 1.0f;
 
+static float kJumpRandomDelayMin = 2.0f;
+static float kJumpRandomDelayMax = 5.5f;
+
 AIStateRangeAttack::AIStateRangeAttack(NPC * npc) :
 	AIState(npc),
 	mDesiredRange(650),
 	mFollowRange(900),
 	mRandOffset(0.0f),
-	mLastTimeRanAway(0)
+	mLastTimeRanAway(0.0f),
+	mTimeUntilRandomlyJump(0.0f)
 {
 	mStateType = kRangeAttack;
 }
@@ -26,7 +30,9 @@ void AIStateRangeAttack::OnTransition()
 
 	m_npc->SetMaxVelocityXYZ(randMaxXVelocity, 99999, 0);
 
-	mRandOffset = rand() % 150;
+	mRandOffset = rand() % 220;
+
+	mTimeUntilRandomlyJump = kJumpRandomDelayMin + (rand() % (int)((kJumpRandomDelayMax - kJumpRandomDelayMin) * 100.0f)) * 0.01f;
 }
 
 void AIStateRangeAttack::Update(float delta)
@@ -41,10 +47,11 @@ void AIStateRangeAttack::Update(float delta)
 			float distanceSquared = distanceSquaredVector.LengthSquared();
 			if (distanceSquared < (mDesiredRange + mRandOffset) * (mDesiredRange + mRandOffset))
 			{
+				// run away from player
 				distanceSquaredVector.Normalise();
 				m_npc->AccelerateX(-distanceSquaredVector.X);
 			}
-			else if (distanceSquared >(mFollowRange + mRandOffset) * (mFollowRange + mRandOffset))
+			else if (distanceSquared > (mFollowRange + mRandOffset) * (mFollowRange + mRandOffset))
 			{
 				distanceSquaredVector.Normalise();
 				m_npc->AccelerateX(distanceSquaredVector.X);
@@ -63,6 +70,24 @@ void AIStateRangeAttack::Update(float delta)
 			m_npc->StopXAccelerating();
 			GAME_ASSERT(GameObjectManager::Instance()->GetPlayer());
 			m_npc->FireProjectileAtObject(GameObjectManager::Instance()->GetPlayer());
+		}
+
+		if (mTimeUntilRandomlyJump > 0.0f)
+		{
+			mTimeUntilRandomlyJump -= delta;
+		}
+
+		// let's just randomly jump
+		if (m_npc->IsOnSolidSurface())
+		{
+			if (mTimeUntilRandomlyJump <= 0.0f)
+			{
+				if (m_npc->Jump(100.0f))
+				{
+					m_npc->SetVelocityY(0.5f);
+					mTimeUntilRandomlyJump = kJumpRandomDelayMin + (rand() % (int)((kJumpRandomDelayMax - kJumpRandomDelayMin) * 100.0f)) * 0.01f;
+				}
+			}
 		}
 
 		m_npc->SetIsStrafing(true);

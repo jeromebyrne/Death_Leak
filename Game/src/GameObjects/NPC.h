@@ -45,6 +45,10 @@ public:
 
 	bool GetCheckNPCOverlapCollisions() { return mCheckNPCOverlapCollisions; }
 
+	bool IsPlayerEnemy() const { return mIsPlayerEnemy; }
+
+	void SetIsPlayerEnemy(bool value) { mIsPlayerEnemy = value; }
+
 protected:
 
 	Player * m_player;
@@ -73,6 +77,7 @@ private:
 	unique_ptr<Sprite> mHealthBarOverlaySprite;
 	float mCurrentHealthMeterScale;
 	float mHealthMeterHealthBeforeDecrease;
+	bool mIsPlayerEnemy;
 };
 
 #endif

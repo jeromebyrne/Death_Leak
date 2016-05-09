@@ -57,7 +57,7 @@
       </frame>
 		</Running>
 
-    <Strafing FrameRate="20" MaxFrameRate="20" MinFrameRate="4" skeleton_offset_x="0" skeleton_offset_y="0">
+    <Strafing FrameRate="20" MaxFrameRate="20" MinFrameRate="4" skeleton_offset_x="0" skeleton_offset_y="40">
 
       <frame filename="Media\\characters\\ninja_enemy_1\\run_5.png">
         <skeletonparts>
@@ -174,6 +174,12 @@
       <frame filename="Media\\characters\\ninja_enemy_1\\arm_throw_run2.png" />
       <frame filename="Media\\characters\\ninja_enemy_1\\arm_throw_run3.png" />
     </Running>
+
+    <Strafing FrameRate="8" MaxFrameRate="8" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="40">
+      <frame filename="Media\\characters\\ninja_enemy_1\\arm_throw_run1.png" />
+      <frame filename="Media\\characters\\ninja_enemy_1\\arm_throw_run2.png" />
+      <frame filename="Media\\characters\\ninja_enemy_1\\arm_throw_run3.png" />
+    </Strafing>
 
     <JumpingUp FrameRate="8" MaxFrameRate="8" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="40">
       <frame filename="Media\\characters\\ninja_enemy_1\\arm_throw_still1.png" />

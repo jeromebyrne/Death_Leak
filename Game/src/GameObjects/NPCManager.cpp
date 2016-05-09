@@ -1,5 +1,6 @@
 #include "precompiled.h"
 #include "NPCManager.h"
+#include "DrawUtilities.h"
 
 NPCManager * NPCManager::mInstance = nullptr;
 
@@ -32,15 +33,12 @@ void NPCManager::Update()
 	Camera2D * cam = Camera2D::GetInstance();
 	for (NPC * npc : m_npcList)
 	{
-		if (cam->IsObjectInView(npc))
+		for (NPC * otherNpc : m_npcList)
 		{
-			for (NPC * otherNpc : m_npcList)
+			if (npc != otherNpc)
 			{
-				if (npc != otherNpc && cam->IsObjectInView(otherNpc))
-				{
-					// push away from each other
-					ResolveCollisions(npc, otherNpc);
-				}
+				// push away from each other
+				ResolveCollisions(npc, otherNpc);
 			}
 		}
 	}
@@ -48,6 +46,50 @@ void NPCManager::Update()
 	for (NPC * npc : m_npcList)
 	{
 		npc->ClearNPCCollisionSet();
+	}
+}
+
+void NPCManager::Draw()
+{
+	auto cam = Camera2D::GetInstance();
+
+	float camLeft = cam->Left();
+	float camRight = cam->Right();
+	float camTop = cam->Top();
+	float camBottom = cam->Bottom();
+
+	for (NPC * npc : m_npcList)
+	{
+		// TODO: instead of doing bounds checks in lots of places we can calculate
+		// at the start of the frame and set a flag if is in view
+		if (!npc->IsPlayerEnemy() ||
+			cam->IsObjectInView(npc))
+		{
+			continue;
+		}
+
+		Vector3 indicatorPos = Vector3(npc->X(), npc->Y(), 3);
+
+		if (npc->Right() < camLeft)
+		{
+			indicatorPos.X = camLeft + 64;
+		}
+		else if (npc->Left() > camRight)
+		{
+			indicatorPos.X = camRight - 64;
+		}
+
+		if (npc->Bottom() > camTop)
+		{
+			indicatorPos.Y = camTop - 64;
+		}
+		else if (npc->Top() < camBottom)
+		{
+			indicatorPos.Y = camBottom + 64;
+		}
+
+		// TODO: don't use the draw utilities as it's very slow
+		DrawUtilities::DrawTexture(indicatorPos, Vector2(128, 128), "Media//skull_icon.png");
 	}
 }
 

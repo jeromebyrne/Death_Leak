@@ -22,6 +22,7 @@ private:
 	float mRandOffset;
 
 	float mLastTimeRanAway;
+	float mTimeUntilRandomlyJump;
 };
 
 #endif

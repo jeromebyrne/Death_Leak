@@ -174,6 +174,11 @@
       <frame filename="Media\\characters\\player\\arm_throw_2.png" />
     </Running>
 
+    <Strafing FrameRate="10" MaxFrameRate="10" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\\characters\\player\\arm_throw_1.png" />
+      <frame filename="Media\\characters\\player\\arm_throw_2.png" />
+    </Strafing>
+
     <JumpingUp FrameRate="4" MaxFrameRate="8" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
     </JumpingUp>
 
