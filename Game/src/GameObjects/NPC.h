@@ -72,12 +72,13 @@ private:
 	float mLastFireTime;
 	float mNextFireTime;
 
-	unique_ptr<Sprite> mHealthBarSprite;
-	unique_ptr<Sprite> mHealthBarUnderlaySprite;
-	unique_ptr<Sprite> mHealthBarOverlaySprite;
+	Sprite * mHealthBarSprite;
+	Sprite * mHealthBarUnderlaySprite;
+	Sprite * mHealthBarOverlaySprite;
 	float mCurrentHealthMeterScale;
 	float mHealthMeterHealthBeforeDecrease;
 	bool mIsPlayerEnemy;
+	int mRandHealthBarOffsetY;
 };
 
 #endif

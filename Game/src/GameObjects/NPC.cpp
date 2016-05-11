@@ -38,7 +38,8 @@ NPC::NPC(float x, float y, float z, float width, float height, float breadth) :
 	mCurrentHealthMeterScale(1.0f),
 	m_butterflyWander(nullptr),
 	mAddHealthBar(true),
-	mIsPlayerEnemy(false)
+	mIsPlayerEnemy(false),
+	mRandHealthBarOffsetY(0.0f)
 {
 	mHealth = 20.0f;
 	mMaxHealth = 20.0f;
@@ -556,8 +557,13 @@ void NPC::Draw(ID3D10Device * device, Camera2D * camera)
 {
 	Character::Draw(device, camera);
 
+	Vector3 healthBarPos = Vector3(m_position.X,
+									m_position.Y + (m_collisionBoxDimensions.Y * 0.5f) + mCollisionBoxOffset.Y + 5 + mRandHealthBarOffsetY,
+									m_position.Z);
 	if (mHealthMeterHealthBeforeDecrease > mHealth && mHealthBarUnderlaySprite)
 	{
+		mHealthBarUnderlaySprite->SetXYZ(healthBarPos.X, healthBarPos.Y, healthBarPos.Z);
+
 		if (mHealthBarUnderlaySprite->IsChangeRequired())
 		{
 			mHealthBarUnderlaySprite->ApplyChange(device);
@@ -566,6 +572,8 @@ void NPC::Draw(ID3D10Device * device, Camera2D * camera)
 	}
 	if (mHealthBarSprite)
 	{
+		mHealthBarSprite->SetXYZ(healthBarPos.X, healthBarPos.Y, healthBarPos.Z);
+
 		// apply any changes needed
 		if (mHealthBarSprite->IsChangeRequired())
 		{
@@ -575,6 +583,8 @@ void NPC::Draw(ID3D10Device * device, Camera2D * camera)
 	}
 	if (mHealthBarOverlaySprite)
 	{
+		mHealthBarOverlaySprite->SetXYZ(healthBarPos.X, healthBarPos.Y, healthBarPos.Z);
+
 		// apply any changes needed
 		if (mHealthBarOverlaySprite->IsChangeRequired())
 		{
@@ -586,11 +596,11 @@ void NPC::Draw(ID3D10Device * device, Camera2D * camera)
 
 void NPC::AddHealthBar()
 {
-	int randYOffset = rand() % 15;
+	mRandHealthBarOffsetY = rand() % 15;
 
 	if (!mHealthBarUnderlaySprite)
 	{
-		mHealthBarUnderlaySprite = unique_ptr<Sprite>(new Sprite());
+		mHealthBarUnderlaySprite = new Sprite();
 		mHealthBarUnderlaySprite->SetTextureFilename("Media\\characters\\health_bar_back.png");
 		mHealthBarUnderlaySprite->SetIsNativeDimensions(false);
 		mHealthBarUnderlaySprite->SetDimensionsXYZ(kHealthBarDimensionsX, kHealthBarDimensionsY, 0);
@@ -601,14 +611,10 @@ void NPC::AddHealthBar()
 		mHealthBarUnderlaySprite->Scale(Graphics::GetInstance()->BackBufferWidth() / 1920,
 			Graphics::GetInstance()->BackBufferHeight() / 1080,
 			false);
-
-		mHealthBarUnderlaySprite->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), 
-									Vector3(0,((m_collisionBoxDimensions.Y * 0.5f) + mCollisionBoxOffset.Y) + 5 + randYOffset, 0),
-									false);
 	}
 	if (!mHealthBarSprite)
 	{
-		mHealthBarSprite = unique_ptr<Sprite>(new Sprite());
+		mHealthBarSprite = new Sprite();
 		mHealthBarSprite->SetTextureFilename("Media\\characters\\health_bar.png");
 		mHealthBarSprite->SetIsNativeDimensions(false);
 		mHealthBarSprite->SetDimensionsXYZ(kHealthBarDimensionsX, kHealthBarDimensionsY, 0);
@@ -619,14 +625,10 @@ void NPC::AddHealthBar()
 		mHealthBarSprite->Scale(Graphics::GetInstance()->BackBufferWidth() / 1920,
 			Graphics::GetInstance()->BackBufferHeight() / 1080,
 			false);
-
-		mHealthBarSprite->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), 
-									Vector3(0,((m_collisionBoxDimensions.Y * 0.5f) + mCollisionBoxOffset.Y) + 5 + randYOffset, 0),
-									false);
 	}
 	if (!mHealthBarOverlaySprite)
 	{
-		mHealthBarOverlaySprite = unique_ptr<Sprite>(new Sprite());
+		mHealthBarOverlaySprite = new Sprite();
 		mHealthBarOverlaySprite->SetTextureFilename("Media\\characters\\health_bar_overlay.png");
 		mHealthBarOverlaySprite->SetIsNativeDimensions(false);
 		mHealthBarOverlaySprite->SetDimensionsXYZ(kHealthBarOverlayDimensionsX, kHealthBarOverlayDimensionsY, 0);
@@ -637,10 +639,6 @@ void NPC::AddHealthBar()
 		mHealthBarOverlaySprite->Scale(Graphics::GetInstance()->BackBufferWidth() / 1920,
 									   Graphics::GetInstance()->BackBufferHeight() / 1080,
 									   false);
-
-		mHealthBarOverlaySprite->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()),
-											Vector3(0, ((m_collisionBoxDimensions.Y * 0.5f) + mCollisionBoxOffset.Y) + 5 + randYOffset, 0),
-											false);
 	}
 }
 

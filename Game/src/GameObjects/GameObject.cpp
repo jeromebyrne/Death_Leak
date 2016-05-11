@@ -476,7 +476,7 @@ void GameObject::AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset, 
 
 void GameObject::Detach()
 {
-	mAttachedTo = nullptr;
+	mAttachedTo.reset();
 	mAttachedToOffset = Vector3(0, 0, 0);
 }
 

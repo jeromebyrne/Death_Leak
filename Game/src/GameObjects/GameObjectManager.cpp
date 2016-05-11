@@ -90,6 +90,11 @@ void GameObjectManager::RemoveGameObject(GameObject * object, bool defer)
 		if (iter != m_gameObjects.end())
 		{
 #if _DEBUG
+			if (iter->get()->IsCharacter())
+			{
+				LOG_INFO("Debugging");
+			}
+
 			// the ref count should only be 1 when removing an object from the master list
 			long refCount = (*iter).use_count();
 			if (refCount > 1)
@@ -774,7 +779,8 @@ void GameObjectManager::AddGameObject(GameObject * object, bool editModeAdd)
 	}
 #endif
 
-	m_gameObjects.push_back(shared_ptr<GameObject>(object));
+	auto obj = shared_ptr<GameObject>(object);
+	m_gameObjects.push_back(obj);
 
 	// no need to manually add it to gameObject list as this is done automatically in the constructor
 	if (object->IsDrawable())
@@ -1154,7 +1160,7 @@ void GameObjectManager::ProcessGamePad()
 			// testing
 			Timing::Instance()->SetTimeModifierForNumSeconds(0.1f, 3.5f);
 			NinjaSpawner spawner;
-			spawner.SpawnMultiple(5, Vector2(m_player->X(), m_player->Y()), Vector2(1200, 1200));
+			spawner.SpawnMultiple(1, Vector2(m_player->X(), m_player->Y()), Vector2(1200, 1200));
 		}
 
 		pressingLeftShoulder = false;
