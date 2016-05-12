@@ -1146,7 +1146,6 @@ void GameObjectManager::ProcessGamePad()
 
 	// ===========================
 
-#if _DEBUG
 	// Ninja spawning
 	static bool pressingLeftShoulder = false;
 	if (pad_state.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
@@ -1188,8 +1187,6 @@ void GameObjectManager::ProcessGamePad()
 		}
 		pressing_slo_mo = false;
 	}
-
-#endif
 }
 
 GameObject * GameObjectManager::CopyObject(GameObject * toCopy)

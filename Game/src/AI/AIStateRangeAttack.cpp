@@ -6,7 +6,7 @@ static const float kRunAwayDelay = 1.0f;
 static const float kJumpRandomDelayMin = 2.0f;
 static const float kJumpRandomDelayMax = 4.5f;
 static const float kTeleportDelayMin = 2.0f;
-static const float kTeleportDelayMax = 4.0f;
+static const float kTeleportDelayMax = 7.0f;
 
 AIStateRangeAttack::AIStateRangeAttack(NPC * npc) :
 	AIState(npc),
