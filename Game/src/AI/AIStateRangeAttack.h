@@ -17,12 +17,14 @@ public:
 
 private:
 
+	bool CanAccelerateX(float direction);
+
 	float mDesiredRange;
 	float mFollowRange;
 	float mRandOffset;
-
 	float mLastTimeRanAway;
 	float mTimeUntilRandomlyJump;
+	float mTimeUntilCanTeleport;
 };
 
 #endif

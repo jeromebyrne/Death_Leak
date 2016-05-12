@@ -13,6 +13,7 @@ private:
 
 	TextureManager(void);
 	~TextureManager(void);
+
 public:
 	
 	static TextureManager* Instance();

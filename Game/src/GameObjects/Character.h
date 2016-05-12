@@ -21,7 +21,7 @@ public:
 	virtual bool OnCollision(SolidMovingSprite * object) override;
 	virtual void Scale(float xScale, float yScale, bool scalePosition = true) override;
 	virtual void LoadContent(ID3D10Device * graphicsdevice) override;
-	inline void SetMaxJumpSpeed(float value) { m_maxJumpSpeed = value; }  
+	inline void SetMaxJumpSpeed(float value) { m_maxJumpSpeed = value; }
 	virtual bool Jump(float percent);
 	virtual void WallJump(float percent);
 	virtual void AccelerateX(float directionX);
@@ -40,6 +40,7 @@ public:
 	unsigned GetMaxJumpsAllowed() const { return mMaxJumpsAllowed; }
 	unsigned GetCurrentJumpsBeforeLand() const { return mCurrentJumpsBeforeLand; }
 	float GetTimeNotOnSolidSurface() const { return mTimeNotOnSolidSurface; }
+	float GetTimeOnSolidSurface() const { return mTimeOnSolidSurface; }
 	void setCurrentSolidLineDroppingDownThroughId(unsigned int value) { mCurrentSolidLineDroppingDownThroughId = value; }
 	unsigned getCurrentSolidLineDroppingDownThroughId() const { return mCurrentSolidLineDroppingDownThroughId; }
 	void dropDown();
@@ -48,6 +49,8 @@ public:
 	void SetIsStrafing(bool value) { mIsStrafing = value; }
 	float GetStrafeDirectionX() const { return mStrafeDirectionX; }
 	void SetStrafeDirectionX(float value) { mStrafeDirectionX = value; }
+
+	void Teleport(float posX, float posY, bool showParticles);
 
 protected:
 

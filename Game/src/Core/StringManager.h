@@ -8,6 +8,7 @@ using namespace std;
 class StringManager
 {
 public:
+
 	StringManager(void);
 	virtual ~StringManager(void);
 

@@ -6,24 +6,8 @@
 
 class DXWindow
 {
-
-private:
-	HINSTANCE m_hInstance;
-	HWND m_hWnd;
-
-	ID3D10Device*           m_pGraphicsDevice; // pointer to the graphics device
-	IDXGISwapChain*         m_pGraphicsSwapChain; // pointer to the object for switching front and back buffers
-
-	char * m_winClassName;
-	char * m_windowTitle;
-	int m_width;
-	int m_height;
-	int m_topLeftX;
-	int m_topLeftY;
-
-	static DXWindow * mInstance;
-
 public:
+
 	DXWindow(char * winClassName, char * windowTitle, int windowWidth = 640, int windowHeight = 480);
 	~DXWindow(void);
 	
@@ -50,6 +34,23 @@ public:
 	static DXWindow * GetInstance() { return mInstance; }
 	
 	Vector2 GetWindowDimensions();
+
+private:
+
+	HINSTANCE m_hInstance;
+	HWND m_hWnd;
+
+	ID3D10Device*           m_pGraphicsDevice; // pointer to the graphics device
+	IDXGISwapChain*         m_pGraphicsSwapChain; // pointer to the object for switching front and back buffers
+
+	char * m_winClassName;
+	char * m_windowTitle;
+	int m_width;
+	int m_height;
+	int m_topLeftX;
+	int m_topLeftY;
+
+	static DXWindow * mInstance;
 };
 
 #endif

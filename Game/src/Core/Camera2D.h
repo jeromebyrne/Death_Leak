@@ -90,6 +90,10 @@ public:
 
 	void SetOverrideDirection(bool shouldOverride, Vector2 direction) { mIsOverrideDirection = shouldOverride; mOverrideDirection = direction; }
 
+	float GetLeftLevelBounds() const { return mBoundsTopLeft.X; }
+
+	float GetRightLevelBounds() const { return mBoundsBottomRight.X; }
+
 private:
 
 	bool UpdateBoundsX(GameObject * target);

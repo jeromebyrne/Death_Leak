@@ -72,24 +72,24 @@ void NPCManager::Draw()
 
 		if (npc->Right() < camLeft)
 		{
-			indicatorPos.X = camLeft + 64;
+			indicatorPos.X = camLeft + 55;
 		}
 		else if (npc->Left() > camRight)
 		{
-			indicatorPos.X = camRight - 64;
+			indicatorPos.X = camRight - 55;
 		}
 
 		if (npc->Bottom() > camTop)
 		{
-			indicatorPos.Y = camTop - 64;
+			indicatorPos.Y = camTop - 55;
 		}
 		else if (npc->Top() < camBottom)
 		{
-			indicatorPos.Y = camBottom + 64;
+			indicatorPos.Y = camBottom + 55;
 		}
 
 		// TODO: don't use the draw utilities as it's very slow
-		DrawUtilities::DrawTexture(indicatorPos, Vector2(128, 128), "Media//skull_icon.png");
+		DrawUtilities::DrawTexture(indicatorPos, Vector2(90, 90), "Media//skull_icon.png");
 	}
 }
 
@@ -97,6 +97,12 @@ void NPCManager::ResolveCollisions(NPC * npc, NPC * otherNPC)
 {
 	if (npc->GetCheckNPCOverlapCollisions() && otherNPC->GetCheckNPCOverlapCollisions())
 	{
+		if (!npc->IsOnSolidSurface())
+		{
+			otherNPC->AddToNPCResolvedList(npc);
+			return;
+		}
+
 		bool colliding = Utilities::IsSolidSpriteInRectangle(npc, otherNPC->X(), otherNPC->Y(), otherNPC->CollisionDimensions().X * 3.0f, otherNPC->CollisionDimensions().Y);
 		if (colliding && !npc->NPCCollisionSetContains(otherNPC))
 		{

@@ -2,10 +2,11 @@
 #include "AIStateRangeAttack.h"
 #include "NPC.h"
 
-static float kRunAwayDelay = 1.0f;
-
-static float kJumpRandomDelayMin = 2.0f;
-static float kJumpRandomDelayMax = 5.5f;
+static const float kRunAwayDelay = 1.0f;
+static const float kJumpRandomDelayMin = 2.0f;
+static const float kJumpRandomDelayMax = 4.5f;
+static const float kTeleportDelayMin = 2.0f;
+static const float kTeleportDelayMax = 4.0f;
 
 AIStateRangeAttack::AIStateRangeAttack(NPC * npc) :
 	AIState(npc),
@@ -13,7 +14,8 @@ AIStateRangeAttack::AIStateRangeAttack(NPC * npc) :
 	mFollowRange(900),
 	mRandOffset(0.0f),
 	mLastTimeRanAway(0.0f),
-	mTimeUntilRandomlyJump(0.0f)
+	mTimeUntilRandomlyJump(0.0f),
+	mTimeUntilCanTeleport(0.0f)
 {
 	mStateType = kRangeAttack;
 }
@@ -39,21 +41,50 @@ void AIStateRangeAttack::Update(float delta)
 {
 	if (m_npc->m_player)
 	{
+		if (!CanAccelerateX(1.0f))
+		{
+			m_npc->Teleport(m_npc->m_player->Position().X - 300, m_npc->m_player->Position().Y + 300, true);
+			mLastTimeRanAway = 0.0f;
+			return; // skip this update
+		}
+		else if (!CanAccelerateX(-1.0f))
+		{
+			m_npc->Teleport(m_npc->m_player->Position().X + 300, m_npc->m_player->Position().Y + 300, true);
+			mLastTimeRanAway = 0.0f;
+			return; // skip this update
+		}
+
 		Vector3 distanceSquaredVector = m_npc->m_player->Position() - m_npc->Position();
+
+		if (std::abs(distanceSquaredVector.X > 3000) ||
+			(std::abs(distanceSquaredVector.Y > 1000) && m_npc->m_player->IsOnSolidSurface() && m_npc->m_player->GetTimeOnSolidSurface() > 1.0f))
+		{
+			if (mTimeUntilCanTeleport <= 0.0f)
+			{
+				m_npc->Teleport(m_npc->m_player->Position().X + 5, m_npc->m_player->Position().Y + 500, true);
+				mLastTimeRanAway = 0.0f;
+				mTimeUntilCanTeleport = kTeleportDelayMin + (rand() % (int)((kTeleportDelayMax - kTeleportDelayMin) * 100.0f)) * 0.01f;
+				m_npc->FireProjectileAtObject(m_npc->m_player);
+			}
+		}
+
 		float currentTime = Timing::Instance()->GetTotalTimeSeconds();
 		if (currentTime > mLastTimeRanAway + kRunAwayDelay)
 		{
 			// get the distance to the player
 			float distanceSquared = distanceSquaredVector.LengthSquared();
+
 			if (distanceSquared < (mDesiredRange + mRandOffset) * (mDesiredRange + mRandOffset))
 			{
 				// run away from player
 				distanceSquaredVector.Normalise();
+
 				m_npc->AccelerateX(-distanceSquaredVector.X);
 			}
 			else if (distanceSquared > (mFollowRange + mRandOffset) * (mFollowRange + mRandOffset))
 			{
 				distanceSquaredVector.Normalise();
+
 				m_npc->AccelerateX(distanceSquaredVector.X);
 			}
 			else
@@ -100,4 +131,39 @@ void AIStateRangeAttack::Update(float delta)
 			m_npc->SetStrafeDirectionX(-1.0f);
 		}
 	}
+
+	if (mTimeUntilCanTeleport > 0.0f)
+	{
+		mTimeUntilCanTeleport -= delta;
+	}
+}
+
+bool AIStateRangeAttack::CanAccelerateX(float direction)
+{
+	GAME_ASSERT(std::abs(direction) == 1.0f);
+
+	auto cam = Camera2D::GetInstance();
+
+	if (cam->IsObjectInView(m_npc))
+	{
+		// should be able to accelerate if in view
+		return true;
+	}
+
+	if (direction < 0.0f)
+	{
+		if (m_npc->m_position.X - 10.0f < cam->GetLeftLevelBounds())
+		{
+			return false;
+		}
+	}
+	else
+	{
+		if (m_npc->m_position.X + 10.0f > cam->GetRightLevelBounds())
+		{
+			return false;
+		}
+	}
+		
+	return true;
 }
