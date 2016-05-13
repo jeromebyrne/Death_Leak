@@ -1118,23 +1118,10 @@ void GameObjectManager::ProcessGamePad()
 	}
 	else
 	{
-		if(pressing_bomb)
+		if (pressing_bomb)
 		{
-			// get aim direction 
-			Vector2 dir = Vector2(m_player->DirectionX(), 0);
+			Projectile * p = m_player->FireBomb(aimDirection);
 
-			if (pad_state.Gamepad.sThumbLX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
-				pad_state.Gamepad.sThumbLX > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
-				pad_state.Gamepad.sThumbLY < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
-				pad_state.Gamepad.sThumbLY > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
-			{
-				dir = Vector2(pad_state.Gamepad.sThumbLX, pad_state.Gamepad.sThumbLY);
-				dir.Normalise();
-			}
-			
-			// let the player fire and return a projectile object which is added to the world
-			Projectile * p = m_player->FireBomb(dir);
-			
 			if (p)
 			{
 				GameObjectManager::Instance()->AddGameObject(p);

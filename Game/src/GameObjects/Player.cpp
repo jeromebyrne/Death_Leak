@@ -84,14 +84,14 @@ Projectile * Player::FireBomb(Vector2 direction)
 		pos.X -= m_projectileOffset.X;
 	}
 
-	float speed = mSprintActive ? 20 : 15;
+	float speed = mSprintActive ? 10 : 7.5;
 
 	Projectile * p = new BombProjectile(Projectile::kPlayerProjectile,
 										kBombTextureFile,
 										mProjectileImpactFilePath.c_str(),
 										pos,
 										Vector2(30,8),
-										Vector2(60,60),
+										Vector2(30,30),
 										direction,
 										50,
 										speed,

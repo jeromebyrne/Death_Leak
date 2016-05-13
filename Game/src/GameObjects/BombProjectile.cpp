@@ -43,7 +43,7 @@ Projectile(ownerType,textureFileName,
 
 BombProjectile::~BombProjectile(void)
 {
-	Explosion * explosion = new Explosion(m_damage, 700, m_position.X, m_position.Y, m_position.Z - 0.1);
+	Explosion * explosion = new Explosion(m_damage, 1000, m_position.X, m_position.Y, m_position.Z - 0.1);
 
 	GameObjectManager::Instance()->AddGameObject(explosion);
 
