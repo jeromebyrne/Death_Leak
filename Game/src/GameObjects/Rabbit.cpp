@@ -126,5 +126,5 @@ void Rabbit::Initialise()
 
 	mPlayFootsteps = false;
 
-	SetState(AIState::kRepel);
+	SetState(AIState::kGroundAnimalWander);
 }

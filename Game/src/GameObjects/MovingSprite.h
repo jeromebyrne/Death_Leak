@@ -64,6 +64,7 @@ public:
 	{
 		m_direction = Vector3(x, y, z);
 	}
+	inline void SetDirectionX(float dirX) { m_direction.X = dirX; }
 	inline void SetVelocity(Vector3 value)
 	{
 		m_velocity = value;
@@ -75,6 +76,10 @@ public:
 	inline Vector3 GetMaxVelocity()
 	{
 		return m_maxVelocity;
+	}
+	inline void SetMaxVelocityX(float x)
+	{
+		m_maxVelocity.X = x;
 	}
 	inline void SetMaxVelocityXYZ(float x, float y, float z)
 	{

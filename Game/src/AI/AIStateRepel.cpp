@@ -21,7 +21,7 @@ void AIStateRepel::OnTransition()
 
 void AIStateRepel::Update(float delta)
 {
-	if (m_npc->m_player && m_npc->IsOnSolidSurface())
+	if (m_npc->m_player /*&& m_npc->IsOnSolidSurface()*/)
 	{
 		// get the distance to the player
 		Vector3 distanceSquaredVector =  m_npc->m_player->Position() - m_npc->Position();

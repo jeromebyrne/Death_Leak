@@ -26,6 +26,7 @@
     <ClCompile Include="src\AI\AIState.cpp" />
     <ClCompile Include="src\AI\AIStateButterflyWander.cpp" />
     <ClCompile Include="src\AI\AIStateFollow.cpp" />
+    <ClCompile Include="src\AI\AIStateGroundAnimalWander.cpp" />
     <ClCompile Include="src\AI\AIStateRangeAttack.cpp" />
     <ClCompile Include="src\AI\AIStateRepel.cpp" />
     <ClCompile Include="src\Animation\Animation.cpp" />
@@ -137,6 +138,7 @@
     <ClInclude Include="src\AI\AIState.h" />
     <ClInclude Include="src\AI\AIStateButterflyWander.h" />
     <ClInclude Include="src\AI\AIStateFollow.h" />
+    <ClInclude Include="src\AI\AIStateGroundAnimalWander.h" />
     <ClInclude Include="src\AI\AIStateRangeAttack.h" />
     <ClInclude Include="src\AI\AIStateRepel.h" />
     <ClInclude Include="src\Animation\Animation.h" />

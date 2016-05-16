@@ -15,6 +15,7 @@ public:
 		kRepel,
 		kRangeAttack,
 		kButterflyWander,
+		kGroundAnimalWander,
 		kNone
 	};
 

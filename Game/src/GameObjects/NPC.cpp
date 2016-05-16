@@ -3,6 +3,7 @@
 #include "AIStateFollow.h"
 #include "AIStateRepel.h"
 #include "AIStateRangeAttack.h"
+#include "AIStateGroundAnimalWander.h"
 #include "AudioManager.h"
 #include "projectile.h"
 #include "timing.h"
@@ -39,7 +40,8 @@ NPC::NPC(float x, float y, float z, float width, float height, float breadth) :
 	m_butterflyWander(nullptr),
 	mAddHealthBar(true),
 	mIsPlayerEnemy(false),
-	mRandHealthBarOffsetY(0.0f)
+	mRandHealthBarOffsetY(0.0f),
+	mGroundAnimalWanderState(nullptr)
 {
 	mHealth = 20.0f;
 	mMaxHealth = 20.0f;
@@ -59,6 +61,7 @@ NPC::NPC(float x, float y, float z, float width, float height, float breadth) :
 	m_repelState = new AIStateRepel(this);
 	m_rangeAttackState = new AIStateRangeAttack(this);
 	m_butterflyWander = new AIStateButterflyWander(this);
+	mGroundAnimalWanderState = new AIStateGroundAnimalWander(this);
 
 	// set to default state
 	SetState(AIState::kRangeAttack);
@@ -144,6 +147,13 @@ void NPC::SetState(AIState::AIStateType state)
 		{
 			GAME_ASSERT(m_butterflyWander);
 			m_currentState = m_butterflyWander;
+			m_currentState->OnTransition();
+			break;
+		}
+		case AIState::kGroundAnimalWander:
+		{
+			GAME_ASSERT(mGroundAnimalWanderState);
+			m_currentState = mGroundAnimalWanderState;
 			m_currentState->OnTransition();
 			break;
 		}
