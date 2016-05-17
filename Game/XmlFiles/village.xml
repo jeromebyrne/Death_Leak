@@ -31,34 +31,8 @@
         <projectileoffsetx value="40" />
         <projectileoffsety value="0" />
     </Player>
-    <Rabbit id="2" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="47.000000" y="419.056702" x="-53.368546" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="18.143854" width="62.159492" native="false" repeatX="false" repeatY="false" />
-        <material value="rabbit" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\characters\rat\1.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\rat_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="6.000000" x="0.900000" />
-        <maxvelocity z="0.000000" y="100000000.000000" x="7.000000" />
-        <applygravity value="true" />
-        <collisionboxdimensions z="0.000000" y="15.415522" x="15.415522" offsetX="0.000000" offsetY="0.000000" />
-        <passive value="false" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <maxjumpspeed value="25" />
-        <xaccelrate value="1" />
-        <projectileoffsetx value="15" />
-        <projectileoffsety value="20" />
-    </Rabbit>
     <ParallaxLayer id="3" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="99999.000000" y="1750.000000" x="556.286621" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="99999.000000" y="1750.000000" x="796.286621" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="2000.000000" width="2560.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -81,7 +55,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="4" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="99999.000000" y="3750.000000" x="556.286621" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="99999.000000" y="3750.000000" x="796.286621" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="2000.000000" width="2560.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -104,7 +78,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="5" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="300.000000" y="700.000000" x="556.286621" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="300.000000" y="700.000000" x="796.286621" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="383.000000" width="1920.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -127,7 +101,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="6" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9999.000000" y="800.000000" x="556.286621" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="9999.000000" y="800.000000" x="796.286621" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="512.000000" width="3257.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -150,7 +124,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="7" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9998.000000" y="680.000000" x="556.286621" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="9998.000000" y="680.000000" x="796.286621" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="512.000000" width="3257.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -3424,7 +3398,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <ParallaxLayer id="229" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="140.000000" y="3600.000000" x="556.286621" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="140.000000" y="3600.000000" x="796.286621" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="383.000000" width="1920.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -7079,61 +7053,9 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <Rabbit id="411" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="47.000000" y="418.941833" x="315.534302" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="18.143854" width="62.159492" native="false" repeatX="false" repeatY="false" />
-        <material value="rabbit" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\characters\rat\1.png" />
-        <horizontalflip value="true" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\rat_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="6.000000" x="0.900000" />
-        <maxvelocity z="0.000000" y="100000000.000000" x="7.000000" />
-        <applygravity value="true" />
-        <collisionboxdimensions z="0.000000" y="15.415522" x="15.415522" offsetX="0.000000" offsetY="0.000000" />
-        <passive value="false" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <maxjumpspeed value="25" />
-        <xaccelrate value="1" />
-        <projectileoffsetx value="15" />
-        <projectileoffsety value="20" />
-    </Rabbit>
-    <Rabbit id="412" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="47.000000" y="415.841370" x="669.640869" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="18.143854" width="62.159492" native="false" repeatX="false" repeatY="false" />
-        <material value="rabbit" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\characters\rat\1.png" />
-        <horizontalflip value="true" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\rat_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="6.000000" x="0.900000" />
-        <maxvelocity z="0.000000" y="100000000.000000" x="7.000000" />
-        <applygravity value="true" />
-        <collisionboxdimensions z="0.000000" y="15.415522" x="15.415522" offsetX="0.000000" offsetY="0.000000" />
-        <passive value="false" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <maxjumpspeed value="25" />
-        <xaccelrate value="1" />
-        <projectileoffsetx value="15" />
-        <projectileoffsety value="20" />
-    </Rabbit>
-    <Rabbit id="413" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="47.000000" y="417.908325" x="1064.875977" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="18.143854" width="62.159492" native="false" repeatX="false" repeatY="false" />
+    <Rabbit id="410" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="47.000000" y="445.927490" x="662.869751" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="85.000000" width="280.000000" native="true" repeatX="false" repeatY="false" />
         <material value="rabbit" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
@@ -7158,58 +7080,6 @@
         <projectileoffsety value="20" />
     </Rabbit>
     <Rabbit id="414" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="47.000000" y="415.841370" x="504.123657" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="18.143854" width="62.159492" native="false" repeatX="false" repeatY="false" />
-        <material value="rabbit" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\characters\rat\1.png" />
-        <horizontalflip value="true" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\rat_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="6.000000" x="0.900000" />
-        <maxvelocity z="0.000000" y="100000000.000000" x="7.000000" />
-        <applygravity value="true" />
-        <collisionboxdimensions z="0.000000" y="15.415522" x="15.415522" offsetX="0.000000" offsetY="0.000000" />
-        <passive value="false" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <maxjumpspeed value="25" />
-        <xaccelrate value="1" />
-        <projectileoffsetx value="15" />
-        <projectileoffsety value="20" />
-    </Rabbit>
-    <Rabbit id="415" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="47.000000" y="421.008850" x="130.957520" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="18.143854" width="62.159492" native="false" repeatX="false" repeatY="false" />
-        <material value="rabbit" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\characters\rat\1.png" />
-        <horizontalflip value="true" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\rat_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="6.000000" x="0.900000" />
-        <maxvelocity z="0.000000" y="100000000.000000" x="7.000000" />
-        <applygravity value="true" />
-        <collisionboxdimensions z="0.000000" y="15.415522" x="15.415522" offsetX="0.000000" offsetY="0.000000" />
-        <passive value="false" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <maxjumpspeed value="25" />
-        <xaccelrate value="1" />
-        <projectileoffsetx value="15" />
-        <projectileoffsety value="20" />
-    </Rabbit>
-    <Rabbit id="416" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="47.000000" y="427.209778" x="-193.055054" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="18.143854" width="62.159492" native="false" repeatX="false" repeatY="false" />
         <material value="rabbit" />
@@ -7219,58 +7089,6 @@
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\characters\rat\1.png" />
         <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\rat_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="6.000000" x="0.900000" />
-        <maxvelocity z="0.000000" y="100000000.000000" x="7.000000" />
-        <applygravity value="true" />
-        <collisionboxdimensions z="0.000000" y="15.415522" x="15.415522" offsetX="0.000000" offsetY="0.000000" />
-        <passive value="false" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <maxjumpspeed value="25" />
-        <xaccelrate value="1" />
-        <projectileoffsetx value="15" />
-        <projectileoffsety value="20" />
-    </Rabbit>
-    <Rabbit id="417" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="47.000000" y="430.310242" x="921.427734" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="18.143854" width="62.159492" native="false" repeatX="false" repeatY="false" />
-        <material value="rabbit" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\characters\rat\1.png" />
-        <horizontalflip value="true" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\rat_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="6.000000" x="0.900000" />
-        <maxvelocity z="0.000000" y="100000000.000000" x="7.000000" />
-        <applygravity value="true" />
-        <collisionboxdimensions z="0.000000" y="15.415522" x="15.415522" offsetX="0.000000" offsetY="0.000000" />
-        <passive value="false" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <maxjumpspeed value="25" />
-        <xaccelrate value="1" />
-        <projectileoffsetx value="15" />
-        <projectileoffsety value="20" />
-    </Rabbit>
-    <Rabbit id="418" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="47.000000" y="444.779175" x="1387.885498" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="18.143854" width="62.159492" native="false" repeatX="false" repeatY="false" />
-        <material value="rabbit" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\characters\rat\1.png" />
-        <horizontalflip value="true" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\rat_anim.xml" />
