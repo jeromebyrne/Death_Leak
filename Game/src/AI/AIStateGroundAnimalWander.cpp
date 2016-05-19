@@ -63,6 +63,11 @@ void AIStateGroundAnimalWander::Update(float delta)
 
 void AIStateGroundAnimalWander::UpdateMoving(float delta)
 {
+	if (m_npc->IsHittingSolidLineEdge())
+	{
+		m_npc->SetDirectionX(-m_npc->DirectionX());
+	}
+
 	if (IsPlayerClose())
 	{
 		m_npc->SetVelocityX(0.0f);

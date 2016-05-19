@@ -19,7 +19,8 @@ MovingSprite::MovingSprite(float x, float y, float z, float width, float height,
 	mIsInWater(false),
 	mWasInWaterLastFrame(false),
 	mIsDeepWater(false),
-	mTimeUntilCanSpawnWaterBubbles(0.0f)
+	mTimeUntilCanSpawnWaterBubbles(0.0f),
+	mHittingSolidLineEdge(false)
 {
 	if (m_maxVelocity.Y < 0)  // less than 0 actually signifies no maximum
 	{
@@ -97,6 +98,8 @@ void MovingSprite::Update(float delta)
 				Vector2 leftMostPoint = solidLineStrip->GetLeftMostPoint();
 
 				float nextPositionX = m_position.X + nextVelocity.X;
+				
+				mHittingSolidLineEdge = false;
 
 				if ((solidLineStrip->GetHasHardRightEdge() && 
 					nextVelocity.X > 0 &&
@@ -107,6 +110,7 @@ void MovingSprite::Update(float delta)
 				{
 					nextVelocity.X = 0.0f;
 					StopXAccelerating();
+					mHittingSolidLineEdge = true;
 				}
 			}
 		}

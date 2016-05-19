@@ -120,7 +120,7 @@ void Rabbit::Initialise()
 	m_repelState->SetStopDistance(120 + randStopDistance);
 	m_repelState->SetFollowRadius(500);
 
-	mRunAnimFramerateMultiplier = 3.5f;
+	mRunAnimFramerateMultiplier = 1.8f;
 
 	mCheckNPCOverlapCollisions = false;
 

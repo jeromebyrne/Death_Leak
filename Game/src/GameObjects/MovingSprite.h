@@ -110,6 +110,8 @@ public:
 
 	void SetCurrentYResistance(float value) { mCurrentYResistance = value; }
 
+	bool IsHittingSolidLineEdge() const { return mHittingSolidLineEdge; }
+
 protected:
 
 	virtual void DoWaterAccelerationBubbles();
@@ -125,16 +127,12 @@ protected:
 	MovingSprite * mObjectMovingWith;
 
 	float mCurrentYResistance; // this can change dynamically
-
 	bool m_isOnGround;
-
 	bool mIsInWater;
- 
 	bool mWasInWaterLastFrame;
-
 	bool mIsDeepWater;
-
 	float mTimeUntilCanSpawnWaterBubbles;
+	bool mHittingSolidLineEdge;
 };
 
 #endif
