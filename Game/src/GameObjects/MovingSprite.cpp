@@ -84,6 +84,8 @@ void MovingSprite::Update(float delta)
 		nextVelocity.Y = -m_maxVelocity.Y;
 	}
 
+	mHittingSolidLineEdge = false;
+
 	if (IsCharacter())
 	{
 		Character * character = static_cast<Character *>(this);
@@ -98,8 +100,6 @@ void MovingSprite::Update(float delta)
 				Vector2 leftMostPoint = solidLineStrip->GetLeftMostPoint();
 
 				float nextPositionX = m_position.X + nextVelocity.X;
-				
-				mHittingSolidLineEdge = false;
 
 				if ((solidLineStrip->GetHasHardRightEdge() && 
 					nextVelocity.X > 0 &&

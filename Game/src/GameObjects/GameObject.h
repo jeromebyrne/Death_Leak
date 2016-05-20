@@ -187,6 +187,10 @@ public:
 
 	static void ResetGameIds();
 
+	static unsigned int GetCurrentGameObjectCount() { return sGameObjectId; }
+
+	static void ForceIncrementGameObjectCount() { sGameObjectId++; }
+
 protected:
 
 	virtual void DrawDebugText();
@@ -251,8 +255,6 @@ protected:
 	bool mAlwaysUpdate;
 
 private:
-
-	
 
 	int m_id; // our game object ID (this is unique)
 

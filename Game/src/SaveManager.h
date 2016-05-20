@@ -20,6 +20,10 @@ public:
 
 	void SetNumCurrencyOrbsCollected(int value);
 
+	void SetOrbsCollected(const std::string & levelFile, std::vector<unsigned int> orbGameIds);
+
+	void GetOrbsCollected(const std::string & levelFile, std::vector<unsigned int> & orbGameIdsOut);
+
 private:
 
 	static SaveManager * mInstance;

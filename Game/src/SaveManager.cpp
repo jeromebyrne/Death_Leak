@@ -1,5 +1,6 @@
 #include "precompiled.h"
 #include "SaveManager.h"
+#include <algorithm>
 
 SaveManager * SaveManager::mInstance = nullptr;
 static const char * saveFilename = "save.xml";
@@ -241,4 +242,54 @@ int SaveManager::GetNumCurrencyOrbsCollected() const
 void SaveManager::SetNumCurrencyOrbsCollected(int value)
 {
 	mSaveMap["currency_orbs_collected"] = value;
+}
+
+void SaveManager::SetOrbsCollected(const std::string & levelFile, std::vector<unsigned int> orbGameIds)
+{
+	std::string key = levelFile + "_orbs_collected";
+
+	std::replace(key.begin(), key.end(), '\\', '-'); // replace back slashes as they will mess up the xml file
+
+	DataValue orbVector = mSaveMap[key];
+
+	if (orbVector.getType() != DataValue::Type::VECTOR)
+	{
+		// we haven't created this vector yet
+		orbVector = DataValue(std::vector<DataValue>());
+	}
+
+	auto vec = orbVector.asVector();
+
+	for (const unsigned int i : orbGameIds)
+	{
+		vec.push_back(DataValue((int)i));
+	}
+
+	mSaveMap[key] = vec;
+}
+
+void SaveManager::GetOrbsCollected(const std::string & levelFile, std::vector<unsigned int> & orbGameIdsOut)
+{
+	std::string key = levelFile + "_orbs_collected";
+
+	std::replace(key.begin(), key.end(), '\\', '-'); // replace back slashes as they will mess up the xml file
+
+	DataValue orbVector = mSaveMap[key];
+
+	if (orbVector.getType() != DataValue::Type::VECTOR)
+	{
+		return;
+	}
+
+	auto vec = orbVector.asVector();
+
+	for (const auto & item : vec)
+	{
+		if (item.getType() != DataValue::Type::INTEGER)
+		{
+			continue;
+		}
+
+		orbGameIdsOut.push_back(item.asInt());
+	}
 }

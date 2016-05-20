@@ -3,7 +3,7 @@
 #include "NPC.h"
 
 static const float kRestDelayMin = 0.5f;
-static const float kRestDelayMax = 2.0f;
+static const float kRestDelayMax = 3.0f;
 static const float kMoveDelayMin = 0.75f;
 static const float kMoveDelayMax = 1.5f;
 static const float kRunAwayMinDelay = 0.5f;
@@ -65,7 +65,17 @@ void AIStateGroundAnimalWander::UpdateMoving(float delta)
 {
 	if (m_npc->IsHittingSolidLineEdge())
 	{
-		m_npc->SetDirectionX(-m_npc->DirectionX());
+		if (IsPlayerCloseEnoughToJumpFromEdge())
+		{
+			mCurrentInternalState = kRunningFromPlayer;
+			mCurrentTimeRunningFromPlayer = 2.0f;
+			m_npc->SetVelocityY(0.5f);
+			m_npc->Jump(100.0f);
+		}
+		else
+		{
+			m_npc->SetDirectionX(-m_npc->DirectionX());
+		}
 	}
 
 	if (IsPlayerClose())
@@ -164,6 +174,14 @@ bool AIStateGroundAnimalWander::CanAccelerateX(float direction)
 
 void AIStateGroundAnimalWander::UpdateRunningFromPlayer(float delta)
 {
+	if (m_npc->IsHittingSolidLineEdge())
+	{
+		mCurrentInternalState = kRunningFromPlayer;
+		mCurrentTimeRunningFromPlayer = 2.0f;
+		m_npc->SetVelocityY(0.5f);
+		m_npc->Jump(70.0f);
+	}
+
 	if (mCurrentTimeRunningFromPlayer > 0.0f)
 	{
 		if (m_npc->m_player)
@@ -210,6 +228,24 @@ bool AIStateGroundAnimalWander::IsPlayerClose() const
 	float distanceSquared = distanceSquaredVector.LengthSquared();
 
 	if (distanceSquared < kRunAwayPlayerDistanceSquared)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool AIStateGroundAnimalWander::IsPlayerCloseEnoughToJumpFromEdge() const
+{
+	if (!m_npc->m_player)
+	{
+		return false;
+	}
+
+	Vector3 distanceSquaredVector = m_npc->m_player->Position() - m_npc->Position();
+	float distanceSquared = distanceSquaredVector.LengthSquared();
+
+	if (distanceSquared < kRunAwayPlayerDistanceSquared * 2.0f)
 	{
 		return true;
 	}

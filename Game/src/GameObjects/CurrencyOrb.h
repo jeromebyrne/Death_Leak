@@ -25,6 +25,8 @@ public:
 
 	static void SpawnOrbs(Vector3 & position, unsigned int numOrbs);
 
+	void SetIsLoadTimeObject(bool value) { mIsLoadTimeObject = value; }
+
 private:
 
 	void DoIdleHover(float delta);
@@ -48,6 +50,8 @@ private:
 	float mSpawnPeriodTime;
 
 	float mTimeTracking;
+
+	bool mIsLoadTimeObject;
 };
 
 #endif

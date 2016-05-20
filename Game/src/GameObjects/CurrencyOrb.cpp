@@ -21,7 +21,8 @@ CurrencyOrb::CurrencyOrb(void) :
 	mIsLargeType(false),
 	mParticleTrailObjectId(-1),
 	mSpawnPeriodTime(0.1f),
-	mTimeTracking(0.0f)
+	mTimeTracking(0.0f),
+	mIsLoadTimeObject(false)
 {
 	mIsCurrencyOrb = true;
 }
@@ -243,16 +244,24 @@ void CurrencyOrb::DoTrackPlayer(float delta)
 
 void CurrencyOrb::DoCollisionSmallType(Player * player)
 {
+	if (mIsLoadTimeObject)
+	{
+		GameObjectManager::Instance()->SetOrbCollected(ID());
+	}
 }
 
 void CurrencyOrb::DoCollisionLargeType(Player * player)
 {
+	if (mIsLoadTimeObject)
+	{
+		GameObjectManager::Instance()->SetOrbCollected(ID());
+	}
+
 	if (m_material)
 	{
 		// show particles when we make contact
 		string particleName = m_material->GetRandomParticleTexture();
 
-		/*
 		ParticleEmitterManager::Instance()->CreateRadialSpray(20,
 																Vector3(m_position.X + player->VelocityX() * 5, m_position.Y + player->VelocityY() * 2, player->Z() - 0.02f),
 																Vector3(3200, 1200, 0),
@@ -274,7 +283,6 @@ void CurrencyOrb::DoCollisionLargeType(Player * player)
 																0.8f,
 																5,
 																5);
-																*/
 
 		ParticleEmitterManager::Instance()->CreateRadialSpray(1,
 																Vector3(m_position.X + player->VelocityX() * 5, m_position.Y + player->VelocityY() * 2, player->Z() - 0.01f),

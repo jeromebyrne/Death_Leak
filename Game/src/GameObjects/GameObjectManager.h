@@ -101,13 +101,15 @@ public:
 
 	void SetLevelFreshLaunch(bool value) { mFreshLevelLaunch = value; }
 
+	void SetOrbCollected(unsigned int orbId);
+
 private:
 
 	Camera2D * m_camera;
 	static GameObjectManager* m_instance;
 	list<shared_ptr<GameObject> > m_gameObjects;
 	list<GameObject *> m_killList; // a list of all objects which need to be removed
-	GameObject * CreateObject(TiXmlElement * object);
+	GameObject * CreateObject(TiXmlElement * object, const std::vector<unsigned int> & orbsCollected);
 	TiXmlElement * SaveObject(GameObject * object);
 	void LoadContent(ID3D10Device * device); // load graphics content for drawable objects
 	void Initialise(); // call initialise function on all game objects
@@ -149,6 +151,10 @@ private:
 	bool mFreshLevelLaunch;
 
 	MusicManager mMusicManager;
+
+	std::vector<unsigned int> mCurrentOrbIdsCollected;
+
+	std::string mCurrentLevelFile;
 };
 
 #endif

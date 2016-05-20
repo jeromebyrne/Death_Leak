@@ -45,7 +45,7 @@ void NPCTrigger::Update(float delta)
 																Vector3(0, 1, 0),
 																0.1,
 																Vector3(3200, 1200, 0),
-																"Media\\exclamation.png",
+																"Media\\skull_icon_2.png",
 																1.0f,
 																1.0f,
 																0.3f,

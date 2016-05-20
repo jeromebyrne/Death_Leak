@@ -27,6 +27,8 @@ private:
 
 	bool IsPlayerClose() const;
 
+	bool IsPlayerCloseEnoughToJumpFromEdge() const;
+
 	enum GroundAnimalWanderInternalState
 	{
 		kResting,

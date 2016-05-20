@@ -321,6 +321,8 @@ void GameObjectManager::DebugDraw()
 // load game objects via xml file
 void GameObjectManager::LoadObjectsFromFile(const char* filename)
 {
+	mCurrentLevelFile = filename;
+
 	GameObject::ResetGameIds();
 
 #if _DEBUG
@@ -352,11 +354,15 @@ void GameObjectManager::LoadObjectsFromFile(const char* filename)
 
 	TiXmlElement * child = root->FirstChildElement();
 
+	// get the orbs that have already been created so that we don't create them
+	std::vector<unsigned int> orbsCollected;
+	SaveManager::GetInstance()->GetOrbsCollected(mCurrentLevelFile, orbsCollected);
+
 	// loop through our game objects
 	unsigned int objLoadCount = 0;
 	while(child)
 	{
-		GameObject * object = CreateObject(child);
+		GameObject * object = CreateObject(child, orbsCollected);
 		if (object)
 		{
 			m_gameObjects.push_back(shared_ptr<GameObject>(object));
@@ -477,6 +483,10 @@ void GameObjectManager::SwitchToLevel(const char * level, bool defer)
 		return;
 	}
 
+	SaveManager::GetInstance()->SetOrbsCollected(mCurrentLevelFile, mCurrentOrbIdsCollected);
+
+	mCurrentOrbIdsCollected.clear();
+
 	SaveManager::GetInstance()->WriteSaveFile();
 
 	UIManager::Instance()->PopUI("game_hud");
@@ -561,7 +571,7 @@ TiXmlElement * GameObjectManager::SaveObject(GameObject * object)
 	return element;
 }
 
-GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement)
+GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement, const std::vector<unsigned int> & orbsCollected)
 {
 	// what type of object is this
 	const char* gameObjectTypeName = objectElement->Value();
@@ -660,7 +670,18 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement)
 	}
 	else if (strcmp(gameObjectTypeName, "currencyorb") == 0)
 	{
-		newGameObject = new CurrencyOrb();
+		bool alreadyCollected = std::find(orbsCollected.begin(), orbsCollected.end(), GameObject::GetCurrentGameObjectCount()) != orbsCollected.end();
+		if (alreadyCollected && !Game::GetIsLevelEditMode())
+		{
+			// mimic the creation of an object to keep game ids deterministic
+			GameObject::ForceIncrementGameObjectCount();
+			newGameObject = nullptr;
+		}
+		else
+		{
+			newGameObject = new CurrencyOrb();
+			static_cast<CurrencyOrb*>(newGameObject)->SetIsLoadTimeObject(true);
+		}
 	}
 	else if (strcmp(gameObjectTypeName, "breakable") == 0)
 	{
@@ -1200,7 +1221,7 @@ GameObject * GameObjectManager::CopyObject(GameObject * toCopy)
 		return nullptr;
 	}
 
-	return CreateObject(xmlElement);
+	return CreateObject(xmlElement, std::vector<unsigned int>());
 }
 
 void GameObjectManager::AddSlowMotionLayer()
@@ -1253,4 +1274,9 @@ void GameObjectManager::GetSolidSpritesOnScreen(std::list<GameObject *> & toPopu
 			toPopulate.push_back(objRawPtr);
 		}
 	}
+}
+
+void GameObjectManager::SetOrbCollected(unsigned int orbId)
+{
+	mCurrentOrbIdsCollected.push_back(orbId);
 }
