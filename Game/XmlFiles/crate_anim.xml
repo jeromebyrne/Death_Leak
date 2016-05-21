@@ -22,15 +22,15 @@
     </SlidingDown>
 
     <Damage1 FrameRate="0" MaxFrameRate="0" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
-      <frame filename="Media\crate\normal_2.png"/>
+      <frame filename="Media\crate\normal.png"/>
     </Damage1>
 
     <Damage2 FrameRate="0" MaxFrameRate="0" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
-      <frame filename="Media\crate\normal_2.png"/>
+      <frame filename="Media\crate\normal.png"/>
     </Damage2>
 
     <Damage3 FrameRate="0" MaxFrameRate="0" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
-      <frame filename="Media\crate\normal_3.png"/>
+      <frame filename="Media\crate\normal.png"/>
     </Damage3>
 
     <Damage4 FrameRate="0" MaxFrameRate="0" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">

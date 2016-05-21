@@ -209,8 +209,8 @@ void Breakable::SpawnDamageTransitionParticles()
 		return;
 	}
 
-	ParticleEmitterManager::Instance()->CreateDirectedSpray(50,
-															Vector3(m_position.X, m_position.Y, m_position.Z - 0.02f),
+	ParticleEmitterManager::Instance()->CreateDirectedSpray(10,
+															Vector3(m_position.X, m_position.Y-30, m_position.Z - 0.02f),
 															Vector3(0, 1, 0),
 															0.7f,
 															Vector3(3200, 1200, 0),
@@ -219,16 +219,16 @@ void Breakable::SpawnDamageTransitionParticles()
 															7.0f,
 															0.7f,
 															1.50f,
-															64,
-															64,
+															256,
+															256,
 															0,
 															false,
 															0.7,
 															1.0,
 															10000,
 															true,
-															6,
-															m_dimensions.X * 0.07f,
+															2,
+															m_dimensions.X * 0.03f,
 															m_dimensions.Y * 0.1f,
 															0.1f,
 															0.1f);
