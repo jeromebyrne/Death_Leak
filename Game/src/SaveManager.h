@@ -20,9 +20,13 @@ public:
 
 	void SetNumCurrencyOrbsCollected(int value);
 
-	void SetOrbsCollected(const std::string & levelFile, std::vector<unsigned int> orbGameIds);
+	void SetCurrencyOrbsCollected(const std::string & levelFile, std::vector<unsigned int> orbGameIds);
 
-	void GetOrbsCollected(const std::string & levelFile, std::vector<unsigned int> & orbGameIdsOut);
+	void GetCurrencyOrbsCollected(const std::string & levelFile, std::vector<unsigned int> & orbGameIdsOut);
+
+	void GetBreakablesBroken(const std::string & levelFile, std::vector<unsigned int> & breakableIdsOut);
+
+	void SetBreakablesBroken(const std::string & levelFile, std::vector<unsigned int> breakableIds);
 
 private:
 

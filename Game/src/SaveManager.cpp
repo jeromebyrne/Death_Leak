@@ -244,9 +244,9 @@ void SaveManager::SetNumCurrencyOrbsCollected(int value)
 	mSaveMap["currency_orbs_collected"] = value;
 }
 
-void SaveManager::SetOrbsCollected(const std::string & levelFile, std::vector<unsigned int> orbGameIds)
+void SaveManager::SetCurrencyOrbsCollected(const std::string & levelFile, std::vector<unsigned int> orbGameIds)
 {
-	std::string key = levelFile + "_orbs_collected";
+	std::string key = levelFile + "_currency_orbs_collected";
 
 	std::replace(key.begin(), key.end(), '\\', '-'); // replace back slashes as they will mess up the xml file
 
@@ -268,9 +268,9 @@ void SaveManager::SetOrbsCollected(const std::string & levelFile, std::vector<un
 	mSaveMap[key] = vec;
 }
 
-void SaveManager::GetOrbsCollected(const std::string & levelFile, std::vector<unsigned int> & orbGameIdsOut)
+void SaveManager::GetCurrencyOrbsCollected(const std::string & levelFile, std::vector<unsigned int> & orbGameIdsOut)
 {
-	std::string key = levelFile + "_orbs_collected";
+	std::string key = levelFile + "_currency_orbs_collected";
 
 	std::replace(key.begin(), key.end(), '\\', '-'); // replace back slashes as they will mess up the xml file
 
@@ -292,4 +292,54 @@ void SaveManager::GetOrbsCollected(const std::string & levelFile, std::vector<un
 
 		orbGameIdsOut.push_back(item.asInt());
 	}
+}
+
+void SaveManager::GetBreakablesBroken(const std::string & levelFile, std::vector<unsigned int> & breakableIdsOut)
+{
+	std::string key = levelFile + "_breakables_broken";
+
+	std::replace(key.begin(), key.end(), '\\', '-'); // replace back slashes as they will mess up the xml file
+
+	DataValue breakablesVector = mSaveMap[key];
+
+	if (breakablesVector.getType() != DataValue::Type::VECTOR)
+	{
+		return;
+	}
+
+	auto vec = breakablesVector.asVector();
+
+	for (const auto & item : vec)
+	{
+		if (item.getType() != DataValue::Type::INTEGER)
+		{
+			continue;
+		}
+
+		breakableIdsOut.push_back(item.asInt());
+	}
+}
+
+void SaveManager::SetBreakablesBroken(const std::string & levelFile, std::vector<unsigned int> breakableIds)
+{
+	std::string key = levelFile + "_breakables_broken";
+
+	std::replace(key.begin(), key.end(), '\\', '-'); // replace back slashes as they will mess up the xml file
+
+	DataValue breakablesVector = mSaveMap[key];
+
+	if (breakablesVector.getType() != DataValue::Type::VECTOR)
+	{
+		// we haven't created this vector yet
+		breakablesVector = DataValue(std::vector<DataValue>());
+	}
+
+	auto vec = breakablesVector.asVector();
+
+	for (const unsigned int i : breakableIds)
+	{
+		vec.push_back(DataValue((int)i));
+	}
+
+	mSaveMap[key] = vec;
 }

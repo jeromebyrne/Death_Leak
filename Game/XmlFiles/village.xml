@@ -40,7 +40,7 @@
         <num_enemies value="2.000000" />
     </NPCTrigger>
     <ParallaxLayer id="3" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="99999.000000" y="1750.000000" x="1234.531982" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="99999.000000" y="1750.000000" x="514.531982" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="2000.000000" width="2560.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -63,7 +63,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="4" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="99999.000000" y="3750.000000" x="1234.531982" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="99999.000000" y="3750.000000" x="514.531982" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="2000.000000" width="2560.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -86,7 +86,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="5" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="300.000000" y="700.000000" x="1234.531982" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="300.000000" y="700.000000" x="514.531982" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="383.000000" width="1920.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -109,7 +109,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="6" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9999.000000" y="800.000000" x="1234.531982" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="9999.000000" y="800.000000" x="514.531982" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="512.000000" width="3257.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -132,7 +132,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="7" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9998.000000" y="680.000000" x="1234.531982" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="9998.000000" y="680.000000" x="514.531982" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="512.000000" width="3257.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -356,8 +356,8 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="21" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="72.900002" y="604.453796" x="2424.625244" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="332.259399" width="564.234802" native="false" repeatX="false" repeatY="false" />
+        <position z="72.900002" y="567.975403" x="2416.726318" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="384.649109" width="562.686707" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
@@ -3406,7 +3406,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <ParallaxLayer id="229" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="140.000000" y="3600.000000" x="1234.531982" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="140.000000" y="3600.000000" x="514.531982" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="383.000000" width="1920.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -5390,213 +5390,6 @@
         <can_be_damaged value="true" />
     </CurrencyOrb>
     <Breakable id="333" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="60.000000" y="1227.573486" x="1893.841431" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="112.893822" width="119.868950" native="false" repeatX="false" repeatY="false" />
-        <material value="crate" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\platform_grass.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\crate_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="2.000000" x="0.950000" />
-        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions z="0.000000" y="51.002209" x="51.002209" offsetX="0.000000" offsetY="-10.000000" />
-        <passive value="true" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <health value="10.000000" delete_on_break="false" />
-    </Breakable>
-    <Breakable id="334" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="63.000000" y="1234.807861" x="2062.368164" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="112.893822" width="119.868950" native="false" repeatX="false" repeatY="false" />
-        <material value="crate" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\platform_grass.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\crate_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="2.000000" x="0.950000" />
-        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions z="0.000000" y="51.002209" x="51.002209" offsetX="0.000000" offsetY="-10.000000" />
-        <passive value="true" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <health value="10.000000" delete_on_break="false" />
-    </Breakable>
-    <Breakable id="335" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="71.000000" y="498.731384" x="4974.845703" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="113.654472" width="126.870094" native="false" repeatX="false" repeatY="false" />
-        <material value="crate" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\platform_grass.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\crate_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="2.000000" x="0.950000" />
-        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions z="0.000000" y="51.002209" x="51.002209" offsetX="0.000000" offsetY="-10.000000" />
-        <passive value="true" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <health value="10.000000" delete_on_break="false" />
-    </Breakable>
-    <Breakable id="336" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="71.000000" y="519.515991" x="4723.308594" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="112.893822" width="119.868950" native="false" repeatX="false" repeatY="false" />
-        <material value="crate" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\platform_grass.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\crate_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="2.000000" x="0.950000" />
-        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions z="0.000000" y="51.002209" x="51.002209" offsetX="0.000000" offsetY="-10.000000" />
-        <passive value="true" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <health value="10.000000" delete_on_break="false" />
-    </Breakable>
-    <Breakable id="337" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="71.000000" y="534.597351" x="5147.634766" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="112.893822" width="119.868950" native="false" repeatX="false" repeatY="false" />
-        <material value="crate" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\platform_grass.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\crate_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="2.000000" x="0.950000" />
-        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions z="0.000000" y="51.002209" x="51.002209" offsetX="0.000000" offsetY="-10.000000" />
-        <passive value="true" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <health value="10.000000" delete_on_break="false" />
-    </Breakable>
-    <Breakable id="338" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="71.000000" y="540.798279" x="5271.020020" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="112.893822" width="119.868950" native="false" repeatX="false" repeatY="false" />
-        <material value="crate" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\platform_grass.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\crate_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="2.000000" x="0.950000" />
-        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions z="0.000000" y="51.002209" x="51.002209" offsetX="0.000000" offsetY="-10.000000" />
-        <passive value="true" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <health value="10.000000" delete_on_break="false" />
-    </Breakable>
-    <Breakable id="339" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="71.000000" y="551.133240" x="6646.192383" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="112.893822" width="119.868950" native="false" repeatX="false" repeatY="false" />
-        <material value="crate" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\platform_grass.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\crate_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="2.000000" x="0.950000" />
-        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions z="0.000000" y="51.002209" x="51.002209" offsetX="0.000000" offsetY="-10.000000" />
-        <passive value="true" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <health value="10.000000" delete_on_break="false" />
-    </Breakable>
-    <Breakable id="340" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="71.000000" y="567.669128" x="6830.769531" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="112.893822" width="119.868950" native="false" repeatX="false" repeatY="false" />
-        <material value="crate" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\platform_grass.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\crate_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="2.000000" x="0.950000" />
-        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions z="0.000000" y="51.002209" x="51.002209" offsetX="0.000000" offsetY="-10.000000" />
-        <passive value="true" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <health value="10.000000" delete_on_break="false" />
-    </Breakable>
-    <Breakable id="341" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="71.000000" y="545.123657" x="2956.788086" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="112.893822" width="119.868950" native="false" repeatX="false" repeatY="false" />
-        <material value="crate" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\platform_grass.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\crate_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="2.000000" x="0.950000" />
-        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions z="0.000000" y="51.002209" x="51.002209" offsetX="0.000000" offsetY="-10.000000" />
-        <passive value="true" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <health value="10.000000" delete_on_break="false" />
-    </Breakable>
-    <Breakable id="342" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="71.000000" y="526.635681" x="979.234253" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="151.007477" width="151.007477" native="false" repeatX="false" repeatY="false" />
         <material value="crate" />
@@ -5619,122 +5412,7 @@
         <can_be_damaged value="true" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="343" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="71.000000" y="907.190674" x="9956.036133" rotation="0.029994" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="172.236740" width="182.878372" native="false" repeatX="false" repeatY="false" />
-        <material value="crate" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\platform_grass.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\crate_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="2.000000" x="0.950000" />
-        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions z="0.000000" y="89.302910" x="89.302910" offsetX="0.000000" offsetY="-10.000000" />
-        <passive value="true" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <health value="70.000000" delete_on_break="false" />
-    </Breakable>
-    <Breakable id="344" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="71.000000" y="1000.511230" x="13052.712891" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="172.236740" width="182.878372" native="false" repeatX="false" repeatY="false" />
-        <material value="crate" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\platform_grass.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\crate_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="2.000000" x="0.950000" />
-        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions z="0.000000" y="89.302910" x="89.302910" offsetX="0.000000" offsetY="-10.000000" />
-        <passive value="true" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <health value="70.000000" delete_on_break="false" />
-    </Breakable>
-    <Breakable id="345" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="71.000000" y="989.640381" x="13226.004883" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="112.893822" width="119.868950" native="false" repeatX="false" repeatY="false" />
-        <material value="crate" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\platform_grass.png" />
-        <horizontalflip value="true" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\crate_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="2.000000" x="0.950000" />
-        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions z="0.000000" y="51.002209" x="51.002209" offsetX="0.000000" offsetY="-10.000000" />
-        <passive value="true" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <health value="10.000000" delete_on_break="false" />
-    </Breakable>
-    <Breakable id="346" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="72.000000" y="983.439453" x="12934.091797" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="112.893822" width="119.868950" native="false" repeatX="false" repeatY="false" />
-        <material value="crate" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\platform_grass.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\crate_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="2.000000" x="0.950000" />
-        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions z="0.000000" y="51.002209" x="51.002209" offsetX="0.000000" offsetY="-10.000000" />
-        <passive value="true" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <health value="10.000000" delete_on_break="false" />
-    </Breakable>
-    <Breakable id="347" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="71.000000" y="1097.889160" x="15998.919922" rotation="-0.050071" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="112.893822" width="119.868950" native="false" repeatX="false" repeatY="false" />
-        <material value="crate" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\platform_grass.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\crate_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="2.000000" x="0.950000" />
-        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions z="0.000000" y="51.002209" x="51.002209" offsetX="0.000000" offsetY="-10.000000" />
-        <passive value="true" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <health value="10.000000" delete_on_break="false" />
-    </Breakable>
-    <Sprite id="348" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Sprite id="334" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="98.900002" y="1208.855713" x="3925.690918" rotation="0.006318" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="204.816635" width="237.500183" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -5748,7 +5426,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="349" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Sprite id="335" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="98.900002" y="1334.941895" x="3551.521729" rotation="0.006318" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="204.816635" width="237.500183" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -5762,7 +5440,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="350" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Sprite id="336" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="98.900002" y="1484.415527" x="3152.023438" rotation="0.006318" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="204.816635" width="237.500183" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -5776,7 +5454,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="351" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Sprite id="337" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="98.900002" y="1731.171509" x="2356.537354" rotation="0.006318" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="204.816635" width="237.500183" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -5790,7 +5468,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="352" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Sprite id="338" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="98.900002" y="1631.171509" x="2811.960449" rotation="0.006318" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="204.816635" width="237.500183" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -5804,7 +5482,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <SolidLineStrip id="353" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidLineStrip id="339" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="969.200195" x="4156.286621" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="431.004761" width="232.727539" native="false" repeatX="false" repeatY="false" />
         <material value="" />
@@ -5830,7 +5508,7 @@
         </points>
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="true" />
     </SolidLineStrip>
-    <SolidLineStrip id="354" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidLineStrip id="340" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="1239.075806" x="3896.474609" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="431.004761" width="232.727539" native="false" repeatX="false" repeatY="false" />
         <material value="" />
@@ -5856,7 +5534,7 @@
         </points>
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="true" />
     </SolidLineStrip>
-    <SolidLineStrip id="355" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidLineStrip id="341" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="1362.712158" x="3527.948242" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="431.004761" width="232.727539" native="false" repeatX="false" repeatY="false" />
         <material value="" />
@@ -5882,7 +5560,7 @@
         </points>
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="true" />
     </SolidLineStrip>
-    <SolidLineStrip id="356" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidLineStrip id="342" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="1507.937012" x="3126.819580" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="431.004761" width="232.727539" native="false" repeatX="false" repeatY="false" />
         <material value="" />
@@ -5908,7 +5586,7 @@
         </points>
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="true" />
     </SolidLineStrip>
-    <SolidLineStrip id="357" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidLineStrip id="343" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="1654.501709" x="2785.126709" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="431.004761" width="232.727539" native="false" repeatX="false" repeatY="false" />
         <material value="" />
@@ -5934,7 +5612,7 @@
         </points>
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="true" />
     </SolidLineStrip>
-    <SolidLineStrip id="358" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidLineStrip id="344" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="1756.090088" x="2328.449707" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="431.004761" width="232.727539" native="false" repeatX="false" repeatY="false" />
         <material value="" />
@@ -5960,7 +5638,7 @@
         </points>
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="true" />
     </SolidLineStrip>
-    <Sprite id="359" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Sprite id="345" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="98.900002" y="1463.956177" x="16679.044922" rotation="0.006318" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="204.816635" width="237.500183" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -5974,7 +5652,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <SolidLineStrip id="360" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidLineStrip id="346" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="1569.200195" x="16756.287109" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="596.363647" width="339.058594" native="false" repeatX="false" repeatY="false" />
         <material value="" />
@@ -6000,7 +5678,7 @@
         </points>
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="true" />
     </SolidLineStrip>
-    <SolidLineStrip id="361" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidLineStrip id="347" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="1609.200195" x="17036.287109" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="637.703369" width="286.898438" native="false" repeatX="false" repeatY="false" />
         <material value="" />
@@ -6027,7 +5705,7 @@
         </points>
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="true" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="20.000000" can_drop_down="true" />
     </SolidLineStrip>
-    <CurrencyOrb id="362" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="348" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1576.338989" x="16969.203125" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6049,7 +5727,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="363" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="349" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1558.769531" x="17092.587891" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6071,7 +5749,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="364" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="350" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="2159.152344" x="17517.917969" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6093,7 +5771,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="365" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="351" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="2282.137939" x="17685.441406" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6115,7 +5793,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="366" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="352" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="2399.267090" x="17861.365234" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6137,7 +5815,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="367" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="353" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="2601.142822" x="18093.089844" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6159,7 +5837,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="368" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="354" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="2793.372559" x="17946.632813" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6181,7 +5859,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="369" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="355" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="2995.937012" x="18013.841797" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6203,7 +5881,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="370" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="356" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3177.678711" x="17958.669922" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6225,7 +5903,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="371" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="357" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3375.075684" x="17778.105469" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6247,7 +5925,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="372" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="358" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3610.023193" x="17794.281250" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6269,7 +5947,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="373" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="359" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3629.659668" x="17623.748047" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6291,7 +5969,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="374" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="360" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3657.563965" x="17469.265625" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6313,7 +5991,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="375" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="361" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3708.205078" x="17287.697266" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6335,7 +6013,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="376" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="362" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3785.181152" x="16957.291016" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="255.000000" width="167.000000" native="true" repeatX="false" repeatY="false" />
         <material value="flame_orb_large" />
@@ -6357,7 +6035,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="377" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="363" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3525.774414" x="16957.291016" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="255.000000" width="167.000000" native="true" repeatX="false" repeatY="false" />
         <material value="flame_orb_large" />
@@ -6379,7 +6057,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="378" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="364" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3260.166748" x="16963.308594" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="255.000000" width="167.000000" native="true" repeatX="false" repeatY="false" />
         <material value="flame_orb_large" />
@@ -6401,7 +6079,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="379" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="365" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3631.190674" x="16828.888672" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6423,7 +6101,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="380" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="366" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3650.826904" x="17090.707031" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6445,7 +6123,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="381" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="367" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3369.717041" x="16836.914063" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6467,7 +6145,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="382" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="368" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3357.314941" x="17097.728516" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6489,7 +6167,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="383" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="369" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3928.453857" x="16955.283203" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6511,7 +6189,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="384" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="370" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3056.760010" x="16964.312500" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6533,7 +6211,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="385" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="371" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="3400.300781" x="17900.738281" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6555,7 +6233,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="386" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="372" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1834.827026" x="2402.682129" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6577,7 +6255,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <Rabbit id="387" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <Rabbit id="373" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="47.000000" y="839.688232" x="14881.929688" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="29.771154" width="111.204018" native="false" repeatX="false" repeatY="false" />
         <material value="rabbit" />
@@ -6603,7 +6281,7 @@
         <projectileoffsetx value="15" />
         <projectileoffsety value="20" />
     </Rabbit>
-    <CurrencyOrb id="388" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="374" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="711.630859" x="453.340820" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -6625,7 +6303,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="389" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="375" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="687.669128" x="-437.066711" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="255.000000" width="167.000000" native="true" repeatX="false" repeatY="false" />
         <material value="flame_orb_large" />
@@ -6647,7 +6325,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="390" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="376" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1017.353394" x="-449.104370" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="255.000000" width="167.000000" native="true" repeatX="false" repeatY="false" />
         <material value="flame_orb_large" />
@@ -6669,7 +6347,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <CurrencyOrb id="391" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <CurrencyOrb id="377" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1087.630859" x="-112.051025" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="255.000000" width="167.000000" native="true" repeatX="false" repeatY="false" />
         <material value="flame_orb_large" />
@@ -6691,7 +6369,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
     </CurrencyOrb>
-    <Breakable id="394" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Breakable id="378" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="68.000000" y="493.563904" x="1094.970947" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="168.115250" width="168.115250" native="false" repeatX="false" repeatY="false" />
         <material value="crate" />
@@ -6709,6 +6387,144 @@
         <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
         <applygravity value="false" />
         <collisionboxdimensions z="0.000000" y="82.708794" x="82.708794" offsetX="0.000000" offsetY="-10.000000" />
+        <passive value="true" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+        <health value="10.000000" delete_on_break="false" />
+    </Breakable>
+    <Breakable id="379" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+        <position z="68.000000" y="525.602173" x="830.143311" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="168.115250" width="168.115250" native="false" repeatX="false" repeatY="false" />
+        <material value="crate" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\platform_grass.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\crate_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="2.000000" x="0.950000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="82.708794" x="82.708794" offsetX="0.000000" offsetY="-10.000000" />
+        <passive value="true" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+        <health value="10.000000" delete_on_break="false" />
+    </Breakable>
+    <Breakable id="380" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+        <position z="68.000000" y="520.434692" x="699.735840" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="168.115250" width="168.115250" native="false" repeatX="false" repeatY="false" />
+        <material value="crate" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\platform_grass.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\crate_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="2.000000" x="0.950000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="82.708794" x="82.708794" offsetX="0.000000" offsetY="-10.000000" />
+        <passive value="true" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+        <health value="10.000000" delete_on_break="false" />
+    </Breakable>
+    <Breakable id="381" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+        <position z="71.000000" y="539.037598" x="1139.108887" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="168.115250" width="168.115250" native="false" repeatX="false" repeatY="false" />
+        <material value="crate" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\platform_grass.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\crate_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="2.000000" x="0.950000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="82.708794" x="82.708794" offsetX="0.000000" offsetY="-10.000000" />
+        <passive value="true" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+        <health value="10.000000" delete_on_break="false" />
+    </Breakable>
+    <Breakable id="382" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+        <position z="68.000000" y="525.602173" x="552.274963" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="168.115250" width="168.115250" native="false" repeatX="false" repeatY="false" />
+        <material value="crate" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\platform_grass.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\crate_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="2.000000" x="0.950000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="82.708794" x="82.708794" offsetX="0.000000" offsetY="-10.000000" />
+        <passive value="true" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+        <health value="10.000000" delete_on_break="false" />
+    </Breakable>
+    <Breakable id="385" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+        <position z="68.000000" y="542.138062" x="289.829834" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="330.772339" width="330.772339" native="false" repeatX="false" repeatY="false" />
+        <material value="crate" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\platform_grass.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\crate_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="2.000000" x="0.950000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="185.880295" x="185.880295" offsetX="0.000000" offsetY="-10.000000" />
+        <passive value="true" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+        <health value="10.000000" delete_on_break="false" />
+    </Breakable>
+    <Breakable id="386" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+        <position z="68.000000" y="472.894043" x="-14.120026" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="86.784149" width="86.784149" native="false" repeatX="false" repeatY="false" />
+        <material value="crate" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\platform_grass.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\crate_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="2.000000" x="0.950000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="35.863094" x="35.863094" offsetX="0.000000" offsetY="-10.000000" />
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />

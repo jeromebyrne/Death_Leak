@@ -101,7 +101,11 @@ public:
 
 	void SetLevelFreshLaunch(bool value) { mFreshLevelLaunch = value; }
 
-	void SetOrbCollected(unsigned int orbId);
+	void SetCurrencyOrbCollected(unsigned int orbId);
+
+	void SetBreakableBroken(unsigned int breakableId);
+
+	std::string GetCurrentLevelFile() const { return mCurrentLevelFile; }
 
 private:
 
@@ -152,7 +156,9 @@ private:
 
 	MusicManager mMusicManager;
 
-	std::vector<unsigned int> mCurrentOrbIdsCollected;
+	std::vector<unsigned int> mCurrentCurrencyOrbIdsCollected;
+
+	std::vector<unsigned int> mCurrentBreakablesBroken;
 
 	std::string mCurrentLevelFile;
 };

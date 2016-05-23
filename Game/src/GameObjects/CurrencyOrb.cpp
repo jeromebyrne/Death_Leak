@@ -246,7 +246,7 @@ void CurrencyOrb::DoCollisionSmallType(Player * player)
 {
 	if (mIsLoadTimeObject)
 	{
-		GameObjectManager::Instance()->SetOrbCollected(ID());
+		GameObjectManager::Instance()->SetCurrencyOrbCollected(ID());
 	}
 }
 
@@ -254,7 +254,7 @@ void CurrencyOrb::DoCollisionLargeType(Player * player)
 {
 	if (mIsLoadTimeObject)
 	{
-		GameObjectManager::Instance()->SetOrbCollected(ID());
+		GameObjectManager::Instance()->SetCurrencyOrbCollected(ID());
 	}
 
 	if (m_material)

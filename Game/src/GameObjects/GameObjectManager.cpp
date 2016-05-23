@@ -355,14 +355,14 @@ void GameObjectManager::LoadObjectsFromFile(const char* filename)
 	TiXmlElement * child = root->FirstChildElement();
 
 	// get the orbs that have already been created so that we don't create them
-	std::vector<unsigned int> orbsCollected;
-	SaveManager::GetInstance()->GetOrbsCollected(mCurrentLevelFile, orbsCollected);
+	std::vector<unsigned int> currencyOrbsCollected;
+	SaveManager::GetInstance()->GetCurrencyOrbsCollected(mCurrentLevelFile, currencyOrbsCollected);
 
 	// loop through our game objects
 	unsigned int objLoadCount = 0;
 	while(child)
 	{
-		GameObject * object = CreateObject(child, orbsCollected);
+		GameObject * object = CreateObject(child, currencyOrbsCollected);
 		if (object)
 		{
 			m_gameObjects.push_back(shared_ptr<GameObject>(object));
@@ -483,9 +483,11 @@ void GameObjectManager::SwitchToLevel(const char * level, bool defer)
 		return;
 	}
 
-	SaveManager::GetInstance()->SetOrbsCollected(mCurrentLevelFile, mCurrentOrbIdsCollected);
+	SaveManager::GetInstance()->SetCurrencyOrbsCollected(mCurrentLevelFile, mCurrentCurrencyOrbIdsCollected);
+	SaveManager::GetInstance()->SetBreakablesBroken(mCurrentLevelFile, mCurrentBreakablesBroken);
 
-	mCurrentOrbIdsCollected.clear();
+	mCurrentCurrencyOrbIdsCollected.clear();
+	mCurrentBreakablesBroken.clear();
 
 	SaveManager::GetInstance()->WriteSaveFile();
 
@@ -1276,7 +1278,12 @@ void GameObjectManager::GetSolidSpritesOnScreen(std::list<GameObject *> & toPopu
 	}
 }
 
-void GameObjectManager::SetOrbCollected(unsigned int orbId)
+void GameObjectManager::SetCurrencyOrbCollected(unsigned int orbId)
 {
-	mCurrentOrbIdsCollected.push_back(orbId);
+	mCurrentCurrencyOrbIdsCollected.push_back(orbId);
+}
+
+void GameObjectManager::SetBreakableBroken(unsigned int breakableId)
+{
+	mCurrentBreakablesBroken.push_back(breakableId);
 }

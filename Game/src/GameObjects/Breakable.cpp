@@ -4,6 +4,9 @@
 #include "Material.h"
 #include "particleEmitterManager.h"
 #include "CurrencyOrb.h"
+#include "Orb.h"
+#include "SaveManager.h"
+#include "Game.h"
 
 Breakable::Breakable(float x, float y, float z, float width, float height, float breadth) :
 	SolidMovingSprite(x,y,z,width, height, breadth),
@@ -29,6 +32,19 @@ void Breakable::Initialise()
 {
 	// update the base classes
 	SolidMovingSprite::Initialise();
+
+	if (!Game::GetInstance()->GetIsLevelEditMode() )
+	{
+		std::vector<unsigned int> breakablesBroken;
+		SaveManager::GetInstance()->GetBreakablesBroken(GameObjectManager::Instance()->GetCurrentLevelFile(), breakablesBroken);
+
+		if (std::find(breakablesBroken.begin(), breakablesBroken.end(), ID()) != breakablesBroken.end())
+		{
+			mHealth = 0.0f;
+			mState = kBroken;
+			UpdateState();
+		}
+	}
 }
 
 void Breakable::XmlRead(TiXmlElement * element)
@@ -112,6 +128,8 @@ void Breakable::UpdateState()
 	}
 	else if (mState != kBroken)
 	{
+		GameObjectManager::Instance()->SetBreakableBroken(ID());
+
 		ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
 																Vector3(m_position.X - (m_dimensions.X * 0.5f), m_position.Y - (m_dimensions.Y * 0.5f), m_position.Z - 0.02f),
 																Vector3(0, 0, 0),
@@ -209,8 +227,28 @@ void Breakable::SpawnDamageTransitionParticles()
 		return;
 	}
 
-	ParticleEmitterManager::Instance()->CreateDirectedSpray(10,
-															Vector3(m_position.X, m_position.Y-30, m_position.Z - 0.02f),
+	Vector2 nativeDimensions = GetTextureDimensions();
+
+	float scaleX = m_dimensions.X / nativeDimensions.X;
+	float scaleY = m_dimensions.Y / nativeDimensions.Y;
+
+	// TODO: only do this for crates, read from material file
+	for (int i = 0; i < 4; ++i)
+	{
+		Orb * debris = new Orb(nullptr, Vector3(m_position.X,
+			m_position.Y + 50,
+			m_position.Z),
+			Vector3(160 * scaleX, 443 * scaleY, 0),
+			Vector3(15, 15, 0),
+			"Media\\crate\\debris.png",
+			false,
+			1.0f);
+
+		GameObjectManager::Instance()->AddGameObject(debris);
+	}
+
+	ParticleEmitterManager::Instance()->CreateDirectedSpray(5,
+															Vector3(m_position.X, m_position.Y, m_position.Z - 0.02f),
 															Vector3(0, 1, 0),
 															0.7f,
 															Vector3(3200, 1200, 0),
@@ -219,8 +257,8 @@ void Breakable::SpawnDamageTransitionParticles()
 															7.0f,
 															0.7f,
 															1.50f,
-															256,
-															256,
+															180,
+															180,
 															0,
 															false,
 															0.7,
@@ -232,4 +270,4 @@ void Breakable::SpawnDamageTransitionParticles()
 															m_dimensions.Y * 0.1f,
 															0.1f,
 															0.1f);
-}
+} 

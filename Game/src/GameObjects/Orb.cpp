@@ -25,7 +25,7 @@ Orb::Orb(SolidMovingSprite * target,
 	m_physicalTarget(target),
 	m_closestDistanceToTarget(2000000000, 2000000000, 2000000000),
 	mValue(1),
-	mCreationTime(0.0f)
+	mCreationTime(0.0f)  
 {
 	mIsOrb = true;
 
