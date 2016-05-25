@@ -8,7 +8,6 @@ ActiveBird::ActiveBird(void) :
 {
 }
 
-
 ActiveBird::~ActiveBird(void)
 {
 }
@@ -33,8 +32,8 @@ void ActiveBird::Initialise()
 
 	mRunAnimFramerateMultiplier = 8.0f;
 
-	mFlapWingsMinDelay = 0.2f;
-	mFlapWingsMaxDelay = 0.5f;
+	mFlapWingsMinDelay = 0.35f;
+	mFlapWingsMaxDelay = 0.7f;
 	mFlapTimeMinDelay = 1.0f;
 	mFlapTimeMaxDelay = 2.4f;
 }
