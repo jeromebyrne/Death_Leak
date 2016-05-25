@@ -35,6 +35,7 @@
 #include "CurrencyOrb.h"
 #include "Breakable.h"
 #include "SaveManager.h"
+#include "ActiveBird.h"
 
 struct DepthSortPredicate
 {
@@ -669,6 +670,10 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement, const
 	else if (strcmp(gameObjectTypeName, "ambientbird") == 0)
 	{
 		newGameObject = new AmbientBird();
+	}
+	else if (strcmp(gameObjectTypeName, "activebird") == 0)
+	{
+		newGameObject = new ActiveBird();
 	}
 	else if (strcmp(gameObjectTypeName, "currencyorb") == 0)
 	{

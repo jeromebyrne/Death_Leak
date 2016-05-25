@@ -232,12 +232,36 @@ void Breakable::SpawnDamageTransitionParticles()
 	float scaleX = m_dimensions.X / nativeDimensions.X;
 	float scaleY = m_dimensions.Y / nativeDimensions.Y;
 
+	ParticleEmitterManager::Instance()->CreateDirectedSpray(5,
+																Vector3(m_position.X, m_position.Y, m_position.Z),
+																Vector3(0, 1, 0),
+																0.7f,
+																Vector3(3200, 1200, 0),
+																m_material->GetRandomParticleTexture(),
+																1.0f,
+																7.0f,
+																0.7f,
+																1.50f,
+																180,
+																180,
+																0,
+																false,
+																0.7,
+																1.0,
+																10000,
+																true,
+																2,
+																m_dimensions.X * 0.03f,
+																m_dimensions.Y * 0.1f,
+																0.1f,
+																0.1f);
+
 	// TODO: only do this for crates, read from material file
 	for (int i = 0; i < 4; ++i)
 	{
 		Orb * debris = new Orb(nullptr, Vector3(m_position.X,
 			m_position.Y + 50,
-			m_position.Z),
+			m_position.Z - 0.01f),
 			Vector3(160 * scaleX, 443 * scaleY, 0),
 			Vector3(15, 15, 0),
 			"Media\\crate\\debris.png",
@@ -247,27 +271,4 @@ void Breakable::SpawnDamageTransitionParticles()
 		GameObjectManager::Instance()->AddGameObject(debris);
 	}
 
-	ParticleEmitterManager::Instance()->CreateDirectedSpray(5,
-															Vector3(m_position.X, m_position.Y, m_position.Z - 0.02f),
-															Vector3(0, 1, 0),
-															0.7f,
-															Vector3(3200, 1200, 0),
-															m_material->GetRandomParticleTexture(),
-															1.0f,
-															7.0f,
-															0.7f,
-															1.50f,
-															180,
-															180,
-															0,
-															false,
-															0.7,
-															1.0,
-															10000,
-															true,
-															2,
-															m_dimensions.X * 0.03f,
-															m_dimensions.Y * 0.1f,
-															0.1f,
-															0.1f);
 } 

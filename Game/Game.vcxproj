@@ -67,6 +67,7 @@
     <ClCompile Include="src\Effects\EffectSepia.cpp" />
     <ClCompile Include="src\Environment.cpp" />
     <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="src\GameObjects\ActiveBird.cpp" />
     <ClCompile Include="src\GameObjects\AmbientBird.cpp" />
     <ClCompile Include="src\GameObjects\BlackHole.cpp" />
     <ClCompile Include="src\GameObjects\BombProjectile.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="src\Effects\EffectSepia.h" />
     <ClInclude Include="src\Environment.h" />
     <ClInclude Include="src\Game.h" />
+    <ClInclude Include="src\GameObjects\ActiveBird.h" />
     <ClInclude Include="src\GameObjects\AmbientBird.h" />
     <ClInclude Include="src\GameObjects\BlackHole.h" />
     <ClInclude Include="src\GameObjects\BombProjectile.h" />

@@ -18,6 +18,13 @@ public:
 	virtual void XmlRead(TiXmlElement * element) override;
 	virtual void XmlWrite(TiXmlElement * element) override;
 
+protected:
+
+	float mFlapWingsMinDelay = 0.9f;
+	float mFlapWingsMaxDelay = 1.9f;
+	float mFlapTimeMinDelay = 2.0f;
+	float mFlapTimeMaxDelay = 3.4f;
+
 private:
 
 	bool mIsGliding;

@@ -8,16 +8,11 @@
 #include "AIStateRepel.h"
 #include "Game.h"
 
-static const float kFlapWingsMinDelay = 0.9f;
-static const float kFlapWingsMaxDelay = 1.9f;
-static const float kFlapTimeMinDelay = 2.0f;
-static const float kFlapTimeMaxDelay = 3.4f;
-
 AmbientBird::AmbientBird(void) :
 	NPC(),
 	mIsGliding(false),
-	mTimeUntilFlap(kFlapWingsMinDelay),
-	mTimeUntilEndFlap(kFlapTimeMinDelay),
+	mTimeUntilFlap(0.0f),
+	mTimeUntilEndFlap(0.0f),
 	mTravelOffset(1000.0f)
 {
 	mAlwaysUpdate = true;
@@ -175,7 +170,7 @@ void AmbientBird::Update(float delta)
 
 		if (mTimeUntilFlap <= 0.0f)
 		{
-			mTimeUntilFlap = (rand() % (unsigned)((kFlapWingsMaxDelay - kFlapWingsMinDelay) * 100)) + (kFlapWingsMinDelay * 100);
+			mTimeUntilFlap = (rand() % (unsigned)((mFlapWingsMaxDelay - mFlapWingsMinDelay) * 100)) + (mFlapWingsMinDelay * 100);
 			mTimeUntilFlap *= 0.01;
 
 			mIsGliding = false;
@@ -186,7 +181,7 @@ void AmbientBird::Update(float delta)
 		mTimeUntilEndFlap -= delta;
 		if (mTimeUntilEndFlap <= 0.0f)
 		{
-			mTimeUntilEndFlap = (rand() % (unsigned)((kFlapTimeMaxDelay - kFlapTimeMinDelay) * 100)) + (kFlapTimeMinDelay * 100);
+			mTimeUntilEndFlap = (rand() % (unsigned)((mFlapTimeMaxDelay - mFlapTimeMinDelay) * 100)) + (mFlapTimeMinDelay * 100);
 			mTimeUntilEndFlap *= 0.01;
 
 			mIsGliding = true;
