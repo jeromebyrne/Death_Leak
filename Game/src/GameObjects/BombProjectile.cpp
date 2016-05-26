@@ -3,7 +3,7 @@
 #include "Explosion.h"
 #include "ParticleEmitterManager.h"
 #include "NPC.h"
-#include "Orb.h"
+#include "Debris.h"
 #include "AudioManager.h"
 #include "waterblock.h"
 #include "SolidLineStrip.h"
@@ -21,7 +21,8 @@ BombProjectile::BombProjectile(ProjectileOwnerType ownerType,
 								float damage,
 								float speed,
 								int maxTimeInActive):
-Projectile(ownerType,textureFileName, 
+Projectile(ownerType,
+			textureFileName, 
 			impactTextureFilename,
 			position,
 			dimensions,
@@ -60,7 +61,7 @@ bool BombProjectile::OnCollision(SolidMovingSprite* object)
 		return false;
 	}
 
-	if (object->IsOrb() || object->IsCurrencyOrb())
+	if (object->IsDebris() || object->IsCurrencyOrb())
 	{
 		return false;
 	}
@@ -198,17 +199,6 @@ void BombProjectile::HandleSolidLineStripCollision(SolidLineStrip * solidLineStr
 		if (m_isActive)
 		{
 			m_timeBecameInactive = Timing::Instance()->GetTotalTimeSeconds();
-		}
-		
-		if (mSpinningMovement)
-		{
-			SetRotationAngle(0);
-		}
-
-		// damage the other object
-		if (!mIsInWater)
-		{
-			// OnDamage(m_damage, collisionPosition);
 		}
 
 		Material * objectMaterial = solidLineStrip->GetMaterial();

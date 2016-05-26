@@ -3,7 +3,7 @@
 #include "AudioManager.h"
 #include "Material.h"
 #include "particleEmitterManager.h"
-#include "orb.h"
+#include "Debris.h"
 #include "Projectile.h"
 #include "platform.h"
 #include "BombProjectile.h"
@@ -219,7 +219,7 @@ bool Character::OnCollision(SolidMovingSprite * object)
 {
 	if( !object->IsCharacter() &&
 		!object->IsCurrencyOrb() &&
-		!object->IsOrb() &&
+		!object->IsDebris() &&
 		!object->IsPlatform() &&
 		!object->IsWaterBlock())
 	{

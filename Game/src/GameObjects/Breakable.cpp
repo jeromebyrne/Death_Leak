@@ -4,7 +4,7 @@
 #include "Material.h"
 #include "particleEmitterManager.h"
 #include "CurrencyOrb.h"
-#include "Orb.h"
+#include "Debris.h"
 #include "SaveManager.h"
 #include "Game.h"
 
@@ -90,14 +90,14 @@ void Breakable::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 		return;
 	}
 
-	UpdateState();
+	SolidMovingSprite::OnDamage(damageDealer, damageAmount, pointOfContact, shouldExplode);
 
 	if (mCanBeDamaged)
 	{
 		mHealth -= damageAmount;
 	}
 
-	SolidMovingSprite::OnDamage(damageDealer, damageAmount, pointOfContact, shouldExplode);
+	UpdateState();
 }
 
 void Breakable::UpdateState()
@@ -259,7 +259,7 @@ void Breakable::SpawnDamageTransitionParticles()
 	// TODO: only do this for crates, read from material file
 	for (int i = 0; i < 4; ++i)
 	{
-		Orb * debris = new Orb(nullptr, Vector3(m_position.X,
+		Debris * debris = new Debris(nullptr, Vector3(m_position.X,
 			m_position.Y + 50,
 			m_position.Z - 0.01f),
 			Vector3(160 * scaleX, 443 * scaleY, 0),

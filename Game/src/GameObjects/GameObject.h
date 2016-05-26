@@ -136,7 +136,7 @@ public:
 
 	bool IsProjectile() const { return mIsProjectile; }
 
-	bool IsOrb() const { return mIsOrb; }
+	bool IsDebris() const { return mIsDebris; }
 
 	bool IsCurrencyOrb() const { return mIsCurrencyOrb; }
 
@@ -212,7 +212,7 @@ protected:
 	bool mIsSolidLine;
 	bool mIsButterfly;
 	bool mIsProjectile;
-	bool mIsOrb;
+	bool mIsDebris;
 	bool mIsCurrencyOrb;
 	bool mIsCharacter;
 	bool mIsParallaxLayer;

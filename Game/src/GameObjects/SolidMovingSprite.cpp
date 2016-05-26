@@ -236,26 +236,8 @@ bool SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 
 	if (object->IsBreakable())
 	{
-		/*if (static_cast<Breakable *>(object)->GetBreakableState() == Breakable::kBroken)
-		{
-			return false;
-		}*/
-
 		return false;
 	}
-
-	// TODO: figure out why I was doing this
-	/*
-	if (IsPassive() && object->IsCharacter() && object->IsOnSolidLine())
-	{
-		return;
-	}
-
-	if (IsCharacter() && IsOnSolidLine())
-	{
-		return;
-	}
-	*/
 
 	// if we are not passive then push ourselves away from the object
 	// remember this behaviour can be overwritten in derived function
@@ -371,6 +353,8 @@ bool SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 			character->OnDamage(this, m_applyDamageAmount, Vector3(0,0,0));
 		}
 	}
+
+	return true;
 }
 
 void SolidMovingSprite::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode)

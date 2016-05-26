@@ -3,7 +3,7 @@
 #include "ParticleEmitterManager.h"
 #include "AudioManager.h"
 #include "material.h"
-#include "Orb.h"
+#include "Debris.h"
 #include "AIStateFollow.h"
 #include "AIStateRepel.h"
 
@@ -33,10 +33,10 @@ void Butterfly::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 
 	GameObjectManager::Instance()->RemoveGameObject(this);
 
-	Orb * wing1 = new Orb(nullptr, Vector3(m_position.X, m_position.Y, m_position.Z - 1.1f), Vector3(32, 32, 0), Vector3(15, 15, 0), "Media\\characters\\butterfly\\dead_wing_1.png", true, 0.15f);
+	Debris * wing1 = new Debris(nullptr, Vector3(m_position.X, m_position.Y, m_position.Z - 1.1f), Vector3(32, 32, 0), Vector3(15, 15, 0), "Media\\characters\\butterfly\\dead_wing_1.png", true, 0.15f);
 	GameObjectManager::Instance()->AddGameObject(wing1);
 
-	Orb * wing2 = new Orb(nullptr, Vector3(m_position.X + 10, m_position.Y, m_position.Z - 1.1f), Vector3(32, 32, 0), Vector3(15, 15, 0), "Media\\characters\\butterfly\\dead_wing_2.png", true, 0.15f);
+	Debris * wing2 = new Debris(nullptr, Vector3(m_position.X + 10, m_position.Y, m_position.Z - 1.1f), Vector3(32, 32, 0), Vector3(15, 15, 0), "Media\\characters\\butterfly\\dead_wing_2.png", true, 0.15f);
 	GameObjectManager::Instance()->AddGameObject(wing2);
 
 	ParticleEmitterManager::Instance()->CreateDirectedSpray(1,

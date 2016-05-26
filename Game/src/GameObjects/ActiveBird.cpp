@@ -1,6 +1,6 @@
 #include "precompiled.h"
 #include "ActiveBird.h"
-#include "Orb.h"
+#include "Debris.h"
 #include "ParticleEmitterManager.h"
 
 ActiveBird::ActiveBird(void) :
@@ -16,7 +16,7 @@ void ActiveBird::OnDamage(GameObject * damageDealer, float damageAmount, Vector3
 {
 	Character::OnDamage(damageDealer, damageAmount, pointOfContact, false);
 
-	Orb * deadBird = new Orb(nullptr, m_position, m_dimensions, Vector3(15, 15, 0), "Media\\characters\\bird\\dead.png", false, 1.2f);
+	Debris * deadBird = new Debris(nullptr, m_position, m_dimensions, Vector3(15, 15, 0), "Media\\characters\\bird\\dead.png", false, 0.5f);
 	GameObjectManager::Instance()->AddGameObject(deadBird);
 
 	ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(5, m_position, true, 2.0f);
@@ -24,6 +24,14 @@ void ActiveBird::OnDamage(GameObject * damageDealer, float damageAmount, Vector3
 	{
 		spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(deadBird->ID()), Vector3(0, 0, 0));
 	}
+
+	// create some feathers
+	for (int i = 0; i < 4; ++i)
+	{
+		Debris * feather = new Debris(nullptr, m_position, Vector3(30, 30, 0), Vector3(15, 15, 0), "Media\\characters\\bird\\feather.png", false, 0.1f);
+		GameObjectManager::Instance()->AddGameObject(feather);
+	}
+
 }
 
 void ActiveBird::Initialise()

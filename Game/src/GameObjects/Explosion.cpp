@@ -3,7 +3,7 @@
 #include "ParticleEmitterManager.h"
 #include "AudioManager.h"
 #include "NPCManager.h"
-#include "Orb.h"
+#include "Debris.h"
 #include "Projectile.h"
 
 static const unsigned int kExplosionAliveTime = 2000;
@@ -58,7 +58,7 @@ void Explosion::ApplyForceToApplicable()
 			continue;
 		}
 
-		if (obj->IsOrb() ||
+		if (obj->IsDebris() ||
 			obj->IsProjectile())
 		{
 			MovingSprite * moveable = static_cast<MovingSprite *>(obj); // has to be a movingsprite if it's one of the above

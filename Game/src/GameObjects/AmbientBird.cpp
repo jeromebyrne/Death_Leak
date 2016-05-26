@@ -3,7 +3,7 @@
 #include "ParticleEmitterManager.h"
 #include "AudioManager.h"
 #include "material.h"
-#include "Orb.h"
+#include "Debris.h"
 #include "AIStateFollow.h"
 #include "AIStateRepel.h"
 #include "Game.h"

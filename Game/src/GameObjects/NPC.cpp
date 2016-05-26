@@ -8,7 +8,7 @@
 #include "projectile.h"
 #include "timing.h"
 #include <math.h>
-#include "orb.h"
+#include "Debris.h"
 #include "particleemittermanager.h"
 #include "NPCManager.h"
 #include "AIStateButterflyWander.h"
@@ -213,7 +213,7 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointO
 		if (m_isAnimated && m_animationFile == "XmlFiles\\ninjaAnimation2.xml")
 		{
 			{
-				Orb * head = new Orb(nullptr, Vector3(m_position.X, m_position.Y + 50, m_position.Z - 1.1f), Vector3(54, 60, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\decapitated_head.png", true, 1.4f);
+				Debris * head = new Debris(nullptr, Vector3(m_position.X, m_position.Y + 50, m_position.Z - 1.1f), Vector3(54, 60, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\decapitated_head.png", true, 1.4f);
 				GameObjectManager::Instance()->AddGameObject(head);
 
 				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, m_position, true, 2.0f);
@@ -224,7 +224,7 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointO
 			}
 
 			{
-				Orb * arm1 = new Orb(nullptr, Vector3(m_position.X - 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\arm_destroyed.png", true, 1.4f);
+				Debris * arm1 = new Debris(nullptr, Vector3(m_position.X - 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\arm_destroyed.png", true, 1.4f);
 				GameObjectManager::Instance()->AddGameObject(arm1);
 
 				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, m_position, true, 2.0f);
@@ -235,7 +235,7 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointO
 			}
 
 			{
-				Orb * arm2 = new Orb(nullptr, Vector3(m_position.X + 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\arm_destroyed.png", true, 1.4f);
+				Debris * arm2 = new Debris(nullptr, Vector3(m_position.X + 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\arm_destroyed.png", true, 1.4f);
 				GameObjectManager::Instance()->AddGameObject(arm2);
 
 				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, m_position, true, 2.0f);
@@ -246,7 +246,7 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointO
 			}
 
 			{
-				Orb * leg1 = new Orb(nullptr, Vector3(m_position.X + 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\leg_destroyed.png", true, 1.4f);
+				Debris * leg1 = new Debris(nullptr, Vector3(m_position.X + 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\leg_destroyed.png", true, 1.4f);
 				GameObjectManager::Instance()->AddGameObject(leg1);
 
 				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, m_position, true, 2.0f);
@@ -257,7 +257,7 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointO
 			}
 
 			{
-				Orb * leg2 = new Orb(nullptr, Vector3(m_position.X - 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\leg_destroyed.png", true, 1.4f);
+				Debris * leg2 = new Debris(nullptr, Vector3(m_position.X - 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\leg_destroyed.png", true, 1.4f);
 				GameObjectManager::Instance()->AddGameObject(leg2);
 
 				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, m_position, true, 2.0f);
@@ -270,7 +270,7 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointO
 		else if (m_isAnimated && m_animationFile == "XmlFiles\\ninjaAnimation3.xml")
 		{
 			{
-				Orb * head = new Orb(nullptr, Vector3(m_position.X, m_position.Y + 50, m_position.Z - 1.1f), Vector3(54, 60, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_3\\decapitated_head.png", true, 1.4f);
+				Debris * head = new Debris(nullptr, Vector3(m_position.X, m_position.Y + 50, m_position.Z - 1.1f), Vector3(54, 60, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_3\\decapitated_head.png", true, 1.4f);
 				GameObjectManager::Instance()->AddGameObject(head);
 
 				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, m_position, true, 2.0f);
@@ -281,7 +281,7 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointO
 			}
 
 			{
-				Orb * arm1 = new Orb(nullptr, Vector3(m_position.X - 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_3\\arm_destroyed.png", true, 1.4f);
+				Debris * arm1 = new Debris(nullptr, Vector3(m_position.X - 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_3\\arm_destroyed.png", true, 1.4f);
 				GameObjectManager::Instance()->AddGameObject(arm1);
 
 				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, m_position, true, 2.0f);
@@ -292,7 +292,7 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointO
 			}
 
 			{
-				Orb * arm2 = new Orb(nullptr, Vector3(m_position.X + 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_3\\arm_destroyed.png", true, 1.4f);
+				Debris * arm2 = new Debris(nullptr, Vector3(m_position.X + 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_3\\arm_destroyed.png", true, 1.4f);
 				GameObjectManager::Instance()->AddGameObject(arm2);
 
 				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, m_position, true, 2.0f);
@@ -303,7 +303,7 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointO
 			}
 
 			{
-				Orb * leg1 = new Orb(nullptr, Vector3(m_position.X + 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_3\\leg_destroyed.png", true, 1.4f);
+				Debris * leg1 = new Debris(nullptr, Vector3(m_position.X + 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_3\\leg_destroyed.png", true, 1.4f);
 				GameObjectManager::Instance()->AddGameObject(leg1);
 
 				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, m_position, true, 2.0f);
@@ -314,7 +314,7 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointO
 			}
 
 			{
-				Orb * leg2 = new Orb(nullptr, Vector3(m_position.X - 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\leg_destroyed.png", true, 1.4f);
+				Debris * leg2 = new Debris(nullptr, Vector3(m_position.X - 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\ninja_enemy_1\\leg_destroyed.png", true, 1.4f);
 				GameObjectManager::Instance()->AddGameObject(leg2);
 
 				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, m_position, true, 2.0f);
@@ -324,13 +324,13 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointO
 				}
 			}
 
-			Orb * hat = new Orb(nullptr, Vector3(m_position.X, m_position.Y + 75, m_position.Z - 1.1f), Vector3(67, 29, 0), Vector3(15, 15, 0), "Media\\objects\\ricehat.png", false, 2.0f);
+			Debris * hat = new Debris(nullptr, Vector3(m_position.X, m_position.Y + 75, m_position.Z - 1.1f), Vector3(67, 29, 0), Vector3(15, 15, 0), "Media\\objects\\ricehat.png", false, 2.0f);
 			GameObjectManager::Instance()->AddGameObject(hat);
 		}
 		else if (m_isAnimated && m_animationFile == "XmlFiles\\player_female_animation.xml")
 		{
 			{
-				Orb * head = new Orb(nullptr, Vector3(m_position.X, m_position.Y + 250, m_position.Z - 1.1f), Vector3(54, 60, 0), Vector3(15, 15, 0), "Media\\characters\\female\\decapitated_head.png", true, 1.0f);
+				Debris * head = new Debris(nullptr, Vector3(m_position.X, m_position.Y + 250, m_position.Z - 1.1f), Vector3(54, 60, 0), Vector3(15, 15, 0), "Media\\characters\\female\\decapitated_head.png", true, 1.0f);
 				GameObjectManager::Instance()->AddGameObject(head);
 
 				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, m_position, true, 2.0f);
@@ -341,7 +341,7 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointO
 			}
 
 			{
-				Orb * arm1 = new Orb(nullptr, Vector3(m_position.X - 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\female\\arm_destroyed.png", true, 1.0f);
+				Debris * arm1 = new Debris(nullptr, Vector3(m_position.X - 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\female\\arm_destroyed.png", true, 1.0f);
 				GameObjectManager::Instance()->AddGameObject(arm1);
 
 				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, m_position, true, 2.0f);
@@ -352,7 +352,7 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointO
 			}
 
 			{
-				Orb * arm2 = new Orb(nullptr, Vector3(m_position.X + 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\female\\arm_destroyed.png", true, 1.0f);
+				Debris * arm2 = new Debris(nullptr, Vector3(m_position.X + 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(15, 15, 0), "Media\\characters\\female\\arm_destroyed.png", true, 1.0f);
 				GameObjectManager::Instance()->AddGameObject(arm2);
 
 				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, m_position, true, 2.0f);
@@ -363,7 +363,7 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointO
 			}
 
 			{
-				Orb * leg1 = new Orb(nullptr, Vector3(m_position.X + 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\female\\leg_destroyed.png", true, 1.0f);
+				Debris * leg1 = new Debris(nullptr, Vector3(m_position.X + 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\female\\leg_destroyed.png", true, 1.0f);
 				GameObjectManager::Instance()->AddGameObject(leg1);
 
 				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, m_position, true, 2.0f);
@@ -374,7 +374,7 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointO
 			}
 
 			{
-				Orb * leg2 = new Orb(nullptr, Vector3(m_position.X - 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\female\\leg_destroyed.png", true, 1.0f);
+				Debris * leg2 = new Debris(nullptr, Vector3(m_position.X - 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(15, 15, 0), "Media\\characters\\female\\leg_destroyed.png", true, 1.0f);
 				GameObjectManager::Instance()->AddGameObject(leg2);
 
 				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, m_position, true, 2.0f);
@@ -417,7 +417,7 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointO
 			{
 				case 0:
 					{
-						  Orb * orb = new Orb(nullptr, orb_pos, Vector3(40, 40, 0), Vector3(15, 15, 0), "Media\\orb.png", false, 1.0f);
+						Debris * orb = new Debris(nullptr, orb_pos, Vector3(40, 40, 0), Vector3(15, 15, 0), "Media\\orb.png", false, 1.0f);
 						GameObjectManager::Instance()->AddGameObject(orb);
 
 						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(orb_pos.X, orb_pos.Y, orb_pos.Z - 0.1), true, 2.0f);
@@ -429,7 +429,7 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointO
 					}
 				case 1:
 					{
-						  Orb * orb = new Orb(nullptr, orb_pos, Vector3(50, 50, 0), Vector3(25, 25, 0), "Media\\orb2.png", false, 1.0f);
+						Debris * orb = new Debris(nullptr, orb_pos, Vector3(50, 50, 0), Vector3(25, 25, 0), "Media\\orb2.png", false, 1.0f);
 						GameObjectManager::Instance()->AddGameObject(orb);
 
 						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(orb_pos.X, orb_pos.Y, orb_pos.Z - 0.1), true, 2.0f);
@@ -441,7 +441,7 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointO
 					}
 				case 2:
 					{
-						  Orb * orb = new Orb(nullptr, orb_pos, Vector3(60, 60, 0), Vector3(30, 30, 0), "Media\\orb3.png", false, 1.0f);
+						Debris * orb = new Debris(nullptr, orb_pos, Vector3(60, 60, 0), Vector3(30, 30, 0), "Media\\orb3.png", false, 1.0f);
 						GameObjectManager::Instance()->AddGameObject(orb);
 
 						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(orb_pos.X, orb_pos.Y, orb_pos.Z - 0.1), true, 2.0f);
@@ -453,7 +453,7 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointO
 					}
 				default:
 					{
-						   Orb * orb = new Orb(nullptr, orb_pos, Vector3(45, 45, 0), Vector3(15, 15, 0), "Media\\orb.png", false, 1.0f);
+						Debris * orb = new Debris(nullptr, orb_pos, Vector3(45, 45, 0), Vector3(15, 15, 0), "Media\\orb.png", false, 1.0f);
 						GameObjectManager::Instance()->AddGameObject(orb);
 
 						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(orb_pos.X, orb_pos.Y, orb_pos.Z - 0.1), true, 2.0f);

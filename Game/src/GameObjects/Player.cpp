@@ -2,7 +2,7 @@
 #include "Player.h"
 #include "AnimationPart.h"
 #include "AudioManager.h"
-#include "orb.h"
+#include "Debris.h"
 #include "particleemittermanager.h"
 #include "BombProjectile.h"
 #include "Game.h"
@@ -93,7 +93,7 @@ Projectile * Player::FireBomb(Vector2 direction)
 										Vector2(30,8),
 										Vector2(30,30),
 										direction,
-										50,
+										500,
 										speed,
 										2.0f);
 

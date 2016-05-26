@@ -4,7 +4,7 @@
 #include "AudioManager.h"
 #include "Material.h"
 #include "NPC.h"
-#include "orb.h"
+#include "Debris.h"
 #include "waterblock.h"
 #include "SolidLineStrip.h"
 #include "DrawUtilities.h"

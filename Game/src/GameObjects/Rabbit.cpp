@@ -3,7 +3,7 @@
 #include "ParticleEmitterManager.h"
 #include "AudioManager.h"
 #include "material.h"
-#include "Orb.h"
+#include "Debris.h"
 #include "AIStateFollow.h"
 #include "AIStateRepel.h"
 
@@ -57,7 +57,7 @@ void Rabbit::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 poi
 			{
 				case 0:
 					{
-						Orb * orb = new Orb(nullptr, orb_pos, Vector3(20, 20, 0), Vector3(15, 15, 0), "Media\\orb.png", false, 0.5f);
+						Debris * orb = new Debris(nullptr, orb_pos, Vector3(20, 20, 0), Vector3(15, 15, 0), "Media\\orb.png", false, 0.5f);
 						GameObjectManager::Instance()->AddGameObject(orb);
 
 						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(orb_pos.X, orb_pos.Y, orb_pos.Z - 0.1), true, 2.0f);
@@ -69,7 +69,7 @@ void Rabbit::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 poi
 					}
 				case 1:
 					{
-						Orb * orb = new Orb(nullptr, orb_pos, Vector3(25, 25, 0), Vector3(25, 25, 0), "Media\\orb2.png", false, 0.5f);
+						Debris * orb = new Debris(nullptr, orb_pos, Vector3(25, 25, 0), Vector3(25, 25, 0), "Media\\orb2.png", false, 0.5f);
 						GameObjectManager::Instance()->AddGameObject(orb);
 
 						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(orb_pos.X, orb_pos.Y, orb_pos.Z - 0.1), true, 2.0f);
@@ -81,7 +81,7 @@ void Rabbit::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 poi
 					}
 				case 2:
 					{
-						Orb * orb = new Orb(nullptr, orb_pos, Vector3(30, 30, 0), Vector3(30, 30, 0), "Media\\orb3.png", false, 0.5f);
+						Debris * orb = new Debris(nullptr, orb_pos, Vector3(30, 30, 0), Vector3(30, 30, 0), "Media\\orb3.png", false, 0.5f);
 						GameObjectManager::Instance()->AddGameObject(orb);
 
 						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(orb_pos.X, orb_pos.Y, orb_pos.Z - 0.1), true, 2.0f);
@@ -93,7 +93,7 @@ void Rabbit::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 poi
 					}
 				default:
 					{
-						   Orb * orb = new Orb(nullptr, orb_pos, Vector3(23, 23, 0), Vector3(15, 15, 0), "Media\\orb.png", false, 0.5f);
+						Debris * orb = new Debris(nullptr, orb_pos, Vector3(23, 23, 0), Vector3(15, 15, 0), "Media\\orb.png", false, 0.5f);
 						GameObjectManager::Instance()->AddGameObject(orb);
 
 						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(orb_pos.X, orb_pos.Y, orb_pos.Z - 0.1), true, 2.0f);

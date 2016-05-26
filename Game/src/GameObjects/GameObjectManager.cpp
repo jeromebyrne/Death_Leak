@@ -22,7 +22,7 @@
 #include "AudioObject.h"
 #include "Rabbit.h"
 #include "Game.h"
-#include "Orb.h"
+#include "Debris.h"
 #include "LevelTrigger.h"
 #include "WaterBlock.h"
 #include "butterfly.h"
@@ -210,7 +210,7 @@ void GameObjectManager::Update(bool paused, float delta)
 			else // objects outside the update area
 			{
 				// if a projectile has gone outside the bounds then just remove it
-				if (obj->IsProjectile() || obj->IsOrb()) // add checks for other projectile class names as needed
+				if (obj->IsProjectile() || obj->IsDebris()) // add checks for other projectile class names as needed
 				{
 					RemoveGameObject(obj.get());
 				}
