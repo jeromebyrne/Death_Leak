@@ -151,7 +151,10 @@ bool SolidLineStrip::OnCollision(SolidMovingSprite * object)
 
 					object->SetY(object->Y() + diffY);
 
-					object->StopYAccelerating();
+					if (!object->IsDebris())
+					{
+						object->StopYAccelerating();
+					}
 
 					object->SetIsCollidingOnTopOfObject(true);
 
@@ -165,6 +168,11 @@ bool SolidLineStrip::OnCollision(SolidMovingSprite * object)
 						character->setCurrentSolidLineDroppingDownThroughId(0);
 
 						character->UpdateFootsteps(this);
+					}
+					else if (object->IsDebris() && object->VelocityY() < -0.5f)
+					{
+						object->SetVelocityY(object->VelocityY() * -0.65f);
+						//object->AccelerateY(1.0f, 1.0f);
 					}
 
 					return true;

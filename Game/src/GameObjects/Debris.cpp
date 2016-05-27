@@ -53,6 +53,8 @@ Debris::Debris(SolidMovingSprite * target,
 	m_material = MaterialManager::Instance()->GetMaterial("default_orb");
 
 	mCreationTime = Timing::Instance()->GetTotalTimeSeconds();
+
+	m_collisionBoxDimensions = collisionDimensions;
 }
 
 Debris::~Debris(void)
@@ -110,18 +112,15 @@ bool Debris::OnCollision(SolidMovingSprite* object)
 		return false;
 	}
 
-	/*
 	if (object->IsCharacter())
 	{
-		return false;
-	}*/
+		Character * character = static_cast<Character*>(object);
+
+		SetVelocityX(character->GetVelocity().X * 1.2f);
+	}
 
 	if (object->IsSolidLineStrip())
 	{
-		// SolidLineStrip * lineStrip = static_cast<SolidLineStrip*>(object);
-		// HandleSolidLineStripCollision(lineStrip);
-		// return false;
-
 		if (mCurrentDebrisState == kActive)
 		{
 			mCurrentDebrisState = kFadingOut;

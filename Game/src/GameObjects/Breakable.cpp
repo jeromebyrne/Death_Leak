@@ -256,14 +256,19 @@ void Breakable::SpawnDamageTransitionParticles()
 																0.1f,
 																0.1f);
 
+	float debrisPosZ = 51.0f;
+	if (m_position.Z < 50.0f)
+	{
+		debrisPosZ = m_position.Z - 0.01f;
+	}
 	// TODO: only do this for crates, read from material file
 	for (int i = 0; i < 4; ++i)
 	{
 		Debris * debris = new Debris(nullptr, Vector3(m_position.X,
 			m_position.Y + 50,
-			m_position.Z - 0.01f),
+			debrisPosZ),
 			Vector3(160 * scaleX, 443 * scaleY, 0),
-			Vector3(15, 15, 0),
+			Vector3(30, 30, 0),
 			"Media\\crate\\debris.png",
 			false,
 			1.0f);
