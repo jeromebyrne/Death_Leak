@@ -150,14 +150,14 @@ void Explosion::Display()
 															0.2f,
 															0.5f);
 
-	ParticleEmitterManager::Instance()->CreateRadialSpray(30,
+	ParticleEmitterManager::Instance()->CreateRadialSpray(15,
 															m_position,
 															Vector3(2000, 2000, 0),
 															"Media\\smoke4.png",
 															10.0f,
 															30.5f,
-															0.5f,
-															1.0f,
+															0.4f,
+															0.6f,
 															80.0f,
 															160.0f,
 															1.1f,
@@ -172,7 +172,7 @@ void Explosion::Display()
 															5.0f,
 															5.0f);
 
-	ParticleEmitterManager::Instance()->CreateRadialSpray(30,
+	ParticleEmitterManager::Instance()->CreateRadialSpray(20,
 															m_position,
 															Vector3(2000, 2000, 0),
 															"Media\\flame3.png",

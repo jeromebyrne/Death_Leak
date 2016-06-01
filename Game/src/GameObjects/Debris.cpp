@@ -69,7 +69,7 @@ void Debris::Update(float delta)
 	float targetDelta =  Timing::Instance()->GetTargetDelta();
 	float percentDelta = delta / targetDelta;
 
-	SetRotationAngle(m_rotationAngle - (m_velocity.X * 0.02) * percentDelta);
+	SetRotationAngle(m_rotationAngle - (m_velocity.X * (mIsOnSolidLine ? 0.005 : 0.02)) * percentDelta);
 
 	switch (mCurrentDebrisState)
 	{

@@ -52,7 +52,11 @@ PS_INPUT VS( VS_INPUT input )
 //--------------------------------------------------------------------------------------
 float4 PS( PS_INPUT input) : SV_Target
 {    
-    float4 textureSample = txDiffuse.Sample( samLinear, input.Tex );
+	float4 textureSample = txDiffuse.Sample(samLinear, input.Tex);
+
+	// textureSample.r = 1.0f;
+	// textureSample.g = 0.0f;
+	// textureSample.b = 0.0f;
 
     // we store this individual particles alpha in the NORMAL vector.X component
 	textureSample.a *= input.Norm.x;

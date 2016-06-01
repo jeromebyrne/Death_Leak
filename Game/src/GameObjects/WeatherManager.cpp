@@ -5,7 +5,7 @@
 #include "AudioObject.h"
 #include "Game.h"
 
-static const float kTimeUntilFirstWeather = 20.0f;
+static const float kTimeUntilFirstWeather = 8.0f;
 static const float kRainSessionMinTime = 70.0f;
 static const float kRainSessionMaxTime = 120.0f;
 static const float kRainIntroTime = 10.0f;
@@ -608,7 +608,7 @@ void WeatherManager::UpdateNoWeather(float delta)
 	{
 		StartRaining();
 		
-		//StartSnowing();
+		// StartSnowing();
 
 		mHasHadWeather = true;
 	}

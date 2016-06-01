@@ -25,13 +25,27 @@ void ActiveBird::OnDamage(GameObject * damageDealer, float damageAmount, Vector3
 		spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(deadBird->ID()), Vector3(0, 0, 0));
 	}
 
-	// create some feathers
-	for (int i = 0; i < 4; ++i)
-	{
-		Debris * feather = new Debris(nullptr, m_position, Vector3(30, 30, 0), Vector3(15, 15, 0), "Media\\characters\\bird\\feather.png", false, 0.1f);
-		GameObjectManager::Instance()->AddGameObject(feather);
-	}
-
+	ParticleEmitterManager::Instance()->CreateRadialSpray(10,
+														m_position,
+														Vector3(3000, 3000, 0),
+														"Media\\characters\\bird\\feather.png",
+														5.0f,
+														9.0f,
+														0.5,
+														0.7f,
+														20,
+														40,
+														2.0f,
+														false,
+														1.0f,
+														1.0f,
+														0.0f,
+														false,
+														1.0f,
+														0.5f,
+														0.9f,
+														5.0f,
+														5.0f);
 }
 
 void ActiveBird::Initialise()

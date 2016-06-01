@@ -6,7 +6,7 @@ static const float kRestDelayMin = 0.5f;
 static const float kRestDelayMax = 3.0f;
 static const float kMoveDelayMin = 0.75f;
 static const float kMoveDelayMax = 1.5f;
-static const float kRunAwayMinDelay = 0.5f;
+static const float kRunAwayMinDelay = 1.0f;
 static const float kRunAwayPlayerDistanceSquared = 200.0f * 200.0f;
 
 AIStateGroundAnimalWander::AIStateGroundAnimalWander(NPC * npc) :
