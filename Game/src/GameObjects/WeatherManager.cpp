@@ -600,7 +600,6 @@ void WeatherManager::UpdateSnowing(float delta)
 	}
 }
 
-
 void WeatherManager::UpdateNoWeather(float delta)
 {
 	// always start raining after 20 seconds the first time you play

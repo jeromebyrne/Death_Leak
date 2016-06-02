@@ -1,109 +1,68 @@
 <uiscreen>
-
+  
   <sprite name="1_title_background"
           process_input="false"
-          posX ="-970" posY ="-540" width="1939.2" height ="1090.8"
-          image="Media\UI\main_menu_2.png"
-          hflip="false" vflip="false"
-          alpha="1.0"
-          use_standard_effect="true">
-  </sprite>
-  
-  <sprite name="21_title_background"
-           process_input="false"
-           posX ="-970" posY ="-540" width="1969.2" height ="1115.8"
-           image="Media\UI\main_menu_blur.png"
-           hflip="false" vflip="false"
-           alpha="0.45">
-  </sprite>
-  
-  <sprite name="22_title_death_leak"
-          process_input="false"
-          posX ="-750" posY ="300" width="753" height ="194"
-          image="Media\UI\title.png"
-          hflip="false" vflip="false"
-          alpha="0.5">
-  </sprite>
-  <sprite name="23_title_death_leak"
-          process_input="false"
-          posX ="-754" posY ="307" width="753" height ="194"
-          image="Media\UI\title.png"
-          hflip="false" vflip="false"
-          alpha="1.0">
-  </sprite>
-  <sprite name="24_title_death_leak"
-          process_input="false"
           posX ="-960" posY ="-540" width="1920" height ="1080"
-          image="Media\UI\frame.png"
-          hflip="false" vflip="false"
+          image="Media\UI\quake_title.png"
+          hflip="false" vflip="true"
           alpha="1.0"
           use_standard_effect="true">
   </sprite>
-  <animatedsprite name="25_noise_anim"
+
+  <animatedsprite name="1_u"
                    process_input="false"
                    posX ="-960" posY ="-540" width="1920" height ="1080"
                    image="Media\UI\noise_layer.png"
                    hflip="false" vflip="false"
-                   alpha="0.2"
-                   fps ="10">
+                   alpha="0.15"
+                   fps ="20">
     <frames frame1="Media\UI\noise_layer.png"
-            frame2="Media\UI\noise_layer_3.png"
-            frame3="Media\UI\noise_layer_2.png"
-            frame4="Media\UI\noise_layer_5.png"
-            frame5="Media\UI\noise_layer_4.png"
+            frame2="Media\UI\noise_layer_2.png"
+            frame3="Media\UI\noise_layer_3.png"
+            frame4="Media\UI\noise_layer_4.png"
+            frame5="Media\UI\noise_layer_5.png"
             frame6="Media\UI\noise_layer_6.png"
     />
   </animatedsprite>
 
-  <animatedsprite name="26_scratch_anim"
-                   process_input="false"
-                   posX ="-960" posY ="-540" width="1920" height ="1080"
-                   image="Media\UI\noise_layer.png"
-                   hflip="false" vflip="false"
-                   alpha="0.24"
-                  use_standard_effect="true"
-                   fps ="10">
-    <frames frame1="Media\UI\film_frame.png"
-            frame2="Media\UI\film_frame_2.png"
-            frame3="Media\UI\film_frame_3.png"
-            frame4="Media\UI\film_frame_4.png"
-    />
-  </animatedsprite>
+  <sprite name="4_special_edition"
+         process_input="false"
+         posX ="-250" posY ="480" width="504" height ="57"
+         image="Media\UI\special_edition.png"
+         hflip="false" vflip="true"
+         alpha="1.0"
+         use_standard_effect="true">
+  </sprite>
   
   <button name="3_new_game"
           process_input="true"
-          posX ="-500" posY ="-150" width="150" height ="150"
-          image="Media\UI\buttons\play1.png"
-          image_focus="Media\UI\buttons\play2.png"
-          image_click="Media\UI\buttons\play2.png"
-          hflip="false" vflip="false"
+          posX ="-920" posY ="150" width="256" height ="256"
+          image="Media\UI\quake_symbol_2.png"
+          image_focus="Media\UI\quake_symbol.png"
+          image_click="Media\UI\quake_symbol_2.png"
+          hflip="false" vflip="true"
           alpha="1.0"
           use_standard_effect="true">
     
     <actionspressup>
       <fadeout time="150"/>
       <popui ui="mainmenu" />
-      <pushui ui="gameloading" />
-      <fadein time="150"/>
-      <stopallsounds />
-      <loadlevel level="XmlFiles\village.xml" />
-      <popui ui="gameloading" />
-      <pushui ui="game_hud" />
+      <pushui ui="character_select" />
     </actionspressup>
     
     <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3" />
+      <playsoundeffect sound="UI\\click.wav" />
     </actionspressdown>
     
   </button>
 
   <button name="5_level_editor"
           process_input="true"
-          posX ="-165" posY ="-260" width="150" height ="150"
-          image="Media\\UI\\buttons\\edit1.png"
-          image_focus="Media\\UI\\buttons\\edit2.png"
-          image_click="Media\\UI\\buttons\\edit2.png"
-          hflip="false" vflip="false"
+          posX ="-900" posY ="-100" width="210" height ="210"
+          image="Media\UI\quake_2_symbol_2.png"
+          image_focus="Media\UI\quake_2_symbol.png"
+          image_click="Media\UI\quake_2_symbol_2.png"
+          hflip="false" vflip="true"
           alpha="1.0"
           use_standard_effect="true">
     <actionspressup>
@@ -114,36 +73,17 @@
     </actionspressup>
 
     <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3"/>
-    </actionspressdown>
-  </button>
-   
-  <button name="6_options"
-          process_input="true"
-          posX ="175" posY ="-400" width="150" height ="150"
-          image="Media\\UI\\buttons\\settings1.png"
-          image_focus="Media\\UI\\buttons\settings2.png"
-          image_click="Media\\UI\\buttons\settings2.png"
-          hflip="false" vflip="false"
-          alpha="1.0"
-          use_standard_effect="true">
-    <actionspressup>
-      <popui ui="mainmenu" />
-      <pushui ui="options" />
-    </actionspressup>
-    
-    <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3"/>
+      <playsoundeffect sound="UI\\click.wav"/>
     </actionspressdown>
   </button>
   
   <button name="7_quit"
            process_input="true"
-           posX ="520" posY ="-470" width="150" height ="150"
-           image="Media\\UI\\buttons\\back1.png"
-           image_focus="Media\\UI\\buttons\back2.png"
-           image_click="Media\\UI\\buttons\back2.png"
-           hflip="false" vflip="false"
+           posX ="-900" posY ="-350" width="210" height ="210"
+          image="Media\UI\quake_3_symbol_2.png"
+          image_focus="Media\UI\quake_3_symbol.png"
+          image_click="Media\UI\quake_3_symbol_2.png"
+          hflip="false" vflip="true"
            alpha="1.0"
           use_standard_effect="true">
 
@@ -152,16 +92,8 @@
     </actionspressup>
 
     <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3" />
+      <playsoundeffect sound="UI\\click.wav" />
     </actionspressdown>
 
   </button>
-
-  <sprite name="8_gamepad_warning"
-          process_input="false"
-          posX ="-300" posY ="150" width="500" height ="125"
-          image="Media\\UI\\gamepadwarning.png"
-          hflip="false" vflip="false"
-          alpha="1.0">
-  </sprite>
 </uiscreen>

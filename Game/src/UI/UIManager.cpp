@@ -259,9 +259,9 @@ void UIManager::XmlRead(const char * uiRootPath)
 
 	// just set the current ui screen here - TEMP
 	list<string> params;
-	params.push_back("language_select");
+	params.push_back("mainmenu");
 	PushBackEvent("pushui", params);
-	AudioManager::Instance()->PlayMusic("weather\\2minutestorm.mp3");
+	AudioManager::Instance()->PlayMusic("quake_theme.mp3");
 }
 
 void UIManager::PushBackEvent(string eventName, list<string> eventParams)

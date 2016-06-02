@@ -1,0 +1,66 @@
+<uiscreen show_cursor="false">
+  <sprite name="1_load_splash"
+           process_input="false"
+           posX ="-960" posY ="-540" width="1920" height ="1080"
+           image="Media\\UI\\quake_bg_2.png"
+           hflip="false" vflip="true"
+           alpha="1.0"
+          use_standard_effect="true">
+  </sprite>
+
+  <animatedsprite name="1_noise_anim"
+                   process_input="false"
+                   posX ="-960" posY ="-540" width="1920" height ="1080"
+                   image="Media\UI\noise_layer.png"
+                   hflip="false" vflip="false"
+                   alpha="0.15"
+                   fps ="20">
+    <frames frame1="Media\UI\noise_layer.png"
+            frame2="Media\UI\noise_layer_2.png"
+            frame3="Media\UI\noise_layer_3.png"
+            frame4="Media\UI\noise_layer_4.png"
+            frame5="Media\UI\noise_layer_5.png"
+            frame6="Media\UI\noise_layer_6.png"
+    />
+  </animatedsprite>
+
+<sprite name="2_title"
+           process_input="false"
+           posX ="-450" posY ="400" width="893" height ="90"
+           image="Media\\UI\\select_character.png"
+           hflip="false" vflip="true"
+           alpha="1.0"
+          use_standard_effect="true">
+  </sprite>
+
+  <animatedsprite name="9_anim"
+                   process_input="false"
+                   posX ="-100" posY ="0" width="211.4" height ="280"
+                   image="Media\\characters\\player\\player_run_1.png"
+                   hflip="false" vflip="true"
+                   alpha="1.0"
+                   fps ="10">
+    <frames frame1="Media\\quake_char_1\\1.png"
+frame2="Media\\quake_char_1\\2.png"
+frame3="Media\\quake_char_1\\3.png"
+frame4="Media\\quake_char_1\\4.png"
+frame5="Media\\quake_char_1\\5.png"
+frame6="Media\\quake_char_1\\6.png" />
+  </animatedsprite>
+
+<animatedsprite name="99_anim"
+                   process_input="false"
+                   posX ="-100" posY ="-340" width="200.2" height ="198.8"
+                   image="Media\\characters\\player\\player_run_1.png"
+                   hflip="false" vflip="true"
+                   alpha="1.0"
+                   fps ="10">
+    <frames frame1="Media\\quake_char_2\\1.png"
+frame2="Media\\quake_char_2\\2.png"
+frame3="Media\\quake_char_2\\3.png"
+frame4="Media\\quake_char_2\\4.png"
+frame5="Media\\quake_char_2\\5.png"
+frame6="Media\\quake_char_2\\6.png" />
+  </animatedsprite>
+
+</uiscreen>

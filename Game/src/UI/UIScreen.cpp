@@ -133,7 +133,11 @@ void UIScreen::Update()
 	for(;current != m_widgetMap.end(); current++)
 	{
 		UIWidget * widget = (*current).second;
-		widget->Update();
+
+		if (widget)
+		{
+			widget->Update();
+		}
 	}
 
 	// process input on the screen
@@ -148,36 +152,15 @@ void UIScreen::Update()
 			ProcessCursorInput();
 		}
 	}
-
-	// HACK: here to enable disable gamepad warning
-	if (m_name == "mainmenu")
-	{
-		if (!GamePad::GetPad1() || !GamePad::GetPad1()->IsConnected())
-		{
-			// enable gamepad warning
-			// get the gamepad warning widget
-			UIWidget * widget = m_widgetMap["8_gamepad_warning"]; // warning, crash potential
-
-			widget->SetVisible(true);
-		}
-		else
-		{
-			// disable gamepad warning
-			UIWidget * widget = m_widgetMap["8_gamepad_warning"]; // warning, crash potential
-
-			widget->SetVisible(false);
-		}
-	}
 }
 
 void UIScreen::Draw(ID3D10Device * device)
 {
 	// loop through our widgets and draw
-	map<string, UIWidget*>::const_iterator current = m_widgetMap.begin();
-	for(;current != m_widgetMap.end(); current++)
+	for (map<string, UIWidget*>::const_iterator current = m_widgetMap.begin(); current != m_widgetMap.end(); current++)
 	{
 		UIWidget * widget = (*current).second;
-		if(widget->IsVisible())
+		if(widget && widget->IsVisible())
 		{
 			widget->Draw(device);
 		}
@@ -187,8 +170,7 @@ void UIScreen::Draw(ID3D10Device * device)
 void UIScreen::Initialise()
 {
 	// loop through our widgets and draw
-	map<string, UIWidget*>::const_iterator current = m_widgetMap.begin();
-	for(;current != m_widgetMap.end(); current++)
+	for (map<string, UIWidget*>::const_iterator current = m_widgetMap.begin(); current != m_widgetMap.end(); current++)
 	{
 		UIWidget * widget = (*current).second;
 		widget->Initialise();
@@ -198,8 +180,7 @@ void UIScreen::Initialise()
 void UIScreen::LoadContent(ID3D10Device * graphicsdevice)
 {
 	// loop through our widgets and load any content
-	map<string, UIWidget*>::const_iterator current = m_widgetMap.begin();
-	for(;current != m_widgetMap.end(); current++)
+	for (map<string, UIWidget*>::const_iterator current = m_widgetMap.begin(); current != m_widgetMap.end(); current++)
 	{
 		UIWidget * widget = (*current).second;
 		widget->LoadContent(graphicsdevice);

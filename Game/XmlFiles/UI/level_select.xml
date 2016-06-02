@@ -68,7 +68,7 @@
     </actionspressup>
 
     <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3"/>
+      <playsoundeffect sound="UI\\click.wav"/>
     </actionspressdown>
   </button>
 
@@ -93,7 +93,7 @@
     </actionspressup>
 
     <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3"/>
+      <playsoundeffect sound="UI\\click.wav"/>
     </actionspressdown>
   </button>
 
@@ -118,7 +118,7 @@
     </actionspressup>
 
     <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3"/>
+      <playsoundeffect sound="UI\\click.wav"/>
     </actionspressdown>
   </button>
 
@@ -143,7 +143,7 @@
     </actionspressup>
 
     <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3"/>
+      <playsoundeffect sound="UI\\click.wav"/>
     </actionspressdown>
   </button>
 
@@ -168,7 +168,7 @@
     </actionspressup>
 
     <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3"/>
+      <playsoundeffect sound="UI\\click.wav"/>
     </actionspressdown>
   </button>
   
@@ -188,7 +188,7 @@
     </actionspressup>
 
     <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3" />
+      <playsoundeffect sound="UI\\click.wav" />
     </actionspressdown>
 
   </button>
