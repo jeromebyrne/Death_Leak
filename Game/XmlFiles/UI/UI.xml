@@ -10,4 +10,7 @@
   <uiscreen name="language_select" filepath="XmlFiles\\UI\\language_select.xml" />
   <uiscreen name="level_edit_hud" filepath="XmlFiles\\UI\\level_edit_hud.xml" />
 <uiscreen name="character_select" filepath="XmlFiles\\UI\\character_select.xml" />
+<uiscreen name="character_select_2" filepath="XmlFiles\\UI\\character_select_2.xml" />
+<uiscreen name="character_select_3" filepath="XmlFiles\\UI\\character_select_3.xml" />
+<uiscreen name="character_select_4" filepath="XmlFiles\\UI\\character_select_4.xml" />
 </ui>

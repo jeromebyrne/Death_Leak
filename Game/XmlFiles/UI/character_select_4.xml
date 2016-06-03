@@ -24,60 +24,28 @@
     />
   </animatedsprite>
 
-  <sprite name="2"
-           process_input="false"
-           posX ="-450" posY ="242" width="893" height ="90"
-           image="Media\\UI\\select_character.png"
-           hflip="false" vflip="true"
-           alpha="0.35"
-          use_standard_effect="true">
-  </sprite>
-
 <sprite name="2_title"
            process_input="false"
-           posX ="-450" posY ="250" width="893" height ="90"
-           image="Media\\UI\\select_character.png"
+           posX ="-400" posY ="-300" width="800" height ="606"
+           image="Media\\UI\\borb_detected.png"
            hflip="false" vflip="true"
            alpha="1.0"
           use_standard_effect="true">
   </sprite>
 
-  <button name="3_left_character"
+  <button name="4_continue"
           process_input="true"
-          posX ="-380" posY ="-170" width="260" height ="360"
-          image="Media\blank_alpha.png"
-          image_focus="Media\UI\selected_behind.png"
-          image_click="Media\blank_alpha.png"
+          posX ="-150" posY ="-150" width="327.5" height ="303"
+          image="Media\UI\rita_profile.png"
+          image_focus="Media\UI\rita_profile_2.png"
+          image_click="Media\UI\rita_profile.png"
           hflip="false" vflip="true"
           alpha="1.0"
           use_standard_effect="true">
 
     <actionspressup>
-      <fadeout time="150"/>
-      <popui ui="character_select" />
-      <pushui ui="character_select_2" />
-    </actionspressup>
-
-    <actionspressdown>
-      <playsoundeffect sound="UI\\click.wav" />
-    </actionspressdown>
-
-  </button>
-
-  <button name="4_right_character"
-          process_input="true"
-          posX ="90" posY ="-170" width="300" height ="310"
-          image="Media\blank_alpha.png"
-          image_focus="Media\UI\selected_behind.png"
-          image_click="Media\blank_alpha.png"
-          hflip="false" vflip="true"
-          alpha="1.0"
-          use_standard_effect="true">
-
-    <actionspressup>
-      <fadeout time="150"/>
-      <popui ui="character_select" />
-      <pushui ui="character_select_2" />
+      <popui ui="character_select_2" />
+      <pushui ui="character_select_3" />
     </actionspressup>
 
     <actionspressdown>
@@ -88,7 +56,7 @@
 
   <animatedsprite name="9_anim"
                    process_input="false"
-                   posX ="-360" posY ="-150" width="211.4" height ="280"
+                   posX ="-500" posY ="-150" width="211.4" height ="280"
                    image="Media\\characters\\player\\player_run_1.png"
                    hflip="false" vflip="true"
                    alpha="1.0"
@@ -103,7 +71,7 @@ frame6="Media\\quake_char_1\\6.png" />
 
 <animatedsprite name="99_anim"
                    process_input="false"
-                   posX ="140" posY ="-150" width="220.2" height ="216.8"
+                   posX ="350" posY ="-150" width="220.2" height ="216.8"
                    image="Media\\characters\\player\\player_run_1.png"
                    hflip="false" vflip="true"
                    alpha="1.0"

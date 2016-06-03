@@ -44,7 +44,7 @@
 
   <button name="3_left_character"
           process_input="true"
-          posX ="-380" posY ="-170" width="260" height ="360"
+          posX ="-600" posY ="-400" width="260" height ="360"
           image="Media\blank_alpha.png"
           image_focus="Media\UI\selected_behind.png"
           image_click="Media\blank_alpha.png"
@@ -54,8 +54,8 @@
 
     <actionspressup>
       <fadeout time="150"/>
-      <popui ui="character_select" />
-      <pushui ui="character_select_2" />
+      <popui ui="character_select_3" />
+      <pushui ui="character_select_4" />
     </actionspressup>
 
     <actionspressdown>
@@ -64,31 +64,18 @@
 
   </button>
 
-  <button name="4_right_character"
-          process_input="true"
-          posX ="90" posY ="-170" width="300" height ="310"
-          image="Media\blank_alpha.png"
-          image_focus="Media\UI\selected_behind.png"
-          image_click="Media\blank_alpha.png"
-          hflip="false" vflip="true"
-          alpha="1.0"
+<sprite name="5_selection_error"
+           process_input="false"
+           posX ="-350" posY ="-50" width="722" height ="207"
+           image="Media\\UI\\selection_error_2.png"
+           hflip="false" vflip="true"
+           alpha="1.0"
           use_standard_effect="true">
-
-    <actionspressup>
-      <fadeout time="150"/>
-      <popui ui="character_select" />
-      <pushui ui="character_select_2" />
-    </actionspressup>
-
-    <actionspressdown>
-      <playsoundeffect sound="UI\\click.wav" />
-    </actionspressdown>
-
-  </button>
+  </sprite>
 
   <animatedsprite name="9_anim"
                    process_input="false"
-                   posX ="-360" posY ="-150" width="211.4" height ="280"
+                   posX ="-580" posY ="-380" width="211.4" height ="280"
                    image="Media\\characters\\player\\player_run_1.png"
                    hflip="false" vflip="true"
                    alpha="1.0"
@@ -99,21 +86,6 @@ frame3="Media\\quake_char_1\\3.png"
 frame4="Media\\quake_char_1\\4.png"
 frame5="Media\\quake_char_1\\5.png"
 frame6="Media\\quake_char_1\\6.png" />
-  </animatedsprite>
-
-<animatedsprite name="99_anim"
-                   process_input="false"
-                   posX ="140" posY ="-150" width="220.2" height ="216.8"
-                   image="Media\\characters\\player\\player_run_1.png"
-                   hflip="false" vflip="true"
-                   alpha="1.0"
-                   fps ="10">
-    <frames frame1="Media\\quake_char_2\\1.png"
-frame2="Media\\quake_char_2\\2.png"
-frame3="Media\\quake_char_2\\3.png"
-frame4="Media\\quake_char_2\\4.png"
-frame5="Media\\quake_char_2\\5.png"
-frame6="Media\\quake_char_2\\6.png" />
   </animatedsprite>
 
 </uiscreen>

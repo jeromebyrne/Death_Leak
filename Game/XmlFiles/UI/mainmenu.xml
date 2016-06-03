@@ -27,6 +27,15 @@
 
   <sprite name="4_special_edition"
          process_input="false"
+         posX ="-250" posY ="473" width="504" height ="57"
+         image="Media\UI\special_edition.png"
+         hflip="false" vflip="true"
+         alpha="0.35"
+         use_standard_effect="true">
+  </sprite>
+
+  <sprite name="4_special_edition_2"
+         process_input="false"
          posX ="-250" posY ="480" width="504" height ="57"
          image="Media\UI\special_edition.png"
          hflip="false" vflip="true"
