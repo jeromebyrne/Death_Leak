@@ -33,7 +33,7 @@
           use_standard_effect="true">
   </sprite>
 
-  <button name="4_continue"
+<button name="4_continue"
           process_input="true"
           posX ="-150" posY ="-150" width="327.5" height ="303"
           image="Media\UI\rita_profile.png"
@@ -42,16 +42,22 @@
           hflip="false" vflip="true"
           alpha="1.0"
           use_standard_effect="true">
-
+    
     <actionspressup>
-      <popui ui="character_select_2" />
-      <pushui ui="character_select_3" />
+      <fadeout time="150"/>
+      <popui ui="character_select_4" />
+      <pushui ui="gameloading" />
+      <fadein time="150"/>
+      <stopallsounds />
+      <loadlevel level="XmlFiles\village.xml" />
+      <popui ui="gameloading" />
+      <pushui ui="game_hud" />
     </actionspressup>
-
+    
     <actionspressdown>
       <playsoundeffect sound="UI\\click.wav" />
     </actionspressdown>
-
+    
   </button>
 
   <animatedsprite name="9_anim"
