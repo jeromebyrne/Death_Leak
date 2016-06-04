@@ -51,7 +51,7 @@
       <stopallsounds />
       <loadlevel level="XmlFiles\village.xml" />
       <popui ui="gameloading" />
-      <pushui ui="game_hud" />
+      <pushui ui="hud_1" />
     </actionspressup>
     
     <actionspressdown>

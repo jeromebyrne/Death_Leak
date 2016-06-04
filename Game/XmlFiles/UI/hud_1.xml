@@ -1,0 +1,33 @@
+<uiscreen show_cursor="true">
+
+
+  <sprite name="0_bg"
+          process_input="false"
+          posX ="-960" posY ="-540" width="1920" height ="1080"
+          image="Media\UI\hud_1.png"
+          hflip="false" vflip="true"
+          alpha="1.0"
+          use_standard_effect="true">
+  </sprite>
+
+<button name="3_continue"
+          process_input="true"
+          posX ="750" posY ="-500" width="140.5" height ="106"
+          image="Media\UI\arrow_right.png"
+          image_focus="Media\UI\arrow_right_selected.png"
+          image_click="Media\UI\arrow_right.png"
+          hflip="false" vflip="true"
+          alpha="1.0"
+          use_standard_effect="true">
+
+    <actionspressup>
+      <popui ui="hud_1" />
+    </actionspressup>
+
+    <actionspressdown>
+      <playsoundeffect sound="UI\\click.wav" />
+    </actionspressdown>
+
+  </button>
+  
+</uiscreen>

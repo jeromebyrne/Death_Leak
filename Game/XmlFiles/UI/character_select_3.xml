@@ -53,6 +53,7 @@
           use_standard_effect="true">
 
     <actionspressup>
+      <stopallsounds />
       <popui ui="character_select_3" />
       <pushui ui="character_select_4" />
     </actionspressup>
