@@ -14,4 +14,5 @@
 <uiscreen name="character_select_3" filepath="XmlFiles\\UI\\character_select_3.xml" />
 <uiscreen name="character_select_4" filepath="XmlFiles\\UI\\character_select_4.xml" />
 <uiscreen name="hud_1" filepath="XmlFiles\\UI\\hud_1.xml" />
+  <uiscreen name="hud_2" filepath="XmlFiles\\UI\\hud_2.xml" />
 </ui>

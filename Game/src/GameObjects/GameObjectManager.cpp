@@ -334,7 +334,7 @@ void GameObjectManager::LoadObjectsFromFile(const char* filename)
 #endif
 
 	// play opening stinger
-	AudioManager::Instance()->StopAllSounds();
+	// AudioManager::Instance()->StopAllSounds();
 
 	Graphics * graphics = Graphics::GetInstance();
 	Camera2D * camera = Camera2D::GetInstance();
@@ -490,9 +490,9 @@ void GameObjectManager::SwitchToLevel(const char * level, bool defer)
 	mCurrentCurrencyOrbIdsCollected.clear();
 	mCurrentBreakablesBroken.clear();
 
-	SaveManager::GetInstance()->WriteSaveFile();
+	// SaveManager::GetInstance()->WriteSaveFile();
 
-	UIManager::Instance()->PopUI("game_hud");
+	// UIManager::Instance()->PopUI("game_hud");
 	UIManager::Instance()->PushUI("gameloading");
 	UIManager::Instance()->RefreshUI();
 
@@ -501,7 +501,17 @@ void GameObjectManager::SwitchToLevel(const char * level, bool defer)
 	LoadObjectsFromFile(level);
 
 	UIManager::Instance()->PopUI("gameloading");
-	UIManager::Instance()->PushUI("game_hud");
+	//UIManager::Instance()->PushUI("game_hud");
+
+	if (strcmp(level, "XmlFiles\\village_2.xml") == 0)
+	{
+		AudioManager::Instance()->StopAllSounds();
+		UIManager::Instance()->PushUI("game_hud");
+		UIManager::Instance()->PushUI("hud_2");
+
+		NinjaSpawner ninjaSpawner;
+		ninjaSpawner.SpawnMultiple(1, Vector2(m_player->X(), m_player->Y()), Vector2(1200, 1200));
+	}
 }
 
 void GameObjectManager::SaveObjectsToFile(const char* filename)

@@ -41,7 +41,7 @@ void Player::Initialise()
 	// update the base classes
 	Character::Initialise();
 
-	mRunAnimFramerateMultiplier = 1.2f;
+	mRunAnimFramerateMultiplier = 6.0f;
 
 	m_maxJumpSpeed = 25;
 

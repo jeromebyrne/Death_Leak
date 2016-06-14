@@ -59,7 +59,7 @@
         meter_middle="Media\\UI\\meter_overlay.png"
         meter_bar_middle="Media\\UI\\meter_bar_middle.png"
         hflip="false" vflip="false"
-        alpha="0.9"
+        alpha="0.0"
         use_standard_effect="true">
   </meter>
 
@@ -71,7 +71,7 @@
         meter_middle="Media\\UI\\meter_overlay.png"
         meter_bar_middle="Media\\UI\\xp_meter_bar_middle.png"
         hflip="false" vflip="true"
-        alpha="0.9"
+        alpha="0.0"
         use_standard_effect="true">
   </meter>
   

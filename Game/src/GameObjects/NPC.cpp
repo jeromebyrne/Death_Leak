@@ -38,7 +38,7 @@ NPC::NPC(float x, float y, float z, float width, float height, float breadth) :
 	m_rangeAttackState(nullptr),
 	mCurrentHealthMeterScale(1.0f),
 	m_butterflyWander(nullptr),
-	mAddHealthBar(true),
+	mAddHealthBar(false),
 	mIsPlayerEnemy(false),
 	mRandHealthBarOffsetY(0.0f),
 	mGroundAnimalWanderState(nullptr)
@@ -64,7 +64,12 @@ NPC::NPC(float x, float y, float z, float width, float height, float breadth) :
 	mGroundAnimalWanderState = new AIStateGroundAnimalWander(this);
 
 	// set to default state
-	SetState(AIState::kRangeAttack);
+	SetState(AIState::kFriendlyFollowing);
+	// void SetStopDistance(float value) { mStopDistance = value; }
+	// void SetFollowRadius(float value) { mFollowRadius = value; }
+	m_friendlyFollowState->SetStopDistance(150);
+	m_friendlyFollowState->SetFollowRadius(500);
+	
 
 	mAlwaysUpdate = true;
 }
@@ -116,6 +121,11 @@ void NPC::Initialise()
 
 		UpdateHealthBar(1.0f);
 	}
+
+	m_resistance.X = 0.78;
+	m_maxVelocity.X = 12;
+
+	mRunAnimFramerateMultiplier = 6.0f;
 }
 
 void NPC::SetState(AIState::AIStateType state)

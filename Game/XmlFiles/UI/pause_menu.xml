@@ -18,10 +18,10 @@
   
   <sprite name="1_bg"
           process_input="false"
-          posX ="-1024" posY ="-540" width="2048" height ="2048"
-          image="Media\\UI\\blank_dark.png"
-          hflip="false" vflip="false"
-          alpha="0.6"
+          posX ="-960" posY ="-540" width="1920" height ="1080"
+          image="Media\\UI\\iphone.png"
+          hflip="false" vflip="true"
+          alpha="1.0"
           use_standard_effect="true">
   </sprite>
 
@@ -34,29 +34,10 @@
           use_standard_effect="true">
   </sprite>
 
-  <button name="3_resume"
-           process_input="true"
-           posX ="-75" posY ="100" width="120" height ="120"
-           image="Media\\UI\\buttons\\play1.png"
-           image_focus="Media\\UI\\buttons\\play2.png"
-           image_click="Media\\UI\\buttons\\play2.png"
-           hflip="false" vflip="false"
-           alpha="1.0"
-          use_standard_effect="true">
 
-    <actionspressup>
-      <unpausegame />
-    </actionspressup>
-
-    <actionspressdown>
-      <playsoundeffect sound="UI\\click.wav" />
-    </actionspressdown>
-
-  </button>
-  
   <button name="4_quit"
            process_input="true"
-           posX ="-75" posY ="-100" width="120" height ="120"
+           posX ="-1000" posY ="-600" width="120" height ="120"
            image="Media\\UI\\buttons\\back1.png"
            image_focus="Media\\UI\\buttons\\back2.png"
            image_click="Media\\UI\\buttons\\back2.png"
@@ -79,7 +60,74 @@
     <actionspressdown>
       <playsoundeffect sound="UI\\click.wav" />
     </actionspressdown>
+  </button>
+
+    <button name="5_imagine"
+           process_input="true"
+           posX ="-203" posY ="172" width="418" height ="137"
+           image="Media\\UI\\song_1.png"
+           image_focus="Media\\UI\\song_1_s.png"
+           image_click="Media\\UI\\song_1.png"
+           hflip="false" vflip="true"
+           alpha="1.0"
+          use_standard_effect="true">
+
+      <actionspressup>
+        <stopallsounds/>
+        <unpausegame />
+        <popui ui="pause_menu"/>
+        <playmusic sound="dragons.mp3" loop="true"/>
+      </actionspressup>
+
+      <actionspressdown>
+        <playsoundeffect sound="UI\\click.wav" />
+      </actionspressdown>
+
+    </button>
+
+  <button name="5_lily"
+           process_input="true"
+           posX ="-203" posY ="35" width="418" height ="137"
+           image="Media\\UI\\song_2.png"
+           image_focus="Media\\UI\\song_2_s.png"
+           image_click="Media\\UI\\song_2.png"
+           hflip="false" vflip="true"
+           alpha="1.0"
+          use_standard_effect="true">
+
+    <actionspressup>
+      <stopallsounds/>
+      <unpausegame />
+      <popui ui="pause_menu"/>
+      <playmusic sound="lily_allen.mp3" loop="true"/>
+    </actionspressup>
+
+    <actionspressdown>
+      <playsoundeffect sound="UI\\click.wav" />
+    </actionspressdown>
 
   </button>
-  
+
+  <button name="6_ed"
+          process_input="true"
+          posX ="-203" posY ="-102" width="418" height ="137"
+          image="Media\\UI\\song_3.png"
+          image_focus="Media\\UI\\song_3_s.png"
+          image_click="Media\\UI\\song_3.png"
+          hflip="false" vflip="true"
+          alpha="1.0"
+         use_standard_effect="true">
+
+    <actionspressup>
+      <stopallsounds/>
+      <unpausegame />
+      <popui ui="pause_menu"/>
+      <playmusic sound="ed_sheeran.mp3" loop="true"/>
+    </actionspressup>
+
+    <actionspressdown>
+      <playsoundeffect sound="UI\\click.wav" />
+    </actionspressdown>
+
+  </button>
 </uiscreen>

@@ -73,7 +73,7 @@ void Game::Initialise()
 {
 	HRESULT hr = S_OK;
 
-	SaveManager::GetInstance()->ReadSaveFile();
+	// SaveManager::GetInstance()->ReadSaveFile();
 
 	Settings::GetInstance()->ReadSettingsFile();
 

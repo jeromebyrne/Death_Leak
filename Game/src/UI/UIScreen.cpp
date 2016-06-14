@@ -205,14 +205,19 @@ void UIScreen::ProcessCursorInput()
 	if(mouseUICoords.X != m_lastMousePos.X && mouseUICoords.Y != m_lastMousePos.Y)
 	{
 		/// loop through our widgets and check if we are mousing over anything
-		map<string, UIWidget*>::const_iterator current = m_widgetMap.begin();
+		
 		
 		bool focusedOnSomething = false;
 		bool widgetWasDifferentOnLastFrame = false;
 	
-		for(;current != m_widgetMap.end(); current++)
+		for (map<string, UIWidget*>::const_iterator current = m_widgetMap.begin(); current != m_widgetMap.end(); current++)
 		{
 			UIWidget * widget = (*current).second;
+
+			if (!widget->IsProcessInput())
+			{
+				continue;
+			}
 
 			Vector2 widget_top_left = widget->BottomLeft();
 			widget_top_left.Y += widget->Dimensions().Y;
@@ -223,30 +228,21 @@ void UIScreen::ProcessCursorInput()
 				focusedOnSomething = true;
 				if(widget != m_currentWidgetInFocus) 
 				{
-					if (widget->IsProcessInput())
+					widgetWasDifferentOnLastFrame = true;
+
+					if(m_currentWidgetInFocus != 0)
 					{
-						widgetWasDifferentOnLastFrame = true;
-
-						if(m_currentWidgetInFocus != 0)
-						{
-							// lost focus on the old widget
-							m_currentWidgetInFocus->OnLoseFocus();
-						}
-
-						// just focused on this
-						widget->OnFocus(); 
-						m_currentWidgetInFocus = widget;
-
-						break; // we found a valid widget so break
+						// lost focus on the old widget
+						m_currentWidgetInFocus->OnLoseFocus();
 					}
-					else
-					{
-						// its a valid widget but it doesnt accept input so keep going through the widget loop
-						focusedOnSomething = false;
-					}
+
+					// just focused on this
+					widget->OnFocus(); 
+					m_currentWidgetInFocus = widget;
 				}
 				
-				// break; // only one widget should be in focus so let's break
+				m_currentWidgetInFocus = widget;
+				break; // only one widget should be in focus so let's break
 			} // end if
 		}// end for
 

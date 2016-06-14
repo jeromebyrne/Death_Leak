@@ -10,12 +10,12 @@
 
   <animatedsprite name="2_anim"
                    process_input="false"
-                   posX ="-75" posY ="-100" width="256" height ="256"
+                   posX ="590" posY ="-450" width="217.5" height ="283.5"
                    image="Media\\characters\\player\\player_run_1.png"
                    hflip="false" vflip="true"
                    alpha="1.0"
                    fps ="1">
-    <frames frame1="Media\\UI\\quake_symbol.png" />
+    <frames frame1="Media\\UI\\loading_icon.png" />
   </animatedsprite>
 
 </uiscreen>

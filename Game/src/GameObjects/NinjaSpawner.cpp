@@ -43,9 +43,16 @@ void NinjaSpawner::SpawnNPC(const float posX,
 	npc->setAccelXRate(1.0);
 	npc->SetMaterial(MaterialManager::Instance()->GetMaterial("demon1"));
 	npc->SetMaxJumpSpeed(randJumpSpeed);
-	npc->SetIsPlayerEnemy(true);
+	npc->SetIsPlayerEnemy(false);
+
+	npc->m_dimensions = Vector3(133.777786, 387.761719, 0);
+	npc->SetCollisionDimensions(npc->m_dimensions);
+	npc->SetCollisionBoxOffset(Vector2(0, 0));
+	// height = "387.761719" width = "133.777786"
 
 	GameObjectManager::Instance()->AddGameObject(npc);
+
+	// TODO: set behaviour
 
 	// show some effects when we spawn - smoke
 	ParticleEmitterManager::Instance()->CreateRadialSpray(50,
@@ -128,7 +135,7 @@ void NinjaSpawner::SpawnMultiple(const unsigned int numNPC, Vector2 boundsPos, V
 			}
 		}
 
-		SpawnNPC(boundsPos.X + randX, boundsPos.Y + randY, false, animFile, dimensions, collisionDimensions, collisionOffset);
+		SpawnNPC(boundsPos.X + 200, boundsPos.Y + 100, false, "XmlFiles\\joe_anim.xml", dimensions, collisionDimensions, collisionOffset);
 	}
 
 	// AudioManager::Instance()->PlaySoundEffect("gong.wav", false, false, false);
