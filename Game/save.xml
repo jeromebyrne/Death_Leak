@@ -1,2 +1,70 @@
 <save_data>
+    <XmlFiles-field_1.xml_breakables_broken type="vector" />
+    <XmlFiles-field_1.xml_currency_orbs_collected type="vector">
+        <e_1 type="int" value="216" />
+        <e_2 type="int" value="232" />
+        <e_3 type="int" value="233" />
+        <e_4 type="int" value="234" />
+        <e_5 type="int" value="235" />
+        <e_6 type="int" value="236" />
+        <e_7 type="int" value="214" />
+        <e_8 type="int" value="215" />
+        <e_9 type="int" value="241" />
+        <e_10 type="int" value="218" />
+        <e_11 type="int" value="217" />
+        <e_12 type="int" value="220" />
+        <e_13 type="int" value="221" />
+        <e_14 type="int" value="219" />
+        <e_15 type="int" value="222" />
+        <e_16 type="int" value="224" />
+        <e_17 type="int" value="223" />
+        <e_18 type="int" value="231" />
+        <e_19 type="int" value="226" />
+        <e_20 type="int" value="225" />
+        <e_21 type="int" value="243" />
+        <e_22 type="int" value="229" />
+    </XmlFiles-field_1.xml_currency_orbs_collected>
+    <XmlFiles-village.xml_breakables_broken type="vector" />
+    <XmlFiles-village.xml_currency_orbs_collected type="vector">
+        <e_1 type="int" value="373" />
+        <e_2 type="int" value="374" />
+        <e_3 type="int" value="375" />
+        <e_4 type="int" value="331" />
+        <e_5 type="int" value="287" />
+        <e_6 type="int" value="289" />
+        <e_7 type="int" value="288" />
+        <e_8 type="int" value="286" />
+        <e_9 type="int" value="285" />
+        <e_10 type="int" value="292" />
+        <e_11 type="int" value="291" />
+        <e_12 type="int" value="262" />
+        <e_13 type="int" value="290" />
+        <e_14 type="int" value="299" />
+        <e_15 type="int" value="300" />
+        <e_16 type="int" value="301" />
+        <e_17 type="int" value="302" />
+        <e_18 type="int" value="303" />
+        <e_19 type="int" value="304" />
+        <e_20 type="int" value="324" />
+        <e_21 type="int" value="305" />
+        <e_22 type="int" value="306" />
+        <e_23 type="int" value="307" />
+        <e_24 type="int" value="308" />
+        <e_25 type="int" value="309" />
+        <e_26 type="int" value="310" />
+        <e_27 type="int" value="315" />
+        <e_28 type="int" value="314" />
+        <e_29 type="int" value="325" />
+        <e_30 type="int" value="319" />
+        <e_31 type="int" value="320" />
+        <e_32 type="int" value="321" />
+        <e_33 type="int" value="322" />
+        <e_34 type="int" value="323" />
+    </XmlFiles-village.xml_currency_orbs_collected>
+    <XmlFiles-village_outskirts.xml_breakables_broken type="vector" />
+    <XmlFiles-village_outskirts.xml_currency_orbs_collected type="vector" />
+    <XmlFiles-waterfall_level.xml_breakables_broken type="vector" />
+    <XmlFiles-waterfall_level.xml_currency_orbs_collected type="vector" />
+    <currency_orbs_collected type="int" value="124" />
+    <player_level type="int" value="4" />
 </save_data>

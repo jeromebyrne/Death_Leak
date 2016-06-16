@@ -30,8 +30,8 @@
                    posX ="-960" posY ="-540" width="1920" height ="1080"
                    image="Media\UI\noise_layer.png"
                    hflip="false" vflip="false"
-                   alpha="0.20"
-                   fps ="10">
+                   alpha="0.10"
+                   fps ="20">
     <frames frame1="Media\UI\noise_layer.png"
             frame2="Media\UI\noise_layer_2.png"
             frame3="Media\UI\noise_layer_3.png"
@@ -46,9 +46,9 @@
                    posX ="-960" posY ="-540" width="1920" height ="1080"
                    image="Media\UI\noise_layer.png"
                    hflip="false" vflip="false"
-                   alpha="0.24"
+                   alpha="0.15"
                   use_standard_effect="true"
-                   fps ="10">
+                   fps ="15">
     <frames frame1="Media\UI\film_frame.png"
             frame2="Media\UI\film_frame_2.png"
             frame3="Media\UI\film_frame_3.png"
