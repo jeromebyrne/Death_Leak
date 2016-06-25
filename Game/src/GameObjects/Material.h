@@ -16,14 +16,17 @@ public:
 	string GetRandomDestroyedSound();
 	string GetMaterialName() const { return mMaterialName; }
 
+	const vector<string> GetDebrisTextures() const { return mDebrisTextures; }
+
 	bool GetIsPierceable() const { return mPierceable; }
 
 private:
 
-	vector<string> m_particleTextures;
-	vector<string> m_damageSoundEffects;
-	vector<string> m_footstepSoundEffects;
-	vector<string> m_destroySoundEffects;
+	vector<string> mParticleTextures;
+	vector<string> mDamageSoundEffects;
+	vector<string> mFootstepSoundEffects;
+	vector<string> mDestroySoundEffects;
+	vector<string> mDebrisTextures;
 	string mMaterialName;
 
 	bool mPierceable;

@@ -18,6 +18,12 @@
      </destroysoundeffects>
 
     <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
   </material>
 
   <material name="water">
@@ -40,6 +46,12 @@
      </destroysoundeffects>
 
     <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
   </material>
 
   <material name="shallow_water">
@@ -72,6 +84,12 @@
      </destroysoundeffects>
 
     <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
   </material>
 
   <!--cave rock-->
@@ -104,6 +122,12 @@
      </destroysoundeffects>
 
     <is_pierceable value="false" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
   </material>
 
   <material name="softwood">
@@ -133,6 +157,12 @@
      </destroysoundeffects>
 
     <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
   </material>
 
   <!--Grass Ground-->
@@ -172,6 +202,12 @@
      </destroysoundeffects>
 
     <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
   </material>
 
   <!--Grass Ground TWO-->
@@ -211,6 +247,12 @@
      </destroysoundeffects>
 
     <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
   </material>
 
   <!--Metal-->
@@ -240,6 +282,12 @@
      </destroysoundeffects>
 
     <is_pierceable value="false" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
   </material>
 
   <material name="stone">
@@ -270,6 +318,12 @@
      </destroysoundeffects>
 
     <is_pierceable value="false" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
   </material>
 
   <!--Flesh-->
@@ -303,6 +357,12 @@
      </destroysoundeffects>
 
     <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
   </material>
 
   <!--male ninja-->
@@ -332,6 +392,12 @@
      </destroysoundeffects>
 
     <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
   </material>
 
   <!--rabbit-->
@@ -354,6 +420,12 @@
      </destroysoundeffects>
 
     <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
   </material>
   
   <!-- demon 1-->
@@ -387,9 +459,13 @@
      </destroysoundeffects>
 
     <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
   </material>
-
-
 
   <!--Underwater sand-->
   <material name="underwater_sand">
@@ -429,6 +505,12 @@
      </destroysoundeffects>
 
     <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
   </material>
 
   <!--cave rock-->
@@ -462,6 +544,12 @@
      </destroysoundeffects>
 
     <is_pierceable value="false" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
   </material>
 
 
@@ -494,6 +582,12 @@
      </destroysoundeffects>
 
     <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
   </material>
 
   <material name="flame_orb_large">
@@ -514,6 +608,12 @@
      </destroysoundeffects>
 
     <is_pierceable value="true" />
+    
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
   </material>
 
   <material name="crate">
@@ -549,6 +649,12 @@
       </destroysoundeffects>
 
     <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
   </material>
 
   <material name="water">
@@ -571,6 +677,12 @@
       </destroysoundeffects>
 
     <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
   </material>
 
   <material name="skype_monkey">
@@ -601,6 +713,54 @@
     </destroysoundeffects>
 
     <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
+  </material>
+
+
+  <material name="pot">
+    <particletextures>
+      <texture file="Media\crate\particle_5.png" />
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="crate\hit_1.wav" />
+      <sound file="crate\hit_2.wav" />
+      <sound file="crate\hit_3.wav" />
+      <sound file="crate\hit_4.wav" />
+      <sound file="crate\hit_5.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+      <sound file="Footstep2.wav" />
+      <sound file="Footstep3.wav" />
+      <sound file="Footstep4.wav" />
+      <sound file="Footstep5.wav" />
+      <sound file="Footstep6.wav" />
+      <sound file="Footstep7.wav" />
+      <sound file="Footstep8.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffects>
+      <sound file="crate\damage.wav"/>
+      <sound file="crate\damage_2.wav"/>
+      <sound file="crate\damage_3.wav"/>
+      <sound file="crate\damage_4.wav"/>
+      <sound file="crate\damage_5.wav"/>
+    </destroysoundeffects>
+
+    <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\objects\pot_debris_1.png"/>
+      <texture file="Media\objects\pot_debris_2.png"/>
+      <texture file="Media\objects\pot_debris_3.png"/>
+    </debris_textures>
   </material>
 
 </materials>

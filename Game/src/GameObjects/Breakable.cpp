@@ -261,19 +261,33 @@ void Breakable::SpawnDamageTransitionParticles()
 	{
 		debrisPosZ = m_position.Z - 0.01f;
 	}
-	// TODO: only do this for crates, read from material file
-	for (int i = 0; i < 4; ++i)
+
+	const auto & debrisTextures = m_material->GetDebrisTextures();
+
+	Vector3 size;
+
+	// A massive hack...
+	if (m_material->GetMaterialName() == "crate")
+	{
+		size = Vector3(160 * scaleX, 443 * scaleY, 0);
+	}
+	else
+	{
+		// pot
+		size = Vector3(310 * scaleX, 284 * scaleY, 0);
+	}
+
+	for (const auto & d : debrisTextures)
 	{
 		Debris * debris = new Debris(nullptr, Vector3(m_position.X,
 			m_position.Y + 50,
 			debrisPosZ),
-			Vector3(160 * scaleX, 443 * scaleY, 0),
+			size,
 			Vector3(30, 30, 0),
-			"Media\\crate\\debris.png",
+			d.c_str(),
 			false,
 			1.0f);
 
 		GameObjectManager::Instance()->AddGameObject(debris);
 	}
-
 } 

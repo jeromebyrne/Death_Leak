@@ -34,7 +34,7 @@
     </Damage3>
 
     <Damage4 FrameRate="0" MaxFrameRate="0" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
-      <frame filename="Media\objects\pot.png"/>
+      <frame filename="Media\objects\pot_destroyed.png"/>
     </Damage4>
 
 	</body>

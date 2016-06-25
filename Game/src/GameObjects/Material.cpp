@@ -21,7 +21,7 @@ void Material::ReadXml(TiXmlElement * element)
 	{
 		const char * texFile = XmlUtilities::ReadAttributeAsString(currentTexture, "", "file");
 
-		m_particleTextures.push_back(string(texFile));
+		mParticleTextures.push_back(string(texFile));
 
 		currentTexture = currentTexture->NextSiblingElement();
 	}
@@ -34,7 +34,7 @@ void Material::ReadXml(TiXmlElement * element)
 	{
 		const char * soundFile = XmlUtilities::ReadAttributeAsString(currentDamageSound, "", "file");
 		
-		m_damageSoundEffects.push_back(string(soundFile));
+		mDamageSoundEffects.push_back(string(soundFile));
 
 		currentDamageSound = currentDamageSound->NextSiblingElement();
 	}
@@ -47,7 +47,7 @@ void Material::ReadXml(TiXmlElement * element)
 	{
 		const char * soundFile = XmlUtilities::ReadAttributeAsString(currentFootstepSound, "", "file");
 		
-		m_footstepSoundEffects.push_back(string(soundFile));
+		mFootstepSoundEffects.push_back(string(soundFile));
 
 		currentFootstepSound = currentFootstepSound->NextSiblingElement();
 	}
@@ -59,17 +59,31 @@ void Material::ReadXml(TiXmlElement * element)
 	{
 		const char * soundFile = XmlUtilities::ReadAttributeAsString(currentDestroyedSound, "", "file");
 
-		m_destroySoundEffects.push_back(string(soundFile));
+		mDestroySoundEffects.push_back(string(soundFile));
 
 		currentDestroyedSound = currentDestroyedSound->NextSiblingElement();
 	}
 
 	mPierceable = XmlUtilities::ReadAttributeAsBool(element, "is_pierceable", "value");
+
+	// really hacky crappy code but trying to get stuff FINISHED!
+	TiXmlElement * debrisTexturesChild = destroyedSoundChild->NextSiblingElement();
+	debrisTexturesChild = debrisTexturesChild->NextSiblingElement();
+
+	TiXmlElement * currentDebrisTexture = debrisTexturesChild->FirstChildElement();
+	while (currentDebrisTexture)
+	{
+		const char * soundFile = XmlUtilities::ReadAttributeAsString(currentDebrisTexture, "", "file");
+
+		mDebrisTextures.push_back(string(soundFile));
+
+		currentDebrisTexture = currentDebrisTexture->NextSiblingElement();
+	}
 }
 
 string Material::GetRandomDamageSoundFilename()
 {
-	int soundCount = m_damageSoundEffects.size();
+	int soundCount = mDamageSoundEffects.size();
 	if (soundCount == 0)
 	{
 		LOG_ERROR("Damage sound count is 0 for material: %s", mMaterialName.c_str());
@@ -78,12 +92,12 @@ string Material::GetRandomDamageSoundFilename()
 	}
 	int randNum = rand() % soundCount;
 
-	return m_damageSoundEffects[randNum];
+	return mDamageSoundEffects[randNum];
 }
 
 string Material::GetRandomDestroyedSound()
 {
-	int soundCount = m_destroySoundEffects.size();
+	int soundCount = mDestroySoundEffects.size();
 	if (soundCount == 0)
 	{
 		LOG_ERROR("Damage sound count is 0 for material: %s", mMaterialName.c_str());
@@ -92,12 +106,12 @@ string Material::GetRandomDestroyedSound()
 	}
 	int randNum = rand() % soundCount;
 
-	return m_destroySoundEffects[randNum];
+	return mDestroySoundEffects[randNum];
 }
 
 string Material::GetRandomFootstepSoundFilename()
 {
-	int soundCount = m_footstepSoundEffects.size();
+	int soundCount = mFootstepSoundEffects.size();
 	if (soundCount == 0)
 	{
 		LOG_ERROR("Footstep sound count is 0 for material: %s", mMaterialName.c_str());
@@ -106,12 +120,12 @@ string Material::GetRandomFootstepSoundFilename()
 	}
 	int randNum = rand() % soundCount;
 
-	return m_footstepSoundEffects[randNum];
+	return mFootstepSoundEffects[randNum];
 }
 
 string Material::GetRandomParticleTexture()
 {
-	int texCount = m_particleTextures.size();
+	int texCount = mParticleTextures.size();
 	if (texCount == 0)
 	{
 		LOG_ERROR("Particle texture count is 0 for material: %s", mMaterialName.c_str());
@@ -120,5 +134,5 @@ string Material::GetRandomParticleTexture()
 	}
 	int randNum = rand() % texCount;
 
-	return m_particleTextures[randNum];
+	return mParticleTextures[randNum];
 }
