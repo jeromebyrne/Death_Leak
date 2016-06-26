@@ -280,13 +280,13 @@ void Breakable::SpawnDamageTransitionParticles()
 	for (const auto & d : debrisTextures)
 	{
 		Debris * debris = new Debris(nullptr, Vector3(m_position.X,
-			m_position.Y + 50,
-			debrisPosZ),
-			size,
-			Vector3(30, 30, 0),
-			d.c_str(),
-			false,
-			1.0f);
+									m_position.Y + 50,
+									debrisPosZ),
+									size,
+									Vector3(30, 30, 0),
+									d.c_str(),
+									false,
+									1.0f);
 
 		GameObjectManager::Instance()->AddGameObject(debris);
 	}

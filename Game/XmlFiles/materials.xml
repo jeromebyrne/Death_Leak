@@ -728,11 +728,10 @@
     </particletextures>
 
     <damagesoundeffects>
-      <sound file="crate\hit_1.wav" />
-      <sound file="crate\hit_2.wav" />
-      <sound file="crate\hit_3.wav" />
-      <sound file="crate\hit_4.wav" />
-      <sound file="crate\hit_5.wav" />
+      <sound file="pot\pot_hit.wav"/>
+      <sound file="pot\pot_hit_2.wav"/>
+      <sound file="pot\pot_hit_3.wav"/>
+      <sound file="pot\pot_hit_4.wav"/>
     </damagesoundeffects>
 
     <footstepsoundeffects>
@@ -747,11 +746,11 @@
     </footstepsoundeffects>
 
     <destroysoundeffects>
-      <sound file="crate\damage.wav"/>
-      <sound file="crate\damage_2.wav"/>
-      <sound file="crate\damage_3.wav"/>
-      <sound file="crate\damage_4.wav"/>
-      <sound file="crate\damage_5.wav"/>
+      <sound file="pot\pot_break.wav"/>
+      <sound file="pot\pot_break_2.wav"/>
+      <sound file="pot\pot_break_3.wav"/>
+      <sound file="pot\pot_break_4.wav"/>
+      <sound file="pot\pot_break_5.wav"/>
     </destroysoundeffects>
 
     <is_pierceable value="true" />
@@ -760,6 +759,14 @@
       <texture file="Media\objects\pot_debris_1.png"/>
       <texture file="Media\objects\pot_debris_2.png"/>
       <texture file="Media\objects\pot_debris_3.png"/>
+      <texture file="Media\objects\pot_debris_3.png"/>
+      <texture file="Media\objects\pot_debris_3.png"/>
+      <texture file="Media\objects\pot_debris_3.png"/>
+      <texture file="Media\objects\pot_debris_4.png"/>
+      <texture file="Media\objects\pot_debris_4.png"/>
+      <texture file="Media\objects\pot_debris_4.png"/>
+      <texture file="Media\objects\pot_debris_4.png"/>
+      <texture file="Media\objects\pot_debris_4.png"/>
     </debris_textures>
   </material>
 
