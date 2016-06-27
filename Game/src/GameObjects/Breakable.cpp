@@ -288,6 +288,8 @@ void Breakable::SpawnDamageTransitionParticles()
 									false,
 									1.0f);
 
+		debris->SetMaterial(m_material);
+
 		GameObjectManager::Instance()->AddGameObject(debris);
 	}
 } 
