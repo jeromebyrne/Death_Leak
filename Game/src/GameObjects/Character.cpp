@@ -421,6 +421,11 @@ void Character::UpdateFootsteps(SolidMovingSprite * solidObject)
 
 void Character::UpdateAnimations()
 {
+	if (dynamic_cast<Player*>(this) && m_velocity.X > 1.0f)
+	{
+		LOG_INFO("debugging");
+	}
+
 	AnimationPart * bodyPart = m_animation->GetPart("body");
 	GAME_ASSERT(bodyPart);
 
@@ -454,7 +459,7 @@ void Character::UpdateAnimations()
 			bodyPart->Animate();
 			m_texture = bodyPart->CurrentFrame(); // set the current texture
 		}
-		else if ((m_velocity.X > 1 || m_velocity.X < -1) && !m_collidingAtSideOfObject) // we are moving left or right and not colliding with the side of an object
+		else if ((m_velocity.X > 1.0f || m_velocity.X < -1.0f) && !m_collidingAtSideOfObject) // we are moving left or right and not colliding with the side of an object
 		{
 			if (mIsStrafing)
 			{

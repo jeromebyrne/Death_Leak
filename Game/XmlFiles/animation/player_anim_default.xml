@@ -1,0 +1,125 @@
+
+<data>
+	<body OffsetX="0" OffsetY="8" SizeX="40" SizeY="80">
+
+	<Still FrameRate="20" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+    <frame filename="Media\characters\player\idle_default\idle_default_000.png" />
+    <frame filename="Media\characters\player\idle_default\idle_default_001.png" />
+    <frame filename="Media\characters\player\idle_default\idle_default_002.png" />
+    <frame filename="Media\characters\player\idle_default\idle_default_003.png" />
+    <frame filename="Media\characters\player\idle_default\idle_default_004.png" />
+    <frame filename="Media\characters\player\idle_default\idle_default_005.png" />
+    <frame filename="Media\characters\player\idle_default\idle_default_006.png" />
+    <frame filename="Media\characters\player\idle_default\idle_default_007.png" />
+    <frame filename="Media\characters\player\idle_default\idle_default_008.png" />
+    <frame filename="Media\characters\player\idle_default\idle_default_009.png" />
+    <frame filename="Media\characters\player\idle_default\idle_default_010.png" />
+    <frame filename="Media\characters\player\idle_default\idle_default_011.png" />
+    <frame filename="Media\characters\player\idle_default\idle_default_012.png" />
+    <frame filename="Media\characters\player\idle_default\idle_default_013.png" />
+    <frame filename="Media\characters\player\idle_default\idle_default_014.png" />
+    <frame filename="Media\characters\player\idle_default\idle_default_015.png" />
+    <frame filename="Media\characters\player\idle_default\idle_default_016.png" />
+    <frame filename="Media\characters\player\idle_default\idle_default_017.png" />
+    <frame filename="Media\characters\player\idle_default\idle_default_018.png" />
+    <frame filename="Media\characters\player\idle_default\idle_default_019.png" />
+    </Still>
+
+		<Running FrameRate="60" MaxFrameRate="60" MinFrameRate="4" skeleton_offset_x="0" skeleton_offset_y="0">
+			<frame filename="Media\characters\player\run_default\run_default_000.png" />
+			<frame filename="Media\characters\player\run_default\run_default_001.png" />
+			<frame filename="Media\characters\player\run_default\run_default_002.png" />
+			<frame filename="Media\characters\player\run_default\run_default_003.png" />
+			<frame filename="Media\characters\player\run_default\run_default_004.png" />
+			<frame filename="Media\characters\player\run_default\run_default_005.png" />
+			<frame filename="Media\characters\player\run_default\run_default_006.png" />
+			<frame filename="Media\characters\player\run_default\run_default_007.png" />
+			<frame filename="Media\characters\player\run_default\run_default_008.png" />
+			<frame filename="Media\characters\player\run_default\run_default_009.png" />
+			<frame filename="Media\characters\player\run_default\run_default_010.png" />
+			<frame filename="Media\characters\player\run_default\run_default_011.png" />
+			<frame filename="Media\characters\player\run_default\run_default_012.png" />
+			<frame filename="Media\characters\player\run_default\run_default_013.png" />
+			<frame filename="Media\characters\player\run_default\run_default_014.png" />
+      <frame filename="Media\characters\player\run_default\run_default_015.png" />
+      <frame filename="Media\characters\player\run_default\run_default_016.png" />
+      <frame filename="Media\characters\player\run_default\run_default_017.png" />
+      <frame filename="Media\characters\player\run_default\run_default_018.png" />
+      <frame filename="Media\characters\player\run_default\run_default_019.png" />
+		</Running>
+
+
+    <Strafing FrameRate="20" MaxFrameRate="20" MinFrameRate="4" skeleton_offset_x="0" skeleton_offset_y="0">
+		<frame filename="Media\characters\player\run_default\run_default_000.png" />
+    </Strafing>
+    
+
+		<JumpingUp FrameRate="60" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\jump_up_default\jump_up_default_000.png" />
+      <frame filename="Media\characters\player\jump_up_default\jump_up_default_001.png" />
+      <frame filename="Media\characters\player\jump_up_default\jump_up_default_002.png" />
+      <frame filename="Media\characters\player\jump_up_default\jump_up_default_003.png" />
+      <frame filename="Media\characters\player\jump_up_default\jump_up_default_004.png" />
+      <frame filename="Media\characters\player\jump_up_default\jump_up_default_005.png" />
+      <frame filename="Media\characters\player\jump_up_default\jump_up_default_006.png" />
+      <frame filename="Media\characters\player\jump_up_default\jump_up_default_007.png" />
+      <frame filename="Media\characters\player\jump_up_default\jump_up_default_008.png" />
+      <frame filename="Media\characters\player\jump_up_default\jump_up_default_009.png" />
+		</JumpingUp>
+
+    <JumpingDown FrameRate="30" MaxFrameRate="30" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_000.png" />
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_001.png" />
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_002.png" />
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_003.png" />
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_004.png" />
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_005.png" />
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_006.png" />
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_007.png" />
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_008.png" />
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_009.png" />
+    </JumpingDown>
+
+    <SlidingDown FrameRate="0" MaxFrameRate="0" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\\characters\\player\\player_wall_slide.png">
+        <skeletonparts>
+          <part start_x="-15" start_y="-45" end_x="40" end_y="20"/>
+          <part start_x="-15" start_y="-45" end_x="0" end_y="-95"/>
+          <part start_x="0" start_y="-95" end_x="-15" end_y="-147"/>
+        </skeletonparts>
+      </frame>
+    </SlidingDown>
+
+	</body>
+
+	<arm OffsetX="50" OffsetY="24" SizeX="10" SizeY="10">
+		<Still FrameRate="10" MaxFrameRate="10" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+       <frame filename="Media\\characters\\player\\arm_throw_1.png" />
+       <frame filename="Media\\characters\\player\\arm_throw_2.png" />
+		</Still>
+
+    <Running FrameRate="10" MaxFrameRate="10" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\\characters\\player\\arm_throw_1.png" />
+      <frame filename="Media\\characters\\player\\arm_throw_2.png" />
+    </Running>
+
+    <Strafing FrameRate="10" MaxFrameRate="10" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\\characters\\player\\arm_throw_1.png" />
+      <frame filename="Media\\characters\\player\\arm_throw_2.png" />
+    </Strafing>
+
+    <JumpingUp FrameRate="4" MaxFrameRate="8" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+    </JumpingUp>
+
+    <JumpingDown FrameRate="10" MaxFrameRate="10" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\\characters\\player\\arm_throw_jump_1.png" />
+      <frame filename="Media\\characters\\player\\arm_throw_jump_2.png" />
+    </JumpingDown>
+
+    <SlidingDown FrameRate="10" MaxFrameRate="10" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\\characters\\player\\arm_throw_1.png" />
+      <frame filename="Media\\characters\\player\\arm_throw_2.png" />
+    </SlidingDown>
+	</arm>
+
+</data>

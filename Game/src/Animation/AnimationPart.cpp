@@ -161,9 +161,6 @@ void AnimationPart::SetSequence(string name)
 void AnimationPart::AnimateLooped()
 {
 	// Animate at the frame rate for the current sequence:
-
-    //if ( m_current_sequence != null ) AnimateLooped( m_current_sequence.FrameRate );
-
 	if(m_currentSequence != 0)
 	{
 		AnimateLooped(m_currentSequence->Framerate());
