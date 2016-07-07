@@ -14,7 +14,7 @@
 
 float Character::mLastTimePlayedDeathSFX = 0;
 static const float kMinTimeBetweenDeathSFX = 0.1f;
-static const float kJumpDelay = 0.13f;
+static const float kJumpDelay = 0.05f;
 static const int kDamageKickback = 20;
 static const float kTimeAllowedToJumpAfterLeaveSolidGround = 0.3f;
 
@@ -81,11 +81,12 @@ void Character::Update(float delta)
 	// update the base classes
 	SolidMovingSprite::Update(delta);
 
-	// Game feature - Characters face less friction if they are sprinting whilst on the side of an object
-	if (m_velocity.Y > 0 && m_collidingAtSideOfObject && mSprintActive)
+	if (m_collidingAtSideOfObject)
 	{
 		// sliding on the side of an object so reduce gravity resistance
-		mCurrentYResistance = m_resistance.Y * 3.0f; // TODO: read this from xml
+		mCurrentYResistance = m_resistance.Y * 2.0f; 
+
+		m_velocity.Y *= 0.7f;
 	}
 	else
 	{
@@ -496,9 +497,12 @@ void Character::UpdateAnimations()
 		}
 		else if(m_acceleration.Y > 0 && m_collidingAtSideOfObject) // we have jumped at the side of a wall
 		{
-			bodyPart->SetSequence("SlidingDown");
+			if (current_body_sequence_name != "SlidingDown")
+			{
+				bodyPart->SetSequence("SlidingDown");
+			}
 
-			//bodyPart->Animate();
+			bodyPart->AnimateLooped();
 			
 			m_texture = bodyPart->CurrentFrame(); // set the current texture
 		}

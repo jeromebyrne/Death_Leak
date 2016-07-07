@@ -724,10 +724,10 @@
             </timeline>
             <timeline id="21" name="torso">
                 <key id="0" spin="0">
-                    <object folder="0" file="10" x="10.944096" y="2.185396" angle="301.452061" scale_x="1.024974" scale_y="1"/>
+                    <object folder="0" file="10" x="10.944096" y="2.185396" angle="301.452061" scale_x="1.024974"/>
                 </key>
                 <key id="1" time="501" spin="0">
-                    <object folder="0" file="10" x="10.710965" y="3.157841" angle="301.452061" scale_x="0.99989" scale_y="1"/>
+                    <object folder="0" file="10" x="10.710965" y="3.157841" angle="301.452061" scale_x="0.99989"/>
                 </key>
             </timeline>
             <timeline id="22" name="head">
@@ -1622,19 +1622,19 @@
             </timeline>
             <timeline id="11" obj="0" name="bone_000" object_type="bone">
                 <key id="0" spin="0">
-                    <bone x="-97.302947" y="322.138214" angle="60.091386"/>
+                    <bone x="-5.63628" y="324.221547" angle="60.091386"/>
                 </key>
                 <key id="1" time="251" spin="0">
-                    <bone x="-97.302947" y="361.138214" angle="60.091386"/>
+                    <bone x="-5.63628" y="363.221547" angle="60.091386"/>
                 </key>
                 <key id="2" time="500" spin="0">
-                    <bone x="-97.302947" y="324.172927" angle="60.091386"/>
+                    <bone x="-5.63628" y="326.25626" angle="60.091386"/>
                 </key>
                 <key id="3" time="595" spin="0">
-                    <bone x="-97.302947" y="335.849823" angle="60.091386"/>
+                    <bone x="-5.63628" y="337.933156" angle="60.091386"/>
                 </key>
                 <key id="4" time="752" spin="0">
-                    <bone x="-97.302947" y="355.147432" angle="60.091386"/>
+                    <bone x="-5.63628" y="357.230765" angle="60.091386"/>
                 </key>
             </timeline>
             <timeline id="12" obj="1" name="bone_001" object_type="bone">
