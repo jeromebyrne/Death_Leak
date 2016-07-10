@@ -36,6 +36,10 @@ void SolidLineStrip::Initialise()
 	// update the base classes
 	SolidMovingSprite::Initialise();
 
+	// increase the bounding box size, this is for collision detection reasons when a character leaves the box
+	m_collisionBoxDimensions.Y += 150;
+	m_collisionBoxDimensions.X += 150;
+
 	// all solid line strips should be passive 
 	m_passive = true;
 }
@@ -134,6 +138,11 @@ bool SolidLineStrip::OnCollision(SolidMovingSprite * object)
 		{
 			if (!BoxHitCheck(l, object))
 			{
+				if (GameObjectManager::Instance()->GetPlayer() == object)
+				{
+					LOG_INFO("DEBUGGING");
+				}
+
 				object->SetIsOnSolidLine(false, nullptr);
 				continue;
 			}
@@ -172,7 +181,6 @@ bool SolidLineStrip::OnCollision(SolidMovingSprite * object)
 					else if (object->IsDebris() && object->VelocityY() < -0.5f)
 					{
 						object->SetVelocityY(object->VelocityY() * -0.65f);
-						//object->AccelerateY(1.0f, 1.0f);
 					}
 
 					return true;
@@ -181,6 +189,11 @@ bool SolidLineStrip::OnCollision(SolidMovingSprite * object)
 			}
 			else
 			{
+				if (GameObjectManager::Instance()->GetPlayer() == object)
+				{
+					LOG_INFO("DEBUGGING");
+				}
+
 				object->SetIsOnSolidLine(false, nullptr);
 			}
 		}

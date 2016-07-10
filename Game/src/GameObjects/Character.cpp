@@ -14,7 +14,7 @@
 
 float Character::mLastTimePlayedDeathSFX = 0;
 static const float kMinTimeBetweenDeathSFX = 0.1f;
-static const float kJumpDelay = 0.05f;
+static const float kJumpDelay = 0.10f;
 static const int kDamageKickback = 20;
 static const float kTimeAllowedToJumpAfterLeaveSolidGround = 0.3f;
 
@@ -51,7 +51,8 @@ Character::Character(float x, float y, float z, float width, float height, float
 	mCurrentSolidLineDroppingDownThroughId(0),
 	mIsStrafing(false),
 	mStrafeDirectionX(1.0f),
-	mTimeOnSolidSurface(0.0f)
+	mTimeOnSolidSurface(0.0f),
+	mIsDucking(false)
 {
 	mProjectileFilePath = "Media/knife.png";
 	mProjectileImpactFilePath = "Media/knife_impact.png";
@@ -118,6 +119,13 @@ void Character::Update(float delta)
 	{
 		mIsMidAirMovingUp = false;
 		mIsMidAirMovingDown = false;
+	}
+
+	if (mIsMidAirMovingUp ||
+		mIsMidAirMovingDown)
+	{
+		// can't be ducking if in mid air
+		SetDucking(false);
 	}
 
 	if (!GetWaterIsDeep())
@@ -422,11 +430,6 @@ void Character::UpdateFootsteps(SolidMovingSprite * solidObject)
 
 void Character::UpdateAnimations()
 {
-	if (dynamic_cast<Player*>(this) && m_velocity.X > 1.0f)
-	{
-		LOG_INFO("debugging");
-	}
-
 	AnimationPart * bodyPart = m_animation->GetPart("body");
 	GAME_ASSERT(bodyPart);
 
@@ -434,7 +437,17 @@ void Character::UpdateAnimations()
 	{
 		string current_body_sequence_name = bodyPart->CurrentSequence()->Name();
 
-		if(mIsMidAirMovingDown) // we are accelerating vertically and not on top of another object
+		if (mIsDucking)
+		{
+			if (current_body_sequence_name != "Duck")
+			{
+				bodyPart->SetSequence("Duck");
+			}
+
+			bodyPart->Animate();
+			m_texture = bodyPart->CurrentFrame(); // set the current texture
+		}
+		else if (mIsMidAirMovingDown) // we are accelerating vertically and not on top of another object
 		{
 			if (Timing::Instance()->GetTotalTimeSeconds() > mMidAirMovingDownStartTime + kJumpDelay)
 			{
@@ -446,19 +459,20 @@ void Character::UpdateAnimations()
 
 			bodyPart->Animate();
 			m_texture = bodyPart->CurrentFrame(); // set the current texture
+
+			mWasDucking = false;
 		}
 		else if (mIsMidAirMovingUp)
 		{
-			if (Timing::Instance()->GetTotalTimeSeconds() > mMidAirMovingUpStartTime + kJumpDelay)
+			if (current_body_sequence_name != "JumpingUp")
 			{
-				if (current_body_sequence_name != "JumpingUp")
-				{
-					bodyPart->SetSequence("JumpingUp");
-				}
+				bodyPart->SetSequence("JumpingUp");
 			}
 			
 			bodyPart->Animate();
 			m_texture = bodyPart->CurrentFrame(); // set the current texture
+
+			mWasDucking = false;
 		}
 		else if ((m_velocity.X > 1.0f || m_velocity.X < -1.0f) && !m_collidingAtSideOfObject) // we are moving left or right and not colliding with the side of an object
 		{
@@ -494,8 +508,10 @@ void Character::UpdateAnimations()
 			}
 			
 			m_texture = bodyPart->CurrentFrame(); // set the current texture
+
+			mWasDucking = false;
 		}
-		else if(m_acceleration.Y > 0 && m_collidingAtSideOfObject) // we have jumped at the side of a wall
+		else if (m_collidingAtSideOfObject && std::abs(m_velocity.Y) > 0.1f) // we have jumped at the side of a wall
 		{
 			if (current_body_sequence_name != "SlidingDown")
 			{
@@ -505,6 +521,24 @@ void Character::UpdateAnimations()
 			bodyPart->AnimateLooped();
 			
 			m_texture = bodyPart->CurrentFrame(); // set the current texture
+
+			mWasDucking = false;
+		}
+		else if (mWasDucking)
+		{
+			if (current_body_sequence_name != "DuckUp")
+			{
+				bodyPart->SetSequence("DuckUp");
+			}
+
+			bodyPart->Animate();
+
+			m_texture = bodyPart->CurrentFrame(); // set the current texture
+
+			if (bodyPart->IsFinished())
+			{
+				mWasDucking = false;
+			}
 		}
 		else
 		{
@@ -516,6 +550,8 @@ void Character::UpdateAnimations()
 			bodyPart->AnimateLooped();
 			
 			m_texture = bodyPart->CurrentFrame(); // set the current texture
+
+			mWasDucking = false;
 		}
 
 		// update the arm
@@ -1084,4 +1120,15 @@ void Character::Teleport(float posX, float posY, bool showParticles)
 			spawnSpreadX * 1.4f,
 			spawnSpreadY * 1.0f);
 	}
+}
+
+void Character::SetDucking(bool value)
+{ 
+	if (mIsDucking == true && value == false)
+	{
+		// come back up
+		mWasDucking = true;
+	}
+
+	mIsDucking = value;
 }

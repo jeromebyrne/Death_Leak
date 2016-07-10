@@ -398,7 +398,22 @@ void SolidMovingSprite::OnDamage(GameObject * damageDealer, float damageAmount, 
 
 bool SolidMovingSprite::IsOnSolidSurface()
 {
-	return IsOnGround() || GetIsCollidingOnTopOfObject() || IsOnSolidLine();
+	if (IsOnSolidLine())
+	{
+		return true;
+	}
+
+	if (IsOnGround())
+	{
+		return true;
+	}
+
+	if (GetIsCollidingOnTopOfObject())
+	{
+		return true;
+	}
+	
+	return false;
 }
 
 void SolidMovingSprite::SetIsOnSolidLine(bool value, SolidLineStrip * lineStrip)

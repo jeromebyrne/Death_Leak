@@ -52,6 +52,8 @@ public:
 
 	void Teleport(float posX, float posY, bool showParticles);
 
+	void SetDucking(bool value);
+
 protected:
 
 	void UpdateWaterWadeSFX();
@@ -95,6 +97,8 @@ protected:
 	unsigned int mCurrentSolidLineDroppingDownThroughId;
 	bool mIsStrafing;
 	float mStrafeDirectionX;
+	bool mIsDucking;
+	bool mWasDucking;
 };
 
 #endif
