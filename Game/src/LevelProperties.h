@@ -18,6 +18,8 @@ public:
 	Vector2 GetTargetOffset() const { return mTargetOffset; }
 	Vector2 GetOriginalTargetOffset() const { return mOriginalTargetOffset; }
 	void SetTargetOffset(Vector2 offset) { mTargetOffset = offset; }
+	bool ShouldFollowX() const { return mFollowX; }
+	bool ShouldFollowY() const { return mFollowY; }
 
 private:
 
@@ -27,12 +29,16 @@ private:
 	Vector2 mTargetOffset;
 	Vector2 mOriginalTargetOffset;
 	Vector2 mTargetLag;
+	Vector2 mInitialCamPos;
 
 	string mLevelMusic;
 	float mMusicLength;
 	float mMusicInitialDelay;
 	float mMusicTimeBetween;
 	bool mAllowWeather;
+
+	bool mFollowX;
+	bool mFollowY;
 };
 
 #endif

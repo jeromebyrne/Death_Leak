@@ -197,6 +197,31 @@
       <playsoundeffect sound="UI\\click.mp3"/>
     </actionspressdown>
   </button>
+
+  <button name="37_level_test"
+          process_input="true"
+          posX ="-800" posY ="-500" width="240" height ="135"
+          image="Media\UI\level_edit\level_5_blur.png"
+          image_focus="Media\UI\level_edit\level_5.png"
+          image_click="Media\UI\level_edit\level_5.png"
+          hflip="false" vflip="false"
+          alpha="1.0"
+          use_standard_effect="true">
+    <actionspressup>
+      <fadeout time="150"/>
+      <popui ui="level_select_edit" />
+      <pushui ui="gameloading" />
+      <fadein time="150"/>
+      <stopallsounds />
+      <leveledit level="XmlFiles\levels\test_level.xml" />
+      <popui ui="gameloading" />
+      <pushui ui="level_edit_hud" />
+    </actionspressup>
+
+    <actionspressdown>
+      <playsoundeffect sound="UI\\click.mp3"/>
+    </actionspressdown>
+  </button>
   
   
   

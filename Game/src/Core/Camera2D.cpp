@@ -15,7 +15,9 @@ Camera2D::Camera2D(int screenWidth, int screenHeight, float x, float y, float z)
 	mShakeStartTime(0.0f),
 	mCurrentShakeDuration(0.0f),
 	mTargetObject(nullptr),
-	mIsOverrideDirection(false)
+	mIsOverrideDirection(false),
+	mFollowX(true),
+	mFollowY(true)
 {
 	// Initialize the world matrix
     D3DXMatrixIdentity( &m_world );
@@ -277,7 +279,7 @@ void Camera2D::FollowTargetObjectWithLag(bool forceUpdate, float overrideLagX, f
 		return;
 	}
 
-	if (UpdateBoundsX(mTargetObject) || forceUpdate)
+	if ((mFollowX && UpdateBoundsX(mTargetObject)) || forceUpdate)
 	{
 		// get the x and y distance between the camera and the object
 		float distanceX = 0.0f;
@@ -319,7 +321,7 @@ void Camera2D::FollowTargetObjectWithLag(bool forceUpdate, float overrideLagX, f
 		m_position.X -= distanceX / xLag;
 	}
 
-	if (UpdateBoundsY(mTargetObject) || forceUpdate)
+	if ((mFollowY && UpdateBoundsY(mTargetObject)) || forceUpdate)
 	{
 		float yLag = mTargetLag.Y;
 

@@ -42,8 +42,15 @@ public:
 
 	inline void FollowObjectsOrigin(GameObject * object)
 	{
-		m_position.X = object->X();
-		m_position.Y = object->Y();
+		if (mFollowX)
+		{
+			m_position.X = object->X();
+		}
+
+		if (mFollowY)
+		{
+			m_position.Y = object->Y();
+		}
 	}
 
 	void SetTargetObject(MovingSprite * target) { mTargetObject = target; }
@@ -62,6 +69,7 @@ public:
 	{
 		return m_width;
 	}
+
 	inline float ViewHeight()
 	{
 		return m_height;
@@ -93,6 +101,10 @@ public:
 	float GetLeftLevelBounds() const { return mBoundsTopLeft.X; }
 
 	float GetRightLevelBounds() const { return mBoundsBottomRight.X; }
+
+	void SetShouldFollowX(bool value) { mFollowX = value; }
+
+	void SetShouldFollowY(bool value) { mFollowY = value; }
 
 private:
 
@@ -130,6 +142,9 @@ private:
 
 	bool mIsOverrideDirection;
 	Vector2 mOverrideDirection;
+
+	bool mFollowX;
+	bool mFollowY;
 };
 
 #endif

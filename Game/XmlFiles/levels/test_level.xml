@@ -1,0 +1,179 @@
+<level audio="">
+    <LevelProperties>
+        <camera_properties posx="0.000000" posy="300.000000" zoom_in_percent="1.000000" xOffset="200.000000" yOffset="200.000000" xLag="15.000000" yLag="1.000000" followx="true" followy="false" />
+        <level_bounds left="-10000.000000" right="17300.000000" top="500.000000" bottom="-50.000000" />
+        <music file="music\japanese2.mp3" initial_delay="20.000000" length="96.000000" time_between="120.000000" />
+        <weather_properties allow_weather="true" />
+    </LevelProperties>
+    <Player id="1" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="50.000000" y="201.301453" x="-63.448120" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="259.568695" width="205.158539" native="false" repeatX="false" repeatY="false" />
+        <material value="maleninja" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="40.000000" rand_init_step="1" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="true" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\animation\player_anim_default.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="1.400000" x="0.880000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="6.000000" />
+        <applygravity value="true" />
+        <collisionboxdimensions z="0.000000" y="253.312698" x="151.987610" offsetX="0.000000" offsetY="0.000000" />
+        <passive value="false" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+        <maxjumpspeed value="25" />
+        <xaccelrate value="1" />
+        <projectileoffsetx value="40" />
+        <projectileoffsety value="0" />
+    </Player>
+    <Sprite id="2" parallax_x="0.100000" parallax_y="1.000000" level_edit_locked="true" updateable="true">
+        <position z="99999.000000" y="500.048096" x="0.000000" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="324.000000" width="339.000000" native="true" repeatX="false" repeatY="false" />
+        <material value="grassground" />
+        <sine_wave_props active="true" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <alpha value="1.000000" />
+        <effect name="effectlightetxture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\Ambient\moon.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+    </Sprite>
+    <Sprite id="3" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+        <position z="101.900002" y="4.200989" x="-153.277832" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="512.000000" width="4096.000000" native="false" repeatX="true" repeatY="false" />
+        <material value="grassground" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\ground\village_ground.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+    </Sprite>
+    <Sprite id="4" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+        <position z="101.900002" y="1224.334961" x="-4122.807617" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="512.000000" width="4096.000000" native="false" repeatX="true" repeatY="false" />
+        <material value="grassground" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\ground\village_ground.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+    </Sprite>
+    <SolidLineStrip id="5" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="3.000000" y="218.133972" x="-301.867126" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="1.000000" height="876.266846" width="12672.601563" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="1.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="0.000000" x="0.000000" />
+        <applygravity value="true" />
+        <collisionboxdimensions z="0.000000" y="550.000000" x="12242.915039" offsetX="289.843262" offsetY="-238.133423" />
+        <passive value="true" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+        <points>
+            <point x="-5756.614258" y="-206.181824" />
+            <point x="-16.927917" y="-186.545471" />
+            <point x="104.075195" y="-320.899475" />
+            <point x="222.570557" y="-179.137756" />
+            <point x="416.175598" y="-155.367371" />
+            <point x="474.357422" y="-223.577942" />
+            <point x="582.696045" y="-257.683167" />
+            <point x="711.097290" y="-206.008545" />
+            <point x="859.561157" y="-184.305176" />
+            <point x="935.799438" y="-271.118591" />
+            <point x="1034.106689" y="-306.257324" />
+            <point x="1153.354248" y="-185.511963" />
+            <point x="6336.300781" y="-166.909058" />
+        </points>
+        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="false" />
+    </SolidLineStrip>
+    <SolidMovingSprite id="6" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="51.000000" y="353.224884" x="-765.893372" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="575.000000" width="810.000000" native="true" repeatX="false" repeatY="false" />
+        <material value="grassground" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\objects\wall.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="2.000000" x="0.950000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="380.141724" x="689.051758" offsetX="0.000000" offsetY="-60.000000" />
+        <passive value="true" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="false" />
+    </SolidMovingSprite>
+    <Sprite id="7" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+        <position z="101.900002" y="3.253601" x="-4069.467041" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="512.000000" width="4096.000000" native="false" repeatX="true" repeatY="false" />
+        <material value="grassground" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\ground\village_ground.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+    </Sprite>
+    <SolidLineStrip id="10" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="3.000000" y="460.000000" x="-743.448120" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="1.000000" height="564.325378" width="734.294678" native="false" repeatX="false" repeatY="false" />
+        <material value="" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="1.000000" x="1.000000" />
+        <maxvelocity z="0.000000" y="0.000000" x="0.000000" />
+        <applygravity value="true" />
+        <collisionboxdimensions z="0.000000" y="400.000000" x="701.191284" offsetX="-16.551697" offsetY="82.162689" />
+        <passive value="true" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+        <points>
+            <point x="-367.147339" y="26.354065" />
+            <point x="-268.840088" y="111.100464" />
+            <point x="-173.542297" y="97.665039" />
+            <point x="-18.056396" y="137.971313" />
+            <point x="133.416992" y="75.961731" />
+            <point x="246.771240" y="119.368408" />
+            <point x="334.043945" y="53.224854" />
+        </points>
+        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="false" />
+    </SolidLineStrip>
+</level>
