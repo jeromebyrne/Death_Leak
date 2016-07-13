@@ -94,6 +94,8 @@ public:
 
 	void DoSmallShake();
 
+	void DoMediumShake();
+
 	void DoBigShake();
 
 	void SetOverrideDirection(bool shouldOverride, Vector2 direction) { mIsOverrideDirection = shouldOverride; mOverrideDirection = direction; }

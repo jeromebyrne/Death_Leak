@@ -412,6 +412,11 @@ void Camera2D::DoSmallShake()
 	DoShake(10.0f, 0.16f);
 }
 
+void Camera2D::DoMediumShake()
+{
+	DoShake(15.0f, 0.30f);
+}
+
 void Camera2D::DoBigShake()
 {
 	DoShake(60.0f, 0.45f);

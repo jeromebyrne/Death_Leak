@@ -54,6 +54,8 @@ public:
 
 	void SetDucking(bool value);
 
+	bool JustFellFromLargeDistance() const { return mJustfellFromLargeDistance; }
+
 protected:
 
 	void UpdateWaterWadeSFX();
@@ -99,6 +101,9 @@ protected:
 	float mStrafeDirectionX;
 	bool mIsDucking;
 	bool mWasDucking;
+	float mHighestPointWhileInAir;
+	bool mJustFellFromDistance;
+	bool mJustfellFromLargeDistance;
 };
 
 #endif

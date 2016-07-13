@@ -968,7 +968,8 @@ void GameObjectManager::ProcessGamePad()
 	// can't move left or right whilst moving up the side of an object
 	// this helps the player latch on better
 	bool applySprint = false;
-	if (!isDucking &&
+	if (!m_player->JustFellFromLargeDistance() &&
+		!isDucking &&
 		(!m_player->GetIsCollidingAtObjectSide() || m_player->GetVelocity().Y <= 0.1))
 	{
 		if (pad_state.Gamepad.sThumbLX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE )
@@ -995,7 +996,8 @@ void GameObjectManager::ProcessGamePad()
 	static float jumpPowerPercent = 0.0f;
 	static bool stoppedPressingJump = true;
 
-	if (pad_state.Gamepad.wButtons & XINPUT_GAMEPAD_A)
+	if (!m_player->JustFellFromLargeDistance() &&
+		pad_state.Gamepad.wButtons & XINPUT_GAMEPAD_A)
 	{
 		if (stoppedPressingJump)
 		{
@@ -1055,7 +1057,8 @@ void GameObjectManager::ProcessGamePad()
 	}
 
 	static bool pressingFire = false;
-	if (pad_state.Gamepad.wButtons & XINPUT_GAMEPAD_X)
+	if (!m_player->JustFellFromLargeDistance() &&
+		pad_state.Gamepad.wButtons & XINPUT_GAMEPAD_X)
 	{
 		pressingFire = true;
 	}
@@ -1080,7 +1083,8 @@ void GameObjectManager::ProcessGamePad()
 
 	static bool pressingStrafeLeft = false;
 
-	if (pad_state.Gamepad.bLeftTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
+	if (!m_player->JustFellFromLargeDistance() &&
+		pad_state.Gamepad.bLeftTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
 	{
 		if (!pressingStrafeLeft)
 		{
@@ -1109,7 +1113,8 @@ void GameObjectManager::ProcessGamePad()
 
 	static bool pressingStrafeRight = false;
 
-	if (pad_state.Gamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
+	if (!m_player->JustFellFromLargeDistance() &&
+		pad_state.Gamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
 	{
 		if (!pressingStrafeRight)
 		{
@@ -1143,7 +1148,8 @@ void GameObjectManager::ProcessGamePad()
 	// melee ============================
 
 	static bool pressing_melee = false;
-	if (pad_state.Gamepad.wButtons & XINPUT_GAMEPAD_B)
+	if (!m_player->JustFellFromLargeDistance() &&
+		pad_state.Gamepad.wButtons & XINPUT_GAMEPAD_B)
 	{
 		pressing_melee = true;
 	}
@@ -1159,7 +1165,9 @@ void GameObjectManager::ProcessGamePad()
 	// Bomb ============================
 
 	static bool pressing_bomb = false;
-	if (pad_state.Gamepad.wButtons & XINPUT_GAMEPAD_Y)
+	if (!m_player->JustFellFromLargeDistance() &&
+		!m_player->GetIsCollidingAtObjectSide() &&
+		pad_state.Gamepad.wButtons & XINPUT_GAMEPAD_Y)
 	{
 		pressing_bomb = true;
 	}
@@ -1212,7 +1220,7 @@ void GameObjectManager::ProcessGamePad()
 			LOG_INFO("This is a really bad way to do this. Come back later.");
 			if (Timing::Instance()->GetTimeModifier() == 1.0f)
 			{
-				Timing::Instance()->SetTimeModifier(3.5f);
+				Timing::Instance()->SetTimeModifier(0.5f);
 			}
 			else
 			{

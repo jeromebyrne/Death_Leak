@@ -17,6 +17,8 @@ static const float kMinTimeBetweenDeathSFX = 0.1f;
 static const float kJumpDelay = 0.10f;
 static const int kDamageKickback = 20;
 static const float kTimeAllowedToJumpAfterLeaveSolidGround = 0.3f;
+static const float kSmallDropDistance = 200.0f;
+static const float kLargeDropDistance = 600.0f;
 
 Character::Character(float x, float y, float z, float width, float height, float breadth): 
 	SolidMovingSprite(x,y,z,width, height, breadth),
@@ -52,7 +54,10 @@ Character::Character(float x, float y, float z, float width, float height, float
 	mIsStrafing(false),
 	mStrafeDirectionX(1.0f),
 	mTimeOnSolidSurface(0.0f),
-	mIsDucking(false)
+	mIsDucking(false),
+	mHighestPointWhileInAir(0.0f),
+	mJustFellFromDistance(false),
+	mJustfellFromLargeDistance(false)
 {
 	mProjectileFilePath = "Media/knife.png";
 	mProjectileImpactFilePath = "Media/knife_impact.png";
@@ -124,6 +129,11 @@ void Character::Update(float delta)
 	if (mIsMidAirMovingUp ||
 		mIsMidAirMovingDown)
 	{
+		if (mHighestPointWhileInAir < m_position.Y)
+		{
+			mHighestPointWhileInAir = m_position.Y;
+		}
+
 		// can't be ducking if in mid air
 		SetDucking(false);
 	}
@@ -135,6 +145,29 @@ void Character::Update(float delta)
 
 	if (IsOnSolidSurface())
 	{
+		if (mHighestPointWhileInAir != m_position.Y)
+		{
+			float dropDistance = mHighestPointWhileInAir - m_position.Y;
+
+			if (dropDistance > kSmallDropDistance && dropDistance < kLargeDropDistance)
+			{
+				mJustFellFromDistance = true;
+				mJustfellFromLargeDistance = false;
+			}
+			else if (dropDistance >= kLargeDropDistance)
+			{
+				mJustFellFromDistance = false;
+				mJustfellFromLargeDistance = true;
+
+				StopXAccelerating();
+
+				Camera2D::GetInstance()->DoMediumShake();
+
+				// TODO: do drop sound effect (What if it's a non human NPC?)
+			}
+
+			mHighestPointWhileInAir = m_position.Y;
+		}
 		// reset this because we're on solid ground
 		mTimeOnSolidSurface += delta;
 		if (mCurrentJumpsBeforeLand > 0)
@@ -437,6 +470,30 @@ void Character::UpdateAnimations()
 	{
 		string current_body_sequence_name = bodyPart->CurrentSequence()->Name();
 
+		if (mJustfellFromLargeDistance)
+		{
+			// if we fell from a large distance the nothing else matters.
+			// We pause all character movement and wait until the recover animation is finished
+
+			if (current_body_sequence_name != "ImpactLandHard")
+			{
+				bodyPart->SetSequence("ImpactLandHard");
+			}
+
+			bodyPart->Animate();
+
+			m_texture = bodyPart->CurrentFrame(); // set the current texture
+
+			if (bodyPart->IsFinished())
+			{
+				mJustfellFromLargeDistance = false;
+			}
+
+			m_mainBodyTexture = m_texture;
+
+			return;
+		}
+
 		if (mIsDucking)
 		{
 			if (current_body_sequence_name != "Duck")
@@ -446,6 +503,8 @@ void Character::UpdateAnimations()
 
 			bodyPart->Animate();
 			m_texture = bodyPart->CurrentFrame(); // set the current texture
+
+			mJustFellFromDistance = false;
 		}
 		else if (mIsMidAirMovingDown) // we are accelerating vertically and not on top of another object
 		{
@@ -461,6 +520,7 @@ void Character::UpdateAnimations()
 			m_texture = bodyPart->CurrentFrame(); // set the current texture
 
 			mWasDucking = false;
+			mJustFellFromDistance = false;
 		}
 		else if (mIsMidAirMovingUp)
 		{
@@ -473,6 +533,7 @@ void Character::UpdateAnimations()
 			m_texture = bodyPart->CurrentFrame(); // set the current texture
 
 			mWasDucking = false;
+			mJustFellFromDistance = false;
 		}
 		else if (m_collidingAtSideOfObject) // we have jumped at the side of a wall
 		{
@@ -486,6 +547,7 @@ void Character::UpdateAnimations()
 			m_texture = bodyPart->CurrentFrame(); // set the current texture
 
 			mWasDucking = false;
+			mJustFellFromDistance = false;
 		}
 		else if ((m_velocity.X > 1.0f || m_velocity.X < -1.0f) && !m_collidingAtSideOfObject) // we are moving left or right and not colliding with the side of an object
 		{
@@ -523,6 +585,7 @@ void Character::UpdateAnimations()
 			m_texture = bodyPart->CurrentFrame(); // set the current texture
 
 			mWasDucking = false;
+			mJustFellFromDistance = false;
 		}
 		else if (mWasDucking)
 		{
@@ -539,17 +602,38 @@ void Character::UpdateAnimations()
 			{
 				mWasDucking = false;
 			}
+
+			mJustFellFromDistance = false;
 		}
 		else
 		{
-			if(current_body_sequence_name != "Still")
+			if (mJustFellFromDistance)
 			{
-				bodyPart->SetSequence("Still");
-			}
+				if (current_body_sequence_name != "ImpactLandSoft")
+				{
+					bodyPart->SetSequence("ImpactLandSoft");
+				}
 
-			bodyPart->AnimateLooped();
-			
-			m_texture = bodyPart->CurrentFrame(); // set the current texture
+				bodyPart->Animate();
+
+				m_texture = bodyPart->CurrentFrame(); // set the current texture
+
+				if (bodyPart->IsFinished())
+				{
+					mJustFellFromDistance = false;
+				}
+			}
+			else
+			{
+				if (current_body_sequence_name != "Still")
+				{
+					bodyPart->SetSequence("Still");
+				}
+
+				bodyPart->AnimateLooped();
+
+				m_texture = bodyPart->CurrentFrame(); // set the current texture
+			}
 
 			mWasDucking = false;
 		}
