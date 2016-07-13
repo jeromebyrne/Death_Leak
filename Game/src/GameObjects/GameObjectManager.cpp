@@ -968,7 +968,8 @@ void GameObjectManager::ProcessGamePad()
 	// can't move left or right whilst moving up the side of an object
 	// this helps the player latch on better
 	bool applySprint = false;
-	if (!isDucking && (!m_player->GetIsCollidingAtObjectSide() || m_player->GetVelocity().Y <= 0.1))
+	if (!isDucking &&
+		(!m_player->GetIsCollidingAtObjectSide() || m_player->GetVelocity().Y <= 0.1))
 	{
 		if (pad_state.Gamepad.sThumbLX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE )
 		{

@@ -118,6 +118,11 @@ void Camera2D::FollowObjectWithOffset(GameObject * object)
 
 bool Camera2D::UpdateBoundsX(GameObject * object)
 {
+	if (!mFollowX)
+	{
+		return false;
+	}
+
 	float targetXLeft = (object->X() - mTargetOffset.X * mZoomInPercent);
 	float targetXRight = (object->X() + mTargetOffset.X * mZoomInPercent);
 
@@ -135,6 +140,11 @@ bool Camera2D::UpdateBoundsX(GameObject * object)
 
 bool Camera2D::UpdateBoundsY(GameObject * target)
 {	
+	if (!mFollowY)
+	{
+		return false;
+	}
+
 	float targetYTop = (target->Y() + mTargetOffset.Y * mZoomInPercent);
 	float targetYBottom = (target->Y() - mTargetOffset.Y * mZoomInPercent);
 

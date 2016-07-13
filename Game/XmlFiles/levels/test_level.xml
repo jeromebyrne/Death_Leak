@@ -75,7 +75,7 @@
     </Sprite>
     <SolidLineStrip id="5" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="218.133972" x="-301.867126" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="1.000000" height="876.266846" width="12672.601563" native="false" repeatX="false" repeatY="false" />
+        <dimensions breadth="1.000000" height="761.549194" width="12672.601563" native="false" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
@@ -89,22 +89,16 @@
         <resistance z="0.000000" y="1.000000" x="1.000000" />
         <maxvelocity z="0.000000" y="0.000000" x="0.000000" />
         <applygravity value="true" />
-        <collisionboxdimensions z="0.000000" y="550.000000" x="12242.915039" offsetX="289.843262" offsetY="-238.133423" />
+        <collisionboxdimensions z="0.000000" y="400.000000" x="12092.915039" offsetX="289.843262" offsetY="-180.774597" />
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
         <points>
             <point x="-5756.614258" y="-206.181824" />
             <point x="-16.927917" y="-186.545471" />
-            <point x="104.075195" y="-320.899475" />
             <point x="222.570557" y="-179.137756" />
             <point x="416.175598" y="-155.367371" />
-            <point x="474.357422" y="-223.577942" />
-            <point x="582.696045" y="-257.683167" />
-            <point x="711.097290" y="-206.008545" />
             <point x="859.561157" y="-184.305176" />
-            <point x="935.799438" y="-271.118591" />
-            <point x="1034.106689" y="-306.257324" />
             <point x="1153.354248" y="-185.511963" />
             <point x="6336.300781" y="-166.909058" />
         </points>
@@ -145,7 +139,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <SolidLineStrip id="10" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidLineStrip id="8" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="460.000000" x="-743.448120" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="564.325378" width="734.294678" native="false" repeatX="false" repeatY="false" />
         <material value="" />
@@ -161,7 +155,7 @@
         <resistance z="0.000000" y="1.000000" x="1.000000" />
         <maxvelocity z="0.000000" y="0.000000" x="0.000000" />
         <applygravity value="true" />
-        <collisionboxdimensions z="0.000000" y="400.000000" x="701.191284" offsetX="-16.551697" offsetY="82.162689" />
+        <collisionboxdimensions z="0.000000" y="550.000000" x="851.191284" offsetX="-16.551697" offsetY="82.162689" />
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />

@@ -474,6 +474,19 @@ void Character::UpdateAnimations()
 
 			mWasDucking = false;
 		}
+		else if (m_collidingAtSideOfObject) // we have jumped at the side of a wall
+		{
+			if (current_body_sequence_name != "SlidingDown")
+			{
+				bodyPart->SetSequence("SlidingDown");
+			}
+
+			bodyPart->AnimateLooped();
+
+			m_texture = bodyPart->CurrentFrame(); // set the current texture
+
+			mWasDucking = false;
+		}
 		else if ((m_velocity.X > 1.0f || m_velocity.X < -1.0f) && !m_collidingAtSideOfObject) // we are moving left or right and not colliding with the side of an object
 		{
 			if (mIsStrafing)
@@ -506,19 +519,6 @@ void Character::UpdateAnimations()
 					bodyPart->CurrentSequence()->SetFrameRate(animFramerate);
 				}
 			}
-			
-			m_texture = bodyPart->CurrentFrame(); // set the current texture
-
-			mWasDucking = false;
-		}
-		else if (m_collidingAtSideOfObject && std::abs(m_velocity.Y) > 0.1f) // we have jumped at the side of a wall
-		{
-			if (current_body_sequence_name != "SlidingDown")
-			{
-				bodyPart->SetSequence("SlidingDown");
-			}
-
-			bodyPart->AnimateLooped();
 			
 			m_texture = bodyPart->CurrentFrame(); // set the current texture
 
@@ -586,6 +586,11 @@ void Character::UpdateAnimations()
 
 bool Character::Jump(float percent)
 {
+	if (m_collidingAtSideOfObject)
+	{
+		return false;
+	}
+
 	if (mCurrentJumpsBeforeLand >= mMaxJumpsAllowed &&
 		!(WasInWaterLastFrame() && GetWaterIsDeep()))
 	{
@@ -671,6 +676,12 @@ void Character::WallJump(float percent)
 
 void Character::AccelerateX(float directionX)
 {
+	if (GetIsCollidingAtObjectSide()  && m_direction.X != directionX)
+	{
+		// don't allow accelerating into the side of solid objects
+		return;
+	}
+
 	float deepWaterModifier = (WasInWaterLastFrame() && GetWaterIsDeep()) ? 0.5f : 1.0f;
 
 	float strafeModifier = mIsStrafing ? 0.4f : 1.0f;
