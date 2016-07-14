@@ -951,25 +951,25 @@ void GameObjectManager::ProcessGamePad()
 		mCamYShouldOffset = false;
 	}
 	
-	bool isDucking = false;
+	bool isCrouching = false;
 
 	if (pad_state.Gamepad.sThumbLY < -(XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE * 2.5f) &&
 		m_player->IsOnSolidSurface() &&
 		!m_player->IsStrafing() &&
 		!m_player->GetIsCollidingAtObjectSide())
 	{
-		isDucking = true;
+		isCrouching = true;
 		m_player->StopXAccelerating();
 	}
 
-	m_player->SetDucking(isDucking);
+	m_player->SetCrouching(isCrouching);
 
 	// LEFT / RIGHT ======================
 	// can't move left or right whilst moving up the side of an object
 	// this helps the player latch on better
 	bool applySprint = false;
 	if (!m_player->JustFellFromLargeDistance() &&
-		!isDucking &&
+		!isCrouching &&
 		(!m_player->GetIsCollidingAtObjectSide() || m_player->GetVelocity().Y <= 0.1))
 	{
 		if (pad_state.Gamepad.sThumbLX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE )
@@ -1001,7 +1001,10 @@ void GameObjectManager::ProcessGamePad()
 	{
 		if (stoppedPressingJump)
 		{
-			if (pad_state.Gamepad.sThumbLY < -30000 && m_player->IsOnSolidSurface())
+			if (pad_state.Gamepad.sThumbLY < -30000 && 
+				m_player->IsOnSolidLine() &&
+				m_player->GetCurrentSolidLineStrip() &&
+				m_player->GetCurrentSolidLineStrip()->GetCanDropDown())
 			{
 				m_player->dropDown();
 			}
@@ -1034,7 +1037,7 @@ void GameObjectManager::ProcessGamePad()
 		aimDirection.Normalise();
 	}
 
-	if (isDucking)
+	if (isCrouching)
 	{
 		aimDirection.X = m_player->DirectionX();
 		aimDirection.Y = 0;

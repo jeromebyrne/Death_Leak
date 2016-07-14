@@ -54,7 +54,8 @@ Character::Character(float x, float y, float z, float width, float height, float
 	mIsStrafing(false),
 	mStrafeDirectionX(1.0f),
 	mTimeOnSolidSurface(0.0f),
-	mIsDucking(false),
+	mIsCrouching(false),
+	mIsFullyCrouched(false),
 	mHighestPointWhileInAir(0.0f),
 	mJustFellFromDistance(false),
 	mJustfellFromLargeDistance(false)
@@ -135,7 +136,7 @@ void Character::Update(float delta)
 		}
 
 		// can't be ducking if in mid air
-		SetDucking(false);
+		SetCrouching(false);
 	}
 
 	if (!GetWaterIsDeep())
@@ -162,6 +163,52 @@ void Character::Update(float delta)
 				StopXAccelerating();
 
 				Camera2D::GetInstance()->DoMediumShake();
+
+				if (IsOnSolidLine())
+				{
+					auto solidLine = GetCurrentSolidLineStrip();
+
+					if (solidLine)
+					{
+						Material * objectMaterial = solidLine->GetMaterial();
+						string particleFile = "";
+						if (objectMaterial != 0)
+						{
+							string soundfile = objectMaterial->GetRandomFootstepSoundFilename();
+							AudioManager::Instance()->PlaySoundEffect(soundfile);
+
+							particleFile = objectMaterial->GetRandomParticleTexture();
+
+							bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
+							if (!particleFile.empty())
+							{
+								ParticleEmitterManager::Instance()->CreateDirectedSpray(20,
+																						Vector3(m_position.X + (m_direction.X * 60.f), CollisionBottom(), m_position.Z - 0.1),
+																						Vector3(0, 1, 0),
+																						0.4,
+																						Vector3(1200, 720, 0),
+																						particleFile,
+																						3.0f,
+																						6.0f,
+																						0.4f,
+																						1.0f,
+																						5,
+																						10,
+																						0.8,
+																						false,
+																						0.8,
+																						1.0,
+																						1,
+																						true,
+																						15,
+																						5.0f,
+																						0.2f,
+																						0.15f,
+																						0.9f);
+							}
+						}
+					}
+				}
 
 				// TODO: do drop sound effect (What if it's a non human NPC?)
 			}
@@ -494,7 +541,7 @@ void Character::UpdateAnimations()
 			return;
 		}
 
-		if (mIsDucking)
+		if (mIsCrouching)
 		{
 			if (current_body_sequence_name != "Duck")
 			{
@@ -503,6 +550,11 @@ void Character::UpdateAnimations()
 
 			bodyPart->Animate();
 			m_texture = bodyPart->CurrentFrame(); // set the current texture
+
+			if (bodyPart->IsFinished())
+			{
+				mIsFullyCrouched = true;
+			}
 
 			mJustFellFromDistance = false;
 		}
@@ -519,7 +571,8 @@ void Character::UpdateAnimations()
 			bodyPart->Animate();
 			m_texture = bodyPart->CurrentFrame(); // set the current texture
 
-			mWasDucking = false;
+			mIsFullyCrouched = false;
+			mWasCrouching = false;
 			mJustFellFromDistance = false;
 		}
 		else if (mIsMidAirMovingUp)
@@ -532,7 +585,8 @@ void Character::UpdateAnimations()
 			bodyPart->Animate();
 			m_texture = bodyPart->CurrentFrame(); // set the current texture
 
-			mWasDucking = false;
+			mIsFullyCrouched = false;
+			mWasCrouching = false;
 			mJustFellFromDistance = false;
 		}
 		else if (m_collidingAtSideOfObject) // we have jumped at the side of a wall
@@ -546,7 +600,8 @@ void Character::UpdateAnimations()
 
 			m_texture = bodyPart->CurrentFrame(); // set the current texture
 
-			mWasDucking = false;
+			mIsFullyCrouched = false;
+			mWasCrouching = false;
 			mJustFellFromDistance = false;
 		}
 		else if ((m_velocity.X > 1.0f || m_velocity.X < -1.0f) && !m_collidingAtSideOfObject) // we are moving left or right and not colliding with the side of an object
@@ -584,10 +639,11 @@ void Character::UpdateAnimations()
 			
 			m_texture = bodyPart->CurrentFrame(); // set the current texture
 
-			mWasDucking = false;
+			mIsFullyCrouched = false;
+			mWasCrouching = false;
 			mJustFellFromDistance = false;
 		}
-		else if (mWasDucking)
+		else if (mWasCrouching)
 		{
 			if (current_body_sequence_name != "DuckUp")
 			{
@@ -600,9 +656,10 @@ void Character::UpdateAnimations()
 
 			if (bodyPart->IsFinished())
 			{
-				mWasDucking = false;
+				mWasCrouching = false;
 			}
 
+			mIsFullyCrouched = false;
 			mJustFellFromDistance = false;
 		}
 		else
@@ -635,7 +692,8 @@ void Character::UpdateAnimations()
 				m_texture = bodyPart->CurrentFrame(); // set the current texture
 			}
 
-			mWasDucking = false;
+			mIsFullyCrouched = false;
+			mWasCrouching = false;
 		}
 
 		// update the arm
@@ -714,6 +772,58 @@ bool Character::Jump(float percent)
 		mIsMidAirMovingUp = true;
 		// force the jump anim to trigger straight away by saying it happened slightly in the past
 		mMidAirMovingUpStartTime = Timing::Instance()->GetTotalTimeSeconds() - kJumpDelay;
+	}
+
+	// if we are crouching fully then we get a nice boost to our jump
+	if (mIsFullyCrouched)
+	{
+		percent *= 1.2f;
+
+		if (IsOnSolidLine())
+		{
+			auto solidLine = GetCurrentSolidLineStrip();
+
+			if (solidLine)
+			{
+				Material * objectMaterial = solidLine->GetMaterial();
+				string particleFile = "";
+				if (objectMaterial != 0)
+				{
+					string soundfile = objectMaterial->GetRandomFootstepSoundFilename();
+					AudioManager::Instance()->PlaySoundEffect(soundfile);
+
+					particleFile = objectMaterial->GetRandomParticleTexture();
+
+					bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
+					if (!particleFile.empty())
+					{
+						ParticleEmitterManager::Instance()->CreateDirectedSpray(40,
+							Vector3(m_position.X + (m_direction.X * 60.f), CollisionBottom(), m_position.Z - 0.1),
+							Vector3(0, 1, 0),
+							0.1,
+							Vector3(1200, 720, 0),
+							particleFile,
+							3.0f,
+							10.0f,
+							0.4f,
+							1.0f,
+							5,
+							10,
+							0.8,
+							false,
+							0.8,
+							1.0,
+							1,
+							true,
+							10,
+							3.0f,
+							0.0f,
+							0.15f,
+							0.7f);
+					}
+				}
+			}
+		}
 	}
 
 	m_velocity.Y = 0;
@@ -1217,13 +1327,13 @@ void Character::Teleport(float posX, float posY, bool showParticles)
 	}
 }
 
-void Character::SetDucking(bool value)
+void Character::SetCrouching(bool value)
 { 
-	if (mIsDucking == true && value == false)
+	if (mIsCrouching == true && value == false)
 	{
 		// come back up
-		mWasDucking = true;
+		mWasCrouching = true;
 	}
 
-	mIsDucking = value;
+	mIsCrouching = value;
 }

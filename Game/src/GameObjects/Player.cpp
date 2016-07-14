@@ -198,7 +198,7 @@ Projectile * Player::FireWeapon(Vector2 direction)
 
 	Vector3 pos = m_position;
 	pos.X = (direction.X > 0) ? pos.X + m_projectileOffset.X : pos.X -= m_projectileOffset.X;
-	pos.Y += mIsDucking ? m_projectileOffset.Y - 25 : m_projectileOffset.Y;
+	pos.Y += mIsCrouching ? m_projectileOffset.Y - 25 : m_projectileOffset.Y;
 	pos.Z = m_position.Z + 0.1;
 
 	if (mIsMidAirMovingUp)

@@ -52,7 +52,7 @@ public:
 
 	void Teleport(float posX, float posY, bool showParticles);
 
-	void SetDucking(bool value);
+	void SetCrouching(bool value);
 
 	bool JustFellFromLargeDistance() const { return mJustfellFromLargeDistance; }
 
@@ -99,8 +99,9 @@ protected:
 	unsigned int mCurrentSolidLineDroppingDownThroughId;
 	bool mIsStrafing;
 	float mStrafeDirectionX;
-	bool mIsDucking;
-	bool mWasDucking;
+	bool mIsCrouching;
+	bool mWasCrouching;
+	bool mIsFullyCrouched;
 	float mHighestPointWhileInAir;
 	bool mJustFellFromDistance;
 	bool mJustfellFromLargeDistance;
