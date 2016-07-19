@@ -26,7 +26,7 @@
     </Still>
 
 		<Running FrameRate="60" MaxFrameRate="60" MinFrameRate="4" skeleton_offset_x="0" skeleton_offset_y="0">
-			<frame filename="Media\characters\player\run_default\run_default_000.png" />
+			<frame filename="Media\characters\player\run_default\run_default_000.png" sfx_type="footstep" />
 			<frame filename="Media\characters\player\run_default\run_default_001.png" />
 			<frame filename="Media\characters\player\run_default\run_default_002.png" />
 			<frame filename="Media\characters\player\run_default\run_default_003.png" />
@@ -36,7 +36,7 @@
 			<frame filename="Media\characters\player\run_default\run_default_007.png" />
 			<frame filename="Media\characters\player\run_default\run_default_008.png" />
 			<frame filename="Media\characters\player\run_default\run_default_009.png" />
-			<frame filename="Media\characters\player\run_default\run_default_010.png" />
+			<frame filename="Media\characters\player\run_default\run_default_010.png" sfx_type="footstep" />
 			<frame filename="Media\characters\player\run_default\run_default_011.png" />
 			<frame filename="Media\characters\player\run_default\run_default_012.png" />
 			<frame filename="Media\characters\player\run_default\run_default_013.png" />

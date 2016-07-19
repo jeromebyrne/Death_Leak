@@ -124,7 +124,5 @@ void Rabbit::Initialise()
 
 	mCheckNPCOverlapCollisions = false;
 
-	mPlayFootsteps = false;
-
 	SetState(AIState::kGroundAnimalWander);
 }

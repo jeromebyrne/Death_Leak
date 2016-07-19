@@ -6,12 +6,6 @@
 
 class Animation
 {
-private:
-
-	map<string,AnimationPart*> m_animationParts;
-
-	void ReadXml(const char* filename);
-
 public:
 
 	Animation(const char* filename);
@@ -21,6 +15,12 @@ public:
 	void SetPartSequence(string partName, string sequenceName);
 
 	AnimationSkeleton * GetSkeletonForCurrentSequence(const char * bodyPart);
+
+private:
+
+	map<string, AnimationPart*> m_animationParts;
+
+	void ReadXml(const char* filename);
 };
 
 #endif

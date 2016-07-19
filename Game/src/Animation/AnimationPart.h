@@ -23,6 +23,8 @@ public:
 	// returns the current frame number in the current sequence
 	int FrameNumber();
 
+	bool HasSFXforCurrentFrame() const;
+
 	inline float OffsetX()
 	{
 		return m_offsetX;

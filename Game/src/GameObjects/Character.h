@@ -36,14 +36,13 @@ public:
 	virtual Projectile * FireWeapon(Vector2 direction) = 0;
 	virtual Projectile * FireBomb(Vector2 direction) = 0;
 	virtual void DoMeleeAttack();
-	void UpdateFootsteps(SolidMovingSprite * solidObject);
 	unsigned GetMaxJumpsAllowed() const { return mMaxJumpsAllowed; }
 	unsigned GetCurrentJumpsBeforeLand() const { return mCurrentJumpsBeforeLand; }
 	float GetTimeNotOnSolidSurface() const { return mTimeNotOnSolidSurface; }
 	float GetTimeOnSolidSurface() const { return mTimeOnSolidSurface; }
-	void setCurrentSolidLineDroppingDownThroughId(unsigned int value) { mCurrentSolidLineDroppingDownThroughId = value; }
-	unsigned getCurrentSolidLineDroppingDownThroughId() const { return mCurrentSolidLineDroppingDownThroughId; }
-	void dropDown();
+	void SetCurrentSolidLineDroppingDownThroughId(unsigned int value) { mCurrentSolidLineDroppingDownThroughId = value; }
+	unsigned GetCurrentSolidLineDroppingDownThroughId() const { return mCurrentSolidLineDroppingDownThroughId; }
+	void DropDown();
 
 	bool IsStrafing() const  { return mIsStrafing; }
 	void SetIsStrafing(bool value) { mIsStrafing = value; }
@@ -58,16 +57,12 @@ public:
 
 protected:
 
-	void UpdateWaterWadeSFX();
 	virtual void UpdateAnimations() override; // override sprite update animations
 	void PlayRandomWeaponFireSound();
 
 	bool m_isJumping;
 	float m_maxJumpSpeed;
-	float m_lastTimePlayedFootstep; // the last time in ms when we played a footstep sound
 	float m_lastTimePlayedWaterWadeSFX; 
-	float m_footstepTime; // the time in between each footstep
-	float m_sprintFootstepTime; // the time between each footstep when sprinting
 	float m_waterWadeSFXTime;
 	float mAccelXRate;
 	float mHealth;
@@ -86,7 +81,6 @@ protected:
 	float mLastTimePlayedDamageSound;
 	const float mDamageSoundDelayMilli;
 	float mRunAnimFramerateMultiplier;
-	bool mPlayFootsteps;
 	bool mMatchAnimFrameRateWithMovement;
 	bool mIsMidAirMovingDown;
 	bool mIsMidAirMovingUp;
@@ -105,6 +99,7 @@ protected:
 	float mHighestPointWhileInAir;
 	bool mJustFellFromDistance;
 	bool mJustfellFromLargeDistance;
+	unsigned mLastRunFramePlayed;
 };
 
 #endif

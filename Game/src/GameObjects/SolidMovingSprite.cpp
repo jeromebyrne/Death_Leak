@@ -14,7 +14,8 @@ SolidMovingSprite::SolidMovingSprite(float x, float y , float z , float width , 
 	m_collisionBoxDimensions(width, height, breadth),
 	m_passive(false), 
 	m_onTopOfOtherSolidObject(false), 
-	m_collidingAtSideOfObject(false),
+	m_collidingAtLeftSideOfObject(false),
+	m_collidingAtRightSideOfObject(false),
 	m_applyDamage(false),
 	m_applyDamageAmount(0),
 	mBouncable(false),
@@ -258,13 +259,16 @@ bool SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 		float thisBottom = this->CollisionBottom();
 	
 		// get the overlap
-		float xOverlap;
-		float yOverlap;
+		float xOverlap = 0.0f;
+		float yOverlap = 0.0f;
+
+		bool liesLeftOf = false;
 
 		// if this lies left of the other object
 		if(thisX < otherX)
 		{
 			xOverlap = otherLeft - thisRight;
+			liesLeftOf = true;
 		}
 		else // it lies right of the centre
 		{
@@ -317,7 +321,15 @@ bool SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 		if(tempXoverlap <= tempYoverlap)
 		{
 			m_position.X += xOverlap;
-			m_collidingAtSideOfObject = true; // we are colliding mainly with the side of the object
+
+			if (liesLeftOf)
+			{
+				m_collidingAtLeftSideOfObject = true;
+			}
+			else
+			{
+				m_collidingAtRightSideOfObject = true;
+			}
 
 			if (mBouncable)
 			{

@@ -70,8 +70,6 @@ void Butterfly::Initialise()
 
 	mCheckNPCOverlapCollisions = false;
 
-	mPlayFootsteps = false;
-
 	SetState(AIState::kButterflyWander);
 
 	m_applyGravity = true;

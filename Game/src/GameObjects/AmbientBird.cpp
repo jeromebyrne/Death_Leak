@@ -37,8 +37,6 @@ void AmbientBird::Initialise()
 
 	mCheckNPCOverlapCollisions = false;
 
-	mPlayFootsteps = false;
-
 	m_applyGravity = false;
 
 	if (m_position.Z > 99)

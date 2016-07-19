@@ -102,7 +102,6 @@ ID3D10ShaderResourceView* AnimationPart::CurrentFrame()
 
 int AnimationPart::FrameCount()
 {
-
 	// if the sequence is null then return 0
 	if(m_currentSequence != 0)
 	{
@@ -235,5 +234,15 @@ void AnimationPart::Animate()
 	{
 		Animate(m_currentSequence->Framerate());
 	}
+}
+
+bool AnimationPart::HasSFXforCurrentFrame() const
+{
+	if (!m_currentSequence)
+	{
+		return false;
+	}
+
+	m_currentSequence->HasSFXforFrame(m_currentFrameNumber);
 }
 

@@ -126,7 +126,7 @@ bool SolidLineStrip::OnCollision(SolidMovingSprite * object)
 		GAME_ASSERT((dynamic_cast<Character *>(object) != nullptr));
 		Character * character = static_cast<Character *>(object);
 
-		if (character->getCurrentSolidLineDroppingDownThroughId() == ID())
+		if (character->GetCurrentSolidLineDroppingDownThroughId() == ID())
 		{
 			return false;
 		}
@@ -174,9 +174,7 @@ bool SolidLineStrip::OnCollision(SolidMovingSprite * object)
 						GAME_ASSERT((dynamic_cast<Character *>(object) != nullptr));
 						Character * character = static_cast<Character *>(object);
 
-						character->setCurrentSolidLineDroppingDownThroughId(0);
-
-						character->UpdateFootsteps(this);
+						character->SetCurrentSolidLineDroppingDownThroughId(0);
 					}
 					else if (object->IsDebris() && object->VelocityY() < -0.5f)
 					{

@@ -54,6 +54,13 @@ void AnimationSequence::ReadXml(TiXmlElement * element)
 	{
 		const char * textureName = XmlUtilities::ReadAttributeAsString(child, "", "filename");
 
+		bool playSfxForFrame = XmlUtilities::AttributeExists(child, "", "sfx_type");
+
+		if (playSfxForFrame)
+		{
+			mSFXmap[frame_count] = XmlUtilities::ReadAttributeAsString(child, "", "sfx_type");
+		}
+
 		ID3D10ShaderResourceView* texture = TextureManager::Instance()->LoadTexture(textureName);
 
 		if(texture != 0)
@@ -98,6 +105,16 @@ void AnimationSequence::ReadXml(TiXmlElement * element)
 
 		++frame_count;
 	}
+}
+
+bool AnimationSequence::HasSFXforFrame(unsigned int frame) const
+{
+	return mSFXmap.find(frame) != mSFXmap.end();
+}
+
+std::string AnimationSequence::GetSFXforFrame(unsigned int frame) const
+{
+	return mSFXmap.at(frame);
 }
 
 void AnimationSequence::ScaleBones()

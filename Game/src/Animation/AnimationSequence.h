@@ -46,11 +46,17 @@ public:
 		return m_name;
 	}
 
+	bool HasSFXforFrame(unsigned int frame) const;
+
+	// we definitely know that there is an SFX
+	std::string GetSFXforFrame(unsigned int frame) const;
+
 	AnimationSkeleton * GetSkeleton() const { return mSkeleton; }
 
 private:
 
 	list<ID3D10ShaderResourceView*> * m_frames; // holds a list of textures
+	map<unsigned, string> mSFXmap;
 	float m_framerate; // the desired framerate at which the frames will be displayed in order
 	float m_minFramerate; // the minimum frame speed
 	float m_maxFramerate; // the maximum framerate

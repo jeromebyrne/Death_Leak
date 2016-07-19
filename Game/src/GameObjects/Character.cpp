@@ -24,9 +24,6 @@ Character::Character(float x, float y, float z, float width, float height, float
 	SolidMovingSprite(x,y,z,width, height, breadth),
 	m_isJumping(false), 
 	m_maxJumpSpeed(10), 
-	m_lastTimePlayedFootstep(0.0f), 
-	m_footstepTime(0.35f),
-	m_sprintFootstepTime(0.25f),
 	m_waterWadeSFXTime(1.0f),
 	mAccelXRate(0),
 	mHealth(100),
@@ -39,7 +36,6 @@ Character::Character(float x, float y, float z, float width, float height, float
 	mLastTimePlayedDamageSound(0.0f),
 	mDamageSoundDelayMilli(0.15f),
 	mRunAnimFramerateMultiplier(1.0f),
-	mPlayFootsteps(true),
 	mMatchAnimFrameRateWithMovement(true),
 	m_lastTimePlayedWaterWadeSFX(0.0f),
 	mIsMidAirMovingDown(false),
@@ -58,7 +54,8 @@ Character::Character(float x, float y, float z, float width, float height, float
 	mIsFullyCrouched(false),
 	mHighestPointWhileInAir(0.0f),
 	mJustFellFromDistance(false),
-	mJustfellFromLargeDistance(false)
+	mJustfellFromLargeDistance(false),
+	mLastRunFramePlayed(99999)
 {
 	mProjectileFilePath = "Media/knife.png";
 	mProjectileImpactFilePath = "Media/knife_impact.png";
@@ -88,7 +85,7 @@ void Character::Update(float delta)
 	// update the base classes
 	SolidMovingSprite::Update(delta);
 
-	if (m_collidingAtSideOfObject)
+	if (GetIsCollidingAtObjectSide())
 	{
 		// sliding on the side of an object so reduce gravity resistance
 		mCurrentYResistance = m_resistance.Y * 2.0f; 
@@ -100,7 +97,7 @@ void Character::Update(float delta)
 		mCurrentYResistance = m_resistance.Y;
 	}
 
-	if (m_acceleration.Y > 0 && !m_onTopOfOtherSolidObject && !m_collidingAtSideOfObject) // we are accelerating vertically and not on top of another object
+	if (m_acceleration.Y > 0 && !m_onTopOfOtherSolidObject && !GetIsCollidingAtObjectSide()) // we are accelerating vertically and not on top of another object
 	{
 		if (m_velocity.Y > -0.5)
 		{
@@ -137,11 +134,6 @@ void Character::Update(float delta)
 
 		// can't be ducking if in mid air
 		SetCrouching(false);
-	}
-
-	if (!GetWaterIsDeep())
-	{
-		UpdateWaterWadeSFX();
 	}
 
 	if (IsOnSolidSurface())
@@ -306,19 +298,7 @@ void Character::LoadContent(ID3D10Device * graphicsdevice)
 
 bool Character::OnCollision(SolidMovingSprite * object)
 {
-	if( !object->IsCharacter() &&
-		!object->IsCurrencyOrb() &&
-		!object->IsDebris() &&
-		!object->IsPlatform() &&
-		!object->IsWaterBlock())
-	{
-		// update the base classes
-		if (SolidMovingSprite::OnCollision(object))
-		{
-			UpdateFootsteps(object);
-		}
-	}
-	else if (object->IsPlatform())
+	if (object->IsPlatform())
 	{
 		if (Bottom() > object->Y()) // is the bottom of the character above the platform centre point?
 		{
@@ -327,185 +307,6 @@ bool Character::OnCollision(SolidMovingSprite * object)
 	}
 
 	return true;
-}
-
-void Character::UpdateWaterWadeSFX()
-{
-	if (GetAccelX() > 0.0f && mPlayFootsteps && (WasInWaterLastFrame() || GetIsInWater()))
-	{
-		float currentTime = Timing::Instance()->GetTotalTimeSeconds();
-
-		if (currentTime > m_lastTimePlayedWaterWadeSFX + m_waterWadeSFXTime)
-		{
-			const char * fileName = "water/wade_2/1.wav";
-			int randNum = rand() % 12;
-
-			switch (randNum)
-			{
-				case 0:
-				{
-					fileName = "water/wade_2/1.wav";
-					break;
-				}
-				case 1:
-				{
-					fileName = "water/wade_2/2.wav";
-					break;
-				}
-				case 2:
-				{
-						  fileName = "water/wade_2/3.wav";
-					break;
-				}
-				case 3:
-				{
-						  fileName = "water/wade_2/4.wav";
-					break;
-				}
-				case 4:
-				{
-						  fileName = "water/wade_2/5.wav";
-					break;
-				}
-				case 5:
-				{
-						  fileName = "water/wade_2/6.wav";
-						  break;
-				}
-				case 6:
-				{
-						  fileName = "water/wade_2/7.wav";
-						  break;
-				}
-				case 7:
-				{
-						  fileName = "water/wade_2/8.wav";
-						  break;
-				}
-				case 8:
-				{
-						  fileName = "water/wade_2/9.wav";
-						  break;
-				}
-				case 9:
-				{
-						  fileName = "water/wade_2/10.wav";
-						  break;
-				}
-				case 10:
-				{
-						  fileName = "water/wade_2/11.wav";
-						  break;
-				}
-				case 11:
-				{
-						  fileName = "water/wade_2/12.wav";
-						  break;
-				}
-				default:
-					break;
-			}
-
-			AudioManager::Instance()->PlaySoundEffect(fileName);
-
-			m_lastTimePlayedWaterWadeSFX = currentTime;
-		}
-	}
-}
-
-void Character::UpdateFootsteps(SolidMovingSprite * solidObject)
-{
-	// play footstep sounds if we are running on top the object
-	if (mPlayFootsteps && IsOnSolidSurface() && !m_collidingAtSideOfObject)
-	{
-		if (m_acceleration.X != 0)
-		{
-			float currentTime = Timing::Instance()->GetTotalTimeSeconds();
-
-			float footstep_delay = mSprintActive ? m_sprintFootstepTime : m_footstepTime;
-
-			if (currentTime > m_lastTimePlayedFootstep + footstep_delay)
-			{
-				m_lastTimePlayedFootstep = currentTime;
-
-				Material * objectMaterial = solidObject->GetMaterial();
-				string particleFile = "";
-				if (objectMaterial != 0)
-				{
-					if (!GetIsInWater() && !WasInWaterLastFrame())
-					{
-						string soundfile = objectMaterial->GetRandomFootstepSoundFilename();
-						AudioManager::Instance()->PlaySoundEffect(soundfile);
-					}
-					particleFile = objectMaterial->GetRandomParticleTexture();
-				}
-
-				Vector3 pos(m_position.X, Bottom(), m_position.Z - 1);
-				Vector3 dir(0.1, 0.9, 0);
-
-				if (!mSprintActive)
-				{
-					bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
-					if (!particleFile.empty())
-					{
-						ParticleEmitterManager::Instance()->CreateDirectedSpray(3,
-																				pos,
-																				dir,
-																				0.25,
-																				Vector3(1200, 720, 0),
-																				particleFile,
-																				isInDeepWater ? 0.4f : 1.0f,
-																				isInDeepWater ? 1.5f : 4.0f,
-																				isInDeepWater ? 1.4f : 0.6f,
-																				isInDeepWater ? 2.5f : 0.8f,
-																				2,
-																				5,
-																				0.2,
-																				false,
-																				0.8,
-																				1.0,
-																				1,
-																				true,
-																				isInDeepWater ? 35 : 25,
-																				3.0f,
-																				1.0f,
-																				0.15f,
-																				0.7f);
-					}
-				}
-				else
-				{
-					bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
-					if (!particleFile.empty())
-					{
-						ParticleEmitterManager::Instance()->CreateDirectedSpray(8,
-																				pos,
-																				dir,
-																				0.5,
-																				Vector3(1200, 720, 0),
-																				particleFile,
-																				isInDeepWater ? 0.4f : 1.4,
-																				isInDeepWater ? 1.5f : 2.8,
-																				isInDeepWater ? 1.4f : 0.3f,
-																				isInDeepWater ? 2.5f : 0.8f,
-																				2,
-																				5,
-																				0.2,
-																				false,
-																				0.8,
-																				1.0,
-																				1,
-																				true,
-																				isInDeepWater ? 35 : 32,
-																				1.5f,
-																				0.5f,
-																				0.15f,
-																				0.5f);
-					}
-				}
-			}
-		}
-	}
 }
 
 void Character::UpdateAnimations()
@@ -589,7 +390,7 @@ void Character::UpdateAnimations()
 			mWasCrouching = false;
 			mJustFellFromDistance = false;
 		}
-		else if (m_collidingAtSideOfObject) // we have jumped at the side of a wall
+		else if (GetIsCollidingAtObjectSide()) // we have jumped at the side of a wall
 		{
 			if (current_body_sequence_name != "SlidingDown")
 			{
@@ -604,7 +405,7 @@ void Character::UpdateAnimations()
 			mWasCrouching = false;
 			mJustFellFromDistance = false;
 		}
-		else if ((m_velocity.X > 1.0f || m_velocity.X < -1.0f) && !m_collidingAtSideOfObject) // we are moving left or right and not colliding with the side of an object
+		else if ((m_velocity.X > 1.0f || m_velocity.X < -1.0f) && !GetIsCollidingAtObjectSide()) // we are moving left or right and not colliding with the side of an object
 		{
 			if (mIsStrafing)
 			{
@@ -636,12 +437,35 @@ void Character::UpdateAnimations()
 					bodyPart->CurrentSequence()->SetFrameRate(animFramerate);
 				}
 			}
+
+			if (mLastRunFramePlayed != bodyPart->FrameNumber() && bodyPart->HasSFXforCurrentFrame())
+			{
+				// footstep SFX
+				if (IsOnSolidLine())
+				{
+					auto solidLine = GetCurrentSolidLineStrip();
+					
+					if (solidLine)
+					{
+						auto material = solidLine->GetMaterial();
+
+						if (material)
+						{
+							std::string filename = material->GetRandomFootstepSoundFilename();
+
+							AudioManager::Instance()->PlaySoundEffect(filename);
+						}
+					}
+				}
+			}
 			
 			m_texture = bodyPart->CurrentFrame(); // set the current texture
 
 			mIsFullyCrouched = false;
 			mWasCrouching = false;
 			mJustFellFromDistance = false;
+
+			mLastRunFramePlayed = bodyPart->FrameNumber();
 		}
 		else if (mWasCrouching)
 		{
@@ -728,7 +552,7 @@ void Character::UpdateAnimations()
 
 bool Character::Jump(float percent)
 {
-	if (m_collidingAtSideOfObject)
+	if (GetIsCollidingAtObjectSide())
 	{
 		return false;
 	}
@@ -1193,12 +1017,12 @@ void Character::DoMeleeAttack()
 {
 }
 
-void Character::dropDown()
+void Character::DropDown()
 {
 	auto solidLine = GetCurrentSolidLineStrip();
 	if (solidLine)
 	{
-		setCurrentSolidLineDroppingDownThroughId(solidLine->ID());
+		SetCurrentSolidLineDroppingDownThroughId(solidLine->ID());
 		if (std::abs(m_velocity.Y < 1.0f))
 		{
 			m_velocity.Y = -1.0f;

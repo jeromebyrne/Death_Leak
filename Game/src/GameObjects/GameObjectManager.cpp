@@ -969,8 +969,7 @@ void GameObjectManager::ProcessGamePad()
 	// this helps the player latch on better
 	bool applySprint = false;
 	if (!m_player->JustFellFromLargeDistance() &&
-		!isCrouching &&
-		(!m_player->GetIsCollidingAtObjectSide() || m_player->GetVelocity().Y <= 0.1))
+		!isCrouching)
 	{
 		if (pad_state.Gamepad.sThumbLX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE )
 		{
@@ -1006,7 +1005,7 @@ void GameObjectManager::ProcessGamePad()
 				m_player->GetCurrentSolidLineStrip() &&
 				m_player->GetCurrentSolidLineStrip()->GetCanDropDown())
 			{
-				m_player->dropDown();
+				m_player->DropDown();
 			}
 			else
 			{
@@ -1077,6 +1076,7 @@ void GameObjectManager::ProcessGamePad()
 				GameObjectManager::Instance()->AddGameObject(p);
 			}
 		}
+
 		pressingFire = false;
 	}
 

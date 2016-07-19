@@ -18,7 +18,8 @@ public:
 	virtual void SetNotColliding() // sets properties that mean we are not colliding
 	{
 		m_onTopOfOtherSolidObject = false;
-		m_collidingAtSideOfObject = false;
+		m_collidingAtLeftSideOfObject = false;
+		m_collidingAtRightSideOfObject = false;
 		mObjectMovingWith = 0;
 	}
 
@@ -28,7 +29,7 @@ public:
 	void SetCollisionDimensions(Vector3 value) { m_collisionBoxDimensions = value; }
 	void SetCollisionBoxOffset(Vector2 value) { mCollisionBoxOffset = value; }
 
-	bool GetIsCollidingAtObjectSide() const { return m_collidingAtSideOfObject; }
+	bool GetIsCollidingAtObjectSide() const { return m_collidingAtLeftSideOfObject || m_collidingAtRightSideOfObject; }
 	bool GetIsCollidingOnTopOfObject() const { return m_onTopOfOtherSolidObject; }
 	void SetIsCollidingOnTopOfObject(bool value) { m_onTopOfOtherSolidObject = value; }
 	virtual void Scale(float xScale, float yScale, bool scalePosition = true) override;
@@ -97,7 +98,8 @@ protected:
 	Vector3 m_collisionBoxDimensions;
 	bool m_markedForResolve; // do we need to do collision resolution
 	bool m_onTopOfOtherSolidObject; // are we colliding above another object (moving on top of it scenario)
-	bool m_collidingAtSideOfObject; // we are colliding at either side of another solid object
+	bool m_collidingAtLeftSideOfObject;
+	bool m_collidingAtRightSideOfObject;
 	
 	bool m_applyDamage; // does this obejct apply damage to other objects that hit it?
 	float m_applyDamageAmount;
