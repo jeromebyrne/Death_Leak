@@ -306,7 +306,7 @@ bool Character::OnCollision(SolidMovingSprite * object)
 		}
 	}
 
-	return true;
+	return SolidMovingSprite::OnCollision(object);
 }
 
 void Character::UpdateAnimations()
@@ -454,6 +454,37 @@ void Character::UpdateAnimations()
 							std::string filename = material->GetRandomFootstepSoundFilename();
 
 							AudioManager::Instance()->PlaySoundEffect(filename);
+
+							// do particles
+							std::string particleFile = material->GetRandomParticleTexture();
+
+							bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
+							if (!particleFile.empty())
+							{
+								ParticleEmitterManager::Instance()->CreateDirectedSpray(10,
+																						Vector3(m_position.X + (m_direction.X * 5.f), CollisionBottom(), m_position.Z - 0.1),
+																						Vector3(0, 1, 0),
+																						0.1,
+																						Vector3(1200, 720, 0),
+																						particleFile,
+																						2.0f,
+																						4.0f,
+																						0.3f,
+																						0.7f,
+																						10,
+																						20,
+																						0.5,
+																						false,
+																						0.8,
+																						1.0,
+																						1,
+																						true,
+																						7,
+																						2.0f,
+																						0.0f,
+																						0.15f,
+																						0.7f);
+							}
 						}
 					}
 				}
@@ -659,7 +690,7 @@ bool Character::Jump(float percent)
 	return true;
 }
 
-void Character::WallJump(float percent)
+void Character::WallJump(int directionX, float percent)
 {
 	if(percent > 100.0f)
 	{
@@ -670,6 +701,7 @@ void Character::WallJump(float percent)
 		percent = 1.0f;
 	}
 	
+	/*
 	m_velocity.Y = 0;
 	m_velocity.X = 0;
 	m_direction.Y = 1.0;
@@ -690,6 +722,7 @@ void Character::WallJump(float percent)
 
 	// play jump sound
 	AudioManager::Instance()->PlaySoundEffect("jump.wav");
+	*/
 }
 
 void Character::AccelerateX(float directionX)

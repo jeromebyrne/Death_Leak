@@ -16,10 +16,6 @@ class GameObjectManager
 {
 public:
 
-	void CheckPlayerInput();
-	void ProcessKeyboardMouse();
-	void ProcessGamePad();
-
 	bool IsLevelLoaded() { return m_levelLoaded; }
 
 	inline static GameObjectManager* Instance()
@@ -52,8 +48,6 @@ public:
 	}
 
 	void OrderDrawablesByDepth(); // reorders the drawables list by depth
-
-	void SetShowDebugInfo(bool value) { mShowDebugInfo = value; };
 
 	void GetSolidSpritesOnScreen(std::list<GameObject *> & toPopulate);
 
@@ -107,6 +101,8 @@ public:
 
 	std::string GetCurrentLevelFile() const { return mCurrentLevelFile; }
 
+	const LevelProperties & GetCurrentLevelProperties() const { return mLevelProperties; }
+
 private:
 
 	Camera2D * m_camera;
@@ -138,12 +134,6 @@ private:
 	bool m_levelLoaded;
 
 	void ScaleObjects(float xScale, float yScale);
-
-	bool mShowDebugInfo;
-
-	// should the camera be looking ip above the player or down below
-	bool mCamYShouldOffset;
-	float mCamYOffset; // if mCamYShouldOffset = true then this decides up or down 
 
 	ParallaxLayer * mSlowMotionLayer;
 

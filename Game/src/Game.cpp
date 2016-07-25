@@ -158,9 +158,7 @@ void Game::Update(float delta)
 			}
 			
 			// NOTE: NEED to check input AFTER we do collision detection, MUST BE IN THIS ORDER
-
-			// check input for player
-			GameObjectManager::Instance()->CheckPlayerInput();
+			mInputManager.ProcessGameplayInput();
 		}
 
 		if (!mLevelEditMode)
@@ -292,7 +290,11 @@ void Game::Draw()
 	GameObjectManager::Instance()->Draw(m_pGraphics->Device());
 
 #if _DEBUG
-	GameObjectManager::Instance()->DebugDraw();
+
+	if (mInputManager.ShowDebugInfoEnabled())
+	{
+		GameObjectManager::Instance()->DebugDraw();
+	}
 
 	if (mLevelEditMode && mlevelEditor)
 	{
@@ -415,5 +417,10 @@ void Game::ResetLevelEditor()
 void Game::DoDamagePauseEffect()
 {
 	mLastTimeDamagePauseEffect = Timing::Instance()->GetTotalTimeSeconds();
+}
+
+void Game::DisableDebugInfoEnabled()
+{
+
 }
 

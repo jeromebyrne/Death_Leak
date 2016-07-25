@@ -181,10 +181,10 @@
 
     <footstepsoundeffects>
       <!--<sound file="footsteps_2/1.wav" />-->
-      <sound file="footsteps_2/2.wav" />
+       <sound file="footsteps_2/2.wav" />
       <sound file="footsteps_2/3.wav" />
       <sound file="footsteps_2/4.wav" />
-      <sound file="footsteps_2/5.wav" />
+      <!--<sound file="footsteps_2/5.wav" />-->
       <sound file="footsteps_2/6.wav" />
       <sound file="footsteps_2/7.wav" />
       <sound file="footsteps_2/8.wav" />

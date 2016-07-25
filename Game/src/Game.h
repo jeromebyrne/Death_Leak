@@ -1,6 +1,8 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include "InputManager.h"
+
 class EffectLightTexture;
 class EffectLightTextureVertexWobble;
 class EffectParticleSpray;
@@ -53,7 +55,10 @@ public:
 	// This is an effect to add pauses for enemy damage etc...
 	void DoDamagePauseEffect();
 
+	void DisableDebugInfoEnabled();
+
 private:
+
 	// graphics manager
 	Graphics * m_pGraphics;
 
@@ -79,8 +84,8 @@ private:
 	ScreenAlignedTexture * m_screenAlignedPostProcTex1;
 	static Vector2 mGameScale;
 	static Game * mInstance;
-
 	float mLastTimeDamagePauseEffect;
+	InputManager mInputManager;
 };
 
 #endif

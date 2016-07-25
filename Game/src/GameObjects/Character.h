@@ -23,7 +23,7 @@ public:
 	virtual void LoadContent(ID3D10Device * graphicsdevice) override;
 	inline void SetMaxJumpSpeed(float value) { m_maxJumpSpeed = value; }
 	virtual bool Jump(float percent);
-	virtual void WallJump(float percent);
+	virtual void WallJump(int directionX, float percent);
 	virtual void AccelerateX(float directionX);
 	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) override;
 	void setAccelXRate(const float accelRate) { mAccelXRate = accelRate; }
