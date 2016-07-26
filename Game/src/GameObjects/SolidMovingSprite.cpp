@@ -420,7 +420,8 @@ bool SolidMovingSprite::IsOnSolidSurface()
 		return true;
 	}
 
-	if (GetIsCollidingOnTopOfObject())
+	if (GetIsCollidingOnTopOfObject() &&
+		!GetIsCollidingAtObjectSide())
 	{
 		return true;
 	}

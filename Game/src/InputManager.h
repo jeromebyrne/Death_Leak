@@ -24,7 +24,8 @@ private:
 
 	struct CurrentGamePadState
 	{
-		bool mStoppedPressingJump = false;
+		bool mPressingJump = false;
+		bool mPressingWallJump = false;
 		bool mPressingPrimaryWeapon = false;
 		bool mPressingSecondaryWeapon = false;
 		bool mPressingStrafeLeft = false;
@@ -41,6 +42,8 @@ private:
 
 	void ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player);
 
+	void ProcessWallJump_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player);
+
 	void ProcessAimDirection_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player);
 
 	void ProcessPrimaryWeapon_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player);
@@ -52,6 +55,7 @@ private:
 	void ProcessTestActions_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player, const LevelProperties & levelProps);
 
 	bool mShowDebugInfo;
+	bool mPressingDebugInfoKey;
 
 	CurrentGamePadState mCurrentGamepadState;
 };

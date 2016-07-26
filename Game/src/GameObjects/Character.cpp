@@ -19,6 +19,7 @@ static const int kDamageKickback = 20;
 static const float kTimeAllowedToJumpAfterLeaveSolidGround = 0.3f;
 static const float kSmallDropDistance = 200.0f;
 static const float kLargeDropDistance = 600.0f;
+static const float kWallJumpTime = 1.0f;
 
 Character::Character(float x, float y, float z, float width, float height, float breadth): 
 	SolidMovingSprite(x,y,z,width, height, breadth),
@@ -55,7 +56,10 @@ Character::Character(float x, float y, float z, float width, float height, float
 	mHighestPointWhileInAir(0.0f),
 	mJustFellFromDistance(false),
 	mJustfellFromLargeDistance(false),
-	mLastRunFramePlayed(99999)
+	mLastRunFramePlayed(99999),
+	mWallJumpCountdownTime(5.0f),
+	mIsWallJumping(false),
+	mCurrentWallJumpXDirection(1.0f)
 {
 	mProjectileFilePath = "Media/knife.png";
 	mProjectileImpactFilePath = "Media/knife_impact.png";
@@ -80,10 +84,43 @@ void Character::Scale(float xScale, float yScale, bool scalePosition)
 	m_projectileOffset.Y = m_projectileOffset.Y * xScale;
 }
 
+void Character::SetIsWallJumping(bool value)
+{
+	mIsWallJumping = value;
+
+	if (mIsWallJumping)
+	{
+		mWallJumpCountdownTime = kWallJumpTime;
+	}
+}
+
 void Character::Update(float delta)
 {
 	// update the base classes
 	SolidMovingSprite::Update(delta);
+
+	if (mIsWallJumping)
+	{
+		mWallJumpCountdownTime -= delta;
+
+		if (mWallJumpCountdownTime <= 0.0f ||
+			IsOnSolidSurface())
+		{
+			mIsWallJumping = false;
+		}
+	}
+
+	if (mIsWallJumping)
+	{
+		SetCurrentXResistance(0.99f);
+		SetMaxVelocityLimitEnabled(false);
+	}
+	else
+	{
+		// back to default air resistance with x velocity cap
+		SetCurrentXResistance(m_resistance.X);
+		SetMaxVelocityLimitEnabled(true);
+	}
 
 	if (GetIsCollidingAtObjectSide())
 	{
@@ -298,7 +335,16 @@ void Character::LoadContent(ID3D10Device * graphicsdevice)
 
 bool Character::OnCollision(SolidMovingSprite * object)
 {
-	if (object->IsPlatform())
+	if (!object->IsCharacter() &&
+		!object->IsCurrencyOrb() &&
+		!object->IsDebris() &&
+		!object->IsPlatform() &&
+		!object->IsWaterBlock())
+	{
+		    
+		SolidMovingSprite::OnCollision(object);
+	}
+	else if (object->IsPlatform())
 	{
 		if (Bottom() > object->Y()) // is the bottom of the character above the platform centre point?
 		{
@@ -306,7 +352,7 @@ bool Character::OnCollision(SolidMovingSprite * object)
 		}
 	}
 
-	return SolidMovingSprite::OnCollision(object);
+	return true;
 }
 
 void Character::UpdateAnimations()
@@ -700,29 +746,24 @@ void Character::WallJump(int directionX, float percent)
 	{
 		percent = 1.0f;
 	}
-	
-	/*
-	m_velocity.Y = 0;
-	m_velocity.X = 0;
-	m_direction.Y = 1.0;
-	m_direction.X = m_direction.X * -1;
-	m_acceleration.Y = (m_maxJumpSpeed * 0.4 /100) * percent;
-	m_acceleration.X = (m_maxJumpSpeed * 10 /100) * percent;
 
-	if(m_direction.X < 0)
+	if (directionX > 0.0f)
 	{
-		// flip the sprite horizontally
-		FlipHorizontal();
-	}
-	else if(m_direction.X > 0)
-	{
-		// unflip
 		UnFlipHorizontal();
 	}
+	else
+	{
+		FlipHorizontal();
+	}
+	
+	SetVelocityY(20.0f);
+	SetVelocityX(20.0f * directionX);
 
-	// play jump sound
+	SetIsWallJumping(true);
+
+	mCurrentWallJumpXDirection = directionX;
+
 	AudioManager::Instance()->PlaySoundEffect("jump.wav");
-	*/
 }
 
 void Character::AccelerateX(float directionX)

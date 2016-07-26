@@ -38,7 +38,7 @@ public:
 	{
 		return m_velocity.Y;
 	}
-	void SetVelocityX(float value)
+	void SetVelocityX(float value) 
 	{
 		m_velocity.X = value;
 	}
@@ -110,7 +110,11 @@ public:
 
 	void SetCurrentYResistance(float value) { mCurrentYResistance = value; }
 
+	void SetCurrentXResistance(float value) { mCurrentXResistance = value; }
+
 	bool IsHittingSolidLineEdge() const { return mHittingSolidLineEdge; }
+
+	void SetMaxVelocityLimitEnabled(bool value) { mMaxVelocityXLimitEnabled = value; }
 
 protected:
 
@@ -122,11 +126,13 @@ protected:
 	Vector3 m_resistance;
 	Vector3 m_acceleration;
 	bool m_applyGravity;
+	bool mMaxVelocityXLimitEnabled;
 
 	// are we moving within the space of anothe rmoving object
 	MovingSprite * mObjectMovingWith;
 
 	float mCurrentYResistance; // this can change dynamically
+	float mCurrentXResistance; // this can change dynamically
 	bool m_isOnGround;
 	bool mIsInWater;
 	bool mWasInWaterLastFrame;

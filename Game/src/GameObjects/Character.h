@@ -55,8 +55,13 @@ public:
 
 	bool JustFellFromLargeDistance() const { return mJustfellFromLargeDistance; }
 
+	bool IsWallJumping() const { return mIsWallJumping; }
+
+	float GetCurrentWallJumpXDirection() const { return mCurrentWallJumpXDirection; }
+
 protected:
 
+	void SetIsWallJumping(bool value);
 	virtual void UpdateAnimations() override; // override sprite update animations
 	void PlayRandomWeaponFireSound();
 
@@ -100,6 +105,9 @@ protected:
 	bool mJustFellFromDistance;
 	bool mJustfellFromLargeDistance;
 	unsigned mLastRunFramePlayed;
+	bool mIsWallJumping;
+	float mWallJumpCountdownTime;
+	float mCurrentWallJumpXDirection;
 };
 
 #endif

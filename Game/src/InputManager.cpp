@@ -7,7 +7,8 @@
 #include "Projectile.h"
 
 InputManager::InputManager() :
-	mShowDebugInfo(false)
+	mShowDebugInfo(false),
+	mPressingDebugInfoKey(false)
 {
 
 }
@@ -21,15 +22,13 @@ void InputManager::ProcessGameplayInput()
 
 #ifdef _DEBUG
 
-	// turn debug info on or off here
-	static bool pressingDebugInfo = false;
 	if (GetAsyncKeyState('I'))
 	{
-		pressingDebugInfo = true;
+		mPressingDebugInfoKey = true;
 	}
 	else
 	{
-		if (pressingDebugInfo) // just released
+		if (mPressingDebugInfoKey) // just released
 		{
 			if (mShowDebugInfo)
 			{
@@ -40,7 +39,7 @@ void InputManager::ProcessGameplayInput()
 				mShowDebugInfo = true;
 			}
 		}
-		pressingDebugInfo = false;
+		mPressingDebugInfoKey = false;
 	}
 
 #endif
@@ -76,12 +75,14 @@ void InputManager::ProcessLeftRightMovement_gamepad(XINPUT_STATE padState, Curre
 	if (!player->JustFellFromLargeDistance() &&
 		!currentActions.mIsCrouching)
 	{
-		if (padState.Gamepad.sThumbLX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+		if (padState.Gamepad.sThumbLX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE && 
+			!(player->IsWallJumping() && player->GetCurrentWallJumpXDirection() > 0.0f))
 		{
 			player->AccelerateX(-100);
 			currentActions.mIsSprinting = true;
 		}
-		else if (padState.Gamepad.sThumbLX > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+		else if (padState.Gamepad.sThumbLX > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE &&
+			!(player->IsWallJumping() && player->GetCurrentWallJumpXDirection() < 0.0f))
 		{
 			player->AccelerateX(100);
 			currentActions.mIsSprinting = true;
@@ -98,31 +99,55 @@ void InputManager::ProcessLeftRightMovement_gamepad(XINPUT_STATE padState, Curre
 
 void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player)
 {
-	float jumpPower = 0.0f;
+	bool wasPressingJump = mCurrentGamepadState.mPressingJump;
+
 	if (!player->JustFellFromLargeDistance() &&
 		padState.Gamepad.wButtons & XINPUT_GAMEPAD_A)
 	{
-		if (mCurrentGamepadState.mStoppedPressingJump)
-		{
-			if (padState.Gamepad.sThumbLY < -30000 &&
-				player->IsOnSolidLine() &&
-				player->GetCurrentSolidLineStrip() &&
-				player->GetCurrentSolidLineStrip()->GetCanDropDown())
-			{
-				player->DropDown();
-			}
-			else
-			{
-				jumpPower = player->IsStrafing() ? 80.0f : 100.0f;
-				player->Jump(jumpPower);
-			}
-
-			mCurrentGamepadState.mStoppedPressingJump = false;
-		}
+		mCurrentGamepadState.mPressingJump = true;
 	}
 	else
 	{
-		mCurrentGamepadState.mStoppedPressingJump = true;	
+		mCurrentGamepadState.mPressingJump = false;
+	}
+
+	if (mCurrentGamepadState.mPressingJump && !wasPressingJump)
+	{
+		if (padState.Gamepad.sThumbLY < -30000 &&
+			player->IsOnSolidLine() &&
+			player->GetCurrentSolidLineStrip() &&
+			player->GetCurrentSolidLineStrip()->GetCanDropDown())
+		{
+			player->DropDown();
+		}
+		else
+		{
+			float jumpPower = player->IsStrafing() ? 80.0f : 100.0f;
+			player->Jump(jumpPower);
+		}
+	}
+}
+
+void InputManager::ProcessWallJump_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player)
+{
+	bool wasPressingJump = mCurrentGamepadState.mPressingWallJump;
+
+	if (!player->JustFellFromLargeDistance() &&
+		padState.Gamepad.wButtons & XINPUT_GAMEPAD_A)
+	{
+		mCurrentGamepadState.mPressingWallJump = true;
+	}
+	else
+	{
+		mCurrentGamepadState.mPressingWallJump = false;
+	}
+
+	if (mCurrentGamepadState.mPressingWallJump && !wasPressingJump)
+	{
+		if (player->GetIsCollidingAtObjectSide())
+		{
+			player->WallJump(-player->DirectionX(), 100.0f);
+		}
 	}
 }
 
@@ -341,6 +366,8 @@ void InputManager::ProcessGameplay_GamePad()
 	ProcessLeftRightMovement_gamepad(padState, currentActions, player);
 
 	ProcessJump_gamepad(padState, currentActions, player);
+
+	ProcessWallJump_gamepad(padState, currentActions, player);
 
 	ProcessAimDirection_gamepad(padState, currentActions, player);
 

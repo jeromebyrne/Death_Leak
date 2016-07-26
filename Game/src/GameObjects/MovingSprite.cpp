@@ -15,12 +15,14 @@ MovingSprite::MovingSprite(float x, float y, float z, float width, float height,
 	m_applyGravity(true),
 	mObjectMovingWith(0),
 	mCurrentYResistance(1.0f),
+	mCurrentXResistance(1.0f),
 	m_isOnGround(true),
 	mIsInWater(false),
 	mWasInWaterLastFrame(false),
 	mIsDeepWater(false),
 	mTimeUntilCanSpawnWaterBubbles(0.0f),
-	mHittingSolidLineEdge(false)
+	mHittingSolidLineEdge(false),
+	mMaxVelocityXLimitEnabled(true)
 {
 	if (m_maxVelocity.Y < 0)  // less than 0 actually signifies no maximum
 	{
@@ -66,11 +68,11 @@ void MovingSprite::Update(float delta)
 	float velocityMod = mIsInWater ? (GetWaterIsDeep() ? 0.35f : 0.6f) : 1.0f;
 	Vector3 nextVelocity = m_velocity + (m_acceleration * m_direction) * velocityMod;
 
-	if (nextVelocity.X > m_maxVelocity.X)
+	if (nextVelocity.X > m_maxVelocity.X && mMaxVelocityXLimitEnabled)
 	{
 		nextVelocity.X = m_maxVelocity.X;
 	}
-	else if (nextVelocity.X < -m_maxVelocity.X)
+	else if (nextVelocity.X < -m_maxVelocity.X && mMaxVelocityXLimitEnabled)
 	{
 		nextVelocity.X = -m_maxVelocity.X;
 	}
@@ -165,7 +167,7 @@ void MovingSprite::Update(float delta)
 	}
 
 	// apply friction values
-	m_velocity.X = m_velocity.X * m_resistance.X;
+	m_velocity.X = m_velocity.X * mCurrentXResistance;
 
 	// stop us if we get too slow
 	if(m_velocity.X < 0.1 && m_velocity.X > -0.1)
@@ -209,6 +211,7 @@ void MovingSprite::Initialise()
 	Sprite::Initialise();
 
 	mCurrentYResistance = m_resistance.Y;
+	mCurrentXResistance = m_resistance.X;
 }
 
 void MovingSprite::XmlRead(TiXmlElement * element)

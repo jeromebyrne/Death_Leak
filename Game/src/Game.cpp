@@ -421,6 +421,6 @@ void Game::DoDamagePauseEffect()
 
 void Game::DisableDebugInfoEnabled()
 {
-
+	mInputManager.DisableDebugInfoEnabled();
 }
 
