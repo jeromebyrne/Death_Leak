@@ -173,6 +173,11 @@ void Character::Update(float delta)
 		SetCrouching(false);
 	}
 
+	if (GetIsCollidingAtObjectSide())
+	{
+		mJustfellFromLargeDistance = false;
+	}
+
 	if (IsOnSolidSurface())
 	{
 		if (mHighestPointWhileInAir != m_position.Y)
@@ -436,7 +441,8 @@ void Character::UpdateAnimations()
 			mWasCrouching = false;
 			mJustFellFromDistance = false;
 		}
-		else if (GetIsCollidingAtObjectSide()) // we have jumped at the side of a wall
+		else if (GetIsCollidingAtObjectSide() &&
+			!IsOnSolidSurface()) // we have jumped at the side of a wall
 		{
 			if (current_body_sequence_name != "SlidingDown")
 			{
@@ -746,6 +752,8 @@ void Character::WallJump(int directionX, float percent)
 	{
 		percent = 1.0f;
 	}
+
+	SetDirectionX(directionX);
 
 	if (directionX > 0.0f)
 	{
