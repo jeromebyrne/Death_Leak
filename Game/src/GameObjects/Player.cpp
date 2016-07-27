@@ -177,14 +177,15 @@ void Player::Update(float delta)
 
 Projectile * Player::FireWeapon(Vector2 direction)
 {
-	if (GetIsCollidingAtObjectSide())
+	if (GetIsCollidingAtObjectSide() ||
+		GetIsRolling())
 	{
-		// can't fire while on the side of an object
 		return nullptr;
 	}
 
 	mTimeUntilAimLineStartDisappearing = kAimLineOpacityDecrementDelay;
-	if ((mBurstFireEnabled && mCurrentBurstNum >= mFireBurstNum) || mTimeUntilProjectileReady > 0.0f)
+	if ((mBurstFireEnabled && mCurrentBurstNum >= mFireBurstNum) || 
+		mTimeUntilProjectileReady > 0.0f)
 	{
 		return nullptr;
 	}

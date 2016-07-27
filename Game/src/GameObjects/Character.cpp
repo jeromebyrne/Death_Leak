@@ -59,7 +59,8 @@ Character::Character(float x, float y, float z, float width, float height, float
 	mLastRunFramePlayed(99999),
 	mWallJumpCountdownTime(5.0f),
 	mIsWallJumping(false),
-	mCurrentWallJumpXDirection(1.0f)
+	mCurrentWallJumpXDirection(1.0f),
+	mIsRolling(false)
 {
 	mProjectileFilePath = "Media/knife.png";
 	mProjectileImpactFilePath = "Media/knife_impact.png";
@@ -98,6 +99,11 @@ void Character::Update(float delta)
 {
 	// update the base classes
 	SolidMovingSprite::Update(delta);
+
+	if (mIsRolling)
+	{
+		AccelerateX(m_direction.X);
+	}
 
 	if (mIsWallJumping)
 	{
@@ -393,11 +399,30 @@ void Character::UpdateAnimations()
 			return;
 		}
 
-		if (mIsCrouching)
+		if (mIsRolling)
 		{
-			if (current_body_sequence_name != "Duck")
+			if (current_body_sequence_name != "Roll")
 			{
-				bodyPart->SetSequence("Duck");
+				bodyPart->SetSequence("Roll");
+			}
+
+			bodyPart->Animate();
+			m_texture = bodyPart->CurrentFrame(); // set the current texture
+
+			if (bodyPart->IsFinished())
+			{
+				mIsRolling = false;
+			}
+
+			mJustFellFromDistance = false;
+			mIsFullyCrouched = false;
+			mWasCrouching = false;
+		}
+		else if (mIsCrouching)
+		{
+			if (current_body_sequence_name != "Crouch")
+			{
+				bodyPart->SetSequence("Crouch");
 			}
 
 			bodyPart->Animate();
@@ -552,9 +577,9 @@ void Character::UpdateAnimations()
 		}
 		else if (mWasCrouching)
 		{
-			if (current_body_sequence_name != "DuckUp")
+			if (current_body_sequence_name != "CrouchUp")
 			{
-				bodyPart->SetSequence("DuckUp");
+				bodyPart->SetSequence("CrouchUp");
 			}
 
 			bodyPart->Animate();
@@ -636,6 +661,11 @@ void Character::UpdateAnimations()
 bool Character::Jump(float percent)
 {
 	if (GetIsCollidingAtObjectSide())
+	{
+		return false;
+	}
+
+	if (mIsRolling)
 	{
 		return false;
 	}
@@ -772,6 +802,20 @@ void Character::WallJump(int directionX, float percent)
 	mCurrentWallJumpXDirection = directionX;
 
 	AudioManager::Instance()->PlaySoundEffect("jump.wav");
+}
+
+bool Character::Roll()
+{
+	if (mIsRolling ||
+		!IsOnSolidSurface() ||
+		IsStrafing())
+	{
+		return false;
+	}
+
+	mIsRolling = true;
+
+	return true;
 }
 
 void Character::AccelerateX(float directionX)

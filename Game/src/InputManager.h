@@ -24,6 +24,7 @@ private:
 
 	struct CurrentGamePadState
 	{
+		bool mPressingRoll = false;
 		bool mPressingJump = false;
 		bool mPressingWallJump = false;
 		bool mPressingPrimaryWeapon = false;
@@ -43,6 +44,8 @@ private:
 	void ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player);
 
 	void ProcessWallJump_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player);
+
+	void ProcessRoll_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player);
 
 	void ProcessAimDirection_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player);
 

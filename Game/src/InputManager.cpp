@@ -61,7 +61,8 @@ void InputManager::ProcessCrouch_gamepad(XINPUT_STATE padState, CurrentGameplayA
 	if (padState.Gamepad.sThumbLY < -(XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE * 2.5f) &&
 		player->IsOnSolidSurface() &&
 		!player->IsStrafing() &&
-		!player->GetIsCollidingAtObjectSide())
+		!player->GetIsCollidingAtObjectSide() &&
+		!player->GetIsRolling())
 	{
 		currentActions.mIsCrouching = true;
 		player->StopXAccelerating();
@@ -73,7 +74,8 @@ void InputManager::ProcessCrouch_gamepad(XINPUT_STATE padState, CurrentGameplayA
 void InputManager::ProcessLeftRightMovement_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player)
 {
 	if (!player->JustFellFromLargeDistance() &&
-		!currentActions.mIsCrouching)
+		!currentActions.mIsCrouching &&
+		!player->GetIsRolling())
 	{
 		if (padState.Gamepad.sThumbLX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE && 
 			!(player->IsWallJumping() && player->GetCurrentWallJumpXDirection() > 0.0f))
@@ -125,6 +127,26 @@ void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 			float jumpPower = player->IsStrafing() ? 80.0f : 100.0f;
 			player->Jump(jumpPower);
 		}
+	}
+}
+
+void InputManager::ProcessRoll_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player)
+{
+	bool wasPressingRoll = mCurrentGamepadState.mPressingRoll;
+
+	if (!player->JustFellFromLargeDistance() &&
+		padState.Gamepad.wButtons & XINPUT_GAMEPAD_B)
+	{
+		mCurrentGamepadState.mPressingRoll = true;
+	}
+	else
+	{
+		mCurrentGamepadState.mPressingRoll = false;
+	}
+
+	if (mCurrentGamepadState.mPressingRoll && !wasPressingRoll)
+	{ 
+		player->Roll();
 	}
 }
 
@@ -362,6 +384,8 @@ void InputManager::ProcessGameplay_GamePad()
 	CurrentGameplayActions currentActions;
 
 	ProcessCrouch_gamepad(padState, currentActions, player);
+
+	ProcessRoll_gamepad(padState, currentActions, player);
 
 	ProcessLeftRightMovement_gamepad(padState, currentActions, player);
 

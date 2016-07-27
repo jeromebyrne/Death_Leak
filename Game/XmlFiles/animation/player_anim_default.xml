@@ -99,23 +99,23 @@
       <frame filename="Media\characters\player\jump_down_default\jump_down_default_009.png" />
     </JumpingDown>
 
-    <Duck FrameRate="40" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+    <Crouch FrameRate="40" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
       <frame filename="Media\characters\player\duck_default\duck_default_000.png" />
       <frame filename="Media\characters\player\duck_default\duck_default_001.png" />
       <frame filename="Media\characters\player\duck_default\duck_default_002.png" />
       <frame filename="Media\characters\player\duck_default\duck_default_003.png" />
       <frame filename="Media\characters\player\duck_default\duck_default_004.png" />
       <frame filename="Media\characters\player\duck_default\duck_default_005.png" />
-    </Duck>
+    </Crouch>
 
-    <DuckUp FrameRate="40" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+    <CrouchUp FrameRate="40" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
       <frame filename="Media\characters\player\duck_default\duck_default_005.png" />
       <frame filename="Media\characters\player\duck_default\duck_default_004.png" />
       <frame filename="Media\characters\player\duck_default\duck_default_003.png" />
       <frame filename="Media\characters\player\duck_default\duck_default_002.png" />
       <frame filename="Media\characters\player\duck_default\duck_default_001.png" />
       <frame filename="Media\characters\player\duck_default\duck_default_000.png" />
-    </DuckUp>
+    </CrouchUp>
 
     <SlidingDown FrameRate="20" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
       <frame filename="Media\characters\player\wall_slide_default\wall_slide_default_000.png" />
@@ -147,6 +147,19 @@
       <frame filename="Media\characters\player\duck_default\duck_default_001.png" />
       <frame filename="Media\characters\player\duck_default\duck_default_000.png" />
     </ImpactLandHard>
+
+    <Roll FrameRate="30" MaxFrameRate="30" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_000.png" />
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_001.png" />
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_002.png" />
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_003.png" />
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_004.png" />
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_005.png" />
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_006.png" />
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_007.png" />
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_008.png" />
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_009.png" />
+    </Roll>
 
 	</body>
 

@@ -24,6 +24,7 @@ public:
 	inline void SetMaxJumpSpeed(float value) { m_maxJumpSpeed = value; }
 	virtual bool Jump(float percent);
 	virtual void WallJump(int directionX, float percent);
+	virtual bool Roll();
 	virtual void AccelerateX(float directionX);
 	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) override;
 	void setAccelXRate(const float accelRate) { mAccelXRate = accelRate; }
@@ -58,6 +59,8 @@ public:
 	bool IsWallJumping() const { return mIsWallJumping; }
 
 	float GetCurrentWallJumpXDirection() const { return mCurrentWallJumpXDirection; }
+
+	bool GetIsRolling() const { return mIsRolling; }
 
 protected:
 
@@ -108,6 +111,7 @@ protected:
 	bool mIsWallJumping;
 	float mWallJumpCountdownTime;
 	float mCurrentWallJumpXDirection;
+	bool mIsRolling;
 };
 
 #endif
