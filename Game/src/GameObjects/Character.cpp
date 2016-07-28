@@ -19,7 +19,9 @@ static const int kDamageKickback = 20;
 static const float kTimeAllowedToJumpAfterLeaveSolidGround = 0.3f;
 static const float kSmallDropDistance = 200.0f;
 static const float kLargeDropDistance = 600.0f;
-static const float kWallJumpTime = 1.0f;
+static const float kWallJumpTime = 0.35f;
+static const float kRollVelocityX = 18.0f;
+static const float kRollVelocityY = 5.0f;
 
 Character::Character(float x, float y, float z, float width, float height, float breadth): 
 	SolidMovingSprite(x,y,z,width, height, breadth),
@@ -103,11 +105,25 @@ void Character::Update(float delta)
 	if (mIsRolling)
 	{
 		AccelerateX(m_direction.X);
+		
+		// SetCurrentXResistance(0.99f);
+		SetMaxVelocityLimitEnabled(false);
+	}
+	else
+	{
+		if (!mIsWallJumping)
+		{
+			//SetCurrentXResistance(m_resistance.X);
+			SetMaxVelocityLimitEnabled(true);
+		}
 	}
 
 	if (mIsWallJumping)
 	{
 		mWallJumpCountdownTime -= delta;
+
+		// SetCurrentXResistance(0.99f);
+		SetMaxVelocityLimitEnabled(false);
 
 		if (mWallJumpCountdownTime <= 0.0f ||
 			IsOnSolidSurface())
@@ -115,17 +131,14 @@ void Character::Update(float delta)
 			mIsWallJumping = false;
 		}
 	}
-
-	if (mIsWallJumping)
-	{
-		SetCurrentXResistance(0.99f);
-		SetMaxVelocityLimitEnabled(false);
-	}
 	else
 	{
 		// back to default air resistance with x velocity cap
-		SetCurrentXResistance(m_resistance.X);
-		SetMaxVelocityLimitEnabled(true);
+		if (!mIsRolling)
+		{
+			// SetCurrentXResistance(m_resistance.X);
+			SetMaxVelocityLimitEnabled(true);
+		}
 	}
 
 	if (GetIsCollidingAtObjectSide())
@@ -412,6 +425,8 @@ void Character::UpdateAnimations()
 			if (bodyPart->IsFinished())
 			{
 				mIsRolling = false;
+				// StopXAccelerating();
+				// SetVelocityX(0.0f);
 			}
 
 			mJustFellFromDistance = false;
@@ -794,6 +809,8 @@ void Character::WallJump(int directionX, float percent)
 		FlipHorizontal();
 	}
 	
+	SetMaxVelocityLimitEnabled(false);
+
 	SetVelocityY(20.0f);
 	SetVelocityX(20.0f * directionX);
 
@@ -814,6 +831,19 @@ bool Character::Roll()
 	}
 
 	mIsRolling = true;
+
+	SetMaxVelocityLimitEnabled(false);
+
+	if (std::abs(m_velocity.X) < kRollVelocityX)
+	{
+		SetVelocityX(m_direction.X * kRollVelocityX);
+	}
+	else
+	{
+		SetVelocityX(m_velocity.X * 1.5f);
+	}
+
+	SetVelocityY(kRollVelocityY);
 
 	return true;
 }

@@ -175,6 +175,7 @@ void MovingSprite::Update(float delta)
 		// then stop
 		m_velocity.X = 0;
 	}
+	/*
 	if(m_velocity.X > m_maxVelocity.X)
 	{
 		m_velocity.X = m_maxVelocity.X;
@@ -191,7 +192,7 @@ void MovingSprite::Update(float delta)
 	else if(m_velocity.Y < -m_maxVelocity.Y)
 	{
 		m_velocity.Y = -m_maxVelocity.Y;
-	}
+	}*/
 
 	if (mIsInWater == false)
 	{
@@ -270,7 +271,6 @@ void MovingSprite::AccelerateX(float directionX, float rate)
 		}
 		m_direction.X = directionX;
 		m_acceleration.X = rate;
-
 	}
 	else if(directionX > 0)
 	{
