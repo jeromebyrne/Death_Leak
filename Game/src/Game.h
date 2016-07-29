@@ -56,6 +56,8 @@ public:
 	void DoDamagePauseEffect();
 
 	void DisableDebugInfoEnabled();
+		
+	const InputManager & GetInputManager() const { return mInputManager; }
 
 private:
 

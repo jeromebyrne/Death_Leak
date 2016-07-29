@@ -5,10 +5,12 @@
 #include "NinjaSpawner.h"
 #include "SolidLineStrip.h"
 #include "Projectile.h"
+#include "Timing.h"
 
 InputManager::InputManager() :
 	mShowDebugInfo(false),
-	mPressingDebugInfoKey(false)
+	mPressingDebugInfoKey(false),
+	mLastTimePressedRoll(999.0f)
 {
 
 }
@@ -138,6 +140,7 @@ void InputManager::ProcessRoll_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 		padState.Gamepad.wButtons & XINPUT_GAMEPAD_B)
 	{
 		mCurrentGamepadState.mPressingRoll = true;
+		mLastTimePressedRoll = Timing::Instance()->GetTotalTimeSeconds();
 	}
 	else
 	{

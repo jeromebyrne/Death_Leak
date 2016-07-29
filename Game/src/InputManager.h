@@ -13,6 +13,8 @@ public:
 
 	void DisableDebugInfoEnabled() { mShowDebugInfo = false; }
 
+	float GetLastTimePressedRoll() const { return mLastTimePressedRoll; }
+
 private:
 
 	struct CurrentGameplayActions
@@ -61,6 +63,8 @@ private:
 	bool mPressingDebugInfoKey;
 
 	CurrentGamePadState mCurrentGamepadState;
+
+	float mLastTimePressedRoll;
 };
 
 #endif

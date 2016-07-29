@@ -11,6 +11,7 @@
 #include "DrawUtilities.h"
 #include "CurrencyOrb.h"
 #include "SolidLineStrip.h"
+#include "Game.h"
 
 float Character::mLastTimePlayedDeathSFX = 0;
 static const float kMinTimeBetweenDeathSFX = 0.1f;
@@ -19,9 +20,10 @@ static const int kDamageKickback = 20;
 static const float kTimeAllowedToJumpAfterLeaveSolidGround = 0.3f;
 static const float kSmallDropDistance = 200.0f;
 static const float kLargeDropDistance = 600.0f;
-static const float kWallJumpTime = 0.35f;
-static const float kRollVelocityX = 18.0f;
+static const float kWallJumpTime = 0.15f;
+static const float kRollVelocityX = 14.0f;
 static const float kRollVelocityY = 5.0f;
+static const float kLandRollInputWindow = 0.2f;
 
 Character::Character(float x, float y, float z, float width, float height, float breadth): 
 	SolidMovingSprite(x,y,z,width, height, breadth),
@@ -113,7 +115,6 @@ void Character::Update(float delta)
 	{
 		if (!mIsWallJumping)
 		{
-			//SetCurrentXResistance(m_resistance.X);
 			SetMaxVelocityLimitEnabled(true);
 		}
 	}
@@ -122,7 +123,6 @@ void Character::Update(float delta)
 	{
 		mWallJumpCountdownTime -= delta;
 
-		// SetCurrentXResistance(0.99f);
 		SetMaxVelocityLimitEnabled(false);
 
 		if (mWallJumpCountdownTime <= 0.0f ||
@@ -203,67 +203,81 @@ void Character::Update(float delta)
 		{
 			float dropDistance = mHighestPointWhileInAir - m_position.Y;
 
-			if (dropDistance > kSmallDropDistance && dropDistance < kLargeDropDistance)
+			// if we pressed roll just before landing then we should roll
+			auto inputManager = Game::GetInstance()->GetInputManager();
+
+			float totalTime = Timing::Instance()->GetTotalTimeSeconds();
+			float diff = totalTime - inputManager.GetLastTimePressedRoll();
+			if (diff > 0.0f && diff < kLandRollInputWindow)
 			{
-				mJustFellFromDistance = true;
+				Roll();
+				mJustFellFromDistance = false;
 				mJustfellFromLargeDistance = false;
 			}
-			else if (dropDistance >= kLargeDropDistance)
+			else if (!mIsRolling)
 			{
-				mJustFellFromDistance = false;
-				mJustfellFromLargeDistance = true;
-
-				StopXAccelerating();
-
-				Camera2D::GetInstance()->DoMediumShake();
-
-				if (IsOnSolidLine())
+				if (dropDistance > kSmallDropDistance && dropDistance < kLargeDropDistance)
 				{
-					auto solidLine = GetCurrentSolidLineStrip();
+					mJustFellFromDistance = true;
+					mJustfellFromLargeDistance = false;
+				}
+				else if (dropDistance >= kLargeDropDistance)
+				{
+					mJustFellFromDistance = false;
+					mJustfellFromLargeDistance = true;
 
-					if (solidLine)
+					StopXAccelerating();
+
+					Camera2D::GetInstance()->DoMediumShake();
+
+					if (IsOnSolidLine())
 					{
-						Material * objectMaterial = solidLine->GetMaterial();
-						string particleFile = "";
-						if (objectMaterial != 0)
+						auto solidLine = GetCurrentSolidLineStrip();
+
+						if (solidLine)
 						{
-							string soundfile = objectMaterial->GetRandomFootstepSoundFilename();
-							AudioManager::Instance()->PlaySoundEffect(soundfile);
-
-							particleFile = objectMaterial->GetRandomParticleTexture();
-
-							bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
-							if (!particleFile.empty())
+							Material * objectMaterial = solidLine->GetMaterial();
+							string particleFile = "";
+							if (objectMaterial != 0)
 							{
-								ParticleEmitterManager::Instance()->CreateDirectedSpray(20,
-																						Vector3(m_position.X + (m_direction.X * 60.f), CollisionBottom(), m_position.Z - 0.1),
-																						Vector3(0, 1, 0),
-																						0.4,
-																						Vector3(1200, 720, 0),
-																						particleFile,
-																						3.0f,
-																						6.0f,
-																						0.4f,
-																						1.0f,
-																						5,
-																						10,
-																						0.8,
-																						false,
-																						0.8,
-																						1.0,
-																						1,
-																						true,
-																						15,
-																						5.0f,
-																						0.2f,
-																						0.15f,
-																						0.9f);
+								string soundfile = objectMaterial->GetRandomFootstepSoundFilename();
+								AudioManager::Instance()->PlaySoundEffect(soundfile);
+
+								particleFile = objectMaterial->GetRandomParticleTexture();
+
+								bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
+								if (!particleFile.empty())
+								{
+									ParticleEmitterManager::Instance()->CreateDirectedSpray(20,
+										Vector3(m_position.X + (m_direction.X * 60.f), CollisionBottom(), m_position.Z - 0.1),
+										Vector3(0, 1, 0),
+										0.4,
+										Vector3(1200, 720, 0),
+										particleFile,
+										3.0f,
+										6.0f,
+										0.4f,
+										1.0f,
+										5,
+										10,
+										0.8,
+										false,
+										0.8,
+										1.0,
+										1,
+										true,
+										15,
+										5.0f,
+										0.2f,
+										0.15f,
+										0.9f);
+								}
 							}
 						}
 					}
-				}
 
-				// TODO: do drop sound effect (What if it's a non human NPC?)
+					// TODO: do drop sound effect (What if it's a non human NPC?)
+				}
 			}
 
 			mHighestPointWhileInAir = m_position.Y;
