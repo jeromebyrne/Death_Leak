@@ -7,7 +7,7 @@
                    hflip="false" vflip="false"
                    alpha="0.1"
                   use_standard_effect="true"
-                   fps ="30">
+                   fps ="6">
     <frames frame1="Media\UI\film_frame.png"
             frame2="Media\UI\film_frame_2.png"
             frame3="Media\UI\film_frame_3.png"

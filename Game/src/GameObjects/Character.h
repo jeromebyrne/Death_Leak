@@ -62,6 +62,8 @@ public:
 
 	bool GetIsRolling() const { return mIsRolling; }
 
+	void DoAnimationEffectIfApplicable(AnimationPart * bodyPart);
+
 protected:
 
 	void SetIsWallJumping(bool value);
@@ -112,6 +114,7 @@ protected:
 	float mWallJumpCountdownTime;
 	float mCurrentWallJumpXDirection;
 	bool mIsRolling;
+	bool mDoReboundJump;
 };
 
 #endif

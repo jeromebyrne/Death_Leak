@@ -10,7 +10,8 @@
 InputManager::InputManager() :
 	mShowDebugInfo(false),
 	mPressingDebugInfoKey(false),
-	mLastTimePressedRoll(999.0f)
+	mLastTimePressedRoll(999.0f),
+	mLastTimePressedJump(999.0f)
 {
 
 }
@@ -80,13 +81,13 @@ void InputManager::ProcessLeftRightMovement_gamepad(XINPUT_STATE padState, Curre
 		!player->GetIsRolling())
 	{
 		if (padState.Gamepad.sThumbLX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE && 
-			!(player->IsWallJumping() && player->GetCurrentWallJumpXDirection() > 0.0f))
+			!player->IsWallJumping())
 		{
 			player->AccelerateX(-100);
 			currentActions.mIsSprinting = true;
 		}
 		else if (padState.Gamepad.sThumbLX > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE &&
-			!(player->IsWallJumping() && player->GetCurrentWallJumpXDirection() < 0.0f))
+			!player->IsWallJumping())
 		{
 			player->AccelerateX(100);
 			currentActions.mIsSprinting = true;
@@ -109,6 +110,7 @@ void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 		padState.Gamepad.wButtons & XINPUT_GAMEPAD_A)
 	{
 		mCurrentGamepadState.mPressingJump = true;
+		mLastTimePressedJump = Timing::Instance()->GetTotalTimeSeconds();
 	}
 	else
 	{

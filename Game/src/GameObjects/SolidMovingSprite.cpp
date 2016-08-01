@@ -322,13 +322,16 @@ bool SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 		{
 			m_position.X += xOverlap;
 
-			if (liesLeftOf)
+			if (thisBottom > otherBottom)
 			{
-				m_collidingAtLeftSideOfObject = true;
-			}
-			else
-			{
-				m_collidingAtRightSideOfObject = true;
+				if (liesLeftOf)
+				{
+					m_collidingAtLeftSideOfObject = true;
+				}
+				else
+				{
+					m_collidingAtRightSideOfObject = true;
+				}
 			}
 
 			if (mBouncable)

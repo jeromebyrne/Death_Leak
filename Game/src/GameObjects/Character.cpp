@@ -15,15 +15,18 @@
 
 float Character::mLastTimePlayedDeathSFX = 0;
 static const float kMinTimeBetweenDeathSFX = 0.1f;
-static const float kJumpDelay = 0.10f;
+static const float kJumpDelay = 0.05f;
 static const int kDamageKickback = 20;
 static const float kTimeAllowedToJumpAfterLeaveSolidGround = 0.3f;
 static const float kSmallDropDistance = 200.0f;
 static const float kLargeDropDistance = 600.0f;
-static const float kWallJumpTime = 0.15f;
+static const float kWallJumpTime = 0.3f;
 static const float kRollVelocityX = 14.0f;
-static const float kRollVelocityY = 5.0f;
+static const float kRollVelocityY = 0.0f;
 static const float kLandRollInputWindow = 0.2f;
+static const float kLandJumpInputWindow = 0.1f;
+static const float kWallJumpXResistance = 0.99f;
+static const float kWallJumpVelocityXBoost = 15.0f;
 
 Character::Character(float x, float y, float z, float width, float height, float breadth): 
 	SolidMovingSprite(x,y,z,width, height, breadth),
@@ -64,7 +67,8 @@ Character::Character(float x, float y, float z, float width, float height, float
 	mWallJumpCountdownTime(5.0f),
 	mIsWallJumping(false),
 	mCurrentWallJumpXDirection(1.0f),
-	mIsRolling(false)
+	mIsRolling(false),
+	mDoReboundJump(false)
 {
 	mProjectileFilePath = "Media/knife.png";
 	mProjectileImpactFilePath = "Media/knife_impact.png";
@@ -101,14 +105,19 @@ void Character::SetIsWallJumping(bool value)
 
 void Character::Update(float delta)
 {
+	if (mDoReboundJump)
+	{
+		Jump(100.0f);
+		mDoReboundJump = false;
+	}
+
 	// update the base classes
 	SolidMovingSprite::Update(delta);
 
 	if (mIsRolling)
 	{
 		AccelerateX(m_direction.X);
-		
-		// SetCurrentXResistance(0.99f);
+
 		SetMaxVelocityLimitEnabled(false);
 	}
 	else
@@ -124,6 +133,7 @@ void Character::Update(float delta)
 		mWallJumpCountdownTime -= delta;
 
 		SetMaxVelocityLimitEnabled(false);
+		SetCurrentXResistance(kWallJumpXResistance);
 
 		if (mWallJumpCountdownTime <= 0.0f ||
 			IsOnSolidSurface())
@@ -136,9 +146,9 @@ void Character::Update(float delta)
 		// back to default air resistance with x velocity cap
 		if (!mIsRolling)
 		{
-			// SetCurrentXResistance(m_resistance.X);
 			SetMaxVelocityLimitEnabled(true);
 		}
+		SetCurrentXResistance(m_resistance.X);
 	}
 
 	if (GetIsCollidingAtObjectSide())
@@ -207,8 +217,8 @@ void Character::Update(float delta)
 			auto inputManager = Game::GetInstance()->GetInputManager();
 
 			float totalTime = Timing::Instance()->GetTotalTimeSeconds();
-			float diff = totalTime - inputManager.GetLastTimePressedRoll();
-			if (diff > 0.0f && diff < kLandRollInputWindow)
+			float rollDiff = totalTime - inputManager.GetLastTimePressedRoll();
+			if (rollDiff >= 0.0f && rollDiff < kLandRollInputWindow)
 			{
 				Roll();
 				mJustFellFromDistance = false;
@@ -220,6 +230,13 @@ void Character::Update(float delta)
 				{
 					mJustFellFromDistance = true;
 					mJustfellFromLargeDistance = false;
+
+					float jumpDiff = totalTime - inputManager.GetLastTimePressedJump();
+					if (jumpDiff >= 0.0f && jumpDiff < kLandJumpInputWindow)
+					{
+						mDoReboundJump = true;
+						Jump(100.0f);
+					}
 				}
 				else if (dropDistance >= kLargeDropDistance)
 				{
@@ -439,9 +456,18 @@ void Character::UpdateAnimations()
 			if (bodyPart->IsFinished())
 			{
 				mIsRolling = false;
-				// StopXAccelerating();
-				// SetVelocityX(0.0f);
+
+				// if we pressed jump while rolling then jump straight away
+				auto inputManager = Game::GetInstance()->GetInputManager();
+				float totalTime = Timing::Instance()->GetTotalTimeSeconds();
+				float jumpDiff = totalTime - inputManager.GetLastTimePressedJump();
+				if (jumpDiff >= 0.0f && jumpDiff < kLandJumpInputWindow)
+				{
+					Jump(100.0f);
+				}
 			}
+
+			DoAnimationEffectIfApplicable(bodyPart);
 
 			mJustFellFromDistance = false;
 			mIsFullyCrouched = false;
@@ -466,7 +492,8 @@ void Character::UpdateAnimations()
 		}
 		else if (mIsMidAirMovingDown) // we are accelerating vertically and not on top of another object
 		{
-			if (Timing::Instance()->GetTotalTimeSeconds() > mMidAirMovingDownStartTime + kJumpDelay)
+			if (Timing::Instance()->GetTotalTimeSeconds() > mMidAirMovingDownStartTime + kJumpDelay ||
+				GetTimeNotOnSolidSurface() > 0.25f)
 			{
 				if (current_body_sequence_name != "JumpingDown")
 				{
@@ -513,7 +540,7 @@ void Character::UpdateAnimations()
 		}
 		else if ((m_velocity.X > 1.0f || m_velocity.X < -1.0f) && !GetIsCollidingAtObjectSide()) // we are moving left or right and not colliding with the side of an object
 		{
-			if (mIsStrafing)
+			if (mIsStrafing && mStrafeDirectionX != m_direction.X)
 			{
 				if (current_body_sequence_name != "Strafing")
 				{
@@ -530,7 +557,7 @@ void Character::UpdateAnimations()
 
 			bodyPart->AnimateLooped();
 
-			if (mMatchAnimFrameRateWithMovement)
+			if (mMatchAnimFrameRateWithMovement && !mIsStrafing)
 			{
 				if (WasInWaterLastFrame())
 				{
@@ -544,57 +571,7 @@ void Character::UpdateAnimations()
 				}
 			}
 
-			if (mLastRunFramePlayed != bodyPart->FrameNumber() && bodyPart->HasSFXforCurrentFrame())
-			{
-				// footstep SFX
-				if (IsOnSolidLine())
-				{
-					auto solidLine = GetCurrentSolidLineStrip();
-					
-					if (solidLine)
-					{
-						auto material = solidLine->GetMaterial();
-
-						if (material)
-						{
-							std::string filename = material->GetRandomFootstepSoundFilename();
-
-							AudioManager::Instance()->PlaySoundEffect(filename);
-
-							// do particles
-							std::string particleFile = material->GetRandomParticleTexture();
-
-							bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
-							if (!particleFile.empty())
-							{
-								ParticleEmitterManager::Instance()->CreateDirectedSpray(10,
-																						Vector3(m_position.X + (m_direction.X * 5.f), CollisionBottom(), m_position.Z - 0.1),
-																						Vector3(0, 1, 0),
-																						0.1,
-																						Vector3(1200, 720, 0),
-																						particleFile,
-																						2.0f,
-																						4.0f,
-																						0.3f,
-																						0.7f,
-																						10,
-																						20,
-																						0.5,
-																						false,
-																						0.8,
-																						1.0,
-																						1,
-																						true,
-																						7,
-																						2.0f,
-																						0.0f,
-																						0.15f,
-																						0.7f);
-							}
-						}
-					}
-				}
-			}
+			DoAnimationEffectIfApplicable(bodyPart);
 			
 			m_texture = bodyPart->CurrentFrame(); // set the current texture
 
@@ -685,6 +662,61 @@ void Character::UpdateAnimations()
 	//================================================
 
 	m_mainBodyTexture = m_texture;
+}
+
+void Character::DoAnimationEffectIfApplicable(AnimationPart * bodyPart)
+{
+	if (mLastRunFramePlayed != bodyPart->FrameNumber() && bodyPart->HasSFXforCurrentFrame())
+	{
+		// footstep SFX
+		if (IsOnSolidLine())
+		{
+			auto solidLine = GetCurrentSolidLineStrip();
+
+			if (solidLine)
+			{
+				auto material = solidLine->GetMaterial();
+
+				if (material)
+				{
+					std::string filename = material->GetRandomFootstepSoundFilename();
+
+					AudioManager::Instance()->PlaySoundEffect(filename);
+
+					// do particles
+					std::string particleFile = material->GetRandomParticleTexture();
+
+					bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
+					if (!particleFile.empty())
+					{
+						ParticleEmitterManager::Instance()->CreateDirectedSpray(10,
+							Vector3(m_position.X + (m_direction.X * 5.f), CollisionBottom(), m_position.Z - 0.1),
+							Vector3(0, 1, 0),
+							0.1,
+							Vector3(1200, 720, 0),
+							particleFile,
+							2.0f,
+							4.0f,
+							0.3f,
+							0.7f,
+							10,
+							20,
+							0.5,
+							false,
+							0.8,
+							1.0,
+							1,
+							true,
+							7,
+							2.0f,
+							0.0f,
+							0.15f,
+							0.7f);
+					}
+				}
+			}
+		}
+	}
 }
 
 bool Character::Jump(float percent)
@@ -826,7 +858,7 @@ void Character::WallJump(int directionX, float percent)
 	SetMaxVelocityLimitEnabled(false);
 
 	SetVelocityY(20.0f);
-	SetVelocityX(20.0f * directionX);
+	SetVelocityX(kWallJumpVelocityXBoost * directionX);
 
 	SetIsWallJumping(true);
 
@@ -872,7 +904,7 @@ void Character::AccelerateX(float directionX)
 
 	float deepWaterModifier = (WasInWaterLastFrame() && GetWaterIsDeep()) ? 0.5f : 1.0f;
 
-	float strafeModifier = mIsStrafing ? 0.4f : 1.0f;
+	float strafeModifier = mIsStrafing ? 0.35f : 1.0f;
 
 	if (GetIsSprintActive())
 	{

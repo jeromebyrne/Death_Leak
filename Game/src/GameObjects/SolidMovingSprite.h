@@ -20,7 +20,7 @@ public:
 		m_onTopOfOtherSolidObject = false;
 		m_collidingAtLeftSideOfObject = false;
 		m_collidingAtRightSideOfObject = false;
-		mObjectMovingWith = 0;
+		mObjectMovingWith = nullptr;
 	}
 
 	Vector2 CollisionBoxOffset() const { return mCollisionBoxOffset; }

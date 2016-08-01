@@ -15,6 +15,8 @@ public:
 
 	float GetLastTimePressedRoll() const { return mLastTimePressedRoll; }
 
+	float GetLastTimePressedJump() const { return mLastTimePressedJump; }
+
 private:
 
 	struct CurrentGameplayActions
@@ -65,6 +67,7 @@ private:
 	CurrentGamePadState mCurrentGamepadState;
 
 	float mLastTimePressedRoll;
+	float mLastTimePressedJump;
 };
 
 #endif
