@@ -48,9 +48,8 @@
       <frame filename="Media\characters\player\run_default\run_default_019.png" />
 		</Running>
 
-
-    <Strafing FrameRate="40" MaxFrameRate="60" MinFrameRate="4" skeleton_offset_x="0" skeleton_offset_y="0">
-      <frame filename="Media\characters\player\strafe_default\strafe_default_000.png" />
+    <StrafeForward FrameRate="30" MaxFrameRate="60" MinFrameRate="4" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\strafe_default\strafe_default_000.png" sfx_type="footstep" />
       <frame filename="Media\characters\player\strafe_default\strafe_default_001.png" />
       <frame filename="Media\characters\player\strafe_default\strafe_default_002.png" />
       <frame filename="Media\characters\player\strafe_default\strafe_default_003.png" />
@@ -60,7 +59,7 @@
       <frame filename="Media\characters\player\strafe_default\strafe_default_007.png" />
       <frame filename="Media\characters\player\strafe_default\strafe_default_008.png" />
       <frame filename="Media\characters\player\strafe_default\strafe_default_009.png" />
-      <frame filename="Media\characters\player\strafe_default\strafe_default_010.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_010.png" sfx_type="footstep" />
       <frame filename="Media\characters\player\strafe_default\strafe_default_011.png" />
       <frame filename="Media\characters\player\strafe_default\strafe_default_012.png" />
       <frame filename="Media\characters\player\strafe_default\strafe_default_013.png" />
@@ -70,9 +69,31 @@
       <frame filename="Media\characters\player\strafe_default\strafe_default_017.png" />
       <frame filename="Media\characters\player\strafe_default\strafe_default_018.png" />
       <frame filename="Media\characters\player\strafe_default\strafe_default_019.png" />
-    </Strafing>
-    
+    </StrafeForward>
 
+    <StrafeBack FrameRate="40" MaxFrameRate="60" MinFrameRate="4" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\strafe_default\strafe_default_019.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_018.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_017.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_016.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_015.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_014.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_013.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_012.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_011.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_010.png" sfx_type="footstep" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_009.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_008.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_007.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_006.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_005.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_004.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_003.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_002.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_001.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_000.png" sfx_type="footstep" />
+    </StrafeBack>
+    
 		<JumpingUp FrameRate="60" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
       <frame filename="Media\characters\player\jump_up_default\jump_up_default_000.png" />
       <frame filename="Media\characters\player\jump_up_default\jump_up_default_001.png" />

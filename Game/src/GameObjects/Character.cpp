@@ -13,7 +13,7 @@
 #include "SolidLineStrip.h"
 #include "Game.h"
 
-float Character::mLastTimePlayedDeathSFX = 0;
+float Character::mLastTimePlayedDeathSFX = 0.0f;
 static const float kMinTimeBetweenDeathSFX = 0.1f;
 static const float kJumpDelay = 0.05f;
 static const int kDamageKickback = 20;
@@ -540,11 +540,21 @@ void Character::UpdateAnimations()
 		}
 		else if ((m_velocity.X > 1.0f || m_velocity.X < -1.0f) && !GetIsCollidingAtObjectSide()) // we are moving left or right and not colliding with the side of an object
 		{
-			if (mIsStrafing && mStrafeDirectionX != m_direction.X)
+			if (mIsStrafing)
 			{
-				if (current_body_sequence_name != "Strafing")
+				if (mStrafeDirectionX != m_direction.X)
 				{
-					bodyPart->SetSequence("Strafing");
+					if (current_body_sequence_name != "StrafeBack")
+					{
+						bodyPart->SetSequence("StrafeBack");
+					}
+				}
+				else
+				{
+					if (current_body_sequence_name != "StrafeForward")
+					{
+						bodyPart->SetSequence("StrafeForward");
+					}
 				}
 			}
 			else
@@ -690,7 +700,7 @@ void Character::DoAnimationEffectIfApplicable(AnimationPart * bodyPart)
 					if (!particleFile.empty())
 					{
 						ParticleEmitterManager::Instance()->CreateDirectedSpray(10,
-							Vector3(m_position.X + (m_direction.X * 5.f), CollisionBottom(), m_position.Z - 0.1),
+							Vector3(m_position.X + (m_direction.X * 5.f), CollisionBottom(), m_position.Z + 0.1),
 							Vector3(0, 1, 0),
 							0.1,
 							Vector3(1200, 720, 0),
@@ -904,7 +914,7 @@ void Character::AccelerateX(float directionX)
 
 	float deepWaterModifier = (WasInWaterLastFrame() && GetWaterIsDeep()) ? 0.5f : 1.0f;
 
-	float strafeModifier = mIsStrafing ? 0.35f : 1.0f;
+	float strafeModifier = mIsStrafing ? 0.3f : 1.0f;
 
 	if (GetIsSprintActive())
 	{

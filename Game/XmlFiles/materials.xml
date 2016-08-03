@@ -168,8 +168,9 @@
   <!--Grass Ground-->
   <material name="grassground">
     <particletextures>
-      <texture file="Media\grassParticle4.png"/>
+      <!--<texture file="Media\grassParticle4.png"/>-->
       <!--<texture file="Media\wetsplashparticle.png"/>-->
+      <texture file="Media\rock_particle.png"/>
     </particletextures>
 
     <damagesoundeffects>
