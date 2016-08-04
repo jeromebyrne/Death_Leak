@@ -64,6 +64,8 @@ private:
 
 	void CheckForSolidLineSetDropDown();
 
+	void CheckForPixelMovement();
+
 	GameObject * GetGameObjectClickedOn(list<shared_ptr<GameObject> > & gameObjects);
 
 	Sprite * GetAsSprite(GameObject * object);

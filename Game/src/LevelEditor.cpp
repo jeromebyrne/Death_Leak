@@ -901,6 +901,8 @@ void LevelEditor::CheckInput_Regular()
 
 	CheckForMaterialAssign();
 
+	CheckForPixelMovement();
+
 	for (auto & obj : gameObjects)
 	{
 		if (dynamic_cast<ParticleSpray*>(obj.get()))
@@ -1225,5 +1227,44 @@ void LevelEditor::CheckForSolidLineSetDropDown()
 	if (GetAsyncKeyState(VK_DOWN) >= 0)
 	{
 		pressingDown = false;
+	}
+}
+
+void LevelEditor::CheckForPixelMovement()
+{
+	GAME_ASSERT(!mTerrainEditing);
+
+	if (mTerrainEditing)
+	{
+		return;
+	}
+
+	if (!mSelectedObject)
+	{
+		return;
+	}
+
+	if (GetAsyncKeyState(VK_UP))
+	{
+		mSelectedObject->SetY(mSelectedObject->Y() + 0.1f);
+		mSelectedObject->Update(0);
+	}
+
+	if (GetAsyncKeyState(VK_LEFT))
+	{
+		mSelectedObject->SetX(mSelectedObject->X() - 0.1f);
+		mSelectedObject->Update(0);
+	}
+
+	if (GetAsyncKeyState(VK_DOWN))
+	{
+		mSelectedObject->SetY(mSelectedObject->Y() - 0.1f);
+		mSelectedObject->Update(0);
+	}
+
+	if (GetAsyncKeyState(VK_RIGHT))
+	{
+		mSelectedObject->SetX(mSelectedObject->X() + 0.1f);
+		mSelectedObject->Update(0);
 	}
 }
