@@ -419,8 +419,3 @@ void Game::DoDamagePauseEffect()
 	mLastTimeDamagePauseEffect = Timing::Instance()->GetTotalTimeSeconds();
 }
 
-void Game::DisableDebugInfoEnabled()
-{
-	mInputManager.DisableDebugInfoEnabled();
-}
-

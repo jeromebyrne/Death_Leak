@@ -11,7 +11,11 @@ public:
 
 	bool ShowDebugInfoEnabled() const { return mShowDebugInfo; }
 
-	void DisableDebugInfoEnabled() { mShowDebugInfo = false; }
+	void EnableDebugInfo(bool enabled) { mShowDebugInfo = enabled; }
+
+	void EnablePostProcessing(bool enabled) { mEnableGraphicsPostProcessing = enabled; }
+
+	bool GraphicsPostProcessingEnabled() const { return mEnableGraphicsPostProcessing; }
 
 	float GetLastTimePressedRoll() const { return mLastTimePressedRoll; }
 
@@ -63,6 +67,8 @@ private:
 
 	bool mShowDebugInfo;
 	bool mPressingDebugInfoKey;
+	bool mEnableGraphicsPostProcessing;
+	bool mPressingPostProcessingKey;
 
 	CurrentGamePadState mCurrentGamepadState;
 

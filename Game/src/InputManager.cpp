@@ -11,7 +11,10 @@ InputManager::InputManager() :
 	mShowDebugInfo(false),
 	mPressingDebugInfoKey(false),
 	mLastTimePressedRoll(999.0f),
-	mLastTimePressedJump(999.0f)
+	mLastTimePressedJump(999.0f),
+	mEnableGraphicsPostProcessing(true),
+	mPressingPostProcessingKey(false)
+
 {
 
 }
@@ -43,6 +46,26 @@ void InputManager::ProcessGameplayInput()
 			}
 		}
 		mPressingDebugInfoKey = false;
+	}
+
+	if (GetAsyncKeyState('L'))
+	{
+		mPressingPostProcessingKey = true;
+	}
+	else
+	{
+		if (mPressingPostProcessingKey)
+		{
+			if (mEnableGraphicsPostProcessing)
+			{
+				mEnableGraphicsPostProcessing = false;
+			}
+			else
+			{
+				mEnableGraphicsPostProcessing = true;
+			}
+		}
+		mPressingPostProcessingKey = false;
 	}
 
 #endif
@@ -359,7 +382,7 @@ void InputManager::ProcessTestActions_gamepad(XINPUT_STATE padState, CurrentGame
 				LOG_INFO("This is a really bad way to do this. Come back later.");
 				if (Timing::Instance()->GetTimeModifier() == 1.0f)
 				{
-					Timing::Instance()->SetTimeModifier(0.5f);
+					Timing::Instance()->SetTimeModifier(0.05f);
 				}
 				else
 				{

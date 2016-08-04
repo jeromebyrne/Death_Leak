@@ -324,7 +324,9 @@ void UIManager::HandleEvent(string eventName, list<string> params)
 		{
 			string level_file = *(params.begin()); // always only 1 parameter
 			Game::SetIsLevelEditMode(false);
-			Game::GetInstance()->DisableDebugInfoEnabled();
+			auto inputManager = Game::GetInstance()->GetInputManager();
+			inputManager.EnableDebugInfo(false);
+			inputManager.EnablePostProcessing(false);
 			GameObjectManager::Instance()->LoadObjectsFromFile(level_file.c_str());
 			break;
 		}
@@ -486,9 +488,11 @@ void UIManager::HandleEvent(string eventName, list<string> params)
 				list<string>::iterator iter = params.begin();
 				const char * level = (*iter).c_str();
 				Game::SetIsLevelEditMode(true);
-				// GameObjectManager::Instance()->SetShowDebugInfo(true);
 				GameObjectManager::Instance()->LoadObjectsFromFile(level);
 			}
+			auto inputManager = Game::GetInstance()->GetInputManager();
+			inputManager.EnableDebugInfo(true);
+			inputManager.EnablePostProcessing(true);
 			break;			
 		}
 	case SET_LANGUAGE:

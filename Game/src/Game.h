@@ -54,8 +54,6 @@ public:
 
 	// This is an effect to add pauses for enemy damage etc...
 	void DoDamagePauseEffect();
-
-	void DisableDebugInfoEnabled();
 		
 	const InputManager & GetInputManager() const { return mInputManager; }
 

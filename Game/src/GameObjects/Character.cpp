@@ -135,6 +135,15 @@ void Character::Update(float delta)
 		SetMaxVelocityLimitEnabled(false);
 		SetCurrentXResistance(kWallJumpXResistance);
 
+		if (m_direction.X > 0)
+		{
+			UnFlipHorizontal();
+		}
+		else
+		{
+			FlipHorizontal();
+		}
+
 		if (mWallJumpCountdownTime <= 0.0f ||
 			IsOnSolidSurface())
 		{
@@ -794,7 +803,7 @@ bool Character::Jump(float percent)
 			if (solidLine)
 			{
 				Material * objectMaterial = solidLine->GetMaterial();
-				string particleFile = "";
+				string particleFile;
 				if (objectMaterial != 0)
 				{
 					string soundfile = objectMaterial->GetRandomFootstepSoundFilename();

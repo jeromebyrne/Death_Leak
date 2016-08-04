@@ -71,7 +71,7 @@
       <frame filename="Media\characters\player\strafe_default\strafe_default_019.png" />
     </StrafeForward>
 
-    <StrafeBack FrameRate="40" MaxFrameRate="60" MinFrameRate="4" skeleton_offset_x="0" skeleton_offset_y="0">
+    <StrafeBack FrameRate="30" MaxFrameRate="60" MinFrameRate="4" skeleton_offset_x="0" skeleton_offset_y="0">
       <frame filename="Media\characters\player\strafe_default\strafe_default_019.png" />
       <frame filename="Media\characters\player\strafe_default\strafe_default_018.png" />
       <frame filename="Media\characters\player\strafe_default\strafe_default_017.png" />

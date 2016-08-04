@@ -185,21 +185,28 @@ void Update(float delta)
 }
 void Render()
 {
-	//
-    // Clear the backbuffer
-    //
 	g_pGraphics->Clear();
-	g_pGraphics->EnableAlphaBlending();
-	//g_pGraphics->SwitchToBackBufferRenderTarget();
-	g_pGraphics->SwitchToPreProcessRenderTarget();
-	// draw the game
-	g_pGame->Draw();
-	
-	// Do Post processing 
-	g_pGraphics->SwitchToBackBufferRenderTarget();
-	g_pGame->PostDraw();
+	g_pGraphics->EnableAlphaBlending(); // Required?
 
-	// draw the UI last
+	bool postProcessingEnabled = true;
+
+#ifdef DEBUG
+	postProcessingEnabled = Game::GetInstance()->GetInputManager().GraphicsPostProcessingEnabled();
+#endif
+
+	if (postProcessingEnabled)
+	{
+		g_pGraphics->SwitchToPreProcessRenderTarget();
+		g_pGame->Draw();
+		g_pGraphics->SwitchToBackBufferRenderTarget();
+		g_pGame->PostDraw();
+	}
+	else
+	{
+		g_pGraphics->SwitchToBackBufferRenderTarget();
+		g_pGame->Draw();
+	}
+
 	UIManager::Instance()->Draw(g_pGraphics->Device());
 
     g_pGraphics->SwapBuffers();
