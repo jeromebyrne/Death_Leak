@@ -23,8 +23,8 @@ static const float kLargeDropDistance = 600.0f;
 static const float kWallJumpTime = 0.3f;
 static const float kRollVelocityX = 14.0f;
 static const float kRollVelocityY = 0.0f;
-static const float kLandRollInputWindow = 0.2f;
-static const float kLandJumpInputWindow = 0.1f;
+static const float kLandRollInputWindow = 0.3f;
+static const float kLandJumpInputWindow = 0.3f;
 static const float kWallJumpXResistance = 0.99f;
 static const float kWallJumpVelocityXBoost = 15.0f;
 

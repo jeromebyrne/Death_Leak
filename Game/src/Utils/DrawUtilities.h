@@ -152,7 +152,7 @@ public:
 		{
 			D3D10_BUFFER_DESC bd;
 			bd.Usage = D3D10_USAGE_DEFAULT;
-			bd.ByteWidth = sizeof(lineVertices[0]) * 8;
+			bd.ByteWidth = sizeof(lineVertices[0]) * 2;
 			bd.BindFlags = D3D10_BIND_VERTEX_BUFFER;
 			bd.CPUAccessFlags = 0;
 			bd.MiscFlags = 0;

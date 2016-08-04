@@ -133,7 +133,6 @@ void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 		padState.Gamepad.wButtons & XINPUT_GAMEPAD_A)
 	{
 		mCurrentGamepadState.mPressingJump = true;
-		mLastTimePressedJump = Timing::Instance()->GetTotalTimeSeconds();
 	}
 	else
 	{
@@ -151,6 +150,7 @@ void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 		}
 		else
 		{
+			mLastTimePressedJump = Timing::Instance()->GetTotalTimeSeconds();
 			float jumpPower = player->IsStrafing() ? 80.0f : 100.0f;
 			player->Jump(jumpPower);
 		}
@@ -165,7 +165,6 @@ void InputManager::ProcessRoll_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 		padState.Gamepad.wButtons & XINPUT_GAMEPAD_B)
 	{
 		mCurrentGamepadState.mPressingRoll = true;
-		mLastTimePressedRoll = Timing::Instance()->GetTotalTimeSeconds();
 	}
 	else
 	{
@@ -174,7 +173,28 @@ void InputManager::ProcessRoll_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 
 	if (mCurrentGamepadState.mPressingRoll && !wasPressingRoll)
 	{ 
+		mLastTimePressedRoll = Timing::Instance()->GetTotalTimeSeconds();
 		player->Roll();
+	}
+}
+
+void InputManager::ProcessMelee_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player)
+{
+	bool wasPressingMelee = mCurrentGamepadState.mPressingMelee;
+
+	if (!player->JustFellFromLargeDistance() &&
+		padState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
+	{
+		mCurrentGamepadState.mPressingMelee = true;
+	}
+	else
+	{
+		mCurrentGamepadState.mPressingMelee = false;
+	}
+
+	if (mCurrentGamepadState.mPressingMelee && !wasPressingMelee)
+	{
+		player->DoMeleeAttack();
 	}
 }
 
@@ -350,7 +370,7 @@ void InputManager::ProcessTestActions_gamepad(XINPUT_STATE padState, CurrentGame
 	// Ninja spawning
 	{
 		static bool pressingLeftShoulder = false;
-		if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
+		if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
 		{
 			pressingLeftShoulder = true;
 		}
@@ -371,7 +391,7 @@ void InputManager::ProcessTestActions_gamepad(XINPUT_STATE padState, CurrentGame
 	// slow motion
 	{
 		static bool pressing_slo_mo = false;
-		if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
+		if (GetAsyncKeyState('O'))
 		{
 			pressing_slo_mo = true;
 		}
@@ -382,7 +402,7 @@ void InputManager::ProcessTestActions_gamepad(XINPUT_STATE padState, CurrentGame
 				LOG_INFO("This is a really bad way to do this. Come back later.");
 				if (Timing::Instance()->GetTimeModifier() == 1.0f)
 				{
-					Timing::Instance()->SetTimeModifier(0.05f);
+					Timing::Instance()->SetTimeModifier(0.2f);
 				}
 				else
 				{
@@ -420,6 +440,8 @@ void InputManager::ProcessGameplay_GamePad()
 	ProcessJump_gamepad(padState, currentActions, player);
 
 	ProcessWallJump_gamepad(padState, currentActions, player);
+
+	ProcessMelee_gamepad(padState, currentActions, player);
 
 	ProcessAimDirection_gamepad(padState, currentActions, player);
 
