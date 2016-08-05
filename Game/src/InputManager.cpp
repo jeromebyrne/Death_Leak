@@ -146,7 +146,7 @@ void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 			player->GetCurrentSolidLineStrip() &&
 			player->GetCurrentSolidLineStrip()->GetCanDropDown())
 		{
-			player->DropDown();
+			player->DropDown(); 
 		}
 		else
 		{
@@ -171,7 +171,9 @@ void InputManager::ProcessRoll_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 		mCurrentGamepadState.mPressingRoll = false;
 	}
 
-	if (mCurrentGamepadState.mPressingRoll && !wasPressingRoll)
+	if (mCurrentGamepadState.mPressingRoll && 
+		!wasPressingRoll &&
+		!player->GetIsRolling())
 	{ 
 		mLastTimePressedRoll = Timing::Instance()->GetTotalTimeSeconds();
 		player->Roll();
