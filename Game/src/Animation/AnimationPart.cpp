@@ -243,6 +243,6 @@ bool AnimationPart::HasSFXforCurrentFrame() const
 		return false;
 	}
 
-	m_currentSequence->HasSFXforFrame(m_currentFrameNumber);
+	return m_currentSequence->HasSFXforFrame(m_currentFrameNumber);
 }
 

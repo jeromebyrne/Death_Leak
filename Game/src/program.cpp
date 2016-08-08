@@ -47,7 +47,7 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 	double last_update_time = 0.0;
 	bool first_update = true;
 
-	timeBeginPeriod(1); // set timing resolution to 1 millisecond
+	// timeBeginPeriod(1); // set timing resolution to 1 millisecond
 #if _DEBUG
 	// _CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 	// _CrtSetReportMode( _CRT_ERROR, _CRTDBG_MODE_DEBUG );
@@ -66,14 +66,6 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 			break;
 		}
 
-		// is there a message to process?
-		if (PeekMessage( &mssg, NULL, 0, 0, PM_REMOVE)) 
-		{
-			// dispatch the message
-			TranslateMessage(&mssg);
-			DispatchMessage(&mssg);
-		} 
-
 		if (first_update)
 		{
 			last_update_time = timeGetTime();
@@ -84,9 +76,9 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 		double currentTime = timeGetTime();
 		Timing * timing = Timing::Instance();
 
-		double delta = (currentTime - last_update_time) * 0.001f;
+		double delta = (currentTime - last_update_time) * 0.001;
 
-		if (delta > timing->GetTargetDelta() * 1.2f)
+		if (delta > timing->GetTargetDelta() * 1.2)
 		{
 			delta = timing->GetTargetDelta() * 1.2;
 		}
@@ -99,8 +91,16 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 			Update(delta * timing->GetTimeModifier());
 			last_update_time = currentTime;
 			timing->IncrementTotalTimeSeconds(delta * timing->GetTimeModifier());
+		}
 
-			Render();
+		Render();
+
+		// is there a message to process?
+		if (PeekMessage(&mssg, NULL, 0, 0, PM_REMOVE))
+		{
+			// dispatch the message
+			TranslateMessage(&mssg);
+			DispatchMessage(&mssg);
 		}
 	}
 
