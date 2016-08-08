@@ -216,6 +216,7 @@ void Character::Update(float delta)
 		mJustfellFromLargeDistance = false;
 	}
 
+	bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
 	if (IsOnSolidSurface())
 	{
 		if (mHighestPointWhileInAir != m_position.Y)
@@ -233,7 +234,7 @@ void Character::Update(float delta)
 				mJustFellFromDistance = false;
 				mJustfellFromLargeDistance = false;
 			}
-			else if (!mIsRolling)
+			else if (!mIsRolling && !isInDeepWater)
 			{
 				if (dropDistance > kSmallDropDistance && dropDistance < kLargeDropDistance)
 				{
@@ -271,7 +272,6 @@ void Character::Update(float delta)
 
 								particleFile = objectMaterial->GetRandomParticleTexture();
 
-								bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
 								if (!particleFile.empty())
 								{
 									ParticleEmitterManager::Instance()->CreateDirectedSpray(20,
@@ -424,6 +424,8 @@ void Character::UpdateAnimations()
 	AnimationPart * bodyPart = m_animation->GetPart("body");
 	GAME_ASSERT(bodyPart);
 
+	bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
+
 	if (bodyPart)
 	{
 		string current_body_sequence_name = bodyPart->CurrentSequence()->Name();
@@ -432,7 +434,6 @@ void Character::UpdateAnimations()
 		{
 			// if we fell from a large distance the nothing else matters.
 			// We pause all character movement and wait until the recover animation is finished
-
 			if (current_body_sequence_name != "ImpactLandHard")
 			{
 				bodyPart->SetSequence("ImpactLandHard");
@@ -504,13 +505,25 @@ void Character::UpdateAnimations()
 			if (Timing::Instance()->GetTotalTimeSeconds() > mMidAirMovingDownStartTime + kJumpDelay ||
 				GetTimeNotOnSolidSurface() > 0.25f)
 			{
-				if (current_body_sequence_name != "JumpingDown")
+				if (isInDeepWater)
 				{
-					bodyPart->SetSequence("JumpingDown");
+					if (current_body_sequence_name != "SwimIdle")
+					{
+						bodyPart->SetSequence("SwimIdle");
+					}
+
+					bodyPart->AnimateLooped();
+				}
+				else
+				{
+					if (current_body_sequence_name != "JumpingDown")
+					{
+						bodyPart->SetSequence("JumpingDown");
+					}
+					bodyPart->Animate();
 				}
 			}
 
-			bodyPart->Animate();
 			m_texture = bodyPart->CurrentFrame(); // set the current texture
 
 			mIsFullyCrouched = false;
@@ -519,12 +532,23 @@ void Character::UpdateAnimations()
 		}
 		else if (mIsMidAirMovingUp)
 		{
-			if (current_body_sequence_name != "JumpingUp")
+			if (isInDeepWater)
 			{
-				bodyPart->SetSequence("JumpingUp");
+				if (current_body_sequence_name != "SwimBurst")
+				{
+					bodyPart->SetSequence("SwimBurst");
+				}
+				bodyPart->Animate();
 			}
-			
-			bodyPart->Animate();
+			else
+			{
+				if (current_body_sequence_name != "JumpingUp")
+				{
+					bodyPart->SetSequence("JumpingUp");
+				}
+				bodyPart->Animate();
+			}
+
 			m_texture = bodyPart->CurrentFrame(); // set the current texture
 
 			mIsFullyCrouched = false;
@@ -700,12 +724,15 @@ void Character::DoAnimationEffectIfApplicable(AnimationPart * bodyPart)
 				{
 					std::string filename = material->GetRandomFootstepSoundFilename();
 
-					AudioManager::Instance()->PlaySoundEffect(filename);
-
+					bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
+					if (!isInDeepWater)
+					{
+						AudioManager::Instance()->PlaySoundEffect(filename);
+					}
+					
 					// do particles
 					std::string particleFile = material->GetRandomParticleTexture();
 
-					bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
 					if (!particleFile.empty())
 					{
 						ParticleEmitterManager::Instance()->CreateDirectedSpray(10,
@@ -1349,26 +1376,26 @@ void Character::Teleport(float posX, float posY, bool showParticles)
 			spawnSpreadY * 1.5f);
 
 		ParticleEmitterManager::Instance()->CreateRadialSpray(20,
-			pos,
-			Vector3(3200, 2000, 0),
-			"Media\\smoke.png",
-			1.0f,
-			2.0f,
-			0.5f,
-			1.0f,
-			200,
-			300,
-			1,
-			false,
-			0.7f,
-			1.0f,
-			-1,
-			true,
-			0.1f,
-			0.1f,
-			0.7f,
-			spawnSpreadX * 1.4f,
-			spawnSpreadY * 1.0f);
+																pos,
+																Vector3(3200, 2000, 0),
+																"Media\\smoke.png",
+																1.0f,
+																2.0f,
+																0.5f,
+																1.0f,
+																200,
+																300,
+																1,
+																false,
+																0.7f,
+																1.0f,
+																-1,
+																true,
+																0.1f,
+																0.1f,
+																0.7f,
+																spawnSpreadX * 1.4f,
+																spawnSpreadY * 1.0f);
 	}
 }
 

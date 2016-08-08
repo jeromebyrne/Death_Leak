@@ -202,6 +202,47 @@
       <frame filename="Media\characters\player\roll_default\roll_default_029.png" />
     </Roll>
 
+    <SwimIdle FrameRate="10" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_000.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_001.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_002.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_003.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_004.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_005.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_006.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_007.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_008.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_009.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_010.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_011.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_012.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_013.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_014.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_015.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_016.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_017.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_018.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_019.png" />
+    </SwimIdle>
+
+    <SwimBurst FrameRate="30" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\swim_burst_default\swim_burst_default_000.png" />
+      <frame filename="Media\characters\player\swim_burst_default\swim_burst_default_001.png" />
+      <frame filename="Media\characters\player\swim_burst_default\swim_burst_default_002.png" />
+      <frame filename="Media\characters\player\swim_burst_default\swim_burst_default_003.png" />
+      <frame filename="Media\characters\player\swim_burst_default\swim_burst_default_004.png" />
+      <frame filename="Media\characters\player\swim_burst_default\swim_burst_default_005.png" />
+      <frame filename="Media\characters\player\swim_burst_default\swim_burst_default_006.png" />
+      <frame filename="Media\characters\player\swim_burst_default\swim_burst_default_007.png" />
+      <frame filename="Media\characters\player\swim_burst_default\swim_burst_default_008.png" />
+      <frame filename="Media\characters\player\swim_burst_default\swim_burst_default_009.png" />
+      <frame filename="Media\characters\player\swim_burst_default\swim_burst_default_010.png" />
+      <frame filename="Media\characters\player\swim_burst_default\swim_burst_default_011.png" />
+      <frame filename="Media\characters\player\swim_burst_default\swim_burst_default_012.png" />
+      <frame filename="Media\characters\player\swim_burst_default\swim_burst_default_013.png" />
+      <frame filename="Media\characters\player\swim_burst_default\swim_burst_default_014.png" />
+    </SwimBurst>
+
 	</body>
 
 	<arm OffsetX="0" OffsetY="0" SizeX="10" SizeY="10">
