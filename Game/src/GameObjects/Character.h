@@ -115,6 +115,7 @@ protected:
 	float mCurrentWallJumpXDirection;
 	bool mIsRolling;
 	bool mDoReboundJump;
+	bool mDoSwimBurstAnim;
 };
 
 #endif

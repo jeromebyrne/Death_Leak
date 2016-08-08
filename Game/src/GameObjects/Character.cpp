@@ -68,7 +68,8 @@ Character::Character(float x, float y, float z, float width, float height, float
 	mIsWallJumping(false),
 	mCurrentWallJumpXDirection(1.0f),
 	mIsRolling(false),
-	mDoReboundJump(false)
+	mDoReboundJump(false),
+	mDoSwimBurstAnim(false)
 {
 	mProjectileFilePath = "Media/knife.png";
 	mProjectileImpactFilePath = "Media/knife_impact.png";
@@ -538,6 +539,11 @@ void Character::UpdateAnimations()
 				{
 					bodyPart->SetSequence("SwimBurst");
 				}
+				if (mDoSwimBurstAnim)
+				{
+					bodyPart->Restart();
+					mDoSwimBurstAnim = false;
+				}
 				bodyPart->Animate();
 			}
 			else
@@ -793,7 +799,8 @@ bool Character::Jump(float percent)
 
 	if (WasInWaterLastFrame())
 	{
-		percent *= 0.32f;
+		percent *= 0.22f;
+		mDoSwimBurstAnim = true;
 	}
 
 	if(percent > 100)
@@ -948,7 +955,8 @@ void Character::AccelerateX(float directionX)
 		return;
 	}
 
-	float deepWaterModifier = (WasInWaterLastFrame() && GetWaterIsDeep()) ? 0.5f : 1.0f;
+	bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
+	float deepWaterModifier = isInDeepWater ? (IsOnSolidSurface() ? 0.5f : 0.2f) : 1.0f;
 
 	float strafeModifier = mIsStrafing ? 0.3f : 1.0f;
 
