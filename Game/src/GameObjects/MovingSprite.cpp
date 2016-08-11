@@ -16,7 +16,6 @@ MovingSprite::MovingSprite(float x, float y, float z, float width, float height,
 	mObjectMovingWith(0),
 	mCurrentYResistance(1.0f),
 	mCurrentXResistance(1.0f),
-	m_isOnGround(true),
 	mIsInWater(false),
 	mWasInWaterLastFrame(false),
 	mIsDeepWater(false),
@@ -68,22 +67,22 @@ void MovingSprite::Update(float delta)
 	float velocityMod = mIsInWater ? (GetWaterIsDeep() ? 0.35f : 0.6f) : 1.0f;
 	Vector3 nextVelocity = m_velocity + (m_acceleration * m_direction) * velocityMod;
 
-	if (nextVelocity.X > m_maxVelocity.X && mMaxVelocityXLimitEnabled)
+	if (nextVelocity.X > m_maxVelocity.X * velocityMod && mMaxVelocityXLimitEnabled)
 	{
-		nextVelocity.X = m_maxVelocity.X;
+		nextVelocity.X = m_maxVelocity.X * velocityMod;
 	}
-	else if (nextVelocity.X < -m_maxVelocity.X && mMaxVelocityXLimitEnabled)
+	else if (nextVelocity.X < -m_maxVelocity.X * velocityMod && mMaxVelocityXLimitEnabled)
 	{
-		nextVelocity.X = -m_maxVelocity.X;
+		nextVelocity.X = -m_maxVelocity.X * velocityMod;
 	}
 
-	if (nextVelocity.Y > m_maxVelocity.Y)
+	if (nextVelocity.Y > m_maxVelocity.Y * velocityMod)
 	{
-		nextVelocity.Y = m_maxVelocity.Y;
+		nextVelocity.Y = m_maxVelocity.Y * velocityMod;
 	}
-	else if (nextVelocity.Y < -m_maxVelocity.Y)
+	else if (nextVelocity.Y < -m_maxVelocity.Y * velocityMod)
 	{
-		nextVelocity.Y = -m_maxVelocity.Y;
+		nextVelocity.Y = -m_maxVelocity.Y * velocityMod;
 	}
 
 	mHittingSolidLineEdge = false;
@@ -134,27 +133,9 @@ void MovingSprite::Update(float delta)
 		m_position += m_velocity * percentDelta; // update our position by velocity
 	}
 
-	int groundLevel = Environment::Instance()->GroundLevel();
-	
-	float bottom = Bottom();
-	if (bottom <= groundLevel)
-	{
-		m_isOnGround = true;
-		if(bottom < groundLevel) // if below ground level then set at ground level
-		{
-			m_position.Y = (groundLevel + m_dimensions.Y/2);
-			StopYAccelerating();
-			m_velocity.Y = 0;
-		}
-	}
-	else
-	{
-		m_isOnGround = false;
-	}
-
 	// apply gravity?
 	float fakeGravity = 1.0f; // must be greater than 1
-	if(m_applyGravity && bottom > groundLevel) //if above ground level then apply gravity
+	if (m_applyGravity) // TODO: only apply if not on solid surface
 	{
 		if (!mIsInWater)
 		{
@@ -162,7 +143,14 @@ void MovingSprite::Update(float delta)
 		}
 		else
 		{
-			AccelerateY(-1, 0.03f * percentDelta);
+			if (m_velocity.Y > 0.0f)
+			{
+				AccelerateY(-1, 0.055f * percentDelta);
+			}
+			else
+			{
+				AccelerateY(-1, 0.004f * percentDelta);
+			}
 		}
 	}
 
@@ -175,24 +163,6 @@ void MovingSprite::Update(float delta)
 		// then stop
 		m_velocity.X = 0;
 	}
-	/*
-	if(m_velocity.X > m_maxVelocity.X)
-	{
-		m_velocity.X = m_maxVelocity.X;
-	}
-	else if(m_velocity.X < -m_maxVelocity.X)
-	{
-		m_velocity.X = -m_maxVelocity.X;
-	}
-
-	if(m_velocity.Y > m_maxVelocity.Y)
-	{
-		m_velocity.Y = m_maxVelocity.Y;
-	}
-	else if(m_velocity.Y < -m_maxVelocity.Y)
-	{
-		m_velocity.Y = -m_maxVelocity.Y;
-	}*/
 
 	if (mIsInWater == false)
 	{

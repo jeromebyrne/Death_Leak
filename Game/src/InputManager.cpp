@@ -14,9 +14,7 @@ InputManager::InputManager() :
 	mLastTimePressedJump(999.0f),
 	mEnableGraphicsPostProcessing(true),
 	mPressingPostProcessingKey(false)
-
 {
-
 }
 
 void InputManager::ProcessGameplayInput()
@@ -154,6 +152,24 @@ void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 			float jumpPower = player->IsStrafing() ? 80.0f : 100.0f;
 			player->Jump(jumpPower);
 		}
+	}
+}
+
+void InputManager::ProcessSwimDown_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player, const LevelProperties & levelProps)
+{
+	if (!(player->WasInWaterLastFrame() && player->GetWaterIsDeep()))
+	{
+		return;
+	}
+
+	if (player->IsOnSolidSurface())
+	{
+		return;
+	}
+
+	if (padState.Gamepad.sThumbLY < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+	{
+		player->AccelerateY(-1.0f, 0.1f);
 	}
 }
 
@@ -452,6 +468,8 @@ void InputManager::ProcessGameplay_GamePad()
 	ProcessSecondaryWeapon_gamepad(padState, currentActions, player);
 
 	ProcessStrafing_gamepad(padState, currentActions, player, levelProps);
+
+	ProcessSwimDown_gamepad(padState, currentActions, player, levelProps);
 
 	ProcessTestActions_gamepad(padState, currentActions, player, levelProps);
 }

@@ -1,6 +1,6 @@
 <level audio="">
     <LevelProperties>
-        <camera_properties posx="0.000000" posy="0.000000" zoom_in_percent="0.600000" xOffset="0.000000" yOffset="50.000000" xLag="100.000000" yLag="60.000000" followx="true" followy="true" />
+        <camera_properties posx="0.000000" posy="0.000000" zoom_in_percent="0.500000" xOffset="0.000000" yOffset="50.000000" xLag="100.000000" yLag="60.000000" followx="true" followy="true" />
         <level_bounds left="-5800.000000" right="-4500.000000" top="1200.000000" bottom="250.000000" />
         <music file="" initial_delay="20.000000" length="96.000000" time_between="120.000000" />
         <weather_properties allow_weather="false" />
@@ -11,7 +11,7 @@
         <material value="maleninja" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="40.000000" rand_init_step="1" />
         <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <effect name="effectnoise" noiseintensity="0.005000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\subzero\still1.png" />
         <horizontalflip value="true" />

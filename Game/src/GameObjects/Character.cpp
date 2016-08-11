@@ -173,9 +173,10 @@ void Character::Update(float delta)
 		mCurrentYResistance = m_resistance.Y;
 	}
 
-	if (m_acceleration.Y > 0 && !m_onTopOfOtherSolidObject && !GetIsCollidingAtObjectSide()) // we are accelerating vertically and not on top of another object
+	bool inDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
+	if ((m_acceleration.Y > 0.0f || inDeepWater) && !m_onTopOfOtherSolidObject && !GetIsCollidingAtObjectSide()) // we are accelerating vertically and not on top of another object
 	{
-		if (m_velocity.Y > -0.5)
+		if ((!inDeepWater && m_velocity.Y > -0.5) || (inDeepWater && m_velocity.Y > 0.0f))
 		{
 			if (!mIsMidAirMovingUp)
 			{
@@ -184,7 +185,8 @@ void Character::Update(float delta)
 			mIsMidAirMovingUp = true;
 			mIsMidAirMovingDown = false;
 		}
-		else if (m_velocity.Y <= -0.5)
+		else if (!(inDeepWater && m_velocity.Y <= -0.5) ||
+			(m_velocity.Y <= 0.0f && inDeepWater))
 		{
 			if (!mIsMidAirMovingDown)
 			{
@@ -504,16 +506,30 @@ void Character::UpdateAnimations()
 		else if (mIsMidAirMovingDown) // we are accelerating vertically and not on top of another object
 		{
 			if (Timing::Instance()->GetTotalTimeSeconds() > mMidAirMovingDownStartTime + kJumpDelay ||
-				GetTimeNotOnSolidSurface() > 0.25f)
+				GetTimeNotOnSolidSurface() > 0.25f ||
+				isInDeepWater)
 			{
 				if (isInDeepWater)
 				{
-					if (current_body_sequence_name != "SwimIdle")
+					if (current_body_sequence_name == "SwimBurst" ||
+						current_body_sequence_name == "SwimBurstKick")
+					{
+						bodyPart->SetSequence("SwimBurstSettle");
+						bodyPart->Animate();
+					}
+					else if (!bodyPart->IsFinished() && current_body_sequence_name == "SwimBurstSettle")
+					{
+						bodyPart->Animate();
+					}
+					else if (current_body_sequence_name != "SwimIdle")
 					{
 						bodyPart->SetSequence("SwimIdle");
+						bodyPart->AnimateLooped();
 					}
-
-					bodyPart->AnimateLooped();
+					else
+					{
+						bodyPart->AnimateLooped();
+					}
 				}
 				else
 				{
@@ -526,7 +542,6 @@ void Character::UpdateAnimations()
 			}
 
 			m_texture = bodyPart->CurrentFrame(); // set the current texture
-
 			mIsFullyCrouched = false;
 			mWasCrouching = false;
 			mJustFellFromDistance = false;
@@ -535,13 +550,20 @@ void Character::UpdateAnimations()
 		{
 			if (isInDeepWater)
 			{
-				if (current_body_sequence_name != "SwimBurst")
+				if (current_body_sequence_name != "SwimBurst" &&
+					current_body_sequence_name != "SwimBurstKick")
 				{
 					bodyPart->SetSequence("SwimBurst");
 				}
+
 				if (mDoSwimBurstAnim)
 				{
-					bodyPart->Restart();
+					if (bodyPart->IsFinished())
+					{
+						bodyPart->SetSequence("SwimBurstKick");
+						bodyPart->Restart();
+					}
+					
 					mDoSwimBurstAnim = false;
 				}
 				bodyPart->Animate();
@@ -797,19 +819,19 @@ bool Character::Jump(float percent)
 		return false;
 	}
 
-	if (WasInWaterLastFrame())
+	if (WasInWaterLastFrame() && GetWaterIsDeep())
 	{
-		percent *= 0.22f;
+		percent *= 0.2f;
 		mDoSwimBurstAnim = true;
 	}
 
-	if(percent > 100)
+	if(percent > 100.0f)
 	{
-		percent = 100;
+		percent = 100.0f;
 	}
-	else if(percent <= 0)
+	else if(percent <= 0.0f)
 	{
-		percent = 1;
+		percent = 1.0f;
 	}
 
 	if (/*m_acceleration.Y == 0 && */ !WasInWaterLastFrame())

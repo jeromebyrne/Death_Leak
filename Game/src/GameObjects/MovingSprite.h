@@ -92,8 +92,6 @@ public:
 
 	float GetYResistance() const { return m_resistance.Y; }
 
-	bool IsOnGround() const { return m_isOnGround; }
-
 	virtual void AccelerateX(float directionX, float rate);
 	virtual void AccelerateY(float directionY, float rate);
 	virtual void StopXAccelerating();
@@ -133,7 +131,6 @@ protected:
 
 	float mCurrentYResistance; // this can change dynamically
 	float mCurrentXResistance; // this can change dynamically
-	bool m_isOnGround;
 	bool mIsInWater;
 	bool mWasInWaterLastFrame;
 	bool mIsDeepWater;

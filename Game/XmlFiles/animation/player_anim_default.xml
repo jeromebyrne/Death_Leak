@@ -243,6 +243,27 @@
       <frame filename="Media\characters\player\swim_burst_default\swim_burst_default_014.png" />
     </SwimBurst>
 
+    <SwimBurstSettle FrameRate="30" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\swim_burst_settle_default\swim_burst_settle_default_000.png" />
+      <frame filename="Media\characters\player\swim_burst_settle_default\swim_burst_settle_default_001.png" />
+      <frame filename="Media\characters\player\swim_burst_settle_default\swim_burst_settle_default_002.png" />
+      <frame filename="Media\characters\player\swim_burst_settle_default\swim_burst_settle_default_003.png" />
+      <frame filename="Media\characters\player\swim_burst_settle_default\swim_burst_settle_default_004.png" />
+    </SwimBurstSettle>
+
+    <SwimBurstKick FrameRate="30" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\swim_burst_kick_default\swim_burst_kick_default_000.png" />
+      <frame filename="Media\characters\player\swim_burst_kick_default\swim_burst_kick_default_001.png" />
+      <frame filename="Media\characters\player\swim_burst_kick_default\swim_burst_kick_default_002.png" />
+      <frame filename="Media\characters\player\swim_burst_kick_default\swim_burst_kick_default_003.png" />
+      <frame filename="Media\characters\player\swim_burst_kick_default\swim_burst_kick_default_004.png" />
+      <frame filename="Media\characters\player\swim_burst_kick_default\swim_burst_kick_default_005.png" />
+      <frame filename="Media\characters\player\swim_burst_kick_default\swim_burst_kick_default_006.png" />
+      <frame filename="Media\characters\player\swim_burst_kick_default\swim_burst_kick_default_007.png" />
+      <frame filename="Media\characters\player\swim_burst_kick_default\swim_burst_kick_default_008.png" />
+      <frame filename="Media\characters\player\swim_burst_kick_default\swim_burst_kick_default_009.png" />
+    </SwimBurstKick>
+
 	</body>
 
 	<arm OffsetX="0" OffsetY="0" SizeX="10" SizeY="10">
