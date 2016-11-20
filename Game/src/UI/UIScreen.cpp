@@ -7,6 +7,7 @@
 #include "UIAnimatedSprite.h"
 #include "UICheckbox.h"
 #include "UIMeter.h"
+#include "UITextBox.h"
 #include "gamepad.h"
 #include "Game.h"
 
@@ -91,6 +92,11 @@ UIWidget * UIScreen::CreateWidget(const char * type)
 	{
 		UIButton * button = new UIButton();
 		return button;
+	}
+	else if (strcmp(type, "textbox") == 0)
+	{
+		UITextBox * textBox = new UITextBox();
+		return textBox;
 	}
 	else if (strcmp(type, "animatedsprite") == 0)
 	{

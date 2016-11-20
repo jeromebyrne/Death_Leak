@@ -38,13 +38,6 @@ void UIManager::Release()
 	m_allScreens.clear();
 
 	m_currentScreens.clear();
-
-	// delete the default shader effect here
-	if (m_defaultEffect)
-	{
-		delete m_defaultEffect;
-		m_defaultEffect = nullptr;
-	}
 }
 
 UIManager* UIManager::Instance()

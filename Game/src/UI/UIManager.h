@@ -70,6 +70,9 @@ public:
 
 	void HandleEvents();
 
+	float GetBaseWidth() const { return mBaseWidth; }
+	float GetBaseHeight() const { return mBaseHeight; }
+
 private:
 
 	static UIManager * m_instance;

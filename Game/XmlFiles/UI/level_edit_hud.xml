@@ -1,2 +1,8 @@
 <uiscreen show_cursor="true">
+
+  <textbox name="999_testing"
+          process_input="true"
+          posX ="300" posY ="-300" width="300" height ="30">
+  </textbox>
+  
 </uiscreen>

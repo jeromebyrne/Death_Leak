@@ -126,6 +126,7 @@
     <ClCompile Include="src\UI\UIMeter.cpp" />
     <ClCompile Include="src\UI\UIScreen.cpp" />
     <ClCompile Include="src\UI\UISprite.cpp" />
+    <ClCompile Include="src\UI\UITextBox.cpp" />
     <ClCompile Include="src\UI\UIWidget.cpp" />
     <ClCompile Include="tinyxml\tinystr.cpp" />
     <ClCompile Include="tinyxml\tinyxml.cpp" />
@@ -243,6 +244,7 @@
     <ClInclude Include="src\UI\UIMeter.h" />
     <ClInclude Include="src\UI\UIScreen.h" />
     <ClInclude Include="src\UI\UISprite.h" />
+    <ClInclude Include="src\UI\UITextBox.h" />
     <ClInclude Include="src\UI\UIWidget.h" />
     <ClInclude Include="src\Utils\DrawUtilities.h" />
     <ClInclude Include="src\Utils\Utilities.h" />

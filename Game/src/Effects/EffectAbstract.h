@@ -58,13 +58,13 @@ public:
 		if( m_pEffect )
 		{
 			m_pEffect->Release();
-			m_pEffect = NULL;
+			m_pEffect = nullptr;
 		}
 
 		if(InputLayout) 
 		{
 			InputLayout->Release();
-			InputLayout = NULL;
+			InputLayout = nullptr;
 		}
 	}
 	

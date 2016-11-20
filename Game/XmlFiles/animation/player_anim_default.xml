@@ -169,7 +169,7 @@
       <frame filename="Media\characters\player\duck_default\duck_default_000.png" />
     </ImpactLandHard>
 
-    <Roll FrameRate="40" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+    <Roll FrameRate="60" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
       <frame filename="Media\characters\player\roll_default\roll_default_000.png" />
       <frame filename="Media\characters\player\roll_default\roll_default_001.png" />
       <frame filename="Media\characters\player\roll_default\roll_default_002.png" />
