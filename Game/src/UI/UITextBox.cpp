@@ -4,6 +4,10 @@
 #include "Graphics.h"
 #include "DrawUtilities.h"
 #include "UISprite.h"
+#include <conio.h>  
+#include <ctype.h> 
+
+static const float kEditFadeAmount = 0.05f;
 
 UITextBox::UITextBox(void) : UIWidget()
 {
@@ -62,12 +66,22 @@ void UITextBox::Draw(ID3D10Device * graphicsdevice)
 	auto uiManager = UIManager::Instance();
 
 	unsigned xPadding = 5;
-	Graphics::GetInstance()->DrawDebugText("testing UITextBox", xPadding + m_bottomLeft.X + uiManager->GetBaseWidth() * 0.5f,
+	Graphics::GetInstance()->DrawDebugText(mDisplayText.c_str(), xPadding + m_bottomLeft.X + uiManager->GetBaseWidth() * 0.5f,
 																- m_bottomLeft.Y + (uiManager->GetBaseHeight() * 0.5f) - m_dimensions.Y);
 }
 
 void UITextBox::OnFocus()
 {
+	if (mInEditMode)
+	{
+		return;
+	}
+
+	if (UIManager::Instance()->IsInKeyboardInputMode())
+	{
+		return;
+	}
+
 	UIWidget::OnFocus();
 
 	m_dimensions = mFocusDimensions;
@@ -83,6 +97,16 @@ void UITextBox::OnFocus()
 
 void UITextBox::OnLoseFocus()
 {
+	if (mInEditMode)
+	{
+		return;
+	}
+
+	if (UIManager::Instance()->IsInKeyboardInputMode())
+	{
+		return;
+	}
+
 	UIWidget::OnLoseFocus();
 
 	m_dimensions = mNormalDimensions;
@@ -104,4 +128,77 @@ void UITextBox::OnPressDown()
 void UITextBox::OnPressUp()
 {
 	LOG_INFO("UITextBox press up");
+
+	mInEditMode = true;
+
+	UIManager::Instance()->SetIsInKeyboardInputMode(true);
+
+	UIManager::Instance()->SetStartingInputInKeyboardInputMode(mText);
+}
+
+void UITextBox::Update()
+{
+	UIWidget::Update();
+
+	if (mInEditMode)
+	{
+		ProcessEditInput();
+
+		if (mBackgroundImage)
+		{
+			if (mEditFadeUp)
+			{
+				mBackgroundImage->SetAlpha(mBackgroundImage->Alpha() + kEditFadeAmount);
+
+				if (mBackgroundImage->Alpha() >= 1.0f)
+				{
+					mEditFadeUp = false;
+				}
+			}
+			else
+			{
+				mBackgroundImage->SetAlpha(mBackgroundImage->Alpha() - kEditFadeAmount);
+
+				if (mBackgroundImage->Alpha() <= 0.0f)
+				{
+					mEditFadeUp = true;
+				}
+			}
+		}
+	}
+	else
+	{
+		if (mBackgroundImage)
+		{
+			mBackgroundImage->SetAlpha(1.0f);
+		}
+	}
+}
+
+void UITextBox::ProcessEditInput()
+{
+	if (GetAsyncKeyState(VK_RETURN) < 0)
+	{
+		// commit the change to text
+		mText = mDisplayText;
+		mInEditMode = false;
+		UIManager::Instance()->SetIsInKeyboardInputMode(false);
+		return;
+	}
+	else if (GetAsyncKeyState(VK_ESCAPE) < 0)
+	{
+		// cancel the change to text
+		mDisplayText = mText;
+		mInEditMode = false;
+		UIManager::Instance()->SetIsInKeyboardInputMode(false);
+		return;
+	}
+
+	mDisplayText = UIManager::Instance()->GetKeyboardInputInKeyboardInputMode();
+}
+
+void UITextBox::SetText(const std::string text)
+{
+	mText = text;
+	mDisplayText = text;
 }

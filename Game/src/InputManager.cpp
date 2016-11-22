@@ -6,6 +6,7 @@
 #include "SolidLineStrip.h"
 #include "Projectile.h"
 #include "Timing.h"
+#include "UIManager.h"
 
 InputManager::InputManager() :
 	mShowDebugInfo(false),
@@ -26,44 +27,47 @@ void InputManager::ProcessGameplayInput()
 
 #ifdef _DEBUG
 
-	if (GetAsyncKeyState('I'))
+	if (!UIManager::Instance()->IsInKeyboardInputMode())
 	{
-		mPressingDebugInfoKey = true;
-	}
-	else
-	{
-		if (mPressingDebugInfoKey) // just released
+		if (GetAsyncKeyState('I'))
 		{
-			if (mShowDebugInfo)
-			{
-				mShowDebugInfo = false;
-			}
-			else
-			{
-				mShowDebugInfo = true;
-			}
+			mPressingDebugInfoKey = true;
 		}
-		mPressingDebugInfoKey = false;
-	}
+		else
+		{
+			if (mPressingDebugInfoKey) // just released
+			{
+				if (mShowDebugInfo)
+				{
+					mShowDebugInfo = false;
+				}
+				else
+				{
+					mShowDebugInfo = true;
+				}
+			}
+			mPressingDebugInfoKey = false;
+		}
 
-	if (GetAsyncKeyState('L'))
-	{
-		mPressingPostProcessingKey = true;
-	}
-	else
-	{
-		if (mPressingPostProcessingKey)
+		if (GetAsyncKeyState('L'))
 		{
-			if (mEnableGraphicsPostProcessing)
-			{
-				mEnableGraphicsPostProcessing = false;
-			}
-			else
-			{
-				mEnableGraphicsPostProcessing = true;
-			}
+			mPressingPostProcessingKey = true;
 		}
-		mPressingPostProcessingKey = false;
+		else
+		{
+			if (mPressingPostProcessingKey)
+			{
+				if (mEnableGraphicsPostProcessing)
+				{
+					mEnableGraphicsPostProcessing = false;
+				}
+				else
+				{
+					mEnableGraphicsPostProcessing = true;
+				}
+			}
+			mPressingPostProcessingKey = false;
+		}
 	}
 
 #endif

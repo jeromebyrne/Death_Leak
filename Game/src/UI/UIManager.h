@@ -73,6 +73,18 @@ public:
 	float GetBaseWidth() const { return mBaseWidth; }
 	float GetBaseHeight() const { return mBaseHeight; }
 
+	bool IsInKeyboardInputMode() const { return mIsInKeyboardInputMode; }
+
+	void SetIsInKeyboardInputMode(bool value);
+
+	void HandleKeyPressInKeyboardInputMode(char character);
+
+	void HandleBackspaceInKeyboardInputMode();
+
+	const std::string & GetKeyboardInputInKeyboardInputMode() const { return mKeyboardInput; }
+
+	void SetStartingInputInKeyboardInputMode(const std::string & startingInput)  { mKeyboardInput = startingInput; }
+
 private:
 
 	static UIManager * m_instance;
@@ -106,6 +118,10 @@ private:
 	int mBaseHeight;
 
 	UISprite * mCursorSprite;
+
+	bool mIsInKeyboardInputMode = false;
+
+	std::string mKeyboardInput;
 };
 
 #endif

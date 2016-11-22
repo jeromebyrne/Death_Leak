@@ -145,6 +145,30 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 			}
 			break;
 		}
+		case WM_CHAR:
+		{
+			char c = wParam;
+
+			if (isprint(c))
+			{
+				auto uiManager = UIManager::Instance();
+
+				if (uiManager)
+				{
+					uiManager->HandleKeyPressInKeyboardInputMode(c);
+				}
+			}
+			else if (c == '\b')
+			{
+				// handle backspace
+				auto uiManager = UIManager::Instance();
+
+				if (uiManager)
+				{
+					uiManager->HandleBackspaceInKeyboardInputMode();
+				}
+			}
+		}
 
         default:
             return DefWindowProc( hWnd, message, wParam, lParam );

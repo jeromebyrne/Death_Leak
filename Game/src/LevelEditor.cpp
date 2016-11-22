@@ -9,6 +9,7 @@
 #include "DrawUtilities.h"
 #include "MaterialManager.h"
 #include "NPCTrigger.h"
+#include "UIManager.h"
 
 LevelEditor::LevelEditor(void):
 	mSelectedObject(nullptr),
@@ -36,6 +37,11 @@ void LevelEditor::Reset()
 
 void LevelEditor::Update()
 {
+	if (UIManager::Instance()->IsInKeyboardInputMode())
+	{
+		return;
+	}
+
 	static bool isPressingTerrainEdit = false;
 
 	if (!isPressingTerrainEdit && GetAsyncKeyState('T') < 0)

@@ -44,6 +44,11 @@ void SimpleFontManager::DrawDebugText(const char * text, float top, float left)
 {
 	RECT rectangle = {top, left, 0, 0};
 
+	if (strcmp(text, "")==0)
+	{
+		return;
+	}
+
 	// TODO: optimise, cache the wchar_t rather than constant conversion
 	wchar_t * w_text =  Utilities::ConvertCharStringToWcharString(text);
 	mDebugFont->DrawText(0,w_text, -1, &rectangle, DT_NOCLIP, mDebugFontColor);

@@ -17,19 +17,33 @@ public:
 	virtual void Draw(ID3D10Device * graphicsdevice);
 	virtual void Initialise();
 	virtual void Reset();
+	virtual void Update() override;
 
 	virtual void OnFocus() override;
 	virtual void OnLoseFocus() override;
+
+	std::string GetText() const { return mText; }
+
+	void SetText(const std::string text);
 
 protected:
 
 	virtual void OnPressDown() override;
 	virtual void OnPressUp() override;
 
+	void ProcessEditInput();
+
 	UISprite * mBackgroundImage;
 
 	Vector2 mFocusDimensions;
 	Vector2 mNormalDimensions;
+
+	bool mInEditMode = false;
+
+	bool mEditFadeUp = false;
+
+	std::string mText;
+	std::string mDisplayText;
 };
 
 #endif

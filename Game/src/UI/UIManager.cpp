@@ -542,3 +542,37 @@ UISprite * UIManager::CreateCursorSprite()
 
 	return cursorSprite;
 }
+
+void UIManager::HandleKeyPressInKeyboardInputMode(char character)
+{
+	if (!mIsInKeyboardInputMode)
+	{
+		return;
+	}
+
+	mKeyboardInput += character;
+}
+
+void UIManager::HandleBackspaceInKeyboardInputMode()
+{
+	if (!mIsInKeyboardInputMode)
+	{
+		return;
+	}
+
+	if (!mKeyboardInput.empty())
+	{
+		mKeyboardInput.resize(mKeyboardInput.size() - 1);
+	}
+}
+
+void UIManager::SetIsInKeyboardInputMode(bool value)
+{
+	mIsInKeyboardInputMode = value;
+
+	if (value == false)
+	{
+		// clear the string for next time
+		mKeyboardInput = "";
+	}
+}
