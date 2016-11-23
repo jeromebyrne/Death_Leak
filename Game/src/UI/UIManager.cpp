@@ -10,6 +10,7 @@
 #include "StringManager.h"
 #include "UISprite.h"
 #include "gamepad.h"
+#include "UIObjectEditScreen.h"
 
 extern void PostDestroyMessage();
 
@@ -229,6 +230,10 @@ void UIManager::XmlRead(const char * uiRootPath)
 		if (name == "game_hud")
 		{
 			ui_screen= new UIGameHudScreen(name);
+		}
+		else if (name == "object_editor")
+		{
+			ui_screen = new UIObjectEditScreen(name);
 		}
 		else
 		{
@@ -575,4 +580,25 @@ void UIManager::SetIsInKeyboardInputMode(bool value)
 		// clear the string for next time
 		mKeyboardInput = "";
 	}
+}
+
+void UIManager::DisplayObjectEditor(GameObject * gameObject)
+{
+	mObjectEditorDisplaying = true;
+
+	UIObjectEditScreen * screen = dynamic_cast<UIObjectEditScreen*>(PushUI("object_editor"));
+
+	GAME_ASSERT(screen != 0);
+
+	if (screen)
+	{
+		screen->SetObjectToEdit(gameObject);
+	}
+}
+
+void UIManager::DismissObjectEditor()
+{
+	PopUI("object_editor");
+
+	mObjectEditorDisplaying = false;
 }

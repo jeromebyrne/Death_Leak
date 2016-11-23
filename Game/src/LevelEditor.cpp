@@ -37,7 +37,9 @@ void LevelEditor::Reset()
 
 void LevelEditor::Update()
 {
-	if (UIManager::Instance()->IsInKeyboardInputMode())
+	CheckForInvokeObjectEditor();
+
+	if (UIManager::Instance()->IsObjectEditorDisplaying())
 	{
 		return;
 	}
@@ -1272,5 +1274,34 @@ void LevelEditor::CheckForPixelMovement()
 	{
 		mSelectedObject->SetX(mSelectedObject->X() + 0.1f);
 		mSelectedObject->Update(0);
+	}
+}
+
+void LevelEditor::CheckForInvokeObjectEditor()
+{
+	if (!mSelectedObject)
+	{
+		return;
+	}
+
+	static bool pressingKey = false;
+
+	if (!pressingKey && GetAsyncKeyState(VK_TAB) < 0)
+	{
+		pressingKey = true;
+
+		if (UIManager::Instance()->IsObjectEditorDisplaying())
+		{
+			UIManager::Instance()->DismissObjectEditor();
+		}
+		else
+		{
+			UIManager::Instance()->DisplayObjectEditor(mSelectedObject);
+		}
+	}
+
+	if (GetAsyncKeyState(VK_TAB) >= 0)
+	{
+		pressingKey = false;
 	}
 }

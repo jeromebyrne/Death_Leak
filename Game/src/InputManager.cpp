@@ -27,7 +27,7 @@ void InputManager::ProcessGameplayInput()
 
 #ifdef _DEBUG
 
-	if (!UIManager::Instance()->IsInKeyboardInputMode())
+	if (!UIManager::Instance()->IsObjectEditorDisplaying())
 	{
 		if (GetAsyncKeyState('I'))
 		{

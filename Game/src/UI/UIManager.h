@@ -85,6 +85,12 @@ public:
 
 	void SetStartingInputInKeyboardInputMode(const std::string & startingInput)  { mKeyboardInput = startingInput; }
 
+	void DisplayObjectEditor(GameObject * gameObject);
+
+	void DismissObjectEditor();
+
+	bool IsObjectEditorDisplaying() const { return mObjectEditorDisplaying; }
+
 private:
 
 	static UIManager * m_instance;
@@ -122,6 +128,8 @@ private:
 	bool mIsInKeyboardInputMode = false;
 
 	std::string mKeyboardInput;
+
+	bool mObjectEditorDisplaying = false;
 };
 
 #endif

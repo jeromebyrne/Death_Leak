@@ -228,16 +228,13 @@ void UIScreen::ProcessCursorInput()
 
 	// only process for mouse if mouse has changed
 	if(mouseUICoords.X != m_lastMousePos.X && mouseUICoords.Y != m_lastMousePos.Y)
-	{
-		/// loop through our widgets and check if we are mousing over anything
-		map<string, UIWidget*>::const_iterator current = m_widgetMap.begin();
-		
+	{		
 		bool focusedOnSomething = false;
 		bool widgetWasDifferentOnLastFrame = false;
 	
-		for(;current != m_widgetMap.end(); current++)
+		for(const auto & kvp : m_widgetMap)
 		{
-			UIWidget * widget = (*current).second;
+			UIWidget * widget = kvp.second;
 
 			Vector2 widget_top_left = widget->BottomLeft();
 			widget_top_left.Y += widget->Dimensions().Y;

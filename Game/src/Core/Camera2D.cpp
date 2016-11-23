@@ -210,7 +210,7 @@ void Camera2D::Update()
 	}
 
 #if _DEBUG
-	if (!UIManager::Instance()->IsInKeyboardInputMode())
+	if (!UIManager::Instance()->IsObjectEditorDisplaying())
 	{
 		int movespeed = 40;
 		// test
