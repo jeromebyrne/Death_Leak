@@ -66,8 +66,9 @@ void UITextBox::Draw(ID3D10Device * graphicsdevice)
 	auto uiManager = UIManager::Instance();
 
 	unsigned xPadding = 5;
+	float textHeight = 30.0f; // TODO: don't hardcode this
 	Graphics::GetInstance()->DrawDebugText(mDisplayText.c_str(), xPadding + m_bottomLeft.X + uiManager->GetBaseWidth() * 0.5f,
-																- m_bottomLeft.Y + (uiManager->GetBaseHeight() * 0.5f) - m_dimensions.Y);
+																(- m_bottomLeft.Y + (uiManager->GetBaseHeight() * 0.5f) - m_dimensions.Y) - textHeight * 0.25f);
 }
 
 void UITextBox::OnFocus()
