@@ -73,11 +73,8 @@ void UIManager::Update()
 		updateCursor = screen->GetShowCursor();
 	}
 
-	if (updateCursor && mCursorSprite)
+	if (mCursorSprite)
 	{
-		if (!(GamePad::GetPad1() && GamePad::GetPad1()->IsConnected()) ||
-			Game::GetIsLevelEditMode())
-		{
 			POINT currentMouse;
 			GetCursorPos(&currentMouse);
 			ScreenToClient(DXWindow::GetInstance()->Hwnd(), &currentMouse);
@@ -90,7 +87,6 @@ void UIManager::Update()
 			mCursorSprite->SetBottomLeft(mouseUICoords);
 
 			mCursorSprite->RebuildBuffers();
-		}
 	}
 }
 
@@ -145,13 +141,9 @@ void UIManager::Draw(ID3D10Device * device)
 		drawCursor = screen->GetShowCursor();
 	}
 
-	if (drawCursor && mCursorSprite )
+	if (mCursorSprite )
 	{
-		if (!(GamePad::GetPad1() && GamePad::GetPad1()->IsConnected()) ||
-			Game::GetIsLevelEditMode())
-		{
-			mCursorSprite->Draw(device);
-		}
+		mCursorSprite->Draw(device);
 	}
 }
 
@@ -257,9 +249,9 @@ void UIManager::XmlRead(const char * uiRootPath)
 
 	// just set the current ui screen here - TEMP
 	list<string> params;
-	params.push_back("language_select");
+	params.push_back("mainmenu");
 	PushBackEvent("pushui", params);
-	AudioManager::Instance()->PlayMusic("weather\\2minutestorm.mp3");
+	AudioManager::Instance()->PlayMusic("xmas\\sleigh_bells.wav", true);
 }
 
 void UIManager::PushBackEvent(string eventName, list<string> eventParams)
@@ -537,7 +529,9 @@ UISprite * UIManager::CreateCursorSprite()
 
 	cursorSprite->SetImage("Media\\UI\\cursor.png");
 
-	cursorSprite->SetDimensions(Vector2(35, 59));
+	cursorSprite->SetDimensions(Vector2(129, 80));
+
+	cursorSprite->SetAlpha(0.8f);
 
 	cursorSprite->SetUseStandardEffect(true);
 

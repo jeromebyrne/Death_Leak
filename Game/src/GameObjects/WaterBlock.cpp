@@ -55,11 +55,11 @@ bool WaterBlock::OnCollision(SolidMovingSprite * object)
 																		0.15f,
 																		0.2f);
 			}
-			else if (!GetIsDeepWater())
+			else if (!GetIsDeepWater() && GameObjectManager::Instance()->GetPlayer() == object)
 			{
 				AudioManager::Instance()->PlaySoundEffect("water\\water_splash_medium_2.wav");
 
-				ParticleEmitterManager::Instance()->CreateDirectedSpray(30,
+				ParticleEmitterManager::Instance()->CreateDirectedSpray(10,
 																		Vector3(object->X(), object->CollisionBottom() - 20, object->Z() - 0.1f),
 																		Vector3(0, 1, 0),
 																		1.0f,
@@ -78,13 +78,13 @@ bool WaterBlock::OnCollision(SolidMovingSprite * object)
 																		10.0f,
 																		true,
 																		3.5,
-																		10.0f,
-																		0.0f,
+																		5.0f,
+																		0.5f,
 																		0.15f,
 																		0.4f);
 
 				string particleTexFile = material->GetRandomParticleTexture();
-				ParticleEmitterManager::Instance()->CreateDirectedSpray(30,
+				ParticleEmitterManager::Instance()->CreateDirectedSpray(10,
 																		Vector3(object->X(), object->CollisionBottom() - 50, object->Z() - 0.1f),
 																		Vector3(0, 1, 0),
 																		0.4,

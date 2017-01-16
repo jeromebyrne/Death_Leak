@@ -220,19 +220,19 @@ Projectile * Player::FireWeapon(Vector2 direction)
 		pos.X -= m_projectileOffset.X;
 	}
 
-	float speed = mSprintActive ? 23 : 15;
+	float speed = mSprintActive ? 15 : 12;
 	bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
 
 	Projectile * p = new Projectile(Projectile::kPlayerProjectile,
 									mProjectileFilePath.c_str(),
 									mProjectileImpactFilePath.c_str(),
 									pos,
-									Vector2(30,8),
-									Vector2(60,20),
+									Vector2(30,30),
+									Vector2(25,25),
 									direction,
 									5,
 									isInDeepWater ? speed * 0.6f : speed,
-									0.25f);
+									0.5f);
 
 	if (m_isAnimated && m_animation)
 	{
@@ -281,6 +281,7 @@ void Player::ResetProjectileFireDelay()
 
 void Player::CheckForAndDoLevelUp()
 {
+	/*
 	unsigned int playerLevel = SaveManager::GetInstance()->GetPlayerLevel();
 	unsigned int orbsCollected = SaveManager::GetInstance()->GetNumCurrencyOrbsCollected();
 
@@ -289,8 +290,7 @@ void Player::CheckForAndDoLevelUp()
 		SaveManager::GetInstance()->SetPlayerLevel(playerLevel + 1);
 
 		// Do effects
-		AudioManager::Instance()->PlaySoundEffect("gong.wav", false, false, false);
-		AudioManager::Instance()->PlaySoundEffect("music\\japanese1.wav", false, false, false);
+		AudioManager::Instance()->PlaySoundEffect("xmas\\sleigh_bells.wav", false, false, false);
 		Camera2D::GetInstance()->DoBigShake();
 		Timing::Instance()->SetTimeModifierForNumSeconds(0.04f, 4.0f);
 		ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
@@ -404,6 +404,7 @@ void Player::CheckForAndDoLevelUp()
 		}
 		// ************************************
 	}
+	*/
 }
 
 void Player::AddAimLineSprite()

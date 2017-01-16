@@ -71,8 +71,8 @@ Character::Character(float x, float y, float z, float width, float height, float
 	mDoReboundJump(false),
 	mDoSwimBurstAnim(false)
 {
-	mProjectileFilePath = "Media/knife.png";
-	mProjectileImpactFilePath = "Media/knife_impact.png";
+	mProjectileFilePath = "Media/xmas/snowball_outline.png";
+	mProjectileImpactFilePath = "Media/xmas/snowball_impact.png";
 	mIsCharacter = true;
 
 	mExplodesGruesomely = true;
@@ -291,7 +291,7 @@ void Character::Update(float delta)
 										10,
 										0.8,
 										false,
-										0.8,
+										1.0,
 										1.0,
 										1,
 										true,
@@ -777,7 +777,7 @@ void Character::DoAnimationEffectIfApplicable(AnimationPart * bodyPart)
 							20,
 							0.5,
 							false,
-							0.8,
+							1.0,
 							1.0,
 							1,
 							true,
@@ -850,7 +850,7 @@ bool Character::Jump(float percent)
 	// if we are crouching fully then we get a nice boost to our jump
 	if (mIsFullyCrouched)
 	{
-		percent *= 1.2f;
+		percent *= 1.4f;
 
 		if (IsOnSolidLine())
 		{
@@ -884,7 +884,7 @@ bool Character::Jump(float percent)
 							10,
 							0.8,
 							false,
-							0.8,
+							1.0,
 							1.0,
 							1,
 							true,
@@ -1076,7 +1076,7 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 																			180,
 																			3.4,
 																			loop,
-																			0.3f,
+																			1.0f,
 																			1.0f,
 																			loopTime,
 																			true,

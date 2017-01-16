@@ -56,22 +56,23 @@ float4 PS( PS_INPUT input) : SV_Target
 	// Use our new texture coordinate to look-up a pixel in ColorMapSampler.
 	float4 color = txDiffuse.Sample( samLinear, input.Tex);
 	
-	float4 sepiaColor;
+	//float4 sepiaColor;
+
 	// sepiaColor.r = (color.r * 0.393) + (color.g * 0.769) + (color.b * 0.189);
 	// sepiaColor.g = (color.r * 0.349) + (color.g * 0.686) + (color.b * 0.168);
 	// sepiaColor.b = (color.r * 0.272) + (color.g * 0.534) + (color.b * 0.131);
 
-	sepiaColor.r = (color.r * 0.293) + (color.g * 0.669) + (color.b * 0.089);
-	sepiaColor.g = (color.r * 0.249) + (color.g * 0.586) + (color.b * 0.068);
-	sepiaColor.b = (color.r * 0.172) + (color.g * 0.434) + (color.b * 0.031);
+	// sepiaColor.r = (color.r * 0.293) + (color.g * 0.669) + (color.b * 0.089);
+	// sepiaColor.g = (color.r * 0.249) + (color.g * 0.586) + (color.b * 0.068);
+	// sepiaColor.b = (color.r * 0.172) + (color.g * 0.434) + (color.b * 0.031);
 
 	float4 finalColor = { 1.0, 1.0, 1.0, 1.0 };
 
 	float sepiaTrue = step((color.r - (color.g + color.b)), 0.5);
 	float redTrue = step(0.5, (color.r - (color.g + color.b)));
-	finalColor.r = (sepiaTrue * sepiaColor.r) + (redTrue * color.r);
-	finalColor.g = (sepiaTrue * sepiaColor.g) + (redTrue * color.g);
-	finalColor.b = (sepiaTrue * sepiaColor.b) + (redTrue * color.b);
+	finalColor.r = (color.r) + (redTrue * 5.0);
+	finalColor.g = (color.g) + (redTrue * 5.0);
+	finalColor.b = (color.b) + (redTrue * 5.0);
 
 	return finalColor;
 }

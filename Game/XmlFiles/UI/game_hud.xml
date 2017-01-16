@@ -1,19 +1,4 @@
-<uiscreen show_cursor="false">
- 
-  <animatedsprite name="26_scratch_anim"
-                   process_input="false"
-                   posX ="-960" posY ="-540" width="1920" height ="1080"
-                   image="Media\UI\noise_layer.png"
-                   hflip="false" vflip="false"
-                   alpha="0.1"
-                  use_standard_effect="true"
-                   fps ="6">
-    <frames frame1="Media\UI\film_frame.png"
-            frame2="Media\UI\film_frame_2.png"
-            frame3="Media\UI\film_frame_3.png"
-            frame4="Media\UI\film_frame_4.png"
-    />
-  </animatedsprite>
+<uiscreen show_cursor="true">
 
   <sprite name="27_frame_left"
           process_input="false"

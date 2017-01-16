@@ -10,20 +10,12 @@
 
   <animatedsprite name="2_anim"
                    process_input="false"
-                   posX ="700" posY ="-500" width="128" height ="128"
-                   image="Media\\UI\\loading_spinner\\1.png"
-                   hflip="false" vflip="false"
+                   posX ="600" posY ="-500" width="266" height ="470"
+                   image="Media\\xmas\\filled-stocking.png"
+                   hflip="false" vflip="true"
                    alpha="1.0"
                    fps ="30">
-    <frames frame1="Media\\UI\\loading_spinner\\1.png"
-            frame2="Media\\UI\\loading_spinner\\2.png"
-            frame3="Media\\UI\\loading_spinner\\3.png"
-            frame4="Media\\UI\\loading_spinner\\4.png"
-            frame5="Media\\UI\\loading_spinner\\5.png"
-            frame6="Media\\UI\\loading_spinner\\6.png"
-            frame7="Media\\UI\\loading_spinner\\7.png"
-            frame8="Media\\UI\\loading_spinner\\8.png"
-            frame9="Media\\UI\\loading_spinner\\9.png" />
+    <frames frame1="Media\\xmas\\filled-stocking.png" />
   </animatedsprite>
 
 </uiscreen>

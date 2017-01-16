@@ -391,47 +391,13 @@ void InputManager::ProcessTestActions_gamepad(XINPUT_STATE padState, CurrentGame
 {
 	// Ninja spawning
 	{
-		static bool pressingLeftShoulder = false;
 		if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
 		{
-			pressingLeftShoulder = true;
+			Timing::Instance()->SetTimeModifier(0.2f);
 		}
 		else
 		{
-			if (pressingLeftShoulder)
-			{
-				// testing
-				Timing::Instance()->SetTimeModifierForNumSeconds(0.1f, 3.5f);
-				NinjaSpawner spawner;
-				spawner.SpawnMultiple(1, Vector2(player->X(), player->Y()), Vector2(1200, 1200));
-			}
-
-			pressingLeftShoulder = false;
-		}
-	}
-
-	// slow motion
-	{
-		static bool pressing_slo_mo = false;
-		if (GetAsyncKeyState('O'))
-		{
-			pressing_slo_mo = true;
-		}
-		else
-		{
-			if (pressing_slo_mo)
-			{
-				LOG_INFO("This is a really bad way to do this. Come back later.");
-				if (Timing::Instance()->GetTimeModifier() == 1.0f)
-				{
-					Timing::Instance()->SetTimeModifier(0.2f);
-				}
-				else
-				{
-					Timing::Instance()->SetTimeModifier(1.0f);
-				}
-			}
-			pressing_slo_mo = false;
+			Timing::Instance()->SetTimeModifier(1.0f);
 		}
 	}
 }
@@ -463,15 +429,15 @@ void InputManager::ProcessGameplay_GamePad()
 
 	ProcessWallJump_gamepad(padState, currentActions, player);
 
-	ProcessMelee_gamepad(padState, currentActions, player);
+	// ProcessMelee_gamepad(padState, currentActions, player);
 
 	ProcessAimDirection_gamepad(padState, currentActions, player);
 
 	ProcessPrimaryWeapon_gamepad(padState, currentActions, player);
 
-	ProcessSecondaryWeapon_gamepad(padState, currentActions, player);
+	// ProcessSecondaryWeapon_gamepad(padState, currentActions, player);
 
-	ProcessStrafing_gamepad(padState, currentActions, player, levelProps);
+	// ProcessStrafing_gamepad(padState, currentActions, player, levelProps);
 
 	ProcessSwimDown_gamepad(padState, currentActions, player, levelProps);
 

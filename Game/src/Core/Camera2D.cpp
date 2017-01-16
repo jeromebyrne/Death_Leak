@@ -351,7 +351,10 @@ void Camera2D::FollowTargetObjectWithLag(bool forceUpdate, float overrideLagX, f
 
 		float distanceY = m_position.Y - (mTargetObject->Y() + mTargetOffset.Y * mZoomInPercent);
 
-		m_position.Y -= distanceY / yLag;
+		if (mTargetObject->Y() < 1600)
+		{
+			m_position.Y -= distanceY / yLag;
+		}
 	}
 }
 

@@ -6,7 +6,7 @@
   </village_outskirts_name>
 
   <village_name>
-    <en-gb>Deserted Village</en-gb>
+    <en-gb>Welcome to RATLAND</en-gb>
     <pt-br>A Vila</pt-br>
   </village_name>
 
@@ -26,12 +26,12 @@
   </underwater_cave_name>
 
   <level_up_notification>
-    <en-gb>LEVEL UP!</en-gb>
+    <en-gb>Well Done!</en-gb>
     <pt-br>UPAR!</pt-br>
   </level_up_notification>
 
   <test_string>
-    <en-gb>+ Double Jump unlocked!</en-gb>
+    <en-gb>You got all the crackers!</en-gb>
     <pt-br>+ Double Jump unlocked!</pt-br>
   </test_string>
 </strings>

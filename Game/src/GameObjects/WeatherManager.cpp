@@ -5,7 +5,7 @@
 #include "AudioObject.h"
 #include "Game.h"
 
-static const float kTimeUntilFirstWeather = 8.0f;
+static const float kTimeUntilFirstWeather = 40.0f;
 static const float kRainSessionMinTime = 70.0f;
 static const float kRainSessionMaxTime = 120.0f;
 static const float kRainIntroTime = 10.0f;
@@ -260,7 +260,7 @@ void WeatherManager::CreateSnowAssets()
 		mBottomSnowLayer->m_autoScrollY = true;
 		mBottomSnowLayer->m_autoScrollX = false;
 		mBottomSnowLayer->m_autoScrollXSpeed = 0;
-		mBottomSnowLayer->m_autoScrollYSpeed = 6.0f;
+		mBottomSnowLayer->m_autoScrollYSpeed = 2.5f;
 		mBottomSnowLayer->EffectName = "effectlighttexture";
 		mBottomSnowLayer->m_alpha = 1.0f;
 
@@ -286,7 +286,7 @@ void WeatherManager::CreateSnowAssets()
 		mTopSnowLayer->m_autoScrollY = true;
 		mTopSnowLayer->m_autoScrollX = false;
 		mTopSnowLayer->m_autoScrollXSpeed = 0;
-		mTopSnowLayer->m_autoScrollYSpeed = 6.0f;
+		mTopSnowLayer->m_autoScrollYSpeed = 2.5f;
 		mTopSnowLayer->EffectName = "effectlighttexture";
 		mTopSnowLayer->m_alpha = 1.0f;
 
@@ -312,7 +312,7 @@ void WeatherManager::CreateSnowAssets()
 		mSnowLayer3->m_autoScrollY = true;
 		mSnowLayer3->m_autoScrollX = false;
 		mSnowLayer3->m_autoScrollXSpeed = 0;
-		mSnowLayer3->m_autoScrollYSpeed = 6.5f;
+		mSnowLayer3->m_autoScrollYSpeed = 2.5f;
 		mSnowLayer3->EffectName = "effectlighttexture";
 		mSnowLayer3->m_alpha = 1.0f;
 
@@ -606,9 +606,9 @@ void WeatherManager::UpdateNoWeather(float delta)
 	// always start raining after 20 seconds the first time you play
 	if (!mHasHadWeather && mElapsedTime > kTimeUntilFirstWeather)
 	{
-		StartRaining();
+		//StartRaining();
 		
-		// StartSnowing();
+		StartSnowing();
 
 		mHasHadWeather = true;
 	}
@@ -616,39 +616,7 @@ void WeatherManager::UpdateNoWeather(float delta)
 	{
 		if (mNextWeatherDecisionTime < mElapsedTime)
 		{
-			// time to make a weather decision
-			if (!mHasRained)
-			{
-				StartRaining();
-			}
-			else if (!mHasSnowed)
-			{
-				StartSnowing();
-			}
-			else
-			{
-				// pick some random weather
-				int randNum = rand() % 2;
-
-				switch (randNum)
-				{
-					case 0:
-						{
-							StartRaining();
-							break;
-						}
-					case 1:
-						{
-							StartSnowing();
-							break;
-						}
-					default:
-						{
-							StartRaining();
-							break;
-						}
-				}
-			}
+			StartSnowing();
 		}
 	}
 }

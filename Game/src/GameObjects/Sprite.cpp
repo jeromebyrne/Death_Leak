@@ -631,7 +631,7 @@ void Sprite::Draw_effectLightTexture(ID3D10Device * device)
 	else
 	{
 		double gb_amount = (double)timeDiff / (double)kBurstTintMaxTime;
-		m_effectLightTexture->SetLightColor((float*)D3DXVECTOR4(1, gb_amount, gb_amount, 1));
+		m_effectLightTexture->SetLightColor((float*)D3DXVECTOR4(gb_amount + 10.0f, gb_amount * 10.0f, gb_amount * 10.0f, 1));
 	}
 
 	//// Set the input layout on the device

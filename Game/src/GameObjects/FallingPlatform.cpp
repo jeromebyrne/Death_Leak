@@ -15,6 +15,7 @@ mFallStartTime(0.0f),
 mReturnStartTime(0.0f),
 mInitialReturnPosition(0,0,0)
 {
+	mAlwaysUpdate = true;
 }
 
 FallingPlatform::~FallingPlatform(void)

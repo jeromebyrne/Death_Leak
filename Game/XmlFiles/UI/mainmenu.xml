@@ -2,81 +2,38 @@
 
   <sprite name="1_title_background"
           process_input="false"
-          posX ="-970" posY ="-540" width="1939.2" height ="1090.8"
-          image="Media\UI\main_menu_2.png"
-          hflip="false" vflip="false"
+          posX ="-1280" posY ="-800" width="2560" height ="1600"
+          image="Media\UI\xmas\bg_title_2.png"
+          hflip="false" vflip="true"
           alpha="1.0"
           use_standard_effect="true">
   </sprite>
-  
-  <sprite name="21_title_background"
-           process_input="false"
-           posX ="-970" posY ="-540" width="1969.2" height ="1115.8"
-           image="Media\UI\main_menu_blur.png"
-           hflip="false" vflip="false"
-           alpha="0.45">
-  </sprite>
-  
-  <sprite name="22_title_death_leak"
-          process_input="false"
-          posX ="-750" posY ="300" width="753" height ="194"
-          image="Media\UI\title.png"
-          hflip="false" vflip="false"
-          alpha="0.5">
-  </sprite>
-  <sprite name="23_title_death_leak"
-          process_input="false"
-          posX ="-754" posY ="307" width="753" height ="194"
-          image="Media\UI\title.png"
-          hflip="false" vflip="false"
-          alpha="1.0">
-  </sprite>
-  <sprite name="24_title_death_leak"
-          process_input="false"
-          posX ="-960" posY ="-540" width="1920" height ="1080"
-          image="Media\UI\frame.png"
-          hflip="false" vflip="false"
-          alpha="1.0"
-          use_standard_effect="true">
-  </sprite>
-  <animatedsprite name="25_noise_anim"
-                   process_input="false"
-                   posX ="-960" posY ="-540" width="1920" height ="1080"
-                   image="Media\UI\noise_layer.png"
-                   hflip="false" vflip="false"
-                   alpha="0.1"
-                   fps ="20">
-    <frames frame1="Media\UI\noise_layer.png"
-            frame2="Media\UI\noise_layer_3.png"
-            frame3="Media\UI\noise_layer_2.png"
-            frame4="Media\UI\noise_layer_5.png"
-            frame5="Media\UI\noise_layer_4.png"
-            frame6="Media\UI\noise_layer_6.png"
-    />
-  </animatedsprite>
 
-  <animatedsprite name="26_scratch_anim"
-                   process_input="false"
-                   posX ="-960" posY ="-540" width="1920" height ="1080"
-                   image="Media\UI\noise_layer.png"
-                   hflip="false" vflip="false"
-                   alpha="0.15"
-                  use_standard_effect="true"
-                   fps ="15">
-    <frames frame1="Media\UI\film_frame.png"
-            frame2="Media\UI\film_frame_2.png"
-            frame3="Media\UI\film_frame_3.png"
-            frame4="Media\UI\film_frame_4.png"
-    />
-  </animatedsprite>
-  
+  <sprite name="2_title_background"
+          process_input="false"
+          posX ="-640" posY ="-480" width="1280" height ="960"
+          image="Media\UI\xmas\modals\horizontal-2048-by-1536.png"
+          hflip="false" vflip="true"
+          alpha="1.0"
+          use_standard_effect="true">
+  </sprite>
+
+  <sprite name="31_title"
+          process_input="false"
+          posX ="-495" posY ="50" width="990" height ="331"
+          image="Media\UI\xmas\title.png"
+          hflip="false" vflip="true"
+          alpha="1.0"
+          use_standard_effect="true">
+  </sprite>
+
   <button name="3_new_game"
           process_input="true"
-          posX ="-500" posY ="-150" width="150" height ="150"
-          image="Media\UI\buttons\play1.png"
-          image_focus="Media\UI\buttons\play2.png"
-          image_click="Media\UI\buttons\play2.png"
-          hflip="false" vflip="false"
+          posX ="-128" posY ="-240" width="256" height ="272"
+          image="Media\UI\xmas\play.png"
+          image_focus="Media\UI\xmas\play2.png"
+          image_click="Media\UI\xmas\play2.png"
+          hflip="false" vflip="true"
           alpha="1.0"
           use_standard_effect="true">
     
@@ -97,9 +54,10 @@
     
   </button>
 
+  <!--
   <button name="5_level_editor"
           process_input="true"
-          posX ="-165" posY ="-260" width="150" height ="150"
+          posX ="750" posY ="-260" width="150" height ="150"
           image="Media\\UI\\buttons\\edit1.png"
           image_focus="Media\\UI\\buttons\\edit2.png"
           image_click="Media\\UI\\buttons\\edit2.png"
@@ -117,33 +75,17 @@
       <playsoundeffect sound="UI\\click.mp3"/>
     </actionspressdown>
   </button>
-   
-  <button name="6_options"
-          process_input="true"
-          posX ="175" posY ="-400" width="150" height ="150"
-          image="Media\\UI\\buttons\\settings1.png"
-          image_focus="Media\\UI\\buttons\settings2.png"
-          image_click="Media\\UI\\buttons\settings2.png"
-          hflip="false" vflip="false"
-          alpha="1.0"
-          use_standard_effect="true">
-    <actionspressup>
-      <popui ui="mainmenu" />
-      <pushui ui="options" />
-    </actionspressup>
-    
-    <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3"/>
-    </actionspressdown>
-  </button>
+  
+  -->
+
   
   <button name="7_quit"
            process_input="true"
-           posX ="520" posY ="-470" width="150" height ="150"
-           image="Media\\UI\\buttons\\back1.png"
-           image_focus="Media\\UI\\buttons\back2.png"
-           image_click="Media\\UI\\buttons\back2.png"
-           hflip="false" vflip="false"
+           posX ="-64" posY ="-440" width="128" height ="144.5"
+           image="Media\\UI\\xmas\\left.png"
+           image_focus="Media\\UI\\xmas\\left2.png"
+           image_click="Media\\UI\\xmas\\left2.png"
+           hflip="false" vflip="true"
            alpha="1.0"
           use_standard_effect="true">
 
@@ -159,7 +101,7 @@
 
   <sprite name="8_gamepad_warning"
           process_input="false"
-          posX ="-300" posY ="150" width="500" height ="125"
+          posX ="-3000" posY ="150" width="500" height ="125"
           image="Media\\UI\\gamepadwarning.png"
           hflip="false" vflip="false"
           alpha="1.0">

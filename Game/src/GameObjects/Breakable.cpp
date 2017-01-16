@@ -155,7 +155,7 @@ void Breakable::UpdateState()
 																0.1f);
 
 		mState = kBroken;
-		CurrencyOrb::SpawnOrbs(m_position, (rand() % 8) + 1);
+		// CurrencyOrb::SpawnOrbs(m_position, 5);
 		AudioManager::Instance()->PlaySoundEffect(m_material->GetRandomDestroyedSound());
 
 		if (mDeleteWhenBroken)

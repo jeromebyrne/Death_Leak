@@ -473,7 +473,7 @@ void Projectile::Update(float delta)
 		if (mCollidedWithProjectile)
 		{
 			SetRotationAngle(GetRotationAngle() + mReboundRotateRate);
-			m_position.Y -= 2 * percentDelta; // fake gravity
+			m_position.Y -= 4 * percentDelta; // fake gravity
 		}
 
 		float currentTime = Timing::Instance()->GetTotalTimeSeconds();
@@ -493,14 +493,13 @@ void Projectile::Update(float delta)
 	{
 		mTrailParticlesAttached = true;
 
-		/*
 		ParticleSpray * spray =
 		ParticleEmitterManager::Instance()->CreateDirectedSpray(10,
 																Vector3(m_position.X, m_position.Y, m_position.Z - 0.01f),
 																Vector3(-m_direction.X, -m_direction.Y, 0),
 																0.25,
 																Vector3(1200, 720, 0),
-																"Media//projectile_trail.png",
+																"Media//xmas//snowball.png",
 																0.0f,
 																0.0f,
 																0.1f,
@@ -522,7 +521,6 @@ void Projectile::Update(float delta)
 		{
 			spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), Vector3(0, 0, 0));
 		}
-		*/
 	}
 
 	if (!m_isActive)
@@ -601,14 +599,13 @@ void Projectile::HandleSolidLineStripCollision(SolidLineStrip * solidLineStrip)
 				AudioManager::Instance()->PlaySoundEffect(soundFile);
 			}
 
-			string particleTexFile = objectMaterial->GetRandomParticleTexture();
 			bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
-			ParticleEmitterManager::Instance()->CreateDirectedSpray(10,
+			ParticleEmitterManager::Instance()->CreateDirectedSpray(5,
 																	particlePos,
 																	Vector3(-m_direction.X, -m_direction.Y, 0),
 																	0.4,
 																	Vector3(3200, 1200, 0),
-																	particleTexFile,
+																	"Media//bloodparticle2.png",
 																	isInDeepWater ? 0.4f : 1.0f,
 																	isInDeepWater ? 1.5f : 4.0f,
 																	isInDeepWater ? 1.4f : minLive,
@@ -617,7 +614,7 @@ void Projectile::HandleSolidLineStripCollision(SolidLineStrip * solidLineStrip)
 																	30,
 																	0.7,
 																	loop,
-																	0.7f,
+																	1.0f,
 																	1.0f,
 																	10.0f,
 																	true,

@@ -703,7 +703,7 @@
     <Sprite id="42" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="81.099998" y="652.585266" x="12840.285156" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="944.127075" width="711.566345" native="false" repeatX="false" repeatY="false" />
-        <material value="grassground" />
+        <material value="grassground" />\
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
