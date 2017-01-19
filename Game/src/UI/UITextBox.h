@@ -26,6 +26,8 @@ public:
 
 	void SetText(const std::string text);
 
+	void SetIsEditable(bool editable);
+
 protected:
 
 	virtual void OnPressDown() override;
@@ -44,6 +46,8 @@ protected:
 
 	std::string mText;
 	std::string mDisplayText;
+
+	bool mIsEditable = true;
 };
 
 #endif

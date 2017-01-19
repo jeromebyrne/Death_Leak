@@ -23,6 +23,8 @@ private:
 
 	void removeTexBoxes();
 
+	void addRow(TiXmlElement * xmlElement, float startX, float startY, unsigned int & textBoxCountOut, unsigned int rowCount);
+
 	GameObject * mCurrentObject = nullptr;
 
 	std::map<std::string, UITextBox*> mTextBoxMap;

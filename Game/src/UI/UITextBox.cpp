@@ -42,7 +42,7 @@ void UITextBox::Initialise()
 	mBackgroundImage->SetIsProcessInput(false);
 	mBackgroundImage->SetBottomLeft(m_bottomLeft);
 	mBackgroundImage->SetDimensions(m_dimensions);
-	mBackgroundImage->SetImage("Media\\editor\\selection.png");
+	mBackgroundImage->SetImage(mIsEditable ? "Media\\editor\\text_box_backing.png" : "Media\\editor\\label_backing.png");
 	mBackgroundImage->SetAlpha(m_alpha);
 	mBackgroundImage->SetUseStandardEffect(true);
 	
@@ -66,13 +66,18 @@ void UITextBox::Draw(ID3D10Device * graphicsdevice)
 	auto uiManager = UIManager::Instance();
 
 	unsigned xPadding = 5;
-	float textHeight = 30.0f; // TODO: don't hardcode this
+	float textHeight = 8.0f; // TODO: don't hardcode this
 	Graphics::GetInstance()->DrawDebugText(mDisplayText.c_str(), xPadding + m_bottomLeft.X + uiManager->GetBaseWidth() * 0.5f,
 																(- m_bottomLeft.Y + (uiManager->GetBaseHeight() * 0.5f) - m_dimensions.Y) - textHeight * 0.25f);
 }
 
 void UITextBox::OnFocus()
 {
+	if (!mIsEditable)
+	{
+		return;
+	}
+
 	if (mInEditMode)
 	{
 		return;
@@ -98,6 +103,11 @@ void UITextBox::OnFocus()
 
 void UITextBox::OnLoseFocus()
 {
+	if (!mIsEditable)
+	{
+		return;
+	}
+
 	if (mInEditMode)
 	{
 		return;
@@ -123,11 +133,21 @@ void UITextBox::OnLoseFocus()
 
 void UITextBox::OnPressDown()
 {
+	if (!mIsEditable)
+	{
+		return;
+	}
+
 	LOG_INFO("UITextBox press down");
 }
 
 void UITextBox::OnPressUp()
 {
+	if (!mIsEditable)
+	{
+		return;
+	}
+
 	LOG_INFO("UITextBox press up");
 
 	mInEditMode = true;
@@ -178,6 +198,11 @@ void UITextBox::Update()
 
 void UITextBox::ProcessEditInput()
 {
+	if (!mIsEditable)
+	{
+		return;
+	}
+
 	if (GetAsyncKeyState(VK_RETURN) < 0)
 	{
 		// commit the change to text
@@ -202,4 +227,9 @@ void UITextBox::SetText(const std::string text)
 {
 	mText = text;
 	mDisplayText = text;
+}
+
+void UITextBox::SetIsEditable(bool editable)
+{
+	mIsEditable = editable;
 }

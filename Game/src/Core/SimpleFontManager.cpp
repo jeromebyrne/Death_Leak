@@ -16,7 +16,7 @@ void SimpleFontManager::Init(Graphics * graphics)
 	// DEBUG font
 	{
 		D3DX10_FONT_DESC fd;
-		fd.Height = 30;
+		fd.Height = 16;
 		fd.Width = 0;
 		fd.Weight = 0;
 		fd.MipLevels = 1;
@@ -24,7 +24,7 @@ void SimpleFontManager::Init(Graphics * graphics)
 		fd.CharSet = OUT_DEFAULT_PRECIS;
 		fd.Quality = DEFAULT_QUALITY;
 		fd.PitchAndFamily = DEFAULT_PITCH | FF_DONTCARE;
-		wcscpy(fd.FaceName, L"Impact");
+		wcscpy(fd.FaceName, L"Arial");
 
 		D3DX10CreateFontIndirect(graphics->Device(), &fd, &mDebugFont);
 		mDebugFontColor = D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f);
