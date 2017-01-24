@@ -17,17 +17,21 @@ public:
 
 	void SetObjectToEdit(GameObject * object);
 
+	void ApplyChanges();
+
 private:
 
-	void addTextBoxesForCurrentObject();
+	void clearData();
 
-	void removeTexBoxes();
+	void AddTextBoxesForObject(GameObject * object);
 
-	void addRow(TiXmlElement * xmlElement, float startX, float startY, unsigned int & textBoxCountOut, unsigned int rowCount);
+	TiXmlElement * ConvertPropertiesToXmlElement();
+
+	void AddRow(TiXmlElement * xmlElement, float startX, float startY, unsigned int & textBoxCountOut, unsigned int rowCount);
 
 	GameObject * mCurrentObject = nullptr;
 
-	std::map<std::string, UITextBox*> mTextBoxMap;
+	vector<pair<std::string, std::map<std::string, std::string>>> mObjectProperties;
 };
 
 #endif

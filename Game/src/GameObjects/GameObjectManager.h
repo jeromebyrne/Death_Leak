@@ -36,6 +36,7 @@ public:
 	void SaveObjectsToFile(const char* filename);
 	void AddGameObject(GameObject * object, bool editModeAdd = false);
 	void RemoveGameObject(GameObject * object, bool defer = true);
+	void AddGameObjectViaLevelEditor(GameObject * object);
 
 	shared_ptr<GameObject> & GetObjectByID(int id);
 
@@ -103,14 +104,16 @@ public:
 
 	const LevelProperties & GetCurrentLevelProperties() const { return mLevelProperties; }
 
+	TiXmlElement * ConvertObjectToXmlElement(GameObject * object);
+
+	GameObject * CreateObject(TiXmlElement * object, const std::vector<unsigned int> & orbsCollected);
+
 private:
 
 	Camera2D * m_camera;
 	static GameObjectManager* m_instance;
 	list<shared_ptr<GameObject> > m_gameObjects;
 	list<GameObject *> m_killList; // a list of all objects which need to be removed
-	GameObject * CreateObject(TiXmlElement * object, const std::vector<unsigned int> & orbsCollected);
-	TiXmlElement * SaveObject(GameObject * object);
 	void LoadContent(ID3D10Device * device); // load graphics content for drawable objects
 	void Initialise(); // call initialise function on all game objects
 

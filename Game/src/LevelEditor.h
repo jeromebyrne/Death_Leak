@@ -21,6 +21,13 @@ public:
 
 	void Reset();
 
+	void ResetSelectedObject() 
+	{ 
+		mSelectedObject = nullptr;
+		mSelectedLineStrip = nullptr;
+		mSelectedLinePointIndex = -1;
+	}
+
 private:
 
 	void CheckInput_TerrainEditing();

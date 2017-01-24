@@ -68,6 +68,10 @@ void GameObjectManager::RemoveGameObject(GameObject * object, bool defer)
 		GAME_ASSERT(object);
 		return;
 	}
+
+#if _DEBUG
+	Game::GetInstance()->ResetLevelEditorSelectedObject();
+#endif
 	
 	if (defer)
 	{
@@ -549,7 +553,7 @@ void GameObjectManager::SaveObjectsToFile(const char* filename)
 
 	for (auto obj : sortedObjects)
 	{
-		TiXmlElement * objElem = SaveObject(obj.second);
+		TiXmlElement * objElem = ConvertObjectToXmlElement(obj.second);
 
 		if (objElem)
 		{
@@ -560,7 +564,7 @@ void GameObjectManager::SaveObjectsToFile(const char* filename)
 	doc.Save(filename, root);
 }
 
-TiXmlElement * GameObjectManager::SaveObject(GameObject * object)
+TiXmlElement * GameObjectManager::ConvertObjectToXmlElement(GameObject * object)
 {
 	string objectType = object->GetTypeName();
 	TiXmlElement * element = new TiXmlElement(objectType.c_str());
@@ -579,7 +583,7 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement, const
 	// start looking at what object we need to make
 	if(strcmp(gameObjectTypeName, "player") == 0)
 	{
-		if (!m_player) // only create 1 player
+		if (!m_player || Game::GetInstance()->GetIsLevelEditMode()) // only create 1 player unless in editor
 		{
 			newGameObject = new Player();
 			m_player = static_cast<Player*>(newGameObject);
@@ -767,8 +771,6 @@ ParticleSpray * GameObjectManager::ReadParticleSpray(TiXmlElement * element)
 																						spawnSpreadY,
 																						fadeInPercentTime,
 																						fadeOutPercentTime);
-	p->SetXmlForCloning(element);
-
 	return p;
 }
 
@@ -830,6 +832,35 @@ void GameObjectManager::AddGameObject(GameObject * object, bool editModeAdd)
 	OrderDrawablesByDepth();
 }
 
+void GameObjectManager::AddGameObjectViaLevelEditor(GameObject * object)
+{
+	// don't let any new objects be created unless we purposely added them
+	if (!Game::GetIsLevelEditMode())
+	{
+		return;
+	}
+
+	DrawableObject * drawable = dynamic_cast<DrawableObject*>(object);
+	AudioObject * audiobj = dynamic_cast<AudioObject*>(object);
+	NPCTrigger * npcTrigger = dynamic_cast<NPCTrigger*>(object);
+	if (drawable)
+	{
+		GameObjectManager::Instance()->AddGameObject(drawable, true);
+	}
+	else if (audiobj)
+	{
+		GameObjectManager::Instance()->AddGameObject(audiobj, true);
+	}
+	else if (npcTrigger)
+	{
+		GameObjectManager::Instance()->AddGameObject(npcTrigger, true);
+	}
+	else
+	{
+		throw new exception();
+	}
+}
+
 // order our drawable list by depth - this a once off that should be done at initialise stage
 void GameObjectManager::OrderDrawablesByDepth()
 {
@@ -844,19 +875,11 @@ GameObject * GameObjectManager::CopyObject(GameObject * toCopy)
 		return nullptr;
 	}
 
-	TiXmlNode * xmlNode = toCopy->GetClonedXml();
-
-	if (!xmlNode)
-	{
-		GAME_ASSERT(false);
-		return nullptr;
-	}
-
-	// clone again in case we do multiple copies
-	TiXmlElement * xmlElement = dynamic_cast<TiXmlElement*>(xmlNode->Clone());
+	auto xmlElement = GameObjectManager::Instance()->ConvertObjectToXmlElement(toCopy);
 
 	if (!xmlElement)
 	{
+		GAME_ASSERT(false);
 		return nullptr;
 	}
 

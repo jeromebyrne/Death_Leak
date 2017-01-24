@@ -2,6 +2,11 @@
 #include "UIObjectEditScreen.h"
 #include "UITextBox.h"
 #include "UIManager.h"
+#include "GameObjectManager.h"
+#include "LevelEditor.h"
+#include "Game.h"
+
+static const unsigned int kTextBoxStartIndex = 8000;
 
 UIObjectEditScreen::UIObjectEditScreen(string name) :
 	UIScreen(name)
@@ -15,6 +20,12 @@ UIObjectEditScreen::~UIObjectEditScreen(void)
 void UIObjectEditScreen::Update()
 {
 	UIScreen::Update();
+
+	if (GetAsyncKeyState('O') < 0)
+	{
+		// just testing
+		ApplyChanges();
+	}
 }
 
 void UIObjectEditScreen::Initialise()
@@ -26,40 +37,38 @@ void UIObjectEditScreen::SetObjectToEdit(GameObject * object)
 {
 	GAME_ASSERT(object != 0);
 
+	clearData();
+
 	mCurrentObject = object;
 
-	removeTexBoxes();
-
-	addTextBoxesForCurrentObject();
+	AddTextBoxesForObject(mCurrentObject);
 }
 
-void UIObjectEditScreen::addTextBoxesForCurrentObject()
+void UIObjectEditScreen::AddTextBoxesForObject(GameObject * object)
 {
-	if (!mCurrentObject)
+	if (!object)
 	{
 		return;
 	}
 
-	// TODO: we only want to save what has changed
-	// cloned XML does not get changed when we use regular editor to modify objects
-	auto xmlNode = mCurrentObject->GetClonedXml();
+	auto xmlElement = GameObjectManager::Instance()->ConvertObjectToXmlElement(object);
 
 	float startX = -(UIManager::Instance()->GetBaseWidth() * 0.5f);
 	float startY = (UIManager::Instance()->GetBaseHeight() * 0.5f);
 
-	unsigned int textBoxCount = 8000;
+	unsigned int textBoxCount = kTextBoxStartIndex;
 
 	int rowCount = 0;
 
-	addRow(xmlNode->ToElement(), startX, startY, textBoxCount, rowCount);
+	AddRow(xmlElement, startX, startY, textBoxCount, rowCount);
 
 	++rowCount;
 
-	auto childElement = xmlNode->FirstChildElement();
+	auto childElement = xmlElement->FirstChildElement();
 
 	while (childElement != nullptr)
 	{
-		addRow(childElement, startX, startY, textBoxCount, rowCount);
+		AddRow(childElement, startX, startY, textBoxCount, rowCount);
 
 		childElement = childElement->NextSiblingElement();
 
@@ -67,13 +76,15 @@ void UIObjectEditScreen::addTextBoxesForCurrentObject()
 	}
 }
 
-void UIObjectEditScreen::addRow(TiXmlElement * xmlElement, float startX, float startY, unsigned int & textBoxCountOut, unsigned int rowCount)
+void UIObjectEditScreen::AddRow(TiXmlElement * xmlElement, float startX, float startY, unsigned int & textBoxCountOut, unsigned int rowCount)
 {
 	float heightPadding = 25;
 	float xPadding = 8.0f;
 	float yPadding = 30.0f;
 
 	float nextXOffset = startX + xPadding;
+
+	std::map<std::string, std::string> propertyMap;
 
 	// element
 	std::string elementName = xmlElement->Value();
@@ -103,9 +114,12 @@ void UIObjectEditScreen::addRow(TiXmlElement * xmlElement, float startX, float s
 
 	for (auto attr = xmlElement->FirstAttribute(); attr != nullptr; attr = attr->Next())
 	{
+		std::string key = attr->Name();
+		std::string value = attr->Value();
+
 		// property key
 		{
-			float textBoxWidth = strlen(attr->Name()) * 8;
+			float textBoxWidth = strlen(key.c_str()) * 8;
 
 			if (textBoxWidth < 15.0f) { textBoxWidth = 15.0f; }
 
@@ -122,7 +136,7 @@ void UIObjectEditScreen::addRow(TiXmlElement * xmlElement, float startX, float s
 			textBox->SetDimensions(Vector2(textBoxWidth, 15));
 			textBox->SetIsProcessInput(false);
 			textBox->SetIsEditable(false);
-			textBox->SetText(attr->Name());
+			textBox->SetText(key);
 
 			nextXOffset += (5 + textBoxWidth);
 
@@ -137,7 +151,7 @@ void UIObjectEditScreen::addRow(TiXmlElement * xmlElement, float startX, float s
 
 		// property value
 		{
-			float textBoxWidth = strlen(attr->Value()) * 8;
+			float textBoxWidth = strlen(value.c_str()) * 8;
 
 			if (textBoxWidth < 20.0f) { textBoxWidth = 20.0f; }
 
@@ -146,7 +160,7 @@ void UIObjectEditScreen::addRow(TiXmlElement * xmlElement, float startX, float s
 			textBox->SetBottomLeft(Vector2(nextXOffset, (startY - yPadding) - (heightPadding * rowCount)));
 			textBox->SetDimensions(Vector2(textBoxWidth, 15));
 			textBox->SetIsProcessInput(true);
-			textBox->SetText(attr->Value());
+			textBox->SetText(value);
 
 			nextXOffset += (xPadding + textBoxWidth);
 
@@ -156,22 +170,89 @@ void UIObjectEditScreen::addRow(TiXmlElement * xmlElement, float startX, float s
 			std::string mapKeyPrefix = Utilities::ConvertDoubleToString(textBoxCountOut);
 			m_widgetMap[mapKeyPrefix + "_textbox"] = textBox;
 
+			propertyMap[key] = value;
+
 			++textBoxCountOut;
 		}
 	}
+
+	mObjectProperties.push_back(std::pair<std::string, std::map<std::string, std::string>>(elementName, propertyMap));
 }
 
-void UIObjectEditScreen::removeTexBoxes()
+TiXmlElement * UIObjectEditScreen::ConvertPropertiesToXmlElement()
 {
-	for (const auto & kvp : mTextBoxMap)
+	TiXmlElement * parentElement = nullptr;
+	
+	unsigned count = 0;
+	for (const auto & kvp : mObjectProperties)
 	{
-		m_widgetMap.erase(kvp.first);
+		if (count == 0)
+		{
+			parentElement = new TiXmlElement(kvp.first.c_str());
+
+			for (const auto & attribute : kvp.second)
+			{
+				parentElement->SetAttribute(attribute.first.c_str(), attribute.second.c_str());
+			}
+		}
+		else
+		{
+			TiXmlElement * childElement = new TiXmlElement(kvp.first.c_str());
+
+			for (const auto & attribute : kvp.second)
+			{
+				childElement->SetAttribute(attribute.first.c_str(), attribute.second.c_str());
+			}
+
+			parentElement->LinkEndChild(childElement);
+		}
+
+		++count;
 	}
 
-	for (const auto & kvp : mTextBoxMap)
+	return parentElement;
+}
+
+void UIObjectEditScreen::ApplyChanges()
+{
+	auto xmlElement = ConvertPropertiesToXmlElement();
+
+	auto gameObjectManager = GameObjectManager::Instance();
+
+	gameObjectManager->RemoveGameObject(mCurrentObject, false);
+	mCurrentObject = nullptr;
+
+	auto editedObject = gameObjectManager->CreateObject(xmlElement, std::vector<unsigned int>());
+
+	GAME_ASSERT(editedObject != 0);
+
+	if (editedObject)
 	{
-		delete kvp.second;
+		gameObjectManager->AddGameObjectViaLevelEditor(editedObject);
+		editedObject->Update(0);
+		SetObjectToEdit(editedObject);
+		//UIManager::Instance()->DismissObjectEditor();
+	}
+}
+
+void UIObjectEditScreen::clearData()
+{
+	std::list<std::string> textBoxKeys;
+
+	for (const auto & kvp : m_widgetMap)
+	{
+		UITextBox * textBox = dynamic_cast<UITextBox*>(kvp.second);
+
+		if (textBox)
+		{
+			textBoxKeys.push_back(kvp.first);
+		}
 	}
 
-	mTextBoxMap.clear();
+	for (const auto & key : textBoxKeys)
+	{
+		m_widgetMap[key]->Release();
+		delete m_widgetMap[key];
+		m_widgetMap.erase(key);
+	}
 }

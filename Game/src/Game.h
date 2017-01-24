@@ -52,6 +52,9 @@ public:
 
 	void ResetLevelEditor();
 
+	void ResetLevelEditorSelectedObject();
+
+
 	// This is an effect to add pauses for enemy damage etc...
 	void DoDamagePauseEffect();
 		

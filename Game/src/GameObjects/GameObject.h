@@ -24,8 +24,6 @@ public:
 		return m_id;
 	}
 
-	TiXmlNode * GetClonedXml() const { return mClonedXml; }
-
 	string GetTypeName();
 
 	inline void SetXYZ(float x, float y, float z)
@@ -178,8 +176,6 @@ public:
 
 	void SetLevelEditShowSelected(bool value) { mLevelEditShowSelected = value; }
 
-	void SetXmlForCloning(TiXmlElement * element);
-
 	// used for occlusion checks
 	Vector2 GetLargestPossibleDimensions() const { return mLargestPossibleDimensions; }
 
@@ -264,10 +260,6 @@ private:
 
 	VertexPositionColor m_debugDrawVertices[8];
 	ID3D10Buffer* m_debugDrawVBuffer;
-
-	// used in the level editor for copying objects,
-	// not valid in release mode
-	TiXmlNode * mClonedXml;
 
 	bool mLevelEditLocked;
 

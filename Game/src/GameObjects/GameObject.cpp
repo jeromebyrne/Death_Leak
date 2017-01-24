@@ -20,7 +20,6 @@ GameObject::GameObject(float x, float y, float z, float width, float height, flo
 	m_matScaleX(1.0f),
 	m_matScaleY(1.0f),
 	m_debugDrawVBuffer(0),
-	mClonedXml(nullptr),
 	mDrawable(false),
 	m_updateable(true),
 	mIsSolidSprite(false),
@@ -192,31 +191,8 @@ void GameObject::Update(float delta)
 	UpdateToParent();
 }
 
-void GameObject::SetXmlForCloning(TiXmlElement * element)
-{
-	GAME_ASSERT(element);
-	if (!element)
-	{
-		return;
-	}
-
-	if (mClonedXml)
-	{
-		LOG_INFO("This object already has a cloned xml node");
-		GAME_ASSERT(false);
-		return;
-	}
-
-	mClonedXml = element->Clone();
-}
-
 void GameObject:: XmlRead(TiXmlElement * element)
 {
-	if (Game::GetIsLevelEditMode())
-	{
-		SetXmlForCloning(element);
-	}
-
 	// updateable
 	m_updateable = XmlUtilities::ReadAttributeAsBool(element, "", "updateable");
 

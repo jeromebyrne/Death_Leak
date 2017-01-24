@@ -153,24 +153,24 @@ void Player::Update(float delta)
 	if (mAimLineSprite)
 	{
 		mAimLineSprite->SetY(m_position.Y + m_projectileOffset.Y);
-	}
 
-	if (mIsStrafing)
-	{
-		// always show aim line when strafing
-		mTimeUntilAimLineStartDisappearing = kAimLineOpacityDecrementDelay;
-	}
-	
-	if (mTimeUntilAimLineStartDisappearing > 0.0f)
-	{
-		mTimeUntilAimLineStartDisappearing -= delta;
-		mAimLineSprite->SetAlpha(1.0f);
-	}
-	else
-	{
-		if (mAimLineSprite->Alpha() > 0.0f)
+		if (mIsStrafing)
 		{
-			mAimLineSprite->SetAlpha(mAimLineSprite->Alpha() - (kAimLineOpacityDecreaseRate * delta));
+			// always show aim line when strafing
+			mTimeUntilAimLineStartDisappearing = kAimLineOpacityDecrementDelay;
+		}
+
+		if (mTimeUntilAimLineStartDisappearing > 0.0f)
+		{
+			mTimeUntilAimLineStartDisappearing -= delta;
+			mAimLineSprite->SetAlpha(1.0f);
+		}
+		else
+		{
+			if (mAimLineSprite->Alpha() > 0.0f)
+			{
+				mAimLineSprite->SetAlpha(mAimLineSprite->Alpha() - (kAimLineOpacityDecreaseRate * delta));
+			}
 		}
 	}
 }

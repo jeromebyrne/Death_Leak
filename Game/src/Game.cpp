@@ -414,6 +414,14 @@ void Game::ResetLevelEditor()
 	}
 }
 
+void Game::ResetLevelEditorSelectedObject()
+{
+	if (mlevelEditor)
+	{
+		mlevelEditor->ResetSelectedObject();
+	}
+}
+
 void Game::DoDamagePauseEffect()
 {
 	mLastTimeDamagePauseEffect = Timing::Instance()->GetTotalTimeSeconds();

@@ -275,25 +275,7 @@ void LevelEditor::CheckForCopy()
 			GameObject * newObject = GameObjectManager::Instance()->CopyObject(mSelectedObject);
 			if (newObject)
 			{
-				DrawableObject * drawable = dynamic_cast<DrawableObject*>(newObject);
-				AudioObject * audiobj = dynamic_cast<AudioObject*>(newObject);
-				NPCTrigger * npcTrigger = dynamic_cast<NPCTrigger*>(newObject);
-				if (drawable)
-				{
-					GameObjectManager::Instance()->AddGameObject(drawable, true);
-				}
-				else if (audiobj)
-				{
-					GameObjectManager::Instance()->AddGameObject(audiobj, true);
-				}
-				else if (npcTrigger)
-				{
-					GameObjectManager::Instance()->AddGameObject(npcTrigger, true);
-				}
-				else 
-				{
-					throw new exception();
-				}
+				GameObjectManager::Instance()->AddGameObjectViaLevelEditor(newObject);
 				
 				newObject->SetX(mSelectedObject->X() + 50);
 				newObject->SetY(mSelectedObject->Y() + 50);
@@ -1279,11 +1261,6 @@ void LevelEditor::CheckForPixelMovement()
 
 void LevelEditor::CheckForInvokeObjectEditor()
 {
-	if (!mSelectedObject)
-	{
-		return;
-	}
-
 	static bool pressingKey = false;
 
 	if (!pressingKey && GetAsyncKeyState(VK_TAB) < 0)
@@ -1294,7 +1271,7 @@ void LevelEditor::CheckForInvokeObjectEditor()
 		{
 			UIManager::Instance()->DismissObjectEditor();
 		}
-		else
+		else if (mSelectedObject)
 		{
 			UIManager::Instance()->DisplayObjectEditor(mSelectedObject);
 		}
