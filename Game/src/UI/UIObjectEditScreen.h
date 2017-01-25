@@ -29,6 +29,8 @@ private:
 
 	void AddRow(TiXmlElement * xmlElement, float startX, float startY, unsigned int & textBoxCountOut, unsigned int rowCount);
 
+	void UpdateObjectProperties();
+
 	GameObject * mCurrentObject = nullptr;
 
 	vector<pair<std::string, std::map<std::string, std::string>>> mObjectProperties;

@@ -24,6 +24,8 @@ public:
 		return m_id;
 	}
 
+	void SetID(int id);
+
 	string GetTypeName();
 
 	inline void SetXYZ(float x, float y, float z)

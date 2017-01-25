@@ -28,6 +28,10 @@ public:
 
 	void SetIsEditable(bool editable);
 
+	void UpdateMetadata(const std::string & key, const std::string & value);
+
+	std::string GetMetadataValue(const std::string & key);
+
 protected:
 
 	virtual void OnPressDown() override;
@@ -48,6 +52,8 @@ protected:
 	std::string mDisplayText;
 
 	bool mIsEditable = true;
+
+	std::map<std::string, std::string> mMetadata;
 };
 
 #endif

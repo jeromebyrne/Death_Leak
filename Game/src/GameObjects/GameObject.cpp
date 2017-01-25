@@ -465,3 +465,14 @@ void GameObject::UpdateToParent()
 	}
 }
 
+void GameObject::SetID(int id)
+{
+	// only allow setting ID when in level edit mode
+	if (!Game::GetInstance()->GetIsLevelEditMode())
+	{
+		return;
+	}
+
+	m_id = id;
+}
+

@@ -30,6 +30,8 @@ protected:
 
 	bool IsPointWithinBounds(float pointx, float pointy, Vector2 topLeftBounds, Vector2 boundsDimensions);
 
+	void ResetFocusedWidget() { m_currentWidgetInFocus = nullptr; }
+
 private: 
 
 	void ProcessCursorInput(); // process input for this screen

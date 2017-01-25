@@ -233,3 +233,13 @@ void UITextBox::SetIsEditable(bool editable)
 {
 	mIsEditable = editable;
 }
+
+void UITextBox::UpdateMetadata(const std::string & key, const std::string & value)
+{
+	mMetadata[key] = value;
+}
+
+std::string UITextBox::GetMetadataValue(const std::string & key)
+{
+	return mMetadata[key];
+}

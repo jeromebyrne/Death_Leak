@@ -5,6 +5,7 @@
 #include "GameObjectManager.h"
 #include "LevelEditor.h"
 #include "Game.h"
+#include "UIWidget.h"
 
 static const unsigned int kTextBoxStartIndex = 8000;
 
@@ -172,6 +173,9 @@ void UIObjectEditScreen::AddRow(TiXmlElement * xmlElement, float startX, float s
 
 			propertyMap[key] = value;
 
+			textBox->UpdateMetadata("element_key", elementName);
+			textBox->UpdateMetadata("attribute_key", key);
+
 			++textBoxCountOut;
 		}
 	}
@@ -215,9 +219,18 @@ TiXmlElement * UIObjectEditScreen::ConvertPropertiesToXmlElement()
 
 void UIObjectEditScreen::ApplyChanges()
 {
+	if (mCurrentObject == nullptr)
+	{
+		return;
+	}
+
+	UpdateObjectProperties();
+
 	auto xmlElement = ConvertPropertiesToXmlElement();
 
 	auto gameObjectManager = GameObjectManager::Instance();
+
+	int objectId = mCurrentObject->ID();
 
 	gameObjectManager->RemoveGameObject(mCurrentObject, false);
 	mCurrentObject = nullptr;
@@ -229,10 +242,13 @@ void UIObjectEditScreen::ApplyChanges()
 	if (editedObject)
 	{
 		gameObjectManager->AddGameObjectViaLevelEditor(editedObject);
+		editedObject->SetID(objectId);
 		editedObject->Update(0);
 		SetObjectToEdit(editedObject);
 		//UIManager::Instance()->DismissObjectEditor();
 	}
+
+	ResetFocusedWidget();
 }
 
 void UIObjectEditScreen::clearData()
@@ -254,5 +270,33 @@ void UIObjectEditScreen::clearData()
 		m_widgetMap[key]->Release();
 		delete m_widgetMap[key];
 		m_widgetMap.erase(key);
+	}
+}
+
+void UIObjectEditScreen::UpdateObjectProperties()
+{
+	for (const auto & kvp : m_widgetMap)
+	{
+		UITextBox * textBox = dynamic_cast<UITextBox*>(kvp.second);
+
+		if (textBox == nullptr)
+		{
+			continue;
+		}
+
+		std::string elementKey = textBox->GetMetadataValue("element_key");
+		std::string attributeKey = textBox->GetMetadataValue("attribute_key");
+		if (attributeKey.empty() || elementKey.empty())
+		{
+			continue;
+		}
+
+		for (auto & kvp : mObjectProperties)
+		{
+			if (kvp.first == elementKey)
+			{
+				kvp.second[attributeKey] = textBox->GetText();
+			}
+		}
 	}
 }
