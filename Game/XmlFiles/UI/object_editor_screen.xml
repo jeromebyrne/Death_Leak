@@ -11,7 +11,7 @@
 
   <button name="21_apply"
           process_input="true"
-          posX ="810" posY ="-520" width="120" height ="60"
+          posX ="810" posY ="-515" width="120" height ="60"
           image="Media\UI\buttons\apply_changes.png"
           image_focus="Media\UI\buttons\apply_changes_2.png"
           image_click="Media\UI\buttons\apply_changes_2.png"

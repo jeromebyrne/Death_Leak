@@ -16,30 +16,14 @@
            alpha="0.45">
   </sprite>
 
-  <animatedsprite name="25_noise_anim"
-                   process_input="false"
-                   posX ="-960" posY ="-540" width="1920" height ="1080"
-                   image="Media\UI\noise_layer.png"
-                   hflip="false" vflip="false"
-                   alpha="0.1"
-                   fps ="20">
-    <frames frame1="Media\UI\noise_layer.png"
-            frame2="Media\UI\noise_layer_2.png"
-            frame3="Media\UI\noise_layer_3.png"
-            frame4="Media\UI\noise_layer_4.png"
-            frame5="Media\UI\noise_layer_5.png"
-            frame6="Media\UI\noise_layer_6.png"
-    />
-  </animatedsprite>
-
   <animatedsprite name="26_scratch_anim"
                    process_input="false"
                    posX ="-960" posY ="-540" width="1920" height ="1080"
                    image="Media\UI\noise_layer.png"
                    hflip="false" vflip="false"
-                   alpha="0.15"
+                   alpha="0.10"
                   use_standard_effect="true"
-                   fps ="15">
+                   fps ="11">
     <frames frame1="Media\UI\film_frame.png"
             frame2="Media\UI\film_frame_2.png"
             frame3="Media\UI\film_frame_3.png"

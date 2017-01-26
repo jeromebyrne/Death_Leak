@@ -1,18 +1,17 @@
 <uiscreen>
 
-  <animatedsprite name="0_noise_anim"
+  <animatedsprite name="0_scratch_anim"
                    process_input="false"
                    posX ="-960" posY ="-540" width="1920" height ="1080"
                    image="Media\UI\noise_layer.png"
                    hflip="false" vflip="false"
-                   alpha="0.5"
-                   fps ="10">
-    <frames frame1="Media\UI\noise_layer.png"
-            frame2="Media\UI\noise_layer_2.png"
-            frame3="Media\UI\noise_layer_3.png"
-            frame4="Media\UI\noise_layer_4.png"
-            frame5="Media\UI\noise_layer_5.png"
-            frame6="Media\UI\noise_layer_6.png"
+                   alpha="0.10"
+                  use_standard_effect="true"
+                   fps ="11">
+    <frames frame1="Media\UI\film_frame.png"
+            frame2="Media\UI\film_frame_2.png"
+            frame3="Media\UI\film_frame_3.png"
+            frame4="Media\UI\film_frame_4.png"
     />
   </animatedsprite>
   
