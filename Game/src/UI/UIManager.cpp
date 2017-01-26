@@ -500,6 +500,12 @@ void UIManager::HandleEvent(string eventName, list<string> params)
 			StringManager::GetInstance()->SetLocale(lang);
 			break;
 		}
+	case APPLY_OBJECT_EDIT_CHANGES:
+	{
+		ApplyObjectEditChanges();
+		DismissObjectEditor();
+		break;
+	}
 
 	default:
 		break;
@@ -529,6 +535,7 @@ void UIManager::InitActionStringToEnumMap()
 	m_ActionStringToEnumMap["quittodesktop"] = QUIT_TO_DESKTOP; 
 	m_ActionStringToEnumMap["leveledit"] = LEVEL_EDIT; 
 	m_ActionStringToEnumMap["set_language"] = SET_LANGUAGE;
+	m_ActionStringToEnumMap["apply_object_edit_changes"] = APPLY_OBJECT_EDIT_CHANGES;
 }
 
 UISprite * UIManager::CreateCursorSprite()
@@ -601,4 +608,17 @@ void UIManager::DismissObjectEditor()
 	PopUI("object_editor");
 
 	mObjectEditorDisplaying = false;
+}
+
+void UIManager::ApplyObjectEditChanges()
+{
+	for (const auto & screen : m_currentScreens)
+	{
+		UIObjectEditScreen * correctScreen = dynamic_cast<UIObjectEditScreen*>(screen);
+
+		if (correctScreen)
+		{
+			correctScreen->ApplyChanges();
+		}
+	}
 }

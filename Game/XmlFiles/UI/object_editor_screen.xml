@@ -8,5 +8,23 @@
           alpha="0.7"
           use_standard_effect="true">
   </sprite>
+
+  <button name="21_apply"
+          process_input="true"
+          posX ="810" posY ="-520" width="120" height ="60"
+          image="Media\UI\buttons\apply_changes.png"
+          image_focus="Media\UI\buttons\apply_changes_2.png"
+          image_click="Media\UI\buttons\apply_changes_2.png"
+          hflip="false" vflip="false"
+          alpha="1.0"
+          use_standard_effect="true">
+    <actionspressup>
+      <apply_object_edit_changes/>
+    </actionspressup>
+
+    <actionspressdown>
+      <playsoundeffect sound="UI\\click.mp3"/>
+    </actionspressdown>
+  </button>
   
 </uiscreen>

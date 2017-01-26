@@ -28,7 +28,8 @@ enum UIEventActions
 	MUTE_MUSIC,
 	QUIT_TO_DESKTOP,
 	LEVEL_EDIT,
-	SET_LANGUAGE		
+	SET_LANGUAGE,
+	APPLY_OBJECT_EDIT_CHANGES
 };
 
 class UIManager
@@ -92,6 +93,8 @@ public:
 	bool IsObjectEditorDisplaying() const { return mObjectEditorDisplaying; }
 
 private:
+
+	void ApplyObjectEditChanges();
 
 	static UIManager * m_instance;
 	

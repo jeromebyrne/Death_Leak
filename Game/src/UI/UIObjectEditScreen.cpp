@@ -21,12 +21,6 @@ UIObjectEditScreen::~UIObjectEditScreen(void)
 void UIObjectEditScreen::Update()
 {
 	UIScreen::Update();
-
-	if (GetAsyncKeyState('O') < 0)
-	{
-		// just testing
-		ApplyChanges();
-	}
 }
 
 void UIObjectEditScreen::Initialise()
@@ -245,7 +239,6 @@ void UIObjectEditScreen::ApplyChanges()
 		editedObject->SetID(objectId);
 		editedObject->Update(0);
 		SetObjectToEdit(editedObject);
-		//UIManager::Instance()->DismissObjectEditor();
 	}
 
 	ResetFocusedWidget();
