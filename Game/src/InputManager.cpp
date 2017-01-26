@@ -27,47 +27,50 @@ void InputManager::ProcessGameplayInput()
 
 #ifdef _DEBUG
 
-	if (!UIManager::Instance()->IsObjectEditorDisplaying())
+	if (GetAsyncKeyState('I'))
 	{
-		if (GetAsyncKeyState('I'))
+		if (!UIManager::Instance()->IsObjectEditorDisplaying())
 		{
 			mPressingDebugInfoKey = true;
 		}
-		else
+	}
+	else
+	{
+		if (mPressingDebugInfoKey) // just released
 		{
-			if (mPressingDebugInfoKey) // just released
+			if (mShowDebugInfo)
 			{
-				if (mShowDebugInfo)
-				{
-					mShowDebugInfo = false;
-				}
-				else
-				{
-					mShowDebugInfo = true;
-				}
+				mShowDebugInfo = false;
 			}
-			mPressingDebugInfoKey = false;
+			else
+			{
+				mShowDebugInfo = true;
+			}
 		}
+		mPressingDebugInfoKey = false;
+	}
 
-		if (GetAsyncKeyState('L'))
+	if (GetAsyncKeyState('L'))
+	{
+		if (!UIManager::Instance()->IsObjectEditorDisplaying())
 		{
 			mPressingPostProcessingKey = true;
 		}
-		else
+	}
+	else
+	{
+		if (mPressingPostProcessingKey)
 		{
-			if (mPressingPostProcessingKey)
+			if (mEnableGraphicsPostProcessing)
 			{
-				if (mEnableGraphicsPostProcessing)
-				{
-					mEnableGraphicsPostProcessing = false;
-				}
-				else
-				{
-					mEnableGraphicsPostProcessing = true;
-				}
+				mEnableGraphicsPostProcessing = false;
 			}
-			mPressingPostProcessingKey = false;
+			else
+			{
+				mEnableGraphicsPostProcessing = true;
+			}
 		}
+		mPressingPostProcessingKey = false;
 	}
 
 #endif
