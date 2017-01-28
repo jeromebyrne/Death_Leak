@@ -2,7 +2,7 @@
     <LevelProperties>
         <camera_properties posx="0.000000" posy="0.000000" zoom_in_percent="1.000000" xOffset="200.000000" yOffset="200.000000" xLag="15.000000" yLag="1.000000" followx="true" followy="true" />
         <level_bounds left="-5100.000000" right="1575.000000" top="3000.000000" bottom="50.000000" />
-        <music file="xmas/let_it_snow.mp3" initial_delay="50.000000" length="231.000000" time_between="400.000000" />
+        <music file="xmas/let_it_snow.mp3" initial_delay="25.000000" length="231.000000" time_between="400.000000" />
         <weather_properties allow_weather="true" />
     </LevelProperties>
     <Player id="1" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
@@ -1106,7 +1106,7 @@
         <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="false" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="30.000000" top_left_intensity_y="20.000000" top_right_intensity_x="30.000000" top_right_intensity_y="20.000000" time_multiplier="1.000000" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="5.000000" top_left_intensity_y="5.000000" top_right_intensity_x="5.000000" top_right_intensity_y="5.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="2.000000" x="0.950000" />
         <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
         <applygravity value="false" />
