@@ -210,39 +210,44 @@ void Camera2D::Update()
 	}
 
 #if _DEBUG
-	if (!UIManager::Instance()->IsObjectEditorDisplaying())
-	{
+	
 		int movespeed = 40;
 		// test
 		if (GetAsyncKeyState('D') < 0)
 		{
-			m_position.X += movespeed;
-
-			if (Game::GetInstance()->GetIsLevelEditMode())
+			if (!UIManager::Instance()->IsObjectEditorDisplaying())
 			{
-				list<shared_ptr<GameObject> > & gameObjects = GameObjectManager::Instance()->GetGameObjectList();
-				for (auto & obj : gameObjects)
+				m_position.X += movespeed;
+
+				if (Game::GetInstance()->GetIsLevelEditMode())
 				{
-					if (obj->GetParallaxMultiplierX() != 1.0f ||
-						obj->GetParallaxMultiplierY() != 1.0f)
+					list<shared_ptr<GameObject> > & gameObjects = GameObjectManager::Instance()->GetGameObjectList();
+					for (auto & obj : gameObjects)
 					{
-						obj->Update(1.0f);
+						if (obj->GetParallaxMultiplierX() != 1.0f ||
+							obj->GetParallaxMultiplierY() != 1.0f)
+						{
+							obj->Update(1.0f);
+						}
 					}
 				}
 			}
 		}
 		else if (GetAsyncKeyState('A') < 0)
 		{
-			m_position.X -= movespeed;
-			if (Game::GetInstance()->GetIsLevelEditMode())
+			if (!UIManager::Instance()->IsObjectEditorDisplaying())
 			{
-				list<shared_ptr<GameObject> > & gameObjects = GameObjectManager::Instance()->GetGameObjectList();
-				for (auto & obj : gameObjects)
+				m_position.X -= movespeed;
+				if (Game::GetInstance()->GetIsLevelEditMode())
 				{
-					if (obj->GetParallaxMultiplierX() != 1.0f ||
-						obj->GetParallaxMultiplierY() != 1.0f)
+					list<shared_ptr<GameObject> > & gameObjects = GameObjectManager::Instance()->GetGameObjectList();
+					for (auto & obj : gameObjects)
 					{
-						obj->Update(1.0f);
+						if (obj->GetParallaxMultiplierX() != 1.0f ||
+							obj->GetParallaxMultiplierY() != 1.0f)
+						{
+							obj->Update(1.0f);
+						}
 					}
 				}
 			}
@@ -250,37 +255,42 @@ void Camera2D::Update()
 
 		if (GetAsyncKeyState('W') < 0)
 		{
-			m_position.Y += movespeed;
-			if (Game::GetInstance()->GetIsLevelEditMode())
+			if (!UIManager::Instance()->IsObjectEditorDisplaying())
 			{
-				list<shared_ptr<GameObject> > & gameObjects = GameObjectManager::Instance()->GetGameObjectList();
-				for (auto & obj : gameObjects)
+				m_position.Y += movespeed;
+				if (Game::GetInstance()->GetIsLevelEditMode())
 				{
-					if (obj->GetParallaxMultiplierX() != 1.0f ||
-						obj->GetParallaxMultiplierY() != 1.0f)
+					list<shared_ptr<GameObject> > & gameObjects = GameObjectManager::Instance()->GetGameObjectList();
+					for (auto & obj : gameObjects)
 					{
-						obj->Update(1.0f);
+						if (obj->GetParallaxMultiplierX() != 1.0f ||
+							obj->GetParallaxMultiplierY() != 1.0f)
+						{
+							obj->Update(1.0f);
+						}
 					}
 				}
 			}
 		}
 		else if (GetAsyncKeyState('S') < 0 && GetAsyncKeyState(VK_CONTROL) >= 0)
 		{
-			m_position.Y -= movespeed;
-			if (Game::GetInstance()->GetIsLevelEditMode())
+			if (!UIManager::Instance()->IsObjectEditorDisplaying())
 			{
-				list<shared_ptr<GameObject> > & gameObjects = GameObjectManager::Instance()->GetGameObjectList();
-				for (auto & obj : gameObjects)
+				m_position.Y -= movespeed;
+				if (Game::GetInstance()->GetIsLevelEditMode())
 				{
-					if (obj->GetParallaxMultiplierX() != 1.0f ||
-						obj->GetParallaxMultiplierY() != 1.0f)
+					list<shared_ptr<GameObject> > & gameObjects = GameObjectManager::Instance()->GetGameObjectList();
+					for (auto & obj : gameObjects)
 					{
-						obj->Update(1.0f);
+						if (obj->GetParallaxMultiplierX() != 1.0f ||
+							obj->GetParallaxMultiplierY() != 1.0f)
+						{
+							obj->Update(1.0f);
+						}
 					}
 				}
 			}
 		}
-	}
 #endif
 }
 

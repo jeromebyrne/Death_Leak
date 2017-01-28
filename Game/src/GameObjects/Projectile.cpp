@@ -223,7 +223,7 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 
 				Game::GetInstance()->DoDamagePauseEffect();
 
-				if (Camera2D::GetInstance()->IsObjectInView(this))
+				if ((object->IsBreakable() || object->IsCharacter()) && Camera2D::GetInstance()->IsObjectInView(this))
 				{
 					Camera2D::GetInstance()->DoSmallShake();
 				}
@@ -375,10 +375,9 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 			}
 		}
 
-		Game::GetInstance()->DoDamagePauseEffect();
-
-		if (Camera2D::GetInstance()->IsObjectInView(this))
+		if ((object->IsBreakable() || object->IsCharacter()) && Camera2D::GetInstance()->IsObjectInView(this))
 		{
+			Game::GetInstance()->DoDamagePauseEffect();
 			Camera2D::GetInstance()->DoSmallShake();
 		}
 	}
