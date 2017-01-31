@@ -12,6 +12,9 @@
 
 unsigned int gBackBufferWidth = 1920;
 unsigned int gBackBufferHeight = 1080;
+unsigned int gWindowWidth = 1280;
+unsigned int gWindowHeight = 720;
+
 DXWindow * g_pWindow = nullptr;
 Graphics * g_pGraphics = nullptr;
 Game * g_pGame = nullptr;
@@ -179,7 +182,7 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 
 HRESULT Initialise(HINSTANCE hInstance, int nCmdShow)
 {
-	g_pWindow = new DXWindow("Death Leak", "Death Leak", 1920, 1080);
+	g_pWindow = new DXWindow("Death Leak", "Death Leak", gWindowWidth, gWindowHeight);
 	g_pGraphics = new Graphics();
 	Game::Create();
 	g_pGame = Game::GetInstance();

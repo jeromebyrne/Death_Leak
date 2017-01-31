@@ -138,12 +138,22 @@ void UITextBox::OnPressDown()
 		return;
 	}
 
+	if (UIManager::Instance()->IsInKeyboardInputMode())
+	{
+		return;
+	}
+
 	LOG_INFO("UITextBox press down");
 }
 
 void UITextBox::OnPressUp()
 {
 	if (!mIsEditable)
+	{
+		return;
+	}
+
+	if (UIManager::Instance()->IsInKeyboardInputMode())
 	{
 		return;
 	}

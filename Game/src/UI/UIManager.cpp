@@ -274,11 +274,33 @@ Vector2 UIManager::GetPointInUICoords(float x, float y)
 {
 	Vector2 ui_coords;
 
-	int halfWidth =  DXWindow::GetInstance()->GetWindowDimensions().X * 0.5f; // Graphics::GetInstance()->BackBufferWidth()/2;
-	int halfHeight = DXWindow::GetInstance()->GetWindowDimensions().Y * 0.5f; // Graphics::GetInstance()->BackBufferHeight()/2;
+	auto window = DXWindow::GetInstance();
+	auto graphics = Graphics::GetInstance();
 
-	ui_coords.X = x - halfWidth;
-	ui_coords.Y = halfHeight - y;
+	float xScale = 1.0f;
+	float yScale = 1.0f;
+
+	float windowWidth = window->GetWindowDimensions().X;
+	float windowHeight = window->GetWindowDimensions().Y;
+
+	float backBufferWidth = graphics->BackBufferWidth();
+	float backBufferHeight = graphics->BackBufferHeight();
+
+	if (windowWidth != backBufferWidth)
+	{
+		xScale = backBufferWidth / windowWidth;
+	}
+
+	if (windowHeight != backBufferHeight)
+	{
+		yScale = backBufferHeight / windowHeight;
+	}
+
+	int halfWidth = DXWindow::GetInstance()->GetWindowDimensions().X * 0.5f;
+	int halfHeight = DXWindow::GetInstance()->GetWindowDimensions().Y * 0.5f;
+
+	ui_coords.X = (x - halfWidth) * xScale;
+	ui_coords.Y = (halfHeight - y) * yScale;
 
 	return ui_coords;
 }
@@ -544,7 +566,7 @@ UISprite * UIManager::CreateCursorSprite()
 
 	cursorSprite->SetImage("Media\\UI\\cursor.png");
 
-	cursorSprite->SetDimensions(Vector2(35, 59));
+	cursorSprite->SetDimensions(Vector2(28, 42));
 
 	cursorSprite->SetUseStandardEffect(true);
 
