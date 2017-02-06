@@ -88,6 +88,10 @@ public:
 	bool IsOnSolidSurface();
 
 	SolidLineStrip * GetCurrentSolidLineStrip() const { return mCurrentSolidLineStrip; }
+
+	bool CanBeStruckByMelee() const { return mCanBeDamaged && mMeleeStrikeCooldown <= 0.0f; }
+
+	void TriggerMeleeCooldown();
 	
 protected:
 
@@ -120,6 +124,8 @@ private:
 	ID3D10Buffer* m_collisionBoxVBuffer;
 
 	SolidLineStrip * mCurrentSolidLineStrip;
+
+	float mMeleeStrikeCooldown = 0.0f;
 };
 
 #endif

@@ -264,6 +264,53 @@
       <frame filename="Media\characters\player\swim_burst_kick_default\swim_burst_kick_default_009.png" />
     </SwimBurstKick>
 
+    <Melee FrameRate="60" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\melee_1_default\melee_1_default_000.png" />
+      <frame filename="Media\characters\player\melee_1_default\melee_1_default_001.png" />
+      <frame filename="Media\characters\player\melee_1_default\melee_1_default_002.png" />
+      <frame filename="Media\characters\player\melee_1_default\melee_1_default_003.png" />
+      <frame filename="Media\characters\player\melee_1_default\melee_1_default_004.png" />
+      <frame filename="Media\characters\player\melee_1_default\melee_1_default_005.png" />
+      <frame filename="Media\characters\player\melee_1_default\melee_1_default_006.png" />
+    </Melee>
+
+    <Melee2 FrameRate="50" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\melee_2_default\melee_2_default_000.png" />
+      <frame filename="Media\characters\player\melee_2_default\melee_2_default_001.png" />
+      <frame filename="Media\characters\player\melee_2_default\melee_2_default_002.png" />
+      <frame filename="Media\characters\player\melee_2_default\melee_2_default_003.png" />
+      <frame filename="Media\characters\player\melee_2_default\melee_2_default_004.png" />
+      <frame filename="Media\characters\player\melee_2_default\melee_2_default_005.png" />
+      <frame filename="Media\characters\player\melee_2_default\melee_2_default_006.png" />
+      <frame filename="Media\characters\player\melee_2_default\melee_2_default_007.png" />
+      <frame filename="Media\characters\player\melee_2_default\melee_2_default_008.png" />
+      <frame filename="Media\characters\player\melee_2_default\melee_2_default_009.png" />
+      <frame filename="Media\characters\player\melee_2_default\melee_2_default_010.png" />
+      <frame filename="Media\characters\player\melee_2_default\melee_2_default_011.png" />
+    </Melee2>
+
+    <Melee3 FrameRate="50" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\melee_3_default\melee_2_default_012.png" />
+      <frame filename="Media\characters\player\melee_3_default\melee_2_default_013.png" />
+      <frame filename="Media\characters\player\melee_3_default\melee_2_default_014.png" />
+      <frame filename="Media\characters\player\melee_3_default\melee_2_default_015.png" />
+      <frame filename="Media\characters\player\melee_3_default\melee_2_default_015.png" />
+      <frame filename="Media\characters\player\melee_3_default\melee_2_default_015.png" />
+      <frame filename="Media\characters\player\melee_3_default\melee_2_default_015.png" />
+      <frame filename="Media\characters\player\melee_3_default\melee_2_default_015.png" />
+    </Melee3>
+
+    <MeleeFinish FrameRate="60" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\melee_finish\melee_finish_000.png" />
+      <frame filename="Media\characters\player\melee_finish\melee_finish_001.png" />
+      <frame filename="Media\characters\player\melee_finish\melee_finish_002.png" />
+      <frame filename="Media\characters\player\melee_finish\melee_finish_003.png" />
+      <frame filename="Media\characters\player\melee_finish\melee_finish_004.png" />
+      <frame filename="Media\characters\player\melee_finish\melee_finish_005.png" />
+      <frame filename="Media\characters\player\melee_finish\melee_finish_006.png" />
+      <frame filename="Media\characters\player\melee_finish\melee_finish_007.png" />
+    </MeleeFinish>
+
 	</body>
 
 	<arm OffsetX="0" OffsetY="0" SizeX="10" SizeY="10">

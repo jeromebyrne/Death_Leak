@@ -69,7 +69,8 @@ Character::Character(float x, float y, float z, float width, float height, float
 	mCurrentWallJumpXDirection(1.0f),
 	mIsRolling(false),
 	mDoReboundJump(false),
-	mDoSwimBurstAnim(false)
+	mDoSwimBurstAnim(false),
+	mIsDoingMelee(false)
 {
 	mProjectileFilePath = "Media/knife.png";
 	mProjectileImpactFilePath = "Media/knife_impact.png";
@@ -402,13 +403,20 @@ void Character::LoadContent(ID3D10Device * graphicsdevice)
 
 bool Character::OnCollision(SolidMovingSprite * object)
 {
+	// see if we are doing melee and damage the other object
+	if (mIsDoingMelee && 
+		object->CanBeStruckByMelee() &&
+		!object->IsSolidLineStrip())
+	{
+		DoMeleeCollisions(object);
+	}
+
 	if (!object->IsCharacter() &&
 		!object->IsCurrencyOrb() &&
 		!object->IsDebris() &&
 		!object->IsPlatform() &&
 		!object->IsWaterBlock())
 	{
-		    
 		SolidMovingSprite::OnCollision(object);
 	}
 	else if (object->IsPlatform())
@@ -420,6 +428,92 @@ bool Character::OnCollision(SolidMovingSprite * object)
 	}
 
 	return true;
+}
+
+void Character::DoMeleeCollisions(SolidMovingSprite * object)
+{
+	if (!mIsDoingMelee)
+	{
+		return;
+	}
+
+	if (mCurrentMeleePhase == kMeleePhase3)
+	{
+		if (m_direction.X > 0)
+		{
+			// left edge of the object must be greater than the center of the character
+			if (object->CollisionLeft() > CollisionLeft())
+			{
+				object->OnDamage(this, mMeleeDamage, Vector3(0, 0, 0), false);
+				object->TriggerMeleeCooldown();
+			}
+		}
+		else if (m_direction.X < 0)
+		{
+			// right edge of the object must be less than the center of the character
+			if (object->CollisionRight() < CollisionRight())
+			{
+				object->OnDamage(this, mMeleeDamage, Vector3(0, 0, 0), false);
+				object->TriggerMeleeCooldown();
+			}
+		}
+	}
+
+	if (WillDeflectProjectile(object->DirectionX(), object->CollisionLeft(), object->CollisionRight()))
+	{
+		// deflect any projectiles
+		if (object->IsProjectile())
+		{
+			GAME_ASSERT(dynamic_cast<Projectile *>(object));
+			Projectile * objAsProj = static_cast<Projectile *>(object);
+
+			int yOffset = rand() % 200;
+			int randOffsetSign = rand() % 2;
+			if (randOffsetSign == 0)
+			{
+				yOffset *= -1;
+			}
+
+			// pick a position behind the projectile to fire back at 
+			int objDirXNormal = objAsProj->DirectionX() > 0 ? 1 : -1;
+			Vector3 targetPos = Vector3(objAsProj->X() - 200 * objDirXNormal, objAsProj->Y() + yOffset, objAsProj->Z());
+
+			Vector3 direction = objAsProj->Position() - targetPos;
+			direction.Normalise();
+
+			objAsProj->SetVelocityXYZ(-objAsProj->VelocityX() * 0.7, -5, 0);
+
+			ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
+				object->Position(),
+				Vector3(-m_direction.X, 0, 0),
+				0.4,
+				Vector3(3200, 1200, 0),
+				"Media\\blast_circle.png",
+				0.01,
+				0.01,
+				0.40f,
+				0.40f,
+				50,
+				50,
+				0,
+				false,
+				0.7,
+				1.0,
+				10000,
+				true,
+				2,
+				0.0f,
+				0.0f,
+				0.0f,
+				0.3f);
+
+			AudioManager::Instance()->PlaySoundEffect("metalclink.wav");
+
+			Game::GetInstance()->DoDamagePauseEffect();
+
+			object->TriggerMeleeCooldown();
+		}
+	}
 }
 
 void Character::UpdateAnimations()
@@ -456,7 +550,87 @@ void Character::UpdateAnimations()
 			return;
 		}
 
-		if (mIsRolling)
+		if (mIsDoingMelee)
+		{
+			switch (mCurrentMeleePhase)
+			{
+				case kMeleePhase1:
+				{
+					if (current_body_sequence_name != "Melee")
+					{
+						bodyPart->SetSequence("Melee");
+					}
+
+					bodyPart->Animate();
+					m_texture = bodyPart->CurrentFrame(); // set the current texture
+
+					if (bodyPart->IsFinished())
+					{
+						mCurrentMeleePhase = kMeleePhase2;
+					}
+					break;
+				}
+				case kMeleePhase2:
+				{
+					if (current_body_sequence_name != "Melee2")
+					{
+						bodyPart->SetSequence("Melee2");
+					}
+
+					bodyPart->Animate();
+					m_texture = bodyPart->CurrentFrame(); // set the current texture
+
+					if (bodyPart->IsFinished())
+					{
+						mCurrentMeleePhase = kMeleePhase3;
+					}
+					break;
+				}
+				case kMeleePhase3:
+				{
+					if (current_body_sequence_name != "Melee3")
+					{
+						bodyPart->SetSequence("Melee3");
+					}
+
+					bodyPart->Animate();
+					m_texture = bodyPart->CurrentFrame(); // set the current texture
+
+					if (bodyPart->IsFinished())
+					{
+						mCurrentMeleePhase = kMeleeFinish;
+					}
+					break;
+				}
+				case kMeleeFinish:
+				{
+					if (current_body_sequence_name != "MeleeFinish")
+					{
+						bodyPart->SetSequence("MeleeFinish");
+					}
+
+					bodyPart->Animate();
+					m_texture = bodyPart->CurrentFrame(); // set the current texture
+
+					if (bodyPart->IsFinished())
+					{
+						mIsDoingMelee = false;
+					}
+
+					break;
+				}
+				default:
+				{
+					GAME_ASSERT(false);
+					break;
+				}
+			}
+
+			mJustFellFromDistance = false;
+			mIsFullyCrouched = false;
+			mWasCrouching = false;
+		}
+		else if (mIsRolling)
 		{
 			if (current_body_sequence_name != "Roll")
 			{
@@ -722,15 +896,6 @@ void Character::UpdateAnimations()
 			}
 		}
 	}
-
-	// DEBUGGING REMOVE ME ===========================
-	/*bodyPart = m_animation->GetPart("body");
-	GAME_ASSERT(bodyPart);
-
-	bodyPart->SetSequence("JumpingDown");
-	bodyPart->SetFrame(1);
-	m_texture = bodyPart->CurrentFrame();*/
-	//================================================
 
 	m_mainBodyTexture = m_texture;
 }
@@ -1293,6 +1458,19 @@ void Character::Draw(ID3D10Device * device, Camera2D * camera)
 
 void Character::DoMeleeAttack()
 {
+	if (!IsOnSolidSurface())
+	{
+		return;
+	}
+
+	if (mIsDoingMelee ||
+		mIsRolling)
+	{
+		return;
+	}
+
+	mIsDoingMelee = true;
+	mCurrentMeleePhase = kMeleePhase1;
 }
 
 void Character::DropDown()
@@ -1438,4 +1616,41 @@ void Character::SetCrouching(bool value)
 	}
 
 	mIsCrouching = value;
+}
+
+bool Character::WillDeflectProjectile(float projectileDirectionX, float projectileCollisionLeft, float projectileCollisionRight)
+{
+
+	if (mIsDoingMelee &&
+		(mCurrentMeleePhase == kMeleePhase1 || mCurrentMeleePhase == kMeleePhase3))
+	{
+		if (m_direction.X > 0)
+		{
+			if (projectileDirectionX > 0.0f)
+			{
+				// character is facing the same direction as the projectile, don't deflect
+				return false;
+			}
+			// left edge of the object must be greater than the center of the character
+			if (projectileCollisionLeft > CollisionLeft())
+			{
+				return true;
+			}
+		}
+		else if (m_direction.X < 0)
+		{
+			if (projectileDirectionX < 0.0f)
+			{
+				// character is facing the same direction as the projectile, don't deflect
+				return false;
+			}
+			// right edge of the object must be less than the center of the character
+			if (projectileCollisionRight < CollisionRight())
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
 }

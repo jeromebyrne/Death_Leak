@@ -96,6 +96,20 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 			return false;
 		}
 
+		bool isCharacter = object->IsCharacter();
+		
+		if (isCharacter)
+		{
+			GAME_ASSERT(dynamic_cast<Character*>(object));
+			Character * asCharacter = static_cast<Character*>(object);
+
+			if (asCharacter->WillDeflectProjectile(m_direction.X, CollisionLeft(), CollisionRight()))
+			{
+				// the character class handles the projectile deflection
+				return false;
+			}
+		}
+
 		Player * player = GameObjectManager::Instance()->GetPlayer();
 		if (object == player && mOwnerType == Projectile::kPlayerProjectile)
 		{
@@ -223,7 +237,7 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 
 				Game::GetInstance()->DoDamagePauseEffect();
 
-				if ((object->IsBreakable() || object->IsCharacter()) && Camera2D::GetInstance()->IsObjectInView(this))
+				if ((object->IsBreakable() || isCharacter) && Camera2D::GetInstance()->IsObjectInView(this))
 				{
 					Camera2D::GetInstance()->DoSmallShake();
 				}
@@ -328,7 +342,7 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 					maxLive = 0.7f;
 				}
 			
-				if (object->IsCharacter())
+				if (isCharacter)
 				{
 					ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateDirectedBloodSpray(40,
 																										particlePos,
@@ -375,7 +389,7 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 			}
 		}
 
-		if ((object->IsBreakable() || object->IsCharacter()) && Camera2D::GetInstance()->IsObjectInView(this))
+		if ((object->IsBreakable() || isCharacter) && Camera2D::GetInstance()->IsObjectInView(this))
 		{
 			Game::GetInstance()->DoDamagePauseEffect();
 			Camera2D::GetInstance()->DoSmallShake();

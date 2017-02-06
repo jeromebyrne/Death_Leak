@@ -11,6 +11,14 @@ class Character : public SolidMovingSprite
 
 public:
 
+	enum CurrentMeleePhase
+	{
+		kMeleePhase1,
+		kMeleePhase2,
+		kMeleePhase3,
+		kMeleeFinish
+	};
+
 	Character(float x = 0, float y = 0, float z = 0, float width = 10, float height = 10, float breadth = 0);
 	virtual ~Character(void);
 	virtual void Update(float delta) override;
@@ -62,13 +70,21 @@ public:
 
 	bool GetIsRolling() const { return mIsRolling; }
 
+	bool IsDoingMelee() const { return mIsDoingMelee; }
+
 	void DoAnimationEffectIfApplicable(AnimationPart * bodyPart);
+
+	CurrentMeleePhase GetCurrentMeleePhase() const { return mCurrentMeleePhase; }
+
+	bool WillDeflectProjectile(float projectileDirectionX, float projectileCollisionLeft, float projectileCollisionRight);
 
 protected:
 
 	void SetIsWallJumping(bool value);
 	virtual void UpdateAnimations() override; // override sprite update animations
 	void PlayRandomWeaponFireSound();
+
+	void DoMeleeCollisions(SolidMovingSprite * object);
 
 	bool m_isJumping;
 	float m_maxJumpSpeed;
@@ -116,6 +132,11 @@ protected:
 	bool mIsRolling;
 	bool mDoReboundJump;
 	bool mDoSwimBurstAnim;
+	bool mIsDoingMelee;
+
+	CurrentMeleePhase mCurrentMeleePhase = kMeleePhase1;
+
+	float mMeleeDamage = 10.0f;
 };
 
 #endif

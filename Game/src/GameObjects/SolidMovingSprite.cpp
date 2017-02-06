@@ -47,6 +47,11 @@ void SolidMovingSprite::Update(float delta)
 		// if on top of an object and downward velocity is string then balance it out
 		m_velocity.Y = -0.05;
 	}
+
+	if (mMeleeStrikeCooldown > 0.0f)
+	{
+		mMeleeStrikeCooldown -= delta;
+	}
 }
 
 void SolidMovingSprite::SetupDebugDraw()
@@ -474,4 +479,9 @@ void SolidMovingSprite::DoWaterAccelerationBubbles()
 
 		mTimeUntilCanSpawnWaterBubbles = 0.2f;
 	}
+}
+
+void SolidMovingSprite::TriggerMeleeCooldown()
+{
+	mMeleeStrikeCooldown = 0.5f;
 }

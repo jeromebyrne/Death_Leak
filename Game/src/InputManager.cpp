@@ -77,19 +77,20 @@ void InputManager::ProcessGameplayInput()
 
 	GamePad * gamepad1 = GamePad::GetPad1();
 
-	if (gamepad1 && gamepad1->IsConnected())
-	{
+	// if (gamepad1 && gamepad1->IsConnected())
+	// {
 		ProcessGameplay_GamePad();
-	}
-	else
-	{
+	// }
+	// else
+	// {
 		ProcessGameplay_Keyboard();
-	}
+	//}
 }
 
 void InputManager::ProcessCrouch_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player)
 {
 	if (padState.Gamepad.sThumbLY < -(XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE * 2.5f) &&
+		!player->IsDoingMelee() &&
 		player->IsOnSolidSurface() &&
 		!player->IsStrafing() &&
 		!player->GetIsCollidingAtObjectSide() &&
@@ -109,12 +110,14 @@ void InputManager::ProcessLeftRightMovement_gamepad(XINPUT_STATE padState, Curre
 		!player->GetIsRolling())
 	{
 		if (padState.Gamepad.sThumbLX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE && 
+			!player->IsDoingMelee() &&
 			!player->IsWallJumping())
 		{
 			player->AccelerateX(-100);
 			currentActions.mIsSprinting = true;
 		}
 		else if (padState.Gamepad.sThumbLX > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE &&
+			!player->IsDoingMelee() &&
 			!player->IsWallJumping())
 		{
 			player->AccelerateX(100);
@@ -135,6 +138,7 @@ void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 	bool wasPressingJump = mCurrentGamepadState.mPressingJump;
 
 	if (!player->JustFellFromLargeDistance() &&
+		!player->IsDoingMelee() &&
 		padState.Gamepad.wButtons & XINPUT_GAMEPAD_A)
 	{
 		mCurrentGamepadState.mPressingJump = true;
@@ -147,6 +151,7 @@ void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 	if (mCurrentGamepadState.mPressingJump && !wasPressingJump)
 	{
 		if (padState.Gamepad.sThumbLY < -30000 &&
+			!player->IsDoingMelee() &&
 			player->IsOnSolidLine() &&
 			player->GetCurrentSolidLineStrip() &&
 			player->GetCurrentSolidLineStrip()->GetCanDropDown())
@@ -185,6 +190,7 @@ void InputManager::ProcessRoll_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 	bool wasPressingRoll = mCurrentGamepadState.mPressingRoll;
 
 	if (!player->JustFellFromLargeDistance() &&
+		!player->IsDoingMelee() &&
 		padState.Gamepad.wButtons & XINPUT_GAMEPAD_B)
 	{
 		mCurrentGamepadState.mPressingRoll = true;
@@ -208,6 +214,7 @@ void InputManager::ProcessMelee_gamepad(XINPUT_STATE padState, CurrentGameplayAc
 	bool wasPressingMelee = mCurrentGamepadState.mPressingMelee;
 
 	if (!player->JustFellFromLargeDistance() &&
+		!player->IsDoingMelee() &&
 		padState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
 	{
 		mCurrentGamepadState.mPressingMelee = true;
@@ -287,6 +294,7 @@ void InputManager::ProcessAimDirection_gamepad(XINPUT_STATE padState, CurrentGam
 void InputManager::ProcessPrimaryWeapon_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player)
 {
 	if (!player->JustFellFromLargeDistance() &&
+		!player->IsDoingMelee() &&
 		padState.Gamepad.wButtons & XINPUT_GAMEPAD_X)
 	{
 		mCurrentGamepadState.mPressingPrimaryWeapon = true;
@@ -312,6 +320,7 @@ void InputManager::ProcessSecondaryWeapon_gamepad(XINPUT_STATE padState, Current
 {
 	if (!player->JustFellFromLargeDistance() &&
 		!player->GetIsCollidingAtObjectSide() &&
+		!player->IsDoingMelee() &&
 		padState.Gamepad.wButtons & XINPUT_GAMEPAD_Y)
 	{
 		mCurrentGamepadState.mPressingSecondaryWeapon = true;
@@ -334,6 +343,7 @@ void InputManager::ProcessSecondaryWeapon_gamepad(XINPUT_STATE padState, Current
 void InputManager::ProcessStrafing_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player, const LevelProperties & levelProps)
 {
 	if (!player->JustFellFromLargeDistance() &&
+		!player->IsDoingMelee() &&
 		padState.Gamepad.bLeftTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
 	{
 		if (!mCurrentGamepadState.mPressingStrafeLeft)
@@ -362,6 +372,7 @@ void InputManager::ProcessStrafing_gamepad(XINPUT_STATE padState, CurrentGamepla
 	}
 
 	if (!player->JustFellFromLargeDistance() &&
+		!player->IsDoingMelee() &&
 		padState.Gamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
 	{
 		if (!mCurrentGamepadState.mPressingStrafeRight)
@@ -456,6 +467,8 @@ void InputManager::ProcessGameplay_GamePad()
 
 	CurrentGameplayActions currentActions;
 
+	ProcessMelee_gamepad(padState, currentActions, player);
+
 	ProcessCrouch_gamepad(padState, currentActions, player);
 
 	ProcessRoll_gamepad(padState, currentActions, player);
@@ -465,8 +478,6 @@ void InputManager::ProcessGameplay_GamePad()
 	ProcessJump_gamepad(padState, currentActions, player);
 
 	ProcessWallJump_gamepad(padState, currentActions, player);
-
-	ProcessMelee_gamepad(padState, currentActions, player);
 
 	ProcessAimDirection_gamepad(padState, currentActions, player);
 
