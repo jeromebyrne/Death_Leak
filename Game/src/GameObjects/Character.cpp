@@ -467,51 +467,65 @@ void Character::DoMeleeCollisions(SolidMovingSprite * object)
 			GAME_ASSERT(dynamic_cast<Projectile *>(object));
 			Projectile * objAsProj = static_cast<Projectile *>(object);
 
-			int yOffset = rand() % 200;
-			int randOffsetSign = rand() % 2;
-			if (randOffsetSign == 0)
+			if (objAsProj->IsActive())
 			{
-				yOffset *= -1;
+				int yOffset = rand() % 200;
+				int randOffsetSign = rand() % 2;
+				if (randOffsetSign == 0)
+				{
+					yOffset *= -1;
+				}
+
+				Vector2 newTargetPosition(objAsProj->X() + (500 * -objAsProj->DirectionX()), objAsProj->Y() + yOffset);
+				Vector2 newDirection = newTargetPosition - Vector2(objAsProj->X(), objAsProj->Y());
+				newDirection.Normalise();
+
+				objAsProj->SetVelocityXYZ(objAsProj->GetSpeed() * newDirection.X, objAsProj->GetSpeed() * newDirection.Y, 0);
+
+				if (objAsProj->GetOwnerType() == Projectile::kNPCProjectile)
+				{
+					objAsProj->SetOwnerType(Projectile::kPlayerProjectile);
+				}
+				else if (objAsProj->GetOwnerType() == Projectile::kPlayerProjectile)
+				{
+					objAsProj->SetOwnerType(Projectile::kNPCProjectile);
+				}
+
+				ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
+					object->Position(),
+					Vector3(0, 0, 0),
+					0.4,
+					Vector3(3200, 1200, 0),
+					"Media\\blast_circle.png",
+					0.01,
+					0.01,
+					0.40f,
+					0.40f,
+					20,
+					20,
+					0,
+					false,
+					0.7,
+					1.0,
+					10000,
+					true,
+					2,
+					0.0f,
+					0.0f,
+					0.0f,
+					0.3f);
+
+				AudioManager::Instance()->PlaySoundEffect("metalclink.wav");
+
+				Game::GetInstance()->DoDamagePauseEffect();
+
+				object->TriggerMeleeCooldown();
 			}
-
-			// pick a position behind the projectile to fire back at 
-			int objDirXNormal = objAsProj->DirectionX() > 0 ? 1 : -1;
-			Vector3 targetPos = Vector3(objAsProj->X() - 200 * objDirXNormal, objAsProj->Y() + yOffset, objAsProj->Z());
-
-			Vector3 direction = objAsProj->Position() - targetPos;
-			direction.Normalise();
-
-			objAsProj->SetVelocityXYZ(-objAsProj->VelocityX() * 0.7, -5, 0);
-
-			ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
-				object->Position(),
-				Vector3(-m_direction.X, 0, 0),
-				0.4,
-				Vector3(3200, 1200, 0),
-				"Media\\blast_circle.png",
-				0.01,
-				0.01,
-				0.40f,
-				0.40f,
-				50,
-				50,
-				0,
-				false,
-				0.7,
-				1.0,
-				10000,
-				true,
-				2,
-				0.0f,
-				0.0f,
-				0.0f,
-				0.3f);
-
-			AudioManager::Instance()->PlaySoundEffect("metalclink.wav");
-
-			Game::GetInstance()->DoDamagePauseEffect();
-
-			object->TriggerMeleeCooldown();
+		}
+		else if (object->IsDebris())
+		{
+			object->SetVelocityX(object->GetVelocity().X * 2.0f);
+			object->SetDirectionX(m_direction.X);
 		}
 	}
 }

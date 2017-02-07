@@ -36,15 +36,17 @@ Projectile::Projectile(ProjectileOwnerType ownerType,
 	mOwnerType(ownerType),
 	mType(kUnknownProjectileType),
 	mReboundRotateRate(0.3f),
-	mTrailParticlesAttached(false)
+	mTrailParticlesAttached(false),
+	mSpeed(speed)
 {
 	NUM_PROJECTILES_ACTIVE++; // increase our world projectile count
 
 	m_direction.X = direction.X;
 	m_direction.Y = direction.Y;
 
-	m_velocity.X = direction.X * speed;
-	m_velocity.Y = direction.Y * speed;
+
+	m_velocity.X = direction.X * mSpeed;
+	m_velocity.Y = direction.Y * mSpeed;
 
 	m_textureFilename = textureFileName;
 
@@ -135,11 +137,11 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 			GAME_ASSERT(dynamic_cast<Projectile *>(object));
 			Projectile * objAsProj = static_cast<Projectile *>(object);
 
-			if (objAsProj->getOwnerType() == kPlayerProjectile &&
-				getOwnerType() == kPlayerProjectile)
+			if (objAsProj->GetOwnerType() == kPlayerProjectile &&
+				GetOwnerType() == kPlayerProjectile)
 			{
-				if (getProjectileType() == kBladeProjectile &&
-					objAsProj->getProjectileType() == kBombProjectile)
+				if (GetProjectileType() == kBladeProjectile &&
+					objAsProj->GetProjectileType() == kBombProjectile)
 				{
 					// the player has fired a blade at their own bomb to blow it up
 
@@ -175,8 +177,8 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 				}
 			}
 
-			if (objAsProj->getOwnerType() != getOwnerType() &&
-				objAsProj->getOwnerType() == kPlayerProjectile &&
+			if (objAsProj->GetOwnerType() != GetOwnerType() &&
+				objAsProj->GetOwnerType() == kPlayerProjectile &&
 				!mCollidedWithProjectile &&
 				!objAsProj->mCollidedWithProjectile)
 			{

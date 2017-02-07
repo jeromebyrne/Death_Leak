@@ -48,14 +48,19 @@ public:
 
 	void SetSpinningMovement(bool value) { mSpinningMovement = value; }
 
-	ProjectileType getProjectileType() const { return mType; }
-	ProjectileOwnerType getOwnerType() const { return mOwnerType; }
+	ProjectileType GetProjectileType() const { return mType; }
+	ProjectileOwnerType GetOwnerType() const { return mOwnerType; }
+	void SetOwnerType(ProjectileOwnerType type) { mOwnerType = type; }
 
 	Vector2 GetCollisionRayStart() const;
 	Vector2 GetCollisionRayEnd() const;
 
 	Vector2 GetLastFrameCollisionRayStart();
 	// Vector2 GetLastFrameCollisionRayEnd();
+
+	float GetSpeed() const { return mSpeed; }
+
+	bool IsActive() const { return m_isActive; }
 
 protected:
 
@@ -83,6 +88,8 @@ protected:
 	float mReboundRotateRate;
 
 	bool mTrailParticlesAttached;
+
+	float mSpeed = 1.0f;
 };
 
 #endif
