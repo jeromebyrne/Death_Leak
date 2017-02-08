@@ -34,7 +34,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Player id="3" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="50.000000" y="0.327034" x="-3480.686768" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="50.000000" y="3.500000" x="-3487.686768" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="162.409988" width="128.366013" native="false" repeatX="false" repeatY="false" />
         <material value="maleninja" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="40.000000" rand_init_step="1" />
@@ -59,31 +59,10 @@
         <projectileoffsetx value="40" />
         <projectileoffsety value="0" />
     </Player>
-    <SolidMovingSprite id="4" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="51.000000" y="126.000000" x="-1986.686768" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="174.366013" width="245.628647" native="false" repeatX="false" repeatY="false" />
-        <material value="grassground" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\objects\wall.png" />
-        <horizontalflip value="true" />
-        <verticalflip value="false" />
-        <isanimated value="false" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="2.000000" x="0.950000" />
-        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions z="0.000000" y="150.000000" x="239.243851" offsetX="0.000000" offsetY="-5.000000" />
-        <passive value="true" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="false" />
-    </SolidMovingSprite>
-    <SolidLineStrip id="5" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidLineStrip id="4" parallax_x="0.650000" parallax_y="1.010000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="140.000000" x="-3169.153320" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="1.000000" height="904.000000" width="7032.000000" native="false" repeatX="false" repeatY="false" />
-        <material value="" />
+        <dimensions breadth="1.000000" height="879.000000" width="5933.000000" native="false" repeatX="false" repeatY="false" />
+        <material value="grassground" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
@@ -96,7 +75,7 @@
         <resistance z="0.000000" y="1.000000" x="1.000000" />
         <maxvelocity z="0.000000" y="0.000000" x="0.000000" />
         <applygravity value="true" />
-        <collisionboxdimensions z="0.000000" y="550.000000" x="6632.500000" offsetX="274.750000" offsetY="-252.000000" />
+        <collisionboxdimensions z="0.000000" y="550.000000" x="5430.966797" offsetX="-326.016724" offsetY="-239.500000" />
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
@@ -105,35 +84,58 @@
             <point x="-918.500000" y="-289.500000" />
             <point x="-148.500000" y="-324.000000" />
             <point x="906.500000" y="-223.500000" />
-            <point x="1414.000000" y="-180.000000" />
-            <point x="2096.500000" y="-261.000000" />
-            <point x="3516.000000" y="-273.000000" />
+            <point x="2314.466553" y="-155.000000" />
         </points>
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="false" />
     </SolidLineStrip>
-    <SolidMovingSprite id="6" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="51.000000" y="271.500000" x="-1986.186768" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="174.366013" width="245.628647" native="false" repeatX="false" repeatY="false" />
-        <material value="grassground" />
+    <Breakable id="5" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+        <position z="68.000000" y="13.500000" x="-3040.686768" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
+        <material value="pot" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\objects\wall.png" />
-        <horizontalflip value="true" />
+        <texture filename="Media\platform_grass.png" />
+        <horizontalflip value="false" />
         <verticalflip value="false" />
-        <isanimated value="false" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\pot_anim.xml" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="2.000000" x="0.950000" />
         <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
         <applygravity value="false" />
-        <collisionboxdimensions z="0.000000" y="150.000000" x="239.243851" offsetX="0.000000" offsetY="-5.000000" />
+        <collisionboxdimensions z="0.000000" y="78.258614" x="29.460556" offsetX="0.000000" offsetY="0.000000" />
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="false" />
-    </SolidMovingSprite>
+        <can_be_damaged value="true" />
+        <health value="10.000000" delete_on_break="false" />
+    </Breakable>
+    <Breakable id="6" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+        <position z="68.000000" y="-48.000000" x="-3009.186768" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
+        <material value="pot" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\platform_grass.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\pot_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="2.000000" x="0.950000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="78.258614" x="29.460556" offsetX="0.000000" offsetY="0.000000" />
+        <passive value="true" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+        <health value="10.000000" delete_on_break="false" />
+    </Breakable>
     <Breakable id="7" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="68.000000" y="-27.500000" x="-3009.686768" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="68.000000" y="12.000000" x="-2943.186768" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
         <material value="pot" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -155,53 +157,7 @@
         <can_be_damaged value="true" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="10" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="68.000000" y="-16.500000" x="-2936.186523" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
-        <material value="pot" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\platform_grass.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\pot_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="2.000000" x="0.950000" />
-        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions z="0.000000" y="78.258614" x="29.460556" offsetX="0.000000" offsetY="0.000000" />
-        <passive value="true" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <health value="10.000000" delete_on_break="false" />
-    </Breakable>
-    <Breakable id="11" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="68.000000" y="-10.500000" x="-2873.186523" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
-        <material value="pot" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\platform_grass.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\pot_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="2.000000" x="0.950000" />
-        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions z="0.000000" y="78.258614" x="29.460556" offsetX="0.000000" offsetY="0.000000" />
-        <passive value="true" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <health value="10.000000" delete_on_break="false" />
-    </Breakable>
-    <Breakable id="12" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Breakable id="8" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="68.000000" y="-27.000000" x="-3084.686523" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
         <material value="pot" />
@@ -224,99 +180,7 @@
         <can_be_damaged value="true" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="13" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="68.000000" y="3.000000" x="-2807.186523" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
-        <material value="pot" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\platform_grass.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\pot_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="2.000000" x="0.950000" />
-        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions z="0.000000" y="78.258614" x="29.460556" offsetX="0.000000" offsetY="0.000000" />
-        <passive value="true" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <health value="10.000000" delete_on_break="false" />
-    </Breakable>
-    <Breakable id="14" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="68.000000" y="18.000000" x="-2747.186523" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
-        <material value="pot" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\platform_grass.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\pot_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="2.000000" x="0.950000" />
-        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions z="0.000000" y="78.258614" x="29.460556" offsetX="0.000000" offsetY="0.000000" />
-        <passive value="true" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <health value="10.000000" delete_on_break="false" />
-    </Breakable>
-    <Breakable id="15" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="68.000000" y="34.500000" x="-2684.186523" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
-        <material value="pot" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\platform_grass.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\pot_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="2.000000" x="0.950000" />
-        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions z="0.000000" y="78.258614" x="29.460556" offsetX="0.000000" offsetY="0.000000" />
-        <passive value="true" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <health value="10.000000" delete_on_break="false" />
-    </Breakable>
-    <Breakable id="16" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="68.000000" y="51.000000" x="-2624.186523" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
-        <material value="pot" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\platform_grass.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\pot_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="2.000000" x="0.950000" />
-        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions z="0.000000" y="78.258614" x="29.460556" offsetX="0.000000" offsetY="0.000000" />
-        <passive value="true" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <health value="10.000000" delete_on_break="false" />
-    </Breakable>
-    <Breakable id="17" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Breakable id="9" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="68.000000" y="-16.500000" x="-3146.186523" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
         <material value="pot" />
@@ -339,7 +203,7 @@
         <can_be_damaged value="true" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="18" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Breakable id="10" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="68.000000" y="0.000000" x="-3204.686523" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
         <material value="pot" />
@@ -362,7 +226,7 @@
         <can_be_damaged value="true" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="19" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Breakable id="11" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="68.000000" y="9.000000" x="-3284.186523" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
         <material value="pot" />
@@ -385,7 +249,7 @@
         <can_be_damaged value="true" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="20" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Breakable id="12" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="68.000000" y="-34.500000" x="-3251.186523" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
         <material value="pot" />
@@ -408,8 +272,192 @@
         <can_be_damaged value="true" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
+    <Breakable id="13" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+        <position z="68.000000" y="-67.500000" x="-3120.186768" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
+        <material value="pot" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\platform_grass.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\pot_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="2.000000" x="0.950000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="78.258614" x="29.460556" offsetX="0.000000" offsetY="0.000000" />
+        <passive value="true" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+        <health value="10.000000" delete_on_break="false" />
+    </Breakable>
+    <Breakable id="14" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+        <position z="68.000000" y="-57.000000" x="-3180.186768" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
+        <material value="pot" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\platform_grass.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\pot_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="2.000000" x="0.950000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="78.258614" x="29.460556" offsetX="0.000000" offsetY="0.000000" />
+        <passive value="true" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+        <health value="10.000000" delete_on_break="false" />
+    </Breakable>
+    <Breakable id="15" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+        <position z="68.000000" y="37.500000" x="-2716.186768" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
+        <material value="pot" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\platform_grass.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\pot_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="2.000000" x="0.950000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="78.258614" x="29.460556" offsetX="0.000000" offsetY="0.000000" />
+        <passive value="true" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+        <health value="10.000000" delete_on_break="false" />
+    </Breakable>
+    <Breakable id="16" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+        <position z="68.000000" y="9.000000" x="-2674.186768" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
+        <material value="pot" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\platform_grass.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\pot_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="2.000000" x="0.950000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="78.258614" x="29.460556" offsetX="0.000000" offsetY="0.000000" />
+        <passive value="true" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+        <health value="10.000000" delete_on_break="false" />
+    </Breakable>
+    <Breakable id="17" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+        <position z="68.000000" y="12.000000" x="-2617.186768" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
+        <material value="pot" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\platform_grass.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\pot_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="2.000000" x="0.950000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="78.258614" x="29.460556" offsetX="0.000000" offsetY="0.000000" />
+        <passive value="true" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+        <health value="10.000000" delete_on_break="false" />
+    </Breakable>
+    <Breakable id="18" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+        <position z="68.000000" y="72.000000" x="-2563.186768" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
+        <material value="pot" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\platform_grass.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\pot_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="2.000000" x="0.950000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="78.258614" x="29.460556" offsetX="0.000000" offsetY="0.000000" />
+        <passive value="true" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+        <health value="10.000000" delete_on_break="false" />
+    </Breakable>
+    <Breakable id="19" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+        <position z="68.000000" y="10.500000" x="-2558.686768" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
+        <material value="pot" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\platform_grass.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\pot_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="2.000000" x="0.950000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="78.258614" x="29.460556" offsetX="0.000000" offsetY="0.000000" />
+        <passive value="true" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+        <health value="10.000000" delete_on_break="false" />
+    </Breakable>
+    <Breakable id="20" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+        <position z="68.000000" y="7.500000" x="-2477.686768" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
+        <material value="pot" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\platform_grass.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\pot_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance z="0.000000" y="2.000000" x="0.950000" />
+        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions z="0.000000" y="78.258614" x="29.460556" offsetX="0.000000" offsetY="0.000000" />
+        <passive value="true" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+        <health value="10.000000" delete_on_break="false" />
+    </Breakable>
     <Breakable id="21" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="68.000000" y="-57.000000" x="-3053.186523" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="68.000000" y="84.000000" x="-2428.186768" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
         <material value="pot" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -432,7 +480,7 @@
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
     <Breakable id="22" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="68.000000" y="-48.000000" x="-2906.186523" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="68.000000" y="27.000000" x="-2411.686768" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
         <material value="pot" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -455,7 +503,7 @@
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
     <Breakable id="23" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="68.000000" y="-30.000000" x="-2789.186523" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="68.000000" y="-37.500000" x="-2779.186768" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
         <material value="pot" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -478,7 +526,7 @@
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
     <Breakable id="24" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="68.000000" y="-7.500000" x="-2618.186523" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="68.000000" y="82.500000" x="-2207.686768" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
         <material value="pot" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -501,7 +549,7 @@
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
     <Breakable id="25" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="68.000000" y="6.000000" x="-2525.186523" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="68.000000" y="7.500000" x="-2267.686768" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
         <material value="pot" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -523,142 +571,25 @@
         <can_be_damaged value="true" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="26" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="68.000000" y="88.500000" x="-2362.186768" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
-        <material value="pot" />
+    <SolidMovingSprite id="26" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+        <position z="51.000000" y="140.500000" x="-1603.686768" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions breadth="0.000000" height="456.278748" width="642.757874" native="false" repeatX="false" repeatY="false" />
+        <material value="caverock" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\platform_grass.png" />
+        <texture filename="Media\objects\wall.png" />
         <horizontalflip value="false" />
         <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\pot_anim.xml" />
+        <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance z="0.000000" y="2.000000" x="0.950000" />
         <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
         <applygravity value="false" />
-        <collisionboxdimensions z="0.000000" y="78.258614" x="29.460556" offsetX="0.000000" offsetY="0.000000" />
+        <collisionboxdimensions z="0.000000" y="454.628204" x="570.000000" offsetX="0.000000" offsetY="0.000000" />
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <health value="10.000000" delete_on_break="false" />
-    </Breakable>
-    <Breakable id="27" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="68.000000" y="22.500000" x="-2351.686768" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
-        <material value="pot" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\platform_grass.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\pot_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="2.000000" x="0.950000" />
-        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions z="0.000000" y="78.258614" x="29.460556" offsetX="0.000000" offsetY="0.000000" />
-        <passive value="true" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <health value="10.000000" delete_on_break="false" />
-    </Breakable>
-    <Breakable id="28" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="68.000000" y="43.500000" x="-2447.686768" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
-        <material value="pot" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\platform_grass.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\pot_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="2.000000" x="0.950000" />
-        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions z="0.000000" y="78.258614" x="29.460556" offsetX="0.000000" offsetY="0.000000" />
-        <passive value="true" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <health value="10.000000" delete_on_break="false" />
-    </Breakable>
-    <Breakable id="29" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="68.000000" y="60.000000" x="-2228.686768" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
-        <material value="pot" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\platform_grass.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\pot_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="2.000000" x="0.950000" />
-        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions z="0.000000" y="78.258614" x="29.460556" offsetX="0.000000" offsetY="0.000000" />
-        <passive value="true" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <health value="10.000000" delete_on_break="false" />
-    </Breakable>
-    <Breakable id="30" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="68.000000" y="94.500000" x="-2291.686768" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
-        <material value="pot" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\platform_grass.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\pot_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="2.000000" x="0.950000" />
-        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions z="0.000000" y="78.258614" x="29.460556" offsetX="0.000000" offsetY="0.000000" />
-        <passive value="true" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <health value="10.000000" delete_on_break="false" />
-    </Breakable>
-    <Breakable id="31" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="68.000000" y="25.500000" x="-2182.186768" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
-        <material value="pot" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\platform_grass.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\pot_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="2.000000" x="0.950000" />
-        <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions z="0.000000" y="78.258614" x="29.460556" offsetX="0.000000" offsetY="0.000000" />
-        <passive value="true" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <health value="10.000000" delete_on_break="false" />
-    </Breakable>
+        <can_be_damaged value="false" />
+    </SolidMovingSprite>
 </level>

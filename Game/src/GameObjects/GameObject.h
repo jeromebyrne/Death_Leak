@@ -154,6 +154,8 @@ public:
 
 	bool IsBreakable() const { return mIsBreakable; }
 
+	bool IsBombProjectile() const { return mIsBombProjectile; }
+
 	virtual void AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset, bool trackOrientation = true);
 	void Detach();
 
@@ -219,6 +221,8 @@ protected:
 	bool mIsPlatform;
 	bool mIsSolidLineStrip;
 	bool mIsBreakable;
+	bool mIsBombProjectile;
+
 	std::shared_ptr<GameObject> mAttachedTo;
 	Vector3 mAttachedToOffset;
 	float mParallaxMultiplierX;

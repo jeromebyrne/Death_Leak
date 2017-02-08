@@ -148,7 +148,7 @@ void Breakable::UpdateState()
 																1.0,
 																10000,
 																true,
-																35,
+																6,
 																0.0f,
 																0.0f,
 																0.1f,

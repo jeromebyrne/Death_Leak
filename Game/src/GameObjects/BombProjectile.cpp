@@ -33,6 +33,8 @@ Projectile(ownerType,
 			 maxTimeInActive),
 			 mTimeUntilNextParticleSpray(0.0f)
 {
+	mIsBombProjectile = true;
+
 	mSpinningMovement = true;
 	mBouncable = true;
 	mBounceDampening = 0.35f;
@@ -76,6 +78,16 @@ bool BombProjectile::OnCollision(SolidMovingSprite* object)
 		return false;
 	}
 
+	if (object->IsBreakable())
+	{
+		return false;
+	}
+
+	if (object->IsBombProjectile())
+	{
+		return false;
+	}
+
 	if (object->IsSolidLineStrip())
 	{
 		SolidLineStrip * lineStrip = static_cast<SolidLineStrip*>(object);
@@ -86,6 +98,8 @@ bool BombProjectile::OnCollision(SolidMovingSprite* object)
 	if (m_isActive)
 	{
 		m_isActive = false;
+		m_applyGravity = false;
+		SetVelocityXYZ(0.0f, 0.0f, 0.0f);
 		m_timeBecameInactive = Timing::Instance()->GetTotalTimeSeconds();
 	}
 
@@ -98,7 +112,7 @@ void BombProjectile::Update(float delta)
 	float percentDelta = delta / targetDelta;
 
 	// apply gravity to the 
-	if (!mIsOnSolidLine)
+	if (m_applyGravity && !mIsOnSolidLine)
 	{
 		if (!mIsInWater)
 		{
@@ -179,22 +193,8 @@ void BombProjectile::HandleSolidLineStripCollision(SolidLineStrip * solidLineStr
 
 	if (solidLineStrip->GetBombProjectileCollisionData(this, collisionPosition))
 	{
-		if (m_velocity.Y < 0.0f && !WasInWaterLastFrame())
-		{
-			// bounce
-			m_velocity.X *= 0.9f;
-			m_velocity.Y *= -0.5f;
-		}
-		else if (WasInWaterLastFrame())
-		{
-			m_velocity.X *= 0.3f;
-			m_velocity.Y *= -0.2f;
-		}
-
-
-		float diffY = collisionPosition.Y - CollisionBottom();
-
-		SetY(solidLineStrip->Position().Y - collisionPosition.Y);
+		m_applyGravity = false;
+		SetVelocityXYZ(0.0f, 0.0f, 0.0f);
 
 		if (m_isActive)
 		{
