@@ -245,6 +245,8 @@ bool SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 		return false;
 	}
 
+	float objectYVelocity = object->VelocityY();
+
 	// if we are not passive then push ourselves away from the object
 	// remember this behaviour can be overwritten in derived function
 	if(!m_passive && !object->IsProjectile()) // by default we don't want to be pushed by a projectile
@@ -372,6 +374,18 @@ bool SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 			Character * character = static_cast<Character*>(object);
 			character->OnDamage(this, m_applyDamageAmount, Vector3(0,0,0));
 		}
+	}
+
+	if (mIsBouncy &&
+		object->CollisionBottom() > CollisionCentreY() &&
+		objectYVelocity < -10.0f)
+	{
+		float newYVelocity = std::abs(objectYVelocity * mBounceMultiplier);
+		if (newYVelocity > 25.0f)
+		{
+			newYVelocity = 25.0f;
+		}
+		object->SetVelocityY(newYVelocity);
 	}
 
 	return true;

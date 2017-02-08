@@ -92,6 +92,9 @@ public:
 	bool CanBeStruckByMelee() const { return mCanBeDamaged && mMeleeStrikeCooldown <= 0.0f; }
 
 	void TriggerMeleeCooldown();
+
+	bool IsBouncy() const { return mIsBouncy; }
+	float GetBounceMultiplier() const { return mBounceMultiplier; }
 	
 protected:
 
@@ -116,6 +119,9 @@ protected:
 	bool mCanBeDamaged;
 
 	bool mIsOnSolidLine;
+
+	bool mIsBouncy = false;
+	float mBounceMultiplier = 1.3f;
 
 private:
 
