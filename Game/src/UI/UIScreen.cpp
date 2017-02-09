@@ -145,7 +145,8 @@ void UIScreen::Update()
 	// process input on the screen
 	if (GetForegroundWindow() == DXWindow::GetInstance()->Hwnd())
 	{
-		if (GamePad::GetPad1() && GamePad::GetPad1()->IsConnected())
+		if (GamePad::GetPad1() && GamePad::GetPad1()->IsConnected() &&
+			!UIManager::Instance()->IsObjectEditorDisplaying())
 		{
 			ProcessGamePad();
 		}
