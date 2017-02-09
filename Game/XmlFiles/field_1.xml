@@ -26,6 +26,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <maxjumpspeed value="25" />
         <xaccelrate value="1" />
         <projectileoffsetx value="40" />
@@ -52,13 +53,14 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <maxjumpspeed value="25" />
         <xaccelrate value="0.5" />
         <projectileoffsetx value="15" />
         <projectileoffsety value="20" />
     </Butterfly>
     <ParallaxLayer id="3" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9999.000000" y="800.000000" x="985.517029" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="9999.000000" y="800.000000" x="1015.890320" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="472.000000" width="2048.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -81,7 +83,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="4" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9990.000000" y="740.000000" x="985.517029" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="9990.000000" y="740.000000" x="1015.890320" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="472.000000" width="2048.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -221,6 +223,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <points>
             <point x="-4424.577148" y="15.502380" />
             <point x="-3464.075195" y="66.143555" />
@@ -1068,6 +1071,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <points>
             <point x="-216.049988" y="81.971436" />
             <point x="-149.843079" y="26.047974" />
@@ -1097,6 +1101,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <points>
             <point x="38.000000" y="-145.876709" />
             <point x="148.000000" y="-70.123047" />
@@ -1139,6 +1144,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <points>
             <point x="-3.385498" y="104.593506" />
             <point x="262.445313" y="131.464233" />
@@ -1196,6 +1202,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <points>
             <point x="-145.329102" y="65.356934" />
             <point x="-10.000000" y="28.663574" />
@@ -1223,6 +1230,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <points>
             <point x="-237.401367" y="6.340515" />
             <point x="-123.043945" y="16.675415" />
@@ -1279,6 +1287,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <points>
             <point x="-133.792969" y="-34.602783" />
             <point x="11.661621" y="8.803955" />
@@ -1307,6 +1316,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <points>
             <point x="-193.000000" y="24.568848" />
             <point x="124.000000" y="-1.023682" />
@@ -1347,6 +1357,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <points>
             <point x="-131.536133" y="-85.033447" />
             <point x="-39.247559" y="-15.789429" />
@@ -1388,6 +1399,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <points>
             <point x="-284.890137" y="-44.535889" />
             <point x="58.181885" y="68.114868" />
@@ -2622,7 +2634,7 @@
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="false" />
+        <horizontalflip value="true" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
@@ -2634,6 +2646,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <maxjumpspeed value="25" />
         <xaccelrate value="0.5" />
         <projectileoffsetx value="15" />
@@ -2712,6 +2725,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="false" />
+        <is_bouncy value="false" bounce_multiplier="1.300000" />
         <maxjumpspeed value="25" />
         <xaccelrate value="0.5" />
         <projectileoffsetx value="15" />
@@ -2739,6 +2753,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="false" />
+        <is_bouncy value="false" bounce_multiplier="1.300000" />
         <maxjumpspeed value="25" />
         <xaccelrate value="0.5" />
         <projectileoffsetx value="15" />
@@ -2766,6 +2781,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="false" />
+        <is_bouncy value="false" bounce_multiplier="1.300000" />
         <maxjumpspeed value="25" />
         <xaccelrate value="0.5" />
         <projectileoffsetx value="15" />
@@ -2793,6 +2809,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="false" />
+        <is_bouncy value="false" bounce_multiplier="1.300000" />
         <maxjumpspeed value="25" />
         <xaccelrate value="0.5" />
         <projectileoffsetx value="15" />
@@ -2820,6 +2837,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="false" />
+        <is_bouncy value="false" bounce_multiplier="1.300000" />
         <maxjumpspeed value="25" />
         <xaccelrate value="0.5" />
         <projectileoffsetx value="15" />
@@ -2847,6 +2865,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="false" />
+        <is_bouncy value="false" bounce_multiplier="1.300000" />
         <maxjumpspeed value="25" />
         <xaccelrate value="0.5" />
         <projectileoffsetx value="15" />
@@ -2874,6 +2893,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="false" />
+        <is_bouncy value="false" bounce_multiplier="1.300000" />
         <maxjumpspeed value="25" />
         <xaccelrate value="0.5" />
         <projectileoffsetx value="15" />
@@ -3133,6 +3153,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <maxjumpspeed value="25" />
         <xaccelrate value="0.5" />
         <projectileoffsetx value="15" />
@@ -3159,6 +3180,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <maxjumpspeed value="25" />
         <xaccelrate value="0.5" />
         <projectileoffsetx value="15" />
@@ -3185,6 +3207,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <maxjumpspeed value="25" />
         <xaccelrate value="0.5" />
         <projectileoffsetx value="15" />
@@ -3199,7 +3222,7 @@
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="false" />
+        <horizontalflip value="true" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
@@ -3211,6 +3234,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <maxjumpspeed value="25" />
         <xaccelrate value="0.5" />
         <projectileoffsetx value="15" />
@@ -3237,6 +3261,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="false" />
+        <is_bouncy value="false" bounce_multiplier="1.300000" />
         <maxjumpspeed value="25" />
         <xaccelrate value="0.5" />
         <projectileoffsetx value="15" />
@@ -3251,7 +3276,7 @@
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="true" />
+        <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
@@ -3263,6 +3288,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="false" />
+        <is_bouncy value="false" bounce_multiplier="1.300000" />
         <maxjumpspeed value="25" />
         <xaccelrate value="0.5" />
         <projectileoffsetx value="15" />
@@ -3277,7 +3303,7 @@
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="true" />
+        <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
@@ -3289,6 +3315,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="false" />
+        <is_bouncy value="false" bounce_multiplier="1.300000" />
         <maxjumpspeed value="25" />
         <xaccelrate value="0.5" />
         <projectileoffsetx value="15" />
@@ -3303,7 +3330,7 @@
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="true" />
+        <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
@@ -3315,6 +3342,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="false" />
+        <is_bouncy value="false" bounce_multiplier="1.300000" />
         <maxjumpspeed value="25" />
         <xaccelrate value="0.5" />
         <projectileoffsetx value="15" />
@@ -3341,6 +3369,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="false" />
+        <is_bouncy value="false" bounce_multiplier="1.300000" />
         <maxjumpspeed value="25" />
         <xaccelrate value="0.5" />
         <projectileoffsetx value="15" />
@@ -3412,6 +3441,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <CurrencyOrb id="215" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1121.904297" x="464.638306" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -3434,6 +3464,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <CurrencyOrb id="216" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1069.196289" x="575.986328" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -3456,6 +3487,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <CurrencyOrb id="217" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1286.152954" x="-239.813110" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -3478,6 +3510,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <CurrencyOrb id="218" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1333.693604" x="-128.465149" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -3500,6 +3533,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <CurrencyOrb id="219" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1166.880127" x="2904.638184" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -3522,6 +3556,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <CurrencyOrb id="220" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1177.215088" x="3052.099121" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -3544,6 +3579,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <CurrencyOrb id="221" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1183.416016" x="3209.591309" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -3566,6 +3602,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <CurrencyOrb id="222" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1161.712769" x="3366.080322" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -3588,6 +3625,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <CurrencyOrb id="223" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1226.822754" x="3880.688477" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -3610,6 +3648,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <CurrencyOrb id="224" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1163.779785" x="4000.061523" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -3632,6 +3671,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <CurrencyOrb id="225" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1070.573975" x="4753.290527" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -3654,6 +3694,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <CurrencyOrb id="226" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1058.172119" x="4960.939453" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -3676,6 +3717,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <CurrencyOrb id="227" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1395.205566" x="5256.613281" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -3698,6 +3740,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <CurrencyOrb id="228" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1428.277344" x="5404.074219" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -3720,6 +3763,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <CurrencyOrb id="229" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1669.310791" x="4585.516113" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -3742,6 +3786,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <CurrencyOrb id="230" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1649.674438" x="4799.183594" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -3764,6 +3809,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <CurrencyOrb id="231" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1160.985474" x="4869.152344" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -3786,6 +3832,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <CurrencyOrb id="232" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="717.387390" x="1322.945557" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -3808,6 +3855,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <CurrencyOrb id="233" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="810.401733" x="1455.233887" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -3830,6 +3878,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <CurrencyOrb id="234" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="861.042847" x="1666.895386" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -3852,6 +3901,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <CurrencyOrb id="235" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="821.770142" x="1863.509766" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -3874,6 +3924,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <CurrencyOrb id="236" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="686.382568" x="1990.907959" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -3896,6 +3947,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <CurrencyOrb id="237" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1219.817993" x="2543.133789" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -3918,6 +3970,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <CurrencyOrb id="238" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1329.368164" x="2544.136719" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -3940,6 +3993,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <CurrencyOrb id="239" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1442.018921" x="2550.155518" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -3962,6 +4016,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <CurrencyOrb id="240" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1560.870605" x="2552.161865" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -3984,6 +4039,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <CurrencyOrb id="241" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1399.224731" x="148.400085" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -4006,6 +4062,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <CurrencyOrb id="242" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1715.396973" x="2522.945557" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -4028,6 +4085,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <CurrencyOrb id="243" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="1508.162476" x="4414.481445" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -4050,6 +4108,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <SolidLineStrip id="244" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="1323.990479" x="3485.704102" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -4071,6 +4130,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <points>
             <point x="5.015625" y="-192.746338" />
             <point x="1.003174" y="-33.588501" />

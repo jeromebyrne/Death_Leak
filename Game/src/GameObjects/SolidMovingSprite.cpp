@@ -202,6 +202,9 @@ void SolidMovingSprite::XmlRead(TiXmlElement * element)
 	m_applyDamageAmount = XmlUtilities::ReadAttributeAsFloat(element, "applydamage", "amount"); 
 
 	mCanBeDamaged = XmlUtilities::ReadAttributeAsBool(element, "can_be_damaged", "value"); 
+
+	mIsBouncy = XmlUtilities::ReadAttributeAsBool(element, "is_bouncy", "value");
+	mBounceMultiplier = XmlUtilities::ReadAttributeAsBool(element, "bounce_multiplier", "value");
 }
 
 void SolidMovingSprite::XmlWrite(TiXmlElement * element)
@@ -231,6 +234,12 @@ void SolidMovingSprite::XmlWrite(TiXmlElement * element)
 	TiXmlElement * canBeDamaged = new TiXmlElement("can_be_damaged");
 	canBeDamaged->SetAttribute("value", isDamagedAsStr);
 	element->LinkEndChild(canBeDamaged);
+
+	const char * isBouncyAsStr = mIsBouncy ? "true" : "false";
+	TiXmlElement * isBouncy = new TiXmlElement("is_bouncy");
+	isBouncy->SetAttribute("value", isDamagedAsStr);
+	isBouncy->SetDoubleAttribute("bounce_multiplier", mBounceMultiplier);
+	element->LinkEndChild(isBouncy);
 }
 
 bool SolidMovingSprite::OnCollision(SolidMovingSprite * object)

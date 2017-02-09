@@ -54,6 +54,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <maxjumpspeed value="25" />
         <xaccelrate value="1" />
         <projectileoffsetx value="40" />
@@ -79,6 +80,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <points>
             <point x="-2966.500000" y="-283.500000" />
             <point x="-918.500000" y="-289.500000" />
@@ -109,6 +111,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
     <Breakable id="6" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
@@ -132,6 +135,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
     <Breakable id="7" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
@@ -155,6 +159,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
     <Breakable id="8" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
@@ -178,6 +183,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
     <Breakable id="9" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
@@ -201,6 +207,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
     <Breakable id="10" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
@@ -224,6 +231,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
     <Breakable id="11" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
@@ -247,6 +255,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
     <Breakable id="12" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
@@ -270,6 +279,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
     <Breakable id="13" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
@@ -293,6 +303,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
     <Breakable id="14" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
@@ -316,6 +327,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
     <Breakable id="15" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
@@ -339,6 +351,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
     <Breakable id="16" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
@@ -362,6 +375,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
     <Breakable id="17" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
@@ -385,6 +399,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
     <Breakable id="18" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
@@ -408,6 +423,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
     <Breakable id="19" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
@@ -431,6 +447,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
     <Breakable id="20" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
@@ -454,6 +471,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
     <Breakable id="21" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
@@ -477,6 +495,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
     <Breakable id="22" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
@@ -500,6 +519,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
     <Breakable id="23" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
@@ -523,6 +543,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
     <Breakable id="24" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
@@ -546,6 +567,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
     <Breakable id="25" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
@@ -569,6 +591,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
     <SolidMovingSprite id="26" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
@@ -591,5 +614,6 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="false" />
+        <is_bouncy value="false" bounce_multiplier="1.300000" />
     </SolidMovingSprite>
 </level>

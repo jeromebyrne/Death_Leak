@@ -26,6 +26,7 @@
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <maxjumpspeed value="25" />
         <xaccelrate value="1" />
         <projectileoffsetx value="40" />
@@ -51,6 +52,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="false" />
+        <is_bouncy value="false" bounce_multiplier="1.300000" />
         <is_deep_water value="true" />
     </WaterBlock>
     <Sprite id="3" parallax_x="0.650000" parallax_y="1.010000" level_edit_locked="false" updateable="true">
@@ -101,6 +103,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
+        <is_bouncy value="true" bounce_multiplier="1.300000" />
         <points>
             <point x="-2295.799316" y="-79.208679" />
             <point x="-1481.253418" y="-71.974182" />
@@ -383,6 +386,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="100.000000" />
         <can_be_damaged value="false" />
+        <is_bouncy value="false" bounce_multiplier="1.300000" />
     </SolidMovingSprite>
     <SolidMovingSprite id="23" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="5.000000" y="999.062622" x="-6916.274414" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -404,6 +408,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="100.000000" />
         <can_be_damaged value="false" />
+        <is_bouncy value="false" bounce_multiplier="1.300000" />
     </SolidMovingSprite>
     <SolidMovingSprite id="24" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="5.000000" y="405.799500" x="-3469.377930" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -425,6 +430,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="100.000000" />
         <can_be_damaged value="false" />
+        <is_bouncy value="false" bounce_multiplier="1.300000" />
     </SolidMovingSprite>
     <ParticleSpray id="25" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="26.000000" y="224.517212" x="-4473.390625" rotation="0.000000" auto_rotate_value="0.000000" spawn_spread_x="8.000000" spawn_spread_y="5.000000" />
