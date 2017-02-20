@@ -185,6 +185,32 @@ void InputManager::ProcessSwimDown_gamepad(XINPUT_STATE padState, CurrentGamepla
 	}
 }
 
+void InputManager::ProcessDownwardDash_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player)
+{
+	if (player->GetIsDownwardDashing())
+	{
+		return;
+	}
+
+	bool wasPressingDownwardDash = mCurrentGamepadState.mPressingDownwardDashPrimary;
+
+	if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
+		padState.Gamepad.sThumbLY < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE * 2.5f)
+	{
+		mCurrentGamepadState.mPressingDownwardDashPrimary = true;
+	}
+	else
+	{
+		mCurrentGamepadState.mPressingDownwardDashPrimary = false;
+	}
+
+	if (mCurrentGamepadState.mPressingDownwardDashPrimary &&
+		!wasPressingDownwardDash)
+	{
+		player->DoDownwardDash();
+	}
+}
+
 void InputManager::ProcessRoll_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player)
 {
 	bool wasPressingRoll = mCurrentGamepadState.mPressingRoll;
@@ -466,6 +492,8 @@ void InputManager::ProcessGameplay_GamePad()
 	const auto & levelProps = GameObjectManager::Instance()->GetCurrentLevelProperties();
 
 	CurrentGameplayActions currentActions;
+
+	ProcessDownwardDash_gamepad(padState, currentActions, player);
 
 	ProcessMelee_gamepad(padState, currentActions, player);
 

@@ -34,7 +34,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Player id="3" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="50.000000" y="160.500000" x="-3563.686523" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="50.000000" y="498.000000" x="-2950.186523" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="162.409988" width="128.366013" native="false" repeatX="false" repeatY="false" />
         <material value="maleninja" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="40.000000" rand_init_step="1" />
@@ -638,7 +638,7 @@
         <can_be_damaged value="false" />
         <is_bouncy value="true" bounce_multiplier="1.500000" />
     </SolidMovingSprite>
-    <SolidLineStrip id="30" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidLineStrip id="28" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="500.000000" x="-2203.686523" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="1.000000" height="401.500000" width="822.000000" native="false" repeatX="false" repeatY="false" />
         <material value="" />
@@ -654,7 +654,7 @@
         <resistance z="0.000000" y="1.000000" x="1.000000" />
         <maxvelocity z="0.000000" y="0.000000" x="0.000000" />
         <applygravity value="true" />
-        <collisionboxdimensions z="0.000000" y="400.000000" x="778.500000" offsetX="-21.750000" offsetY="-0.750000" />
+        <collisionboxdimensions z="0.000000" y="550.000000" x="928.500000" offsetX="-21.750000" offsetY="-0.750000" />
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />

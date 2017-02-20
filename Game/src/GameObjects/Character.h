@@ -78,6 +78,10 @@ public:
 
 	bool WillDeflectProjectile(float projectileDirectionX, float projectileCollisionLeft, float projectileCollisionRight);
 
+	void DoDownwardDash();
+
+	bool GetIsDownwardDashing() const { return mIsDownwardDashing; }
+
 protected:
 
 	void SetIsWallJumping(bool value);
@@ -133,6 +137,8 @@ protected:
 	bool mDoReboundJump;
 	bool mDoSwimBurstAnim;
 	bool mIsDoingMelee;
+	bool mIsDownwardDashing;
+	bool mWasDownwardDashing;
 
 	CurrentMeleePhase mCurrentMeleePhase = kMeleePhase1;
 

@@ -70,7 +70,9 @@ Character::Character(float x, float y, float z, float width, float height, float
 	mIsRolling(false),
 	mDoReboundJump(false),
 	mDoSwimBurstAnim(false),
-	mIsDoingMelee(false)
+	mIsDoingMelee(false),
+	mIsDownwardDashing(false),
+	mWasDownwardDashing(false)
 {
 	mProjectileFilePath = "Media/knife.png";
 	mProjectileImpactFilePath = "Media/knife_impact.png";
@@ -115,6 +117,19 @@ void Character::Update(float delta)
 
 	// update the base classes
 	SolidMovingSprite::Update(delta);
+
+	if (IsOnSolidSurface())
+	{
+		if (mIsDownwardDashing)
+		{
+			mWasDownwardDashing = true;
+		}
+		else
+		{
+			mWasDownwardDashing = false;
+		}
+		mIsDownwardDashing = false;
+	}
 
 	if (mIsRolling)
 	{
@@ -246,7 +261,7 @@ void Character::Update(float delta)
 					mJustfellFromLargeDistance = false;
 
 					float jumpDiff = totalTime - inputManager.GetLastTimePressedJump();
-					if (jumpDiff >= 0.0f && jumpDiff < kLandJumpInputWindow)
+					if (!mIsDownwardDashing && !mWasDownwardDashing && jumpDiff >= 0.0f && jumpDiff < kLandJumpInputWindow)
 					{
 						mDoReboundJump = true;
 						Jump(100.0f);
@@ -1634,7 +1649,6 @@ void Character::SetCrouching(bool value)
 
 bool Character::WillDeflectProjectile(float projectileDirectionX, float projectileCollisionLeft, float projectileCollisionRight)
 {
-
 	if (mIsDoingMelee &&
 		(mCurrentMeleePhase == kMeleePhase1 || mCurrentMeleePhase == kMeleePhase3))
 	{
@@ -1667,4 +1681,23 @@ bool Character::WillDeflectProjectile(float projectileDirectionX, float projecti
 	}
 
 	return false;
+}
+
+void Character::DoDownwardDash()
+{
+	if (IsOnSolidSurface())
+	{
+		return;
+	}
+
+	if (GetTimeNotOnSolidSurface() < 0.25f)
+	{
+		return;
+	}
+
+	StopYAccelerating();
+
+	m_velocity.Y = -30.0f;
+
+	mIsDownwardDashing = true;
 }

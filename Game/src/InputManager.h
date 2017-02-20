@@ -40,6 +40,7 @@ private:
 		bool mPressingStrafeLeft = false;
 		bool mPressingStrafeRight = false;
 		bool mPressingMelee = false;
+		bool mPressingDownwardDashPrimary = false;
 	};
 
 	void ProcessGameplay_GamePad();
@@ -67,6 +68,8 @@ private:
 	void ProcessStrafing_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player, const LevelProperties & levelProps);
 
 	void ProcessSwimDown_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player, const LevelProperties & levelProps);
+
+	void ProcessDownwardDash_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player);
 
 	void ProcessTestActions_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player, const LevelProperties & levelProps);
 
