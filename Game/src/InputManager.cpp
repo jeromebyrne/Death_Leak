@@ -137,6 +137,15 @@ void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 {
 	bool wasPressingJump = mCurrentGamepadState.mPressingJump;
 
+	float initialJumpPercent = 40.0f;
+	static float currentJumpIncreasePercent = initialJumpPercent;
+	static bool canIncreaseJump = false;
+
+	if (player->IsOnSolidSurface())
+	{
+		currentJumpIncreasePercent = initialJumpPercent;
+	}
+
 	if (!player->JustFellFromLargeDistance() &&
 		!player->IsDoingMelee() &&
 		padState.Gamepad.wButtons & XINPUT_GAMEPAD_A)
@@ -161,9 +170,21 @@ void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 		else
 		{
 			mLastTimePressedJump = Timing::Instance()->GetTotalTimeSeconds();
-			float jumpPower = player->IsStrafing() ? 80.0f : 100.0f;
-			player->Jump(jumpPower);
+			float jumpPower = player->IsStrafing() ? initialJumpPercent * 0.8f : initialJumpPercent;
+			if (player->Jump(jumpPower))
+			{
+				canIncreaseJump = true;
+			}
+			else
+			{
+				canIncreaseJump = false;
+			}
 		}
+	}
+	else if (mCurrentGamepadState.mPressingJump && wasPressingJump && canIncreaseJump && currentJumpIncreasePercent < 100.0f)
+	{
+		currentJumpIncreasePercent += 5.0f;
+		player->IncreaseJump(currentJumpIncreasePercent);
 	}
 }
 

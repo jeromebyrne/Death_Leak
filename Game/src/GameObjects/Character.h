@@ -31,6 +31,7 @@ public:
 	virtual void LoadContent(ID3D10Device * graphicsdevice) override;
 	inline void SetMaxJumpSpeed(float value) { m_maxJumpSpeed = value; }
 	virtual bool Jump(float percent);
+	void IncreaseJump(float percent);
 	virtual void WallJump(int directionX, float percent);
 	virtual bool Roll();
 	virtual void AccelerateX(float directionX);
@@ -87,6 +88,8 @@ protected:
 	void SetIsWallJumping(bool value);
 	virtual void UpdateAnimations() override; // override sprite update animations
 	void PlayRandomWeaponFireSound();
+
+	void DoLargeImpactLanding();
 
 	void DoMeleeCollisions(SolidMovingSprite * object);
 

@@ -107,11 +107,66 @@ void Character::SetIsWallJumping(bool value)
 	}
 }
 
+void Character::DoLargeImpactLanding()
+{
+	mJustFellFromDistance = false;
+	mJustfellFromLargeDistance = true;
+
+	StopXAccelerating();
+
+	Camera2D::GetInstance()->DoMediumShake();
+
+	if (IsOnSolidLine())
+	{
+		auto solidLine = GetCurrentSolidLineStrip();
+
+		if (solidLine)
+		{
+			Material * objectMaterial = solidLine->GetMaterial();
+			string particleFile = "";
+			if (objectMaterial != 0)
+			{
+				string soundfile = objectMaterial->GetRandomFootstepSoundFilename();
+				AudioManager::Instance()->PlaySoundEffect(soundfile);
+
+				particleFile = objectMaterial->GetRandomParticleTexture();
+
+				if (!particleFile.empty())
+				{
+					ParticleEmitterManager::Instance()->CreateDirectedSpray(20,
+						Vector3(m_position.X + (m_direction.X * 60.f), CollisionBottom(), m_position.Z - 0.1),
+						Vector3(0, 1, 0),
+						0.4,
+						Vector3(1200, 720, 0),
+						particleFile,
+						3.0f,
+						6.0f,
+						0.4f,
+						1.0f,
+						5,
+						10,
+						0.8,
+						false,
+						0.8,
+						1.0,
+						1,
+						true,
+						15,
+						5.0f,
+						0.2f,
+						0.15f,
+						0.9f);
+				}
+			}
+		}
+	}
+}
+
 void Character::Update(float delta)
 {
 	if (mDoReboundJump)
 	{
-		Jump(100.0f);
+		Jump(95.0f);
 		mDoReboundJump = false;
 	}
 
@@ -120,6 +175,10 @@ void Character::Update(float delta)
 
 	if (IsOnSolidSurface())
 	{
+		if (mWasDownwardDashing)
+		{
+			DoLargeImpactLanding();
+		}
 		if (mIsDownwardDashing)
 		{
 			mWasDownwardDashing = true;
@@ -264,64 +323,12 @@ void Character::Update(float delta)
 					if (!mIsDownwardDashing && !mWasDownwardDashing && jumpDiff >= 0.0f && jumpDiff < kLandJumpInputWindow)
 					{
 						mDoReboundJump = true;
-						Jump(100.0f);
+						Jump(95.0f);
 					}
 				}
 				else if (dropDistance >= kLargeDropDistance)
 				{
-					mJustFellFromDistance = false;
-					mJustfellFromLargeDistance = true;
-
-					StopXAccelerating();
-
-					Camera2D::GetInstance()->DoMediumShake();
-
-					if (IsOnSolidLine())
-					{
-						auto solidLine = GetCurrentSolidLineStrip();
-
-						if (solidLine)
-						{
-							Material * objectMaterial = solidLine->GetMaterial();
-							string particleFile = "";
-							if (objectMaterial != 0)
-							{
-								string soundfile = objectMaterial->GetRandomFootstepSoundFilename();
-								AudioManager::Instance()->PlaySoundEffect(soundfile);
-
-								particleFile = objectMaterial->GetRandomParticleTexture();
-
-								if (!particleFile.empty())
-								{
-									ParticleEmitterManager::Instance()->CreateDirectedSpray(20,
-										Vector3(m_position.X + (m_direction.X * 60.f), CollisionBottom(), m_position.Z - 0.1),
-										Vector3(0, 1, 0),
-										0.4,
-										Vector3(1200, 720, 0),
-										particleFile,
-										3.0f,
-										6.0f,
-										0.4f,
-										1.0f,
-										5,
-										10,
-										0.8,
-										false,
-										0.8,
-										1.0,
-										1,
-										true,
-										15,
-										5.0f,
-										0.2f,
-										0.15f,
-										0.9f);
-								}
-							}
-						}
-					}
-
-					// TODO: do drop sound effect (What if it's a non human NPC?)
+					DoLargeImpactLanding();
 				}
 			}
 
@@ -679,7 +686,7 @@ void Character::UpdateAnimations()
 				float jumpDiff = totalTime - inputManager.GetLastTimePressedJump();
 				if (jumpDiff >= 0.0f && jumpDiff < kLandJumpInputWindow)
 				{
-					Jump(100.0f);
+					Jump(70.0f);
 				}
 			}
 
@@ -1044,7 +1051,7 @@ bool Character::Jump(float percent)
 	// if we are crouching fully then we get a nice boost to our jump
 	if (mIsFullyCrouched)
 	{
-		percent *= 1.2f;
+		percent *= 4.0f;
 
 		if (IsOnSolidLine())
 		{
@@ -1100,6 +1107,23 @@ bool Character::Jump(float percent)
 	++mCurrentJumpsBeforeLand;
 
 	return true;
+}
+
+void Character::IncreaseJump(float percent)
+{
+	if (IsOnSolidSurface())
+	{
+		return;
+	}
+
+	float velY = (m_maxJumpSpeed / 100) * percent;
+
+	float diff = velY - m_velocity.Y;
+
+	if (diff > 0)
+	{
+		m_velocity.Y += diff;
+	}
 }
 
 void Character::WallJump(int directionX, float percent)
