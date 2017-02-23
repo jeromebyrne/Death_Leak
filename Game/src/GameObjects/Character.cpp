@@ -72,7 +72,8 @@ Character::Character(float x, float y, float z, float width, float height, float
 	mDoSwimBurstAnim(false),
 	mIsDoingMelee(false),
 	mIsDownwardDashing(false),
-	mWasDownwardDashing(false)
+	mWasDownwardDashing(false),
+	mCanIncreaseJumpVelocity(false)
 {
 	mProjectileFilePath = "Media/knife.png";
 	mProjectileImpactFilePath = "Media/knife_impact.png";
@@ -996,6 +997,9 @@ void Character::DoAnimationEffectIfApplicable(AnimationPart * bodyPart)
 
 bool Character::Jump(float percent)
 {
+	// set this to false by default, gets set true if we reach the end of this function
+	mCanIncreaseJumpVelocity = false;
+
 	if (GetIsCollidingAtObjectSide())
 	{
 		return false;
@@ -1105,6 +1109,8 @@ bool Character::Jump(float percent)
 	m_acceleration.Y = (m_maxJumpSpeed/100) * percent;
 
 	++mCurrentJumpsBeforeLand;
+
+	mCanIncreaseJumpVelocity = true;
 
 	return true;
 }

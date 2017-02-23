@@ -83,6 +83,8 @@ public:
 
 	bool GetIsDownwardDashing() const { return mIsDownwardDashing; }
 
+	bool CanIncreaseJumpIntensity() const { return mCanIncreaseJumpVelocity; }
+
 protected:
 
 	void SetIsWallJumping(bool value);
@@ -142,6 +144,7 @@ protected:
 	bool mIsDoingMelee;
 	bool mIsDownwardDashing;
 	bool mWasDownwardDashing;
+	bool mCanIncreaseJumpVelocity;
 
 	CurrentMeleePhase mCurrentMeleePhase = kMeleePhase1;
 
