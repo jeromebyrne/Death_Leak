@@ -45,7 +45,7 @@ void Player::Initialise()
 
 	m_maxJumpSpeed = 20;
 
-	mMaxJumpsAllowed = 1;
+	mMaxJumpsAllowed = 2;
 }
 void Player::XmlRead(TiXmlElement * element)
 {

@@ -310,6 +310,12 @@ void Character::Update(float delta)
 			if (rollDiff >= 0.0f && rollDiff < kLandRollInputWindow)
 			{
 				Roll();
+				if (dropDistance >= kLargeDropDistance)
+				{
+					Camera2D::GetInstance()->DoMediumShake();
+				}
+
+				// we avoided the crouch delay by rolling
 				mJustFellFromDistance = false;
 				mJustfellFromLargeDistance = false;
 			}
@@ -1015,13 +1021,17 @@ bool Character::Jump(float percent)
 	{
 		return false;
 	}
-
-	// allow a small amount of time to jump just after being on a solid object
-	if ((m_velocity.Y < 0.0f && !IsOnSolidSurface() &&
-		GetTimeNotOnSolidSurface() > kTimeAllowedToJumpAfterLeaveSolidGround) &&
-		!(WasInWaterLastFrame() && GetWaterIsDeep()))
+	
+	// only do these checks if jumping from the ground
+	if (mCurrentJumpsBeforeLand == 0)
 	{
-		return false;
+		// allow a small amount of time to jump just after being on a solid object
+		if ((m_velocity.Y < 0.0f && !IsOnSolidSurface() &&
+			GetTimeNotOnSolidSurface() > kTimeAllowedToJumpAfterLeaveSolidGround) &&
+			!(WasInWaterLastFrame() && GetWaterIsDeep()))
+		{
+			return false;
+		}
 	}
 
 	if (WasInWaterLastFrame() && GetWaterIsDeep())
@@ -1103,14 +1113,33 @@ bool Character::Jump(float percent)
 			}
 		}
 	}
+	
+	if (mCurrentJumpsBeforeLand == 0)
+	{
+		m_velocity.Y = 0;
+		m_direction.Y = 1;
+		m_acceleration.Y = (m_maxJumpSpeed / 100) * percent;
 
-	m_velocity.Y = 0;
-	m_direction.Y = 1;
-	m_acceleration.Y = (m_maxJumpSpeed/100) * percent;
+		// can only increase jump on first jump from land
+		mCanIncreaseJumpVelocity = true;
+	}
+	else
+	{
+		m_velocity.Y += 12.0f;
+
+		if (m_velocity.Y < 14.0f)
+		{
+			m_velocity.Y = 14.0f;
+		}
+
+		// we just double jumped so reset jump animation
+		AnimationPart * bodyPart = m_animation->GetPart("body");
+		GAME_ASSERT(bodyPart);
+
+		bodyPart->Restart();
+	}
 
 	++mCurrentJumpsBeforeLand;
-
-	mCanIncreaseJumpVelocity = true;
 
 	return true;
 }

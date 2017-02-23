@@ -81,9 +81,10 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 
 		double delta = (currentTime - last_update_time) * 0.001;
 
-		if (delta > timing->GetTargetDelta() * 1.2)
+		// just force this to 1.0 as lots of issues
+		if (delta > timing->GetTargetDelta())
 		{
-			delta = timing->GetTargetDelta() * 1.2;
+			delta = timing->GetTargetDelta();
 		}
 
 		timing->SetLastUpdateDelta(delta * timing->GetTimeModifier());
