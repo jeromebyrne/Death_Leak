@@ -1758,5 +1758,7 @@ void Character::DoDownwardDash()
 
 	m_velocity.Y = -30.0f;
 
+	mCanIncreaseJumpVelocity = false;
+
 	mIsDownwardDashing = true;
 }

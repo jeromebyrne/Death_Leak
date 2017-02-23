@@ -135,6 +135,12 @@ void InputManager::ProcessLeftRightMovement_gamepad(XINPUT_STATE padState, Curre
 
 void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player)
 {
+	if (player->GetIsDownwardDashing())
+	{
+		// prioritise downward dash over double jumping
+		return;
+	}
+
 	bool wasPressingJump = mCurrentGamepadState.mPressingJump;
 
 	float initialJumpPercent = 40.0f;
