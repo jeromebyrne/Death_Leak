@@ -73,6 +73,9 @@ private:
 
 	void ProcessTestActions_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player, const LevelProperties & levelProps);
 
+	// keyboard
+	void ProcessLeftRightMovement_keyboard(CurrentGameplayActions & currentActions, Player * player);
+
 	bool mShowDebugInfo;
 	bool mPressingDebugInfoKey;
 	bool mEnableGraphicsPostProcessing;

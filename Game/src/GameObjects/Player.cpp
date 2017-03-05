@@ -269,6 +269,16 @@ void Player::DebugDraw(ID3D10Device *  device)
 		mShowDebugText = true;
 	}
 
+	if (GetCurrentSolidLineStrip() != nullptr)
+	{
+		DrawUtilities::DrawLine(Vector2(m_position.X, m_position.Y), 
+								Vector2(m_position.X + 100 * mCurrentSolidLineDirection.X, m_position.Y + 100 * mCurrentSolidLineDirection.Y));
+	}
+	else
+	{
+		DrawUtilities::DrawLine(Vector2(m_position.X, m_position.Y), Vector2(m_position.X + 100 * m_direction.X, m_position.Y));
+	}
+	
 	Character::DebugDraw(device);
 }
 
@@ -469,6 +479,11 @@ void Player::SetAimLineDirection(Vector2 & dir)
 			mAimLineSprite->SetAttachmentOffsetX(-m_projectileOffset.X);
 		}
 	}
+}
+
+void Player::SetCurrentSolidLineDirection(const Vector2 & direction)
+{
+	mCurrentSolidLineDirection = direction;
 }
 
 

@@ -132,17 +132,14 @@ bool SolidLineStrip::OnCollision(SolidMovingSprite * object)
 		}
 	}
 
+	auto player = GameObjectManager::Instance()->GetPlayer();
+
 	if (!object->IsPassive())
 	{
 		for (auto & l : mLines)
 		{
 			if (!BoxHitCheck(l, object))
 			{
-				if (GameObjectManager::Instance()->GetPlayer() == object)
-				{
-					LOG_INFO("DEBUGGING");
-				}
-
 				object->SetIsOnSolidLine(false, nullptr);
 				continue;
 			}
@@ -179,6 +176,18 @@ bool SolidLineStrip::OnCollision(SolidMovingSprite * object)
 					else if (object->IsDebris() && object->VelocityY() < -0.5f)
 					{
 						object->SetVelocityY(object->VelocityY() * -0.65f);
+					}
+
+					if (object == player)
+					{
+						if (player->DirectionX() > 0)
+						{
+							player->SetCurrentSolidLineDirection(Vector2(l.LineDirection.X * player->DirectionX(), l.LineDirection.Y * -player->DirectionY()));
+						}
+						else
+						{
+							player->SetCurrentSolidLineDirection(Vector2(l.LineDirection.X * player->DirectionX(), l.LineDirection.Y * player->DirectionY()));
+						}
 					}
 
 					return true;

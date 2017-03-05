@@ -62,7 +62,7 @@
     </Player>
     <SolidLineStrip id="4" parallax_x="0.650000" parallax_y="1.010000" level_edit_locked="false" updateable="true">
         <position z="3.000000" y="140.000000" x="-3169.153320" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="1.000000" height="879.000000" width="5933.000000" native="false" repeatX="false" repeatY="false" />
+        <dimensions breadth="1.000000" height="984.033508" width="5933.000000" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
@@ -76,7 +76,7 @@
         <resistance z="0.000000" y="1.000000" x="1.000000" />
         <maxvelocity z="0.000000" y="0.000000" x="0.000000" />
         <applygravity value="true" />
-        <collisionboxdimensions z="0.000000" y="550.000000" x="5430.966797" offsetX="-326.016724" offsetY="-239.500000" />
+        <collisionboxdimensions z="0.000000" y="400.000000" x="5280.966797" offsetX="-326.016724" offsetY="-292.016754" />
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
@@ -84,7 +84,10 @@
         <points>
             <point x="-2966.500000" y="-283.500000" />
             <point x="-918.500000" y="-289.500000" />
-            <point x="-148.500000" y="-324.000000" />
+            <point x="-323.729004" y="-400.095703" />
+            <point x="-186.299561" y="-279.177032" />
+            <point x="195.894775" y="-429.033508" />
+            <point x="302.227051" y="-248.172241" />
             <point x="906.500000" y="-223.500000" />
             <point x="2314.466553" y="-155.000000" />
         </points>
@@ -546,7 +549,7 @@
         <is_bouncy value="true" bounce_multiplier="0.000000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="25" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
+    <Breakable id="24" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
         <position z="68.000000" y="7.500000" x="-2267.686768" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="105.405495" width="58.349476" native="false" repeatX="false" repeatY="false" />
         <material value="pot" />
@@ -570,7 +573,7 @@
         <is_bouncy value="true" bounce_multiplier="0.000000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <SolidMovingSprite id="26" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidMovingSprite id="25" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="51.000000" y="413.500000" x="-1277.686768" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="1000.000000" width="642.757874" native="false" repeatX="false" repeatY="false" />
         <material value="caverock" />
@@ -592,7 +595,7 @@
         <can_be_damaged value="false" />
         <is_bouncy value="false" bounce_multiplier="0.000000" />
     </SolidMovingSprite>
-    <SolidMovingSprite id="27" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
+    <SolidMovingSprite id="26" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="51.000000" y="62.500000" x="-1804.186768" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="294.412964" width="414.738251" native="false" repeatX="false" repeatY="false" />
         <material value="caverock" />

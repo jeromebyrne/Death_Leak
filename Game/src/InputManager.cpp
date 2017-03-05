@@ -302,6 +302,11 @@ void InputManager::ProcessAimDirection_gamepad(XINPUT_STATE padState, CurrentGam
 {
 	currentActions.mAimDirection = Vector2(player->IsStrafing() ? player->GetStrafeDirectionX() : player->DirectionX(), 0);
 
+	if (player->IsOnSolidLine())
+	{
+		currentActions.mAimDirection = player->GetCurrentSolidLineDirection();
+	}
+
 	if (padState.Gamepad.sThumbLX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
 		padState.Gamepad.sThumbLX > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
 		padState.Gamepad.sThumbLY < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
@@ -541,5 +546,47 @@ void InputManager::ProcessGameplay_GamePad()
 
 void InputManager::ProcessGameplay_Keyboard()
 {
-	// Implement me :'(
+	Player * player = GameObjectManager::Instance()->GetPlayer();
+
+	if (!player)
+	{
+		return;
+	}
+
+	const auto & levelProps = GameObjectManager::Instance()->GetCurrentLevelProperties();
+
+	CurrentGameplayActions currentActions;
+
+	ProcessLeftRightMovement_keyboard(currentActions, player);
+
+}
+
+void InputManager::ProcessLeftRightMovement_keyboard(CurrentGameplayActions & currentActions, Player * player)
+{
+	if (!player->JustFellFromLargeDistance() &&
+		!currentActions.mIsCrouching &&
+		!player->GetIsRolling())
+	{
+		if (GetAsyncKeyState(VK_LEFT) < 0 &&
+			!player->IsDoingMelee() &&
+			!player->IsWallJumping())
+		{
+			player->AccelerateX(-100);
+			currentActions.mIsSprinting = true;
+		}
+		else if (GetAsyncKeyState(VK_RIGHT) < 0 &&
+			!player->IsDoingMelee() &&
+			!player->IsWallJumping())
+		{
+			player->AccelerateX(100);
+			currentActions.mIsSprinting = true;
+		}
+		else
+		{
+			// not pressing anything
+			// player->StopXAccelerating();
+		}
+	}
+
+	player->SetSprintActive(currentActions.mIsSprinting);
 }

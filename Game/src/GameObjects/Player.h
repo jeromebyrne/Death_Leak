@@ -21,6 +21,10 @@ public:
 	void AddAimLineSprite();
 	void SetAimLineDirection(Vector2 & dir);
 
+	void SetCurrentSolidLineDirection(const Vector2 & direction);
+
+	Vector2 GetCurrentSolidLineDirection() const { return mCurrentSolidLineDirection; }
+
 private:
 
 	virtual void DebugDraw(ID3D10Device *  device) override;
@@ -39,6 +43,8 @@ private:
 	Sprite * mAimLineSprite;
 
 	float mTimeUntilAimLineStartDisappearing;
+
+	Vector2 mCurrentSolidLineDirection;
 };
 
 #endif
