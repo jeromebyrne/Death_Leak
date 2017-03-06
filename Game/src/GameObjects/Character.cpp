@@ -972,7 +972,7 @@ void Character::DoAnimationEffectIfApplicable(AnimationPart * bodyPart)
 					if (!particleFile.empty())
 					{
 						ParticleEmitterManager::Instance()->CreateDirectedSpray(10,
-							Vector3(m_position.X + (m_direction.X * 5.f), CollisionBottom(), m_position.Z + 0.1),
+							Vector3(m_position.X + (m_direction.X * 12.f), CollisionBottom(), m_position.Z - 0.1f),
 							Vector3(0, 1, 0),
 							0.1,
 							Vector3(1200, 720, 0),

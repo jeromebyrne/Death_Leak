@@ -36,6 +36,7 @@
 #include "Breakable.h"
 #include "SaveManager.h"
 #include "ActiveBird.h"
+#include "Smashable.h"
 
 struct DepthSortPredicate
 {
@@ -691,6 +692,10 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement, const
 	else if (strcmp(gameObjectTypeName, "breakable") == 0)
 	{
 		newGameObject = new Breakable();
+	}
+	else if (strcmp(gameObjectTypeName, "smashable") == 0)
+	{
+		newGameObject = new Smashable();
 	}
 
 	if (newGameObject && !dynamic_cast<ParticleSpray*>(newGameObject))

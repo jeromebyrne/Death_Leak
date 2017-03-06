@@ -77,14 +77,14 @@ void InputManager::ProcessGameplayInput()
 
 	GamePad * gamepad1 = GamePad::GetPad1();
 
-	// if (gamepad1 && gamepad1->IsConnected())
-	// {
+	if (gamepad1 && gamepad1->IsConnected())
+	{
 		ProcessGameplay_GamePad();
-	// }
-	// else
-	// {
+	}
+	else
+	{
 		ProcessGameplay_Keyboard();
-	//}
+	}
 }
 
 void InputManager::ProcessCrouch_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player)
@@ -584,7 +584,7 @@ void InputManager::ProcessLeftRightMovement_keyboard(CurrentGameplayActions & cu
 		else
 		{
 			// not pressing anything
-			// player->StopXAccelerating();
+			player->StopXAccelerating();
 		}
 	}
 

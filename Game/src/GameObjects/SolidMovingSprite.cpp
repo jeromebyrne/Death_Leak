@@ -8,6 +8,7 @@
 #include "AnimationSkeleton.h"
 #include "SolidLineStrip.h"
 #include "Breakable.h"
+#include "Smashable.h"
 
 SolidMovingSprite::SolidMovingSprite(float x, float y , float z , float width , float height , float breadth , float groundFriction , float airResistance ):
 	MovingSprite(x,y,z,width, height, breadth,groundFriction, airResistance),
@@ -252,6 +253,15 @@ bool SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 	if (object->IsBreakable())
 	{
 		return false;
+	}
+
+	if (object->IsSmashable())
+	{
+		Smashable * smashable = static_cast<Smashable*>(object);
+		if (smashable->GetSmashableState() == Smashable::kSmashed)
+		{
+			return false;
+		}
 	}
 
 	float objectYVelocity = object->VelocityY();

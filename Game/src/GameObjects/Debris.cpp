@@ -112,6 +112,11 @@ bool Debris::OnCollision(SolidMovingSprite* object)
 		return false;
 	}
 
+	if (object->IsProjectile())
+	{
+		return false;
+	}
+
 	if (object->IsCharacter())
 	{
 		Character * character = static_cast<Character*>(object);

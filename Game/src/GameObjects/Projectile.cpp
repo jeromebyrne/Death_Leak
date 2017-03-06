@@ -65,6 +65,12 @@ Projectile::~Projectile()
 
 bool Projectile::OnCollision(SolidMovingSprite* object)
 {
+	if (object->IsDebris())
+	{
+		// don't want projectiles to be impeded by debris
+		return false;
+	}
+
 	if (object->IsBreakable())
 	{
 		if (static_cast<Breakable *>(object)->GetBreakableState() == Breakable::kBroken)
