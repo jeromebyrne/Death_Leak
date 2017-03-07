@@ -149,4 +149,25 @@
           hflip="false" vflip="false"
           alpha="1.0">
   </sprite>
+
+  <button name="9_quick_play"
+          process_input="true"
+          posX ="-500" posY ="-400" width="150" height ="150"
+          image="Media\\UI\\buttons\\edit1.png"
+          image_focus="Media\\UI\\buttons\\edit2.png"
+          image_click="Media\\UI\\buttons\\edit2.png"
+          hflip="false" vflip="false"
+          alpha="1.0"
+          use_standard_effect="true">
+    <actionspressup>
+      <fadeout time="150"/>
+      <popui ui="mainmenu" />
+      <pushui ui="level_select" />
+      <fadein time="150"/>
+    </actionspressup>
+
+    <actionspressdown>
+      <playsoundeffect sound="UI\\click.mp3"/>
+    </actionspressdown>
+  </button>
 </uiscreen>

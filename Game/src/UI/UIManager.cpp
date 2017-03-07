@@ -12,6 +12,7 @@
 #include "gamepad.h"
 #include "UIObjectEditScreen.h"
 #include "UILevelSelectScreen.h"
+#include "UIQuickPlayScreen.h"
 
 extern void PostDestroyMessage();
 
@@ -235,6 +236,10 @@ void UIManager::XmlRead(const char * uiRootPath)
 		else if (name == "object_editor")
 		{
 			ui_screen = new UIObjectEditScreen(name);
+		}
+		else if (name == "level_select")
+		{
+			ui_screen = new UIQuickPlayScreen(name);
 		}
 		else if (name == "level_select_edit")
 		{

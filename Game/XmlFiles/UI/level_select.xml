@@ -1,11 +1,11 @@
-<uiscreen>
+<uiquickplayscreen>
   <sprite name="1_title_background"
           process_input="false"
           posX ="-970" posY ="-540" width="1939.2" height ="1090.8"
           image="Media\UI\main_menu_2.png"
           hflip="false" vflip="false"
           alpha="1.0"
-          use_standard_effect="false">
+          use_standard_effect="true">
   </sprite>
 
   <sprite name="21_title_background"
@@ -31,150 +31,24 @@
     />
   </animatedsprite>
 
-  <button name="31_level_1"
-          process_input="true"
-          posX ="-880" posY ="200" width="480" height ="270"
-          image="Media\UI\level_edit\level_1_blur.png"
-          image_focus="Media\UI\level_edit\level_1.png"
-          image_click="Media\UI\level_edit\level_1.png"
-          hflip="false" vflip="false"
-          alpha="1.0"
-          use_standard_effect="true">
-    <actionspressup>
-      <fadeout time="150"/>
-      <popui ui="level_select_edit" />
-      <pushui ui="gameloading" />
-      <fadein time="150"/>
-      <stopallsounds />
-      <leveledit level="XmlFiles\village.xml" />
-      <popui ui="gameloading" />
-      <pushui ui="game_hud" />
-    </actionspressup>
-
-    <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3"/>
-    </actionspressdown>
-  </button>
-
-  <button name="32_level_2"
-          process_input="true"
-          posX ="-300" posY ="200" width="480" height ="270"
-          image="Media\UI\level_edit\level_2_blur.png"
-          image_focus="Media\UI\level_edit\level_2.png"
-          image_click="Media\UI\level_edit\level_2.png"
-          hflip="false" vflip="false"
-          alpha="1.0"
-          use_standard_effect="true">
-    <actionspressup>
-      <fadeout time="150"/>
-      <popui ui="level_select_edit" />
-      <pushui ui="gameloading" />
-      <fadein time="150"/>
-      <stopallsounds />
-      <leveledit level="XmlFiles\field_1.xml" />
-      <popui ui="gameloading" />
-      <pushui ui="game_hud" />
-    </actionspressup>
-
-    <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3"/>
-    </actionspressdown>
-  </button>
-
-  <button name="33_level_3"
-          process_input="true"
-          posX ="280" posY ="200" width="480" height ="270"
-          image="Media\UI\level_edit\level_3_blur.png"
-          image_focus="Media\UI\level_edit\level_3.png"
-          image_click="Media\UI\level_edit\level_3.png"
-          hflip="false" vflip="false"
-          alpha="1.0"
-          use_standard_effect="true">
-    <actionspressup>
-      <fadeout time="150"/>
-      <popui ui="level_select_edit" />
-      <pushui ui="gameloading" />
-      <fadein time="150"/>
-      <stopallsounds />
-      <leveledit level="XmlFiles\village_outskirts.xml" />
-      <popui ui="gameloading" />
-      <pushui ui="game_hud" />
-    </actionspressup>
-
-    <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3"/>
-    </actionspressdown>
-  </button>
-
-  <button name="34_level_4"
-          process_input="true"
-          posX ="-520" posY ="-150" width="480" height ="270"
-          image="Media\UI\level_edit\level_4_blur.png"
-          image_focus="Media\UI\level_edit\level_4.png"
-          image_click="Media\UI\level_edit\level_4.png"
-          hflip="false" vflip="false"
-          alpha="1.0"
-          use_standard_effect="true">
-    <actionspressup>
-      <fadeout time="150"/>
-      <popui ui="level_select_edit" />
-      <pushui ui="gameloading" />
-      <fadein time="150"/>
-      <stopallsounds />
-      <leveledit level="XmlFiles\waterfall_level.xml" />
-      <popui ui="gameloading" />
-      <pushui ui="game_hud" />
-    </actionspressup>
-
-    <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3"/>
-    </actionspressdown>
-  </button>
-
-  <button name="35_level_5"
-          process_input="true"
-          posX ="40" posY ="-150" width="480" height ="270"
-          image="Media\UI\level_edit\level_5_blur.png"
-          image_focus="Media\UI\level_edit\level_5.png"
-          image_click="Media\UI\level_edit\level_5.png"
-          hflip="false" vflip="false"
-          alpha="1.0"
-          use_standard_effect="true">
-    <actionspressup>
-      <fadeout time="150"/>
-      <popui ui="level_select_edit" />
-      <pushui ui="gameloading" />
-      <fadein time="150"/>
-      <stopallsounds />
-      <leveledit level="XmlFiles\underwater_cave.xml" />
-      <popui ui="gameloading" />
-      <pushui ui="game_hud" />
-    </actionspressup>
-
-    <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3"/>
-    </actionspressdown>
-  </button>
-  
-  <button name="99_back"
-         process_input="true"
-         posX ="520" posY ="-470" width="150" height ="150"
-         image="Media\\UI\\buttons\\back1.png"
-         image_focus="Media\\UI\\buttons\\back2.png"
-         image_click="Media\\UI\\buttons\\back2.png"
-         hflip="false" vflip="false"
-         alpha="1.0"
-          use_standard_effect="true">
+  <button name = "99_back"
+   process_input = "true"
+   posX = "520" posY = "-470" width = "150" height = "150"
+   image = "Media\\UI\\buttons\\back1.png"
+   image_focus = "Media\\UI\\buttons\\back2.png"
+   image_click = "Media\\UI\\buttons\\back2.png"
+   hflip = "false" vflip = "false"
+   alpha = "1.0"
+   use_standard_effect = "true">
 
     <actionspressup>
-      <popui ui="level_select_edit" />
-      <pushui ui="mainmenu" />
+      <popui ui = "level_select" />
+      <pushui ui = "mainmenu" />
     </actionspressup>
 
     <actionspressdown>
       <playsoundeffect sound="UI\\click.mp3" />
     </actionspressdown>
-
   </button>
-  
-</uiscreen>
+
+</uiquickplayscreen>

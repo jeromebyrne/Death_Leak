@@ -33,9 +33,9 @@ void UILevelSelectScreen::CreateLevelEntries()
 	mLevelEntries["Test Level"] = "XmlFiles\\levels\\test_level.xml";
 	mLevelEntries["Underwater Cave"] = "XmlFiles\\underwater_cave.xml";
 	mLevelEntries["Village 2"] = "XmlFiles\\village_2.xml";
-	mLevelEntries["Waterfall level"] = "XmlFiles\waterfall_level.xml";
-	mLevelEntries["Village Outskirts"] = "XmlFiles\village_outskirts.xml";
-	mLevelEntries["Field"] = "XmlFiles\field_1.xml";
+	mLevelEntries["Waterfall level"] = "XmlFiles\\waterfall_level.xml";
+	mLevelEntries["Village Outskirts"] = "XmlFiles\\village_outskirts.xml";
+	mLevelEntries["Field"] = "XmlFiles\\field_1.xml";
 	mLevelEntries["Village"] = "XmlFiles\\village.xml";
 }
 
