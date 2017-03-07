@@ -71,6 +71,10 @@ public:
 
 	virtual void Scale(float x, float y);
 
+	// override this o assign different UI actions for different type widgets
+	// string eventType = "actionspressdown", "actionspressup" etc...
+	virtual void AssignEventAction(string eventType, EventStruct eventStruct);
+
 protected:
 
 	Vector2 m_bottomLeft;
@@ -87,10 +91,6 @@ protected:
 	// the actions associated with this widget for pressing up and down
 	list<EventStruct> m_pressUpActions;
 	list<EventStruct> m_pressDownActions;
-
-	// override this o assign different UI actions for different type widgets
-	// string eventType = "actionspressdown", "actionspressup" etc...
-	virtual void AssignEventAction(string eventType, EventStruct eventStruct);
 
 	bool mCurrentlyInFocus; // for gamepad
 

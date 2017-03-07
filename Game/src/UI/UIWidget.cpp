@@ -112,21 +112,17 @@ void UIWidget::Release()
 
 void UIWidget::OnPressDown()
 {
-	list<EventStruct>::iterator iter = m_pressDownActions.begin();
-
-	for (; iter != m_pressDownActions.end(); iter++)
+	for (const auto & action : m_pressDownActions)
 	{
-		UIManager::Instance()->PushBackEvent(iter->EventName, iter->EventParams);
+		UIManager::Instance()->PushBackEvent(action.EventName, action.EventParams);
 	}
 }
 
 void UIWidget::OnPressUp()
 {
-	list<EventStruct>::iterator iter = m_pressUpActions.begin();
-
-	for (; iter != m_pressUpActions.end(); iter++)
+	for (const auto & action : m_pressUpActions)
 	{
-		UIManager::Instance()->PushBackEvent(iter->EventName, iter->EventParams);
+		UIManager::Instance()->PushBackEvent(action.EventName, action.EventParams);
 	}
 }
 

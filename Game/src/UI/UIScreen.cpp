@@ -194,22 +194,17 @@ void UIScreen::Draw(ID3D10Device * device)
 void UIScreen::Initialise()
 {
 	// loop through our widgets and draw
-	map<string, UIWidget*>::const_iterator current = m_widgetMap.begin();
-	for(;current != m_widgetMap.end(); current++)
+	for (const auto & w : m_widgetMap)
 	{
-		UIWidget * widget = (*current).second;
-		widget->Initialise();
+		w.second->Initialise();
 	}
 }
 
 void UIScreen::LoadContent(ID3D10Device * graphicsdevice)
 {
-	// loop through our widgets and load any content
-	map<string, UIWidget*>::const_iterator current = m_widgetMap.begin();
-	for(;current != m_widgetMap.end(); current++)
+	for (const auto & w : m_widgetMap)
 	{
-		UIWidget * widget = (*current).second;
-		widget->LoadContent(graphicsdevice);
+		w.second->LoadContent(graphicsdevice);
 	}
 }
 

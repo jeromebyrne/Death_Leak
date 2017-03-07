@@ -11,6 +11,7 @@
 #include "UISprite.h"
 #include "gamepad.h"
 #include "UIObjectEditScreen.h"
+#include "UILevelSelectScreen.h"
 
 extern void PostDestroyMessage();
 
@@ -234,6 +235,10 @@ void UIManager::XmlRead(const char * uiRootPath)
 		else if (name == "object_editor")
 		{
 			ui_screen = new UIObjectEditScreen(name);
+		}
+		else if (name == "level_select_edit")
+		{
+			ui_screen = new UILevelSelectScreen(name);
 		}
 		else
 		{
