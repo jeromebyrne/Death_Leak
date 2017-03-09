@@ -34,7 +34,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Player id="3" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="50.000000" y="498.000000" x="-2950.186523" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="50.000000" y="498.000000" x="-2856.191406" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="162.409988" width="128.366013" native="false" repeatX="false" repeatY="false" />
         <material value="maleninja" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="40.000000" rand_init_step="1" />
@@ -360,7 +360,7 @@
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
     <Smashable id="17" parallax_x="1.000000" parallax_y="1.070000" level_edit_locked="false" updateable="true">
-        <position z="68.000000" y="18.373230" x="-3658.399658" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="46.000000" y="292.248840" x="-1761.220947" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="280.000000" width="155.000000" native="false" repeatX="false" repeatY="false" />
         <material value="pot" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />

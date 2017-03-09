@@ -148,8 +148,6 @@ void Player::Update(float delta)
 		}
 	}
 
-	CheckForAndDoLevelUp();
-
 	if (mAimLineSprite)
 	{
 		mAimLineSprite->SetY(m_position.Y + m_projectileOffset.Y);

@@ -28,6 +28,10 @@ public:
 
 	void SetBreakablesBroken(const std::string & levelFile, std::vector<unsigned int> breakableIds);
 
+	bool IsGameFeatureUnlocked(const int featureType);
+
+	void SetGameFeatureUnlocked(const int featureType);
+
 private:
 
 	static SaveManager * mInstance;

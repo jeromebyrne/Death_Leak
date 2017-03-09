@@ -343,3 +343,60 @@ void SaveManager::SetBreakablesBroken(const std::string & levelFile, std::vector
 
 	mSaveMap[key] = vec;
 }
+
+bool SaveManager::IsGameFeatureUnlocked(const int featureType)
+{
+	std::string key = "gameplay_features_unlocked";
+
+	DataValue featuresVector = mSaveMap[key];
+
+	if (featuresVector.getType() != DataValue::Type::VECTOR)
+	{
+		return false;
+	}
+
+	auto vec = featuresVector.asVector();
+
+	for (const auto & item : vec)
+	{
+		if (item.getType() != DataValue::Type::INTEGER)
+		{
+			continue;
+		}
+
+		if (item.asInt() == featureType)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void SaveManager::SetGameFeatureUnlocked(const int featureType)
+{
+	std::string key = "gameplay_features_unlocked";
+
+	DataValue featuresVector = mSaveMap[key];
+
+	if (featuresVector.getType() != DataValue::Type::VECTOR)
+	{
+		// we haven't created this vector yet
+		featuresVector = DataValue(std::vector<DataValue>());
+	}
+
+	auto vec = featuresVector.asVector();
+
+	for (const auto & val : vec)
+	{
+		if (val.asInt() == featureType)
+		{
+			// we already unlocked this so just return
+			return;
+		}
+	}
+
+	vec.push_back(DataValue(featureType));
+
+	mSaveMap[key] = vec;
+}
