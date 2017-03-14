@@ -13,6 +13,7 @@
 #include "UIObjectEditScreen.h"
 #include "UILevelSelectScreen.h"
 #include "UIQuickPlayScreen.h"
+#include "SaveManager.h"
 
 extern void PostDestroyMessage();
 
@@ -265,9 +266,26 @@ void UIManager::XmlRead(const char * uiRootPath)
 		ui_screen_xml = ui_screen_xml->NextSiblingElement();
 	}
 
-	// just set the current ui screen here - TEMP
+	DisplayLaunchUI();
+}
+
+void UIManager::DisplayLaunchUI()
+{
 	list<string> params;
-	params.push_back("language_select");
+
+	// just set the current ui screen here - TEMP
+	std::string languageSet = SaveManager::GetInstance()->GetLanguageSet();
+	if (languageSet.empty())
+	{
+		params.push_back("language_select");
+	}
+	else
+	{
+		// the language was set so tell the strings
+		StringManager::GetInstance()->SetLocale(languageSet);
+		params.push_back("mainmenu");
+	}
+
 	PushBackEvent("pushui", params);
 	AudioManager::Instance()->PlayMusic("weather\\2minutestorm.mp3");
 }
@@ -530,6 +548,8 @@ void UIManager::HandleEvent(string eventName, list<string> params)
 			list<string>::iterator iter = params.begin();
 			std::string lang = (*iter).c_str();
 			StringManager::GetInstance()->SetLocale(lang);
+			SaveManager::GetInstance()->SetLanguage(lang);
+			SaveManager::GetInstance()->WriteSaveFile();
 			break;
 		}
 	case APPLY_OBJECT_EDIT_CHANGES:

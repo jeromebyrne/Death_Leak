@@ -1,4 +1,5 @@
 <save_data>
     <XmlFiles-levels-save_shrine_test_level.xml_breakables_broken type="vector" />
     <XmlFiles-levels-save_shrine_test_level.xml_currency_orbs_collected type="vector" />
+    <language_locale_key type="string" value="en-gb" />
 </save_data>

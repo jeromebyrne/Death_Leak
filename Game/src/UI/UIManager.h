@@ -94,6 +94,8 @@ public:
 
 private:
 
+	void DisplayLaunchUI();
+
 	void ApplyObjectEditChanges();
 
 	static UIManager * m_instance;

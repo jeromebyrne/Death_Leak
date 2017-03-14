@@ -32,6 +32,10 @@ public:
 
 	void SetGameFeatureUnlocked(const int featureType);
 
+	void SetLanguage(const std::string & langLocaleKey);
+
+	std::string GetLanguageSet();
+
 private:
 
 	static SaveManager * mInstance;

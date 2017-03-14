@@ -400,3 +400,20 @@ void SaveManager::SetGameFeatureUnlocked(const int featureType)
 
 	mSaveMap[key] = vec;
 }
+
+void SaveManager::SetLanguage(const std::string & langLocaleKey)
+{
+	mSaveMap["language_locale_key"] = langLocaleKey;
+}
+
+std::string SaveManager::GetLanguageSet()
+{
+	DataValue asDataValue = mSaveMap["language_locale_key"];
+
+	if (asDataValue.getType() != DataValue::Type::STRING)
+	{
+		return std::string();
+	}
+
+	return asDataValue.asString();
+}
