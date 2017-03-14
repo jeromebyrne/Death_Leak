@@ -25,6 +25,8 @@ public:
 
 	Vector2 GetCurrentSolidLineDirection() const { return mCurrentSolidLineDirection; }
 
+	bool CanJump() const override;
+
 private:
 
 	virtual void DebugDraw(ID3D10Device *  device) override;

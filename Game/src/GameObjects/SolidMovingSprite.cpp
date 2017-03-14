@@ -449,7 +449,7 @@ void SolidMovingSprite::OnDamage(GameObject * damageDealer, float damageAmount, 
 	}
 }
 
-bool SolidMovingSprite::IsOnSolidSurface()
+bool SolidMovingSprite::IsOnSolidSurface() const
 {
 	if (IsOnSolidLine())
 	{

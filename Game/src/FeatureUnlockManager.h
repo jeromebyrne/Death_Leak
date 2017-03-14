@@ -10,8 +10,7 @@ public:
 	{
 		kDoubleJump = 1,
 		kCrouchJump,
-		kDownwardDash,
-		kAutoRoll
+		kDownwardDash
 	};
 
 	FeatureUnlockManager(void);

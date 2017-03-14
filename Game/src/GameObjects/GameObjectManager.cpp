@@ -37,6 +37,7 @@
 #include "SaveManager.h"
 #include "ActiveBird.h"
 #include "Smashable.h"
+#include "SaveShrine.h"
 
 struct DepthSortPredicate
 {
@@ -474,6 +475,17 @@ void GameObjectManager::ParseLevelProperties(TiXmlElement * element)
 	GAME_ASSERT(foundLevelProperties);
 }
 
+void GameObjectManager::SaveGame()
+{
+	SaveManager::GetInstance()->SetCurrencyOrbsCollected(mCurrentLevelFile, mCurrentCurrencyOrbIdsCollected);
+	SaveManager::GetInstance()->SetBreakablesBroken(mCurrentLevelFile, mCurrentBreakablesBroken);
+
+	mCurrentCurrencyOrbIdsCollected.clear();
+	mCurrentBreakablesBroken.clear();
+
+	SaveManager::GetInstance()->WriteSaveFile();
+}
+
 void GameObjectManager::SwitchToLevel(const char * level, bool defer)
 {
 	if (defer)
@@ -482,14 +494,6 @@ void GameObjectManager::SwitchToLevel(const char * level, bool defer)
 		mLevelToSwitch = level;
 		return;
 	}
-
-	SaveManager::GetInstance()->SetCurrencyOrbsCollected(mCurrentLevelFile, mCurrentCurrencyOrbIdsCollected);
-	SaveManager::GetInstance()->SetBreakablesBroken(mCurrentLevelFile, mCurrentBreakablesBroken);
-
-	mCurrentCurrencyOrbIdsCollected.clear();
-	mCurrentBreakablesBroken.clear();
-
-	SaveManager::GetInstance()->WriteSaveFile();
 
 	UIManager::Instance()->PopUI("game_hud");
 	UIManager::Instance()->PushUI("gameloading");
@@ -674,6 +678,10 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement, const
 	{
 		newGameObject = new ActiveBird();
 	}
+	else if (strcmp(gameObjectTypeName, "saveshrine") == 0)
+	{
+		newGameObject = new SaveShrine();
+	}
 	else if (strcmp(gameObjectTypeName, "currencyorb") == 0)
 	{
 		bool alreadyCollected = std::find(orbsCollected.begin(), orbsCollected.end(), GameObject::GetCurrentGameObjectCount()) != orbsCollected.end();
@@ -845,6 +853,7 @@ void GameObjectManager::AddGameObjectViaLevelEditor(GameObject * object)
 		return;
 	}
 
+	// TODO: figure out WHY I'm doing these casts...
 	DrawableObject * drawable = dynamic_cast<DrawableObject*>(object);
 	AudioObject * audiobj = dynamic_cast<AudioObject*>(object);
 	NPCTrigger * npcTrigger = dynamic_cast<NPCTrigger*>(object);
@@ -862,7 +871,7 @@ void GameObjectManager::AddGameObjectViaLevelEditor(GameObject * object)
 	}
 	else
 	{
-		throw new exception();
+		GameObjectManager::Instance()->AddGameObject(object, true);
 	}
 }
 

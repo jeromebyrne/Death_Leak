@@ -108,6 +108,8 @@ public:
 
 	GameObject * CreateObject(TiXmlElement * object, const std::vector<unsigned int> & orbsCollected);
 
+	void SaveGame();
+
 private:
 
 	Camera2D * m_camera;

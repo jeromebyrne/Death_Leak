@@ -12,6 +12,7 @@
 #include "CurrencyOrb.h"
 #include "SolidLineStrip.h"
 #include "Game.h"
+#include "FeatureUnlockManager.h"
 
 float Character::mLastTimePlayedDeathSFX = 0.0f;
 static const float kMinTimeBetweenDeathSFX = 0.1f;
@@ -1001,11 +1002,8 @@ void Character::DoAnimationEffectIfApplicable(AnimationPart * bodyPart)
 	}
 }
 
-bool Character::Jump(float percent)
+bool Character::CanJump() const
 {
-	// set this to false by default, gets set true if we reach the end of this function
-	mCanIncreaseJumpVelocity = false;
-
 	if (GetIsCollidingAtObjectSide())
 	{
 		return false;
@@ -1021,7 +1019,7 @@ bool Character::Jump(float percent)
 	{
 		return false;
 	}
-	
+
 	// only do these checks if jumping from the ground
 	if (mCurrentJumpsBeforeLand == 0)
 	{
@@ -1032,6 +1030,19 @@ bool Character::Jump(float percent)
 		{
 			return false;
 		}
+	}
+
+	return true;
+}
+
+bool Character::Jump(float percent)
+{
+	// set this to false by default, gets set true if we reach the end of this function
+	mCanIncreaseJumpVelocity = false;
+
+	if (!CanJump())
+	{
+		return false;
 	}
 
 	if (WasInWaterLastFrame() && GetWaterIsDeep())
@@ -1049,7 +1060,7 @@ bool Character::Jump(float percent)
 		percent = 1.0f;
 	}
 
-	if (/*m_acceleration.Y == 0 && */ !WasInWaterLastFrame())
+	if (!WasInWaterLastFrame())
 	{
 		// play jump sound
 		AudioManager::Instance()->PlaySoundEffect("jump.wav");
@@ -1063,7 +1074,8 @@ bool Character::Jump(float percent)
 	}
 
 	// if we are crouching fully then we get a nice boost to our jump
-	if (mIsFullyCrouched)
+	if (mIsFullyCrouched &&
+		FeatureUnlockManager::GetInstance()->IsFeatureUnlocked(FeatureUnlockManager::kCrouchJump))
 	{
 		percent *= 4.0f;
 
@@ -1750,6 +1762,11 @@ void Character::DoDownwardDash()
 	}
 
 	if (GetTimeNotOnSolidSurface() < 0.25f)
+	{
+		return;
+	}
+
+	if (FeatureUnlockManager::GetInstance()->IsFeatureUnlocked(FeatureUnlockManager::kDownwardDash))
 	{
 		return;
 	}

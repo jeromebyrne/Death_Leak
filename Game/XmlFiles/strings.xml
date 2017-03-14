@@ -34,4 +34,9 @@
     <en-gb>+ Double Jump unlocked!</en-gb>
     <pt-br>+ Double Jump unlocked!</pt-br>
   </test_string>
+
+  <game_saved>
+    <en-gb>Game Saved</en-gb>
+    <pt-br>Game Saved</pt-br>
+  </game_saved>
 </strings>

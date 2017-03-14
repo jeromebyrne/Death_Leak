@@ -85,6 +85,8 @@ public:
 
 	bool CanIncreaseJumpIntensity() const { return mCanIncreaseJumpVelocity; }
 
+	virtual bool CanJump() const;
+
 protected:
 
 	void SetIsWallJumping(bool value);

@@ -11,6 +11,7 @@
 #include "TextObject.h"
 #include "AudioManager.h"
 #include "DrawUtilities.h"
+#include "FeatureUnlockManager.h"
 
 static const char * kBombTextureFile = "Media/bomb.png";
 static const float kAimLineOpacityDecrementDelay = 1.0f;
@@ -482,6 +483,22 @@ void Player::SetAimLineDirection(Vector2 & dir)
 void Player::SetCurrentSolidLineDirection(const Vector2 & direction)
 {
 	mCurrentSolidLineDirection = direction;
+}
+
+bool Player::CanJump() const
+{
+	if (!Character::CanJump())
+	{
+		return false;
+	}
+
+	if (mCurrentJumpsBeforeLand > 1 &&
+		!FeatureUnlockManager::GetInstance()->IsFeatureUnlocked(FeatureUnlockManager::kDoubleJump))
+	{
+		return false;
+	}
+
+	return true;
 }
 
 
