@@ -38,6 +38,7 @@
 #include "ActiveBird.h"
 #include "Smashable.h"
 #include "SaveShrine.h"
+#include "Door.h"
 
 struct DepthSortPredicate
 {
@@ -682,6 +683,10 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement, const
 	{
 		newGameObject = new SaveShrine();
 	}
+    else if (strcmp(gameObjectTypeName, "door") == 0)
+    {
+        newGameObject = new Door();
+    }
 	else if (strcmp(gameObjectTypeName, "currencyorb") == 0)
 	{
 		bool alreadyCollected = std::find(orbsCollected.begin(), orbsCollected.end(), GameObject::GetCurrentGameObjectCount()) != orbsCollected.end();
