@@ -77,6 +77,7 @@
     <ClCompile Include="src\GameObjects\Character.cpp" />
     <ClCompile Include="src\GameObjects\CurrencyOrb.cpp" />
     <ClCompile Include="src\GameObjects\Debris.cpp" />
+    <ClCompile Include="src\GameObjects\Door.cpp" />
     <ClCompile Include="src\GameObjects\DrawableObject.cpp" />
     <ClCompile Include="src\GameObjects\Explosion.cpp" />
     <ClCompile Include="src\GameObjects\FallingPlatform.cpp" />
@@ -202,6 +203,7 @@
     <ClInclude Include="src\GameObjects\Character.h" />
     <ClInclude Include="src\GameObjects\CurrencyOrb.h" />
     <ClInclude Include="src\GameObjects\Debris.h" />
+    <ClInclude Include="src\GameObjects\Door.h" />
     <ClInclude Include="src\GameObjects\DrawableObject.h" />
     <ClInclude Include="src\GameObjects\Explosion.h" />
     <ClInclude Include="src\GameObjects\FallingPlatform.h" />

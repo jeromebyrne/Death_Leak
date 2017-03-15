@@ -1,5 +1,5 @@
 #ifndef INPUTMANAGER_H
-#define ENVIRONMENT_H
+#define INPUTMANAGER_H
 
 class InputManager
 {
@@ -20,6 +20,8 @@ public:
 	float GetLastTimePressedRoll() const { return mLastTimePressedRoll; }
 
 	float GetLastTimePressedJump() const { return mLastTimePressedJump; }
+
+	bool IsPressingEnterDoor() const;
 
 private:
 

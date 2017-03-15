@@ -590,3 +590,18 @@ void InputManager::ProcessLeftRightMovement_keyboard(CurrentGameplayActions & cu
 
 	player->SetSprintActive(currentActions.mIsSprinting);
 }
+
+bool InputManager::IsPressingEnterDoor() const
+{
+	GamePad * gamepad1 = GamePad::GetPad1();
+
+	if (gamepad1 && gamepad1->IsConnected())
+	{
+		XINPUT_STATE padState = gamepad1->GetState();
+		return padState.Gamepad.sThumbLY > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE * 3.0f;
+	}
+	else
+	{
+		return GetAsyncKeyState(VK_UP) < 0;
+	}
+}
