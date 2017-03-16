@@ -34,6 +34,8 @@
 #include "SaveManager.h"
 #include "DataValue.h"
 #include "PlayerLevelManager.h"
+#include "FeatureUnlockManager.h"
+#include "InventoryManager.h"
 
 Game * Game::mInstance = nullptr;
 
@@ -136,6 +138,10 @@ void Game::Initialise()
 	mGameScale.Y = (float)m_pGraphics->BackBufferHeight() / 1080.f;
 
 	PlayerLevelManager::GetInstance()->Initialise();
+
+	FeatureUnlockManager::GetInstance()->Initialise();
+
+	InventoryManager::GetInstance()->Initialise();
 }
 
 void Game::Update(float delta)

@@ -2,6 +2,8 @@
 #include "Door.h"
 #include "InputManager.h"
 #include "Game.h"
+#include "AudioManager.h"
+#include "InventoryManager.h"
 
 static const float kWarmUpTime = 2.0f;
 
@@ -44,12 +46,17 @@ void Door::Update(float delta)
 		{
 			if (!mRequiredKey.empty())
 			{
-				// TODO: check has key
+				if (!InventoryManager::GetInstance()->HasKey(mRequiredKey))
+				{
+					if (!mDoorLockedSFX.empty())
+					{
+						AudioManager::Instance()->PlaySoundEffect(mDoorLockedSFX);
+					}
 
-				// TODO: play locked SFX if don't have a key
+					return;
+				}
 			}
 
-			// TODO: play open SFX
 			EnterDoor();
 		}
 	}
@@ -94,6 +101,14 @@ void Door::XmlWrite(TiXmlElement * element)
 
 void Door::EnterDoor()
 {
+	// pause when we open a door so as not to get hit by projectiles etc...
+	Game::GetInstance()->PauseGame();
+
+	if (!mDoorOpenSFX.empty())
+	{
+		AudioManager::Instance()->PlaySoundEffect(mDoorOpenSFX);
+	}
+
 	GameObjectManager::Instance()->SetPlayerStartPos(mToLevelPosition);
 	GameObjectManager::Instance()->SwitchToLevel(mToLevelFile.c_str(), true);
 }

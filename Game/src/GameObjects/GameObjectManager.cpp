@@ -373,13 +373,6 @@ void GameObjectManager::LoadObjectsFromFile(const char* filename)
 		child = child->NextSiblingElement();
 
 		++objLoadCount;
-
-		if (objLoadCount > 5)
-		{
-			// I should really look into loading textures on a thread, but for now...
-			UIManager::Instance()->RefreshUI();
-			objLoadCount = 0;
-		}
 	}
 
 	ParseLevelProperties(root);
@@ -506,6 +499,8 @@ void GameObjectManager::SwitchToLevel(const char * level, bool defer)
 
 	UIManager::Instance()->PopUI("gameloading");
 	UIManager::Instance()->PushUI("game_hud");
+
+	Game::GetInstance()->UnPauseGame();
 }
 
 void GameObjectManager::SaveObjectsToFile(const char* filename)
