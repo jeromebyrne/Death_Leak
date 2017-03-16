@@ -27,6 +27,11 @@ private:
 	std::string mToLevelFile;
 
 	Vector2 mToLevelPosition;
+
+	std::string mRequiredKey;
+
+	std::string mDoorOpenSFX;
+	std::string mDoorLockedSFX;
 };
 
 #endif

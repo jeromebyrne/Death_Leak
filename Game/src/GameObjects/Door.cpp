@@ -42,6 +42,14 @@ void Door::Update(float delta)
 			player->IsOnSolidSurface() && 
 			std::abs(player->GetVelocity().X) < 0.5f)
 		{
+			if (!mRequiredKey.empty())
+			{
+				// TODO: check has key
+
+				// TODO: play locked SFX if don't have a key
+			}
+
+			// TODO: play open SFX
 			EnterDoor();
 		}
 	}
@@ -54,6 +62,11 @@ void Door::XmlRead(TiXmlElement * element)
 
 	mToLevelPosition.X = XmlUtilities::ReadAttributeAsFloat(element, "player_start_pos", "x");
 	mToLevelPosition.Y = XmlUtilities::ReadAttributeAsFloat(element, "player_start_pos", "y");
+
+	mRequiredKey = XmlUtilities::ReadAttributeAsString(element, "required_key", "value");
+
+	mDoorOpenSFX = XmlUtilities::ReadAttributeAsString(element, "door_sfx", "open");
+	mDoorLockedSFX = XmlUtilities::ReadAttributeAsString(element, "door_sfx", "locked");
 }
 
 void Door::XmlWrite(TiXmlElement * element)
@@ -68,6 +81,15 @@ void Door::XmlWrite(TiXmlElement * element)
 	posElem->SetDoubleAttribute("x", mToLevelPosition.X);
 	posElem->SetDoubleAttribute("y", mToLevelPosition.Y);
 	element->LinkEndChild(posElem);
+
+	TiXmlElement * requiredKey = new TiXmlElement("required_key");
+	requiredKey->SetAttribute("value", mRequiredKey.c_str());
+	element->LinkEndChild(requiredKey);
+
+	TiXmlElement * doorSFX = new TiXmlElement("door_sfx");
+	doorSFX->SetAttribute("open", mDoorOpenSFX.c_str());
+	doorSFX->SetAttribute("locked", mDoorLockedSFX.c_str());
+	element->LinkEndChild(doorSFX);
 }
 
 void Door::EnterDoor()

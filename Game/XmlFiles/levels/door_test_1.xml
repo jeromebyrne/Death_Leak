@@ -138,5 +138,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <to_level_file value="XmlFiles\levels\door_test_2.xml" />
         <player_start_pos x="-3046.000000" y="-10.000000" />
+        <required_key value="" />
+        <door_sfx open="" locked="" />
     </Door>
 </level>
