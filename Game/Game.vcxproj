@@ -109,6 +109,7 @@
     <ClCompile Include="src\GameObjects\WaterBlock.cpp" />
     <ClCompile Include="src\GameObjects\WeatherManager.cpp" />
     <ClCompile Include="src\InputManager.cpp" />
+    <ClCompile Include="src\InventoryManager.cpp" />
     <ClCompile Include="src\LevelEditor.cpp" />
     <ClCompile Include="src\LevelProperties.cpp" />
     <ClCompile Include="src\Particles\ParticleEmitterManager.cpp" />
@@ -236,6 +237,7 @@
     <ClInclude Include="src\GameObjects\WaterBlock.h" />
     <ClInclude Include="src\GameObjects\WeatherManager.h" />
     <ClInclude Include="src\InputManager.h" />
+    <ClInclude Include="src\InventoryManager.h" />
     <ClInclude Include="src\LevelEditor.h" />
     <ClInclude Include="src\LevelProperties.h" />
     <ClInclude Include="src\Particles\Particle.h" />
@@ -273,6 +275,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B09D5975-BA6E-4BFD-A9DF-35827CC583C4}</ProjectGuid>
     <RootNamespace>Game</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

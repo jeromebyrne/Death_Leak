@@ -27,7 +27,8 @@ void InventoryManager::Initialise()
 
 bool InventoryManager::HasKey(const std::string & keyId)
 {
-	// TODO: return false
+	// TODO:
+	return false;
 }
 
 void InventoryManager::SetHasKey(const std::string & keyId, bool value)

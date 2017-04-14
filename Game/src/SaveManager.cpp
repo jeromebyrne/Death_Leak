@@ -401,6 +401,17 @@ void SaveManager::SetGameFeatureUnlocked(const int featureType)
 	mSaveMap[key] = vec;
 }
 
+bool SaveManager::HasDoorKey(const std::string & keyId)
+{
+	// TODO:
+	return false;
+}
+
+void SaveManager::SetGameFeatureUnlocked(const std::string & keyId, bool obtained)
+{
+
+}
+
 void SaveManager::SetLanguage(const std::string & langLocaleKey)
 {
 	mSaveMap["language_locale_key"] = langLocaleKey;

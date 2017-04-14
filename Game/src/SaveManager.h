@@ -32,6 +32,10 @@ public:
 
 	void SetGameFeatureUnlocked(const int featureType);
 
+	bool HasDoorKey(const std::string & keyId);
+
+	void SetGameFeatureUnlocked(const std::string & keyId, bool obtained);
+
 	void SetLanguage(const std::string & langLocaleKey);
 
 	std::string GetLanguageSet();

@@ -12,6 +12,10 @@ public:
 
 	void Initialise();
 
+	bool HasKey(const std::string & keyId);
+
+	void SetHasKey(const std::string & keyId, bool value);
+
 private:
 
 	static InventoryManager * m_instance;

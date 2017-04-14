@@ -16,7 +16,7 @@ bool XmlDocument::Load(const char * filename)
 	if ( !loadOkay )
 	{
 		LOG_ERROR("Unable to open xml file %s. Check that the file exists", filename);
-		GAME_ASSERT(loadOkay);
+ 		GAME_ASSERT(loadOkay);
 	}
 	else
 	{
