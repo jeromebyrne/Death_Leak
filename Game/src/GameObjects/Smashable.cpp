@@ -62,7 +62,8 @@ bool Smashable::OnCollision(SolidMovingSprite * object)
 	}
 
 	auto player = GameObjectManager::Instance()->GetPlayer();
-	if (player && player->GetIsDownwardDashing())
+
+	if (player && player == object && player->GetIsDownwardDashing())
 	{
 		// we are downward dashing, this is the only thing that can break a smashable
 		// just make sure we are on top of the object

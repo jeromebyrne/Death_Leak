@@ -854,7 +854,7 @@ void Character::UpdateAnimations()
 				}
 				else
 				{
-					float animFramerate = std::abs(mSprintActive ? (m_velocity.X * 1.6f) * mRunAnimFramerateMultiplier : (m_velocity.X * 1.4f) * mRunAnimFramerateMultiplier);
+					float animFramerate = std::abs(mSprintActive ? (m_velocity.X * 2.0f) * mRunAnimFramerateMultiplier : (m_velocity.X * 1.8f) * mRunAnimFramerateMultiplier);
 
 					bodyPart->CurrentSequence()->SetFrameRate(animFramerate);
 				}
@@ -974,7 +974,7 @@ void Character::DoAnimationEffectIfApplicable(AnimationPart * bodyPart)
 					{
 						ParticleEmitterManager::Instance()->CreateDirectedSpray(10,
 							Vector3(m_position.X + (m_direction.X * 12.f), CollisionBottom(), m_position.Z - 0.1f),
-							Vector3(0, 1, 0),
+							m_direction.X > 0 ? Vector3(-0.5f, 0.5f, 0.0f) : Vector3(0.5f, 0.5f, 0.0f),
 							0.1,
 							Vector3(1200, 720, 0),
 							particleFile,

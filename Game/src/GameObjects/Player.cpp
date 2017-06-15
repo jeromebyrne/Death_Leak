@@ -42,11 +42,17 @@ void Player::Initialise()
 	// update the base classes
 	Character::Initialise();
 
+	// Just hardcoding these variables now
+	// because I want to get this shit locked down and finished
 	mRunAnimFramerateMultiplier = 3.0f;
+	m_maxJumpSpeed = 25;
+	mMaxJumpsAllowed = 1;
+	m_maxVelocity.X = 5.0001f;
+	mSprintVelocityX = 10.0f;
+	m_resistance.X = 0.9f; // HAS to be lower than 1.0 (TODO: really need to change this)
+	m_resistance.Y = 0.85f;
+	// <resistance z="0.000000" y="1.400000" x="0.880000" />
 
-	m_maxJumpSpeed = 20;
-
-	mMaxJumpsAllowed = 2;
 }
 void Player::XmlRead(TiXmlElement * element)
 {
