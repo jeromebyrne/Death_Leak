@@ -95,7 +95,7 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 
 	GAME_ASSERT((object != this));
 
-  	if(m_isActive)
+  	if (m_isActive)
 	{
 		if (object->IsSolidLineStrip())
 		{

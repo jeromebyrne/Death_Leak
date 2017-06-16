@@ -19,14 +19,14 @@
         <isanimated value="true" />
         <animationfile value="XmlFiles\animation\player_anim_default.xml" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="1.400000" x="0.880000" />
+        <resistance z="0.000000" y="0.850000" x="0.900000" />
         <maxvelocity z="0.000000" y="99999.000000" x="6.000000" />
         <applygravity value="true" />
         <collisionboxdimensions z="0.000000" y="253.312698" x="151.987610" offsetX="0.000000" offsetY="0.000000" />
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
-        <is_bouncy value="true" bounce_multiplier="1.300000" />
+        <is_bouncy value="false" bounce_multiplier="1.300000" />
         <maxjumpspeed value="25" />
         <xaccelrate value="1" />
         <projectileoffsetx value="40" />
@@ -255,7 +255,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
-        <is_bouncy value="true" bounce_multiplier="1.300000" />
+        <is_bouncy value="false" bounce_multiplier="1.300000" />
         <points>
             <point x="-3286.394531" y="718.258362" />
             <point x="-2195.611328" y="706.660278" />
@@ -627,7 +627,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
-        <is_bouncy value="true" bounce_multiplier="1.300000" />
+        <is_bouncy value="false" bounce_multiplier="1.300000" />
         <points>
             <point x="-51.153809" y="72.781128" />
             <point x="65.209961" y="3.537109" />
@@ -836,7 +836,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
-        <is_bouncy value="true" bounce_multiplier="1.300000" />
+        <is_bouncy value="false" bounce_multiplier="1.300000" />
         <points>
             <point x="-503.376465" y="-21.907043" />
             <point x="-209.458008" y="-31.208496" />
@@ -867,7 +867,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
-        <is_bouncy value="true" bounce_multiplier="1.300000" />
+        <is_bouncy value="false" bounce_multiplier="1.300000" />
         <points>
             <point x="-699.865479" y="-379.629547" />
             <point x="-433.354248" y="-121.339691" />
@@ -1019,7 +1019,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
-        <is_bouncy value="true" bounce_multiplier="1.300000" />
+        <is_bouncy value="false" bounce_multiplier="1.300000" />
         <points>
             <point x="-88.934570" y="12.404175" />
             <point x="336.394531" y="17.571655" />
@@ -1305,7 +1305,7 @@
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
-        <is_bouncy value="true" bounce_multiplier="1.300000" />
+        <is_bouncy value="false" bounce_multiplier="1.300000" />
         <points>
             <point x="-5423.000000" y="9.573456" />
             <point x="-1423.000000" y="-33.421783" />

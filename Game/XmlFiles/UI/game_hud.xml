@@ -15,7 +15,7 @@
     />
   </animatedsprite>
 
-  <sprite name="265_frame_left"
+  <sprite name="265_crt_effect"
           process_input="false"
           posX ="-960" posY ="-540" width="1920" height ="1080"
           image="Media\crt_effect.png"

@@ -1709,6 +1709,11 @@ void Character::Teleport(float posX, float posY, bool showParticles)
 
 void Character::SetCrouching(bool value)
 { 
+	if (value == true)
+	{
+		bool brk = true;
+	}
+
 	if (mIsCrouching == true && value == false)
 	{
 		// come back up

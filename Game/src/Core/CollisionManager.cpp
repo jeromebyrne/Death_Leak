@@ -71,7 +71,11 @@ void CollisionManager::DetectAndResolve(int camX, int camY)
 				// TODO: check the OnCollision functions for safety 
 				// best to pass the shared pointers rather than raw pointers
 				solidSprite->OnCollision(otherSolidSprite);
-				otherSolidSprite->OnCollision(solidSprite);
+
+				if (!otherSolidSprite->IsSolidLineStrip())
+				{
+					otherSolidSprite->OnCollision(solidSprite);
+				}
 			}
 		}
 	}// end outer for	
