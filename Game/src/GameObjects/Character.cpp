@@ -1077,7 +1077,7 @@ bool Character::Jump(float percent)
 	if (mIsFullyCrouched &&
 		FeatureUnlockManager::GetInstance()->IsFeatureUnlocked(FeatureUnlockManager::kCrouchJump))
 	{
-		percent *= 4.0f;
+		percent *= 1.9f;
 
 		if (IsOnSolidLine())
 		{
@@ -1771,7 +1771,7 @@ void Character::DoDownwardDash()
 		return;
 	}
 
-	if (FeatureUnlockManager::GetInstance()->IsFeatureUnlocked(FeatureUnlockManager::kDownwardDash))
+	if (!FeatureUnlockManager::GetInstance()->IsFeatureUnlocked(FeatureUnlockManager::kDownwardDash))
 	{
 		return;
 	}

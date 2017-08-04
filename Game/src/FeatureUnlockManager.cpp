@@ -30,6 +30,11 @@ void FeatureUnlockManager::Initialise()
 
 bool FeatureUnlockManager::IsFeatureUnlocked(const FeatureType type)
 {
+	if (mFeatureUnlockCache.find(type) == mFeatureUnlockCache.end())
+	{
+		return false;
+	}
+
 	return mFeatureUnlockCache[type];
 }
 

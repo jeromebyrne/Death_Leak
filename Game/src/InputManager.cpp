@@ -143,7 +143,7 @@ void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 
 	bool wasPressingJump = mCurrentGamepadState.mPressingJump;
 
-	float initialJumpPercent = 40.0f;
+	float initialJumpPercent = 70.0f;
 	static float currentJumpIncreasePercent = initialJumpPercent;
 
 	if (player->IsOnSolidSurface())
@@ -181,7 +181,7 @@ void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 	}
 	else if (mCurrentGamepadState.mPressingJump && wasPressingJump && player->CanIncreaseJumpIntensity() && currentJumpIncreasePercent < 100.0f)
 	{
-		currentJumpIncreasePercent += 5.0f;
+		currentJumpIncreasePercent += 6.0f;
 		player->IncreaseJump(currentJumpIncreasePercent);
 	}
 }
@@ -467,7 +467,7 @@ void InputManager::ProcessTestActions_gamepad(XINPUT_STATE padState, CurrentGame
 				// testing
 				Timing::Instance()->SetTimeModifierForNumSeconds(0.1f, 3.5f);
 				NinjaSpawner spawner;
-				spawner.SpawnMultiple(1, Vector2(player->X(), player->Y()), Vector2(1200, 1200));
+				//spawner.SpawnMultiple(1, Vector2(player->X(), player->Y()), Vector2(1200, 1200));
 			}
 
 			pressingLeftShoulder = false;

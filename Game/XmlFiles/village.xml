@@ -1,12 +1,12 @@
 <level audio="">
     <LevelProperties>
-        <camera_properties posx="0.000000" posy="700.000000" zoom_in_percent="1.000000" xOffset="200.000000" yOffset="50.000000" xLag="15.000000" yLag="1.000000" followx="true" followy="false" />
-        <level_bounds left="-1000.000000" right="17300.000000" top="4000.000000" bottom="675.000000" />
+        <camera_properties posx="0.000000" posy="750.000000" zoom_in_percent="1.000000" xOffset="200.000000" yOffset="50.000000" xLag="15.000000" yLag="1.000000" followx="true" followy="false" />
+        <level_bounds left="-1000.000000" right="17300.000000" top="8000.000000" bottom="600.000000" />
         <music file="music\japanese2.mp3" initial_delay="20.000000" length="96.000000" time_between="120.000000" />
         <weather_properties allow_weather="true" />
     </LevelProperties>
     <Player id="1" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="50.000000" y="933.000000" x="636.239380" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="50.000000" y="5000.000000" x="636.239380" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="231.714279" width="183.142853" native="false" repeatX="false" repeatY="false" />
         <material value="maleninja" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="40.000000" rand_init_step="1" />
@@ -27,19 +27,11 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
-        <maxjumpspeed value="25" />
+        <maxjumpspeed value="23" />
         <xaccelrate value="1" />
         <projectileoffsetx value="40" />
         <projectileoffsety value="0" />
     </Player>
-    <NPCTrigger id="2" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="4.000000" y="1598.960938" x="799.923828" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions breadth="0.000000" height="500.000000" width="1000.000000" />
-        <material value="" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <cooldown_time value="50.000000" />
-        <num_enemies value="2.000000" />
-    </NPCTrigger>
     <ParallaxLayer id="3" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="99999.000000" y="1750.000000" x="636.239380" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="2000.000000" width="2560.000000" native="true" repeatX="false" repeatY="false" />
