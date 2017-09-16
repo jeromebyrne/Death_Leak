@@ -48,9 +48,9 @@ void Player::Initialise()
 	m_maxJumpSpeed = 23;
 	mMaxJumpsAllowed = 1;
 	m_maxVelocity.X = 5.0001f;
-	mSprintVelocityX = 10.0f;
-	m_resistance.X = 0.9f; // HAS to be lower than 1.0 (TODO: really need to change this)
-	m_resistance.Y = 0.85f;
+	mSprintVelocityX = 15.0f;
+	m_resistance.X = 0.92f; // HAS to be lower than 1.0 (TODO: really need to change this)
+	m_resistance.Y = 0.88f;
 	// <resistance z="0.000000" y="1.400000" x="0.880000" />
 
 	// TODO: just testing
