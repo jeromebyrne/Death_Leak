@@ -3,7 +3,13 @@
 	<body OffsetX="0" OffsetY="8" SizeX="40" SizeY="80">
 
 	<Still FrameRate="20" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
-    <frame filename="Media\characters\player\idle_default\idle_default_000.png" />
+    <frame filename="Media\characters\player\idle_default\idle_default_000.png">
+      <skeletonparts>
+        <part start_x="-15" start_y="-45" end_x="40" end_y="20"/>
+        <part start_x="-15" start_y="-45" end_x="0" end_y="-95"/>
+        <part start_x="0" start_y="-95" end_x="-15" end_y="-147"/>
+      </skeletonparts>
+    </frame>
     <frame filename="Media\characters\player\idle_default\idle_default_001.png" />
     <frame filename="Media\characters\player\idle_default\idle_default_002.png" />
     <frame filename="Media\characters\player\idle_default\idle_default_003.png" />
