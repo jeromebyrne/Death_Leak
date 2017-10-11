@@ -409,7 +409,7 @@ bool SaveManager::HasDoorKey(const std::string & keyId)
 
 void SaveManager::SetGameFeatureUnlocked(const std::string & keyId, bool obtained)
 {
-
+	// TODO:
 }
 
 void SaveManager::SetLanguage(const std::string & langLocaleKey)

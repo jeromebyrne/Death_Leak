@@ -21,6 +21,8 @@ public:
 	bool ShouldFollowX() const { return mFollowX; }
 	bool ShouldFollowY() const { return mFollowY; }
 
+	bool IsAnimationPreview() const { return mIsAnimationPreview; }
+
 private:
 
 	Vector2 mCamBoundsTopLeft;
@@ -30,15 +32,14 @@ private:
 	Vector2 mOriginalTargetOffset;
 	Vector2 mTargetLag;
 	Vector2 mInitialCamPos;
-
 	string mLevelMusic;
 	float mMusicLength;
 	float mMusicInitialDelay;
 	float mMusicTimeBetween;
 	bool mAllowWeather;
-
 	bool mFollowX;
 	bool mFollowY;
+	bool mIsAnimationPreview;
 };
 
 #endif

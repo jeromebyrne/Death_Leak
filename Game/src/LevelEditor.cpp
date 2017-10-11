@@ -19,7 +19,6 @@ LevelEditor::LevelEditor(void):
 {
 }
 
-
 LevelEditor::~LevelEditor(void)
 {
 }
@@ -35,8 +34,44 @@ void LevelEditor::Reset()
 	mSelectedLinePointIndex = -1;
 }
 
+void LevelEditor::UpdateAnimationPreview()
+{
+	if (mAnimationPreviewTargetObject == nullptr)
+	{
+		// grab the target animation - TODO: can make this configurable
+		auto object = GameObjectManager::Instance()->GetObjectByID(1);
+
+		if (object == nullptr)
+		{
+			return;
+		}
+
+		mAnimationPreviewTargetObject = dynamic_cast<Sprite*>(object.get());
+
+		if (mAnimationPreviewTargetObject == nullptr)
+		{
+			return;
+		}
+	}
+
+	Animation * anim = mAnimationPreviewTargetObject->GetAnimation();
+
+	if (anim == nullptr)
+	{
+		return;
+	}
+
+	//anim->GetSkeletonForCurrentSequence
+}
+
 void LevelEditor::Update()
 {
+	if (GameObjectManager::Instance()->GetCurrentLevelProperties().IsAnimationPreview())
+	{
+		UpdateAnimationPreview();
+		return;
+	}
+
 	CheckForInvokeObjectEditor();
 
 	if (UIManager::Instance()->IsObjectEditorDisplaying())

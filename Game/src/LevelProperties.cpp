@@ -9,7 +9,8 @@ LevelProperties::LevelProperties(void) :
 	mMusicTimeBetween(0.0f),
 	mAllowWeather(true),
 	mFollowX(true),
-	mFollowY(true)
+	mFollowY(true),
+	mIsAnimationPreview(false)
 {
 }
 
@@ -29,6 +30,8 @@ void LevelProperties::XmlRead(TiXmlElement * element)
 	mTargetLag.Y = XmlUtilities::ReadAttributeAsFloat(element, "camera_properties", "yLag");
 	mFollowX = XmlUtilities::ReadAttributeAsBool(element, "camera_properties", "followx");
 	mFollowY = XmlUtilities::ReadAttributeAsBool(element, "camera_properties", "followy");
+
+	mIsAnimationPreview = XmlUtilities::ReadAttributeAsBool(element, "is_animation_preview", "value");
 
 	mOriginalTargetOffset = mTargetOffset;
 
@@ -90,5 +93,9 @@ void LevelProperties::XmlWrite(TiXmlElement * element)
 	TiXmlElement * weather = new TiXmlElement("weather_properties");
 	weather->SetAttribute("allow_weather", mAllowWeather ? "true" : "false");
 	element->LinkEndChild(weather);
+
+	TiXmlElement * animationPreview = new TiXmlElement("is_animation_preview");
+	animationPreview->SetAttribute("value", mIsAnimationPreview ? "true" : "false");
+	element->LinkEndChild(animationPreview);
 }
 

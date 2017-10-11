@@ -144,7 +144,7 @@
 
   <sprite name="8_gamepad_warning"
           process_input="false"
-          posX ="-300" posY ="150" width="500" height ="125"
+          posX ="-900" posY ="-450" width="500" height ="125"
           image="Media\\UI\\gamepadwarning.png"
           hflip="false" vflip="false"
           alpha="1.0">

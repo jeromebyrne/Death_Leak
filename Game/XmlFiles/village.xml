@@ -4,6 +4,7 @@
         <level_bounds left="-1000.000000" right="17300.000000" top="8000.000000" bottom="600.000000" />
         <music file="music\japanese2.mp3" initial_delay="20.000000" length="96.000000" time_between="120.000000" />
         <weather_properties allow_weather="true" />
+        <is_animation_preview value="false" />
     </LevelProperties>
     <Player id="1" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
         <position z="50.000000" y="839.000000" x="688.239380" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -19,7 +20,7 @@
         <isanimated value="true" />
         <animationfile value="XmlFiles\animation\player_anim_default.xml" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance z="0.000000" y="0.870000" x="0.950000" />
+        <resistance z="0.000000" y="0.880000" x="0.920000" />
         <maxvelocity z="0.000000" y="99999.000000" x="10.000000" />
         <applygravity value="true" />
         <collisionboxdimensions z="0.000000" y="190.000000" x="106.665497" offsetX="0.000000" offsetY="-20.000000" />
@@ -33,7 +34,7 @@
         <projectileoffsety value="0" />
     </Player>
     <ParallaxLayer id="2" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="99999.000000" y="1750.000000" x="636.239380" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="99999.000000" y="1750.000000" x="688.239380" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="2000.000000" width="2560.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -56,7 +57,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="3" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="99999.000000" y="3750.000000" x="636.239380" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="99999.000000" y="3750.000000" x="688.239380" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="2000.000000" width="2560.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -79,7 +80,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="4" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="300.000000" y="700.000000" x="636.239380" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="300.000000" y="700.000000" x="688.239380" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="383.000000" width="1920.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -102,7 +103,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="5" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9999.000000" y="800.000000" x="636.239380" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="9999.000000" y="800.000000" x="688.239380" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="512.000000" width="3257.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -125,7 +126,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="6" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="9998.000000" y="680.000000" x="636.239380" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="9998.000000" y="680.000000" x="688.239380" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="512.000000" width="3257.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -3397,7 +3398,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <ParallaxLayer id="227" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">
-        <position z="140.000000" y="3600.000000" x="636.239380" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position z="140.000000" y="3600.000000" x="688.239380" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="383.000000" width="1920.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -6345,7 +6346,7 @@
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\characters\rat\1.png" />
-        <horizontalflip value="true" />
+        <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\small_rat_anim.xml" />

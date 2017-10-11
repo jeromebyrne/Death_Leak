@@ -13,7 +13,7 @@ Animation::Animation(const char* filename)
 
 Animation::~Animation(void)
 {
-}
+} 
 
 void Animation::ReadXml(const char* filename)
 {
@@ -45,29 +45,29 @@ void Animation::ReadXml(const char* filename)
 	}
 }
 
-AnimationPart* Animation::GetPart(string partName)
+AnimationPart* Animation::GetPart(const string & partName)
 {
-	if(partName.length() != 0)
+	if(!partName.empty())
 	{
 		AnimationPart * part = m_animationParts[partName];
 
 		return part; 
 	}
 
-	return 0;
+	return nullptr;
 }
 
-void Animation::SetPartSequence(string partName, string sequenceName)
+void Animation::SetPartSequence(const string & partName, const string & sequenceName)
 {
 	AnimationPart* part = GetPart(partName);
 
-	if(part != 0)
+	if(part != nullptr)
 	{
 		part->SetSequence(sequenceName);
 	}
 }
 
-AnimationSkeleton * Animation::GetSkeletonForCurrentSequence(const char * bodyPart)
+AnimationSkeleton * Animation::GetSkeletonForCurrentSequence(const string & bodyPart)
 {
 	AnimationSequence * currentSequence = m_animationParts[bodyPart]->CurrentSequence();
 	GAME_ASSERT(currentSequence);
@@ -78,4 +78,15 @@ AnimationSkeleton * Animation::GetSkeletonForCurrentSequence(const char * bodyPa
 	}
 
 	return currentSequence->GetSkeleton();
+}
+
+std::vector<std::string> Animation::GetSequenceNamesForBodyPart(const std::string & bodyPart)
+{
+	AnimationPart * part = GetPart(bodyPart);
+	if (part == nullptr)
+	{
+		return std::vector<std::string>();
+	}
+
+	return part->GetSequenceNames();
 }

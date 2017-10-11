@@ -11,10 +11,12 @@ public:
 	Animation(const char* filename);
 	~Animation(void);
 
-	AnimationPart* GetPart(string partName);
-	void SetPartSequence(string partName, string sequenceName);
+	AnimationPart* GetPart(const string & partName);
+	void SetPartSequence(const string & partName, const string & sequenceName);
 
-	AnimationSkeleton * GetSkeletonForCurrentSequence(const char * bodyPart);
+	AnimationSkeleton * GetSkeletonForCurrentSequence(const string & bodyPart);
+
+	std::vector<std::string> GetSequenceNamesForBodyPart(const std::string & bodyPart);
 
 private:
 

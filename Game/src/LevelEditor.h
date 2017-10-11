@@ -30,6 +30,8 @@ public:
 
 private:
 
+	void UpdateAnimationPreview();
+
 	void CheckInput_TerrainEditing();
 
 	void CheckInput_Regular();
@@ -106,6 +108,8 @@ private:
 	SolidLineStrip * mSelectedLineStrip;
 
 	int mSelectedLinePointIndex;
+
+	Sprite * mAnimationPreviewTargetObject = nullptr;
 };
 
 #endif

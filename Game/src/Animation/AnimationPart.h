@@ -25,6 +25,8 @@ public:
 
 	bool HasSFXforCurrentFrame() const;
 
+	std::vector<std::string> GetSequenceNames() const;
+
 	inline float OffsetX()
 	{
 		return m_offsetX;
@@ -60,7 +62,7 @@ public:
 	void Finish() { m_currentFrameNumber = m_currentSequence->Frames()->size(); }
 
 	// set the current sequence
-	void SetSequence(string name);
+	void SetSequence(const string & name);
 
 	// animate, when we reach the last frame go back to the first
 	void AnimateLooped();

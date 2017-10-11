@@ -139,7 +139,7 @@ int AnimationPart::FrameNumber()
 	return m_currentFrameNumber;
 }
 
-void AnimationPart::SetSequence(string name)
+void AnimationPart::SetSequence(const string & name)
 {	
 	// start from the first frame
 	Restart();
@@ -151,7 +151,7 @@ void AnimationPart::SetSequence(string name)
 
 	AnimationSequence* newSequence = m_sequences[name];
 
-	if(newSequence != 0)
+	if(newSequence != nullptr)
 	{
 		m_currentSequence = m_sequences[name];
 	}
@@ -160,7 +160,7 @@ void AnimationPart::SetSequence(string name)
 void AnimationPart::AnimateLooped()
 {
 	// Animate at the frame rate for the current sequence:
-	if(m_currentSequence != 0)
+	if(m_currentSequence != nullptr)
 	{
 		AnimateLooped(m_currentSequence->Framerate());
 	}
@@ -168,7 +168,7 @@ void AnimationPart::AnimateLooped()
 
 void AnimationPart::AnimateLooped(float frameRate)
 {
-	if(m_currentSequence != 0  && frameRate > 0)
+	if(m_currentSequence != nullptr  && frameRate > 0)
 	{
 		int numFrames = m_currentSequence->Frames()->size();
 		if(numFrames > 0)
@@ -200,7 +200,7 @@ void AnimationPart::AnimateLooped(float frameRate)
 
 void AnimationPart::Animate(float frameRate)
 {
-	if(m_currentSequence != 0 && frameRate > 0)
+	if(m_currentSequence != nullptr && frameRate > 0)
 	{
 		int numFrames = m_currentSequence->Frames()->size();
 		if(numFrames > 0)
@@ -230,7 +230,7 @@ void AnimationPart::Animate(float frameRate)
 
 void AnimationPart::Animate()
 {
-	if(m_currentSequence != 0)
+	if(m_currentSequence != nullptr)
 	{
 		Animate(m_currentSequence->Framerate());
 	}
@@ -244,5 +244,18 @@ bool AnimationPart::HasSFXforCurrentFrame() const
 	}
 
 	return m_currentSequence->HasSFXforFrame(m_currentFrameNumber);
+}
+
+std::vector<std::string> AnimationPart::GetSequenceNames() const
+{
+	std::vector<std::string> retVal;
+	retVal.reserve(m_sequences.size());
+
+	for (const auto & kvp : m_sequences)
+	{
+		retVal.push_back(kvp.first);
+	}
+
+	return retVal;
 }
 
