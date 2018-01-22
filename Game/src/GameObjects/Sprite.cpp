@@ -94,8 +94,14 @@ void Sprite::Initialise()
 	{
 		m_matScaleY *= -1;
 	}
-	
+
 	mTextureDimensions = GetTextureDimensions();
+	if (m_isAnimated && m_animation)
+	{
+		float scaleX = m_dimensions.X / mTextureDimensions.X;
+
+		m_animation->ScaleSkeleton(scaleX);
+	}
 }
 
 Vector2 Sprite::GetTextureDimensions()

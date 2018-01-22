@@ -24,6 +24,8 @@ public:
 	bool HasCollidedOnFrame(unsigned int frame, bool isHFlipped, Vector3 & skeletonWorldPos, Vector2 & startPoint, Vector2 & endPoint, Vector2 & intersectPointOut);
 
 	bool HasBonesForFrame(unsigned int frame);
+
+	void ScaleBones(float value);
 	
 private:
 

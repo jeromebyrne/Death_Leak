@@ -47,6 +47,9 @@ public:
 	{
 		return m_currentSequence;
 	}
+
+	AnimationSequence * GetSequence(const string & sequenceName);
+
 	inline string Name()
 	{
 		return m_name;
@@ -80,6 +83,11 @@ public:
 		m_currentFrameNumber = frame;
 	}
 #endif
+
+	map<string, AnimationSequence*> & GetAllSequences()
+	{
+		return m_sequences;
+	}
 
 private:
 	// a map containing all the animation sequences for this part

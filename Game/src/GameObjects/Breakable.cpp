@@ -227,6 +227,7 @@ void Breakable::SpawnDamageTransitionParticles()
 		return;
 	}
 
+	// TODO: this is SLOW
 	Vector2 nativeDimensions = GetTextureDimensions();
 
 	float scaleX = m_dimensions.X / nativeDimensions.X;

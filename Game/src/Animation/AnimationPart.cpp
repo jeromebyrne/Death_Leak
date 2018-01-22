@@ -259,3 +259,14 @@ std::vector<std::string> AnimationPart::GetSequenceNames() const
 	return retVal;
 }
 
+AnimationSequence * AnimationPart::GetSequence(const string & sequenceName)
+{
+	auto & iter = m_sequences.find(sequenceName);
+	if (iter == m_sequences.end())
+	{
+		return nullptr;
+	}
+
+	return iter->second;
+}
+

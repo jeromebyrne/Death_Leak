@@ -90,3 +90,22 @@ std::vector<std::string> Animation::GetSequenceNamesForBodyPart(const std::strin
 
 	return part->GetSequenceNames();
 }
+
+void Animation::ScaleSkeleton(float value)
+{
+	for (auto & kvp : m_animationParts)
+	{
+		auto & sequences = kvp.second->GetAllSequences();
+
+		for (auto & kvp : sequences)
+		{
+			auto skeleton = kvp.second->GetSkeleton();
+
+			if (skeleton)
+			{
+				skeleton->ScaleBones(value);
+			}
+		}
+	}
+}
+

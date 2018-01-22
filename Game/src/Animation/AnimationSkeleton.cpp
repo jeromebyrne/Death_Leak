@@ -17,24 +17,7 @@ void AnimationSkeleton::PopulateFrameData(unsigned int frame, list<AnimationSkel
 
 	for (auto & piece : framePieces)
 	{
-		AnimationSkeletonFramePiece internalPiece;
-		internalPiece.mStartPos = piece.mStartPos;
-		internalPiece.mEndPos = piece.mEndPos;
-
-		Vector2 lineDirection = piece.mEndPos - piece.mStartPos;
-		internalPiece.mLength = lineDirection.Length();
-
-		if (internalPiece.mLength <= 0)
-		{
-			GAME_ASSERT(false);
-			continue;
-		}
-
-		internalPiece.mLineDirection.X = lineDirection.X / internalPiece.mLength;
-		internalPiece.mLineDirection.Y = lineDirection.Y / internalPiece.mLength;
-
-		internalPiece.mNormal.X = -internalPiece.mLineDirection.Y;
-		internalPiece.mNormal.Y = internalPiece.mLineDirection.X;
+		AnimationSkeletonFramePiece internalPiece = piece;
 
 		mSkeletonLines[frame].push_back(internalPiece);
 	}
@@ -134,4 +117,32 @@ bool AnimationSkeleton::Intersect(bool isHFlipped,
 bool AnimationSkeleton::HasBonesForFrame(unsigned int frame) 
 {
 	return mSkeletonLines[frame].size();
+}
+
+void AnimationSkeleton::ScaleBones(float scaleValue)
+{
+	for (auto & kvp : mSkeletonLines)
+	{
+		for (auto & piece : kvp.second)
+		{
+			piece.mStartPos = piece.mStartPos * scaleValue;
+			piece.mEndPos = piece.mEndPos * scaleValue;
+
+			Vector2 lineDirection = piece.mEndPos - piece.mStartPos;
+			piece.mLength = lineDirection.Length();
+
+			if (piece.mLength <= 0)
+			{
+				GAME_ASSERT(false);
+				continue;
+			}
+
+			piece.mLineDirection.X = lineDirection.X / piece.mLength;
+			piece.mLineDirection.Y = lineDirection.Y / piece.mLength;
+
+			piece.mNormal.X = -piece.mLineDirection.Y;
+			piece.mNormal.Y = piece.mLineDirection.X;
+		}
+	}
+	
 }

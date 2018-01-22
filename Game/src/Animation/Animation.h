@@ -18,6 +18,8 @@ public:
 
 	std::vector<std::string> GetSequenceNamesForBodyPart(const std::string & bodyPart);
 
+	void ScaleSkeleton(float value);
+
 private:
 
 	map<string, AnimationPart*> m_animationParts;

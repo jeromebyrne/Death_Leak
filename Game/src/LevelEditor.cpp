@@ -985,6 +985,19 @@ void LevelEditor::Draw()
 	Vector2 mousePos = GetMouseWorldPos();
 
 	Graphics::GetInstance()->DrawDebugText(Utilities::getFormattedString("Mouse X,Y: %f %f", mousePos.X, mousePos.Y).c_str(), 100, 150);
+
+	if (GameObjectManager::Instance()->GetCurrentLevelProperties().IsAnimationPreview())
+	{
+		auto object = GameObjectManager::Instance()->GetObjectByID(1);
+
+		if (object)
+		{
+			float animX = object->Position().X - mousePos.X;
+			float animY = object->Position().Y - mousePos.Y;
+
+			Graphics::GetInstance()->DrawDebugText(Utilities::getFormattedString("Animation Position X,Y: %f %f", animX, -animY).c_str(), 100, 200);
+		}	
+	}
 }
 
 SolidLineStrip * LevelEditor::GetSolidLineStripClickedOn(list<shared_ptr<GameObject> > & gameObjects)
