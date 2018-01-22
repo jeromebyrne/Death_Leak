@@ -36,6 +36,8 @@ private:
 
 	void CheckInput_Regular();
 
+	void CheckInput_AnimationPreview();
+
 	void CheckForSavePressed();
 
 	void CheckForZChange();

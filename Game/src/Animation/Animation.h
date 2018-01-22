@@ -20,6 +20,15 @@ public:
 
 	void ScaleSkeleton(float value);
 
+	// This function is needed for viewing animations
+	void JumpToNextFrame(const string & bodyPart);
+
+	// This function is needed for viewing animations
+	void JumpToPreviousFrame(const string & bodyPart);
+
+	// used for animation viewer
+	int CurrentFrame(const string & bodyPart);
+
 private:
 
 	map<string, AnimationPart*> m_animationParts;

@@ -65,10 +65,11 @@ void LevelEditor::UpdateAnimationPreview()
 }
 
 void LevelEditor::Update()
-{
+{ 
 	if (GameObjectManager::Instance()->GetCurrentLevelProperties().IsAnimationPreview())
 	{
 		UpdateAnimationPreview();
+		CheckInput_AnimationPreview();
 		return;
 	}
 
@@ -128,6 +129,50 @@ void LevelEditor::Update()
 			mo->StopYAccelerating();
 			mo->StopXAccelerating();
 		}
+	}
+}
+
+void LevelEditor::CheckInput_AnimationPreview()
+{
+	if (!mAnimationPreviewTargetObject)
+	{
+		return;
+	}
+
+	static bool isPressingRight = false;
+
+	if (!isPressingRight && GetAsyncKeyState(VK_RIGHT) < 0)
+	{
+		isPressingRight = true;
+
+		auto anim = mAnimationPreviewTargetObject->GetAnimation();
+		if (anim)
+		{
+			anim->JumpToNextFrame("body");
+		}
+	}
+
+	if (GetAsyncKeyState(VK_RIGHT) >= 0)
+	{
+		isPressingRight = false;
+	}
+
+	static bool isPressingLeft = false;
+
+	if (!isPressingLeft && GetAsyncKeyState(VK_LEFT) < 0)
+	{
+		isPressingLeft = true;
+
+		auto anim = mAnimationPreviewTargetObject->GetAnimation();
+		if (anim)
+		{
+			anim->JumpToPreviousFrame("body");
+		}
+	}
+
+	if (GetAsyncKeyState(VK_LEFT) >= 0)
+	{
+		isPressingLeft = false;
 	}
 }
 
@@ -988,14 +1033,22 @@ void LevelEditor::Draw()
 
 	if (GameObjectManager::Instance()->GetCurrentLevelProperties().IsAnimationPreview())
 	{
-		auto object = GameObjectManager::Instance()->GetObjectByID(1);
-
-		if (object)
+		if (mAnimationPreviewTargetObject)
 		{
-			float animX = object->Position().X - mousePos.X;
-			float animY = object->Position().Y - mousePos.Y;
+			float animX = mAnimationPreviewTargetObject->Position().X - mousePos.X;
+			float animY = mAnimationPreviewTargetObject->Position().Y - mousePos.Y;
 
-			Graphics::GetInstance()->DrawDebugText(Utilities::getFormattedString("Animation Position X,Y: %f %f", animX, -animY).c_str(), 100, 200);
+			Graphics::GetInstance()->DrawDebugText(Utilities::getFormattedString("Animation Position X,Y: %f %f", animX, -animY).c_str(), 100, 175);
+
+			auto animation = mAnimationPreviewTargetObject->GetAnimation();
+
+			if (animation)
+			{
+				int currentFrame = animation->CurrentFrame("body");
+
+				Graphics::GetInstance()->DrawDebugText(Utilities::getFormattedString("Animation Frame: %i", currentFrame).c_str(), 100, 200);
+			}
+			
 		}	
 	}
 }

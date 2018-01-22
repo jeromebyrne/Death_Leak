@@ -144,5 +144,4 @@ void AnimationSkeleton::ScaleBones(float scaleValue)
 			piece.mNormal.Y = piece.mLineDirection.X;
 		}
 	}
-	
 }

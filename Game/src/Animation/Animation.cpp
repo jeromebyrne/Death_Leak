@@ -109,3 +109,69 @@ void Animation::ScaleSkeleton(float value)
 	}
 }
 
+void Animation::JumpToNextFrame(const string & bodyPart)
+{
+	// move to the next fram in the curent sequence
+	AnimationPart * part = GetPart(bodyPart);
+	if (part == nullptr)
+	{
+		return;
+	}
+
+	auto sequence = part->CurrentSequence();
+	if (sequence == nullptr)
+	{
+		return;
+	}
+
+	int numFrames = sequence->Frames()->size();
+
+	int nextFrame = part->FrameNumber() + 1;
+
+	if (nextFrame >= numFrames)
+	{
+		nextFrame = 0;
+	}
+
+	part->SetFrame(nextFrame);
+}
+
+void Animation::JumpToPreviousFrame(const string & bodyPart)
+{
+	AnimationPart * part = GetPart(bodyPart);
+	if (part == nullptr)
+	{
+		return;
+	}
+
+	auto sequence = part->CurrentSequence();
+	if (sequence == nullptr)
+	{
+		return;
+	}
+
+	int numFrames = sequence->Frames()->size();
+
+	int nextFrame = part->FrameNumber() - 1;
+
+	if (nextFrame < 0)
+	{
+		nextFrame = numFrames - 1;
+	}
+
+	part->SetFrame(nextFrame);
+}
+
+int Animation::CurrentFrame(const string & bodyPart)
+{
+	AnimationPart * part = GetPart(bodyPart);
+	if (part == nullptr)
+	{
+		return -1;
+	}
+
+	return part->FrameNumber();
+}
+
+
+

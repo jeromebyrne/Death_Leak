@@ -6,6 +6,10 @@
     <frame filename="Media\characters\player\idle_default\idle_default_000.png">
       <skeletonparts>
         <part start_x="57" start_y="203" end_x="-28" end_y="-30"/>
+        <part start_x="-28" start_y="-30" end_x="85" end_y="-142"/>
+        <part start_x="85" start_y="-142" end_x="59" end_y="-344"/>
+        <part start_x="-28" start_y="-30" end_x="-7" end_y="-182"/>
+        <part start_x="-7" start_y="-182" end_x="-69" end_y="-302"/>
       </skeletonparts>
     </frame>
     <frame filename="Media\characters\player\idle_default\idle_default_001.png" />

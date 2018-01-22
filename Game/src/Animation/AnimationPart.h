@@ -77,12 +77,11 @@ public:
 
 	void Animate(float frameRate);
 
-#ifdef DEBUG // purely for debugging 
+	 // This is needed for viewing animations
 	void SetFrame(int frame)
 	{
 		m_currentFrameNumber = frame;
 	}
-#endif
 
 	map<string, AnimationSequence*> & GetAllSequences()
 	{

@@ -563,6 +563,11 @@ void InputManager::ProcessGameplay_Keyboard()
 
 void InputManager::ProcessLeftRightMovement_keyboard(CurrentGameplayActions & currentActions, Player * player)
 {
+	if (GameObjectManager::Instance()->GetCurrentLevelProperties().IsAnimationPreview())
+	{
+		return;
+	}
+
 	if (!player->JustFellFromLargeDistance() &&
 		!currentActions.mIsCrouching &&
 		!player->GetIsRolling())
