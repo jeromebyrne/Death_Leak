@@ -198,6 +198,26 @@ void LevelEditor::CheckInput_AnimationPreview()
 	{
 		isPressingUp = false;
 	}
+
+	// *** PRESSING DOWN
+	static bool isPressingDown = false;
+
+	if (!isPressingDown && GetAsyncKeyState(VK_DOWN) < 0)
+	{
+		isPressingDown = true;
+
+		auto anim = mAnimationPreviewTargetObject->GetAnimation();
+		if (anim)
+		{
+			anim->JumpToPreviousSequence("body");
+			mAnimationPreviewTargetObject->UpdateAnimTexture("body");
+		}
+	}
+
+	if (GetAsyncKeyState(VK_DOWN) >= 0)
+	{
+		isPressingDown = false;
+	}
 }
 
 GameObject * LevelEditor::GetGameObjectClickedOn(list<shared_ptr<GameObject> > & gameObjects)

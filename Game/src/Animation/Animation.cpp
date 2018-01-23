@@ -193,9 +193,36 @@ void Animation::JumpToNextSequence(const string & bodyPart)
 	part->SetSequence(seqIter->first);
 }
 
-void JumpToPreviousSequence(const string & bodyPart)
+void Animation::JumpToPreviousSequence(const string & bodyPart)
 {
-	// TODO: implement
+	AnimationPart * part = GetPart(bodyPart);
+	if (part == nullptr)
+	{
+		return;
+	}
+
+	auto sequence = part->CurrentSequence();
+	if (sequence == nullptr)
+	{
+		return;
+	}
+
+	auto allSeq = part->GetAllSequences();
+
+	if (allSeq.size() < 2)
+	{
+		return;
+	}
+
+	auto seqIter = allSeq.find(sequence->Name());
+	
+	if (seqIter == allSeq.begin())
+	{
+		seqIter = allSeq.end();
+	}
+	--seqIter;
+
+	part->SetSequence(seqIter->first);
 }
 
 int Animation::CurrentFrame(const string & bodyPart)
