@@ -560,6 +560,13 @@ void Character::DoMeleeCollisions(SolidMovingSprite * object)
 	}
 }
 
+// This is used for the animation viewer
+void Character::UpdateAnimTexture(const string & bodyPart)
+{
+	Sprite::UpdateAnimTexture(bodyPart);
+	m_mainBodyTexture = m_texture;
+}
+
 void Character::UpdateAnimations()
 {
 	AnimationPart * bodyPart = m_animation->GetPart("body");

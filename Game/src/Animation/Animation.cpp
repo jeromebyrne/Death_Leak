@@ -162,6 +162,42 @@ void Animation::JumpToPreviousFrame(const string & bodyPart)
 	part->SetFrame(nextFrame);
 }
 
+void Animation::JumpToNextSequence(const string & bodyPart)
+{
+	AnimationPart * part = GetPart(bodyPart);
+	if (part == nullptr)
+	{
+		return;
+	}
+
+	auto sequence = part->CurrentSequence();
+	if (sequence == nullptr)
+	{
+		return;
+	}
+
+	auto allSeq = part->GetAllSequences();
+
+	auto seqIter = allSeq.find(sequence->Name());
+	if (seqIter == allSeq.end())
+	{
+		return;
+	}
+	++seqIter;
+
+	if (seqIter == allSeq.end())
+	{
+		seqIter = allSeq.begin();
+	}
+
+	part->SetSequence(seqIter->first);
+}
+
+void JumpToPreviousSequence(const string & bodyPart)
+{
+	// TODO: implement
+}
+
 int Animation::CurrentFrame(const string & bodyPart)
 {
 	AnimationPart * part = GetPart(bodyPart);

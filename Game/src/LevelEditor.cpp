@@ -139,6 +139,7 @@ void LevelEditor::CheckInput_AnimationPreview()
 		return;
 	}
 
+	// *** PRESSING RIGHT
 	static bool isPressingRight = false;
 
 	if (!isPressingRight && GetAsyncKeyState(VK_RIGHT) < 0)
@@ -149,6 +150,7 @@ void LevelEditor::CheckInput_AnimationPreview()
 		if (anim)
 		{
 			anim->JumpToNextFrame("body");
+			mAnimationPreviewTargetObject->UpdateAnimTexture("body");
 		}
 	}
 
@@ -157,6 +159,7 @@ void LevelEditor::CheckInput_AnimationPreview()
 		isPressingRight = false;
 	}
 
+	// *** PRESSING LEFT
 	static bool isPressingLeft = false;
 
 	if (!isPressingLeft && GetAsyncKeyState(VK_LEFT) < 0)
@@ -167,12 +170,33 @@ void LevelEditor::CheckInput_AnimationPreview()
 		if (anim)
 		{
 			anim->JumpToPreviousFrame("body");
+			mAnimationPreviewTargetObject->UpdateAnimTexture("body");
 		}
 	}
 
 	if (GetAsyncKeyState(VK_LEFT) >= 0)
 	{
 		isPressingLeft = false;
+	}
+
+	// *** PRESSING UP
+	static bool isPressingUp = false;
+
+	if (!isPressingUp && GetAsyncKeyState(VK_UP) < 0)
+	{
+		isPressingUp = true;
+
+		auto anim = mAnimationPreviewTargetObject->GetAnimation();
+		if (anim)
+		{
+			anim->JumpToNextSequence("body");
+			mAnimationPreviewTargetObject->UpdateAnimTexture("body");
+		}
+	}
+
+	if (GetAsyncKeyState(VK_UP) >= 0)
+	{
+		isPressingUp = false;
 	}
 }
 

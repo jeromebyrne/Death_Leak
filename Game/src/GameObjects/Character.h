@@ -87,6 +87,9 @@ public:
 
 	virtual bool CanJump() const;
 
+	// This is used for the animation viewer
+	virtual void UpdateAnimTexture(const string & bodyPart) override;
+
 protected:
 
 	void SetIsWallJumping(bool value);

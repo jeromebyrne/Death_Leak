@@ -26,6 +26,12 @@ public:
 	// This function is needed for viewing animations
 	void JumpToPreviousFrame(const string & bodyPart);
 
+	// This function is needed for viewing animations
+	void JumpToNextSequence(const string & bodyPart);
+
+	// This function is needed for viewing animations
+	void JumpToPreviousSequence(const string & bodyPart);
+
 	// used for animation viewer
 	int CurrentFrame(const string & bodyPart);
 

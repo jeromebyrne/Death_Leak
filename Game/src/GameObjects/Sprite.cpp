@@ -867,7 +867,7 @@ void Sprite::UpdateAnimations()
 	// that inherit from Sprite and override their UpdateAnimations() function.
 	AnimationPart * bodyPart = m_animation->GetPart("body");
 
-	if(bodyPart != 0)
+	if(bodyPart != nullptr)
 	{
 		if(bodyPart->CurrentSequence()->Name() != "Still")
 		{
@@ -878,6 +878,17 @@ void Sprite::UpdateAnimations()
 
 		m_texture = bodyPart->CurrentFrame(); // set the current texture
 	}
+}
+
+void Sprite::UpdateAnimTexture(const string & bodyPart)
+{
+	AnimationPart * part = m_animation->GetPart(bodyPart);
+	if (part == nullptr)
+	{
+		return;
+	}
+
+	m_texture = part->CurrentFrame();
 }
 
 Animation * Sprite::GetAnimation()
