@@ -173,5 +173,23 @@ int Animation::CurrentFrame(const string & bodyPart)
 	return part->FrameNumber();
 }
 
+const string & Animation::CurrentSequenceName(const string & bodyPart)
+{
+	AnimationPart * part = GetPart(bodyPart);
+	if (part == nullptr)
+	{
+		return "Invalid body part";
+	}
+
+	auto sequence = part->CurrentSequence();
+
+	if (!sequence)
+	{
+		return "Sequence not set";
+	}
+
+	return sequence->Name();
+}
+
 
 

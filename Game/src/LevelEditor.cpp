@@ -1046,7 +1046,11 @@ void LevelEditor::Draw()
 			{
 				int currentFrame = animation->CurrentFrame("body");
 
-				Graphics::GetInstance()->DrawDebugText(Utilities::getFormattedString("Animation Frame: %i", currentFrame).c_str(), 100, 200);
+				const string & currentSequenceName = animation->CurrentSequenceName("body");
+
+				Graphics::GetInstance()->DrawDebugText(Utilities::getFormattedString("Current Sequence: %s", currentSequenceName.c_str()).c_str(), 100, 200);
+
+				Graphics::GetInstance()->DrawDebugText(Utilities::getFormattedString("Animation Frame: %i", currentFrame).c_str(), 100, 225);
 			}
 			
 		}	

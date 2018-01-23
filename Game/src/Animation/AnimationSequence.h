@@ -41,7 +41,7 @@ public:
 	{
 		return m_maxFramerate;
 	}
-	inline string Name()
+	inline const string & Name()
 	{
 		return m_name;
 	}

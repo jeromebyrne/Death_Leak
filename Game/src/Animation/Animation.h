@@ -29,6 +29,8 @@ public:
 	// used for animation viewer
 	int CurrentFrame(const string & bodyPart);
 
+	const string & CurrentSequenceName(const string & bodyPart);
+
 private:
 
 	map<string, AnimationPart*> m_animationParts;
