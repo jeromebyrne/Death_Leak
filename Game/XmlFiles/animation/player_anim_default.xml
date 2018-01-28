@@ -502,21 +502,97 @@
     </JumpingDown>
 
     <Crouch FrameRate="40" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
-      <frame filename="Media\characters\player\duck_default\duck_default_000.png" />
-      <frame filename="Media\characters\player\duck_default\duck_default_001.png" />
-      <frame filename="Media\characters\player\duck_default\duck_default_002.png" />
-      <frame filename="Media\characters\player\duck_default\duck_default_003.png" />
-      <frame filename="Media\characters\player\duck_default\duck_default_004.png" />
-      <frame filename="Media\characters\player\duck_default\duck_default_005.png" />
+      <frame filename="Media\characters\player\duck_default\duck_default_000.png" >
+        <skeletonparts>
+          <part start_x="57" start_y="203" end_x="-28" end_y="-30"/>
+          <part start_x="-28" start_y="-30" end_x="85" end_y="-142"/>
+          <part start_x="85" start_y="-142" end_x="57" end_y="-354"/>
+          <part start_x="-28" start_y="-30" end_x="-7" end_y="-182"/>
+          <part start_x="-7" start_y="-182" end_x="-75" end_y="-320"/>
+        </skeletonparts>
+        </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_001.png" >
+        <skeletonparts>
+          <part start_x="92" start_y="173" end_x="-20" end_y="-90"/>
+          <part start_x="-20" start_y="-90" end_x="126" end_y="-139"/>
+          <part start_x="126" start_y="-139" end_x="110" end_y="-354"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_002.png" >
+        <skeletonparts>
+          <part start_x="117" start_y="127" end_x="18" end_y="-90"/>
+          <part start_x="18" start_y="-90" end_x="120" end_y="-150"/>
+          <part start_x="120" start_y="-150" end_x="160" end_y="-354"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_003.png" >
+        <skeletonparts>
+          <part start_x="137" start_y="92" end_x="18" end_y="-90"/>
+          <part start_x="18" start_y="-90" end_x="170" end_y="-150"/>
+          <part start_x="170" start_y="-150" end_x="184" end_y="-361"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_004.png" >
+        <skeletonparts>
+          <part start_x="168" start_y="48" end_x="30" end_y="-175"/>
+          <part start_x="30" start_y="-175" end_x="186" end_y="-150"/>
+          <part start_x="186" start_y="-150" end_x="211" end_y="-361"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_005.png" >
+        <skeletonparts>
+          <part start_x="198" start_y="0" end_x="30" end_y="-175"/>
+          <part start_x="30" start_y="-175" end_x="186" end_y="-150"/>
+          <part start_x="186" start_y="-150" end_x="234" end_y="-362"/>
+        </skeletonparts>
+      </frame>
     </Crouch>
 
     <CrouchUp FrameRate="40" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
-      <frame filename="Media\characters\player\duck_default\duck_default_005.png" />
-      <frame filename="Media\characters\player\duck_default\duck_default_004.png" />
-      <frame filename="Media\characters\player\duck_default\duck_default_003.png" />
-      <frame filename="Media\characters\player\duck_default\duck_default_002.png" />
-      <frame filename="Media\characters\player\duck_default\duck_default_001.png" />
-      <frame filename="Media\characters\player\duck_default\duck_default_000.png" />
+      <frame filename="Media\characters\player\duck_default\duck_default_005.png" >
+        <skeletonparts>
+          <part start_x="198" start_y="0" end_x="30" end_y="-175"/>
+          <part start_x="30" start_y="-175" end_x="186" end_y="-150"/>
+          <part start_x="186" start_y="-150" end_x="234" end_y="-362"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_004.png" >
+        <skeletonparts>
+          <part start_x="168" start_y="48" end_x="30" end_y="-175"/>
+          <part start_x="30" start_y="-175" end_x="186" end_y="-150"/>
+          <part start_x="186" start_y="-150" end_x="211" end_y="-361"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_003.png" >
+        <skeletonparts>
+          <part start_x="137" start_y="92" end_x="18" end_y="-90"/>
+          <part start_x="18" start_y="-90" end_x="170" end_y="-150"/>
+          <part start_x="170" start_y="-150" end_x="184" end_y="-361"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_002.png" >
+        <skeletonparts>
+          <part start_x="117" start_y="127" end_x="18" end_y="-90"/>
+          <part start_x="18" start_y="-90" end_x="120" end_y="-150"/>
+          <part start_x="120" start_y="-150" end_x="160" end_y="-354"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_001.png" >
+        <skeletonparts>
+          <part start_x="92" start_y="173" end_x="-20" end_y="-90"/>
+          <part start_x="-20" start_y="-90" end_x="126" end_y="-139"/>
+          <part start_x="126" start_y="-139" end_x="110" end_y="-354"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_000.png" >
+        <skeletonparts>
+          <part start_x="57" start_y="203" end_x="-28" end_y="-30"/>
+          <part start_x="-28" start_y="-30" end_x="85" end_y="-142"/>
+          <part start_x="85" start_y="-142" end_x="57" end_y="-354"/>
+          <part start_x="-28" start_y="-30" end_x="-7" end_y="-182"/>
+          <part start_x="-7" start_y="-182" end_x="-75" end_y="-320"/>
+        </skeletonparts>
+      </frame>
     </CrouchUp>
 
     <SlidingDown FrameRate="20" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
