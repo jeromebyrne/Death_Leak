@@ -410,16 +410,82 @@
     </StrafeBack>
     
 		<JumpingUp FrameRate="60" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
-      <frame filename="Media\characters\player\jump_up_default\jump_up_default_000.png" />
-      <frame filename="Media\characters\player\jump_up_default\jump_up_default_001.png" />
-      <frame filename="Media\characters\player\jump_up_default\jump_up_default_002.png" />
-      <frame filename="Media\characters\player\jump_up_default\jump_up_default_003.png" />
-      <frame filename="Media\characters\player\jump_up_default\jump_up_default_004.png" />
-      <frame filename="Media\characters\player\jump_up_default\jump_up_default_005.png" />
-      <frame filename="Media\characters\player\jump_up_default\jump_up_default_006.png" />
-      <frame filename="Media\characters\player\jump_up_default\jump_up_default_007.png" />
-      <frame filename="Media\characters\player\jump_up_default\jump_up_default_008.png" />
-      <frame filename="Media\characters\player\jump_up_default\jump_up_default_009.png" />
+      <frame filename="Media\characters\player\jump_up_default\jump_up_default_000.png">
+        <skeletonparts>
+          <part start_x="95" start_y="70" end_x="-42" end_y="-155"/>
+          <part start_x="-42" start_y="-155" end_x="124" end_y="-155"/>
+          <part start_x="124" start_y="-155" end_x="76" end_y="-342"/>
+          <part start_x="-42" start_y="-155" end_x="-19" end_y="-255"/>
+          <part start_x="-19" start_y="-255" end_x="-155" end_y="-305"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_up_default\jump_up_default_001.png" >
+        <skeletonparts>
+          <part start_x="102" start_y="89" end_x="-42" end_y="-155"/>
+          <part start_x="-42" start_y="-155" end_x="124" end_y="-155"/>
+          <part start_x="124" start_y="-155" end_x="76" end_y="-342"/>
+          <part start_x="-42" start_y="-155" end_x="-19" end_y="-255"/>
+          <part start_x="-19" start_y="-255" end_x="-131" end_y="-291"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_up_default\jump_up_default_002.png" >
+        <skeletonparts>
+          <part start_x="100" start_y="115" end_x="-31" end_y="-105"/>
+          <part start_x="-31" start_y="-105" end_x="124" end_y="-155"/>
+          <part start_x="124" start_y="-155" end_x="33" end_y="-342"/>
+          <part start_x="-31" start_y="-105" end_x="26" end_y="-203"/>
+          <part start_x="26" start_y="-203" end_x="-104" end_y="-283"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_up_default\jump_up_default_003.png" >
+        <skeletonparts>
+          <part start_x="96" start_y="137" end_x="-31" end_y="-105"/>
+          <part start_x="-31" start_y="-105" end_x="94" end_y="-170"/>
+          <part start_x="94" start_y="-170" end_x="13" end_y="-333"/>
+          <part start_x="-31" start_y="-105" end_x="26" end_y="-203"/>
+          <part start_x="26" start_y="-203" end_x="-80" end_y="-265"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_up_default\jump_up_default_004.png" >
+        <skeletonparts>
+          <part start_x="96" start_y="159" end_x="-31" end_y="-105"/>
+          <part start_x="-31" start_y="-105" end_x="94" end_y="-170"/>
+          <part start_x="94" start_y="-170" end_x="-25" end_y="-345"/>
+          <part start_x="-31" start_y="-105" end_x="16" end_y="-167"/>
+          <part start_x="16" start_y="-167" end_x="-58" end_y="-248"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_up_default\jump_up_default_005.png" >
+        <skeletonparts>
+          <part start_x="96" start_y="192" end_x="-46" end_y="-56"/>
+          <part start_x="-46" start_y="-56" end_x="40" end_y="-170"/>
+          <part start_x="40" start_y="-170" end_x="-63" end_y="-337"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_up_default\jump_up_default_006.png" >
+        <skeletonparts>
+          <part start_x="89" start_y="212" end_x="-46" end_y="-56"/>
+          <part start_x="-46" start_y="-56" end_x="40" end_y="-170"/>
+          <part start_x="40" start_y="-170" end_x="-83" end_y="-328"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_up_default\jump_up_default_007.png" >
+        <skeletonparts>
+          <part start_x="93" start_y="234" end_x="-46" end_y="-56"/>
+          <part start_x="-46" start_y="-56" end_x="0" end_y="-144"/>
+          <part start_x="0" start_y="-144" end_x="-94" end_y="-315"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_up_default\jump_up_default_008.png" >
+        <skeletonparts>
+          <part start_x="84" start_y="255" end_x="-105" end_y="-287"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_up_default\jump_up_default_009.png" >
+        <skeletonparts>
+          <part start_x="84" start_y="255" end_x="-105" end_y="-287"/>
+        </skeletonparts>
+      </frame>
 		</JumpingUp>
 
     <JumpingDown FrameRate="30" MaxFrameRate="30" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
@@ -589,7 +655,7 @@
       <frame filename="Media\characters\player\melee_1_default\melee_1_default_006.png" />
     </Melee>
 
-    <Melee2 FrameRate="50" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+    <Melee2 FrameRate="60" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
       <frame filename="Media\characters\player\melee_2_default\melee_2_default_000.png" />
       <frame filename="Media\characters\player\melee_2_default\melee_2_default_001.png" />
       <frame filename="Media\characters\player\melee_2_default\melee_2_default_002.png" />
@@ -604,7 +670,7 @@
       <frame filename="Media\characters\player\melee_2_default\melee_2_default_011.png" />
     </Melee2>
 
-    <Melee3 FrameRate="50" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+    <Melee3 FrameRate="60" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
       <frame filename="Media\characters\player\melee_3_default\melee_2_default_012.png" />
       <frame filename="Media\characters\player\melee_3_default\melee_2_default_013.png" />
       <frame filename="Media\characters\player\melee_3_default\melee_2_default_014.png" />

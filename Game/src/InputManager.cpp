@@ -467,7 +467,7 @@ void InputManager::ProcessTestActions_gamepad(XINPUT_STATE padState, CurrentGame
 				// testing
 				Timing::Instance()->SetTimeModifierForNumSeconds(0.1f, 3.5f);
 				NinjaSpawner spawner;
-				//spawner.SpawnMultiple(1, Vector2(player->X(), player->Y()), Vector2(1200, 1200));
+				spawner.SpawnMultiple(1, Vector2(player->X(), player->Y()), Vector2(1200, 1200));
 			}
 
 			pressingLeftShoulder = false;

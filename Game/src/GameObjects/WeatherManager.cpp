@@ -66,14 +66,6 @@ WeatherManager::WeatherManager(void):
 	mSnowLayer3(nullptr),
 	mAllowWeather(true)
 {
-	// preload large textures
-	/*TextureManager::Instance()->LoadTexture("Media\\rainlayer.png");
-	TextureManager::Instance()->LoadTexture("Media\\snowlayer.png");
-	TextureManager::Instance()->LoadTexture("Media\\ground\\ground_rain_1.png");
-	TextureManager::Instance()->LoadTexture("Media\\ground\\ground_rain_2.png");
-	TextureManager::Instance()->LoadTexture("Media\\ground\\ground_rain_3.png");
-	TextureManager::Instance()->LoadTexture("Media\\ground\\ground_rain_4.png");
-	TextureManager::Instance()->LoadTexture("Media\\ground\\ground_rain_5.png");*/
 }
 
 WeatherManager::~WeatherManager(void)
@@ -82,6 +74,17 @@ WeatherManager::~WeatherManager(void)
 
 void WeatherManager::RefreshAssets()
 {
+	// preload large textures
+	TextureManager::Instance()->LoadTexture("Media\\rainlayer.png");
+	TextureManager::Instance()->LoadTexture("Media\\snowlayer.png");
+	/*
+	TextureManager::Instance()->LoadTexture("Media\\ground\\ground_rain_1.png");
+	TextureManager::Instance()->LoadTexture("Media\\ground\\ground_rain_2.png");
+	TextureManager::Instance()->LoadTexture("Media\\ground\\ground_rain_3.png");
+	TextureManager::Instance()->LoadTexture("Media\\ground\\ground_rain_4.png");
+	TextureManager::Instance()->LoadTexture("Media\\ground\\ground_rain_5.png");
+	*/
+
 	float gameScale = Game::GetGameScale().X;
 
 	for (auto state : mCurrentStates)

@@ -54,9 +54,12 @@ void AIStateRangeAttack::Update(float delta)
 			return; // skip this update
 		}
 
+		bool npcInView = Camera2D::GetInstance()->IsObjectInView(m_npc);
+
 		Vector3 distanceSquaredVector = m_npc->m_player->Position() - m_npc->Position();
 
-		if (std::abs(distanceSquaredVector.X > 3000) ||
+		if (npcInView && 
+			std::abs(distanceSquaredVector.X > 3000) ||
 			(std::abs(distanceSquaredVector.Y > 1000) && m_npc->m_player->IsOnSolidSurface() && m_npc->m_player->GetTimeOnSolidSurface() > 1.0f))
 		{
 			if (mTimeUntilCanTeleport <= 0.0f)
@@ -87,7 +90,7 @@ void AIStateRangeAttack::Update(float delta)
 
 				m_npc->AccelerateX(distanceSquaredVector.X);
 			}
-			else
+			else if (npcInView)
 			{
 				m_npc->StopXAccelerating();
 				GAME_ASSERT(GameObjectManager::Instance()->GetPlayer());
