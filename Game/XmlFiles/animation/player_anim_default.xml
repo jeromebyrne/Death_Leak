@@ -489,16 +489,73 @@
 		</JumpingUp>
 
     <JumpingDown FrameRate="30" MaxFrameRate="30" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
-      <frame filename="Media\characters\player\jump_down_default\jump_down_default_000.png" />
-      <frame filename="Media\characters\player\jump_down_default\jump_down_default_001.png" />
-      <frame filename="Media\characters\player\jump_down_default\jump_down_default_002.png" />
-      <frame filename="Media\characters\player\jump_down_default\jump_down_default_003.png" />
-      <frame filename="Media\characters\player\jump_down_default\jump_down_default_004.png" />
-      <frame filename="Media\characters\player\jump_down_default\jump_down_default_005.png" />
-      <frame filename="Media\characters\player\jump_down_default\jump_down_default_006.png" />
-      <frame filename="Media\characters\player\jump_down_default\jump_down_default_007.png" />
-      <frame filename="Media\characters\player\jump_down_default\jump_down_default_008.png" />
-      <frame filename="Media\characters\player\jump_down_default\jump_down_default_009.png" />
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_000.png" >
+        <skeletonparts>
+          <part start_x="84" start_y="297" end_x="-20" end_y="-65"/>
+          <part start_x="-20" start_y="-65" end_x="-135" end_y="-235"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_001.png" >
+        <skeletonparts>
+          <part start_x="84" start_y="297" end_x="-20" end_y="-65"/>
+          <part start_x="-20" start_y="-65" end_x="-135" end_y="-235"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_002.png" >
+        <skeletonparts>
+          <part start_x="84" start_y="297" end_x="-20" end_y="-65"/>
+          <part start_x="-20" start_y="-65" end_x="-135" end_y="-235"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_003.png" >
+        <skeletonparts>
+          <part start_x="120" start_y="291" end_x="-20" end_y="65"/>
+          <part start_x="-20" start_y="65" end_x="53" end_y="-46"/>
+          <part start_x="53" start_y="-46" end_x="-107" end_y="-175"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_004.png" >
+        <skeletonparts>
+          <part start_x="120" start_y="291" end_x="-20" end_y="65"/>
+          <part start_x="-20" start_y="65" end_x="53" end_y="-46"/>
+          <part start_x="53" start_y="-46" end_x="-107" end_y="-175"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_005.png" >
+        <skeletonparts>
+          <part start_x="120" start_y="291" end_x="-20" end_y="65"/>
+          <part start_x="-20" start_y="65" end_x="53" end_y="-46"/>
+          <part start_x="53" start_y="-46" end_x="-107" end_y="-175"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_006.png" >
+        <skeletonparts>
+          <part start_x="129" start_y="280" end_x="-20" end_y="65"/>
+          <part start_x="-20" start_y="65" end_x="142" end_y="32"/>
+          <part start_x="142" start_y="32" end_x="-9" end_y="-102"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_007.png" >
+        <skeletonparts>
+          <part start_x="129" start_y="280" end_x="-20" end_y="65"/>
+          <part start_x="-20" start_y="65" end_x="152" end_y="82"/>
+          <part start_x="152" start_y="82" end_x="42" end_y="-92"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_008.png" >
+        <skeletonparts>
+          <part start_x="129" start_y="280" end_x="-20" end_y="65"/>
+          <part start_x="-20" start_y="65" end_x="152" end_y="82"/>
+          <part start_x="152" start_y="82" end_x="130" end_y="-118"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_009.png" >
+        <skeletonparts>
+          <part start_x="146" start_y="253" end_x="-20" end_y="65"/>
+          <part start_x="-20" start_y="65" end_x="152" end_y="82"/>
+          <part start_x="152" start_y="82" end_x="204" end_y="-118"/>
+        </skeletonparts>
+      </frame>
     </JumpingDown>
 
     <Crouch FrameRate="40" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
