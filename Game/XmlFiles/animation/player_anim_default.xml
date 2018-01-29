@@ -779,13 +779,55 @@
     </SwimBurstKick>
 
     <Melee FrameRate="60" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
-      <frame filename="Media\characters\player\melee_1_default\melee_1_default_000.png" />
-      <frame filename="Media\characters\player\melee_1_default\melee_1_default_001.png" />
-      <frame filename="Media\characters\player\melee_1_default\melee_1_default_002.png" />
-      <frame filename="Media\characters\player\melee_1_default\melee_1_default_003.png" />
-      <frame filename="Media\characters\player\melee_1_default\melee_1_default_004.png" />
-      <frame filename="Media\characters\player\melee_1_default\melee_1_default_005.png" />
-      <frame filename="Media\characters\player\melee_1_default\melee_1_default_006.png" />
+      <frame filename="Media\characters\player\melee_1_default\melee_1_default_000.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="130" end_x="-11" end_y="-109"/>
+          <part start_x="-11" start_y="-109" end_x="129" end_y="-150"/>
+          <part start_x="129" start_y="-150" end_x="97" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_1_default\melee_1_default_001.png" >
+        <skeletonparts>
+          <part start_x="114" start_y="142" end_x="-41" end_y="-109"/>
+          <part start_x="-41" start_y="-109" end_x="99" end_y="-150"/>
+          <part start_x="99" start_y="-150" end_x="57" end_y="-327"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_1_default\melee_1_default_002.png" >
+        <skeletonparts>
+          <part start_x="78" start_y="145" end_x="-41" end_y="-109"/>
+          <part start_x="-41" start_y="-109" end_x="90" end_y="-114"/>
+          <part start_x="90" start_y="-114" end_x="18" end_y="-298"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_1_default\melee_1_default_003.png" >
+        <skeletonparts>
+          <part start_x="54" start_y="145" end_x="-89" end_y="-89"/>
+          <part start_x="-89" start_y="-89" end_x="65" end_y="-134"/>
+          <part start_x="65" start_y="-134" end_x="-34" end_y="-300"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_1_default\melee_1_default_004.png" >
+        <skeletonparts>
+          <part start_x="33" start_y="140" end_x="-89" end_y="-89"/>
+          <part start_x="-89" start_y="-89" end_x="19" end_y="-150"/>
+          <part start_x="19" start_y="-150" end_x="-82" end_y="-300"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_1_default\melee_1_default_005.png" >
+        <skeletonparts>
+          <part start_x="11" start_y="128" end_x="-142" end_y="-108"/>
+          <part start_x="-142" start_y="-108" end_x="-18" end_y="-178"/>
+          <part start_x="-18" start_y="-178" end_x="-88" end_y="-344"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_1_default\melee_1_default_006.png" >
+        <skeletonparts>
+          <part start_x="-27" start_y="118" end_x="-142" end_y="-108"/>
+          <part start_x="-142" start_y="-108" end_x="-28" end_y="-208"/>
+          <part start_x="-28" start_y="-208" end_x="-88" end_y="-344"/>
+        </skeletonparts>
+      </frame>
     </Melee>
 
     <Melee2 FrameRate="60" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
