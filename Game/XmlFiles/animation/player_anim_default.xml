@@ -653,11 +653,41 @@
     </CrouchUp>
 
     <SlidingDown FrameRate="20" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
-      <frame filename="Media\characters\player\wall_slide_default\wall_slide_default_000.png" />
-      <frame filename="Media\characters\player\wall_slide_default\wall_slide_default_001.png" />
-      <frame filename="Media\characters\player\wall_slide_default\wall_slide_default_002.png" />
-      <frame filename="Media\characters\player\wall_slide_default\wall_slide_default_003.png" />
-      <frame filename="Media\characters\player\wall_slide_default\wall_slide_default_004.png" />
+      <frame filename="Media\characters\player\wall_slide_default\wall_slide_default_000.png" >
+        <skeletonparts>
+          <part start_x="76" start_y="180" end_x="251" end_y="-23"/>
+          <part start_x="251" start_y="-23" end_x="150" end_y="-135"/>
+          <part start_x="150" start_y="-135" end_x="300" end_y="-267"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\wall_slide_default\wall_slide_default_001.png" >
+        <skeletonparts>
+          <part start_x="76" start_y="180" end_x="251" end_y="-23"/>
+          <part start_x="251" start_y="-23" end_x="150" end_y="-135"/>
+          <part start_x="150" start_y="-135" end_x="300" end_y="-267"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\wall_slide_default\wall_slide_default_002.png" >
+        <skeletonparts>
+          <part start_x="76" start_y="180" end_x="251" end_y="-23"/>
+          <part start_x="251" start_y="-23" end_x="150" end_y="-135"/>
+          <part start_x="150" start_y="-135" end_x="300" end_y="-267"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\wall_slide_default\wall_slide_default_003.png" >
+        <skeletonparts>
+          <part start_x="76" start_y="180" end_x="251" end_y="-23"/>
+          <part start_x="251" start_y="-23" end_x="150" end_y="-135"/>
+          <part start_x="150" start_y="-135" end_x="300" end_y="-267"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\wall_slide_default\wall_slide_default_004.png" >
+        <skeletonparts>
+          <part start_x="76" start_y="180" end_x="251" end_y="-23"/>
+          <part start_x="251" start_y="-23" end_x="150" end_y="-135"/>
+          <part start_x="150" start_y="-135" end_x="300" end_y="-267"/>
+        </skeletonparts>
+      </frame>
     </SlidingDown>
 
     <ImpactLandSoft FrameRate="30" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
