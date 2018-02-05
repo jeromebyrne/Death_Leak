@@ -52,7 +52,7 @@ PS_INPUT VS( VS_INPUT input )
 //--------------------------------------------------------------------------------------
 float4 PS( PS_INPUT input) : SV_Target
 {
-	float4 textureSample = saturate(lightColor) * txDiffuse.Sample(samLinear, input.Tex);
+	float4 textureSample = lightColor * txDiffuse.Sample(samLinear, input.Tex);
 
 	textureSample.a = textureSample.a * alpha;
     

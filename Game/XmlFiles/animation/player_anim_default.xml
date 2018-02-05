@@ -821,36 +821,212 @@
     </SlidingDown>
     
     <Roll FrameRate="60" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
-      <frame filename="Media\characters\player\roll_default\roll_default_000.png" />
-      <frame filename="Media\characters\player\roll_default\roll_default_001.png" />
-      <frame filename="Media\characters\player\roll_default\roll_default_002.png" />
-      <frame filename="Media\characters\player\roll_default\roll_default_003.png" />
-      <frame filename="Media\characters\player\roll_default\roll_default_004.png" />
-      <frame filename="Media\characters\player\roll_default\roll_default_005.png" />
-      <frame filename="Media\characters\player\roll_default\roll_default_006.png" />
-      <frame filename="Media\characters\player\roll_default\roll_default_007.png" />
-      <frame filename="Media\characters\player\roll_default\roll_default_008.png" />
-      <frame filename="Media\characters\player\roll_default\roll_default_009.png" />
-      <frame filename="Media\characters\player\roll_default\roll_default_010.png" sfx_type="footstep" />
-      <frame filename="Media\characters\player\roll_default\roll_default_011.png" />
-      <frame filename="Media\characters\player\roll_default\roll_default_012.png" />
-      <frame filename="Media\characters\player\roll_default\roll_default_013.png" />
-      <frame filename="Media\characters\player\roll_default\roll_default_014.png" />
-      <frame filename="Media\characters\player\roll_default\roll_default_015.png" />
-      <frame filename="Media\characters\player\roll_default\roll_default_016.png" sfx_type="footstep" />
-      <frame filename="Media\characters\player\roll_default\roll_default_017.png" />
-      <frame filename="Media\characters\player\roll_default\roll_default_018.png" />
-      <frame filename="Media\characters\player\roll_default\roll_default_019.png" />
-      <frame filename="Media\characters\player\roll_default\roll_default_020.png" />
-      <frame filename="Media\characters\player\roll_default\roll_default_021.png" />
-      <frame filename="Media\characters\player\roll_default\roll_default_022.png" />
-      <frame filename="Media\characters\player\roll_default\roll_default_023.png" />
-      <frame filename="Media\characters\player\roll_default\roll_default_024.png" />
-      <frame filename="Media\characters\player\roll_default\roll_default_025.png" />
-      <frame filename="Media\characters\player\roll_default\roll_default_026.png" />
-      <frame filename="Media\characters\player\roll_default\roll_default_027.png" />
-      <frame filename="Media\characters\player\roll_default\roll_default_028.png" />
-      <frame filename="Media\characters\player\roll_default\roll_default_029.png" />
+      <frame filename="Media\characters\player\roll_default\roll_default_000.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="180" end_x="-22" end_y="-56"/>
+          <part start_x="-22" start_y="-56" end_x="129" end_y="-113"/>
+          <part start_x="129" start_y="-113" end_x="23" end_y="-300"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_001.png" >
+        <skeletonparts>
+          <part start_x="180" start_y="134" end_x="-215" end_y="-236"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_002.png" >
+        <skeletonparts>
+          <part start_x="227" start_y="61" end_x="-270" end_y="-170"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_003.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="130" end_x="-11" end_y="-109"/>
+          <part start_x="-11" start_y="-109" end_x="129" end_y="-150"/>
+          <part start_x="129" start_y="-150" end_x="97" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_004.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="130" end_x="-11" end_y="-109"/>
+          <part start_x="-11" start_y="-109" end_x="129" end_y="-150"/>
+          <part start_x="129" start_y="-150" end_x="97" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_005.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="130" end_x="-11" end_y="-109"/>
+          <part start_x="-11" start_y="-109" end_x="129" end_y="-150"/>
+          <part start_x="129" start_y="-150" end_x="97" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_006.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="130" end_x="-11" end_y="-109"/>
+          <part start_x="-11" start_y="-109" end_x="129" end_y="-150"/>
+          <part start_x="129" start_y="-150" end_x="97" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_007.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="130" end_x="-11" end_y="-109"/>
+          <part start_x="-11" start_y="-109" end_x="129" end_y="-150"/>
+          <part start_x="129" start_y="-150" end_x="97" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_008.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="130" end_x="-11" end_y="-109"/>
+          <part start_x="-11" start_y="-109" end_x="129" end_y="-150"/>
+          <part start_x="129" start_y="-150" end_x="97" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_009.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="130" end_x="-11" end_y="-109"/>
+          <part start_x="-11" start_y="-109" end_x="129" end_y="-150"/>
+          <part start_x="129" start_y="-150" end_x="97" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_010.png" sfx_type="footstep" >
+        <skeletonparts>
+          <part start_x="126" start_y="130" end_x="-11" end_y="-109"/>
+          <part start_x="-11" start_y="-109" end_x="129" end_y="-150"/>
+          <part start_x="129" start_y="-150" end_x="97" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_011.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="130" end_x="-11" end_y="-109"/>
+          <part start_x="-11" start_y="-109" end_x="129" end_y="-150"/>
+          <part start_x="129" start_y="-150" end_x="97" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_012.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="130" end_x="-11" end_y="-109"/>
+          <part start_x="-11" start_y="-109" end_x="129" end_y="-150"/>
+          <part start_x="129" start_y="-150" end_x="97" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_013.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="130" end_x="-11" end_y="-109"/>
+          <part start_x="-11" start_y="-109" end_x="129" end_y="-150"/>
+          <part start_x="129" start_y="-150" end_x="97" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_014.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="130" end_x="-11" end_y="-109"/>
+          <part start_x="-11" start_y="-109" end_x="129" end_y="-150"/>
+          <part start_x="129" start_y="-150" end_x="97" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_015.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="130" end_x="-11" end_y="-109"/>
+          <part start_x="-11" start_y="-109" end_x="129" end_y="-150"/>
+          <part start_x="129" start_y="-150" end_x="97" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_016.png" sfx_type="footstep" >
+        <skeletonparts>
+          <part start_x="126" start_y="130" end_x="-11" end_y="-109"/>
+          <part start_x="-11" start_y="-109" end_x="129" end_y="-150"/>
+          <part start_x="129" start_y="-150" end_x="97" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_017.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="130" end_x="-11" end_y="-109"/>
+          <part start_x="-11" start_y="-109" end_x="129" end_y="-150"/>
+          <part start_x="129" start_y="-150" end_x="97" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_018.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="130" end_x="-11" end_y="-109"/>
+          <part start_x="-11" start_y="-109" end_x="129" end_y="-150"/>
+          <part start_x="129" start_y="-150" end_x="97" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_019.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="130" end_x="-11" end_y="-109"/>
+          <part start_x="-11" start_y="-109" end_x="129" end_y="-150"/>
+          <part start_x="129" start_y="-150" end_x="97" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_020.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="130" end_x="-11" end_y="-109"/>
+          <part start_x="-11" start_y="-109" end_x="129" end_y="-150"/>
+          <part start_x="129" start_y="-150" end_x="97" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_021.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="130" end_x="-11" end_y="-109"/>
+          <part start_x="-11" start_y="-109" end_x="129" end_y="-150"/>
+          <part start_x="129" start_y="-150" end_x="97" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_022.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="130" end_x="-11" end_y="-109"/>
+          <part start_x="-11" start_y="-109" end_x="129" end_y="-150"/>
+          <part start_x="129" start_y="-150" end_x="97" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_023.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="130" end_x="-11" end_y="-109"/>
+          <part start_x="-11" start_y="-109" end_x="129" end_y="-150"/>
+          <part start_x="129" start_y="-150" end_x="97" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_024.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="130" end_x="-11" end_y="-109"/>
+          <part start_x="-11" start_y="-109" end_x="129" end_y="-150"/>
+          <part start_x="129" start_y="-150" end_x="97" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_025.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="130" end_x="-11" end_y="-109"/>
+          <part start_x="-11" start_y="-109" end_x="129" end_y="-150"/>
+          <part start_x="129" start_y="-150" end_x="97" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_026.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="130" end_x="-11" end_y="-109"/>
+          <part start_x="-11" start_y="-109" end_x="129" end_y="-150"/>
+          <part start_x="129" start_y="-150" end_x="97" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_027.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="130" end_x="-11" end_y="-109"/>
+          <part start_x="-11" start_y="-109" end_x="129" end_y="-150"/>
+          <part start_x="129" start_y="-150" end_x="97" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_028.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="130" end_x="-11" end_y="-109"/>
+          <part start_x="-11" start_y="-109" end_x="129" end_y="-150"/>
+          <part start_x="129" start_y="-150" end_x="97" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_029.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="130" end_x="-11" end_y="-109"/>
+          <part start_x="-11" start_y="-109" end_x="129" end_y="-150"/>
+          <part start_x="129" start_y="-150" end_x="97" end_y="-360"/>
+        </skeletonparts>
+      </frame>
     </Roll>
 
     <SwimIdle FrameRate="10" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">

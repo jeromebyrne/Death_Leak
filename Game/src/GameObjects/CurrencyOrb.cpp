@@ -79,8 +79,8 @@ bool CurrencyOrb::OnCollision(SolidMovingSprite * object)
 	{
 		mIsLargeType ? DoCollisionLargeType(player) : DoCollisionSmallType(player);
 
-		player->SetShowBurstTint(true);
-		player->SetburstTintStartTime(Timing::Instance()->GetTotalTimeSeconds());
+		// player->SetShowBurstTint(true);
+		// player->SetburstTintStartTime(Timing::Instance()->GetTotalTimeSeconds());
 
 		if (mParticleTrailObjectId != -1)
 		{
