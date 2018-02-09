@@ -17,10 +17,10 @@
 
   <sprite name="265_crt_effect"
           process_input="false"
-          posX ="-960" posY ="-540" width="1920" height ="1080"
-          image="Media\crt_effect.png"
+          posX ="-960" posY ="-640" width="1920" height ="1280"
+          image="Media\UI\canvas_layer.png"
           hflip="false" vflip="false"
-          alpha="0.2"
+          alpha="0.15"
           use_standard_effect="true">
   </sprite>
 
