@@ -15,6 +15,7 @@
     />
   </animatedsprite>
 
+  <!--
   <sprite name="265_crt_effect"
           process_input="false"
           posX ="-960" posY ="-640" width="1920" height ="1280"
@@ -23,6 +24,7 @@
           alpha="0.15"
           use_standard_effect="true">
   </sprite>
+  -->
 
   <sprite name="27_frame_left"
           process_input="false"

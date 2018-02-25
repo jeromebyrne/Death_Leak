@@ -153,7 +153,7 @@ void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 
 	if (!player->JustFellFromLargeDistance() &&
 		!player->IsDoingMelee() &&
-		padState.Gamepad.wButtons & XINPUT_GAMEPAD_A)
+		padState.Gamepad.bRightTrigger & XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
 	{
 		mCurrentGamepadState.mPressingJump = true;
 	}
@@ -236,7 +236,7 @@ void InputManager::ProcessRoll_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 
 	if (!player->JustFellFromLargeDistance() &&
 		!player->IsDoingMelee() &&
-		padState.Gamepad.wButtons & XINPUT_GAMEPAD_B)
+		padState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
 	{
 		mCurrentGamepadState.mPressingRoll = true;
 	}
@@ -260,7 +260,7 @@ void InputManager::ProcessMelee_gamepad(XINPUT_STATE padState, CurrentGameplayAc
 
 	if (!player->JustFellFromLargeDistance() &&
 		!player->IsDoingMelee() &&
-		padState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
+		padState.Gamepad.wButtons & XINPUT_GAMEPAD_A)
 	{
 		mCurrentGamepadState.mPressingMelee = true;
 	}
@@ -302,6 +302,16 @@ void InputManager::ProcessAimDirection_gamepad(XINPUT_STATE padState, CurrentGam
 {
 	currentActions.mAimDirection = Vector2(player->IsStrafing() ? player->GetStrafeDirectionX() : player->DirectionX(), 0);
 
+	if (std::abs(padState.Gamepad.sThumbRX < -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE) ||
+		std::abs(padState.Gamepad.sThumbRY > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE) )
+	{
+		currentActions.mAimDirection = Vector2(padState.Gamepad.sThumbRX, padState.Gamepad.sThumbRY);
+		currentActions.mAimDirection.Normalise();
+	}
+
+	player->SetAimLineDirection(currentActions.mAimDirection);
+
+	/*
 	if (player->IsOnSolidLine())
 	{
 		currentActions.mAimDirection = player->GetCurrentSolidLineDirection();
@@ -339,29 +349,28 @@ void InputManager::ProcessAimDirection_gamepad(XINPUT_STATE padState, CurrentGam
 	}
 
 	player->SetAimLineDirection(currentActions.mAimDirection);
+	*/
 }
 
 void InputManager::ProcessPrimaryWeapon_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player)
 {
 	if (!player->JustFellFromLargeDistance() &&
 		!player->IsDoingMelee() &&
-		padState.Gamepad.wButtons & XINPUT_GAMEPAD_X)
+		(std::abs(padState.Gamepad.sThumbRX) > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE ||
+		std::abs(padState.Gamepad.sThumbRY) > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE))
 	{
 		mCurrentGamepadState.mPressingPrimaryWeapon = true;
+
+		// let the player fire and return a projectile object which is added to the world
+		Projectile * p = player->FireWeapon(currentActions.mAimDirection);
+
+		if (p)
+		{
+			GameObjectManager::Instance()->AddGameObject(p);
+		}
 	}
 	else
 	{
-		if (mCurrentGamepadState.mPressingPrimaryWeapon)
-		{
-			// let the player fire and return a projectile object which is added to the world
-			Projectile * p = player->FireWeapon(currentActions.mAimDirection);
-
-			if (p)
-			{
-				GameObjectManager::Instance()->AddGameObject(p);
-			}
-		}
-
 		mCurrentGamepadState.mPressingPrimaryWeapon = false;
 	}
 }
@@ -537,7 +546,7 @@ void InputManager::ProcessGameplay_GamePad()
 
 	ProcessSecondaryWeapon_gamepad(padState, currentActions, player);
 
-	ProcessStrafing_gamepad(padState, currentActions, player, levelProps);
+	// ProcessStrafing_gamepad(padState, currentActions, player, levelProps);
 
 	ProcessSwimDown_gamepad(padState, currentActions, player, levelProps);
 

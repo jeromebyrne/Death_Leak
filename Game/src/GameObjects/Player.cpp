@@ -19,13 +19,13 @@ static const float kAimLineOpacityDecreaseRate = 1.8f;
 
 Player::Player(float x, float y, float z, float width, float height, float breadth) :
 Character(x, y, z, width, height, breadth),
-	mProjectileFireDelay(0.1f),
+	mProjectileFireDelay(0.15f),
 	mTimeUntilProjectileReady(0.0f),
-	mFireBurstNum(5),
+	mFireBurstNum(0),
 	mCurrentBurstNum(0),
-	mFireBurstDelay(0.5f),
+	mFireBurstDelay(0.45f),
 	mTimeUntilFireBurstAvailable(0.0f),
-	mBurstFireEnabled(false),
+	mBurstFireEnabled(true),
 	mAimLineSprite(nullptr),
 	mTimeUntilAimLineStartDisappearing(0.0f)
 {
@@ -128,7 +128,7 @@ void Player::Update(float delta)
 	// update base classes
 	Character::Update(delta);
 
-	if (mBurstFireEnabled && mCurrentBurstNum >= mFireBurstNum)
+	if (mBurstFireEnabled && mFireBurstNum > 0 && mCurrentBurstNum >= mFireBurstNum)
 	{
 		mCurrentBurstNum = 0;
 		mTimeUntilFireBurstAvailable = mFireBurstDelay;
@@ -192,7 +192,7 @@ Projectile * Player::FireWeapon(Vector2 direction)
 	}
 
 	mTimeUntilAimLineStartDisappearing = kAimLineOpacityDecrementDelay;
-	if ((mBurstFireEnabled && mCurrentBurstNum >= mFireBurstNum) || 
+	if ((mBurstFireEnabled && (mCurrentBurstNum >= mFireBurstNum && mFireBurstNum > 0)) ||
 		mTimeUntilProjectileReady > 0.0f)
 	{
 		return nullptr;
