@@ -1,0 +1,1463 @@
+
+<data>
+  <body OffsetX="0" OffsetY="8" SizeX="40" SizeY="80">
+
+  <Still FrameRate="20" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+    <frame filename="Media\characters\player\idle_default\idle_default_000.png">
+      <skeletonparts>
+        <part start_x="57" start_y="203" end_x="-28" end_y="-30"/>
+        <part start_x="-28" start_y="-30" end_x="85" end_y="-142"/>
+        <part start_x="85" start_y="-142" end_x="57" end_y="-354"/>
+        <part start_x="-28" start_y="-30" end_x="-7" end_y="-182"/>
+        <part start_x="-7" start_y="-182" end_x="-75" end_y="-320"/>
+      </skeletonparts>
+    </frame>
+    <frame filename="Media\characters\player\idle_default\idle_default_001.png">
+      <skeletonparts>
+        <part start_x="57" start_y="203" end_x="-28" end_y="-30"/>
+        <part start_x="-28" start_y="-30" end_x="85" end_y="-142"/>
+        <part start_x="85" start_y="-142" end_x="57" end_y="-354"/>
+        <part start_x="-28" start_y="-30" end_x="-7" end_y="-182"/>
+        <part start_x="-7" start_y="-182" end_x="-75" end_y="-320"/>
+      </skeletonparts>
+    </frame>
+    <frame filename="Media\characters\player\idle_default\idle_default_002.png" >
+      <skeletonparts>
+        <part start_x="57" start_y="203" end_x="-28" end_y="-30"/>
+        <part start_x="-28" start_y="-30" end_x="85" end_y="-142"/>
+        <part start_x="85" start_y="-142" end_x="57" end_y="-354"/>
+        <part start_x="-28" start_y="-30" end_x="-7" end_y="-182"/>
+        <part start_x="-7" start_y="-182" end_x="-75" end_y="-320"/>
+      </skeletonparts>
+    </frame>
+    <frame filename="Media\characters\player\idle_default\idle_default_003.png" >
+      <skeletonparts>
+        <part start_x="57" start_y="203" end_x="-28" end_y="-30"/>
+        <part start_x="-28" start_y="-30" end_x="85" end_y="-142"/>
+        <part start_x="85" start_y="-142" end_x="57" end_y="-354"/>
+        <part start_x="-28" start_y="-30" end_x="-7" end_y="-182"/>
+        <part start_x="-7" start_y="-182" end_x="-75" end_y="-320"/>
+      </skeletonparts>
+    </frame>
+    <frame filename="Media\characters\player\idle_default\idle_default_004.png" >
+      <skeletonparts>
+        <part start_x="57" start_y="203" end_x="-28" end_y="-30"/>
+        <part start_x="-28" start_y="-30" end_x="85" end_y="-142"/>
+        <part start_x="85" start_y="-142" end_x="57" end_y="-354"/>
+        <part start_x="-28" start_y="-30" end_x="-7" end_y="-182"/>
+        <part start_x="-7" start_y="-182" end_x="-75" end_y="-320"/>
+      </skeletonparts>
+    </frame>
+    <frame filename="Media\characters\player\idle_default\idle_default_005.png" >
+      <skeletonparts>
+        <part start_x="57" start_y="203" end_x="-28" end_y="-30"/>
+        <part start_x="-28" start_y="-30" end_x="85" end_y="-142"/>
+        <part start_x="85" start_y="-142" end_x="57" end_y="-354"/>
+        <part start_x="-28" start_y="-30" end_x="-7" end_y="-182"/>
+        <part start_x="-7" start_y="-182" end_x="-75" end_y="-320"/>
+      </skeletonparts>
+    </frame>
+    <frame filename="Media\characters\player\idle_default\idle_default_006.png" >
+      <skeletonparts>
+        <part start_x="57" start_y="203" end_x="-28" end_y="-30"/>
+        <part start_x="-28" start_y="-30" end_x="85" end_y="-142"/>
+        <part start_x="85" start_y="-142" end_x="57" end_y="-354"/>
+        <part start_x="-28" start_y="-30" end_x="-7" end_y="-182"/>
+        <part start_x="-7" start_y="-182" end_x="-75" end_y="-320"/>
+      </skeletonparts>
+    </frame>
+    <frame filename="Media\characters\player\idle_default\idle_default_007.png" >
+      <skeletonparts>
+        <part start_x="57" start_y="203" end_x="-28" end_y="-30"/>
+        <part start_x="-28" start_y="-30" end_x="85" end_y="-142"/>
+        <part start_x="85" start_y="-142" end_x="57" end_y="-354"/>
+        <part start_x="-28" start_y="-30" end_x="-7" end_y="-182"/>
+        <part start_x="-7" start_y="-182" end_x="-75" end_y="-320"/>
+      </skeletonparts>
+    </frame>
+    <frame filename="Media\characters\player\idle_default\idle_default_008.png" >
+      <skeletonparts>
+        <part start_x="57" start_y="203" end_x="-28" end_y="-30"/>
+        <part start_x="-28" start_y="-30" end_x="85" end_y="-142"/>
+        <part start_x="85" start_y="-142" end_x="57" end_y="-354"/>
+        <part start_x="-28" start_y="-30" end_x="-7" end_y="-182"/>
+        <part start_x="-7" start_y="-182" end_x="-75" end_y="-320"/>
+      </skeletonparts>
+    </frame>
+    <frame filename="Media\characters\player\idle_default\idle_default_009.png" >
+      <skeletonparts>
+        <part start_x="57" start_y="203" end_x="-28" end_y="-30"/>
+        <part start_x="-28" start_y="-30" end_x="85" end_y="-142"/>
+        <part start_x="85" start_y="-142" end_x="57" end_y="-354"/>
+        <part start_x="-28" start_y="-30" end_x="-7" end_y="-182"/>
+        <part start_x="-7" start_y="-182" end_x="-75" end_y="-320"/>
+      </skeletonparts>
+    </frame>
+    <frame filename="Media\characters\player\idle_default\idle_default_010.png" >
+      <skeletonparts>
+        <part start_x="57" start_y="203" end_x="-28" end_y="-30"/>
+        <part start_x="-28" start_y="-30" end_x="85" end_y="-142"/>
+        <part start_x="85" start_y="-142" end_x="57" end_y="-354"/>
+        <part start_x="-28" start_y="-30" end_x="-7" end_y="-182"/>
+        <part start_x="-7" start_y="-182" end_x="-75" end_y="-320"/>
+      </skeletonparts>
+    </frame>
+    <frame filename="Media\characters\player\idle_default\idle_default_011.png" >
+      <skeletonparts>
+        <part start_x="57" start_y="203" end_x="-28" end_y="-30"/>
+        <part start_x="-28" start_y="-30" end_x="85" end_y="-142"/>
+        <part start_x="85" start_y="-142" end_x="57" end_y="-354"/>
+        <part start_x="-28" start_y="-30" end_x="-7" end_y="-182"/>
+        <part start_x="-7" start_y="-182" end_x="-75" end_y="-320"/>
+      </skeletonparts>
+    </frame>
+    <frame filename="Media\characters\player\idle_default\idle_default_012.png" >
+      <skeletonparts>
+        <part start_x="57" start_y="203" end_x="-28" end_y="-30"/>
+        <part start_x="-28" start_y="-30" end_x="85" end_y="-142"/>
+        <part start_x="85" start_y="-142" end_x="57" end_y="-354"/>
+        <part start_x="-28" start_y="-30" end_x="-7" end_y="-182"/>
+        <part start_x="-7" start_y="-182" end_x="-75" end_y="-320"/>
+      </skeletonparts>
+    </frame>
+    <frame filename="Media\characters\player\idle_default\idle_default_013.png" >
+      <skeletonparts>
+        <part start_x="57" start_y="203" end_x="-28" end_y="-30"/>
+        <part start_x="-28" start_y="-30" end_x="85" end_y="-142"/>
+        <part start_x="85" start_y="-142" end_x="57" end_y="-354"/>
+        <part start_x="-28" start_y="-30" end_x="-7" end_y="-182"/>
+        <part start_x="-7" start_y="-182" end_x="-75" end_y="-320"/>
+      </skeletonparts>
+    </frame>
+    <frame filename="Media\characters\player\idle_default\idle_default_014.png" >
+      <skeletonparts>
+        <part start_x="57" start_y="203" end_x="-28" end_y="-30"/>
+        <part start_x="-28" start_y="-30" end_x="85" end_y="-142"/>
+        <part start_x="85" start_y="-142" end_x="57" end_y="-354"/>
+        <part start_x="-28" start_y="-30" end_x="-7" end_y="-182"/>
+        <part start_x="-7" start_y="-182" end_x="-75" end_y="-320"/>
+      </skeletonparts>
+    </frame>
+    <frame filename="Media\characters\player\idle_default\idle_default_015.png" >
+      <skeletonparts>
+        <part start_x="57" start_y="203" end_x="-28" end_y="-30"/>
+        <part start_x="-28" start_y="-30" end_x="85" end_y="-142"/>
+        <part start_x="85" start_y="-142" end_x="57" end_y="-354"/>
+        <part start_x="-28" start_y="-30" end_x="-7" end_y="-182"/>
+        <part start_x="-7" start_y="-182" end_x="-75" end_y="-320"/>
+      </skeletonparts>
+    </frame>
+    <frame filename="Media\characters\player\idle_default\idle_default_016.png" >
+      <skeletonparts>
+        <part start_x="57" start_y="203" end_x="-28" end_y="-30"/>
+        <part start_x="-28" start_y="-30" end_x="85" end_y="-142"/>
+        <part start_x="85" start_y="-142" end_x="57" end_y="-354"/>
+        <part start_x="-28" start_y="-30" end_x="-7" end_y="-182"/>
+        <part start_x="-7" start_y="-182" end_x="-75" end_y="-320"/>
+      </skeletonparts>
+    </frame>
+    <frame filename="Media\characters\player\idle_default\idle_default_017.png" >
+      <skeletonparts>
+        <part start_x="57" start_y="203" end_x="-28" end_y="-30"/>
+        <part start_x="-28" start_y="-30" end_x="85" end_y="-142"/>
+        <part start_x="85" start_y="-142" end_x="57" end_y="-354"/>
+        <part start_x="-28" start_y="-30" end_x="-7" end_y="-182"/>
+        <part start_x="-7" start_y="-182" end_x="-75" end_y="-320"/>
+      </skeletonparts>
+    </frame>
+    <frame filename="Media\characters\player\idle_default\idle_default_018.png" >
+      <skeletonparts>
+        <part start_x="57" start_y="203" end_x="-28" end_y="-30"/>
+        <part start_x="-28" start_y="-30" end_x="85" end_y="-142"/>
+        <part start_x="85" start_y="-142" end_x="57" end_y="-354"/>
+        <part start_x="-28" start_y="-30" end_x="-7" end_y="-182"/>
+        <part start_x="-7" start_y="-182" end_x="-75" end_y="-320"/>
+      </skeletonparts>
+    </frame>
+    <frame filename="Media\characters\player\idle_default\idle_default_019.png" >
+      <skeletonparts>
+        <part start_x="57" start_y="203" end_x="-28" end_y="-30"/>
+        <part start_x="-28" start_y="-30" end_x="85" end_y="-142"/>
+        <part start_x="85" start_y="-142" end_x="57" end_y="-354"/>
+        <part start_x="-28" start_y="-30" end_x="-7" end_y="-182"/>
+        <part start_x="-7" start_y="-182" end_x="-75" end_y="-320"/>
+      </skeletonparts>
+    </frame>
+    </Still>
+
+    <Running FrameRate="60" MaxFrameRate="60" MinFrameRate="4" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\run_default\run_default_000.png" sfx_type="footstep">
+        <skeletonparts>
+          <part start_x="120" start_y="140" end_x="-16" end_y="-73"/>
+          <part start_x="-16" start_y="-73" end_x="106" end_y="-160"/>
+          <part start_x="106" start_y="-160" end_x="94" end_y="-354"/>
+          <part start_x="-16" start_y="-73" end_x="-86" end_y="-192"/>
+          <part start_x="-86" start_y="-192" end_x="-204" end_y="-144"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\run_default\run_default_001.png" >
+        <skeletonparts>
+          <part start_x="120" start_y="140" end_x="-16" end_y="-73"/>
+          <part start_x="-16" start_y="-73" end_x="88" end_y="-160"/>
+          <part start_x="88" start_y="-160" end_x="58" end_y="-354"/>
+          <part start_x="-16" start_y="-73" end_x="-47" end_y="-197"/>
+          <part start_x="-47" start_y="-197" end_x="-192" end_y="-180"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\run_default\run_default_002.png" >
+        <skeletonparts>
+          <part start_x="127" start_y="158" end_x="-16" end_y="-73"/>
+          <part start_x="-16" start_y="-73" end_x="71" end_y="-186"/>
+          <part start_x="71" start_y="-186" end_x="10" end_y="-348"/>
+          <part start_x="-16" start_y="-73" end_x="0" end_y="-200"/>
+          <part start_x="0" start_y="-200" end_x="-136" end_y="-200"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\run_default\run_default_003.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="159" end_x="-16" end_y="-73"/>
+          <part start_x="-16" start_y="-73" end_x="45" end_y="-183"/>
+          <part start_x="45" start_y="-183" end_x="-35" end_y="-345"/>
+          <part start_x="-16" start_y="-73" end_x="29" end_y="-165"/>
+          <part start_x="0" start_y="-200" end_x="-92" end_y="-220"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\run_default\run_default_004.png" >
+        <skeletonparts>
+          <part start_x="127" start_y="180" end_x="0" end_y="-20"/>
+          <part start_x="0" start_y="-20" end_x="85" end_y="-143"/>
+          <part start_x="85" start_y="-143" end_x="11" end_y="-179"/>
+          <part start_x="0" start_y="-20" end_x="-20" end_y="-176"/>
+          <part start_x="-20" start_y="-176" end_x="-106" end_y="-342"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\run_default\run_default_005.png" >
+        <skeletonparts>
+          <part start_x="127" start_y="180" end_x="0" end_y="-20"/>
+          <part start_x="0" start_y="-20" end_x="122" end_y="-116"/>
+          <part start_x="122" start_y="-116" end_x="12" end_y="-204"/>
+          <part start_x="0" start_y="-20" end_x="-164" end_y="-338"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\run_default\run_default_006.png" >
+        <skeletonparts>
+          <part start_x="127" start_y="173" end_x="6" end_y="-40"/>
+          <part start_x="6" start_y="-40" end_x="126" end_y="-120"/>
+          <part start_x="126" start_y="-120" end_x="47" end_y="-228"/>
+          <part start_x="6" start_y="-40" end_x="-217" end_y="-310"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\run_default\run_default_007.png" >
+        <skeletonparts>
+          <part start_x="127" start_y="173" end_x="6" end_y="-40"/>
+          <part start_x="6" start_y="-40" end_x="117" end_y="-140"/>
+          <part start_x="117" start_y="-140" end_x="49" end_y="-258"/>
+          <part start_x="6" start_y="-40" end_x="-74" end_y="-174"/>
+          <part start_x="-74" start_y="-174" end_x="-261" end_y="-264"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\run_default\run_default_008.png" >
+        <skeletonparts>
+          <part start_x="122" start_y="165" end_x="6" end_y="-40"/>
+          <part start_x="6" start_y="-40" end_x="105" end_y="-159"/>
+          <part start_x="105" start_y="-159" end_x="45" end_y="-292"/>
+          <part start_x="6" start_y="-40" end_x="-74" end_y="-174"/>
+          <part start_x="-74" start_y="-174" end_x="-272" end_y="-200"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\run_default\run_default_009.png" >
+        <skeletonparts>
+          <part start_x="122" start_y="165" end_x="6" end_y="-40"/>
+          <part start_x="6" start_y="-40" end_x="105" end_y="-159"/>
+          <part start_x="105" start_y="-159" end_x="59" end_y="-308"/>
+          <part start_x="6" start_y="-40" end_x="-74" end_y="-174"/>
+          <part start_x="-74" start_y="-174" end_x="-265" end_y="-152"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\run_default\run_default_010.png" sfx_type="footstep" >
+        <skeletonparts>
+          <part start_x="118" start_y="157" end_x="6" end_y="-40"/>
+          <part start_x="6" start_y="-40" end_x="77" end_y="-192"/>
+          <part start_x="77" start_y="-192" end_x="59" end_y="-332"/>
+          <part start_x="6" start_y="-40" end_x="-67" end_y="-200"/>
+          <part start_x="-67" start_y="-200" end_x="-216" end_y="-90"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\run_default\run_default_011.png" >
+        <skeletonparts>
+          <part start_x="118" start_y="157" end_x="6" end_y="-40"/>
+          <part start_x="6" start_y="-40" end_x="77" end_y="-192"/>
+          <part start_x="77" start_y="-192" end_x="25" end_y="-320"/>
+          <part start_x="6" start_y="-40" end_x="0" end_y="-195"/>
+          <part start_x="0" start_y="-195" end_x="-185" end_y="-176"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\run_default\run_default_012.png" >
+        <skeletonparts>
+          <part start_x="118" start_y="157" end_x="6" end_y="-40"/>
+          <part start_x="6" start_y="-40" end_x="77" end_y="-192"/>
+          <part start_x="77" start_y="-192" end_x="0" end_y="-315"/>
+          <part start_x="6" start_y="-40" end_x="66" end_y="-172"/>
+          <part start_x="66" start_y="-172" end_x="-115" end_y="-222"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\run_default\run_default_013.png" >
+        <skeletonparts>
+          <part start_x="118" start_y="157" end_x="6" end_y="-40"/>
+          <part start_x="6" start_y="-40" end_x="100" end_y="-147"/>
+          <part start_x="100" start_y="-147" end_x="-69" end_y="-235"/>
+          <part start_x="6" start_y="-40" end_x="21" end_y="-200"/>
+          <part start_x="21" start_y="-200" end_x="-51" end_y="-319"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\run_default\run_default_014.png" >
+        <skeletonparts>
+          <part start_x="128" start_y="175" end_x="6" end_y="-40"/>
+          <part start_x="6" start_y="-40" end_x="124" end_y="-114"/>
+          <part start_x="124" start_y="-114" end_x="-13" end_y="-235"/>
+          <part start_x="6" start_y="-40" end_x="-74" end_y="-314"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\run_default\run_default_015.png" >
+        <skeletonparts>
+          <part start_x="128" start_y="175" end_x="6" end_y="-40"/>
+          <part start_x="6" start_y="-40" end_x="133" end_y="-78"/>
+          <part start_x="133" start_y="-78" end_x="31" end_y="-216"/>
+          <part start_x="6" start_y="-40" end_x="-93" end_y="-320"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\run_default\run_default_016.png" >
+        <skeletonparts>
+          <part start_x="128" start_y="175" end_x="6" end_y="-40"/>
+          <part start_x="6" start_y="-40" end_x="133" end_y="-78"/>
+          <part start_x="133" start_y="-78" end_x="51" end_y="-256"/>
+          <part start_x="6" start_y="-40" end_x="-147" end_y="-299"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\run_default\run_default_017.png" >
+        <skeletonparts>
+          <part start_x="122" start_y="167" end_x="6" end_y="-40"/>
+          <part start_x="6" start_y="-40" end_x="126" end_y="-115"/>
+          <part start_x="126" start_y="-115" end_x="62" end_y="-275"/>
+          <part start_x="6" start_y="-40" end_x="-60" end_y="-180"/>
+          <part start_x="-60" start_y="-180" end_x="-192" end_y="-266"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\run_default\run_default_018.png" >
+        <skeletonparts>
+          <part start_x="119" start_y="156" end_x="6" end_y="-40"/>
+          <part start_x="6" start_y="-40" end_x="126" end_y="-115"/>
+          <part start_x="126" start_y="-115" end_x="76" end_y="-300"/>
+          <part start_x="6" start_y="-40" end_x="-60" end_y="-180"/>
+          <part start_x="-60" start_y="-180" end_x="-215" end_y="-229"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\run_default\run_default_019.png" >
+        <skeletonparts>
+          <part start_x="120" start_y="140" end_x="-16" end_y="-73"/>
+          <part start_x="-16" start_y="-73" end_x="106" end_y="-160"/>
+          <part start_x="106" start_y="-160" end_x="94" end_y="-342"/>
+          <part start_x="-16" start_y="-73" end_x="-86" end_y="-192"/>
+          <part start_x="-86" start_y="-192" end_x="-228" end_y="-183"/>
+        </skeletonparts>
+      </frame>
+    </Running>
+
+    <StrafeForward FrameRate="30" MaxFrameRate="60" MinFrameRate="4" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\strafe_default\strafe_default_000.png" sfx_type="footstep" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_001.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_002.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_003.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_004.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_005.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_006.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_007.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_008.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_009.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_010.png" sfx_type="footstep" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_011.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_012.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_013.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_014.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_015.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_016.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_017.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_018.png" />
+      <frame filename="Media\characters\player\strafe_default\strafe_default_019.png" />
+    </StrafeForward>
+
+    <StrafeBack FrameRate="30" MaxFrameRate="60" MinFrameRate="4" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\strafe_default\strafe_default_019.png" >
+        <skeletonparts>
+          <part start_x="120" start_y="190" end_x="-10" end_y="-45"/>
+          <part start_x="-10" start_y="-45" end_x="115" end_y="-130"/>
+          <part start_x="115" start_y="-130" end_x="76" end_y="-342"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\strafe_default\strafe_default_018.png" >
+        <skeletonparts>
+          <part start_x="120" start_y="190" end_x="-10" end_y="-45"/>
+          <part start_x="-10" start_y="-45" end_x="115" end_y="-130"/>
+          <part start_x="115" start_y="-130" end_x="70" end_y="-306"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\strafe_default\strafe_default_017.png" >
+        <skeletonparts>
+          <part start_x="120" start_y="190" end_x="-10" end_y="-45"/>
+          <part start_x="-10" start_y="-45" end_x="115" end_y="-130"/>
+          <part start_x="115" start_y="-130" end_x="47" end_y="-275"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\strafe_default\strafe_default_016.png" >
+        <skeletonparts>
+          <part start_x="117" start_y="211" end_x="-112" end_y="-322"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\strafe_default\strafe_default_015.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="211" end_x="-112" end_y="-322"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\strafe_default\strafe_default_014.png" >
+        <skeletonparts>
+          <part start_x="117" start_y="211" end_x="-80" end_y="-335"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\strafe_default\strafe_default_013.png" >
+        <skeletonparts>
+          <part start_x="117" start_y="195" end_x="-80" end_y="-335"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\strafe_default\strafe_default_012.png" >
+        <skeletonparts>
+          <part start_x="120" start_y="190" end_x="-10" end_y="-45"/>
+          <part start_x="-10" start_y="-45" end_x="60" end_y="-175"/>
+          <part start_x="60" start_y="-175" end_x="0" end_y="-340"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\strafe_default\strafe_default_011.png" >
+        <skeletonparts>
+          <part start_x="120" start_y="190" end_x="-10" end_y="-45"/>
+          <part start_x="-10" start_y="-45" end_x="60" end_y="-175"/>
+          <part start_x="60" start_y="-175" end_x="0" end_y="-340"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\strafe_default\strafe_default_010.png" sfx_type="footstep" >
+        <skeletonparts>
+          <part start_x="120" start_y="190" end_x="-10" end_y="-45"/>
+          <part start_x="-10" start_y="-45" end_x="60" end_y="-175"/>
+          <part start_x="60" start_y="-175" end_x="45" end_y="-355"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\strafe_default\strafe_default_009.png" >
+        <skeletonparts>
+          <part start_x="120" start_y="190" end_x="-10" end_y="-45"/>
+          <part start_x="-10" start_y="-45" end_x="60" end_y="-175"/>
+          <part start_x="60" start_y="-175" end_x="45" end_y="-350"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\strafe_default\strafe_default_008.png" >
+        <skeletonparts>
+          <part start_x="120" start_y="190" end_x="-10" end_y="-45"/>
+          <part start_x="-10" start_y="-45" end_x="96" end_y="-150"/>
+          <part start_x="96" start_y="-150" end_x="27" end_y="-300"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\strafe_default\strafe_default_007.png" >
+        <skeletonparts>
+          <part start_x="120" start_y="190" end_x="-10" end_y="-45"/>
+          <part start_x="-10" start_y="-45" end_x="96" end_y="-150"/>
+          <part start_x="96" start_y="-150" end_x="36" end_y="-261"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\strafe_default\strafe_default_006.png" >
+        <skeletonparts>
+          <part start_x="130" start_y="212" end_x="-10" end_y="-45"/>
+          <part start_x="-10" start_y="-45" end_x="120" end_y="-100"/>
+          <part start_x="120" start_y="-100" end_x="47" end_y="-225"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\strafe_default\strafe_default_005.png" >
+        <skeletonparts>
+          <part start_x="130" start_y="212" end_x="-10" end_y="-45"/>
+          <part start_x="-10" start_y="-45" end_x="120" end_y="-100"/>
+          <part start_x="120" start_y="-100" end_x="9" end_y="-204"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\strafe_default\strafe_default_004.png" >
+        <skeletonparts>
+          <part start_x="130" start_y="212" end_x="-10" end_y="-45"/>
+          <part start_x="-10" start_y="-45" end_x="100" end_y="-130"/>
+          <part start_x="100" start_y="-130" end_x="-10" end_y="-225"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\strafe_default\strafe_default_003.png" >
+        <skeletonparts>
+          <part start_x="130" start_y="212" end_x="-10" end_y="-45"/>
+          <part start_x="-10" start_y="-45" end_x="25" end_y="-175"/>
+          <part start_x="25" start_y="-175" end_x="-45" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\strafe_default\strafe_default_002.png" >
+        <skeletonparts>
+          <part start_x="125" start_y="186" end_x="-10" end_y="-45"/>
+          <part start_x="-10" start_y="-45" end_x="25" end_y="-175"/>
+          <part start_x="25" start_y="-175" end_x="12" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\strafe_default\strafe_default_001.png" >
+        <skeletonparts>
+          <part start_x="125" start_y="186" end_x="-10" end_y="-45"/>
+          <part start_x="-10" start_y="-45" end_x="96" end_y="-150"/>
+          <part start_x="96" start_y="-150" end_x="60" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\strafe_default\strafe_default_000.png" sfx_type="footstep" >
+        <skeletonparts>
+          <part start_x="125" start_y="186" end_x="-10" end_y="-45"/>
+          <part start_x="-10" start_y="-45" end_x="96" end_y="-150"/>
+          <part start_x="96" start_y="-150" end_x="100" end_y="-355"/>
+        </skeletonparts>
+      </frame>
+    </StrafeBack>
+    
+    <JumpingUp FrameRate="60" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\jump_up_default\jump_up_default_000.png">
+        <skeletonparts>
+          <part start_x="95" start_y="70" end_x="-42" end_y="-155"/>
+          <part start_x="-42" start_y="-155" end_x="124" end_y="-155"/>
+          <part start_x="124" start_y="-155" end_x="76" end_y="-342"/>
+          <part start_x="-42" start_y="-155" end_x="-19" end_y="-255"/>
+          <part start_x="-19" start_y="-255" end_x="-155" end_y="-305"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_up_default\jump_up_default_001.png" >
+        <skeletonparts>
+          <part start_x="102" start_y="89" end_x="-42" end_y="-155"/>
+          <part start_x="-42" start_y="-155" end_x="124" end_y="-155"/>
+          <part start_x="124" start_y="-155" end_x="76" end_y="-342"/>
+          <part start_x="-42" start_y="-155" end_x="-19" end_y="-255"/>
+          <part start_x="-19" start_y="-255" end_x="-131" end_y="-291"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_up_default\jump_up_default_002.png" >
+        <skeletonparts>
+          <part start_x="100" start_y="115" end_x="-31" end_y="-105"/>
+          <part start_x="-31" start_y="-105" end_x="124" end_y="-155"/>
+          <part start_x="124" start_y="-155" end_x="33" end_y="-342"/>
+          <part start_x="-31" start_y="-105" end_x="26" end_y="-203"/>
+          <part start_x="26" start_y="-203" end_x="-104" end_y="-283"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_up_default\jump_up_default_003.png" >
+        <skeletonparts>
+          <part start_x="96" start_y="137" end_x="-31" end_y="-105"/>
+          <part start_x="-31" start_y="-105" end_x="94" end_y="-170"/>
+          <part start_x="94" start_y="-170" end_x="13" end_y="-333"/>
+          <part start_x="-31" start_y="-105" end_x="26" end_y="-203"/>
+          <part start_x="26" start_y="-203" end_x="-80" end_y="-265"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_up_default\jump_up_default_004.png" >
+        <skeletonparts>
+          <part start_x="96" start_y="159" end_x="-31" end_y="-105"/>
+          <part start_x="-31" start_y="-105" end_x="94" end_y="-170"/>
+          <part start_x="94" start_y="-170" end_x="-25" end_y="-345"/>
+          <part start_x="-31" start_y="-105" end_x="16" end_y="-167"/>
+          <part start_x="16" start_y="-167" end_x="-58" end_y="-248"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_up_default\jump_up_default_005.png" >
+        <skeletonparts>
+          <part start_x="96" start_y="192" end_x="-46" end_y="-56"/>
+          <part start_x="-46" start_y="-56" end_x="40" end_y="-170"/>
+          <part start_x="40" start_y="-170" end_x="-63" end_y="-337"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_up_default\jump_up_default_006.png" >
+        <skeletonparts>
+          <part start_x="89" start_y="212" end_x="-46" end_y="-56"/>
+          <part start_x="-46" start_y="-56" end_x="40" end_y="-170"/>
+          <part start_x="40" start_y="-170" end_x="-83" end_y="-328"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_up_default\jump_up_default_007.png" >
+        <skeletonparts>
+          <part start_x="93" start_y="234" end_x="-46" end_y="-56"/>
+          <part start_x="-46" start_y="-56" end_x="0" end_y="-144"/>
+          <part start_x="0" start_y="-144" end_x="-94" end_y="-315"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_up_default\jump_up_default_008.png" >
+        <skeletonparts>
+          <part start_x="84" start_y="255" end_x="-105" end_y="-287"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_up_default\jump_up_default_009.png" >
+        <skeletonparts>
+          <part start_x="84" start_y="255" end_x="-105" end_y="-287"/>
+        </skeletonparts>
+      </frame>
+    </JumpingUp>
+
+    <JumpingDown FrameRate="30" MaxFrameRate="30" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_000.png" >
+        <skeletonparts>
+          <part start_x="84" start_y="297" end_x="-20" end_y="-65"/>
+          <part start_x="-20" start_y="-65" end_x="-135" end_y="-235"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_001.png" >
+        <skeletonparts>
+          <part start_x="84" start_y="297" end_x="-20" end_y="-65"/>
+          <part start_x="-20" start_y="-65" end_x="-135" end_y="-235"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_002.png" >
+        <skeletonparts>
+          <part start_x="84" start_y="297" end_x="-20" end_y="-65"/>
+          <part start_x="-20" start_y="-65" end_x="-135" end_y="-235"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_003.png" >
+        <skeletonparts>
+          <part start_x="120" start_y="291" end_x="-20" end_y="65"/>
+          <part start_x="-20" start_y="65" end_x="53" end_y="-46"/>
+          <part start_x="53" start_y="-46" end_x="-107" end_y="-175"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_004.png" >
+        <skeletonparts>
+          <part start_x="120" start_y="291" end_x="-20" end_y="65"/>
+          <part start_x="-20" start_y="65" end_x="53" end_y="-46"/>
+          <part start_x="53" start_y="-46" end_x="-107" end_y="-175"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_005.png" >
+        <skeletonparts>
+          <part start_x="120" start_y="291" end_x="-20" end_y="65"/>
+          <part start_x="-20" start_y="65" end_x="53" end_y="-46"/>
+          <part start_x="53" start_y="-46" end_x="-107" end_y="-175"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_006.png" >
+        <skeletonparts>
+          <part start_x="129" start_y="280" end_x="-20" end_y="65"/>
+          <part start_x="-20" start_y="65" end_x="142" end_y="32"/>
+          <part start_x="142" start_y="32" end_x="-9" end_y="-102"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_007.png" >
+        <skeletonparts>
+          <part start_x="129" start_y="280" end_x="-20" end_y="65"/>
+          <part start_x="-20" start_y="65" end_x="152" end_y="82"/>
+          <part start_x="152" start_y="82" end_x="42" end_y="-92"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_008.png" >
+        <skeletonparts>
+          <part start_x="129" start_y="280" end_x="-20" end_y="65"/>
+          <part start_x="-20" start_y="65" end_x="152" end_y="82"/>
+          <part start_x="152" start_y="82" end_x="130" end_y="-118"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\jump_down_default\jump_down_default_009.png" >
+        <skeletonparts>
+          <part start_x="146" start_y="253" end_x="-20" end_y="65"/>
+          <part start_x="-20" start_y="65" end_x="152" end_y="82"/>
+          <part start_x="152" start_y="82" end_x="204" end_y="-118"/>
+        </skeletonparts>
+      </frame>
+    </JumpingDown>
+
+    <Crouch FrameRate="40" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\duck_default\duck_default_000.png" >
+        <skeletonparts>
+          <part start_x="57" start_y="203" end_x="-28" end_y="-30"/>
+          <part start_x="-28" start_y="-30" end_x="85" end_y="-142"/>
+          <part start_x="85" start_y="-142" end_x="57" end_y="-354"/>
+          <part start_x="-28" start_y="-30" end_x="-7" end_y="-182"/>
+          <part start_x="-7" start_y="-182" end_x="-75" end_y="-320"/>
+        </skeletonparts>
+        </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_001.png" >
+        <skeletonparts>
+          <part start_x="92" start_y="173" end_x="-20" end_y="-90"/>
+          <part start_x="-20" start_y="-90" end_x="126" end_y="-139"/>
+          <part start_x="126" start_y="-139" end_x="110" end_y="-354"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_002.png" >
+        <skeletonparts>
+          <part start_x="117" start_y="127" end_x="18" end_y="-90"/>
+          <part start_x="18" start_y="-90" end_x="120" end_y="-150"/>
+          <part start_x="120" start_y="-150" end_x="160" end_y="-354"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_003.png" >
+        <skeletonparts>
+          <part start_x="137" start_y="92" end_x="18" end_y="-90"/>
+          <part start_x="18" start_y="-90" end_x="170" end_y="-150"/>
+          <part start_x="170" start_y="-150" end_x="184" end_y="-361"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_004.png" >
+        <skeletonparts>
+          <part start_x="168" start_y="48" end_x="30" end_y="-175"/>
+          <part start_x="30" start_y="-175" end_x="186" end_y="-150"/>
+          <part start_x="186" start_y="-150" end_x="211" end_y="-361"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_005.png" >
+        <skeletonparts>
+          <part start_x="198" start_y="0" end_x="30" end_y="-175"/>
+          <part start_x="30" start_y="-175" end_x="186" end_y="-150"/>
+          <part start_x="186" start_y="-150" end_x="234" end_y="-362"/>
+        </skeletonparts>
+      </frame>
+    </Crouch>
+
+    <CrouchUp FrameRate="40" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\duck_default\duck_default_005.png" >
+        <skeletonparts>
+          <part start_x="198" start_y="0" end_x="30" end_y="-175"/>
+          <part start_x="30" start_y="-175" end_x="186" end_y="-150"/>
+          <part start_x="186" start_y="-150" end_x="234" end_y="-362"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_004.png" >
+        <skeletonparts>
+          <part start_x="168" start_y="48" end_x="30" end_y="-175"/>
+          <part start_x="30" start_y="-175" end_x="186" end_y="-150"/>
+          <part start_x="186" start_y="-150" end_x="211" end_y="-361"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_003.png" >
+        <skeletonparts>
+          <part start_x="137" start_y="92" end_x="18" end_y="-90"/>
+          <part start_x="18" start_y="-90" end_x="170" end_y="-150"/>
+          <part start_x="170" start_y="-150" end_x="184" end_y="-361"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_002.png" >
+        <skeletonparts>
+          <part start_x="117" start_y="127" end_x="18" end_y="-90"/>
+          <part start_x="18" start_y="-90" end_x="120" end_y="-150"/>
+          <part start_x="120" start_y="-150" end_x="160" end_y="-354"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_001.png" >
+        <skeletonparts>
+          <part start_x="92" start_y="173" end_x="-20" end_y="-90"/>
+          <part start_x="-20" start_y="-90" end_x="126" end_y="-139"/>
+          <part start_x="126" start_y="-139" end_x="110" end_y="-354"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_000.png" >
+        <skeletonparts>
+          <part start_x="57" start_y="203" end_x="-28" end_y="-30"/>
+          <part start_x="-28" start_y="-30" end_x="85" end_y="-142"/>
+          <part start_x="85" start_y="-142" end_x="57" end_y="-354"/>
+          <part start_x="-28" start_y="-30" end_x="-7" end_y="-182"/>
+          <part start_x="-7" start_y="-182" end_x="-75" end_y="-320"/>
+        </skeletonparts>
+      </frame>
+    </CrouchUp>
+
+
+    <ImpactLandSoft FrameRate="30" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\duck_default\duck_default_005.png" >
+        <skeletonparts>
+          <part start_x="198" start_y="0" end_x="30" end_y="-175"/>
+          <part start_x="30" start_y="-175" end_x="186" end_y="-150"/>
+          <part start_x="186" start_y="-150" end_x="234" end_y="-362"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_004.png" >
+        <skeletonparts>
+          <part start_x="168" start_y="48" end_x="30" end_y="-175"/>
+          <part start_x="30" start_y="-175" end_x="186" end_y="-150"/>
+          <part start_x="186" start_y="-150" end_x="211" end_y="-361"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_003.png" >
+        <skeletonparts>
+          <part start_x="137" start_y="92" end_x="18" end_y="-90"/>
+          <part start_x="18" start_y="-90" end_x="170" end_y="-150"/>
+          <part start_x="170" start_y="-150" end_x="184" end_y="-361"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_002.png" >
+        <skeletonparts>
+          <part start_x="117" start_y="127" end_x="18" end_y="-90"/>
+          <part start_x="18" start_y="-90" end_x="120" end_y="-150"/>
+          <part start_x="120" start_y="-150" end_x="160" end_y="-354"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_001.png" >
+        <skeletonparts>
+          <part start_x="92" start_y="173" end_x="-20" end_y="-90"/>
+          <part start_x="-20" start_y="-90" end_x="126" end_y="-139"/>
+          <part start_x="126" start_y="-139" end_x="110" end_y="-354"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_000.png" >
+        <skeletonparts>
+          <part start_x="57" start_y="203" end_x="-28" end_y="-30"/>
+          <part start_x="-28" start_y="-30" end_x="85" end_y="-142"/>
+          <part start_x="85" start_y="-142" end_x="57" end_y="-354"/>
+          <part start_x="-28" start_y="-30" end_x="-7" end_y="-182"/>
+          <part start_x="-7" start_y="-182" end_x="-75" end_y="-320"/>
+        </skeletonparts>
+      </frame>
+    </ImpactLandSoft>
+
+    <ImpactLandHard FrameRate="15" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\duck_default\duck_default_005.png" >
+        <skeletonparts>
+          <part start_x="198" start_y="0" end_x="30" end_y="-175"/>
+          <part start_x="30" start_y="-175" end_x="186" end_y="-150"/>
+          <part start_x="186" start_y="-150" end_x="234" end_y="-362"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_005.png" >
+        <skeletonparts>
+          <part start_x="198" start_y="0" end_x="30" end_y="-175"/>
+          <part start_x="30" start_y="-175" end_x="186" end_y="-150"/>
+          <part start_x="186" start_y="-150" end_x="234" end_y="-362"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_005.png" >
+        <skeletonparts>
+          <part start_x="198" start_y="0" end_x="30" end_y="-175"/>
+          <part start_x="30" start_y="-175" end_x="186" end_y="-150"/>
+          <part start_x="186" start_y="-150" end_x="234" end_y="-362"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_005.png" >
+        <skeletonparts>
+          <part start_x="198" start_y="0" end_x="30" end_y="-175"/>
+          <part start_x="30" start_y="-175" end_x="186" end_y="-150"/>
+          <part start_x="186" start_y="-150" end_x="234" end_y="-362"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_005.png" >
+        <skeletonparts>
+          <part start_x="198" start_y="0" end_x="30" end_y="-175"/>
+          <part start_x="30" start_y="-175" end_x="186" end_y="-150"/>
+          <part start_x="186" start_y="-150" end_x="234" end_y="-362"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_005.png" >
+        <skeletonparts>
+          <part start_x="198" start_y="0" end_x="30" end_y="-175"/>
+          <part start_x="30" start_y="-175" end_x="186" end_y="-150"/>
+          <part start_x="186" start_y="-150" end_x="234" end_y="-362"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_004.png" >
+        <skeletonparts>
+          <part start_x="168" start_y="48" end_x="30" end_y="-175"/>
+          <part start_x="30" start_y="-175" end_x="186" end_y="-150"/>
+          <part start_x="186" start_y="-150" end_x="211" end_y="-361"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_003.png" >
+        <skeletonparts>
+          <part start_x="137" start_y="92" end_x="18" end_y="-90"/>
+          <part start_x="18" start_y="-90" end_x="170" end_y="-150"/>
+          <part start_x="170" start_y="-150" end_x="184" end_y="-361"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_002.png" >
+        <skeletonparts>
+          <part start_x="117" start_y="127" end_x="18" end_y="-90"/>
+          <part start_x="18" start_y="-90" end_x="120" end_y="-150"/>
+          <part start_x="120" start_y="-150" end_x="160" end_y="-354"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_001.png" >
+        <skeletonparts>
+          <part start_x="92" start_y="173" end_x="-20" end_y="-90"/>
+          <part start_x="-20" start_y="-90" end_x="126" end_y="-139"/>
+          <part start_x="126" start_y="-139" end_x="110" end_y="-354"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\duck_default\duck_default_000.png" >
+        <skeletonparts>
+          <part start_x="57" start_y="203" end_x="-28" end_y="-30"/>
+          <part start_x="-28" start_y="-30" end_x="85" end_y="-142"/>
+          <part start_x="85" start_y="-142" end_x="57" end_y="-354"/>
+          <part start_x="-28" start_y="-30" end_x="-7" end_y="-182"/>
+          <part start_x="-7" start_y="-182" end_x="-75" end_y="-320"/>
+        </skeletonparts>
+      </frame>
+    </ImpactLandHard>
+
+    <SlidingDown FrameRate="20" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\wall_slide_default\wall_slide_default_000.png" >
+        <skeletonparts>
+          <part start_x="76" start_y="180" end_x="251" end_y="-23"/>
+          <part start_x="251" start_y="-23" end_x="150" end_y="-135"/>
+          <part start_x="150" start_y="-135" end_x="300" end_y="-267"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\wall_slide_default\wall_slide_default_001.png" >
+        <skeletonparts>
+          <part start_x="76" start_y="180" end_x="251" end_y="-23"/>
+          <part start_x="251" start_y="-23" end_x="150" end_y="-135"/>
+          <part start_x="150" start_y="-135" end_x="300" end_y="-267"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\wall_slide_default\wall_slide_default_002.png" >
+        <skeletonparts>
+          <part start_x="76" start_y="180" end_x="251" end_y="-23"/>
+          <part start_x="251" start_y="-23" end_x="150" end_y="-135"/>
+          <part start_x="150" start_y="-135" end_x="300" end_y="-267"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\wall_slide_default\wall_slide_default_003.png" >
+        <skeletonparts>
+          <part start_x="76" start_y="180" end_x="251" end_y="-23"/>
+          <part start_x="251" start_y="-23" end_x="150" end_y="-135"/>
+          <part start_x="150" start_y="-135" end_x="300" end_y="-267"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\wall_slide_default\wall_slide_default_004.png" >
+        <skeletonparts>
+          <part start_x="76" start_y="180" end_x="251" end_y="-23"/>
+          <part start_x="251" start_y="-23" end_x="150" end_y="-135"/>
+          <part start_x="150" start_y="-135" end_x="300" end_y="-267"/>
+        </skeletonparts>
+      </frame>
+    </SlidingDown>
+    
+    <Roll FrameRate="60" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\roll_default\roll_default_000.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="180" end_x="-22" end_y="-56"/>
+          <part start_x="-22" start_y="-56" end_x="129" end_y="-113"/>
+          <part start_x="129" start_y="-113" end_x="23" end_y="-300"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_001.png" >
+        <skeletonparts>
+          <part start_x="180" start_y="134" end_x="-215" end_y="-236"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_002.png" >
+        <skeletonparts>
+          <part start_x="227" start_y="61" end_x="-270" end_y="-170"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_003.png" >
+        <skeletonparts>
+          <part start_x="247" start_y="6" end_x="-310" end_y="-84"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_004.png" >
+        <skeletonparts>
+          <part start_x="250" start_y="-77" end_x="-297" end_y="8"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_005.png" >
+        <skeletonparts>
+          <part start_x="210" start_y="-190" end_x="-290" end_y="60"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_006.png" >
+        <skeletonparts>
+          <part start_x="140" start_y="-280" end_x="-220" end_y="90"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_007.png" >
+        <skeletonparts>
+          <part start_x="67" start_y="-320" end_x="-170" end_y="100"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_008.png" >
+        <skeletonparts>
+          <part start_x="40" start_y="-330" end_x="-145" end_y="100"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_009.png" >
+        <skeletonparts>
+          <part start_x="6" start_y="-336" end_x="-113" end_y="100"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_010.png" sfx_type="footstep" >
+        <skeletonparts>
+          <part start_x="-20" start_y="-350" end_x="-80" end_y="80"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_011.png" >
+        <skeletonparts>
+          <part start_x="-40" start_y="-320" end_x="-40" end_y="40"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_012.png" >
+        <skeletonparts>
+          <part start_x="-40" start_y="-320" end_x="-14" end_y="3"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_013.png" >
+        <skeletonparts>
+          <part start_x="-110" start_y="-334" end_x="4" end_y="-8"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_014.png" >
+        <skeletonparts>
+          <part start_x="-160" start_y="-350" end_x="19" end_y="-29"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_015.png" >
+        <skeletonparts>
+          <part start_x="-180" start_y="-340" end_x="60" end_y="-30"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_016.png" sfx_type="footstep" >
+        <skeletonparts>
+          <part start_x="-220" start_y="-330" end_x="160" end_y="-170"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_017.png" >
+        <skeletonparts>
+          <part start_x="-196" start_y="-280" end_x="190" end_y="-290"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_018.png" >
+        <skeletonparts>
+          <part start_x="-190" start_y="-240" end_x="170" end_y="-340"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_019.png" >
+        <skeletonparts>
+          <part start_x="-150" start_y="-128" end_x="160" end_y="-350"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_020.png" >
+        <skeletonparts>
+          <part start_x="-80" start_y="-30" end_x="135" end_y="-350"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_021.png" >
+        <skeletonparts>
+          <part start_x="0" start_y="10" end_x="120" end_y="-350"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_022.png" >
+        <skeletonparts>
+          <part start_x="0" start_y="10" end_x="120" end_y="-350"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_023.png" >
+        <skeletonparts>
+          <part start_x="35" start_y="50" end_x="120" end_y="-350"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_024.png" >
+        <skeletonparts>
+          <part start_x="37" start_y="70" end_x="120" end_y="-350"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_025.png" >
+        <skeletonparts>
+          <part start_x="64" start_y="88" end_x="120" end_y="-350"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_026.png" >
+        <skeletonparts>
+          <part start_x="67" start_y="105" end_x="120" end_y="-350"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_027.png" >
+        <skeletonparts>
+          <part start_x="85" start_y="125" end_x="120" end_y="-350"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_028.png" >
+        <skeletonparts>
+          <part start_x="90" start_y="137" end_x="120" end_y="-350"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\roll_default\roll_default_029.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="130" end_x="-11" end_y="-109"/>
+          <part start_x="-11" start_y="-109" end_x="129" end_y="-150"/>
+          <part start_x="129" start_y="-150" end_x="97" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+    </Roll>
+
+    <SwimIdle FrameRate="10" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_000.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_001.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_002.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_003.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_004.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_005.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_006.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_007.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_008.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_009.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_010.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_011.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_012.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_013.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_014.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_015.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_016.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_017.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_018.png" />
+      <frame filename="Media\characters\player\swim_idle_default\swim_idle_default_019.png" />
+    </SwimIdle>
+
+    <SwimBurst FrameRate="30" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\swim_burst_default\swim_burst_default_000.png" />
+      <frame filename="Media\characters\player\swim_burst_default\swim_burst_default_001.png" />
+      <frame filename="Media\characters\player\swim_burst_default\swim_burst_default_002.png" />
+      <frame filename="Media\characters\player\swim_burst_default\swim_burst_default_003.png" />
+      <frame filename="Media\characters\player\swim_burst_default\swim_burst_default_004.png" />
+      <frame filename="Media\characters\player\swim_burst_default\swim_burst_default_005.png" />
+      <frame filename="Media\characters\player\swim_burst_default\swim_burst_default_006.png" />
+      <frame filename="Media\characters\player\swim_burst_default\swim_burst_default_007.png" />
+      <frame filename="Media\characters\player\swim_burst_default\swim_burst_default_008.png" />
+      <frame filename="Media\characters\player\swim_burst_default\swim_burst_default_009.png" />
+      <frame filename="Media\characters\player\swim_burst_default\swim_burst_default_010.png" />
+      <frame filename="Media\characters\player\swim_burst_default\swim_burst_default_011.png" />
+      <frame filename="Media\characters\player\swim_burst_default\swim_burst_default_012.png" />
+      <frame filename="Media\characters\player\swim_burst_default\swim_burst_default_013.png" />
+      <frame filename="Media\characters\player\swim_burst_default\swim_burst_default_014.png" />
+    </SwimBurst>
+
+    <SwimBurstSettle FrameRate="30" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\swim_burst_settle_default\swim_burst_settle_default_000.png" />
+      <frame filename="Media\characters\player\swim_burst_settle_default\swim_burst_settle_default_001.png" />
+      <frame filename="Media\characters\player\swim_burst_settle_default\swim_burst_settle_default_002.png" />
+      <frame filename="Media\characters\player\swim_burst_settle_default\swim_burst_settle_default_003.png" />
+      <frame filename="Media\characters\player\swim_burst_settle_default\swim_burst_settle_default_004.png" />
+    </SwimBurstSettle>
+
+    <SwimBurstKick FrameRate="30" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\swim_burst_kick_default\swim_burst_kick_default_000.png" />
+      <frame filename="Media\characters\player\swim_burst_kick_default\swim_burst_kick_default_001.png" />
+      <frame filename="Media\characters\player\swim_burst_kick_default\swim_burst_kick_default_002.png" />
+      <frame filename="Media\characters\player\swim_burst_kick_default\swim_burst_kick_default_003.png" />
+      <frame filename="Media\characters\player\swim_burst_kick_default\swim_burst_kick_default_004.png" />
+      <frame filename="Media\characters\player\swim_burst_kick_default\swim_burst_kick_default_005.png" />
+      <frame filename="Media\characters\player\swim_burst_kick_default\swim_burst_kick_default_006.png" />
+      <frame filename="Media\characters\player\swim_burst_kick_default\swim_burst_kick_default_007.png" />
+      <frame filename="Media\characters\player\swim_burst_kick_default\swim_burst_kick_default_008.png" />
+      <frame filename="Media\characters\player\swim_burst_kick_default\swim_burst_kick_default_009.png" />
+    </SwimBurstKick>
+
+    <Melee FrameRate="60" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\melee_1_default\melee_1_default_000.png" >
+        <skeletonparts>
+          <part start_x="126" start_y="130" end_x="-11" end_y="-109"/>
+          <part start_x="-11" start_y="-109" end_x="129" end_y="-150"/>
+          <part start_x="129" start_y="-150" end_x="97" end_y="-360"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_1_default\melee_1_default_001.png" >
+        <skeletonparts>
+          <part start_x="114" start_y="142" end_x="-41" end_y="-109"/>
+          <part start_x="-41" start_y="-109" end_x="99" end_y="-150"/>
+          <part start_x="99" start_y="-150" end_x="57" end_y="-327"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_1_default\melee_1_default_002.png" >
+        <skeletonparts>
+          <part start_x="78" start_y="145" end_x="-41" end_y="-109"/>
+          <part start_x="-41" start_y="-109" end_x="90" end_y="-114"/>
+          <part start_x="90" start_y="-114" end_x="18" end_y="-298"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_1_default\melee_1_default_003.png" >
+        <skeletonparts>
+          <part start_x="54" start_y="145" end_x="-89" end_y="-89"/>
+          <part start_x="-89" start_y="-89" end_x="65" end_y="-134"/>
+          <part start_x="65" start_y="-134" end_x="-34" end_y="-300"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_1_default\melee_1_default_004.png" >
+        <skeletonparts>
+          <part start_x="33" start_y="140" end_x="-89" end_y="-89"/>
+          <part start_x="-89" start_y="-89" end_x="19" end_y="-150"/>
+          <part start_x="19" start_y="-150" end_x="-82" end_y="-300"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_1_default\melee_1_default_005.png" >
+        <skeletonparts>
+          <part start_x="11" start_y="128" end_x="-142" end_y="-108"/>
+          <part start_x="-142" start_y="-108" end_x="-18" end_y="-178"/>
+          <part start_x="-18" start_y="-178" end_x="-88" end_y="-344"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_1_default\melee_1_default_006.png" >
+        <skeletonparts>
+          <part start_x="-27" start_y="118" end_x="-142" end_y="-108"/>
+          <part start_x="-142" start_y="-108" end_x="-28" end_y="-208"/>
+          <part start_x="-28" start_y="-208" end_x="-88" end_y="-344"/>
+        </skeletonparts>
+      </frame>
+    </Melee>
+
+    <Melee2 FrameRate="60" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\melee_2_default\melee_2_default_000.png" >
+        <skeletonparts>
+          <part start_x="24" start_y="166" end_x="-228" end_y="-128"/>
+          <part start_x="-228" start_y="-128" end_x="-96" end_y="-239"/>
+          <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_2_default\melee_2_default_001.png" >
+        <skeletonparts>
+          <part start_x="12" start_y="170" end_x="-228" end_y="-128"/>
+          <part start_x="-228" start_y="-128" end_x="-96" end_y="-239"/>
+          <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_2_default\melee_2_default_002.png" >
+        <skeletonparts>
+          <part start_x="0" start_y="193" end_x="-228" end_y="-128"/>
+          <part start_x="-228" start_y="-128" end_x="-96" end_y="-239"/>
+          <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_2_default\melee_2_default_003.png" >
+        <skeletonparts>
+          <part start_x="-11" start_y="208" end_x="-228" end_y="-128"/>
+          <part start_x="-228" start_y="-128" end_x="-96" end_y="-239"/>
+          <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_2_default\melee_2_default_004.png" >
+        <skeletonparts>
+          <part start_x="-27" start_y="212" end_x="-228" end_y="-128"/>
+          <part start_x="-228" start_y="-128" end_x="-96" end_y="-239"/>
+          <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_2_default\melee_2_default_005.png" >
+        <skeletonparts>
+          <part start_x="-41" start_y="221" end_x="-228" end_y="-128"/>
+          <part start_x="-228" start_y="-128" end_x="-96" end_y="-239"/>
+          <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_2_default\melee_2_default_006.png" >
+        <skeletonparts>
+          <part start_x="-57" start_y="237" end_x="-228" end_y="-128"/>
+          <part start_x="-228" start_y="-128" end_x="-96" end_y="-239"/>
+          <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_2_default\melee_2_default_007.png" >
+        <skeletonparts>
+          <part start_x="-70" start_y="230" end_x="-228" end_y="-128"/>
+          <part start_x="-228" start_y="-128" end_x="-96" end_y="-239"/>
+          <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_2_default\melee_2_default_008.png" >
+        <skeletonparts>
+          <part start_x="-84" start_y="234" end_x="-228" end_y="-128"/>
+          <part start_x="-228" start_y="-128" end_x="-96" end_y="-239"/>
+          <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_2_default\melee_2_default_009.png" >
+        <skeletonparts>
+          <part start_x="-102" start_y="245" end_x="-228" end_y="-128"/>
+          <part start_x="-228" start_y="-128" end_x="-96" end_y="-239"/>
+          <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_2_default\melee_2_default_010.png" >
+        <skeletonparts>
+          <part start_x="-57" start_y="235" end_x="-228" end_y="-128"/>
+          <part start_x="-228" start_y="-128" end_x="-96" end_y="-239"/>
+          <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_2_default\melee_2_default_011.png" >
+        <skeletonparts>
+          <part start_x="12" start_y="170" end_x="-228" end_y="-128"/>
+          <part start_x="-228" start_y="-128" end_x="-96" end_y="-239"/>
+          <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
+        </skeletonparts>
+      </frame>
+    </Melee2>
+
+    <Melee3 FrameRate="60" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\melee_3_default\melee_2_default_012.png" >
+        <skeletonparts>
+          <part start_x="63" start_y="146" end_x="-228" end_y="-128"/>
+          <part start_x="-228" start_y="-128" end_x="-96" end_y="-239"/>
+          <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_3_default\melee_2_default_013.png" >
+        <skeletonparts>
+          <part start_x="-45" start_y="100" end_x="-228" end_y="-128"/>
+          <part start_x="-228" start_y="-128" end_x="-96" end_y="-239"/>
+          <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_3_default\melee_2_default_014.png" >
+        <skeletonparts>
+          <part start_x="-43" start_y="79" end_x="-206" end_y="-153"/>
+          <part start_x="-206" start_y="-153" end_x="-96" end_y="-239"/>
+          <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_3_default\melee_2_default_015.png" >
+        <skeletonparts>
+          <part start_x="-43" start_y="58" end_x="-206" end_y="-153"/>
+          <part start_x="-206" start_y="-153" end_x="-96" end_y="-239"/>
+          <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_3_default\melee_2_default_015.png" >
+        <skeletonparts>
+          <part start_x="-43" start_y="58" end_x="-206" end_y="-153"/>
+          <part start_x="-206" start_y="-153" end_x="-96" end_y="-239"/>
+          <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_3_default\melee_2_default_015.png" >
+        <skeletonparts>
+          <part start_x="-43" start_y="58" end_x="-206" end_y="-153"/>
+          <part start_x="-206" start_y="-153" end_x="-96" end_y="-239"/>
+          <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_3_default\melee_2_default_015.png" >
+        <skeletonparts>
+          <part start_x="-43" start_y="58" end_x="-206" end_y="-153"/>
+          <part start_x="-206" start_y="-153" end_x="-96" end_y="-239"/>
+          <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_3_default\melee_2_default_015.png" >
+        <skeletonparts>
+          <part start_x="-43" start_y="58" end_x="-206" end_y="-153"/>
+          <part start_x="-206" start_y="-153" end_x="-96" end_y="-239"/>
+          <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
+        </skeletonparts>
+      </frame>
+    </Melee3>
+
+    <MeleeFinish FrameRate="60" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\melee_finish\melee_finish_000.png" >
+        <skeletonparts>
+          <part start_x="-43" start_y="58" end_x="-206" end_y="-153"/>
+          <part start_x="-206" start_y="-153" end_x="-96" end_y="-239"/>
+          <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_finish\melee_finish_001.png" >
+        <skeletonparts>
+          <part start_x="-20" start_y="74" end_x="-206" end_y="-153"/>
+          <part start_x="-206" start_y="-153" end_x="-96" end_y="-239"/>
+          <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_finish\melee_finish_002.png" >
+        <skeletonparts>
+          <part start_x="-10" start_y="101" end_x="-160" end_y="-153"/>
+          <part start_x="-160" start_y="-153" end_x="-96" end_y="-239"/>
+          <part start_x="-96" start_y="-239" end_x="-225" end_y="-330"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_finish\melee_finish_003.png" >
+        <skeletonparts>
+          <part start_x="0" start_y="128" end_x="-160" end_y="-153"/>
+          <part start_x="-160" start_y="-153" end_x="-96" end_y="-239"/>
+          <part start_x="-96" start_y="-239" end_x="-190" end_y="-320"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_finish\melee_finish_004.png" >
+        <skeletonparts>
+          <part start_x="13" start_y="146" end_x="-112" end_y="-124"/>
+          <part start_x="-112" start_y="-124" end_x="14" end_y="-194"/>
+          <part start_x="14" start_y="-194" end_x="-136" end_y="-317"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_finish\melee_finish_005.png" >
+        <skeletonparts>
+          <part start_x="24" start_y="175" end_x="-112" end_y="-124"/>
+          <part start_x="-112" start_y="-124" end_x="14" end_y="-194"/>
+          <part start_x="14" start_y="-194" end_x="-95" end_y="-338"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_finish\melee_finish_006.png" >
+        <skeletonparts>
+          <part start_x="41" start_y="196" end_x="-70" end_y="-70"/>
+          <part start_x="-70" start_y="-70" end_x="14" end_y="-194"/>
+          <part start_x="14" start_y="-194" end_x="-43" end_y="-349"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_finish\melee_finish_007.png" >
+        <skeletonparts>
+          <part start_x="48" start_y="225" end_x="-70" end_y="-70"/>
+          <part start_x="-70" start_y="-70" end_x="14" end_y="-194"/>
+          <part start_x="14" start_y="-194" end_x="-43" end_y="-349"/>
+        </skeletonparts>
+      </frame>
+    </MeleeFinish>
+
+  </body>
+
+  <arm OffsetX="0" OffsetY="0" SizeX="10" SizeY="10">
+    <Still FrameRate="30" MaxFrameRate="30" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\back_arm_attack\back_arm_attack_000.png" />
+      <frame filename="Media\characters\player\back_arm_attack\back_arm_attack_001.png" />
+      <frame filename="Media\characters\player\back_arm_attack\back_arm_attack_002.png" />
+      <frame filename="Media\characters\player\back_arm_attack\back_arm_attack_003.png" />
+      <frame filename="Media\characters\player\back_arm_attack\back_arm_attack_004.png" />
+      <frame filename="Media\characters\player\back_arm_attack\back_arm_attack_005.png" />
+      <frame filename="Media\characters\player\back_arm_attack\back_arm_attack_006.png" />
+      <frame filename="Media\characters\player\back_arm_attack\back_arm_attack_007.png" />
+      <frame filename="Media\characters\player\back_arm_attack\back_arm_attack_008.png" />
+      <frame filename="Media\characters\player\back_arm_attack\back_arm_attack_009.png" />
+    </Still>
+
+    <Running FrameRate="30" MaxFrameRate="30" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\back_arm_attack_run\back_arm_attack_run_000.png" />
+      <frame filename="Media\characters\player\back_arm_attack_run\back_arm_attack_run_001.png" />
+      <frame filename="Media\characters\player\back_arm_attack_run\back_arm_attack_run_002.png" />
+      <frame filename="Media\characters\player\back_arm_attack_run\back_arm_attack_run_003.png" />
+      <frame filename="Media\characters\player\back_arm_attack_run\back_arm_attack_run_004.png" />
+      <frame filename="Media\characters\player\back_arm_attack_run\back_arm_attack_run_005.png" />
+      <frame filename="Media\characters\player\back_arm_attack_run\back_arm_attack_run_006.png" />
+      <frame filename="Media\characters\player\back_arm_attack_run\back_arm_attack_run_007.png" />
+      <frame filename="Media\characters\player\back_arm_attack_run\back_arm_attack_run_008.png" />
+      <frame filename="Media\characters\player\back_arm_attack_run\back_arm_attack_run_009.png" />
+    </Running>
+
+    <Strafing FrameRate="30" MaxFrameRate="30" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\back_arm_attack_run\back_arm_attack_run_000.png" />
+      <frame filename="Media\characters\player\back_arm_attack_run\back_arm_attack_run_001.png" />
+      <frame filename="Media\characters\player\back_arm_attack_run\back_arm_attack_run_002.png" />
+      <frame filename="Media\characters\player\back_arm_attack_run\back_arm_attack_run_003.png" />
+      <frame filename="Media\characters\player\back_arm_attack_run\back_arm_attack_run_004.png" />
+      <frame filename="Media\characters\player\back_arm_attack_run\back_arm_attack_run_005.png" />
+      <frame filename="Media\characters\player\back_arm_attack_run\back_arm_attack_run_006.png" />
+      <frame filename="Media\characters\player\back_arm_attack_run\back_arm_attack_run_007.png" />
+      <frame filename="Media\characters\player\back_arm_attack_run\back_arm_attack_run_008.png" />
+      <frame filename="Media\characters\player\back_arm_attack_run\back_arm_attack_run_009.png" />
+    </Strafing>
+
+    <JumpingUp FrameRate="4" MaxFrameRate="8" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+    </JumpingUp>
+
+    <JumpingDown FrameRate="30" MaxFrameRate="30" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+    </JumpingDown>
+
+    <SlidingDown FrameRate="30" MaxFrameRate="30" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+    </SlidingDown>
+  </arm>
+
+</data>

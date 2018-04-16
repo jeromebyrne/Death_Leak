@@ -94,7 +94,7 @@ Projectile * Player::FireBomb(Vector2 direction)
 		pos.X -= m_projectileOffset.X;
 	}
 
-	float speed = mSprintActive ? 10 : 7.5;
+	float speed = mSprintActive ? 15 : 11;
 
 	Projectile * p = new BombProjectile(Projectile::kPlayerProjectile,
 										kBombTextureFile,
@@ -228,7 +228,7 @@ Projectile * Player::FireWeapon(Vector2 direction)
 		pos.X -= m_projectileOffset.X;
 	}
 
-	float speed = mSprintActive ? 23 : 15;
+	float speed = mSprintActive ? 29 : 24;
 	bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
 
 	Projectile * p = new Projectile(Projectile::kPlayerProjectile,

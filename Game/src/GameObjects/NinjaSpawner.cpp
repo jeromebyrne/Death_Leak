@@ -46,6 +46,7 @@ void NinjaSpawner::SpawnNPC(const float posX,
 	npc->SetIsPlayerEnemy(true);
 
 	GameObjectManager::Instance()->AddGameObject(npc);
+	npc->FlipVertical();
 
 	// show some effects when we spawn - smoke
 	ParticleEmitterManager::Instance()->CreateRadialSpray(50,
@@ -99,31 +100,32 @@ void NinjaSpawner::SpawnMultiple(const unsigned int numNPC, Vector2 boundsPos, V
 
 		switch (randAnim)
 		{
+			// height = "231.714279" width = "183.142853"
 			case 0:
 			case 1:
 			case 2:
 			{
-				dimensions = Vector3(220, 220, 0);
+				dimensions = Vector3(183.142853f, 231.714279f, 0);
 				collisionDimensions = Vector3(100, 200, 0);
-				collisionOffset = Vector2(0, -20);
-				animFile = "XmlFiles\\ninjaAnimation3.xml";
+				collisionOffset = Vector2(0, 0);
+				animFile = "XmlFiles\\animation\\ninjaAnimation3.xml";
 				break;
 			}
 			case 3:
 			case 4:
 			{
-				dimensions = Vector3(220, 220, 0);
+				dimensions = Vector3(183.142853f, 231.714279f, 0);
 				collisionDimensions = Vector3(100,200,0);
-				collisionOffset = Vector2(0, -20);
-				animFile = "XmlFiles\\ninjaAnimation2.xml";
+				collisionOffset = Vector2(0, 0);
+				animFile = "XmlFiles\\animation\\ninjaAnimation2.xml";
 				break;
 			}
 			default:
 			{
-				dimensions = Vector3(50, 50, 0);
+				dimensions = Vector3(183.142853f, 231.714279f, 0);
 				collisionDimensions = Vector3(200, 200, 0);
-				collisionOffset = Vector2(0, 100);
-				animFile = "XmlFiles\\ninjaAnimation2.xml";
+				collisionOffset = Vector2(0, 0);
+				animFile = "XmlFiles\\animation\\ninjaAnimation2.xml";
 				break;
 			}
 		}

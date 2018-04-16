@@ -2,9 +2,9 @@
 #include "AIStateRangeAttack.h"
 #include "NPC.h"
 
-static const float kRunAwayDelay = 1.0f;
-static const float kJumpRandomDelayMin = 2.0f;
-static const float kJumpRandomDelayMax = 4.5f;
+static const float kRunAwayDelay = 1.6f;
+static const float kJumpRandomDelayMin = 4.0f;
+static const float kJumpRandomDelayMax = 6.5f;
 static const float kTeleportDelayMin = 2.0f;
 static const float kTeleportDelayMax = 7.0f;
 
@@ -28,7 +28,7 @@ void AIStateRangeAttack::OnTransition()
 {
 	float randMaxXVelocity = rand() % 3000;
 	randMaxXVelocity *= 0.001;
-	randMaxXVelocity += 20;
+	randMaxXVelocity += 10;
 
 	m_npc->SetMaxVelocityXYZ(randMaxXVelocity, 99999, 0);
 

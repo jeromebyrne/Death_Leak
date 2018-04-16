@@ -13,8 +13,8 @@
 #include "NPCManager.h"
 #include "AIStateButterflyWander.h"
 
-static float kMinReloadTime = 0.8f;
-static float kMaxReloadTime = 2.0f;
+static float kMinReloadTime = 1.5f;
+static float kMaxReloadTime = 3.0f;
 
 static const float kHealthBarDimensionsX = 128.0f * 0.5f;
 static const float kHealthBarDimensionsY = 8.0f;
@@ -181,12 +181,13 @@ void NPC::FireProjectileAtObject(GameObject * target)
 
 	if (mLastFireTime + mNextFireTime < Timing::Instance()->GetTotalTimeSeconds())
 	{
-		float randYOffset = rand() % 100;
+		float randYOffset = rand() % 220;
 
 		unsigned randSign = rand() % 2;
 		if (randSign == 1)
 		{
-			randYOffset *= -1;
+			// don't fire right into the ground
+			randYOffset *= -0.20;
 		}
 
 		Vector2 dir = Vector2(target->Position().X - m_position.X, (target->Position().Y + randYOffset) - m_position.Y);
@@ -519,7 +520,7 @@ Projectile * NPC::FireWeapon(Vector2 direction)
 		pos.X -= m_projectileOffset.X;
 	}
 	
-	float speed = mSprintActive ? 25 : 20;
+	float speed = mSprintActive ? 23 : 19;
 
 	// TODO: ideally want these properties configurable per character
 	Projectile * p = new Projectile(Projectile::kNPCProjectile,
@@ -529,7 +530,7 @@ Projectile * NPC::FireWeapon(Vector2 direction)
 									Vector2(20,20),
 									Vector2(25,8),
 									direction,
-									5,
+									2,
 									speed,
 									0.25f);
 
