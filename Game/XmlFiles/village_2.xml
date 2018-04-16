@@ -30,7 +30,7 @@
         <is_bouncy value="false" bounce_multiplier="1.300000" />
         <maxjumpspeed value="23" />
         <xaccelrate value="1" />
-        <projectileoffsetx value="40" />
+        <projectileoffsetx value="0" />
         <projectileoffsety value="0" />
     </Player>
     <SolidLineStrip id="2" parallax_x="1.000000" parallax_y="1.000000" level_edit_locked="false" updateable="true">

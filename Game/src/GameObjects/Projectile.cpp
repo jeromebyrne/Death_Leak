@@ -504,7 +504,7 @@ void Projectile::Update(float delta)
 		if (mCollidedWithProjectile)
 		{
 			SetRotationAngle(GetRotationAngle() + mReboundRotateRate);
-			m_position.Y -= 2 * percentDelta; // fake gravity
+			m_position.Y -= 1.5f * percentDelta; // fake gravity
 		}
 
 		float currentTime = Timing::Instance()->GetTotalTimeSeconds();

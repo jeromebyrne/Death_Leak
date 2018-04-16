@@ -56,6 +56,8 @@ void Player::Initialise()
 	// TODO: just testing
 	FeatureUnlockManager::GetInstance()->SetFeatureUnlocked(FeatureUnlockManager::kCrouchJump, true);
 
+	m_projectileOffset.X = 0.0f;
+	m_projectileOffset.Y = 40.0f;
 }
 void Player::XmlRead(TiXmlElement * element)
 {
