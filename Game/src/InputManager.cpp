@@ -302,54 +302,14 @@ void InputManager::ProcessAimDirection_gamepad(XINPUT_STATE padState, CurrentGam
 {
 	currentActions.mAimDirection = Vector2(player->IsStrafing() ? player->GetStrafeDirectionX() : player->DirectionX(), 0);
 
-	if (std::abs(padState.Gamepad.sThumbRX < -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE) ||
+	/*if (std::abs(padState.Gamepad.sThumbRX < -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE) ||
 		std::abs(padState.Gamepad.sThumbRY > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE) )
-	{
+	{*/
 		currentActions.mAimDirection = Vector2(padState.Gamepad.sThumbRX, padState.Gamepad.sThumbRY);
 		currentActions.mAimDirection.Normalise();
-	}
+	//}
 
 	player->SetAimLineDirection(currentActions.mAimDirection);
-
-	/*
-	if (player->IsOnSolidLine())
-	{
-		currentActions.mAimDirection = player->GetCurrentSolidLineDirection();
-	}
-
-	if (padState.Gamepad.sThumbLX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
-		padState.Gamepad.sThumbLX > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
-		padState.Gamepad.sThumbLY < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE ||
-		padState.Gamepad.sThumbLY > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
-	{
-		currentActions.mAimDirection = Vector2(padState.Gamepad.sThumbLX, padState.Gamepad.sThumbLY);
-		currentActions.mAimDirection.Normalise();
-	}
-
-	if (currentActions.mIsCrouching)
-	{
-		currentActions.mAimDirection.X = player->DirectionX();
-		currentActions.mAimDirection.Y = 0;
-	}
-
-	if (player->IsStrafing())
-	{
-		bool sameSign = player->GetStrafeDirectionX() * padState.Gamepad.sThumbLX >= 0.0f;
-
-		if (sameSign)
-		{
-			currentActions.mAimDirection = Vector2(padState.Gamepad.sThumbLX, padState.Gamepad.sThumbLY);
-		}
-		else
-		{
-			currentActions.mAimDirection = Vector2(padState.Gamepad.sThumbLX * -1.0f, padState.Gamepad.sThumbLY * -1.0f);
-		}
-
-		currentActions.mAimDirection.Normalise();
-	}
-
-	player->SetAimLineDirection(currentActions.mAimDirection);
-	*/
 }
 
 void InputManager::ProcessPrimaryWeapon_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player)
