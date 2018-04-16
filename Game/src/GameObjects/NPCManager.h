@@ -18,6 +18,8 @@ public:
 
 	list<NPC*> GetNPCList() const { return m_npcList; }
 
+	bool IsAnyEnemyNPCInWorld();
+
 private:
 	NPCManager(void);
 	virtual ~NPCManager(void);

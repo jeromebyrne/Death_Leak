@@ -118,3 +118,16 @@ void NPCManager::RemoveNPC(NPC * npc)
 {
 	m_npcList.remove(npc);
 }
+
+bool NPCManager::IsAnyEnemyNPCInWorld()
+{
+	for (auto e : m_npcList)
+	{
+		if (e->IsPlayerEnemy())
+		{
+			return true;
+		}
+	}
+
+	return false;
+}

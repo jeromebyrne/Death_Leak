@@ -10,6 +10,7 @@
 #include "DrawUtilities.h"
 #include "Game.h"
 #include "Breakable.h"
+#include "NPCManager.h"
 
 int Projectile::NUM_PROJECTILES_ACTIVE = 0;
 
@@ -73,7 +74,16 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 
 	if (object->IsBreakable())
 	{
+		if (GetOwnerType() == kNPCProjectile)
+		{
+			return false;
+		}
 		if (static_cast<Breakable *>(object)->GetBreakableState() == Breakable::kBroken)
+		{
+			return false;
+		}
+
+		if (NPCManager::Instance()->IsAnyEnemyNPCInWorld())
 		{
 			return false;
 		}

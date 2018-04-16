@@ -7,6 +7,8 @@
 #include "Debris.h"
 #include "SaveManager.h"
 #include "Game.h"
+#include "NPCManager.h"
+#include "Projectile.h"
 
 Breakable::Breakable(float x, float y, float z, float width, float height, float breadth) :
 	SolidMovingSprite(x,y,z,width, height, breadth),
@@ -77,6 +79,19 @@ bool Breakable::OnCollision(SolidMovingSprite * object)
 
 	if (!object->IsProjectile())
 	{
+		return false;
+	}
+
+	if (NPCManager::Instance()->IsAnyEnemyNPCInWorld())
+	{
+		return false;
+	}
+
+	Projectile * asProjectile = static_cast<Projectile *>(object);
+
+	if (asProjectile->GetOwnerType() == Projectile::kNPCProjectile)
+	{
+		// enemy projectile don't affect breakables
 		return false;
 	}
 

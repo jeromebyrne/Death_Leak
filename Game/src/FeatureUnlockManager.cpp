@@ -26,6 +26,9 @@ void FeatureUnlockManager::Initialise()
 	// then populate the cache
 
 	// TODO
+
+	// Setting this unlocked from the beginning 
+	SetFeatureUnlocked(kDownwardDash, true);
 }
 
 bool FeatureUnlockManager::IsFeatureUnlocked(const FeatureType type)
