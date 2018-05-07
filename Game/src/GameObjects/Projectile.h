@@ -62,6 +62,11 @@ public:
 
 	bool IsActive() const { return m_isActive; }
 
+	void SetDamage(float damageAmount)
+	{
+		m_damage = damageAmount;
+	}
+
 protected:
 
 	void HandleSolidLineStripCollision(SolidLineStrip * solidLineStrip);

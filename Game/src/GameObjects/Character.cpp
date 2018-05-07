@@ -515,6 +515,7 @@ void Character::DoMeleeCollisions(SolidMovingSprite * object)
 				if (objAsProj->GetOwnerType() == Projectile::kNPCProjectile)
 				{
 					objAsProj->SetOwnerType(Projectile::kPlayerProjectile);
+					objAsProj->SetDamage(9999); // a large amount ot instantly kill 
 				}
 				else if (objAsProj->GetOwnerType() == Projectile::kPlayerProjectile)
 				{
@@ -853,7 +854,7 @@ void Character::UpdateAnimations()
 
 			bodyPart->AnimateLooped();
 
-			if (mMatchAnimFrameRateWithMovement && !mIsStrafing)
+			if (mMatchAnimFrameRateWithMovement /*&& !mIsStrafing*/)
 			{
 				if (WasInWaterLastFrame())
 				{
@@ -1252,7 +1253,7 @@ void Character::AccelerateX(float directionX)
 	bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
 	float deepWaterModifier = isInDeepWater ? (IsOnSolidSurface() ? 0.5f : 0.2f) : 1.0f;
 
-	float strafeModifier = mIsStrafing ? 0.3f : 1.0f;
+	float strafeModifier = mIsStrafing ? 1.0f : 1.0f;
 
 	if (GetIsSprintActive())
 	{

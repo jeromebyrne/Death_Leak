@@ -230,7 +230,7 @@ Projectile * Player::FireWeapon(Vector2 direction)
 		pos.X -= m_projectileOffset.X;
 	}
 
-	float speed = mSprintActive ? 29 : 24;
+	float speed = mSprintActive ? 35 : 30;
 	bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
 
 	Projectile * p = new Projectile(Projectile::kPlayerProjectile,
@@ -240,7 +240,7 @@ Projectile * Player::FireWeapon(Vector2 direction)
 									Vector2(30,8),
 									Vector2(60,20),
 									direction,
-									5,
+									0.5f,
 									isInDeepWater ? speed * 0.6f : speed,
 									0.25f);
 

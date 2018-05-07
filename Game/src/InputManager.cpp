@@ -92,7 +92,7 @@ void InputManager::ProcessCrouch_gamepad(XINPUT_STATE padState, CurrentGameplayA
 	if (padState.Gamepad.sThumbLY < -(XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE * 2.5f) &&
 		!player->IsDoingMelee() &&
 		player->IsOnSolidSurface() &&
-		!player->IsStrafing() &&
+		/*!player->IsStrafing() &&*/
 		!player->GetIsCollidingAtObjectSide() &&
 		!player->GetIsRolling())
 	{
@@ -175,7 +175,7 @@ void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 		else
 		{
 			mLastTimePressedJump = Timing::Instance()->GetTotalTimeSeconds();
-			float jumpPower = player->IsStrafing() ? initialJumpPercent * 0.8f : initialJumpPercent;
+			float jumpPower = /* player->IsStrafing() ? initialJumpPercent * 0.8f :*/ initialJumpPercent;
 			player->Jump(jumpPower);
 		}
 	}
@@ -269,10 +269,10 @@ void InputManager::ProcessMelee_gamepad(XINPUT_STATE padState, CurrentGameplayAc
 		mCurrentGamepadState.mPressingMelee = false;
 	}
 
-	if (mCurrentGamepadState.mPressingMelee && !wasPressingMelee)
-	{
-		player->DoMeleeAttack();
-	}
+if (mCurrentGamepadState.mPressingMelee && !wasPressingMelee)
+{
+	player->DoMeleeAttack();
+}
 }
 
 void InputManager::ProcessWallJump_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player)
@@ -305,8 +305,8 @@ void InputManager::ProcessAimDirection_gamepad(XINPUT_STATE padState, CurrentGam
 	/*if (std::abs(padState.Gamepad.sThumbRX < -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE) ||
 		std::abs(padState.Gamepad.sThumbRY > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE) )
 	{*/
-		currentActions.mAimDirection = Vector2(padState.Gamepad.sThumbRX, padState.Gamepad.sThumbRY);
-		currentActions.mAimDirection.Normalise();
+	currentActions.mAimDirection = Vector2(padState.Gamepad.sThumbRX, padState.Gamepad.sThumbRY);
+	currentActions.mAimDirection.Normalise();
 	//}
 
 	player->SetAimLineDirection(currentActions.mAimDirection);
@@ -317,7 +317,7 @@ void InputManager::ProcessPrimaryWeapon_gamepad(XINPUT_STATE padState, CurrentGa
 	if (!player->JustFellFromLargeDistance() &&
 		!player->IsDoingMelee() &&
 		(std::abs(padState.Gamepad.sThumbRX) > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE ||
-		std::abs(padState.Gamepad.sThumbRY) > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE))
+			std::abs(padState.Gamepad.sThumbRY) > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE))
 	{
 		mCurrentGamepadState.mPressingPrimaryWeapon = true;
 
@@ -361,62 +361,57 @@ void InputManager::ProcessSecondaryWeapon_gamepad(XINPUT_STATE padState, Current
 
 void InputManager::ProcessStrafing_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player, const LevelProperties & levelProps)
 {
-	if (!player->JustFellFromLargeDistance() &&
-		!player->IsDoingMelee() &&
-		padState.Gamepad.bLeftTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
-	{
-		if (!mCurrentGamepadState.mPressingStrafeLeft)
-		{
-			// just started pressing so set the strafe direction
-			player->SetStrafeDirectionX(-1.0f);
-			Vector2 defaultOffset = levelProps.GetOriginalTargetOffset();
-			Camera2D::GetInstance()->SetTargetOffset(Vector2(defaultOffset.X + 200, defaultOffset.Y));
-			Camera2D::GetInstance()->SetOverrideDirection(true, -1.0f);
-			player->GetStrafeDirectionX() > 0.0f ? player->UnFlipHorizontal() : player->FlipHorizontal();
-		}
+	// false by default
+	player->SetIsStrafing(false);
 
+	if (player->JustFellFromLargeDistance() ||
+		player->IsDoingMelee())
+	{
+		return;
+	}
+
+	if (!(std::abs(padState.Gamepad.sThumbRX) > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE) &&
+		!(std::abs(padState.Gamepad.sThumbRY) > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE))
+
+	{
+		Camera2D::GetInstance()->SetTargetOffset(levelProps.GetOriginalTargetOffset());
+		Camera2D::GetInstance()->SetOverrideDirection(false, Vector2(0, 0));
+		return;
+	}
+
+	float camXOffset = 250.0f;
+
+	if (padState.Gamepad.sThumbRX > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE &&
+		player->DirectionX() < 0)
+	{
 		player->SetIsStrafing(true);
-		mCurrentGamepadState.mPressingStrafeLeft = true;
+		player->SetStrafeDirectionX(1.0f);
+		Vector2 defaultOffset = levelProps.GetOriginalTargetOffset();
+		Camera2D::GetInstance()->SetTargetOffset(Vector2(defaultOffset.X + camXOffset, defaultOffset.Y));
+		Camera2D::GetInstance()->SetOverrideDirection(true, 1.0f);
+		player->GetStrafeDirectionX() > 0.0f ? player->UnFlipHorizontal() : player->FlipHorizontal();
 	}
-	else
+	else if (padState.Gamepad.sThumbRX > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE &&
+		player->DirectionX() > 0)
 	{
-		if (mCurrentGamepadState.mPressingStrafeLeft)
-		{
-			player->SetIsStrafing(false);
-			Camera2D::GetInstance()->SetTargetOffset(levelProps.GetOriginalTargetOffset());
-			Camera2D::GetInstance()->SetOverrideDirection(false, Vector2(0, 0));
-		}
-
-		mCurrentGamepadState.mPressingStrafeLeft = false;
+		Vector2 defaultOffset = levelProps.GetOriginalTargetOffset();
+		Camera2D::GetInstance()->SetTargetOffset(Vector2(defaultOffset.X + camXOffset, defaultOffset.Y));
 	}
-
-	if (!player->JustFellFromLargeDistance() &&
-		!player->IsDoingMelee() &&
-		padState.Gamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
+	else if (padState.Gamepad.sThumbRX < XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE &&
+		player->DirectionX() > 0)
 	{
-		if (!mCurrentGamepadState.mPressingStrafeRight)
-		{
-			// just started pressing so set the strafe direction
-			player->SetStrafeDirectionX(1.0f);
-			Vector2 defaultOffset = levelProps.GetOriginalTargetOffset();
-			Camera2D::GetInstance()->SetTargetOffset(Vector2(defaultOffset.X + 200, defaultOffset.Y));
-			Camera2D::GetInstance()->SetOverrideDirection(true, 1.0f);
-			player->GetStrafeDirectionX() > 0.0f ? player->UnFlipHorizontal() : player->FlipHorizontal();
-		}
-
 		player->SetIsStrafing(true);
-		mCurrentGamepadState.mPressingStrafeRight = true;
+		player->SetStrafeDirectionX(-1.0f);
+		Vector2 defaultOffset = levelProps.GetOriginalTargetOffset();
+		Camera2D::GetInstance()->SetTargetOffset(Vector2(defaultOffset.X + camXOffset, defaultOffset.Y));
+		Camera2D::GetInstance()->SetOverrideDirection(true, -1.0f);
+		player->GetStrafeDirectionX() > 0.0f ? player->UnFlipHorizontal() : player->FlipHorizontal();
 	}
-	else
+	else if (padState.Gamepad.sThumbRX < XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE &&
+		player->DirectionX() < 0)
 	{
-		if (mCurrentGamepadState.mPressingStrafeRight && !mCurrentGamepadState.mPressingStrafeLeft)
-		{
-			player->SetIsStrafing(false);
-			Camera2D::GetInstance()->SetTargetOffset(levelProps.GetOriginalTargetOffset());
-			Camera2D::GetInstance()->SetOverrideDirection(false, Vector2(0, 0));
-		}
-
-		mCurrentGamepadState.mPressingStrafeRight = false;
+		Vector2 defaultOffset = levelProps.GetOriginalTargetOffset();
+		Camera2D::GetInstance()->SetTargetOffset(Vector2(defaultOffset.X + camXOffset, defaultOffset.Y));
 	}
 }
 
@@ -506,7 +501,7 @@ void InputManager::ProcessGameplay_GamePad()
 
 	ProcessSecondaryWeapon_gamepad(padState, currentActions, player);
 
-	// ProcessStrafing_gamepad(padState, currentActions, player, levelProps);
+	ProcessStrafing_gamepad(padState, currentActions, player, levelProps);
 
 	ProcessSwimDown_gamepad(padState, currentActions, player, levelProps);
 

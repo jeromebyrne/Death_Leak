@@ -153,7 +153,7 @@ protected:
 
 	CurrentMeleePhase mCurrentMeleePhase = kMeleePhase1;
 
-	float mMeleeDamage = 10.0f;
+	float mMeleeDamage = 500.0f;
 };
 
 #endif
