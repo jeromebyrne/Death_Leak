@@ -23,7 +23,7 @@ private:
 	float mFollowRange;
 	float mRandOffset;
 	float mLastTimeRanAway;
-	float mTimeUntilRandomlyJump;
+	float mTimeUntilRandomlyJumpOrRoll;
 	float mTimeUntilCanTeleport;
 };
 

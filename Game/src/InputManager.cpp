@@ -236,7 +236,8 @@ void InputManager::ProcessRoll_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 
 	if (!player->JustFellFromLargeDistance() &&
 		!player->IsDoingMelee() &&
-		padState.Gamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
+		(padState.Gamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD ||
+		padState.Gamepad.bLeftTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD))
 	{
 		mCurrentGamepadState.mPressingRoll = true;
 	}

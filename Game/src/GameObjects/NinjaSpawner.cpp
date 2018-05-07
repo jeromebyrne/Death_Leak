@@ -44,7 +44,7 @@ void NinjaSpawner::SpawnNPC(const float posX,
 	npc->SetMaterial(MaterialManager::Instance()->GetMaterial("demon1"));
 	npc->SetMaxJumpSpeed(randJumpSpeed);
 	npc->SetIsPlayerEnemy(true);
-	npc->SetFadeAlphaWhenPlayerOccluded(true, 0.25f);
+	npc->SetFadeAlphaWhenPlayerOccluded(true, 0.1f);
 
 	GameObjectManager::Instance()->AddGameObject(npc);
 	npc->FlipVertical();

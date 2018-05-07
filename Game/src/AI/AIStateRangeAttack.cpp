@@ -3,8 +3,8 @@
 #include "NPC.h"
 
 static const float kRunAwayDelay = 1.6f;
-static const float kJumpRandomDelayMin = 4.0f;
-static const float kJumpRandomDelayMax = 6.5f;
+static const float kJumpOrRollRandomDelayMin = 6.0f;
+static const float kJumpOrRollRandomDelayMax = 10.5f;
 static const float kTeleportDelayMin = 2.0f;
 static const float kTeleportDelayMax = 7.0f;
 
@@ -14,7 +14,7 @@ AIStateRangeAttack::AIStateRangeAttack(NPC * npc) :
 	mFollowRange(900),
 	mRandOffset(0.0f),
 	mLastTimeRanAway(0.0f),
-	mTimeUntilRandomlyJump(0.0f),
+	mTimeUntilRandomlyJumpOrRoll(0.0f),
 	mTimeUntilCanTeleport(0.0f)
 {
 	mStateType = kRangeAttack;
@@ -34,7 +34,7 @@ void AIStateRangeAttack::OnTransition()
 
 	mRandOffset = rand() % 220;
 
-	mTimeUntilRandomlyJump = kJumpRandomDelayMin + (rand() % (int)((kJumpRandomDelayMax - kJumpRandomDelayMin) * 100.0f)) * 0.01f;
+	mTimeUntilRandomlyJumpOrRoll = kJumpOrRollRandomDelayMin + (rand() % (int)((kJumpOrRollRandomDelayMax - kJumpOrRollRandomDelayMin) * 100.0f)) * 0.01f;
 }
 
 void AIStateRangeAttack::Update(float delta)
@@ -106,20 +106,29 @@ void AIStateRangeAttack::Update(float delta)
 			m_npc->FireProjectileAtObject(GameObjectManager::Instance()->GetPlayer());
 		}
 
-		if (mTimeUntilRandomlyJump > 0.0f)
+		if (mTimeUntilRandomlyJumpOrRoll > 0.0f)
 		{
-			mTimeUntilRandomlyJump -= delta;
+			mTimeUntilRandomlyJumpOrRoll -= delta;
 		}
 
 		// let's just randomly jump
 		if (m_npc->IsOnSolidSurface())
 		{
-			if (mTimeUntilRandomlyJump <= 0.0f)
+			if (mTimeUntilRandomlyJumpOrRoll <= 0.0f)
 			{
-				if (m_npc->Jump(100.0f))
+				// N% chance to roll
+				int randRoll = rand() % 100;
+				if (randRoll < 81)
 				{
-					m_npc->SetVelocityY(0.5f);
-					mTimeUntilRandomlyJump = kJumpRandomDelayMin + (rand() % (int)((kJumpRandomDelayMax - kJumpRandomDelayMin) * 100.0f)) * 0.01f;
+					m_npc->Roll();
+				}
+				else
+				{
+					if (m_npc->Jump(100.0f))
+					{
+						m_npc->SetVelocityY(0.5f);
+						mTimeUntilRandomlyJumpOrRoll = kJumpOrRollRandomDelayMin + (rand() % (int)((kJumpOrRollRandomDelayMax - kJumpOrRollRandomDelayMin) * 100.0f)) * 0.01f;
+					}
 				}
 			}
 		}
