@@ -236,7 +236,7 @@ void InputManager::ProcessRoll_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 
 	if (!player->JustFellFromLargeDistance() &&
 		!player->IsDoingMelee() &&
-		padState.Gamepad.wButtons & XINPUT_GAMEPAD_B)
+		padState.Gamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
 	{
 		mCurrentGamepadState.mPressingRoll = true;
 	}
@@ -364,6 +364,12 @@ void InputManager::ProcessStrafing_gamepad(XINPUT_STATE padState, CurrentGamepla
 	// false by default
 	player->SetIsStrafing(false);
 
+	if (player->GetIsRolling())
+	{
+		return;
+	}
+
+
 	if (player->JustFellFromLargeDistance() ||
 		player->IsDoingMelee())
 	{
@@ -376,6 +382,7 @@ void InputManager::ProcessStrafing_gamepad(XINPUT_STATE padState, CurrentGamepla
 	{
 		Camera2D::GetInstance()->SetTargetOffset(levelProps.GetOriginalTargetOffset());
 		Camera2D::GetInstance()->SetOverrideDirection(false, Vector2(0, 0));
+		
 		return;
 	}
 
@@ -429,7 +436,7 @@ void InputManager::ProcessTestActions_gamepad(XINPUT_STATE padState, CurrentGame
 			if (pressingLeftShoulder)
 			{
 				// testing
-				Timing::Instance()->SetTimeModifierForNumSeconds(0.1f, 3.5f);
+				Timing::Instance()->SetTimeModifierForNumSeconds(0.25f, 1.5f);
 				NinjaSpawner spawner;
 				spawner.SpawnMultiple(4, Vector2(player->X(), player->Y()), Vector2(1200, 1200));
 			}

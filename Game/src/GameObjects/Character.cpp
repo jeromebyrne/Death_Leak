@@ -1218,8 +1218,8 @@ void Character::WallJump(int directionX, float percent)
 bool Character::Roll()
 {
 	if (mIsRolling ||
-		!IsOnSolidSurface() ||
-		IsStrafing())
+		!IsOnSolidSurface() /* ||
+		IsStrafing() */)
 	{
 		return false;
 	}

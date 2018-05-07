@@ -14,8 +14,8 @@
 #include "FeatureUnlockManager.h"
 
 static const char * kBombTextureFile = "Media/bomb.png";
-static const float kAimLineOpacityDecrementDelay = 1.0f;
-static const float kAimLineOpacityDecreaseRate = 1.8f;
+static const float kAimLineOpacityDecrementDelay = 0.05f;
+static const float kAimLineOpacityDecreaseRate = 10.0f;
 
 Player::Player(float x, float y, float z, float width, float height, float breadth) :
 Character(x, y, z, width, height, breadth),
@@ -437,7 +437,8 @@ void Player::AddAimLineSprite()
 
 	mAimLineSprite = new Sprite();
 	
-	mAimLineSprite->SetDimensionsXYZ(100, 100, 0);
+	mAimLineSprite->SetIsNativeDimensions(false);
+	mAimLineSprite->SetDimensionsXYZ(400, 400, 0);
 
 	mAimLineSprite->SetTextureFilename("Media\\aim_line.png");
 

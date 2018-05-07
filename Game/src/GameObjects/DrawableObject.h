@@ -30,6 +30,12 @@ public:
 	void SetChangeRequired() { m_applyChange = true; }
 	D3DXMATRIX World() { return m_world; }
 
+	void SetFadeAlphaWhenPlayerOccluded(bool value, float alphaWhenOccluding)
+	{
+		m_fadeAlphaWhenPlayerOccluded = value;
+		m_alphaWhenOccluding = alphaWhenOccluding;
+	}
+
 	virtual void SetAlpha(float value)
 	{
 		if (value > 1.0f)
