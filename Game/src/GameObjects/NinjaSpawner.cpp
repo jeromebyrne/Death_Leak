@@ -22,13 +22,11 @@ void NinjaSpawner::SpawnNPC(const float posX,
 							Vector2 & collisionBoxOffset)
 {
 	float randJumpSpeed = rand() % 4000;
-	randJumpSpeed *= 0.001;
-	randJumpSpeed += 20;
+	randJumpSpeed *= 0.001f;
+	randJumpSpeed += 20.0f;
 	float randMaxXVelocity = rand() % 3000;
-	randMaxXVelocity *= 0.001;
-	randMaxXVelocity += 10;
-
-	// int randZ = rand() % 20;
+	randMaxXVelocity *= 0.001f;
+	randMaxXVelocity += 8.0f;
 
 	NPC * npc = new NPC(posX, posY, 49);
 	npc->m_animationFile = animationFile;
@@ -39,12 +37,12 @@ void NinjaSpawner::SpawnNPC(const float posX,
 	npc->SetCollisionDimensions(Vector3(collisionDimensions.X, collisionDimensions.Y, 0));
 	npc->SetCollisionBoxOffset(Vector2(collisionBoxOffset.X, collisionBoxOffset.Y));   
 	npc->SetPlayer(GameObjectManager::Instance()->GetPlayer());
-	npc->SetResistanceXYZ(1.0, 1.4f, 0);
+	npc->SetResistanceXYZ(1.0f, 1.4f, 0);
 	npc->setAccelXRate(1.0);
 	npc->SetMaterial(MaterialManager::Instance()->GetMaterial("demon1"));
 	npc->SetMaxJumpSpeed(randJumpSpeed);
 	npc->SetIsPlayerEnemy(true);
-	npc->SetFadeAlphaWhenPlayerOccluded(true, 0.1f);
+	npc->SetFadeAlphaWhenPlayerOccluded(true, 0.5f);
 
 	GameObjectManager::Instance()->AddGameObject(npc);
 	npc->FlipVertical();

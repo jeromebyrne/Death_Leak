@@ -90,6 +90,10 @@ public:
 	// This is used for the animation viewer
 	virtual void UpdateAnimTexture(const string & bodyPart) override;
 
+	void Stun(float stunTime);
+
+	bool IsStunned() { return mCurrentStunTime > 0.0f; }
+
 protected:
 
 	void SetIsWallJumping(bool value);
@@ -150,6 +154,7 @@ protected:
 	bool mIsDownwardDashing;
 	bool mWasDownwardDashing;
 	bool mCanIncreaseJumpVelocity;
+	float mCurrentStunTime = 0.0f;
 
 	CurrentMeleePhase mCurrentMeleePhase = kMeleePhase1;
 

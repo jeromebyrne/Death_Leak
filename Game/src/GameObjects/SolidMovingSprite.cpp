@@ -412,6 +412,12 @@ bool SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 
 void SolidMovingSprite::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode)
 {
+	if (!IsOnSolidSurface() && IsCharacter() && GameObjectManager::Instance()->GetPlayer() != this)
+	{
+		// if an enemy is hit while in midair then damage should be increased
+		damageAmount *= 10.0f; // TODO: this should be config driven
+	}
+
 	if (mCanBeDamaged)
 	{
 		MovingSprite::OnDamage(damageDealer, damageAmount, pointOfContact);

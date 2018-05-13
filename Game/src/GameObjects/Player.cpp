@@ -237,12 +237,13 @@ Projectile * Player::FireWeapon(Vector2 direction)
 									mProjectileFilePath.c_str(),
 									mProjectileImpactFilePath.c_str(),
 									pos,
-									Vector2(30,8),
-									Vector2(60,20),
+									Vector2(75,20),
+									Vector2(90,24),
 									direction,
 									0.5f,
 									isInDeepWater ? speed * 0.6f : speed,
 									0.25f);
+	p->SetIsNativeDimensions(false);
 
 	if (m_isAnimated && m_animation)
 	{

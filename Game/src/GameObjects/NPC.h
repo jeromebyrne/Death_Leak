@@ -81,6 +81,8 @@ private:
 	float mHealthMeterHealthBeforeDecrease;
 	bool mIsPlayerEnemy;
 	int mRandHealthBarOffsetY;
+	int mDamageInARowCount = 0;
+	float mDamageInARowCountdown = 0.0f;
 };
 
 #endif

@@ -75,6 +75,8 @@ private:
 
 	void ProcessTestActions_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player, const LevelProperties & levelProps);
 
+	void ProcessSlowMotion_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player);
+
 	// keyboard
 	void ProcessLeftRightMovement_keyboard(CurrentGameplayActions & currentActions, Player * player);
 

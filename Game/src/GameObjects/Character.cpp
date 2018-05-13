@@ -44,7 +44,7 @@ Character::Character(float x, float y, float z, float width, float height, float
 	m_projectileOffset(0,0),
 	mLastTimePlayedDamageSound(0.0f),
 	mDamageSoundDelayMilli(0.15f),
-	mRunAnimFramerateMultiplier(1.0f),
+	mRunAnimFramerateMultiplier(3.0f),
 	mMatchAnimFrameRateWithMovement(true),
 	m_lastTimePlayedWaterWadeSFX(0.0f),
 	mIsMidAirMovingDown(false),
@@ -174,6 +174,16 @@ void Character::Update(float delta)
 
 	// update the base classes
 	SolidMovingSprite::Update(delta);
+
+	if (mCurrentStunTime > 0.0f)
+	{
+		SetCrouching(true);
+		mCurrentStunTime -= delta;
+		if (mCurrentStunTime <= 0.0f)
+		{
+			Roll();
+		}
+	}
 
 	if (IsOnSolidSurface())
 	{
@@ -1244,6 +1254,11 @@ bool Character::Roll()
 
 void Character::AccelerateX(float directionX)
 {
+	if (IsStunned())
+	{
+		return;
+	}
+
 	if (GetIsCollidingAtObjectSide()  && m_direction.X != directionX)
 	{
 		// don't allow accelerating into the side of solid objects
@@ -1253,15 +1268,13 @@ void Character::AccelerateX(float directionX)
 	bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
 	float deepWaterModifier = isInDeepWater ? (IsOnSolidSurface() ? 0.5f : 0.2f) : 1.0f;
 
-	float strafeModifier = mIsStrafing ? 1.0f : 1.0f;
-
 	if (GetIsSprintActive())
 	{
-		MovingSprite::AccelerateX(directionX, (mAccelXRate * 2) * deepWaterModifier * strafeModifier);
+		MovingSprite::AccelerateX(directionX, (mAccelXRate * 2) * deepWaterModifier);
 	}
 	else
 	{
-		MovingSprite::AccelerateX(directionX, mAccelXRate * deepWaterModifier * strafeModifier);
+		MovingSprite::AccelerateX(directionX, mAccelXRate * deepWaterModifier);
 	}
 
 	if (mIsStrafing)
@@ -1791,4 +1804,13 @@ void Character::DoDownwardDash()
 	mCanIncreaseJumpVelocity = false;
 
 	mIsDownwardDashing = true;
+}
+
+void Character::Stun(float stunTime)
+{
+	StopXAccelerating();
+	StopYAccelerating();
+	SetVelocityXYZ(0.0f, 0.0f, 0.0f);
+	mCurrentStunTime = stunTime;
+	SetCrouching(true);
 }

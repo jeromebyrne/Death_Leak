@@ -153,7 +153,8 @@ void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 
 	if (!player->JustFellFromLargeDistance() &&
 		!player->IsDoingMelee() &&
-		padState.Gamepad.wButtons & XINPUT_GAMEPAD_A)
+		(padState.Gamepad.wButtons & XINPUT_GAMEPAD_A || 
+		padState.Gamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD))
 	{
 		mCurrentGamepadState.mPressingJump = true;
 	}
@@ -213,7 +214,7 @@ void InputManager::ProcessDownwardDash_gamepad(XINPUT_STATE padState, CurrentGam
 
 	bool wasPressingDownwardDash = mCurrentGamepadState.mPressingDownwardDashPrimary;
 
-	if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_A &&
+	if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER &&
 		padState.Gamepad.sThumbLY < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE * 2.5f)
 	{
 		mCurrentGamepadState.mPressingDownwardDashPrimary = true;
@@ -230,14 +231,26 @@ void InputManager::ProcessDownwardDash_gamepad(XINPUT_STATE padState, CurrentGam
 	}
 }
 
+void InputManager::ProcessSlowMotion_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player)
+{
+	if (padState.Gamepad.bLeftTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
+	{
+		Timing::Instance()->SetTimeModifier(0.1f);
+	}
+	else
+	{
+		Timing::Instance()->SetTimeModifier(1.0f);
+	}
+}
+
 void InputManager::ProcessRoll_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player)
 {
 	bool wasPressingRoll = mCurrentGamepadState.mPressingRoll;
 
 	if (!player->JustFellFromLargeDistance() &&
 		!player->IsDoingMelee() &&
-		(padState.Gamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD ||
-		padState.Gamepad.bLeftTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD))
+		(/*padState.Gamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD ||*/
+			padState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER))
 	{
 		mCurrentGamepadState.mPressingRoll = true;
 	}
@@ -261,7 +274,8 @@ void InputManager::ProcessMelee_gamepad(XINPUT_STATE padState, CurrentGameplayAc
 
 	if (!player->JustFellFromLargeDistance() &&
 		!player->IsDoingMelee() &&
-		padState.Gamepad.wButtons & XINPUT_GAMEPAD_X)
+		(padState.Gamepad.wButtons & XINPUT_GAMEPAD_X ||
+		padState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER))
 	{
 		mCurrentGamepadState.mPressingMelee = true;
 	}
@@ -428,7 +442,7 @@ void InputManager::ProcessTestActions_gamepad(XINPUT_STATE padState, CurrentGame
 	// Ninja spawning
 	{
 		static bool pressingLeftShoulder = false;
-		if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
+		if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_B)
 		{
 			pressingLeftShoulder = true;
 		}
@@ -439,7 +453,7 @@ void InputManager::ProcessTestActions_gamepad(XINPUT_STATE padState, CurrentGame
 				// testing
 				Timing::Instance()->SetTimeModifierForNumSeconds(0.25f, 1.5f);
 				NinjaSpawner spawner;
-				spawner.SpawnMultiple(4, Vector2(player->X(), player->Y()), Vector2(1200, 1200));
+				spawner.SpawnMultiple(1, Vector2(player->X(), player->Y()), Vector2(1200, 1200));
 			}
 
 			pressingLeftShoulder = false;
@@ -488,6 +502,8 @@ void InputManager::ProcessGameplay_GamePad()
 	const auto & levelProps = GameObjectManager::Instance()->GetCurrentLevelProperties();
 
 	CurrentGameplayActions currentActions;
+
+	ProcessSlowMotion_gamepad(padState, currentActions, player);
 
 	ProcessDownwardDash_gamepad(padState, currentActions, player);
 

@@ -7,11 +7,12 @@ static const float kJumpOrRollRandomDelayMin = 6.0f;
 static const float kJumpOrRollRandomDelayMax = 10.5f;
 static const float kTeleportDelayMin = 2.0f;
 static const float kTeleportDelayMax = 7.0f;
+static const float kTeleportDistance = 3000.0f;
 
 AIStateRangeAttack::AIStateRangeAttack(NPC * npc) :
 	AIState(npc),
-	mDesiredRange(650),
-	mFollowRange(900),
+	mDesiredRange(500.0f),
+	mFollowRange(780.0f),
 	mRandOffset(0.0f),
 	mLastTimeRanAway(0.0f),
 	mTimeUntilRandomlyJumpOrRoll(0.0f),
@@ -27,12 +28,12 @@ AIStateRangeAttack::~AIStateRangeAttack(void)
 void AIStateRangeAttack::OnTransition()
 {
 	float randMaxXVelocity = rand() % 3000;
-	randMaxXVelocity *= 0.001;
-	randMaxXVelocity += 10;
+	randMaxXVelocity *= 0.001f;
+	randMaxXVelocity += 10.0f;
 
 	m_npc->SetMaxVelocityXYZ(randMaxXVelocity, 99999, 0);
 
-	mRandOffset = rand() % 220;
+	mRandOffset = rand() % 180;
 
 	mTimeUntilRandomlyJumpOrRoll = kJumpOrRollRandomDelayMin + (rand() % (int)((kJumpOrRollRandomDelayMax - kJumpOrRollRandomDelayMin) * 100.0f)) * 0.01f;
 }
@@ -59,7 +60,7 @@ void AIStateRangeAttack::Update(float delta)
 		Vector3 distanceSquaredVector = m_npc->m_player->Position() - m_npc->Position();
 
 		if (npcInView && 
-			std::abs(distanceSquaredVector.X > 3000) ||
+			std::abs(distanceSquaredVector.X > kTeleportDistance) ||
 			(std::abs(distanceSquaredVector.Y > 1000) && m_npc->m_player->IsOnSolidSurface() && m_npc->m_player->GetTimeOnSolidSurface() > 1.0f))
 		{
 			if (mTimeUntilCanTeleport <= 0.0f)

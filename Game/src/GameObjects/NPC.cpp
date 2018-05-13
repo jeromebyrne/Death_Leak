@@ -15,6 +15,9 @@
 
 static float kMinReloadTime = 1.5f;
 static float kMaxReloadTime = 3.0f;
+static float kDamageComboWindowDelay = 1.0f;
+static int kDamageInARowToStun = 5;
+static float kTimeStunned = 3.0f;
 
 static const float kHealthBarDimensionsX = 128.0f * 0.5f;
 static const float kHealthBarDimensionsY = 8.0f;
@@ -77,6 +80,16 @@ NPC::~NPC(void)
 void NPC::Update(float delta)
 {
 	Character::Update(delta);
+
+	if (mDamageInARowCountdown >0.0f)
+	{
+		mDamageInARowCountdown -= delta;
+		if (mDamageInARowCountdown <= 0.0f)
+		{
+			mDamageInARowCount = 0;
+			mDamageInARowCountdown = 0.0f;
+		}
+	}
 
 	if (!m_player)
 	{
@@ -204,6 +217,14 @@ void NPC::FireProjectileAtObject(GameObject * target)
 
 void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode)
 {
+	mDamageInARowCountdown = kDamageComboWindowDelay;
+	++mDamageInARowCount;
+
+	if (!IsStunned() && IsOnSolidSurface() && mDamageInARowCount >= kDamageInARowToStun)
+	{
+		Stun(kTimeStunned);
+	}
+
 	Character::OnDamage(damageDealer, damageAmount, pointOfContact, shouldExplode);
 
 	// throw out some orbs
@@ -520,7 +541,7 @@ Projectile * NPC::FireWeapon(Vector2 direction)
 		pos.X -= m_projectileOffset.X;
 	}
 	
-	float speed = mSprintActive ? 23 : 19;
+	float speed = mSprintActive ? 26 : 21;
 
 	// TODO: ideally want these properties configurable per character
 	Projectile * p = new Projectile(Projectile::kNPCProjectile,
@@ -733,3 +754,4 @@ void NPC::UpdateHealthBar(float delta)
 		mHealthBarOverlaySprite->SetMatrixScaleY(mCurrentHealthMeterScale);
 	}
 }
+
