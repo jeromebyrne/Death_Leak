@@ -214,8 +214,8 @@ void InputManager::ProcessDownwardDash_gamepad(XINPUT_STATE padState, CurrentGam
 
 	bool wasPressingDownwardDash = mCurrentGamepadState.mPressingDownwardDashPrimary;
 
-	if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER &&
-		padState.Gamepad.sThumbLY < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE * 2.5f)
+	if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER /*&&
+		padState.Gamepad.sThumbLY < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE * 2.5f*/)
 	{
 		mCurrentGamepadState.mPressingDownwardDashPrimary = true;
 	}

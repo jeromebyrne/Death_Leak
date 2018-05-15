@@ -73,6 +73,8 @@ public:
 
 	bool IsDoingMelee() const { return mIsDoingMelee; }
 
+	bool IsCrouching() const { return mIsCrouching; }
+
 	void DoAnimationEffectIfApplicable(AnimationPart * bodyPart);
 
 	CurrentMeleePhase GetCurrentMeleePhase() const { return mCurrentMeleePhase; }

@@ -15,7 +15,7 @@
 
 static float kMinReloadTime = 1.5f;
 static float kMaxReloadTime = 3.0f;
-static float kDamageComboWindowDelay = 1.0f;
+static float kDamageComboWindowDelay = 0.5f;
 static int kDamageInARowToStun = 5;
 static float kTimeStunned = 3.0f;
 

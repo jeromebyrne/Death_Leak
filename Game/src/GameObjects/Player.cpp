@@ -19,7 +19,7 @@ static const float kAimLineOpacityDecreaseRate = 10.0f;
 
 Player::Player(float x, float y, float z, float width, float height, float breadth) :
 Character(x, y, z, width, height, breadth),
-	mProjectileFireDelay(0.15f),
+	mProjectileFireDelay(0.10f),
 	mTimeUntilProjectileReady(0.0f),
 	mFireBurstNum(0),
 	mCurrentBurstNum(0),
@@ -31,6 +31,7 @@ Character(x, y, z, width, height, breadth),
 {
 	mHealth = 100.0f;
 	mAlwaysUpdate = true;
+	mIsPlayer = true;
 }
 
 Player::~Player(void)
@@ -237,8 +238,8 @@ Projectile * Player::FireWeapon(Vector2 direction)
 									mProjectileFilePath.c_str(),
 									mProjectileImpactFilePath.c_str(),
 									pos,
-									Vector2(75,20),
-									Vector2(90,24),
+									Vector2(91,16),
+									Vector2(91,16),
 									direction,
 									0.5f,
 									isInDeepWater ? speed * 0.6f : speed,

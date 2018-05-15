@@ -2,7 +2,7 @@
 #include "AIStateRangeAttack.h"
 #include "NPC.h"
 
-static const float kRunAwayDelay = 1.6f;
+static const float kRunAwayDelay = 1.2f;
 static const float kJumpOrRollRandomDelayMin = 6.0f;
 static const float kJumpOrRollRandomDelayMax = 10.5f;
 static const float kTeleportDelayMin = 2.0f;
@@ -40,6 +40,16 @@ void AIStateRangeAttack::OnTransition()
 
 void AIStateRangeAttack::Update(float delta)
 {
+	if (m_npc->GetIsRolling() ||
+		m_npc->IsStunned() ||
+		m_npc->JustFellFromLargeDistance())
+	{
+		// can't do anything while rolling
+		m_npc->StopXAccelerating();
+		m_npc->SetIsStrafing(false);
+		return;
+	}
+
 	if (m_npc->m_player)
 	{
 		if (!CanAccelerateX(1.0f))

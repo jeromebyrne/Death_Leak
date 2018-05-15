@@ -76,8 +76,8 @@ Character::Character(float x, float y, float z, float width, float height, float
 	mWasDownwardDashing(false),
 	mCanIncreaseJumpVelocity(false)
 {
-	mProjectileFilePath = "Media/knife.png";
-	mProjectileImpactFilePath = "Media/knife_impact.png";
+	mProjectileFilePath = "Media/knife_2.png";
+	mProjectileImpactFilePath = "Media/knife_impact_2.png";
 	mIsCharacter = true;
 
 	mExplodesGruesomely = true;
@@ -206,7 +206,10 @@ void Character::Update(float delta)
 	{
 		AccelerateX(m_direction.X);
 
-		SetMaxVelocityLimitEnabled(false);
+		if (IsPlayer())
+		{
+			SetMaxVelocityLimitEnabled(false);
+		}
 	}
 	else
 	{

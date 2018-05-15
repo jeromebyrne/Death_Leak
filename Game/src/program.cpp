@@ -26,6 +26,7 @@ LRESULT CALLBACK    WndProc( HWND, UINT, WPARAM, LPARAM );
 HRESULT Initialise(HINSTANCE hInstance, int nCmdShow);
 void Update(float delta);
 void Render();
+void Present();
 void KillGame();
 
 bool gDestroyGame = false;
@@ -81,23 +82,26 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 
 		double delta = (currentTime - last_update_time) * 0.001;
 
+		double gameSpeed = 1.0; // TODO: final "normal" level should be 0.7 (70%)
+
+		delta *= gameSpeed;
+
 		// just force this to 1.0 as lots of issues
 		if (delta > timing->GetTargetDelta())
 		{
 			delta = timing->GetTargetDelta();
 		}
 
-		timing->SetLastUpdateDelta(delta * timing->GetTimeModifier());
-
-		if (delta >= target_delta)
-		{
-			timing->Update(delta);
-			Update(delta * timing->GetTimeModifier());
-			last_update_time = currentTime;
-			timing->IncrementTotalTimeSeconds(delta * timing->GetTimeModifier());
-		}
+		timing->Update(delta);
+		Update(delta * timing->GetTimeModifier());
+		last_update_time = currentTime;
+		timing->IncrementTotalTimeSeconds(delta * timing->GetTimeModifier());
 
 		Render();
+
+		timing->SetLastUpdateDelta(delta * timing->GetTimeModifier());
+		
+		Present();
 
 		// is there a message to process?
 		if (PeekMessage(&mssg, NULL, 0, 0, PM_REMOVE))
@@ -236,9 +240,13 @@ void Render()
 	}
 
 	UIManager::Instance()->Draw(g_pGraphics->Device());
-
-    g_pGraphics->SwapBuffers();
 }
+
+void Present()
+{
+	g_pGraphics->SwapBuffers();
+}
+
 void KillGame()
 {
 	g_pGraphics->CleanupDevice();

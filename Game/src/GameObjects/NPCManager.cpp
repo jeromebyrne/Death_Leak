@@ -72,24 +72,24 @@ void NPCManager::Draw()
 
 		if (npc->Right() < camLeft)
 		{
-			indicatorPos.X = camLeft + 55;
+			indicatorPos.X = camLeft + 45;
 		}
 		else if (npc->Left() > camRight)
 		{
-			indicatorPos.X = camRight - 55;
+			indicatorPos.X = camRight - 45;
 		}
 
 		if (npc->Bottom() > camTop)
 		{
-			indicatorPos.Y = camTop - 55;
+			indicatorPos.Y = camTop - 45;
 		}
 		else if (npc->Top() < camBottom)
 		{
-			indicatorPos.Y = camBottom + 55;
+			indicatorPos.Y = camBottom + 45;
 		}
 
 		// TODO: don't use the draw utilities as it's very slow
-		DrawUtilities::DrawTexture(indicatorPos, Vector2(90, 90), "Media//skull_icon.png");
+		DrawUtilities::DrawTexture(indicatorPos, Vector2(45, 45), "Media//skull_icon.png");
 	}
 }
 
