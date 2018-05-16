@@ -5,10 +5,10 @@
 #include <set>
 
 class Projectile;
+class ParticleSpray;
 
 class Character : public SolidMovingSprite
 {
-
 public:
 
 	enum CurrentMeleePhase
@@ -106,6 +106,12 @@ protected:
 
 	void DoMeleeCollisions(SolidMovingSprite * object);
 
+	void AddStunParticles();
+
+	void EnableStunParticles(bool enabled);
+
+	void UpdateCollisionBox();
+
 	bool m_isJumping;
 	float m_maxJumpSpeed;
 	float m_lastTimePlayedWaterWadeSFX; 
@@ -157,6 +163,9 @@ protected:
 	bool mWasDownwardDashing;
 	bool mCanIncreaseJumpVelocity;
 	float mCurrentStunTime = 0.0f;
+	ParticleSpray * mStunParticles;
+	Vector3 mRegularCollisionBox;
+	float mMeleeCollisionBoundsX = 1.5f;
 
 	CurrentMeleePhase mCurrentMeleePhase = kMeleePhase1;
 

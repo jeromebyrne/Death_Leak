@@ -19,6 +19,8 @@ public:
 
 	bool IsUpdateable() const { return m_updateable; }
 
+	void SetUpdateable(bool value) { m_updateable = value; }
+
 	inline int ID() const
 	{
 		return m_id;

@@ -2,7 +2,7 @@
 #include "AIStateRangeAttack.h"
 #include "NPC.h"
 
-static const float kRunAwayDelay = 1.2f;
+static const float kRunAwayDelay = 0.5f;
 static const float kJumpOrRollRandomDelayMin = 6.0f;
 static const float kJumpOrRollRandomDelayMax = 10.5f;
 static const float kTeleportDelayMin = 2.0f;
@@ -12,9 +12,9 @@ static const float kTeleportDistance = 3000.0f;
 AIStateRangeAttack::AIStateRangeAttack(NPC * npc) :
 	AIState(npc),
 	mDesiredRange(500.0f),
-	mFollowRange(780.0f),
+	mFollowRange(600.0f),
 	mRandOffset(0.0f),
-	mLastTimeRanAway(0.0f),
+	mLastTimeRanAway(-9999.0f),
 	mTimeUntilRandomlyJumpOrRoll(0.0f),
 	mTimeUntilCanTeleport(0.0f)
 {

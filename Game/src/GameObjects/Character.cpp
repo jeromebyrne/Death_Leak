@@ -13,6 +13,7 @@
 #include "SolidLineStrip.h"
 #include "Game.h"
 #include "FeatureUnlockManager.h"
+#include "ParticleSpray.h"
 
 float Character::mLastTimePlayedDeathSFX = 0.0f;
 static const float kMinTimeBetweenDeathSFX = 0.1f;
@@ -29,10 +30,10 @@ static const float kLandJumpInputWindow = 0.3f;
 static const float kWallJumpXResistance = 0.99f;
 static const float kWallJumpVelocityXBoost = 15.0f;
 
-Character::Character(float x, float y, float z, float width, float height, float breadth): 
-	SolidMovingSprite(x,y,z,width, height, breadth),
-	m_isJumping(false), 
-	m_maxJumpSpeed(10), 
+Character::Character(float x, float y, float z, float width, float height, float breadth) :
+	SolidMovingSprite(x, y, z, width, height, breadth),
+	m_isJumping(false),
+	m_maxJumpSpeed(10),
 	m_waterWadeSFXTime(1.0f),
 	mAccelXRate(0),
 	mHealth(100),
@@ -41,7 +42,7 @@ Character::Character(float x, float y, float z, float width, float height, float
 	mSprintActive(false),
 	mHasExploded(false),
 	m_mainBodyTexture(0),
-	m_projectileOffset(0,0),
+	m_projectileOffset(0, 0),
 	mLastTimePlayedDamageSound(0.0f),
 	mDamageSoundDelayMilli(0.15f),
 	mRunAnimFramerateMultiplier(3.0f),
@@ -74,7 +75,9 @@ Character::Character(float x, float y, float z, float width, float height, float
 	mIsDoingMelee(false),
 	mIsDownwardDashing(false),
 	mWasDownwardDashing(false),
-	mCanIncreaseJumpVelocity(false)
+	mCanIncreaseJumpVelocity(false),
+	mStunParticles(nullptr),
+	mRegularCollisionBox(0, 0, 0)
 {
 	mProjectileFilePath = "Media/knife_2.png";
 	mProjectileImpactFilePath = "Media/knife_impact_2.png";
@@ -175,13 +178,20 @@ void Character::Update(float delta)
 	// update the base classes
 	SolidMovingSprite::Update(delta);
 
+	UpdateCollisionBox();
+
 	if (mCurrentStunTime > 0.0f)
 	{
 		SetCrouching(true);
 		mCurrentStunTime -= delta;
+
 		if (mCurrentStunTime <= 0.0f)
 		{
-			Roll();
+			EnableStunParticles(false);
+			if (!IsPlayer())
+			{
+				Roll();
+			}
 		}
 	}
 
@@ -316,40 +326,43 @@ void Character::Update(float delta)
 		{
 			float dropDistance = mHighestPointWhileInAir - m_position.Y;
 
-			// if we pressed roll just before landing then we should roll
-			auto inputManager = Game::GetInstance()->GetInputManager();
-
-			float totalTime = Timing::Instance()->GetTotalTimeSeconds();
-			float rollDiff = totalTime - inputManager.GetLastTimePressedRoll();
-			if (rollDiff >= 0.0f && rollDiff < kLandRollInputWindow)
+			if (IsPlayer())
 			{
-				Roll();
-				if (dropDistance >= kLargeDropDistance)
-				{
-					Camera2D::GetInstance()->DoMediumShake();
-				}
+				// if we pressed roll just before landing then we should roll
+				auto inputManager = Game::GetInstance()->GetInputManager();
 
-				// we avoided the crouch delay by rolling
-				mJustFellFromDistance = false;
-				mJustfellFromLargeDistance = false;
-			}
-			else if (!mIsRolling && !isInDeepWater)
-			{
-				if (dropDistance > kSmallDropDistance && dropDistance < kLargeDropDistance)
+				float totalTime = Timing::Instance()->GetTotalTimeSeconds();
+				float rollDiff = totalTime - inputManager.GetLastTimePressedRoll();
+				if (rollDiff >= 0.0f && rollDiff < kLandRollInputWindow)
 				{
-					mJustFellFromDistance = true;
-					mJustfellFromLargeDistance = false;
-
-					float jumpDiff = totalTime - inputManager.GetLastTimePressedJump();
-					if (!mIsDownwardDashing && !mWasDownwardDashing && jumpDiff >= 0.0f && jumpDiff < kLandJumpInputWindow)
+					Roll();
+					if (dropDistance >= kLargeDropDistance)
 					{
-						mDoReboundJump = true;
-						Jump(95.0f);
+						Camera2D::GetInstance()->DoMediumShake();
 					}
+
+					// we avoided the crouch delay by rolling
+					mJustFellFromDistance = false;
+					mJustfellFromLargeDistance = false;
 				}
-				else if (dropDistance >= kLargeDropDistance)
+				else if (!mIsRolling && !isInDeepWater)
 				{
-					DoLargeImpactLanding();
+					if (dropDistance > kSmallDropDistance && dropDistance < kLargeDropDistance)
+					{
+						mJustFellFromDistance = true;
+						mJustfellFromLargeDistance = false;
+
+						float jumpDiff = totalTime - inputManager.GetLastTimePressedJump();
+						if (!mIsDownwardDashing && !mWasDownwardDashing && jumpDiff >= 0.0f && jumpDiff < kLandJumpInputWindow)
+						{
+							mDoReboundJump = true;
+							Jump(95.0f);
+						}
+					}
+					else if (dropDistance >= kLargeDropDistance)
+					{
+						DoLargeImpactLanding();
+					}
 				}
 			}
 
@@ -400,6 +413,8 @@ void Character::Initialise()
 	{
 		m_animation->SetPartSequence("arm", "Still");
 	}
+
+	mRegularCollisionBox = m_collisionBoxDimensions;
 }
 
 void Character::XmlRead(TiXmlElement * element)
@@ -487,7 +502,7 @@ void Character::DoMeleeCollisions(SolidMovingSprite * object)
 			// left edge of the object must be greater than the center of the character
 			if (object->CollisionLeft() > CollisionLeft())
 			{
-				object->OnDamage(this, mMeleeDamage, Vector3(0, 0, 0), false);
+				object->OnDamage(this, mMeleeDamage, Vector3(0, 0, 0), true);
 				object->TriggerMeleeCooldown();
 			}
 		}
@@ -496,7 +511,7 @@ void Character::DoMeleeCollisions(SolidMovingSprite * object)
 			// right edge of the object must be less than the center of the character
 			if (object->CollisionRight() < CollisionRight())
 			{
-				object->OnDamage(this, mMeleeDamage, Vector3(0, 0, 0), false);
+				object->OnDamage(this, mMeleeDamage, Vector3(0, 0, 0), true);
 				object->TriggerMeleeCooldown();
 			}
 		}
@@ -1361,22 +1376,22 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 																			12,
 																			0.8f,
 																			2.0f,
+																			50,
 																			100,
-																			180,
 																			3.4,
 																			loop,
 																			0.3f,
 																			1.0f,
 																			loopTime,
 																			true,
-																			2.6f,
+																			2.0f,
 																			5.0f,
 																			16.0f,
 																			0.15f,
 																			0.8f);
 																			
 
-					ParticleEmitterManager::Instance()->CreateDirectedSpray(40,
+					/*ParticleEmitterManager::Instance()->CreateDirectedSpray(20,
 																			pos,
 																			Vector3(0.2f, 0.8f, 0),
 																			0.2f,
@@ -1398,7 +1413,7 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 																			4.0f,
 																			16.0f,
 																			0.15f,
-																			0.8f);
+																			0.8f);*/
 
 					bool slowTime = (rand() % 8) == 1;
 
@@ -1488,6 +1503,12 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 				m_alpha = 0.0f;
 				mHasExploded = true;
 
+				if (mStunParticles != nullptr)
+				{
+					mStunParticles->Detach();
+					GameObjectManager::Instance()->RemoveGameObject(mStunParticles);
+				}
+
 				// mark ourselves for deletion (only if we are not a player)
 				if (GameObjectManager::Instance()->GetPlayer() != this)
 				{
@@ -1504,7 +1525,7 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 
 		if (!mHasExploded || (mHasExploded && !shouldExplode))
 		{
-			ParticleEmitterManager::Instance()->CreateRadialBloodSpray(10, point, false, -1);
+			ParticleEmitterManager::Instance()->CreateRadialBloodSpray(20, point, false, -1);
 		}
 	}
 }
@@ -1811,9 +1832,79 @@ void Character::DoDownwardDash()
 
 void Character::Stun(float stunTime)
 {
+	if (mStunParticles == nullptr)
+	{
+		AddStunParticles();
+	}
+
+	EnableStunParticles(true);
+
 	StopXAccelerating();
 	StopYAccelerating();
 	SetVelocityXYZ(0.0f, 0.0f, 0.0f);
 	mCurrentStunTime = stunTime;
 	SetCrouching(true);
 }
+
+void Character::AddStunParticles()
+{
+	if (mStunParticles != nullptr)
+	{
+		return;
+	}
+
+	mStunParticles = ParticleEmitterManager::Instance()->CreateRadialSpray(5,
+																			m_position,
+																			Vector3(3200, 2000, 0),
+																			"Media\\stun_star.png",
+																			1.5f,
+																			2.0f,
+																			0.5f,
+																			1.0f,
+																			20,
+																			20,
+																			0,
+																			true,
+																			1.0f,
+																			1.0f,
+																			-1.0f,
+																			false,
+																			1.5f,
+																			0.1f,
+																			0.7f,
+																			100.0f,
+																			50.0f);
+	if (mStunParticles)
+	{
+		mStunParticles->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), Vector3(IsHFlipped() ? 50 : -50, -5, 0), true);
+	}
+}
+
+void Character::EnableStunParticles(bool enabled)
+{
+	if (mStunParticles == nullptr)
+	{
+		return;
+	}
+
+	mStunParticles->SetUpdateable(enabled);
+	mStunParticles->SetAlpha(enabled ? 1.0f : 0.0f);
+}
+
+void Character::UpdateCollisionBox()
+{
+	if (!IsPlayer())
+	{
+		// Just do this in Player class?
+		return;
+	}
+
+	m_collisionBoxDimensions = mRegularCollisionBox;
+
+	if (mIsDoingMelee && mCurrentMeleePhase == kMeleePhase3)
+	{
+		m_collisionBoxDimensions.X *= mMeleeCollisionBoundsX;
+	}
+}
+
+

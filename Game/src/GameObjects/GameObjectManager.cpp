@@ -95,10 +95,6 @@ void GameObjectManager::RemoveGameObject(GameObject * object, bool defer)
 		if (iter != m_gameObjects.end())
 		{
 #if _DEBUG
-			if (iter->get()->IsCharacter())
-			{
-				LOG_INFO("Debugging");
-			}
 
 			// the ref count should only be 1 when removing an object from the master list
 			long refCount = (*iter).use_count();

@@ -37,11 +37,13 @@ Projectile(ownerType,
 
 	mSpinningMovement = true;
 	mBouncable = true;
-	mBounceDampening = 0.35f;
+	mBounceDampening = 0.7f;
 
 	mType = kBombProjectile;
 
 	AudioManager::Instance()->PlaySoundEffect("fuse_burning.wav");
+
+	m_maxTimeInActive = 10.0f;
 }
 
 BombProjectile::~BombProjectile(void)

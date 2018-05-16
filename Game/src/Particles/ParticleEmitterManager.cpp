@@ -5,14 +5,14 @@
 
 // radial blood properties
 const unsigned int kBloodRadialMinSize = 30;
-const unsigned int kBloodRadialMaxSize = 100;
+const unsigned int kBloodRadialMaxSize = 60;
 const float kBloodRadialMinSpeed = 1.0f;
 const float kBloodRadialMaxSpeed = 3.0f;
 const unsigned int kBloodRadialGravity = 1.1f;
 const char kBloodTextureFileName[] = "Media\\bloodparticle.png";
 const float kBloodRadialScaleTo = 1.8f;
 float kBloodRadialMinLiveTime = 0.5f;
-float kBloodRadialMaxLiveTime = 1.0f;
+float kBloodRadialMaxLiveTime = 0.7f;
 
 // directed blood properties
 const unsigned int kBloodDirectedMinLiveTime = 0.5f;

@@ -23,7 +23,6 @@ public:
 					float spawnSpreadX,
 					float spawnSpreadY);
 
-	ParticleSpray();
 	virtual ~ParticleSpray(void);
 
 	virtual void Draw(ID3D10Device* device, Camera2D * camera) override;
