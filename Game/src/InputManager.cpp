@@ -235,11 +235,11 @@ void InputManager::ProcessSlowMotion_gamepad(XINPUT_STATE padState, CurrentGamep
 {
 	if (padState.Gamepad.bLeftTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD)
 	{
-		Timing::Instance()->SetTimeModifier(0.1f);
+		player->TryFocus();
 	}
 	else
 	{
-		Timing::Instance()->SetTimeModifier(1.0f);
+		player->StopFocus();
 	}
 }
 

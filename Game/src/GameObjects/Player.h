@@ -27,11 +27,21 @@ public:
 
 	bool CanJump() const override;
 
+	float GetMaxFocusAmount() const { return mMaxFocusAmount; }
+
+	float GetCurrentFocusAmount() const { return mCurrentFocusAmount; }
+
+	void TryFocus();
+
+	void StopFocus();
+
 private:
 
 	virtual void DebugDraw(ID3D10Device *  device) override;
 
 	void CheckForAndDoLevelUp();
+
+	void UpdateFocus(float delta);
 
 	float mProjectileFireDelay;
 	float mTimeUntilProjectileReady;
@@ -41,6 +51,11 @@ private:
 	float mFireBurstDelay;
 	float mTimeUntilFireBurstAvailable;
 	bool mBurstFireEnabled;
+
+	float mMaxFocusAmount = 100.0f;
+	float mCurrentFocusAmount = 100.0f;
+	float mCurrentFocusCooldown = 0.0f;
+	bool mIsFocusing = false;
 
 	Sprite * mAimLineSprite;
 

@@ -17,9 +17,13 @@ static const char * kBombTextureFile = "Media/bomb.png";
 static const float kAimLineOpacityDecrementDelay = 0.05f;
 static const float kAimLineOpacityDecreaseRate = 10.0f;
 
+static const float kFocusUseRate = 150.0f;
+static const float kFocusRechargeRate = 10.0f;
+static const float kFocusCooldownTime = 5.0f;
+
 Player::Player(float x, float y, float z, float width, float height, float breadth) :
 Character(x, y, z, width, height, breadth),
-	mProjectileFireDelay(0.10f),
+	mProjectileFireDelay(0.15f),
 	mTimeUntilProjectileReady(0.0f),
 	mFireBurstNum(0),
 	mCurrentBurstNum(0),
@@ -184,6 +188,8 @@ void Player::Update(float delta)
 			}
 		}
 	}
+
+	UpdateFocus(delta);
 }
 
 Projectile * Player::FireWeapon(Vector2 direction)
@@ -515,4 +521,57 @@ bool Player::CanJump() const
 	return true;
 }
 
+void Player::TryFocus()
+{
+	if (mIsFocusing)
+	{
+		return;
+	}
+
+	if (mCurrentFocusCooldown > 0.0f)
+	{
+		return;
+	}
+
+	if (mCurrentFocusAmount <= 0.0f)
+	{
+		return;
+	}
+
+	Timing::Instance()->SetTimeModifier(0.10f);
+	mIsFocusing = true;
+}
+
+void Player::StopFocus()
+{
+	Timing::Instance()->SetTimeModifier(1.0f);
+	mIsFocusing = false;
+}
+
+void Player::UpdateFocus(float delta)
+{
+	if (mIsFocusing)
+	{
+		mCurrentFocusAmount -= kFocusUseRate * delta;
+
+		if (mCurrentFocusAmount <= 0.0f)
+		{
+			mCurrentFocusAmount = 0.0f;
+			StopFocus();
+			// start cooldown
+			mCurrentFocusCooldown = kFocusCooldownTime;
+		}
+	}
+	else
+	{
+		if (mCurrentFocusCooldown > 0.0f)
+		{
+			mCurrentFocusCooldown -= delta;
+		}
+		else if (mCurrentFocusAmount < mMaxFocusAmount)
+		{
+			mCurrentFocusAmount += kFocusRechargeRate * delta;
+		}
+	}
+}
 

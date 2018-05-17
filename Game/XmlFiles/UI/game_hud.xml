@@ -64,25 +64,25 @@
 
   <meter name="9_health_meter"
         process_input="false"
-        posX ="-900" posY ="480" width="300" height ="19"
+        posX ="-900" posY ="480" width="450" height ="100"
         image="Media\\UI\\meter_overlay.png"
         meter_edge="Media\\UI\\meter_edge_2.png"
         meter_middle="Media\\UI\\meter_overlay.png"
         meter_bar_middle="Media\\UI\\meter_bar_middle.png"
         hflip="false" vflip="false"
-        alpha="0.9"
+        alpha="0.7"
         use_standard_effect="true">
   </meter>
 
   <meter name="91_xp_meter"
         process_input="false"
-        posX ="-900" posY ="460" width="150" height ="19"
+        posX ="-900" posY ="460" width="225" height ="100"
         image="Media\\UI\\meter_overlay.png"
         meter_edge="Media\\UI\\meter_edge_2.png"
         meter_middle="Media\\UI\\meter_overlay.png"
         meter_bar_middle="Media\\UI\\xp_meter_bar_middle.png"
         hflip="false" vflip="true"
-        alpha="0.9"
+        alpha="0.7"
         use_standard_effect="true">
   </meter>
   

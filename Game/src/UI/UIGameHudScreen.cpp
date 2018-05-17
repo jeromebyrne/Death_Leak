@@ -37,14 +37,12 @@ void UIGameHudScreen::Update()
 		}
 	}
 
-	if (mPlayerXPMeter)
+	if (player && mPlayerXPMeter)
 	{
-		unsigned int playerLevel = SaveManager::GetInstance()->GetPlayerLevel();
-		unsigned int orbsCollected = SaveManager::GetInstance()->GetNumCurrencyOrbsCollected();
+		// Player XP is repurposed into FOCUS
+		float focusPercent = player->GetCurrentFocusAmount() / player->GetMaxFocusAmount();
 
-		float percent = PlayerLevelManager::GetInstance()->GetPercentTowardsLevelUp(playerLevel, orbsCollected);
-
-		mPlayerXPMeter->SetProgress(percent < 0.05f ? 0.05f : percent);
+		mPlayerXPMeter->SetProgress(focusPercent);
 	}
 }
 

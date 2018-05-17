@@ -23,7 +23,7 @@ void NinjaSpawner::SpawnNPC(const float posX,
 {
 	float randJumpSpeed = rand() % 4000;
 	randJumpSpeed *= 0.001f;
-	randJumpSpeed += 12.0f;
+	randJumpSpeed += 16.0f;
 	float randMaxXVelocity = rand() % 3000;
 	randMaxXVelocity *= 0.001f;
 	randMaxXVelocity += 14.0f;

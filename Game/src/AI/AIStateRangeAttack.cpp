@@ -3,8 +3,8 @@
 #include "NPC.h"
 
 static const float kRunAwayDelay = 0.5f;
-static const float kJumpOrRollRandomDelayMin = 6.0f;
-static const float kJumpOrRollRandomDelayMax = 10.5f;
+static const float kJumpOrRollRandomDelayMin = 4.0f;
+static const float kJumpOrRollRandomDelayMax = 8.5f;
 static const float kTeleportDelayMin = 2.0f;
 static const float kTeleportDelayMax = 7.0f;
 static const float kTeleportDistance = 3000.0f;
@@ -121,26 +121,24 @@ void AIStateRangeAttack::Update(float delta)
 		{
 			mTimeUntilRandomlyJumpOrRoll -= delta;
 		}
-
-		// let's just randomly jump
-		if (m_npc->IsOnSolidSurface())
+		else if (m_npc->IsOnSolidSurface())
 		{
 			if (mTimeUntilRandomlyJumpOrRoll <= 0.0f)
 			{
-				// N% chance to roll
-				int randRoll = rand() % 100;
-				if (randRoll < 81)
-				{
-					m_npc->Roll();
-				}
-				else
+				// if the NPC is below the player then jump up
+				if (m_npc->m_player->Y() > (m_npc->Y() + 50.0f))
 				{
 					if (m_npc->Jump(100.0f))
 					{
 						m_npc->SetVelocityY(0.5f);
-						mTimeUntilRandomlyJumpOrRoll = kJumpOrRollRandomDelayMin + (rand() % (int)((kJumpOrRollRandomDelayMax - kJumpOrRollRandomDelayMin) * 100.0f)) * 0.01f;
 					}
 				}
+				else
+				{
+					m_npc->Roll();
+				}
+
+				mTimeUntilRandomlyJumpOrRoll = kJumpOrRollRandomDelayMin + (rand() % (int)((kJumpOrRollRandomDelayMax - kJumpOrRollRandomDelayMin) * 100.0f)) * 0.01f;
 			}
 		}
 
