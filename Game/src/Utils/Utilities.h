@@ -6,7 +6,7 @@
 #include "camera2d.h"
 #include <sstream>
 
-static const unsigned int kMaxFormatStringBufferSize = 64000;
+static const unsigned int kMaxFormatStringBufferSize = 64000; // Increase this if we have problems
 
 static const unsigned int kMaxITOA_BufferSize = 256;
 

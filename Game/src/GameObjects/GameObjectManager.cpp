@@ -39,6 +39,7 @@
 #include "Smashable.h"
 #include "SaveShrine.h"
 #include "Door.h"
+#include "GhostEnemy.h"
 
 struct DepthSortPredicate
 {
@@ -700,6 +701,10 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement, const
 	else if (strcmp(gameObjectTypeName, "smashable") == 0)
 	{
 		newGameObject = new Smashable();
+	}
+	else if (strcmp(gameObjectTypeName, "ghostenemy") == 0)
+	{
+		newGameObject = new GhostEnemy();
 	}
 
 	if (newGameObject && !dynamic_cast<ParticleSpray*>(newGameObject))

@@ -12,6 +12,7 @@
 #include "particleemittermanager.h"
 #include "NPCManager.h"
 #include "AIStateButterflyWander.h"
+#include "AIStateFlying.h"
 
 static float kMinReloadTime = 1.5f;
 static float kMaxReloadTime = 2.5f;
@@ -44,7 +45,8 @@ NPC::NPC(float x, float y, float z, float width, float height, float breadth) :
 	mAddHealthBar(true),
 	mIsPlayerEnemy(false),
 	mRandHealthBarOffsetY(0.0f),
-	mGroundAnimalWanderState(nullptr)
+	mGroundAnimalWanderState(nullptr),
+	mFlyingState(nullptr)
 {
 	mHealth = 20.0f;
 	mMaxHealth = 20.0f;
@@ -65,6 +67,7 @@ NPC::NPC(float x, float y, float z, float width, float height, float breadth) :
 	m_rangeAttackState = new AIStateRangeAttack(this);
 	m_butterflyWander = new AIStateButterflyWander(this);
 	mGroundAnimalWanderState = new AIStateGroundAnimalWander(this);
+	mFlyingState = new AIStateFlying(this);
 
 	// set to default state
 	SetState(AIState::kRangeAttack);
@@ -167,6 +170,13 @@ void NPC::SetState(AIState::AIStateType state)
 		{
 			GAME_ASSERT(mGroundAnimalWanderState);
 			m_currentState = mGroundAnimalWanderState;
+			m_currentState->OnTransition();
+			break;
+		}
+		case AIState::kFlying:
+		{
+			GAME_ASSERT(mFlyingState);
+			m_currentState = mFlyingState;
 			m_currentState->OnTransition();
 			break;
 		}

@@ -16,6 +16,7 @@ public:
 		kRangeAttack,
 		kButterflyWander,
 		kGroundAnimalWander,
+		kFlying,
 		kNone
 	};
 

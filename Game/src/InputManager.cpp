@@ -7,6 +7,7 @@
 #include "Projectile.h"
 #include "Timing.h"
 #include "UIManager.h"
+#include "GhostEnemySpawner.h"
 
 InputManager::InputManager() :
 	mShowDebugInfo(false),
@@ -451,9 +452,13 @@ void InputManager::ProcessTestActions_gamepad(XINPUT_STATE padState, CurrentGame
 			if (pressingLeftShoulder)
 			{
 				// testing
-				Timing::Instance()->SetTimeModifierForNumSeconds(0.25f, 1.5f);
+				/*
 				NinjaSpawner spawner;
 				spawner.SpawnMultiple(1, Vector2(player->X(), player->Y()), Vector2(1200, 1200));
+				*/
+
+				GhostEnemySpawner spawner;
+				spawner.SpawnMultiple(4, Vector2(player->X(), player->Y()), Vector2(1200, 1200));
 			}
 
 			pressingLeftShoulder = false;
