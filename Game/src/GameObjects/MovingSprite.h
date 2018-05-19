@@ -114,6 +114,8 @@ public:
 
 	void SetMaxVelocityLimitEnabled(bool value) { mMaxVelocityXLimitEnabled = value; }
 
+	void SetGravityApplyAmount(float value) { mGravityApplyAmount = value; }
+
 protected:
 
 	virtual void DoWaterAccelerationBubbles();
@@ -125,6 +127,7 @@ protected:
 	Vector3 m_acceleration;
 	bool m_applyGravity;
 	bool mMaxVelocityXLimitEnabled;
+	float mGravityApplyAmount = 1.0f;
 
 	// are we moving within the space of anothe rmoving object
 	MovingSprite * mObjectMovingWith;

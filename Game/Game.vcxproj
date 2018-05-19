@@ -274,9 +274,59 @@
     <ClInclude Include="tinyxml\tinyxml.h" />
   </ItemGroup>
   <ItemGroup>
+    <Xml Include="XmlFiles\animation\ghost_enemy_anim.xml" />
+    <Xml Include="XmlFiles\animation\ninjaAnimation.xml" />
+    <Xml Include="XmlFiles\animation\ninjaAnimation2.xml" />
+    <Xml Include="XmlFiles\animation\ninjaAnimation3.xml" />
+    <Xml Include="XmlFiles\animation\player_anim_default.xml" />
+    <Xml Include="XmlFiles\animation_preview.xml" />
+    <Xml Include="XmlFiles\bird_anim.xml" />
+    <Xml Include="XmlFiles\bird_anim_2.xml" />
+    <Xml Include="XmlFiles\butterfly_anim.xml" />
+    <Xml Include="XmlFiles\crate_anim.xml" />
+    <Xml Include="XmlFiles\demon1_animation.xml" />
+    <Xml Include="XmlFiles\field_1.xml" />
+    <Xml Include="XmlFiles\ground_rain.xml" />
+    <Xml Include="XmlFiles\ground_rain_2.xml" />
+    <Xml Include="XmlFiles\level1.xml" />
+    <Xml Include="XmlFiles\levels\door_test_1.xml" />
+    <Xml Include="XmlFiles\levels\door_test_2.xml" />
+    <Xml Include="XmlFiles\levels\save_shrine_test_level.xml" />
+    <Xml Include="XmlFiles\levels\test_level.xml" />
+    <Xml Include="XmlFiles\materials.xml" />
+    <Xml Include="XmlFiles\orb_anim.xml" />
+    <Xml Include="XmlFiles\player_female_animation.xml" />
+    <Xml Include="XmlFiles\player_female_animation2.xml" />
+    <Xml Include="XmlFiles\pot_anim.xml" />
+    <Xml Include="XmlFiles\rabbit_anim.xml" />
+    <Xml Include="XmlFiles\rat_anim.xml" />
+    <Xml Include="XmlFiles\settings.xml" />
+    <Xml Include="XmlFiles\skype_monkey.xml" />
+    <Xml Include="XmlFiles\small_rat_anim.xml" />
+    <Xml Include="XmlFiles\snowLayerMiddleAnimation.xml" />
+    <Xml Include="XmlFiles\snowLayerNearAnimation.xml" />
     <Xml Include="XmlFiles\strings.xml">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </Xml>
+    <Xml Include="XmlFiles\test_smashable.xml" />
+    <Xml Include="XmlFiles\UI\fullscreen_fade.xml" />
+    <Xml Include="XmlFiles\UI\gameloading.xml" />
+    <Xml Include="XmlFiles\UI\game_hud.xml" />
+    <Xml Include="XmlFiles\UI\language_select.xml" />
+    <Xml Include="XmlFiles\UI\language_select_settings.xml" />
+    <Xml Include="XmlFiles\UI\level_edit_hud.xml" />
+    <Xml Include="XmlFiles\UI\level_select.xml" />
+    <Xml Include="XmlFiles\UI\level_select_edit.xml" />
+    <Xml Include="XmlFiles\UI\mainmenu.xml" />
+    <Xml Include="XmlFiles\UI\object_editor_screen.xml" />
+    <Xml Include="XmlFiles\UI\options.xml" />
+    <Xml Include="XmlFiles\UI\pause_menu.xml" />
+    <Xml Include="XmlFiles\UI\UI.xml" />
+    <Xml Include="XmlFiles\underwater_cave.xml" />
+    <Xml Include="XmlFiles\village.xml" />
+    <Xml Include="XmlFiles\village_2.xml" />
+    <Xml Include="XmlFiles\village_outskirts.xml" />
+    <Xml Include="XmlFiles\waterfall_level.xml" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B09D5975-BA6E-4BFD-A9DF-35827CC583C4}</ProjectGuid>

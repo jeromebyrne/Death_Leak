@@ -6,6 +6,8 @@ AIStateFlying::AIStateFlying(NPC * npc) :
 	AIState(npc)
 {
 	mStateType = kRangeAttack;
+
+	mHeightAbovePlayer = 475.0f + (rand() % 150);
 }
 
 AIStateFlying::~AIStateFlying(void)
@@ -25,5 +27,12 @@ void AIStateFlying::OnTransition()
 
 void AIStateFlying::Update(float delta)
 {
-	
+	if (m_npc->m_player == nullptr)
+	{
+		return;
+	}
+
+	m_npc->FireProjectileAtObject(m_npc->m_player);
+
+	m_npc->SetY(m_npc->m_player->Y() +  mHeightAbovePlayer);
 }

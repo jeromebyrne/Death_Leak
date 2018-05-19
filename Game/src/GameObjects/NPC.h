@@ -31,7 +31,7 @@ public:
 
 	void SetState(AIState::AIStateType state);
 
-	void FireProjectileAtObject(GameObject * target);
+	virtual void FireProjectileAtObject(GameObject * target);
 
 	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) override;
 

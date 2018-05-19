@@ -67,6 +67,8 @@ public:
 		m_damage = damageAmount;
 	}
 
+	void SetProjectileResistance(float value) { mProjectileResistance = value; }
+
 protected:
 
 	void HandleSolidLineStripCollision(SolidLineStrip * solidLineStrip);
@@ -95,6 +97,8 @@ protected:
 	bool mTrailParticlesAttached;
 
 	float mSpeed = 1.0f;
+
+	float mProjectileResistance = 1.0f;
 };
 
 #endif

@@ -1,0 +1,30 @@
+<data BoxDimensionsX="32" BoxDimensionsY="48" EllipseDimensionsX="32" EllipseDimensionsY="48">
+
+	<body OffsetX="0" OffsetY="8" SizeX="40" SizeY="80">
+
+		<Still FrameRate="45" MaxFrameRate="45" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\ghost_temp.png"/>
+
+    </Still>
+
+		<Running FrameRate="45" MaxFrameRate="45" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+
+      <frame filename="Media\ghost_temp.png"/>
+
+		</Running>
+
+    <JumpingUp FrameRate="4" MaxFrameRate="4" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\ghost_temp.png"/>
+		</JumpingUp>
+
+    <JumpingDown FrameRate="4" MaxFrameRate="4" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\ghost_temp.png"/>
+    </JumpingDown>
+
+    <SlidingDown FrameRate="0" MaxFrameRate="0" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\ghost_temp.png"/>
+    </SlidingDown>
+
+	</body>
+
+</data>

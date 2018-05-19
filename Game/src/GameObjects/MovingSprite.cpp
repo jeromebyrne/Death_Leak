@@ -133,13 +133,11 @@ void MovingSprite::Update(float delta)
 		m_position += m_velocity * percentDelta; // update our position by velocity
 	}
 
-	// apply gravity?
-	float fakeGravity = 1.0f; // must be greater than 1
 	if (m_applyGravity) // TODO: only apply if not on solid surface
 	{
 		if (!mIsInWater)
 		{
-			AccelerateY(-1, (fakeGravity/mCurrentYResistance) * percentDelta);
+			AccelerateY(-1, (mGravityApplyAmount /mCurrentYResistance) * percentDelta);
 		}
 		else
 		{

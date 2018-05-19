@@ -21,6 +21,8 @@ public:
 	virtual void XmlRead(TiXmlElement * element) override;
 	virtual void XmlWrite(TiXmlElement * element) override;
 
+	Projectile * FireWeapon(Vector2 direction) override;
+
 private:
 
 };

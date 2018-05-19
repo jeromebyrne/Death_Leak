@@ -15,6 +15,8 @@ public:
 
 private:
 
+	float mHeightAbovePlayer = 400.0f;
+
 };
 
 #endif

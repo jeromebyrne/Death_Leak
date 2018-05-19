@@ -498,7 +498,7 @@ void Projectile::Update(float delta)
 			m_velocity.X *= 0.91f; // slow down significantly
 			m_velocity.Y *= 0.95f; // slow down significantly
 		}
-		m_position += m_velocity * percentDelta;
+		m_position += (m_velocity * percentDelta) * mProjectileResistance;
 	}
 	else
 	{
