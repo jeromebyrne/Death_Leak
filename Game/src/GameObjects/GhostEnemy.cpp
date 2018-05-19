@@ -156,6 +156,7 @@ Projectile * GhostEnemy::FireWeapon(Vector2 direction)
 
 	p->SetSpinningMovement(false);
 	p->SetProjectileResistance(0.4f); // load gravity puke
+	p->SetIsDeflectable(false);
 
 	if (direction.X > 0)
 	{

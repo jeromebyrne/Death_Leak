@@ -525,7 +525,7 @@ void Character::DoMeleeCollisions(SolidMovingSprite * object)
 			GAME_ASSERT(dynamic_cast<Projectile *>(object));
 			Projectile * objAsProj = static_cast<Projectile *>(object);
 
-			if (objAsProj->IsActive())
+			if (objAsProj->isDeflectable() && objAsProj->IsActive())
 			{
 				int yOffset = rand() % 200;
 				int randOffsetSign = rand() % 2;

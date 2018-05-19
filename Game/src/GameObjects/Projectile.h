@@ -69,6 +69,10 @@ public:
 
 	void SetProjectileResistance(float value) { mProjectileResistance = value; }
 
+	void SetIsDeflectable(bool value) { mIsDeflectable = value; }
+
+	bool isDeflectable() const { return mIsDeflectable; }
+
 protected:
 
 	void HandleSolidLineStripCollision(SolidLineStrip * solidLineStrip);
@@ -99,6 +103,8 @@ protected:
 	float mSpeed = 1.0f;
 
 	float mProjectileResistance = 1.0f;
+
+	bool mIsDeflectable = true; // most projectile are deflectable
 };
 
 #endif

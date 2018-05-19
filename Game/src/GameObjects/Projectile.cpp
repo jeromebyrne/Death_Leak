@@ -116,7 +116,7 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 
 		bool isCharacter = object->IsCharacter();
 		
-		if (isCharacter)
+		if (mIsDeflectable && isCharacter)
 		{
 			GAME_ASSERT(dynamic_cast<Character*>(object));
 			Character * asCharacter = static_cast<Character*>(object);
@@ -156,7 +156,9 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 			if (objAsProj->GetOwnerType() == kPlayerProjectile &&
 				GetOwnerType() == kPlayerProjectile)
 			{
-				if (GetProjectileType() == kBladeProjectile &&
+			
+				if (mIsDeflectable && 
+					GetProjectileType() == kBladeProjectile &&
 					objAsProj->GetProjectileType() == kBombProjectile)
 				{
 					// the player has fired a blade at their own bomb to blow it up
@@ -193,7 +195,8 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 				}
 			}
 
-			if (objAsProj->GetOwnerType() != GetOwnerType() &&
+			if (mIsDeflectable &&
+				objAsProj->GetOwnerType() != GetOwnerType() &&
 				objAsProj->GetOwnerType() == kPlayerProjectile &&
 				!mCollidedWithProjectile &&
 				!objAsProj->mCollidedWithProjectile)
