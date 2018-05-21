@@ -2,12 +2,17 @@
 #include "AIStateFlying.h"
 #include "NPC.h"
 
+const float kHeightFollowRange = 10.0f;
+const float kXPosFollowRange = 300.0f;
+const float kHeightReadjustmentDelay = 2.0f;
+const float kMinHeight = 450.0f;
+const int kHeightRandVariationMax = 150.0f;
+const float MaxHeightBelowCameraTop = 170.0f;
+
 AIStateFlying::AIStateFlying(NPC * npc) :
 	AIState(npc)
 {
 	mStateType = kRangeAttack;
-
-	mHeightAbovePlayer = 475.0f + (rand() % 150);
 }
 
 AIStateFlying::~AIStateFlying(void)
@@ -16,13 +21,15 @@ AIStateFlying::~AIStateFlying(void)
 
 void AIStateFlying::OnTransition()
 {
-	/*
-	float randMaxXVelocity = rand() % 3000;
-	randMaxXVelocity *= 0.001f;
-	randMaxXVelocity += 10.0f;
-	*/
+	if (m_npc)
+	{
+		mCurrentHeightTarget = m_npc->m_player->Y() + (kMinHeight + (rand() % kHeightRandVariationMax));
 
-	// m_npc->SetMaxVelocityXYZ(randMaxXVelocity, 99999, 0);
+		if (kXPosFollowRange >= 1.0f)
+		{
+			mRandXTargetOffset = rand() % (int)(75.0f + kXPosFollowRange);
+		}
+	}
 }
 
 void AIStateFlying::Update(float delta)
@@ -32,7 +39,63 @@ void AIStateFlying::Update(float delta)
 		return;
 	}
 
-	m_npc->FireProjectileAtObject(m_npc->m_player);
+	if (m_npc->m_player->Y() < m_npc->Y() &&
+		std::abs(m_npc->m_player->X() - m_npc->X()) < kXPosFollowRange)
+	{
+		m_npc->FireProjectileAtObject(m_npc->m_player);
+	}
 
-	m_npc->SetY(m_npc->m_player->Y() +  mHeightAbovePlayer);
+	mTimeUntilCanChangeHeight += delta;
+
+	if (mTimeUntilCanChangeHeight > kHeightReadjustmentDelay)
+	{
+		if (m_npc->m_player->IsOnSolidSurface())
+		{
+			mCurrentHeightTarget = m_npc->m_player->Y() + (kMinHeight + (rand() % kHeightRandVariationMax));
+
+			if (mCurrentHeightTarget > (Camera2D::GetInstance()->Top() - MaxHeightBelowCameraTop))
+			{
+				mCurrentHeightTarget = Camera2D::GetInstance()->Top() - MaxHeightBelowCameraTop;
+			}
+
+			mTimeUntilCanChangeHeight = 0.0f;
+		}
+	}
+	
+	MoveTowardsDesiredHeight(delta);
+
+	MoveTowardsDesiredXPosition(delta);
+}
+
+void AIStateFlying::MoveTowardsDesiredHeight(float delta)
+{
+	if (m_npc->Y() < (mCurrentHeightTarget - kHeightFollowRange))
+	{
+		m_npc->AccelerateY(1.0f, 0.1f);
+	}
+	else if (m_npc->Y() > (mCurrentHeightTarget + kHeightFollowRange))
+	{
+		m_npc->AccelerateY(-1.0f, 0.1f);
+	}
+	else
+	{
+		m_npc->StopYAccelerating();
+		m_npc->SetVelocityY(m_npc->GetVelocity().Y * 0.99f);
+	}
+}
+
+void AIStateFlying::MoveTowardsDesiredXPosition(float delta)
+{
+	if (m_npc->X() > (m_npc->m_player->X() + mRandXTargetOffset))
+	{
+		m_npc->AccelerateX(-1.0f);
+	}
+	else if (m_npc->X() < (m_npc->m_player->X() - mRandXTargetOffset))
+	{
+		m_npc->AccelerateX(1.0f);
+	}
+	else
+	{
+		m_npc->SetVelocityX(m_npc->VelocityX() * 0.99f);
+	}
 }

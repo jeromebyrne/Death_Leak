@@ -15,8 +15,15 @@ public:
 
 private:
 
-	float mHeightAbovePlayer = 400.0f;
+	void MoveTowardsDesiredHeight(float delta);
 
+	void MoveTowardsDesiredXPosition(float delta);
+
+	float mCurrentHeightTarget = 400.0f;
+	
+	float mTimeUntilCanChangeHeight = 0.0f;
+
+	int mRandXTargetOffset = 0;
 };
 
 #endif

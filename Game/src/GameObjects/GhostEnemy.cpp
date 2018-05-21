@@ -36,6 +36,11 @@ void GhostEnemy::Initialise()
 
 	m_applyGravity = false;
 
+	m_maxVelocity.X = 7.0f;
+	m_maxVelocity.Y = 3.5f; 
+
+	m_passive = true; // This is so ghosts pass through stuff
+
 	/*
 	if (m_position.Z > 99)
 	{
