@@ -3,7 +3,8 @@
 #include "NPC.h"
 
 const float kHeightFollowRange = 10.0f;
-const float kXPosFollowRange = 300.0f;
+const float kXPosFollowRangeMin = 150.0f;
+const float kXPosFollowRangeMax = 400.0f;
 const float kHeightReadjustmentDelay = 2.0f;
 const float kMinHeight = 450.0f;
 const int kHeightRandVariationMax = 150.0f;
@@ -13,6 +14,8 @@ AIStateFlying::AIStateFlying(NPC * npc) :
 	AIState(npc)
 {
 	mStateType = kRangeAttack;
+
+	mFireRange = 20.0f + ((rand() % 500) * 0.1f);
 }
 
 AIStateFlying::~AIStateFlying(void)
@@ -25,10 +28,7 @@ void AIStateFlying::OnTransition()
 	{
 		mCurrentHeightTarget = m_npc->m_player->Y() + (kMinHeight + (rand() % kHeightRandVariationMax));
 
-		if (kXPosFollowRange >= 1.0f)
-		{
-			mRandXTargetOffset = rand() % (int)(75.0f + kXPosFollowRange);
-		}
+		mRandXTargetOffset = kXPosFollowRangeMin + rand() % (int)(kXPosFollowRangeMax - kXPosFollowRangeMin);
 	}
 }
 
@@ -40,7 +40,7 @@ void AIStateFlying::Update(float delta)
 	}
 
 	if (m_npc->m_player->Y() < m_npc->Y() &&
-		std::abs(m_npc->m_player->X() - m_npc->X()) < kXPosFollowRange)
+		std::abs(m_npc->m_player->X() - m_npc->X()) < mFireRange)
 	{
 		m_npc->FireProjectileAtObject(m_npc->m_player);
 	}

@@ -40,7 +40,7 @@
 Game * Game::mInstance = nullptr;
 
 static const float kPixelWobbleReverseDelay = 40.0f;
-static const float kPauseDamageEffectDelay = 0.05f;
+static const float kPauseDamageEffectDelay = 0.01f;
 
 bool Game::mPaused = false;
 bool Game::mLevelEditMode = false;
@@ -430,6 +430,10 @@ void Game::ResetLevelEditorSelectedObject()
 
 void Game::DoDamagePauseEffect()
 {
+	if (!mDamagePauseEnabled)
+	{
+		return;
+	}
 	mLastTimeDamagePauseEffect = Timing::Instance()->GetTotalTimeSeconds();
 }
 

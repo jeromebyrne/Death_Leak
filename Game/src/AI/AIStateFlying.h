@@ -24,6 +24,8 @@ private:
 	float mTimeUntilCanChangeHeight = 0.0f;
 
 	int mRandXTargetOffset = 0;
+
+	float mFireRange = 20.0f;
 };
 
 #endif

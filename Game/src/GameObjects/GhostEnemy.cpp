@@ -36,10 +36,12 @@ void GhostEnemy::Initialise()
 
 	m_applyGravity = false;
 
-	m_maxVelocity.X = 7.0f;
+	m_maxVelocity.X = 2.5f + ((rand()%80) * 0.1f);
 	m_maxVelocity.Y = 3.5f; 
 
 	m_passive = true; // This is so ghosts pass through stuff
+
+	mProjectileSpeed = 4.5f + ((rand() % 30) * 0.1f);
 
 	/*
 	if (m_position.Z > 99)
@@ -145,8 +147,6 @@ Projectile * GhostEnemy::FireWeapon(Vector2 direction)
 		pos.X -= m_projectileOffset.X;
 	}
 
-	float speed = 0.0f;
-
 	// TODO: ideally want these properties configurable per character
 	Projectile * p = new Projectile(Projectile::kNPCProjectile,
 		mProjectileFilePath.c_str(),
@@ -156,11 +156,11 @@ Projectile * GhostEnemy::FireWeapon(Vector2 direction)
 		Vector2(25, 8),
 		direction,
 		2,
-		speed,
+		mProjectileSpeed,
 		2.0f);
 
 	p->SetSpinningMovement(false);
-	p->SetProjectileResistance(0.4f); // load gravity puke
+	p->SetProjectileResistance(0.9f);
 	p->SetIsDeflectable(false);
 
 	if (direction.X > 0)

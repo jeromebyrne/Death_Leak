@@ -314,7 +314,7 @@ void InputManager::ProcessWallJump_gamepad(XINPUT_STATE padState, CurrentGamepla
 	}
 }
 
-void InputManager::ProcessAimDirection_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player)
+void InputManager::ProcessAimDirection_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player, const LevelProperties & levelProps)
 {
 	currentActions.mAimDirection = Vector2(player->IsStrafing() ? player->GetStrafeDirectionX() : player->DirectionX(), 0);
 
@@ -324,6 +324,19 @@ void InputManager::ProcessAimDirection_gamepad(XINPUT_STATE padState, CurrentGam
 	currentActions.mAimDirection = Vector2(padState.Gamepad.sThumbRX, padState.Gamepad.sThumbRY);
 	currentActions.mAimDirection.Normalise();
 	//}
+
+	Vector2 defaultOffset = levelProps.GetOriginalTargetOffset();
+
+	if (std::abs(currentActions.mAimDirection.Y) > std::abs(currentActions.mAimDirection.X))
+	{
+		// aiming up or down
+		float yOffset = 150.0f;
+		Camera2D::GetInstance()->SetTargetOffsetY(currentActions.mAimDirection.Y > 0.0f ? defaultOffset.Y + yOffset : defaultOffset.Y - yOffset);
+	}
+	else
+	{
+		Camera2D::GetInstance()->SetTargetOffsetY(defaultOffset.Y);
+	}
 
 	player->SetAimLineDirection(currentActions.mAimDirection);
 }
@@ -410,7 +423,7 @@ void InputManager::ProcessStrafing_gamepad(XINPUT_STATE padState, CurrentGamepla
 		player->SetIsStrafing(true);
 		player->SetStrafeDirectionX(1.0f);
 		Vector2 defaultOffset = levelProps.GetOriginalTargetOffset();
-		Camera2D::GetInstance()->SetTargetOffset(Vector2(defaultOffset.X + camXOffset, defaultOffset.Y));
+		Camera2D::GetInstance()->SetTargetOffsetX(defaultOffset.X + camXOffset);
 		Camera2D::GetInstance()->SetOverrideDirection(true, 1.0f);
 		player->GetStrafeDirectionX() > 0.0f ? player->UnFlipHorizontal() : player->FlipHorizontal();
 	}
@@ -418,7 +431,7 @@ void InputManager::ProcessStrafing_gamepad(XINPUT_STATE padState, CurrentGamepla
 		player->DirectionX() > 0)
 	{
 		Vector2 defaultOffset = levelProps.GetOriginalTargetOffset();
-		Camera2D::GetInstance()->SetTargetOffset(Vector2(defaultOffset.X + camXOffset, defaultOffset.Y));
+		Camera2D::GetInstance()->SetTargetOffsetX(defaultOffset.X + camXOffset);
 	}
 	else if (padState.Gamepad.sThumbRX < XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE &&
 		player->DirectionX() > 0)
@@ -426,7 +439,7 @@ void InputManager::ProcessStrafing_gamepad(XINPUT_STATE padState, CurrentGamepla
 		player->SetIsStrafing(true);
 		player->SetStrafeDirectionX(-1.0f);
 		Vector2 defaultOffset = levelProps.GetOriginalTargetOffset();
-		Camera2D::GetInstance()->SetTargetOffset(Vector2(defaultOffset.X + camXOffset, defaultOffset.Y));
+		Camera2D::GetInstance()->SetTargetOffsetX(defaultOffset.X + camXOffset);
 		Camera2D::GetInstance()->SetOverrideDirection(true, -1.0f);
 		player->GetStrafeDirectionX() > 0.0f ? player->UnFlipHorizontal() : player->FlipHorizontal();
 	}
@@ -434,7 +447,7 @@ void InputManager::ProcessStrafing_gamepad(XINPUT_STATE padState, CurrentGamepla
 		player->DirectionX() < 0)
 	{
 		Vector2 defaultOffset = levelProps.GetOriginalTargetOffset();
-		Camera2D::GetInstance()->SetTargetOffset(Vector2(defaultOffset.X + camXOffset, defaultOffset.Y));
+		Camera2D::GetInstance()->SetTargetOffsetX(defaultOffset.X + camXOffset);
 	}
 }
 
@@ -452,13 +465,11 @@ void InputManager::ProcessTestActions_gamepad(XINPUT_STATE padState, CurrentGame
 			if (pressingLeftShoulder)
 			{
 				// testing
-				/*
 				NinjaSpawner spawner;
-				spawner.SpawnMultiple(1, Vector2(player->X(), player->Y()), Vector2(1200, 1200));
-				*/
+				spawner.SpawnMultiple(3, Vector2(player->X(), player->Y()), Vector2(1200, 1200));
 
-				GhostEnemySpawner spawner;
-				spawner.SpawnMultiple(4, Vector2(player->X(), player->Y()), Vector2(1200, 1200));
+				GhostEnemySpawner ghostSpawner;
+				ghostSpawner.SpawnMultiple(3, Vector2(player->X(), player->Y()), Vector2(1200, 1200));
 			}
 
 			pressingLeftShoulder = false;
@@ -524,7 +535,7 @@ void InputManager::ProcessGameplay_GamePad()
 
 	ProcessWallJump_gamepad(padState, currentActions, player);
 
-	ProcessAimDirection_gamepad(padState, currentActions, player);
+	ProcessAimDirection_gamepad(padState, currentActions, player, levelProps);
 
 	ProcessPrimaryWeapon_gamepad(padState, currentActions, player);
 

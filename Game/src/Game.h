@@ -89,6 +89,7 @@ private:
 	static Game * mInstance;
 	float mLastTimeDamagePauseEffect;
 	InputManager mInputManager;
+	bool mDamagePauseEnabled = true;
 };
 
 #endif

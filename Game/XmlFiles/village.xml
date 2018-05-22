@@ -1,6 +1,6 @@
 <level audio="">
     <LevelProperties>
-        <camera_properties posx="0.000000" posy="750.000000" zoom_in_percent="1.000000" xOffset="200.000000" yOffset="50.000000" xLag="20.000000" yLag="1.000000" followx="true" followy="true" />
+        <camera_properties posx="0.000000" posy="750.000000" zoom_in_percent="1.000000" xOffset="200.000000" yOffset="50.000000" xLag="20.000000" yLag="15.000000" followx="true" followy="true" />
         <level_bounds left="-1000.000000" right="17300.000000" top="8000.000000" bottom="600.000000" />
         <music file="music\japanese2.mp3" initial_delay="20.000000" length="96.000000" time_between="120.000000" />
         <weather_properties allow_weather="true" />

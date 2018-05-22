@@ -90,6 +90,10 @@ public:
 
 	void SetTargetOffset(Vector2 offset) { mTargetOffset = offset; };
 
+	void SetTargetOffsetX(float value) { mTargetOffset.X = value; }
+
+	void SetTargetOffsetY(float value) { mTargetOffset.Y = value; }
+
 	void SetTargetLag(Vector2 lag) { mTargetLag = lag; };
 
 	void DoSmallShake();
