@@ -106,59 +106,8 @@ void Camera2D::SetBounds(float left, float right, float top, float bottom)
 
 void Camera2D::FollowObjectWithOffset(GameObject * object)
 {
-	if (UpdateBoundsX(object))
-	{
-		m_position.X = object->X() + mTargetOffset.X;
-	}
-
-	if (UpdateBoundsY(object))
-	{
-		m_position.Y = object->Y() + mTargetOffset.Y;
-	}
-}
-
-bool Camera2D::UpdateBoundsX(GameObject * object)
-{
-	if (!mFollowX)
-	{
-		return false;
-	}
-
-	float targetXLeft = (object->X() - mTargetOffset.X * mZoomInPercent);
-	float targetXRight = (object->X() + mTargetOffset.X * mZoomInPercent);
-
-	if (targetXLeft < mBoundsTopLeft.X)
-	{
-		return false;
-	}
-	else if (targetXRight > mBoundsBottomRight.X)
-	{
-		return false;
-	}
-
-	return true;
-}
-
-bool Camera2D::UpdateBoundsY(GameObject * target)
-{	
-	if (!mFollowY)
-	{
-		return false;
-	}
-
-	float targetYTop = (target->Y() + mTargetOffset.Y * mZoomInPercent);
-	float targetYBottom = (target->Y() - mTargetOffset.Y * mZoomInPercent);
-
-	if (targetYTop > mBoundsTopLeft.Y)
-	{
-		return false;
-	}
-	else if (targetYBottom < mBoundsBottomRight.Y)
-	{
-		return false;
-	}
-
-	return true;
+	m_position.X = object->X() + mTargetOffset.X;
+	m_position.Y = object->Y() + mTargetOffset.Y;
 }
 
 void Camera2D::Update()
@@ -183,31 +132,29 @@ void Camera2D::Update()
 			bool minusY = (rand() % 2) == 1;
 
 			GAME_ASSERT(mTargetObject);
-			if (UpdateBoundsX(mTargetObject))
+
+			if (minusX)
 			{
-				if (minusX)
-				{
-					m_position.X += mCurrentShakeIntensity * shakePercentTime * Timing::Instance()->GetTimeModifier();
-				}
-				else
-				{
-					m_position.X -= mCurrentShakeIntensity * shakePercentTime * Timing::Instance()->GetTimeModifier();
-				}
+				m_position.X += mCurrentShakeIntensity * shakePercentTime * Timing::Instance()->GetTimeModifier();
+			}
+			else
+			{
+				m_position.X -= mCurrentShakeIntensity * shakePercentTime * Timing::Instance()->GetTimeModifier();
 			}
 			
-			if (UpdateBoundsY(mTargetObject))
+
+			if (minusY)
 			{
-				if (minusY)
-				{
-					m_position.Y += mCurrentShakeIntensity * shakePercentTime * Timing::Instance()->GetTimeModifier();
-				}
-				else
-				{
-					m_position.Y -= mCurrentShakeIntensity * shakePercentTime  * Timing::Instance()->GetTimeModifier();
-				}
+				m_position.Y += mCurrentShakeIntensity * shakePercentTime * Timing::Instance()->GetTimeModifier();
+			}
+			else
+			{
+				m_position.Y -= mCurrentShakeIntensity * shakePercentTime  * Timing::Instance()->GetTimeModifier();
 			}
 		}
 	}
+
+	CheckBoundaryCollisions();
 
 #if _DEBUG
 	
@@ -303,7 +250,7 @@ void Camera2D::FollowTargetObjectWithLag(bool forceUpdate, float overrideLagX, f
 		return;
 	}
 
-	if ((mFollowX && UpdateBoundsX(mTargetObject)) || forceUpdate)
+	// if ((mFollowX && UpdateBoundsX(mTargetObject)) || forceUpdate)
 	{
 		// get the x and y distance between the camera and the object
 		float distanceX = 0.0f;
@@ -345,7 +292,7 @@ void Camera2D::FollowTargetObjectWithLag(bool forceUpdate, float overrideLagX, f
 		m_position.X -= distanceX / xLag;
 	}
 
-	if ((mFollowY && UpdateBoundsY(mTargetObject)) || forceUpdate)
+	// if ((mFollowY && UpdateBoundsY(mTargetObject)) || forceUpdate)
 	{
 		float yLag = mTargetLag.Y;
 
@@ -447,5 +394,36 @@ void Camera2D::DoShake(float intensity, float shakeDuration)
 	mCurrentlyShaking = true;
 	mShakeStartTime = Timing::Instance()->GetTotalTimeSeconds();
 	mCurrentShakeIntensity = intensity;
+}
+
+void Camera2D::CheckBoundaryCollisions()
+{
+	// NOTE to JEROME
+	// We only care about the cameras bounds here
+	// Let the camera follow the player wherever they decide in the code before this
+	// Then make any boundary adjustments here
+	// Once it's in the same frame then it's ok
+	// Stop trying to complicate it with other player object tracking logic
+	// Keep it simple
+	// Ahhhh camera's
+
+	// TOD: alot of these variables can be precalculated
+	if (Bottom() < mBoundsBottomRight.Y)
+	{
+		m_position.Y = mBoundsBottomRight.Y + (m_height * 0.5f);
+	}
+	else if (Top() > mBoundsTopLeft.Y)
+	{
+		m_position.Y = mBoundsTopLeft.Y  - (m_height * 0.5f);
+	}
+
+	if (Left() < mBoundsTopLeft.X)
+	{
+		m_position.X = mBoundsTopLeft.X + (m_width * 0.5f);
+	}
+	else if (Right() > mBoundsBottomRight.X)
+	{
+		m_position.X = mBoundsBottomRight.X - (m_width * 0.5f);
+	}
 }
 

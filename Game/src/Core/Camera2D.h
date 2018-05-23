@@ -75,10 +75,10 @@ public:
 		return m_height;
 	}
 
-	inline float Left() const { return m_position.X - m_width * 0.5; }
-	inline float Right() const { return m_position.X + m_width * 0.5; }
-	inline float Top() const { return m_position.Y + m_height * 0.5; }
-	inline float Bottom() const { return m_position.Y - m_height * 0.5; }
+	inline float Left() const { return m_position.X - m_width * 0.5f; }
+	inline float Right() const { return m_position.X + m_width * 0.5f; }
+	inline float Top() const { return m_position.Y + m_height * 0.5f; }
+	inline float Bottom() const { return m_position.Y - m_height * 0.5f; }
 
 	bool IsCameraOriginInsideObject(GameObject * object);
 
@@ -114,9 +114,7 @@ public:
 
 private:
 
-	bool UpdateBoundsX(GameObject * target);
-
-	bool UpdateBoundsY(GameObject * target);
+	void CheckBoundaryCollisions();
 
 	void Camera2D::DoShake(float intensity, float shakeDuration);
 
