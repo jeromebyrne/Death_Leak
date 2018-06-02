@@ -427,45 +427,21 @@ void InputManager::ProcessStrafing_gamepad(XINPUT_STATE padState, CurrentGamepla
 		isStrafing = true;
 		player->SetStrafeDirectionX(1.0f);
 	}
+	else if (rightThumbstickRangeX > 0.0f)
+	{
+		// firing but not moving
+		player->UnFlipHorizontal();
+	}
+	else if (rightThumbstickRangeX < 0.0f)
+	{
+		// firing but not moving
+		player->FlipHorizontal();
+	}
 
 	player->SetIsStrafing(isStrafing);
 
 	Vector2 defaultOffset = levelProps.GetOriginalTargetOffset();
 	Camera2D::GetInstance()->SetTargetOffsetX(defaultOffset.X + (kAimOffsetX * rightThumbstickRangeX));
-
-	/*
-	if (padState.Gamepad.sThumbRX > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE &&
-		player->DirectionX() < 0)
-	{
-		player->SetIsStrafing(true);
-		player->SetStrafeDirectionX(1.0f);
-		Vector2 defaultOffset = levelProps.GetOriginalTargetOffset();
-		Camera2D::GetInstance()->SetTargetOffsetX(defaultOffset.X + (kAimOffsetX * thumbstickRangeX));
-		Camera2D::GetInstance()->SetOverrideDirection(true, Vector2(1.0f, 0.0f));
-		player->GetStrafeDirectionX() > 0.0f ? player->UnFlipHorizontal() : player->FlipHorizontal();
-	}
-	else if (padState.Gamepad.sThumbRX > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE &&
-		player->DirectionX() > 0)
-	{
-		Vector2 defaultOffset = levelProps.GetOriginalTargetOffset();
-		Camera2D::GetInstance()->SetTargetOffsetX(defaultOffset.X + (kAimOffsetX * thumbstickRangeX));
-	}
-	else if (padState.Gamepad.sThumbRX < XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE &&
-		player->DirectionX() > 0)
-	{
-		player->SetIsStrafing(true);
-		player->SetStrafeDirectionX(-1.0f);
-		Vector2 defaultOffset = levelProps.GetOriginalTargetOffset();
-		Camera2D::GetInstance()->SetTargetOffsetX(defaultOffset.X + (kAimOffsetX * thumbstickRangeX));
-		Camera2D::GetInstance()->SetOverrideDirection(true, Vector2(-1.0f, 0.0f));
-		player->GetStrafeDirectionX() > 0.0f ? player->UnFlipHorizontal() : player->FlipHorizontal();
-	}
-	else if (padState.Gamepad.sThumbRX < XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE &&
-		player->DirectionX() < 0)
-	{
-		Vector2 defaultOffset = levelProps.GetOriginalTargetOffset();
-		Camera2D::GetInstance()->SetTargetOffsetX(defaultOffset.X + (kAimOffsetX * thumbstickRangeX));
-	}*/
 }
 
 void InputManager::ProcessTestActions_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player, const LevelProperties & levelProps)
