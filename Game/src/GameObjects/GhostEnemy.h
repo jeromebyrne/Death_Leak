@@ -15,7 +15,7 @@ public:
 	// virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode) override;
 	virtual void Initialise() override;
 	// virtual void UpdateAnimations() override;
-	// virtual bool OnCollision(SolidMovingSprite * object) override;
+	virtual bool OnCollision(SolidMovingSprite * object) override;
 	virtual void Update(float delta) override;
 
 	virtual void XmlRead(TiXmlElement * element) override;

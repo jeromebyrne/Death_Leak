@@ -146,7 +146,9 @@ void Game::Initialise()
 
 void Game::Update(float delta)
 {
-	m_pCam2d->Update();
+	m_pCam2d->CheckBoundaryCollisions();
+
+	m_pCam2d->FollowTargetObjectWithLag();
 
 	AudioManager::Instance()->Update();
 
@@ -226,6 +228,9 @@ void Game::Update(float delta)
 	// update the UI
 	UIManager::Instance()->Update();
 	UIManager::Instance()->HandleEvents();
+	
+	m_pCam2d->CheckBoundaryCollisions();
+	m_pCam2d->Update();
 }
 
 void Game::PauseGame()
@@ -306,6 +311,10 @@ void Game::Draw()
 	{
 		mlevelEditor->Draw();
 	}
+	
+	Vector3 camPos = Camera2D::GetInstance()->Position();
+	Graphics::GetInstance()->DrawDebugText(Utilities::getFormattedString("Cam X,Y: %f %f", camPos.X, camPos.Y).c_str(), 100, 400);
+
 #endif
 }
 

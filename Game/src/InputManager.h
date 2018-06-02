@@ -23,6 +23,8 @@ public:
 
 	bool IsPressingEnterDoor() const;
 
+	static float GetThumbstickOrTriggerRange(short thumbstickTriggerValue);
+
 private:
 
 	struct CurrentGameplayActions
@@ -33,7 +35,7 @@ private:
 	};
 
 	struct CurrentGamePadState
-	{
+	{ 
 		bool mPressingRoll = false;
 		bool mPressingJump = false;
 		bool mPressingWallJump = false;

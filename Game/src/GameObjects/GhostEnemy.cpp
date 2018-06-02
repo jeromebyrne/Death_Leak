@@ -28,6 +28,40 @@ void GhostEnemy::OnDamage(GameObject * damageDealer, float damageAmount, Vector3
 }
 */
 
+/*
+// see if we are doing melee and damage the other object
+if (mIsDoingMelee &&
+	object->CanBeStruckByMelee() &&
+	!object->IsSolidLineStrip())
+{
+	DoMeleeCollisions(object);
+}
+
+if (!object->IsCharacter() &&
+	!object->IsCurrencyOrb() &&
+	!object->IsDebris() &&
+	!object->IsPlatform() &&
+	!object->IsWaterBlock())
+{
+	SolidMovingSprite::OnCollision(object);
+}
+else if (object->IsPlatform())
+{
+	if (Bottom() > object->Y()) // is the bottom of the character above the platform centre point?
+	{
+		return SolidMovingSprite::OnCollision(object);
+	}
+}
+
+return true;
+*/
+
+bool GhostEnemy::OnCollision(SolidMovingSprite * object)
+{
+	return false;
+}
+
+
 void GhostEnemy::Initialise()
 {
 	NPC::Initialise();

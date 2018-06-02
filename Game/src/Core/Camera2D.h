@@ -92,7 +92,7 @@ public:
 
 	void SetTargetOffsetX(float value) { mTargetOffset.X = value; }
 
-	void SetTargetOffsetY(float value) { mTargetOffset.Y = value; }
+	void SetTargetOffsetY(float value) {  mTargetOffset.Y = value; }
 
 	void SetTargetLag(Vector2 lag) { mTargetLag = lag; };
 
@@ -102,8 +102,6 @@ public:
 
 	void DoBigShake();
 
-	void SetOverrideDirection(bool shouldOverride, Vector2 direction) { mIsOverrideDirection = shouldOverride; mOverrideDirection = direction; }
-
 	float GetLeftLevelBounds() const { return mBoundsTopLeft.X; }
 
 	float GetRightLevelBounds() const { return mBoundsBottomRight.X; }
@@ -112,9 +110,11 @@ public:
 
 	void SetShouldFollowY(bool value) { mFollowY = value; }
 
+	void CheckBoundaryCollisions();
+
 private:
 
-	void CheckBoundaryCollisions();
+	void CheckDebugCamerCommands();
 
 	void Camera2D::DoShake(float intensity, float shakeDuration);
 
@@ -143,9 +143,6 @@ private:
 	float mCurrentShakeDuration;
 
 	MovingSprite * mTargetObject;
-
-	bool mIsOverrideDirection;
-	Vector2 mOverrideDirection;
 
 	bool mFollowX;
 	bool mFollowY;

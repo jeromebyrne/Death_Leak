@@ -9,6 +9,10 @@
 #include "UIManager.h"
 #include "GhostEnemySpawner.h"
 
+const float kMaxGamepadAnalogRange = (std::numeric_limits<short>::max)();
+const float kAimOffsetX = 250.0f;
+const float kAimOffsetY = 220.0f;
+
 InputManager::InputManager() :
 	mShowDebugInfo(false),
 	mPressingDebugInfoKey(false),
@@ -23,7 +27,7 @@ void InputManager::ProcessGameplayInput()
 {
 	if (GetForegroundWindow() != DXWindow::GetInstance()->Hwnd())
 	{
-		return;
+		// return;
 	}
 
 #ifdef _DEBUG
@@ -316,27 +320,24 @@ void InputManager::ProcessWallJump_gamepad(XINPUT_STATE padState, CurrentGamepla
 
 void InputManager::ProcessAimDirection_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player, const LevelProperties & levelProps)
 {
-	currentActions.mAimDirection = Vector2(player->IsStrafing() ? player->GetStrafeDirectionX() : player->DirectionX(), 0);
-
-	/*if (std::abs(padState.Gamepad.sThumbRX < -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE) ||
-		std::abs(padState.Gamepad.sThumbRY > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE) )
-	{*/
-	currentActions.mAimDirection = Vector2(padState.Gamepad.sThumbRX, padState.Gamepad.sThumbRY);
-	currentActions.mAimDirection.Normalise();
-	//}
-
+	currentActions.mAimDirection = Vector2(player->IsStrafing() ? player->GetStrafeDirectionX() : player->DirectionX(), 0.0f);
 	Vector2 defaultOffset = levelProps.GetOriginalTargetOffset();
 
-	if (std::abs(currentActions.mAimDirection.Y) > std::abs(currentActions.mAimDirection.X))
-	{
-		// aiming up or down
-		float yOffset = 150.0f;
-		Camera2D::GetInstance()->SetTargetOffsetY(currentActions.mAimDirection.Y > 0.0f ? defaultOffset.Y + yOffset : defaultOffset.Y - yOffset);
+	if (std::abs(padState.Gamepad.sThumbRX) > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE ||
+		std::abs(padState.Gamepad.sThumbRY) > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
+	{ 
+		currentActions.mAimDirection = Vector2(padState.Gamepad.sThumbRX, padState.Gamepad.sThumbRY);
+		currentActions.mAimDirection.Normalise();
 	}
 	else
 	{
 		Camera2D::GetInstance()->SetTargetOffsetY(defaultOffset.Y);
+		return;
 	}
+
+	float range = GetThumbstickOrTriggerRange(padState.Gamepad.sThumbRY);
+
+	Camera2D::GetInstance()->SetTargetOffsetY(defaultOffset.Y + (kAimOffsetY * range));
 
 	player->SetAimLineDirection(currentActions.mAimDirection);
 }
@@ -393,45 +394,61 @@ void InputManager::ProcessStrafing_gamepad(XINPUT_STATE padState, CurrentGamepla
 	// false by default
 	player->SetIsStrafing(false);
 
-	if (player->GetIsRolling())
-	{
-		return;
-	}
-
-
-	if (player->JustFellFromLargeDistance() ||
-		player->IsDoingMelee())
-	{
-		return;
-	}
-
 	if (!(std::abs(padState.Gamepad.sThumbRX) > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE) &&
 		!(std::abs(padState.Gamepad.sThumbRY) > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE))
 
 	{
 		Camera2D::GetInstance()->SetTargetOffset(levelProps.GetOriginalTargetOffset());
-		Camera2D::GetInstance()->SetOverrideDirection(false, Vector2(0, 0));
-		
 		return;
 	}
 
-	float camXOffset = 250.0f;
+	if (player->GetIsRolling())
+	{
+		return;
+	}
 
+	if (player->JustFellFromLargeDistance() ||
+		player->IsDoingMelee())
+	{
+		return;
+	}	
+
+	float rightThumbstickRangeX = GetThumbstickOrTriggerRange(padState.Gamepad.sThumbRX);
+
+	bool isStrafing = false;
+	
+	if (rightThumbstickRangeX <= 0.0f && padState.Gamepad.sThumbLX > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
+	{
+		isStrafing = true;
+		player->SetStrafeDirectionX(-1.0f);
+	}
+	else if (rightThumbstickRangeX > 0.0f && padState.Gamepad.sThumbLX < -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
+	{
+		isStrafing = true;
+		player->SetStrafeDirectionX(1.0f);
+	}
+
+	player->SetIsStrafing(isStrafing);
+
+	Vector2 defaultOffset = levelProps.GetOriginalTargetOffset();
+	Camera2D::GetInstance()->SetTargetOffsetX(defaultOffset.X + (kAimOffsetX * rightThumbstickRangeX));
+
+	/*
 	if (padState.Gamepad.sThumbRX > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE &&
 		player->DirectionX() < 0)
 	{
 		player->SetIsStrafing(true);
 		player->SetStrafeDirectionX(1.0f);
 		Vector2 defaultOffset = levelProps.GetOriginalTargetOffset();
-		Camera2D::GetInstance()->SetTargetOffsetX(defaultOffset.X + camXOffset);
-		Camera2D::GetInstance()->SetOverrideDirection(true, 1.0f);
+		Camera2D::GetInstance()->SetTargetOffsetX(defaultOffset.X + (kAimOffsetX * thumbstickRangeX));
+		Camera2D::GetInstance()->SetOverrideDirection(true, Vector2(1.0f, 0.0f));
 		player->GetStrafeDirectionX() > 0.0f ? player->UnFlipHorizontal() : player->FlipHorizontal();
 	}
 	else if (padState.Gamepad.sThumbRX > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE &&
 		player->DirectionX() > 0)
 	{
 		Vector2 defaultOffset = levelProps.GetOriginalTargetOffset();
-		Camera2D::GetInstance()->SetTargetOffsetX(defaultOffset.X + camXOffset);
+		Camera2D::GetInstance()->SetTargetOffsetX(defaultOffset.X + (kAimOffsetX * thumbstickRangeX));
 	}
 	else if (padState.Gamepad.sThumbRX < XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE &&
 		player->DirectionX() > 0)
@@ -439,16 +456,16 @@ void InputManager::ProcessStrafing_gamepad(XINPUT_STATE padState, CurrentGamepla
 		player->SetIsStrafing(true);
 		player->SetStrafeDirectionX(-1.0f);
 		Vector2 defaultOffset = levelProps.GetOriginalTargetOffset();
-		Camera2D::GetInstance()->SetTargetOffsetX(defaultOffset.X + camXOffset);
-		Camera2D::GetInstance()->SetOverrideDirection(true, -1.0f);
+		Camera2D::GetInstance()->SetTargetOffsetX(defaultOffset.X + (kAimOffsetX * thumbstickRangeX));
+		Camera2D::GetInstance()->SetOverrideDirection(true, Vector2(-1.0f, 0.0f));
 		player->GetStrafeDirectionX() > 0.0f ? player->UnFlipHorizontal() : player->FlipHorizontal();
 	}
 	else if (padState.Gamepad.sThumbRX < XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE &&
 		player->DirectionX() < 0)
 	{
 		Vector2 defaultOffset = levelProps.GetOriginalTargetOffset();
-		Camera2D::GetInstance()->SetTargetOffsetX(defaultOffset.X + camXOffset);
-	}
+		Camera2D::GetInstance()->SetTargetOffsetX(defaultOffset.X + (kAimOffsetX * thumbstickRangeX));
+	}*/
 }
 
 void InputManager::ProcessTestActions_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player, const LevelProperties & levelProps)
@@ -613,4 +630,9 @@ bool InputManager::IsPressingEnterDoor() const
 	{
 		return GetAsyncKeyState(VK_UP) < 0;
 	}
+}
+
+float InputManager::GetThumbstickOrTriggerRange(short thumbstickTriggerValue)
+{
+	return (float)thumbstickTriggerValue / kMaxGamepadAnalogRange;
 }

@@ -16,7 +16,6 @@ Camera2D::Camera2D(int screenWidth, int screenHeight, float x, float y, float z)
 	mShakeStartTime(0.0f),
 	mCurrentShakeDuration(0.0f),
 	mTargetObject(nullptr),
-	mIsOverrideDirection(false),
 	mFollowX(true),
 	mFollowY(true)
 {
@@ -24,7 +23,7 @@ Camera2D::Camera2D(int screenWidth, int screenHeight, float x, float y, float z)
     D3DXMatrixIdentity( &m_world );
 	D3DXMatrixIdentity( &m_view );
 
-	D3DXMatrixTranslation(&m_view, (int)-m_position.X, (int)-m_position.Y, m_position.Z);
+	D3DXMatrixTranslation(&m_view, -m_position.X, -m_position.Y, m_position.Z);
 
 	// create orthographic projection
 	D3DXMatrixOrthoLH(&m_projection, screenWidth, screenHeight, 0.0f, (std::numeric_limits<float>::max)());
@@ -112,7 +111,7 @@ void Camera2D::FollowObjectWithOffset(GameObject * object)
 
 void Camera2D::Update()
 {
-	D3DXMatrixTranslation(&m_view, (int)-m_position.X, (int)-m_position.Y, m_position.Z);
+	D3DXMatrixTranslation(&m_view, -m_position.X, -m_position.Y, m_position.Z);
 
 	if (mCurrentlyShaking)
 	{
@@ -154,162 +153,52 @@ void Camera2D::Update()
 		}
 	}
 
-	CheckBoundaryCollisions();
-
 #if _DEBUG
-	
-		int movespeed = 40;
-		// test
-		if (GetAsyncKeyState('D') < 0)
-		{
-			if (!UIManager::Instance()->IsObjectEditorDisplaying())
-			{
-				m_position.X += movespeed;
-
-				if (Game::GetInstance()->GetIsLevelEditMode())
-				{
-					list<shared_ptr<GameObject> > & gameObjects = GameObjectManager::Instance()->GetGameObjectList();
-					for (auto & obj : gameObjects)
-					{
-						if (obj->GetParallaxMultiplierX() != 1.0f ||
-							obj->GetParallaxMultiplierY() != 1.0f)
-						{
-							obj->Update(1.0f);
-						}
-					}
-				}
-			}
-		}
-		else if (GetAsyncKeyState('A') < 0)
-		{
-			if (!UIManager::Instance()->IsObjectEditorDisplaying())
-			{
-				m_position.X -= movespeed;
-				if (Game::GetInstance()->GetIsLevelEditMode())
-				{
-					list<shared_ptr<GameObject> > & gameObjects = GameObjectManager::Instance()->GetGameObjectList();
-					for (auto & obj : gameObjects)
-					{
-						if (obj->GetParallaxMultiplierX() != 1.0f ||
-							obj->GetParallaxMultiplierY() != 1.0f)
-						{
-							obj->Update(1.0f);
-						}
-					}
-				}
-			}
-		}
-
-		if (GetAsyncKeyState('W') < 0)
-		{
-			if (!UIManager::Instance()->IsObjectEditorDisplaying())
-			{
-				m_position.Y += movespeed;
-				if (Game::GetInstance()->GetIsLevelEditMode())
-				{
-					list<shared_ptr<GameObject> > & gameObjects = GameObjectManager::Instance()->GetGameObjectList();
-					for (auto & obj : gameObjects)
-					{
-						if (obj->GetParallaxMultiplierX() != 1.0f ||
-							obj->GetParallaxMultiplierY() != 1.0f)
-						{
-							obj->Update(1.0f);
-						}
-					}
-				}
-			}
-		}
-		else if (GetAsyncKeyState('S') < 0 && GetAsyncKeyState(VK_CONTROL) >= 0)
-		{
-			if (!UIManager::Instance()->IsObjectEditorDisplaying())
-			{
-				m_position.Y -= movespeed;
-				if (Game::GetInstance()->GetIsLevelEditMode())
-				{
-					list<shared_ptr<GameObject> > & gameObjects = GameObjectManager::Instance()->GetGameObjectList();
-					for (auto & obj : gameObjects)
-					{
-						if (obj->GetParallaxMultiplierX() != 1.0f ||
-							obj->GetParallaxMultiplierY() != 1.0f)
-						{
-							obj->Update(1.0f);
-						}
-					}
-				}
-			}
-		}
+	CheckDebugCamerCommands();
 #endif
 }
 
 void Camera2D::FollowTargetObjectWithLag(bool forceUpdate, float overrideLagX, float overrideLagY)
 {
-	GAME_ASSERT(mTargetObject);
-
 	if (!mTargetObject)
 	{
 		return;
 	}
 
-	// if ((mFollowX && UpdateBoundsX(mTargetObject)) || forceUpdate)
+	// get the x and y distance between the camera and the object
+	float distanceX = 0.0f;
+
+	distanceX = m_position.X - (mTargetObject->X() + (mTargetOffset.X * mZoomInPercent));
+
+
+	float xLag = mTargetLag.X * mZoomInPercent;
+
+	if (overrideLagX != 0.0f)
 	{
-		// get the x and y distance between the camera and the object
-		float distanceX = 0.0f;
-
-		if (mIsOverrideDirection)
-		{
-			if (mOverrideDirection.X > 0)
-			{
-				distanceX = m_position.X - (mTargetObject->X() + mTargetOffset.X * mZoomInPercent);
-			}
-			else
-			{
-				distanceX = m_position.X - (mTargetObject->X() - mTargetOffset.X * mZoomInPercent);
-			}
-		}
-		else
-		{
-			if (mTargetObject->DirectionX() > 0)
-			{
-				distanceX = m_position.X - (mTargetObject->X() + mTargetOffset.X * mZoomInPercent);
-			}
-			else
-			{
-				distanceX = m_position.X - (mTargetObject->X() - mTargetOffset.X * mZoomInPercent);
-			}
-		}
-
-		float xLag = mTargetLag.X * mZoomInPercent;
-
-		if (overrideLagX != 0.0f)
-		{
-			xLag = overrideLagX;
-		}
-
-		if (xLag < 1.0f)
-		{
-			xLag = 1.0f;
-		}
-		m_position.X -= distanceX / xLag;
+		xLag = overrideLagX;
 	}
 
-	// if ((mFollowY && UpdateBoundsY(mTargetObject)) || forceUpdate)
+	if (xLag < 1.0f)
 	{
-		float yLag = mTargetLag.Y;
-
-		if (overrideLagY != 0.0f)
-		{
-			yLag = overrideLagY;
-		}
-
-		if (yLag < 1.0f)
-		{
-			yLag = 1.0f;
-		}
-
-		float distanceY = m_position.Y - (mTargetObject->Y() + mTargetOffset.Y * mZoomInPercent);
-
-		m_position.Y -= distanceY / yLag;
+		xLag = 1.0f;
 	}
+	m_position.X -= distanceX / xLag;
+
+	float yLag = mTargetLag.Y;
+
+	if (overrideLagY != 0.0f)
+	{
+		yLag = overrideLagY;
+	}
+
+	if (yLag < 1.0f)
+	{
+		yLag = 1.0f;
+	}
+
+	float distanceY = m_position.Y - (mTargetObject->Y() + mTargetOffset.Y * mZoomInPercent);
+
+	m_position.Y -= distanceY / yLag;
 }
 
 bool Camera2D::IsCameraOriginInsideObject(GameObject * object)
@@ -380,7 +269,7 @@ void Camera2D::DoMediumShake()
 
 void Camera2D::DoBigShake()
 {
-	DoShake(60.0f, 0.45f);
+	DoShake(30.0f, 0.45f);
 }
 
 void Camera2D::DoShake(float intensity, float shakeDuration)
@@ -407,23 +296,110 @@ void Camera2D::CheckBoundaryCollisions()
 	// Keep it simple
 	// Ahhhh camera's
 
-	// TOD: alot of these variables can be precalculated
-	if (Bottom() < mBoundsBottomRight.Y)
+	// TODO: alot of these variables can be precalculated
+	float bottom = Bottom();
+	float top = Top();
+
+	if (bottom <= mBoundsBottomRight.Y)
 	{
 		m_position.Y = mBoundsBottomRight.Y + (m_height * 0.5f);
 	}
-	else if (Top() > mBoundsTopLeft.Y)
+	else if (top >= mBoundsTopLeft.Y)
 	{
 		m_position.Y = mBoundsTopLeft.Y  - (m_height * 0.5f);
 	}
 
-	if (Left() < mBoundsTopLeft.X)
+	if (Left() <= mBoundsTopLeft.X)
 	{
 		m_position.X = mBoundsTopLeft.X + (m_width * 0.5f);
 	}
-	else if (Right() > mBoundsBottomRight.X)
+	else if (Right() >= mBoundsBottomRight.X)
 	{
 		m_position.X = mBoundsBottomRight.X - (m_width * 0.5f);
+	}
+}
+
+void Camera2D::CheckDebugCamerCommands()
+{
+	int movespeed = 40;
+	// test
+	if (GetAsyncKeyState('D') < 0)
+	{
+		if (!UIManager::Instance()->IsObjectEditorDisplaying())
+		{
+			m_position.X += movespeed;
+
+			if (Game::GetInstance()->GetIsLevelEditMode())
+			{
+				list<shared_ptr<GameObject> > & gameObjects = GameObjectManager::Instance()->GetGameObjectList();
+				for (auto & obj : gameObjects)
+				{
+					if (obj->GetParallaxMultiplierX() != 1.0f ||
+						obj->GetParallaxMultiplierY() != 1.0f)
+					{
+						obj->Update(1.0f);
+					}
+				}
+			}
+		}
+	}
+	else if (GetAsyncKeyState('A') < 0)
+	{
+		if (!UIManager::Instance()->IsObjectEditorDisplaying())
+		{
+			m_position.X -= movespeed;
+			if (Game::GetInstance()->GetIsLevelEditMode())
+			{
+				list<shared_ptr<GameObject> > & gameObjects = GameObjectManager::Instance()->GetGameObjectList();
+				for (auto & obj : gameObjects)
+				{
+					if (obj->GetParallaxMultiplierX() != 1.0f ||
+						obj->GetParallaxMultiplierY() != 1.0f)
+					{
+						obj->Update(1.0f);
+					}
+				}
+			}
+		}
+	}
+
+	if (GetAsyncKeyState('W') < 0)
+	{
+		if (!UIManager::Instance()->IsObjectEditorDisplaying())
+		{
+			m_position.Y += movespeed;
+			if (Game::GetInstance()->GetIsLevelEditMode())
+			{
+				list<shared_ptr<GameObject> > & gameObjects = GameObjectManager::Instance()->GetGameObjectList();
+				for (auto & obj : gameObjects)
+				{
+					if (obj->GetParallaxMultiplierX() != 1.0f ||
+						obj->GetParallaxMultiplierY() != 1.0f)
+					{
+						obj->Update(1.0f);
+					}
+				}
+			}
+		}
+	}
+	else if (GetAsyncKeyState('S') < 0 && GetAsyncKeyState(VK_CONTROL) >= 0)
+	{
+		if (!UIManager::Instance()->IsObjectEditorDisplaying())
+		{
+			m_position.Y -= movespeed;
+			if (Game::GetInstance()->GetIsLevelEditMode())
+			{
+				list<shared_ptr<GameObject> > & gameObjects = GameObjectManager::Instance()->GetGameObjectList();
+				for (auto & obj : gameObjects)
+				{
+					if (obj->GetParallaxMultiplierX() != 1.0f ||
+						obj->GetParallaxMultiplierY() != 1.0f)
+					{
+						obj->Update(1.0f);
+					}
+				}
+			}
+		}
 	}
 }
 
