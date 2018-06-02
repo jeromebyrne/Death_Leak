@@ -1270,7 +1270,7 @@ bool Character::Roll()
 	return true;
 }
 
-void Character::AccelerateX(float directionX)
+void Character::AccelerateX(float directionX, float percent)
 {
 	if (IsStunned())
 	{
@@ -1286,13 +1286,15 @@ void Character::AccelerateX(float directionX)
 	bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
 	float deepWaterModifier = isInDeepWater ? (IsOnSolidSurface() ? 0.5f : 0.2f) : 1.0f;
 
+	float accelVal = mAccelXRate * percent;
+
 	if (GetIsSprintActive())
 	{
-		MovingSprite::AccelerateX(directionX, (mAccelXRate * 2) * deepWaterModifier);
+		MovingSprite::AccelerateX(directionX, (accelVal * 2) * deepWaterModifier);
 	}
 	else
 	{
-		MovingSprite::AccelerateX(directionX, mAccelXRate * deepWaterModifier);
+		MovingSprite::AccelerateX(directionX, accelVal * deepWaterModifier);
 	}
 
 	if (mIsStrafing)

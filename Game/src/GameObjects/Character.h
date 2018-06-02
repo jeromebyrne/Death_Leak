@@ -34,7 +34,7 @@ public:
 	void IncreaseJump(float percent);
 	virtual void WallJump(int directionX, float percent);
 	virtual bool Roll();
-	virtual void AccelerateX(float directionX);
+	virtual void AccelerateX(float directionX, float percent = 1.0f);
 	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) override;
 	void setAccelXRate(const float accelRate) { mAccelXRate = accelRate; }
 	float GetHealth() const { return mHealth; }

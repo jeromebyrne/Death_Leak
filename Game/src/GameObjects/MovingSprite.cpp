@@ -229,24 +229,24 @@ void MovingSprite::XmlWrite(TiXmlElement * element)
 
 void MovingSprite::AccelerateX(float directionX, float rate)
 {
-	if(directionX < 0)
+	if(directionX < 0.0f)
 	{
-		directionX = -1;  // normalise
+		directionX = -1.0f;  // normalise
 
-		if(m_direction.X > -1)
+		if(m_direction.X > -1.0f)
 		{
-			m_acceleration.X = 0;
+			m_acceleration.X = 0.0f;
 		}
 		m_direction.X = directionX;
 		m_acceleration.X = rate;
 	}
-	else if(directionX > 0)
+	else if(directionX > 0.0f)
 	{
-		directionX = 1; //normalise
+		directionX = 1.0f; //normalise
 
-		if(m_direction.X < 1)
+		if(m_direction.X < 1.0f)
 		{
-			m_acceleration.X = 0;
+			m_acceleration.X = 0.0f;
 		}
 		m_direction.X = directionX;
 		m_acceleration.X = rate;

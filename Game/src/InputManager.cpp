@@ -112,29 +112,36 @@ void InputManager::ProcessCrouch_gamepad(XINPUT_STATE padState, CurrentGameplayA
 
 void InputManager::ProcessLeftRightMovement_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player)
 {
-	if (!player->JustFellFromLargeDistance() &&
-		!currentActions.mIsCrouching &&
-		!player->GetIsRolling())
+	if (player->JustFellFromLargeDistance() ||
+		currentActions.mIsCrouching ||
+		player->GetIsRolling())
 	{
-		if (padState.Gamepad.sThumbLX < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE && 
-			!player->IsDoingMelee() &&
-			!player->IsWallJumping())
+		return;
+	}
+
+	float range = GetThumbstickOrTriggerRange(padState.Gamepad.sThumbLX);
+	float absRange = std::abs(range);
+
+	if (!player->IsDoingMelee() &&
+		!player->IsWallJumping() &&
+		(range > 0.1f || range < -0.1f))
+	{
+		if (absRange < 0.35f)
 		{
-			player->AccelerateX(-100);
+			// min accel rate
+			absRange = 0.35f;
+		}
+
+		player->AccelerateX(range, absRange);
+
+		if (absRange > 0.95f)
+		{
 			currentActions.mIsSprinting = true;
 		}
-		else if (padState.Gamepad.sThumbLX > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE &&
-			!player->IsDoingMelee() &&
-			!player->IsWallJumping())
-		{
-			player->AccelerateX(100);
-			currentActions.mIsSprinting = true;
-		}
-		else
-		{
-			// not pressing anything
-			player->StopXAccelerating();
-		}
+	}
+	else
+	{
+		player->StopXAccelerating();
 	}
 
 	player->SetSprintActive(currentActions.mIsSprinting);
