@@ -433,7 +433,7 @@
   <material name="demon1">
     <particletextures>
       <texture file="Media\bloodparticle.png"/>
-      <texture file="Media\bloodparticle2.png"/>
+      <!--  <texture file="Media\bloodparticle2.png"/> -->
     </particletextures>
 
     <damagesoundeffects>
@@ -768,6 +768,35 @@
       <texture file="Media\objects\pot_debris_4.png"/>
       <texture file="Media\objects\pot_debris_4.png"/>
       <texture file="Media\objects\pot_debris_4.png"/>
+    </debris_textures>
+  </material>
+
+
+  <material name="ghost">
+    <particletextures>
+      <texture file="Media\large_splash.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="water\water_splash_projectile_4.wav" />
+      <sound file="water\water_splash_projectile_5.wav" />
+      <sound file="water\water_splash_projectile_6.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="water\water_wade.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffects>
+      <sound file="blood\\blood2.wav"/>
+    </destroysoundeffects>
+
+    <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
     </debris_textures>
   </material>
 

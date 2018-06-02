@@ -41,7 +41,7 @@ void GhostEnemySpawner::SpawnNPC(const float posX,
 	npc->SetPlayer(GameObjectManager::Instance()->GetPlayer());
 	npc->SetResistanceXYZ(1.0f, 1.4f, 0);
 	npc->setAccelXRate(1.0);
-	npc->SetMaterial(MaterialManager::Instance()->GetMaterial("demon1"));
+	npc->SetMaterial(MaterialManager::Instance()->GetMaterial("ghost"));
 	npc->SetMaxJumpSpeed(randJumpSpeed);
 	npc->SetIsPlayerEnemy(true);
 	npc->SetFadeAlphaWhenPlayerOccluded(false, 0.5f);

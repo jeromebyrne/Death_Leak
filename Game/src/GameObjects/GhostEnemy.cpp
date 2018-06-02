@@ -14,6 +14,8 @@ GhostEnemy::GhostEnemy(void) :
 {
 	mProjectileFilePath = "Media/puke_temp.png";
 	mProjectileImpactFilePath = "Media/puke_impact_temp.png";
+	mExplodesGruesomely = false;
+	mHealth = 10.0f;
 }
 
 
@@ -21,40 +23,41 @@ GhostEnemy::~GhostEnemy(void)
 {
 }
 
-/*
 void GhostEnemy::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode)
 {
-	// TODO:
-}
-*/
+	Character::OnDamage(damageDealer, damageAmount, pointOfContact, shouldExplode);
 
-/*
-// see if we are doing melee and damage the other object
-if (mIsDoingMelee &&
-	object->CanBeStruckByMelee() &&
-	!object->IsSolidLineStrip())
-{
-	DoMeleeCollisions(object);
-}
+	// randomly cry
+	int randNum = rand() % 100;
 
-if (!object->IsCharacter() &&
-	!object->IsCurrencyOrb() &&
-	!object->IsDebris() &&
-	!object->IsPlatform() &&
-	!object->IsWaterBlock())
-{
-	SolidMovingSprite::OnCollision(object);
-}
-else if (object->IsPlatform())
-{
-	if (Bottom() > object->Y()) // is the bottom of the character above the platform centre point?
+	if (randNum > 80)
 	{
-		return SolidMovingSprite::OnCollision(object);
+		int otherRandNum = rand() % 3;
+
+		switch (otherRandNum)
+		{
+		case 0:
+		{
+			AudioManager::Instance()->PlaySoundEffect("character\\scream.wav");
+			break;
+		}
+		case 1:
+		{
+			break;
+		}
+		case 2:
+		{
+			break;
+		}
+		default:
+		{
+			GAME_ASSERT(false);
+			break;
+		}
+		};
 	}
 }
 
-return true;
-*/
 
 bool GhostEnemy::OnCollision(SolidMovingSprite * object)
 {

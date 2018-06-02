@@ -853,7 +853,7 @@ void Character::UpdateAnimations()
 			mWasCrouching = false;
 			mJustFellFromDistance = false;
 		}
-		else if ((m_velocity.X > 1.0f || m_velocity.X < -1.0f) && !GetIsCollidingAtObjectSide()) // we are moving left or right and not colliding with the side of an object
+		else if ((m_velocity.X > 0.05f || m_velocity.X < -0.05f) && !GetIsCollidingAtObjectSide()) // we are moving left or right and not colliding with the side of an object
 		{
 			if (mIsStrafing)
 			{
@@ -1329,6 +1329,8 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 	{
 		mHealth -= damageAmount;
 
+		Vector3 damageDealerDirection = Vector3(0.0f, 0.0f, 0.0f);
+
 		if (damageDealer && damageDealer->IsProjectile() && GameObjectManager::Instance()->GetPlayer() != this)
 		{
 			Projectile * asProjectile = static_cast<Projectile *>(damageDealer);
@@ -1337,6 +1339,9 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 			int dir = (asProjectile->DirectionX() < 0.0f) ? -1 : 1;
 
 			m_position.X += dir * kDamageKickback;
+
+			damageDealerDirection.X = asProjectile->DirectionX();
+			damageDealerDirection.Y = asProjectile->DirectionY();
 		}
 
 		// play sound effect
@@ -1368,54 +1373,34 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 					bool loop = false;
 					unsigned long loopTime = -1;
 
-					ParticleEmitterManager::Instance()->CreateDirectedSpray(40,
-																			Vector3(pos.X, pos.Y + 30, pos.Z),
-																			Vector3(0.2f, 0.8f, 0),
-																			0.3f,
-																			Vector3(3200, 2000, 0),
-																			"Media\\bloodparticle.png",
-																			7,
-																			12,
-																			0.8f,
-																			2.0f,
-																			50,
-																			100,
-																			3.4,
-																			loop,
-																			0.3f,
-																			1.0f,
-																			loopTime,
-																			true,
-																			2.0f,
-																			5.0f,
-																			16.0f,
-																			0.15f,
-																			0.8f);
-																			
+					if (m_material != nullptr)
+					{
+						string particletexFile = m_material->GetRandomParticleTexture();
 
-					/*ParticleEmitterManager::Instance()->CreateDirectedSpray(20,
-																			pos,
-																			Vector3(0.2f, 0.8f, 0),
-																			0.2f,
-																			Vector3(3200, 2000, 0),
-																			"Media\\bloodparticle3.png",
-																			16,
-																			20,
-																			0.6f,
-																			0.9f,
-																			50,
-																			120,
-																			1,
-																			false,
-																			0.7f,
-																			1.0f,
-																			1.0f,
-																			true,
-																			2.5f,
-																			4.0f,
-																			16.0f,
-																			0.15f,
-																			0.8f);*/
+						ParticleEmitterManager::Instance()->CreateDirectedSpray(40,
+							Vector3(pos.X, pos.Y + 30, pos.Z),
+							Vector3(0.2f, 0.8f, 0),
+							0.3f,
+							Vector3(3200, 2000, 0),
+							particletexFile,
+							7,
+							12,
+							0.8f,
+							2.0f,
+							50,
+							100,
+							3.4,
+							loop,
+							0.3f,
+							1.0f,
+							loopTime,
+							true,
+							2.0f,
+							5.0f,
+							16.0f,
+							0.15f,
+							0.8f);
+					}
 
 					bool slowTime = (rand() % 8) == 1;
 
@@ -1455,7 +1440,7 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 					float spawnSpreadX = (m_collisionBoxDimensions.X / 100.0f) * 7.0f;
 					float spawnSpreadY = (m_collisionBoxDimensions.Y / 100.0f) * 10.0f;
 
-					ParticleEmitterManager::Instance()->CreateRadialSpray(50,
+					ParticleEmitterManager::Instance()->CreateRadialSpray(20,
 																			pos,
 																			Vector3(3200, 2000, 0),
 																			"Media\\smoke4.png",
@@ -1467,8 +1452,8 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 																			150,
 																			1,
 																			false,
-																			0.5f,
-																			0.7f,
+																			0.9f,
+																			1.0f,
 																			-1,
 																			true,
 																			3.0f,
@@ -1476,28 +1461,6 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 																			0.8f,
 																			spawnSpreadX * 0.7f,
 																			spawnSpreadY * 1.5f);
-
-					ParticleEmitterManager::Instance()->CreateRadialSpray(50,
-																			pos,
-																			Vector3(3200, 2000, 0),
-																			"Media\\smoke.png",
-																			1.0f,
-																			2.0f,
-																			0.5f,
-																			1.0f,
-																			200,
-																			300,
-																			1,
-																			false,
-																			0.7f,
-																			1.0f,
-																			-1,
-																			true,
-																			0.1f,
-																			0.1f,
-																			0.7f,
-																			spawnSpreadX * 1.4f,
-																			spawnSpreadY * 1.0f);
 
 					AudioManager::Instance()->PlaySoundEffect("explosion/smoke_explosion.wav");
 				}
@@ -1527,7 +1490,36 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 
 		if (!mHasExploded || (mHasExploded && !shouldExplode))
 		{
-			ParticleEmitterManager::Instance()->CreateRadialBloodSpray(20, point, false, -1);
+			// ParticleEmitterManager::Instance()->CreateRadialBloodSpray(20, point, false, -1);
+
+			if (m_material != nullptr)
+			{
+				string particletexFile = m_material->GetRandomParticleTexture();
+
+				ParticleEmitterManager::Instance()->CreateDirectedSpray(20,
+					m_position,
+					damageDealerDirection,
+					0.5f,
+					Vector3(3200, 2000, 0),
+					particletexFile,
+					1.0f,
+					5.0f,
+					0.3f,
+					0.5f,
+					5.0f,
+					10.0f,
+					1.0f,
+					false,
+					0.8f,
+					1.0f,
+					-1.0f,
+					true,
+					15.5f,
+					2.0f,
+					2.0f,
+					0.05f,
+					0.95f);
+			}
 		}
 	}
 }
