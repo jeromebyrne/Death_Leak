@@ -617,7 +617,11 @@ void NPC::Draw(ID3D10Device * device, Camera2D * camera)
 	}
 	if (mHealthBarSprite)
 	{
-		mHealthBarSprite->SetXYZ(healthBarPos.X, healthBarPos.Y, healthBarPos.Z);
+		float percentHealth = mHealth / mMaxHealth;
+
+		float offsetX = kHealthBarDimensionsX - kHealthBarDimensionsX * percentHealth;
+		offsetX *= 0.5f;
+		mHealthBarSprite->SetXYZ(healthBarPos.X - offsetX, healthBarPos.Y, healthBarPos.Z);
 
 		// apply any changes needed
 		if (mHealthBarSprite->IsChangeRequired())
@@ -742,9 +746,9 @@ void NPC::UpdateHealthBar(float delta)
 	}
 
 	float percentHealth = mHealth / mMaxHealth;
+
 	mHealthBarSprite->SetMatrixScaleX(percentHealth * mCurrentHealthMeterScale);
 	mHealthBarSprite->SetMatrixScaleY(mCurrentHealthMeterScale);
-	mHealthBarSprite->SetAttachmentOffsetX(-((((kHealthBarDimensionsX - (kHealthBarDimensionsX * percentHealth))) * mCurrentHealthMeterScale) * 0.5f) );
 
 	if (mHealthMeterHealthBeforeDecrease > mHealth)
 	{
@@ -753,18 +757,6 @@ void NPC::UpdateHealthBar(float delta)
 		{
 			mHealthMeterHealthBeforeDecrease = mHealth;
 		}
-	}
-
-	float percentBefore = mHealthMeterHealthBeforeDecrease / mMaxHealth;
-
-	mHealthBarUnderlaySprite->SetMatrixScaleX(percentBefore * mCurrentHealthMeterScale);
-	mHealthBarUnderlaySprite->SetMatrixScaleY(mCurrentHealthMeterScale);
-	mHealthBarUnderlaySprite->SetAttachmentOffsetX(-((((kHealthBarDimensionsX - (kHealthBarDimensionsX * percentBefore))) * mCurrentHealthMeterScale) * 0.5f) );
-
-	if (mHealthBarOverlaySprite)
-	{
-		mHealthBarOverlaySprite->SetMatrixScaleX(mCurrentHealthMeterScale);
-		mHealthBarOverlaySprite->SetMatrixScaleY(mCurrentHealthMeterScale);
 	}
 }
 

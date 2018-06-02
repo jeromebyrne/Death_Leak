@@ -10,8 +10,8 @@
 #include "GhostEnemySpawner.h"
 
 const float kMaxGamepadAnalogRange = (std::numeric_limits<short>::max)();
-const float kAimOffsetX = 250.0f;
-const float kAimOffsetY = 220.0f;
+const float kAimOffsetX = 450.0f;
+const float kAimOffsetY = 300.0f;
 
 InputManager::InputManager() :
 	mShowDebugInfo(false),
@@ -25,10 +25,12 @@ InputManager::InputManager() :
 
 void InputManager::ProcessGameplayInput()
 {
+	/*
 	if (GetForegroundWindow() != DXWindow::GetInstance()->Hwnd())
 	{
-		// return;
+		return;
 	}
+	*/
 
 #ifdef _DEBUG
 
