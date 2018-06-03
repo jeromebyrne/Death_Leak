@@ -14,7 +14,8 @@ public:
 	{
 		kUnknownProjectileType,
 		kBladeProjectile,
-		kBombProjectile
+		kBombProjectile,
+		kBloodFXProjectile
 	};
 
 	enum ProjectileOwnerType
@@ -46,9 +47,10 @@ public:
 	virtual void LoadContent(ID3D10Device * graphicsdevice) override;
 	virtual void DebugDraw(ID3D10Device * graphicsdevice) override;
 
-	void SetSpinningMovement(bool value) { mSpinningMovement = value; }
+	void SetSpinningMovement(bool value) { mSpinningMovement = value; mRotateToDirection = !mSpinningMovement; }
 
 	ProjectileType GetProjectileType() const { return mType; }
+	void SetProjectileType(ProjectileType t) { mType = t; }
 	ProjectileOwnerType GetOwnerType() const { return mOwnerType; }
 	void SetOwnerType(ProjectileOwnerType type) { mOwnerType = type; }
 
@@ -72,6 +74,12 @@ public:
 	void SetIsDeflectable(bool value) { mIsDeflectable = value; }
 
 	bool isDeflectable() const { return mIsDeflectable; }
+
+	void SetDoAlphaFadeOut(bool value) { mDoAlphaFadeOut = value; }
+
+	void SetDoScaleFadeOut(bool value) { mDoScaleFadeOut = value; }
+
+	void SetShouldRotateToDirection(bool value) { mRotateToDirection = value; }
 
 protected:
 
@@ -105,6 +113,10 @@ protected:
 	float mProjectileResistance = 1.0f;
 
 	bool mIsDeflectable = true; // most projectile are deflectable
+
+	bool mDoAlphaFadeOut = true;
+	bool mDoScaleFadeOut = false;
+	bool mRotateToDirection = true;
 };
 
 #endif

@@ -1335,6 +1335,12 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 		{
 			Projectile * asProjectile = static_cast<Projectile *>(damageDealer);
 
+			if (asProjectile->GetProjectileType() == Projectile::kBloodFXProjectile)
+			{
+				// not affected by blood
+				return;
+			}
+
 			// do a kickback in the x direction
 			int dir = (asProjectile->DirectionX() < 0.0f) ? -1 : 1;
 
@@ -1343,6 +1349,8 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 			damageDealerDirection.X = asProjectile->DirectionX();
 			damageDealerDirection.Y = asProjectile->DirectionY();
 		}
+
+		FireBloodSpatter(Vector2(damageDealerDirection.X, damageDealerDirection.Y), m_position);
 
 		// play sound effect
 		float current_time = Timing::Instance()->GetTotalTimeSeconds();
@@ -1490,35 +1498,35 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 
 		if (!mHasExploded || (mHasExploded && !shouldExplode))
 		{
-			// ParticleEmitterManager::Instance()->CreateRadialBloodSpray(20, point, false, -1);
+			Vector3 pos = Vector3(m_position.X + pointOfContact.X, m_position.Y + pointOfContact.Y, m_position.Z - 0.1f);
 
 			if (m_material != nullptr)
 			{
 				string particletexFile = m_material->GetRandomParticleTexture();
 
 				ParticleEmitterManager::Instance()->CreateDirectedSpray(20,
-					m_position,
+					pos,
 					damageDealerDirection,
-					0.5f,
+					0.2f,
 					Vector3(3200, 2000, 0),
 					particletexFile,
-					1.0f,
-					5.0f,
+					4.0f,
+					10.0f,
 					0.3f,
 					0.5f,
-					5.0f,
-					10.0f,
-					1.0f,
+					3.0f,
+					6.0f,
+					2.5f,
 					false,
 					0.8f,
 					1.0f,
 					-1.0f,
 					true,
-					15.5f,
+					22.0f,
 					2.0f,
 					2.0f,
 					0.05f,
-					0.95f);
+					0.85f);
 			}
 		}
 	}
@@ -1899,6 +1907,32 @@ void Character::UpdateCollisionBox()
 	{
 		m_collisionBoxDimensions.X *= mMeleeCollisionBoundsX;
 	}
+}
+
+void Character::FireBloodSpatter(Vector2 direction, const Vector3 & origin)
+{
+	float speed = 1.0f;
+
+	Projectile * p = new Projectile(Projectile::kUnknownProjectile,
+											"Media\\bloodparticle.png",
+											"Media\\blood_impact.png",
+											origin,
+											Vector2(128, 128),
+											Vector2(64, 64),
+											direction,
+											0.0f,
+											speed,
+											1.5f);
+
+	p->SetProjectileType(Projectile::kBloodFXProjectile);
+	p->SetDoAlphaFadeOut(false);
+	p->SetSpinningMovement(false);
+	p->SetShouldRotateToDirection(false);
+
+	// TODO: this should be replaced with a layer later
+	p->SetZ(80.0f);
+
+	GameObjectManager::Instance()->AddGameObject(p);
 }
 
 

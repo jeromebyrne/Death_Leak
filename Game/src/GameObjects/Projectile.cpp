@@ -113,6 +113,11 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 			HandleSolidLineStripCollision(lineStrip);
 			return false;
 		}
+		else if (mType == kBloodFXProjectile)
+		{
+			// blood effect particle doesn't impact anything except the solid lines
+			return false;
+		}
 
 		bool isCharacter = object->IsCharacter();
 		
@@ -269,7 +274,7 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 			return false;
 		}
 
-		if (mSpinningMovement)
+		if (!mRotateToDirection)
 		{
 			SetRotationAngle(0);
 		}
@@ -453,7 +458,7 @@ void Projectile::Update(float delta)
 		Vector2 dir = Vector2(m_velocity.X, m_velocity.Y);
 		dir.Normalise();
 
-		if (!mSpinningMovement)
+		if (mRotateToDirection)
 		{
 			if (!mIsInWater)
 			{
@@ -483,7 +488,7 @@ void Projectile::Update(float delta)
 				}
 			}
 		}
-		else
+		else if (mSpinningMovement)
 		{
 			if (!mIsInWater)
 			{
@@ -521,7 +526,15 @@ void Projectile::Update(float delta)
 		float timeToDie = m_timeBecameInactive + m_maxTimeInActive;
 
 		float timeToLive = timeToDie - currentTime;
-		m_alpha = timeToLive / m_maxTimeInActive;
+
+		if (mDoAlphaFadeOut)
+		{
+			m_alpha = timeToLive / m_maxTimeInActive;
+		}
+		if (mDoScaleFadeOut)
+		{
+			// TODO: implement this
+		}
 
 		if (currentTime > timeToDie)
 		{
@@ -604,7 +617,7 @@ void Projectile::HandleSolidLineStripCollision(SolidLineStrip * solidLineStrip)
 	unsigned int collisionLineIndex = 0;
 	if (solidLineStrip->GetProjectileCollisionData(this, collisionPosition, collisionLineIndex))
 	{
-		if (mSpinningMovement)
+		if (!mRotateToDirection)
 		{
 			SetRotationAngle(0);
 		}

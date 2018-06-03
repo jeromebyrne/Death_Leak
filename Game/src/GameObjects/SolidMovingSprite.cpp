@@ -264,6 +264,17 @@ bool SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 		}
 	}
 
+	if (object->IsProjectile())
+	{
+		Projectile * asProjectile = static_cast<Projectile*>(object);
+
+		if (asProjectile->GetProjectileType() == Projectile::kBloodFXProjectile)
+		{
+			// blood projectiles only affect solid lines
+			return false;
+		}
+	}
+
 	float objectYVelocity = object->VelocityY();
 
 	// if we are not passive then push ourselves away from the object

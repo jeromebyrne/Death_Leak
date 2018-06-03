@@ -112,6 +112,8 @@ protected:
 
 	void UpdateCollisionBox();
 
+	void FireBloodSpatter(Vector2 direction, const Vector3 & origin);
+
 	bool m_isJumping;
 	float m_maxJumpSpeed;
 	float m_lastTimePlayedWaterWadeSFX; 
