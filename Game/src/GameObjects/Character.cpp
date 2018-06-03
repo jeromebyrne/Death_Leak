@@ -1290,7 +1290,7 @@ void Character::AccelerateX(float directionX, float percent)
 
 	if (GetIsSprintActive())
 	{
-		MovingSprite::AccelerateX(directionX, (accelVal * 2) * deepWaterModifier);
+		MovingSprite::AccelerateX(directionX, (accelVal * 2.0f) * deepWaterModifier);
 	}
 	else
 	{
@@ -1911,26 +1911,25 @@ void Character::UpdateCollisionBox()
 
 void Character::FireBloodSpatter(Vector2 direction, const Vector3 & origin)
 {
-	float speed = 1.0f;
+	float speed = 3.5f;
 
 	Projectile * p = new Projectile(Projectile::kUnknownProjectile,
-											"Media\\bloodparticle.png",
+											"Media\\blood_projectile.png",
 											"Media\\blood_impact.png",
 											origin,
-											Vector2(128, 128),
+											Vector2(256, 256),
 											Vector2(64, 64),
 											direction,
 											0.0f,
 											speed,
-											1.5f);
+											3.5f);
 
 	p->SetProjectileType(Projectile::kBloodFXProjectile);
 	p->SetDoAlphaFadeOut(false);
+	p->SetDoScaleFadeOut(true);
 	p->SetSpinningMovement(false);
 	p->SetShouldRotateToDirection(false);
-
-	// TODO: this should be replaced with a layer later
-	p->SetZ(80.0f);
+	p->SetIsNativeDimensions(false);
 
 	GameObjectManager::Instance()->AddGameObject(p);
 }

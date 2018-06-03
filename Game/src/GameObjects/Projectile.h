@@ -87,6 +87,8 @@ protected:
 
 	void ReboundOffSolidLine(SolidLineStrip * solidLine, unsigned lineIndex);
 
+	void DoBloodProjectilePositionJitter();
+
 	static int NUM_PROJECTILES_ACTIVE; // the number of projectiles currently alive
 
 	bool m_isActive; // are we active (ie: do update and onCollision)

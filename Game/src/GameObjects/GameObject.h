@@ -264,6 +264,8 @@ protected:
 
 	bool mAlwaysUpdate;
 
+	Vector3 mOriginalDimensions;
+
 private:
 
 	int m_id; // our game object ID (this is unique)

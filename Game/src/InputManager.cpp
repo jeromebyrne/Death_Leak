@@ -8,6 +8,7 @@
 #include "Timing.h"
 #include "UIManager.h"
 #include "GhostEnemySpawner.h"
+#include "NPCManager.h"
 
 const float kMaxGamepadAnalogRange = (std::numeric_limits<short>::max)();
 const float kAimOffsetX = 450.0f;
@@ -126,17 +127,22 @@ void InputManager::ProcessLeftRightMovement_gamepad(XINPUT_STATE padState, Curre
 		!player->IsWallJumping() &&
 		(range > 0.1f || range < -0.1f))
 	{
-		if (absRange < 0.35f)
+		if (absRange < 0.5f)
 		{
 			// min accel rate
-			absRange = 0.35f;
+			absRange = 0.5f;
 		}
 
 		player->AccelerateX(range, absRange);
 
 		if (absRange > 0.95f)
 		{
-			currentActions.mIsSprinting = true;
+			if (NPCManager::Instance()->IsAnyEnemyNPCInWorld())
+			{
+				// only sprint if there are enemies in the level
+				// don't want to sprint too fast if we're just exploring
+				currentActions.mIsSprinting = true;
+			}
 		}
 	}
 	else

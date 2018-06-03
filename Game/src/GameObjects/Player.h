@@ -35,6 +35,8 @@ public:
 
 	void StopFocus();
 
+	void UpdateResistance();
+
 private:
 
 	virtual void DebugDraw(ID3D10Device *  device) override;

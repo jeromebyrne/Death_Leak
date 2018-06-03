@@ -81,7 +81,6 @@ void Debris::Update(float delta)
 		{
 			mTimeUntilFadeOutFully -= delta;
 
-			
 			if (mTimeUntilFadeOutFully <= 0.0f)
 			{
 				mTimeUntilFadeOutFully = 0.0f;
@@ -138,6 +137,4 @@ bool Debris::OnCollision(SolidMovingSprite* object)
 void Debris::Initialise()
 {
 	SolidMovingSprite::Initialise();
-
-	mOriginalDimensions = m_dimensions;
 }

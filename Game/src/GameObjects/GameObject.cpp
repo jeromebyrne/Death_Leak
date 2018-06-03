@@ -120,6 +120,8 @@ void GameObject::Initialise()
 						mSineWaveProps.InitialYPosition,
 						mSineWaveProps.InitialXPosition, 
 						mSineWaveProps.OffsetX);
+
+	mOriginalDimensions = m_dimensions;
 }
 
 void GameObject::SetupDebugDraw()

@@ -322,6 +322,7 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 
 		// change our sprite to the impact sprite 
 		m_texture = m_impactTexture;
+		DoBloodProjectilePositionJitter();
 
 		// damage the other object
 		if (!WasInWaterLastFrame())
@@ -531,9 +532,17 @@ void Projectile::Update(float delta)
 		{
 			m_alpha = timeToLive / m_maxTimeInActive;
 		}
-		if (mDoScaleFadeOut)
+		if (mDoScaleFadeOut )
 		{
-			// TODO: implement this
+			float scaleOutTimePercent = 0.1f;
+			float timeToDiePercent = timeToLive / m_maxTimeInActive;
+			if (timeToDiePercent < scaleOutTimePercent)
+			{
+				float scale = 1.0f - ((scaleOutTimePercent - timeToDiePercent) / scaleOutTimePercent);
+				m_alpha = scale; // also alpha out for scaling objects, just later
+				SetMatrixScaleX(scale);
+				SetMatrixScaleY(scale);
+			}
 		}
 
 		if (currentTime > timeToDie)
@@ -685,6 +694,8 @@ void Projectile::HandleSolidLineStripCollision(SolidLineStrip * solidLineStrip)
 			{
 				// change our sprite to the impact sprite 
 				m_texture = m_impactTexture;
+
+				DoBloodProjectilePositionJitter();
 			}
 			else
 			{
@@ -695,7 +706,32 @@ void Projectile::HandleSolidLineStripCollision(SolidLineStrip * solidLineStrip)
 		{
 			// change our sprite to the impact sprite 
 			m_texture = m_impactTexture;
+
+			DoBloodProjectilePositionJitter();
 		}
+	}
+}
+
+void Projectile::DoBloodProjectilePositionJitter()
+{
+	if (mType == kBloodFXProjectile)
+	{
+		// randomly jitter the y position so that it doesn't leave a uniform pattern
+		float randY = ((rand() % 100) * 0.01f) * 20.0f;
+		int negativeSign = rand() % 2 == 1;
+
+		if (negativeSign)
+		{
+			SetY(Y() - randY);
+		}
+		else
+		{
+			SetY(Y() + randY);
+		}
+
+		// TODO: this should be set on a LAYER
+		// This should appear on the ground in MOST cases but is not ideal
+		SetZ(90.0f);
 	}
 }
 

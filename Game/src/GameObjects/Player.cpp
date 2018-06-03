@@ -52,18 +52,32 @@ void Player::Initialise()
 	mRunAnimFramerateMultiplier = 3.0f;
 	m_maxJumpSpeed = 23;
 	mMaxJumpsAllowed = 1;
-	m_maxVelocity.X = 5.0001f;
-	mSprintVelocityX = 15.0f;
-	m_resistance.X = 0.92f; // HAS to be lower than 1.0 (TODO: really need to change this)
-	m_resistance.Y = 0.88f;
-	// <resistance z="0.000000" y="1.400000" x="0.880000" />
+	m_maxVelocity.X = 1.0000f;
+	mSprintVelocityX = 17.5f;
 
-	// TODO: just testing
+	UpdateResistance();
+
+	// TODO: just testing (or am I really, just keep crouch jump all the time?)
 	FeatureUnlockManager::GetInstance()->SetFeatureUnlocked(FeatureUnlockManager::kCrouchJump, true);
 
 	m_projectileOffset.X = 5.0f;
 	m_projectileOffset.Y = 25.0f;
 }
+
+void Player::UpdateResistance()
+{
+	if (mSprintActive)
+	{
+		m_resistance.X = 0.94f; // HAS to be lower than 1.0 (TODO: really need to change this)
+	}
+	else
+	{
+		m_resistance.X = 0.895f; // HAS to be lower than 1.0 (TODO: really need to change this)
+	}
+
+	m_resistance.Y = 0.88f;
+}
+
 void Player::XmlRead(TiXmlElement * element)
 {
 	// update the base classes
@@ -134,6 +148,8 @@ void Player::Update(float delta)
 {
 	// update base classes
 	Character::Update(delta);
+
+	UpdateResistance();
 
 	if (mBurstFireEnabled && mFireBurstNum > 0 && mCurrentBurstNum >= mFireBurstNum)
 	{

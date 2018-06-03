@@ -38,8 +38,6 @@ private:
 	DebrisState mCurrentDebrisState = kActive;
 
 	float mTimeUntilFadeOutFully = 3.0f;
-
-	Vector3 mOriginalDimensions;
 };
 
 #endif
