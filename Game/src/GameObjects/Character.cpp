@@ -1911,6 +1911,11 @@ void Character::UpdateCollisionBox()
 
 void Character::FireBloodSpatter(Vector2 direction, const Vector3 & origin)
 {
+	if (!mEmitsBlood)
+	{
+		return;
+	}
+
 	float speed = 3.5f;
 
 	Projectile * p = new Projectile(Projectile::kUnknownProjectile,

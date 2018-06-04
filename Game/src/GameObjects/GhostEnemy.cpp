@@ -16,6 +16,7 @@ GhostEnemy::GhostEnemy(void) :
 	mProjectileImpactFilePath = "Media/puke_impact_temp.png";
 	mExplodesGruesomely = false;
 	mHealth = 10.0f;
+	mEmitsBlood = false;
 }
 
 

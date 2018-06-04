@@ -168,6 +168,7 @@ protected:
 	ParticleSpray * mStunParticles;
 	Vector3 mRegularCollisionBox;
 	float mMeleeCollisionBoundsX = 1.5f;
+	bool mEmitsBlood = true;
 
 	CurrentMeleePhase mCurrentMeleePhase = kMeleePhase1;
 
