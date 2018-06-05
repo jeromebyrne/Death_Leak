@@ -554,7 +554,7 @@ void Player::TryFocus()
 		return;
 	}
 
-	Timing::Instance()->SetTimeModifier(0.10f);
+	Timing::Instance()->SetTimeModifier(0.15f);
 	mIsFocusing = true;
 }
 

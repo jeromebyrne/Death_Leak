@@ -25,8 +25,8 @@ static const float kLargeDropDistance = 600.0f;
 static const float kWallJumpTime = 0.3f;
 static const float kRollVelocityX = 14.0f;
 static const float kRollVelocityY = 0.0f;
-static const float kLandRollInputWindow = 0.3f;
-static const float kLandJumpInputWindow = 0.3f;
+static const float kLandRollInputWindow = 0.25f;
+static const float kLandJumpInputWindow = 0.2f;
 static const float kWallJumpXResistance = 0.99f;
 static const float kWallJumpVelocityXBoost = 15.0f;
 
@@ -1262,7 +1262,10 @@ bool Character::Roll()
 	}
 	else
 	{
-		SetVelocityX(m_velocity.X * 1.5f);
+		if (GetIsSprintActive())
+		{
+			SetVelocityX(m_velocity.X * 0.4f);
+		}
 	}
 
 	SetVelocityY(kRollVelocityY);
@@ -1917,12 +1920,21 @@ void Character::FireBloodSpatter(Vector2 direction, const Vector3 & origin)
 	}
 
 	float speed = 3.5f;
+	float maxProjectileSize = 256.0f;
+	float randScale = 0.5f + ((rand() % 50) * 0.01f);
+	float projectileSize = maxProjectileSize * randScale;
+
+	string randImpactTex = "Media\\blood_impact.png";
+	if (rand() % 2 == 1)
+	{
+		randImpactTex = "Media\\blood_impact_2.png";
+	}
 
 	Projectile * p = new Projectile(Projectile::kUnknownProjectile,
 											"Media\\blood_projectile.png",
-											"Media\\blood_impact.png",
+											randImpactTex,
 											origin,
-											Vector2(256, 256),
+											Vector2(projectileSize, projectileSize),
 											Vector2(64, 64),
 											direction,
 											0.0f,
@@ -1935,6 +1947,7 @@ void Character::FireBloodSpatter(Vector2 direction, const Vector3 & origin)
 	p->SetSpinningMovement(false);
 	p->SetShouldRotateToDirection(false);
 	p->SetIsNativeDimensions(false);
+	// p->FlipVertical();
 
 	GameObjectManager::Instance()->AddGameObject(p);
 }

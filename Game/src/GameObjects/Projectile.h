@@ -28,8 +28,8 @@ public:
 	friend class BombProjectile;
 
 	Projectile(ProjectileOwnerType ownerType, 
-				const char* textureFileName, 
-				const char * impactTextureFilename,
+				const string & textureFileName, 
+				const string & impactTextureFilename,
 				Vector3 position,
 				Vector2 dimensions,
 				Vector2 collisionDimensions,

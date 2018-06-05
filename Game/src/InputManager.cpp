@@ -120,7 +120,7 @@ void InputManager::ProcessLeftRightMovement_gamepad(XINPUT_STATE padState, Curre
 		return;
 	}
 
-	float range = GetThumbstickOrTriggerRange(padState.Gamepad.sThumbLX);
+	float range = GetThumbstickRange(padState.Gamepad.sThumbLX);
 	float absRange = std::abs(range);
 
 	if (!player->IsDoingMelee() &&
@@ -163,7 +163,7 @@ void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 
 	bool wasPressingJump = mCurrentGamepadState.mPressingJump;
 
-	float initialJumpPercent = 70.0f;
+	float initialJumpPercent = 35.0f;
 	static float currentJumpIncreasePercent = initialJumpPercent;
 
 	if (player->IsOnSolidSurface())
@@ -196,13 +196,14 @@ void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 		else
 		{
 			mLastTimePressedJump = Timing::Instance()->GetTotalTimeSeconds();
-			float jumpPower = /* player->IsStrafing() ? initialJumpPercent * 0.8f :*/ initialJumpPercent;
+			float jumpPower = initialJumpPercent /** GetTriggerRange(padState.Gamepad.bRightTrigger)*/;
+
 			player->Jump(jumpPower);
 		}
 	}
 	else if (mCurrentGamepadState.mPressingJump && wasPressingJump && player->CanIncreaseJumpIntensity() && currentJumpIncreasePercent < 100.0f)
 	{
-		currentJumpIncreasePercent += 7.0f;
+		currentJumpIncreasePercent += 5.0f /* * GetTriggerRange(padState.Gamepad.bRightTrigger) */;
 		player->IncreaseJump(currentJumpIncreasePercent);
 	}
 }
@@ -350,7 +351,7 @@ void InputManager::ProcessAimDirection_gamepad(XINPUT_STATE padState, CurrentGam
 		return;
 	}
 
-	float range = GetThumbstickOrTriggerRange(padState.Gamepad.sThumbRY);
+	float range = GetThumbstickRange(padState.Gamepad.sThumbRY);
 
 	Camera2D::GetInstance()->SetTargetOffsetY(defaultOffset.Y + (kAimOffsetY * range));
 
@@ -428,7 +429,7 @@ void InputManager::ProcessStrafing_gamepad(XINPUT_STATE padState, CurrentGamepla
 		return;
 	}	
 
-	float rightThumbstickRangeX = GetThumbstickOrTriggerRange(padState.Gamepad.sThumbRX);
+	float rightThumbstickRangeX = GetThumbstickRange(padState.Gamepad.sThumbRX);
 
 	bool isStrafing = false;
 	
@@ -623,7 +624,16 @@ bool InputManager::IsPressingEnterDoor() const
 	}
 }
 
-float InputManager::GetThumbstickOrTriggerRange(short thumbstickTriggerValue)
+float InputManager::GetThumbstickRange(short thumbstickValue)
 {
-	return (float)thumbstickTriggerValue / kMaxGamepadAnalogRange;
+	return (float)thumbstickValue / kMaxGamepadAnalogRange;
+}
+
+float InputManager::GetTriggerRange(short triggerValue)
+{
+	if (triggerValue > 255)
+	{
+		return 1.0f;
+	}
+	return (float)triggerValue / 255.0f;
 }

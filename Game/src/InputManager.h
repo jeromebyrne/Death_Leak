@@ -23,7 +23,9 @@ public:
 
 	bool IsPressingEnterDoor() const;
 
-	static float GetThumbstickOrTriggerRange(short thumbstickTriggerValue);
+	static float GetThumbstickRange(short thumbstickValue);
+
+	static float GetTriggerRange(short triggerValue);
 
 private:
 

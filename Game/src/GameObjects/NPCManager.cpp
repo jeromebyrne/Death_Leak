@@ -108,7 +108,7 @@ void NPCManager::ResolveCollisions(NPC * npc, NPC * otherNPC)
 		{
 			// stop accelerating, this is enough to keep NPCs separated
 			npc->StopXAccelerating();
-			npc->SetVelocityX(0);
+			npc->SetVelocityX(0.0f);
 			otherNPC->AddToNPCResolvedList(npc);
 		}
 	}

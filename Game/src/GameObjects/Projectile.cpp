@@ -15,8 +15,8 @@
 int Projectile::NUM_PROJECTILES_ACTIVE = 0;
 
 Projectile::Projectile(ProjectileOwnerType ownerType, 
-						const char* textureFileName,
-						const char * impactTextureFilename,
+						const string & textureFileName,
+						const string & impactTextureFilename,
 						Vector3 position,
 						Vector2 dimensions,
 						Vector2 collisionDimensions,
@@ -534,14 +534,25 @@ void Projectile::Update(float delta)
 		}
 		if (mDoScaleFadeOut )
 		{
-			float scaleOutTimePercent = 0.1f;
 			float timeToDiePercent = timeToLive / m_maxTimeInActive;
-			if (timeToDiePercent < scaleOutTimePercent)
+
+			float scaleInTimePercent = 0.95f;
+
+			float scaleOutTimePercent = 0.2f;
+			
+			if (timeToDiePercent > scaleInTimePercent)
+			{
+				float timeSlice = (1.0f - scaleInTimePercent);
+				float scale = 1.0f - ((timeToDiePercent - scaleInTimePercent) / timeSlice);
+				SetMatrixScaleX(scale);
+				SetMatrixScaleY(scale);
+			}
+			else if (timeToDiePercent < scaleOutTimePercent)
 			{
 				float scale = 1.0f - ((scaleOutTimePercent - timeToDiePercent) / scaleOutTimePercent);
 				m_alpha = scale; // also alpha out for scaling objects, just later
-				SetMatrixScaleX(scale);
-				SetMatrixScaleY(scale);
+				// SetMatrixScaleX(scale);
+				// SetMatrixScaleY(scale);
 			}
 		}
 
