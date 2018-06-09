@@ -160,6 +160,13 @@ void Camera2D::Update()
 
 void Camera2D::FollowTargetObjectWithLag(bool forceUpdate, float overrideLagX, float overrideLagY)
 {
+#if _DEBUG
+	if (Game::GetInstance()->GetIsLevelEditMode())
+	{
+		return;
+	}
+#endif
+
 	if (!mTargetObject)
 	{
 		return;
@@ -287,14 +294,13 @@ void Camera2D::DoShake(float intensity, float shakeDuration)
 
 void Camera2D::CheckBoundaryCollisions()
 {
-	// NOTE to JEROME
-	// We only care about the cameras bounds here
-	// Let the camera follow the player wherever they decide in the code before this
-	// Then make any boundary adjustments here
-	// Once it's in the same frame then it's ok
-	// Stop trying to complicate it with other player object tracking logic
-	// Keep it simple
-	// Ahhhh camera's
+#if _DEBUG
+	if (Game::GetInstance()->GetIsLevelEditMode())
+	{
+		// we need to manipulate teh camera when in edit mode
+		return;
+	}
+#endif
 
 	// TODO: alot of these variables can be precalculated
 	float bottom = Bottom();

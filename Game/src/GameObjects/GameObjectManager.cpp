@@ -388,7 +388,8 @@ void GameObjectManager::LoadObjectsFromFile(const char* filename)
 	}
 
 	// now order the objects by z value
-	OrderDrawablesByDepth();
+	// TODO: figure out if this is even needed, there is a z buffer
+	// OrderDrawablesByDepth();
 
 	// get the backbuffer width and height and determine how much we need to scale by
 	// base width and height are 1920x1080 (need to not hard code this)

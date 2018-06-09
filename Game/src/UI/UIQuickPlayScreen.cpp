@@ -30,16 +30,7 @@ void UIQuickPlayScreen::Initialise()
 
 void UIQuickPlayScreen::CreateLevelEntries()
 {
-	mLevelEntries["Test Level"] = "XmlFiles\\levels\\test_level.xml";
-	mLevelEntries["Underwater Cave"] = "XmlFiles\\underwater_cave.xml";
-	mLevelEntries["Village 2"] = "XmlFiles\\village_2.xml";
-	mLevelEntries["Waterfall level"] = "XmlFiles\\waterfall_level.xml";
-	mLevelEntries["Village Outskirts"] = "XmlFiles\\village_outskirts.xml";
-	mLevelEntries["Field"] = "XmlFiles\\field_1.xml";
-	mLevelEntries["Village"] = "XmlFiles\\village.xml";
-	mLevelEntries["Save Shrine Test"] = "XmlFiles\\levels\\save_shrine_test_level.xml";
-	mLevelEntries["Door Test 1"] = "XmlFiles\\levels\\door_test_1.xml";
-	mLevelEntries["Door Test 2"] = "XmlFiles\\levels\\door_test_2.xml";
+	mLevelEntries["Test Level"] = "XmlFiles\\levels\\test.xml";
 }
 
 void UIQuickPlayScreen::AddLevelButtons()

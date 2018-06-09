@@ -30,17 +30,7 @@ void UILevelSelectScreen::Initialise()
 
 void UILevelSelectScreen::CreateLevelEntries()
 {
-	mLevelEntries["1. Test Level"] = "XmlFiles\\levels\\test_level.xml";
-	mLevelEntries["2. Underwater Cave"] = "XmlFiles\\underwater_cave.xml";
-	mLevelEntries["3. Village 2"] = "XmlFiles\\village_2.xml";
-	mLevelEntries["4. Waterfall level"] = "XmlFiles\\waterfall_level.xml";
-	mLevelEntries["5. Village Outskirts"] = "XmlFiles\\village_outskirts.xml";
-	mLevelEntries["6. Field"] = "XmlFiles\\field_1.xml";
-	mLevelEntries["7. Village"] = "XmlFiles\\village.xml";
-	mLevelEntries["8. Save Shrine Test"] = "XmlFiles\\levels\\save_shrine_test_level.xml";
-	mLevelEntries["9.0 Door Test 1"] = "XmlFiles\\levels\\door_test_1.xml";
-	mLevelEntries["9.1 Door Test 2"] = "XmlFiles\\levels\\door_test_2.xml";
-	mLevelEntries["ANIMATION PREVIEW"] = "XmlFiles\\animation_preview.xml";
+	mLevelEntries["1. Test Level"] = "XmlFiles\\levels\\test.xml";
 }
 
 void UILevelSelectScreen::AddLevelButtons()

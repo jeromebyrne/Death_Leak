@@ -207,6 +207,7 @@ void GameObject:: XmlRead(TiXmlElement * element)
 	m_position.X = XmlUtilities::ReadAttributeAsFloat(element, "position", "x");
 	m_position.Y = XmlUtilities::ReadAttributeAsFloat(element, "position", "y");
 	m_position.Z = XmlUtilities::ReadAttributeAsFloat(element, "position", "z");
+	mDepthLayer = ConvertStringToDepthLayer(XmlUtilities::ReadAttributeAsString(element, "position", "depth_layer"));
 
 	//dimensions 
 	m_dimensions.X = XmlUtilities::ReadAttributeAsFloat(element, "dimensions", "width");
@@ -252,6 +253,7 @@ void GameObject::XmlWrite(TiXmlElement * element)
 
 	// position
 	TiXmlElement * posElem = new TiXmlElement("position");
+	posElem->SetAttribute("depth_layer", ConvertDepthLayerToString(mDepthLayer).c_str());
 	posElem->SetDoubleAttribute("z", m_position.Z);
 	posElem->SetDoubleAttribute("y", m_position.Y);
 	posElem->SetDoubleAttribute("x", m_position.X);
@@ -479,5 +481,128 @@ void GameObject::SetID(int id)
 	}
 
 	m_id = id;
+}
+
+void GameObject::SetDepthLayer(DepthLayer depthLayer)
+{
+	mDepthLayer = depthLayer;
+}
+
+string GameObject::ConvertDepthLayerToString(DepthLayer depthLayer)
+{
+	switch (depthLayer)
+	{
+		case kFarBackground:
+		{
+			return "kFarBackground";
+		}
+		case kMiddleBackground:
+		{
+			return "kMiddleBackground";
+		}
+		case kNearBackground:
+		{
+			return "kNearBackground";
+		}
+		case kGround:
+		{
+			return "kGround";
+		}
+		case kGroundBlood:
+		{
+			return "kGroundBlood";
+		}
+		case kNpc:
+		{
+			return "kNpc";
+		}
+		case kPlayer:
+		{
+			return "kPlayer";
+		}
+		case kProjectile:
+		{
+			return "kProjectile";
+		}
+		case kBloodSpray:
+		{
+			return "kBloodSpray";
+		}
+		case kFarForeground:
+		{
+			return "kFarForeground";
+		}
+		case kMiddleForeground:
+		{
+			return "kMiddleForeground";
+		}
+		case kNearForeground:
+		{
+			return "kNearForeground";
+		}
+		default:
+		{
+			// missing entry
+			GAME_ASSERT(false);
+			return "kPlayer";
+		}
+	}
+}
+
+GameObject::DepthLayer GameObject::ConvertStringToDepthLayer(string depthLayerString)
+{
+	if (depthLayerString == "kFarBackground")
+	{
+		return kFarBackground;
+	}
+	else if (depthLayerString == "kMiddleBackground")
+	{
+		return kMiddleBackground;
+	}
+	else if (depthLayerString == "kNearBackground")
+	{
+		return kNearBackground;
+	}
+	else if (depthLayerString == "kGround")
+	{
+		return kGround;
+	}
+	else if (depthLayerString == "kGroundBlood")
+	{
+		return kGroundBlood;
+	}
+	else if (depthLayerString == "kNpc")
+	{
+		return kNpc;
+	}
+	else if (depthLayerString == "kPlayer")
+	{
+		return kPlayer;
+	}
+	else if (depthLayerString == "kProjectile")
+	{
+		return kProjectile;
+	}
+	else if (depthLayerString == "kBloodSpray")
+	{
+		return kBloodSpray;
+	}
+	else if (depthLayerString == "kFarForeground")
+	{
+		return kFarForeground;
+	}
+	else if (depthLayerString == "kMiddleForeground")
+	{
+		return kMiddleForeground;
+	}
+	else if (depthLayerString == "kNearForeground")
+	{
+		return kNearForeground;
+	}
+	else
+	{
+		GAME_ASSERT(false);
+		return kPlayer;
+	}
 }
 

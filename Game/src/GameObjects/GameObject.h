@@ -9,6 +9,24 @@ class Camera2D;
 class GameObject
 {
 public:
+
+	// if adding to this enum then make sure to update ConvertDepthLayerToString and ConvertStringToDepthLayer
+	enum DepthLayer
+	{
+		kFarBackground = 6000,
+		kMiddleBackground = 5500,
+		kNearBackground = 5000,
+		kGround = 4500,
+		kGroundBlood = 4000,
+		kNpc = 3500,
+		kPlayer = 3000,
+		kProjectile = 2500,
+		kBloodSpray = 2000,
+		kFarForeground = 1500,
+		kMiddleForeground = 1000,
+		kNearForeground = 500
+	};
+
 	typedef unique_ptr<GameObject> & GameObjectPtrRef;
 
 	GameObject(float x = 0, float y = 0, float z = 0, float width = 1, float height = 1, float breadth = 1);
@@ -197,6 +215,12 @@ public:
 
 	static void ForceIncrementGameObjectCount() { sGameObjectId++; }
 
+	void SetDepthLayer(DepthLayer depthLayer);
+
+	static string ConvertDepthLayerToString(DepthLayer depthLayer);
+
+	static DepthLayer ConvertStringToDepthLayer(string depthLayerString);
+
 protected:
 
 	virtual void DrawDebugText();
@@ -273,6 +297,8 @@ private:
 	D3DXMATRIX m_translation;
 	D3DXMATRIX m_rotation;
 	D3DXMATRIX m_matScale;
+
+	DepthLayer mDepthLayer = kGround;
 
 	VertexPositionColor m_debugDrawVertices[8];
 	ID3D10Buffer* m_debugDrawVBuffer;
