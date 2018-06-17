@@ -538,7 +538,7 @@ void Character::DoMeleeCollisions(SolidMovingSprite * object)
 				Vector2 newDirection = newTargetPosition - Vector2(objAsProj->X(), objAsProj->Y());
 				newDirection.Normalise();
 
-				objAsProj->SetVelocityXYZ(objAsProj->GetSpeed() * newDirection.X, objAsProj->GetSpeed() * newDirection.Y, 0);
+				objAsProj->SetVelocityXY(objAsProj->GetSpeed() * newDirection.X, objAsProj->GetSpeed() * newDirection.Y);
 
 				if (objAsProj->GetOwnerType() == Projectile::kNPCProjectile)
 				{
@@ -1377,9 +1377,9 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 			{
 				if (shouldExplode && mExplodesGruesomely)
 				{
-					Vector3 pos = m_position;
+					Vector2 pos = m_position;
 					pos.Y = Bottom();
-					pos.Z = pos.Z -1;
+					pos.Z = pos.Z -1.0f; // TODO: set depth layer
 
 					bool loop = false;
 					unsigned long loopTime = -1;
@@ -1444,9 +1444,9 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 				}
 				else if (shouldExplode && !mExplodesGruesomely)
 				{
-					Vector3 pos = m_position;
+					Vector2 pos = m_position;
 					pos.Y = CollisionBottom();
-					pos.Z = pos.Z - 1;
+					pos.Z = pos.Z - 1; // TODO: set depth layer
 
 					float spawnSpreadX = (m_collisionBoxDimensions.X / 100.0f) * 7.0f;
 					float spawnSpreadY = (m_collisionBoxDimensions.Y / 100.0f) * 10.0f;
@@ -1846,7 +1846,7 @@ void Character::Stun(float stunTime)
 
 	StopXAccelerating();
 	StopYAccelerating();
-	SetVelocityXYZ(0.0f, 0.0f, 0.0f);
+	SetVelocityXY(0.0f, 0.0f);
 	mCurrentStunTime = stunTime;
 	SetCrouching(true);
 }

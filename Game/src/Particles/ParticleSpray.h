@@ -12,8 +12,9 @@ class ParticleSpray : public DrawableObject
 public:
 
 	ParticleSpray(bool isBloodSpray, 
-					Vector3 position,
-					Vector3 dimensions, 
+					Vector2 position,
+					DepthLayer depthLayer,
+					Vector2 dimensions, 
 					const char* textureFileName, 
 					list<Particle> particles,
 					bool isLooping,
@@ -110,7 +111,7 @@ protected:
 	float m_gravity;
 	float m_minBrightness;
 	float m_maxBrightness;
-	float m_numParticles;
+	int m_numParticles;
 	bool mParentHFlipInitial;
 	Vector2 mSpawnSpread;
 	float mFadeOutPercentTime;

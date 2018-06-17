@@ -55,7 +55,7 @@ void ParticleEmitterManager::ClearParticles()
 }
 
 ParticleSpray * ParticleEmitterManager::CreateRadialBloodSpray(unsigned int numParticles,
-													Vector3 position,
+													Vector2 position,
 													bool loop,
 													float loopTime)
 {
@@ -121,16 +121,17 @@ ParticleSpray * ParticleEmitterManager::CreateRadialBloodSpray(unsigned int numP
 
 	// create spray
 	ParticleSpray * spray = new ParticleSpray(true,
-											position,
-											Vector3(3200, 2500, 0), 
-											kBloodTextureFileName,
-											particleList,
-											loop,
-											loopTime,
-											true,
-											kBloodRadialScaleTo * gameScale,
-											0.0f,
-											0.0f);
+												position,
+												GameObject::kBloodSpray1,
+												Vector2(3200.0f, 2500.0f), 
+												kBloodTextureFileName,
+												particleList,
+												loop,
+												loopTime,
+												true,
+												kBloodRadialScaleTo * gameScale,
+												0.0f,
+												0.0f);
 
 	// add the spray to the game world
 	GameObjectManager::Instance()->AddGameObject(spray);
@@ -139,8 +140,8 @@ ParticleSpray * ParticleEmitterManager::CreateRadialBloodSpray(unsigned int numP
 }
 
 ParticleSpray * ParticleEmitterManager::CreateDirectedBloodSpray(int numParticles,
-																 Vector3 position, 
-																 Vector3 direction,
+																 Vector2 position, 
+																 Vector2 direction,
 																 float spread,
 																 bool loop,
 																 float loopTime)
@@ -185,7 +186,8 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedBloodSpray(int numParticle
 	// create spray
 	ParticleSpray * spray = new ParticleSpray(true,
 												position,
-												Vector3(3200, 1200, 0),
+												GameObject::kBloodSpray1,
+												Vector2(3200.0f, 1200.0f),
 												kBloodTextureFileName,
 												particleList,
 												loop,
@@ -215,8 +217,9 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedBloodSpray(int numParticle
 }
 
 ParticleSpray * ParticleEmitterManager::CreateRadialSpray(int numParticles,
-												 Vector3 position, 
-												 Vector3 drawBoundingBox, // determines when we stop drawing particles (camera stops seeing them)
+												 Vector2 position,
+												 GameObject::DepthLayer depthLayer,
+												 Vector2 drawBoundingBox, // determines when we stop drawing particles (camera stops seeing them)
 												 string textureFileName,
 												 float minSpeed,
 												 float maxSpeed,
@@ -345,6 +348,7 @@ ParticleSpray * ParticleEmitterManager::CreateRadialSpray(int numParticles,
 	// create spray
 	ParticleSpray * spray = new ParticleSpray(false,
 												position,
+												depthLayer,
 												drawBoundingBox,
 												(char*)textureFileName.c_str(),
 												particleList, 
@@ -365,10 +369,11 @@ ParticleSpray * ParticleEmitterManager::CreateRadialSpray(int numParticles,
 }
 
 ParticleSpray * ParticleEmitterManager::CreateDirectedSpray(int numParticles,
-															 Vector3 position, 
-															 Vector3 direction,
+															 Vector2 position,
+															 GameObject::DepthLayer depthLayer,
+															 Vector2 direction,
 															 float spread,
-															 Vector3 drawBoundingBox, // determines when we stop drawing particles (camera stops seeing them)
+															 Vector2 drawBoundingBox, // determines when we stop drawing particles (camera stops seeing them)
 															 string textureFileName,
 															 float minSpeed,
 															 float maxSpeed,
@@ -530,7 +535,8 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSpray(int numParticles,
 	}
 	// create spray
 	ParticleSpray * spray = new ParticleSpray(false,
-											position, 
+											position,
+											depthLayer,
 											drawBoundingBox,
 											(char*)textureFileName.c_str(),
 											particleList,
@@ -563,10 +569,11 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSpray(int numParticles,
 
 
 ParticleSpray * ParticleEmitterManager::CreateDirectedSprayLoadTime(int numParticles,
-																	 Vector3 position, 
-																	 Vector3 direction,
+																	 Vector2 position, 
+																	 GameObject::DepthLayer depthLayer,
+																	 Vector2 direction,
 																	 float spread,
-																	 Vector3 drawBoundingBox, // determines when we stop drawing particles (camera stops seeing them)
+																	 Vector2 drawBoundingBox, // determines when we stop drawing particles (camera stops seeing them)
 																	 string textureFileName,
 																	 float minSpeed,
 																	 float maxSpeed,
@@ -725,6 +732,7 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSprayLoadTime(int numParti
 	// create spray
 	ParticleSpray * spray = new ParticleSpray(false,
 												position,
+												depthLayer,
 												drawBoundingBox,
 												(char*)textureFileName.c_str(),
 												particleList, 

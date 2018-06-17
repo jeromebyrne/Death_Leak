@@ -19,21 +19,22 @@ public:
 	void Initialise(Graphics * graphicsSystem); 
 
 	ParticleSpray * CreateRadialBloodSpray(unsigned int numParticles,
-											Vector3 position,
+											Vector2 position,
 											bool loop,
 											float loopTime);
 
 	ParticleSpray * CreateDirectedBloodSpray(int numParticles,
-								 Vector3 position, 
-								 Vector3 direction,
+								 Vector2 position, 
+								 Vector2 direction,
 								 float spread,
 								 bool loop,
 								 float loopTime);
 
 	//void Update(); // update all of our particle sprays
 	ParticleSpray * CreateRadialSpray(int numParticles,
-						 Vector3 position, 
-						 Vector3 drawBoundingBox, // determines when we stop drawing particles (camera stops seeing them)
+						 Vector2 position, 
+						 GameObject::DepthLayer depthLayer,
+						 Vector2 drawBoundingBox, // determines when we stop drawing particles (camera stops seeing them)
 						 string textureFileName,
 						 float minSpeed,
 						 float maxSpeed,
@@ -55,10 +56,11 @@ public:
 
 
 	ParticleSpray * CreateDirectedSpray(int numParticles,
-										 Vector3 position, 
-										 Vector3 direction,
+										 Vector2 position,
+										 GameObject::DepthLayer depthLayer,
+										 Vector2 direction,
 										 float spread,
-										 Vector3 drawBoundingBox, // determines when we stop drawing particles (camera stops seeing them)
+										 Vector2 drawBoundingBox, // determines when we stop drawing particles (camera stops seeing them)
 										 string textureFileName,
 										 float minSpeed,
 										 float maxSpeed,
@@ -82,10 +84,11 @@ public:
 	
 
 	ParticleSpray * CreateDirectedSprayLoadTime(int numParticles,
-												 Vector3 position, 
-												 Vector3 direction,
+												 Vector2 position, 
+												 GameObject::DepthLayer depthLayer,
+												 Vector2 direction,
 												 float spread,
-												 Vector3 drawBoundingBox, // determines when we stop drawing particles (camera stops seeing them)
+												 Vector2 drawBoundingBox, // determines when we stop drawing particles (camera stops seeing them)
 												 string textureFileName,
 												 float minSpeed,
 												 float maxSpeed,

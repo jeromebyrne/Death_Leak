@@ -4,8 +4,8 @@
 
 static const float kTimeBetweenSaves = 5.0f;
 
-SaveShrine::SaveShrine(float x, float y, float z, float width, float height) :
-	GameObject(x, y, z, width, height)
+SaveShrine::SaveShrine(float x, float y, float width, float height) :
+	GameObject(x, y, kGround, width, height) // TODO: don't hardcode kGround?
 {
 	mAlwaysUpdate = true;
 }
@@ -80,7 +80,7 @@ void SaveShrine::DisplaySaveText()
 	saveTextObject->SetStringKey("game_saved");
 	saveTextObject->SetNoClip(true);
 
-	saveTextObject->SetDimensionsXYZ(300, 100, 1);
+	saveTextObject->SetDimensionsXY(300.0f, 100.0f);
 
 	GameObjectManager::Instance()->AddGameObject(saveTextObject);
 

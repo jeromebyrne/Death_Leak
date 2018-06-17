@@ -49,8 +49,8 @@ void Rabbit::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 poi
 
 		for (int i = 0; i < (10 * orbCountMultiplier); ++i)
 		{
-			Vector3 orb_pos = m_position + pointOfContact;
-			orb_pos.Z = 40;
+			Vector2 orb_pos = m_position + pointOfContact;
+			orb_pos.Z = 40; // TODO: set depth layer
 
 			int randOrb = rand() % 3;
 			switch (randOrb)

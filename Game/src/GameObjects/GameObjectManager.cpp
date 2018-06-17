@@ -420,7 +420,7 @@ void GameObjectManager::LoadObjectsFromFile(const char* filename)
 		{
 			m_player->SetX(mPlayerStartPosForLevel.X);
 			m_player->SetY(mPlayerStartPosForLevel.Y);
-			m_player->SetDirectionXYZ(mPlayerStartDirectionXForLevel, 1, 0);
+			m_player->SetDirectionXY(mPlayerStartDirectionXForLevel, 1.0f);
 			m_player->AccelerateX(mPlayerStartDirectionXForLevel);
 			m_camera->SetPositionY(mPlayerStartPosForLevel.Y + 300);
 			m_camera->SetPositionX(-mPlayerStartPosForLevel.X);

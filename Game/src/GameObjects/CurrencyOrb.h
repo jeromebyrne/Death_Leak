@@ -23,7 +23,7 @@ public:
 
 	virtual void Update(float delta) override;
 
-	static void SpawnOrbs(Vector3 & position, unsigned int numOrbs);
+	static void SpawnOrbs(Vector2 & position, unsigned int numOrbs);
 
 	void SetIsLoadTimeObject(bool value) { mIsLoadTimeObject = value; }
 

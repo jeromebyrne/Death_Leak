@@ -224,7 +224,7 @@ bool AIStateGroundAnimalWander::IsPlayerClose() const
 		return false;
 	}
 
-	Vector3 distanceSquaredVector = m_npc->m_player->Position() - m_npc->Position();
+	Vector2 distanceSquaredVector = m_npc->m_player->Position() - m_npc->Position();
 	float distanceSquared = distanceSquaredVector.LengthSquared();
 
 	if (distanceSquared < kRunAwayPlayerDistanceSquared)
@@ -242,7 +242,7 @@ bool AIStateGroundAnimalWander::IsPlayerCloseEnoughToJumpFromEdge() const
 		return false;
 	}
 
-	Vector3 distanceSquaredVector = m_npc->m_player->Position() - m_npc->Position();
+	Vector2 distanceSquaredVector = m_npc->m_player->Position() - m_npc->Position();
 	float distanceSquared = distanceSquaredVector.LengthSquared();
 
 	if (distanceSquared < kRunAwayPlayerDistanceSquared * 2.0f)

@@ -422,7 +422,7 @@ void Player::CheckForAndDoLevelUp()
 			levelUpText->SetStringKey("level_up_notification");
 			levelUpText->SetNoClip(true);
 
-			levelUpText->SetDimensionsXYZ(200, 250, 1);
+			levelUpText->SetDimensionsXY(200.0f, 250.0f);
 
 			GameObjectManager::Instance()->AddGameObject(levelUpText);
 
@@ -440,7 +440,7 @@ void Player::CheckForAndDoLevelUp()
 			mechanicDescriptionText->SetStringKey("test_string");
 			mechanicDescriptionText->SetNoClip(true);
 
-			mechanicDescriptionText->SetDimensionsXYZ(300, 100, 1);
+			mechanicDescriptionText->SetDimensionsXY(300.0f, 100.0f);
 
 			GameObjectManager::Instance()->AddGameObject(mechanicDescriptionText);
 

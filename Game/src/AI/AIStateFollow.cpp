@@ -24,7 +24,7 @@ void AIStateFollow::Update(float delta)
 	if (m_npc->m_player)
 	{
 		// get the distance to the player
-		Vector3 distanceSquaredVector =  m_npc->m_player->Position() - m_npc->Position();
+		Vector2 distanceSquaredVector =  m_npc->m_player->Position() - m_npc->Position();
 		float distanceSquared = distanceSquaredVector.LengthSquared();
 		if (distanceSquared > mStopDistance * mStopDistance &&
 			distanceSquared < mFollowRadius * mFollowRadius)

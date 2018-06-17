@@ -8,7 +8,7 @@ class SolidMovingSprite : public MovingSprite
 {
 public:
 
-	SolidMovingSprite(float x = 0, float y = 0, float z = 0, float width = 10, float height = 10, float breadth = 0, float groundFriction = 1, float airResistance = 1);
+	SolidMovingSprite(float x = 0.0f, float y = 0.0f, DepthLayer depthLayer = kPlayer, float width = 10.0f, float height = 10.0f, float groundFriction = 1.0f, float airResistance = 1.0f);
 	virtual ~SolidMovingSprite(void);
 	virtual void Initialise() override;
 	virtual void XmlRead(TiXmlElement * element) override;
@@ -24,9 +24,9 @@ public:
 	}
 
 	Vector2 CollisionBoxOffset() const { return mCollisionBoxOffset; }
-	Vector3 CollisionDimensions() const { return m_collisionBoxDimensions; }
+	Vector2 CollisionDimensions() const { return m_collisionBoxDimensions; }
 
-	void SetCollisionDimensions(Vector3 value) { m_collisionBoxDimensions = value; }
+	void SetCollisionDimensions(Vector2 value) { m_collisionBoxDimensions = value; }
 	void SetCollisionBoxOffset(Vector2 value) { mCollisionBoxOffset = value; }
 
 	bool GetIsCollidingAtObjectSide() const { return m_collidingAtLeftSideOfObject || m_collidingAtRightSideOfObject; }
@@ -37,7 +37,7 @@ public:
 	// the left side of our bounding box
 	inline float CollisionLeft() const
 	{
-		return (m_position.X - (m_collisionBoxDimensions.X * 0.5f)) + mCollisionBoxOffset.X;
+		return (X() - (m_collisionBoxDimensions.X * 0.5f)) + mCollisionBoxOffset.X;
 	}
 	// the right side of our bounding box
 	inline float CollisionRight() const
@@ -102,7 +102,7 @@ protected:
 
 	bool m_passive; // is this an active collision object or passive?
 
-	Vector3 m_collisionBoxDimensions;
+	Vector2 m_collisionBoxDimensions;
 	bool m_markedForResolve; // do we need to do collision resolution
 	bool m_onTopOfOtherSolidObject; // are we colliding above another object (moving on top of it scenario)
 	bool m_collidingAtLeftSideOfObject;

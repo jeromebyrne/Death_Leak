@@ -74,7 +74,7 @@ bool Camera2D::IsObjectInView(GameObject * object)
 	return inView;
 }
 
-bool Camera2D::IsWorldPosInView(Vector3 & pos, float parallaxXOffset, float parallaxYOffset)
+bool Camera2D::IsWorldPosInView(Vector2 & pos, float parallaxXOffset, float parallaxYOffset)
 {
 	bool inView = false;
 
@@ -226,7 +226,7 @@ bool Camera2D::IsCameraOriginInsideObject(GameObject * object)
 	return false;
 }
 
-bool Camera2D::IsCameraOriginInsideRect(Vector3 pos, Vector2 dimensions)
+bool Camera2D::IsCameraOriginInsideRect(Vector2 pos, Vector2 dimensions)
 {
 	if (m_position.X < pos.X + dimensions.X * 0.5f &&
 		m_position.X > pos.X - dimensions.X * 0.5f &&

@@ -215,16 +215,16 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 
 				// pick a position behind the projectile to fire back at 
 				int objDirXNormal = objAsProj->DirectionX() > 0 ? 1 : -1;
-				Vector3 targetPos = Vector3(objAsProj->X() - 200 * objDirXNormal, objAsProj->Y() + yOffset, objAsProj->Z());
+				Vector2 targetPos = Vector2(objAsProj->X() - 200 * objDirXNormal, objAsProj->Y() + yOffset);
 
-				Vector3 direction = objAsProj->Position() - targetPos;
+				Vector2 direction = objAsProj->Position() - targetPos;
 				direction.Normalise();
 				m_direction = direction;
-				m_velocity = Vector3(direction.X * 25, direction.Y * 25, 1);
+				m_velocity = Vector2(direction.X * 25.0f, direction.Y * 25.0f);
 
 				objAsProj->m_isActive = false;
 				objAsProj->m_timeBecameInactive = Timing::Instance()->GetTotalTimeSeconds();
-				objAsProj->SetVelocityXYZ(-m_velocity.X * 0.7, -5, 0);
+				objAsProj->SetVelocityXYZ(-m_velocity.X * 0.7f, -5.0f); // TODO:: set depth layer
 
 				ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
 																		m_position,

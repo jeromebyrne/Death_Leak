@@ -607,7 +607,8 @@ void NPC::Draw(ID3D10Device * device, Camera2D * camera)
 									m_position.Z);
 	if (mHealthMeterHealthBeforeDecrease > mHealth && mHealthBarUnderlaySprite)
 	{
-		mHealthBarUnderlaySprite->SetXYZ(healthBarPos.X, healthBarPos.Y, healthBarPos.Z);
+		// TODO: set depth layer
+		mHealthBarUnderlaySprite->SetXY(healthBarPos.X, healthBarPos.Y, healthBarPos.Z);
 
 		if (mHealthBarUnderlaySprite->IsChangeRequired())
 		{
@@ -621,6 +622,8 @@ void NPC::Draw(ID3D10Device * device, Camera2D * camera)
 
 		float offsetX = kHealthBarDimensionsX - kHealthBarDimensionsX * percentHealth;
 		offsetX *= 0.5f;
+
+		// TODO: set depth layer
 		mHealthBarSprite->SetXYZ(healthBarPos.X - offsetX, healthBarPos.Y, healthBarPos.Z);
 
 		// apply any changes needed
@@ -632,7 +635,8 @@ void NPC::Draw(ID3D10Device * device, Camera2D * camera)
 	}
 	if (mHealthBarOverlaySprite)
 	{
-		mHealthBarOverlaySprite->SetXYZ(healthBarPos.X, healthBarPos.Y, healthBarPos.Z);
+		// TODO: set depth layer
+		mHealthBarOverlaySprite->SetXY(healthBarPos.X, healthBarPos.Y, healthBarPos.Z);
 
 		// apply any changes needed
 		if (mHealthBarOverlaySprite->IsChangeRequired())
@@ -652,8 +656,8 @@ void NPC::AddHealthBar()
 		mHealthBarUnderlaySprite = new Sprite();
 		mHealthBarUnderlaySprite->SetTextureFilename("Media\\characters\\health_bar_back.png");
 		mHealthBarUnderlaySprite->SetIsNativeDimensions(false);
-		mHealthBarUnderlaySprite->SetDimensionsXYZ(kHealthBarDimensionsX, kHealthBarDimensionsY, 0);
-		mHealthBarUnderlaySprite->SetXYZ(X(), Y(), Z() - 1);
+		mHealthBarUnderlaySprite->SetDimensionsXY(kHealthBarDimensionsX, kHealthBarDimensionsY);
+		mHealthBarUnderlaySprite->SetXY(X(), Y(), Z() - 1); // TODO: set depth layer
 		mHealthBarUnderlaySprite->LoadContent(Graphics::GetInstance()->Device());
 		mHealthBarUnderlaySprite->Initialise();
 
@@ -666,8 +670,8 @@ void NPC::AddHealthBar()
 		mHealthBarSprite = new Sprite();
 		mHealthBarSprite->SetTextureFilename("Media\\characters\\health_bar.png");
 		mHealthBarSprite->SetIsNativeDimensions(false);
-		mHealthBarSprite->SetDimensionsXYZ(kHealthBarDimensionsX, kHealthBarDimensionsY, 0);
-		mHealthBarSprite->SetXYZ(X(), Y(), Z() - 1);
+		mHealthBarSprite->SetDimensionsXY(kHealthBarDimensionsX, kHealthBarDimensionsY);
+		mHealthBarSprite->SetXY(X(), Y(), Z() - 1); // TODO: set depth layer
 		mHealthBarSprite->LoadContent(Graphics::GetInstance()->Device());
 		mHealthBarSprite->Initialise();
 
@@ -680,8 +684,8 @@ void NPC::AddHealthBar()
 		mHealthBarOverlaySprite = new Sprite();
 		mHealthBarOverlaySprite->SetTextureFilename("Media\\characters\\health_bar_overlay.png");
 		mHealthBarOverlaySprite->SetIsNativeDimensions(false);
-		mHealthBarOverlaySprite->SetDimensionsXYZ(kHealthBarOverlayDimensionsX, kHealthBarOverlayDimensionsY, 0);
-		mHealthBarOverlaySprite->SetXYZ(X(), Y(), Z() - 1);
+		mHealthBarOverlaySprite->SetDimensionsXY(kHealthBarOverlayDimensionsX, kHealthBarOverlayDimensionsY);
+		mHealthBarOverlaySprite->SetXY(X(), Y(), Z() - 1); // TODO: set depth layer
 		mHealthBarOverlaySprite->LoadContent(Graphics::GetInstance()->Device());
 		mHealthBarOverlaySprite->Initialise();
 

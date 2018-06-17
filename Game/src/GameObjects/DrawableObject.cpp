@@ -14,10 +14,11 @@
 
 static const float kOcclusionFadeOutMultiplier = 1.5f;
 
-DrawableObject::DrawableObject(float x, float y, float z, float width, float height, float breadth, const char * effectName): GameObject(x,y,z,width,height,breadth),
+DrawableObject::DrawableObject(float x, float y, DepthLayer depthLayer, float width, float height, const char * effectName): 
+		GameObject(x,y, depthLayer, width,height),
 	EffectName(effectName), 
 	m_applyChange(false), 
-	m_alpha(1),
+	m_alpha(1.0f),
 	m_effectBasic(nullptr),
 	m_effectLightTexture(nullptr),
 	m_effectLightTextureWobble(nullptr),
@@ -55,7 +56,7 @@ void DrawableObject::Update(float delta)
 		// get the distance to the player
 		const Player * player = GameObjectManager::Instance()->GetPlayer();
 
-		if (player && player != this && m_position.Z < player->Z())
+		if (player && player != this && GetDepthLayer() < player->GetDepthLayer())
 		{
 			// check is the player inside the bounds of this sprite
 			// if so then fade alpha

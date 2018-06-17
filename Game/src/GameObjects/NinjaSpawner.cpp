@@ -31,13 +31,13 @@ void NinjaSpawner::SpawnNPC(const float posX,
 	NPC * npc = new NPC(posX, posY, 49);
 	npc->m_animationFile = animationFile;
 	npc->m_drawAtNativeDimensions = false;
-	npc->m_dimensions = Vector3(dimensions.X, dimensions.Y, 0);
+	npc->m_dimensions = Vector2(dimensions.X, dimensions.Y);
 	npc->m_isAnimated = true;
-	npc->SetMaxVelocityXYZ(randMaxXVelocity, 99999, 0);
+	npc->SetMaxVelocityXY(randMaxXVelocity, 99999.0f);
 	npc->SetCollisionDimensions(Vector3(collisionDimensions.X, collisionDimensions.Y, 0));
 	npc->SetCollisionBoxOffset(Vector2(collisionBoxOffset.X, collisionBoxOffset.Y));   
 	npc->SetPlayer(GameObjectManager::Instance()->GetPlayer());
-	npc->SetResistanceXYZ(1.0f, 1.4f, 0);
+	npc->SetResistanceXY(1.0f, 1.4f);
 	npc->setAccelXRate(1.0);
 	npc->SetMaterial(MaterialManager::Instance()->GetMaterial("demon1"));
 	npc->SetMaxJumpSpeed(randJumpSpeed);

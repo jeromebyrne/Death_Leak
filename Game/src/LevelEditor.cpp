@@ -125,7 +125,7 @@ void LevelEditor::Update()
 		MovingSprite * mo = GetAsMovingSprite(obj.get());
 		if (mo)
 		{
-			mo->SetVelocityXYZ(0, 0, 0);
+			mo->SetVelocityXY(0.0f, 0.0f);
 			mo->StopYAccelerating();
 			mo->StopXAccelerating();
 		}
@@ -465,7 +465,7 @@ void LevelEditor::CheckForSpriteScaling()
 
 			if (scale != 0)
 			{
-				mSelectedObject->SetDimensionsXYZ(originalDimensions.X * scale, originalDimensions.Y * scale, mSelectedObject->Dimensions().Z);
+				mSelectedObject->SetDimensionsXY(originalDimensions.X * scale, originalDimensions.Y * scale);
 
 				Sprite * s = GetAsSprite(mSelectedObject);
 				if (s)
@@ -690,7 +690,8 @@ void LevelEditor::CheckForNewTerrainObject()
 
 		SolidLineStrip * solidLineStrip = new SolidLineStrip();
 
-		solidLineStrip->SetXYZ(cameraPos.X, cameraPos.Y, 3);
+		solidLineStrip->SetXY(cameraPos.X, cameraPos.Y);
+		solidLineStrip->SetDepthLayer(GameObject::kSolidLines);
 		
 		SolidLineStrip::SolidLinePoint startPoint;
 		SolidLineStrip::SolidLinePoint endPoint;
@@ -942,7 +943,7 @@ void LevelEditor::CheckInput_Regular()
 				MovingSprite * movingSprite = GetAsMovingSprite(mSelectedObject);
 				if (movingSprite)
 				{
-					movingSprite->SetVelocityXYZ(0, 0, 0);
+					movingSprite->SetVelocityXY(0.0f, 0.0f);
 				}
 
 				ScrollingSprite * scrollingSprite = GetAsScrollingSprite(mSelectedObject);

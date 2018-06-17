@@ -15,9 +15,10 @@ public:
 	};
 
 	Debris(SolidMovingSprite * target,
-		Vector3 position,
-		Vector3 dimensions,
-		Vector3 collisionDimensions,
+		Vector2 position,
+		DepthLayer depthLayer,
+		Vector2 dimensions,
+		Vector2 collisionDimensions,
 		const char * textureFile,
 		bool nativeDimensions,
 		float speedMultiplier);

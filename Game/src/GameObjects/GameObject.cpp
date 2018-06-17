@@ -10,10 +10,11 @@ const float kMaxRadians = 6.28318531; // 360 degrees
 
 unsigned int GameObject::sGameObjectId = 1;
 
-GameObject::GameObject(float x, float y, float z, float width, float height, float breadth) :
-	m_position(x, y, z),
-	m_lastPosition(x, y, z),
-	m_dimensions(width, height, breadth),
+GameObject::GameObject(float x, float y, DepthLayer depthLayer, float width, float height) :
+	m_position(x, y),
+	mDepthLayer(depthLayer),
+	m_lastPosition(x, y),
+	m_dimensions(width, height),
 	m_material(0),
 	m_rotationAngle(0),
 	mShowDebugText(0),
@@ -79,7 +80,7 @@ void GameObject::Initialise()
 	// initialise our world matrix
     D3DXMatrixIdentity( &m_world );
 	D3DXMATRIX translation;
-	D3DXMatrixTranslation(&translation, m_position.X, m_position.Y, m_position.Z);
+	D3DXMatrixTranslation(&translation, m_position.X, m_position.Y, (float)mDepthLayer);
 	D3DXMatrixMultiply( &m_world, &translation, &m_world); // take the global world into account
 
 	D3DXMatrixIdentity( &m_translation);
@@ -184,7 +185,7 @@ void GameObject::Update(float delta)
 	}
 
 	D3DXMatrixScaling(&m_matScale, m_matScaleX, m_matScaleY, 1.0);
-	D3DXMatrixTranslation(&m_translation, m_position.X - mCurrentParallaxOffsetX, m_position.Y - mCurrentParallaxOffsetY, m_position.Z);
+	D3DXMatrixTranslation(&m_translation, m_position.X - mCurrentParallaxOffsetX, m_position.Y - mCurrentParallaxOffsetY, (float)mDepthLayer);
 	D3DXMatrixRotationZ(&m_rotation, m_rotationAngle);
 
 	D3DXMatrixMultiply(&m_world, &m_translation, &m_world);
@@ -206,14 +207,14 @@ void GameObject:: XmlRead(TiXmlElement * element)
 	// position 
 	m_position.X = XmlUtilities::ReadAttributeAsFloat(element, "position", "x");
 	m_position.Y = XmlUtilities::ReadAttributeAsFloat(element, "position", "y");
-	m_position.Z = XmlUtilities::ReadAttributeAsFloat(element, "position", "z");
 	mDepthLayer = ConvertStringToDepthLayer(XmlUtilities::ReadAttributeAsString(element, "position", "depth_layer"));
 
 	//dimensions 
 	m_dimensions.X = XmlUtilities::ReadAttributeAsFloat(element, "dimensions", "width");
 	m_dimensions.Y = XmlUtilities::ReadAttributeAsFloat(element, "dimensions", "height");
-	m_dimensions.Z = XmlUtilities::ReadAttributeAsFloat(element, "dimensions", "breadth");
 
+
+	// TODO: these should be automated based on depth layer
 	mParallaxMultiplierX = XmlUtilities::ReadAttributeAsFloat(element, "", "parallax_x");
 	mParallaxMultiplierY = XmlUtilities::ReadAttributeAsFloat(element, "", "parallax_y");
 
@@ -254,7 +255,6 @@ void GameObject::XmlWrite(TiXmlElement * element)
 	// position
 	TiXmlElement * posElem = new TiXmlElement("position");
 	posElem->SetAttribute("depth_layer", ConvertDepthLayerToString(mDepthLayer).c_str());
-	posElem->SetDoubleAttribute("z", m_position.Z);
 	posElem->SetDoubleAttribute("y", m_position.Y);
 	posElem->SetDoubleAttribute("x", m_position.X);
 	posElem->SetDoubleAttribute("rotation", m_rotationAngle);
@@ -263,11 +263,9 @@ void GameObject::XmlWrite(TiXmlElement * element)
 
 	// dimensions
 	TiXmlElement * dimensionsElem = new TiXmlElement("dimensions");
-	dimensionsElem->SetDoubleAttribute("breadth", m_dimensions.Z);
 	dimensionsElem->SetDoubleAttribute("height", m_dimensions.Y);
 	dimensionsElem->SetDoubleAttribute("width", m_dimensions.X);
 	element->LinkEndChild(dimensionsElem);
-
 
 	// material
 	TiXmlElement * materialElem = new TiXmlElement("material");
@@ -418,7 +416,7 @@ void GameObject::DrawDebugText()
 
 	// show our z depth
 	memset(array, 0, bufferSize);
-	sprintf(array, "Depth: %.02f", m_position.Z);
+	sprintf(array, "Depth: %.02f", (float)mDepthLayer);
 	pos = Utilities::WorldToScreen(Vector2(m_position.X - 75, m_position.Y + 125));
 	Graphics::GetInstance()->DrawDebugText(array, pos.X, pos.Y);
 
@@ -444,6 +442,7 @@ string GameObject::GetTypeName()
 	return typeName;
 }
 
+// TODO: should take a Vector2 and a depth layer
 void GameObject::AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset, bool trackParentsOrientation)
 {
 	GAME_ASSERT(parent);
@@ -524,9 +523,9 @@ string GameObject::ConvertDepthLayerToString(DepthLayer depthLayer)
 		{
 			return "kProjectile";
 		}
-		case kBloodSpray:
+		case kBloodSpray1:
 		{
-			return "kBloodSpray";
+			return "kBloodSpray1";
 		}
 		case kFarForeground:
 		{
@@ -539,6 +538,14 @@ string GameObject::ConvertDepthLayerToString(DepthLayer depthLayer)
 		case kNearForeground:
 		{
 			return "kNearForeground";
+		}
+		case kWeatherForeground:
+		{
+			return "kWeatherForeground";
+		}
+		case kSolidLines:
+		{
+			return "kSolidLines";
 		}
 		default:
 		{
@@ -583,9 +590,9 @@ GameObject::DepthLayer GameObject::ConvertStringToDepthLayer(string depthLayerSt
 	{
 		return kProjectile;
 	}
-	else if (depthLayerString == "kBloodSpray")
+	else if (depthLayerString == "kBloodSpray1")
 	{
-		return kBloodSpray;
+		return kBloodSpray1;
 	}
 	else if (depthLayerString == "kFarForeground")
 	{
@@ -598,6 +605,14 @@ GameObject::DepthLayer GameObject::ConvertStringToDepthLayer(string depthLayerSt
 	else if (depthLayerString == "kNearForeground")
 	{
 		return kNearForeground;
+	}
+	else if (depthLayerString == "kWeatherForeground")
+	{
+		return kWeatherForeground;
+	}
+	else if (depthLayerString == "kSolidLines")
+	{
+		return kSolidLines;
 	}
 	else
 	{

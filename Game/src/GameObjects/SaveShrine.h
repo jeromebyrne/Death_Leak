@@ -6,7 +6,7 @@
 class SaveShrine : public GameObject
 {
 public:
-	SaveShrine(float x = 0, float y = 0, float z = 0, float width = 1, float height = 1);
+	SaveShrine(float x = 0, float y = 0, float width = 1, float height = 1);
 	virtual ~SaveShrine();
 
 	virtual void Initialise() override;

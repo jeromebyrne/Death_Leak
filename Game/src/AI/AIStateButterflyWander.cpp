@@ -33,7 +33,7 @@ void AIStateButterflyWander::Update(float delta)
 	if (m_npc->m_player && m_npc->m_position.Z < 99) // Hack: don;t be affceted if in the background
 	{
 		// get the distance to the player
-		Vector3 distanceSquaredVector = m_npc->m_player->Position() - m_npc->Position();
+		Vector2 distanceSquaredVector = m_npc->m_player->Position() - m_npc->Position();
 		float distanceSquared = distanceSquaredVector.LengthSquared();
 		if (distanceSquared < 130 * 130)
 		{

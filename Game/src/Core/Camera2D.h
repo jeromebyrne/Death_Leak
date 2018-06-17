@@ -82,9 +82,9 @@ public:
 
 	bool IsCameraOriginInsideObject(GameObject * object);
 
-	bool IsCameraOriginInsideRect(Vector3 pos, Vector2 dimensions);
+	bool IsCameraOriginInsideRect(Vector2 pos, Vector2 dimensions);
 
-	bool IsWorldPosInView(Vector3 & pos, float parallaxXOffset, float parallaxYOffset);
+	bool IsWorldPosInView(Vector2 & pos, float parallaxXOffset, float parallaxYOffset);
 
 	void SetZoomInLevel(float value);
 

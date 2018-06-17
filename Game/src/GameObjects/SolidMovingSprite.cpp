@@ -10,9 +10,9 @@
 #include "Breakable.h"
 #include "Smashable.h"
 
-SolidMovingSprite::SolidMovingSprite(float x, float y , float z , float width , float height , float breadth , float groundFriction , float airResistance ):
-	MovingSprite(x,y,z,width, height, breadth,groundFriction, airResistance),
-	m_collisionBoxDimensions(width, height, breadth),
+SolidMovingSprite::SolidMovingSprite(float x, float y , DepthLayer depthLayer , float width , float height , float groundFriction , float airResistance ):
+	MovingSprite(x,y, width, height, depthLayer, groundFriction, airResistance),
+	m_collisionBoxDimensions(width, height),
 	m_passive(false), 
 	m_onTopOfOtherSolidObject(false), 
 	m_collidingAtLeftSideOfObject(false),
@@ -191,7 +191,6 @@ void SolidMovingSprite::XmlRead(TiXmlElement * element)
 	// read collision box dimensions
 	m_collisionBoxDimensions.X = XmlUtilities::ReadAttributeAsFloat(element, "collisionboxdimensions", "x");
 	m_collisionBoxDimensions.Y = XmlUtilities::ReadAttributeAsFloat(element, "collisionboxdimensions", "y");
-	m_collisionBoxDimensions.Z = XmlUtilities::ReadAttributeAsFloat(element, "collisionboxdimensions", "z");
 	mCollisionBoxOffset.X = XmlUtilities::ReadAttributeAsFloat(element, "collisionboxdimensions", "offsetX");
 	mCollisionBoxOffset.Y = XmlUtilities::ReadAttributeAsFloat(element, "collisionboxdimensions", "offsetY");
 
@@ -213,7 +212,6 @@ void SolidMovingSprite::XmlWrite(TiXmlElement * element)
 	MovingSprite::XmlWrite(element);
 
 	TiXmlElement * collisionboxdimensions = new TiXmlElement("collisionboxdimensions");
-	collisionboxdimensions->SetDoubleAttribute("z", m_collisionBoxDimensions.Z);
 	collisionboxdimensions->SetDoubleAttribute("y", m_collisionBoxDimensions.Y);
 	collisionboxdimensions->SetDoubleAttribute("x", m_collisionBoxDimensions.X);
 	collisionboxdimensions->SetDoubleAttribute("offsetX", mCollisionBoxOffset.X);

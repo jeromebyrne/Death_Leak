@@ -18,17 +18,15 @@ public:
 		return value;
 	}
 
-	/*
-	inline Vector2 Cross(Vector3 v)
+	inline float Cross(Vector2 v)
 	{
-		return Vector2(Y * v.Z - Z * v.Y, Z * v.X - X * v.Z, X * v.Y - Y * v.X);
+		return (X * v.Y) - (Y * v.X);
 	}
 
-	inline static Vector2 Cross(Vector3 v1, Vector3 v2)
+	inline static Vector2 Cross(Vector2 v1, Vector2 v2)
 	{
-		return Vector2(v1.Y * v2.Z - v1.Z * v2.Y, v1.Z * v2.X - v1.X * v2.Z, v1.X * v2.Y - v1.Y * v2.X);
+		return (v1.X * v2.Y) - (v1.Y * v2.X);
 	}
-	*/
 
 	inline Vector2 operator - ( Vector2 & v )
 	{
@@ -46,6 +44,18 @@ public:
 		return Vector2(newX, newY);
 	}
 
+	inline void operator += (Vector2 & value)
+	{
+		X += value.X;
+		Y += value.Y;
+	}
+
+	inline void operator -= (Vector2 & value)
+	{
+		X -= value.X;
+		Y -= value.Y;
+	}
+
 	inline Vector2 operator * (float value)
 	{
 		float newX = X * value;
@@ -53,6 +63,25 @@ public:
 
 		return Vector2(newX, newY);
 	}
+
+	inline Vector2 operator * (Vector2 & value)
+	{
+		Vector2 returnValue(X * value.X, Y * value.Y);
+
+		return returnValue;
+	}
+
+	inline Vector2 operator / (float value)
+	{
+		float newX = X / value;
+		float newY = Y / value;
+
+		return Vector2(newX, newY);
+	}
+
+	float Distance(Vector2 dest);
+
+	static float Distance(Vector2 src, Vector2 dest);
 
 	float LengthSquared();
 };

@@ -21,15 +21,17 @@ public:
 		kNpc = 3500,
 		kPlayer = 3000,
 		kProjectile = 2500,
-		kBloodSpray = 2000,
+		kBloodSpray1 = 2000,
 		kFarForeground = 1500,
 		kMiddleForeground = 1000,
-		kNearForeground = 500
+		kNearForeground = 500,
+		kWeatherForeground = 20,
+		kSolidLines = 10
 	};
 
 	typedef unique_ptr<GameObject> & GameObjectPtrRef;
 
-	GameObject(float x = 0, float y = 0, float z = 0, float width = 1, float height = 1, float breadth = 1);
+	GameObject(float x = 0, float y = 0, DepthLayer depthLayer = kPlayer, float width = 1, float height = 1);
 	virtual ~GameObject(void);
 
 	virtual void Draw(ID3D10Device * device, Camera2D * camera) { }
@@ -48,25 +50,27 @@ public:
 
 	string GetTypeName();
 
-	inline void SetXYZ(float x, float y, float z)
+	inline void SetXY(float x, float y)
 	{
-		m_position = Vector3(x, y, z);
+		m_position.X = x;
+		m_position.Y = y;
 	}
-	inline Vector3 Position() const
+	inline Vector2 Position() const
 	{
 		return m_position;
 	}
-	inline Vector3 LastPosition() const
+	inline Vector2 LastPosition() const
 	{
 		return m_lastPosition;
 	}
-	inline Vector3 Dimensions() const
+	inline Vector2 Dimensions() const
 	{
 		return m_dimensions;
 	}
-	inline void SetDimensionsXYZ(float x, float y, float z)
+	inline void SetDimensionsXY(float x, float y)
 	{
-		m_dimensions = Vector3(x, y, z);
+		m_dimensions.X = x;
+		m_dimensions.Y = y;
 	}
 	inline float X() const
 	{
@@ -76,10 +80,6 @@ public:
 	{
 		return m_position.Y;
 	}
-	inline float Z() const
-	{
-		return m_position.Z;
-	}
 	inline void SetX(float value)
 	{
 		m_position.X = value;
@@ -87,10 +87,6 @@ public:
 	inline void SetY(float value)
 	{
 		m_position.Y = value;
-	}
-	inline void SetZ(float value)
-	{
-		m_position.Z = value;
 	}
 	inline float Left() const
 	{
@@ -221,18 +217,22 @@ public:
 
 	static DepthLayer ConvertStringToDepthLayer(string depthLayerString);
 
+	DepthLayer GetDepthLayer() const { return mDepthLayer; }
+
 protected:
+
+	Vector2 m_position;
+	Vector2 m_lastPosition;
+	Vector2 m_dimensions;
+	Vector2 mOriginalDimensions;
 
 	virtual void DrawDebugText();
 
 	virtual void UpdateToParent();
 
-	Vector3 m_position;
 	float m_rotationAngle;
 	float m_matScaleX;
 	float m_matScaleY;
-	Vector3 m_lastPosition;
-	Vector3 m_dimensions;
 	bool m_updateable;
 	D3DXMATRIX m_world; 
 	Material * m_material;
@@ -287,8 +287,6 @@ protected:
 	SineWaveProps mSineWaveProps;
 
 	bool mAlwaysUpdate;
-
-	Vector3 mOriginalDimensions;
 
 private:
 

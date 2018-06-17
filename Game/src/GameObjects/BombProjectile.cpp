@@ -101,7 +101,7 @@ bool BombProjectile::OnCollision(SolidMovingSprite* object)
 	{
 		m_isActive = false;
 		m_applyGravity = false;
-		SetVelocityXYZ(0.0f, 0.0f, 0.0f);
+		SetVelocityXY(0.0f, 0.0f);
 		m_timeBecameInactive = Timing::Instance()->GetTotalTimeSeconds();
 	}
 
@@ -191,12 +191,12 @@ void BombProjectile::Update(float delta)
 
 void BombProjectile::HandleSolidLineStripCollision(SolidLineStrip * solidLineStrip)
 {
-	Vector3 collisionPosition;
+	Vector2 collisionPosition;
 
 	if (solidLineStrip->GetBombProjectileCollisionData(this, collisionPosition))
 	{
 		m_applyGravity = false;
-		SetVelocityXYZ(0.0f, 0.0f, 0.0f);
+		SetVelocityXY(0.0f, 0.0f);
 
 		if (m_isActive)
 		{
@@ -207,7 +207,7 @@ void BombProjectile::HandleSolidLineStripCollision(SolidLineStrip * solidLineStr
 		if (objectMaterial != nullptr)
 		{
 			// where should the particles spray from
-			Vector3 particlePos = solidLineStrip->Position() - collisionPosition;
+			Vector2 particlePos = solidLineStrip->Position() - collisionPosition;
 			particlePos.Z = m_position.Z - 0.01f;
 
 			// show particles

@@ -24,7 +24,7 @@ void AIStateRepel::Update(float delta)
 	if (m_npc->m_player /*&& m_npc->IsOnSolidSurface()*/)
 	{
 		// get the distance to the player
-		Vector3 distanceSquaredVector =  m_npc->m_player->Position() - m_npc->Position();
+		Vector2 distanceSquaredVector =  m_npc->m_player->Position() - m_npc->Position();
 		float distanceSquared = distanceSquaredVector.LengthSquared();
 		if (/*distanceSquared > mStopDistance * mStopDistance &&*/
 			distanceSquared < mFollowRadius * mFollowRadius)

@@ -31,7 +31,7 @@ void AIStateRangeAttack::OnTransition()
 	randMaxXVelocity *= 0.001f;
 	randMaxXVelocity += 10.0f;
 
-	m_npc->SetMaxVelocityXYZ(randMaxXVelocity, 99999, 0);
+	m_npc->SetMaxVelocityXY(randMaxXVelocity, 99999.0f);
 
 	mRandOffset = rand() % 180;
 
@@ -67,7 +67,7 @@ void AIStateRangeAttack::Update(float delta)
 
 		bool npcInView = Camera2D::GetInstance()->IsObjectInView(m_npc);
 
-		Vector3 distanceSquaredVector = m_npc->m_player->Position() - m_npc->Position();
+		Vector2 distanceSquaredVector = m_npc->m_player->Position() - m_npc->Position();
 
 		if (npcInView && 
 			std::abs(distanceSquaredVector.X > kTeleportDistance) ||

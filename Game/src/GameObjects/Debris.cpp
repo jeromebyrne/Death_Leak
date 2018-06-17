@@ -11,13 +11,14 @@ unsigned long Debris::mLastTimePlayedSFX = 0;
 static const float kMinTimeBetweenSFX = 0.5f;
 
 Debris::Debris(SolidMovingSprite * target,
-		 Vector3 position, 
-		 Vector3 dimensions, 
-		 Vector3 collisionDimensions, 
+		 Vector2 position, 
+		 DepthLayer depthLayer,
+		 Vector2 dimensions, 
+		 Vector2 collisionDimensions, 
 		 const char * textureFile,
 		 bool nativeDimensions,
 		 float speedMultiplier) :
-	SolidMovingSprite(position.X, position.Y, position.Z, dimensions.X, dimensions.Y, dimensions.Z),
+	SolidMovingSprite(position.X, position.Y, depthLayer, dimensions.X, dimensions.Y),
 	mCreationTime(0.0f)  
 {
 	mIsDebris = true;
@@ -26,7 +27,7 @@ Debris::Debris(SolidMovingSprite * target,
 
 	m_applyGravity = true;
 
-	SetMaxVelocityXYZ(25 * speedMultiplier, 25 * speedMultiplier, 0);
+	SetMaxVelocityXY(25 * speedMultiplier, 25.0f * speedMultiplier);
 	
 	m_resistance.X = 0.99;
 	m_resistance.Y = 2.5;
@@ -45,7 +46,7 @@ Debris::Debris(SolidMovingSprite * target,
 		directionX = -directionX;
 	}
 
-	SetVelocityXYZ(directionX * rand_speed, directionY * rand_speed, 0);
+	SetVelocityXY(directionX * rand_speed, directionY * rand_speed);
 
 	m_drawAtNativeDimensions = nativeDimensions;
 	

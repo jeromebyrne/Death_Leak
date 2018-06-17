@@ -9,8 +9,8 @@ class MovingSprite : public Sprite
 {
 public:
 
-	MovingSprite(float x = 0, float y = 0, float z = 0, float width = 10, float height = 10, float breadth = 0,
-		float groundFriction = 1, float airResistance = 1);
+	MovingSprite(float x = 0.0f, float y = 0.0f, DepthLayer depthLayer = kPlayer, float width = 10.0f, float height = 10.0f,
+		float groundFriction = 1.0f, float airResistance = 1.0f);
 	virtual ~MovingSprite(void);
 	virtual void Update(float delta) override;
 	virtual void Initialise() override;
@@ -26,7 +26,7 @@ public:
 	{
 		return m_direction.Y;
 	}
-	Vector3 GetVelocity() const
+	Vector2 GetVelocity() const
 	{
 		return m_velocity;
 	}
@@ -56,24 +56,24 @@ public:
 		return m_acceleration.Y;
 	}
 
-	inline void SetResistanceXYZ(float x, float y, float z)
+	inline void SetResistanceXY(float x, float y)
 	{
-		m_resistance = Vector3(x, y, z);
+		m_resistance = Vector2(x, y);
 	}
-	inline void SetDirectionXYZ(float x, float y, float z)
+	inline void SetDirectionXY(float x, float y)
 	{
-		m_direction = Vector3(x, y, z);
+		m_direction = Vector2(x, y);
 	}
 	inline void SetDirectionX(float dirX) { m_direction.X = dirX; }
-	inline void SetVelocity(Vector3 value)
+	inline void SetVelocity(Vector2 value)
 	{
 		m_velocity = value;
 	}
-	inline void SetVelocityXYZ(float x, float y, float z)
+	inline void SetVelocityXY(float x, float y)
 	{
-		m_velocity = Vector3(x, y, z);
+		m_velocity = Vector2(x, y);
 	}
-	inline Vector3 GetMaxVelocity()
+	inline Vector2 GetMaxVelocity()
 	{
 		return m_maxVelocity;
 	}
@@ -81,13 +81,13 @@ public:
 	{
 		m_maxVelocity.X = x;
 	}
-	inline void SetMaxVelocityXYZ(float x, float y, float z)
+	inline void SetMaxVelocityXY(float x, float y)
 	{
-		m_maxVelocity = Vector3(x, y, z);
+		m_maxVelocity = Vector2(x, y);
 	}
-	inline void SetAccelerationXYZ(float x, float y, float z)
+	inline void SetAccelerationXY(float x, float y)
 	{
-		m_acceleration = Vector3(x, y, z);
+		m_acceleration = Vector2(x, y);
 	}
 
 	float GetYResistance() const { return m_resistance.Y; }
@@ -120,11 +120,11 @@ protected:
 
 	virtual void DoWaterAccelerationBubbles();
 
-	Vector3 m_velocity;
-	Vector3 m_maxVelocity;
-	Vector3 m_direction;
-	Vector3 m_resistance;
-	Vector3 m_acceleration;
+	Vector2 m_velocity;
+	Vector2 m_maxVelocity;
+	Vector2 m_direction;
+	Vector2 m_resistance;
+	Vector2 m_acceleration;
 	bool m_applyGravity;
 	bool mMaxVelocityXLimitEnabled;
 	float mGravityApplyAmount = 1.0f;

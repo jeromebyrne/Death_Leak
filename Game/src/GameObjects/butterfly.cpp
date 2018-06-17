@@ -32,18 +32,19 @@ void Butterfly::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 	mHasExploded = true;
 
 	GameObjectManager::Instance()->RemoveGameObject(this);
-
-	Debris * wing1 = new Debris(nullptr, Vector3(m_position.X, m_position.Y, m_position.Z - 1.1f), Vector3(32, 32, 0), Vector3(15, 15, 0), "Media\\characters\\butterfly\\dead_wing_1.png", true, 0.15f);
+	
+	Debris * wing1 = new Debris(nullptr, Vector2(m_position.X, m_position.Y), GetDepthLayer(),  Vector2(32.0f, 32.0f), Vector2(15.0f, 15.0f), "Media\\characters\\butterfly\\dead_wing_1.png", true, 0.15f);
 	GameObjectManager::Instance()->AddGameObject(wing1);
 
-	Debris * wing2 = new Debris(nullptr, Vector3(m_position.X + 10, m_position.Y, m_position.Z - 1.1f), Vector3(32, 32, 0), Vector3(15, 15, 0), "Media\\characters\\butterfly\\dead_wing_2.png", true, 0.15f);
+	Debris * wing2 = new Debris(nullptr, Vector2(m_position.X + 10, m_position.Y), GetDepthLayer(), Vector2(32.0f, 32.0f), Vector2(15.0f, 15.0f), "Media\\characters\\butterfly\\dead_wing_2.png", true, 0.15f);
 	GameObjectManager::Instance()->AddGameObject(wing2);
 
 	ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
 															m_position,
-															Vector3(-m_direction.X, 0, 0),
-															0.4,
-															Vector3(3200, 1200, 0),
+															GetDepthLayer(),
+															Vector2(-m_direction.X, 0.0f),
+															0.4f,
+															Vector2(3200.0f, 1200.0f),
 															"Media\\blast_circle.png",
 															0.01,
 															0.01,

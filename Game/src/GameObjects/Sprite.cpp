@@ -26,8 +26,8 @@ static const D3DXVECTOR3 kDefaultBumpNormal = D3DXVECTOR3(0,0,-1);
 static const D3DXVECTOR3 kDefaultTangent = D3DXVECTOR3(0,1,0);
 static const D3DXVECTOR3 kDefaultBiNormal = D3DXVECTOR3(1,1,1);
 
-Sprite::Sprite(float x, float y, float z, float width, float height, float breadth)
-	:DrawableObject(x,y,z,width,height,breadth),
+Sprite::Sprite(float x, float y, DepthLayer depthLayer, float width, float height)
+	:DrawableObject(x, y, depthLayer, width, height),
 	m_horizontalFlip(false),
 	m_verticalFlip(false), 
 	mVertexBuffer(nullptr), 
@@ -212,10 +212,12 @@ void Sprite::RecalculateVertices()
 
 		VertexPositionTextureNormal vertices[] =
 		{
-			{ D3DXVECTOR3( -m_dimensions.X/2, -m_dimensions.Y/2, m_dimensions.Z ), kDefaultTex1, normal1 }, // 0
-			{ D3DXVECTOR3( m_dimensions.X/2, -m_dimensions.Y/2, m_dimensions.Z ), kDefaultTex2, normal2 }, // 1
-			{ D3DXVECTOR3( m_dimensions.X/2, m_dimensions.Y/2, m_dimensions.Z), kDefaultTex3, normal3 },// 2
-			{ D3DXVECTOR3( -m_dimensions.X/2, m_dimensions.Y/2, m_dimensions.Z ), kDefaultTex4, normal4 },// 3
+			// TODO: optimize this, only need 2d vector?
+			// TODO: actually, was z used for some extra data?
+			{ D3DXVECTOR3( -m_dimensions.X/2, -m_dimensions.Y/2, 1.0f ), kDefaultTex1, normal1 }, // 0
+			{ D3DXVECTOR3( m_dimensions.X/2, -m_dimensions.Y/2, 1.0f ), kDefaultTex2, normal2 }, // 1
+			{ D3DXVECTOR3( m_dimensions.X/2, m_dimensions.Y/2, 1.0f), kDefaultTex3, normal3 },// 2
+			{ D3DXVECTOR3( -m_dimensions.X/2, m_dimensions.Y/2, 1.0f ), kDefaultTex4, normal4 },// 3
 		};
 
 		for(int i = 0; i < 4; i++)
@@ -233,10 +235,13 @@ void Sprite::RecalculateVertices()
 	{
 		VertexPositionTextureNormalTanBiNorm vertices[]=
 		{
-			{ D3DXVECTOR3( -m_dimensions.X/2, -m_dimensions.Y/2, m_dimensions.Z ), kDefaultTex1, kDefaultBumpNormal, kDefaultTangent, kDefaultBiNormal}, // 0
-			{ D3DXVECTOR3( m_dimensions.X/2, -m_dimensions.Y/2, m_dimensions.Z ), kDefaultTex2, kDefaultBumpNormal, kDefaultTangent, kDefaultBiNormal}, // 1
-			{ D3DXVECTOR3( m_dimensions.X/2, m_dimensions.Y/2, m_dimensions.Z), kDefaultTex3, kDefaultBumpNormal, kDefaultTangent, kDefaultBiNormal},// 2
-			{ D3DXVECTOR3( -m_dimensions.X/2, m_dimensions.Y/2, m_dimensions.Z ), kDefaultTex4, kDefaultBumpNormal, kDefaultTangent, kDefaultBiNormal},// 3
+			// TODO: optimize this, only need 2d vector?
+			// TODO: actually, was z used for some extra data?
+
+			{ D3DXVECTOR3( -m_dimensions.X/2, -m_dimensions.Y/2, 1.0f ), kDefaultTex1, kDefaultBumpNormal, kDefaultTangent, kDefaultBiNormal}, // 0
+			{ D3DXVECTOR3( m_dimensions.X/2, -m_dimensions.Y/2, 1.0f ), kDefaultTex2, kDefaultBumpNormal, kDefaultTangent, kDefaultBiNormal}, // 1
+			{ D3DXVECTOR3( m_dimensions.X/2, m_dimensions.Y/2, 1.0f), kDefaultTex3, kDefaultBumpNormal, kDefaultTangent, kDefaultBiNormal},// 2
+			{ D3DXVECTOR3( -m_dimensions.X/2, m_dimensions.Y/2, 1.0f ), kDefaultTex4, kDefaultBumpNormal, kDefaultTangent, kDefaultBiNormal},// 3
 		};
 
 		Vector3 tangent;
@@ -753,12 +758,11 @@ void Sprite::Draw_effectBump(ID3D10Device * device)
 	m_effectLightTextureBump->SetAlpha(m_alpha);
 
 	// calculate light direction (camera is light position)
-	Vector3 camPos = GameObjectManager::Instance()->GetPlayer()->Position();//Camera2D::GetInstance()->Position();
-	Vector3 dir = camPos - m_position;
-	dir.Z = -250; // TODO: scale based on frame buffer
-	//dir.Y = 0;
+	Vector2 camPos = GameObjectManager::Instance()->GetPlayer()->Position();
+	Vector2 dir = camPos - m_position;
 	dir.Normalise();
-	m_effectLightTextureBump->SetLightDirection((float*)D3DXVECTOR4(-dir.X, dir.Y , dir.Z, 1.0f));
+	float camDepth = -250.0f;
+	m_effectLightTextureBump->SetLightDirection((float*)D3DXVECTOR4(-dir.X, dir.Y , camDepth, 1.0f));
 
 	//// Set the input layout on the device
 	device->IASetInputLayout(m_effectLightTextureBump->InputLayout);

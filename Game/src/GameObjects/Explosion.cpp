@@ -71,7 +71,7 @@ void Explosion::ApplyForceToApplicable()
 			{
 				direction.Normalise();
 
-				moveable->SetVelocityXYZ(moveable->GetVelocity().X + (direction.X * 10), moveable->GetVelocity().Y + (direction.Y * 15), 0);
+				moveable->SetVelocityXY(moveable->GetVelocity().X + (direction.X * 10.0f), moveable->GetVelocity().Y + (direction.Y * 15.0f));
 			}
 		}
 	}

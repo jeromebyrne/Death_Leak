@@ -30,16 +30,16 @@ void GhostEnemySpawner::SpawnNPC(const float posX,
 	randMaxXVelocity += 14.0f;
 
 	GhostEnemy * npc = new GhostEnemy();
-	npc->SetXYZ(posX, posY, 49.0f);
+	npc->SetXY(posX, posY, 49.0f); // TODO: set depth layer
 	npc->m_animationFile = animationFile;
 	npc->m_drawAtNativeDimensions = false;
-	npc->m_dimensions = Vector3(dimensions.X, dimensions.Y, 0);
+	npc->m_dimensions = Vector2(dimensions.X, dimensions.Y);
 	npc->m_isAnimated = true;
-	npc->SetMaxVelocityXYZ(randMaxXVelocity, 99999, 0);
+	npc->SetMaxVelocityXY(randMaxXVelocity, 99999);
 	npc->SetCollisionDimensions(Vector3(collisionDimensions.X, collisionDimensions.Y, 0));
 	npc->SetCollisionBoxOffset(Vector2(collisionBoxOffset.X, collisionBoxOffset.Y));   
 	npc->SetPlayer(GameObjectManager::Instance()->GetPlayer());
-	npc->SetResistanceXYZ(1.0f, 1.4f, 0);
+	npc->SetResistanceXY(1.0f, 1.4f);
 	npc->setAccelXRate(1.0);
 	npc->SetMaterial(MaterialManager::Instance()->GetMaterial("ghost"));
 	npc->SetMaxJumpSpeed(randJumpSpeed);

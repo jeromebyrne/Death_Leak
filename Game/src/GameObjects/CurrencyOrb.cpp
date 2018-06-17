@@ -70,7 +70,7 @@ bool CurrencyOrb::OnCollision(SolidMovingSprite * object)
 		return false;
 	}
 
-	Vector3 direction = player->Position() - m_position;
+	Vector2 direction = player->Position() - m_position;
 
 	// if within range then move towards the player
 	float distance = direction.LengthSquared();
@@ -127,7 +127,7 @@ void CurrencyOrb::Update(float delta)
 				Player * player = GameObjectManager::Instance()->GetPlayer();
 				if (player)
 				{
-					Vector3 direction = player->Position() - m_position;
+					Vector2 direction = player->Position() - m_position;
 
 					// if within range then move towards the player
 					float distance = direction.LengthSquared();
@@ -194,7 +194,7 @@ void CurrencyOrb::DoTrackPlayer(float delta)
 	}
 
 	// accelerate towards the target
-	Vector3 direction = Vector3(player->CollisionCentreX(), player->CollisionCentreY(), player->Z()) - m_position;
+	Vector2 direction = Vector2(player->CollisionCentreX(), player->CollisionCentreY()) - m_position;
 
 	direction.Normalise();
 
@@ -377,7 +377,7 @@ void CurrencyOrb::AddTrailParticles()
 	}
 }
 
-void CurrencyOrb::SpawnOrbs(Vector3 & position, unsigned int numOrbs)
+void CurrencyOrb::SpawnOrbs(Vector2 & position, unsigned int numOrbs)
 {
 	std::string animFile = "XmlFiles\\orb_anim.xml";
 
@@ -393,12 +393,11 @@ void CurrencyOrb::SpawnOrbs(Vector3 & position, unsigned int numOrbs)
 		newOrb->mCollisionBoxOffset.Y = 10;
 		newOrb->m_isAnimated = true;
 		newOrb->m_animationFile = animFile;
-		newOrb->SetXYZ(position.X, position.Y, position.Z + 0.01f);
+		newOrb->SetXY(position.X, position.Y, position.Z + 0.01f); // TODO: set depth layer
 		newOrb->m_maxVelocity.X = 20.0f;
 		newOrb->m_maxVelocity.Y = 99999;
-		newOrb->SetVelocityXYZ((((rand() % 100) * 0.18f)) * ((rand() % 2) == 1 ? -1.0f : 1.0f),
-			(((rand() % 100) * 0.3f) + 30.0f) * ((rand() % 2) == 1 ? -1.0f : 1.0f),
-			0);
+		newOrb->SetVelocityXY((((rand() % 100) * 0.18f)) * ((rand() % 2) == 1 ? -1.0f : 1.0f),
+			(((rand() % 100) * 0.3f) + 30.0f) * ((rand() % 2) == 1 ? -1.0f : 1.0f));
 
 		GameObjectManager::Instance()->AddGameObject(newOrb);
 

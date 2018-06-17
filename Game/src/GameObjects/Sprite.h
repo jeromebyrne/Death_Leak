@@ -8,7 +8,7 @@ class Sprite : public DrawableObject
 {
 public:
 
-	Sprite(float x = 0, float y = 0, float z = 0, float width = 1, float height = 1, float breadth = 1);
+	Sprite(float x = 0.0f, float y = 0.0f, DepthLayer depthLayer = kPlayer, float width = 1.0f, float height = 1.0f);
 	virtual ~Sprite(void);
 
 	virtual void Initialise() override;

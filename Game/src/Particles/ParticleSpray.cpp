@@ -5,8 +5,9 @@
 #include "DrawUtilities.h"
 
 ParticleSpray::ParticleSpray(bool isBloodSpray, 
-							Vector3 position,
-							Vector3 dimensions, 
+							Vector2 position,
+							DepthLayer depthLayer,
+							Vector2 dimensions, 
 							const char* textureFileName,
 							list<Particle> particles,
 							bool isLooping, 
@@ -15,25 +16,25 @@ ParticleSpray::ParticleSpray(bool isBloodSpray,
 							float scaleTo, 
 							float spawnSpreadX,
 							float spawnSpreadY)
-	: DrawableObject(position.X, position.Y, position.Z, dimensions.X, dimensions.Y, dimensions.Z), 
-	m_vertexBuffer(0), 
+	: DrawableObject(position.X, position.Y, depthLayer, dimensions.X, dimensions.Y), 
+	m_vertexBuffer(nullptr), 
 	m_isLooping(isLooping), 
 	m_particleList(particles), 
 	m_loopTime(loopTime), 
 	m_scalesByLiveTime(scaleByLiveTime), 
 	m_scaleTo(scaleTo),
 	mIsBloodSpray(isBloodSpray),
-	m_direction(1,0),
-	m_spread(1.0),
-	m_minSpeed(5),
-	m_maxSpeed(5),
-	m_minLivetime(2000),
-	m_maxLivetime(4000),
-	m_minSize(30),
-	m_maxSize(50),
-	m_gravity(1),
-	m_minBrightness(1.0),
-	m_maxBrightness(1.0),
+	m_direction(1.0f,0.0f),
+	m_spread(1.0f),
+	m_minSpeed(5.0f),
+	m_maxSpeed(5.0f),
+	m_minLivetime(2000.0f),
+	m_maxLivetime(4000.0f),
+	m_minSize(30.0f),
+	m_maxSize(50.0f),
+	m_gravity(1.0f),
+	m_minBrightness(1.0f),
+	m_maxBrightness(1.0f),
 	m_numParticles(10),
 	mParentHFlipInitial(false),
 	mSpawnSpread(spawnSpreadX, spawnSpreadY),
@@ -136,6 +137,7 @@ void ParticleSpray::Draw(ID3D10Device* device, Camera2D * camera)
 	device->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
 
 	//// Set primitive topology
+	// TODO OPTIMIZE: should be able to use a triangle strip here rather than a list
 	device->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	D3D10_TECHNIQUE_DESC techDesc;

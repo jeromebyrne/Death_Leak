@@ -5,13 +5,13 @@
 #include "ParticleEmitterManager.h"
 #include "Game.h"
 
-MovingSprite::MovingSprite(float x, float y, float z, float width, float height, float breadth, float groundFriction, float airResistance):
-	Sprite(x,y,z, width, height, breadth), 
-	m_resistance(groundFriction, airResistance, 0), 
-	m_velocity(0,0,0),
-	m_maxVelocity(0,0,0),
-	m_acceleration(0,0,0),
-	m_direction(1,0,0), 
+MovingSprite::MovingSprite(float x, float y, DepthLayer depthLayer, float width, float height, float groundFriction, float airResistance):
+	Sprite(x,y, depthLayer, width, height), 
+	m_resistance(groundFriction, airResistance), 
+	m_velocity(0,0),
+	m_maxVelocity(0,0),
+	m_acceleration(0,0),
+	m_direction(1,0), 
 	m_applyGravity(true),
 	mObjectMovingWith(0),
 	mCurrentYResistance(1.0f),
@@ -65,7 +65,7 @@ void MovingSprite::Update(float delta)
 	}
 
 	float velocityMod = mIsInWater ? (GetWaterIsDeep() ? 0.35f : 0.6f) : 1.0f;
-	Vector3 nextVelocity = m_velocity + (m_acceleration * m_direction) * velocityMod;
+	Vector2 nextVelocity = m_velocity + (m_acceleration * m_direction) * velocityMod;
 
 	if (nextVelocity.X > m_maxVelocity.X * velocityMod && mMaxVelocityXLimitEnabled)
 	{
@@ -190,11 +190,9 @@ void MovingSprite::XmlRead(TiXmlElement * element)
 	// read friction values
 	m_resistance.X = XmlUtilities::ReadAttributeAsFloat(element, "resistance", "x");
 	m_resistance.Y = XmlUtilities::ReadAttributeAsFloat(element, "resistance", "y");
-	m_resistance.Z = XmlUtilities::ReadAttributeAsFloat(element, "resistance", "z");
 
 	m_maxVelocity.X = XmlUtilities::ReadAttributeAsFloat(element, "maxvelocity", "x");
 	m_maxVelocity.Y = XmlUtilities::ReadAttributeAsFloat(element, "maxvelocity", "y");
-	m_maxVelocity.Z = XmlUtilities::ReadAttributeAsFloat(element, "maxvelocity", "z");
 
 	if (m_maxVelocity.Y < 0) // less than 0 actually signifies no maximum
 	{
@@ -210,13 +208,11 @@ void MovingSprite::XmlWrite(TiXmlElement * element)
 	Sprite::XmlWrite(element);
 
 	TiXmlElement * resistanceElem = new TiXmlElement("resistance");
-	resistanceElem->SetDoubleAttribute("z", m_resistance.Z);
 	resistanceElem->SetDoubleAttribute("y", m_resistance.Y);
 	resistanceElem->SetDoubleAttribute("x", m_resistance.X);
 	element->LinkEndChild(resistanceElem);
 
 	TiXmlElement * maxvelocityElem = new TiXmlElement("maxvelocity");
-	maxvelocityElem->SetDoubleAttribute("z", m_maxVelocity.Z);
 	maxvelocityElem->SetDoubleAttribute("y", m_maxVelocity.Y);
 	maxvelocityElem->SetDoubleAttribute("x", m_maxVelocity.X);
 	element->LinkEndChild(maxvelocityElem);

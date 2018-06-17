@@ -6,7 +6,7 @@
 class AudioObject : public GameObject
 {
 public: 
-	AudioObject(float x = 0, float y = 0, float z = 0, float width = 1, float height = 1);
+	AudioObject(float x = 0.0f, float y = 0.0f, float width = 1.0f, float height = 1.0f);
 	virtual ~AudioObject(void);
 	
 	virtual void Initialise() override;
