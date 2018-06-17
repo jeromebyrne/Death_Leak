@@ -19,7 +19,7 @@ public:
 		kMeleeFinish
 	};
 
-	Character(float x = 0, float y = 0, float z = 0, float width = 10, float height = 10, float breadth = 0);
+	Character(float x = 0.0f, float y = 0.0f, DepthLayer depthLayer = kPlayer, float width = 10.0f, float height = 10.0f);
 	virtual ~Character(void);
 	virtual void Update(float delta) override;
 	virtual void Initialise() override;
@@ -35,7 +35,7 @@ public:
 	virtual void WallJump(int directionX, float percent);
 	virtual bool Roll();
 	virtual void AccelerateX(float directionX, float percent = 1.0f);
-	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) override;
+	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointOfContact, bool shouldExplode = true) override;
 	void setAccelXRate(const float accelRate) { mAccelXRate = accelRate; }
 	float GetHealth() const { return mHealth; }
 	float GetMaxHealth() const { return mMaxHealth; }
@@ -166,7 +166,7 @@ protected:
 	bool mCanIncreaseJumpVelocity;
 	float mCurrentStunTime = 0.0f;
 	ParticleSpray * mStunParticles;
-	Vector3 mRegularCollisionBox;
+	Vector2 mRegularCollisionBox;
 	float mMeleeCollisionBoundsX = 1.5f;
 	bool mEmitsBlood = true;
 

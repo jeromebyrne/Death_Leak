@@ -19,6 +19,7 @@ public:
 		kGround = 4500,
 		kGroundBlood = 4000,
 		kNpc = 3500,
+		kOrb = 3250,
 		kPlayer = 3000,
 		kProjectile = 2500,
 		kBloodSpray1 = 2000,
@@ -127,7 +128,7 @@ public:
 	virtual void XmlRead(TiXmlElement * element);
 	virtual void XmlWrite(TiXmlElement * element);
 	virtual void DebugDraw(ID3D10Device *  device);
-	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) {}
+	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointOfContact, bool shouldExplode = true) {}
 	inline Material* GetMaterial()
 	{
 		return m_material;

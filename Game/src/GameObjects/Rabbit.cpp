@@ -50,17 +50,16 @@ void Rabbit::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 poi
 		for (int i = 0; i < (10 * orbCountMultiplier); ++i)
 		{
 			Vector2 orb_pos = m_position + pointOfContact;
-			orb_pos.Z = 40; // TODO: set depth layer
 
 			int randOrb = rand() % 3;
 			switch (randOrb)
 			{
 				case 0:
 					{
-						Debris * orb = new Debris(nullptr, orb_pos, Vector3(20, 20, 0), Vector3(15, 15, 0), "Media\\orb.png", false, 0.5f);
+						Debris * orb = new Debris(nullptr, orb_pos, GetDepthLayer(), Vector2(20.0f, 20.0f), Vector2(15.0f, 15.0f), "Media\\orb.png", false, 0.5f);
 						GameObjectManager::Instance()->AddGameObject(orb);
 
-						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(orb_pos.X, orb_pos.Y, orb_pos.Z - 0.1), true, 2.0f);
+						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector2(orb_pos.X, orb_pos.Y), true, 2.0f);
 						if (spray)
 						{
 							spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(orb->ID()), Vector3(0, 0, 0));
@@ -69,10 +68,10 @@ void Rabbit::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 poi
 					}
 				case 1:
 					{
-						Debris * orb = new Debris(nullptr, orb_pos, Vector3(25, 25, 0), Vector3(25, 25, 0), "Media\\orb2.png", false, 0.5f);
+						Debris * orb = new Debris(nullptr, orb_pos, GetDepthLayer(), Vector2(25.0f, 25.0f), Vector2(25.0f, 25.0f), "Media\\orb2.png", false, 0.5f);
 						GameObjectManager::Instance()->AddGameObject(orb);
 
-						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(orb_pos.X, orb_pos.Y, orb_pos.Z - 0.1), true, 2.0f);
+						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector2(orb_pos.X, orb_pos.Y), true, 2.0f);
 						if (spray)
 						{
 							spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(orb->ID()), Vector3(0, 0, 0));
@@ -81,10 +80,10 @@ void Rabbit::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 poi
 					}
 				case 2:
 					{
-						Debris * orb = new Debris(nullptr, orb_pos, Vector3(30, 30, 0), Vector3(30, 30, 0), "Media\\orb3.png", false, 0.5f);
+						Debris * orb = new Debris(nullptr, orb_pos, GetDepthLayer(), Vector2(30.0f, 30.0f), Vector2(30.0f, 30.0f), "Media\\orb3.png", false, 0.5f);
 						GameObjectManager::Instance()->AddGameObject(orb);
 
-						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(orb_pos.X, orb_pos.Y, orb_pos.Z - 0.1), true, 2.0f);
+						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector2(orb_pos.X, orb_pos.Y), true, 2.0f);
 						if (spray)
 						{
 							spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(orb->ID()), Vector3(0, 0, 0));
@@ -93,10 +92,10 @@ void Rabbit::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 poi
 					}
 				default:
 					{
-						Debris * orb = new Debris(nullptr, orb_pos, Vector3(23, 23, 0), Vector3(15, 15, 0), "Media\\orb.png", false, 0.5f);
+						Debris * orb = new Debris(nullptr, orb_pos, GetDepthLayer(), Vector2(23.0f, 23.0f), Vector2(15.0f, 15.0f), "Media\\orb.png", false, 0.5f);
 						GameObjectManager::Instance()->AddGameObject(orb);
 
-						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector3(orb_pos.X, orb_pos.Y, orb_pos.Z - 0.1), true, 2.0f);
+						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector2(orb_pos.X, orb_pos.Y), true, 2.0f);
 						if (spray)
 						{
 							spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(orb->ID()), Vector3(0, 0, 0));

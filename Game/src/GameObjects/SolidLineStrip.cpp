@@ -3,8 +3,8 @@
 #include "DrawUtilities.h"
 #include "Projectile.h"
 
-SolidLineStrip::SolidLineStrip(float x, float y, float z, float width, float height, float breadth) :
-	SolidMovingSprite(x, y, z, width, height, breadth),
+SolidLineStrip::SolidLineStrip(float x, float y, DepthLayer depthLayer, float width, float height) :
+	SolidMovingSprite(x, y, depthLayer, width, height),
 	mHasHardRightEdge(false),
 	mHasHardLeftEdge(false),
 	mHardRightEdgeOffsetX(0.0f),
@@ -343,9 +343,8 @@ void SolidLineStrip::CalculateLines()
 	mCollisionBoxOffset.X = (maxX + minX) * 0.5f;
 	mCollisionBoxOffset.Y = (maxY + minY) * 0.5f;
 
-	m_dimensions = Vector3(m_collisionBoxDimensions.X + std::abs(mCollisionBoxOffset.X) * 2.0f, 
-							m_collisionBoxDimensions.Y + std::abs(mCollisionBoxOffset.Y) * 2.0f, 
-							1);
+	m_dimensions = Vector2(m_collisionBoxDimensions.X + std::abs(mCollisionBoxOffset.X) * 2.0f, 
+							m_collisionBoxDimensions.Y + std::abs(mCollisionBoxOffset.Y) * 2.0f);
 }
 
 bool SolidLineStrip::Intersect(SolidLine & solidLine, Vector2 & otherStart, Vector2 & otherEnd, Vector2 & intersectPointOut)
@@ -416,7 +415,7 @@ void SolidLineStrip::RecalculateLines(std::vector<SolidLinePoint> & points)
 	CalculateLines();
 }
 
-bool SolidLineStrip::GetProjectileCollisionData(Projectile * projectile, Vector3 & position, unsigned int & lineIndex)
+bool SolidLineStrip::GetProjectileCollisionData(Projectile * projectile, Vector2 & position, unsigned int & lineIndex)
 {
 	Vector2 projectileRayStart = projectile->GetLastFrameCollisionRayStart();
 	Vector2 projectileRayEnd = projectile->GetCollisionRayEnd();
@@ -441,7 +440,6 @@ bool SolidLineStrip::GetProjectileCollisionData(Projectile * projectile, Vector3
 
 			position.X = m_position.X - projectileRayEnd.X;
 			position.Y = m_position.Y - projectileRayEnd.Y;
-			position.Z = projectile->Z();
 
 			lineIndex = count;
 
@@ -458,7 +456,7 @@ bool SolidLineStrip::GetProjectileCollisionData(Projectile * projectile, Vector3
 	return false;
 }
 
-bool SolidLineStrip::GetBombProjectileCollisionData(Projectile * projectile, Vector3 & position)
+bool SolidLineStrip::GetBombProjectileCollisionData(Projectile * projectile, Vector2 & position)
 {
 	Vector2 projectileRayStart = projectile->GetCollisionRayStart();
 	Vector2 projectileRayEnd = projectile->GetCollisionRayEnd();
@@ -505,7 +503,6 @@ bool SolidLineStrip::GetBombProjectileCollisionData(Projectile * projectile, Vec
 
 			position.X = m_position.X - projectileRayEnd.X;
 			position.Y = m_position.Y - projectileRayEnd.Y;
-			position.Z = projectile->Z();
 
 			return true;
 		}

@@ -89,7 +89,7 @@ void Player::XmlWrite(TiXmlElement * element)
 	Character::XmlWrite(element);
 }
 
-void Player::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode)
+void Player::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointOfContact, bool shouldExplode)
 {
 	Character::OnDamage(damageDealer, damageAmount, pointOfContact, shouldExplode);
 

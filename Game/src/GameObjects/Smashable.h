@@ -13,7 +13,7 @@ public:
 		kSmashed
 	};
 
-	Smashable(float x = 0, float y = 0, float z = 0, float width = 10, float height = 10, float breadth = 0);
+	Smashable(float x = 0.0f, float y = 0.0f, DepthLayer depthLayer = kPlayer, float width = 10.0f, float height = 10.0f);
 	virtual ~Smashable(void);
 	virtual void Update(float delta) override;
 	virtual void Initialise() override;

@@ -11,7 +11,7 @@
 #include "Smashable.h"
 
 SolidMovingSprite::SolidMovingSprite(float x, float y , DepthLayer depthLayer , float width , float height , float groundFriction , float airResistance ):
-	MovingSprite(x,y, width, height, depthLayer, groundFriction, airResistance),
+	MovingSprite(x,y, depthLayer, width, height, groundFriction, airResistance),
 	m_collisionBoxDimensions(width, height),
 	m_passive(false), 
 	m_onTopOfOtherSolidObject(false), 
@@ -400,7 +400,7 @@ bool SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 		{
 			GAME_ASSERT(dynamic_cast<Character*>(object));
 			Character * character = static_cast<Character*>(object);
-			character->OnDamage(this, m_applyDamageAmount, Vector3(0,0,0));
+			character->OnDamage(this, m_applyDamageAmount, Vector2(0.0f,0.0f));
 		}
 	}
 
@@ -419,7 +419,7 @@ bool SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 	return true;
 }
 
-void SolidMovingSprite::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode)
+void SolidMovingSprite::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointOfContact, bool shouldExplode)
 {
 	if (!IsOnSolidSurface() && IsCharacter() && GameObjectManager::Instance()->GetPlayer() != this)
 	{
@@ -434,28 +434,30 @@ void SolidMovingSprite::OnDamage(GameObject * damageDealer, float damageAmount, 
 		mShowingBurstTint = true;
 		mBurstTintStartTime = Timing::Instance()->GetTotalTimeSeconds();
 
-		Vector3 pos = Vector3(m_position.X + pointOfContact.X, m_position.Y + pointOfContact.Y, m_position.Z - 1);
+		Vector2 pos = Vector2(m_position.X + pointOfContact.X, m_position.Y + pointOfContact.Y);
 
+		// TODO: should DEFINITELY have a layer for blast circles
 		ParticleSpray * spray =
 		ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
 																pos,
-																Vector3(-m_direction.X, 0, 0),
-																0.4,
-																Vector3(3200, 1200, 0),
+																GetDepthLayer(),
+																Vector2(-m_direction.X, 0.0f),
+																0.4f,
+																Vector2(3200.0f, 1200.0f),
 																"Media\\blast_circle.png",
-																0.01,
-																0.01,
+																0.01f,
+																0.01f,
 																0.40f,
 																0.40f,
 																40.0f,
 																40.0f,
-																0,
+																0.0f,
 																false,
-																0.7,
-																1.0,
-																10000,
+																0.7f,
+																1.0f,
+																10000.0f,
 																true,
-																5,
+																5.0f,
 																0.0f,
 																0.0f,
 																0.0f,
@@ -500,24 +502,24 @@ void SolidMovingSprite::DoWaterAccelerationBubbles()
 	if (mTimeUntilCanSpawnWaterBubbles <= 0.0f)
 	{
 		ParticleEmitterManager::Instance()->CreateDirectedSpray(30,
-																Vector3((m_position.X - (m_direction.X < 0.0f ? 30 : -30)) + mCollisionBoxOffset.X, 
-																		m_position.Y + mCollisionBoxOffset.Y, 
-																		m_position.Z),
-																Vector3(-m_direction.X, -m_direction.Y, 0),
+																Vector2((m_position.X - (m_direction.X < 0.0f ? 30 : -30)) + mCollisionBoxOffset.X, 
+																		m_position.Y + mCollisionBoxOffset.Y),
+																GetDepthLayer(),
+																Vector2(-m_direction.X, -m_direction.Y),
 																0.15f,
-																Vector3(3200, 2000, 0),
+																Vector2(3200.0f, 2000.0f),
 																"Media\\Ambient\\bubble.png",
 																0.15f,
 																0.75f,
 																1.5f,
 																3.0f,
-																2,
-																4,
+																2.0f,
+																4.0f,
 																-0.2f,
 																false,
 																1.0f,
 																1.0f,
-																-1,
+																-1.0f,
 																true,
 																2.0f,
 																0.01f * Dimensions().X,

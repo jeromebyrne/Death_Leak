@@ -30,12 +30,13 @@ public:
 	Projectile(ProjectileOwnerType ownerType, 
 				const string & textureFileName, 
 				const string & impactTextureFilename,
-				Vector3 position,
+				Vector2 position,
+				DepthLayer depthLayer,
 				Vector2 dimensions,
 				Vector2 collisionDimensions,
 				Vector2 direction,
-				float damage = 5,
-				float speed = 10,
+				float damage = 5.0f,
+				float speed = 10.0f,
 				float maxTimeInActive = 2.0f);
 
 	virtual ~Projectile(void);

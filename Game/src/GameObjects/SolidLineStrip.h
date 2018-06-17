@@ -25,7 +25,7 @@ public:
 		Vector2 MidPointWorld;
 	};
 
-	SolidLineStrip(float x = 0, float y = 0, float z = 0, float width = 10, float height = 10, float breadth = 0);
+	SolidLineStrip(float x = 0.0f, float y = 0.0f, DepthLayer depthLayer = kPlayer, float width = 10.0f, float height = 10.0f);
 	virtual ~SolidLineStrip(void);
 	virtual void Update(float delta) override;
 	virtual void Initialise() override;
@@ -40,9 +40,9 @@ public:
 
 	void RecalculateLines(std::vector<SolidLinePoint> & points);
 
-	bool GetProjectileCollisionData(Projectile * projectile, Vector3 & position, unsigned int & lineIndex);
+	bool GetProjectileCollisionData(Projectile * projectile, Vector2 & position, unsigned int & lineIndex);
 
-	bool GetBombProjectileCollisionData(Projectile * projectile, Vector3 & position);
+	bool GetBombProjectileCollisionData(Projectile * projectile, Vector2 & position);
 
 	Vector2 GetRightMostPoint() const;
 

@@ -30,19 +30,19 @@ static const float kLandJumpInputWindow = 0.2f;
 static const float kWallJumpXResistance = 0.99f;
 static const float kWallJumpVelocityXBoost = 15.0f;
 
-Character::Character(float x, float y, float z, float width, float height, float breadth) :
-	SolidMovingSprite(x, y, z, width, height, breadth),
+Character::Character(float x, float y, DepthLayer depthLayer, float width, float height) :
+	SolidMovingSprite(x, y, depthLayer, width, height),
 	m_isJumping(false),
-	m_maxJumpSpeed(10),
+	m_maxJumpSpeed(10.0f),
 	m_waterWadeSFXTime(1.0f),
-	mAccelXRate(0),
-	mHealth(100),
-	mMaxHealth(100),
-	mSprintVelocityX(8),
+	mAccelXRate(0.0f),
+	mHealth(100.0f),
+	mMaxHealth(100.0f),
+	mSprintVelocityX(8.0f),
 	mSprintActive(false),
 	mHasExploded(false),
-	m_mainBodyTexture(0),
-	m_projectileOffset(0, 0),
+	m_mainBodyTexture(nullptr),
+	m_projectileOffset(0.0f, 0.0f),
 	mLastTimePlayedDamageSound(0.0f),
 	mDamageSoundDelayMilli(0.15f),
 	mRunAnimFramerateMultiplier(3.0f),
@@ -77,7 +77,7 @@ Character::Character(float x, float y, float z, float width, float height, float
 	mWasDownwardDashing(false),
 	mCanIncreaseJumpVelocity(false),
 	mStunParticles(nullptr),
-	mRegularCollisionBox(0, 0, 0)
+	mRegularCollisionBox(0.0f, 0.0f)
 {
 	mProjectileFilePath = "Media/knife_2.png";
 	mProjectileImpactFilePath = "Media/knife_impact_2.png";
@@ -139,10 +139,11 @@ void Character::DoLargeImpactLanding()
 				if (!particleFile.empty())
 				{
 					ParticleEmitterManager::Instance()->CreateDirectedSpray(20,
-						Vector3(m_position.X + (m_direction.X * 60.f), CollisionBottom(), m_position.Z - 0.1),
-						Vector3(0, 1, 0),
+						Vector2(m_position.X + (m_direction.X * 60.f), CollisionBottom()),
+						GetDepthLayer(),
+						Vector2(0.0f, 1.0f),
 						0.4,
-						Vector3(1200, 720, 0),
+						Vector2(1200.0f, 720.0f),
 						particleFile,
 						3.0f,
 						6.0f,
@@ -502,7 +503,7 @@ void Character::DoMeleeCollisions(SolidMovingSprite * object)
 			// left edge of the object must be greater than the center of the character
 			if (object->CollisionLeft() > CollisionLeft())
 			{
-				object->OnDamage(this, mMeleeDamage, Vector3(0, 0, 0), true);
+				object->OnDamage(this, mMeleeDamage, Vector2(0.0f, 0.0f), true);
 				object->TriggerMeleeCooldown();
 			}
 		}
@@ -511,7 +512,7 @@ void Character::DoMeleeCollisions(SolidMovingSprite * object)
 			// right edge of the object must be less than the center of the character
 			if (object->CollisionRight() < CollisionRight())
 			{
-				object->OnDamage(this, mMeleeDamage, Vector3(0, 0, 0), true);
+				object->OnDamage(this, mMeleeDamage, Vector2(0.0f, 0.0f), true);
 				object->TriggerMeleeCooldown();
 			}
 		}
@@ -552,9 +553,10 @@ void Character::DoMeleeCollisions(SolidMovingSprite * object)
 
 				ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
 					object->Position(),
-					Vector3(0, 0, 0),
+					object->GetDepthLayer(),
+					Vector2(0.0f, 0.0f),
 					0.4,
-					Vector3(3200, 1200, 0),
+					Vector2(3200.0f, 1200.0f),
 					"Media\\blast_circle.png",
 					0.01,
 					0.01,
@@ -1009,10 +1011,11 @@ void Character::DoAnimationEffectIfApplicable(AnimationPart * bodyPart)
 					if (!particleFile.empty())
 					{
 						ParticleEmitterManager::Instance()->CreateDirectedSpray(10,
-							Vector3(m_position.X + (m_direction.X * 12.f), CollisionBottom(), m_position.Z - 0.1f),
-							m_direction.X > 0 ? Vector3(-0.5f, 0.5f, 0.0f) : Vector3(0.5f, 0.5f, 0.0f),
+							Vector2(m_position.X + (m_direction.X * 12.f), CollisionBottom()),
+							GetDepthLayer(),
+							m_direction.X > 0 ? Vector2(-0.5f, 0.5f) : Vector2(0.5f, 0.5f),
 							0.1,
-							Vector3(1200, 720, 0),
+							Vector2(1200.0f, 720.0f),
 							particleFile,
 							2.0f,
 							4.0f,
@@ -1134,24 +1137,25 @@ bool Character::Jump(float percent)
 					if (!particleFile.empty())
 					{
 						ParticleEmitterManager::Instance()->CreateDirectedSpray(40,
-							Vector3(m_position.X + (m_direction.X * 60.f), CollisionBottom(), m_position.Z - 0.1),
-							Vector3(0, 1, 0),
-							0.1,
-							Vector3(1200, 720, 0),
+							Vector2(m_position.X + (m_direction.X * 60.f), CollisionBottom()),
+							GetDepthLayer(),
+							Vector2(0.0f, 1.0f),
+							0.1f,
+							Vector2(1200.0f, 720.0f),
 							particleFile,
 							3.0f,
 							10.0f,
 							0.4f,
 							1.0f,
-							5,
-							10,
-							0.8,
+							5.0f,
+							10.0f,
+							0.8f,
 							false,
-							0.8,
-							1.0,
-							1,
+							0.8f,
+							1.0f,
+							1.0f,
 							true,
-							10,
+							10.0f,
 							3.0f,
 							0.0f,
 							0.15f,
@@ -1326,7 +1330,7 @@ void Character::AccelerateX(float directionX, float percent)
 	}
 }
 
-void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode)
+void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointOfContact, bool shouldExplode)
 {
 	if (mCanBeDamaged)
 	{
@@ -1912,7 +1916,7 @@ void Character::UpdateCollisionBox()
 	}
 }
 
-void Character::FireBloodSpatter(Vector2 direction, const Vector3 & origin)
+void Character::FireBloodSpatter(Vector2 direction, const Vector2 & origin)
 {
 	if (!mEmitsBlood)
 	{

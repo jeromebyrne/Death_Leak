@@ -8,8 +8,8 @@
 #include "SaveManager.h"
 #include "Game.h"
 
-Smashable::Smashable(float x, float y, float z, float width, float height, float breadth) :
-	SolidMovingSprite(x,y,z,width, height, breadth),
+Smashable::Smashable(float x, float y, DepthLayer depthLayer, float width, float height) :
+	SolidMovingSprite(x,y, depthLayer, width, height),
 	mState(kNotSmashed)
 {
 	mCanBeDamaged = false;
@@ -136,57 +136,60 @@ void Smashable::SpawnSmashedParticles()
 	float scaleY = m_dimensions.Y / nativeDimensions.Y;
 
 	ParticleEmitterManager::Instance()->CreateDirectedSpray(5,
-																Vector3(m_position.X, m_position.Y, m_position.Z),
-																Vector3(0, 1, 0),
+																Vector2(m_position.X, m_position.Y),
+																GetDepthLayer(),
+																Vector2(0.0f, 1.0f),
 																0.7f,
-																Vector3(3200, 1200, 0),
+																Vector2(3200.0f, 1200.0f),
 																m_material->GetRandomParticleTexture(),
 																1.0f,
 																7.0f,
 																0.7f,
 																1.50f,
-																180,
-																180,
-																0,
+																180.0f,
+																180.0f,
+																0.0f,
 																false,
-																0.7,
-																1.0,
-																10000,
+																0.7f,
+																1.0f,
+																10000.0f,
 																true,
-																2,
+																2.0f,
 																m_dimensions.X * 0.03f,
 																m_dimensions.Y * 0.1f,
 																0.1f,
 																0.1f);
 
+	/*
 	float debrisPosZ = 51.0f;
 	if (m_position.Z < 50.0f)
 	{
 		debrisPosZ = m_position.Z - 0.01f;
 	}
+	*/
 
 	const auto & debrisTextures = m_material->GetDebrisTextures();
 
-	Vector3 size;
+	Vector2 size;
 
 	// A massive hack...
 	if (m_material->GetMaterialName() == "crate")
 	{
-		size = Vector3(160 * scaleX, 443 * scaleY, 0);
+		size = Vector2(160.0f * scaleX, 443.0f * scaleY);
 	}
 	else
 	{
 		// pot
-		size = Vector3(310 * scaleX, 284 * scaleY, 0);
+		size = Vector2(310.0f * scaleX, 284.0f * scaleY);
 	}
 
 	for (const auto & d : debrisTextures)
 	{
-		Debris * debris = new Debris(nullptr, Vector3(m_position.X,
-									m_position.Y + 50,
-									debrisPosZ),
+		Debris * debris = new Debris(nullptr, 
+									Vector2(m_position.X, m_position.Y + 50.0f),
+									GetDepthLayer(),
 									size,
-									Vector3(30, 30, 0),
+									Vector2(30.0f, 30.0f),
 									d.c_str(),
 									false,
 									1.0f);

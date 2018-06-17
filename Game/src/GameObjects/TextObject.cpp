@@ -4,8 +4,8 @@
 #include "AudioManager.h"
 #include "Game.h"
 
-TextObject::TextObject(float x, float y, float z, float width, float height) :
-	DrawableObject(x, y, z, width, height),
+TextObject::TextObject(float x, float y, DepthLayer depthLayer, float width, float height) :
+	DrawableObject(x, y, depthLayer, width, height),
 	mFont(nullptr),
 	mFontSize(20.0f),
 	mCachedWideString(nullptr),

@@ -13,7 +13,7 @@ public:
 	void Initialise() override;
 	void XmlRead(TiXmlElement * element) override;
 	virtual void XmlWrite(TiXmlElement * element) override;
-	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) override;
+	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointOfContact, bool shouldExplode = true) override;
 	virtual Projectile * FireWeapon(Vector2 direction) override;
 	virtual Projectile * FireBomb(Vector2 direction) override;
 	void ResetProjectileFireDelay();

@@ -515,6 +515,10 @@ string GameObject::ConvertDepthLayerToString(DepthLayer depthLayer)
 		{
 			return "kNpc";
 		}
+		case kOrb:
+		{
+			return "kOrb";
+		}
 		case kPlayer:
 		{
 			return "kPlayer";
@@ -581,6 +585,10 @@ GameObject::DepthLayer GameObject::ConvertStringToDepthLayer(string depthLayerSt
 	else if (depthLayerString == "kNpc")
 	{
 		return kNpc;
+	}
+	else if (depthLayerString == "kOrb")
+	{
+		return kOrb;
 	}
 	else if (depthLayerString == "kPlayer")
 	{

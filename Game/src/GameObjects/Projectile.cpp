@@ -17,14 +17,15 @@ int Projectile::NUM_PROJECTILES_ACTIVE = 0;
 Projectile::Projectile(ProjectileOwnerType ownerType, 
 						const string & textureFileName,
 						const string & impactTextureFilename,
-						Vector3 position,
+						Vector2 position,
+						DepthLayer depthLayer,
 						Vector2 dimensions,
 						Vector2 collisionDimensions,
 						Vector2 direction,
 						float damage,
 						float speed,
 						float maxTimeInActive)
-:SolidMovingSprite(position.X,position.Y,position.Z,dimensions.X,dimensions.Y), 
+:SolidMovingSprite(position.X,position.Y, depthLayer,dimensions.X,dimensions.Y), 
 	m_isActive(true),
 	m_wasActiveLastFrame(true),
 	m_maxTimeInActive(maxTimeInActive),
@@ -33,7 +34,7 @@ Projectile::Projectile(ProjectileOwnerType ownerType,
 	m_impactTextureFilename(impactTextureFilename),
 	mCollidedWithProjectile(false),
 	mSpinningMovement(false),
-	m_timeBecameInactive(0),
+	m_timeBecameInactive(0.0f),
 	mOwnerType(ownerType),
 	mType(kUnknownProjectileType),
 	mReboundRotateRate(0.3f),
@@ -93,7 +94,7 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 	{
 		if (!mIsInWater)
 		{
-			object->OnDamage(this, m_damage, Vector3(0,0,0));
+			object->OnDamage(this, m_damage, Vector2(0.0f,0.0f));
 		}
 		return false;
 	}
@@ -172,21 +173,22 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 
 					ParticleEmitterManager::Instance()->CreateRadialSpray(1,
 																			m_position,
-																			Vector3(3000, 3000, 1),
+																			GetDepthLayer(),
+																			Vector2(3000.0f, 3000.0f),
 																			"Media\\spark.png",
 																			0.2f,
 																			1.0f,
 																			0.2f,
 																			0.4f,
-																			24,
-																			36,
+																			24.0f,
+																			36.0f,
 																			0.0f,
 																			false,
 																			1.0f,
 																			1.0f,
-																			0,
+																			0.0f,
 																			true,
-																			5.0,
+																			5.0f,
 																			0.1f,
 																			0.8f,
 																			0.0f,
@@ -224,27 +226,28 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 
 				objAsProj->m_isActive = false;
 				objAsProj->m_timeBecameInactive = Timing::Instance()->GetTotalTimeSeconds();
-				objAsProj->SetVelocityXYZ(-m_velocity.X * 0.7f, -5.0f); // TODO:: set depth layer
+				objAsProj->SetVelocityXY(-m_velocity.X * 0.7f, -5.0f);
 
 				ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
 																		m_position,
-																		Vector3(-m_direction.X, 0, 0),
-																		0.4,
-																		Vector3(3200, 1200, 0),
+																		GetDepthLayer(),
+																		Vector2(-m_direction.X, 0.0f),
+																		0.4f,
+																		Vector2(3200.0f, 1200.0f),
 																		"Media\\blast_circle.png",
-																		0.01,
-																		0.01,
+																		0.01f,
+																		0.01f,
 																		0.40f,
 																		0.40f,
-																		50,
-																		50,
-																		0,
+																		50.0f,
+																		50.0f,
+																		0.0f,
 																		false,
-																		0.7,
-																		1.0,
-																		10000,
+																		0.7f,
+																		1.0f,
+																		10000.0f,
 																		true,
-																		2,
+																		2.0f,
 																		0.0f,
 																		0.0f,
 																		0.0f,
@@ -280,8 +283,8 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 		}
 
 		// get the offset and attach to the hit object
-		Vector3 offset = m_position - object->Position();
-  		offset.Z = object->Position().Z - 0.1; // want to show damage effects on front of the object
+		Vector2 offset = m_position - object->Position();
+  		// offset.Z = object->Position().Z - 0.1; // want to show damage effects on front of the object
 
 		// check if it's a character with skeleton animtion
 		Animation * objAnimation = object->GetAnimation();
@@ -351,21 +354,21 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 			if(objectMaterial != nullptr)
 			{
 				// where should the particles spray from
-				Vector3 particlePos;
+				Vector2 particlePos;
 				if(m_direction.X > 0)
 				{
-					particlePos = Vector3(m_position.X,m_position.Y, m_position.Z -1 );
+					particlePos = Vector2(m_position.X,m_position.Y );
 				}
 				else
 				{
-					particlePos = Vector3(m_position.X,m_position.Y, m_position.Z -1 );
+					particlePos = Vector2(m_position.X,m_position.Y );
 				}
 			
 				// show particles
 				bool loop = false;
 				float minLive = 0.5f;
 				float maxLive = 1.0f;
-				if (dynamic_cast<Player*>(object) || dynamic_cast<NPC*>(object)) // TODO: optimise with flag
+				if (object->IsPlayer() || dynamic_cast<NPC*>(object)) // TODO: optimise with flag
 				{
 					loop = true;
 					minLive = 0.3f;
@@ -376,7 +379,7 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 				{
 					ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateDirectedBloodSpray(40,
 																										particlePos,
-																										Vector3(-m_direction.X, 0, 0),
+																										Vector2(-m_direction.X, 0.0f),
 																										0.15f,
 																										true,
 																										1.4f);
@@ -394,23 +397,24 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 					string particleTexFile = objectMaterial->GetRandomParticleTexture();
 					 ParticleEmitterManager::Instance()->CreateDirectedSpray(15,
 																			particlePos,
-																			Vector3(-m_direction.X, 0, 0),
-																			0.4,
-																			Vector3(3200, 1200, 0),
+																			GetDepthLayer(),
+																			Vector2(-m_direction.X, 0.0f),
+																			0.4f,
+																			Vector2(3200.0f, 1200.0f),
 																			particleTexFile,
-																			0.5,
-																			2.5,
+																			0.5f,
+																			2.5f,
 																			minLive,
 																			maxLive,
-																			15,
-																			30,
-																			1.5,
+																			15.0f,
+																			30.0f,
+																			1.5f,
 																			loop,
-																			0.7,
-																			1.0,
+																			0.7f,
+																			1.0f,
 																			10.0f,
 																			true,
-																			2.5,
+																			2.5f,
 																			0.0f,
 																			0.0f,
 																			0.15f,
@@ -632,7 +636,7 @@ void Projectile::LoadContent(ID3D10Device * graphicsdevice)
 
 void Projectile::HandleSolidLineStripCollision(SolidLineStrip * solidLineStrip)
 {
-	Vector3 collisionPosition;
+	Vector2 collisionPosition;
 
 	unsigned int collisionLineIndex = 0;
 	if (solidLineStrip->GetProjectileCollisionData(this, collisionPosition, collisionLineIndex))
@@ -659,8 +663,7 @@ void Projectile::HandleSolidLineStripCollision(SolidLineStrip * solidLineStrip)
 		if (objectMaterial != nullptr)
 		{
 			// where should the particles spray from
-			Vector3 particlePos = solidLineStrip->Position() - collisionPosition;
-			particlePos.Z = m_position.Z - 0.01f;
+			Vector2 particlePos = solidLineStrip->Position() - collisionPosition;
 
 			// show particles
 			bool loop = false;
@@ -679,17 +682,18 @@ void Projectile::HandleSolidLineStripCollision(SolidLineStrip * solidLineStrip)
 			bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
 			ParticleEmitterManager::Instance()->CreateDirectedSpray(10,
 																	particlePos,
-																	Vector3(-m_direction.X, -m_direction.Y, 0),
-																	0.4,
-																	Vector3(3200, 1200, 0),
+																	GetDepthLayer(),
+																	Vector2(-m_direction.X, -m_direction.Y),
+																	0.4f,
+																	Vector2(3200.0f, 1200.0f),
 																	particleTexFile,
 																	isInDeepWater ? 0.4f : 1.0f,
 																	isInDeepWater ? 1.5f : 4.0f,
 																	isInDeepWater ? 1.4f : minLive,
 																	isInDeepWater ? 2.5f : maxLive,
-																	10,
-																	30,
-																	0.7,
+																	10.0f,
+																	30.0f,
+																	0.7f,
 																	loop,
 																	0.7f,
 																	1.0f,
@@ -780,7 +784,7 @@ void Projectile::ReboundOffSolidLine(SolidLineStrip * solidLine, unsigned lineIn
 
 	m_direction.Normalise();
 
-	m_velocity = Vector3(m_direction.X * 7, m_direction.Y * 10, 1);
+	m_velocity = Vector2(m_direction.X * 7.0f, m_direction.Y * 10.0f);
 	m_isActive = false;
 	m_timeBecameInactive = Timing::Instance()->GetTotalTimeSeconds();
 	mCollidedWithProjectile = true; // this makes it spin away
@@ -808,7 +812,7 @@ Vector2 Projectile::GetCollisionRayEnd() const
 
 Vector2 Projectile::GetLastFrameCollisionRayStart()
 {
-	Vector3 posDiff = m_position - m_lastPosition;
+	Vector2 posDiff = m_position - m_lastPosition;
 
 	return Vector2(CollisionCentreX() - posDiff.X, CollisionCentreY() - posDiff.Y);
 }
