@@ -205,7 +205,7 @@ void WeatherManager::CreateRainAssets()
 	// add the audio object
 	if (!mRainSFX)
 	{
-		mRainSFX = new AudioObject(0.0f, 1500.0f, 50000.0f, 3000.0f);
+		mRainSFX = new AudioObject(0.0f, 1500.0f, GameObject::kNearForeground, 50000.0f, 3000.0f);
 		mRainSFX->SetAdjustVolumeToCamera(false);
 		mRainSFX->SetAudioFilename("weather\\heavy_rain.wav");
 		mRainSFX->SetRepeat(true);
@@ -332,7 +332,7 @@ void WeatherManager::CreateSnowAssets()
 	// add the audio object
 	if (!mSnowSFX)
 	{
-		mSnowSFX = new AudioObject(0.0f, 1500.0f, 50000.0f, 3000.0f);
+		mSnowSFX = new AudioObject(0.0f, 1500.0f, GameObject::kNearForeground, 50000.0f, 3000.0f);
 		mSnowSFX->SetAdjustVolumeToCamera(false);
 		mSnowSFX->SetAudioFilename("weather\\wind.mp3");
 		mSnowSFX->SetRepeat(true);

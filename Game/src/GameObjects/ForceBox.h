@@ -6,7 +6,7 @@
 class ForceBox : public GameObject
 {
 public:
-	ForceBox(float x = 0, float y = 0, float z = 0, float width = 1, float height = 1);
+	ForceBox(float x = 0.0f, float y = 0, DepthLayer depthLayer = kPlayer, float width = 1.0f, float height = 1.0f);
 	virtual ~ForceBox();
 
 	virtual void Initialise() override;

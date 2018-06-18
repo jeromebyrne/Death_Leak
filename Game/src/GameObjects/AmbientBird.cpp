@@ -94,6 +94,8 @@ bool AmbientBird::OnCollision(SolidMovingSprite * object)
 
 	return NPC::OnCollision(object);
 	*/
+
+	return false;
 }
 
 void AmbientBird::Update(float delta)

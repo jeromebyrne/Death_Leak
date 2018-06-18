@@ -1,8 +1,8 @@
 #include "precompiled.h"
 #include "ForceBox.h"
 
-ForceBox::ForceBox(float x, float y, float z, float width, float height) :
-	GameObject(x, y, z, width, height)
+ForceBox::ForceBox(float x, float y, DepthLayer depthLayer, float width, float height) :
+	GameObject(x, y, depthLayer, width, height)
 {
 	mAlwaysUpdate = true;
 }

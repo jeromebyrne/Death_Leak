@@ -23,7 +23,7 @@ Butterfly::~Butterfly(void)
 
 void Butterfly::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointOfContact, bool shouldExplode)
 {
-	if (m_position.Z > 99)
+	if (GetDepthLayer() > GameObject::kGround)
 	{
 		// hack to stop butterfly's in the background being affected
 		return;
@@ -80,7 +80,7 @@ void Butterfly::Initialise()
 	m_maxVelocity.Y = 5.0f;
 	mAccelXRate = 0.5f;
 
-	if (m_position.Z > 99)
+	if (GetDepthLayer() > GameObject::kGround)
 	{
 		// hack to stop butterfly's in the background being affected
 		m_passive = true;
@@ -123,7 +123,7 @@ void Butterfly::UpdateAnimations()
 
 bool Butterfly::OnCollision(SolidMovingSprite * object)
 {
-	if (m_position.Z > 99)
+	if (GetDepthLayer() > GameObject::kGround)
 	{
 		// hack to stop butterfly's in the background being affected
 		return false;

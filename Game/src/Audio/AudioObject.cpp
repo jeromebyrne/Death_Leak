@@ -3,8 +3,8 @@
 #include "AudioManager.h"
 #include "DrawUtilities.h"
 
-AudioObject::AudioObject(float x, float y, float width, float height):
-	GameObject(x,y,width,height),
+AudioObject::AudioObject(float x, float y, DepthLayer depthLayer, float width, float height):
+	GameObject(x,y,depthLayer,width,height),
 	mAdjustVolumeToCamera(false),
 	mRepeat(false),
 	mSoundInstance(nullptr),
