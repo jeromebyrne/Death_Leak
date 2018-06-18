@@ -18,8 +18,8 @@ void GhostEnemySpawner::SpawnNPC(const float posX,
 							const float posY,
 							bool playSoundEffect, 
 							std::string animationFile, 
-							Vector3 & dimensions, 
-							Vector3 & collisionDimensions, 
+							Vector2 & dimensions, 
+							Vector2 & collisionDimensions, 
 							Vector2 & collisionBoxOffset)
 {
 	float randJumpSpeed = rand() % 4000;
@@ -30,17 +30,18 @@ void GhostEnemySpawner::SpawnNPC(const float posX,
 	randMaxXVelocity += 14.0f;
 
 	GhostEnemy * npc = new GhostEnemy();
-	npc->SetXY(posX, posY, 49.0f); // TODO: set depth layer
+	npc->SetXY(posX, posY);
+	npc->SetDepthLayer(GameObject::kNpc);
 	npc->m_animationFile = animationFile;
 	npc->m_drawAtNativeDimensions = false;
 	npc->m_dimensions = Vector2(dimensions.X, dimensions.Y);
 	npc->m_isAnimated = true;
-	npc->SetMaxVelocityXY(randMaxXVelocity, 99999);
-	npc->SetCollisionDimensions(Vector3(collisionDimensions.X, collisionDimensions.Y, 0));
+	npc->SetMaxVelocityXY(randMaxXVelocity, 99999.0f);
+	npc->SetCollisionDimensions(Vector2(collisionDimensions.X, collisionDimensions.Y));
 	npc->SetCollisionBoxOffset(Vector2(collisionBoxOffset.X, collisionBoxOffset.Y));   
 	npc->SetPlayer(GameObjectManager::Instance()->GetPlayer());
 	npc->SetResistanceXY(1.0f, 1.4f);
-	npc->setAccelXRate(1.0);
+	npc->setAccelXRate(1.0f);
 	npc->SetMaterial(MaterialManager::Instance()->GetMaterial("ghost"));
 	npc->SetMaxJumpSpeed(randJumpSpeed);
 	npc->SetIsPlayerEnemy(true);
@@ -52,26 +53,27 @@ void GhostEnemySpawner::SpawnNPC(const float posX,
 
 	// show some effects when we spawn - smoke
 	ParticleEmitterManager::Instance()->CreateRadialSpray(50,
-														Vector3(npc->X(), npc->Bottom(), npc->Z() - 1.0f),
-														Vector3(3200, 1200, 0),
+														Vector2(npc->X(), npc->Bottom()),
+														GameObject::kNpc,
+														Vector2(3200.0f, 1200.0f),
 														(rand() % 3) > 1 ? "Media\\smoke3.png" : "Media\\smoke4.png",
 														4.5f,
 														6.0f,
 														0.5f,
 														1.0f,
-														100,
-														200,
-														0.5,
+														100.0f,
+														200.0f,
+														0.5f,
 														false,
-														0.5,
-														1.0,
-														800,
+														0.5f,
+														1.0f,
+														800.0f,
 														true, 
-														2.2,
+														2.2f,
 														0.0f,
 														0.5f,
-														10,
-														50);
+														10.0f,
+														50.0f);
 
 	if (playSoundEffect)
 	{
@@ -95,12 +97,12 @@ void GhostEnemySpawner::SpawnMultiple(const unsigned int numNPC, Vector2 boundsP
 		// randomly pick an animation
 		std::string animFile;
 
-		Vector3 dimensions;
-		Vector3 collisionDimensions;
+		Vector2 dimensions;
+		Vector2 collisionDimensions;
 		Vector2 collisionOffset;
 
-		dimensions = Vector3(160, 259, 0);
-		collisionDimensions = Vector3(100, 200, 0);
+		dimensions = Vector2(160.0f, 259.0f);
+		collisionDimensions = Vector2(100.0f, 200.0f);
 		collisionOffset = Vector2(0, 0);
 		animFile = "XmlFiles\\animation\\ghost_enemy_anim.xml";
 

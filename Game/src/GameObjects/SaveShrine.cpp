@@ -84,5 +84,5 @@ void SaveShrine::DisplaySaveText()
 
 	GameObjectManager::Instance()->AddGameObject(saveTextObject);
 
-	saveTextObject->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), Vector3(0, 0, 0), false);
+	saveTextObject->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), Vector2(0.0f, 0.0f), GetDepthLayer(),  false);
 }

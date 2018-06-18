@@ -375,7 +375,7 @@ void CurrencyOrb::AddTrailParticles()
 
 		if (p)
 		{
-			p->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), Vector3(0, 0, 0.1f), true);
+			p->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), Vector2(0.0f, 0.0f), GetDepthLayer(), true);
 			mParticleTrailObjectId = p->ID();
 		}
 	}

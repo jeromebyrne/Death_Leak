@@ -39,11 +39,7 @@ void AmbientBird::Initialise()
 
 	m_applyGravity = false;
 
-	if (m_position.Z > 99)
-	{
-		// hack to stop butterfly's in the background being affected
-		m_passive = true;
-	}
+	m_passive = true;
 
 	SetState(AIState::kNone); // let's just handle our own state
 
@@ -89,6 +85,7 @@ void AmbientBird::UpdateAnimations()
 
 bool AmbientBird::OnCollision(SolidMovingSprite * object)
 {
+	/*
 	if (m_position.Z > 99)
 	{
 		// hack to stop butterfly's in the background being affected
@@ -96,6 +93,7 @@ bool AmbientBird::OnCollision(SolidMovingSprite * object)
 	}
 
 	return NPC::OnCollision(object);
+	*/
 }
 
 void AmbientBird::Update(float delta)

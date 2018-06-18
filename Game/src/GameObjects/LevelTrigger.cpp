@@ -1,8 +1,8 @@
 #include "precompiled.h"
 #include "LevelTrigger.h"
 
-LevelTrigger::LevelTrigger(float x, float y, float z, float width, float height):
-	GameObject(x, y, z, width, height)
+LevelTrigger::LevelTrigger(float x, float y, DepthLayer depthLayer, float width, float height):
+	GameObject(x, y, depthLayer, width, height)
 {
 	mAlwaysUpdate = true;
 }

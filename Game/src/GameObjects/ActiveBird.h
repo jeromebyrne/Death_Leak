@@ -10,7 +10,7 @@ public:
 	ActiveBird(void);
 	virtual ~ActiveBird(void);
 
-	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode) override;
+	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointOfContact, bool shouldExplode) override;
 	virtual void Initialise() override;
 };
 

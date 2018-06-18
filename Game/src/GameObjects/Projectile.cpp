@@ -339,7 +339,7 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 			// spinning projectiles don't naturally orientate so need to flip it when it attaches
 			FlipHorizontal();
 		}
-		AttachTo(GameObjectManager::Instance()->GetObjectByID(object->ID()), offset);
+		AttachTo(GameObjectManager::Instance()->GetObjectByID(object->ID()), offset, GetDepthLayer());
 
 		// stop the projectile
 		m_velocity.X = 0;
@@ -385,7 +385,7 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 																										1.4f);
 					if (spray)
 					{
-						spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(object->ID()), Vector3(-offset.X, -offset.Y, 0));
+						spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(object->ID()), Vector2(-offset.X, -offset.Y), GetDepthLayer());
 					}
 				}
 				else
@@ -744,9 +744,7 @@ void Projectile::DoBloodProjectilePositionJitter()
 			SetY(Y() + randY);
 		}
 
-		// TODO: this should be set on a LAYER
-		// This should appear on the ground in MOST cases but is not ideal
-		SetZ(90.0f);
+		SetDepthLayer(GameObject::kGroundBlood);
 	}
 }
 

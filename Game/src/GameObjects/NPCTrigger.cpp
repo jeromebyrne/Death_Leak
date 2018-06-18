@@ -41,10 +41,11 @@ void NPCTrigger::Update(float delta)
 		ninjaSpawner.SpawnMultiple(mNumEnemies, Vector2(player->X(), player->Y()), Vector2(1200, 1200));
 		Timing::Instance()->SetTimeModifierForNumSeconds(0.1f, 3.5f);
 		ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
-																Vector3(Camera2D::GetInstance()->X(), Camera2D::GetInstance()->Y(), 2),
-																Vector3(0, 1, 0),
-																0.1,
-																Vector3(3200, 1200, 0),
+																Vector2(Camera2D::GetInstance()->X(), Camera2D::GetInstance()->Y()),
+																GameObject::kNpc,
+																Vector2(0.0f, 1.0f),
+																0.1f,
+																Vector2(3200.0f, 1200.0f),
 																"Media\\skull_icon_2.png",
 																1.0f,
 																1.0f,

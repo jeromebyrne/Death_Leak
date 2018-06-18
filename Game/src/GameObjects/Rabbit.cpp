@@ -62,7 +62,7 @@ void Rabbit::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 poi
 						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector2(orb_pos.X, orb_pos.Y), true, 2.0f);
 						if (spray)
 						{
-							spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(orb->ID()), Vector3(0, 0, 0));
+							spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(orb->ID()), Vector2(0.0f, 0.0f), GetDepthLayer());
 						}
 						break;
 					}
@@ -74,7 +74,7 @@ void Rabbit::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 poi
 						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector2(orb_pos.X, orb_pos.Y), true, 2.0f);
 						if (spray)
 						{
-							spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(orb->ID()), Vector3(0, 0, 0));
+							spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(orb->ID()), Vector2(0.0f, 0.0f), GetDepthLayer());
 						}
 						break;
 					}
@@ -86,7 +86,7 @@ void Rabbit::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 poi
 						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector2(orb_pos.X, orb_pos.Y), true, 2.0f);
 						if (spray)
 						{
-							spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(orb->ID()), Vector3(0, 0, 0));
+							spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(orb->ID()), Vector2(0.0f, 0.0f), GetDepthLayer());
 						}
 						break;
 					}
@@ -98,7 +98,7 @@ void Rabbit::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 poi
 						ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, Vector2(orb_pos.X, orb_pos.Y), true, 2.0f);
 						if (spray)
 						{
-							spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(orb->ID()), Vector3(0, 0, 0));
+							spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(orb->ID()), Vector2(0.0f, 0.0f), GetDepthLayer());
 						}
 
 						break;

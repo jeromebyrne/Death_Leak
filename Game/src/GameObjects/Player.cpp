@@ -428,7 +428,7 @@ void Player::CheckForAndDoLevelUp()
 
 			GameObjectManager::Instance()->AddGameObject(levelUpText);
 
-			levelUpText->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), Vector3(0, 125, -30), false);
+			levelUpText->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), Vector2(0.0f, 125.0f), GameObject::kPlayer, false);
 		}
 		// ************************
 
@@ -446,7 +446,7 @@ void Player::CheckForAndDoLevelUp()
 
 			GameObjectManager::Instance()->AddGameObject(mechanicDescriptionText);
 
-			mechanicDescriptionText->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), Vector3(0, 80, -30), false);
+			mechanicDescriptionText->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), Vector2(0.0f, 80.0f),GameObject::kPlayer,  false);
 		}
 		// ************************************
 	}
@@ -472,7 +472,7 @@ void Player::AddAimLineSprite()
 
 	mAimLineSprite->SetDepthLayer(GameObject::kPlayer);
 
-	mAimLineSprite->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), Vector3(m_projectileOffset.X , m_projectileOffset.Y , 0), false);
+	mAimLineSprite->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), Vector2(m_projectileOffset.X , m_projectileOffset.Y), GameObject::kPlayer, false);
 
 	GameObjectManager::Instance()->AddGameObject(mAimLineSprite);
 

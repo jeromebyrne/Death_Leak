@@ -7,7 +7,7 @@ class Platform : public SolidMovingSprite
 {
 public:
 
-	Platform(float x = 0, float y = 0, float z = 0, float width = 10, float height = 10, float breadth = 0,float groundFriction = 1, float airResistance = 1);
+	Platform(float x = 0.0f, float y = 0.0f, DepthLayer depthLayer = GameObject::kPlayer, float width = 10.0f, float height = 10.0f,float groundFriction = 1.0f, float airResistance = 1.0f);
 	virtual ~Platform(void);
 
 private:
