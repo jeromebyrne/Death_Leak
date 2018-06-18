@@ -1049,9 +1049,9 @@ void Sprite::UpdateToParent()
 	}
 }
 
-void Sprite::AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset, bool trackParentsOrientation)
+void Sprite::AttachTo(std::shared_ptr<GameObject> & parent, Vector2 offset, DepthLayer depthLayer, bool trackParentsOrientation)
 {
-	DrawableObject::AttachTo(parent, offset, trackParentsOrientation);
+	DrawableObject::AttachTo(parent, offset, depthLayer, trackParentsOrientation);
 
 	Sprite * sprite = dynamic_cast<Sprite *>(parent.get());
 	GAME_ASSERT(sprite);

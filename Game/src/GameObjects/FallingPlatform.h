@@ -15,7 +15,7 @@ public:
 		kReturning
 	};
 
-	FallingPlatform(float x = 0, float y = 0, float z = 0, float width = 10, float height = 10, float breadth = 0,float groundFriction = 1, float airResistance = 1);
+	FallingPlatform(float x = 0.0f, float y = 0.0f, DepthLayer depthLayer = kPlayer, float width = 10.0f, float height = 10.0f, float groundFriction = 1.0f, float airResistance = 1.0f);
 	virtual ~FallingPlatform(void);
 
 	virtual bool OnCollision(SolidMovingSprite * object) override;
@@ -27,7 +27,7 @@ public:
 
 	virtual void Scale(float x, float y, bool ScalePosition = true) override;
 
-	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) override;
+	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointOfContact, bool shouldExplode = true) override;
 
 private:
 
@@ -39,7 +39,7 @@ private:
 
 	void DoFallingLogic();
 
-	Vector3 mInitialPosition;
+	Vector2 mInitialPosition;
 
 	FallingPlatformState mCurrentState;
 
@@ -53,7 +53,7 @@ private:
 
 	float mTimeUntilReturn;
 
-	Vector3 mInitialReturnPosition;
+	Vector2 mInitialReturnPosition;
 
 };
 

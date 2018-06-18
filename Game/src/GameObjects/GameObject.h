@@ -21,6 +21,7 @@ public:
 		kNpc = 3500,
 		kOrb = 3250,
 		kPlayer = 3000,
+		kGhostVomitProjectile = 2530,
 		kBombProjectile = 2520,
 		kNinjaStarProjectile = 2510,
 		kPlayerProjectile = 2500,
@@ -180,7 +181,7 @@ public:
 
 	bool IsPlayer() const { return mIsPlayer; }
 
-	virtual void AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset, bool trackOrientation = true);
+	virtual void AttachTo(std::shared_ptr<GameObject> & parent, Vector2 offset, DepthLayer depthLayer, bool trackOrientation = true);
 	void Detach();
 
 	float GetParallaxMultiplierX() const { return mParallaxMultiplierX; }
@@ -260,7 +261,7 @@ protected:
 	bool mIsPlayer;
 
 	std::shared_ptr<GameObject> mAttachedTo;
-	Vector3 mAttachedToOffset;
+	Vector2 mAttachedToOffset;
 	float mParallaxMultiplierX;
 	float mParallaxMultiplierY;
 	float mCurrentParallaxOffsetX;

@@ -15,18 +15,18 @@ GameObject::GameObject(float x, float y, DepthLayer depthLayer, float width, flo
 	mDepthLayer(depthLayer),
 	m_lastPosition(x, y),
 	m_dimensions(width, height),
-	m_material(0),
-	m_rotationAngle(0),
-	mShowDebugText(0),
+	m_material(nullptr),
+	m_rotationAngle(0.0f),
+	mShowDebugText(false),
 	m_matScaleX(1.0f),
 	m_matScaleY(1.0f),
-	m_debugDrawVBuffer(0),
+	m_debugDrawVBuffer(nullptr),
 	mDrawable(false),
 	m_updateable(true),
 	mIsSolidSprite(false),
 	mIsSolidLine(false),
 	mAttachedTo(nullptr),
-	mAttachedToOffset(0, 0, 0),
+	mAttachedToOffset(0.0f, 0.0f),
 	mParallaxMultiplierX(1.0f),
 	mCurrentParallaxOffsetX(0.0f),
 	mParallaxMultiplierY(1.0f),
@@ -42,7 +42,7 @@ GameObject::GameObject(float x, float y, DepthLayer depthLayer, float width, flo
 	mIsPlatform(false),
 	mAutoRotationValue(0.0f),
 	mLevelEditLocked(false),
-	mLevelEditSelectionDimensions(100, 100),
+	mLevelEditSelectionDimensions(100.0f, 100.0f),
 	mLevelEditShowSelected(false),
 	mIsSolidLineStrip(false),
 	mAlwaysUpdate(false),
@@ -443,7 +443,7 @@ string GameObject::GetTypeName()
 }
 
 // TODO: should take a Vector2 and a depth layer
-void GameObject::AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset, bool trackParentsOrientation)
+void GameObject::AttachTo(std::shared_ptr<GameObject> & parent, Vector2 offset, DepthLayer depthLayer, bool trackParentsOrientation)
 {
 	GAME_ASSERT(parent);
 	if (!parent)
@@ -453,13 +453,16 @@ void GameObject::AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset, 
 
 	mAttachedTo = parent;
 	mAttachedToOffset = offset;
+	SetDepthLayer(depthLayer);
 	mUpdateToParentsOrientation = trackParentsOrientation;
 }
 
 void GameObject::Detach()
 {
 	mAttachedTo.reset();
-	mAttachedToOffset = Vector3(0, 0, 0);
+	mAttachedToOffset = Vector2(0, 0);
+
+	// TODO: revert to the previous depth layer?
 }
 
 void GameObject::UpdateToParent()
@@ -522,6 +525,10 @@ string GameObject::ConvertDepthLayerToString(DepthLayer depthLayer)
 		case kPlayer:
 		{
 			return "kPlayer";
+		}
+		case kGhostVomitProjectile:
+		{
+			return "kGhostVomitProjectile";
 		}
 		case kBombProjectile:
 		{
@@ -605,6 +612,10 @@ GameObject::DepthLayer GameObject::ConvertStringToDepthLayer(string depthLayerSt
 	else if (depthLayerString == "kPlayer")
 	{
 		return kPlayer;
+	}
+	else if (depthLayerString == "kGhostVomitProjectile")
+	{
+		return kGhostVomitProjectile;
 	}
 	else if (depthLayerString == "kBombProjectile")
 	{

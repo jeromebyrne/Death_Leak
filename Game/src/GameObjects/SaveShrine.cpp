@@ -4,8 +4,8 @@
 
 static const float kTimeBetweenSaves = 5.0f;
 
-SaveShrine::SaveShrine(float x, float y, float width, float height) :
-	GameObject(x, y, kGround, width, height) // TODO: don't hardcode kGround?
+SaveShrine::SaveShrine(float x, float y, DepthLayer depthLayer, float width, float height) :
+	GameObject(x, y, depthLayer, width, height)
 {
 	mAlwaysUpdate = true;
 }
@@ -72,7 +72,7 @@ void SaveShrine::XmlWrite(TiXmlElement * element)
 
 void SaveShrine::DisplaySaveText()
 {
-	TextObject * saveTextObject = new TextObject(m_position.X, m_position.Y, 3.0f);
+	TextObject * saveTextObject = new TextObject(m_position.X, m_position.Y, GetDepthLayer(), 3.0f);
 
 	saveTextObject->SetFont("Jing Jing");
 	saveTextObject->SetFontColor(0.1f, 0.1f, 0.1f);

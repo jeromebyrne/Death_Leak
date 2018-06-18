@@ -9,7 +9,7 @@ public:
 	AmbientBird(void);
 	virtual ~AmbientBird(void);
 
-	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode) override;
+	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointOfContact, bool shouldExplode) override;
 	virtual void Initialise() override;
 	virtual void UpdateAnimations() override;
 	virtual bool OnCollision(SolidMovingSprite * object) override;
@@ -35,7 +35,7 @@ private:
 
 	float mTravelOffset;
 
-	Vector3 mStartPosition;
+	Vector2 mStartPosition;
 };
 
 #endif

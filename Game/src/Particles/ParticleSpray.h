@@ -73,7 +73,7 @@ public:
 
 	void Reset();
 
-	virtual void AttachTo(std::shared_ptr<GameObject> & parent, Vector3 offset, bool trackParentsOrientation = true) override;
+	virtual void AttachTo(std::shared_ptr<GameObject> & parent, Vector2 offset, DepthLayer depthLayer, bool trackParentsOrientation = true) override;
 
 	void SetIsLooping(bool value) { m_isLooping = value; }
 

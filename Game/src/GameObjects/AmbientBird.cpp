@@ -17,7 +17,7 @@ AmbientBird::AmbientBird(void) :
 {
 	mAlwaysUpdate = true;
 	mIsButterfly = true;
-	mHealth = 1; // 1 hit kills for rabbits
+	mHealth = 1.0f; // 1 hit kills for rabbits
 	mMatchAnimFrameRateWithMovement = false;
 	mAddHealthBar = false;
 }
@@ -27,7 +27,7 @@ AmbientBird::~AmbientBird(void)
 {
 }
 
-void AmbientBird::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode)
+void AmbientBird::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointOfContact, bool shouldExplode)
 {
 }
 

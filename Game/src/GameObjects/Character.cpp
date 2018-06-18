@@ -1336,7 +1336,7 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 
 	{
 		mHealth -= damageAmount;
 
-		Vector3 damageDealerDirection = Vector3(0.0f, 0.0f, 0.0f);
+		Vector2 damageDealerDirection = Vector2(0.0f, 0.0f);
 
 		if (damageDealer && damageDealer->IsProjectile() && GameObjectManager::Instance()->GetPlayer() != this)
 		{
@@ -1383,7 +1383,6 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 
 				{
 					Vector2 pos = m_position;
 					pos.Y = Bottom();
-					pos.Z = pos.Z -1.0f; // TODO: set depth layer
 
 					bool loop = false;
 					unsigned long loopTime = -1;
@@ -1393,18 +1392,19 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 
 						string particletexFile = m_material->GetRandomParticleTexture();
 
 						ParticleEmitterManager::Instance()->CreateDirectedSpray(40,
-							Vector3(pos.X, pos.Y + 30, pos.Z),
-							Vector3(0.2f, 0.8f, 0),
+							Vector2(pos.X, pos.Y + 30.0f),
+							GetDepthLayer(),
+							Vector2(0.2f, 0.8f),
 							0.3f,
-							Vector3(3200, 2000, 0),
+							Vector2(3200.0f, 2000.0f),
 							particletexFile,
-							7,
-							12,
+							7.0f,
+							12.0f,
 							0.8f,
 							2.0f,
-							50,
-							100,
-							3.4,
+							50.0f,
+							100.0f,
+							3.4f,
 							loop,
 							0.3f,
 							1.0f,
@@ -1450,26 +1450,26 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 
 				{
 					Vector2 pos = m_position;
 					pos.Y = CollisionBottom();
-					pos.Z = pos.Z - 1; // TODO: set depth layer
 
 					float spawnSpreadX = (m_collisionBoxDimensions.X / 100.0f) * 7.0f;
 					float spawnSpreadY = (m_collisionBoxDimensions.Y / 100.0f) * 10.0f;
 
 					ParticleEmitterManager::Instance()->CreateRadialSpray(20,
 																			pos,
-																			Vector3(3200, 2000, 0),
+																			GetDepthLayer(),
+																			Vector2(3200.0f, 2000.0f),
 																			"Media\\smoke4.png",
 																			1.8f,
 																			3.5f,
 																			0.5f,
 																			1.0f,
-																			75,
-																			150,
-																			1,
+																			75.0f,
+																			150.0f,
+																			1.0f,
 																			false,
 																			0.9f,
 																			1.0f,
-																			-1,
+																			-1.0f,
 																			true,
 																			3.0f,
 																			0.9f,
@@ -1500,12 +1500,11 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 
 		SolidMovingSprite::OnDamage(damageDealer, damageAmount, pointOfContact);
 
 		// blood explosion by default
-		Vector3 point = m_position + pointOfContact;
-		point.Z = m_position.Z;
+		Vector2 point = m_position + pointOfContact;
 
 		if (!mHasExploded || (mHasExploded && !shouldExplode))
 		{
-			Vector3 pos = Vector3(m_position.X + pointOfContact.X, m_position.Y + pointOfContact.Y, m_position.Z - 0.1f);
+			Vector2 pos = Vector2(m_position.X + pointOfContact.X, m_position.Y + pointOfContact.Y);
 
 			if (m_material != nullptr)
 			{
@@ -1513,9 +1512,10 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 
 
 				ParticleEmitterManager::Instance()->CreateDirectedSpray(20,
 					pos,
+					GetDepthLayer(),
 					damageDealerDirection,
 					0.2f,
-					Vector3(3200, 2000, 0),
+					Vector2(3200.0f, 2000.0f),
 					particletexFile,
 					4.0f,
 					10.0f,
@@ -1645,28 +1645,28 @@ void Character::Teleport(float posX, float posY, bool showParticles)
 	// particles in old position
 	if (showParticles)
 	{
-		Vector3 pos = m_position;
+		Vector2 pos = m_position;
 		pos.Y = CollisionBottom();
-		pos.Z = pos.Z - 1;
 
 		float spawnSpreadX = (m_collisionBoxDimensions.X / 100.0f) * 7.0f;
 		float spawnSpreadY = (m_collisionBoxDimensions.Y / 100.0f) * 10.0f;
 
 		ParticleEmitterManager::Instance()->CreateRadialSpray(20,
 			pos,
-			Vector3(3200, 2000, 0),
+			GetDepthLayer(),
+			Vector2(3200.0f, 2000.0f),
 			"Media\\smoke4.png",
 			1.8f,
 			3.5f,
 			0.5f,
 			1.0f,
-			75,
-			150,
-			1,
+			75.0f,
+			150.0f,
+			1.0f,
 			false,
 			0.5f,
 			0.7f,
-			-1,
+			-1.0f,
 			true,
 			3.0f,
 			0.9f,
@@ -1676,19 +1676,20 @@ void Character::Teleport(float posX, float posY, bool showParticles)
 
 		ParticleEmitterManager::Instance()->CreateRadialSpray(20,
 			pos,
-			Vector3(3200, 2000, 0),
+			GetDepthLayer(),
+			Vector2(3200.0f, 2000.0f),
 			"Media\\smoke.png",
 			1.0f,
 			2.0f,
 			0.5f,
 			1.0f,
-			200,
-			300,
-			1,
+			200.0f,
+			300.0f,
+			1.0f,
 			false,
 			0.7f,
 			1.0f,
-			-1,
+			-1.0f,
 			true,
 			0.1f,
 			0.1f,
@@ -1708,28 +1709,28 @@ void Character::Teleport(float posX, float posY, bool showParticles)
 	// particles in new position
 	if (showParticles)
 	{
-		Vector3 pos = m_position;
+		Vector2 pos = m_position;
 		pos.Y = CollisionBottom();
-		pos.Z = pos.Z - 1;
 
 		float spawnSpreadX = (m_collisionBoxDimensions.X / 100.0f) * 7.0f;
 		float spawnSpreadY = (m_collisionBoxDimensions.Y / 100.0f) * 10.0f;
 
 		ParticleEmitterManager::Instance()->CreateRadialSpray(20,
 			pos,
-			Vector3(3200, 2000, 0),
+			GetDepthLayer(),
+			Vector2(3200.0f, 2000.0f),
 			"Media\\smoke4.png",
 			1.8f,
 			3.5f,
 			0.5f,
 			1.0f,
-			75,
-			150,
-			1,
+			75.0f,
+			150.0f,
+			1.0f,
 			false,
 			0.5f,
 			0.7f,
-			-1,
+			-1.0f,
 			true,
 			3.0f,
 			0.9f,
@@ -1739,19 +1740,20 @@ void Character::Teleport(float posX, float posY, bool showParticles)
 
 		ParticleEmitterManager::Instance()->CreateRadialSpray(20,
 																pos,
-																Vector3(3200, 2000, 0),
+																GetDepthLayer(),
+																Vector2(3200.0f, 2000.0f),
 																"Media\\smoke.png",
 																1.0f,
 																2.0f,
 																0.5f,
 																1.0f,
-																200,
-																300,
-																1,
+																200.0f,
+																300.0f,
+																1.0f,
 																false,
 																0.7f,
 																1.0f,
-																-1,
+																-1.0f,
 																true,
 																0.1f,
 																0.1f,
@@ -1864,15 +1866,16 @@ void Character::AddStunParticles()
 
 	mStunParticles = ParticleEmitterManager::Instance()->CreateRadialSpray(5,
 																			m_position,
-																			Vector3(3200, 2000, 0),
+																			GetDepthLayer(),
+																			Vector2(3200.0f, 2000.0f),
 																			"Media\\stun_star.png",
 																			1.5f,
 																			2.0f,
 																			0.5f,
 																			1.0f,
-																			20,
-																			20,
-																			0,
+																			20.0f,
+																			20.0f,
+																			0.0f,
 																			true,
 																			1.0f,
 																			1.0f,
@@ -1885,7 +1888,7 @@ void Character::AddStunParticles()
 																			50.0f);
 	if (mStunParticles)
 	{
-		mStunParticles->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), Vector3(IsHFlipped() ? 50 : -50, -5, 0), true);
+		mStunParticles->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), Vector2(IsHFlipped() ? 50.0f : -50.0f, -5.0f), GetDepthLayer(), true);
 	}
 }
 
@@ -1938,8 +1941,9 @@ void Character::FireBloodSpatter(Vector2 direction, const Vector2 & origin)
 											"Media\\blood_projectile.png",
 											randImpactTex,
 											origin,
+											GetDepthLayer(), // TODO: maybe should be the blood spray layer?
 											Vector2(projectileSize, projectileSize),
-											Vector2(64, 64),
+											Vector2(64.0f, 64.0f),
 											direction,
 											0.0f,
 											speed,

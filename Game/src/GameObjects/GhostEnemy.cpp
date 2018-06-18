@@ -24,7 +24,7 @@ GhostEnemy::~GhostEnemy(void)
 {
 }
 
-void GhostEnemy::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode)
+void GhostEnemy::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointOfContact, bool shouldExplode)
 {
 	Character::OnDamage(damageDealer, damageAmount, pointOfContact, shouldExplode);
 
@@ -171,10 +171,9 @@ void GhostEnemy::XmlWrite(TiXmlElement * element)
 
 Projectile * GhostEnemy::FireWeapon(Vector2 direction)
 {
-	Vector3 pos = m_position;
+	Vector2 pos = m_position;
 	pos.X = (direction.X > 0) ? pos.X + m_projectileOffset.X : pos.X -= m_projectileOffset.X;
 	pos.Y += m_projectileOffset.Y;
-	pos.Z -= 1;
 
 	if (direction.X > 0)
 	{
@@ -190,10 +189,11 @@ Projectile * GhostEnemy::FireWeapon(Vector2 direction)
 		mProjectileFilePath.c_str(),
 		mProjectileImpactFilePath.c_str(),
 		pos,
-		Vector2(20, 20),
-		Vector2(25, 8),
+		GameObject::kGhostVomitProjectile,
+		Vector2(20.0f, 20.0f),
+		Vector2(25.0f, 8.0f),
 		direction,
-		2,
+		2.0f,
 		mProjectileSpeed,
 		2.0f);
 
@@ -201,7 +201,7 @@ Projectile * GhostEnemy::FireWeapon(Vector2 direction)
 	p->SetProjectileResistance(0.9f);
 	p->SetIsDeflectable(false);
 
-	if (direction.X > 0)
+	if (direction.X > 0.0f)
 	{
 		p->UnFlipVertical();
 	}

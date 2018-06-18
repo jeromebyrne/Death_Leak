@@ -244,6 +244,7 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointO
 		// decapitate
 		// if (m_isAnimated && m_animationFile == "XmlFiles\\ninjaAnimation2.xml")
 		// {
+		/*
 		float speedMultiplier = 1.6f;
 			{
 				Debris * head = new Debris(nullptr, Vector3(m_position.X, m_position.Y + 50, m_position.Z - 1.1f), Vector3(54, 60, 0), Vector3(30, 30, 0), "Media\\characters\\ninja_enemy_1\\decapitated_head.png", true, speedMultiplier);
@@ -299,6 +300,15 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointO
 					spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(leg2->ID()), Vector3(0, 0, 0));
 				}
 			}
+			*/
+
+
+
+
+
+
+
+
 		// }
 		/*
 		else if (m_isAnimated && m_animationFile == "XmlFiles\\ninjaAnimation3.xml")
@@ -442,10 +452,10 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointO
 			orbCountMultiplier = 0.0f;
 		}
 
+		/*
 		for (int i = 0; i < (10 * orbCountMultiplier); ++i)
 		{
-			Vector3 orb_pos = m_position + pointOfContact;
-			orb_pos.Z = 40;
+			Vector2 orb_pos = m_position + pointOfContact;
 
 			int randOrb = rand() % 3;
 			switch (randOrb)
@@ -501,6 +511,7 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointO
 					}
 			}
 		}
+		*/
 	}
 	else
 	{
@@ -540,12 +551,11 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointO
 
 Projectile * NPC::FireWeapon(Vector2 direction)
 {
-	Vector3 pos = m_position;
-	pos.X = (direction.X > 0) ? pos.X + m_projectileOffset.X : pos.X -= m_projectileOffset.X;
+	Vector2 pos = m_position;
+	pos.X = (direction.X > 0.0f) ? pos.X + m_projectileOffset.X : pos.X -= m_projectileOffset.X;
 	pos.Y += m_projectileOffset.Y;
-	pos.Z -= 1;
 	
-	if (direction.X > 0)
+	if (direction.X > 0.0f)
 	{
 		pos.X += m_projectileOffset.X;
 	}
@@ -554,17 +564,18 @@ Projectile * NPC::FireWeapon(Vector2 direction)
 		pos.X -= m_projectileOffset.X;
 	}
 	
-	float speed = mSprintActive ? 26 : 21;
+	float speed = mSprintActive ? 26.0f : 21.0f;
 
 	// TODO: ideally want these properties configurable per character
 	Projectile * p = new Projectile(Projectile::kNPCProjectile,
 									mProjectileFilePath.c_str(),
 									mProjectileImpactFilePath.c_str(), 
 									pos,
-									Vector2(20,20),
-									Vector2(25,8),
+									GameObject::kNinjaStarProjectile, //TODO: this won't always be a ninja star
+									Vector2(20.0f,20.0f),
+									Vector2(25.0f,8.0f),
 									direction,
-									2,
+									2.0f,
 									speed,
 									0.25f);
 
@@ -602,13 +613,12 @@ void NPC::Draw(ID3D10Device * device, Camera2D * camera)
 {
 	Character::Draw(device, camera);
 
-	Vector3 healthBarPos = Vector3(m_position.X,
-									m_position.Y + (m_collisionBoxDimensions.Y * 0.5f) + mCollisionBoxOffset.Y + 5 + mRandHealthBarOffsetY,
-									m_position.Z);
+	Vector2 healthBarPos = Vector2(m_position.X,
+									m_position.Y + (m_collisionBoxDimensions.Y * 0.5f) + mCollisionBoxOffset.Y + 5 + mRandHealthBarOffsetY);
 	if (mHealthMeterHealthBeforeDecrease > mHealth && mHealthBarUnderlaySprite)
 	{
-		// TODO: set depth layer
-		mHealthBarUnderlaySprite->SetXY(healthBarPos.X, healthBarPos.Y, healthBarPos.Z);
+		mHealthBarUnderlaySprite->SetXY(healthBarPos.X, healthBarPos.Y);
+		mHealthBarUnderlaySprite->SetDepthLayer(GameObject::kNpc);
 
 		if (mHealthBarUnderlaySprite->IsChangeRequired())
 		{
@@ -623,8 +633,8 @@ void NPC::Draw(ID3D10Device * device, Camera2D * camera)
 		float offsetX = kHealthBarDimensionsX - kHealthBarDimensionsX * percentHealth;
 		offsetX *= 0.5f;
 
-		// TODO: set depth layer
-		mHealthBarSprite->SetXYZ(healthBarPos.X - offsetX, healthBarPos.Y, healthBarPos.Z);
+		mHealthBarSprite->SetXY(healthBarPos.X - offsetX, healthBarPos.Y);
+		mHealthBarSprite->SetDepthLayer(GameObject::kNpc);
 
 		// apply any changes needed
 		if (mHealthBarSprite->IsChangeRequired())
@@ -635,8 +645,8 @@ void NPC::Draw(ID3D10Device * device, Camera2D * camera)
 	}
 	if (mHealthBarOverlaySprite)
 	{
-		// TODO: set depth layer
-		mHealthBarOverlaySprite->SetXY(healthBarPos.X, healthBarPos.Y, healthBarPos.Z);
+		mHealthBarOverlaySprite->SetXY(healthBarPos.X, healthBarPos.Y);
+		mHealthBarOverlaySprite->SetDepthLayer(GameObject::kNpc);
 
 		// apply any changes needed
 		if (mHealthBarOverlaySprite->IsChangeRequired())
@@ -657,7 +667,8 @@ void NPC::AddHealthBar()
 		mHealthBarUnderlaySprite->SetTextureFilename("Media\\characters\\health_bar_back.png");
 		mHealthBarUnderlaySprite->SetIsNativeDimensions(false);
 		mHealthBarUnderlaySprite->SetDimensionsXY(kHealthBarDimensionsX, kHealthBarDimensionsY);
-		mHealthBarUnderlaySprite->SetXY(X(), Y(), Z() - 1); // TODO: set depth layer
+		mHealthBarUnderlaySprite->SetXY(X(), Y());
+		mHealthBarUnderlaySprite->SetDepthLayer(GameObject::kNpc);
 		mHealthBarUnderlaySprite->LoadContent(Graphics::GetInstance()->Device());
 		mHealthBarUnderlaySprite->Initialise();
 
@@ -671,7 +682,8 @@ void NPC::AddHealthBar()
 		mHealthBarSprite->SetTextureFilename("Media\\characters\\health_bar.png");
 		mHealthBarSprite->SetIsNativeDimensions(false);
 		mHealthBarSprite->SetDimensionsXY(kHealthBarDimensionsX, kHealthBarDimensionsY);
-		mHealthBarSprite->SetXY(X(), Y(), Z() - 1); // TODO: set depth layer
+		mHealthBarSprite->SetXY(X(), Y());
+		mHealthBarSprite->SetDepthLayer(GameObject::kNpc);
 		mHealthBarSprite->LoadContent(Graphics::GetInstance()->Device());
 		mHealthBarSprite->Initialise();
 
@@ -685,7 +697,8 @@ void NPC::AddHealthBar()
 		mHealthBarOverlaySprite->SetTextureFilename("Media\\characters\\health_bar_overlay.png");
 		mHealthBarOverlaySprite->SetIsNativeDimensions(false);
 		mHealthBarOverlaySprite->SetDimensionsXY(kHealthBarOverlayDimensionsX, kHealthBarOverlayDimensionsY);
-		mHealthBarOverlaySprite->SetXY(X(), Y(), Z() - 1); // TODO: set depth layer
+		mHealthBarOverlaySprite->SetXY(X(), Y());
+		mHealthBarOverlaySprite->SetDepthLayer(GameObject::kNpc);
 		mHealthBarOverlaySprite->LoadContent(Graphics::GetInstance()->Device());
 		mHealthBarOverlaySprite->Initialise();
 

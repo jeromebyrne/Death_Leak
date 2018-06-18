@@ -21,7 +21,7 @@ public:
 		kReturningToStart
 	};
 
-	PathingPlatform(float x = 0, float y = 0, float z = 0, float width = 10, float height = 10, float breadth = 0,float groundFriction = 1, float airResistance = 1);
+	PathingPlatform(float x = 0.0f, float y = 0.0f, DepthLayer depthLayer = kPlayer, float width = 10.0f, float height = 10.0f,float groundFriction = 1.0f, float airResistance = 1.0f);
 	virtual ~PathingPlatform(void);
 
 	virtual bool OnCollision(SolidMovingSprite * object) override;
@@ -37,7 +37,7 @@ public:
 
 protected:
 
-	std::vector<Vector3> mPathPoints;
+	std::vector<Vector2> mPathPoints;
 
 	int mCurrentPathIndex; // the last point we reached
 
@@ -53,11 +53,11 @@ protected:
 
 	float mPlatformSpeed;
 
-	Vector3 mClosestPointToNextTarget;
+	Vector2 mClosestPointToNextTarget;
 
 	bool mPathForward; // move forward or backward
 
-	Vector3 mOriginalPosition;
+	Vector2 mOriginalPosition;
 
 };
 

@@ -41,6 +41,7 @@
 #include "Door.h"
 #include "GhostEnemy.h"
 
+/*
 struct DepthSortPredicate
 {
 	bool operator() (const shared_ptr<GameObject> & lhs, const shared_ptr<GameObject> & rhs) 
@@ -48,6 +49,7 @@ struct DepthSortPredicate
 		return lhs->Z() > rhs->Z();
 	}
 };
+*/
 
 GameObjectManager* GameObjectManager::m_instance = 0;
 
@@ -716,18 +718,20 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement, const
 
 ParticleSpray * GameObjectManager::ReadParticleSpray(TiXmlElement * element)
 {
+	// TODO: Does this even work anymore?
+
 	string texFileName = XmlUtilities::ReadAttributeAsString(element, "texture", "filename");
 
 	float numParticles = XmlUtilities::ReadAttributeAsFloat(element, "numparticles", "value");
 
 	float posX = XmlUtilities::ReadAttributeAsFloat(element, "position", "x");
 	float posY = XmlUtilities::ReadAttributeAsFloat(element, "position", "y");
-	float posZ = XmlUtilities::ReadAttributeAsFloat(element, "position", "z");
+
+	GameObject::DepthLayer depthLayer = GameObject::ConvertStringToDepthLayer(XmlUtilities::ReadAttributeAsString(element, "position", "depth_layer"));
 
 	//dimensions 
 	float dimX = XmlUtilities::ReadAttributeAsFloat(element, "dimensions", "width");
 	float dimY = XmlUtilities::ReadAttributeAsFloat(element, "dimensions", "height");
-	float dimZ = XmlUtilities::ReadAttributeAsFloat(element, "dimensions", "breadth");
 
 	float dirX = XmlUtilities::ReadAttributeAsFloat(element, "direction", "x");
 	float dirY = XmlUtilities::ReadAttributeAsFloat(element, "direction", "y");
@@ -762,10 +766,11 @@ ParticleSpray * GameObjectManager::ReadParticleSpray(TiXmlElement * element)
 	Vector3 pos = Vector3(0, -23, 16);
 
 	ParticleSpray * p = ParticleEmitterManager::Instance()->CreateDirectedSprayLoadTime(numParticles,
-																						Vector3(posX, posY, posZ),
-																						Vector3(dirX, dirY, 0),
+																						Vector2(posX, posY),
+																						depthLayer,
+																						Vector2(dirX, dirY),
 																						spread,
-																						Vector3(dimX, dimY, dimZ),
+																						Vector2(dimX, dimY),
 																						texFileName.c_str(),
 																						minSpeed,
 																						maxSpeed,
@@ -878,7 +883,7 @@ void GameObjectManager::AddGameObjectViaLevelEditor(GameObject * object)
 // order our drawable list by depth - this a once off that should be done at initialise stage
 void GameObjectManager::OrderDrawablesByDepth()
 {
-	m_gameObjects.sort(DepthSortPredicate());
+	// m_gameObjects.sort(DepthSortPredicate());
 }
 
 GameObject * GameObjectManager::CopyObject(GameObject * toCopy)
@@ -913,18 +918,18 @@ void GameObjectManager::AddSlowMotionLayer()
 	mSlowMotionLayer->m_textureFilename = "Media\\slow_motion_overlay.png";
 	mSlowMotionLayer->m_drawAtNativeDimensions = true;
 	mSlowMotionLayer->m_updateable = true;
-	mSlowMotionLayer->m_position = Vector3(0, 0 * gameScale, 0);
-	mSlowMotionLayer->m_dimensions = Vector3(2048, 1200, 0);
+	mSlowMotionLayer->m_position = Vector2(0.0f, 0.0f * gameScale);
+	mSlowMotionLayer->m_dimensions = Vector2(2048.0f, 1200.0f);
 	mSlowMotionLayer->mRepeatTextureX = false;
 	mSlowMotionLayer->mRepeatTextureY = false;
-	mSlowMotionLayer->m_repeatWidth = 1920;
-	mSlowMotionLayer->m_cameraParallaxMultiplierX = 0;
-	mSlowMotionLayer->m_cameraParallaxMultiplierY = 0;
+	mSlowMotionLayer->m_repeatWidth = 1920.0f;
+	mSlowMotionLayer->m_cameraParallaxMultiplierX = 0.0f;
+	mSlowMotionLayer->m_cameraParallaxMultiplierY = 0.0f;
 	mSlowMotionLayer->m_followCamXPos = true;
 	mSlowMotionLayer->m_followCamYPos = true;
 	mSlowMotionLayer->m_autoScrollY = false;
 	mSlowMotionLayer->m_autoScrollX = false;
-	mSlowMotionLayer->m_autoScrollXSpeed = 0;
+	mSlowMotionLayer->m_autoScrollXSpeed = 0.0f;
 	mSlowMotionLayer->m_autoScrollYSpeed = 0.0f;
 	mSlowMotionLayer->EffectName = "effectlighttexture";
 	mSlowMotionLayer->m_alpha = 0.0f;

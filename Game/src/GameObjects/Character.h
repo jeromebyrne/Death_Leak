@@ -112,7 +112,7 @@ protected:
 
 	void UpdateCollisionBox();
 
-	void FireBloodSpatter(Vector2 direction, const Vector3 & origin);
+	void FireBloodSpatter(Vector2 direction, const Vector2 & origin);
 
 	bool m_isJumping;
 	float m_maxJumpSpeed;

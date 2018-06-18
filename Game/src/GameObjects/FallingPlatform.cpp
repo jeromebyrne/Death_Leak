@@ -1,19 +1,19 @@
 #include "precompiled.h"
 #include "FallingPlatform.h"
 
-const int kReturnTime = 2.0f;
+const float kReturnTime = 2.0f;
 const int kNumTriggerAlphaPulses = 2;
 
-FallingPlatform::FallingPlatform(float x , float y , float z , float width , float height , float breadth ,float groundFriction , float airResistance ):
-Platform(x,y,z,width,height,breadth,groundFriction,airResistance),
+FallingPlatform::FallingPlatform(float x , float y , DepthLayer depthLayer , float width , float height ,float groundFriction , float airResistance ):
+Platform(x,y,depthLayer,width,height,groundFriction,airResistance),
 mCurrentState(kStatic),
-mInitialPosition(x,y,z),
+mInitialPosition(x,y),
 mTriggerStartTime(0.0f),
 mMaxTriggerTime(1.5f),
 mTimeUntilReturn(5.0f),
 mFallStartTime(0.0f),
 mReturnStartTime(0.0f),
-mInitialReturnPosition(0,0,0)
+mInitialReturnPosition(0.0f,0.0f)
 {
 }
 
@@ -34,7 +34,7 @@ bool FallingPlatform::OnCollision(SolidMovingSprite * object)
 	
 	if (dynamic_cast<Player*>(object)) // TODO: optimise with flag
 	{
-		if(object->Bottom() > Y () && object->X() > Left() && object->X() < Right() && object->VelocityY() <= 0.0)
+		if(object->Bottom() > Y () && object->X() > Left() && object->X() < Right() && object->VelocityY() <= 0.0f)
 		{
 			if (mCurrentState == kStatic)
 			{
@@ -62,7 +62,6 @@ void FallingPlatform::XmlRead(TiXmlElement * element)
 
 	mInitialPosition.X = XmlUtilities::ReadAttributeAsFloat(element, "position", "x");
 	mInitialPosition.Y = XmlUtilities::ReadAttributeAsFloat(element, "position", "y");
-	mInitialPosition.Z = XmlUtilities::ReadAttributeAsFloat(element, "position", "z");
 
 	mMaxTriggerTime = XmlUtilities::ReadAttributeAsFloat(element, "maxtriggertime", "value");
 	mTimeUntilReturn = XmlUtilities::ReadAttributeAsFloat(element, "timeuntilreturn", "value");
@@ -133,12 +132,12 @@ void FallingPlatform::DoTriggerLogic()
 	float percent_left = ((float)time_left / (float)mMaxTriggerTime);
 	if (percent_left > 0.75f)
 	{
-		float val = ((percent_left * 4) - 3) * 0.5f;
+		float val = ((percent_left * 4.0f) - 3.0f) * 0.5f;
 		m_alpha = 0.5f + val;
 	}
 	else if (percent_left > 0.5f)
 	{
-		float val = (3 - (percent_left * 4)) * 0.5f;
+		float val = (3.0f - (percent_left * 4.0f)) * 0.5f;
 		m_alpha = 0.5f + val;
 	}
 	else if (percent_left > 0.25f)
@@ -148,8 +147,8 @@ void FallingPlatform::DoTriggerLogic()
 	}
 	else
 	{
-		float val = (1 - (percent_left * 4)) * 0.5f;
-		m_alpha = 0.5f + val;;
+		float val = (1.0f - (percent_left * 4.0f)) * 0.5f;
+		m_alpha = 0.5f + val;
 	}
 }
 
@@ -167,12 +166,12 @@ void FallingPlatform::DoReturnLogic()
 		return;
 	}
 
-	float percent_distance = 1 - ((float)time_left / (float)kReturnTime);
+	float percent_distance = 1.0f - (time_left / kReturnTime);
 
 	// get the distance to the initial position
-	Vector3 distance = mInitialPosition - mInitialReturnPosition;
+	Vector2 distance = mInitialPosition - mInitialReturnPosition;
 	
-	Vector3 increment = mInitialReturnPosition + (distance * percent_distance);
+	Vector2 increment = mInitialReturnPosition + (distance * percent_distance);
 
 	m_position = increment;
 }
@@ -187,13 +186,13 @@ void FallingPlatform::DoFallingLogic()
 		mCurrentState = kReturning;
 
 		m_applyGravity = false;
-		m_velocity = Vector3(0,0,0);
+		m_velocity = Vector2(0.0f, 0.0f);
 		StopYAccelerating();
 		StopXAccelerating();
 	}
 }
 
-void FallingPlatform::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode)
+void FallingPlatform::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointOfContact, bool shouldExplode)
 {
 	Platform::OnDamage(damageDealer, damageAmount, pointOfContact, shouldExplode);
 
