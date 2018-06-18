@@ -10,7 +10,7 @@ public:
 	BombProjectile(ProjectileOwnerType ownerType, 
 					const char* textureFileName,
 					const char * impactTextureFilename,
-					Vector3 position,
+					Vector2 position,
 					Vector2 dimensions,
 					Vector2 collisionDimensions,
 					Vector2 direction,

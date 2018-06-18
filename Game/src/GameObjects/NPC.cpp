@@ -25,19 +25,19 @@ static const float kHealthBarDimensionsY = 8.0f;
 static const float kHealthBarOverlayDimensionsX = 128.0f * 0.5f;
 static const float kHealthBarOverlayDimensionsY = 8.0f;
 
-static const D3DXVECTOR2 kDefaultTex1 = D3DXVECTOR2(0, 0);
-static const D3DXVECTOR2 kDefaultTex2 = D3DXVECTOR2(1, 0);
-static const D3DXVECTOR2 kDefaultTex3 = D3DXVECTOR2(1, 1);
-static const D3DXVECTOR2 kDefaultTex4 = D3DXVECTOR2(0, 1);
+static const D3DXVECTOR2 kDefaultTex1 = D3DXVECTOR2(0.0f, 0.0f);
+static const D3DXVECTOR2 kDefaultTex2 = D3DXVECTOR2(1.0f, 0.0f);
+static const D3DXVECTOR2 kDefaultTex3 = D3DXVECTOR2(1.0f, 1.0f);
+static const D3DXVECTOR2 kDefaultTex4 = D3DXVECTOR2(0.0f, 1.0f);
 
-NPC::NPC(float x, float y, float z, float width, float height, float breadth) :
-	Character(x, y, z, width, height, breadth),
-	m_player(0),
+NPC::NPC(float x, float y, DepthLayer depthLayer, float width, float height) :
+	Character(x, y, depthLayer, width, height),
+	m_player(nullptr),
 	m_friendlyFollowState(nullptr),
 	m_currentState(nullptr),
 	mCheckNPCOverlapCollisions(true),
-	mLastFireTime(0),
-	mNextFireTime(0),
+	mLastFireTime(0.0f),
+	mNextFireTime(0.0f),
 	m_repelState(nullptr),
 	m_rangeAttackState(nullptr),
 	mCurrentHealthMeterScale(1.0f),
@@ -58,7 +58,7 @@ NPC::NPC(float x, float y, float z, float width, float height, float breadth) :
 
 	mLastFireTime = Timing::Instance()->GetTotalTimeSeconds();
 
-	mNextFireTime = (rand() % ((int)((kMaxReloadTime - kMinReloadTime) * 100)) + kMinReloadTime * 100.0f);
+	mNextFireTime = (rand() % ((int)((kMaxReloadTime - kMinReloadTime) * 100.0f)) + kMinReloadTime * 100.0f);
 	mNextFireTime *= 0.01f;
 
 	// initialise the states
@@ -210,7 +210,7 @@ void NPC::FireProjectileAtObject(GameObject * target)
 		if (randSign == 1)
 		{
 			// don't fire right into the ground
-			randYOffset *= -0.20;
+			randYOffset *= -0.20f;
 		}
 
 		Vector2 dir = Vector2(target->Position().X - m_position.X, (target->Position().Y + randYOffset) - m_position.Y);
@@ -220,12 +220,12 @@ void NPC::FireProjectileAtObject(GameObject * target)
 
 		mLastFireTime = Timing::Instance()->GetTotalTimeSeconds();
 
-		mNextFireTime = (rand() % ((int)((kMaxReloadTime - kMinReloadTime) * 100)) + kMinReloadTime * 100.0f);
+		mNextFireTime = (rand() % ((int)((kMaxReloadTime - kMinReloadTime) * 100.0f)) + kMinReloadTime * 100.0f);
 		mNextFireTime *= 0.01f;
 	}
 }
 
-void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode)
+void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointOfContact, bool shouldExplode)
 {
 	mDamageInARowCountdown = kDamageComboWindowDelay;
 	++mDamageInARowCount;

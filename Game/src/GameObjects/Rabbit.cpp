@@ -19,7 +19,7 @@ Rabbit::~Rabbit(void)
 {
 }
 
-void Rabbit::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode)
+void Rabbit::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointOfContact, bool shouldExplode)
 {
 	Character::OnDamage(damageDealer, damageAmount, pointOfContact, false);
 

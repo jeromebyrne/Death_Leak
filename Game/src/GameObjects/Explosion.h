@@ -5,7 +5,7 @@
 class Explosion : public DrawableObject
 {
 public:
-	Explosion(float damage = 100, float radius = 200, float x = 0, float y = 0, float z = 0, float width = 1, float height = 1, float breadth = 1, char* effectName = "effectlighttexture");
+	Explosion(float damage = 100.0f, float radius = 200.0f, float x = 0, float y = 0, DepthLayer depthLayer, float width = 1.0f, float height = 1.0f, char* effectName = "effectlighttexture");
 	virtual ~Explosion(void);
 
 private:

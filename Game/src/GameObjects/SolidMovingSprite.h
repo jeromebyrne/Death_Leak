@@ -52,12 +52,12 @@ public:
 	// the bottom of our bounding box
 	inline float CollisionBottom() const
 	{
-		return (m_position.Y - (m_collisionBoxDimensions.Y * 0.5)) + mCollisionBoxOffset.Y;
+		return (m_position.Y - (m_collisionBoxDimensions.Y * 0.5f)) + mCollisionBoxOffset.Y;
 	}
 
 	inline float CollisionBottomLastFrame() const
 	{
-		return (m_lastPosition.Y - (m_collisionBoxDimensions.Y * 0.5)) + mCollisionBoxOffset.Y;
+		return (m_lastPosition.Y - (m_collisionBoxDimensions.Y * 0.5f)) + mCollisionBoxOffset.Y;
 	}
 
 	inline float CollisionCentreX() const

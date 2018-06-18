@@ -45,7 +45,7 @@ public:
 	void SetGravityValue(float value) { m_gravity = value; }
 	void SetMinBrightnessValue(float value) { m_minBrightness = value; }
 	void SetMaxBrightnessValue(float value) { m_maxBrightness = value; }
-	void SetNumParticlesValue(float value) { m_numParticles = value; }
+	void SetNumParticlesValue(int value) { m_numParticles = value; }
 	void SetFadeOutPercentTime(float value)
 	{
 		mFadeOutPercentTime = value;

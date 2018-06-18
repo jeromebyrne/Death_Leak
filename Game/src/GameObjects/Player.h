@@ -7,7 +7,7 @@ class Player : public Character
 
 public:
 
-	Player(float x = 0, float y = 0, float z = 0, float width = 10, float height = 10, float breadth = 0);
+	Player(float x = 0, float y = 0, float width = 10, float height = 10);
 	virtual ~Player(void);
 	virtual void Update(float delta) override;
 	void Initialise() override;

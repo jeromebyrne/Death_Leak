@@ -553,7 +553,7 @@ void Character::DoMeleeCollisions(SolidMovingSprite * object)
 
 				ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
 					object->Position(),
-					object->GetDepthLayer(),
+					GameObject::kImpactCircles,
 					Vector2(0.0f, 0.0f),
 					0.4,
 					Vector2(3200.0f, 1200.0f),

@@ -31,7 +31,7 @@ CurrencyOrb::~CurrencyOrb(void)
 {
 }
 
-void CurrencyOrb::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode)
+void CurrencyOrb::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointOfContact, bool shouldExplode)
 {
 }
 
@@ -263,50 +263,52 @@ void CurrencyOrb::DoCollisionLargeType(Player * player)
 		string particleName = m_material->GetRandomParticleTexture();
 
 		ParticleEmitterManager::Instance()->CreateRadialSpray(20,
-																Vector3(m_position.X + player->VelocityX() * 5, m_position.Y + player->VelocityY() * 2, player->Z() - 0.02f),
-																Vector3(3200, 1200, 0),
+																Vector2(m_position.X + player->VelocityX() * 5, m_position.Y + player->VelocityY() * 2),
+																GetDepthLayer(),
+																Vector2(3200.0f, 1200.0f),
 																particleName,
-																3.0,
-																7.4,
+																3.0f,
+																7.4f,
 																0.4f,
 																0.6f,
-																50,
-																100,
-																0.5,
+																50.0f,
+																100.0f,
+																0.5f,
 																false,
-																0.8,
-																1.0,
+																0.8f,
+																1.0f,
 																0.8f,
 																true,
 																3.0f,
 																0.15f,
 																0.8f,
-																5,
-																5);
+																5.0f,
+																5.0f);
 
 		ParticleEmitterManager::Instance()->CreateRadialSpray(1,
-																Vector3(m_position.X + player->VelocityX() * 5, m_position.Y + player->VelocityY() * 2, player->Z() - 0.01f),
-																Vector3(3200, 1200, 0),
+																Vector2(m_position.X + player->VelocityX() * 5.0f, m_position.Y + player->VelocityY() * 2.0f),
+																GameObject::kImpactCircles,
+																Vector2(3200.0f, 1200.0f),
 																"Media\\blast_circle.png",
-																1.0,
-																2.4,
+																1.0f,
+																2.4f,
 																0.35f,
 																0.35f,
-																100,
-																100,
-																0.5,
+																100.0f,
+																100.0f,
+																0.5f,
 																false,
-																0.8,
-																1.0,
+																0.8f,
+																1.0f,
 																0.8f,
 																true,
 																5.5f,
 																0.15f,
 																0.5f,
-																0,
-																0);
+																0.0f,
+																0.0f);
 
-		Vector3 position(m_position.X, m_position.Y, m_position.Z + 0.01f);
+		Vector2 position(m_position.X, m_position.Y);
 		SpawnOrbs(position, 10);
 	}
 }
@@ -324,49 +326,51 @@ void CurrencyOrb::AddTrailParticles()
 		{
 			p = ParticleEmitterManager::Instance()->CreateRadialSpray(15,
 																		m_position,
-																		Vector3(3200, 1200, 0),
+																		GetDepthLayer(),
+																		Vector2(3200.0f, 1200.0f),
 																		particleName,
-																		1.5,
-																		3.4,
+																		1.5f,
+																		3.4f,
 																		0.1f,
 																		0.35f,
-																		40,
-																		80,
-																		0.5,
+																		40.0f,
+																		80.0f,
+																		0.5f,
 																		true,
-																		0.8,
-																		1.0,
+																		0.8f,
+																		1.0f,
 																		-1.0f,
 																		true,
 																		0.1f,
 																		0.15f,
 																		0.8f,
-																		3,
-																		3);
+																		3.0f,
+																		3.0f);
 		}
 		else
 		{
 			p = ParticleEmitterManager::Instance()->CreateRadialSpray(40,
 																		m_position,
-																		Vector3(3200, 1200, 0),
+																		GetDepthLayer(),
+																		Vector2(3200.0f, 1200.0f),
 																		particleName,
-																		1.8,
-																		3.6,
+																		1.8f,
+																		3.6f,
 																		0.1f,
 																		0.35f,
-																		200,
-																		300,
-																		0.5,
+																		200.0f,
+																		300.0f,
+																		0.5f,
 																		true,
-																		0.8,
-																		1.0,
+																		0.8f,
+																		1.0f,
 																		-1.0f,
 																		true,
 																		0.1f,
 																		0.15f,
 																		0.8f,
-																		4,
-																		5);
+																		4.0f,
+																		5.0f);
 		}
 
 		if (p)
@@ -393,7 +397,8 @@ void CurrencyOrb::SpawnOrbs(Vector2 & position, unsigned int numOrbs)
 		newOrb->mCollisionBoxOffset.Y = 10;
 		newOrb->m_isAnimated = true;
 		newOrb->m_animationFile = animFile;
-		newOrb->SetXY(position.X, position.Y, position.Z + 0.01f); // TODO: set depth layer
+		newOrb->SetXY(position.X, position.Y);
+		newOrb->SetDepthLayer(GameObject::kOrb);
 		newOrb->m_maxVelocity.X = 20.0f;
 		newOrb->m_maxVelocity.Y = 99999;
 		newOrb->SetVelocityXY((((rand() % 100) * 0.18f)) * ((rand() % 2) == 1 ? -1.0f : 1.0f),

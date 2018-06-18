@@ -25,7 +25,7 @@ void AnimationSkeleton::PopulateFrameData(unsigned int frame, list<AnimationSkel
 
 bool AnimationSkeleton::HasCollidedOnFrame(unsigned int frame, 
 											bool isHFlipped, 
-											Vector3 & skeletonWorldPos, 
+											Vector2 & skeletonWorldPos, 
 											Vector2 & startPoint, 
 											Vector2 & endPoint,
 											Vector2 & intersectPointOut)
@@ -51,7 +51,7 @@ bool AnimationSkeleton::HasCollidedOnFrame(unsigned int frame,
 }
 
 bool AnimationSkeleton::Intersect(bool isHFlipped, 
-									Vector3 & skeletonWorldPos, 
+									Vector2 & skeletonWorldPos, 
 									AnimationSkeletonFramePiece & framePiece, 
 									Vector2 & otherStart, 
 									Vector2 & otherEnd,

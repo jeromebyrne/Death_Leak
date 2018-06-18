@@ -8,8 +8,8 @@
 
 static const unsigned int kExplosionAliveTime = 2000;
 
-Explosion::Explosion(float damage,float radius, float x, float y, float z, float width, float height, float breadth, char* effectName) :
-	DrawableObject(x, y, z, width, height, breadth, effectName),
+Explosion::Explosion(float damage,float radius, float x, float y, GameObject::DepthLayer depthLayer, float width, float height, char* effectName) :
+	DrawableObject(x, y, depthLayer, width, height, effectName),
 	mDamage(damage),
 	mRadius(radius),
 	mFramesActive(0)
@@ -35,12 +35,12 @@ void Explosion::ApplyDamage()
 			continue;
 		}
 
-		Vector3 diff =  m_position - obj->Position();
+		Vector2 diff =  m_position - obj->Position();
 		float distSquared = diff.LengthSquared();
 
 		if (distSquared < (mRadius * mRadius))
 		{
-			obj->OnDamage(this, mDamage, Vector3());
+			obj->OnDamage(this, mDamage, Vector2());
 		}
 	}
 }
@@ -63,7 +63,7 @@ void Explosion::ApplyForceToApplicable()
 		{
 			MovingSprite * moveable = static_cast<MovingSprite *>(obj); // has to be a movingsprite if it's one of the above
 
-			Vector3 direction =  obj->Position() - m_position;
+			Vector2 direction =  obj->Position() - m_position;
 
 			float distSquared = direction.LengthSquared();
 
@@ -128,21 +128,22 @@ void Explosion::Display()
 {
 	ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
 															m_position,
-															Vector3(0, 0, 0),
-															0.4,
-															Vector3(3200, 1200, 0),
+															GameObject::kImpactCircles,
+															Vector2(0.0f, 0.0f),
+															0.4f,
+															Vector2(3200.0f, 1200.0f),
 															"Media\\blast_circle.png",
-															0.01,
-															0.01,
+															0.01f,
+															0.01f,
 															0.25f,
 															0.4f,
-															32,
-															32,
-															0,
+															32.0f,
+															32.0f,
+															0.0f,
 															false,
-															0.7,
-															1.0,
-															10000,
+															0.7f,
+															1.0f,
+															10000.0f,
 															true,
 															75.0f,
 															0.0f,
@@ -152,7 +153,8 @@ void Explosion::Display()
 
 	ParticleEmitterManager::Instance()->CreateRadialSpray(15,
 															m_position,
-															Vector3(2000, 2000, 0),
+															GetDepthLayer(),
+															Vector2(2000.0f, 2000.0f),
 															"Media\\smoke4.png",
 															10.0f,
 															30.5f,
@@ -174,7 +176,8 @@ void Explosion::Display()
 
 	ParticleEmitterManager::Instance()->CreateRadialSpray(20,
 															m_position,
-															Vector3(2000, 2000, 0),
+															GetDepthLayer(),
+															Vector2(2000.0f, 2000.0f),
 															"Media\\flame3.png",
 															5.0f,
 															10.5f,

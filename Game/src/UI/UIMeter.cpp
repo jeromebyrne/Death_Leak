@@ -61,7 +61,7 @@ void UIMeter::Draw(ID3D10Device * graphicsdevice)
 		m_bottomLeft.Y = mInitialPosition.Y;
 		m_bottomLeft.X += (mMeterEdgeWidth * 0.9f) * mScaleX;
 		m_horizontalFlip = false;
-		m_dimensions.X = ((mMeterLength - (mMeterEdgeWidth * 0.8)) * mProgressBeforeMovement) * mScaleX;
+		m_dimensions.X = ((mMeterLength - (mMeterEdgeWidth * 0.8f)) * mProgressBeforeMovement) * mScaleX;
 		m_texture = m_meterBarMiddleBackTexture;
 
 		Reset(); 

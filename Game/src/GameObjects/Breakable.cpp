@@ -10,8 +10,8 @@
 #include "NPCManager.h"
 #include "Projectile.h"
 
-Breakable::Breakable(float x, float y, float z, float width, float height, float breadth) :
-	SolidMovingSprite(x,y,z,width, height, breadth),
+Breakable::Breakable(float x, float y, DepthLayer depthLayer, float width, float height) :
+	SolidMovingSprite(x,y,depthLayer,width, height),
 	mHealth(10.0f),
 	mMaxHealth(10.0f),
 	mState(kNoDamage),
@@ -98,7 +98,7 @@ bool Breakable::OnCollision(SolidMovingSprite * object)
 	return SolidMovingSprite::OnCollision(object);
 }
 
-void Breakable::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode)
+void Breakable::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointOfContact, bool shouldExplode)
 {
 	if (mState == kBroken)
 	{
@@ -146,24 +146,25 @@ void Breakable::UpdateState()
 		GameObjectManager::Instance()->SetBreakableBroken(ID());
 
 		ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
-																Vector3(m_position.X - (m_dimensions.X * 0.5f), m_position.Y - (m_dimensions.Y * 0.5f), m_position.Z - 0.02f),
-																Vector3(0, 0, 0),
+																Vector2(m_position.X - (m_dimensions.X * 0.5f), m_position.Y - (m_dimensions.Y * 0.5f)),
+																GameObject::kImpactCircles,
+																Vector2(0.0f, 0.0f),
 																0.4,
-																Vector3(3200, 1200, 0),
+																Vector2(3200.0f, 1200.0f),
 																"Media\\blast_circle.png",
-																0.01,
-																0.01,
+																0.01f,
+																0.01f,
 																0.7f,
 																0.80f,
-																32,
-																32,
-																0,
+																32.0f,
+																32.0f,
+																0.0f,
 																false,
-																0.7,
-																1.0,
-																10000,
+																0.7f,
+																1.0f,
+																10000.0f,
 																true,
-																6,
+																6.0f,
 																0.0f,
 																0.0f,
 																0.1f,
@@ -249,57 +250,60 @@ void Breakable::SpawnDamageTransitionParticles()
 	float scaleY = m_dimensions.Y / nativeDimensions.Y;
 
 	ParticleEmitterManager::Instance()->CreateDirectedSpray(5,
-																Vector3(m_position.X, m_position.Y, m_position.Z),
-																Vector3(0, 1, 0),
+																Vector2(m_position.X, m_position.Y),
+																GetDepthLayer(),
+																Vector2(0.0f, 1.0f),
 																0.7f,
-																Vector3(3200, 1200, 0),
+																Vector2(3200.0f, 1200.0f),
 																m_material->GetRandomParticleTexture(),
 																1.0f,
 																7.0f,
 																0.7f,
 																1.50f,
-																180,
-																180,
-																0,
+																180.0f,
+																180.0f,
+																0.0f,
 																false,
-																0.7,
-																1.0,
-																10000,
+																0.7f,
+																1.0f,
+																10000.0f,
 																true,
-																2,
+																2.0f,
 																m_dimensions.X * 0.03f,
 																m_dimensions.Y * 0.1f,
 																0.1f,
 																0.1f);
 
+	/*
 	float debrisPosZ = 51.0f;
 	if (m_position.Z < 50.0f)
 	{
 		debrisPosZ = m_position.Z - 0.01f;
 	}
+	*/
 
 	const auto & debrisTextures = m_material->GetDebrisTextures();
 
-	Vector3 size;
+	Vector2 size;
 
 	// A massive hack...
 	if (m_material->GetMaterialName() == "crate")
 	{
-		size = Vector3(160 * scaleX, 443 * scaleY, 0);
+		size = Vector2(160.0f * scaleX, 443.0f * scaleY);
 	}
 	else
 	{
 		// pot
-		size = Vector3(310 * scaleX, 284 * scaleY, 0);
+		size = Vector2(310.0f * scaleX, 284.0f * scaleY);
 	}
 
 	for (const auto & d : debrisTextures)
 	{
-		Debris * debris = new Debris(nullptr, Vector3(m_position.X,
-									m_position.Y + 50,
-									debrisPosZ),
+		Debris * debris = new Debris(nullptr, 
+									Vector2(m_position.X, m_position.Y + 50.0f),
+									GetDepthLayer(),
 									size,
-									Vector3(30, 30, 0),
+									Vector2(30.0f, 30.0f),
 									d.c_str(),
 									false,
 									1.0f);

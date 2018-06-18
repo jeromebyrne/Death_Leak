@@ -71,8 +71,8 @@ public:
 
 	void HandleEvents();
 
-	float GetBaseWidth() const { return mBaseWidth; }
-	float GetBaseHeight() const { return mBaseHeight; }
+	int GetBaseWidth() const { return mBaseWidth; }
+	int GetBaseHeight() const { return mBaseHeight; }
 
 	bool IsInKeyboardInputMode() const { return mIsInKeyboardInputMode; }
 

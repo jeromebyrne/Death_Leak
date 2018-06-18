@@ -440,7 +440,7 @@ void SolidMovingSprite::OnDamage(GameObject * damageDealer, float damageAmount, 
 		ParticleSpray * spray =
 		ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
 																pos,
-																GetDepthLayer(),
+																GameObject::kImpactCircles,
 																Vector2(-m_direction.X, 0.0f),
 																0.4f,
 																Vector2(3200.0f, 1200.0f),

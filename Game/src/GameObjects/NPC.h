@@ -21,7 +21,7 @@ public:
 	friend class AIStateGroundAnimalWander;
 	friend class AIStateFlying;
 
-	NPC(float x = 0, float y = 0, float z = 0, float width = 10, float height = 10, float breadth = 0);
+	NPC(float x = 0.0f, float y = 0.0f, DepthLayer depthLayer = kPlayer, float width = 10.0f, float height = 10.0f);
 	virtual ~NPC(void);
 	virtual void Update(float delta) override;
 	virtual void Draw(ID3D10Device * device, Camera2D * camera) override;
@@ -33,7 +33,7 @@ public:
 
 	virtual void FireProjectileAtObject(GameObject * target);
 
-	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode = true) override;
+	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointOfContact, bool shouldExplode = true) override;
 
 	virtual Projectile * FireWeapon(Vector2 direction) override;
 

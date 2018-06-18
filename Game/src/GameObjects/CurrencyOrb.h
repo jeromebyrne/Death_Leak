@@ -17,7 +17,7 @@ public:
 	CurrencyOrb(void);
 	virtual ~CurrencyOrb(void);
 
-	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode) override;
+	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointOfContact, bool shouldExplode) override;
 	virtual void Initialise() override;
 	virtual bool OnCollision(SolidMovingSprite * object) override;
 

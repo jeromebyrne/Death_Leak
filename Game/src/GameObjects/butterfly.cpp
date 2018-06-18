@@ -21,7 +21,7 @@ Butterfly::~Butterfly(void)
 {
 }
 
-void Butterfly::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode)
+void Butterfly::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointOfContact, bool shouldExplode)
 {
 	if (m_position.Z > 99)
 	{
@@ -41,7 +41,7 @@ void Butterfly::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 
 
 	ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
 															m_position,
-															GetDepthLayer(),
+															GameObject::kImpactCircles,
 															Vector2(-m_direction.X, 0.0f),
 															0.4f,
 															Vector2(3200.0f, 1200.0f),

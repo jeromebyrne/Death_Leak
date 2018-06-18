@@ -14,7 +14,7 @@ static const float kParticleDelay = 0.1f;
 BombProjectile::BombProjectile(ProjectileOwnerType ownerType, 
 								const char* textureFileName, 
 								const char * impactTextureFilename,
-								Vector3 position, 
+								Vector2 position, 
 								Vector2 dimensions,
 								Vector2 collisionDimensions,
 								Vector2 direction,
@@ -25,6 +25,7 @@ Projectile(ownerType,
 			textureFileName, 
 			impactTextureFilename,
 			position,
+			GameObject::kBombProjectile,
 			dimensions,
 			collisionDimensions,
 			 direction, 
@@ -48,7 +49,7 @@ Projectile(ownerType,
 
 BombProjectile::~BombProjectile(void)
 {
-	Explosion * explosion = new Explosion(m_damage, 1000, m_position.X, m_position.Y, m_position.Z - 0.1);
+	Explosion * explosion = new Explosion(m_damage, 1000.0f, m_position.X, m_position.Y, GetDepthLayer());
 
 	GameObjectManager::Instance()->AddGameObject(explosion);
 
@@ -208,7 +209,6 @@ void BombProjectile::HandleSolidLineStripCollision(SolidLineStrip * solidLineStr
 		{
 			// where should the particles spray from
 			Vector2 particlePos = solidLineStrip->Position() - collisionPosition;
-			particlePos.Z = m_position.Z - 0.01f;
 
 			// show particles
 			bool loop = false;
@@ -227,17 +227,18 @@ void BombProjectile::HandleSolidLineStripCollision(SolidLineStrip * solidLineStr
 				string particleTexFile = objectMaterial->GetRandomParticleTexture();
 				ParticleEmitterManager::Instance()->CreateDirectedSpray(5,
 																		particlePos,
-																		Vector3(-m_direction.X, -m_direction.Y, 0),
-																		0.4,
-																		Vector3(3200, 1200, 0),
+																		GetDepthLayer(),
+																		Vector2(-m_direction.X, -m_direction.Y),
+																		0.4f,
+																		Vector2(3200.0f, 1200.0f),
 																		particleTexFile,
 																		1.0f,
 																		4.0f,
 																		minLive,
 																		maxLive,
-																		10,
-																		30,
-																		0.7,
+																		10.0f,
+																		30.0f,
+																		0.7f,
 																		loop,
 																		0.7f,
 																		1.0f,

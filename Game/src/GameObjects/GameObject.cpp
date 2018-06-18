@@ -523,9 +523,21 @@ string GameObject::ConvertDepthLayerToString(DepthLayer depthLayer)
 		{
 			return "kPlayer";
 		}
-		case kProjectile:
+		case kBombProjectile:
 		{
-			return "kProjectile";
+			return "kBombProjectile";
+		}
+		case kNinjaStarProjectile:
+		{
+			return "kNinjaStarProjectile";
+		}
+		case kPlayerProjectile:
+		{
+			return "kPlayerProjectile";
+		}
+		case kImpactCircles:
+		{
+			return "kImpactCircles";
 		}
 		case kBloodSpray1:
 		{
@@ -594,9 +606,21 @@ GameObject::DepthLayer GameObject::ConvertStringToDepthLayer(string depthLayerSt
 	{
 		return kPlayer;
 	}
-	else if (depthLayerString == "kProjectile")
+	else if (depthLayerString == "kBombProjectile")
 	{
-		return kProjectile;
+		return kBombProjectile;
+	}
+	else if (depthLayerString == "kNinjaStarProjectile")
+	{
+		return kNinjaStarProjectile;
+	}
+	else if (depthLayerString == "kPlayerProjectile")
+	{
+		return kPlayerProjectile;
+	}
+	else if (depthLayerString == "kImpactCircles")
+	{
+		return kImpactCircles;
 	}
 	else if (depthLayerString == "kBloodSpray1")
 	{

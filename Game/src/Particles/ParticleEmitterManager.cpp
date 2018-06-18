@@ -69,8 +69,8 @@ ParticleSpray * ParticleEmitterManager::CreateRadialBloodSpray(unsigned int numP
 		Particle p;
 		p.StartTime = creationTime;
 
-		float randDirX = ((rand() % 100)+1) * 0.01;
-		float randDirY = ((rand() % 100)+1) * 0.01;
+		float randDirX = ((rand() % 100)+1) * 0.01f;
+		float randDirY = ((rand() % 100)+1) * 0.01f;
 		
 		int directionXSign = rand() % 2;
 		int directionYSign = rand() % 2;
@@ -173,7 +173,7 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedBloodSpray(int numParticle
 		p.Size = randSize;
 		p.StartSize = randSize;
 
-		float randSpeed = (((rand() % (int)(kBloodDirectedMaxSpeed * 100 - kBloodDirectedMinSpeed * 100)) * 0.01) + kBloodDirectedMinSpeed + 0.01) * gameScale;
+		float randSpeed = (((rand() % (int)(kBloodDirectedMaxSpeed * 100.0f - kBloodDirectedMinSpeed * 100.0f)) * 0.01f) + kBloodDirectedMinSpeed + 0.01f) * gameScale;
 		p.Speed = randSpeed;
 		p.StartSpeed = randSpeed; // our original start speed
 
@@ -485,6 +485,7 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSpray(int numParticles,
 		}
 		else
 		{
+			// TODO: this can only be an INT
 			float posYOffset = rand() % ((unsigned)(spawnSpreadY * 10.0f) + 1);
 
 			if (flippedVertical)

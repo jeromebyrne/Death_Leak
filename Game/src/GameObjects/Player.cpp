@@ -21,8 +21,8 @@ static const float kFocusUseRate = 150.0f;
 static const float kFocusRechargeRate = 10.0f;
 static const float kFocusCooldownTime = 5.0f;
 
-Player::Player(float x, float y, float z, float width, float height, float breadth) :
-Character(x, y, z, width, height, breadth),
+Player::Player(float x, float y, float width, float height) :
+Character(x, y, GameObject::kPlayer, width, height),
 	mProjectileFireDelay(0.15f),
 	mTimeUntilProjectileReady(0.0f),
 	mFireBurstNum(0),
@@ -101,10 +101,9 @@ void Player::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 poi
 
 Projectile * Player::FireBomb(Vector2 direction)
 {
-	Vector3 pos = m_position;
+	Vector2 pos = m_position;
 	pos.X = (direction.X > 0) ? pos.X + m_projectileOffset.X : pos.X -= m_projectileOffset.X;
 	pos.Y += m_projectileOffset.Y;
-	pos.Z -= 0.1;
 
 	if (direction.X > 0)
 	{
@@ -230,21 +229,20 @@ Projectile * Player::FireWeapon(Vector2 direction)
 
 	mTimeUntilProjectileReady = mProjectileFireDelay;
 
-	Vector3 pos = m_position;
-	pos.X = (direction.X > 0) ? pos.X + m_projectileOffset.X : pos.X -= m_projectileOffset.X;
-	pos.Y += mIsCrouching ? m_projectileOffset.Y - 25 : m_projectileOffset.Y;
-	pos.Z = m_position.Z + 0.1;
+	Vector2 pos = m_position;
+	pos.X = (direction.X > 0.0f) ? pos.X + m_projectileOffset.X : pos.X -= m_projectileOffset.X;
+	pos.Y += mIsCrouching ? m_projectileOffset.Y - 25.0f : m_projectileOffset.Y;
 
 	if (mIsMidAirMovingUp)
 	{
-		pos.Y += 65;
+		pos.Y += 65.0f;
 	}
 	else if (mIsMidAirMovingDown)
 	{
-		pos.Y += 40;
+		pos.Y += 40.0f;
 	}
 
-	if (direction.X > 0)
+	if (direction.X > 0.0f)
 	{
 		pos.X += m_projectileOffset.X;
 	}
@@ -253,15 +251,16 @@ Projectile * Player::FireWeapon(Vector2 direction)
 		pos.X -= m_projectileOffset.X;
 	}
 
-	float speed = mSprintActive ? 35 : 30;
+	float speed = mSprintActive ? 35.0f : 30.0f;
 	bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
 
 	Projectile * p = new Projectile(Projectile::kPlayerProjectile,
 									mProjectileFilePath.c_str(),
 									mProjectileImpactFilePath.c_str(),
 									pos,
-									Vector2(91,16),
-									Vector2(91,16),
+									GameObject::kPlayerProjectile,
+									Vector2(91.0f,16.0f),
+									Vector2(91.0f,16.0f),
 									direction,
 									0.5f,
 									isInDeepWater ? speed * 0.6f : speed,
@@ -339,9 +338,10 @@ void Player::CheckForAndDoLevelUp()
 		Timing::Instance()->SetTimeModifierForNumSeconds(0.04f, 4.0f);
 		ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
 																m_position,
-																Vector3(0, 1, 0),
-																0.1,
-																Vector3(3200, 1200, 0),
+																GameObject::kImpactCircles,
+																Vector2(0.0f, 1.0f),
+																0.1f,
+																Vector2(3200.0f, 1200.0f),
 																"Media\\blast_circle.png",
 																1.0f,
 																1.0f,
@@ -364,9 +364,10 @@ void Player::CheckForAndDoLevelUp()
 
 		ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
 																m_position,
-																Vector3(0, 1, 0),
-																0.1,
-																Vector3(3200, 1200, 0),
+																GetDepthLayer(),
+																Vector2(0.0f, 0.0f),
+																0.1f,
+																Vector2(3200.0f, 1200.0f),
 																"Media\\explosion_lines.png",
 																1.0f,
 																1.0f,
@@ -389,9 +390,10 @@ void Player::CheckForAndDoLevelUp()
 
 		ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
 																m_position,
-																Vector3(0, 1, 0),
-																0.1,
-																Vector3(3200, 1200, 0),
+																GetDepthLayer(),
+																Vector2(0.0f, 1.0f),
+																0.1f,
+																Vector2(3200.0f, 1200.0f),
 																"Media\\explosion_lines.png",
 																1.0f,
 																1.0f,
@@ -414,7 +416,7 @@ void Player::CheckForAndDoLevelUp()
 
 		// *** Level Up! text
 		{
-			TextObject * levelUpText = new TextObject(m_position.X, m_position.Y, 3.0f);
+			TextObject * levelUpText = new TextObject(m_position.X, m_position.Y, GetDepthLayer(), 3.0f);
 
 			levelUpText->SetFont("Jing Jing");
 			levelUpText->SetFontColor(1.0f, 0.0f, 0.0f);
@@ -432,7 +434,7 @@ void Player::CheckForAndDoLevelUp()
 
 		// *** Game Mechanic unlocked text
 		{
-			TextObject * mechanicDescriptionText = new TextObject(m_position.X, m_position.Y, 3.0f);
+			TextObject * mechanicDescriptionText = new TextObject(m_position.X, m_position.Y, GetDepthLayer(), 3.0f);
 
 			mechanicDescriptionText->SetFont("Jing Jing");
 			mechanicDescriptionText->SetFontColor(0.1f, 0.1f, 0.1f);
@@ -462,13 +464,13 @@ void Player::AddAimLineSprite()
 	mAimLineSprite = new Sprite();
 	
 	mAimLineSprite->SetIsNativeDimensions(false);
-	mAimLineSprite->SetDimensionsXYZ(400, 400, 0);
+	mAimLineSprite->SetDimensionsXY(400.0f, 400.0f);
 
 	mAimLineSprite->SetTextureFilename("Media\\aim_line.png");
 
 	mAimLineSprite->EffectName = this->EffectName;
 
-	mAimLineSprite->SetZ(Z() + 0.1f);
+	mAimLineSprite->SetDepthLayer(GameObject::kPlayer);
 
 	mAimLineSprite->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), Vector3(m_projectileOffset.X , m_projectileOffset.Y , 0), false);
 

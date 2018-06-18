@@ -84,7 +84,7 @@ bool Smashable::OnCollision(SolidMovingSprite * object)
 	return SolidMovingSprite::OnCollision(object);
 }
 
-void Smashable::OnDamage(GameObject * damageDealer, float damageAmount, Vector3 pointOfContact, bool shouldExplode)
+void Smashable::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointOfContact, bool shouldExplode)
 {
 	SolidMovingSprite::OnDamage(damageDealer, damageAmount, pointOfContact, shouldExplode);
 }
