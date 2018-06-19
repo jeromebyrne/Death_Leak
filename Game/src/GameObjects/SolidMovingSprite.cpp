@@ -43,15 +43,16 @@ void SolidMovingSprite::Update(float delta)
 {
 	MovingSprite::Update(delta);
 
-	if (m_onTopOfOtherSolidObject && m_velocity.Y < -10)
-	{
-		// if on top of an object and downward velocity is string then balance it out
-		m_velocity.Y = -0.05;
-	}
-
 	if (mMeleeStrikeCooldown > 0.0f)
 	{
 		mMeleeStrikeCooldown -= delta;
+	}
+
+	bool isOnSolidSurface = IsOnSolidSurface();
+
+	if (isOnSolidSurface)
+	{
+		SetVelocityY(0.0f);
 	}
 }
 
@@ -60,20 +61,20 @@ void SolidMovingSprite::SetupDebugDraw()
 	MovingSprite::SetupDebugDraw();
 
 	//srand(Timing::Instance()->TotalGameTime());
-	float randR = 0; //((rand()%100) + 0.1) * 0.01;
-	float randG = 0; //((rand()%100) + 0.1) * 0.01;
-	float randB = 0; //((rand()%100) + 0.1) * 0.01;
+	float randR = 0.0f; //((rand()%100) + 0.1) * 0.01;
+	float randG = 0.0f; //((rand()%100) + 0.1) * 0.01;
+	float randB = 0.0f; //((rand()%100) + 0.1) * 0.01;
 
 	VertexPositionColor vertices[] =
     {
-		{ D3DXVECTOR3( - m_collisionBoxDimensions.X * 0.5f, - m_collisionBoxDimensions.Y * 0.5f, 0 ), D3DXVECTOR4(randR,randG,randB,1)}, 
-        { D3DXVECTOR3( m_collisionBoxDimensions.X * 0.5f, - m_collisionBoxDimensions.Y * 0.5f, 0 ), D3DXVECTOR4(randR,randG,randB,1)}, 
-        { D3DXVECTOR3( m_collisionBoxDimensions.X * 0.5f,  m_collisionBoxDimensions.Y * 0.5f, 0), D3DXVECTOR4(randR,randG,randB,1)},
-        { D3DXVECTOR3( - m_collisionBoxDimensions.X * 0.5f,  m_collisionBoxDimensions.Y * 0.5f, 0 ), D3DXVECTOR4(randR,randG,randB,1)},
-		{ D3DXVECTOR3( - m_collisionBoxDimensions.X * 0.5f, - m_collisionBoxDimensions.Y * 0.5f, 0 ), D3DXVECTOR4(randR,randG,randB,1)}, 
-        { D3DXVECTOR3( - m_collisionBoxDimensions.X * 0.5f,  m_collisionBoxDimensions.Y * 0.5f, 0 ), D3DXVECTOR4(randR,randG,randB,1)}, 
-		{ D3DXVECTOR3( m_collisionBoxDimensions.X * 0.5f, - m_collisionBoxDimensions.Y * 0.5f, 0 ), D3DXVECTOR4(randR,randG,randB,1)}, 
-        { D3DXVECTOR3( m_collisionBoxDimensions.X * 0.5f,  m_collisionBoxDimensions.Y * 0.5f, 0 ), D3DXVECTOR4(randR,randG,randB,1)}
+		{ D3DXVECTOR3( - m_collisionBoxDimensions.X * 0.5f, - m_collisionBoxDimensions.Y * 0.5f, 0.0f ), D3DXVECTOR4(randR,randG,randB,1.0f)}, 
+        { D3DXVECTOR3( m_collisionBoxDimensions.X * 0.5f, - m_collisionBoxDimensions.Y * 0.5f, 0.0f ), D3DXVECTOR4(randR,randG,randB,1.0f)}, 
+        { D3DXVECTOR3( m_collisionBoxDimensions.X * 0.5f,  m_collisionBoxDimensions.Y * 0.5f, 0.0f), D3DXVECTOR4(randR,randG,randB,1.0f)},
+        { D3DXVECTOR3( - m_collisionBoxDimensions.X * 0.5f,  m_collisionBoxDimensions.Y * 0.5f, 0.0f ), D3DXVECTOR4(randR,randG,randB,1.0f)},
+		{ D3DXVECTOR3( - m_collisionBoxDimensions.X * 0.5f, - m_collisionBoxDimensions.Y * 0.5f, 0.0f ), D3DXVECTOR4(randR,randG,randB,1.0f)}, 
+        { D3DXVECTOR3( - m_collisionBoxDimensions.X * 0.5f,  m_collisionBoxDimensions.Y * 0.5f, 0.0f ), D3DXVECTOR4(randR,randG,randB,1.0f)}, 
+		{ D3DXVECTOR3( m_collisionBoxDimensions.X * 0.5f, - m_collisionBoxDimensions.Y * 0.5f, 0.0f ), D3DXVECTOR4(randR,randG,randB,1.0f)}, 
+        { D3DXVECTOR3( m_collisionBoxDimensions.X * 0.5f,  m_collisionBoxDimensions.Y * 0.5f, 0.0f ), D3DXVECTOR4(randR,randG,randB,1.0f)}
     };
 
 	for(int i = 0; i < 8; i++)
@@ -180,7 +181,7 @@ void SolidMovingSprite :: Initialise()
 	// update base classes
 	MovingSprite::Initialise();
 
-	m_collisionBoxVBuffer = 0;
+	m_collisionBoxVBuffer = nullptr;
 }
 
 void SolidMovingSprite::XmlRead(TiXmlElement * element)
@@ -339,16 +340,16 @@ bool SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 		// this is only done to compare the size of the xOverlap and yOverlap,
 		// these new values are stored in temporary variables and the originals are
 		// not touched
-		if(tempXoverlap < 0)
+		if(tempXoverlap < 0.0f)
 		{
-			tempXoverlap = (-tempXoverlap-1);
+			tempXoverlap = (-tempXoverlap-1.0f);
 		}
-		else{ tempXoverlap += 1; }
-		if(tempYoverlap < 0)
+		else{ tempXoverlap += 1.0f; }
+		if(tempYoverlap < 0.0f)
 		{
-			tempYoverlap = (-tempYoverlap-1);
+			tempYoverlap = (-tempYoverlap-1.0f);
 		}
-		else{ tempYoverlap += 1; }
+		else{ tempYoverlap += 1.0f; }
 		
 		// now determine which overlap is greater,
 		// we are going to move the point along the axis which

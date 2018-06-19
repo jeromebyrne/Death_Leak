@@ -95,18 +95,18 @@ void GameObject::Initialise()
 	{
 		mLevelEditSelectionDimensions.X = m_dimensions.X;
 
-		if (mLevelEditSelectionDimensions.X < 10)
+		if (mLevelEditSelectionDimensions.X < 10.0f)
 		{
-			mLevelEditSelectionDimensions.X = 10;
+			mLevelEditSelectionDimensions.X = 10.0f;
 		}
 	}
 	if (m_dimensions.Y < mLevelEditSelectionDimensions.Y)
 	{
 		mLevelEditSelectionDimensions.Y = m_dimensions.Y;
 
-		if (mLevelEditSelectionDimensions.Y < 10)
+		if (mLevelEditSelectionDimensions.Y < 10.0f)
 		{
-			mLevelEditSelectionDimensions.Y = 10;
+			mLevelEditSelectionDimensions.Y = 10.0f;
 		}
 	}
 

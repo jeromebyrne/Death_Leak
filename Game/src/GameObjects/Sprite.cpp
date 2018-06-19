@@ -16,15 +16,15 @@
 
 static const float kBurstTintMaxTime = 0.25f;
 
-static const D3DXVECTOR2 kDefaultTex1 = D3DXVECTOR2(0,0);
-static const D3DXVECTOR2 kDefaultTex2 = D3DXVECTOR2(1,0);
-static const D3DXVECTOR2 kDefaultTex3 = D3DXVECTOR2(1,1);
-static const D3DXVECTOR2 kDefaultTex4 = D3DXVECTOR2(0,1);
+static const D3DXVECTOR2 kDefaultTex1 = D3DXVECTOR2(0.0f,0.0f);
+static const D3DXVECTOR2 kDefaultTex2 = D3DXVECTOR2(1.0f,0.0f);
+static const D3DXVECTOR2 kDefaultTex3 = D3DXVECTOR2(1.0f,1.0f);
+static const D3DXVECTOR2 kDefaultTex4 = D3DXVECTOR2(0.0f,1.0f);
 
-static const D3DXVECTOR3 kDefaultNormal = D3DXVECTOR3(0,0,1);
-static const D3DXVECTOR3 kDefaultBumpNormal = D3DXVECTOR3(0,0,-1);
-static const D3DXVECTOR3 kDefaultTangent = D3DXVECTOR3(0,1,0);
-static const D3DXVECTOR3 kDefaultBiNormal = D3DXVECTOR3(1,1,1);
+static const D3DXVECTOR3 kDefaultNormal = D3DXVECTOR3(0.0f,0.0f,1.0f);
+static const D3DXVECTOR3 kDefaultBumpNormal = D3DXVECTOR3(0.0f,0.0f,-1.0f);
+static const D3DXVECTOR3 kDefaultTangent = D3DXVECTOR3(0.0f,1.0f,0.0f);
+static const D3DXVECTOR3 kDefaultBiNormal = D3DXVECTOR3(1.0f,1.0f,1.0f);
 
 Sprite::Sprite(float x, float y, DepthLayer depthLayer, float width, float height)
 	:DrawableObject(x, y, depthLayer, width, height),
@@ -109,7 +109,7 @@ Vector2 Sprite::GetTextureDimensions()
 	if (!IsDrawable() && m_textureFilename.empty())
 	{
 		// it's okay if a non drawable object doesn't have a texture (see SolidLineStrip)
-		return Vector2(0, 0);
+		return Vector2(0.0f, 0.0f);
 	}
 
 	ID3D10ShaderResourceView * srv; 
@@ -195,6 +195,8 @@ void Sprite::RecalculateVertices()
 {
 	ID3D10Device * device = Graphics::GetInstance()->Device();
 
+	float depth = (float)GetDepthLayer();
+
 	if (m_currentEffectType != EFFECT_BUMP)
 	{
 		D3DXVECTOR3 normal1 = kDefaultNormal;
@@ -204,20 +206,20 @@ void Sprite::RecalculateVertices()
 
 		if (m_currentEffectType == EFFECT_FOLIAGE_SWAY)
 		{
-			normal1 = D3DXVECTOR3(mFoliageSwayProperties.BottomLeftSwayIntensity.X, mFoliageSwayProperties.BottomLeftSwayIntensity.Y, 1);
-			normal2 = D3DXVECTOR3(mFoliageSwayProperties.BottomRightSwayIntensity.X, mFoliageSwayProperties.BottomRightSwayIntensity.Y, 1);
-			normal3 = D3DXVECTOR3(mFoliageSwayProperties.TopRightSwayIntensity.X, mFoliageSwayProperties.TopRightSwayIntensity.Y, 1);
-			normal4 = D3DXVECTOR3(mFoliageSwayProperties.TopLeftSwayIntensity.X, mFoliageSwayProperties.TopLeftSwayIntensity.Y, 1);
+			normal1 = D3DXVECTOR3(mFoliageSwayProperties.BottomLeftSwayIntensity.X, mFoliageSwayProperties.BottomLeftSwayIntensity.Y, 1.0f);
+			normal2 = D3DXVECTOR3(mFoliageSwayProperties.BottomRightSwayIntensity.X, mFoliageSwayProperties.BottomRightSwayIntensity.Y, 1.0f);
+			normal3 = D3DXVECTOR3(mFoliageSwayProperties.TopRightSwayIntensity.X, mFoliageSwayProperties.TopRightSwayIntensity.Y, 1.0f);
+			normal4 = D3DXVECTOR3(mFoliageSwayProperties.TopLeftSwayIntensity.X, mFoliageSwayProperties.TopLeftSwayIntensity.Y, 1.0f);
 		}
 
 		VertexPositionTextureNormal vertices[] =
 		{
 			// TODO: optimize this, only need 2d vector?
 			// TODO: actually, was z used for some extra data?
-			{ D3DXVECTOR3( -m_dimensions.X/2, -m_dimensions.Y/2, 1.0f ), kDefaultTex1, normal1 }, // 0
-			{ D3DXVECTOR3( m_dimensions.X/2, -m_dimensions.Y/2, 1.0f ), kDefaultTex2, normal2 }, // 1
-			{ D3DXVECTOR3( m_dimensions.X/2, m_dimensions.Y/2, 1.0f), kDefaultTex3, normal3 },// 2
-			{ D3DXVECTOR3( -m_dimensions.X/2, m_dimensions.Y/2, 1.0f ), kDefaultTex4, normal4 },// 3
+			{ D3DXVECTOR3( -m_dimensions.X/2.0f, -m_dimensions.Y/2.0f, depth), kDefaultTex1, normal1 }, // 0
+			{ D3DXVECTOR3( m_dimensions.X/2.0f, -m_dimensions.Y/2.0f, depth), kDefaultTex2, normal2 }, // 1
+			{ D3DXVECTOR3( m_dimensions.X/2.0f, m_dimensions.Y/2.0f, depth), kDefaultTex3, normal3 },// 2
+			{ D3DXVECTOR3( -m_dimensions.X/2.0f, m_dimensions.Y/2.0f, depth), kDefaultTex4, normal4 },// 3
 		};
 
 		for(int i = 0; i < 4; i++)
@@ -238,10 +240,10 @@ void Sprite::RecalculateVertices()
 			// TODO: optimize this, only need 2d vector?
 			// TODO: actually, was z used for some extra data?
 
-			{ D3DXVECTOR3( -m_dimensions.X/2, -m_dimensions.Y/2, 1.0f ), kDefaultTex1, kDefaultBumpNormal, kDefaultTangent, kDefaultBiNormal}, // 0
-			{ D3DXVECTOR3( m_dimensions.X/2, -m_dimensions.Y/2, 1.0f ), kDefaultTex2, kDefaultBumpNormal, kDefaultTangent, kDefaultBiNormal}, // 1
-			{ D3DXVECTOR3( m_dimensions.X/2, m_dimensions.Y/2, 1.0f), kDefaultTex3, kDefaultBumpNormal, kDefaultTangent, kDefaultBiNormal},// 2
-			{ D3DXVECTOR3( -m_dimensions.X/2, m_dimensions.Y/2, 1.0f ), kDefaultTex4, kDefaultBumpNormal, kDefaultTangent, kDefaultBiNormal},// 3
+			{ D3DXVECTOR3( -m_dimensions.X/2, -m_dimensions.Y/2, depth ), kDefaultTex1, kDefaultBumpNormal, kDefaultTangent, kDefaultBiNormal}, // 0
+			{ D3DXVECTOR3( m_dimensions.X/2, -m_dimensions.Y/2, depth ), kDefaultTex2, kDefaultBumpNormal, kDefaultTangent, kDefaultBiNormal}, // 1
+			{ D3DXVECTOR3( m_dimensions.X/2, m_dimensions.Y/2, depth), kDefaultTex3, kDefaultBumpNormal, kDefaultTangent, kDefaultBiNormal},// 2
+			{ D3DXVECTOR3( -m_dimensions.X/2, m_dimensions.Y/2, depth ), kDefaultTex4, kDefaultBumpNormal, kDefaultTangent, kDefaultBiNormal},// 3
 		};
 
 		Vector3 tangent;

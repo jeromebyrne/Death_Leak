@@ -8,12 +8,12 @@
 MovingSprite::MovingSprite(float x, float y, DepthLayer depthLayer, float width, float height, float groundFriction, float airResistance):
 	Sprite(x,y, depthLayer, width, height), 
 	m_resistance(groundFriction, airResistance), 
-	m_velocity(0,0),
-	m_maxVelocity(0,0),
-	m_acceleration(0,0),
-	m_direction(1,0), 
+	m_velocity(0.0f,0.0f),
+	m_maxVelocity(0.0f,0.0f),
+	m_acceleration(0.0f,0.0f),
+	m_direction(1.0f,0.0f), 
 	m_applyGravity(true),
-	mObjectMovingWith(0),
+	mObjectMovingWith(nullptr),
 	mCurrentYResistance(1.0f),
 	mCurrentXResistance(1.0f),
 	mIsInWater(false),
@@ -23,7 +23,7 @@ MovingSprite::MovingSprite(float x, float y, DepthLayer depthLayer, float width,
 	mHittingSolidLineEdge(false),
 	mMaxVelocityXLimitEnabled(true)
 {
-	if (m_maxVelocity.Y < 0)  // less than 0 actually signifies no maximum
+	if (m_maxVelocity.Y < 0.0f)  // less than 0 actually signifies no maximum
 	{
 		m_maxVelocity.Y = (numeric_limits<int>::max)();
 	}
@@ -49,6 +49,8 @@ void MovingSprite::Scale(float xScale, float yScale, bool scalePosition)
 
 void MovingSprite::Update(float delta)
 {	
+	// TODO: optmize so stuff like SolidLineStrip isn't calling this function
+
 	// update our base class 
 	Sprite::Update(delta);
 
@@ -103,10 +105,10 @@ void MovingSprite::Update(float delta)
 				float nextPositionX = m_position.X + nextVelocity.X;
 
 				if ((solidLineStrip->GetHasHardRightEdge() && 
-					nextVelocity.X > 0 &&
+					nextVelocity.X > 0.0f &&
 					nextPositionX > rightMostPoint.X - solidLineStrip->GetHardRightEdgeOffsetX()) ||
 					(solidLineStrip->GetHasHardLeftEdge() && 
-					nextVelocity.X < 0 &&
+					nextVelocity.X < 0.0f &&
 					nextPositionX < leftMostPoint.X + solidLineStrip->GetHardLeftEdgeOffsetX()))
 				{
 					nextVelocity.X = 0.0f;
@@ -120,8 +122,29 @@ void MovingSprite::Update(float delta)
 	// increase velocity
 	m_velocity = nextVelocity;
 
-	float targetDelta =  Timing::Instance()->GetTargetDelta();
+	bool isOnSolidSurface = IsOnSolidSurface();
+
+	float targetDelta = Timing::Instance()->GetTargetDelta();
 	float percentDelta = delta / targetDelta;
+
+	if (m_applyGravity && !isOnSolidSurface)
+	{
+		if (!mIsInWater)
+		{
+			AccelerateY(-1.0f, (mGravityApplyAmount / mCurrentYResistance) * percentDelta);
+		}
+		else
+		{
+			if (m_velocity.Y > 0.0f)
+			{
+				AccelerateY(-1.0f, 0.055f * percentDelta);
+			}
+			else
+			{
+				AccelerateY(-1.0f, 0.004f * percentDelta);
+			}
+		}
+	}
 
 	if (mObjectMovingWith)
 	{
@@ -131,25 +154,6 @@ void MovingSprite::Update(float delta)
 	else
 	{
 		m_position += m_velocity * percentDelta; // update our position by velocity
-	}
-
-	if (m_applyGravity) // TODO: only apply if not on solid surface
-	{
-		if (!mIsInWater)
-		{
-			AccelerateY(-1, (mGravityApplyAmount /mCurrentYResistance) * percentDelta);
-		}
-		else
-		{
-			if (m_velocity.Y > 0.0f)
-			{
-				AccelerateY(-1, 0.055f * percentDelta);
-			}
-			else
-			{
-				AccelerateY(-1, 0.004f * percentDelta);
-			}
-		}
 	}
 
 	// apply friction values
@@ -194,7 +198,7 @@ void MovingSprite::XmlRead(TiXmlElement * element)
 	m_maxVelocity.X = XmlUtilities::ReadAttributeAsFloat(element, "maxvelocity", "x");
 	m_maxVelocity.Y = XmlUtilities::ReadAttributeAsFloat(element, "maxvelocity", "y");
 
-	if (m_maxVelocity.Y < 0) // less than 0 actually signifies no maximum
+	if (m_maxVelocity.Y < 0.0f) // less than 0 actually signifies no maximum
 	{
 		// TODO: This is a very bad idea, no idea why I originally wanted this
 		m_maxVelocity.Y = 99999.f;
@@ -251,24 +255,24 @@ void MovingSprite::AccelerateX(float directionX, float rate)
 
 void MovingSprite::AccelerateY(float directionY, float rate)
 {
-	if(directionY < 0)
+	if(directionY < 0.0f)
 	{
-		directionY = -1;  // normalise
+		directionY = -1.0f;  // normalise
 
-		if(m_direction.Y > -1)
+		if(m_direction.Y > -1.0f)
 		{
-			m_acceleration.Y = 0;
+			m_acceleration.Y = 0.0f;
 		}
 		m_direction.Y = directionY;
 		m_acceleration.Y = rate;
 	}
-	else if(directionY > 0)
+	else if(directionY > 0.0f)
 	{
-		directionY = 1; //normalise
+		directionY = 1.0f; //normalise
 
-		if(m_direction.Y < 1)
+		if(m_direction.Y < 1.0f)
 		{
-			m_acceleration.Y = 0;
+			m_acceleration.Y = 0.0f;
 		}
 		m_direction.Y = directionY;
 		m_acceleration.Y = rate;
@@ -277,11 +281,11 @@ void MovingSprite::AccelerateY(float directionY, float rate)
 
 void MovingSprite::StopXAccelerating()
 {
-	m_acceleration.X = 0;
+	m_acceleration.X = 0.0f;
 }
 void MovingSprite::StopYAccelerating()
 {
-	m_acceleration.Y = 0;
+	m_acceleration.Y = 0.0f;
 }
 
 void MovingSprite::SetIsInWater(bool value, bool isDeepWater)

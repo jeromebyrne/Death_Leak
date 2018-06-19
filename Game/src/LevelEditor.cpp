@@ -329,28 +329,18 @@ void LevelEditor::CheckForSavePressed()
 	}
 }
 
-void LevelEditor::CheckForZChange()
+void LevelEditor::CheckForDepthChange()
 {
+	// GAME_ASSERT(false);
+	// TODO: implement this with new depth stuff
+	/*
 	if (mSelectedObject)
 	{
 		static bool isPressingZChange = false;
 
-		if (!isPressingZChange && GetAsyncKeyState(VK_CONTROL) < 0 && GetAsyncKeyState(VK_LMENU ) < 0 && GetAsyncKeyState(VK_UP))
-		{
-			mSelectedObject->SetZ(mSelectedObject->Z() + 0.1f);
-			GameObjectManager::Instance()->OrderDrawablesByDepth();
-			isPressingZChange = true;
-		}
-		else if (!isPressingZChange && GetAsyncKeyState(VK_CONTROL) < 0 && GetAsyncKeyState(VK_UP))
+		if (!isPressingZChange && GetAsyncKeyState(VK_CONTROL) < 0 && GetAsyncKeyState(VK_UP))
 		{
 			mSelectedObject->SetZ(mSelectedObject->Z() + 1);
-			GameObjectManager::Instance()->OrderDrawablesByDepth();
-			isPressingZChange = true;
-		}
-
-		if (!isPressingZChange && GetAsyncKeyState(VK_CONTROL) < 0 && GetAsyncKeyState(VK_LMENU ) < 0 && GetAsyncKeyState(VK_DOWN))
-		{
-			mSelectedObject->SetZ(mSelectedObject->Z() - 0.1f);
 			GameObjectManager::Instance()->OrderDrawablesByDepth();
 			isPressingZChange = true;
 		}
@@ -366,6 +356,7 @@ void LevelEditor::CheckForZChange()
 			isPressingZChange = false;
 		}
 	}
+	*/
 }
 
 void LevelEditor::CheckForDeleting()
@@ -585,7 +576,7 @@ void LevelEditor::CheckForCollisionBoxScaling()
 
 				if (scale != 0)
 				{
-					solidSprite->SetCollisionDimensions(Vector3(originalDimensions.X * scale, originalDimensions.Y * scale, solidSprite->CollisionDimensions().Z));
+					solidSprite->SetCollisionDimensions(Vector2(originalDimensions.X * scale, originalDimensions.Y * scale));
 					solidSprite->RecalculateVertices();
 					solidSprite->ApplyChange(Graphics::GetInstance()->Device());
 				}
@@ -994,7 +985,7 @@ void LevelEditor::CheckInput_Regular()
 		pressingPlace = false;
 	}
 
-	CheckForZChange();
+	CheckForDepthChange();
 
 	CheckForSpriteScaling();
 

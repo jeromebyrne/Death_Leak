@@ -41,15 +41,13 @@
 #include "Door.h"
 #include "GhostEnemy.h"
 
-/*
 struct DepthSortPredicate
 {
 	bool operator() (const shared_ptr<GameObject> & lhs, const shared_ptr<GameObject> & rhs) 
 	{
-		return lhs->Z() > rhs->Z();
+		return lhs->GetDepthLayer() > rhs->GetDepthLayer();
 	}
 };
-*/
 
 GameObjectManager* GameObjectManager::m_instance = 0;
 
@@ -847,6 +845,7 @@ void GameObjectManager::AddGameObject(GameObject * object, bool editModeAdd)
 	// TODO: Optimise, huge bottleneck
 	LOG_INFO("optimise AddGameObject");
 
+	// TODO: we shouldn't actually need to do this 
 	OrderDrawablesByDepth();
 }
 
@@ -883,7 +882,7 @@ void GameObjectManager::AddGameObjectViaLevelEditor(GameObject * object)
 // order our drawable list by depth - this a once off that should be done at initialise stage
 void GameObjectManager::OrderDrawablesByDepth()
 {
-	// m_gameObjects.sort(DepthSortPredicate());
+	m_gameObjects.sort(DepthSortPredicate());
 }
 
 GameObject * GameObjectManager::CopyObject(GameObject * toCopy)

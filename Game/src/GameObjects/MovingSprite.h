@@ -116,6 +116,8 @@ public:
 
 	void SetGravityApplyAmount(float value) { mGravityApplyAmount = value; }
 
+	virtual bool IsOnSolidSurface() const { return false; }
+
 protected:
 
 	virtual void DoWaterAccelerationBubbles();

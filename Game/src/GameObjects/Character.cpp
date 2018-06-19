@@ -177,6 +177,7 @@ void Character::Update(float delta)
 	}
 
 	// update the base classes
+	// TODO: animations are being updated here, should update animations afterwards?
 	SolidMovingSprite::Update(delta);
 
 	UpdateCollisionBox();
@@ -275,9 +276,11 @@ void Character::Update(float delta)
 	}
 
 	bool inDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
-	if ((m_acceleration.Y > 0.0f || inDeepWater) && !m_onTopOfOtherSolidObject && !GetIsCollidingAtObjectSide()) // we are accelerating vertically and not on top of another object
+	if (((m_acceleration.Y * m_direction.Y) > 0.0f || inDeepWater) &&
+		!m_onTopOfOtherSolidObject && 
+		!GetIsCollidingAtObjectSide()) // we are accelerating vertically and not on top of another object
 	{
-		if ((!inDeepWater && m_velocity.Y > -0.5) || (inDeepWater && m_velocity.Y > 0.0f))
+		if ((!inDeepWater && m_velocity.Y > -0.5f) || (inDeepWater && m_velocity.Y > 0.0f))
 		{
 			if (!mIsMidAirMovingUp)
 			{
@@ -286,7 +289,7 @@ void Character::Update(float delta)
 			mIsMidAirMovingUp = true;
 			mIsMidAirMovingDown = false;
 		}
-		else if (!(inDeepWater && m_velocity.Y <= -0.5) ||
+		else if (!(inDeepWater && m_velocity.Y <= -0.5f) ||
 			(m_velocity.Y <= 0.0f && inDeepWater))
 		{
 			if (!mIsMidAirMovingDown)
@@ -1168,9 +1171,9 @@ bool Character::Jump(float percent)
 	
 	if (mCurrentJumpsBeforeLand == 0)
 	{
-		m_velocity.Y = 0;
-		m_direction.Y = 1;
-		m_acceleration.Y = (m_maxJumpSpeed / 100) * percent;
+		m_velocity.Y = 1.0f;
+		m_direction.Y = 1.0f;
+		m_acceleration.Y = (m_maxJumpSpeed / 100.0f) * percent;
 
 		// can only increase jump on first jump from land
 		mCanIncreaseJumpVelocity = true;

@@ -36,7 +36,7 @@ public:
 
 	typedef unique_ptr<GameObject> & GameObjectPtrRef;
 
-	GameObject(float x = 0, float y = 0, DepthLayer depthLayer = kPlayer, float width = 1, float height = 1);
+	GameObject(float x = 0.0f, float y = 0.0f, DepthLayer depthLayer = kPlayer, float width = 1.0f, float height = 1.0f);
 	virtual ~GameObject(void);
 
 	virtual void Draw(ID3D10Device * device, Camera2D * camera) { }

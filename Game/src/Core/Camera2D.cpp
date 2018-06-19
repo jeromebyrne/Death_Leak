@@ -297,7 +297,7 @@ void Camera2D::CheckBoundaryCollisions()
 #if _DEBUG
 	if (Game::GetInstance()->GetIsLevelEditMode())
 	{
-		// we need to manipulate teh camera when in edit mode
+		// we need to manipulate the camera when in edit mode
 		return;
 	}
 #endif

@@ -85,7 +85,7 @@ public:
 
 	virtual void SetIsOnSolidLine(bool value, SolidLineStrip * lineStrip);
 
-	bool IsOnSolidSurface() const;
+	bool IsOnSolidSurface() const override;
 
 	SolidLineStrip * GetCurrentSolidLineStrip() const { return mCurrentSolidLineStrip; }
 

@@ -15,6 +15,7 @@ SolidLineStrip::SolidLineStrip(float x, float y, DepthLayer depthLayer, float wi
 	mDrawable = false;
 	mIsSolidLineStrip = true;
 	m_drawAtNativeDimensions = false;
+	m_applyGravity = false;
 }
 
 SolidLineStrip::~SolidLineStrip(void)
@@ -146,16 +147,15 @@ bool SolidLineStrip::OnCollision(SolidMovingSprite * object)
 
 			Vector2 intersectPoint;
 			bool intersect = Intersect(l,
-										Vector2(object->CollisionCentreX(), object->CollisionBottomLastFrame() + 20),
+										Vector2(object->CollisionCentreX(), object->CollisionBottomLastFrame() + 20.0f),
 										Vector2(object->CollisionCentreX(), object->CollisionBottom()), 
 										intersectPoint);
 			if (intersect)
 			{
 				if (object->VelocityY() <= 0.0f) // if not moving upwards (example: jumping)
 				{
-					float diffY = intersectPoint.Y - object->CollisionBottom();
-
-					object->SetY(object->Y() + diffY);
+					// Set 1.0f below the intersection point so the object remains connected
+					object->SetY(intersectPoint.Y + (((object->CollisionDimensions().Y * 0.5f) + object->CollisionBoxOffset().Y) - 1.0f));
 
 					if (!object->IsDebris())
 					{
@@ -196,11 +196,6 @@ bool SolidLineStrip::OnCollision(SolidMovingSprite * object)
 			}
 			else
 			{
-				if (GameObjectManager::Instance()->GetPlayer() == object)
-				{
-					LOG_INFO("DEBUGGING");
-				}
-
 				object->SetIsOnSolidLine(false, nullptr);
 			}
 		}
@@ -220,27 +215,27 @@ void SolidLineStrip::DebugDraw(ID3D10Device *  device)
 
 		if (count == 0 && GetHasHardLeftEdge())
 		{
-			DrawUtilities::DrawLine(l.StartPoint.WorldPosition, Vector2(l.StartPoint.WorldPosition.X - 10, l.StartPoint.WorldPosition.Y + 50));
+			DrawUtilities::DrawLine(l.StartPoint.WorldPosition, Vector2(l.StartPoint.WorldPosition.X - 10.0f, l.StartPoint.WorldPosition.Y + 50.0f));
 		}
 		if (count == (mLines.size() - 1) && GetHasHardRightEdge())
 		{
-			DrawUtilities::DrawLine(l.EndPoint.WorldPosition, Vector2(l.EndPoint.WorldPosition.X + 10, l.EndPoint.WorldPosition.Y + 50));
+			DrawUtilities::DrawLine(l.EndPoint.WorldPosition, Vector2(l.EndPoint.WorldPosition.X + 10.0f, l.EndPoint.WorldPosition.Y + 50.0f));
 		}
 
 		if (mCanDropDown)
 		{
-			DrawUtilities::DrawLine(l.EndPoint.WorldPosition, Vector2(l.EndPoint.WorldPosition.X, l.EndPoint.WorldPosition.Y - 70));
+			DrawUtilities::DrawLine(l.EndPoint.WorldPosition, Vector2(l.EndPoint.WorldPosition.X, l.EndPoint.WorldPosition.Y - 70.0f));
 		}
 
 		if (count == 0)
 		{
-			DrawUtilities::DrawTexture(Vector3(l.StartPoint.WorldPosition.X, l.StartPoint.WorldPosition.Y, 3),
-										Vector2(50, 50),
+			DrawUtilities::DrawTexture(Vector3(l.StartPoint.WorldPosition.X, l.StartPoint.WorldPosition.Y, 3.0f),
+										Vector2(50.0f, 50.0f),
 										"Media\\editor\\circle.png");
 		}
 
-		DrawUtilities::DrawTexture(Vector3(l.EndPoint.WorldPosition.X, l.EndPoint.WorldPosition.Y, 3),
-									Vector2(50, 50),
+		DrawUtilities::DrawTexture(Vector3(l.EndPoint.WorldPosition.X, l.EndPoint.WorldPosition.Y, 3.0f),
+									Vector2(50.0f, 50.0f),
 									"Media\\editor\\circle.png");
 		++count;
 	}

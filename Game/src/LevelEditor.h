@@ -40,7 +40,7 @@ private:
 
 	void CheckForSavePressed();
 
-	void CheckForZChange();
+	void CheckForDepthChange();
 
 	void CheckForSpriteScaling();
 

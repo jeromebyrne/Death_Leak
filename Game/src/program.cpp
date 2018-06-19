@@ -201,7 +201,7 @@ HRESULT Initialise(HINSTANCE hInstance, int nCmdShow)
 	result = g_pWindow->Initialise(hInstance, nCmdShow, WndProc);
 
 	//initialise graphics device and plug into window
-	if(FAILED(result = g_pGraphics->Initialise(g_pWindow->Hwnd(), gBackBufferWidth, gBackBufferHeight, 0.0f,1.0f, 0,0)))
+	if(FAILED(result = g_pGraphics->Initialise(g_pWindow->Hwnd(), gBackBufferWidth, gBackBufferHeight, 0.0f, 1.0f, 0.0f,0.0f)))
 	{
 		MessageBox(g_pWindow->Hwnd(),L"Failed to init graphics",L"FAILED",NULL);
 	}

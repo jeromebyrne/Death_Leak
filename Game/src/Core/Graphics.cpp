@@ -240,7 +240,10 @@ void Graphics::Clear()
 	m_pd3dDevice->ClearRenderTargetView( m_pPreProcessRenderTargetView, clearColor );
 
 	// clear the depth buffer
-	m_pd3dDevice->ClearDepthStencilView( m_pDepthStencilView, D3D10_CLEAR_DEPTH, 1.0f, 0 );
+	if (m_pDepthStencilView != nullptr)
+	{
+		m_pd3dDevice->ClearDepthStencilView(m_pDepthStencilView, D3D10_CLEAR_DEPTH, 1.0f, 0);
+	}
 }
 void Graphics::SwapBuffers()
 {
