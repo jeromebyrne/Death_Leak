@@ -141,13 +141,17 @@ bool SolidLineStrip::OnCollision(SolidMovingSprite * object)
 		{
 			if (!BoxHitCheck(l, object))
 			{
-				object->SetIsOnSolidLine(false, nullptr);
+				if (!object->IsOnSolidlineThisFrame())
+				{
+					object->SetIsOnSolidLine(false, nullptr);
+				}
+
 				continue;
 			}
 
 			Vector2 intersectPoint;
 			bool intersect = Intersect(l,
-										Vector2(object->CollisionCentreX(), object->CollisionBottomLastFrame() + 20.0f),
+										Vector2(object->CollisionCentreX(), object->CollisionBottomLastFrame() + 30.0f),
 										Vector2(object->CollisionCentreX(), object->CollisionBottom()), 
 										intersectPoint);
 			if (intersect)
@@ -196,7 +200,10 @@ bool SolidLineStrip::OnCollision(SolidMovingSprite * object)
 			}
 			else
 			{
-				object->SetIsOnSolidLine(false, nullptr);
+				if (!object->IsOnSolidlineThisFrame())
+				{
+					object->SetIsOnSolidLine(false, nullptr);
+				}
 			}
 		}
 	}

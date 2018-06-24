@@ -1415,9 +1415,9 @@ void LevelEditor::CheckForCameraZoom()
 
 		float zoomLevel = cam->GetZoomLevel();
 
-		if (GetAsyncKeyState(VK_CONTROL))
+		if (GetAsyncKeyState(VK_CONTROL) < 0)
 		{
-			if (GetAsyncKeyState(VK_CONTROL))
+			if (GetAsyncKeyState(VK_LSHIFT) < 0)
 			{
 				cam->SetZoomLevel(mOriginalCameraZoom);
 				return;

@@ -55,6 +55,8 @@ void CurrencyOrb::Initialise()
 	}
 
 	m_material = mIsLargeType ? MaterialManager::Instance()->GetMaterial("flame_orb_large") : MaterialManager::Instance()->GetMaterial("flame_orb");
+
+	SetDepthLayer(GameObject::kOrb);
 }
 
 bool CurrencyOrb::OnCollision(SolidMovingSprite * object)

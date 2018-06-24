@@ -77,6 +77,9 @@ void Game::Initialise()
 
 	SaveManager::GetInstance()->ReadSaveFile();
 
+	mGOMInstance = GameObjectManager::Instance();
+	mUIManagerInstance = UIManager::Instance();
+
 	Settings::GetInstance()->ReadSettingsFile();
 
 	// initialise audio
@@ -107,8 +110,8 @@ void Game::Initialise()
 	m_effectPixelWobble = static_cast<EffectLightTexturePixelWobble*>(EffectManager::Instance()->GetEffect("effectpixelwobble"));
 	m_effectFoliageSway = static_cast<EffectFoliageSway*>(EffectManager::Instance()->GetEffect("effectfoliagesway"));
 
-	m_effectNoise->SetSeed(5);
-	m_effectLightTextureVertexWobble->SetWobbleIntensity(30);
+	m_effectNoise->SetSeed(98765);
+	m_effectLightTextureVertexWobble->SetWobbleIntensity(30.0f);
 
 	// initialise Materials
 	MaterialManager::Instance()->Initialise("XmlFiles\\materials.xml");
@@ -125,9 +128,9 @@ void Game::Initialise()
 	ParticleEmitterManager::Instance()->Initialise(m_pGraphics);
 
 	// initialise the UI
-	UIManager::Instance()->XmlRead("XmlFiles\\UI\\UI.xml"); // read in all of the UI components
-	UIManager::Instance()->LoadContent(m_pGraphics);
-	UIManager::Instance()->Initialise();
+	mUIManagerInstance->XmlRead("XmlFiles\\UI\\UI.xml"); // read in all of the UI components
+	mUIManagerInstance->LoadContent(m_pGraphics);
+	mUIManagerInstance->Initialise();
 
 	// create a screen aligned texture for post processing 
 	m_screenAlignedPostProcTex1 = new ScreenAlignedTexture();
@@ -155,27 +158,18 @@ void Game::Update(float delta)
 	bool damageEffectPauseActive = Timing::Instance()->GetTotalTimeSeconds() < (mLastTimeDamagePauseEffect + 
 																			(kPauseDamageEffectDelay * Timing::Instance()->GetTimeModifier()));
 
-	if (GameObjectManager::Instance()->IsLevelLoaded())
+	if (mGOMInstance->IsLevelLoaded())
 	{
-		if (!mPaused)
-		{
-			// do collision detection
-			if (!damageEffectPauseActive)
-			{
-				CollisionManager::Instance()->DetectAndResolve(m_pCam2d->X(), m_pCam2d->Y());
-			}
-			
-			// NOTE: NEED to check input AFTER we do collision detection, MUST BE IN THIS ORDER
-			mInputManager.ProcessGameplayInput();
-		}
-
+#if _DEBUG
 		if (!mLevelEditMode)
 		{
+#endif
 			if (!damageEffectPauseActive)
 			{
 				// update all of our game objects
-				GameObjectManager::Instance()->Update(mPaused, delta);
+				mGOMInstance->Update(mPaused, delta);
 			}
+#if _DEBUG
 		}
 		else
 		{
@@ -183,7 +177,7 @@ void Game::Update(float delta)
 			if (!hasUpdatedOnce)
 			{
 				// update all of our game objects once
-				auto objects = GameObjectManager::Instance()->GetGameObjectList();
+				auto objects = mGOMInstance->GetGameObjectList();
 				for (auto & obj : objects)
 				{
 					obj->Update(delta);
@@ -195,6 +189,21 @@ void Game::Update(float delta)
 			{
 				mlevelEditor->Update();
 			}
+		}
+#endif
+
+		if (!mPaused)
+		{
+			// do collision detection
+			if (!damageEffectPauseActive)
+			{
+				CollisionManager::Instance()->DetectAndResolve(m_pCam2d->X(), m_pCam2d->Y());
+			}
+			
+			mGOMInstance->PostUpdate(mPaused, delta);
+
+			// NOTE: NEED to check input AFTER we do collision detection, MUST BE IN THIS ORDER
+			mInputManager.ProcessGameplayInput();
 		}
 
 		// TODO: move to the check input function
@@ -226,8 +235,8 @@ void Game::Update(float delta)
 	}
 	
 	// update the UI
-	UIManager::Instance()->Update();
-	UIManager::Instance()->HandleEvents();
+	mUIManagerInstance->Update();
+	mUIManagerInstance->HandleEvents();
 	
 	m_pCam2d->CheckBoundaryCollisions();
 	m_pCam2d->Update();
@@ -298,13 +307,13 @@ void Game::Draw()
 #endif
 
 	// draw all of our gameObjects
-	GameObjectManager::Instance()->Draw(m_pGraphics->Device());
+	mGOMInstance->Draw(m_pGraphics->Device());
 
 #if _DEBUG
 
 	if (mInputManager.ShowDebugInfoEnabled())
 	{
-		GameObjectManager::Instance()->DebugDraw();
+		mGOMInstance->DebugDraw();
 	}
 
 	if (mLevelEditMode && mlevelEditor)
@@ -361,7 +370,7 @@ void Game::PostDraw() // post processsing effects here
 void Game::Cleanup()
 {
 	// delete all of our game objects
-	GameObjectManager::Instance()->DeleteGameObjects();
+	mGOMInstance->DeleteGameObjects();
 
 	// delete our textures
 	TextureManager::Instance()->Release();
@@ -376,7 +385,7 @@ void Game::Cleanup()
 	MaterialManager::Instance()->Release();
 
 	// cleanup UI
-	UIManager::Instance()->Release();
+	mUIManagerInstance->Release();
 	
 	// release the screen aligned texture
 	m_screenAlignedPostProcTex1->Release();

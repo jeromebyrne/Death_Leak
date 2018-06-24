@@ -95,6 +95,10 @@ public:
 
 	bool IsBouncy() const { return mIsBouncy; }
 	float GetBounceMultiplier() const { return mBounceMultiplier; }
+
+	virtual void PostUpdate(float delta) override;
+
+	bool IsOnSolidlineThisFrame() { return mIsOnSolidlineThisFrame; }
 	
 protected:
 
@@ -132,6 +136,8 @@ private:
 	SolidLineStrip * mCurrentSolidLineStrip;
 
 	float mMeleeStrikeCooldown = 0.0f;
+
+	bool mIsOnSolidlineThisFrame = false;
 };
 
 #endif

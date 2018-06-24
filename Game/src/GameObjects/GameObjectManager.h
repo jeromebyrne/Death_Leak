@@ -28,6 +28,7 @@ public:
 	}
 
 	void Update(bool paused, float delta); // call update function on all game objects
+	void PostUpdate(bool paused, float delta);
 	void Draw(ID3D10Device * device); // call Draw on all drawable objects
 	void DebugDraw();
 
@@ -156,6 +157,8 @@ private:
 	std::vector<unsigned int> mCurrentBreakablesBroken;
 
 	std::string mCurrentLevelFile;
+
+	list<GameObject *> mPostUpdateObjects;
 };
 
 #endif

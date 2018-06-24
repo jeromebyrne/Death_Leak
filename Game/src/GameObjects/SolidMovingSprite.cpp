@@ -491,6 +491,8 @@ void SolidMovingSprite::SetIsOnSolidLine(bool value, SolidLineStrip * lineStrip)
 	{
 		GAME_ASSERT(lineStrip);
 		mCurrentSolidLineStrip = lineStrip;
+
+		mIsOnSolidlineThisFrame = true; // gets reset in post update
 	}
 	else
 	{
@@ -535,4 +537,11 @@ void SolidMovingSprite::DoWaterAccelerationBubbles()
 void SolidMovingSprite::TriggerMeleeCooldown()
 {
 	mMeleeStrikeCooldown = 0.5f;
+}
+
+void SolidMovingSprite::PostUpdate(float delta)
+{
+	MovingSprite::PostUpdate(delta);
+
+	mIsOnSolidlineThisFrame = false;
 }

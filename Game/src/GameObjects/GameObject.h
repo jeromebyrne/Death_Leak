@@ -226,6 +226,8 @@ public:
 
 	DepthLayer GetDepthLayer() const { return mDepthLayer; }
 
+	virtual void PostUpdate(float delta) {  }
+
 protected:
 
 	Vector2 m_position;

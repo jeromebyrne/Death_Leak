@@ -21,6 +21,7 @@ class LevelEditor;
 class ScreenAlignedTexture;
 class Camera2D;
 class Graphics;
+class UIManager;
 
 class Game
 {
@@ -90,6 +91,8 @@ private:
 	float mLastTimeDamagePauseEffect;
 	InputManager mInputManager;
 	bool mDamagePauseEnabled = true;
+	GameObjectManager * mGOMInstance = nullptr;
+	UIManager * mUIManagerInstance = nullptr;
 };
 
 #endif

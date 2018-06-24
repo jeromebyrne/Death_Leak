@@ -184,6 +184,8 @@ void GameObjectManager::Update(bool paused, float delta)
 		// update the weather
 		WeatherManager::GetInstance()->Update(delta);
 
+		mPostUpdateObjects.clear();
+
 		for(auto & obj : m_gameObjects) 
 		{
 			if (!obj)
@@ -197,25 +199,42 @@ void GameObjectManager::Update(bool paused, float delta)
 				continue;
 			}
 
-			// if the object is in the update zone
-			if (Utilities::IsObjectInRectangle(obj.get(), camX, camY, m_updateZoneDimensions.X, m_updateZoneDimensions.Y))
+			if (obj->AlwaysUpdate())
 			{
 				obj->Update(delta); 
+				mPostUpdateObjects.push_back(obj.get());
 			}
-			else if(obj->AlwaysUpdate())
+			else 
 			{
-				obj->Update(delta); // always update parralax layers
-			}
-			else // objects outside the update area
-			{
-				// if a projectile has gone outside the bounds then just remove it
-				if (obj->IsProjectile() || obj->IsDebris()) // add checks for other projectile class names as needed
+				bool inView = 
+					Utilities::IsObjectInRectangle(obj.get(), camX, camY, m_updateZoneDimensions.X, m_updateZoneDimensions.Y);
+
+				if (inView)
 				{
+					obj->Update(delta);
+					mPostUpdateObjects.push_back(obj.get());
+				}
+				else if (obj->IsProjectile() || obj->IsDebris())
+				{
+					// if a projectile has gone outside the bounds then just remove it
 					RemoveGameObject(obj.get());
 				}
 			}
 		}
 	} // end of if paused
+}
+
+void GameObjectManager::PostUpdate(bool paused, float delta)
+{
+	if (paused)
+	{
+		return;
+	}
+
+	for (GameObject * obj : mPostUpdateObjects)
+	{
+		obj->PostUpdate(delta);
+	}
 
 	// kill any objects in the kill list
 	for (auto obj : m_killList)
