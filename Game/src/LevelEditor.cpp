@@ -454,15 +454,30 @@ void LevelEditor::CheckForSpriteScaling()
 
 			float scale = newLength / origLength;
 
-			if (scale != 0)
+			if (scale != 0.0f)
 			{
-				mSelectedObject->SetDimensionsXY(originalDimensions.X * scale, originalDimensions.Y * scale);
-
 				Sprite * s = GetAsSprite(mSelectedObject);
-				if (s)
+				if (s != nullptr && s->GetDoesRepeatX() && !s->GetDoesRepeatY())
 				{
-					s->ScaleSpriteOnly(scale, scale);
+					mSelectedObject->SetDimensionsXY(originalDimensions.X * scale, originalDimensions.Y);
+				}
+				else
+				{
+					mSelectedObject->SetDimensionsXY(originalDimensions.X * scale, originalDimensions.Y * scale);
+				}
+
+				if (s != nullptr)
+				{
 					s->SetIsNativeDimensions(false);
+					if (s->GetDoesRepeatX() && !s->GetDoesRepeatY())
+					{
+						s->ScaleSpriteOnly(1.0f, 1.0f);
+					}
+					else
+					{
+						s->ScaleSpriteOnly(scale, scale);
+					}
+					
 					s->ApplyChange(Graphics::GetInstance()->Device());
 				}
 			}
@@ -1009,6 +1024,8 @@ void LevelEditor::CheckInput_Regular()
 
 	CheckForPixelMovement();
 
+	CheckForCameraZoom();
+
 	for (auto & obj : gameObjects)
 	{
 		if (dynamic_cast<ParticleSpray*>(obj.get()))
@@ -1167,40 +1184,6 @@ Vector2 LevelEditor::GetMouseWorldPos()
 
 void LevelEditor::CheckForLayerAssign()
 {
-	if (!mSelectedObject)
-	{
-		return;
-	}
-
-	if (GetAsyncKeyState('1') < 0)
-	{
-		mSelectedObject->SetParallaxMultiplierX(1.0f);
-		mSelectedObject->SetParallaxMultiplierY(1.07f);
-	}
-	else if (GetAsyncKeyState('2') < 0)
-	{
-		mSelectedObject->SetParallaxMultiplierX(0.8f);
-		mSelectedObject->SetParallaxMultiplierY(1.04f);
-	}
-	else if (GetAsyncKeyState('3') < 0)
-	{
-		mSelectedObject->SetParallaxMultiplierX(0.65f);
-		mSelectedObject->SetParallaxMultiplierY(1.01f);
-	}
-	if (GetAsyncKeyState('0') < 0)
-	{
-		// reset
-		/*for (auto & object : GameObjectManager::Instance()->GetGameObjectList())
-		{
-			if (object->GetParallaxMultiplierY() == 1.07f)
-			{
-				object->SetParallaxMultiplierY(1.0f);
-			}
-		}*/
-
-		mSelectedObject->SetParallaxMultiplierX(1.0f);
-		mSelectedObject->SetParallaxMultiplierY(1.0f);
-	}
 }
 
 void LevelEditor::CheckForMaterialAssign()
@@ -1421,5 +1404,42 @@ void LevelEditor::CheckForInvokeObjectEditor()
 	if (GetAsyncKeyState(VK_TAB) >= 0)
 	{
 		pressingKey = false;
+	}
+}
+
+void LevelEditor::CheckForCameraZoom()
+{
+	if ( GetAsyncKeyState(VK_MBUTTON) < 0)
+	{
+		auto cam = Camera2D::GetInstance();
+
+		float zoomLevel = cam->GetZoomLevel();
+
+		if (GetAsyncKeyState(VK_CONTROL))
+		{
+			if (GetAsyncKeyState(VK_CONTROL))
+			{
+				cam->SetZoomLevel(mOriginalCameraZoom);
+				return;
+			}
+			// ZOOM IN
+			zoomLevel -= 0.02f;
+		}
+		else
+		{
+			// ZOOM OUT
+			zoomLevel += 0.02f;
+		}
+
+		if (zoomLevel < 0.2f)
+		{
+			zoomLevel = 0.2f;
+		}
+		else if (zoomLevel > 3.0f)
+		{
+			zoomLevel = 3.0f;
+		}
+
+		cam->SetZoomLevel(zoomLevel);
 	}
 }

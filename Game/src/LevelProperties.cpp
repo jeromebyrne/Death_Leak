@@ -44,7 +44,7 @@ void LevelProperties::XmlRead(TiXmlElement * element)
 	if (cam2d)
 	{
 		cam2d->SetBounds(mCamBoundsTopLeft.X, mCamBoundsBottomRight.X, mCamBoundsTopLeft.Y, mCamBoundsBottomRight.Y);
-		cam2d->SetZoomInLevel(mCameraZoomInPercent);
+		cam2d->SetZoomLevel(mCameraZoomInPercent);
 		cam2d->SetTargetOffset(mTargetOffset);
 		cam2d->SetTargetLag(mTargetLag);
 		cam2d->SetShouldFollowX(mFollowX);

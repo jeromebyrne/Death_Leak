@@ -86,7 +86,9 @@ public:
 
 	bool IsWorldPosInView(Vector2 & pos, float parallaxXOffset, float parallaxYOffset);
 
-	void SetZoomInLevel(float value);
+	void SetZoomLevel(float value);
+
+	float GetZoomLevel() { return mZoomPercent; }
 
 	void SetTargetOffset(Vector2 offset) { mTargetOffset = offset; };
 
@@ -132,7 +134,7 @@ private:
 	Vector2 mBoundsTopLeft;
 	Vector2 mBoundsBottomRight;
 
-	float mZoomInPercent;
+	float mZoomPercent;
 
 	Vector2 mTargetOffset;
 	Vector2 mTargetLag;

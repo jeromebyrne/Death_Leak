@@ -10,7 +10,7 @@ Camera2D::Camera2D(int screenWidth, int screenHeight, float x, float y, float z)
 	m_position(x,y,z), 
 	m_width(screenWidth),
 	m_height(screenHeight),
-	mZoomInPercent(1.0f),
+	mZoomPercent(1.0f),
 	mCurrentlyShaking(false),
 	mCurrentShakeIntensity(1.0f),
 	mShakeStartTime(0.0f),
@@ -37,6 +37,13 @@ Camera2D::~Camera2D(void)
 
 bool Camera2D::IsObjectInView(GameObject * object)
 {
+#if _DEBUG
+	if (Game::GetInstance()->GetIsLevelEditMode())
+	{
+		// this is to force draw everythign when in level edit mode
+		return true;
+	}
+#endif
 	bool inView = false;
 
 	float objectX = object->X() - object->GetCurrentParallaxOffsetX();
@@ -175,10 +182,10 @@ void Camera2D::FollowTargetObjectWithLag(bool forceUpdate, float overrideLagX, f
 	// get the x and y distance between the camera and the object
 	float distanceX = 0.0f;
 
-	distanceX = m_position.X - (mTargetObject->X() + (mTargetOffset.X * mZoomInPercent));
+	distanceX = m_position.X - (mTargetObject->X() + (mTargetOffset.X * mZoomPercent));
 
 
-	float xLag = mTargetLag.X * mZoomInPercent;
+	float xLag = mTargetLag.X * mZoomPercent;
 
 	if (overrideLagX != 0.0f)
 	{
@@ -203,7 +210,7 @@ void Camera2D::FollowTargetObjectWithLag(bool forceUpdate, float overrideLagX, f
 		yLag = 1.0f;
 	}
 
-	float distanceY = m_position.Y - (mTargetObject->Y() + mTargetOffset.Y * mZoomInPercent);
+	float distanceY = m_position.Y - (mTargetObject->Y() + mTargetOffset.Y * mZoomPercent);
 
 	m_position.Y -= distanceY / yLag;
 }
@@ -239,29 +246,24 @@ bool Camera2D::IsCameraOriginInsideRect(Vector2 pos, Vector2 dimensions)
 	return false;
 }
 
-void Camera2D::SetZoomInLevel(float value)
+void Camera2D::SetZoomLevel(float value)
 {
-	if (value > 1.0f)
+	if (!Game::GetInstance()->GetIsLevelEditMode())
 	{
-		value = 1.0f;
+		if (value > 1.0f)
+		{
+			value = 1.0f;
+		}
 	}
-
+	
 	if (value < 0.2f)
 	{
 		value = 0.2f;
 	}
 
-	mZoomInPercent = value;
+	mZoomPercent = value;
 
-	// want to have a 1.0 scale for level editing
-	if (!Game::GetIsLevelEditMode())
-	{
-		D3DXMatrixOrthoLH(&m_projection, m_width * value, m_height * value, 0.0f, (std::numeric_limits<float>::max)());
-	}
-	else
-	{
-		D3DXMatrixOrthoLH(&m_projection, m_width, m_height, 0.0f, (std::numeric_limits<float>::max)());
-	}
+	D3DXMatrixOrthoLH(&m_projection, m_width * value, m_height * value, 0.0f, (std::numeric_limits<float>::max)());
 }
 
 void Camera2D::DoSmallShake()

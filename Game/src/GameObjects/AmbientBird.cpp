@@ -71,7 +71,7 @@ void AmbientBird::UpdateAnimations()
 			{
 				bodyPart->SetSequence("Running");
 
-				bodyPart->CurrentSequence()->SetFrameRate(9);
+				bodyPart->CurrentSequence()->SetFrameRate(9.0f);
 			}
 		}
 		
@@ -114,10 +114,10 @@ void AmbientBird::Update(float delta)
 		if (m_position.X > (mStartPosition.X + mTravelOffset))
 		{
 			float diffX = Camera2D::GetInstance()->X() - mStartPosition.X;
-			float startParallaxOffsetX = (diffX * mParallaxMultiplierX) - diffX;
+			float startParallaxOffsetX = (diffX * mParallaxMultiplier.X) - diffX;
 
 			float diffY = Camera2D::GetInstance()->Y() - mStartPosition.Y;
-			float startParallaxOffsetY = (diffY * mParallaxMultiplierY) - diffY;
+			float startParallaxOffsetY = (diffY * mParallaxMultiplier.Y) - diffY;
 
 			if (!Camera2D::GetInstance()->IsObjectInView(this) &&
 				!Camera2D::GetInstance()->IsWorldPosInView(mStartPosition, startParallaxOffsetX, startParallaxOffsetY))
@@ -127,7 +127,7 @@ void AmbientBird::Update(float delta)
 				{
 					float distX = player->X() - m_position.X;
 
-					if (std::abs(distX) > 1000)
+					if (std::abs(distX) > 1000.0f)
 					{
 						m_position = mStartPosition;
 					}
@@ -140,10 +140,10 @@ void AmbientBird::Update(float delta)
 		if (m_position.X < (mStartPosition.X + mTravelOffset))
 		{
 			float diffX = Camera2D::GetInstance()->X() - mStartPosition.X;
-			float startParallaxOffsetX = (diffX * mParallaxMultiplierX) - diffX;
+			float startParallaxOffsetX = (diffX * mParallaxMultiplier.X) - diffX;
 
 			float diffY = Camera2D::GetInstance()->Y() - mStartPosition.Y;
-			float startParallaxOffsetY = (diffY * mParallaxMultiplierY) - diffY;
+			float startParallaxOffsetY = (diffY * mParallaxMultiplier.Y) - diffY;
 
 			if (!Camera2D::GetInstance()->IsObjectInView(this) &&
 				!Camera2D::GetInstance()->IsWorldPosInView(mStartPosition, startParallaxOffsetX, startParallaxOffsetY))
@@ -153,7 +153,7 @@ void AmbientBird::Update(float delta)
 				{
 					float distX = player->X() - m_position.X;
 
-					if (std::abs(distX) > 1000)
+					if (std::abs(distX) > 1000.0f)
 					{
 						m_position = mStartPosition;
 					}
@@ -169,7 +169,7 @@ void AmbientBird::Update(float delta)
 		if (mTimeUntilFlap <= 0.0f)
 		{
 			mTimeUntilFlap = (rand() % (unsigned)((mFlapWingsMaxDelay - mFlapWingsMinDelay) * 100)) + (mFlapWingsMinDelay * 100);
-			mTimeUntilFlap *= 0.01;
+			mTimeUntilFlap *= 0.01f;
 
 			mIsGliding = false;
 		}
@@ -180,7 +180,7 @@ void AmbientBird::Update(float delta)
 		if (mTimeUntilEndFlap <= 0.0f)
 		{
 			mTimeUntilEndFlap = (rand() % (unsigned)((mFlapTimeMaxDelay - mFlapTimeMinDelay) * 100)) + (mFlapTimeMinDelay * 100);
-			mTimeUntilEndFlap *= 0.01;
+			mTimeUntilEndFlap *= 0.01f;
 
 			mIsGliding = true;
 		}

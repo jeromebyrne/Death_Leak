@@ -11,6 +11,7 @@ class GameObject
 public:
 
 	// if adding to this enum then make sure to update ConvertDepthLayerToString and ConvertStringToDepthLayer
+	// also update GetParallaxXForDepthLayer
 	enum DepthLayer
 	{
 		kFarBackground = 6000,
@@ -45,6 +46,8 @@ public:
 	bool IsUpdateable() const { return m_updateable; }
 
 	void SetUpdateable(bool value) { m_updateable = value; }
+
+	static Vector2 GetParallaxMultipliersForDepthLayer(DepthLayer depthLayer);
 
 	inline int ID() const
 	{
@@ -184,13 +187,12 @@ public:
 	virtual void AttachTo(std::shared_ptr<GameObject> & parent, Vector2 offset, DepthLayer depthLayer, bool trackOrientation = true);
 	void Detach();
 
-	float GetParallaxMultiplierX() const { return mParallaxMultiplierX; }
-	float GetParallaxMultiplierY() const { return mParallaxMultiplierY; }
+	float GetParallaxMultiplierX() const { return mParallaxMultiplier.X; }
+	float GetParallaxMultiplierY() const { return mParallaxMultiplier.Y; }
 	float GetCurrentParallaxOffsetX() const { return mCurrentParallaxOffsetX; }
 	float GetCurrentParallaxOffsetY() const { return mCurrentParallaxOffsetY; }
 
-	void SetParallaxMultiplierX(float value) { mParallaxMultiplierX = value; }
-	void SetParallaxMultiplierY(float value) { mParallaxMultiplierY = value; }
+	void SetParallaxMultiplier(Vector2 value) { mParallaxMultiplier = value; }
 
 	virtual void SetupDebugDraw();
 
@@ -262,8 +264,8 @@ protected:
 
 	std::shared_ptr<GameObject> mAttachedTo;
 	Vector2 mAttachedToOffset;
-	float mParallaxMultiplierX;
-	float mParallaxMultiplierY;
+	bool mObjectParallaxEnabled = true;
+	Vector2 mParallaxMultiplier;
 	float mCurrentParallaxOffsetX;
 	float mCurrentParallaxOffsetY;
 	bool mUpdateToParentsOrientation;

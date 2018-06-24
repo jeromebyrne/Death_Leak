@@ -27,9 +27,8 @@ GameObject::GameObject(float x, float y, DepthLayer depthLayer, float width, flo
 	mIsSolidLine(false),
 	mAttachedTo(nullptr),
 	mAttachedToOffset(0.0f, 0.0f),
-	mParallaxMultiplierX(1.0f),
+	mParallaxMultiplier(1.0f, 1.0f),
 	mCurrentParallaxOffsetX(0.0f),
-	mParallaxMultiplierY(1.0f),
 	mCurrentParallaxOffsetY(0.0f),
 	mUpdateToParentsOrientation(false),
 	mIsButterfly(false),
@@ -166,15 +165,18 @@ void GameObject::Update(float delta)
 		SetRotationAngle(m_rotationAngle + (mAutoRotationValue * percentDelta));
 	}
 
-	if (mParallaxMultiplierX != 1.0f)
+	if (mObjectParallaxEnabled)
 	{
-		float diff = Camera2D::GetInstance()->X() - m_position.X;
-		mCurrentParallaxOffsetX = (diff * mParallaxMultiplierX) - diff;
-	}
-	if (mParallaxMultiplierY != 1.0f)
-	{
-		float diff = Camera2D::GetInstance()->Y() - m_position.Y;
-		mCurrentParallaxOffsetY = (diff * mParallaxMultiplierY) - diff;
+		if (mParallaxMultiplier.X != 1.0f)
+		{
+			float diff = Camera2D::GetInstance()->X() - m_position.X;
+			mCurrentParallaxOffsetX = (diff * mParallaxMultiplier.X) - diff;
+		}
+		if (mParallaxMultiplier.Y != 1.0f)
+		{
+			float diff = Camera2D::GetInstance()->Y() - m_position.Y;
+			mCurrentParallaxOffsetY = (diff * mParallaxMultiplier.Y) - diff;
+		}
 	}
 
 	if (mSineWaveProps.DoSineWave)
@@ -207,16 +209,12 @@ void GameObject:: XmlRead(TiXmlElement * element)
 	// position 
 	m_position.X = XmlUtilities::ReadAttributeAsFloat(element, "position", "x");
 	m_position.Y = XmlUtilities::ReadAttributeAsFloat(element, "position", "y");
-	mDepthLayer = ConvertStringToDepthLayer(XmlUtilities::ReadAttributeAsString(element, "position", "depth_layer"));
+	DepthLayer depthLayer = ConvertStringToDepthLayer(XmlUtilities::ReadAttributeAsString(element, "position", "depth_layer"));
+	SetDepthLayer(depthLayer);
 
 	//dimensions 
 	m_dimensions.X = XmlUtilities::ReadAttributeAsFloat(element, "dimensions", "width");
 	m_dimensions.Y = XmlUtilities::ReadAttributeAsFloat(element, "dimensions", "height");
-
-
-	// TODO: these should be automated based on depth layer
-	mParallaxMultiplierX = XmlUtilities::ReadAttributeAsFloat(element, "", "parallax_x");
-	mParallaxMultiplierY = XmlUtilities::ReadAttributeAsFloat(element, "", "parallax_y");
 
 	//// read material
 	string matStr = string(XmlUtilities::ReadAttributeAsString(element, "material", "value"));
@@ -242,9 +240,6 @@ void GameObject:: XmlRead(TiXmlElement * element)
 void GameObject::XmlWrite(TiXmlElement * element)
 {
 	element->SetAttribute("id", Utilities::ConvertDoubleToString(m_id).c_str());
-
-	element->SetDoubleAttribute("parallax_x", mParallaxMultiplierX);
-	element->SetDoubleAttribute("parallax_y", mParallaxMultiplierY);
 
 	const char * levelEditLockedFlag = mLevelEditLocked ? "true" : "false";
 	element->SetAttribute("level_edit_locked", levelEditLockedFlag);
@@ -488,6 +483,8 @@ void GameObject::SetID(int id)
 void GameObject::SetDepthLayer(DepthLayer depthLayer)
 {
 	mDepthLayer = depthLayer;
+
+	mParallaxMultiplier = GetParallaxMultipliersForDepthLayer(mDepthLayer);
 }
 
 string GameObject::ConvertDepthLayerToString(DepthLayer depthLayer)
@@ -662,5 +659,49 @@ GameObject::DepthLayer GameObject::ConvertStringToDepthLayer(string depthLayerSt
 		GAME_ASSERT(false);
 		return kPlayer;
 	}
+}
+
+Vector2 GameObject::GetParallaxMultipliersForDepthLayer(DepthLayer depthLayer)
+{
+	switch (depthLayer)
+	{
+		case kFarBackground:
+		{
+			return Vector2(0.25f, 1.0f);
+		}
+		case kMiddleBackground:
+		{
+			return Vector2(0.5f, 0.9f);
+		}
+		case kNearBackground:
+		{
+			return Vector2(0.75f, 0.95f);
+		}
+		case kGround:
+		case kGroundBlood:
+		case kNpc:
+		case kOrb:
+		case kPlayer:
+		case kGhostVomitProjectile:
+		case kBombProjectile:
+		case kNinjaStarProjectile:
+		case kPlayerProjectile:
+		case kImpactCircles:
+		case kBloodSpray1:
+		{
+			return Vector2(1.0f, 1.0f);
+		}
+		case kFarForeground:
+		case kMiddleForeground:
+		case kNearForeground:
+		case kWeatherForeground:
+		case kSolidLines:
+		default:
+		{
+			return Vector2(1.0f, 1.0f);
+		}
+	}
+
+	return Vector2(1.0f, 1.0f);
 }
 

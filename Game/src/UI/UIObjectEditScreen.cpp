@@ -84,19 +84,19 @@ void UIObjectEditScreen::AddRow(TiXmlElement * xmlElement, float startX, float s
 	// element
 	std::string elementName = xmlElement->Value();
 	{
-		float textBoxWidth = strlen(elementName.c_str()) * 7.5;
+		float textBoxWidth = strlen(elementName.c_str()) * 7.5f;
 
 		if (textBoxWidth < 15.0f) { textBoxWidth = 15.0f; }
 
 		UITextBox * textBox = new UITextBox();
 		float posX = nextXOffset;
 		textBox->SetBottomLeft(Vector2(nextXOffset, (startY - yPadding) - (heightPadding * rowCount)));
-		textBox->SetDimensions(Vector2(textBoxWidth, 15));
+		textBox->SetDimensions(Vector2(textBoxWidth, 15.0f));
 		textBox->SetIsProcessInput(false);
 		textBox->SetIsEditable(false);
 		textBox->SetText(elementName);
 
-		nextXOffset += (5 + textBoxWidth);
+		nextXOffset += (5.0f + textBoxWidth);
 
 		textBox->LoadContent(Graphics::GetInstance()->Device());
 		textBox->Initialise();
@@ -114,7 +114,7 @@ void UIObjectEditScreen::AddRow(TiXmlElement * xmlElement, float startX, float s
 
 		// property key
 		{
-			float textBoxWidth = strlen(key.c_str()) * 8;
+			float textBoxWidth = strlen(key.c_str()) * 8.0f;
 
 			if (textBoxWidth < 15.0f) { textBoxWidth = 15.0f; }
 
@@ -128,7 +128,7 @@ void UIObjectEditScreen::AddRow(TiXmlElement * xmlElement, float startX, float s
 			UITextBox * textBox = new UITextBox();
 			float posX = nextXOffset;
 			textBox->SetBottomLeft(Vector2(nextXOffset, (startY - yPadding) - (heightPadding * rowCount)));
-			textBox->SetDimensions(Vector2(textBoxWidth, 15));
+			textBox->SetDimensions(Vector2(textBoxWidth, 15.0f));
 			textBox->SetIsProcessInput(false);
 			textBox->SetIsEditable(false);
 			textBox->SetText(key);
@@ -146,14 +146,14 @@ void UIObjectEditScreen::AddRow(TiXmlElement * xmlElement, float startX, float s
 
 		// property value
 		{
-			float textBoxWidth = strlen(value.c_str()) * 8;
+			float textBoxWidth = strlen(value.c_str()) * 8.0f;
 
 			if (textBoxWidth < 20.0f) { textBoxWidth = 20.0f; }
 
 			UITextBox * textBox = new UITextBox();
 			float posX = nextXOffset;
 			textBox->SetBottomLeft(Vector2(nextXOffset, (startY - yPadding) - (heightPadding * rowCount)));
-			textBox->SetDimensions(Vector2(textBoxWidth, 15));
+			textBox->SetDimensions(Vector2(textBoxWidth, 15.0f));
 			textBox->SetIsProcessInput(true);
 			textBox->SetText(value);
 
@@ -237,7 +237,7 @@ void UIObjectEditScreen::ApplyChanges()
 	{
 		gameObjectManager->AddGameObjectViaLevelEditor(editedObject);
 		editedObject->SetID(objectId);
-		editedObject->Update(0);
+		editedObject->Update(0.0f);
 		SetObjectToEdit(editedObject);
 	}
 

@@ -155,7 +155,7 @@ bool SolidLineStrip::OnCollision(SolidMovingSprite * object)
 				if (object->VelocityY() <= 0.0f) // if not moving upwards (example: jumping)
 				{
 					// Set 1.0f below the intersection point so the object remains connected
-					object->SetY(intersectPoint.Y + (((object->CollisionDimensions().Y * 0.5f) + object->CollisionBoxOffset().Y) - 1.0f));
+					object->SetY(intersectPoint.Y + (((object->CollisionDimensions().Y * 0.5f) + object->CollisionBoxOffset().Y) - 5.0f));
 
 					if (!object->IsDebris())
 					{

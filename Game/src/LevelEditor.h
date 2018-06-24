@@ -79,6 +79,8 @@ private:
 
 	void CheckForInvokeObjectEditor();
 
+	void CheckForCameraZoom();
+
 	GameObject * GetGameObjectClickedOn(list<shared_ptr<GameObject> > & gameObjects);
 
 	Sprite * GetAsSprite(GameObject * object);
@@ -112,6 +114,8 @@ private:
 	int mSelectedLinePointIndex;
 
 	Sprite * mAnimationPreviewTargetObject = nullptr;
+
+	float mOriginalCameraZoom = 1.0f;
 };
 
 #endif

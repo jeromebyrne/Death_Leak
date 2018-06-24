@@ -276,7 +276,7 @@ void Character::Update(float delta)
 	}
 
 	bool inDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
-	if (((m_acceleration.Y * m_direction.Y) > 0.0f || inDeepWater) &&
+	if ((m_acceleration.Y > 0.0f || inDeepWater) &&
 		!m_onTopOfOtherSolidObject && 
 		!GetIsCollidingAtObjectSide()) // we are accelerating vertically and not on top of another object
 	{
