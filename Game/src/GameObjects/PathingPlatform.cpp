@@ -180,96 +180,43 @@ void PathingPlatform::Scale(float x, float y, bool scalePosition)
 
 bool PathingPlatform::OnCollision(SolidMovingSprite * object)
 {
-	/*
-	if (object->IsSolidLine())
-	{
-		return;
-	}
-
-	// if we are not passive then push ourselves away from the object
-	// remember this behaviour can be overwritten in derived function
-	if (!m_passive && !object->IsProjectile()) // by default we don't want to be pushed by a projectile
-	{
-		float otherTop = object->CollisionTop();
-		float otherBottom = object->CollisionBottom();
-		float otherY = object->Y() + object->CollisionBoxOffset().Y;
-
-		float thisY = this->Y() + CollisionBoxOffset().Y;
-		float thisTop = this->CollisionTop();
-		float thisBottom = this->CollisionBottom();
-
-		// get the overlap
-		float yOverlap = 0.0f;
-
-		// below
-		if (thisBottom > otherBottom && thisBottom < otherTop)
-		{
-			yOverlap = otherBottom - thisTop;
-		}
-		else
-		{
-			mObjectMovingWith = nullptr;
-			return;
-		}
-
-		m_onTopOfOtherSolidObject = true;
-
-		m_position.Y += yOverlap;
-		StopYAccelerating();
-
-		if (mBouncable)
-		{
-			m_velocity.Y = m_velocity.Y * -mBounceDampening;
-		}
-	}
-
-	if (m_applyDamage)
-	{
-		if (object->IsCharacter())
-		{
-			GAME_ASSERT(dynamic_cast<Character*>(object));
-			Character * character = static_cast<Character*>(object);
-			character->OnDamage(this, m_applyDamageAmount, Vector3(0, 0, 0));
-		}
-	}
-	*/
-
+	// SolidMovingSprite::OnCollision(object);
 
 	// *** Platform triggers ***
 	if (mPathingType == kPathWhenTriggered &&
 		(mCurrentPathState == kNotPathing || mCurrentPathState == kReturningToStart) && 
-		dynamic_cast<Player*>(object))
+		object->IsPlayer() &&
+		IsPlayerColliding())
 	{
-		if(object->Bottom() > Y () && object->X() > Left() && object->X() < Right() && object->VelocityY() <= 0.0f)
-		{
-			mClosestPointToNextTarget = Vector2((numeric_limits<int>::max)(), (numeric_limits<int>::max)());
+		mCollidingWithPlayer = true;
 
-			if (mPathForward)
+		mClosestPointToNextTarget = Vector2((numeric_limits<int>::max)(), (numeric_limits<int>::max)());
+
+		if (mPathForward)
+		{
+			if (mCurrentPathState == kReturningToStart)
 			{
-				if (mCurrentPathState == kReturningToStart)
+				if (mCurrentPathIndex < (mPathPoints.size()-1))
 				{
-					if (mCurrentPathIndex < (mPathPoints.size()-1))
-					{
-						++mCurrentPathIndex;
-					}
-					else
-					{
-						mCurrentPathIndex = 0;
-					}
+					++mCurrentPathIndex;
 				}
-				mCurrentPathState = kLoopingForward;
+				else
+				{
+					mCurrentPathIndex = 0;
+				}
 			}
-			else
+			mCurrentPathState = kLoopingForward;
+		}
+		else
+		{
+			if (mCurrentPathState == kReturningToStart)
 			{
-				if (mCurrentPathState == kReturningToStart)
+				if (mCurrentPathIndex > 0)
 				{
-					if (mCurrentPathIndex > 0)
-					{
-						--mCurrentPathIndex;
-					}
+					--mCurrentPathIndex;
 				}
-				mCurrentPathState = kLoopingBackward;
 			}
+			mCurrentPathState = kLoopingBackward;
 		}
 	}
 
@@ -279,6 +226,9 @@ bool PathingPlatform::OnCollision(SolidMovingSprite * object)
 void PathingPlatform::Initialise()
 {
 	Platform::Initialise();
+
+	// Set player not moving 
+	// mObjectMovingWith = nullptr;
 
 	mAlwaysUpdate = true;
 
@@ -303,6 +253,14 @@ void PathingPlatform::Update(float delta)
 {
 	SolidMovingSprite::Update(delta);
 
+	if (mCollidingWithPlayer)
+	{
+		if (!IsPlayerColliding())
+		{
+			mCollidingWithPlayer = false;
+		}
+	}
+
 	switch(mCurrentPathState)
 	{
 		case kLoopingForward:
@@ -312,7 +270,9 @@ void PathingPlatform::Update(float delta)
 					// get the player
 					const Player * player = GameObjectManager::Instance()->GetPlayer();
 
-					if (player && player->GetObjectMovingWith() != this)
+					auto objectMovingWith = player->GetObjectMovingWith();
+
+					if (player &&  objectMovingWith != this)
 					{
 						// the player is not colliding with us so let's start moving back to the start
 						mCurrentPathState = kReturningToStart;
@@ -395,8 +355,8 @@ void PathingPlatform::Update(float delta)
 		case kNotPathing:
 		default:
 			{
-				m_velocity.X = 0;
-				m_velocity.Y = 0;
+				m_velocity.X = 0.0f;
+				m_velocity.Y = 0.0f;
 				break;
 			}
 	};
@@ -475,7 +435,7 @@ void PathingPlatform::PathForward()
 		{
 			Vector2 direction = mPathPoints[mCurrentPathIndex] - m_position;
 
-			if (direction.LengthSquared() < 10 * 10 || direction.LengthSquared() > mClosestPointToNextTarget.LengthSquared())
+			if (direction.LengthSquared() < 10.0f * 10.0f || direction.LengthSquared() > mClosestPointToNextTarget.LengthSquared())
 			{
 				mClosestPointToNextTarget = Vector2((numeric_limits<int>::max)(), (numeric_limits<int>::max)());
 
@@ -567,4 +527,27 @@ void PathingPlatform::PathBackward()
 			}
 		}
 	}
+}
+
+bool PathingPlatform::IsPlayerColliding()
+{
+	Player * player = GameObjectManager::Instance()->GetPlayer();
+
+	if (player == nullptr)
+	{
+		return false;
+	}
+
+	if (player->Bottom() > Y() && player->X() > Left() && player->X() < Right() && player->VelocityY() <= 0.0f)
+	{
+		player->SetObjectMovingWith(this);
+		return true;
+	}
+
+	if (player->GetObjectMovingWith() == this)
+	{
+		player->SetObjectMovingWith(nullptr);
+	}
+	
+	return false;
 }

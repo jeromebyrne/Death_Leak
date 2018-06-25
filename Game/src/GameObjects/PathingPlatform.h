@@ -37,6 +37,8 @@ public:
 
 protected:
 
+	bool IsPlayerColliding();
+
 	std::vector<Vector2> mPathPoints;
 
 	int mCurrentPathIndex; // the last point we reached
@@ -59,6 +61,7 @@ protected:
 
 	Vector2 mOriginalPosition;
 
+	bool mCollidingWithPlayer = false;
 };
 
 #endif

@@ -99,6 +99,8 @@ public:
 
 	const MovingSprite * GetObjectMovingWith() const { return mObjectMovingWith; }
 
+	void SetObjectMovingWith(MovingSprite * movingWith) { mObjectMovingWith = movingWith; }
+
 	void SetIsInWater(bool value, bool isDeepWater);
 	bool GetIsInWater() const { return mIsInWater; }
 

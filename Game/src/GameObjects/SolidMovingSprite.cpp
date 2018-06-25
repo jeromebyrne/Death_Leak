@@ -325,12 +325,10 @@ bool SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 		if(thisBottom >= otherY)
 		{
 			m_onTopOfOtherSolidObject = true;
-			mObjectMovingWith = object;
 		}
 		else
 		{
 			m_onTopOfOtherSolidObject = false;
-			mObjectMovingWith = nullptr;
 		}
 
 		float tempXoverlap = xOverlap;
