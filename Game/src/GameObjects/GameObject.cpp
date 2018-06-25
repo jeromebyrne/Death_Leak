@@ -688,14 +688,23 @@ Vector2 GameObject::GetParallaxMultipliersForDepthLayer(DepthLayer depthLayer)
 		case kPlayerProjectile:
 		case kImpactCircles:
 		case kBloodSpray1:
+		case kSolidLines:
 		{
 			return Vector2(1.0f, 1.0f);
 		}
 		case kFarForeground:
+		{
+			return Vector2(1.1f, 1.05f);
+		}
 		case kMiddleForeground:
+		{
+			return Vector2(1.3f, 1.08f);
+		}
 		case kNearForeground:
 		case kWeatherForeground:
-		case kSolidLines:
+		{
+			return Vector2(1.8f, 1.2f);
+		}
 		default:
 		{
 			return Vector2(1.0f, 1.0f);

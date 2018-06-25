@@ -1,5 +1,12 @@
 <save_data>
-    <XmlFiles-levels-save_shrine_test_level.xml_breakables_broken type="vector" />
-    <XmlFiles-levels-save_shrine_test_level.xml_currency_orbs_collected type="vector" />
+    <XmlFiles-levels-test.xml_breakables_broken type="vector">
+        <e_1 type="int" value="18" />
+    </XmlFiles-levels-test.xml_breakables_broken>
+    <XmlFiles-levels-test.xml_currency_orbs_collected type="vector">
+        <e_1 type="int" value="20" />
+        <e_2 type="int" value="20" />
+    </XmlFiles-levels-test.xml_currency_orbs_collected>
+    <XmlFiles-levels-test_2.xml_currency_orbs_collected type="vector" />
+    <currency_orbs_collected type="int" value="14" />
     <language_locale_key type="string" value="en-gb" />
 </save_data>

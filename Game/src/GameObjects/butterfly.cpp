@@ -11,7 +11,7 @@ Butterfly::Butterfly(void) :
 	NPC()
 {
 	mIsButterfly = true;
-	mHealth = 1; // 1 hit kills for rabbits
+	mHealth = 1.0f; // 1 hit kills for rabbits
 	mMatchAnimFrameRateWithMovement = false;
 	mAddHealthBar = false;
 }
@@ -23,7 +23,7 @@ Butterfly::~Butterfly(void)
 
 void Butterfly::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointOfContact, bool shouldExplode)
 {
-	if (GetDepthLayer() > GameObject::kGround)
+	if (GetDepthLayer() != GameObject::kGround)
 	{
 		// hack to stop butterfly's in the background being affected
 		return;
@@ -46,19 +46,19 @@ void Butterfly::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 
 															0.4f,
 															Vector2(3200.0f, 1200.0f),
 															"Media\\blast_circle.png",
-															0.01,
-															0.01,
+															0.01f,
+															0.01f,
 															0.20f,
 															0.35f,
-															30,
-															30,
-															0,
+															30.0f,
+															30.0f,
+															0.0f,
 															false,
-															0.7,
-															1.0,
-															10000,
+															0.7f,
+															1.0f,
+															10000.0f,
 															true,
-															3,
+															3.0f,
 															0.0f,
 															0.0f,
 															0.1f,

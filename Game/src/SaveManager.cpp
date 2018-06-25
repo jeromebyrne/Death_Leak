@@ -278,6 +278,7 @@ void SaveManager::GetCurrencyOrbsCollected(const std::string & levelFile, std::v
 
 	if (orbVector.getType() != DataValue::Type::VECTOR)
 	{
+		mSaveMap[key] = DataValue(std::vector<DataValue>());
 		return;
 	}
 
@@ -304,6 +305,7 @@ void SaveManager::GetBreakablesBroken(const std::string & levelFile, std::vector
 
 	if (breakablesVector.getType() != DataValue::Type::VECTOR)
 	{
+		mSaveMap[key] = DataValue(std::vector<DataValue>());
 		return;
 	}
 

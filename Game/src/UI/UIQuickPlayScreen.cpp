@@ -31,6 +31,7 @@ void UIQuickPlayScreen::Initialise()
 void UIQuickPlayScreen::CreateLevelEntries()
 {
 	mLevelEntries["Test Level"] = "XmlFiles\\levels\\test.xml";
+	mLevelEntries["Test Level 2"] = "XmlFiles\\levels\\test_2.xml";
 }
 
 void UIQuickPlayScreen::AddLevelButtons()

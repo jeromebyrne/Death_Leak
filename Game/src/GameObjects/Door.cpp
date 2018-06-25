@@ -102,7 +102,7 @@ void Door::XmlWrite(TiXmlElement * element)
 void Door::EnterDoor()
 {
 	// pause when we open a door so as not to get hit by projectiles etc...
-	Game::GetInstance()->PauseGame();
+	// Game::GetInstance()->PauseGame();
 
 	if (!mDoorOpenSFX.empty())
 	{

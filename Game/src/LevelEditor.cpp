@@ -1423,21 +1423,21 @@ void LevelEditor::CheckForCameraZoom()
 				return;
 			}
 			// ZOOM IN
-			zoomLevel -= 0.02f;
+			zoomLevel -= 0.03f;
 		}
 		else
 		{
 			// ZOOM OUT
-			zoomLevel += 0.02f;
+			zoomLevel += 0.03f;
 		}
 
 		if (zoomLevel < 0.2f)
 		{
 			zoomLevel = 0.2f;
 		}
-		else if (zoomLevel > 3.0f)
+		else if (zoomLevel > 5.0f)
 		{
-			zoomLevel = 3.0f;
+			zoomLevel = 5.0f;
 		}
 
 		cam->SetZoomLevel(zoomLevel);

@@ -236,6 +236,8 @@ void GameObjectManager::PostUpdate(bool paused, float delta)
 		obj->PostUpdate(delta);
 	}
 
+	mPostUpdateObjects.clear();
+
 	// kill any objects in the kill list
 	for (auto obj : m_killList)
 	{
@@ -288,6 +290,7 @@ void GameObjectManager::Draw(ID3D10Device *  device)
 			// apply any changes needed
 			if (drawObj->IsChangeRequired())
 			{
+				// TODO: potential profiling 
 				drawObj->ApplyChange(device);
 			}
 			drawObj->Draw(device, m_camera);
@@ -355,8 +358,7 @@ void GameObjectManager::LoadObjectsFromFile(const char* filename)
 	Camera2D * camera = Camera2D::GetInstance();
 
 	// space in which include objects for Updates() and collision detection
-	m_updateZoneDimensions.X = 4000;
-	m_updateZoneDimensions.Y = 4000;
+	m_updateZoneDimensions = Vector2(4000.0f, 4000.0f);
 
 	CollisionManager::Instance()->SetCollisionArea(m_updateZoneDimensions.X, m_updateZoneDimensions.Y);
 
@@ -415,8 +417,8 @@ void GameObjectManager::LoadObjectsFromFile(const char* filename)
 	float bbWidth = Graphics::GetInstance()->BackBufferWidth();
 	float bbHeight = Graphics::GetInstance()->BackBufferHeight();
 
-	float scaleX = bbWidth / 1920;
-	float scaleY = bbHeight / 1080;
+	float scaleX = bbWidth / 1920.0f;
+	float scaleY = bbHeight / 1080.0f;
 
 	m_updateZoneDimensions.X * scaleX;
 	m_updateZoneDimensions.Y * scaleY;
@@ -441,7 +443,7 @@ void GameObjectManager::LoadObjectsFromFile(const char* filename)
 			m_player->SetY(mPlayerStartPosForLevel.Y);
 			m_player->SetDirectionXY(mPlayerStartDirectionXForLevel, 1.0f);
 			m_player->AccelerateX(mPlayerStartDirectionXForLevel);
-			m_camera->SetPositionY(mPlayerStartPosForLevel.Y + 300);
+			m_camera->SetPositionY(mPlayerStartPosForLevel.Y + 300.0f);
 			m_camera->SetPositionX(-mPlayerStartPosForLevel.X);
 			m_camera->FollowTargetObjectWithLag(true, 1.0f, 2.0f);
 		}
@@ -450,7 +452,7 @@ void GameObjectManager::LoadObjectsFromFile(const char* filename)
 	// update all the objects at least once at the start
 	for (auto & obj : m_gameObjects)
 	{
-		obj->Update(0);
+		obj->Update(0.0f);
 	}
 
 	m_levelLoaded = true;
