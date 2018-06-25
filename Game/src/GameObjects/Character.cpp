@@ -1194,6 +1194,8 @@ bool Character::Jump(float percent)
 		bodyPart->Restart();
 	}
 
+	SetY(m_position.Y + 10.0f); // bump us up so that solid lines don't keep us grounded
+
 	++mCurrentJumpsBeforeLand;
 
 	return true;

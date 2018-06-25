@@ -27,6 +27,7 @@ void ForceBox::Update(float delta)
 		{
 			if (player->IsOnSolidSurface())
 			{
+				player->SetY(player->Y() + 10.0f); // bump us up so that solid lines don't keep us grounded
 				player->SetVelocityY(1.0f);
 			}
 			
