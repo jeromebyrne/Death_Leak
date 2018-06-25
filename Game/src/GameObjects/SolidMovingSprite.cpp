@@ -347,7 +347,7 @@ bool SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 		{
 			tempYoverlap = (-tempYoverlap-1.0f);
 		}
-		else{ tempYoverlap += 1.0f; }
+		else{ tempYoverlap += 0.0f; }
 		
 		// now determine which overlap is greater,
 		// we are going to move the point along the axis which
@@ -378,7 +378,9 @@ bool SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 		{
 			if(m_onTopOfOtherSolidObject) // only push ourselves away if we are on top, this prevnts objects sinking with pressure
 			{
-				m_position.Y += yOverlap;
+				// m_position.Y += yOverlap;
+				m_position.Y = otherTop + (((CollisionDimensions().Y * 0.5f) + CollisionBoxOffset().Y) - 5.0f);
+				m_velocity.Y = 0.0f;
 				StopYAccelerating();
 			}
 			else

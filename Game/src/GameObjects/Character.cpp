@@ -483,7 +483,7 @@ bool Character::OnCollision(SolidMovingSprite * object)
 	}
 	else if (object->IsPlatform())
 	{
-		//if (Bottom() > object->Y()) // is the bottom of the character above the platform centre point?
+		if (Bottom() > object->Y()) // is the bottom of the character above the platform centre point?
 		{
 			return SolidMovingSprite::OnCollision(object);
 		}
