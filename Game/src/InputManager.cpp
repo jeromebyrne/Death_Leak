@@ -163,6 +163,8 @@ void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 
 	bool wasPressingJump = mCurrentGamepadState.mPressingJump;
 
+	// TODO: why am I doing all this before even checking if jumping?
+
 	float initialJumpPercent = 35.0f;
 	static float currentJumpIncreasePercent = initialJumpPercent;
 
@@ -186,6 +188,7 @@ void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 	if (mCurrentGamepadState.mPressingJump && !wasPressingJump)
 	{
 		if (padState.Gamepad.sThumbLY < -30000 &&
+			!player->IsFullyCrouched() && /* if we're fully crouched then we're actually trying to jump */
 			!player->IsDoingMelee() &&
 			player->IsOnSolidLine() &&
 			player->GetCurrentSolidLineStrip() &&

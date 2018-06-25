@@ -1056,6 +1056,12 @@ bool Character::CanJump() const
 		return false;
 	}
 
+	if (GetCurrentSolidLineDroppingDownThroughId() != -1)
+	{
+		// we're currently dropping down
+		return false;
+	}
+
 	if (mCurrentJumpsBeforeLand >= mMaxJumpsAllowed &&
 		!(WasInWaterLastFrame() && GetWaterIsDeep()))
 	{
@@ -1205,6 +1211,12 @@ void Character::IncreaseJump(float percent)
 {
 	if (IsOnSolidSurface())
 	{
+		return;
+	}
+
+	if (GetCurrentSolidLineDroppingDownThroughId() != -1)
+	{
+		// we're currently dropping down
 		return;
 	}
 
@@ -1638,9 +1650,9 @@ void Character::DropDown()
 	if (solidLine)
 	{
 		SetCurrentSolidLineDroppingDownThroughId(solidLine->ID());
-		if (std::abs(m_velocity.Y < 1.0f))
+		//if (std::abs(m_velocity.Y < 5.0f))
 		{
-			m_velocity.Y = -1.0f;
+			m_velocity.Y = -10.0f;
 		}
 	}
 }

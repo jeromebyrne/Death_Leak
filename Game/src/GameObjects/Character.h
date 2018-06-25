@@ -96,6 +96,8 @@ public:
 
 	bool IsStunned() { return mCurrentStunTime > 0.0f; }
 
+	bool IsFullyCrouched() { return mIsFullyCrouched; }
+
 protected:
 
 	void SetIsWallJumping(bool value);
