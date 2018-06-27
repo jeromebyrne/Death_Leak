@@ -376,21 +376,26 @@ bool SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 		}
 		else
 		{
+			float sinkValue = 5.0f;
 			if(m_onTopOfOtherSolidObject) // only push ourselves away if we are on top, this prevnts objects sinking with pressure
 			{
-				// m_position.Y += yOverlap;
-				m_position.Y = otherTop + (((CollisionDimensions().Y * 0.5f) + CollisionBoxOffset().Y) - 5.0f);
-				m_velocity.Y = 0.0f;
-				StopYAccelerating();
+				m_position.Y = otherTop + (((CollisionDimensions().Y * 0.5f) + CollisionBoxOffset().Y) - sinkValue);
+
+				if (!mBouncable)
+				{
+					m_velocity.Y = 0.0f;
+					StopYAccelerating();
+				}
 			}
 			else
 			{
 				m_position.Y += yOverlap;
 			}
 
-			if (mBouncable)
+			if (mBouncable && m_velocity.Y < -5.0f)
 			{
 				m_velocity.Y = m_velocity.Y * -mBounceDampening;
+				m_position.Y += (sinkValue + 1.0f);
 			}
 		}
 	}
