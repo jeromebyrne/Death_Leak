@@ -276,6 +276,8 @@ bool SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 
 	float objectYVelocity = object->VelocityY();
 
+	float sinkValue = 5.0f; // how much the object is "sunk" into the other object
+
 	// if we are not passive then push ourselves away from the object
 	// remember this behaviour can be overwritten in derived function
 	if(!m_passive && !object->IsProjectile()) // by default we don't want to be pushed by a projectile
@@ -376,26 +378,41 @@ bool SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 		}
 		else
 		{
-			float sinkValue = 5.0f;
-			if(m_onTopOfOtherSolidObject) // only push ourselves away if we are on top, this prevnts objects sinking with pressure
+			if(m_onTopOfOtherSolidObject && !IsDebris()) // only push ourselves away if we are on top, this prevnts objects sinking with pressure
 			{
 				m_position.Y = otherTop + (((CollisionDimensions().Y * 0.5f) + CollisionBoxOffset().Y) - sinkValue);
 
-				if (!mBouncable)
+				if (!mBouncable && !object->IsBouncy())
 				{
 					m_velocity.Y = 0.0f;
 					StopYAccelerating();
+				}
+
+				// TODO: only collision with solid lines will cause bounce now
+				/*
+				if (mBouncable && m_velocity.Y < -2.0f)
+				{
+					m_velocity.Y = m_velocity.Y * -mBounceDampening;
+					m_position.Y += (sinkValue);
+				}
+				*/
+
+				if (object->IsBouncy() &&
+					m_velocity.Y < -5.0f)
+				{
+					float maxBounceVelY = 50.0f;
+					float newYVelocity = m_velocity.Y * (-object->GetBounceMultiplier());
+					if (newYVelocity > maxBounceVelY)
+					{
+						newYVelocity = maxBounceVelY;
+					}
+					SetVelocityY(newYVelocity);
+					m_position.Y += (sinkValue + 1.0f);
 				}
 			}
 			else
 			{
 				m_position.Y += yOverlap;
-			}
-
-			if (mBouncable && m_velocity.Y < -5.0f)
-			{
-				m_velocity.Y = m_velocity.Y * -mBounceDampening;
-				m_position.Y += (sinkValue + 1.0f);
 			}
 		}
 	}
@@ -408,18 +425,6 @@ bool SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 			Character * character = static_cast<Character*>(object);
 			character->OnDamage(this, m_applyDamageAmount, Vector2(0.0f,0.0f));
 		}
-	}
-
-	if (mIsBouncy &&
-		object->CollisionBottom() > CollisionCentreY() &&
-		objectYVelocity < -10.0f)
-	{
-		float newYVelocity = std::abs(objectYVelocity * mBounceMultiplier);
-		if (newYVelocity > 25.0f)
-		{
-			newYVelocity = 25.0f;
-		}
-		object->SetVelocityY(newYVelocity);
 	}
 
 	return true;

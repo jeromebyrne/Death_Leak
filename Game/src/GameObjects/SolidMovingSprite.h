@@ -98,6 +98,10 @@ public:
 	virtual void PostUpdate(float delta) override;
 
 	bool IsOnSolidlineThisFrame() { return mIsOnSolidlineThisFrame; }
+
+	bool IsBouncable() const { return mBouncable;  }
+
+	float GetBounceDampening() const { return mBounceDampening; }
 	
 protected:
 

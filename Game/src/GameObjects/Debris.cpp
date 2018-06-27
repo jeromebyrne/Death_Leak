@@ -56,6 +56,9 @@ Debris::Debris(SolidMovingSprite * target,
 	mCreationTime = Timing::Instance()->GetTotalTimeSeconds();
 
 	m_collisionBoxDimensions = collisionDimensions;
+
+	mBouncable = true;
+	mBounceDampening = 0.99f;
 }
 
 Debris::~Debris(void)
