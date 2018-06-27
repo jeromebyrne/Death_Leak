@@ -2,6 +2,7 @@
     <XmlFiles-levels-test.xml_breakables_broken type="vector">
         <e_1 type="int" value="17" />
         <e_2 type="int" value="16" />
+        <e_3 type="int" value="18" />
     </XmlFiles-levels-test.xml_breakables_broken>
     <XmlFiles-levels-test.xml_currency_orbs_collected type="vector">
         <e_1 type="int" value="19" />
@@ -13,6 +14,7 @@
         <e_7 type="int" value="22" />
         <e_8 type="int" value="22" />
     </XmlFiles-levels-test.xml_currency_orbs_collected>
-    <currency_orbs_collected type="int" value="62" />
+    <XmlFiles-levels-test_2.xml_currency_orbs_collected type="vector" />
+    <currency_orbs_collected type="int" value="86" />
     <language_locale_key type="string" value="en-gb" />
 </save_data>

@@ -39,4 +39,9 @@
     <en-gb>Game Saved</en-gb>
     <pt-br>Jogo Salvo</pt-br>
   </game_saved>
+
+  <test_level_name>
+    <en-gb>Test Level</en-gb>
+    <pt-br>Test Level</pt-br>
+  </test_level_name>
 </strings>
