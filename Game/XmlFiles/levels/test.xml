@@ -7,7 +7,7 @@
         <is_animation_preview value="false" />
     </LevelProperties>
     <ParallaxLayer id="1" level_edit_locked="false" updateable="true">
-        <position depth_layer="kFarBackground" y="1750.000000" x="-1532.150391" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kFarBackground" y="1750.000000" x="1707.849609" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="4000.000000" width="2560.000000" native="false" repeatX="false" repeatY="true" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -30,7 +30,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="2" level_edit_locked="false" updateable="true">
-        <position depth_layer="kFarBackground" y="236.000000" x="-1532.150391" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kFarBackground" y="236.000000" x="1707.849609" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="243.000000" width="4083.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -53,7 +53,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="3" level_edit_locked="false" updateable="true">
-        <position depth_layer="kFarBackground" y="-120.000000" x="-1532.150391" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kFarBackground" y="-120.000000" x="1707.849609" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="523.000000" width="2048.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -76,7 +76,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="4" level_edit_locked="false" updateable="true">
-        <position depth_layer="kFarBackground" y="-30.000000" x="-1532.150391" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kFarBackground" y="-30.000000" x="1707.849609" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="596.000000" width="1925.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -99,7 +99,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="5" level_edit_locked="false" updateable="true">
-        <position depth_layer="kFarBackground" y="110.000000" x="-1532.150391" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kFarBackground" y="110.000000" x="1707.849609" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="243.000000" width="4083.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -299,7 +299,7 @@
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="false" />
+        <horizontalflip value="true" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
@@ -534,7 +534,7 @@
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="false" />
+        <horizontalflip value="true" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
@@ -561,7 +561,7 @@
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="true" />
+        <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
@@ -588,7 +588,7 @@
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="true" />
+        <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
@@ -777,8 +777,8 @@
         <scroll_properties StartLerpX="841.849609" StartLerpY="652.065918" LerpDistanceX="-3000.000000" LerpDistanceY="0.000000" LerpTime="20.000000" FadeInTime="5.000000" FadeOutTime="5.000000" />
     </ScrollingSprite>
     <Sprite id="38" level_edit_locked="false" updateable="true">
-        <position depth_layer="kMiddleForeground" y="-60.934082" x="732.849609" rotation="0.110765" auto_rotate_value="0.000000" />
-        <dimensions height="293.000000" width="3042.772461" native="false" repeatX="true" repeatY="false" />
+        <position depth_layer="kMiddleForeground" y="-283.934082" x="-120.150391" rotation="0.110765" auto_rotate_value="0.000000" />
+        <dimensions height="293.000000" width="3040.212891" native="false" repeatX="true" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <alpha value="1.000000" />
@@ -801,4 +801,96 @@
         <font_properties string_id="test_level_name" name="Arial" size="148.000000" />
         <font_color r="1" g="0" b="0" />
     </TextObject>
+    <AmbientBird id="40" level_edit_locked="false" updateable="true">
+        <position depth_layer="kNearBackground" y="187.065918" x="-3067.150391" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions height="53.319241" width="67.216293" native="false" repeatX="false" repeatY="false" />
+        <material value="rabbit" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <alpha value="0.600000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\bird_anim.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance y="6.000000" x="0.990000" />
+        <maxvelocity y="5.000000" x="3.900000" />
+        <applygravity value="false" />
+        <collisionboxdimensions y="32.000000" x="32.000000" offsetX="0.000000" offsetY="0.000000" />
+        <passive value="true" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="false" />
+        <is_bouncy value="false" bounce_multiplier="1.300000" />
+        <maxjumpspeed value="25" />
+        <xaccelrate value="0.5" />
+        <projectileoffsetx value="15" />
+        <projectileoffsety value="20" />
+        <travel_offset value="5000" />
+    </AmbientBird>
+    <ActiveBird id="41" level_edit_locked="false" updateable="true">
+        <position depth_layer="kNpc" y="7.065918" x="-3199.150391" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions height="96.990631" width="122.270119" native="false" repeatX="false" repeatY="false" />
+        <material value="rabbit" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\subzero\still1.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="true" />
+        <animationfile value="XmlFiles\bird_anim_2.xml" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance y="6.000000" x="0.990000" />
+        <maxvelocity y="5.000000" x="15.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions y="30.755033" x="87.730293" offsetX="0.000000" offsetY="-5.000000" />
+        <passive value="true" />
+        <applydamage flag="false" amount="0.000000" />
+        <can_be_damaged value="true" />
+        <is_bouncy value="false" bounce_multiplier="1.300000" />
+        <maxjumpspeed value="25" />
+        <xaccelrate value="2" />
+        <projectileoffsetx value="15" />
+        <projectileoffsety value="20" />
+        <travel_offset value="6000" />
+    </ActiveBird>
+    <SolidMovingSprite id="42" level_edit_locked="false" updateable="true">
+        <position depth_layer="kGround" y="528.064026" x="1546.847900" rotation="0.750000" auto_rotate_value="0.250000" />
+        <dimensions height="206.014374" width="206.014374" native="false" repeatX="false" repeatY="false" />
+        <material value="caverock" />
+        <sine_wave_props active="true" x_offset="100.000000" y_offset="100.000000" amplitude="2.000000" rand_init_step="0" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\objects\saw.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <resistance y="2.000000" x="0.950000" />
+        <maxvelocity y="99999.000000" x="10.000000" />
+        <applygravity value="false" />
+        <collisionboxdimensions y="156.284470" x="156.284470" offsetX="0.000000" offsetY="0.000000" />
+        <passive value="true" />
+        <applydamage flag="true" amount="1.000000" />
+        <can_be_damaged value="false" />
+        <is_bouncy value="false" bounce_multiplier="1.000000" />
+    </SolidMovingSprite>
+    <Sprite id="43" level_edit_locked="false" updateable="true">
+        <position depth_layer="kFarForeground" y="255.065918" x="2169.849609" rotation="-0.010000" auto_rotate_value="0.000000" />
+        <dimensions height="499.621399" width="499.621399" native="false" repeatX="false" repeatY="false" />
+        <material value="grassground" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <alpha value="0.500000" />
+        <effect name="effectnoise" noiseintensity="0.020000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media/ground/noise_test.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="0.000000" />
+    </Sprite>
 </level>

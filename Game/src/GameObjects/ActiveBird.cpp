@@ -14,6 +14,13 @@ ActiveBird::~ActiveBird(void)
 
 void ActiveBird::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointOfContact, bool shouldExplode)
 {
+	if (mHealth <= 0.0f)
+	{
+		return;
+	}
+
+	mHealth = 0.0f; // 1 hit kill for birds
+
 	Character::OnDamage(damageDealer, damageAmount, pointOfContact, false);
 
 	Debris * deadBird = new Debris(nullptr, m_position, GetDepthLayer(), m_dimensions, Vector2(15.0f, 15.0f), "Media\\characters\\bird\\dead.png", false, 0.5f);
