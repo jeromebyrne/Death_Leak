@@ -101,12 +101,10 @@ public:
 
 	void SetObjectMovingWith(MovingSprite * movingWith) { mObjectMovingWith = movingWith; }
 
-	void SetIsInWater(bool value, bool isDeepWater);
+	void SetIsInWater(bool value);
 	bool GetIsInWater() const { return mIsInWater; }
 
 	bool WasInWaterLastFrame() const { return mWasInWaterLastFrame; }
-
-	bool GetWaterIsDeep() const { return mIsDeepWater; }
 
 	void SetCurrentYResistance(float value) { mCurrentYResistance = value; }
 
@@ -140,7 +138,6 @@ protected:
 	float mCurrentXResistance; // this can change dynamically
 	bool mIsInWater;
 	bool mWasInWaterLastFrame;
-	bool mIsDeepWater;
 	float mTimeUntilCanSpawnWaterBubbles;
 	bool mHittingSolidLineEdge;
 };

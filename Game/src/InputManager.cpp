@@ -168,7 +168,7 @@ void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 	float initialJumpPercent = 35.0f;
 	static float currentJumpIncreasePercent = initialJumpPercent;
 
-	if (player->IsOnSolidSurface())
+	if (player->IsOnSolidSurface() || player->GetIsInWater())
 	{
 		currentJumpIncreasePercent = initialJumpPercent;
 	}
@@ -213,7 +213,7 @@ void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 
 void InputManager::ProcessSwimDown_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player, const LevelProperties & levelProps)
 {
-	if (!(player->WasInWaterLastFrame() && player->GetWaterIsDeep()))
+	if (!player->WasInWaterLastFrame())
 	{
 		return;
 	}

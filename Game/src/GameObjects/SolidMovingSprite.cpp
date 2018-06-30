@@ -390,10 +390,10 @@ bool SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 
 				// TODO: only collision with solid lines will cause bounce now
 				/*
-				if (mBouncable && m_velocity.Y < -2.0f)
+				if (mBouncable && m_velocity.Y < -2.0f)             
 				{
 					m_velocity.Y = m_velocity.Y * -mBounceDampening;
-					m_position.Y += (sinkValue);
+					m_position.Y += (sinkValue);                                                
 				}
 				*/
 

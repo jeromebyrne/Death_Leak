@@ -4,8 +4,7 @@
 #include "ParticleEmittermanager.h"
 #include "AudioManager.h"
 
-WaterBlock::WaterBlock(void) :
-	mIsDeepWater(false)
+WaterBlock::WaterBlock(void)
 {
 	mIsWaterBlock = true;
 }
@@ -18,14 +17,14 @@ bool WaterBlock::OnCollision(SolidMovingSprite * object)
 {
 	bool wasInwater = object->WasInWaterLastFrame();
 
-	object->SetIsInWater(true, GetIsDeepWater());
+	object->SetIsInWater(true);
 	
 	if (!wasInwater && object->VelocityY() < -2.0f)
 	{
 		Material * material = GetMaterial();
 		if (material)
 		{
-			if (object->IsProjectile() && !GetIsDeepWater())
+			if (object->IsProjectile())
 			{
 				string soundFile = material->GetRandomDamageSoundFilename();
 				AudioManager::Instance()->PlaySoundEffect(soundFile);
@@ -56,6 +55,7 @@ bool WaterBlock::OnCollision(SolidMovingSprite * object)
 																		0.15f,
 																		0.2f);
 			}
+			/*
 			else if (!GetIsDeepWater())
 			{
 				AudioManager::Instance()->PlaySoundEffect("water\\water_splash_medium_2.wav");
@@ -110,25 +110,9 @@ bool WaterBlock::OnCollision(SolidMovingSprite * object)
 																		0.0f,
 																		0.15f,
 																		0.3f);
-			}
+			}*/
 		}
 	}
 
 	return true;
-}
-
-void WaterBlock::XmlRead(TiXmlElement * element)
-{
-	SolidMovingSprite::XmlRead(element);
-
-	mIsDeepWater = XmlUtilities::ReadAttributeAsBool(element, "is_deep_water", "value");
-}
-
-void WaterBlock::XmlWrite(TiXmlElement * element)
-{
-	SolidMovingSprite::XmlWrite(element);
-
-	TiXmlElement * deepWater = new TiXmlElement("is_deep_water");
-	deepWater->SetAttribute("value", mIsDeepWater ? "true" : "false");
-	element->LinkEndChild(deepWater);
 }

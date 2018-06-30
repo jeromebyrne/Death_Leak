@@ -18,7 +18,6 @@ MovingSprite::MovingSprite(float x, float y, DepthLayer depthLayer, float width,
 	mCurrentXResistance(1.0f),
 	mIsInWater(false),
 	mWasInWaterLastFrame(false),
-	mIsDeepWater(false),
 	mTimeUntilCanSpawnWaterBubbles(0.0f),
 	mHittingSolidLineEdge(false),
 	mMaxVelocityXLimitEnabled(true)
@@ -66,7 +65,7 @@ void MovingSprite::Update(float delta)
 		DoWaterAccelerationBubbles();
 	}
 
-	float velocityMod = mIsInWater ? (GetWaterIsDeep() ? 0.35f : 0.6f) : 1.0f;
+	float velocityMod = mIsInWater ? 0.25f : 1.0f;
 	Vector2 nextVelocity = m_velocity + (m_acceleration * m_direction) * velocityMod;
 
 	if (nextVelocity.X > m_maxVelocity.X * velocityMod && mMaxVelocityXLimitEnabled)
@@ -135,14 +134,8 @@ void MovingSprite::Update(float delta)
 		}
 		else
 		{
-			if (m_velocity.Y > 0.0f)
-			{
-				AccelerateY(-1.0f, 0.055f * percentDelta);
-			}
-			else
-			{
-				AccelerateY(-1.0f, 0.004f * percentDelta);
-			}
+			float waterGravityMultiplier = 0.1f; // TODO: make this a constant
+			AccelerateY(-1.0f, (mGravityApplyAmount * waterGravityMultiplier / mCurrentYResistance) * percentDelta);
 		}
 	}
 
@@ -288,13 +281,13 @@ void MovingSprite::StopYAccelerating()
 	m_acceleration.Y = 0.0f;
 }
 
-void MovingSprite::SetIsInWater(bool value, bool isDeepWater)
+void MovingSprite::SetIsInWater(bool value)
 {
 	mIsInWater = value;
-	mIsDeepWater = isDeepWater;
 
 	if (mIsInWater)
 	{
+		// TODO: what is the point of this?
 		mWasInWaterLastFrame = true;
 	}
 }

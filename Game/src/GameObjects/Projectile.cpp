@@ -679,7 +679,7 @@ void Projectile::HandleSolidLineStripCollision(SolidLineStrip * solidLineStrip)
 			}
 
 			string particleTexFile = objectMaterial->GetRandomParticleTexture();
-			bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
+			bool isInWater = WasInWaterLastFrame();
 			ParticleEmitterManager::Instance()->CreateDirectedSpray(10,
 																	particlePos,
 																	GetDepthLayer(),
@@ -687,10 +687,10 @@ void Projectile::HandleSolidLineStripCollision(SolidLineStrip * solidLineStrip)
 																	0.4f,
 																	Vector2(3200.0f, 1200.0f),
 																	particleTexFile,
-																	isInDeepWater ? 0.4f : 1.0f,
-																	isInDeepWater ? 1.5f : 4.0f,
-																	isInDeepWater ? 1.4f : minLive,
-																	isInDeepWater ? 2.5f : maxLive,
+																	isInWater ? 0.4f : 1.0f,
+																	isInWater ? 1.5f : 4.0f,
+																	isInWater ? 1.4f : minLive,
+																	isInWater ? 2.5f : maxLive,
 																	10.0f,
 																	30.0f,
 																	0.7f,

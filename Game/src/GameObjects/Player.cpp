@@ -252,7 +252,7 @@ Projectile * Player::FireWeapon(Vector2 direction)
 	}
 
 	float speed = mSprintActive ? 35.0f : 30.0f;
-	bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
+	bool isInWater = WasInWaterLastFrame();
 
 	Projectile * p = new Projectile(Projectile::kPlayerProjectile,
 									mProjectileFilePath.c_str(),
@@ -263,7 +263,7 @@ Projectile * Player::FireWeapon(Vector2 direction)
 									Vector2(91.0f,16.0f),
 									direction,
 									0.5f,
-									isInDeepWater ? speed * 0.6f : speed,
+									isInWater ? speed * 0.6f : speed,
 									0.25f);
 	p->SetIsNativeDimensions(false);
 
@@ -528,6 +528,11 @@ bool Player::CanJump() const
 	if (!Character::CanJump())
 	{
 		return false;
+	}
+
+	if (GetIsInWater())
+	{
+		return true;
 	}
 
 	if (mCurrentJumpsBeforeLand > 1 &&

@@ -11,15 +11,7 @@ public:
 
 	virtual bool OnCollision(SolidMovingSprite * object) override;
 
-	bool GetIsDeepWater() const { return mIsDeepWater; }
-
 private:
-
-	void XmlRead(TiXmlElement * element) override;
-
-	void XmlWrite(TiXmlElement * element) override;
-
-	bool mIsDeepWater;
 };
 
 #endif

@@ -40,6 +40,8 @@ void AudioObject::Update(float delta)
 		mHasStartedPlaying = true;
 	}
 
+	bool hasVolume = true;
+
 	if (mSoundInstance)
 	{
 		if (!mRepeat && mSoundInstance->isFinished())
@@ -47,11 +49,21 @@ void AudioObject::Update(float delta)
 			GameObjectManager::Instance()->RemoveGameObject(this);
 		}
 
+
+		Camera2D * camera = Camera2D::GetInstance();
+		const Vector3 & camPos = camera->Position();
+
 		if (mAdjustVolumeToCamera)
 		{
-			// if the centre of the camera is outside the dimensions of the audio
-			// then start decreasing the volume
-			Camera2D * camera = Camera2D::GetInstance();
+			float distX = 0.0f;
+			if (camPos.X < m_position.X)
+			{
+				distX = Left() - camPos.X;
+			}
+			else
+			{
+				distX = camPos.X - Right();
+			}
 
 			if (camera->IsCameraOriginInsideObject(this))
 			{
@@ -59,18 +71,6 @@ void AudioObject::Update(float delta)
 			}
 			else if (camera->IsCameraOriginInsideRect(m_position, Vector2(mFadeDimensions.X, m_dimensions.Y)))
 			{
-				Vector3 camPos = camera->Position();
-				float distX = 0;
-
-				if (camPos.X < m_position.X)
-				{
-					distX = Left() - camPos.X;
-				}
-				else 
-				{
-					distX = camPos.X - Right();
-				}
-
 				float fadeLenghtX = (mFadeDimensions.X - m_dimensions.X) * 0.5f;
 
 				float percent = distX / fadeLenghtX;
@@ -79,8 +79,7 @@ void AudioObject::Update(float delta)
 			}
 			else if (camera->IsCameraOriginInsideRect(m_position, Vector2(m_dimensions.X, mFadeDimensions.Y)))
 			{
-				Vector3 camPos = camera->Position();
-				float distY = 0;
+				float distY = 0.0f;
 
 				if (camPos.Y < m_position.Y)
 				{
@@ -101,8 +100,6 @@ void AudioObject::Update(float delta)
 			{
 				float fadeLenghtX = (mFadeDimensions.X - m_dimensions.X) * 0.5f;
 				float fadeLenghtY = (mFadeDimensions.Y - m_dimensions.Y) * 0.5f;
-
-				Vector3 camPos = camera->Position();
 
 				float offsetX = 0;
 				float offsetY = 0; 
@@ -149,11 +146,19 @@ void AudioObject::Update(float delta)
 			}
 			else
 			{
+				hasVolume = false;
 				mSoundInstance->setVolume(0.0f);
 			}
 		}
 
-		mSoundInstance->setPlaybackSpeed(Timing::Instance()->GetTimeModifier());
+		if (hasVolume)
+		{
+			float panVal = camPos.X - m_position.X;
+			panVal /= mFadeDimensions.X;
+			mSoundInstance->setPan(panVal);
+
+			mSoundInstance->setPlaybackSpeed(Timing::Instance()->GetTimeModifier());
+		}
 	}
 }
 

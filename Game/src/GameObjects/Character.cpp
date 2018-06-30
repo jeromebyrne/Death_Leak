@@ -29,6 +29,7 @@ static const float kLandRollInputWindow = 0.25f;
 static const float kLandJumpInputWindow = 0.2f;
 static const float kWallJumpXResistance = 0.99f;
 static const float kWallJumpVelocityXBoost = 15.0f;
+static const float kWaterJumpPercentModifier = 0.2f;
 
 Character::Character(float x, float y, DepthLayer depthLayer, float width, float height) :
 	SolidMovingSprite(x, y, depthLayer, width, height),
@@ -275,12 +276,12 @@ void Character::Update(float delta)
 		mCurrentYResistance = m_resistance.Y;
 	}
 
-	bool inDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
-	if ((m_acceleration.Y > 0.0f || inDeepWater) &&
+	bool isInWater = WasInWaterLastFrame();
+	if ((m_acceleration.Y > 0.0f || isInWater) &&
 		!m_onTopOfOtherSolidObject && 
 		!GetIsCollidingAtObjectSide()) // we are accelerating vertically and not on top of another object
 	{
-		if ((!inDeepWater && m_velocity.Y > -0.5f) || (inDeepWater && m_velocity.Y > 0.0f))
+		if ((!isInWater && m_velocity.Y > -0.5f) || (isInWater && m_velocity.Y > 0.0f))
 		{
 			if (!mIsMidAirMovingUp)
 			{
@@ -289,8 +290,8 @@ void Character::Update(float delta)
 			mIsMidAirMovingUp = true;
 			mIsMidAirMovingDown = false;
 		}
-		else if (!(inDeepWater && m_velocity.Y <= -0.5f) ||
-			(m_velocity.Y <= 0.0f && inDeepWater))
+		else if (!(isInWater && m_velocity.Y <= -0.5f) ||
+			(m_velocity.Y <= 0.0f && isInWater))
 		{
 			if (!mIsMidAirMovingDown)
 			{
@@ -323,7 +324,6 @@ void Character::Update(float delta)
 		mJustfellFromLargeDistance = false;
 	}
 
-	bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
 	if (IsOnSolidSurface())
 	{
 		if (mHighestPointWhileInAir != m_position.Y)
@@ -349,7 +349,7 @@ void Character::Update(float delta)
 					mJustFellFromDistance = false;
 					mJustfellFromLargeDistance = false;
 				}
-				else if (!mIsRolling && !isInDeepWater)
+				else if (!mIsRolling && !isInWater)
 				{
 					if (dropDistance > kSmallDropDistance && dropDistance < kLargeDropDistance)
 					{
@@ -606,7 +606,7 @@ void Character::UpdateAnimations()
 	AnimationPart * bodyPart = m_animation->GetPart("body");
 	GAME_ASSERT(bodyPart);
 
-	bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
+	bool isInWater = WasInWaterLastFrame();
 
 	if (bodyPart)
 	{
@@ -766,9 +766,9 @@ void Character::UpdateAnimations()
 		{
 			if (Timing::Instance()->GetTotalTimeSeconds() > mMidAirMovingDownStartTime + kJumpDelay ||
 				GetTimeNotOnSolidSurface() > 0.25f ||
-				isInDeepWater)
+				isInWater)
 			{
-				if (isInDeepWater)
+				if (isInWater)
 				{
 					if (current_body_sequence_name == "SwimBurst" ||
 						current_body_sequence_name == "SwimBurstKick")
@@ -807,7 +807,7 @@ void Character::UpdateAnimations()
 		}
 		else if (mIsMidAirMovingUp)
 		{
-			if (isInDeepWater)
+			if (isInWater)
 			{
 				if (current_body_sequence_name != "SwimBurst" &&
 					current_body_sequence_name != "SwimBurstKick")
@@ -1002,8 +1002,7 @@ void Character::DoAnimationEffectIfApplicable(AnimationPart * bodyPart)
 				{
 					std::string filename = material->GetRandomFootstepSoundFilename();
 
-					bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
-					if (!isInDeepWater)
+					if (!WasInWaterLastFrame())
 					{
 						AudioManager::Instance()->PlaySoundEffect(filename);
 					}
@@ -1046,6 +1045,12 @@ void Character::DoAnimationEffectIfApplicable(AnimationPart * bodyPart)
 
 bool Character::CanJump() const
 {
+	if (GetIsInWater())
+	{
+		// can always "Jump" when in water
+		return true;
+	}
+
 	if (GetIsCollidingAtObjectSide())
 	{
 		return false;
@@ -1062,8 +1067,7 @@ bool Character::CanJump() const
 		return false;
 	}
 
-	if (mCurrentJumpsBeforeLand >= mMaxJumpsAllowed &&
-		!(WasInWaterLastFrame() && GetWaterIsDeep()))
+	if (mCurrentJumpsBeforeLand >= mMaxJumpsAllowed)
 	{
 		return false;
 	}
@@ -1073,8 +1077,7 @@ bool Character::CanJump() const
 	{
 		// allow a small amount of time to jump just after being on a solid object
 		if ((m_velocity.Y < 0.0f && !IsOnSolidSurface() &&
-			GetTimeNotOnSolidSurface() > kTimeAllowedToJumpAfterLeaveSolidGround) &&
-			!(WasInWaterLastFrame() && GetWaterIsDeep()))
+			GetTimeNotOnSolidSurface() > kTimeAllowedToJumpAfterLeaveSolidGround))
 		{
 			return false;
 		}
@@ -1093,9 +1096,15 @@ bool Character::Jump(float percent)
 		return false;
 	}
 
-	if (WasInWaterLastFrame() && GetWaterIsDeep())
+	if (GetIsInWater() || WasInWaterLastFrame())
 	{
-		percent *= 0.2f;
+		if (m_velocity.Y < 0.0f)
+		{
+			// slow gravity
+			m_velocity.Y *= 0.2f;
+		}
+		percent *= kWaterJumpPercentModifier;
+		mCanIncreaseJumpVelocity = true;
 		mDoSwimBurstAnim = true;
 	}
 
@@ -1142,7 +1151,6 @@ bool Character::Jump(float percent)
 
 					particleFile = objectMaterial->GetRandomParticleTexture();
 
-					bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
 					if (!particleFile.empty())
 					{
 						ParticleEmitterManager::Instance()->CreateDirectedSpray(40,
@@ -1175,29 +1183,33 @@ bool Character::Jump(float percent)
 		}
 	}
 	
-	if (mCurrentJumpsBeforeLand == 0)
+	if (!WasInWaterLastFrame())
 	{
-		m_velocity.Y = 1.0f;
-		m_direction.Y = 1.0f;
-		m_acceleration.Y = (m_maxJumpSpeed / 100.0f) * percent;
-
-		// can only increase jump on first jump from land
-		mCanIncreaseJumpVelocity = true;
-	}
-	else
-	{
-		m_velocity.Y += 12.0f;
-
-		if (m_velocity.Y < 14.0f)
+		if (mCurrentJumpsBeforeLand == 0)
 		{
-			m_velocity.Y = 14.0f;
+			m_velocity.Y = 1.0f;
+			m_direction.Y = 1.0f;
+			m_acceleration.Y = (m_maxJumpSpeed / 100.0f) * percent;
+
+			// can only increase jump on first jump from land
+			mCanIncreaseJumpVelocity = true;
 		}
+		else
+		{
+			// DOUBLE JUMP
+			m_velocity.Y += 12.0f;
 
-		// we just double jumped so reset jump animation
-		AnimationPart * bodyPart = m_animation->GetPart("body");
-		GAME_ASSERT(bodyPart);
+			if (m_velocity.Y < 14.0f)
+			{
+				m_velocity.Y = 14.0f;
+			}
 
-		bodyPart->Restart();
+			// we just double jumped so reset jump animation
+			AnimationPart * bodyPart = m_animation->GetPart("body");
+			GAME_ASSERT(bodyPart);
+
+			bodyPart->Restart();
+		}
 	}
 
 	SetY(m_position.Y + 10.0f); // bump us up so that solid lines don't keep us grounded
@@ -1220,11 +1232,16 @@ void Character::IncreaseJump(float percent)
 		return;
 	}
 
-	float velY = (m_maxJumpSpeed / 100) * percent;
+	if (WasInWaterLastFrame())
+	{
+		percent *= kWaterJumpPercentModifier;
+	}
+
+	float velY = (m_maxJumpSpeed / 100.0f) * percent;
 
 	float diff = velY - m_velocity.Y;
 
-	if (diff > 0)
+	if (diff > 0.0f)
 	{
 		m_velocity.Y += diff;
 	}
@@ -1307,8 +1324,7 @@ void Character::AccelerateX(float directionX, float percent)
 		return;
 	}
 
-	bool isInDeepWater = WasInWaterLastFrame() && GetWaterIsDeep();
-	float deepWaterModifier = isInDeepWater ? (IsOnSolidSurface() ? 0.5f : 0.2f) : 1.0f;
+	float deepWaterModifier = WasInWaterLastFrame() ? (IsOnSolidSurface() ? 0.5f : 0.2f) : 1.0f;
 
 	float accelVal = mAccelXRate * percent;
 
