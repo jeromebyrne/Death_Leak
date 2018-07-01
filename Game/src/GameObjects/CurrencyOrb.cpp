@@ -287,29 +287,6 @@ void CurrencyOrb::DoCollisionLargeType(Player * player)
 																5.0f,
 																5.0f);
 
-		ParticleEmitterManager::Instance()->CreateRadialSpray(1,
-																Vector2(m_position.X + player->VelocityX() * 5.0f, m_position.Y + player->VelocityY() * 2.0f),
-																GameObject::kImpactCircles,
-																Vector2(3200.0f, 1200.0f),
-																"Media\\blast_circle.png",
-																1.0f,
-																2.4f,
-																0.35f,
-																0.35f,
-																100.0f,
-																100.0f,
-																0.5f,
-																false,
-																0.8f,
-																1.0f,
-																0.8f,
-																true,
-																5.5f,
-																0.15f,
-																0.5f,
-																0.0f,
-																0.0f);
-
 		Vector2 position(m_position.X, m_position.Y);
 		SpawnOrbs(position, 10);
 	}

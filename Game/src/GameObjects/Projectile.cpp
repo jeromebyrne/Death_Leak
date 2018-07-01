@@ -228,31 +228,6 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 				objAsProj->m_timeBecameInactive = Timing::Instance()->GetTotalTimeSeconds();
 				objAsProj->SetVelocityXY(-m_velocity.X * 0.7f, -5.0f);
 
-				ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
-																		m_position,
-																		GameObject::kImpactCircles,
-																		Vector2(-m_direction.X, 0.0f),
-																		0.4f,
-																		Vector2(3200.0f, 1200.0f),
-																		"Media\\blast_circle.png",
-																		0.01f,
-																		0.01f,
-																		0.40f,
-																		0.40f,
-																		50.0f,
-																		50.0f,
-																		0.0f,
-																		false,
-																		0.7f,
-																		1.0f,
-																		10000.0f,
-																		true,
-																		2.0f,
-																		0.0f,
-																		0.0f,
-																		0.0f,
-																		0.3f);
-
 				AudioManager::Instance()->PlaySoundEffect("metalclink.wav");
 
 				// 50/50 chance of the players projectile being discarded in a collision

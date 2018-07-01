@@ -447,33 +447,35 @@ void SolidMovingSprite::OnDamage(GameObject * damageDealer, float damageAmount, 
 
 		Vector2 pos = Vector2(m_position.X + pointOfContact.X, m_position.Y + pointOfContact.Y);
 
-		// TODO: should DEFINITELY have a layer for blast circles
-		ParticleSpray * spray =
-		ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
-																pos,
-																GameObject::kImpactCircles,
-																Vector2(-m_direction.X, 0.0f),
-																0.4f,
-																Vector2(3200.0f, 1200.0f),
-																"Media\\blast_circle.png",
-																0.01f,
-																0.01f,
-																0.40f,
-																0.40f,
-																40.0f,
-																40.0f,
-																0.0f,
-																false,
-																0.7f,
-																1.0f,
-																10000.0f,
-																true,
-																5.0f,
-																0.0f,
-																0.0f,
-																0.0f,
-																0.3f);
-
+		if (damageDealer->IsProjectile())
+		{
+			// TODO: optimize this to not be a particle spray
+			ParticleSpray * spray =
+				ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
+					pos,
+					GameObject::kImpactCircles,
+					Vector2(-m_direction.X, 0.0f),
+					0.0f,
+					Vector2(3200.0f, 1200.0f),
+					"Media\\blast_circle.png",
+					0.00f,
+					0.00f,
+					0.30f,
+					0.30f,
+					20.0f,
+					20.0f,
+					0.0f,
+					false,
+					1.0f,
+					1.0f,
+					10000.0f,
+					true,
+					3.0f,
+					0.0f,
+					0.0f,
+					0.0f,
+					0.3f);
+		}
 	}
 }
 

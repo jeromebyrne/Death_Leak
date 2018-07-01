@@ -428,7 +428,7 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSpray(int numParticles,
 		
 		int flippedVertical = rand() % 2;
 		int flippedHorizontal = rand() % 2;
-		float randSpread = ((rand() % (int)(spread * 100)) * 0.01);
+		float randSpread = spread != 0.0f ? ((rand() % (int)(spread * 100.0f)) * 0.01f) : 0.0f;
 
 		if(flippedVertical == 0)
 		{

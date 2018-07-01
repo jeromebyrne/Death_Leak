@@ -336,31 +336,6 @@ void Player::CheckForAndDoLevelUp()
 		AudioManager::Instance()->PlaySoundEffect("music\\japanese1.wav", false, false, false);
 		Camera2D::GetInstance()->DoBigShake();
 		Timing::Instance()->SetTimeModifierForNumSeconds(0.04f, 4.0f);
-		ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
-																m_position,
-																GameObject::kImpactCircles,
-																Vector2(0.0f, 1.0f),
-																0.1f,
-																Vector2(3200.0f, 1200.0f),
-																"Media\\blast_circle.png",
-																1.0f,
-																1.0f,
-																0.1f,
-																0.1f,
-																256.0f,
-																256.0f,
-																0.0f,
-																false,
-																1.0f,
-																1.0f,
-																0.0f,
-																true,
-																8.0f,
-																0.0f,
-																0.0f,
-																0.05f,
-																0.1f,
-																true);
 
 		ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
 																m_position,

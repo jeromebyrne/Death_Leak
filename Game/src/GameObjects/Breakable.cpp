@@ -145,31 +145,6 @@ void Breakable::UpdateState()
 	{
 		GameObjectManager::Instance()->SetBreakableBroken(ID());
 
-		ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
-																Vector2(m_position.X - (m_dimensions.X * 0.5f), m_position.Y - (m_dimensions.Y * 0.5f)),
-																GameObject::kImpactCircles,
-																Vector2(0.0f, 0.0f),
-																0.4,
-																Vector2(3200.0f, 1200.0f),
-																"Media\\blast_circle.png",
-																0.01f,
-																0.01f,
-																0.7f,
-																0.80f,
-																32.0f,
-																32.0f,
-																0.0f,
-																false,
-																0.7f,
-																1.0f,
-																10000.0f,
-																true,
-																6.0f,
-																0.0f,
-																0.0f,
-																0.1f,
-																0.1f);
-
 		mState = kBroken;
 		CurrencyOrb::SpawnOrbs(m_position, (rand() % 8) + 1);
 		AudioManager::Instance()->PlaySoundEffect(m_material->GetRandomDestroyedSound());

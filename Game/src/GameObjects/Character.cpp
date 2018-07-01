@@ -554,30 +554,7 @@ void Character::DoMeleeCollisions(SolidMovingSprite * object)
 					objAsProj->SetOwnerType(Projectile::kNPCProjectile);
 				}
 
-				ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
-					object->Position(),
-					GameObject::kImpactCircles,
-					Vector2(0.0f, 0.0f),
-					0.4,
-					Vector2(3200.0f, 1200.0f),
-					"Media\\blast_circle.png",
-					0.01,
-					0.01,
-					0.40f,
-					0.40f,
-					20,
-					20,
-					0,
-					false,
-					0.7,
-					1.0,
-					10000,
-					true,
-					2,
-					0.0f,
-					0.0f,
-					0.0f,
-					0.3f);
+				// TODO: spark particle
 
 				AudioManager::Instance()->PlaySoundEffect("metalclink.wav");
 
