@@ -4,7 +4,6 @@
 
 class Player : public Character
 {
-
 public:
 
 	Player(float x = 0, float y = 0, float width = 10, float height = 10);

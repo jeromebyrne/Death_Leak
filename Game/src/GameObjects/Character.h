@@ -169,7 +169,9 @@ protected:
 	float mCurrentStunTime = 0.0f;
 	ParticleSpray * mStunParticles;
 	Vector2 mRegularCollisionBox;
+	Vector2 mCollisionBoxOffsetOriginal;
 	float mMeleeCollisionBoundsX = 1.5f;
+	float mRollCollisionBoundsY = 0.75f; // This shouldn't go below 0.5f
 	bool mEmitsBlood = true;
 
 	CurrentMeleePhase mCurrentMeleePhase = kMeleePhase1;

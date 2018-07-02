@@ -668,7 +668,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="false" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
-        <platformspeed value="3" />
+        <platformspeed x="7" y="3" />
         <platformpathtype value="pathwhentriggered" />
         <platformpathstate value="pathforward" />
         <pathpoints>

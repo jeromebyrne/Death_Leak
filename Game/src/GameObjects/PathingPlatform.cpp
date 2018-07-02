@@ -6,7 +6,6 @@ PathingPlatform::PathingPlatform(float x, float y, DepthLayer depthLayer, float 
 	Platform(x, y, depthLayer, width, height, groundFriction, airResistance),
 	mCurrentPathState(kNotPathing),
 	mCurrentPathIndex(0),
-	mPlatformSpeed(8.0f),
 	mClosestPointToNextTarget((numeric_limits<int>::max)(), (numeric_limits<int>::max)()),
 	mPathingType(kAlwaysPathing),
 	mPathForward(true)
@@ -23,7 +22,8 @@ void PathingPlatform::XmlRead(TiXmlElement * element)
 
 	mOriginalPosition = m_position;
 
-	mPlatformSpeed = XmlUtilities::ReadAttributeAsFloat(element, "platformspeed", "value");
+	mPlatformSpeedX = XmlUtilities::ReadAttributeAsFloat(element, "platformspeed", "x");
+	mPlatformSpeedY = XmlUtilities::ReadAttributeAsFloat(element, "platformspeed", "y");
 
 	string platform_type = XmlUtilities::ReadAttributeAsString(element, "platformpathtype", "value");
 	
@@ -82,7 +82,8 @@ void PathingPlatform::XmlWrite(TiXmlElement * element)
 	Platform::XmlWrite(element);
 
 	TiXmlElement * platformspeed = new TiXmlElement("platformspeed");
-	platformspeed->SetAttribute("value", Utilities::ConvertDoubleToString(mPlatformSpeed).c_str());
+	platformspeed->SetAttribute("x", Utilities::ConvertDoubleToString(mPlatformSpeedX).c_str());
+	platformspeed->SetAttribute("y", Utilities::ConvertDoubleToString(mPlatformSpeedX).c_str());
 	element->LinkEndChild(platformspeed);
 
 	const char * type = "";
@@ -168,7 +169,8 @@ void PathingPlatform::Scale(float x, float y, bool scalePosition)
 	Platform::Scale(x, y, scalePosition);
 
 	// hmmm how should I scale mPlatformSpeed? if aspect ratio changes then speed will change (don't change aspect ratio?)
-	mPlatformSpeed *= x;
+	mPlatformSpeedX *= x;
+	mPlatformSpeedY *= y;
 	
 	// scale all of the path points
 	for (int i = 0; i < mPathPoints.size(); ++i)
@@ -404,8 +406,8 @@ void PathingPlatform::ReturnToStart()
 		mClosestPointToNextTarget = direction;
 		direction.Normalise();
 
-		m_velocity.X = direction.X * mPlatformSpeed;
-		m_velocity.Y = direction.Y * mPlatformSpeed;
+		m_velocity.X = direction.X * mPlatformSpeedX;
+		m_velocity.Y = direction.Y * mPlatformSpeedY;
 
 		if(m_velocity.X > m_maxVelocity.X)
 		{
@@ -454,8 +456,8 @@ void PathingPlatform::PathForward()
 			mClosestPointToNextTarget = direction;
 			direction.Normalise();
 
-			m_velocity.X = direction.X * mPlatformSpeed;
-			m_velocity.Y = direction.Y * mPlatformSpeed;
+			m_velocity.X = direction.X * mPlatformSpeedX;
+			m_velocity.Y = direction.Y * mPlatformSpeedY;
 
 			if(m_velocity.X > m_maxVelocity.X)
 			{
@@ -505,8 +507,8 @@ void PathingPlatform::PathBackward()
 			mClosestPointToNextTarget = direction;
 			direction.Normalise();
 
-			m_velocity.X = direction.X * mPlatformSpeed;
-			m_velocity.Y = direction.Y * mPlatformSpeed;
+			m_velocity.X = direction.X * mPlatformSpeedX;
+			m_velocity.Y = direction.Y * mPlatformSpeedY;
 
 			if(m_velocity.X > m_maxVelocity.X)
 			{

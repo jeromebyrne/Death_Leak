@@ -78,7 +78,8 @@ Character::Character(float x, float y, DepthLayer depthLayer, float width, float
 	mWasDownwardDashing(false),
 	mCanIncreaseJumpVelocity(false),
 	mStunParticles(nullptr),
-	mRegularCollisionBox(0.0f, 0.0f)
+	mRegularCollisionBox(0.0f, 0.0f),
+	mCollisionBoxOffsetOriginal(0.0f, 0.0f)
 {
 	mProjectileFilePath = "Media/knife_2.png";
 	mProjectileImpactFilePath = "Media/knife_impact_2.png";
@@ -419,6 +420,8 @@ void Character::Initialise()
 	}
 
 	mRegularCollisionBox = m_collisionBoxDimensions;
+	mCollisionBoxOffsetOriginal = mCollisionBoxOffset;
+
 }
 
 void Character::XmlRead(TiXmlElement * element)
@@ -1922,11 +1925,23 @@ void Character::UpdateCollisionBox()
 	}
 
 	m_collisionBoxDimensions = mRegularCollisionBox;
+	mCollisionBoxOffset = mCollisionBoxOffsetOriginal;
 
 	if (mIsDoingMelee && mCurrentMeleePhase == kMeleePhase3)
 	{
+		// this is so the collision box will overlap more and cause damage
 		m_collisionBoxDimensions.X *= mMeleeCollisionBoundsX;
 	}
+	else if (mIsRolling)
+	{
+		// This is so the bounding box will lower and can roll under stuff
+		// mCollisionBoxOffset.Y -= 20.f; (m_collisionBoxDimensions.Y * (1.0f - mRollCollisionBoundsY));
+		// m_collisionBoxDimensions.Y *= mRollCollisionBoundsY;
+	}
+
+#if _DEBUG
+	SetupDebugDraw();
+#endif
 }
 
 void Character::FireBloodSpatter(Vector2 direction, const Vector2 & origin)

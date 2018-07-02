@@ -53,7 +53,8 @@ protected:
 
 	void ReturnToStart();
 
-	float mPlatformSpeed;
+	float mPlatformSpeedX = 1.0f;
+	float mPlatformSpeedY = 1.0f;
 
 	Vector2 mClosestPointToNextTarget;
 
