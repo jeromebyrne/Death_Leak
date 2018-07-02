@@ -31,6 +31,7 @@ public:
 	virtual void LoadContent(ID3D10Device * graphicsdevice) override;
 	inline void SetMaxJumpSpeed(float value) { m_maxJumpSpeed = value; }
 	virtual bool Jump(float percent);
+	bool WaterJump();
 	void IncreaseJump(float percent);
 	virtual void WallJump(int directionX, float percent);
 	virtual bool Roll();

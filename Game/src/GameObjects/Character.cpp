@@ -1078,30 +1078,15 @@ bool Character::Jump(float percent)
 
 	if (GetIsInWater() || WasInWaterLastFrame())
 	{
-		if (m_velocity.Y < 0.0f)
-		{
-			// slow gravity
-			m_velocity.Y *= 0.2f;
-		}
-		percent *= kWaterJumpPercentModifier;
-		mCanIncreaseJumpVelocity = true;
-		mDoSwimBurstAnim = true;
+		return WaterJump();
 	}
 
-	if(percent > 100.0f)
-	{
-		percent = 100.0f;
-	}
-	else if(percent <= 0.0f)
-	{
-		percent = 1.0f;
-	}
+	// clamp
+	percent = percent > 100.0f ? 100.0f : percent;
+	percent = percent <= 0.0f ? 1.0f : percent;
 
-	if (!WasInWaterLastFrame())
-	{
-		// play jump sound
-		AudioManager::Instance()->PlaySoundEffect("jump.wav");
-	}
+	// play jump sound
+	AudioManager::Instance()->PlaySoundEffect("jump.wav");
 
 	if (!mIsMidAirMovingUp)
 	{
@@ -1162,39 +1147,65 @@ bool Character::Jump(float percent)
 			}
 		}
 	}
-	
-	if (!WasInWaterLastFrame())
+
+	if (mCurrentJumpsBeforeLand == 0)
 	{
-		if (mCurrentJumpsBeforeLand == 0)
+		m_velocity.Y = 1.0f;
+		m_direction.Y = 1.0f;
+		m_acceleration.Y = (m_maxJumpSpeed / 100.0f) * percent;
+
+		// can only increase jump on first jump from land
+		mCanIncreaseJumpVelocity = true;
+	}
+	else
+	{
+		// DOUBLE JUMP
+		m_velocity.Y += 12.0f;
+
+		if (m_velocity.Y < 14.0f)
 		{
-			m_velocity.Y = 1.0f;
-			m_direction.Y = 1.0f;
-			m_acceleration.Y = (m_maxJumpSpeed / 100.0f) * percent;
-
-			// can only increase jump on first jump from land
-			mCanIncreaseJumpVelocity = true;
+			m_velocity.Y = 14.0f;
 		}
-		else
-		{
-			// DOUBLE JUMP
-			m_velocity.Y += 12.0f;
 
-			if (m_velocity.Y < 14.0f)
-			{
-				m_velocity.Y = 14.0f;
-			}
+		// we just double jumped so reset jump animation
+		AnimationPart * bodyPart = m_animation->GetPart("body");
+		GAME_ASSERT(bodyPart);
 
-			// we just double jumped so reset jump animation
-			AnimationPart * bodyPart = m_animation->GetPart("body");
-			GAME_ASSERT(bodyPart);
-
-			bodyPart->Restart();
-		}
+		bodyPart->Restart();
 	}
 
 	SetY(m_position.Y + 10.0f); // bump us up so that solid lines don't keep us grounded
 
 	++mCurrentJumpsBeforeLand;
+
+	return true;
+}
+
+bool Character::WaterJump()
+{
+	float jumpPercent = 40.0f;
+
+	// NOTE: assumes the character is in water
+	if (m_velocity.Y < 0.0f)
+	{
+		// slow gravity
+		m_velocity.Y *= 0.2f;
+	}
+
+	mCanIncreaseJumpVelocity = true;
+	mDoSwimBurstAnim = true;
+
+	m_velocity.Y = 1.0f;
+	m_direction.Y = 1.0f;
+	m_acceleration.Y = (m_maxJumpSpeed / 100.0f) * jumpPercent;
+
+	// can only increase jump on first jump from land
+	mCanIncreaseJumpVelocity = true;
+
+	if (IsOnSolidSurface())
+	{
+		SetY(m_position.Y + 10.0f); // bump us up so that solid lines don't keep us grounded
+	}
 
 	return true;
 }
