@@ -37,6 +37,11 @@ void AudioObject::Update(float delta)
 	if (!mHasStartedPlaying)
 	{
 		mSoundInstance = AudioManager::Instance()->PlaySoundEffect(mAudioFilename, mRepeat, true);
+
+		if (mSoundInstance != nullptr && mAdjustVolumeToCamera)
+		{
+			mSoundInstance->setVolume(0.0f);
+		}
 		mHasStartedPlaying = true;
 	}
 
@@ -48,7 +53,6 @@ void AudioObject::Update(float delta)
 		{
 			GameObjectManager::Instance()->RemoveGameObject(this);
 		}
-
 
 		Camera2D * camera = Camera2D::GetInstance();
 		const Vector3 & camPos = camera->Position();

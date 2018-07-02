@@ -29,7 +29,7 @@ static const float kLandRollInputWindow = 0.25f;
 static const float kLandJumpInputWindow = 0.2f;
 static const float kWallJumpXResistance = 0.99f;
 static const float kWallJumpVelocityXBoost = 15.0f;
-static const float kWaterJumpPercentModifier = 0.2f;
+static const float kWaterJumpPercentModifier = 0.4f;
 
 Character::Character(float x, float y, DepthLayer depthLayer, float width, float height) :
 	SolidMovingSprite(x, y, depthLayer, width, height),
@@ -1301,17 +1301,17 @@ void Character::AccelerateX(float directionX, float percent)
 		return;
 	}
 
-	float deepWaterModifier = WasInWaterLastFrame() ? (IsOnSolidSurface() ? 0.5f : 0.2f) : 1.0f;
+	// float deepWaterModifier = WasInWaterLastFrame() ? (IsOnSolidSurface() ? 0.5f : 0.2f) : 1.0f;
 
 	float accelVal = mAccelXRate * percent;
 
 	if (GetIsSprintActive())
 	{
-		MovingSprite::AccelerateX(directionX, (accelVal * 2.0f) * deepWaterModifier);
+		MovingSprite::AccelerateX(directionX, (accelVal * 2.0f) /* * deepWaterModifier */);
 	}
 	else
 	{
-		MovingSprite::AccelerateX(directionX, accelVal * deepWaterModifier);
+		MovingSprite::AccelerateX(directionX, accelVal /* * deepWaterModifier */);
 	}
 
 	if (mIsStrafing)
@@ -1327,12 +1327,12 @@ void Character::AccelerateX(float directionX, float percent)
 	}
 	else
 	{
-		if (directionX < 0)
+		if (directionX < 0.0f)
 		{
 			// flip the sprite horizontally
 			FlipHorizontal();
 		}
-		else if (directionX > 0)
+		else if (directionX > 0.0f)
 		{
 			// unflip
 			UnFlipHorizontal();

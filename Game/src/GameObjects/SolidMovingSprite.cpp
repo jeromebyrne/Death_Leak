@@ -384,7 +384,11 @@ bool SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 
 				if (!mBouncable && !object->IsBouncy())
 				{
-					m_velocity.Y = 0.0f;
+					if (m_velocity.Y < 1.0f)
+					{
+						m_velocity.Y = 0.0f;
+					}
+
 					StopYAccelerating();
 				}
 

@@ -65,7 +65,7 @@ void MovingSprite::Update(float delta)
 		DoWaterAccelerationBubbles();
 	}
 
-	float velocityMod = mIsInWater ? 0.25f : 1.0f;
+	float velocityMod = mIsInWater ? 0.2f : 1.0f;
 	Vector2 nextVelocity = m_velocity + (m_acceleration * m_direction) * velocityMod;
 
 	if (nextVelocity.X > m_maxVelocity.X * velocityMod && mMaxVelocityXLimitEnabled)
@@ -134,8 +134,11 @@ void MovingSprite::Update(float delta)
 		}
 		else
 		{
-			float waterGravityMultiplier = 0.1f; // TODO: make this a constant
-			AccelerateY(-1.0f, (mGravityApplyAmount * waterGravityMultiplier / mCurrentYResistance) * percentDelta);
+			if (m_velocity.Y > -2.0f) // TODO: make this a constant
+			{
+				float waterGravityMultiplier = 0.15f; // TODO: make this a constant
+				AccelerateY(-1.0f, (mGravityApplyAmount * waterGravityMultiplier / mCurrentYResistance) * percentDelta);
+			}
 		}
 	}
 
