@@ -2,7 +2,7 @@
 #include "SaveShrine.h"
 #include "TextObject.h"
 
-static const float kTimeBetweenSaves = 5.0f;
+static const float kTimeBetweenSaves = 60.0f;
 
 SaveShrine::SaveShrine(float x, float y, DepthLayer depthLayer, float width, float height) :
 	GameObject(x, y, depthLayer, width, height)

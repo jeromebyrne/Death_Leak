@@ -1623,21 +1623,22 @@ void Character::Draw(ID3D10Device * device, Camera2D * camera)
 	SolidMovingSprite::Draw(device, camera);
 }
 
-void Character::DoMeleeAttack()
+bool Character::DoMeleeAttack()
 {
 	if (!IsOnSolidSurface())
 	{
-		return;
+		return false;
 	}
 
 	if (mIsDoingMelee ||
 		mIsRolling)
 	{
-		return;
+		return false;
 	}
 
 	mIsDoingMelee = true;
 	mCurrentMeleePhase = kMeleePhase1;
+	return true;
 }
 
 void Character::DropDown()
@@ -1828,30 +1829,32 @@ bool Character::WillDeflectProjectile(float projectileDirectionX, float projecti
 	return false;
 }
 
-void Character::DoDownwardDash()
+bool Character::DoDownwardDash()
 {
 	if (IsOnSolidSurface())
 	{
-		return;
+		return false;
 	}
 
 	if (GetTimeNotOnSolidSurface() < 0.25f)
 	{
-		return;
+		return false;
 	}
 
 	if (!FeatureUnlockManager::GetInstance()->IsFeatureUnlocked(FeatureUnlockManager::kDownwardDash))
 	{
-		return;
+		return false;
 	}
 
 	StopYAccelerating();
 
-	m_velocity.Y = -30.0f;
+	m_velocity.Y = -50.0f;
 
 	mCanIncreaseJumpVelocity = false;
 
 	mIsDownwardDashing = true;
+
+	return true;
 }
 
 void Character::Stun(float stunTime)

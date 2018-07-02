@@ -36,6 +36,16 @@ public:
 
 	void UpdateResistance();
 
+	bool HasEnoughFocusForMelee();
+
+	bool HasEnoughFocusForDownwardDash();
+
+	virtual bool DoMeleeAttack() override;
+
+	virtual bool DoDownwardDash() override;
+
+	void ConsumeFocus(float focusAmount);
+
 private:
 
 	virtual void DebugDraw(ID3D10Device *  device) override;

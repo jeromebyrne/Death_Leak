@@ -45,7 +45,7 @@ public:
 	bool GetIsSprintActive() { return mSprintActive; }
 	virtual Projectile * FireWeapon(Vector2 direction) = 0;
 	virtual Projectile * FireBomb(Vector2 direction) = 0;
-	virtual void DoMeleeAttack();
+	virtual bool DoMeleeAttack();
 	unsigned GetMaxJumpsAllowed() const { return mMaxJumpsAllowed; }
 	unsigned GetCurrentJumpsBeforeLand() const { return mCurrentJumpsBeforeLand; }
 	float GetTimeNotOnSolidSurface() const { return mTimeNotOnSolidSurface; }
@@ -81,7 +81,7 @@ public:
 
 	bool WillDeflectProjectile(float projectileDirectionX, float projectileCollisionLeft, float projectileCollisionRight);
 
-	void DoDownwardDash();
+	virtual bool DoDownwardDash();
 
 	bool GetIsDownwardDashing() const { return mIsDownwardDashing; }
 
