@@ -130,6 +130,8 @@ private:
 
 	void AddSlowMotionLayer();
 
+	void CacheSaveData();
+
 	GameObjectManager();
 	~GameObjectManager(void);
 	

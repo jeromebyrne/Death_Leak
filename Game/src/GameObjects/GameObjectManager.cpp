@@ -486,13 +486,18 @@ void GameObjectManager::ParseLevelProperties(TiXmlElement * element)
 	GAME_ASSERT(foundLevelProperties);
 }
 
-void GameObjectManager::SaveGame()
+void GameObjectManager::CacheSaveData()
 {
 	SaveManager::GetInstance()->SetCurrencyOrbsCollected(mCurrentLevelFile, mCurrentCurrencyOrbIdsCollected);
 	SaveManager::GetInstance()->SetBreakablesBroken(mCurrentLevelFile, mCurrentBreakablesBroken);
 
 	mCurrentCurrencyOrbIdsCollected.clear();
 	mCurrentBreakablesBroken.clear();
+}
+
+void GameObjectManager::SaveGame()
+{
+	CacheSaveData();
 
 	SaveManager::GetInstance()->WriteSaveFile();
 }
@@ -505,6 +510,8 @@ void GameObjectManager::SwitchToLevel(const char * level, bool defer)
 		mLevelToSwitch = level;
 		return;
 	}
+
+	CacheSaveData();
 
 	UIManager::Instance()->PopUI("game_hud");
 	UIManager::Instance()->PushUI("gameloading");
