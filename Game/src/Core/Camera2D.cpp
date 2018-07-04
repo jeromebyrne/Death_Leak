@@ -179,40 +179,45 @@ void Camera2D::FollowTargetObjectWithLag(bool forceUpdate, float overrideLagX, f
 		return;
 	}
 
-	// get the x and y distance between the camera and the object
-	float distanceX = 0.0f;
-
-	distanceX = m_position.X - (mTargetObject->X() + (mTargetOffset.X * mZoomPercent));
-
-
-	float xLag = mTargetLag.X * mZoomPercent;
-
-	if (overrideLagX != 0.0f)
+	if (mFollowX)
 	{
-		xLag = overrideLagX;
-	}
+		// get the x and y distance between the camera and the object
+		float distanceX = 0.0f;
 
-	if (xLag < 1.0f)
+		distanceX = m_position.X - (mTargetObject->X() + (mTargetOffset.X * mZoomPercent));
+
+		float xLag = mTargetLag.X * mZoomPercent;
+
+		if (overrideLagX != 0.0f)
+		{
+			xLag = overrideLagX;
+		}
+
+		if (xLag < 1.0f)
+		{
+			xLag = 1.0f;
+		}
+		m_position.X -= distanceX / xLag;
+	}
+	
+	if (mFollowY)
 	{
-		xLag = 1.0f;
+		float yLag = mTargetLag.Y;
+
+		if (overrideLagY != 0.0f)
+		{
+			yLag = overrideLagY;
+		}
+
+		if (yLag < 1.0f)
+		{
+			yLag = 1.0f;
+		}
+
+		float distanceY = m_position.Y - (mTargetObject->Y() + mTargetOffset.Y * mZoomPercent);
+
+		m_position.Y -= distanceY / yLag;
 	}
-	m_position.X -= distanceX / xLag;
-
-	float yLag = mTargetLag.Y;
-
-	if (overrideLagY != 0.0f)
-	{
-		yLag = overrideLagY;
-	}
-
-	if (yLag < 1.0f)
-	{
-		yLag = 1.0f;
-	}
-
-	float distanceY = m_position.Y - (mTargetObject->Y() + mTargetOffset.Y * mZoomPercent);
-
-	m_position.Y -= distanceY / yLag;
 }
 
 bool Camera2D::IsCameraOriginInsideObject(GameObject * object)

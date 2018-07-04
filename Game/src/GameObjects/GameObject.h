@@ -11,7 +11,7 @@ class GameObject
 public:
 
 	// if adding to this enum then make sure to update ConvertDepthLayerToString and ConvertStringToDepthLayer
-	// also update GetParallaxXForDepthLayer
+	// also update GetParallaxMultipliersForDepthLayer
 	enum DepthLayer
 	{
 		kFarBackground = 6000,
@@ -28,6 +28,7 @@ public:
 		kPlayerProjectile = 2500,
 		kImpactCircles = 2250,
 		kBloodSpray1 = 2000,
+		kGroundFront = 1750,
 		kFarForeground = 1500,
 		kMiddleForeground = 1000,
 		kNearForeground = 500,

@@ -36,6 +36,14 @@ void GhostEnemySpawner::SpawnNPC(const float posX,
 	npc->m_drawAtNativeDimensions = false;
 	npc->m_dimensions = Vector2(dimensions.X, dimensions.Y);
 	npc->m_isAnimated = true;
+	/*
+	npc->EffectName = "effectpixelwobble";
+	npc->mPixelWobbleIntensity = 0.035f;
+	npc->mPixelWobbleSpeedMod = 0.75f;
+	*/
+
+	npc->EffectName = "effectnoise";
+	npc->mNoiseShaderIntensity = 0.02f;
 	npc->SetMaxVelocityXY(randMaxXVelocity, 99999.0f);
 	npc->SetCollisionDimensions(Vector2(collisionDimensions.X, collisionDimensions.Y));
 	npc->SetCollisionBoxOffset(Vector2(collisionBoxOffset.X, collisionBoxOffset.Y));   
@@ -101,9 +109,9 @@ void GhostEnemySpawner::SpawnMultiple(const unsigned int numNPC, Vector2 boundsP
 		Vector2 collisionDimensions;
 		Vector2 collisionOffset;
 
-		dimensions = Vector2(160.0f, 259.0f);
+		dimensions = Vector2(256.0f, 256.0f);
 		collisionDimensions = Vector2(100.0f, 200.0f);
-		collisionOffset = Vector2(0, 0);
+		collisionOffset = Vector2(0.0f, 0.0f);
 		animFile = "XmlFiles\\animation\\ghost_enemy_anim.xml";
 
 		SpawnNPC(boundsPos.X + randX, boundsPos.Y + randY, false, animFile, dimensions, collisionDimensions, collisionOffset);

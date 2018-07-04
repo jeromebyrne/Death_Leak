@@ -523,6 +523,10 @@ string GameObject::ConvertDepthLayerToString(DepthLayer depthLayer)
 		{
 			return "kPlayer";
 		}
+		case kGroundFront:
+		{
+			return "kGroundFront";
+		}
 		case kGhostVomitProjectile:
 		{
 			return "kGhostVomitProjectile";
@@ -610,6 +614,10 @@ GameObject::DepthLayer GameObject::ConvertStringToDepthLayer(string depthLayerSt
 	{
 		return kPlayer;
 	}
+	else if (depthLayerString == "kGroundFront")
+	{
+		return kGroundFront;
+	}
 	else if (depthLayerString == "kGhostVomitProjectile")
 	{
 		return kGhostVomitProjectile;
@@ -689,6 +697,7 @@ Vector2 GameObject::GetParallaxMultipliersForDepthLayer(DepthLayer depthLayer)
 		case kImpactCircles:
 		case kBloodSpray1:
 		case kSolidLines:
+		case kGroundFront:
 		{
 			return Vector2(1.0f, 1.0f);
 		}
