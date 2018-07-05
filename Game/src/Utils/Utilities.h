@@ -184,6 +184,11 @@ public:
 		return ::atof(buf);
 	}
 
+	static int ConvertStringToInt(const char * str)
+	{
+		return std::stoi(str);
+	}
+
 	static string getFormattedString(const char * stringToFormat, ...)
 	{
 		if (!stringToFormat)

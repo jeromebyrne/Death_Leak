@@ -1,6 +1,7 @@
 #include "precompiled.h"
 #include "SaveShrine.h"
 #include "TextObject.h"
+#include "Game.h"
 
 static const float kTimeBetweenSaves = 60.0f;
 
@@ -22,6 +23,11 @@ void SaveShrine::Initialise()
 void SaveShrine::Update(float delta)
 {
 	GameObject::Update(delta);
+
+	if (Game::GetInstance()->GetIsLevelEditMode())
+	{
+		return;
+	}
 
 	Player * player = GameObjectManager::Instance()->GetPlayer();
 	if (!player)
@@ -84,5 +90,5 @@ void SaveShrine::DisplaySaveText()
 
 	GameObjectManager::Instance()->AddGameObject(saveTextObject);
 
-	saveTextObject->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), Vector2(0.0f, 0.0f), GetDepthLayer(),  false);
+	saveTextObject->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), Vector2(0.0f, 200.0f), GameObject::kGroundFront,  false);
 }

@@ -249,14 +249,6 @@ void Breakable::SpawnDamageTransitionParticles()
 																0.1f,
 																0.1f);
 
-	/*
-	float debrisPosZ = 51.0f;
-	if (m_position.Z < 50.0f)
-	{
-		debrisPosZ = m_position.Z - 0.01f;
-	}
-	*/
-
 	const auto & debrisTextures = m_material->GetDebrisTextures();
 
 	Vector2 size;

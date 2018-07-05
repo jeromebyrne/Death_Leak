@@ -45,28 +45,17 @@ void SolidLineStrip::XmlRead(TiXmlElement * element)
 	// update base classes
 	SolidMovingSprite::XmlRead(element);
 
-	TiXmlElement * sub_elem = element->FirstChildElement();
+	int numPoints = XmlUtilities::ReadAttributeAsInt(element, "points", "num_points");
 
-	while (sub_elem)
+	for (int i = 0; i < numPoints; ++i)
 	{
-		string name = sub_elem->Value();
+		SolidLinePoint point;
 
-		if (name == "points")
-		{
-			TiXmlElement * path_point = sub_elem->FirstChildElement();
-			while (path_point)
-			{
-				SolidLinePoint point;
-
-				point.LocalPosition.X = XmlUtilities::ReadAttributeAsFloat(path_point, "", "x");
-				point.LocalPosition.Y = XmlUtilities::ReadAttributeAsFloat(path_point, "", "y");
-				mPoints.push_back(point);
-				path_point = path_point->NextSiblingElement();
-			}
-			break;
-		}
-
-		sub_elem = sub_elem->NextSiblingElement();
+		string xPrefix = "x_";
+		string yPrefix = "y_";
+		point.LocalPosition.X = XmlUtilities::ReadAttributeAsFloat(element, "points", (xPrefix + std::to_string(i)).c_str());
+		point.LocalPosition.Y = XmlUtilities::ReadAttributeAsFloat(element, "points", (yPrefix + std::to_string(i)).c_str());
+		mPoints.push_back(point);
 	}
 
 	CalculateLines();
@@ -85,13 +74,18 @@ void SolidLineStrip::XmlWrite(TiXmlElement * element)
 
 	// path points
 	TiXmlElement * points = new TiXmlElement("points"); 
+	int pointsCount = 0;
 	for (auto p : mPoints)
 	{
-		TiXmlElement * point = new TiXmlElement("point");
-		point->SetDoubleAttribute("x", p.LocalPosition.X);
-		point->SetDoubleAttribute("y", p.LocalPosition.Y);
-		points->LinkEndChild(point);
+		string attributeKeyX = "x_" + std::to_string(pointsCount);
+		string attributeKeyY = "y_" + std::to_string(pointsCount);
+
+		points->SetDoubleAttribute(attributeKeyX.c_str(), p.LocalPosition.X);
+		points->SetDoubleAttribute(attributeKeyY.c_str(), p.LocalPosition.Y);
+		++pointsCount;
 	}
+	points->SetAttribute("num_points", pointsCount);
+
 	element->LinkEndChild(points);
 
 	TiXmlElement * edgeProperties = new TiXmlElement("edge_properties");

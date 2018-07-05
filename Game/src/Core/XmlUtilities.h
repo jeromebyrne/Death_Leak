@@ -48,6 +48,25 @@ public:
 		return value;
 	}
 
+	static int ReadAttributeAsInt(TiXmlElement * element, const char* subElementName, const char * key)
+	{
+		TiXmlElement * attributeElement;
+
+		if (strcmp(subElementName, ""))
+		{
+			attributeElement = element->FirstChildElement(subElementName);
+		}
+		else
+		{
+			attributeElement = element;
+		}
+
+		const char* intAsString = attributeElement->Attribute(key);
+		int value = Utilities::ConvertStringToInt(intAsString);
+
+		return value;
+	}
+
 	static const char * ReadAttributeAsString(TiXmlElement * element, const char* subElementName, const char * key)
 	{
 		TiXmlElement * attributeElement;
