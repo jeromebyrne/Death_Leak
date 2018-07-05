@@ -299,6 +299,12 @@ Projectile * Player::FireWeapon(Vector2 direction)
 
 void Player::DebugDraw(ID3D10Device *  device)
 {
+	if (Game::GetInstance()->IsLevelEditTerrainMode())
+	{
+		// If we are terrain editing then just highlight the terrain (SolidLineStrip)
+		return;
+	}
+
 	if (!Game::GetInstance()->GetIsLevelEditMode())
 	{
 		mShowDebugText = true;

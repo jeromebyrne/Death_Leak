@@ -37,10 +37,6 @@ void SolidLineStrip::Initialise()
 	// update the base classes
 	SolidMovingSprite::Initialise();
 
-	// increase the bounding box size, this is for collision detection reasons when a character leaves the box
-	m_collisionBoxDimensions.Y += 150;
-	m_collisionBoxDimensions.X += 150;
-
 	// all solid line strips should be passive 
 	m_passive = true;
 }
@@ -268,10 +264,10 @@ void SolidLineStrip::CalculateLines()
 	}
 
 	int count = 0;
-	float maxX = 0;
-	float minX = 0;
-	float maxY = 0;
-	float minY = 0;
+	float maxX = 0.0f;
+	float minX = 0.0f;
+	float maxY = 0.0f;
+	float minY = 0.0f;
 
 	for (auto & p : mPoints)
 	{
@@ -339,22 +335,22 @@ void SolidLineStrip::CalculateLines()
 		++count;
 	}
 
-	m_collisionBoxDimensions.X = std::abs(maxX - minX);
-	m_collisionBoxDimensions.Y = std::abs(maxY - minY);
+	m_collisionBoxDimensions.X = std::abs(maxX - minX) + 50.0f;
+	m_collisionBoxDimensions.Y = std::abs(maxY - minY) + 100.0f;
 
-	if (m_collisionBoxDimensions.Y < 400)
+	if (m_collisionBoxDimensions.Y < 400.0f)
 	{
-		m_collisionBoxDimensions.Y = 400;
+		m_collisionBoxDimensions.Y = 400.0f;
 	}
-	if (m_collisionBoxDimensions.X < 100)
+	if (m_collisionBoxDimensions.X < 100.0f)
 	{
-		m_collisionBoxDimensions.X = 100;
+		m_collisionBoxDimensions.X = 100.0f;
 	}
 
 	mCollisionBoxOffset.X = (maxX + minX) * 0.5f;
 	mCollisionBoxOffset.Y = (maxY + minY) * 0.5f;
 
-	m_dimensions = Vector2(m_collisionBoxDimensions.X + std::abs(mCollisionBoxOffset.X) * 2.0f, 
+	m_dimensions = Vector2(m_collisionBoxDimensions.X + std::abs(mCollisionBoxOffset.X)  * 2.0f, 
 							m_collisionBoxDimensions.Y + std::abs(mCollisionBoxOffset.Y) * 2.0f);
 }
 

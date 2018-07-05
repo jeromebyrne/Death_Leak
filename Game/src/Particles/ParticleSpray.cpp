@@ -3,6 +3,7 @@
 #include "particleEmitterManager.h"
 #include "Projectile.h"
 #include "DrawUtilities.h"
+#include "Game.h"
 
 ParticleSpray::ParticleSpray(bool isBloodSpray, 
 							Vector2 position,
@@ -478,6 +479,12 @@ void ParticleSpray::UpdateParticleToParent(Particle & particle)
 
 void ParticleSpray::DebugDraw(ID3D10Device *  device)
 {
+	if (Game::GetInstance()->IsLevelEditTerrainMode() )
+	{
+		// If we are terrain editing then just highlight the terrain (SolidLineStrip)
+		return;
+	}
+
 	DrawableObject::DebugDraw(device);
 
 	DrawUtilities::DrawTexture(Vector3(m_position.X, m_position.Y, 3), Vector2(GetLevelEditSelectionDimensions().X, GetLevelEditSelectionDimensions().Y), "Media\\editor\\particles.png");

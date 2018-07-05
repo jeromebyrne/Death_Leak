@@ -307,52 +307,55 @@ void GameObject::Scale(float xScale, float yScale, bool scalePosition)
 
 void GameObject::DebugDraw(ID3D10Device *  device)
 {
-	if (Game::GetInstance()->IsLevelEditTerrainMode() && !dynamic_cast<SolidLineStrip*>(this))
+	if (Game::GetInstance()->IsLevelEditTerrainMode() && !IsSolidLineStrip())
 	{
 		// If we are terrain editing then just highlight the terrain (SolidLineStrip)
 		return;
 	}
 
-	// get our basic effect to draw our lines
-	EffectBasic * basicEffect = static_cast<EffectBasic*>(EffectManager::Instance()->GetEffect("effectbasic"));
-
-	// set the world matrix
-	basicEffect->SetWorld((float*)&m_world);
-
-	// set the alpha value
-	basicEffect->SetAlpha(1.0f);
-
-	// Set the input layout on the device
-	device->IASetInputLayout(basicEffect->InputLayout);
-	
-	if(m_debugDrawVBuffer == 0)
+	if (!IsSolidLineStrip())
 	{
-		D3D10_BUFFER_DESC bd;
-		bd.Usage = D3D10_USAGE_DEFAULT;
-		bd.ByteWidth = sizeof(m_debugDrawVertices[0]) * 8;
-		bd.BindFlags = D3D10_BIND_VERTEX_BUFFER;
-		bd.CPUAccessFlags = 0;
-		bd.MiscFlags = 0;
-		D3D10_SUBRESOURCE_DATA InitData;
-		InitData.pSysMem = m_debugDrawVertices;
+		// get our basic effect to draw our lines
+		EffectBasic * basicEffect = static_cast<EffectBasic*>(EffectManager::Instance()->GetEffect("effectbasic"));
 
-		device->CreateBuffer( &bd, &InitData, &m_debugDrawVBuffer );
-	}
+		// set the world matrix
+		basicEffect->SetWorld((float*)&m_world);
 
-    // Set vertex buffer
-	UINT stride = sizeof(VertexPositionColor);
-	UINT offset = 0;
-	device->IASetVertexBuffers(0,1, &m_debugDrawVBuffer, &stride, &offset);
+		// set the alpha value
+		basicEffect->SetAlpha(1.0f);
 
-	// Set primitive topology
-	device->IASetPrimitiveTopology( D3D10_PRIMITIVE_TOPOLOGY_LINELIST);
+		// Set the input layout on the device
+		device->IASetInputLayout(basicEffect->InputLayout);
 
-	D3D10_TECHNIQUE_DESC techDesc;
-	basicEffect->CurrentTechnique->GetDesc(&techDesc);
-	for(UINT p = 0; p < techDesc.Passes; ++p)
-	{
-		basicEffect->CurrentTechnique->GetPassByIndex(p)->Apply(0);
-		device->Draw(8, 0);
+		if (m_debugDrawVBuffer == nullptr)
+		{
+			D3D10_BUFFER_DESC bd;
+			bd.Usage = D3D10_USAGE_DEFAULT;
+			bd.ByteWidth = sizeof(m_debugDrawVertices[0]) * 8;
+			bd.BindFlags = D3D10_BIND_VERTEX_BUFFER;
+			bd.CPUAccessFlags = 0;
+			bd.MiscFlags = 0;
+			D3D10_SUBRESOURCE_DATA InitData;
+			InitData.pSysMem = m_debugDrawVertices;
+
+			device->CreateBuffer(&bd, &InitData, &m_debugDrawVBuffer);
+		}
+
+		// Set vertex buffer
+		UINT stride = sizeof(VertexPositionColor);
+		UINT offset = 0;
+		device->IASetVertexBuffers(0, 1, &m_debugDrawVBuffer, &stride, &offset);
+
+		// Set primitive topology
+		device->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_LINELIST);
+
+		D3D10_TECHNIQUE_DESC techDesc;
+		basicEffect->CurrentTechnique->GetDesc(&techDesc);
+		for (UINT p = 0; p < techDesc.Passes; ++p)
+		{
+			basicEffect->CurrentTechnique->GetPassByIndex(p)->Apply(0);
+			device->Draw(8, 0);
+		}
 	}
 
 	if (mShowDebugText)
@@ -372,7 +375,20 @@ void GameObject::DebugDraw(ID3D10Device *  device)
 
 	if (mLevelEditShowSelected)
 	{
-		DrawUtilities::DrawTexture(Vector3(m_position.X, m_position.Y, 3), Vector2(m_dimensions.X, m_dimensions.Y), "Media\\editor\\selected.png");
+		if (IsSolidLineStrip())
+		{
+			const SolidLineStrip * sls = static_cast<SolidLineStrip *>(this);
+			DrawUtilities::DrawTexture(Vector3(m_position.X + sls->CollisionBoxOffset().X, m_position.Y + sls->CollisionBoxOffset().Y, 3), 
+										Vector2(sls->CollisionDimensions().X, sls->CollisionDimensions().Y), 
+										"Media\\editor\\selected.png");
+		}
+		else
+		{
+			DrawUtilities::DrawTexture(Vector3(m_position.X, m_position.Y, 3), 
+										Vector2(m_dimensions.X, m_dimensions.Y), 
+										"Media\\editor\\selected.png");
+		}
+		
 	}
 
 	DrawUtilities::DrawTexture(Vector3(m_position.X, m_position.Y, 3), Vector2(mLevelEditSelectionDimensions.X, mLevelEditSelectionDimensions.Y), "Media\\editor\\selection.png");

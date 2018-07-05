@@ -101,6 +101,8 @@ void LevelEditor::Update()
 		else
 		{
 			mTerrainEditing = true;
+			// need to move to be at zoom level 1.0f to edit correctly
+			Camera2D::GetInstance()->SetZoomLevel(1.0f);
 		}
 	}
 	if (GetAsyncKeyState('T') >= 0)
@@ -703,10 +705,10 @@ void LevelEditor::CheckForNewTerrainObject()
 		SolidLineStrip::SolidLinePoint endPoint;
 
 		startPoint.WorldPosition = Vector2(solidLineStrip->Position().X, solidLineStrip->Position().Y);
-		startPoint.LocalPosition = Vector2(0, 0);
+		startPoint.LocalPosition = Vector2(0.0f, 0.0f);
 
-		endPoint.WorldPosition = Vector2(solidLineStrip->Position().X + 200, solidLineStrip->Position().Y + 100);
-		endPoint.LocalPosition = Vector2(0, 200);
+		endPoint.WorldPosition = Vector2(solidLineStrip->Position().X + 200.0f, solidLineStrip->Position().Y + 100.0f);
+		endPoint.LocalPosition = Vector2(200.0f, 0.0f);
 
 		std::vector<SolidLineStrip::SolidLinePoint> pointVec;
 		pointVec.reserve(2);
@@ -795,6 +797,7 @@ void LevelEditor::CheckForTerrainPointMove()
 		points[mSelectedLinePointIndex].LocalPosition = LocalPos;
 
 		mSelectedLineStrip->RecalculateLines(points);
+		mSelectedLineStrip->SetupDebugDraw();
 	}
 }
 
@@ -1143,12 +1146,15 @@ SolidLineStrip * LevelEditor::GetSolidLineStripClickedOn(list<shared_ptr<GameObj
 
 		const vector<SolidLineStrip::SolidLinePoint> points = solidLineStrip->GetLinePoints();
 		unsigned index = 0;
+
+		const float boundingBoxSize = 50.0f;
+
 		for (auto p : points)
 		{
-			float pointLeft = p.WorldPosition.X - 50;
-			float pointRight = p.WorldPosition.X + 50;
-			float pointTop = p.WorldPosition.Y + 50;
-			float pointBottom = p.WorldPosition.Y - 50;
+			float pointLeft = p.WorldPosition.X  - boundingBoxSize;
+			float pointRight = p.WorldPosition.X + boundingBoxSize;
+			float pointTop = p.WorldPosition.Y  + boundingBoxSize;
+			float pointBottom = p.WorldPosition.Y  - boundingBoxSize;
 
 			if (!(worldPosClicked.X > pointLeft &&
 				worldPosClicked.X < pointRight &&
