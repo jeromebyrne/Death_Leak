@@ -1,5 +1,7 @@
 <save_data>
-    <XmlFiles-levels-hot_springs.xml_breakables_broken type="vector" />
+    <XmlFiles-levels-hot_springs.xml_breakables_broken type="vector">
+        <e_1 type="int" value="34" />
+    </XmlFiles-levels-hot_springs.xml_breakables_broken>
     <XmlFiles-levels-hot_springs.xml_currency_orbs_collected type="vector" />
     <XmlFiles-levels-test.xml_breakables_broken type="vector">
         <e_1 type="int" value="46" />
@@ -14,6 +16,6 @@
     </XmlFiles-levels-test.xml_currency_orbs_collected>
     <XmlFiles-levels-test_2.xml_breakables_broken type="vector" />
     <XmlFiles-levels-test_2.xml_currency_orbs_collected type="vector" />
-    <currency_orbs_collected type="int" value="34" />
+    <currency_orbs_collected type="int" value="46" />
     <language_locale_key type="string" value="en-gb" />
 </save_data>
