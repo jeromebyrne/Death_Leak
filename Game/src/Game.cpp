@@ -153,6 +153,8 @@ void Game::Update(float delta)
 
 	m_pCam2d->FollowTargetObjectWithLag();
 
+	m_pCam2d->CheckBoundaryCollisions();
+
 	AudioManager::Instance()->Update();
 
 	bool damageEffectPauseActive = Timing::Instance()->GetTotalTimeSeconds() < (mLastTimeDamagePauseEffect + 
@@ -238,7 +240,7 @@ void Game::Update(float delta)
 	mUIManagerInstance->Update();
 	mUIManagerInstance->HandleEvents();
 	
-	m_pCam2d->CheckBoundaryCollisions();
+	// m_pCam2d->CheckBoundaryCollisions();
 	m_pCam2d->Update();
 }
 

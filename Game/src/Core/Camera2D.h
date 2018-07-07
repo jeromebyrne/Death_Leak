@@ -148,6 +148,9 @@ private:
 
 	bool mFollowX;
 	bool mFollowY;
+
+	// bool mIsOutofBoundsX = false;
+	// bool mIsOutofBoundsY = false;
 };
 
 #endif
