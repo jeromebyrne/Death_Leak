@@ -670,7 +670,15 @@
     </damagesoundeffects>
 
     <footstepsoundeffects>
-      <sound file="water\water_wade.wav" />
+      <sound file="water\shallow_footsteps\1.wav" />
+      <sound file="water\shallow_footsteps\2.wav" />
+      <sound file="water\shallow_footsteps\3.wav" />
+      <sound file="water\shallow_footsteps\4.wav" />
+      <sound file="water\shallow_footsteps\5.wav" />
+      <sound file="water\shallow_footsteps\6.wav" />
+      <sound file="water\shallow_footsteps\7.wav" />
+      <sound file="water\shallow_footsteps\8.wav" />
+      <sound file="water\shallow_footsteps\9.wav" />
     </footstepsoundeffects>
 
     <destroysoundeffects>

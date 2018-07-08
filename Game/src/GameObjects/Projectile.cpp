@@ -757,12 +757,12 @@ void Projectile::ReboundOffSolidLine(SolidLineStrip * solidLine, unsigned lineIn
 
 	m_direction.Normalise();
 
-	m_velocity = Vector2(m_direction.X * 7.0f, m_direction.Y * 10.0f);
+	m_velocity = Vector2(m_direction.X * 2.0f, m_direction.Y * 6.0f);
 	m_isActive = false;
 	m_timeBecameInactive = Timing::Instance()->GetTotalTimeSeconds();
 	mCollidedWithProjectile = true; // this makes it spin away
-	m_maxTimeInActive = 0.75f;
-	mReboundRotateRate = 0.2f;
+	m_maxTimeInActive = 0.25f;
+	mReboundRotateRate = 0.09f;
 }
 
 void Projectile::DebugDraw(ID3D10Device * graphicsdevice)

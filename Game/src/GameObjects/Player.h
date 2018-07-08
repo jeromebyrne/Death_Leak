@@ -36,15 +36,15 @@ public:
 
 	void UpdateResistance();
 
-	bool HasEnoughFocusForMelee();
-
-	bool HasEnoughFocusForDownwardDash();
+	bool HasEnoughFocus(float amountToUse);
 
 	virtual bool DoMeleeAttack() override;
 
 	virtual bool DoDownwardDash() override;
 
 	void ConsumeFocus(float focusAmount);
+
+	virtual bool Roll() override;
 
 private:
 

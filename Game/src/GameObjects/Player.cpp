@@ -22,6 +22,7 @@ static const float kFocusRechargeRate = 10.0f;
 static const float kFocusCooldownTime = 5.0f;
 static const float kMeleeFocusAmount = 75.0f;
 static const float kDownwardDashFocusAmount = 75.0f;
+static const float kRollFocusAmount = 20.0f;
 
 Player::Player(float x, float y, float width, float height) :
 Character(x, y, GameObject::kPlayer, width, height),
@@ -573,19 +574,9 @@ void Player::UpdateFocus(float delta)
 	}
 }
 
-bool Player::HasEnoughFocusForMelee()
+bool Player::HasEnoughFocus(float amountToUse)
 {
-	if (mCurrentFocusAmount >= kMeleeFocusAmount)
-	{
-		return true;
-	}
-
-	return false;
-}
-
-bool Player::HasEnoughFocusForDownwardDash()
-{
-	if (mCurrentFocusAmount >= kDownwardDashFocusAmount)
+	if (mCurrentFocusAmount >= amountToUse)
 	{
 		return true;
 	}
@@ -595,7 +586,7 @@ bool Player::HasEnoughFocusForDownwardDash()
 
 bool Player::DoMeleeAttack()
 {
-	if (!HasEnoughFocusForMelee())
+	if (!HasEnoughFocus(kMeleeFocusAmount))
 	{
 		return false;
 	}
@@ -624,7 +615,7 @@ void Player::ConsumeFocus(float focusAmount)
 
 bool Player::DoDownwardDash()
 {
-	if (!HasEnoughFocusForDownwardDash())
+	if (!HasEnoughFocus(kDownwardDashFocusAmount))
 	{
 		return false;
 	}
@@ -632,6 +623,22 @@ bool Player::DoDownwardDash()
 	if (Character::DoDownwardDash())
 	{
 		ConsumeFocus(kDownwardDashFocusAmount);
+		return true;
+	}
+
+	return false;
+}
+
+bool Player::Roll() 
+{
+	if (!HasEnoughFocus(kRollFocusAmount))
+	{
+		return false;
+	}
+
+	if (Character::Roll())
+	{
+		ConsumeFocus(kRollFocusAmount);
 		return true;
 	}
 
