@@ -52,6 +52,11 @@
       <texture file="Media\crate\debris.png"/>
       <texture file="Media\crate\debris.png"/>
     </debris_textures>
+
+    <landsoundeffects>
+      <sound file="water\water_splash_medium.wav" />
+      <sound file="water\water_splash_medium_2.wav" />
+    </landsoundeffects>
   </material>
 
   <material name="shallow_water">

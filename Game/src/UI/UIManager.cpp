@@ -457,6 +457,7 @@ void UIManager::HandleEvent(string eventName, list<string> params)
 		}
 	case FADE_OUT:
 		{
+			/*
 			list<string>::iterator iter = params.begin();
 			int milliseconds = atoi((*iter).c_str());
 
@@ -474,10 +475,13 @@ void UIManager::HandleEvent(string eventName, list<string> params)
 			}
 
 			PopUI("fullscreen_fade");
+			*/
+			RefreshUI();
 			break;
 		}
 	case FADE_IN:
 		{
+		/*
 			list<string>::iterator iter = params.begin();
 			int milliseconds = atoi((*iter).c_str());
 
@@ -495,6 +499,8 @@ void UIManager::HandleEvent(string eventName, list<string> params)
 			}
 
 			PopUI("fullscreen_fade");
+			*/
+			RefreshUI();
 			break;
 		}
 	case MUTE_SOUND_EFFECTS:

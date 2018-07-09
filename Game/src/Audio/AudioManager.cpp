@@ -61,7 +61,7 @@ ISound * AudioManager::PlaySoundEffect(string fileName, bool loop, bool track, b
 			if (manuallyTrackSloMo)
 			{
 				mSloMoUntrackedSounds.push_back(sound);
-			}
+			}			
 		}
 		return sound;
 	}

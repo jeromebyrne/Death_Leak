@@ -49,7 +49,7 @@ void CurrencyOrb::Initialise()
 	m_resistance.Y = 3.0f;
 	m_maxVelocity.X = 20.0f;
 
-	if (m_drawAtNativeDimensions)
+	if (m_drawAtNativeDimensions) // This is a TERRIBLE way to determine this
 	{
 		mIsLargeType = true;
 	}

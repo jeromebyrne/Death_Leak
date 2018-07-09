@@ -69,7 +69,7 @@
       <fadeout time="150"/>
       <popui ui="mainmenu" />
       <pushui ui="gameloading" />
-      <fadein time="150"/>
+      <fadein time="50"/>
       <stopallsounds />
       <loadlevel level="XmlFiles\levels\hot_springs.xml" />
       <popui ui="gameloading" />
@@ -77,7 +77,7 @@
     </actionspressup>
     
     <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3" />
+      <playsoundeffect sound="UI\\click.wav" />
     </actionspressdown>
     
   </button>
@@ -95,11 +95,11 @@
       <fadeout time="150"/>
       <popui ui="mainmenu" />
       <pushui ui="level_select_edit" />
-      <fadein time="150"/>
+      <fadein time="50"/>
     </actionspressup>
 
     <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3"/>
+      <playsoundeffect sound="UI\\click.wav"/>
     </actionspressdown>
   </button>
    
@@ -118,7 +118,7 @@
     </actionspressup>
     
     <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3"/>
+      <playsoundeffect sound="UI\\click.wav"/>
     </actionspressdown>
   </button>
   
@@ -137,7 +137,7 @@
     </actionspressup>
 
     <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3" />
+      <playsoundeffect sound="UI\\click.wav" />
     </actionspressdown>
 
   </button>
@@ -163,11 +163,11 @@
       <fadeout time="150"/>
       <popui ui="mainmenu" />
       <pushui ui="level_select" />
-      <fadein time="150"/>
+      <fadein time="50"/>
     </actionspressup>
 
     <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3"/>
+      <playsoundeffect sound="UI\\click.wav"/>
     </actionspressdown>
   </button>
 </uiscreen>

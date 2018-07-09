@@ -53,7 +53,7 @@
             use_standard_effect="true">
 
     <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3" />
+      <playsoundeffect sound="UI\\click.wav" />
     </actionspressdown>
     
     <actions_check>
@@ -79,7 +79,7 @@
             use_standard_effect="true">
 
     <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3" />
+      <playsoundeffect sound="UI\\click.wav" />
     </actionspressdown>
 
     <actions_check>
@@ -107,7 +107,7 @@
     </actionspressup>
 
     <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3"/>
+      <playsoundeffect sound="UI\\click.wav"/>
     </actionspressdown>
   </button>
   
@@ -127,7 +127,7 @@
     </actionspressup>
 
     <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3" />
+      <playsoundeffect sound="UI\\click.wav" />
     </actionspressdown>
 
   </button>

@@ -13,6 +13,7 @@
 #include "NPCManager.h"
 
 int Projectile::NUM_PROJECTILES_ACTIVE = 0;
+const float kFadeInTime = 0.3f;
 
 Projectile::Projectile(ProjectileOwnerType ownerType, 
 						const string & textureFileName,
@@ -46,7 +47,6 @@ Projectile::Projectile(ProjectileOwnerType ownerType,
 	m_direction.X = direction.X;
 	m_direction.Y = direction.Y;
 
-
 	m_velocity.X = direction.X * mSpeed;
 	m_velocity.Y = direction.Y * mSpeed;
 
@@ -59,6 +59,8 @@ Projectile::Projectile(ProjectileOwnerType ownerType,
 	mType = kBladeProjectile;
 
 	mIsProjectile = true;
+
+	SetAlpha(0.0f);
 }
 
 Projectile::~Projectile()
@@ -432,41 +434,24 @@ void Projectile::Update(float delta)
 		// we dont need complicated movement so we'll ignore the MovingSprite class
 		Sprite::Update(delta);
 
-		m_velocity.Y -= 0.1f * percentDelta;
+		mTimeActive += delta;
 
-		// rotate appropriately
-		Vector2 dir = Vector2(m_velocity.X, m_velocity.Y);
-		dir.Normalise();
+		if (mTimeActive < kFadeInTime)
+		{
+			float percentFade = mTimeActive / kFadeInTime;
+
+			SetAlpha(percentFade);
+		}
+		else
+		{
+			SetAlpha(1.0f);
+		}
+
+		m_velocity.Y -= 0.1f * percentDelta;
 
 		if (mRotateToDirection)
 		{
-			if (!mIsInWater)
-			{
-				if (dir.Y < 0)
-				{
-					if (dir.X > 0)
-					{
-						SetRotationAngle(-acos(dir.Dot(Vector2(1, 0))));
-					}
-					else
-					{
-						SetRotationAngle(acos(dir.Dot(Vector2(1, 0))));
-						FlipVertical();
-					}
-				}
-				else
-				{
-					if (dir.X > 0)
-					{
-						SetRotationAngle(acos(dir.Dot(Vector2(1, 0))));
-					}
-					else
-					{
-						SetRotationAngle(-acos(dir.Dot(Vector2(1, 0))));
-						FlipVertical();
-					}
-				}
-			}
+			DoRotateToDirection();
 		}
 		else if (mSpinningMovement)
 		{
@@ -702,6 +687,11 @@ void Projectile::HandleSolidLineStripCollision(SolidLineStrip * solidLineStrip)
 	}
 }
 
+void DoRotateToDirection()
+{
+
+}
+
 void Projectile::DoBloodProjectilePositionJitter()
 {
 	if (mType == kBloodFXProjectile)
@@ -788,4 +778,40 @@ Vector2 Projectile::GetLastFrameCollisionRayStart()
 	Vector2 posDiff = m_position - m_lastPosition;
 
 	return Vector2(CollisionCentreX() - posDiff.X, CollisionCentreY() - posDiff.Y);
+}
+
+void Projectile::DoRotateToDirection()
+{
+	if (GetIsInWater())
+	{
+		return;
+	}
+
+	Vector2 dir = Vector2(m_velocity.X, m_velocity.Y);
+	dir.Normalise();
+	
+	if (dir.Y < 0)
+	{
+		if (dir.X > 0)
+		{
+			SetRotationAngle(-acos(dir.Dot(Vector2(1, 0))));
+		}
+		else
+		{
+			SetRotationAngle(acos(dir.Dot(Vector2(1, 0))));
+			FlipVertical();
+		}
+	}
+	else
+	{
+		if (dir.X > 0)
+		{
+			SetRotationAngle(acos(dir.Dot(Vector2(1, 0))));
+		}
+		else
+		{
+			SetRotationAngle(-acos(dir.Dot(Vector2(1, 0))));
+			FlipVertical();
+		}
+	}
 }

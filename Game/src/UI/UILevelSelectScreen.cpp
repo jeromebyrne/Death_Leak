@@ -141,7 +141,7 @@ void UILevelSelectScreen::LoadContent(ID3D10Device * graphicsdevice)
 	< / actionspressup>
 
 	<actionspressdown>
-	<playsoundeffect sound = "UI\\click.mp3" / >
+	<playsoundeffect sound = "UI\\click.wav" / >
 	< / actionspressdown>
 	< / button>
 
@@ -166,7 +166,7 @@ void UILevelSelectScreen::LoadContent(ID3D10Device * graphicsdevice)
 	< / actionspressup>
 
 	<actionspressdown>
-	<playsoundeffect sound = "UI\\click.mp3" / >
+	<playsoundeffect sound = "UI\\click.wav" / >
 	< / actionspressdown>
 	< / button>
 
@@ -191,7 +191,7 @@ void UILevelSelectScreen::LoadContent(ID3D10Device * graphicsdevice)
 	< / actionspressup>
 
 	<actionspressdown>
-	<playsoundeffect sound = "UI\\click.mp3" / >
+	<playsoundeffect sound = "UI\\click.wav" / >
 	< / actionspressdown>
 	< / button>
 
@@ -216,7 +216,7 @@ void UILevelSelectScreen::LoadContent(ID3D10Device * graphicsdevice)
 	< / actionspressup>
 
 	<actionspressdown>
-	<playsoundeffect sound = "UI\\click.mp3" / >
+	<playsoundeffect sound = "UI\\click.wav" / >
 	< / actionspressdown>
 	< / button>
 
@@ -241,7 +241,7 @@ void UILevelSelectScreen::LoadContent(ID3D10Device * graphicsdevice)
 	< / actionspressup>
 
 	<actionspressdown>
-	<playsoundeffect sound = "UI\\click.mp3" / >
+	<playsoundeffect sound = "UI\\click.wav" / >
 	< / actionspressdown>
 	< / button>
 
@@ -266,7 +266,7 @@ void UILevelSelectScreen::LoadContent(ID3D10Device * graphicsdevice)
 	< / actionspressup>
 
 	<actionspressdown>
-	<playsoundeffect sound = "UI\\click.mp3" / >
+	<playsoundeffect sound = "UI\\click.wav" / >
 	< / actionspressdown>
 	< / button>
 
@@ -291,7 +291,7 @@ void UILevelSelectScreen::LoadContent(ID3D10Device * graphicsdevice)
 	< / actionspressup>
 
 	<actionspressdown>
-	<playsoundeffect sound = "UI\\click.mp3" / >
+	<playsoundeffect sound = "UI\\click.wav" / >
 	< / actionspressdown>
 	< / button>
 

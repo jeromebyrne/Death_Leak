@@ -122,52 +122,6 @@ void Character::DoLargeImpactLanding()
 	StopXAccelerating();
 
 	Camera2D::GetInstance()->DoMediumShake();
-
-	if (IsOnSolidLine())
-	{
-		auto solidLine = GetCurrentSolidLineStrip();
-
-		if (solidLine)
-		{
-			Material * objectMaterial = solidLine->GetMaterial();
-			string particleFile = "";
-			if (objectMaterial != 0)
-			{
-				string soundfile = objectMaterial->GetRandomFootstepSoundFilename();
-				AudioManager::Instance()->PlaySoundEffect(soundfile);
-
-				particleFile = objectMaterial->GetRandomParticleTexture();
-
-				if (!particleFile.empty())
-				{
-					ParticleEmitterManager::Instance()->CreateDirectedSpray(20,
-						Vector2(m_position.X + (m_direction.X * 60.f), CollisionBottom()),
-						GetDepthLayer(),
-						Vector2(0.0f, 1.0f),
-						0.4,
-						Vector2(1200.0f, 720.0f),
-						particleFile,
-						3.0f,
-						6.0f,
-						0.4f,
-						1.0f,
-						5,
-						10,
-						0.8,
-						false,
-						0.8,
-						1.0,
-						1,
-						true,
-						15,
-						5.0f,
-						0.2f,
-						0.15f,
-						0.9f);
-				}
-			}
-		}
-	}
 }
 
 void Character::Update(float delta)
@@ -331,6 +285,8 @@ void Character::Update(float delta)
 		{
 			float dropDistance = mHighestPointWhileInAir - m_position.Y;
 
+			DoLandOnSolidSurfaceEffects(dropDistance);
+
 			if (IsPlayer())
 			{
 				// if we pressed roll just before landing then we should roll
@@ -390,6 +346,92 @@ void Character::Update(float delta)
 	{
 		mTimeNotOnSolidSurface += delta;
 		mTimeOnSolidSurface = 0.0f;
+	}
+}
+
+void Character::DoLandOnSolidSurfaceEffects(float dropDistance)
+{
+	if (dropDistance < kSmallDropDistance)
+	{
+		return;
+	}
+
+	if (IsOnSolidLine())
+	{
+		auto solidLine = GetCurrentSolidLineStrip();
+
+		if (solidLine)
+		{
+			Material * objectMaterial = solidLine->GetMaterial();
+			string particleFile = "";
+			if (objectMaterial != nullptr)
+			{
+				string soundfile = objectMaterial->GetRandomFootstepSoundFilename();
+				AudioManager::Instance()->PlaySoundEffect(soundfile);
+
+				particleFile = objectMaterial->GetRandomParticleTexture();
+
+				if (!particleFile.empty())
+				{
+					if (dropDistance < kLargeDropDistance)
+					{
+						ParticleEmitterManager::Instance()->CreateDirectedSpray(10,
+							Vector2(m_position.X + (m_direction.X * 10.f), CollisionBottom() + 35.0f),
+							GetDepthLayer(),
+							Vector2(0.0f, 1.0f),
+							0.8f,
+							Vector2(1200.0f, 720.0f),
+							particleFile,
+							1.0f,
+							1.5f,
+							0.8f,
+							1.2f,
+							32.0f,
+							32.0f,
+							0.8f,
+							false,
+							0.8f,
+							1.0f,
+							1.0f,
+							true,
+							5.0f,
+							5.0f,
+							0.2f,
+							0.15f,
+							0.9f);
+					}
+					else
+					{
+						ParticleEmitterManager::Instance()->CreateDirectedSpray(30,
+							Vector2(m_position.X + (m_direction.X * 10.f), CollisionBottom()),
+							GetDepthLayer(),
+							Vector2(0.0f, 1.0f),
+							0.4f,
+							Vector2(1200.0f, 720.0f),
+							particleFile,
+							3.0f,
+							5.0f,
+							0.4f,
+							1.0f,
+							5.0f,
+							10.0f,
+							0.8f,
+							false,
+							0.8f,
+							1.0f,
+							1.0f,
+							true,
+							15.0f,
+							5.0f,
+							0.2f,
+							0.15f,
+							0.9f);
+					}
+
+					
+				}
+			}
+		}
 	}
 }
 
@@ -1100,52 +1142,6 @@ bool Character::Jump(float percent)
 		FeatureUnlockManager::GetInstance()->IsFeatureUnlocked(FeatureUnlockManager::kCrouchJump))
 	{
 		percent *= 1.9f;
-
-		if (IsOnSolidLine())
-		{
-			auto solidLine = GetCurrentSolidLineStrip();
-
-			if (solidLine)
-			{
-				Material * objectMaterial = solidLine->GetMaterial();
-				string particleFile;
-				if (objectMaterial != 0)
-				{
-					string soundfile = objectMaterial->GetRandomFootstepSoundFilename();
-					AudioManager::Instance()->PlaySoundEffect(soundfile);
-
-					particleFile = objectMaterial->GetRandomParticleTexture();
-
-					if (!particleFile.empty())
-					{
-						ParticleEmitterManager::Instance()->CreateDirectedSpray(40,
-							Vector2(m_position.X + (m_direction.X * 60.f), CollisionBottom()),
-							GetDepthLayer(),
-							Vector2(0.0f, 1.0f),
-							0.1f,
-							Vector2(1200.0f, 720.0f),
-							particleFile,
-							3.0f,
-							10.0f,
-							0.4f,
-							1.0f,
-							5.0f,
-							10.0f,
-							0.8f,
-							false,
-							0.8f,
-							1.0f,
-							1.0f,
-							true,
-							10.0f,
-							3.0f,
-							0.0f,
-							0.15f,
-							0.7f);
-					}
-				}
-			}
-		}
 	}
 
 	if (mCurrentJumpsBeforeLand == 0)
@@ -1178,7 +1174,67 @@ bool Character::Jump(float percent)
 
 	++mCurrentJumpsBeforeLand;
 
+	DoJumpParticles();
+
 	return true;
+}
+
+void Character::DoJumpParticles()
+{
+	if (!IsOnSolidLine())
+	{
+		return;
+	}
+
+	auto solidLine = GetCurrentSolidLineStrip();
+
+	if (!solidLine)
+	{
+		return;
+	}
+
+	Material * objectMaterial = solidLine->GetMaterial();
+	if (!objectMaterial)
+	{
+		return;
+	}
+
+	string particleFile;
+
+	string soundfile = objectMaterial->GetRandomFootstepSoundFilename();
+	AudioManager::Instance()->PlaySoundEffect(soundfile);
+
+	particleFile = objectMaterial->GetRandomParticleTexture();
+
+	if (particleFile.empty())
+	{
+		return;
+	}
+
+	ParticleEmitterManager::Instance()->CreateDirectedSpray(10,
+		Vector2(m_position.X + (m_direction.X * 10.f), CollisionBottom() + 35.0f),
+		GetDepthLayer(),
+		Vector2(0.0f, 1.0f),
+		0.8f,
+		Vector2(1200.0f, 720.0f),
+		particleFile,
+		1.0f,
+		1.5f,
+		0.8f,
+		1.2f,
+		32.0f,
+		32.0f,
+		0.8f,
+		false,
+		0.8f,
+		1.0f,
+		1.0f,
+		true,
+		5.0f,
+		5.0f,
+		0.2f,
+		0.15f,
+		0.9f);
 }
 
 bool Character::WaterJump()

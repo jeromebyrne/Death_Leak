@@ -52,53 +52,59 @@ void TextObject::Update(float delta)
 		return;
 	}
 
-	// get the distance to the player
-	const Player * player = GameObjectManager::Instance()->GetPlayer();
-
-	if (player)
+	if (!mAlwaysShow)
 	{
-		// check is the player inside the bounds of this sprite
-		// if so then fade alpha
-		if (player->X() > Left() &&
-			player->X() < Right() &&
-			player->Y() > Bottom() &&
-			player->Y() < Top())
+		if (mTriggeredByPlayer)
 		{
-			if (!mHasShown)
-			{
-				mHasShown = true;
+			// get the distance to the player
+			const Player * player = GameObjectManager::Instance()->GetPlayer();
 
-				AudioManager::Instance()->PlaySoundEffect("boomy_intro.wav");
+			if (player)
+			{
+				// check is the player inside the bounds of this sprite
+				// if so then fade alpha
+				if (player->X() > Left() &&
+					player->X() < Right() &&
+					player->Y() > Bottom() &&
+					player->Y() < Top())
+				{
+					if (!mHasShown)
+					{
+						mHasShown = true;
+
+						AudioManager::Instance()->PlaySoundEffect("boomy_intro.wav");
+					}
+				}
 			}
 		}
 
-		if (mHasShown && mTimeToShow > 0.0f)
+		if (mHasShown)
 		{
-			if (m_alpha < 1.0f)
+			if (mTimeToShow > 0.0f)
 			{
-				m_alpha += 1.4f * delta;
+				if (m_alpha < 1.0f)
+				{
+					m_alpha += 1.4f * delta;
+				}
+				else
+				{
+					m_alpha = 1.0f;
+				}
+
+				mTimeToShow -= delta;
 			}
 			else
 			{
-				m_alpha = 1.0f;
+				if (m_alpha > 0.0f)
+				{
+					m_alpha -= 0.9f * delta;
+				}
+				else
+				{
+					m_alpha = 0.0f;
+				}
 			}
 		}
-		else
-		{
-			if (m_alpha > 0.0f)
-			{
-				m_alpha -= 0.9f * delta;
-			}
-			else
-			{
-				m_alpha = 0.0f;
-			}
-		}
-	}
-
-	if (mHasShown)
-	{
-		mTimeToShow -= delta;
 	}
 
 	UpdateToParent();
@@ -139,7 +145,7 @@ void TextObject::Draw(ID3D10Device * device, Camera2D * camera)
 {
 	DrawableObject::Draw(device, camera);
 
-	if (Alpha() <= 0.0f && mHasShown)
+	if (!mAlwaysShow && Alpha() <= 0.0f && mHasShown)
 	{
 		return;
 	}

@@ -117,6 +117,10 @@ protected:
 
 	void FireBloodSpatter(Vector2 direction, const Vector2 & origin);
 
+	void DoLandOnSolidSurfaceEffects(float dropDistance);
+
+	void DoJumpParticles();
+
 	bool m_isJumping;
 	float m_maxJumpSpeed;
 	float m_lastTimePlayedWaterWadeSFX; 

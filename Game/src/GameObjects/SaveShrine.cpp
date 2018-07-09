@@ -2,8 +2,10 @@
 #include "SaveShrine.h"
 #include "TextObject.h"
 #include "Game.h"
+#include "AudioManager.h"
+#include "ParticleEmitterManager.h"
 
-static const float kTimeBetweenSaves = 60.0f;
+static const float kTimeBetweenSaves = 5.0f;
 
 SaveShrine::SaveShrine(float x, float y, DepthLayer depthLayer, float width, float height) :
 	GameObject(x, y, depthLayer, width, height)
@@ -37,25 +39,27 @@ void SaveShrine::Update(float delta)
 
 	if (Utilities::IsObjectInRectangle(player, m_position.X, m_position.Y, m_dimensions.X, m_dimensions.Y))
 	{
-		if (!mHasSaved && mHasPlayerExitedBounds)
+		if (!mHasSaved && player->IsFullyCrouched())
 		{
-			DisplaySaveText();
+			// DisplaySaveText();
+
+			AudioManager::Instance()->PlaySoundEffect("save_game.wav");
+
+			AudioManager::Instance()->PlaySoundEffect("water/steam_hissing.wav");
+
+			Camera2D::GetInstance()->DoMediumShake();
+
+			DisplaySaveParticles();
 
 			GameObjectManager::Instance()->SaveGame();
 
 			mHasSaved = true;
 
 			mTimeUntilCanSaveAgain = kTimeBetweenSaves;
-		}
-		mHasPlayerExitedBounds = false;
-	
-	}
-	else
-	{
-		mHasPlayerExitedBounds = true;
+		}	
 	}
 
-	if (mHasSaved)
+	if (mHasSaved && !player->IsFullyCrouched())
 	{
 		mTimeUntilCanSaveAgain -= delta;
 
@@ -64,6 +68,61 @@ void SaveShrine::Update(float delta)
 			mHasSaved = false;
 		}
 	}
+}
+
+void SaveShrine::DisplaySaveParticles()
+{
+	ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
+		m_position,
+		GetDepthLayer(),
+		Vector2(0.0f, 0.0f),
+		0.1f,
+		Vector2(3200.0f, 1200.0f),
+		"Media\\blast_circle.png",
+		1.0f,
+		1.0f,
+		0.1f,
+		0.1f,
+		256.0f,
+		256.0f,
+		0.0f,
+		false,
+		1.0f,
+		1.0f,
+		0.0f,
+		true,
+		8.0f,
+		0.0f,
+		0.0f,
+		0.05f,
+		0.1f,
+		true);
+
+	ParticleEmitterManager::Instance()->CreateDirectedSpray(50,
+		Vector2(m_position.X, m_position.Y + 20.0f),
+		GameObject::kGroundFront,
+		Vector2(0.0f, 1.0f),
+		0.4f,
+		Vector2(3200.0f, 1200.0f),
+		"Media\\levels\\hot_spring\\fog_1.png",
+		2.8f,
+		3.0f,
+		2.0f,
+		7.5f,
+		128.0f,
+		128.0f,
+		0.6f,
+		false,
+		1.0f,
+		1.0f,
+		2.0f,
+		true,
+		2.5f,
+		m_dimensions.X * 0.07f,
+		3.0f,
+		0.05f,
+		0.9f,
+		true);
 }
 
 void SaveShrine::XmlRead(TiXmlElement * element)
@@ -80,11 +139,15 @@ void SaveShrine::DisplaySaveText()
 {
 	TextObject * saveTextObject = new TextObject(m_position.X, m_position.Y, GetDepthLayer(), 3.0f);
 
-	saveTextObject->SetFont("Jing Jing");
-	saveTextObject->SetFontColor(0.1f, 0.1f, 0.1f);
+	saveTextObject->SetFont("Courier New");
+	saveTextObject->SetFontColor(0.35f, 0.35f, 0.35f);
 	saveTextObject->SetFontSize(40.0f);
 	saveTextObject->SetStringKey("game_saved");
 	saveTextObject->SetNoClip(true);
+	saveTextObject->SetAlwaysShow(false);
+	saveTextObject->SetTriggeredByPlayer(false);
+	saveTextObject->SetHasShown(true);
+	saveTextObject->SetTimeToShow(0.5f);
 
 	saveTextObject->SetDimensionsXY(300.0f, 100.0f);
 

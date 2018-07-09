@@ -18,8 +18,9 @@ private:
 
 	void DisplaySaveText();
 
+	void DisplaySaveParticles();
+
 	bool mHasSaved = false;
-	bool mHasPlayerExitedBounds = true;
 
 	float mTimeUntilCanSaveAgain = 0.0f;
 };

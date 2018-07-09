@@ -20,8 +20,11 @@ public:
 	void SetFont(const char * fontname);
 	void SetFontSize(float size);
 	void SetFontColor(float r, float g, float b);
-
 	void SetNoClip(bool centred) { mNoClip = centred; }
+	void SetAlwaysShow(bool value) { mAlwaysShow = value; }
+	void SetTriggeredByPlayer(bool value) { mTriggeredByPlayer = value; }
+	void SetHasShown(bool value) { mHasShown = value; }
+	void SetTimeToShow(float value) { mTimeToShow = value; }
 
 private:
 
@@ -31,7 +34,6 @@ private:
 	float mFontSize;
 	std::string mStringId;
 	std::string mLocalisedString;
-
 	wchar_t * mCachedWideString;
 
 	bool mHasShown;
@@ -39,6 +41,10 @@ private:
 	float mTimeToShow;
 
 	bool mNoClip;
+
+	bool mAlwaysShow = true;
+
+	bool mTriggeredByPlayer = false;
 };
 
 #endif

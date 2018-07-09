@@ -23,11 +23,11 @@
       <fadeout time="150"/>
       <popui ui="language_select_settings" />
       <pushui ui="options" />
-      <fadein time="150"/>
+      <fadein time="50"/>
     </actionspressup>
 
     <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3"/>
+      <playsoundeffect sound="UI\\click.wav"/>
     </actionspressdown>
   </button>
 
@@ -45,11 +45,11 @@
       <fadeout time="150"/>
       <popui ui="language_select_settings" />
       <pushui ui="options" />
-      <fadein time="150"/>
+      <fadein time="50"/>
     </actionspressup>
 
     <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3"/>
+      <playsoundeffect sound="UI\\click.wav"/>
     </actionspressdown>
   </button>
 
@@ -67,11 +67,11 @@
       <fadeout time="150"/>
       <popui ui="language_select_settings" />
       <pushui ui="options" />
-      <fadein time="150"/>
+      <fadein time="50"/>
     </actionspressup>
 
     <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3"/>
+      <playsoundeffect sound="UI\\click.wav"/>
     </actionspressdown>
   </button>
 
@@ -89,11 +89,11 @@
       <fadeout time="150"/>
       <popui ui="language_select_settings" />
       <pushui ui="options" />
-      <fadein time="150"/>
+      <fadein time="50"/>
     </actionspressup>
 
     <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3"/>
+      <playsoundeffect sound="UI\\click.wav"/>
     </actionspressdown>
   </button>
 
@@ -111,11 +111,11 @@
       <fadeout time="150"/>
       <popui ui="language_select_settings" />
       <pushui ui="options" />
-      <fadein time="150"/>
+      <fadein time="50"/>
     </actionspressup>
 
     <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3"/>
+      <playsoundeffect sound="UI\\click.wav"/>
     </actionspressdown>
   </button>
 
@@ -133,11 +133,11 @@
       <fadeout time="150"/>
       <popui ui="language_select_settings" />
       <pushui ui="options" />
-      <fadein time="150"/>
+      <fadein time="50"/>
     </actionspressup>
 
     <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3"/>
+      <playsoundeffect sound="UI\\click.wav"/>
     </actionspressdown>
   </button>
 

@@ -48,7 +48,7 @@
     </actionspressup>
 
     <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3" />
+      <playsoundeffect sound="UI\\click.wav" />
     </actionspressdown>
 
   </button>
@@ -72,11 +72,11 @@
       <popui ui="game_hud"/>
       <pushui ui="mainmenu"/>
       <playmusic sound="" loop="true"/>
-      <fadein time="150"/>
+      <fadein time="50"/>
     </actionspressup>
 
     <actionspressdown>
-      <playsoundeffect sound="UI\\click.mp3" />
+      <playsoundeffect sound="UI\\click.wav" />
     </actionspressdown>
 
   </button>
