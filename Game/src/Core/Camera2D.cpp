@@ -134,28 +134,34 @@ void Camera2D::Update()
 		{
 			float shakePercentTime = timeDiff / mCurrentShakeDuration;
 
-			bool minusX = (rand() % 2) == 1;
-			bool minusY = (rand() % 2) == 1;
-
 			GAME_ASSERT(mTargetObject);
 
-			if (minusX)
+			if (mFollowX == true)
 			{
-				m_position.X += mCurrentShakeIntensity * shakePercentTime * Timing::Instance()->GetTimeModifier();
-			}
-			else
-			{
-				m_position.X -= mCurrentShakeIntensity * shakePercentTime * Timing::Instance()->GetTimeModifier();
-			}
-			
+				bool minusX = (rand() % 2) == 1;
 
-			if (minusY)
-			{
-				m_position.Y += mCurrentShakeIntensity * shakePercentTime * Timing::Instance()->GetTimeModifier();
+				if (minusX)
+				{
+					m_position.X += mCurrentShakeIntensity * shakePercentTime * Timing::Instance()->GetTimeModifier();
+				}
+				else
+				{
+					m_position.X -= mCurrentShakeIntensity * shakePercentTime * Timing::Instance()->GetTimeModifier();
+				}
 			}
-			else
+
+			if (mFollowY == true)
 			{
-				m_position.Y -= mCurrentShakeIntensity * shakePercentTime  * Timing::Instance()->GetTimeModifier();
+				bool minusY = (rand() % 2) == 1;
+
+				if (minusY)
+				{
+					m_position.Y += mCurrentShakeIntensity * shakePercentTime * Timing::Instance()->GetTimeModifier();
+				}
+				else
+				{
+					m_position.Y -= mCurrentShakeIntensity * shakePercentTime  * Timing::Instance()->GetTimeModifier();
+				}
 			}
 		}
 	}

@@ -17,6 +17,7 @@ public:
 		kFarBackground = 6000,
 		kMiddleBackground = 5500,
 		kNearBackground = 5000,
+		kGroundBack = 4750,
 		kGround = 4500,
 		kGroundBlood = 4000,
 		kNpc = 3500,

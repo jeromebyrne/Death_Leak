@@ -5,11 +5,11 @@
 Graphics * Graphics::mInstance = nullptr;
 
 // clear color
-static const float clearColor[4] = { 0.3f, 0.3f, 0.3f, 1.0f };
+static const float clearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 
 Graphics::Graphics(void):
 	mSimpleFontManager(nullptr),
-	mIsFullScreen(true),
+	mIsFullScreen(false),
 	mVSyncEnabled(true)
 {
 	// TODO: add these to member initialiser
@@ -34,7 +34,7 @@ Graphics::Graphics(void):
 Graphics::~Graphics(void)
 {
 	mSimpleFontManager->Release();
-	mSimpleFontManager = 0;
+	mSimpleFontManager = nullptr;
 }
 
 HRESULT Graphics::Initialise(HWND hWnd, int backBufferWidth, int backBufferHeight, float minDepth, float maxDepth, int topLeftX, int topLeftY)

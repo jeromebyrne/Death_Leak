@@ -11,6 +11,7 @@
 #include "Game.h"
 #include "Breakable.h"
 #include "NPCManager.h"
+#include "Smashable.h"
 
 int Projectile::NUM_PROJECTILES_ACTIVE = 0;
 const float kFadeInTime = 0.3f;
@@ -74,8 +75,7 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 		// don't want projectiles to be impeded by debris
 		return false;
 	}
-
-	if (object->IsBreakable())
+	else if (object->IsBreakable())
 	{
 		if (GetOwnerType() == kNPCProjectile)
 		{
@@ -91,8 +91,14 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 			return false;
 		}
 	}
-
-	if (object->IsButterfly())
+	else if (object->IsSmashable())
+	{
+		if (static_cast<Smashable *>(object)->GetSmashableState() == Smashable::kSmashed)
+		{
+			return false;
+		}
+	}
+	else if (object->IsButterfly())
 	{
 		if (!mIsInWater)
 		{
@@ -100,8 +106,7 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 		}
 		return false;
 	}
-
-	if (object->IsCurrencyOrb())
+	else if (object->IsCurrencyOrb())
 	{
 		return false;
 	}

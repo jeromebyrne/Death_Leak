@@ -71,7 +71,7 @@
       <pushui ui="gameloading" />
       <fadein time="50"/>
       <stopallsounds />
-      <loadlevel level="XmlFiles\levels\hot_springs.xml" />
+      <loadlevel level="XmlFiles\levels\cliff.xml" />
       <popui ui="gameloading" />
       <pushui ui="game_hud" />
     </actionspressup>

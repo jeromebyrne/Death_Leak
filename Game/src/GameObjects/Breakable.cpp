@@ -87,6 +87,7 @@ bool Breakable::OnCollision(SolidMovingSprite * object)
 		return false;
 	}
 
+	/*
 	Projectile * asProjectile = static_cast<Projectile *>(object);
 
 	if (asProjectile->GetOwnerType() == Projectile::kNPCProjectile)
@@ -94,6 +95,7 @@ bool Breakable::OnCollision(SolidMovingSprite * object)
 		// enemy projectile don't affect breakables
 		return false;
 	}
+	*/
 
 	return SolidMovingSprite::OnCollision(object);
 }
@@ -113,6 +115,19 @@ void Breakable::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 
 	}
 
 	UpdateState();
+
+	auto cam = Camera2D::GetInstance();
+	if (cam->IsObjectInView(this))
+	{
+		if (mState == kBroken)
+		{
+			cam->DoMediumShake();
+		}
+		else
+		{
+			cam->DoSmallShake();
+		}
+	}
 }
 
 void Breakable::UpdateState()

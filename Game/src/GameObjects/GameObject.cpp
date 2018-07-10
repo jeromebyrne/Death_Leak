@@ -519,6 +519,10 @@ string GameObject::ConvertDepthLayerToString(DepthLayer depthLayer)
 		{
 			return "kNearBackground";
 		}
+		case kGroundBack:
+		{
+			return "kGroundBack";
+		}
 		case kGround:
 		{
 			return "kGround";
@@ -609,6 +613,10 @@ GameObject::DepthLayer GameObject::ConvertStringToDepthLayer(string depthLayerSt
 	else if (depthLayerString == "kNearBackground")
 	{
 		return kNearBackground;
+	}
+	else if (depthLayerString == "kGroundBack")
+	{
+		return kGroundBack;
 	}
 	else if (depthLayerString == "kGround")
 	{
@@ -701,6 +709,7 @@ Vector2 GameObject::GetParallaxMultipliersForDepthLayer(DepthLayer depthLayer)
 		{
 			return Vector2(0.75f, 0.99f);
 		}
+		case kGroundBack:
 		case kGround:
 		case kGroundBlood:
 		case kNpc:

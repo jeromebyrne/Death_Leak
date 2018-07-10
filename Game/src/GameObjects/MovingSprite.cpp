@@ -5,6 +5,9 @@
 #include "ParticleEmitterManager.h"
 #include "Game.h"
 
+const float kGravityWhenFallingMultiplier = 2.0f;
+const float kGravityWhenFallingVelocityThreshold = -15.0f;
+
 MovingSprite::MovingSprite(float x, float y, DepthLayer depthLayer, float width, float height, float groundFriction, float airResistance):
 	Sprite(x,y, depthLayer, width, height), 
 	m_resistance(groundFriction, airResistance), 
@@ -130,7 +133,15 @@ void MovingSprite::Update(float delta)
 	{
 		if (!mIsInWater)
 		{
-			AccelerateY(-1.0f, (mGravityApplyAmount / mCurrentYResistance) * percentDelta);
+			if (m_velocity.Y > 0.0f || m_velocity.Y < kGravityWhenFallingVelocityThreshold)
+			{
+				AccelerateY(-1.0f, (mGravityApplyAmount / mCurrentYResistance) * percentDelta);
+			}
+			else
+			{
+				AccelerateY(-1.0f, ((mGravityApplyAmount * kGravityWhenFallingMultiplier) / mCurrentYResistance) * percentDelta);
+			}
+			
 		}
 		else
 		{

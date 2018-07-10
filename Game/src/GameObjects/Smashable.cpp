@@ -78,6 +78,8 @@ bool Smashable::OnCollision(SolidMovingSprite * object)
 				AudioManager::Instance()->PlaySoundEffect(m_material->GetRandomDestroyedSound());
 			}
 			SpawnSmashedParticles();
+
+			Camera2D::GetInstance()->DoBigShake();
 		}
 	}
 
@@ -86,6 +88,11 @@ bool Smashable::OnCollision(SolidMovingSprite * object)
 
 void Smashable::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointOfContact, bool shouldExplode)
 {
+	if (mState == kSmashed)
+	{
+		return;
+	}
+
 	SolidMovingSprite::OnDamage(damageDealer, damageAmount, pointOfContact, shouldExplode);
 }
 
