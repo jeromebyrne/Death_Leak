@@ -446,10 +446,14 @@ void Projectile::Update(float delta)
 			float percentFade = mTimeActive / kFadeInTime;
 
 			SetAlpha(percentFade);
+
+			m_dimensions = mOriginalDimensions * percentFade;
 		}
 		else
 		{
 			SetAlpha(1.0f);
+
+			m_dimensions = mOriginalDimensions;
 		}
 
 		m_velocity.Y -= 0.1f * percentDelta;

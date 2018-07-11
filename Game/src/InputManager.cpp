@@ -13,6 +13,8 @@
 const float kMaxGamepadAnalogRange = (std::numeric_limits<short>::max)();
 const float kAimOffsetX = 450.0f;
 const float kAimOffsetY = 300.0f;
+const float kJumpInitialPercent = 30.0f;
+const float kJumpIncrementalIncreasePercent = 3.75f;
 
 InputManager::InputManager() :
 	mShowDebugInfo(false),
@@ -125,14 +127,8 @@ void InputManager::ProcessLeftRightMovement_gamepad(XINPUT_STATE padState, Curre
 
 	if (!player->IsDoingMelee() &&
 		!player->IsWallJumping() &&
-		(range > 0.1f || range < -0.1f))
+		(range > 0.2f || range < -0.2f))
 	{
-		if (absRange < 0.5f)
-		{
-			// min accel rate
-			absRange = 0.5f;
-		}
-
 		player->AccelerateX(range, absRange);
 
 		if (absRange > 0.95f)
@@ -164,13 +160,12 @@ void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 	bool wasPressingJump = mCurrentGamepadState.mPressingJump;
 
 	// TODO: why am I doing all this before even checking if jumping?
-
-	float initialJumpPercent = 35.0f;
-	static float currentJumpIncreasePercent = initialJumpPercent;
+	static float currentJumpIncreasePercent = kJumpInitialPercent;
 
 	if (player->IsOnSolidSurface() || player->GetIsInWater())
 	{
-		currentJumpIncreasePercent = initialJumpPercent;
+		// reset
+		currentJumpIncreasePercent = kJumpInitialPercent;
 	}
 
 	if (!player->JustFellFromLargeDistance() &&
@@ -199,14 +194,17 @@ void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 		else
 		{
 			mLastTimePressedJump = Timing::Instance()->GetTotalTimeSeconds();
-			float jumpPower = initialJumpPercent /** GetTriggerRange(padState.Gamepad.bRightTrigger)*/;
+			float jumpPower = kJumpInitialPercent;
 
 			player->Jump(jumpPower);
 		}
 	}
-	else if (mCurrentGamepadState.mPressingJump && wasPressingJump && player->CanIncreaseJumpIntensity() && currentJumpIncreasePercent < 100.0f)
+	else if (mCurrentGamepadState.mPressingJump && 
+		wasPressingJump && 
+		player->CanIncreaseJumpIntensity() && 
+		currentJumpIncreasePercent < 100.0f)
 	{
-		currentJumpIncreasePercent += 5.0f /* * GetTriggerRange(padState.Gamepad.bRightTrigger) */;
+		currentJumpIncreasePercent += kJumpIncrementalIncreasePercent;
 		player->IncreaseJump(currentJumpIncreasePercent);
 	}
 }

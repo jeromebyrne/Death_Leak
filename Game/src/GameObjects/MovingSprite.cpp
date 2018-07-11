@@ -5,7 +5,7 @@
 #include "ParticleEmitterManager.h"
 #include "Game.h"
 
-const float kGravityWhenFallingMultiplier = 2.0f;
+const float kGravityWhenFallingMultiplier = 3.0f;
 const float kGravityWhenFallingVelocityThreshold = -15.0f;
 
 MovingSprite::MovingSprite(float x, float y, DepthLayer depthLayer, float width, float height, float groundFriction, float airResistance):

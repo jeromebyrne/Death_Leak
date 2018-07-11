@@ -53,10 +53,11 @@ void Player::Initialise()
 	// Just hardcoding these variables now
 	// because I want to get this shit locked down and finished
 	mRunAnimFramerateMultiplier = 3.0f;
-	m_maxJumpSpeed = 23;
+	m_maxJumpSpeed = 19.0f;
 	mMaxJumpsAllowed = 1;
 	m_maxVelocity.X = 1.0000f;
 	mSprintVelocityX = 17.5f;
+	mAccelXRate = 0.60f;
 
 	UpdateResistance();
 
@@ -65,17 +66,31 @@ void Player::Initialise()
 
 	m_projectileOffset.X = 5.0f;
 	m_projectileOffset.Y = 25.0f;
+
+	SetGravityApplyAmount(0.75f);
 }
 
 void Player::UpdateResistance()
 {
-	if (mSprintActive)
+	if (GetIsRolling())
+	{
+		m_resistance.X = 0.93f;
+	}
+	else if (mSprintActive)
 	{
 		m_resistance.X = 0.94f; // HAS to be lower than 1.0 (TODO: really need to change this)
 	}
 	else
 	{
-		m_resistance.X = 0.895f; // HAS to be lower than 1.0 (TODO: really need to change this)
+		// m_resistance.X = 0.895f; // HAS to be lower than 1.0 (TODO: really need to change this)
+		if (m_acceleration.X == 0.0f)
+		{
+			m_resistance.X = 0.8f;
+		}
+		else
+		{
+			m_resistance.X = 0.9999f;
+		}
 	}
 
 	m_resistance.Y = 0.88f;
@@ -254,7 +269,7 @@ Projectile * Player::FireWeapon(Vector2 direction)
 		pos.X -= m_projectileOffset.X;
 	}
 
-	float speed = mSprintActive ? 35.0f : 30.0f;
+	float speed = mSprintActive ? 25.0f : 20.0f;
 	bool isInWater = WasInWaterLastFrame();
 
 	Projectile * p = new Projectile(Projectile::kPlayerProjectile,
@@ -262,8 +277,8 @@ Projectile * Player::FireWeapon(Vector2 direction)
 									mProjectileImpactFilePath.c_str(),
 									pos,
 									GameObject::kPlayerProjectile,
-									Vector2(91.0f,16.0f),
-									Vector2(91.0f,16.0f),
+									Vector2(112.66,33.33f),
+									Vector2(112.66,33.33f),
 									direction,
 									0.5f,
 									isInWater ? speed * 0.6f : speed,

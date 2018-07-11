@@ -1141,7 +1141,7 @@ bool Character::Jump(float percent)
 	if (mIsFullyCrouched &&
 		FeatureUnlockManager::GetInstance()->IsFeatureUnlocked(FeatureUnlockManager::kCrouchJump))
 	{
-		percent *= 1.9f;
+		percent *= 6.0f;
 	}
 
 	if (mCurrentJumpsBeforeLand == 0)

@@ -86,7 +86,7 @@ public:
 
 	bool GetIsDownwardDashing() const { return mIsDownwardDashing; }
 
-	bool CanIncreaseJumpIntensity() const { return mCanIncreaseJumpVelocity; }
+	bool CanIncreaseJumpIntensity() const { return mCanIncreaseJumpVelocity && m_velocity.Y >= 0.0f; }
 
 	virtual bool CanJump() const;
 
