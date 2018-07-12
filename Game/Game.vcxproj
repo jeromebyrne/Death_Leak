@@ -118,6 +118,7 @@
     <ClCompile Include="src\Particles\ParticleEmitterManager.cpp" />
     <ClCompile Include="src\Particles\ParticleSpray.cpp" />
     <ClCompile Include="src\PlayerLevelManager.cpp" />
+    <ClCompile Include="src\PositionalAudio.cpp" />
     <ClCompile Include="src\precompiled.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -250,6 +251,7 @@
     <ClInclude Include="src\Particles\ParticleEmitterManager.h" />
     <ClInclude Include="src\Particles\ParticleSpray.h" />
     <ClInclude Include="src\PlayerLevelManager.h" />
+    <ClInclude Include="src\PositionalAudio.h" />
     <ClInclude Include="src\precompiled.h" />
     <ClInclude Include="src\Resource.h" />
     <ClInclude Include="src\SaveManager.h" />

@@ -197,6 +197,11 @@ void GameObject::Update(float delta)
 	m_lastPosition = m_position;
 
 	UpdateToParent();
+
+	if (mPositionalAudio.IsInitialised())
+	{
+		mPositionalAudio.Update(delta, m_position);
+	}
 }
 
 void GameObject:: XmlRead(TiXmlElement * element)

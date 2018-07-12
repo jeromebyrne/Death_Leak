@@ -100,7 +100,7 @@ void AudioObject::Update(float delta)
 
 				mSoundInstance->setVolume(1.0f - percent);
 			}
-			else if (camera->IsCameraOriginInsideRect(m_position, Vector2(mFadeDimensions.X, mFadeDimensions.Y)))
+			else if (camera->IsCameraOriginInsideRect(m_position, mFadeDimensions))
 			{
 				float fadeLenghtX = (mFadeDimensions.X - m_dimensions.X) * 0.5f;
 				float fadeLenghtY = (mFadeDimensions.Y - m_dimensions.Y) * 0.5f;

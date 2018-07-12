@@ -22,9 +22,9 @@ public:
 
 	void Initialise();
 	void Release();
-	ISound * PlaySoundEffect(string fileName, bool loop = false, bool track = false, bool applyTimeMod = true);
+	irrklang::ISound * PlaySoundEffect(string fileName, bool loop = false, bool track = false, bool applyTimeMod = true);
 	void PlayMusic(string fileName, bool loop = false);
-	ISound* GetSound(string filename); // get a sound object
+	irrklang::ISound* GetSound(string filename); // get a sound object
 
 	void StopAllSounds();
 
@@ -47,7 +47,7 @@ private:
 
 	// when slow mo is active we want to modify the playback speed
 	// however you need to manually track the sound in that case
-	list<ISound*> mSloMoUntrackedSounds;
+	list<irrklang::ISound*> mSloMoUntrackedSounds;
 };
 
 #endif

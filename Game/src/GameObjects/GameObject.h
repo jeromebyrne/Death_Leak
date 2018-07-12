@@ -2,6 +2,7 @@
 #define GAMEOBJECT_H
 
 #include "SineWave.h"
+#include "PositionalAudio.h"
 
 class Material;
 class Camera2D;
@@ -298,6 +299,8 @@ protected:
 	SineWaveProps mSineWaveProps;
 
 	bool mAlwaysUpdate;
+
+	PositionalAudio mPositionalAudio;
 
 private:
 

@@ -29,7 +29,7 @@ void AudioManager::Release()
 	}
 }
 
-ISound * AudioManager::PlaySoundEffect(string fileName, bool loop, bool track, bool applyTimeMod)
+irrklang::ISound * AudioManager::PlaySoundEffect(string fileName, bool loop, bool track, bool applyTimeMod)
 {
 	if (mSfxEnabled)
 	{
@@ -45,7 +45,7 @@ ISound * AudioManager::PlaySoundEffect(string fileName, bool loop, bool track, b
 			}
 			track = true;
 		}
-		ISound * sound = m_irrKlangEngine->play2D(file.c_str(), loop, false, track);
+		irrklang::ISound * sound = m_irrKlangEngine->play2D(file.c_str(), loop, false, track);
 		if (!sound)
 		{
 			LOG_ERROR("Sound file not found: %s", fileName.c_str());
@@ -95,7 +95,7 @@ void AudioManager::Update()
 
 	float timeMod = Timing::Instance()->GetTimeModifier();
 
-	list<ISound *> killList;
+	list<irrklang::ISound *> killList;
 	for (auto sound : mSloMoUntrackedSounds)
 	{
 		sound->setPlaybackSpeed(timeMod);
