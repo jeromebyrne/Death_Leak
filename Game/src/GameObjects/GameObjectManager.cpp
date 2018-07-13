@@ -744,8 +744,6 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement, const
 
 ParticleSpray * GameObjectManager::ReadParticleSpray(TiXmlElement * element)
 {
-	// TODO: Does this even work anymore?
-
 	string texFileName = XmlUtilities::ReadAttributeAsString(element, "texture", "filename");
 
 	float numParticles = XmlUtilities::ReadAttributeAsFloat(element, "numparticles", "value");
@@ -790,7 +788,6 @@ ParticleSpray * GameObjectManager::ReadParticleSpray(TiXmlElement * element)
 	float fadeOutPercentTime = XmlUtilities::ReadAttributeAsFloat(element, "fade_time_percent", "out");
 
 	Vector3 pos = Vector3(0, -23, 16);
-
 	ParticleSpray * p = ParticleEmitterManager::Instance()->CreateDirectedSprayLoadTime(numParticles,
 																						Vector2(posX, posY),
 																						depthLayer,
@@ -815,6 +812,23 @@ ParticleSpray * GameObjectManager::ReadParticleSpray(TiXmlElement * element)
 																						spawnSpreadY,
 																						fadeInPercentTime,
 																						fadeOutPercentTime);
+
+	p->mPositionalAudioEnabled = XmlUtilities::ReadAttributeAsBool(element, "pos_audio_props", "enabled");
+
+	if (p->mPositionalAudioEnabled)
+	{
+		p->mPositionalAudio.SetAudioFilename(XmlUtilities::ReadAttributeAsString(element, "pos_audio_props", "file"));
+		Vector2 dimensions;
+		dimensions.X = XmlUtilities::ReadAttributeAsFloat(element, "pos_audio_props", "dim_x");
+		dimensions.Y = XmlUtilities::ReadAttributeAsFloat(element, "pos_audio_props", "dim_y");
+		p->mPositionalAudio.SetDimensions(dimensions);
+		Vector2 fadeDimensions;
+		fadeDimensions.X = XmlUtilities::ReadAttributeAsFloat(element, "pos_audio_props", "fade_dim_x");
+		fadeDimensions.Y = XmlUtilities::ReadAttributeAsFloat(element, "pos_audio_props", "fade_dim_y");
+		p->mPositionalAudio.SetFadeDimensions(fadeDimensions);
+		p->mPositionalAudioStartDelay = XmlUtilities::ReadAttributeAsFloat(element, "pos_audio_props", "play_delay");
+		p->mPositionalAudio.SetRepeat(XmlUtilities::ReadAttributeAsBool(element, "pos_audio_props", "repeat"));
+	}
 	return p;
 }
 

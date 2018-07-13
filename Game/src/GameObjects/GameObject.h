@@ -231,6 +231,11 @@ public:
 
 	virtual void PostUpdate(float delta) {  }
 
+	// Made public for XML special case read
+	bool mPositionalAudioEnabled = false;
+	PositionalAudio mPositionalAudio;
+	float mPositionalAudioStartDelay = 0.1f;
+
 protected:
 
 	Vector2 m_position;
@@ -300,8 +305,6 @@ protected:
 
 	bool mAlwaysUpdate;
 
-	PositionalAudio mPositionalAudio;
-
 private:
 
 	int m_id; // our game object ID (this is unique)
@@ -327,6 +330,9 @@ private:
 	static unsigned int sGameObjectId;
 
 	SineWave mSinWave;
+
+	bool mHasPlayedPositionalAudio = false;
+	float mPositionalAudioCountdown = 0.0f;
 };
 
 #endif

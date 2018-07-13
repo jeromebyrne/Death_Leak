@@ -198,9 +198,22 @@ void GameObject::Update(float delta)
 
 	UpdateToParent();
 
-	if (mPositionalAudio.IsInitialised())
+	if (mPositionalAudioEnabled)
 	{
-		mPositionalAudio.Update(delta, m_position);
+		if (!mHasPlayedPositionalAudio)
+		{
+			mPositionalAudioStartDelay -= delta;
+
+			if (mPositionalAudioStartDelay <= 0.0f)
+			{
+				mPositionalAudio.Play();
+				mHasPlayedPositionalAudio = true;
+			}
+		}
+		else
+		{
+			mPositionalAudio.Update(delta, m_position);
+		}
 	}
 }
 
@@ -233,13 +246,34 @@ void GameObject:: XmlRead(TiXmlElement * element)
 	mAutoRotationValue = XmlUtilities::ReadAttributeAsFloat(element, "position", "auto_rotate_value");
 
 	// sine wave properties
-	mSineWaveProps.InitialYPosition = m_position.Y;
-	mSineWaveProps.InitialXPosition = m_position.X;
-	mSineWaveProps.Amplitude = XmlUtilities::ReadAttributeAsFloat(element, "sine_wave_props", "amplitude");
-	mSineWaveProps.OffsetX = XmlUtilities::ReadAttributeAsFloat(element, "sine_wave_props", "x_offset");
-	mSineWaveProps.OffsetY = XmlUtilities::ReadAttributeAsFloat(element, "sine_wave_props", "y_offset");
 	mSineWaveProps.DoSineWave = XmlUtilities::ReadAttributeAsBool(element, "sine_wave_props", "active");
-	mSineWaveProps.RandomiseInitialStep = XmlUtilities::ReadAttributeAsBool(element, "sine_wave_props", "rand_init_step");
+
+	if (mSineWaveProps.DoSineWave)
+	{
+		mSineWaveProps.InitialYPosition = m_position.Y;
+		mSineWaveProps.InitialXPosition = m_position.X;
+		mSineWaveProps.Amplitude = XmlUtilities::ReadAttributeAsFloat(element, "sine_wave_props", "amplitude");
+		mSineWaveProps.OffsetX = XmlUtilities::ReadAttributeAsFloat(element, "sine_wave_props", "x_offset");
+		mSineWaveProps.OffsetY = XmlUtilities::ReadAttributeAsFloat(element, "sine_wave_props", "y_offset");
+		mSineWaveProps.RandomiseInitialStep = XmlUtilities::ReadAttributeAsBool(element, "sine_wave_props", "rand_init_step");
+	}
+
+	mPositionalAudioEnabled = XmlUtilities::ReadAttributeAsBool(element, "pos_audio_props", "enabled");
+
+	if (mPositionalAudioEnabled)
+	{
+		mPositionalAudio.SetAudioFilename(XmlUtilities::ReadAttributeAsString(element, "pos_audio_props", "file"));
+		Vector2 dimensions;
+		dimensions.X = XmlUtilities::ReadAttributeAsFloat(element, "pos_audio_props", "dim_x");
+		dimensions.Y = XmlUtilities::ReadAttributeAsFloat(element, "pos_audio_props", "dim_y");
+		mPositionalAudio.SetDimensions(dimensions);
+		Vector2 fadeDimensions;
+		fadeDimensions.X = XmlUtilities::ReadAttributeAsFloat(element, "pos_audio_props", "fade_dim_x");
+		fadeDimensions.Y = XmlUtilities::ReadAttributeAsFloat(element, "pos_audio_props", "fade_dim_y");
+		mPositionalAudio.SetFadeDimensions(fadeDimensions);
+		mPositionalAudioStartDelay = XmlUtilities::ReadAttributeAsFloat(element, "pos_audio_props", "play_delay");
+		mPositionalAudio.SetRepeat(XmlUtilities::ReadAttributeAsBool(element, "pos_audio_props", "repeat"));
+	}
 }
 
 void GameObject::XmlWrite(TiXmlElement * element)
@@ -270,7 +304,7 @@ void GameObject::XmlWrite(TiXmlElement * element)
 	// material
 	TiXmlElement * materialElem = new TiXmlElement("material");
 
-	if (m_material != 0)
+	if (m_material != nullptr)
 	{
 		materialElem->SetAttribute("value", m_material->GetMaterialName().c_str());
 	}
@@ -291,6 +325,19 @@ void GameObject::XmlWrite(TiXmlElement * element)
 	sineWaveElem->SetAttribute("rand_init_step", mSineWaveProps.RandomiseInitialStep);
 
 	element->LinkEndChild(sineWaveElem);
+
+	// Positional Audio
+	TiXmlElement * posAudioElem = new TiXmlElement("pos_audio_props");
+	posAudioElem->SetAttribute("enabled", mPositionalAudioEnabled ? "true" : "false");
+	posAudioElem->SetAttribute("file", mPositionalAudio.GetAudioFilename().c_str());
+	posAudioElem->SetDoubleAttribute("dim_x", mPositionalAudio.GetDimensions().X);
+	posAudioElem->SetDoubleAttribute("dim_y", mPositionalAudio.GetDimensions().Y);
+	posAudioElem->SetDoubleAttribute("fade_dim_x", mPositionalAudio.GetFadeDimensions().X);
+	posAudioElem->SetDoubleAttribute("fade_dim_y", mPositionalAudio.GetFadeDimensions().Y);
+	posAudioElem->SetDoubleAttribute("play_delay", mPositionalAudioStartDelay);
+	posAudioElem->SetAttribute("repeat", mPositionalAudio.IsRepeat() ? "true" : "false");
+
+	element->LinkEndChild(posAudioElem);
 }
 
 void GameObject::Scale(float xScale, float yScale, bool scalePosition)

@@ -90,9 +90,6 @@ void GhostEnemy::Initialise()
 	*/
 
 	SetState(AIState::kFlying); // let's just handle our own state
-
-	mPositionalAudio.Initialise("save_game.wav", true, Vector2(750.0f, 750.0f), Vector2(2000.0f, 2000.0f));
-	mPositionalAudio.Play();
 }
 
 /*

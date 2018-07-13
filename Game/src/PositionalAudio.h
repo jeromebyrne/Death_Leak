@@ -25,6 +25,16 @@ public:
 
 	bool IsInitialised() const;
 
+	string GetAudioFilename() const { return mAudioFilename; }
+	bool IsRepeat() const { return mRepeat; }
+	Vector2 GetDimensions() const { return mDimensions; }
+	Vector2 GetFadeDimensions() const { return mFadeDimensions; }
+
+	void SetAudioFilename(const string & filename) { mAudioFilename = filename; }
+	void SetRepeat(bool repeat) { mRepeat = repeat; }
+	void SetDimensions(const Vector2 & dimensions) { mDimensions = dimensions; }
+	void SetFadeDimensions(const Vector2 & fadeDimensions) { mFadeDimensions = fadeDimensions; }
+
 private:
 
 	void DeleteSoundInstance();
