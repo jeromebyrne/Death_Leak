@@ -154,6 +154,7 @@ void ParticleSpray::Update(float delta)
 {
 	DrawableObject::Update(delta);
 
+	// TODO: This is not optimal creatign these everytime
 	D3DXVECTOR2 tex1 = D3DXVECTOR2(1, 1);
 	D3DXVECTOR2 tex2 = D3DXVECTOR2(0, 1);
 	D3DXVECTOR2 tex3 = D3DXVECTOR2(0, 0);
@@ -178,11 +179,13 @@ void ParticleSpray::Update(float delta)
 			float depth = 1;
 
 			// set the correct texture coords
+			/*
 			if (currentParticle.FlippedHorizontal)	{ tex1.x = 0; tex2.x = 1; tex3.x = 1; tex4.x = 0; }
 			else									{ tex1.x = 1; tex2.x = 0; tex3.x = 0; tex4.x = 1; }
 
 			if (currentParticle.FlippedVertical)	{ tex1.y = 0; tex2.y = 0; tex3.y = 1; tex4.y = 1; }
 			else									{ tex1.y = 1; tex2.y = 1; tex3.y = 0; tex4.y = 0; }
+			*/
 
 			//NOTE: We store individual particle alpha value in the Normal.X component
 			// 1 vertex
@@ -279,11 +282,11 @@ void ParticleSpray::Update(float delta)
 				currentParticle.Size = currentParticle.StartSize + toAdd;
 			}
 
-			if (time_left <= 0)
+			if (time_left <= 0.0f)
 			{
 				if (m_isLooping)
 				{
-					if (mAttachedTo)
+					if (mAttachedTo || mAttachedToCamera)
 					{
 						UpdateParticleToParent(currentParticle);
 					}
@@ -444,6 +447,7 @@ void ParticleSpray::UpdateParticleToParent(Particle & particle)
 {
 	if (mAttachedTo)
 	{
+		// TODO: update this to use p.PosXOffset and p.PosYOffset
 		GAME_ASSERT(dynamic_cast<Sprite*>(mAttachedTo.get()));
 
 		Sprite * parentSprite = static_cast<Sprite *>(mAttachedTo.get());
@@ -474,6 +478,13 @@ void ParticleSpray::UpdateParticleToParent(Particle & particle)
 				particle.PosY = parentSprite->Y() - mAttachedToOffset.Y;
 			}
 		}
+	}
+	else if (mAttachedToCamera)
+	{
+		auto cam = Camera2D::GetInstance();
+
+		particle.PosX = (cam->X() + mCameraAttachOffset.X) + particle.PosXOffset;
+		particle.PosY = (cam->Y() + mCameraAttachOffset.Y) + particle.PosYOffset;
 	}
 }
 

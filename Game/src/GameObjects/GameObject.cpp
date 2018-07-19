@@ -186,10 +186,12 @@ void GameObject::Update(float delta)
 		m_position.X = mSinWave.GetValueX();
 	}
 
+	// TODO: need to do all of this if nothing has changed?
 	D3DXMatrixScaling(&m_matScale, m_matScaleX, m_matScaleY, 1.0);
 	D3DXMatrixTranslation(&m_translation, m_position.X - mCurrentParallaxOffsetX, m_position.Y - mCurrentParallaxOffsetY, (float)mDepthLayer);
 	D3DXMatrixRotationZ(&m_rotation, m_rotationAngle);
 
+	// TODO; cane just do 1 multiply somehow?
 	D3DXMatrixMultiply(&m_world, &m_translation, &m_world);
 	D3DXMatrixMultiply(&m_world, &m_matScale, &m_world);
 	D3DXMatrixMultiply(&m_world, &m_rotation, &m_world);
@@ -505,7 +507,6 @@ string GameObject::GetTypeName()
 	return typeName;
 }
 
-// TODO: should take a Vector2 and a depth layer
 void GameObject::AttachTo(std::shared_ptr<GameObject> & parent, Vector2 offset, DepthLayer depthLayer, bool trackParentsOrientation)
 {
 	GAME_ASSERT(parent);
@@ -523,7 +524,7 @@ void GameObject::AttachTo(std::shared_ptr<GameObject> & parent, Vector2 offset, 
 void GameObject::Detach()
 {
 	mAttachedTo.reset();
-	mAttachedToOffset = Vector2(0, 0);
+	mAttachedToOffset = Vector2(0.0f, 0.0f);
 
 	// TODO: revert to the previous depth layer?
 }
@@ -534,6 +535,12 @@ void GameObject::UpdateToParent()
 	{
 		m_position.Y = mAttachedTo->Position().Y + mAttachedToOffset.Y;
 		m_position.X = mAttachedTo->Position().X + mAttachedToOffset.X;
+	}
+	else if (mAttachedToCamera)
+	{
+		auto cam = Camera2D::GetInstance();
+		m_position.Y = cam->Y() + mCameraAttachOffset.Y;
+		m_position.X = cam->X() + mCameraAttachOffset.X;
 	}
 }
 
@@ -798,5 +805,16 @@ Vector2 GameObject::GetParallaxMultipliersForDepthLayer(DepthLayer depthLayer)
 	}
 
 	return Vector2(1.0f, 1.0f);
+}
+
+void GameObject::AttachToCamera(const Vector2 & offset)
+{
+	mAttachedToCamera = true;
+	mCameraAttachOffset = offset;
+}
+
+void GameObject::DetachFromCamera()
+{
+	mAttachedToCamera = false;
 }
 

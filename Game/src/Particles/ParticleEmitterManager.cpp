@@ -78,12 +78,12 @@ ParticleSpray * ParticleEmitterManager::CreateRadialBloodSpray(unsigned int numP
 		if(directionXSign == 0)
 		{
 			randDirX = -randDirX;
-			p.FlippedHorizontal = true; // just do this here for convenience
+			// p.FlippedHorizontal = true; // just do this here for convenience
 		}
 		if(directionYSign)
 		{
 			randDirY = -randDirY;
-			p.FlippedVertical = true; // just do this here for convenience
+			// p.FlippedVertical = true; // just do this here for convenience
 		}
 		p.DirectionX = randDirX;
 		p.DirectionY = randDirY;
@@ -96,13 +96,13 @@ ParticleSpray * ParticleEmitterManager::CreateRadialBloodSpray(unsigned int numP
 		}
 
 		unsigned spawnSpread = 4 * numParticles;
-		float posXOffset = rand() % spawnSpread;
-		p.PosX = position.X + posXOffset;
-		p.StartPosX = position.X + posXOffset;
+		p.PosXOffset = rand() % spawnSpread;
+		p.PosX = position.X + p.PosXOffset;
+		p.StartPosX = position.X + p.PosXOffset;
 
-		float posYOffset = (rand() % spawnSpread) * 1.4f;
-		p.PosY = position.Y + posYOffset;
-		p.StartPosY = position.Y + posYOffset;
+		p.PosYOffset = (rand() % spawnSpread) * 1.4f;
+		p.PosY = position.Y + p.PosYOffset;
+		p.StartPosY = position.Y + p.PosYOffset;
 
 		int randSize = ((rand() % (int)(kBloodRadialMaxSize - kBloodRadialMinSize)) + kBloodRadialMinSize + 1) * gameScale;
 		p.Size = randSize;
@@ -158,8 +158,8 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedBloodSpray(int numParticle
 
 		float randSpread = ((rand() % (int)(spread * 100)) * 0.01);
 
-		p.FlippedHorizontal = true; 
-		p.FlippedVertical = false; 
+		// p.FlippedHorizontal = true; 
+		// p.FlippedVertical = false; 
 		p.DirectionX = direction.X + randSpread;
 		p.DirectionY = direction.Y - randSpread;
 
@@ -269,12 +269,12 @@ ParticleSpray * ParticleEmitterManager::CreateRadialSpray(int numParticles,
 		if(directionXSign == 0)
 		{
 			randDirX = -randDirX;
-			p.FlippedHorizontal = true; // just do this here for convenience
+			// p.FlippedHorizontal = true; // just do this here for convenience
 		}
 		if(directionYSign)
 		{
 			randDirY = -randDirY;
-			p.FlippedVertical = true; // just do this here for convenience
+			// p.FlippedVertical = true; // just do this here for convenience
 		}
 		p.DirectionX = randDirX;
 		p.DirectionY = randDirY;
@@ -289,10 +289,10 @@ ParticleSpray * ParticleEmitterManager::CreateRadialSpray(int numParticles,
 		}
 		else
 		{
-			float posXOffset = rand() % ((unsigned)(spawnSpreadX * 10.0f) + 1);
+			p.PosXOffset = rand() % ((unsigned)(spawnSpreadX * 10.0f) + 1);
 
-			p.PosX = position.X + posXOffset;
-			p.StartPosX = position.X + posXOffset;
+			p.PosX = position.X + p.PosXOffset;
+			p.StartPosX = position.X + p.PosXOffset;
 		}
 
 		if (spawnSpreadY == 0.0f)
@@ -302,10 +302,10 @@ ParticleSpray * ParticleEmitterManager::CreateRadialSpray(int numParticles,
 		}
 		else
 		{
-			float posYOffset = rand() % ((unsigned)(spawnSpreadY * 10.0f) + 1);
+			p.PosYOffset = rand() % ((unsigned)(spawnSpreadY * 10.0f) + 1);
 
-			p.PosY = position.Y + posYOffset;
-			p.StartPosY = position.Y + posYOffset;
+			p.PosY = position.Y + p.PosYOffset;
+			p.StartPosY = position.Y + p.PosYOffset;
 		}
 		
 		if(maxSize <= minSize)
@@ -425,33 +425,11 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSpray(int numParticles,
 	{
 		Particle p;
 		p.StartTime = creationTime;
-		
-		int flippedVertical = rand() % 2;
-		int flippedHorizontal = rand() % 2;
+
 		float randSpread = spread != 0.0f ? ((rand() % (int)(spread * 100.0f)) * 0.01f) : 0.0f;
 
-		if(flippedVertical == 0)
-		{
-			if (!originalOrientation)
-			{
-				p.FlippedHorizontal = true;
-			}
-			
-			p.DirectionX = direction.X + randSpread;
-			p.DirectionY = direction.Y - randSpread;
-		}
-		else
-		{
-			p.DirectionX = direction.X - randSpread;
-			p.DirectionY = direction.Y + randSpread;
-		}
-		if(flippedHorizontal == 0)
-		{
-			if (!originalOrientation)
-			{
-				p.FlippedVertical = true;
-			}
-		}
+		p.DirectionX = direction.X + randSpread;
+		p.DirectionY = direction.Y - randSpread;
 			
 		if(maxLiveTime == minLiveTime)
 		{
@@ -467,15 +445,15 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSpray(int numParticles,
 		}
 		else
 		{
-			float posXOffset = rand() % ((unsigned)(spawnSpreadX * 10.0f) + 1);
+			p.PosXOffset = rand() % ((unsigned)(spawnSpreadX * 10.0f) + 1);
 
-			if (flippedHorizontal)
+			if (rand() % 2 == 1)
 			{
-				posXOffset *= -1;
+				p.PosXOffset *= -1;
 			}
 
-			p.PosX = position.X + posXOffset;
-			p.StartPosX = position.X + posXOffset;
+			p.PosX = position.X + p.PosXOffset;
+			p.StartPosX = position.X + p.PosXOffset;
 		}
 
 		if (spawnSpreadY == 0.0f)
@@ -486,15 +464,14 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSpray(int numParticles,
 		else
 		{
 			// TODO: this can only be an INT
-			float posYOffset = rand() % ((unsigned)(spawnSpreadY * 10.0f) + 1);
-
-			if (flippedVertical)
+			p.PosYOffset = rand() % ((unsigned)(spawnSpreadY * 10.0f) + 1);
+			if (rand() % 2 == 1)
 			{
-				posYOffset *= -1;
+				p.PosYOffset *= -1;
 			}
 
-			p.PosY = position.Y + posYOffset;
-			p.StartPosY = position.Y + posYOffset;
+			p.PosY = position.Y + p.PosYOffset;
+			p.StartPosY = position.Y + p.PosYOffset;
 		}
 		
 		if(maxSize <= minSize)
@@ -626,29 +603,16 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSprayLoadTime(int numParti
 		Particle p;
 		p.StartTime = creationTime;
 		
-		int flippedVertical = rand() % 2;
-		int flippedHorizontal = rand() % 2;
+		// int flippedVertical = rand() % 2;
+		// int flippedHorizontal = rand() % 2;
 		float randSpread = 0.0f; 
 		if (spread > 0.0f)
 		{
 			((rand() % (int)(spread * 100)) * 0.01);
 		}
 
-		if(flippedVertical == 0)
-		{
-			p.FlippedHorizontal = true; 
-			p.DirectionX = direction.X + randSpread;
-			p.DirectionY = direction.Y - randSpread;
-		}
-		else
-		{
-			p.DirectionX = direction.X - randSpread;
-			p.DirectionY = direction.Y + randSpread;
-		}
-		if(flippedHorizontal == 0)
-		{
-			p.FlippedVertical = true; 
-		}
+		p.DirectionX = direction.X - randSpread;
+		p.DirectionY = direction.Y + randSpread;
 			
 		if(maxLiveTime == minLiveTime)
 		{
@@ -664,15 +628,15 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSprayLoadTime(int numParti
 		}
 		else
 		{
-			float posXOffset = rand() % ((unsigned)(spawnSpreadX * 10.0f) + 1);
+			p.PosXOffset = rand() % ((unsigned)(spawnSpreadX * 10.0f) + 1);
 
-			if (flippedHorizontal)
+			if (rand() % 2 == 1)
 			{
-				posXOffset *= -1;
+				p.PosXOffset *= -1;
 			}
 
-			p.PosX = position.X + posXOffset;
-			p.StartPosX = position.X + posXOffset;
+			p.PosX = position.X + p.PosXOffset;
+			p.StartPosX = position.X + p.PosXOffset;
 		}
 
 		if (spawnSpreadY == 0.0f)
@@ -682,15 +646,15 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSprayLoadTime(int numParti
 		}
 		else
 		{
-			float posYOffset = rand() % ((unsigned)(spawnSpreadY * 10.0f) + 1);
+			p.PosYOffset = rand() % ((unsigned)(spawnSpreadY * 10.0f) + 1);
 
-			if (flippedVertical)
+			if (rand() % 2 == 1)
 			{
-				posYOffset *= -1;
+				p.PosYOffset *= -1;
 			}
 
-			p.PosY = position.Y + posYOffset;
-			p.StartPosY = position.Y + posYOffset;
+			p.PosY = position.Y + p.PosYOffset;
+			p.StartPosY = position.Y + p.PosYOffset;
 		}
 
 		if(maxSize <= minSize)

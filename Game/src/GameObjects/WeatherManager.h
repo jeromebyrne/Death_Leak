@@ -47,15 +47,15 @@ private:
 
 	static WeatherManager * mInstance;
 
-	ParallaxLayer * mTopRainLayer;
-	ParallaxLayer * mBottomRainLayer;
-	ParallaxLayer * mRainLayer3;
 	ParallaxLayer * mGroundRainLayer;
 
 	ParallaxLayer * mTopSnowLayer;
 	ParallaxLayer * mBottomSnowLayer;
 	ParallaxLayer * mSnowLayer3;
 	ParallaxLayer * mLightningLayer;
+
+	ParticleSpray * mRainParticleSpray = nullptr;
+	ParticleSpray * mSnowParticleSpray = nullptr;
 
 	void UpdateRaining(float delta);
 	void UpdateSnowing(float delta);

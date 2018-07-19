@@ -19,9 +19,11 @@ public:
 	float StartTime;
 	bool IsDead;
 	float Gravity;
-	bool FlippedHorizontal;
-	bool FlippedVertical;
+	// bool FlippedHorizontal;
+	// bool FlippedVertical;
 	float Brightness; // value between 0 and 1.0
+	float PosXOffset = 0.0f;
+	float PosYOffset = 0.0f;
 
 	float CurrentAlpha; // needed to stop the alpha from flickering
 
@@ -40,8 +42,8 @@ public:
 		 StartTime(0),
 		 IsDead(false),
 		 Gravity(0),
-		 FlippedHorizontal(false),
-		 FlippedVertical(false),
+		 // FlippedHorizontal(false),
+		 // FlippedVertical(false),
 		 Brightness(false)
 	{
 	}

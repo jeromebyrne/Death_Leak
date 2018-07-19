@@ -215,6 +215,8 @@ public:
 
 	bool AlwaysUpdate() const { return mAlwaysUpdate; }
 
+	void SetAlwaysUpdate(bool value) { mAlwaysUpdate = value; }
+
 	static void ResetGameIds();
 
 	static unsigned int GetCurrentGameObjectCount() { return sGameObjectId; }
@@ -230,6 +232,10 @@ public:
 	DepthLayer GetDepthLayer() const { return mDepthLayer; }
 
 	virtual void PostUpdate(float delta) {  }
+
+	void AttachToCamera(const Vector2 & offset);
+
+	void DetachFromCamera();
 
 	// Made public for XML special case read
 	bool mPositionalAudioEnabled = false;
@@ -304,6 +310,9 @@ protected:
 	SineWaveProps mSineWaveProps;
 
 	bool mAlwaysUpdate;
+
+	float mAttachedToCamera = false;
+	Vector2 mCameraAttachOffset;
 
 private:
 
