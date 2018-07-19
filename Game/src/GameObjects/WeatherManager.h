@@ -49,9 +49,6 @@ private:
 
 	ParallaxLayer * mGroundRainLayer;
 
-	ParallaxLayer * mTopSnowLayer;
-	ParallaxLayer * mBottomSnowLayer;
-	ParallaxLayer * mSnowLayer3;
 	ParallaxLayer * mLightningLayer;
 
 	ParticleSpray * mRainParticleSpray = nullptr;
