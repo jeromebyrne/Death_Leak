@@ -7,27 +7,27 @@
     <XmlFiles-levels-hot_springs.xml_currency_orbs_collected type="vector">
         <e_1 type="int" value="50" />
         <e_2 type="int" value="50" />
-        <e_3 type="int" value="52" />
-        <e_4 type="int" value="52" />
-        <e_5 type="int" value="51" />
+        <e_3 type="int" value="57" />
+        <e_4 type="int" value="57" />
+        <e_5 type="int" value="49" />
         <e_6 type="int" value="51" />
-        <e_7 type="int" value="53" />
+        <e_7 type="int" value="52" />
         <e_8 type="int" value="53" />
-        <e_9 type="int" value="54" />
-        <e_10 type="int" value="54" />
-        <e_11 type="int" value="49" />
-        <e_12 type="int" value="49" />
-        <e_13 type="int" value="58" />
-        <e_14 type="int" value="58" />
-        <e_15 type="int" value="57" />
-        <e_16 type="int" value="57" />
-        <e_17 type="int" value="59" />
-        <e_18 type="int" value="59" />
-        <e_19 type="int" value="56" />
-        <e_20 type="int" value="56" />
-        <e_21 type="int" value="55" />
-        <e_22 type="int" value="55" />
+        <e_9 type="int" value="55" />
+        <e_10 type="int" value="56" />
+        <e_11 type="int" value="58" />
+        <e_12 type="int" value="59" />
+        <e_13 type="int" value="49" />
+        <e_14 type="int" value="51" />
+        <e_15 type="int" value="52" />
+        <e_16 type="int" value="53" />
+        <e_17 type="int" value="55" />
+        <e_18 type="int" value="56" />
+        <e_19 type="int" value="58" />
+        <e_20 type="int" value="59" />
+        <e_21 type="int" value="54" />
+        <e_22 type="int" value="54" />
     </XmlFiles-levels-hot_springs.xml_currency_orbs_collected>
-    <currency_orbs_collected type="int" value="92" />
+    <currency_orbs_collected type="int" value="108" />
     <language_locale_key type="string" value="en-gb" />
 </save_data>

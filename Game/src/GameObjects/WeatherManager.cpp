@@ -6,7 +6,7 @@
 #include "Game.h"
 #include "ParticleEmitterManager.h"
 
-static const float kTimeUntilFirstWeather = 4.0f;
+static const float kTimeUntilFirstWeather = 50.0f;
 static const float kRainSessionMinTime = 70.0f;
 static const float kRainSessionMaxTime = 120.0f;
 static const float kRainIntroTime = 5.0f;
@@ -459,9 +459,9 @@ void WeatherManager::UpdateNoWeather(float delta)
 	// always start raining after 20 seconds the first time you play
 	if (!mHasHadWeather && mElapsedTime > kTimeUntilFirstWeather)
 	{
-		// StartRaining();
+		StartRaining();
 		
-		StartSnowing();
+		// StartSnowing();
 
 		mHasHadWeather = true;
 	}

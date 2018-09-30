@@ -74,6 +74,8 @@ public:
 		return m_passive;
 	}
 
+	void SetPassive(bool value) { m_passive = value; }
+
 	virtual void DebugDraw(ID3D10Device *  device) override;
 
 	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointOfContact, bool shouldExplode = true) override;

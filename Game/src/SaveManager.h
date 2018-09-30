@@ -38,6 +38,18 @@ public:
 
 	void SetLanguage(const std::string & langLocaleKey);
 
+	int GetHealthDevilRewardCount();
+
+	void SetHealthDevilRewardCount(int value);
+
+	bool HasHealthDevilGivenReward(const string & healthDevilId);
+
+	void SetHealthDevilGivenReward(const string & healthDevilId, bool value);
+
+	void SetPlayerMaxHealth(const int value);
+
+	int GetPlayerMaxHealth();
+
 	std::string GetLanguageSet();
 
 private:
@@ -48,6 +60,8 @@ private:
 	~SaveManager(void) { }
 
 	int GetIntValue(const std::string & key, int defaultValue = 0) const;
+
+	bool GetBoolValue(const std::string & key, bool defaultValue = false) const;
 
 	void AddKeyValuePair(const std::string & key, const DataValue & value);
 

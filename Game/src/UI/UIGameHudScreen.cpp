@@ -4,6 +4,9 @@
 #include "GameObjectManager.h"
 #include "SaveManager.h"
 #include "PlayerLevelManager.h"
+#include "AudioManager.h"
+
+const float kHealthMeterDimensionsMultiplier = 3.0f;
 
 UIGameHudScreen::UIGameHudScreen(string name) : 
 	UIScreen(name),
@@ -14,36 +17,27 @@ UIGameHudScreen::UIGameHudScreen(string name) :
 
 UIGameHudScreen::~UIGameHudScreen(void)
 {
+	if (mMeterUpgradeSound != nullptr)
+	{
+		mMeterUpgradeSound->drop();
+		mMeterUpgradeSound = nullptr;
+	}
 }
 
 void UIGameHudScreen::Update()
 {
 	UIScreen::Update();
 
-	const Player * player = GameObjectManager::Instance()->GetPlayer();
+	Player * player = GameObjectManager::Instance()->GetPlayer();
 
-	if (player && mPlayerHealthMeter)
+	if (player == nullptr || mPlayerHealthMeter == nullptr)
 	{
-		float player_health = player->GetHealth();
-		float player_max_health = player->GetMaxHealth();
-
-		if (player_health > 0 && player_max_health > 0)
-		{
-			mPlayerHealthMeter->SetProgress(player_health / player_max_health);
-		}
-		else
-		{
-			mPlayerHealthMeter->SetProgress(0);
-		}
+		return;
 	}
 
-	if (player && mPlayerXPMeter)
-	{
-		// Player XP is repurposed into FOCUS
-		float focusPercent = player->GetCurrentFocusAmount() / player->GetMaxFocusAmount();
+	UpdatePlayerHealthMeter(player);
 
-		mPlayerXPMeter->SetProgress(focusPercent);
-	}
+	UpdatePlayerStaminaMeter(player);
 }
 
 void UIGameHudScreen::Initialise()
@@ -78,6 +72,78 @@ void UIGameHudScreen::Initialise()
 				}
 			}
 		}
-		
+	}
+}
+
+void UIGameHudScreen::UpdatePlayerHealthMeter(Player * player)
+{
+	float player_health = player->GetHealth();
+	float player_max_health = player->GetMaxHealth();
+
+	if (mDoingHealthMeterUpgrade)
+	{
+		DoHealthMeterUpgrade(player);
+		// return;
+	}
+
+	if (player_max_health != mLastPlayerHealth)
+	{
+		mLastPlayerHealth = player_max_health;
+
+		mDoingHealthMeterUpgrade = true;
+		if (mMeterUpgradeSound == nullptr)
+		{
+			mMeterUpgradeSound = AudioManager::Instance()->PlaySoundEffect("character/meter_upgrade.wav", true, true);
+		}
+		else
+		{
+			mMeterUpgradeSound->setPlayPosition(0);
+			mMeterUpgradeSound->setIsPaused(false);
+		}
+		return;
+	}
+
+	if (player_health > 0 && player_max_health > 0)
+	{
+		mPlayerHealthMeter->SetProgress(player_health / player_max_health);
+	}
+	else
+	{
+		mPlayerHealthMeter->SetProgress(0);
+	}
+}
+
+void UIGameHudScreen::UpdatePlayerStaminaMeter(Player * player)
+{
+	if (player && mPlayerXPMeter)
+	{
+		// Player XP is repurposed into FOCUS
+		float focusPercent = player->GetCurrentFocusAmount() / player->GetMaxFocusAmount();
+
+		mPlayerXPMeter->SetProgress(focusPercent);
+	}
+}
+
+void UIGameHudScreen::DoHealthMeterUpgrade(Player * player)
+{
+	float player_max_health = player->GetMaxHealth();
+
+	float currentDimensions = mPlayerHealthMeter->GetMeterLength();
+	float finalDimensions = player_max_health * kHealthMeterDimensionsMultiplier;
+	if (currentDimensions < finalDimensions)
+	{
+		mPlayerHealthMeter->SetMeterLength(currentDimensions + 0.20f);
+		Camera2D::GetInstance()->DoSmallShake();
+	}
+	else if (currentDimensions >= finalDimensions)
+	{
+		mPlayerHealthMeter->SetMeterLength(finalDimensions);
+		player->IncreaseHealth(9999999); // max out health
+		mDoingHealthMeterUpgrade = false;
+
+		if (mMeterUpgradeSound != nullptr)
+		{
+			mMeterUpgradeSound->setIsPaused(true);
+		}
 	}
 }

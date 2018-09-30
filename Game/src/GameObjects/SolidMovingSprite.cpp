@@ -254,6 +254,11 @@ bool SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 		return false;
 	}
 
+	if (object->IsPickup())
+	{
+		return false;
+	}
+
 	if (object->IsSmashable())
 	{
 		Smashable * smashable = static_cast<Smashable*>(object);

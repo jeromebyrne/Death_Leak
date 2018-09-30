@@ -87,6 +87,8 @@
     <ClCompile Include="src\GameObjects\GameObjectManager.cpp" />
     <ClCompile Include="src\GameObjects\GhostEnemy.cpp" />
     <ClCompile Include="src\GameObjects\GhostEnemySpawner.cpp" />
+    <ClCompile Include="src\GameObjects\HealthDevil.cpp" />
+    <ClCompile Include="src\GameObjects\HealthUpgradePickup.cpp" />
     <ClCompile Include="src\GameObjects\LevelTrigger.cpp" />
     <ClCompile Include="src\GameObjects\Material.cpp" />
     <ClCompile Include="src\GameObjects\MaterialManager.cpp" />
@@ -97,6 +99,7 @@
     <ClCompile Include="src\GameObjects\NPCTrigger.cpp" />
     <ClCompile Include="src\GameObjects\ParallaxLayer.cpp" />
     <ClCompile Include="src\GameObjects\PathingPlatform.cpp" />
+    <ClCompile Include="src\GameObjects\Pickup.cpp" />
     <ClCompile Include="src\GameObjects\Platform.cpp" />
     <ClCompile Include="src\GameObjects\Player.cpp" />
     <ClCompile Include="src\GameObjects\Projectile.cpp" />
@@ -218,6 +221,8 @@
     <ClInclude Include="src\GameObjects\GameObjectManager.h" />
     <ClInclude Include="src\GameObjects\GhostEnemy.h" />
     <ClInclude Include="src\GameObjects\GhostEnemySpawner.h" />
+    <ClInclude Include="src\GameObjects\HealthDevil.h" />
+    <ClInclude Include="src\GameObjects\HealthUpgradePickup.h" />
     <ClInclude Include="src\GameObjects\LevelTrigger.h" />
     <ClInclude Include="src\GameObjects\Material.h" />
     <ClInclude Include="src\GameObjects\MaterialManager.h" />
@@ -229,6 +234,7 @@
     <ClInclude Include="src\GameObjects\NPCTrigger.h" />
     <ClInclude Include="src\GameObjects\ParallaxLayer.h" />
     <ClInclude Include="src\GameObjects\PathingPlatform.h" />
+    <ClInclude Include="src\GameObjects\Pickup.h" />
     <ClInclude Include="src\GameObjects\Platform.h" />
     <ClInclude Include="src\GameObjects\Player.h" />
     <ClInclude Include="src\GameObjects\Projectile.h" />

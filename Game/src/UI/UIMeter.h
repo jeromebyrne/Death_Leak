@@ -23,6 +23,12 @@ public:
 
 	virtual void Scale(float x, float y);
 
+	void SetMeterLength(float x);
+
+	float GetMeterLength() const { return mMeterLength; }
+
+	void SetDrawMeter(bool value) { mDrawMeter = value; }
+
 private:
 
 	enum State
@@ -58,6 +64,8 @@ private:
 	float mScaleY;
 
 	float mBarNativeHeight;
+
+	bool mDrawMeter = true;
 };
 
 #endif

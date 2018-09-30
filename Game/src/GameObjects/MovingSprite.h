@@ -118,6 +118,8 @@ public:
 
 	virtual bool IsOnSolidSurface() const { return false; }
 
+	void SetApplyGravity(bool value) { m_applyGravity = value; }
+
 protected:
 
 	virtual void DoWaterAccelerationBubbles();

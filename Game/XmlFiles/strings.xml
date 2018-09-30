@@ -44,4 +44,9 @@
     <en-gb>Test Level</en-gb>
     <pt-br>Test Level</pt-br>
   </test_level_name>
+
+  <health_upgrade_notification>
+    <en-gb>Max Health Increased</en-gb>
+    <pt-br>Max Health Increased</pt-br>
+  </health_upgrade_notification>
 </strings>

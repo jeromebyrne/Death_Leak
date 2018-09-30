@@ -224,6 +224,24 @@ int SaveManager::GetIntValue(const std::string & key, int defaultValue) const
 	return iter->second.asInt();
 }
 
+bool SaveManager::GetBoolValue(const std::string & key, bool defaultValue) const
+{
+	const auto & iter = mSaveMap.find(key);
+
+	if (iter == mSaveMap.end())
+	{
+		return defaultValue;
+	}
+
+	if (iter->second.getType() != DataValue::Type::BOOLEAN)
+	{
+		GAME_ASSERT(false);
+		return defaultValue;
+	}
+
+	return iter->second.asBool();
+}
+
 int SaveManager::GetPlayerLevel() const
 {
 	return GetIntValue("player_level", 1);
@@ -429,4 +447,34 @@ std::string SaveManager::GetLanguageSet()
 	}
 
 	return asDataValue.asString();
+}
+
+int SaveManager::GetHealthDevilRewardCount()
+{
+	return GetIntValue("health_devil_reward_count");
+}
+
+void SaveManager::SetHealthDevilRewardCount(int value)
+{
+	mSaveMap["health_devil_reward_count"] = value;
+}
+
+bool SaveManager::HasHealthDevilGivenReward(const string & healthDevilId)
+{
+	return GetBoolValue(healthDevilId);
+}
+
+void SaveManager::SetHealthDevilGivenReward(const string & healthDevilId, bool value)
+{
+	mSaveMap[healthDevilId] = value;
+}
+
+void SaveManager::SetPlayerMaxHealth(const int value)
+{
+	mSaveMap["player_max_health"] = value;
+}
+
+int SaveManager::GetPlayerMaxHealth()
+{
+	return GetIntValue("player_max_health", 0);
 }

@@ -43,7 +43,6 @@ public:
 
 	virtual bool OnCollision(SolidMovingSprite* object) override;
 	virtual void Update(float delta) override;
-	virtual void Draw(ID3D10Device * device, Camera2D * camera) override;
 	virtual void Scale(float xScale, float yScale, bool scalePosition = true) override;
 	virtual void LoadContent(ID3D10Device * graphicsdevice) override;
 	virtual void DebugDraw(ID3D10Device * graphicsdevice) override;

@@ -206,8 +206,8 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedBloodSpray(int numParticle
 	spray->SetMinSize(kBloodDirectedMinSize);
 	spray->SetMaxSize(kBloodDirectedMaxSize);
 	spray->SetGravityValue(kBloodDirectedGravity);
-	spray->SetMinBrightnessValue(1.0);
-	spray->SetMaxBrightnessValue(1.0);
+	spray->SetMinBrightnessValue(1.0f);
+	spray->SetMaxBrightnessValue(1.0f);
 	spray->SetNumParticlesValue(numParticles);
 
 	// add the spray to the game world
@@ -260,8 +260,8 @@ ParticleSpray * ParticleEmitterManager::CreateRadialSpray(int numParticles,
 		p.StartTime = creationTime;
 
 		// random direction ======================================
-		float randDirX = ((rand() % 100)+1) * 0.01;
-		float randDirY = ((rand() % 100)+1) * 0.01;
+		float randDirX = ((rand() % 100)+1) * 0.01f;
+		float randDirY = ((rand() % 100)+1) * 0.01f;
 		
 		int directionXSign = rand() % 2;
 		int directionYSign = rand() % 2;
@@ -291,6 +291,11 @@ ParticleSpray * ParticleEmitterManager::CreateRadialSpray(int numParticles,
 		{
 			p.PosXOffset = rand() % ((unsigned)(spawnSpreadX * 10.0f) + 1);
 
+			if (rand() % 2 == 1)
+			{
+				p.PosXOffset *= -1;
+			}
+
 			p.PosX = position.X + p.PosXOffset;
 			p.StartPosX = position.X + p.PosXOffset;
 		}
@@ -303,6 +308,11 @@ ParticleSpray * ParticleEmitterManager::CreateRadialSpray(int numParticles,
 		else
 		{
 			p.PosYOffset = rand() % ((unsigned)(spawnSpreadY * 10.0f) + 1);
+
+			if (rand() % 2 == 1)
+			{
+				p.PosYOffset *= -1;
+			}
 
 			p.PosY = position.Y + p.PosYOffset;
 			p.StartPosY = position.Y + p.PosYOffset;
@@ -327,7 +337,7 @@ ParticleSpray * ParticleEmitterManager::CreateRadialSpray(int numParticles,
 		}
 		else
 		{
-			float randSpeed = (((rand() % (int)(maxSpeed * 100 - minSpeed * 100)) * 0.01) + minSpeed + 0.01) * gameScale;
+			float randSpeed = (((rand() % (int)(maxSpeed * 100.0f - minSpeed * 100.0f)) * 0.01f) + minSpeed + 0.01f) * gameScale;
 			p.Speed = randSpeed;
 			p.StartSpeed = randSpeed; // our original start speed
 		}

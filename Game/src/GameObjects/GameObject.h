@@ -187,6 +187,8 @@ public:
 
 	bool IsPlayer() const { return mIsPlayer; }
 
+	bool IsPickup() const { return mIsPickup; }
+
 	virtual void AttachTo(std::shared_ptr<GameObject> & parent, Vector2 offset, DepthLayer depthLayer, bool trackOrientation = true);
 	void Detach();
 
@@ -277,6 +279,7 @@ protected:
 	bool mIsBombProjectile;
 	bool mIsSmashable;
 	bool mIsPlayer;
+	bool mIsPickup;
 
 	std::shared_ptr<GameObject> mAttachedTo;
 	Vector2 mAttachedToOffset;

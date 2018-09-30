@@ -56,7 +56,7 @@ void DrawableObject::Update(float delta)
 		// get the distance to the player
 		const Player * player = GameObjectManager::Instance()->GetPlayer();
 
-		if (player && player != this && GetDepthLayer() < player->GetDepthLayer())
+		// if (player && player != this && GetDepthLayer() < player->GetDepthLayer())
 		{
 			// check is the player inside the bounds of this sprite
 			// if so then fade alpha

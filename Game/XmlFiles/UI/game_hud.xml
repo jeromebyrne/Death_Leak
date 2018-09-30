@@ -5,7 +5,7 @@
                    posX ="-960" posY ="-540" width="1920" height ="1080"
                    image="Media\UI\noise_layer.png"
                    hflip="false" vflip="false"
-                   alpha="0.07"
+                   alpha="0.11"
                   use_standard_effect="true"
                    fps ="11">
     <frames frame1="Media\UI\film_frame.png"
@@ -64,7 +64,7 @@
 
   <meter name="9_health_meter"
         process_input="false"
-        posX ="-900" posY ="480" width="450" height ="100"
+        posX ="-900" posY ="480" width="300" height ="100"
         image="Media\\UI\\meter_overlay.png"
         meter_edge="Media\\UI\\meter_edge_2.png"
         meter_middle="Media\\UI\\meter_overlay.png"
@@ -76,7 +76,7 @@
 
   <meter name="91_xp_meter"
         process_input="false"
-        posX ="-900" posY ="460" width="225" height ="100"
+        posX ="-900" posY ="460" width="200" height ="100"
         image="Media\\UI\\meter_overlay.png"
         meter_edge="Media\\UI\\meter_edge_2.png"
         meter_middle="Media\\UI\\meter_overlay.png"

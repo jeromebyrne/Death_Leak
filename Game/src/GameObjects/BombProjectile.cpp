@@ -86,6 +86,11 @@ bool BombProjectile::OnCollision(SolidMovingSprite* object)
 		return false;
 	}
 
+	if (object->IsPickup())
+	{
+		return false;
+	}
+
 	if (object->IsBombProjectile())
 	{
 		return false;

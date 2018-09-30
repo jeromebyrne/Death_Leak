@@ -69,15 +69,18 @@ void UIMeter::Draw(ID3D10Device * graphicsdevice)
 	}
 
 	// draw the bar
-	m_bottomLeft.X = mInitialPosition.X;
-	m_bottomLeft.Y = mInitialPosition.Y;
-	m_bottomLeft.X += (mMeterEdgeWidth * 0.9f) * mScaleX;
-	m_horizontalFlip = false;
-	m_dimensions.X = ((mMeterLength - (mMeterEdgeWidth * 0.8)) * mProgress) * mScaleX;
-	m_texture = m_meterBarMiddleTexture;
+	if (mDrawMeter)
+	{
+		m_bottomLeft.X = mInitialPosition.X;
+		m_bottomLeft.Y = mInitialPosition.Y;
+		m_bottomLeft.X += (mMeterEdgeWidth * 0.9f) * mScaleX;
+		m_horizontalFlip = false;
+		m_dimensions.X = ((mMeterLength - (mMeterEdgeWidth * 0.8)) * mProgress) * mScaleX;
+		m_texture = m_meterBarMiddleTexture;
 
-	Reset(); 
-	UISprite::Draw(graphicsdevice);
+		Reset();
+		UISprite::Draw(graphicsdevice);
+	}
 	
 	// draw meter left edge
 	m_bottomLeft.X = mInitialPosition.X;
@@ -115,11 +118,10 @@ void UIMeter::Draw(ID3D10Device * graphicsdevice)
 	m_texture = m_meterMiddleTexture;
 
 	// unbind the vertex buffer before deleting it in Reset();
-	graphicsdevice->IASetVertexBuffers (0, 1, &nullB, &null, &null);
+	graphicsdevice->IASetVertexBuffers(0, 1, &nullB, &null, &null);
 
-	Reset(); 
+	Reset();
 	UISprite::Draw(graphicsdevice);
-
 }
 
 void UIMeter::Initialise()
@@ -215,3 +217,11 @@ void UIMeter::Update()
 			}
 	};
 }
+
+void UIMeter::SetMeterLength(float x)
+{
+	m_dimensions.X = x;
+	mMeterLength = m_dimensions.X;
+}
+
+

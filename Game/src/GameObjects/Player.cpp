@@ -36,7 +36,6 @@ Character(x, y, GameObject::kPlayer, width, height),
 	mAimLineSprite(nullptr),
 	mTimeUntilAimLineStartDisappearing(0.0f)
 {
-	mHealth = 100.0f;
 	mAlwaysUpdate = true;
 	mIsPlayer = true;
 }
@@ -68,6 +67,14 @@ void Player::Initialise()
 	m_projectileOffset.Y = 25.0f;
 
 	SetGravityApplyAmount(0.75f);
+
+	int maxHealth = SaveManager::GetInstance()->GetPlayerMaxHealth();
+	if (maxHealth == 0)
+	{
+		maxHealth = 100;
+	}
+
+	mMaxHealth = maxHealth;
 }
 
 void Player::UpdateResistance()
@@ -658,5 +665,12 @@ bool Player::Roll()
 	}
 
 	return false;
+}
+
+void Player::SetMaxHealth(float value)
+{
+	mMaxHealth = value;
+
+	SaveManager::GetInstance()->SetPlayerMaxHealth((int)mMaxHealth);
 }
 

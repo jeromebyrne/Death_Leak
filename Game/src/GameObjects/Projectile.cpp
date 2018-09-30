@@ -110,6 +110,10 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 	{
 		return false;
 	}
+	else if (object->IsPickup())
+	{
+		return false;
+	}
 
 	GAME_ASSERT((object != this));
 
@@ -578,11 +582,6 @@ void Projectile::Update(float delta)
 	}
 
 	mIsInWater = false;
-}
-
-void Projectile::Draw(ID3D10Device * device, Camera2D * camera)
-{
-	SolidMovingSprite::Draw(device, camera);
 }
 
 void Projectile::Scale(float xScale, float yScale, bool scalePosition)

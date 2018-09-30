@@ -46,6 +46,8 @@ public:
 
 	virtual bool Roll() override;
 
+	void SetMaxHealth(float value);
+
 private:
 
 	virtual void DebugDraw(ID3D10Device *  device) override;
