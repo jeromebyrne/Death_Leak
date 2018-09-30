@@ -598,6 +598,12 @@ void Player::UpdateFocus(float delta)
 
 bool Player::HasEnoughFocus(float amountToUse)
 {
+	if (mCurrentFocusAmount > 0)
+	{
+		// fuck it, just let the player do anything if there's any focus
+		return true;
+	}
+
 	if (mCurrentFocusAmount >= amountToUse)
 	{
 		return true;

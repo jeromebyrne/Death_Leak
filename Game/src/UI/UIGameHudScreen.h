@@ -19,15 +19,18 @@ public:
 private:
 
 	void DoHealthMeterUpgrade(Player * player);
-
 	void UpdatePlayerHealthMeter(Player * player);
 
-	void UpdatePlayerStaminaMeter(Player * player);
+	void DoFocusMeterUpgrade(Player * player);
+	void UpdatePlayerFocusMeter(Player * player);
+
 	UIMeter * mPlayerHealthMeter;
 	UIMeter * mPlayerXPMeter;
-	float mLastPlayerHealth = 0.0f;
+	float mLastPlayerMaxHealth = 0.0f;
+	float mLastPlayerMaxFocus = 0.0f;
 
 	bool mDoingHealthMeterUpgrade = false;
+	bool mDoingFocusMeterUpgrade = false;
 
 	ISound * mMeterUpgradeSound = nullptr;
 };

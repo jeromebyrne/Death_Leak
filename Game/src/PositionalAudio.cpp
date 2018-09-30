@@ -160,7 +160,10 @@ void PositionalAudio::Play()
 	{
 		mSoundInstance = AudioManager::Instance()->PlaySoundEffect(mAudioFilename, mRepeat, true, true);
 		// set the volume to 0 at start in case outside of the update zone
-		mSoundInstance->setVolume(0.0f);
+		if (mSoundInstance)
+		{
+			mSoundInstance->setVolume(0.0f);
+		}
 	}
 }
 

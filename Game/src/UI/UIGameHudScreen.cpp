@@ -7,6 +7,7 @@
 #include "AudioManager.h"
 
 const float kHealthMeterDimensionsMultiplier = 3.0f;
+const float kFocusMeterDimensionsMultiplier = 2.0f;
 
 UIGameHudScreen::UIGameHudScreen(string name) : 
 	UIScreen(name),
@@ -37,7 +38,7 @@ void UIGameHudScreen::Update()
 
 	UpdatePlayerHealthMeter(player);
 
-	UpdatePlayerStaminaMeter(player);
+	UpdatePlayerFocusMeter(player);
 }
 
 void UIGameHudScreen::Initialise()
@@ -86,9 +87,9 @@ void UIGameHudScreen::UpdatePlayerHealthMeter(Player * player)
 		// return;
 	}
 
-	if (player_max_health != mLastPlayerHealth)
+	if (player_max_health != mLastPlayerMaxHealth)
 	{
-		mLastPlayerHealth = player_max_health;
+		mLastPlayerMaxHealth = player_max_health;
 
 		mDoingHealthMeterUpgrade = true;
 		if (mMeterUpgradeSound == nullptr)
@@ -113,8 +114,33 @@ void UIGameHudScreen::UpdatePlayerHealthMeter(Player * player)
 	}
 }
 
-void UIGameHudScreen::UpdatePlayerStaminaMeter(Player * player)
+void UIGameHudScreen::UpdatePlayerFocusMeter(Player * player)
 {
+	float player_max_focus = player->GetMaxFocusAmount();
+
+	if (mDoingFocusMeterUpgrade)
+	{
+		DoFocusMeterUpgrade(player);
+		// return;
+	}
+
+	if (player_max_focus != mLastPlayerMaxFocus)
+	{
+		mLastPlayerMaxFocus = player_max_focus;
+
+		mDoingFocusMeterUpgrade = true;
+		if (mMeterUpgradeSound == nullptr)
+		{
+			mMeterUpgradeSound = AudioManager::Instance()->PlaySoundEffect("character/meter_upgrade.wav", true, true);
+		}
+		else
+		{
+			mMeterUpgradeSound->setPlayPosition(0);
+			mMeterUpgradeSound->setIsPaused(false);
+		}
+		return;
+	}
+
 	if (player && mPlayerXPMeter)
 	{
 		// Player XP is repurposed into FOCUS
@@ -140,6 +166,30 @@ void UIGameHudScreen::DoHealthMeterUpgrade(Player * player)
 		mPlayerHealthMeter->SetMeterLength(finalDimensions);
 		player->IncreaseHealth(9999999); // max out health
 		mDoingHealthMeterUpgrade = false;
+
+		if (mMeterUpgradeSound != nullptr)
+		{
+			mMeterUpgradeSound->setIsPaused(true);
+		}
+	}
+}
+
+void UIGameHudScreen::DoFocusMeterUpgrade(Player * player)
+{
+	float player_max_focus = player->GetMaxFocusAmount();
+
+	float currentDimensions = mPlayerXPMeter->GetMeterLength();
+	float finalDimensions = player_max_focus * kFocusMeterDimensionsMultiplier;
+	if (currentDimensions < finalDimensions)
+	{
+		mPlayerXPMeter->SetMeterLength(currentDimensions + 0.20f);
+		Camera2D::GetInstance()->DoSmallShake();
+	}
+	else if (currentDimensions >= finalDimensions)
+	{
+		mPlayerXPMeter->SetMeterLength(finalDimensions);
+		// player->IncreaseHealth(9999999); // max out health
+		mDoingFocusMeterUpgrade = false;
 
 		if (mMeterUpgradeSound != nullptr)
 		{

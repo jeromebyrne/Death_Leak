@@ -29,6 +29,8 @@ private:
 
 	void GiveHealthUpgradeReward();
 
+	void GiveFocusUpgradeReward();
+
 	bool mHasCreatedParticles = false;
 
 	bool mHasPlayedDialog = false;

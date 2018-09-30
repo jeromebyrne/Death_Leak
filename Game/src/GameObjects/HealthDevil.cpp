@@ -5,6 +5,7 @@
 #include "SaveManager.h"
 #include "HealthUpgradePickup.h"
 #include "Game.h"
+#include "FocusUpgradePickup.h"
 
 HealthDevil::HealthDevil(float x, 
 	float y, 
@@ -147,7 +148,8 @@ void HealthDevil::GiveReward()
 	{
 		case 0:
 		{
-			GiveHealthUpgradeReward();
+			// GiveHealthUpgradeReward();
+			GiveFocusUpgradeReward();
 			break;
 		}
 		default:
@@ -181,4 +183,23 @@ void HealthDevil::GiveHealthUpgradeReward()
 	huPickup->EffectName = "effectlighttexture";
 	
 	GameObjectManager::Instance()->AddGameObject(huPickup);
+}
+
+void HealthDevil::GiveFocusUpgradeReward()
+{
+	FocusUpgradePickup * fuPickup = new FocusUpgradePickup();
+	fuPickup->SetTextureFilename("Media\\objects\\focus_upgrade.png");
+	fuPickup->SetIsNativeDimensions(true);
+	fuPickup->SetCollisionDimensions(Vector2(20.0f, 30.0f));
+	fuPickup->SetApplyGravity(true);
+	fuPickup->SetGravityApplyAmount(1.0f);
+	fuPickup->SetUpdateable(true);
+	fuPickup->SetPassive(false);
+	fuPickup->SetXY(m_position.X, m_position.Y + 20.0f); // spawn above the health devil
+	fuPickup->SetMaxVelocityXY(30.0f, 30.0f);
+	fuPickup->SetVelocityXY(15.0f, 20.0f);
+	fuPickup->SetResistanceXY(0.95f, 1.0f);
+	fuPickup->EffectName = "effectlighttexture";
+
+	GameObjectManager::Instance()->AddGameObject(fuPickup);
 }

@@ -31,42 +31,44 @@ void AudioManager::Release()
 
 irrklang::ISound * AudioManager::PlaySoundEffect(string fileName, bool loop, bool track, bool applyTimeMod)
 {
-	if (mSfxEnabled)
+	string file = m_audioPath + fileName;
+
+	bool manuallyTrackSloMo = false;
+	float timeMod = Timing::Instance()->GetTimeModifier();
+	if (!track)
 	{
-		string file = m_audioPath + fileName;
+		if (applyTimeMod)
+		{
+			manuallyTrackSloMo = true;
+		}
+		track = true;
+	}
+	irrklang::ISound * sound = m_irrKlangEngine->play2D(file.c_str(), loop, false, track);
+	if (!sound)
+	{
+		LOG_ERROR("Sound file not found: %s", fileName.c_str());
+		GAME_ASSERT(sound);
+	}
+	else
+	{
+		if (applyTimeMod)
+		{
+			sound->setPlaybackSpeed(timeMod);
+		}
 
-		bool manuallyTrackSloMo = false;
-		float timeMod = Timing::Instance()->GetTimeModifier();
-		if (!track)
+		if (manuallyTrackSloMo)
 		{
-			if (applyTimeMod)
-			{
-				manuallyTrackSloMo = true;
-			}
-			track = true;
-		}
-		irrklang::ISound * sound = m_irrKlangEngine->play2D(file.c_str(), loop, false, track);
-		if (!sound)
-		{
-			LOG_ERROR("Sound file not found: %s", fileName.c_str());
-			GAME_ASSERT(sound);
-		}
-		else
-		{
-			if (applyTimeMod)
-			{
-				sound->setPlaybackSpeed(timeMod);
-			}
-
-			if (manuallyTrackSloMo)
-			{
-				mSloMoUntrackedSounds.push_back(sound);
-			}			
-		}
-		return sound;
+			mSloMoUntrackedSounds.push_back(sound);
+		}			
 	}
 
-	return nullptr;
+	if (sound && !mSfxEnabled)
+	{
+		sound->setVolume(0.0f);
+		sound->setIsPaused();
+	}
+
+	return sound;
 }
 
 void AudioManager::PlayMusic(string fileName, bool loop)

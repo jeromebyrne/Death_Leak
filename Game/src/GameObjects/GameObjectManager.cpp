@@ -42,6 +42,7 @@
 #include "GhostEnemy.h"
 #include "HealthDevil.h"
 #include "HealthUpgradePickup.h"
+#include "FocusUpgradePickup.h"
 
 struct DepthSortPredicate
 {
@@ -742,6 +743,10 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement, const
 	else if (strcmp(gameObjectTypeName, "healthupgradepickup") == 0)
 	{
 		newGameObject = new HealthUpgradePickup();
+	}
+	else if (strcmp(gameObjectTypeName, "focusupgradepickup") == 0)
+	{
+		newGameObject = new FocusUpgradePickup();
 	}
 
 	if (newGameObject && !dynamic_cast<ParticleSpray*>(newGameObject))

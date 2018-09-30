@@ -306,10 +306,10 @@ void InputManager::ProcessMelee_gamepad(XINPUT_STATE padState, CurrentGameplayAc
 		mCurrentGamepadState.mPressingMelee = false;
 	}
 
-if (mCurrentGamepadState.mPressingMelee && !wasPressingMelee)
-{
-	player->DoMeleeAttack();
-}
+	if (mCurrentGamepadState.mPressingMelee && !wasPressingMelee)
+	{
+		player->DoMeleeAttack();
+	}
 }
 
 void InputManager::ProcessWallJump_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player)
