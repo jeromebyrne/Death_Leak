@@ -3,7 +3,7 @@
 #include "InputManager.h"
 #include "Game.h"
 #include "AudioManager.h"
-#include "InventoryManager.h"
+#include "SaveManager.h"
 
 static const float kWarmUpTime = 2.0f;
 
@@ -40,24 +40,30 @@ void Door::Update(float delta)
 	if (Utilities::IsObjectInRectangle(player, m_position.X, m_position.Y, m_dimensions.X, m_dimensions.Y))
 	{
 		auto inputManager = Game::GetInstance()->GetInputManager();
-		if (inputManager.IsPressingEnterDoor() &&
+		if (mCanTryOpen &&
+			inputManager.IsPressingEnterDoor() &&
 			player->IsOnSolidSurface() && 
 			std::abs(player->GetVelocity().X) < 0.5f)
 		{
+			mCanTryOpen = false;
+
 			if (!mRequiredKey.empty())
 			{
-				if (!InventoryManager::GetInstance()->HasKey(mRequiredKey))
+				if (!SaveManager::GetInstance()->HasDoorKey(mRequiredKey))
 				{
 					if (!mDoorLockedSFX.empty())
 					{
 						AudioManager::Instance()->PlaySoundEffect(mDoorLockedSFX);
 					}
-
 					return;
 				}
 			}
 
 			EnterDoor();
+		}
+		else if (!inputManager.IsPressingEnterDoor())
+		{
+			mCanTryOpen = true;
 		}
 	}
 }

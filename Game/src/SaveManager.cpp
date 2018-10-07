@@ -423,14 +423,19 @@ void SaveManager::SetGameFeatureUnlocked(const int featureType)
 
 bool SaveManager::HasDoorKey(const std::string & keyId)
 {
-	// TODO:
-	return false;
+	if (mSaveMap.find(keyId) == mSaveMap.end())
+	{
+		return false;
+	}
+
+	return mSaveMap[keyId].asBool();
 }
 
-void SaveManager::SetGameFeatureUnlocked(const std::string & keyId, bool obtained)
+void SaveManager::SetHasDoorkey(const std::string & keyId, bool value)
 {
-	// TODO:
+	mSaveMap[keyId] = value;
 }
+
 
 void SaveManager::SetLanguage(const std::string & langLocaleKey)
 {

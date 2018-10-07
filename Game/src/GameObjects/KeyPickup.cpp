@@ -1,9 +1,10 @@
 #include "precompiled.h"
-#include "HealthUpgradePickup.h"
+#include "KeyPickup.h"
 #include "AudioManager.h"
 #include "ParticleEmitterManager.h"
+#include "SaveManager.h"
 
-void HealthUpgradePickup::DoPickup()
+void KeyPickup::DoPickup()
 {
 	AudioManager::Instance()->PlaySoundEffect("character/drink_health_upgrade.wav");
 
@@ -14,18 +15,17 @@ void HealthUpgradePickup::DoPickup()
 		return;
 	}
 
-	int currentMaxHealth = p->GetMaxHealth();
-
-	int newMaxHealth = currentMaxHealth + mHealthUpgradeAmount;
-
-	p->SetMaxHealth(newMaxHealth);
+	if (!mKeyId.empty())
+	{
+		SaveManager::GetInstance()->SetHasDoorkey(mKeyId, true);
+	}
 
 	DoPickupEffects(p);
 
 	GameObjectManager::Instance()->RemoveGameObject(this);
 }
 
-void HealthUpgradePickup::DoPickupEffects(Player * player)
+void KeyPickup::DoPickupEffects(Player * player)
 {
 	Camera2D::GetInstance()->DoBigShake();
 

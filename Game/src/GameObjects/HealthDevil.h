@@ -31,6 +31,8 @@ private:
 
 	void GiveFocusUpgradeReward();
 
+	void GiveKeyRewardTest();
+
 	bool mHasCreatedParticles = false;
 
 	bool mHasPlayedDialog = false;

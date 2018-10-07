@@ -35,7 +35,6 @@
 #include "DataValue.h"
 #include "PlayerLevelManager.h"
 #include "FeatureUnlockManager.h"
-#include "InventoryManager.h"
 
 Game * Game::mInstance = nullptr;
 
@@ -143,8 +142,6 @@ void Game::Initialise()
 	PlayerLevelManager::GetInstance()->Initialise();
 
 	FeatureUnlockManager::GetInstance()->Initialise();
-
-	InventoryManager::GetInstance()->Initialise();
 }
 
 void Game::Update(float delta)

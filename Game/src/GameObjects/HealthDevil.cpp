@@ -6,6 +6,7 @@
 #include "HealthUpgradePickup.h"
 #include "Game.h"
 #include "FocusUpgradePickup.h"
+#include "KeyPickup.h"
 
 HealthDevil::HealthDevil(float x, 
 	float y, 
@@ -149,7 +150,8 @@ void HealthDevil::GiveReward()
 		case 0:
 		{
 			// GiveHealthUpgradeReward();
-			GiveFocusUpgradeReward();
+			// GiveFocusUpgradeReward();
+			GiveKeyRewardTest();
 			break;
 		}
 		default:
@@ -202,4 +204,25 @@ void HealthDevil::GiveFocusUpgradeReward()
 	fuPickup->EffectName = "effectlighttexture";
 
 	GameObjectManager::Instance()->AddGameObject(fuPickup);
+}
+
+void HealthDevil::GiveKeyRewardTest()
+{
+	KeyPickup * keyPickup = new KeyPickup();
+	keyPickup->SetTextureFilename("Media\\keys\\key_1.png");
+	keyPickup->SetIsNativeDimensions(true);
+	keyPickup->SetCollisionDimensions(Vector2(20.0f, 30.0f));
+	keyPickup->SetApplyGravity(true);
+	keyPickup->SetGravityApplyAmount(1.0f);
+	keyPickup->SetUpdateable(true);
+	keyPickup->SetPassive(false);
+	keyPickup->SetXY(m_position.X, m_position.Y + 20.0f); // spawn above the health devil
+	keyPickup->SetMaxVelocityXY(30.0f, 30.0f);
+	keyPickup->SetVelocityXY(15.0f, 20.0f);
+	keyPickup->SetResistanceXY(0.95f, 1.0f);
+	keyPickup->EffectName = "effectlighttexture";
+
+	keyPickup->SetKeyId("key_1");
+
+	GameObjectManager::Instance()->AddGameObject(keyPickup);
 }
