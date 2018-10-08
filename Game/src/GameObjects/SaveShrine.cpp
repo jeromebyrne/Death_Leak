@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "AudioManager.h"
 #include "ParticleEmitterManager.h"
+#include "SaveManager.h"
 
 static const float kTimeBetweenSaves = 5.0f;
 
@@ -50,6 +51,8 @@ void SaveShrine::Update(float delta)
 			Camera2D::GetInstance()->DoMediumShake();
 
 			DisplaySaveParticles();
+
+			SaveManager::GetInstance()->SetLevelLastSavedAt(GameObjectManager::Instance()->GetCurrentLevelFile());
 
 			GameObjectManager::Instance()->SaveGame();
 

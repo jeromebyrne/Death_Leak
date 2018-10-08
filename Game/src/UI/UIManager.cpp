@@ -372,6 +372,14 @@ void UIManager::HandleEvent(string eventName, list<string> params)
 	case LOAD_LEVEL:
 		{
 			string level_file = *(params.begin()); // always only 1 parameter
+
+			string savedlevel = SaveManager::GetInstance()->GetLevelLastSavedAt();
+			if (!savedlevel.empty())
+			{
+				// This is not a new game
+				level_file = savedlevel;
+			}
+
 			Game::SetIsLevelEditMode(false);
 			auto inputManager = Game::GetInstance()->GetInputManager();
 			inputManager.EnableDebugInfo(false);

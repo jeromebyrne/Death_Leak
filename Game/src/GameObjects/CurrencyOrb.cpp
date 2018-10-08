@@ -61,6 +61,13 @@ void CurrencyOrb::Initialise()
 
 bool CurrencyOrb::OnCollision(SolidMovingSprite * object)
 {
+#if _DEBUG
+	if (Game::GetInstance()->GetIsLevelEditMode())
+	{
+		return false;
+	}
+#endif
+
 	if (mCurrentState == kSpawnPeriod)
 	{
 		return false;

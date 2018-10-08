@@ -52,6 +52,10 @@ public:
 
 	std::string GetLanguageSet();
 
+	void SetLevelLastSavedAt(const string & levelId);
+
+	string GetLevelLastSavedAt();
+
 private:
 
 	static SaveManager * mInstance;
@@ -62,6 +66,8 @@ private:
 	int GetIntValue(const std::string & key, int defaultValue = 0) const;
 
 	bool GetBoolValue(const std::string & key, bool defaultValue = false) const;
+
+	string GetStringValue(const std::string & key, string defaultValue = "") const;
 
 	void AddKeyValuePair(const std::string & key, const DataValue & value);
 

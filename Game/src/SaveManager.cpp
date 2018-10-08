@@ -242,6 +242,24 @@ bool SaveManager::GetBoolValue(const std::string & key, bool defaultValue) const
 	return iter->second.asBool();
 }
 
+string SaveManager::GetStringValue(const std::string & key, string defaultValue) const
+{
+	const auto & iter = mSaveMap.find(key);
+
+	if (iter == mSaveMap.end())
+	{
+		return defaultValue;
+	}
+
+	if (iter->second.getType() != DataValue::Type::STRING)
+	{
+		GAME_ASSERT(false);
+		return defaultValue;
+	}
+
+	return iter->second.asString();
+}
+
 int SaveManager::GetPlayerLevel() const
 {
 	return GetIntValue("player_level", 1);
@@ -423,19 +441,13 @@ void SaveManager::SetGameFeatureUnlocked(const int featureType)
 
 bool SaveManager::HasDoorKey(const std::string & keyId)
 {
-	if (mSaveMap.find(keyId) == mSaveMap.end())
-	{
-		return false;
-	}
-
-	return mSaveMap[keyId].asBool();
+	return GetBoolValue(keyId, false);
 }
 
 void SaveManager::SetHasDoorkey(const std::string & keyId, bool value)
 {
 	mSaveMap[keyId] = value;
 }
-
 
 void SaveManager::SetLanguage(const std::string & langLocaleKey)
 {
@@ -471,7 +483,11 @@ bool SaveManager::HasHealthDevilGivenReward(const string & healthDevilId)
 
 void SaveManager::SetHealthDevilGivenReward(const string & healthDevilId, bool value)
 {
-	mSaveMap[healthDevilId] = value;
+	std::string key = "health_devil_reward_" + healthDevilId;
+
+	std::replace(key.begin(), key.end(), '\\', '-'); // replace back slashes as they will mess up the xml file
+
+	mSaveMap[key] = value;
 }
 
 void SaveManager::SetPlayerMaxHealth(const int value)
@@ -482,4 +498,14 @@ void SaveManager::SetPlayerMaxHealth(const int value)
 int SaveManager::GetPlayerMaxHealth()
 {
 	return GetIntValue("player_max_health", 0);
+}
+
+void SaveManager::SetLevelLastSavedAt(const string & levelId)
+{
+	mSaveMap["last_level_saved"] = levelId;
+}
+
+string SaveManager::GetLevelLastSavedAt()
+{
+	return GetStringValue("last_level_saved");
 }

@@ -66,10 +66,10 @@
           use_standard_effect="true">
     
     <actionspressup>
-      <fadeout time="150"/>
+      <fadeout time="0"/>
       <popui ui="mainmenu" />
       <pushui ui="gameloading" />
-      <fadein time="50"/>
+      <fadein time="0"/>
       <stopallsounds />
       <loadlevel level="XmlFiles\levels\cliff.xml" />
       <popui ui="gameloading" />

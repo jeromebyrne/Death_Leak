@@ -455,6 +455,10 @@ void GameObjectManager::LoadObjectsFromFile(const char* filename)
 	// update all the objects at least once at the start
 	for (auto & obj : m_gameObjects)
 	{
+		if (obj->isPart)
+		{
+			// TODO: crashing on particles for some reason
+		}
 		obj->Update(0.0f);
 	}
 
