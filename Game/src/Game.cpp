@@ -216,15 +216,20 @@ void Game::Update(float delta)
 		static bool pressingPause = false;
 		if ((GetAsyncKeyState(VK_ESCAPE) < 0 || pressing_pause_gamepad) && !pressingPause)
 		{
-			pressingPause = true;
+			Player * player = GameObjectManager::Instance()->GetPlayer();
 
-			if (mPaused)
+			if (player && !player->IsDead())
 			{
-				UnPauseGame();
-			}
-			else
-			{
-				PauseGame();
+				pressingPause = true;
+
+				if (mPaused)
+				{
+					UnPauseGame();
+				}
+				else
+				{
+					PauseGame();
+				}
 			}
 		}
 		else if (!(GetAsyncKeyState(VK_ESCAPE) < 0) && !pressing_pause_gamepad)

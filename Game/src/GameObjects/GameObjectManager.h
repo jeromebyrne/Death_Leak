@@ -111,6 +111,8 @@ public:
 
 	void SaveGame();
 
+	void QuitLevel();
+
 private:
 
 	Camera2D * m_camera;
@@ -161,6 +163,9 @@ private:
 	std::string mCurrentLevelFile;
 
 	list<GameObject *> mPostUpdateObjects;
+
+	// save the health between levels
+	float mCachedPlayerHealth = -1;
 };
 
 #endif

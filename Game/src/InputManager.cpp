@@ -84,16 +84,23 @@ void InputManager::ProcessGameplayInput()
 	}
 
 #endif
+	
+	Player * player = GameObjectManager::Instance()->GetPlayer();
+
+	if (!player || player->IsDead())
+	{
+		return;
+	}
 
 	GamePad * gamepad1 = GamePad::GetPad1();
 
 	if (gamepad1 && gamepad1->IsConnected())
 	{
-		ProcessGameplay_GamePad();
+		ProcessGameplay_GamePad(player);
 	}
 	else
 	{
-		ProcessGameplay_Keyboard();
+		ProcessGameplay_Keyboard(player);
 	}
 }
 
@@ -261,7 +268,11 @@ void InputManager::ProcessSlowMotion_gamepad(XINPUT_STATE padState, CurrentGamep
 	}
 	else
 	{
-		player->StopFocus();
+		// don't stop focusing if dead, as we should always be in slo mo when dead
+		if (!player->IsDead())
+		{
+			player->StopFocus();
+		}
 	}
 }
 
@@ -512,18 +523,11 @@ void InputManager::ProcessTestActions_gamepad(XINPUT_STATE padState, CurrentGame
 	}
 }
 
-void InputManager::ProcessGameplay_GamePad()
+void InputManager::ProcessGameplay_GamePad(Player * player)
 {
 	GamePad * gamepad1 = GamePad::GetPad1();
 
 	XINPUT_STATE padState = gamepad1->GetState();
-
-	Player * player = GameObjectManager::Instance()->GetPlayer();
-
-	if (!player)
-	{
-		return;
-	}
 
 	const auto & levelProps = GameObjectManager::Instance()->GetCurrentLevelProperties();
 
@@ -558,21 +562,13 @@ void InputManager::ProcessGameplay_GamePad()
 	ProcessTestActions_gamepad(padState, currentActions, player, levelProps);
 }
 
-void InputManager::ProcessGameplay_Keyboard()
+void InputManager::ProcessGameplay_Keyboard(Player * player)
 {
-	Player * player = GameObjectManager::Instance()->GetPlayer();
-
-	if (!player)
-	{
-		return;
-	}
-
 	const auto & levelProps = GameObjectManager::Instance()->GetCurrentLevelProperties();
 
 	CurrentGameplayActions currentActions;
 
 	ProcessLeftRightMovement_keyboard(currentActions, player);
-
 }
 
 void InputManager::ProcessLeftRightMovement_keyboard(CurrentGameplayActions & currentActions, Player * player)

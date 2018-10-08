@@ -126,6 +126,11 @@ void Character::DoLargeImpactLanding()
 
 void Character::Update(float delta)
 {
+	if (IsDead())
+	{
+		return;
+	}
+
 	if (mDoReboundJump)
 	{
 		Jump(95.0f);
@@ -918,6 +923,11 @@ void Character::UpdateAnimations()
 				else
 				{
 					float animFramerate = std::abs(mSprintActive ? (m_velocity.X * 2.0f) * mRunAnimFramerateMultiplier : (m_velocity.X * 1.8f) * mRunAnimFramerateMultiplier);
+
+					if (Timing::Instance()->GetTimeModifier() < 1.0f)
+					{
+						animFramerate * mDeltaTimeMultiplierInSloMo;
+					}
 
 					bodyPart->CurrentSequence()->SetFrameRate(animFramerate);
 				}
@@ -2053,6 +2063,11 @@ void Character::FireBloodSpatter(Vector2 direction, const Vector2 & origin)
 	// p->FlipVertical();
 
 	GameObjectManager::Instance()->AddGameObject(p);
+}
+
+bool Character::IsDead()
+{
+	return mHealth <= 0.0f;
 }
 
 

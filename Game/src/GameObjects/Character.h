@@ -99,6 +99,8 @@ public:
 
 	bool IsFullyCrouched() { return mIsFullyCrouched; }
 
+	bool IsDead();
+
 protected:
 
 	void SetIsWallJumping(bool value);

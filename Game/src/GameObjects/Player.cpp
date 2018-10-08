@@ -12,6 +12,7 @@
 #include "AudioManager.h"
 #include "DrawUtilities.h"
 #include "FeatureUnlockManager.h"
+#include "UIManager.h"
 
 static const char * kBombTextureFile = "Media/bomb.png";
 static const float kAimLineOpacityDecrementDelay = 0.05f;
@@ -75,6 +76,8 @@ void Player::Initialise()
 	}
 
 	mMaxHealth = maxHealth;
+
+	mDeltaTimeMultiplierInSloMo = 3.5f;
 }
 
 void Player::UpdateResistance()
@@ -118,9 +121,15 @@ void Player::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 poi
 {
 	Character::OnDamage(damageDealer, damageAmount, pointOfContact, shouldExplode);
 
-	if (mHealth <= 0.0f)
+	if (IsDead())
 	{
-		m_alpha = 0.2f; 
+		m_alpha = 0.0f;
+
+		if (mHasTriggeredDiedUI == false)
+		{
+			mHasTriggeredDiedUI = true;
+			UIManager::Instance()->PushUI("you_died");
+		}
 	}
 }
 
@@ -223,13 +232,18 @@ void Player::Update(float delta)
 		else
 		{
 			if (mAimLineSprite->Alpha() > 0.0f)
-			{
+			{  
 				mAimLineSprite->SetAlpha(mAimLineSprite->Alpha() - (kAimLineOpacityDecreaseRate * delta));
 			}
 		}
 	}
 
 	UpdateFocus(delta);
+
+	if (IsDead())
+	{
+		Timing::Instance()->SetTimeModifier(0.15f);
+	}
 }
 
 Projectile * Player::FireWeapon(Vector2 direction)

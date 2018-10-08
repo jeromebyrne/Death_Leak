@@ -12,4 +12,5 @@
   <uiscreen name="object_editor" filepath="XmlFiles\\UI\\object_editor_screen.xml" />
   <uiscreen name="level_select" filepath="XmlFiles\\UI\\level_select.xml" />
   <uiscreen name="language_select_settings" filepath="XmlFiles\\UI\\language_select_settings.xml" />
+  <uiscreen name="you_died" filepath="XmlFiles\\UI\\you_died.xml" />
 </ui>

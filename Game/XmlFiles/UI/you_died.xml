@@ -1,0 +1,55 @@
+<uiscreen>
+
+  <animatedsprite name="0_scratch_anim"
+                   process_input="false"
+                   posX ="-960" posY ="-540" width="1920" height ="1080"
+                   image="Media\UI\noise_layer.png"
+                   hflip="false" vflip="false"
+                   alpha="0.10"
+                  use_standard_effect="true"
+                   fps ="11">
+    <frames frame1="Media\UI\film_frame.png"
+            frame2="Media\UI\film_frame_2.png"
+            frame3="Media\UI\film_frame_3.png"
+            frame4="Media\UI\film_frame_4.png"
+    />
+  </animatedsprite>
+
+  <sprite name="1_bg"
+          process_input="false"
+          posX ="-960" posY ="-540" width="1920" height ="1080"
+          image="Media\\UI\\you_died.png"
+          hflip="false" vflip="false"
+          alpha="1.0"
+          use_standard_effect="true">
+  </sprite>
+  
+<button name="4_quit"
+           process_input="true"
+           posX ="-75" posY ="-100" width="120" height ="120"
+           image="Media\\UI\\buttons\\back1.png"
+           image_focus="Media\\UI\\buttons\\back2.png"
+           image_click="Media\\UI\\buttons\\back2.png"
+           hflip="false" vflip="false"
+           alpha="1.0"
+          use_standard_effect="true">
+
+    <actionspressup>
+      <stopallsounds/>
+      <fadeout time="150"/>
+      <unpausegame />
+      <destroylevel />
+      <popui ui="you_died"/>
+      <popui ui="game_hud"/>
+      <pushui ui="mainmenu"/>
+      <playmusic sound="" loop="true"/>
+      <fadein time="50"/>
+    </actionspressup>
+
+    <actionspressdown>
+      <playsoundeffect sound="UI\\click.wav" />
+    </actionspressdown>
+
+  </button>
+  
+</uiscreen>

@@ -332,6 +332,9 @@
     <Xml Include="XmlFiles\UI\options.xml" />
     <Xml Include="XmlFiles\UI\pause_menu.xml" />
     <Xml Include="XmlFiles\UI\UI.xml" />
+    <Xml Include="XmlFiles\UI\you_died.xml">
+      <SubType>Designer</SubType>
+    </Xml>
     <Xml Include="XmlFiles\underwater_cave.xml" />
     <Xml Include="XmlFiles\village.xml" />
     <Xml Include="XmlFiles\village_2.xml" />

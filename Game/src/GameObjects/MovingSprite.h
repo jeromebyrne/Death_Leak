@@ -142,6 +142,7 @@ protected:
 	bool mWasInWaterLastFrame;
 	float mTimeUntilCanSpawnWaterBubbles;
 	bool mHittingSolidLineEdge;
+	float mDeltaTimeMultiplierInSloMo = 1.0f;
 };
 
 #endif

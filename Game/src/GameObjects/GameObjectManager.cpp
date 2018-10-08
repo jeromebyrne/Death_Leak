@@ -56,7 +56,7 @@ GameObjectManager* GameObjectManager::m_instance = 0;
 
 GameObjectManager::GameObjectManager(): 
 	m_camera(),
-	m_player(0),
+	m_player(nullptr),
 	m_levelLoaded(false),
 	mSwitchToLevel(false),
 	mSlowMotionLayer(nullptr),
@@ -514,6 +514,8 @@ void GameObjectManager::SwitchToLevel(const char * level, bool defer)
 		return;
 	}
 
+	mCachedPlayerHealth = m_player != nullptr ? m_player->GetHealth() : -1.0f;
+
 	CacheSaveData();
 
 	UIManager::Instance()->PopUI("game_hud");
@@ -615,6 +617,11 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement, const
 		{
 			newGameObject = new Player();
 			m_player = static_cast<Player*>(newGameObject);
+
+			if (mCachedPlayerHealth != -1.0f)
+			{
+				m_player->SetHealth(mCachedPlayerHealth);
+			}
 		}
 	}
 	else if (strcmp(gameObjectTypeName, "npc") == 0)
@@ -1021,4 +1028,10 @@ void GameObjectManager::SetCurrencyOrbCollected(unsigned int orbId)
 void GameObjectManager::SetBreakableBroken(unsigned int breakableId)
 {
 	mCurrentBreakablesBroken.push_back(breakableId);
+}
+
+void GameObjectManager::QuitLevel()
+{
+	mCachedPlayerHealth = -1.0f;
+	DeleteGameObjects();
 }

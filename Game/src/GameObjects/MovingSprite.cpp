@@ -53,6 +53,13 @@ void MovingSprite::Update(float delta)
 {	
 	// TODO: optmize so stuff like SolidLineStrip isn't calling this function
 
+	if (Timing::Instance()->GetTimeModifier() < 1.0f)
+	{
+		// slo-mo
+		// Note: This is mainly for the player so they can move faster during slo mo
+		delta *= mDeltaTimeMultiplierInSloMo;
+	}
+
 	// update our base class 
 	Sprite::Update(delta);
 

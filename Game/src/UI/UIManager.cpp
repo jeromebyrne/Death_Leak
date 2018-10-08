@@ -437,7 +437,7 @@ void UIManager::HandleEvent(string eventName, list<string> params)
 		{
 			Game::SetIsLevelEditMode(false);
 			Game::GetInstance()->ResetLevelEditor();
-			GameObjectManager::Instance()->DeleteGameObjects();
+			GameObjectManager::Instance()->QuitLevel();
 			break;
 		}
 	case SLEEP:

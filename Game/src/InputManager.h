@@ -49,9 +49,9 @@ private:
 		bool mPressingDownwardDashPrimary = false;
 	};
 
-	void ProcessGameplay_GamePad();
+	void ProcessGameplay_GamePad(Player * player);
 
-	void ProcessGameplay_Keyboard();
+	void ProcessGameplay_Keyboard(Player * player);
 
 	void ProcessCrouch_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player);
 
