@@ -142,6 +142,7 @@ void AIStateRangeAttack::Update(float delta)
 			}
 		}
 
+		/*
 		m_npc->SetIsStrafing(true);
 		if (distanceSquaredVector.X > 0)
 		{
@@ -151,6 +152,7 @@ void AIStateRangeAttack::Update(float delta)
 		{
 			m_npc->SetStrafeDirectionX(-1.0f);
 		}
+		*/
 	}
 
 	if (mTimeUntilCanTeleport > 0.0f)
@@ -163,10 +165,15 @@ bool AIStateRangeAttack::CanAccelerateX(float direction)
 {
 	GAME_ASSERT(std::abs(direction) == 1.0f);
 
+	if (m_npc->IsCrouching())
+	{
+		return false;
+	}
+
 	auto cam = Camera2D::GetInstance();
 
 	if (cam->IsObjectInView(m_npc))
-	{
+	{ 
 		// should be able to accelerate if in view
 		return true;
 	}

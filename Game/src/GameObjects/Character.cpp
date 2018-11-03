@@ -1678,7 +1678,7 @@ void Character::Draw(ID3D10Device * device, Camera2D * camera)
 	if (IsOnSolidSurface())
 	{
 		// TODO: this is a temporary function, just testing the shadow - REMOVE
-		// DrawUtilities::DrawTexture(Vector3(m_position.X, m_position.Y - 150, m_position.Z), Vector2(200, 150), "Media\\characters\\player\\shadow.png");
+		DrawUtilities::DrawTexture(Vector3(m_position.X, m_position.Y - 150, GetDepthLayer() + 0.1f), Vector2(200, 128), "Media\\characters\\player\\shadow.png");
 	}
 	
 	// draw the arm first because it should be behind the body

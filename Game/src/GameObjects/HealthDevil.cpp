@@ -33,39 +33,41 @@ void HealthDevil::Update(float delta)
 {	
 	Sprite::Update(delta);
 
-	if (mHasGivenReward)
-	{
-		return;
-	}
-
 	if (mHasCreatedParticles == false)
 	{
 		auto pos = Position();
 		pos.Y += 60.0f;
 		ParticleEmitterManager::Instance()->CreateRadialSpray(60,
-																pos,
-																GameObject::kGround,
-																Vector2(3200.0f, 2000.0f),
+			pos,
+			GameObject::kGround,
+			Vector2(3200.0f, 2000.0f),
 			"Media\\characters\\health_devil\\shroud_particle.png",
-																0.05f,
-																0.4f,
-																3.3f,
-																8.6f,
-																300.0f,
-																500.0f,
-																0.0f,
-																true,
-																0.5f,
-																1.0f,
-																-1.0f,
-																true,
-																0.4f,
-																0.1f,
-																0.8f,
-																12.0f,
-																6.0f);
+			0.05f,
+			0.4f,
+			3.3f,
+			8.6f,
+			300.0f,
+			500.0f,
+			0.0f,
+			true,
+			0.5f,
+			1.0f,
+			-1.0f,
+			true,
+			0.4f,
+			0.1f,
+			0.8f,
+			12.0f,
+			6.0f);
 
 		mHasCreatedParticles = true;
+	}
+
+	if (mHasGivenReward)
+	{
+		// Don't show the eyes if we've given the reward
+		m_alpha = 0.0f;
+		return;
 	}
 
 	Player * player = GameObjectManager::Instance()->GetPlayer();
@@ -120,6 +122,15 @@ void HealthDevil::Initialise()
 	string levelId = GameObjectManager::Instance()->GetCurrentLevelFile();
 
 	mHasGivenReward = SaveManager::GetInstance()->HasHealthDevilGivenReward(levelId);
+
+	if (mHasGivenReward)
+	{
+		// don't play the siren audio
+		if (mPositionalAudioEnabled)
+		{
+			mPositionalAudio.Disable();
+		}
+	}
 }
 
 void HealthDevil::XmlRead(TiXmlElement * element)
@@ -150,8 +161,8 @@ void HealthDevil::GiveReward()
 		case 0:
 		{
 			// GiveHealthUpgradeReward();
-			// GiveFocusUpgradeReward();
-			GiveKeyRewardTest();
+			GiveFocusUpgradeReward();
+			// GiveKeyRewardTest();
 			break;
 		}
 		default:

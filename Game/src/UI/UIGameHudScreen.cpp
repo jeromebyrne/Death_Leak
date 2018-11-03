@@ -118,6 +118,17 @@ void UIGameHudScreen::UpdatePlayerFocusMeter(Player * player)
 {
 	float player_max_focus = player->GetMaxFocusAmount();
 
+	if (player_max_focus <= 0.0f)
+	{
+		mPlayerXPMeter->SetDrawMeter(false);
+		mPlayerXPMeter->SetMeterLength(0.0f);
+		return;
+	}
+	else
+	{
+		mPlayerXPMeter->SetDrawMeter(true);
+	}
+
 	if (mDoingFocusMeterUpgrade)
 	{
 		DoFocusMeterUpgrade(player);
@@ -182,7 +193,7 @@ void UIGameHudScreen::DoFocusMeterUpgrade(Player * player)
 	float finalDimensions = player_max_focus * kFocusMeterDimensionsMultiplier;
 	if (currentDimensions < finalDimensions)
 	{
-		mPlayerXPMeter->SetMeterLength(currentDimensions + 0.20f);
+		mPlayerXPMeter->SetMeterLength(currentDimensions + (player_max_focus <= 100.0f ? 0.5f : 0.20f));
 		Camera2D::GetInstance()->DoSmallShake();
 	}
 	else if (currentDimensions >= finalDimensions)

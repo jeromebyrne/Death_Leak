@@ -1,5 +1,6 @@
 #include "precompiled.h"
 #include "LevelTrigger.h"
+#include "Game.h"
 
 LevelTrigger::LevelTrigger(float x, float y, DepthLayer depthLayer, float width, float height):
 	GameObject(x, y, depthLayer, width, height)
@@ -19,6 +20,13 @@ void LevelTrigger::Initialise()
 void LevelTrigger::Update(float delta)
 {
 	GameObject::Update(delta);
+
+#ifdef _DEBUG
+	if (Game::GetInstance()->GetIsLevelEditMode())
+	{
+		return;
+	}
+#endif
 
 	Player * player = GameObjectManager::Instance()->GetPlayer();
 	if (player)

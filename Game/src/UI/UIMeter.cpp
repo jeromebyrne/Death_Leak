@@ -47,6 +47,11 @@ void UIMeter::XmlRead(TiXmlElement * element)
 
 void UIMeter::Draw(ID3D10Device * graphicsdevice)
 {
+	if (!mDrawMeter)
+	{
+		return;
+	}
+
 	m_dimensions.Y = mBarNativeHeight * mScaleY;
 
 	// unbind the vertex buffer before deleting it in Reset();
@@ -69,18 +74,15 @@ void UIMeter::Draw(ID3D10Device * graphicsdevice)
 	}
 
 	// draw the bar
-	if (mDrawMeter)
-	{
-		m_bottomLeft.X = mInitialPosition.X;
-		m_bottomLeft.Y = mInitialPosition.Y;
-		m_bottomLeft.X += (mMeterEdgeWidth * 0.9f) * mScaleX;
-		m_horizontalFlip = false;
-		m_dimensions.X = ((mMeterLength - (mMeterEdgeWidth * 0.8)) * mProgress) * mScaleX;
-		m_texture = m_meterBarMiddleTexture;
+	m_bottomLeft.X = mInitialPosition.X;
+	m_bottomLeft.Y = mInitialPosition.Y;
+	m_bottomLeft.X += (mMeterEdgeWidth * 0.9f) * mScaleX;
+	m_horizontalFlip = false;
+	m_dimensions.X = ((mMeterLength - (mMeterEdgeWidth * 0.8)) * mProgress) * mScaleX;
+	m_texture = m_meterBarMiddleTexture;
 
-		Reset();
-		UISprite::Draw(graphicsdevice);
-	}
+	Reset();
+	UISprite::Draw(graphicsdevice);
 	
 	// draw meter left edge
 	m_bottomLeft.X = mInitialPosition.X;

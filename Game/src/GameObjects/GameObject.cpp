@@ -182,9 +182,17 @@ void GameObject::Update(float delta)
 
 	if (mSineWaveProps.DoSineWave)
 	{
-		mSinWave.Update(delta);
-		m_position.Y = mSinWave.GetValueY();
-		m_position.X = mSinWave.GetValueX();
+#ifdef _DEBUG
+		if (!Game::GetInstance()->GetIsLevelEditMode())
+		{
+#endif 
+			mSinWave.Update(delta);
+			m_position.Y = mSinWave.GetValueY();
+			m_position.X = mSinWave.GetValueX();
+
+#ifdef _DEBUG
+		}
+#endif 
 	}
 
 	// TODO: need to do all of this if nothing has changed?

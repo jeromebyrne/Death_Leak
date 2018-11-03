@@ -13,6 +13,7 @@ protected:
 
 	void DoPickupEffects(Player * player);
 
+	int mFirstFocusUpgradeAmount = 100;
 	int mFocusUpgradeAmount = 20;
 };
 

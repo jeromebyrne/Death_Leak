@@ -20,7 +20,7 @@ Graphics::Graphics(void):
 	m_pPreProcessRenderTargetView = nullptr;
 	m_pPreProcessTexture = nullptr;
 	m_preProcessSRV = nullptr;
-	 
+
 	m_pBackBuffer = nullptr;
 	m_alphaDisabledBlendState = nullptr;
 	m_alphaEnabledBlendState = nullptr;

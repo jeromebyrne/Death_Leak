@@ -108,7 +108,7 @@ void NinjaSpawner::SpawnMultiple(const unsigned int numNPC, Vector2 boundsPos, V
 				dimensions = Vector2(183.142853f, 231.714279f);
 				collisionDimensions = Vector2(100.0f, 200.0f);
 				collisionOffset = Vector2(0.0f, 0.0f);
-				animFile = "XmlFiles\\animation\\ninjaAnimation3.xml";
+				animFile = "XmlFiles\\animation\\ninjaAnimation.xml";
 				break;
 			}
 			case 3:
@@ -117,7 +117,7 @@ void NinjaSpawner::SpawnMultiple(const unsigned int numNPC, Vector2 boundsPos, V
 				dimensions = Vector2(183.142853f, 231.714279f);
 				collisionDimensions = Vector2(100.0f,200.0f);
 				collisionOffset = Vector2(0.0f, 0.0f);
-				animFile = "XmlFiles\\animation\\ninjaAnimation2.xml";
+				animFile = "XmlFiles\\animation\\ninjaAnimation.xml";
 				break;
 			}
 			default:
@@ -125,7 +125,7 @@ void NinjaSpawner::SpawnMultiple(const unsigned int numNPC, Vector2 boundsPos, V
 				dimensions = Vector2(183.142853f, 231.714279f);
 				collisionDimensions = Vector2(200.0f, 200.0f);
 				collisionOffset = Vector2(0.0f, 0.0f);
-				animFile = "XmlFiles\\animation\\ninjaAnimation2.xml";
+				animFile = "XmlFiles\\animation\\ninjaAnimation.xml";
 				break;
 			}
 		}

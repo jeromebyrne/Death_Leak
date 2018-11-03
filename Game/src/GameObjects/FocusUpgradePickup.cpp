@@ -16,7 +16,7 @@ void FocusUpgradePickup::DoPickup()
 
 	int currentMaxFocus = p->GetMaxFocusAmount();
 
-	int newMaxFocus = currentMaxFocus + mFocusUpgradeAmount;
+	int newMaxFocus = currentMaxFocus == 0 ? mFirstFocusUpgradeAmount : currentMaxFocus + mFocusUpgradeAmount;
 
 	p->SetMaxFocus(newMaxFocus);
 

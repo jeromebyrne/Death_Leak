@@ -33,6 +33,16 @@ void PositionalAudio::Update(float delta, const Vector2 & position)
 		return;
 	}
 
+	if (mPlaying == false)
+	{
+		return;
+	}
+
+	if (mIsDisabled)
+	{
+		return;
+	}
+
 	if (!mRepeat && mSoundInstance->isFinished())
 	{
 		DeleteSoundInstance();
@@ -156,6 +166,16 @@ void PositionalAudio::Update(float delta, const Vector2 & position)
 
 void PositionalAudio::Play()
 {
+	if (mPlaying == true)
+	{
+		return;
+	}
+
+	if (mIsDisabled)
+	{
+		return;
+	}
+
 	if (mSoundInstance == nullptr)
 	{
 		mSoundInstance = AudioManager::Instance()->PlaySoundEffect(mAudioFilename, mRepeat, true, true);
@@ -163,8 +183,18 @@ void PositionalAudio::Play()
 		if (mSoundInstance)
 		{
 			mSoundInstance->setVolume(0.0f);
+			mPlaying = true;
 		}
 	}
+}
+
+void PositionalAudio::Stop()
+{
+	if (mSoundInstance != nullptr)
+	{
+		mSoundInstance->stop();
+	}
+	mPlaying = false;
 }
 
 void PositionalAudio::DeleteSoundInstance()
@@ -180,4 +210,10 @@ void PositionalAudio::DeleteSoundInstance()
 bool PositionalAudio::IsInitialised() const
 {
 	return mIsInitialised;
+}
+
+void PositionalAudio::Disable()
+{
+	mIsDisabled = true;
+	Stop();
 }

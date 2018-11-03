@@ -478,7 +478,11 @@ void SaveManager::SetHealthDevilRewardCount(int value)
 
 bool SaveManager::HasHealthDevilGivenReward(const string & healthDevilId)
 {
-	return GetBoolValue(healthDevilId);
+	std::string key = "health_devil_reward_" + healthDevilId;
+
+	std::replace(key.begin(), key.end(), '\\', '-'); // replace back slashes as they will mess up the xml file
+
+	return GetBoolValue(key);
 }
 
 void SaveManager::SetHealthDevilGivenReward(const string & healthDevilId, bool value)

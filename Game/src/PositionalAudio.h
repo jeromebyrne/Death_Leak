@@ -23,6 +23,10 @@ public:
 
 	void Play();
 
+	void Stop();
+
+	void Disable();
+
 	bool IsInitialised() const;
 
 	string GetAudioFilename() const { return mAudioFilename; }
@@ -45,6 +49,8 @@ private:
 	Vector2 mFadeDimensions;
 	bool mIsInitialised = false;
 	irrklang::ISound * mSoundInstance = nullptr;
+	bool mPlaying = false;
+	bool mIsDisabled = false;
 };
 
 #endif
