@@ -1,3 +1,5 @@
 <save_data>
+    <XmlFiles-levels-hot_springs.xml_breakables_broken type="vector" />
+    <XmlFiles-levels-hot_springs.xml_currency_orbs_collected type="vector" />
     <language_locale_key type="string" value="en-gb" />
 </save_data>
