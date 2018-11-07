@@ -233,6 +233,12 @@ void GameObject:: XmlRead(TiXmlElement * element)
 	// updateable
 	m_updateable = XmlUtilities::ReadAttributeAsBool(element, "", "updateable");
 
+	if (mAlwaysUpdate == false)
+	{
+		// only read it if it hasn't been forced on
+		mAlwaysUpdate = XmlUtilities::ReadAttributeAsBool(element, "", "always_update");
+	}
+
 	mLevelEditLocked = XmlUtilities::ReadAttributeAsBool(element, "", "level_edit_locked");
 
 	// position 
@@ -296,6 +302,9 @@ void GameObject::XmlWrite(TiXmlElement * element)
 
 	const char * updateableFlag = m_updateable ? "true" : "false";
 	element->SetAttribute("updateable", updateableFlag);
+
+	const char * alwaysUpdateFlag = mAlwaysUpdate ? "true" : "false";
+	element->SetAttribute("always_update", alwaysUpdateFlag);
 
 	// position
 	TiXmlElement * posElem = new TiXmlElement("position");
