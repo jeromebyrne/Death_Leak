@@ -1044,7 +1044,7 @@ void Character::DoAnimationEffectIfApplicable(AnimationPart * bodyPart)
 
 					if (!particleFile.empty())
 					{
-						ParticleEmitterManager::Instance()->CreateDirectedSpray(10,
+						ParticleEmitterManager::Instance()->CreateDirectedSpray(3,
 							Vector2(m_position.X + (m_direction.X * 12.f), CollisionBottom()),
 							GetDepthLayer(),
 							m_direction.X > 0 ? Vector2(-0.5f, 0.5f) : Vector2(0.5f, 0.5f),
@@ -1055,8 +1055,8 @@ void Character::DoAnimationEffectIfApplicable(AnimationPart * bodyPart)
 							4.0f,
 							0.3f,
 							0.7f,
-							40,
-							60,
+							10,
+							30,
 							0.5,
 							false,
 							0.8,
