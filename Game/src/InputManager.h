@@ -84,6 +84,10 @@ private:
 	// keyboard
 	void ProcessLeftRightMovement_keyboard(CurrentGameplayActions & currentActions, Player * player);
 
+	void ProcessCrouch_keyboard(CurrentGameplayActions & currentActions, Player * player);
+
+	void ProcessJump_keyboard(CurrentGameplayActions & currentActions, Player * player);
+
 	bool mShowDebugInfo;
 	bool mPressingDebugInfoKey;
 	bool mEnableGraphicsPostProcessing;

@@ -28,12 +28,10 @@ InputManager::InputManager() :
 
 void InputManager::ProcessGameplayInput()
 {
-	/*
 	if (GetForegroundWindow() != DXWindow::GetInstance()->Hwnd())
 	{
 		return;
 	}
-	*/
 
 #ifdef _DEBUG
 
@@ -569,6 +567,10 @@ void InputManager::ProcessGameplay_Keyboard(Player * player)
 	CurrentGameplayActions currentActions;
 
 	ProcessLeftRightMovement_keyboard(currentActions, player);
+
+	ProcessCrouch_keyboard(currentActions, player);
+	
+	ProcessJump_keyboard(currentActions, player);
 }
 
 void InputManager::ProcessLeftRightMovement_keyboard(CurrentGameplayActions & currentActions, Player * player)
@@ -604,6 +606,58 @@ void InputManager::ProcessLeftRightMovement_keyboard(CurrentGameplayActions & cu
 	}
 
 	player->SetSprintActive(currentActions.mIsSprinting);
+}
+
+void InputManager::ProcessCrouch_keyboard(CurrentGameplayActions & currentActions, Player * player)
+{
+	if (GetAsyncKeyState(VK_DOWN) < 0 &&
+		!player->IsDoingMelee() &&
+		player->IsOnSolidSurface() &&
+		/*!player->IsStrafing() &&*/
+		!player->GetIsCollidingAtObjectSide() &&
+		!player->GetIsRolling())
+	{
+		currentActions.mIsCrouching = true;
+		player->StopXAccelerating();
+	}
+
+	player->SetCrouching(currentActions.mIsCrouching);
+}
+
+void InputManager::ProcessJump_keyboard(CurrentGameplayActions & currentActions, Player * player)
+{
+	// This is temp and only setup for testing
+	if (player->GetIsDownwardDashing())
+	{
+		// prioritise downward dash over double jumping
+		return;
+	}
+
+	// TODO: why am I doing all this before even checking if jumping?
+	static float currentJumpIncreasePercent = kJumpInitialPercent;
+
+	if (player->IsOnSolidSurface() || player->GetIsInWater())
+	{
+		// reset
+		currentJumpIncreasePercent = kJumpInitialPercent;
+	}
+
+	bool pressingJump = false;
+
+	if (!player->JustFellFromLargeDistance() &&
+		!player->IsDoingMelee() &&
+		GetAsyncKeyState(VK_UP) < 0)
+	{
+		pressingJump = true;
+	}
+
+	if (pressingJump)
+	{
+		mLastTimePressedJump = Timing::Instance()->GetTotalTimeSeconds();
+		float jumpPower = 100.0f;
+
+		player->Jump(jumpPower);
+	}
 }
 
 bool InputManager::IsPressingEnterDoor() const
