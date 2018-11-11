@@ -243,6 +243,7 @@ public:
 	bool mPositionalAudioEnabled = false;
 	PositionalAudio mPositionalAudio;
 	float mPositionalAudioStartDelay = 0.1f;
+	float mInitialPosAudioDelay = mPositionalAudioStartDelay;
 
 protected:
 

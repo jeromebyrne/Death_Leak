@@ -289,7 +289,11 @@ void GameObject:: XmlRead(TiXmlElement * element)
 		fadeDimensions.Y = XmlUtilities::ReadAttributeAsFloat(element, "pos_audio_props", "fade_dim_y");
 		mPositionalAudio.SetFadeDimensions(fadeDimensions);
 		mPositionalAudioStartDelay = XmlUtilities::ReadAttributeAsFloat(element, "pos_audio_props", "play_delay");
+		mInitialPosAudioDelay = mPositionalAudioStartDelay;
 		mPositionalAudio.SetRepeat(XmlUtilities::ReadAttributeAsBool(element, "pos_audio_props", "repeat"));
+
+		// positional audio always needs to update as it could be out of update bounds
+		mAlwaysUpdate = true;
 	}
 }
 
@@ -354,7 +358,7 @@ void GameObject::XmlWrite(TiXmlElement * element)
 	posAudioElem->SetDoubleAttribute("dim_y", mPositionalAudio.GetDimensions().Y);
 	posAudioElem->SetDoubleAttribute("fade_dim_x", mPositionalAudio.GetFadeDimensions().X);
 	posAudioElem->SetDoubleAttribute("fade_dim_y", mPositionalAudio.GetFadeDimensions().Y);
-	posAudioElem->SetDoubleAttribute("play_delay", mPositionalAudioStartDelay);
+	posAudioElem->SetDoubleAttribute("play_delay", mInitialPosAudioDelay);
 	posAudioElem->SetAttribute("repeat", mPositionalAudio.IsRepeat() ? "true" : "false");
 
 	element->LinkEndChild(posAudioElem);
