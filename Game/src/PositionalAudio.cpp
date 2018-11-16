@@ -90,7 +90,7 @@ void PositionalAudio::Update(float delta, const Vector2 & position)
 			distY = bottom - camPos.Y;
 		}
 		else
-		{
+		{ 
 			distY = camPos.Y - top;
 		}
 
