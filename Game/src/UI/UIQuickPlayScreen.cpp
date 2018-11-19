@@ -30,11 +30,12 @@ void UIQuickPlayScreen::Initialise()
 
 void UIQuickPlayScreen::CreateLevelEntries()
 {
-	mLevelEntries["Test Level"] = "XmlFiles\\levels\\test.xml";
-	mLevelEntries["Test Level 2"] = "XmlFiles\\levels\\test_2.xml";
-	mLevelEntries["Hot Springs"] = "XmlFiles\\levels\\hot_springs.xml";
-	mLevelEntries["Cliff"] = "XmlFiles\\levels\\cliff.xml";
-	mLevelEntries["Cliff Windmill"] = "XmlFiles\\levels\\cliff_windmill.xml";
+	mLevelEntries["1. Test Level"] = "XmlFiles\\levels\\test.xml";
+	mLevelEntries["2. Test Level 2"] = "XmlFiles\\levels\\test_2.xml";
+	mLevelEntries["3. Hot Springs"] = "XmlFiles\\levels\\hot_springs.xml";
+	mLevelEntries["4. Cliff"] = "XmlFiles\\levels\\cliff.xml";
+	mLevelEntries["5. Cliff Windmill"] = "XmlFiles\\levels\\cliff_windmill.xml";
+	mLevelEntries["6. Ninja Arena 1"] = "XmlFiles\\levels\\first_ninja_arena.xml";
 }
 
 void UIQuickPlayScreen::AddLevelButtons()

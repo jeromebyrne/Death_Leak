@@ -35,6 +35,7 @@ void UILevelSelectScreen::CreateLevelEntries()
 	mLevelEntries["3. Hot Springs"] = "XmlFiles\\levels\\hot_springs.xml";
 	mLevelEntries["4. Cliff"] = "XmlFiles\\levels\\cliff.xml";
 	mLevelEntries["5. Cliff Windmill"] = "XmlFiles\\levels\\cliff_windmill.xml";
+	mLevelEntries["6. Ninja Arena 1"] = "XmlFiles\\levels\\first_ninja_arena.xml";
 }
 
 void UILevelSelectScreen::AddLevelButtons()

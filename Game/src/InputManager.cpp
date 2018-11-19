@@ -142,7 +142,7 @@ void InputManager::ProcessLeftRightMovement_gamepad(XINPUT_STATE padState, Curre
 			{
 				// only sprint if there are enemies in the level
 				// don't want to sprint too fast if we're just exploring
-				currentActions.mIsSprinting = true;
+				// currentActions.mIsSprinting = true;
 			}
 		}
 	}

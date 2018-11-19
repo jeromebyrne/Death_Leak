@@ -38,7 +38,7 @@
 
 Game * Game::mInstance = nullptr;
 
-static const float kPixelWobbleReverseDelay = 40.0f;
+static const float kPixelWobbleReverseDelay = 10.0f;
 static const float kPauseDamageEffectDelay = 0.01f;
 
 bool Game::mPaused = false;
@@ -297,7 +297,7 @@ void Game::Draw()
 	else
 	{
 		pixelWobbleShaderTime -= Timing::Instance()->GetLastUpdateDelta();
-		if (pixelWobbleShaderTime < -kPixelWobbleReverseDelay)
+		if (pixelWobbleShaderTime < kPixelWobbleReverseDelay * 0.5f)
 		{
 			m_effectPixelWobble->ReverseMotion();
 			inReverse = false;
