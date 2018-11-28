@@ -3,6 +3,7 @@
 #include "MovingSprite.h"
 #include "Game.h"
 #include "UIManager.h"
+#include "NPCManager.h"
 
 Camera2D * Camera2D::mInstance = 0;
 
@@ -192,7 +193,10 @@ void Camera2D::FollowTargetObjectWithLag(bool forceUpdate, float overrideLagX, f
 
 		distanceX = m_position.X - (mTargetObject->X() + (mTargetOffset.X * mZoomPercent));
 
-		float xLag = mTargetLag.X * mZoomPercent;
+		bool enemiesInWorld = NPCManager::Instance()->IsAnyEnemyNPCInWorld();
+
+		// increased lag when fighting enemies
+		float xLag = enemiesInWorld ? 40.0f * mZoomPercent : mTargetLag.X * mZoomPercent;
 
 		if (overrideLagX != 0.0f)
 		{

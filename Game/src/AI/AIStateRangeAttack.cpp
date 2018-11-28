@@ -3,22 +3,24 @@
 #include "NPC.h"
 
 static const float kRunAwayDelay = 0.5f;
-static const float kJumpOrRollRandomDelayMin = 4.0f;
-static const float kJumpOrRollRandomDelayMax = 8.5f;
+static const float kJumpOrRollRandomDelayMin = 2.0f;
+static const float kJumpOrRollRandomDelayMax = 4.5f;
 static const float kTeleportDelayMin = 2.0f;
 static const float kTeleportDelayMax = 7.0f;
 static const float kTeleportDistance = 3000.0f;
 
 AIStateRangeAttack::AIStateRangeAttack(NPC * npc) :
 	AIState(npc),
-	mDesiredRange(500.0f),
-	mFollowRange(600.0f),
+	mDesiredRange(300.0f),
+	mFollowRange(550.0f),
 	mRandOffset(0.0f),
 	mLastTimeRanAway(-9999.0f),
 	mTimeUntilRandomlyJumpOrRoll(0.0f),
 	mTimeUntilCanTeleport(0.0f)
 {
 	mStateType = kRangeAttack;
+
+	mTimeUntilCanTeleport = kTeleportDelayMin + (rand() % (int)((kTeleportDelayMax - kTeleportDelayMin) * 100.0f)) * 0.01f;
 }
 
 AIStateRangeAttack::~AIStateRangeAttack(void)
@@ -27,13 +29,13 @@ AIStateRangeAttack::~AIStateRangeAttack(void)
 
 void AIStateRangeAttack::OnTransition()
 {
-	float randMaxXVelocity = rand() % 3000;
+	float randMaxXVelocity = rand() % 800;
 	randMaxXVelocity *= 0.001f;
-	randMaxXVelocity += 10.0f;
+	randMaxXVelocity += 1.0f;
 
 	m_npc->SetMaxVelocityXY(randMaxXVelocity, 99999.0f);
 
-	mRandOffset = rand() % 180;
+	mRandOffset = rand() % 200;
 
 	mTimeUntilRandomlyJumpOrRoll = kJumpOrRollRandomDelayMin + (rand() % (int)((kJumpOrRollRandomDelayMax - kJumpOrRollRandomDelayMin) * 100.0f)) * 0.01f;
 }
@@ -46,6 +48,7 @@ void AIStateRangeAttack::Update(float delta)
 	{
 		// can't do anything while rolling
 		m_npc->StopXAccelerating();
+		m_npc->SetVelocityX(0.0f);
 		m_npc->SetIsStrafing(false);
 		return;
 	}
@@ -55,13 +58,13 @@ void AIStateRangeAttack::Update(float delta)
 		if (!CanAccelerateX(1.0f))
 		{
 			m_npc->Teleport(m_npc->m_player->Position().X - 300, m_npc->m_player->Position().Y + 300, true);
-			mLastTimeRanAway = 0.0f;
+			// mLastTimeRanAway = 0.0f;
 			return; // skip this update
 		}
 		else if (!CanAccelerateX(-1.0f))
 		{
 			m_npc->Teleport(m_npc->m_player->Position().X + 300, m_npc->m_player->Position().Y + 300, true);
-			mLastTimeRanAway = 0.0f;
+			// mLastTimeRanAway = 0.0f;
 			return; // skip this update
 		}
 
@@ -71,14 +74,15 @@ void AIStateRangeAttack::Update(float delta)
 
 		if (npcInView && 
 			std::abs(distanceSquaredVector.X > kTeleportDistance) ||
-			(std::abs(distanceSquaredVector.Y > 1000) && m_npc->m_player->IsOnSolidSurface() && m_npc->m_player->GetTimeOnSolidSurface() > 1.0f))
+				(std::abs(distanceSquaredVector.Y > 500.0f) && 
+				m_npc->m_player->IsOnSolidSurface() && 
+				m_npc->m_player->GetTimeOnSolidSurface() > 1.0f))
 		{
 			if (mTimeUntilCanTeleport <= 0.0f)
 			{
-				m_npc->Teleport(m_npc->m_player->Position().X + 5, m_npc->m_player->Position().Y + 500, true);
+				m_npc->Teleport(m_npc->m_player->Position().X + (rand() % 15) + 10.0f, m_npc->m_player->Position().Y + 200.0f, true);
 				mLastTimeRanAway = 0.0f;
 				mTimeUntilCanTeleport = kTeleportDelayMin + (rand() % (int)((kTeleportDelayMax - kTeleportDelayMin) * 100.0f)) * 0.01f;
-				m_npc->FireProjectileAtObject(m_npc->m_player);
 			}
 		}
 
@@ -105,7 +109,6 @@ void AIStateRangeAttack::Update(float delta)
 			{
 				m_npc->StopXAccelerating();
 				GAME_ASSERT(GameObjectManager::Instance()->GetPlayer());
-				m_npc->FireProjectileAtObject(GameObjectManager::Instance()->GetPlayer());
 
 				mLastTimeRanAway = currentTime;
 			}
@@ -113,6 +116,7 @@ void AIStateRangeAttack::Update(float delta)
 		else
 		{
 			m_npc->StopXAccelerating();
+			m_npc->SetVelocityX(m_npc->GetVelocity().X * 0.75f);
 			GAME_ASSERT(GameObjectManager::Instance()->GetPlayer());
 			m_npc->FireProjectileAtObject(GameObjectManager::Instance()->GetPlayer());
 		}
@@ -141,18 +145,6 @@ void AIStateRangeAttack::Update(float delta)
 				mTimeUntilRandomlyJumpOrRoll = kJumpOrRollRandomDelayMin + (rand() % (int)((kJumpOrRollRandomDelayMax - kJumpOrRollRandomDelayMin) * 100.0f)) * 0.01f;
 			}
 		}
-
-		/*
-		m_npc->SetIsStrafing(true);
-		if (distanceSquaredVector.X > 0)
-		{
-			m_npc->SetStrafeDirectionX(1.0f);
-		}
-		else
-		{
-			m_npc->SetStrafeDirectionX(-1.0f);
-		}
-		*/
 	}
 
 	if (mTimeUntilCanTeleport > 0.0f)

@@ -27,7 +27,7 @@ static const float kRollFocusAmount = 20.0f;
 
 Player::Player(float x, float y, float width, float height) :
 Character(x, y, GameObject::kPlayer, width, height),
-	mProjectileFireDelay(0.15f),
+	mProjectileFireDelay(0.25f),
 	mTimeUntilProjectileReady(0.0f),
 	mFireBurstNum(0),
 	mCurrentBurstNum(0),
@@ -154,7 +154,7 @@ Projectile * Player::FireBomb(Vector2 direction)
 										kBombTextureFile,
 										mProjectileImpactFilePath.c_str(),
 										pos,
-										Vector2(30,8),
+										Vector2(45,45),
 										Vector2(30,30),
 										direction,
 										500,

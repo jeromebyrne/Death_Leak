@@ -293,7 +293,7 @@
         <fade_time_percent out="0.250000" in="0.250000" />
     </ParticleSpray>
     <ParticleSpray id="18" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kMiddleBackground" y="49.000000" x="111.451904" rotation="0.000000" auto_rotate_value="0.000000" spawn_spread_x="120.000000" spawn_spread_y="30.000000" />
+        <position depth_layer="kMiddleBackground" y="-87.000000" x="239.451904" rotation="0.000000" auto_rotate_value="0.000000" spawn_spread_x="120.000000" spawn_spread_y="30.000000" />
         <dimensions height="317.648529" width="982.725159" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -779,7 +779,7 @@
         <fadedimensions x="3000.000000" y="3000.000000" />
     </AudioObject>
     <ParticleSpray id="46" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kGroundBack" y="1011.000000" x="66.451904" rotation="0.000000" auto_rotate_value="0.000000" spawn_spread_x="100.000000" spawn_spread_y="5.000000" />
+        <position depth_layer="kGroundBack" y="1006.000000" x="59.451904" rotation="0.000000" auto_rotate_value="0.000000" spawn_spread_x="100.000000" spawn_spread_y="5.000000" />
         <dimensions height="3000.000000" width="400.000000" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -851,7 +851,7 @@
         <fade_time_percent out="0.250000" in="0.250000" />
     </ParticleSpray>
     <ParticleSpray id="50" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kFarForeground" y="264.000000" x="-31.548096" rotation="0.000000" auto_rotate_value="0.000000" spawn_spread_x="40.000000" spawn_spread_y="20.000000" />
+        <position depth_layer="kFarForeground" y="-229.000000" x="812.451904" rotation="0.000000" auto_rotate_value="0.000000" spawn_spread_x="40.000000" spawn_spread_y="20.000000" />
         <dimensions height="317.648529" width="982.725159" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -871,14 +871,7 @@
         <brightness min="1.000000" max="1.000000" />
         <fade_time_percent out="0.250000" in="0.250000" />
     </ParticleSpray>
-    <SaveShrine id="51" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kGround" y="-312.000000" x="183.451904" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions height="594.016724" width="792.024719" />
-        <material value="" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
-    </SaveShrine>
-    <Sprite id="52" level_edit_locked="false" updateable="true" always_update="false">
+    <Sprite id="51" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGround" y="-79.000000" x="-939.548096" rotation="0.260202" auto_rotate_value="0.000000" />
         <dimensions height="413.000000" width="2152.163330" native="false" repeatX="true" repeatY="false" />
         <material value="grassground" />
@@ -893,7 +886,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <LevelTrigger id="53" level_edit_locked="false" updateable="true" always_update="true">
+    <LevelTrigger id="52" level_edit_locked="false" updateable="true" always_update="true">
         <position depth_layer="kGround" y="44.000000" x="1926.451904" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="4000.000000" width="1200.000000" />
         <material value="" />
@@ -903,4 +896,11 @@
         <player_start_pos x="6500.000000" y="-800.000000" />
         <player_direction x="-1.000000" />
     </LevelTrigger>
+    <SaveShrine id="53" level_edit_locked="false" updateable="true" always_update="true">
+        <position depth_layer="kGroundFront" y="-233.000000" x="206.451904" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions height="594.016724" width="792.024719" />
+        <material value="" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
+    </SaveShrine>
 </level>

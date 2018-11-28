@@ -77,7 +77,7 @@ void SaveShrine::DisplaySaveParticles()
 {
 	ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
 		m_position,
-		GetDepthLayer(),
+		GameObject::kMiddleForeground,
 		Vector2(0.0f, 0.0f),
 		0.1f,
 		Vector2(3200.0f, 1200.0f),

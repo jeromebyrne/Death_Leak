@@ -14,10 +14,10 @@
 #include "AIStateButterflyWander.h"
 #include "AIStateFlying.h"
 
-static float kMinReloadTime = 1.5f;
-static float kMaxReloadTime = 2.5f;
+static float kMinReloadTime = 1.25f;
+static float kMaxReloadTime = 2.0f;
 static float kDamageComboWindowDelay = 0.5f;
-static int kDamageInARowToStun = 6;
+static int kDamageInARowToStun = 4;
 static float kTimeStunned = 3.0f;
 
 static const float kHealthBarDimensionsX = 128.0f * 0.5f;
@@ -222,6 +222,9 @@ void NPC::FireProjectileAtObject(GameObject * target)
 
 		mNextFireTime = (rand() % ((int)((kMaxReloadTime - kMinReloadTime) * 100.0f)) + kMinReloadTime * 100.0f);
 		mNextFireTime *= 0.01f;
+
+		// also set our direction to the direction we are firing
+		SetDirectionX(dir.X);
 	}
 }
 
@@ -564,7 +567,7 @@ Projectile * NPC::FireWeapon(Vector2 direction)
 		pos.X -= m_projectileOffset.X;
 	}
 	
-	float speed = mSprintActive ? 26.0f : 21.0f;
+	float speed = mSprintActive ? 15.0f : 10.0f;
 
 	// TODO: ideally want these properties configurable per character
 	Projectile * p = new Projectile(Projectile::kNPCProjectile,

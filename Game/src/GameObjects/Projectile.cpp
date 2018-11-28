@@ -32,7 +32,7 @@ Projectile::Projectile(ProjectileOwnerType ownerType,
 	m_wasActiveLastFrame(true),
 	m_maxTimeInActive(maxTimeInActive),
 	m_damage(damage),
-	m_impactTexture(NULL),
+	m_impactTexture(nullptr),
 	m_impactTextureFilename(impactTextureFilename),
 	mCollidedWithProjectile(false),
 	mSpinningMovement(false),
@@ -604,6 +604,12 @@ void Projectile::LoadContent(ID3D10Device * graphicsdevice)
 
 void Projectile::HandleSolidLineStripCollision(SolidLineStrip * solidLineStrip)
 {
+	if (mType == kBladeProjectile && NPCManager::Instance()->IsAnyEnemyNPCInWorld())
+	{
+		// let projectile go through solid lines when enemies are in the world
+		return;
+	}
+
 	Vector2 collisionPosition;
 
 	unsigned int collisionLineIndex = 0;

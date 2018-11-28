@@ -1755,8 +1755,8 @@ void Character::Teleport(float posX, float posY, bool showParticles)
 			150.0f,
 			1.0f,
 			false,
-			0.5f,
-			0.7f,
+			0.0f,
+			0.1f,
 			-1.0f,
 			true,
 			3.0f,
@@ -1765,30 +1765,8 @@ void Character::Teleport(float posX, float posY, bool showParticles)
 			spawnSpreadX * 0.7f,
 			spawnSpreadY * 1.5f);
 
-		ParticleEmitterManager::Instance()->CreateRadialSpray(20,
-			pos,
-			GetDepthLayer(),
-			Vector2(3200.0f, 2000.0f),
-			"Media\\smoke.png",
-			1.0f,
-			2.0f,
-			0.5f,
-			1.0f,
-			200.0f,
-			300.0f,
-			1.0f,
-			false,
-			0.7f,
-			1.0f,
-			-1.0f,
-			true,
-			0.1f,
-			0.1f,
-			0.7f,
-			spawnSpreadX * 1.4f,
-			spawnSpreadY * 1.0f);
-
-		AudioManager::Instance()->PlaySoundEffect("explosion/smoke_explosion.wav");
+		// disabling this until only 1 sound is played for all NPCs teleporting
+		// AudioManager::Instance()->PlaySoundEffect("explosion/smoke_explosion.wav");
 	}
 
 	m_position.X = posX;

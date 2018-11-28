@@ -69,8 +69,8 @@ private:
 	float mTimeUntilFireBurstAvailable;
 	bool mBurstFireEnabled;
 
-	float mMaxFocusAmount = 120.0f;
-	float mCurrentFocusAmount = 0.0f;
+	float mMaxFocusAmount = 100.0f;
+	float mCurrentFocusAmount = mMaxFocusAmount;
 	float mCurrentFocusCooldown = 0.0f;
 	bool mIsFocusing = false;
 

@@ -42,9 +42,15 @@ Projectile(ownerType,
 
 	mType = kBombProjectile;
 
-	AudioManager::Instance()->PlaySoundEffect("fuse_burning.wav");
+	mPositionalAudioEnabled = true;
+	mPositionalAudio.SetRepeat(true);
+	mPositionalAudio.SetAudioFilename("fuse_burning.wav");
+	mPositionalAudio.SetDimensions(Vector2(600.0f, 600.0f));
+	mPositionalAudio.SetFadeDimensions(Vector2(3000.0f, 3000.0f));
 
 	m_maxTimeInActive = 10.0f;
+
+	m_alpha = 1.0f;
 }
 
 BombProjectile::~BombProjectile(void)
