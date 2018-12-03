@@ -8,6 +8,7 @@ class FocusUpgradePickup : public Pickup
 public:
 
 	virtual void DoPickup() override;
+	virtual void Initialise() override;
 
 protected:
 

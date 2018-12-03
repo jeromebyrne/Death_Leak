@@ -19,6 +19,9 @@ Door::~Door()
 void Door::Initialise()
 {
 	Sprite::Initialise();
+
+	mInteractableProperties.IsInteractable = true;
+	mInteractableProperties.PosOffset = Vector2(0.0f, 30.0f);
 }
 
 void Door::Update(float delta)
@@ -31,12 +34,7 @@ void Door::Update(float delta)
 		return;
 	}
 
-	Player * player = GameObjectManager::Instance()->GetPlayer();
-	if (!player)
-	{
-		return;
-	}
-
+	/*
 	if (Utilities::IsObjectInRectangle(player, m_position.X, m_position.Y, m_dimensions.X, m_dimensions.Y))
 	{
 		auto inputManager = Game::GetInstance()->GetInputManager();
@@ -66,6 +64,7 @@ void Door::Update(float delta)
 			mCanTryOpen = true;
 		}
 	}
+	*/
 }
 void Door::XmlRead(TiXmlElement * element)
 {
@@ -117,4 +116,45 @@ void Door::EnterDoor()
 
 	GameObjectManager::Instance()->SetPlayerStartPos(mToLevelPosition);
 	GameObjectManager::Instance()->SwitchToLevel(mToLevelFile.c_str(), true);
+}
+
+void Door::OnInteracted()
+{
+	mCanTryOpen = false;
+
+	if (!mRequiredKey.empty())
+	{
+		if (!SaveManager::GetInstance()->HasDoorKey(mRequiredKey))
+		{
+			if (!mDoorLockedSFX.empty())
+			{
+				AudioManager::Instance()->PlaySoundEffect(mDoorLockedSFX);
+			}
+			return;
+		}
+	}
+
+	EnterDoor();
+}
+
+bool Door::CanInteract()
+{
+	Player * player = GameObjectManager::Instance()->GetPlayer();
+	if (player == nullptr)
+	{
+		return false;
+	}
+
+	if (mDoorWarmUpTime < kWarmUpTime)
+	{
+		return false;
+	}
+
+	if (mCanTryOpen &&
+		player->IsOnSolidSurface())
+	{
+		return true;
+	}		
+
+	return false;
 }

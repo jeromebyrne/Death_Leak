@@ -23,6 +23,9 @@ public:
 
 protected:
 
+	virtual void OnInteracted() override;
+	virtual bool CanInteract() override;
+
 private:
 
 	void GiveReward();
@@ -34,6 +37,8 @@ private:
 	void GiveKeyRewardTest();
 
 	bool mHasCreatedParticles = false;
+
+	ParticleSpray * mParticleSpray = nullptr;
 
 	bool mHasPlayedDialog = false;
 

@@ -4,15 +4,15 @@
 
 static const float kRunAwayDelay = 0.5f;
 static const float kJumpOrRollRandomDelayMin = 2.0f;
-static const float kJumpOrRollRandomDelayMax = 4.5f;
-static const float kTeleportDelayMin = 2.0f;
+static const float kJumpOrRollRandomDelayMax = 6.5f;
+static const float kTeleportDelayMin = 10.0f;
 static const float kTeleportDelayMax = 7.0f;
 static const float kTeleportDistance = 3000.0f;
 
 AIStateRangeAttack::AIStateRangeAttack(NPC * npc) :
 	AIState(npc),
-	mDesiredRange(300.0f),
-	mFollowRange(550.0f),
+	mDesiredRange(200.0f),
+	mFollowRange(500.0f),
 	mRandOffset(0.0f),
 	mLastTimeRanAway(-9999.0f),
 	mTimeUntilRandomlyJumpOrRoll(0.0f),
@@ -35,7 +35,7 @@ void AIStateRangeAttack::OnTransition()
 
 	m_npc->SetMaxVelocityXY(randMaxXVelocity, 99999.0f);
 
-	mRandOffset = rand() % 200;
+	mRandOffset = rand() % 180;
 
 	mTimeUntilRandomlyJumpOrRoll = kJumpOrRollRandomDelayMin + (rand() % (int)((kJumpOrRollRandomDelayMax - kJumpOrRollRandomDelayMin) * 100.0f)) * 0.01f;
 }
@@ -58,13 +58,13 @@ void AIStateRangeAttack::Update(float delta)
 		if (!CanAccelerateX(1.0f))
 		{
 			m_npc->Teleport(m_npc->m_player->Position().X - 300, m_npc->m_player->Position().Y + 300, true);
-			// mLastTimeRanAway = 0.0f;
+			mLastTimeRanAway = 0.0f;
 			return; // skip this update
 		}
 		else if (!CanAccelerateX(-1.0f))
 		{
 			m_npc->Teleport(m_npc->m_player->Position().X + 300, m_npc->m_player->Position().Y + 300, true);
-			// mLastTimeRanAway = 0.0f;
+			mLastTimeRanAway = 0.0f;
 			return; // skip this update
 		}
 
@@ -80,7 +80,8 @@ void AIStateRangeAttack::Update(float delta)
 		{
 			if (mTimeUntilCanTeleport <= 0.0f)
 			{
-				m_npc->Teleport(m_npc->m_player->Position().X + (rand() % 15) + 10.0f, m_npc->m_player->Position().Y + 200.0f, true);
+				TeleportBehindPlayer();
+
 				mLastTimeRanAway = 0.0f;
 				mTimeUntilCanTeleport = kTeleportDelayMin + (rand() % (int)((kTeleportDelayMax - kTeleportDelayMin) * 100.0f)) * 0.01f;
 			}
@@ -98,18 +99,20 @@ void AIStateRangeAttack::Update(float delta)
 				distanceSquaredVector.Normalise();
 
 				m_npc->AccelerateX(-distanceSquaredVector.X);
+
+				mTimeStoodStill = 0.0f;
 			}
 			else if (distanceSquared > (mFollowRange + mRandOffset) * (mFollowRange + mRandOffset))
 			{
 				distanceSquaredVector.Normalise();
 
 				m_npc->AccelerateX(distanceSquaredVector.X);
+
+				mTimeStoodStill = 0.0f;
 			}
 			else if (npcInView)
 			{
 				m_npc->StopXAccelerating();
-				GAME_ASSERT(GameObjectManager::Instance()->GetPlayer());
-
 				mLastTimeRanAway = currentTime;
 			}
 		}
@@ -117,15 +120,24 @@ void AIStateRangeAttack::Update(float delta)
 		{
 			m_npc->StopXAccelerating();
 			m_npc->SetVelocityX(m_npc->GetVelocity().X * 0.75f);
-			GAME_ASSERT(GameObjectManager::Instance()->GetPlayer());
-			m_npc->FireProjectileAtObject(GameObjectManager::Instance()->GetPlayer());
+
+			auto player = GameObjectManager::Instance()->GetPlayer();
+			GAME_ASSERT(player);
+			m_npc->FireProjectileAtObject(player);
+			mTimeStoodStill += delta;
 		}
 
+		if (mTimeStoodStill > 3.0f)
+		{
+			TeleportBehindPlayer();
+
+			mTimeStoodStill = 0.0f;
+		}
 		if (mTimeUntilRandomlyJumpOrRoll > 0.0f)
 		{
 			mTimeUntilRandomlyJumpOrRoll -= delta;
 		}
-		else if (m_npc->IsOnSolidSurface())
+		else if (m_npc->IsOnSolidSurface() && m_npc->GetAccelX() > 0.0f)
 		{
 			if (mTimeUntilRandomlyJumpOrRoll <= 0.0f)
 			{
@@ -151,6 +163,15 @@ void AIStateRangeAttack::Update(float delta)
 	{
 		mTimeUntilCanTeleport -= delta;
 	}
+}
+
+void AIStateRangeAttack::TeleportBehindPlayer()
+{
+	float playerX = m_npc->m_player->X();
+	float pOffsetBehind = ((rand() % 300) + 200.0f) * m_npc->m_player->DirectionX();
+	m_npc->Teleport(playerX - pOffsetBehind, m_npc->m_player->Position().Y + ((rand() % 200) + 200.0f), true);
+	m_npc->FireProjectileAtObject(m_npc->m_player);
+
 }
 
 bool AIStateRangeAttack::CanAccelerateX(float direction)

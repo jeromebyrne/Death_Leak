@@ -17,6 +17,8 @@ public:
 
 	virtual bool OnCollision(SolidMovingSprite * object) override;
 
+	virtual void OnInteracted() override;
+
 protected:
 
 	bool mIsPickedUp = false;

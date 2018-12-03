@@ -21,11 +21,11 @@ public:
 
 	float GetLastTimePressedJump() const { return mLastTimePressedJump; }
 
-	bool IsPressingEnterDoor() const;
-
 	static float GetThumbstickRange(short thumbstickValue);
 
 	static float GetTriggerRange(short triggerValue);
+
+	bool IsPressingInteractButton() const;
 
 private:
 

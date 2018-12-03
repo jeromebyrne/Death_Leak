@@ -55,3 +55,9 @@ void HealthUpgradePickup::DoPickupEffects(Player * player)
 		0.1f,
 		true);
 }
+
+void HealthUpgradePickup::Initialise()
+{
+	Pickup::Initialise();
+}
+

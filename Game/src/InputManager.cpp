@@ -305,8 +305,7 @@ void InputManager::ProcessMelee_gamepad(XINPUT_STATE padState, CurrentGameplayAc
 
 	if (!player->JustFellFromLargeDistance() &&
 		!player->IsDoingMelee() &&
-		(padState.Gamepad.wButtons & XINPUT_GAMEPAD_X ||
-		padState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER))
+		padState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
 	{
 		mCurrentGamepadState.mPressingMelee = true;
 	}
@@ -660,21 +659,6 @@ void InputManager::ProcessJump_keyboard(CurrentGameplayActions & currentActions,
 	}
 }
 
-bool InputManager::IsPressingEnterDoor() const
-{
-	GamePad * gamepad1 = GamePad::GetPad1();
-
-	if (gamepad1 && gamepad1->IsConnected())
-	{
-		XINPUT_STATE padState = gamepad1->GetState();
-		return padState.Gamepad.sThumbLY > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE * 3.0f;
-	}
-	else
-	{
-		return GetAsyncKeyState(VK_UP) < 0;
-	}
-}
-
 float InputManager::GetThumbstickRange(short thumbstickValue)
 {
 	return (float)thumbstickValue / kMaxGamepadAnalogRange;
@@ -687,4 +671,30 @@ float InputManager::GetTriggerRange(short triggerValue)
 		return 1.0f;
 	}
 	return (float)triggerValue / 255.0f;
+}
+
+bool InputManager::IsPressingInteractButton() const
+{
+	GamePad * gamepad1 = GamePad::GetPad1();
+
+	if (gamepad1 && gamepad1->IsConnected())
+	{
+		XINPUT_STATE padState = gamepad1->GetState();
+
+		if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_X)
+		{
+			return true;
+		}
+
+		return false;
+	}
+	else
+	{
+		if (GetAsyncKeyState(VK_SPACE) < 0)
+		{
+			return true;
+		}
+
+		return false;
+	}
 }

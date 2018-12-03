@@ -17,8 +17,8 @@
 static float kMinReloadTime = 1.25f;
 static float kMaxReloadTime = 2.0f;
 static float kDamageComboWindowDelay = 0.5f;
-static int kDamageInARowToStun = 4;
-static float kTimeStunned = 3.0f;
+static int kDamageInARowToStun = 6;
+static float kTimeStunned = 2.0f;
 
 static const float kHealthBarDimensionsX = 128.0f * 0.5f;
 static const float kHealthBarDimensionsY = 8.0f;
@@ -222,9 +222,6 @@ void NPC::FireProjectileAtObject(GameObject * target)
 
 		mNextFireTime = (rand() % ((int)((kMaxReloadTime - kMinReloadTime) * 100.0f)) + kMinReloadTime * 100.0f);
 		mNextFireTime *= 0.01f;
-
-		// also set our direction to the direction we are firing
-		SetDirectionX(dir.X);
 	}
 }
 

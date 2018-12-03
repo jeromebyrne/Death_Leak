@@ -55,3 +55,8 @@ void FocusUpgradePickup::DoPickupEffects(Player * player)
 		0.1f,
 		true);
 }
+
+void FocusUpgradePickup::Initialise()
+{
+	Pickup::Initialise();
+}

@@ -164,7 +164,7 @@ void WeatherManager::CreateRainAssets()
 																					0.0f,
 																					Vector2(3200.0f, 2000.0f),
 																					"Media\\rain_drop.png",
-																					28.0f,
+																					26.0f,
 																					32.0f,
 																					0.7f,
 																					0.85f,

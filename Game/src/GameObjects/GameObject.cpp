@@ -5,6 +5,7 @@
 #include "DrawUtilities.h"
 #include "Game.h"
 #include "SolidLineStrip.h"
+#include "UIManager.h"
 
 const float kMaxRadians = 6.28318531; // 360 degrees
 
@@ -225,6 +226,76 @@ void GameObject::Update(float delta)
 		{
 			mPositionalAudio.Update(delta, m_position);
 		}
+	}
+
+	if (mInteractableProperties.IsInteractable)
+	{
+		UpdateInteractable(delta);
+	}
+}
+
+void GameObject::UpdateInteractable(float delta)
+{
+#ifdef _DEBUG
+	if (Game::GetInstance()->GetIsLevelEditMode())
+	{
+		return;
+	}
+#endif
+
+	auto player = GameObjectManager::Instance()->GetPlayer();
+
+	if (player == this || player == nullptr)
+	{
+		return;
+	}
+
+	bool playerCollision = Utilities::IsSolidSpriteInRectangle(player, m_position.X, m_position.Y, m_dimensions.X, m_dimensions.Y);
+	if (playerCollision)
+	{
+		if (!CanInteract())
+		{
+			return;
+		}
+
+		mInteractableProperties.CurrentScreenPos = Utilities::WorldToScreen(m_position + mInteractableProperties.PosOffset);
+
+		const InputManager input = Game::GetInstance()->GetInputManager();
+
+		if (input.IsPressingInteractButton())
+		{
+			mInteractableProperties.InteractCountdown -= delta;
+
+			mInteractableProperties.CurrentAlpha = 1.0f;
+
+			float percentChange = mInteractableProperties.InteractCountdown / mInteractableProperties.InteractTime;
+
+			if (mInteractableProperties.InteractCountdown <= 0.0f)
+			{
+				OnInteracted();
+				// Disbale the interactivity of this object (NOTE: may not work for all objects)
+				mInteractableProperties.IsInteractable = false;
+			}
+		}
+		else
+		{
+			// fade in 
+			mInteractableProperties.CurrentAlpha += delta * 3.0f;
+			if (mInteractableProperties.CurrentAlpha > 0.75f)
+			{
+				mInteractableProperties.CurrentAlpha = 0.75f;
+			}
+
+			mInteractableProperties.InteractCountdown = mInteractableProperties.InteractTime;
+		}
+
+		UIManager::Instance()->AddInteractableToDraw(mInteractableProperties);
+	}
+	else
+	{
+		mInteractableProperties.CurrentAlpha = 0.0f;
+
+		mInteractableProperties.InteractCountdown = mInteractableProperties.InteractTime;
 	}
 }
 

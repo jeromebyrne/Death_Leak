@@ -9,6 +9,8 @@ public:
 
 	virtual void DoPickup() override;
 
+	virtual void Initialise() override;
+
 protected:
 
 	void DoPickupEffects(Player * player);

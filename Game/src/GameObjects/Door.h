@@ -19,6 +19,9 @@ private:
 
 	void EnterDoor();
 
+	virtual void OnInteracted() override;
+	virtual bool CanInteract() override;
+
 	bool mIsInitiallyLocked = false;
 	// this is to prevent the player entering the door immediately when we load the level
 	float mDoorWarmUpTime = 0.0f;

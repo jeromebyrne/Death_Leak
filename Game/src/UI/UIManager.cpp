@@ -15,6 +15,9 @@
 #include "UIQuickPlayScreen.h"
 #include "SaveManager.h"
 
+static const int kMaxInteractablesToDraw = 20;
+static Vector2 kInteractSpriteDimensions = Vector2(50.0f, 50.0f);
+
 extern void PostDestroyMessage();
 
 UIManager * UIManager::m_instance = 0;
@@ -63,6 +66,8 @@ void UIManager::Initialise()
 	}
 
 	mCursorSprite = CreateCursorSprite();
+
+	CreateInteractableSprites();
 }
 
 void UIManager::Update()
@@ -156,6 +161,37 @@ void UIManager::Draw(ID3D10Device * device)
 			mCursorSprite->Draw(device);
 		}
 	}
+
+	int iDrawnCount = 0;
+	for (const auto & i : mInteractableIconsToDraw)
+	{
+		if (iDrawnCount >= kMaxInteractablesToDraw)
+		{
+			break;
+		}
+
+		auto iSprite = mInteractableSprites[iDrawnCount];
+		// ScreenToClient(DXWindow::GetInstance()->Hwnd(), &currentMouse);
+		Vector2 uiCoords = GetPointInUICoords(i.CurrentScreenPos.X - iSprite->Dimensions().X * 0.5f, 
+												i.CurrentScreenPos.Y - iSprite->Dimensions().Y * 0.5f);
+
+		// mInteractableProperties.CurrentScale
+		iSprite->SetDimensions(kInteractSpriteDimensions * i.CurrentScale);
+		iSprite->SetBottomLeft(uiCoords);
+		iSprite->SetAlpha(i.CurrentAlpha);
+		iSprite->RebuildBuffers();
+		iSprite->Draw(device);
+
+		++iDrawnCount;
+	}
+
+	// clear the interactables every frame
+	mInteractableIconsToDraw.clear();
+}
+
+void UIManager::AddInteractableToDraw(GameObject::InteractableProperties iProp)
+{
+	mInteractableIconsToDraw.push_back(iProp);
 }
 
 UIScreen * UIManager::PushUI(string uiName)
@@ -620,6 +656,24 @@ UISprite * UIManager::CreateCursorSprite()
 	cursorSprite->LoadContent(Graphics::GetInstance()->Device());
 
 	return cursorSprite;
+}
+
+void UIManager::CreateInteractableSprites()
+{
+	mInteractableSprites.reserve(kMaxInteractablesToDraw);
+
+	for (int i = 0; i < kMaxInteractablesToDraw; ++i)
+	{
+		UISprite * sprite = new UISprite();
+
+		sprite->SetImage("Media\\UI\\gamepad_icons\\x.png");
+		sprite->SetDimensions(kInteractSpriteDimensions);
+		sprite->SetUseStandardEffect(true);
+		sprite->Initialise();
+		sprite->LoadContent(Graphics::GetInstance()->Device());
+
+		mInteractableSprites.push_back(sprite);
+	}
 }
 
 void UIManager::HandleKeyPressInKeyboardInputMode(char character)

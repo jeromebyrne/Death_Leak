@@ -19,12 +19,15 @@ private:
 
 	bool CanAccelerateX(float direction);
 
+	void TeleportBehindPlayer();
+
 	float mDesiredRange;
 	float mFollowRange;
 	float mRandOffset;
 	float mLastTimeRanAway;
 	float mTimeUntilRandomlyJumpOrRoll;
 	float mTimeUntilCanTeleport;
+	float mTimeStoodStill;
 };
 
 #endif

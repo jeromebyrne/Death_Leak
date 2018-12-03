@@ -11,6 +11,21 @@ class GameObject
 {
 public:
 
+	struct InteractableProperties
+	{
+		bool IsInteractable;
+		Vector2 CurrentScreenPos;
+		Vector2 PosOffset;
+		float CurrentAlpha = 1.0f;
+		float InteractTime = 0.3f;
+		float InteractCountdown = InteractTime;
+		float CurrentScale = 1.0f;
+
+		InteractableProperties() :
+			IsInteractable(false)
+		{}
+	};
+
 	// if adding to this enum then make sure to update ConvertDepthLayerToString and ConvertStringToDepthLayer
 	// also update GetParallaxMultipliersForDepthLayer
 	enum DepthLayer
@@ -256,6 +271,10 @@ protected:
 
 	virtual void UpdateToParent();
 
+	void UpdateInteractable(float delta);
+	virtual void OnInteracted() {}
+	virtual bool CanInteract() { return true; }
+
 	float m_rotationAngle;
 	float m_matScaleX;
 	float m_matScaleY;
@@ -312,6 +331,8 @@ protected:
 		{}
 	};
 	SineWaveProps mSineWaveProps;
+
+	InteractableProperties mInteractableProperties;
 
 	bool mAlwaysUpdate;
 

@@ -35,7 +35,7 @@ public:
 	Vector2 GetFadeDimensions() const { return mFadeDimensions; }
 
 	void SetAudioFilename(const string & filename) { mAudioFilename = filename; }
-	void SetRepeat(bool repeat) { mRepeat = repeat; }
+	void SetRepeat(bool repeat);
 	void SetDimensions(const Vector2 & dimensions) { mDimensions = dimensions; }
 	void SetFadeDimensions(const Vector2 & fadeDimensions) { mFadeDimensions = fadeDimensions; }
 

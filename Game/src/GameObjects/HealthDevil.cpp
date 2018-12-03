@@ -37,28 +37,28 @@ void HealthDevil::Update(float delta)
 	{
 		auto pos = Position();
 		pos.Y += 60.0f;
-		ParticleEmitterManager::Instance()->CreateRadialSpray(60,
-			pos,
-			GameObject::kGround,
-			Vector2(3200.0f, 2000.0f),
-			"Media\\characters\\health_devil\\shroud_particle.png",
-			0.05f,
-			0.4f,
-			3.3f,
-			8.6f,
-			300.0f,
-			500.0f,
-			0.0f,
-			true,
-			0.5f,
-			1.0f,
-			-1.0f,
-			true,
-			0.4f,
-			0.1f,
-			0.8f,
-			12.0f,
-			6.0f);
+		mParticleSpray = ParticleEmitterManager::Instance()->CreateRadialSpray(60,
+																pos,
+																GameObject::kGround,
+																Vector2(3200.0f, 2000.0f),
+																"Media\\characters\\health_devil\\shroud_particle.png",
+																0.05f,
+																0.4f,
+																3.3f,
+																8.6f,
+																300.0f,
+																500.0f,
+																0.0f,
+																true,
+																0.5f,
+																1.0f,
+																-1.0f,
+																true,
+																0.4f,
+																0.1f,
+																0.8f,
+																12.0f,
+																6.0f);
 
 		mHasCreatedParticles = true;
 	}
@@ -68,30 +68,6 @@ void HealthDevil::Update(float delta)
 		// Don't show the eyes if we've given the reward
 		m_alpha = 0.0f;
 		return;
-	}
-
-	Player * player = GameObjectManager::Instance()->GetPlayer();
-	if (player == nullptr)
-	{
-		return;
-	}
-
-	bool playerCollision = Utilities::IsSolidSpriteInRectangle(player, m_position.X, m_position.Y, m_dimensions.X, m_dimensions.Y);
-	if (playerCollision)
-	{
-		auto inputManager = Game::GetInstance()->GetInputManager();
-		if (inputManager.IsPressingEnterDoor() &&
-			player->IsOnSolidSurface() &&
-			std::abs(player->GetVelocity().X) < 0.5f)
-		{
-			// play audio, after audio finishes the reward will be given
-			if (!mHasPlayedDialog)
-			{
-				Camera2D::GetInstance()->DoMediumShake();
-				mVoiceOverSoundPlaying = AudioManager::Instance()->PlaySoundEffect("character\\health_devil\\vo\\test.wav", false, true);
-				mHasPlayedDialog = true;
-			}
-		}
 	}
 
 	if (mHasPlayedDialog && mVoiceOverSoundPlaying != nullptr)
@@ -106,6 +82,11 @@ void HealthDevil::Update(float delta)
 				mVoiceOverSoundPlaying->drop();
 				mVoiceOverSoundPlaying = nullptr;
 			}
+
+			if (mParticleSpray != nullptr)
+			{
+				mParticleSpray->SetIsLooping(false);
+			}
 		}
 		else
 		{
@@ -118,6 +99,9 @@ void HealthDevil::Update(float delta)
 void HealthDevil::Initialise()
 {
 	Sprite::Initialise();
+
+	mInteractableProperties.IsInteractable = true;
+	mInteractableProperties.PosOffset = Vector2(-10, -200);
 
 	string levelId = GameObjectManager::Instance()->GetCurrentLevelFile();
 
@@ -236,4 +220,32 @@ void HealthDevil::GiveKeyRewardTest()
 	keyPickup->SetKeyId("key_1");
 
 	GameObjectManager::Instance()->AddGameObject(keyPickup);
+}
+
+void HealthDevil::OnInteracted()
+{
+	// play audio, after audio finishes the reward will be given
+	if (!mHasPlayedDialog)
+	{
+		Camera2D::GetInstance()->DoMediumShake();
+		mPositionalAudio.SetRepeat(false);
+		mVoiceOverSoundPlaying = AudioManager::Instance()->PlaySoundEffect("character\\health_devil\\vo\\test.wav", false, true);
+		mHasPlayedDialog = true;
+	}
+}
+
+bool HealthDevil::CanInteract()
+{
+	Player * player = GameObjectManager::Instance()->GetPlayer();
+	if (player == nullptr)
+	{
+		return false;
+	}
+
+	if (player->IsOnSolidSurface())
+	{
+		return true;
+	}
+
+	return false;
 }

@@ -217,3 +217,13 @@ void PositionalAudio::Disable()
 	mIsDisabled = true;
 	Stop();
 }
+
+void PositionalAudio::SetRepeat(bool repeat) 
+{ 
+	mRepeat = repeat;
+
+	if (mSoundInstance != nullptr)
+	{
+		mSoundInstance->setIsLooped(mRepeat);
+	}
+}

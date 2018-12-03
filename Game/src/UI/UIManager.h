@@ -56,8 +56,6 @@ public:
 	// pops a UI off the current UI list
 	void PopUI(string uiName);
 
-	void BringUIToFront();
-
 	EffectLightTextureVertexWobble * GetDefaultEffect() { return m_defaultEffect; }
 
 	EffectLightTexture * GetStandardEffect() { return mStandardEffect; }
@@ -92,6 +90,8 @@ public:
 
 	bool IsObjectEditorDisplaying() const { return mObjectEditorDisplaying; }
 
+	void AddInteractableToDraw(GameObject::InteractableProperties iProp);
+
 private:
 
 	void DisplayLaunchUI();
@@ -121,6 +121,8 @@ private:
 	void HandleEvent(string eventName, list<string> params);
 
 	UISprite * CreateCursorSprite();
+
+	void CreateInteractableSprites();
 	
 	// a list of events that need to be processed in the next update loop
 	list<EventStruct> mCurrentEventList;
@@ -135,6 +137,10 @@ private:
 	std::string mKeyboardInput;
 
 	bool mObjectEditorDisplaying = false;
+
+	list<GameObject::InteractableProperties> mInteractableIconsToDraw;
+
+	vector<UISprite *> mInteractableSprites;
 };
 
 #endif
