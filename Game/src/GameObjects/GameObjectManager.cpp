@@ -43,6 +43,7 @@
 #include "HealthDevil.h"
 #include "HealthUpgradePickup.h"
 #include "FocusUpgradePickup.h"
+#include "HealthIncreasePickup.h"
 
 struct DepthSortPredicate
 {
@@ -1038,4 +1039,26 @@ void GameObjectManager::QuitLevel()
 {
 	mCachedPlayerHealth = -1.0f;
 	DeleteGameObjects();
+}
+
+void GameObjectManager::SpawnHealthIncrease(const Vector2 & position)
+{
+	HealthIncreasePickup * p = new HealthIncreasePickup();
+	p->SetTextureFilename("Media\\objects\\sake_bottle.png");
+	p->SetIsNativeDimensions(true);
+	p->SetCollisionDimensions(Vector2(25.0f, 90.0f));
+	p->SetApplyGravity(true);
+	p->SetGravityApplyAmount(1.0f);
+	p->SetUpdateable(true);
+	p->SetPassive(false);
+	p->SetXY(position.X, position.Y + 20.0f);
+	float xSign = rand() % 2 == 0 ? 1.0 : -1.0f;
+	float randVelX = (rand() % 15) + 15.0f;
+	float randVelY = (rand() % 10) + 5.0f;
+	p->SetMaxVelocityXY(30.0f, 20.0f);
+	p->SetVelocityXY(randVelX * xSign, randVelY);
+	p->SetResistanceXY(0.95f, 1.0f);
+	p->EffectName = "effectlighttexture";
+
+	AddGameObject(p);
 }

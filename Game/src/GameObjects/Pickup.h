@@ -19,6 +19,8 @@ public:
 
 	virtual void OnInteracted() override;
 
+	virtual bool CanInteract() override;
+
 protected:
 
 	bool mIsPickedUp = false;

@@ -89,6 +89,7 @@
     <ClCompile Include="src\GameObjects\GhostEnemy.cpp" />
     <ClCompile Include="src\GameObjects\GhostEnemySpawner.cpp" />
     <ClCompile Include="src\GameObjects\HealthDevil.cpp" />
+    <ClCompile Include="src\GameObjects\HealthIncreasePickup.cpp" />
     <ClCompile Include="src\GameObjects\HealthUpgradePickup.cpp" />
     <ClCompile Include="src\GameObjects\KeyPickup.cpp" />
     <ClCompile Include="src\GameObjects\LevelTrigger.cpp" />
@@ -224,6 +225,7 @@
     <ClInclude Include="src\GameObjects\GhostEnemy.h" />
     <ClInclude Include="src\GameObjects\GhostEnemySpawner.h" />
     <ClInclude Include="src\GameObjects\HealthDevil.h" />
+    <ClInclude Include="src\GameObjects\HealthIncreasePickup.h" />
     <ClInclude Include="src\GameObjects\HealthUpgradePickup.h" />
     <ClInclude Include="src\GameObjects\KeyPickup.h" />
     <ClInclude Include="src\GameObjects\LevelTrigger.h" />

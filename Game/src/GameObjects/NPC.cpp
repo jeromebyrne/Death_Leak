@@ -512,6 +512,9 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointO
 			}
 		}
 		*/
+
+		// TESTING loot dropping here
+		GameObjectManager::Instance()->SpawnHealthIncrease(m_position);
 	}
 	else
 	{

@@ -113,6 +113,8 @@ public:
 
 	void QuitLevel();
 
+	void SpawnHealthIncrease(const Vector2 & position);
+
 private:
 
 	Camera2D * m_camera;
