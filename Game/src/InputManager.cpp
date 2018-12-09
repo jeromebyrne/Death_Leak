@@ -121,6 +121,7 @@ void InputManager::ProcessCrouch_gamepad(XINPUT_STATE padState, CurrentGameplayA
 void InputManager::ProcessLeftRightMovement_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player)
 {
 	if (player->JustFellFromLargeDistance() ||
+		player->JustFellFromShortDistance() ||
 		currentActions.mIsCrouching ||
 		player->GetIsRolling())
 	{
@@ -174,6 +175,7 @@ void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 	}
 
 	if (!player->JustFellFromLargeDistance() &&
+		!player->JustFellFromShortDistance() &&
 		!player->IsDoingMelee() &&
 		(padState.Gamepad.wButtons & XINPUT_GAMEPAD_A || 
 		padState.Gamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD))
@@ -279,6 +281,7 @@ void InputManager::ProcessRoll_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 	bool wasPressingRoll = mCurrentGamepadState.mPressingRoll;
 
 	if (!player->JustFellFromLargeDistance() &&
+		!player->JustFellFromShortDistance() &&
 		!player->IsDoingMelee() &&
 		(/*padState.Gamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD ||*/
 			padState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER))
@@ -304,6 +307,7 @@ void InputManager::ProcessMelee_gamepad(XINPUT_STATE padState, CurrentGameplayAc
 	bool wasPressingMelee = mCurrentGamepadState.mPressingMelee;
 
 	if (!player->JustFellFromLargeDistance() &&
+		!player->JustFellFromShortDistance() &&
 		!player->IsDoingMelee() &&
 		padState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
 	{
@@ -325,6 +329,7 @@ void InputManager::ProcessWallJump_gamepad(XINPUT_STATE padState, CurrentGamepla
 	bool wasPressingJump = mCurrentGamepadState.mPressingWallJump;
 
 	if (!player->JustFellFromLargeDistance() &&
+		!player->JustFellFromShortDistance() &&
 		padState.Gamepad.wButtons & XINPUT_GAMEPAD_A)
 	{
 		mCurrentGamepadState.mPressingWallJump = true;
@@ -370,6 +375,7 @@ void InputManager::ProcessAimDirection_gamepad(XINPUT_STATE padState, CurrentGam
 void InputManager::ProcessPrimaryWeapon_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player)
 {
 	if (!player->JustFellFromLargeDistance() &&
+		!player->JustFellFromShortDistance() &&
 		!player->IsDoingMelee() &&
 		(std::abs(padState.Gamepad.sThumbRX) > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE ||
 			std::abs(padState.Gamepad.sThumbRY) > XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE))
@@ -393,6 +399,7 @@ void InputManager::ProcessPrimaryWeapon_gamepad(XINPUT_STATE padState, CurrentGa
 void InputManager::ProcessSecondaryWeapon_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player)
 {
 	if (!player->JustFellFromLargeDistance() &&
+		!player->JustFellFromShortDistance() &&
 		!player->GetIsCollidingAtObjectSide() &&
 		!player->IsDoingMelee() &&
 		padState.Gamepad.wButtons & XINPUT_GAMEPAD_Y)
@@ -433,6 +440,7 @@ void InputManager::ProcessStrafing_gamepad(XINPUT_STATE padState, CurrentGamepla
 	}
 
 	if (player->JustFellFromLargeDistance() ||
+		player->JustFellFromShortDistance() ||
 		player->IsDoingMelee())
 	{
 		return;
@@ -483,8 +491,8 @@ void InputManager::ProcessTestActions_gamepad(XINPUT_STATE padState, CurrentGame
 			if (pressingLeftShoulder)
 			{
 				// testing
-				NinjaSpawner spawner;
-				spawner.SpawnMultiple(3, Vector2(player->X(), player->Y()), Vector2(1200, 1200));
+				// NinjaSpawner spawner;
+				// spawner.SpawnMultiple(3, Vector2(player->X(), player->Y()), Vector2(1200, 1200));
 
 				GhostEnemySpawner ghostSpawner;
 				ghostSpawner.SpawnMultiple(3, Vector2(player->X(), player->Y()), Vector2(1200, 1200));
@@ -580,6 +588,7 @@ void InputManager::ProcessLeftRightMovement_keyboard(CurrentGameplayActions & cu
 	}
 
 	if (!player->JustFellFromLargeDistance() &&
+		!player->JustFellFromShortDistance() && 
 		!currentActions.mIsCrouching &&
 		!player->GetIsRolling())
 	{
@@ -644,6 +653,7 @@ void InputManager::ProcessJump_keyboard(CurrentGameplayActions & currentActions,
 	bool pressingJump = false;
 
 	if (!player->JustFellFromLargeDistance() &&
+		!player->JustFellFromShortDistance() &&
 		!player->IsDoingMelee() &&
 		GetAsyncKeyState(VK_UP) < 0)
 	{

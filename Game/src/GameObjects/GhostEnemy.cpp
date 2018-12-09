@@ -200,6 +200,7 @@ Projectile * GhostEnemy::FireWeapon(Vector2 direction)
 	p->SetSpinningMovement(false);
 	p->SetProjectileResistance(0.9f);
 	p->SetIsDeflectable(false);
+	p->SetProjectileType(Projectile::kLiquid);
 
 	if (direction.X > 0.0f)
 	{

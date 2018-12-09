@@ -15,7 +15,7 @@
 #include "UIQuickPlayScreen.h"
 #include "SaveManager.h"
 
-static const int kMaxInteractablesToDraw = 20;
+static const int kMaxInteractablesToDraw = 3;
 static Vector2 kInteractSpriteDimensions = Vector2(50.0f, 50.0f);
 
 extern void PostDestroyMessage();
@@ -162,27 +162,37 @@ void UIManager::Draw(ID3D10Device * device)
 		}
 	}
 
-	int iDrawnCount = 0;
-	for (const auto & i : mInteractableIconsToDraw)
+	GameObjectManager * gameObjectManager = GameObjectManager::Instance();
+
+	if (gameObjectManager)
 	{
-		if (iDrawnCount >= kMaxInteractablesToDraw)
+		float worldScale = gameObjectManager->GetCurrentLevelProperties().GetZoomInPercent();
+		worldScale = (1.0f + (1.0f - worldScale));
+
+		int iDrawnCount = 0;
+		for (const auto & i : mInteractableIconsToDraw)
 		{
-			break;
+			if (iDrawnCount >= kMaxInteractablesToDraw)
+			{
+				break;
+			}
+
+			auto iSprite = mInteractableSprites[iDrawnCount];
+
+			Vector2 uiCoords = GetPointInUICoords(i.CurrentScreenPos.X - iSprite->Dimensions().X * 0.5f,
+													i.CurrentScreenPos.Y - iSprite->Dimensions().Y * 0.5f);
+
+			uiCoords = uiCoords * worldScale;
+
+			// mInteractableProperties.CurrentScale
+			iSprite->SetDimensions(kInteractSpriteDimensions * i.CurrentScale);
+			iSprite->SetBottomLeft(uiCoords);
+			iSprite->SetAlpha(i.CurrentAlpha);
+			iSprite->RebuildBuffers();
+			iSprite->Draw(device);
+
+			++iDrawnCount;
 		}
-
-		auto iSprite = mInteractableSprites[iDrawnCount];
-		// ScreenToClient(DXWindow::GetInstance()->Hwnd(), &currentMouse);
-		Vector2 uiCoords = GetPointInUICoords(i.CurrentScreenPos.X - iSprite->Dimensions().X * 0.5f, 
-												i.CurrentScreenPos.Y - iSprite->Dimensions().Y * 0.5f);
-
-		// mInteractableProperties.CurrentScale
-		iSprite->SetDimensions(kInteractSpriteDimensions * i.CurrentScale);
-		iSprite->SetBottomLeft(uiCoords);
-		iSprite->SetAlpha(i.CurrentAlpha);
-		iSprite->RebuildBuffers();
-		iSprite->Draw(device);
-
-		++iDrawnCount;
 	}
 
 	// clear the interactables every frame

@@ -13,9 +13,7 @@ HealthDevil::HealthDevil(float x,
 	DepthLayer 
 	depthLayer, 
 	float width, 
-	float height, 
-	float groundFriction, 
-	float airResistance):
+	float height):
 	Sprite(x,y, depthLayer, width, height)
 {
 }

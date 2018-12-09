@@ -66,6 +66,8 @@ public:
 
 	bool JustFellFromLargeDistance() const { return mJustfellFromLargeDistance; }
 
+	bool JustFellFromShortDistance() const { return mJustFellFromShortDistance;  }
+
 	bool IsWallJumping() const { return mIsWallJumping; }
 
 	float GetCurrentWallJumpXDirection() const { return mCurrentWallJumpXDirection; }
@@ -160,7 +162,7 @@ protected:
 	bool mWasCrouching;
 	bool mIsFullyCrouched;
 	float mHighestPointWhileInAir;
-	bool mJustFellFromDistance;
+	bool mJustFellFromShortDistance;
 	bool mJustfellFromLargeDistance;
 	unsigned mLastRunFramePlayed;
 	bool mIsWallJumping;

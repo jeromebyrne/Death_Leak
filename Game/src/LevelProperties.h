@@ -20,8 +20,8 @@ public:
 	void SetTargetOffset(Vector2 offset) { mTargetOffset = offset; }
 	bool ShouldFollowX() const { return mFollowX; }
 	bool ShouldFollowY() const { return mFollowY; }
-
 	bool IsAnimationPreview() const { return mIsAnimationPreview; }
+	float GetZoomInPercent() const { return mCameraZoomInPercent; }
 
 private:
 

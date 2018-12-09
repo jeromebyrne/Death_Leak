@@ -61,9 +61,6 @@ void Player::Initialise()
 
 	UpdateResistance();
 
-	// TODO: just testing (or am I really, just keep crouch jump all the time?)
-	FeatureUnlockManager::GetInstance()->SetFeatureUnlocked(FeatureUnlockManager::kCrouchJump, true);
-
 	m_projectileOffset.X = 5.0f;
 	m_projectileOffset.Y = 25.0f;
 
@@ -566,6 +563,11 @@ bool Player::CanJump() const
 
 void Player::TryFocus()
 {
+	if (!FeatureUnlockManager::GetInstance()->IsFeatureUnlocked(FeatureUnlockManager::kSlowMotion))
+	{
+		return;
+	}
+
 	if (mIsFocusing)
 	{
 		return;
@@ -673,6 +675,11 @@ bool Player::DoDownwardDash()
 
 bool Player::Roll() 
 {
+	if (!FeatureUnlockManager::GetInstance()->IsFeatureUnlocked(FeatureUnlockManager::kRoll))
+	{
+		return false;
+	}
+
 	if (!HasEnoughFocus(kRollFocusAmount))
 	{
 		return false;

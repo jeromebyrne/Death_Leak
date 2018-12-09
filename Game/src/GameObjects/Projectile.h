@@ -15,7 +15,8 @@ public:
 		kUnknownProjectileType,
 		kBladeProjectile,
 		kBombProjectile,
-		kBloodFXProjectile
+		kBloodFXProjectile,
+		kLiquid
 	};
 
 	enum ProjectileOwnerType
@@ -73,7 +74,7 @@ public:
 
 	void SetIsDeflectable(bool value) { mIsDeflectable = value; }
 
-	bool isDeflectable() const { return mIsDeflectable; }
+	bool isDeflectable() const;
 
 	void SetDoAlphaFadeOut(bool value) { mDoAlphaFadeOut = value; }
 

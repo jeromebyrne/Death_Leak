@@ -5,6 +5,7 @@
 #include "solidmovingsprite.h"
 #include "camera2d.h"
 #include <sstream>
+#include "GameObjectManager.h"
 
 static const unsigned int kMaxFormatStringBufferSize = 64000; // Increase this if we have problems
 

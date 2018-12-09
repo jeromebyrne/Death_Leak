@@ -78,6 +78,7 @@
     <ClCompile Include="src\GameObjects\Character.cpp" />
     <ClCompile Include="src\GameObjects\CurrencyOrb.cpp" />
     <ClCompile Include="src\GameObjects\Debris.cpp" />
+    <ClCompile Include="src\GameObjects\DojoScrollPickup.cpp" />
     <ClCompile Include="src\GameObjects\Door.cpp" />
     <ClCompile Include="src\GameObjects\DrawableObject.cpp" />
     <ClCompile Include="src\GameObjects\Explosion.cpp" />
@@ -214,6 +215,7 @@
     <ClInclude Include="src\GameObjects\Character.h" />
     <ClInclude Include="src\GameObjects\CurrencyOrb.h" />
     <ClInclude Include="src\GameObjects\Debris.h" />
+    <ClInclude Include="src\GameObjects\DojoScrollPickup.h" />
     <ClInclude Include="src\GameObjects\Door.h" />
     <ClInclude Include="src\GameObjects\DrawableObject.h" />
     <ClInclude Include="src\GameObjects\Explosion.h" />

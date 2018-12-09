@@ -12,6 +12,7 @@
 #include "Breakable.h"
 #include "NPCManager.h"
 #include "Smashable.h"
+#include "featureUnlockManager.h"
 
 int Projectile::NUM_PROJECTILES_ACTIVE = 0;
 const float kFadeInTime = 0.3f;
@@ -133,7 +134,7 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 
 		bool isCharacter = object->IsCharacter();
 		
-		if (mIsDeflectable && isCharacter)
+		if (isDeflectable() && isCharacter)
 		{
 			GAME_ASSERT(dynamic_cast<Character*>(object));
 			Character * asCharacter = static_cast<Character*>(object);
@@ -174,7 +175,7 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 				GetOwnerType() == kPlayerProjectile)
 			{
 			
-				if (mIsDeflectable && 
+				if (isDeflectable() &&
 					GetProjectileType() == kBladeProjectile &&
 					objAsProj->GetProjectileType() == kBombProjectile)
 				{
@@ -213,7 +214,7 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 				}
 			}
 
-			if (mIsDeflectable &&
+			if (isDeflectable() &&
 				objAsProj->GetOwnerType() != GetOwnerType() &&
 				objAsProj->GetOwnerType() == kPlayerProjectile &&
 				!mCollidedWithProjectile &&
@@ -828,4 +829,14 @@ void Projectile::DoRotateToDirection()
 			FlipVertical();
 		}
 	}
+}
+
+bool Projectile::isDeflectable() const
+{ 
+	if (!FeatureUnlockManager::GetInstance()->IsFeatureUnlocked(FeatureUnlockManager::kDeflection))
+	{
+		return false;
+	}
+
+	return mIsDeflectable; 
 }

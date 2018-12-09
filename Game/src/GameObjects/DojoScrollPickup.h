@@ -1,19 +1,20 @@
-#ifndef HEALTHDEVIL_H
-#define HEALTHDEVIL_H
+#ifndef DOJOSCROLLPICKUP_H
+#define DOJOSCROLLPICKUP_H
 
 #include "sprite.h"
+#include "FeatureUnlockManager.h"
 
-class HealthDevil : public Sprite
+class DojoScrollPickup : public Sprite
 {
 public:
 
-	HealthDevil(float x = 0.0f, 
+	DojoScrollPickup(float x = 0.0f,
 		float y = 0.0f, 
 		DepthLayer depthLayer = kPlayer, 
 		float width = 10.0f, 
 		float height = 10.0f);
 
-	virtual ~HealthDevil(void);
+	virtual ~DojoScrollPickup(void);
 	virtual void Update(float delta) override;
 	virtual void Initialise() override;
 	virtual void XmlRead(TiXmlElement * element) override;
@@ -26,24 +27,7 @@ protected:
 
 private:
 
-	void GiveReward();
-
-	void GiveHealthUpgradeReward();
-
-	void GiveFocusUpgradeReward();
-
-	void GiveKeyRewardTest();
-
-	bool mHasCreatedParticles = false;
-
-	ParticleSpray * mParticleSpray = nullptr;
-
-	bool mHasPlayedDialog = false;
-
-	ISound * mVoiceOverSoundPlaying = nullptr;
-
-	bool mHasGivenReward = false;
-
+	FeatureUnlockManager::FeatureType mUnlocksFeature = FeatureUnlockManager::kNone;
 };
 
 #endif

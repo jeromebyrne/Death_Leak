@@ -20,10 +20,10 @@ static const float kMinTimeBetweenDeathSFX = 0.1f;
 static const float kJumpDelay = 0.05f;
 static const int kDamageKickback = 20;
 static const float kTimeAllowedToJumpAfterLeaveSolidGround = 0.3f;
-static const float kSmallDropDistance = 200.0f;
-static const float kLargeDropDistance = 600.0f;
+static const float kSmallDropDistance = 300.0f;
+static const float kLargeDropDistance = 700.0f;
 static const float kWallJumpTime = 0.3f;
-static const float kRollVelocityX = 14.0f;
+static const float kRollVelocityX = 12.0f;
 static const float kRollVelocityY = 0.0f;
 static const float kLandRollInputWindow = 0.25f;
 static const float kLandJumpInputWindow = 0.2f;
@@ -64,7 +64,7 @@ Character::Character(float x, float y, DepthLayer depthLayer, float width, float
 	mIsCrouching(false),
 	mIsFullyCrouched(false),
 	mHighestPointWhileInAir(0.0f),
-	mJustFellFromDistance(false),
+	mJustFellFromShortDistance(false),
 	mJustfellFromLargeDistance(false),
 	mLastRunFramePlayed(99999),
 	mWallJumpCountdownTime(5.0f),
@@ -116,7 +116,7 @@ void Character::SetIsWallJumping(bool value)
 
 void Character::DoLargeImpactLanding()
 {
-	mJustFellFromDistance = false;
+	mJustFellFromShortDistance = false;
 	mJustfellFromLargeDistance = true;
 
 	StopXAccelerating();
@@ -308,22 +308,26 @@ void Character::Update(float delta)
 					}
 
 					// we avoided the crouch delay by rolling
-					mJustFellFromDistance = false;
+					mJustFellFromShortDistance = false;
 					mJustfellFromLargeDistance = false;
 				}
 				else if (!mIsRolling && !isInWater)
 				{
 					if (dropDistance > kSmallDropDistance && dropDistance < kLargeDropDistance)
 					{
-						mJustFellFromDistance = true;
+						// soft landing
+						mJustFellFromShortDistance = true;
 						mJustfellFromLargeDistance = false;
 
+						StopXAccelerating();
+
+						/*
 						float jumpDiff = totalTime - inputManager.GetLastTimePressedJump();
 						if (!mIsDownwardDashing && !mWasDownwardDashing && jumpDiff >= 0.0f && jumpDiff < kLandJumpInputWindow)
 						{
 							mDoReboundJump = true;
 							Jump(95.0f);
-						}
+						}*/
 					}
 					else if (dropDistance >= kLargeDropDistance)
 					{
@@ -662,6 +666,29 @@ void Character::UpdateAnimations()
 			return;
 		}
 
+		if (mJustFellFromShortDistance)
+		{
+			if (current_body_sequence_name != "ImpactLandSoft")
+			{
+				bodyPart->SetSequence("ImpactLandSoft");
+			}
+
+			bodyPart->Animate();
+
+			m_texture = bodyPart->CurrentFrame(); // set the current texture
+
+			m_mainBodyTexture = m_texture;
+
+			if (bodyPart->IsFinished())
+			{
+				mJustFellFromShortDistance = false;
+			}
+			else
+			{
+				return;
+			}
+		}
+
 		if (mIsDoingMelee)
 		{
 			switch (mCurrentMeleePhase)
@@ -738,7 +765,7 @@ void Character::UpdateAnimations()
 				}
 			}
 
-			mJustFellFromDistance = false;
+			// mJustFellFromDistance = false;
 			mIsFullyCrouched = false;
 			mWasCrouching = false;
 		}
@@ -768,7 +795,7 @@ void Character::UpdateAnimations()
 
 			DoAnimationEffectIfApplicable(bodyPart);
 
-			mJustFellFromDistance = false;
+			// mJustFellFromDistance = false;
 			mIsFullyCrouched = false;
 			mWasCrouching = false;
 		}
@@ -787,7 +814,7 @@ void Character::UpdateAnimations()
 				mIsFullyCrouched = true;
 			}
 
-			mJustFellFromDistance = false;
+			// mJustFellFromDistance = false;
 		}
 		else if (mIsMidAirMovingDown) // we are accelerating vertically and not on top of another object
 		{
@@ -830,7 +857,7 @@ void Character::UpdateAnimations()
 			m_texture = bodyPart->CurrentFrame(); // set the current texture
 			mIsFullyCrouched = false;
 			mWasCrouching = false;
-			mJustFellFromDistance = false;
+			// mJustFellFromDistance = false;
 		}
 		else if (mIsMidAirMovingUp)
 		{
@@ -867,7 +894,7 @@ void Character::UpdateAnimations()
 
 			mIsFullyCrouched = false;
 			mWasCrouching = false;
-			mJustFellFromDistance = false;
+			// mJustFellFromDistance = false;
 		}
 		else if (GetIsCollidingAtObjectSide() &&
 			!IsOnSolidSurface()) // we have jumped at the side of a wall
@@ -883,7 +910,7 @@ void Character::UpdateAnimations()
 
 			mIsFullyCrouched = false;
 			mWasCrouching = false;
-			mJustFellFromDistance = false;
+			// mJustFellFromDistance = false;
 		}
 		else if ((m_velocity.X > 0.05f || m_velocity.X < -0.05f) && !GetIsCollidingAtObjectSide()) // we are moving left or right and not colliding with the side of an object
 		{
@@ -939,7 +966,7 @@ void Character::UpdateAnimations()
 
 			mIsFullyCrouched = false;
 			mWasCrouching = false;
-			mJustFellFromDistance = false;
+			// mJustFellFromDistance = false;
 
 			mLastRunFramePlayed = bodyPart->FrameNumber();
 		}
@@ -960,37 +987,18 @@ void Character::UpdateAnimations()
 			}
 
 			mIsFullyCrouched = false;
-			mJustFellFromDistance = false;
+			//mJustFellFromDistance = false;
 		}
 		else
 		{
-			if (mJustFellFromDistance)
+			if (current_body_sequence_name != "Still")
 			{
-				if (current_body_sequence_name != "ImpactLandSoft")
-				{
-					bodyPart->SetSequence("ImpactLandSoft");
-				}
-
-				bodyPart->Animate();
-
-				m_texture = bodyPart->CurrentFrame(); // set the current texture
-
-				if (bodyPart->IsFinished())
-				{
-					mJustFellFromDistance = false;
-				}
+				bodyPart->SetSequence("Still");
 			}
-			else
-			{
-				if (current_body_sequence_name != "Still")
-				{
-					bodyPart->SetSequence("Still");
-				}
 
-				bodyPart->AnimateLooped();
+			bodyPart->AnimateLooped();
 
-				m_texture = bodyPart->CurrentFrame(); // set the current texture
-			}
+			m_texture = bodyPart->CurrentFrame(); // set the current texture
 
 			mIsFullyCrouched = false;
 			mWasCrouching = false;
@@ -1151,7 +1159,7 @@ bool Character::Jump(float percent)
 	if (mIsFullyCrouched &&
 		FeatureUnlockManager::GetInstance()->IsFeatureUnlocked(FeatureUnlockManager::kCrouchJump))
 	{
-		percent *= 6.0f;
+		percent *= 5.75f;
 	}
 
 	if (mCurrentJumpsBeforeLand == 0)

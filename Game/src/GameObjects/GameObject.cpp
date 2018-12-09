@@ -10,6 +10,7 @@
 const float kMaxRadians = 6.28318531; // 360 degrees
 
 unsigned int GameObject::sGameObjectId = 1;
+int GameObject::sCurrentInteractable = -1;
 
 GameObject::GameObject(float x, float y, DepthLayer depthLayer, float width, float height) :
 	m_position(x, y),
@@ -60,6 +61,7 @@ GameObject::GameObject(float x, float y, DepthLayer depthLayer, float width, flo
 void GameObject::ResetGameIds()
 {
 	sGameObjectId = 1;
+	sCurrentInteractable = -1;
 }
 
 GameObject::~GameObject(void)
@@ -251,12 +253,14 @@ void GameObject::UpdateInteractable(float delta)
 	}
 
 	bool playerCollision = Utilities::IsSolidSpriteInRectangle(player, m_position.X, m_position.Y, m_dimensions.X, m_dimensions.Y);
-	if (playerCollision)
+	if (playerCollision && (sCurrentInteractable < 0 || ID() == sCurrentInteractable))
 	{
 		if (!CanInteract())
 		{
 			return;
 		}
+
+		sCurrentInteractable = ID();
 
 		mInteractableProperties.CurrentScreenPos = Utilities::WorldToScreen(m_position + mInteractableProperties.PosOffset);
 
@@ -273,8 +277,10 @@ void GameObject::UpdateInteractable(float delta)
 			if (mInteractableProperties.InteractCountdown <= 0.0f)
 			{
 				OnInteracted();
-				// Disbale the interactivity of this object (NOTE: may not work for all objects)
+				// Disable the interactivity of this object (NOTE: may not work for all objects)
 				mInteractableProperties.IsInteractable = false;
+
+				sCurrentInteractable = -1;
 			}
 		}
 		else
@@ -296,6 +302,11 @@ void GameObject::UpdateInteractable(float delta)
 		mInteractableProperties.CurrentAlpha = 0.0f;
 
 		mInteractableProperties.InteractCountdown = mInteractableProperties.InteractTime;
+
+		if (sCurrentInteractable == ID())
+		{
+			sCurrentInteractable = -1;
+		}
 	}
 }
 

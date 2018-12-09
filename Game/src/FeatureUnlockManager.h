@@ -8,9 +8,13 @@ public:
 	// Do NOT change the order of these enums, will affect the save file
 	enum FeatureType
 	{
-		kDoubleJump = 1,
+		kNone = 0,
+		kDoubleJump,
 		kCrouchJump,
-		kDownwardDash
+		kDownwardDash,
+		kRoll,
+		kSlowMotion,
+		kDeflection
 	};
 
 	FeatureUnlockManager(void);
@@ -22,13 +26,15 @@ public:
 
 	bool IsFeatureUnlocked(const FeatureType type);
 
-	void SetFeatureUnlocked(const FeatureType type, bool unlocked);
+	void SetFeatureUnlocked(const FeatureType type);
+
+	FeatureType GetFeatureTypeFromString(const string & asString);
+
+	string GetFeatureAsString(FeatureType featureType);
 
 private:
 
 	static FeatureUnlockManager * m_instance;
-
-	std::map<FeatureType, bool> mFeatureUnlockCache;
 };
 
 #endif

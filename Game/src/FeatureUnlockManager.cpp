@@ -1,5 +1,6 @@
 #include "precompiled.h"
 #include "FeatureUnlockManager.h"
+#include "SaveManager.h"
 
 FeatureUnlockManager * FeatureUnlockManager::m_instance = nullptr;
 
@@ -22,26 +23,78 @@ FeatureUnlockManager::~FeatureUnlockManager(void)
 
 void FeatureUnlockManager::Initialise()
 {
-	// check the svae file for features unlocked
-	// then populate the cache
-
-	// TODO
-
-	// Setting this unlocked from the beginning 
-	SetFeatureUnlocked(kDownwardDash, true);
 }
 
 bool FeatureUnlockManager::IsFeatureUnlocked(const FeatureType type)
 {
-	if (mFeatureUnlockCache.find(type) == mFeatureUnlockCache.end())
-	{
-		return false;
-	}
-
-	return mFeatureUnlockCache[type];
+	return SaveManager::GetInstance()->IsGameFeatureUnlocked(type);
 }
 
-void FeatureUnlockManager::SetFeatureUnlocked(const FeatureType type, bool unlocked)
+void FeatureUnlockManager::SetFeatureUnlocked(const FeatureType type)
 {
-	mFeatureUnlockCache[type] = unlocked;
+	SaveManager::GetInstance()->SetGameFeatureUnlocked(type);
+}
+
+FeatureUnlockManager::FeatureType FeatureUnlockManager::GetFeatureTypeFromString(const string & asString)
+{
+	if (asString == "kDoubleJump")
+	{
+		return kDoubleJump;
+	}
+	else if (asString == "kCrouchJump")
+	{
+		return kCrouchJump;
+	}
+	else if (asString == "kDownwardDash")
+	{
+		return kDownwardDash;
+	}
+	else if (asString == "kRoll")
+	{
+		return kRoll;
+	}
+	else if (asString == "kSlowMotion")
+	{
+		return kSlowMotion;
+	}
+	else if (asString == "kDeflection")
+	{
+		return kDeflection;
+	}
+	
+	GAME_ASSERT(false);
+	return kNone;
+}
+
+string FeatureUnlockManager::GetFeatureAsString(FeatureType featureType)
+{
+	switch (featureType)
+	{
+		case kDoubleJump:
+		{
+			return "kDoubleJump";
+		}
+		case kCrouchJump:
+		{
+			return "kCrouchJump";
+		}
+		case kDownwardDash:
+		{
+			return "kDownwardDash";
+		}
+		case kRoll:
+		{
+			return "kRoll";
+		}
+		case kSlowMotion:
+		{
+			return "kSlowMotion";
+		}
+		case kDeflection:
+		{
+			return "kDeflection";
+		}
+	}
+
+	return "kNone";
 }

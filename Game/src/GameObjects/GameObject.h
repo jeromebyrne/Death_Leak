@@ -274,6 +274,7 @@ protected:
 	void UpdateInteractable(float delta);
 	virtual void OnInteracted() {}
 	virtual bool CanInteract() { return true; }
+	static int sCurrentInteractable;
 
 	float m_rotationAngle;
 	float m_matScaleX;
