@@ -32,12 +32,13 @@ bool FallingPlatform::OnCollision(SolidMovingSprite * object)
 {
 	Platform::OnCollision(object);
 	
-	if (dynamic_cast<Player*>(object)) // TODO: optimise with flag
+	if (object->IsPlayer())
 	{
 		if(object->Bottom() > Y () && object->X() > Left() && object->X() < Right() && object->VelocityY() <= 0.0f)
 		{
 			if (mCurrentState == kStatic)
 			{
+				mSineWaveProps.DoSineWave = false; // disable sin wave if enabled
 				mCurrentState = kTriggered;
 				mTriggerStartTime = Timing::Instance()->GetTotalTimeSeconds();
 			}

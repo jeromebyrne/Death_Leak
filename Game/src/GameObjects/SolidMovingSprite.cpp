@@ -9,6 +9,7 @@
 #include "SolidLineStrip.h"
 #include "Breakable.h"
 #include "Smashable.h"
+#include "Game.h"
 
 SolidMovingSprite::SolidMovingSprite(float x, float y , DepthLayer depthLayer , float width , float height , float groundFriction , float airResistance ):
 	MovingSprite(x,y, depthLayer, width, height, groundFriction, airResistance),
@@ -244,6 +245,13 @@ void SolidMovingSprite::XmlWrite(TiXmlElement * element)
 
 bool SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 {
+#ifdef _DEBUG
+	if (Game::GetInstance()->GetIsLevelEditMode())
+	{
+		return false;
+	}
+#endif
+
 	if (object->IsSolidLine())
 	{
 		return false;

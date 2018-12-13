@@ -85,7 +85,7 @@ ID3D10ShaderResourceView* TextureManager::LoadTexture_ui(const char * fileName)
 	wchar_t* fileNameWide = Utilities::ConvertCharStringToWcharString(fileName);
 
 	// search the map and see have we already got this texture
-	if(m_textureIDmap_ui[fileName] != 0)
+	if(m_textureIDmap_ui[fileName] != nullptr)
 	{
 		return m_textureIDmap_ui[fileName]; // we already have this texture
 	}
