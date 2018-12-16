@@ -30,14 +30,17 @@ void UIQuickPlayScreen::Initialise()
 
 void UIQuickPlayScreen::CreateLevelEntries()
 {
-	mLevelEntries["1. Test Level"] = "XmlFiles\\levels\\test.xml";
-	mLevelEntries["2. Test Level 2"] = "XmlFiles\\levels\\test_2.xml";
-	mLevelEntries["3. Hot Springs"] = "XmlFiles\\levels\\hot_springs.xml";
-	mLevelEntries["4. Cliff"] = "XmlFiles\\levels\\cliff.xml";
-	mLevelEntries["5. Cliff Windmill"] = "XmlFiles\\levels\\cliff_windmill.xml";
-	mLevelEntries["6. Ninja Arena 1"] = "XmlFiles\\levels\\first_ninja_arena.xml";
-	mLevelEntries["7. Dojo"] = "XmlFiles\\levels\\dojo.xml";
-	mLevelEntries["8. Witch Arena 1"] = "XmlFiles\\levels\\first_witch_arena.xml";
+	mLevelEntries["a. Test Level"] = "XmlFiles\\levels\\test.xml";
+	mLevelEntries["b. Test Level 2"] = "XmlFiles\\levels\\test_2.xml";
+	mLevelEntries["c. Hot Springs"] = "XmlFiles\\levels\\hot_springs.xml";
+	mLevelEntries["d. Cliff"] = "XmlFiles\\levels\\cliff.xml";
+	mLevelEntries["e. Cliff Windmill"] = "XmlFiles\\levels\\cliff_windmill.xml";
+	mLevelEntries["f. Ninja Arena 1"] = "XmlFiles\\levels\\first_ninja_arena.xml";
+	mLevelEntries["g. Dojo"] = "XmlFiles\\levels\\dojo.xml";
+	mLevelEntries["h. Cave Platforming 1"] = "XmlFiles\\levels\\cave_platforming_1.xml";
+	mLevelEntries["i. Grass Exploration 1"] = "XmlFiles\\levels\\grass_exploration_1.xml";
+	mLevelEntries["j. Grass Exploration 2"] = "XmlFiles\\levels\\grass_exploration_2.xml";
+	mLevelEntries["k. Grass Exploration 3"] = "XmlFiles\\levels\\grass_exploration_3.xml";
 }
 
 void UIQuickPlayScreen::AddLevelButtons()
