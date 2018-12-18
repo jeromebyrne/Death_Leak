@@ -515,7 +515,6 @@ bool SolidLineStrip::GetBombProjectileCollisionData(Projectile * projectile, Vec
 
 	return false;
 }
-
 Vector2 SolidLineStrip::GetRightMostPoint() const
 {
 	unsigned int linesSize = mLines.size();
