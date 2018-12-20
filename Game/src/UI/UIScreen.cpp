@@ -278,12 +278,12 @@ void UIScreen::ProcessCursorInput()
 
 		if (!focusedOnSomething)
 		{
-			if(m_currentWidgetInFocus != 0)
+			if(m_currentWidgetInFocus != nullptr)
 			{
 				// lost focus on the old widget
 				m_currentWidgetInFocus->OnLoseFocus();
 			}
-			m_currentWidgetInFocus = 0;
+			m_currentWidgetInFocus = nullptr;
 		}
 
 		// now check if we are left clicking
