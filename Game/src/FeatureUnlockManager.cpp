@@ -27,6 +27,11 @@ void FeatureUnlockManager::Initialise()
 
 bool FeatureUnlockManager::IsFeatureUnlocked(const FeatureType type)
 {
+#ifdef _DEBUG
+	// testing
+	return true;
+#endif
+
 	return SaveManager::GetInstance()->IsGameFeatureUnlocked(type);
 }
 

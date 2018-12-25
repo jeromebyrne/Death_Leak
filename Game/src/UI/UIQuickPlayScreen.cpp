@@ -45,6 +45,7 @@ void UIQuickPlayScreen::CreateLevelEntries()
 	mLevelEntries["m. Grass Exploration Dead End Below 2"] = "XmlFiles\\levels\\grass_exploration_dead_end_below_2.xml";
 	mLevelEntries["n. Water Well 1"] = "XmlFiles\\levels\\water_well_1.xml";
 	mLevelEntries["o. Inside Hanging Shadow"] = "XmlFiles\\levels\\inside_hanging_shadow.xml";
+	mLevelEntries["p. Catacombs Entrance 1"] = "XmlFiles\\levels\\catacombs_entrance_1.xml";
 }
 
 void UIQuickPlayScreen::AddLevelButtons()

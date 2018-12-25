@@ -165,7 +165,7 @@ void GameObjectManager::Initialise()
 	}
 
 	GAME_ASSERT(m_player);
-	if (m_player)
+ 	if (m_player)
 	{
 		// set the camera to the players position initially
 		m_camera->FollowObjectsOrigin(m_player);
@@ -519,6 +519,8 @@ void GameObjectManager::SwitchToLevel(const char * level, bool defer)
 		mLevelToSwitch = level;
 		return;
 	}
+
+	m_camera->SetTargetObject(nullptr);
 
 	mCachedPlayerHealth = m_player != nullptr ? m_player->GetHealth() : -1.0f;
 
