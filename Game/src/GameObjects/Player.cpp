@@ -43,6 +43,9 @@ Character(x, y, GameObject::kPlayer, width, height),
 
 Player::~Player(void)
 {
+#if _DEBUG
+	bool testing = true;
+#endif
 }
 
 void Player::Initialise()

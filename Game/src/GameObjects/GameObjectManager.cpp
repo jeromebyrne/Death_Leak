@@ -448,9 +448,9 @@ void GameObjectManager::LoadObjectsFromFile(const char* filename)
 			m_player->SetY(mPlayerStartPosForLevel.Y);
 			m_player->SetDirectionXY(mPlayerStartDirectionXForLevel, 1.0f);
 			m_player->AccelerateX(mPlayerStartDirectionXForLevel);
-			m_camera->SetPositionY(mPlayerStartPosForLevel.Y + 300.0f);
-			m_camera->SetPositionX(-mPlayerStartPosForLevel.X);
-			m_camera->FollowTargetObjectWithLag(true, 1.0f, 2.0f);
+			// m_camera->SetPositionY(mPlayerStartPosForLevel.Y + 300.0f);
+			// m_camera->SetPositionX(-mPlayerStartPosForLevel.X);
+			// m_camera->FollowTargetObjectWithLag(true, 1.0f, 2.0f);
 		}
 	}
 
@@ -868,7 +868,10 @@ ParticleSpray * GameObjectManager::ReadParticleSpray(TiXmlElement * element)
 
 void GameObjectManager::DeleteGameObjects()
 {
-	m_player = nullptr;
+	for (auto g : m_gameObjects)
+	{
+		g.reset();
+	}
 
 	m_gameObjects.clear();
 	ParticleEmitterManager::Instance()->ClearParticles();
@@ -876,6 +879,8 @@ void GameObjectManager::DeleteGameObjects()
 	mSlowMotionLayer = nullptr;
 
 	m_levelLoaded = false;
+
+	m_player = nullptr;
 }
 
 void GameObjectManager::AddGameObject(GameObject * object, bool editModeAdd)
