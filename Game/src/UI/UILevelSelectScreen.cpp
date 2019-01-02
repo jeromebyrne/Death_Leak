@@ -47,7 +47,11 @@ void UILevelSelectScreen::CreateLevelEntries()
 	mLevelEntries["o. Inside Hanging Shadow"] = "XmlFiles\\levels\\inside_hanging_shadow.xml";
 	mLevelEntries["p. Catacombs Entrance 1"] = "XmlFiles\\levels\\catacombs_entrance_1.xml";
 	mLevelEntries["q. Catacombs Entrance 2"] = "XmlFiles\\levels\\catacombs_entrance_2.xml";
-
+	mLevelEntries["r. Grass River 1"] = "XmlFiles\\levels\\grass_river_1.xml";
+	mLevelEntries["s. Underwater Cave 1"] = "XmlFiles\\levels\\underwater_cave.xml";
+	mLevelEntries["t. Underwater Cave 2"] = "XmlFiles\\levels\\underwater_cave_2.xml";
+	mLevelEntries["u. Underwater Cave 3"] = "XmlFiles\\levels\\underwater_cave_3.xml";
+	mLevelEntries["v. Underwater Cave 4"] = "XmlFiles\\levels\\underwater_cave_4.xml";
 }
 
 void UILevelSelectScreen::AddLevelButtons()
