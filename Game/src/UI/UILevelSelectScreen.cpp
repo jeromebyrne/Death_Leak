@@ -49,22 +49,24 @@ void UILevelSelectScreen::CreateLevelEntries()
 	mLevelEntries["q. Catacombs Entrance 2"] = "XmlFiles\\levels\\catacombs_entrance_2.xml";
 	mLevelEntries["r. Grass River 1"] = "XmlFiles\\levels\\grass_river_1.xml";
 	mLevelEntries["s. Underwater Cave 1"] = "XmlFiles\\levels\\underwater_cave.xml";
+	mLevelEntries["s2. Underwater Cave 1.5"] = "XmlFiles\\levels\\underwater_cave_1_5.xml";
 	mLevelEntries["t. Underwater Cave 2"] = "XmlFiles\\levels\\underwater_cave_2.xml";
 	mLevelEntries["u. Underwater Cave 3"] = "XmlFiles\\levels\\underwater_cave_3.xml";
 	mLevelEntries["v. Underwater Cave 4"] = "XmlFiles\\levels\\underwater_cave_4.xml";
+	mLevelEntries["w. Underwater Cave 5"] = "XmlFiles\\levels\\underwater_cave_5.xml";
 }
 
 void UILevelSelectScreen::AddLevelButtons()
 {
 	float startX = -940.0f;
-	float startY = 480.0f;
+	float startY = 500.0f;
 
 	unsigned count = 0;
 	for (const auto & l : mLevelEntries)
 	{
 		UIButton * button = new UIButton();
-		button->SetBottomLeft(Vector2(startX, startY - count * 45));
-		button->SetDimensions(Vector2(650, 35));
+		button->SetBottomLeft(Vector2(startX, startY - count * 30));
+		button->SetDimensions(Vector2(550, 25));
 		button->SetIsProcessInput(true);
 		button->SetButtonAssets("Media\\UI\\level_edit\\button_default.png",
 								"Media\\UI\\level_edit\\button_default_2.png",
