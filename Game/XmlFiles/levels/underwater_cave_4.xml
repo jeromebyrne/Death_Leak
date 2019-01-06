@@ -3,11 +3,11 @@
         <camera_properties posx="0.000000" posy="0.000000" zoom_in_percent="1.000000" xOffset="120.000000" yOffset="100.000000" xLag="15.000000" yLag="5.000000" followx="true" followy="false" />
         <level_bounds left="-2500.000000" right="1400.000000" top="3000.000000" bottom="150.000000" />
         <music file="music\japanese2.mp3" initial_delay="20.000000" length="96.000000" time_between="120.000000" />
-        <weather_properties allow_weather="true" />
+        <weather_properties allow_weather="false" />
         <is_animation_preview value="false" />
     </LevelProperties>
     <Player id="1" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kPlayer" y="441.089172" x="-1047.548096" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kPlayer" y="488.000000" x="-1066.548096" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="215.352036" width="181.393768" native="false" repeatX="false" repeatY="false" />
         <material value="maleninja" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -78,9 +78,7 @@
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
-        <level_to_load value="XmlFiles\levels\hot_springs.xml" />
-        <player_start_pos x="200.000000" y="-150.000000" />
-        <player_direction x="-1.000000" />
+        <level_to_load value="XmlFiles\levels\underwater_cave_3.xml" />
     </LevelTrigger>
     <SolidLineStrip id="5" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kSolidLines" y="588.627930" x="-480.000000" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -214,18 +212,14 @@
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
         <level_to_load value="XmlFiles\levels\hot_springs.xml" />
-        <player_start_pos x="200.000000" y="-150.000000" />
-        <player_direction x="-1.000000" />
     </LevelTrigger>
     <LevelTrigger id="13" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kGround" y="740.000000" x="2510.000000" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kGround" y="740.000000" x="2440.451904" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="677.938599" width="2000.000000" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
-        <level_to_load value="XmlFiles\levels\hot_springs.xml" />
-        <player_start_pos x="200.000000" y="-150.000000" />
-        <player_direction x="-1.000000" />
+        <level_to_load value="XmlFiles\levels\underwater_cave_5.xml" />
     </LevelTrigger>
     <SolidMovingSprite id="14" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGround" y="691.000000" x="1784.000000" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -423,4 +417,34 @@
         <brightness min="1.000000" max="1.000000" />
         <fade_time_percent out="0.500000" in="0.100000" />
     </ParticleSpray>
+    <LevelEntry id="26" level_edit_locked="false" updateable="true" always_update="true">
+        <position depth_layer="kGround" y="488.000000" x="-1066.548096" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions height="250.000000" width="250.000000" />
+        <material value="" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
+        <level_came_from value="XmlFiles\levels\underwater_cave_3.xml" />
+        <player_direction x="-1.000000" />
+        <door_id value="" />
+    </LevelEntry>
+    <LevelEntry id="27" level_edit_locked="false" updateable="true" always_update="true">
+        <position depth_layer="kGround" y="582.000000" x="1200.451904" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions height="250.000000" width="250.000000" />
+        <material value="" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
+        <level_came_from value="XmlFiles\levels\underwater_cave_5.xml" />
+        <player_direction x="-1.000000" />
+        <door_id value="" />
+    </LevelEntry>
+    <LevelEntry id="28" level_edit_locked="false" updateable="true" always_update="true">
+        <position depth_layer="kGround" y="569.000000" x="-2391.548096" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions height="250.000000" width="250.000000" />
+        <material value="" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
+        <level_came_from value="XmlFiles\levels\hot_springs.xml" />
+        <player_direction x="1.000000" />
+        <door_id value="" />
+    </LevelEntry>
 </level>

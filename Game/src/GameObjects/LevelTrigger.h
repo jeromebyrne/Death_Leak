@@ -14,12 +14,11 @@ public:
 	virtual void XmlRead(TiXmlElement * element) override;
 	virtual void XmlWrite(TiXmlElement * element) override;
 
+	void DebugDraw(ID3D10Device *  device) override;
+
 private:
 
 	std::string mLevelToLoad;
-
-	Vector2 mPlayerStartPos;
-	float mPlayerDirectionX;
 };
 
 #endif

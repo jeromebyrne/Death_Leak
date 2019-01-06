@@ -102,8 +102,6 @@
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
         <level_to_load value="XmlFiles\levels\hot_springs.xml" />
-        <player_start_pos x="200.000000" y="-150.000000" />
-        <player_direction x="-1.000000" />
     </LevelTrigger>
     <LevelTrigger id="6" level_edit_locked="false" updateable="true" always_update="true">
         <position depth_layer="kGround" y="-885.000000" x="4073.343750" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -112,8 +110,6 @@
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
         <level_to_load value="XmlFiles\levels\hot_springs.xml" />
-        <player_start_pos x="200.000000" y="-150.000000" />
-        <player_direction x="-1.000000" />
     </LevelTrigger>
     <Sprite id="7" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kFarForeground" y="-997.000000" x="520.933533" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -216,17 +212,7 @@
         <can_be_damaged value="false" />
         <is_bouncy value="true" bounce_multiplier="1.100000" />
     </SolidMovingSprite>
-    <LevelTrigger id="12" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kGround" y="351.000000" x="574.933594" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions height="677.938599" width="903.918274" />
-        <material value="" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
-        <level_to_load value="XmlFiles\levels\hot_springs.xml" />
-        <player_start_pos x="200.000000" y="-150.000000" />
-        <player_direction x="-1.000000" />
-    </LevelTrigger>
-    <WaterBlock id="13" level_edit_locked="false" updateable="true" always_update="false">
+    <WaterBlock id="12" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundFront" y="-1095.372192" x="-2345.066406" rotation="-1.563874" auto_rotate_value="0.000000" />
         <dimensions height="512.000000" width="512.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -249,27 +235,23 @@
         <can_be_damaged value="false" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </WaterBlock>
-    <LevelTrigger id="14" level_edit_locked="false" updateable="true" always_update="true">
+    <LevelTrigger id="13" level_edit_locked="false" updateable="true" always_update="true">
         <position depth_layer="kGround" y="-1062.372192" x="-3108.066406" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="677.938599" width="903.918274" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
-        <level_to_load value="XmlFiles\levels\hot_springs.xml" />
-        <player_start_pos x="200.000000" y="-150.000000" />
-        <player_direction x="-1.000000" />
+        <level_to_load value="XmlFiles\levels\underwater_cave_2.xml" />
     </LevelTrigger>
-    <LevelTrigger id="15" level_edit_locked="false" updateable="true" always_update="true">
+    <LevelTrigger id="14" level_edit_locked="false" updateable="true" always_update="true">
         <position depth_layer="kGround" y="-1101.372192" x="1512.933594" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="677.938599" width="903.918274" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
-        <level_to_load value="XmlFiles\levels\hot_springs.xml" />
-        <player_start_pos x="200.000000" y="-150.000000" />
-        <player_direction x="-1.000000" />
+        <level_to_load value="XmlFiles\levels\underwater_cave.xml" />
     </LevelTrigger>
-    <WaterBlock id="16" level_edit_locked="false" updateable="true" always_update="false">
+    <WaterBlock id="15" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundFront" y="-1110.372192" x="616.933594" rotation="1.571443" auto_rotate_value="0.000000" />
         <dimensions height="1023.620605" width="537.143127" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -292,7 +274,7 @@
         <can_be_damaged value="false" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </WaterBlock>
-    <Sprite id="17" level_edit_locked="false" updateable="true" always_update="false">
+    <Sprite id="16" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundFront" y="-226.372192" x="376.933594" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="1313.000000" width="1750.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -307,7 +289,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="18" level_edit_locked="false" updateable="true" always_update="false">
+    <Sprite id="17" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundFront" y="-2272.195557" x="196.933594" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="2057.594238" width="2742.414307" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -322,7 +304,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <ParticleSpray id="19" level_edit_locked="false" updateable="true" always_update="false">
+    <ParticleSpray id="18" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundFront" y="-1097.372192" x="34.933594" rotation="0.000000" auto_rotate_value="0.000000" spawn_spread_x="30.000000" spawn_spread_y="20.000000" />
         <dimensions height="2000.000000" width="978.267883" />
         <material value="" />
@@ -343,7 +325,7 @@
         <brightness min="1.000000" max="1.000000" />
         <fade_time_percent out="0.250000" in="0.250000" />
     </ParticleSpray>
-    <Sprite id="20" level_edit_locked="false" updateable="true" always_update="false">
+    <Sprite id="19" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundFront" y="-205.372192" x="-1305.066406" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="1313.000000" width="1750.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -358,7 +340,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="21" level_edit_locked="false" updateable="true" always_update="false">
+    <Sprite id="20" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundFront" y="-223.372192" x="-2971.066406" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="1313.000000" width="1750.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -373,7 +355,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <SolidMovingSprite id="22" level_edit_locked="false" updateable="true" always_update="false">
+    <SolidMovingSprite id="21" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGround" y="-636.372192" x="-997.066406" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="2.000000" width="2.000000" native="true" repeatX="false" repeatY="false" />
         <material value="caverock" />
@@ -396,7 +378,7 @@
         <can_be_damaged value="false" />
         <is_bouncy value="true" bounce_multiplier="1.100000" />
     </SolidMovingSprite>
-    <Sprite id="23" level_edit_locked="false" updateable="true" always_update="false">
+    <Sprite id="22" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundFront" y="-2286.164063" x="-2501.056641" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="2057.594238" width="2742.414307" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -411,4 +393,24 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
+    <LevelEntry id="23" level_edit_locked="false" updateable="true" always_update="true">
+        <position depth_layer="kGround" y="-1120.372192" x="795.933594" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions height="250.000000" width="250.000000" />
+        <material value="" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
+        <level_came_from value="XmlFiles\levels\underwater_cave.xml" />
+        <player_direction x="-1.000000" />
+        <door_id value="" />
+    </LevelEntry>
+    <LevelEntry id="26" level_edit_locked="false" updateable="true" always_update="true">
+        <position depth_layer="kGround" y="-1129.372192" x="-2359.066406" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions height="250.000000" width="250.000000" />
+        <material value="" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
+        <level_came_from value="XmlFiles\levels\underwater_cave_2.xml" />
+        <player_direction x="1.000000" />
+        <door_id value="" />
+    </LevelEntry>
 </level>

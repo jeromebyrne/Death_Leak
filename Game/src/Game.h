@@ -47,7 +47,7 @@ public:
 
 	bool IsLevelEditTerrainMode() const;
 
-	void SetLevelEditFilename(const char * file);
+	void SetLevelEditFilename(const string & file);
 
 	static Vector2 GetGameScale() { return mGameScale; }
 

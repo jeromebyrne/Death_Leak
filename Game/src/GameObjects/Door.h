@@ -31,6 +31,7 @@ private:
 	std::string mDoorOpenSFX;
 	std::string mDoorLockedSFX;
 	bool mCanTryOpen = true;
+	std::string mDoorIdentifier;
 };
 
 #endif

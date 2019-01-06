@@ -79,6 +79,8 @@ void Door::XmlRead(TiXmlElement * element)
 
 	mDoorOpenSFX = XmlUtilities::ReadAttributeAsString(element, "door_sfx", "open");
 	mDoorLockedSFX = XmlUtilities::ReadAttributeAsString(element, "door_sfx", "locked");
+
+	mDoorIdentifier = XmlUtilities::ReadAttributeAsString(element, "door_id", "value");
 }
 
 void Door::XmlWrite(TiXmlElement * element)
@@ -102,6 +104,10 @@ void Door::XmlWrite(TiXmlElement * element)
 	doorSFX->SetAttribute("open", mDoorOpenSFX.c_str());
 	doorSFX->SetAttribute("locked", mDoorLockedSFX.c_str());
 	element->LinkEndChild(doorSFX);
+
+	TiXmlElement * doorId = new TiXmlElement("door_id");
+	doorId->SetAttribute("value", mDoorIdentifier.c_str());
+	element->LinkEndChild(doorId);
 }
 
 void Door::EnterDoor()
@@ -114,8 +120,8 @@ void Door::EnterDoor()
 		AudioManager::Instance()->PlaySoundEffect(mDoorOpenSFX);
 	}
 
-	GameObjectManager::Instance()->SetPlayerStartPos(mToLevelPosition);
-	GameObjectManager::Instance()->SwitchToLevel(mToLevelFile.c_str(), true);
+	GAME_ASSERT(mDoorIdentifier.empty() == false);
+	GameObjectManager::Instance()->SwitchToLevel(mToLevelFile, mDoorIdentifier, true);
 }
 
 void Door::OnInteracted()

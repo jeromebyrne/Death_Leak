@@ -45,6 +45,7 @@
 #include "FocusUpgradePickup.h"
 #include "HealthIncreasePickup.h"
 #include "DojoScrollPickup.h"
+#include "LevelEntry.h"
 
 struct DepthSortPredicate
 {
@@ -253,7 +254,7 @@ void GameObjectManager::PostUpdate(bool paused, float delta)
 
 	if (mSwitchToLevel)
 	{
-		SwitchToLevel(mLevelToSwitch.c_str(), false);
+		SwitchToLevel(mLevelToSwitch, mDoorIdCameFrom, false);
 		mLevelToSwitch = "";
 		mSwitchToLevel = false;
 	}
@@ -343,7 +344,7 @@ void GameObjectManager::DebugDraw()
 }
 
 // load game objects via xml file
-void GameObjectManager::LoadObjectsFromFile(const char* filename)
+void GameObjectManager::LoadObjectsFromFile(const string & filename)
 {
 	mCurrentLevelFile = filename;
 
@@ -438,21 +439,6 @@ void GameObjectManager::LoadObjectsFromFile(const char* filename)
 	{
 		mFreshLevelLaunch = false;
 	}
-	else
-	{
-		// this level was triggered by a LevelTrigger
-		GAME_ASSERT(m_player);
-		if (m_player)
-		{
-			m_player->SetX(mPlayerStartPosForLevel.X);
-			m_player->SetY(mPlayerStartPosForLevel.Y);
-			m_player->SetDirectionXY(mPlayerStartDirectionXForLevel, 1.0f);
-			m_player->AccelerateX(mPlayerStartDirectionXForLevel);
-			// m_camera->SetPositionY(mPlayerStartPosForLevel.Y + 300.0f);
-			// m_camera->SetPositionX(-mPlayerStartPosForLevel.X);
-			// m_camera->FollowTargetObjectWithLag(true, 1.0f, 2.0f);
-		}
-	}
 
 	// update all the objects at least once at the start
 	for (auto & obj : m_gameObjects)
@@ -511,14 +497,17 @@ void GameObjectManager::SaveGame()
 	SaveManager::GetInstance()->WriteSaveFile();
 }
 
-void GameObjectManager::SwitchToLevel(const char * level, bool defer)
+void GameObjectManager::SwitchToLevel(const string & level, const string & doorId, bool defer)
 {
 	if (defer)
 	{
 		mSwitchToLevel = true;
 		mLevelToSwitch = level;
+		mDoorIdCameFrom = doorId;
 		return;
 	}
+
+	mLastLevel = mCurrentLevelFile;
 
 	m_camera->SetTargetObject(nullptr);
 
@@ -540,7 +529,7 @@ void GameObjectManager::SwitchToLevel(const char * level, bool defer)
 	Game::GetInstance()->UnPauseGame();
 }
 
-void GameObjectManager::SaveObjectsToFile(const char* filename)
+void GameObjectManager::SaveObjectsToFile(const string & filename)
 {
 	// loop through the game objects and make sure there are no duplicates
 	list<GameObject *> checkedList;
@@ -632,9 +621,13 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement, const
 			}
 		}
 	}
-	else if (strcmp(gameObjectTypeName, "npc") == 0)
+	else if (strcmp(gameObjectTypeName, "parallaxlayer") == 0)
 	{
-		newGameObject = new NPC();
+		newGameObject = new ParallaxLayer(m_camera);
+	}
+	else if (strcmp(gameObjectTypeName, "levelentry") == 0)
+	{
+		newGameObject = new LevelEntry();
 	}
 	else if (strcmp(gameObjectTypeName, "solidmovingsprite") == 0)
 	{
@@ -647,10 +640,6 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement, const
 	else if (strcmp(gameObjectTypeName, "movingsprite") == 0)
 	{
 		newGameObject = new MovingSprite();
-	}
-	else if (strcmp(gameObjectTypeName, "parallaxlayer") == 0)
-	{
-		newGameObject = new ParallaxLayer(m_camera);
 	}
 	else if (strcmp(gameObjectTypeName, "platform") == 0)
 	{
@@ -671,6 +660,10 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement, const
 	else if (strcmp(gameObjectTypeName, "audioobject") == 0)
 	{
 		newGameObject = new AudioObject();
+	}
+	else if (strcmp(gameObjectTypeName, "npc") == 0)
+	{
+		newGameObject = new NPC();
 	}
 	else if (strcmp(gameObjectTypeName, "rabbit") == 0)
 	{

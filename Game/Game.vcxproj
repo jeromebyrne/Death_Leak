@@ -93,6 +93,7 @@
     <ClCompile Include="src\GameObjects\HealthIncreasePickup.cpp" />
     <ClCompile Include="src\GameObjects\HealthUpgradePickup.cpp" />
     <ClCompile Include="src\GameObjects\KeyPickup.cpp" />
+    <ClCompile Include="src\GameObjects\LevelEntry.cpp" />
     <ClCompile Include="src\GameObjects\LevelTrigger.cpp" />
     <ClCompile Include="src\GameObjects\Material.cpp" />
     <ClCompile Include="src\GameObjects\MaterialManager.cpp" />
@@ -230,6 +231,7 @@
     <ClInclude Include="src\GameObjects\HealthIncreasePickup.h" />
     <ClInclude Include="src\GameObjects\HealthUpgradePickup.h" />
     <ClInclude Include="src\GameObjects\KeyPickup.h" />
+    <ClInclude Include="src\GameObjects\LevelEntry.h" />
     <ClInclude Include="src\GameObjects\LevelTrigger.h" />
     <ClInclude Include="src\GameObjects\Material.h" />
     <ClInclude Include="src\GameObjects\MaterialManager.h" />

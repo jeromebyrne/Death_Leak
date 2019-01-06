@@ -15,7 +15,7 @@ public:
 
 	void Draw();
 
-	void SetLevelFile(const char * level) { mCurrentLevel = level; }
+	void SetLevelFile(const string & level) { mCurrentLevel = level; }
 
 	bool IsTerrainEditing() const { return mTerrainEditing; }
 

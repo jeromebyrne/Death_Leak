@@ -1,6 +1,7 @@
 #include "precompiled.h"
 #include "LevelTrigger.h"
 #include "Game.h"
+#include "DrawUtilities.h"
 
 LevelTrigger::LevelTrigger(float x, float y, DepthLayer depthLayer, float width, float height):
 	GameObject(x, y, depthLayer, width, height)
@@ -34,9 +35,7 @@ void LevelTrigger::Update(float delta)
 		if (Utilities::IsObjectInRectangle(player, m_position.X, m_position.Y, m_dimensions.X, m_dimensions.Y))
 		{
 			// trigger next level
-			GameObjectManager::Instance()->SetPlayerStartPos(mPlayerStartPos);
-			GameObjectManager::Instance()->SetPlayerStartDirectionX(mPlayerDirectionX);
-			GameObjectManager::Instance()->SwitchToLevel(mLevelToLoad.c_str(), true);
+			GameObjectManager::Instance()->SwitchToLevel(mLevelToLoad.c_str(), "", true);
 		}
 	}
 }
@@ -47,10 +46,6 @@ void LevelTrigger::XmlRead(TiXmlElement * element)
 
 	// level_to_load
 	mLevelToLoad = XmlUtilities::ReadAttributeAsString(element, "level_to_load", "value");
-
-	mPlayerStartPos.X = XmlUtilities::ReadAttributeAsFloat(element, "player_start_pos", "x");
-	mPlayerStartPos.Y = XmlUtilities::ReadAttributeAsFloat(element, "player_start_pos", "y");
-	mPlayerDirectionX = XmlUtilities::ReadAttributeAsFloat(element, "player_direction", "x");
 }
 
 void LevelTrigger::XmlWrite(TiXmlElement * element)
@@ -60,13 +55,11 @@ void LevelTrigger::XmlWrite(TiXmlElement * element)
 	TiXmlElement * levelFile = new TiXmlElement("level_to_load");
 	levelFile->SetAttribute("value", mLevelToLoad.c_str());
 	element->LinkEndChild(levelFile);
+}
 
-	TiXmlElement * posElem = new TiXmlElement("player_start_pos");
-	posElem->SetDoubleAttribute("x", mPlayerStartPos.X);
-	posElem->SetDoubleAttribute("y", mPlayerStartPos.Y);
-	element->LinkEndChild(posElem);
+void LevelTrigger::DebugDraw(ID3D10Device *  device)
+{
+	GameObject::DebugDraw(device);
 
-	TiXmlElement * dirElem = new TiXmlElement("player_direction");
-	dirElem->SetDoubleAttribute("x", mPlayerDirectionX);
-	element->LinkEndChild(dirElem);
+	DrawUtilities::DrawTexture(Vector3(m_position.X, m_position.Y, 3), Vector2(GetLevelEditSelectionDimensions().X, GetLevelEditSelectionDimensions().Y), "Media\\editor\\level_trigger.png");
 }

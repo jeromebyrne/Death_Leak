@@ -20,7 +20,7 @@ public:
 
 	inline static GameObjectManager* Instance()
 	{
-		if (m_instance == 0)
+		if (m_instance == nullptr)
 		{
 			m_instance = new GameObjectManager();
 		}
@@ -33,8 +33,8 @@ public:
 	void DebugDraw();
 
 	// this function also acts as a public initialise
-	void LoadObjectsFromFile(const char* filename);// load game objects via xml file
-	void SaveObjectsToFile(const char* filename);
+	void LoadObjectsFromFile(const string & filename);// load game objects via xml file
+	void SaveObjectsToFile(const string & filename);
 	void AddGameObject(GameObject * object, bool editModeAdd = false);
 	void RemoveGameObject(GameObject * object, bool defer = true);
 	void AddGameObjectViaLevelEditor(GameObject * object);
@@ -82,18 +82,12 @@ public:
 	// only works in debug, designed for level editor
 	GameObject * CopyObject(GameObject * toCopy);
 
-	void SwitchToLevel(const char * level, bool defer = true);
+	void SwitchToLevel(const string & level, const string & doorId, bool defer = true);
 
 	bool mSwitchToLevel;
 	std::string mLevelToSwitch;
-
-	Vector2 GetPlayerStartPos() const { return mPlayerStartPosForLevel; }
-
-	void SetPlayerStartPos(Vector2 & position) { mPlayerStartPosForLevel = position; }
-
-	float GetPlayerStartDirectionX() const { return mPlayerStartDirectionXForLevel; }
-
-	void SetPlayerStartDirectionX(float value) { mPlayerStartDirectionXForLevel = value; }
+	std::string mLastLevel;
+	std::string mDoorIdCameFrom;
 
 	void SetLevelFreshLaunch(bool value) { mFreshLevelLaunch = value; }
 
@@ -150,9 +144,6 @@ private:
 	ParallaxLayer * mSlowMotionLayer;
 
 	LevelProperties mLevelProperties;
-
-	Vector2 mPlayerStartPosForLevel;
-	float mPlayerStartDirectionXForLevel;
 
 	bool mFreshLevelLaunch;
 

@@ -38,7 +38,7 @@ GameObject::GameObject(float x, float y, DepthLayer depthLayer, float width, flo
 	mIsDebris(false),
 	mIsCharacter(false),
 	mIsParallaxLayer(false),
-	mIsAudioObject(false),
+	mIsAudioObject(false), 
 	mIsWaterBlock(false),
 	mIsPlatform(false),
 	mAutoRotationValue(0.0f),

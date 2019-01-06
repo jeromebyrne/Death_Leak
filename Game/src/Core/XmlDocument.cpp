@@ -9,9 +9,9 @@ XmlDocument::~XmlDocument(void)
 {
 }
 
-bool XmlDocument::Load(const char * filename)
+bool XmlDocument::Load(const string & filename)
 {
-	bool loadOkay = m_document.LoadFile(filename);
+	bool loadOkay = m_document.LoadFile(filename.c_str());
 
 	if ( !loadOkay )
 	{
@@ -27,9 +27,9 @@ bool XmlDocument::Load(const char * filename)
 	return loadOkay;
 }
 
-void XmlDocument::Save(const char * filename, TiXmlElement * root)
+void XmlDocument::Save(const string & filename, TiXmlElement * root)
 {
 	TiXmlDocument doc;
 	doc.LinkEndChild( root );
-	doc.SaveFile( filename );
+	doc.SaveFile( filename.c_str() );
 }

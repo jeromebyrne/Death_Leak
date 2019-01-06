@@ -30,30 +30,34 @@ void UILevelSelectScreen::Initialise()
 
 void UILevelSelectScreen::CreateLevelEntries()
 {
-	mLevelEntries["a. Test Level"] = "XmlFiles\\levels\\test.xml";
-	mLevelEntries["b. Test Level 2"] = "XmlFiles\\levels\\test_2.xml";
-	mLevelEntries["c. Hot Springs"] = "XmlFiles\\levels\\hot_springs.xml";
-	mLevelEntries["d. Cliff"] = "XmlFiles\\levels\\cliff.xml";
-	mLevelEntries["e. Cliff Windmill"] = "XmlFiles\\levels\\cliff_windmill.xml";
-	mLevelEntries["f. Ninja Arena 1"] = "XmlFiles\\levels\\first_ninja_arena.xml";
-	mLevelEntries["g. Dojo"] = "XmlFiles\\levels\\dojo.xml";
-	mLevelEntries["h. Cave Platforming 1"] = "XmlFiles\\levels\\cave_platforming_1.xml";
-	mLevelEntries["i. Grass Exploration 1"] = "XmlFiles\\levels\\grass_exploration_1.xml";
-	mLevelEntries["j. Grass Exploration 2"] = "XmlFiles\\levels\\grass_exploration_2.xml";
-	mLevelEntries["k. Grass Exploration 3"] = "XmlFiles\\levels\\grass_exploration_3.xml";
-	mLevelEntries["l. Grass Exploration Dead End Below 1"] = "XmlFiles\\levels\\grass_exploration_dead_end_below_1.xml";
-	mLevelEntries["m. Grass Exploration Dead End Below 2"] = "XmlFiles\\levels\\grass_exploration_dead_end_below_2.xml";
-	mLevelEntries["n. Water Well 1"] = "XmlFiles\\levels\\water_well_1.xml";
-	mLevelEntries["o. Inside Hanging Shadow"] = "XmlFiles\\levels\\inside_hanging_shadow.xml";
-	mLevelEntries["p. Catacombs Entrance 1"] = "XmlFiles\\levels\\catacombs_entrance_1.xml";
-	mLevelEntries["q. Catacombs Entrance 2"] = "XmlFiles\\levels\\catacombs_entrance_2.xml";
-	mLevelEntries["r. Grass River 1"] = "XmlFiles\\levels\\grass_river_1.xml";
-	mLevelEntries["s. Underwater Cave 1"] = "XmlFiles\\levels\\underwater_cave.xml";
-	mLevelEntries["s2. Underwater Cave 1.5"] = "XmlFiles\\levels\\underwater_cave_1_5.xml";
-	mLevelEntries["t. Underwater Cave 2"] = "XmlFiles\\levels\\underwater_cave_2.xml";
-	mLevelEntries["u. Underwater Cave 3"] = "XmlFiles\\levels\\underwater_cave_3.xml";
-	mLevelEntries["v. Underwater Cave 4"] = "XmlFiles\\levels\\underwater_cave_4.xml";
-	mLevelEntries["w. Underwater Cave 5"] = "XmlFiles\\levels\\underwater_cave_5.xml";
+	mLevelEntries["A. Test Level"] = "XmlFiles\\levels\\test.xml";
+	mLevelEntries["B. Test Level 2"] = "XmlFiles\\levels\\test_2.xml";
+	mLevelEntries["C. Hot Springs"] = "XmlFiles\\levels\\hot_springs.xml";
+	mLevelEntries["D. Cliff"] = "XmlFiles\\levels\\cliff.xml";
+	mLevelEntries["E. Cliff Windmill"] = "XmlFiles\\levels\\cliff_windmill.xml";
+	mLevelEntries["F. Ninja Arena 1"] = "XmlFiles\\levels\\first_ninja_arena.xml";
+	mLevelEntries["G. Dojo"] = "XmlFiles\\levels\\dojo.xml";
+	mLevelEntries["H. Cave Platforming 1"] = "XmlFiles\\levels\\cave_platforming_1.xml";
+	mLevelEntries["I. Grass Exploration 1"] = "XmlFiles\\levels\\grass_exploration_1.xml";
+	mLevelEntries["J. Grass Exploration 2"] = "XmlFiles\\levels\\grass_exploration_2.xml";
+	mLevelEntries["K. Grass Exploration 3"] = "XmlFiles\\levels\\grass_exploration_3.xml";
+	mLevelEntries["L. Grass Exploration Dead End Below 1"] = "XmlFiles\\levels\\grass_exploration_dead_end_below_1.xml";
+	mLevelEntries["M. Grass Exploration Dead End Below 2"] = "XmlFiles\\levels\\grass_exploration_dead_end_below_2.xml";
+	mLevelEntries["N. Water Well 1"] = "XmlFiles\\levels\\water_well_1.xml";
+	mLevelEntries["O. Inside Hanging Shadow"] = "XmlFiles\\levels\\inside_hanging_shadow.xml";
+	mLevelEntries["P. Catacombs Entrance 1"] = "XmlFiles\\levels\\catacombs_entrance_1.xml";
+	mLevelEntries["Q. Catacombs Entrance 2"] = "XmlFiles\\levels\\catacombs_entrance_2.xml";
+	mLevelEntries["R. Grass River 1"] = "XmlFiles\\levels\\grass_river_1.xml";
+	mLevelEntries["S. Underwater Cave 1"] = "XmlFiles\\levels\\underwater_cave.xml";
+	mLevelEntries["S2. Underwater Cave 1.5"] = "XmlFiles\\levels\\underwater_cave_1_5.xml";
+	mLevelEntries["T. Underwater Cave 2"] = "XmlFiles\\levels\\underwater_cave_2.xml";
+	mLevelEntries["U. Underwater Cave 3"] = "XmlFiles\\levels\\underwater_cave_3.xml";
+	mLevelEntries["V. Underwater Cave 4"] = "XmlFiles\\levels\\underwater_cave_4.xml";
+	mLevelEntries["W. Underwater Cave 5"] = "XmlFiles\\levels\\underwater_cave_5.xml";
+	mLevelEntries["X. Underwater Cave 6"] = "XmlFiles\\levels\\underwater_cave_6.xml";
+	mLevelEntries["Y. Waterfall Bottom"] = "XmlFiles\\levels\\waterfall_bottom.xml";
+	mLevelEntries["Z. Waterfall Top"] = "XmlFiles\\levels\\waterfall_top.xml";
+	mLevelEntries["a. Forest Exploration 1"] = "XmlFiles\\levels\\forest_exploration_1.xml";
 }
 
 void UILevelSelectScreen::AddLevelButtons()

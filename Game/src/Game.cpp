@@ -395,7 +395,7 @@ void Game::Cleanup()
 	m_screenAlignedPostProcTex1->Release();
 }
 
-void Game::SetLevelEditFilename(const char * file) 
+void Game::SetLevelEditFilename(const string & file) 
 { 
 	GAME_ASSERT(mlevelEditor);
 	if (mlevelEditor)

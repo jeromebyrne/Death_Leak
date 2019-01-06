@@ -10,9 +10,9 @@ public:
 	XmlDocument(void);
 	~XmlDocument(void);
 	
-	bool Load(const char * fileName);
+	bool Load(const string & fileName);
 
-	void Save(const char * filename,  TiXmlElement * root);
+	void Save(const string & filename,  TiXmlElement * root);
 	
 	TiXmlHandle * Handle()
 	{
