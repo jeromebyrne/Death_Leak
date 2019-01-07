@@ -1,13 +1,13 @@
 <level audio="">
     <LevelProperties>
         <camera_properties posx="0.000000" posy="3400.000000" zoom_in_percent="1.000000" xOffset="0.000000" yOffset="-100.000000" xLag="15.000000" yLag="7.000000" followx="true" followy="false" />
-        <level_bounds left="-2300.000000" right="3000.000000" top="10000.000000" bottom="0.000000" />
+        <level_bounds left="-2300.000000" right="5800.000000" top="10000.000000" bottom="0.000000" />
         <music file="" initial_delay="1.000000" length="96.000000" time_between="120.000000" />
         <weather_properties allow_weather="true" />
         <is_animation_preview value="false" />
     </LevelProperties>
     <ParallaxLayer id="1" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kFarBackground" y="3400.000000" x="2763.985352" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kFarBackground" y="3200.000000" x="3220.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="2000.000000" width="2560.000000" native="false" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -31,7 +31,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <Player id="2" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kPlayer" y="3146.000000" x="-116.014648" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kPlayer" y="3096.000000" x="-1899.014648" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="215.352036" width="181.393768" native="false" repeatX="false" repeatY="false" />
         <material value="maleninja" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -83,7 +83,7 @@
     </SolidMovingSprite>
     <SolidLineStrip id="4" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kSolidLines" y="2969.958496" x="-435.014404" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions height="470.083008" width="9416.000000" native="false" repeatX="false" repeatY="false" />
+        <dimensions height="486.916992" width="14088.000000" native="false" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
@@ -98,17 +98,17 @@
         <resistance y="1.000000" x="1.000000" />
         <maxvelocity y="0.000000" x="0.000000" />
         <applygravity value="false" />
-        <collisionboxdimensions y="400.000000" x="7491.000000" offsetX="962.499878" offsetY="35.041504" />
+        <collisionboxdimensions y="400.000000" x="9856.000000" offsetX="2116.000000" offsetY="-43.458496" />
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
-        <points x_0="-2758.000244" y_0="43.041504" x_1="4683.000000" y_1="27.041504" num_points="2" />
+        <points x_0="-2787.000244" y_0="-51.958496" x_1="7019.000000" y_1="-34.958496" num_points="2" />
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="false" />
     </SolidLineStrip>
     <Sprite id="5" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundBack" y="2623.000000" x="491.985352" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions height="1024.000000" width="7354.119629" native="false" repeatX="true" repeatY="false" />
+        <dimensions height="1024.000000" width="14167.714844" native="false" repeatX="true" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
@@ -137,7 +137,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="7" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kFarForeground" y="3423.000000" x="3070.985352" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kFarForeground" y="3418.000000" x="2788.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="2743.384033" width="1112.317383" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -152,21 +152,6 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="8" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kFarForeground" y="3638.000000" x="-947.014648" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions height="2743.384033" width="1112.317383" native="false" repeatX="false" repeatY="false" />
-        <material value="grassground" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media/objects/tree2_blur.png" />
-        <horizontalflip value="true" />
-        <verticalflip value="false" />
-        <isanimated value="false" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-    </Sprite>
-    <Sprite id="9" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kMiddleForeground" y="3375.000000" x="2171.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="4158.374023" width="1686.031372" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -181,24 +166,24 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
+    <LevelTrigger id="9" level_edit_locked="false" updateable="true" always_update="true">
+        <position depth_layer="kGround" y="3923.000000" x="-2658.014648" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions height="2000.000000" width="400.000000" />
+        <material value="" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
+        <level_to_load value="XmlFiles\levels\forest_exploration_2.xml" />
+    </LevelTrigger>
     <LevelTrigger id="10" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kGround" y="3914.000000" x="-2706.014648" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kGround" y="3307.000000" x="6055.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="2000.000000" width="400.000000" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
-        <level_to_load value="XmlFiles\levels\waterfall_top.xml" />
+        <level_to_load value="XmlFiles\levels\waterfall_bottom.xml" />
     </LevelTrigger>
-    <LevelTrigger id="11" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kGround" y="3304.000000" x="3291.985352" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions height="2000.000000" width="400.000000" />
-        <material value="" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
-        <level_to_load value="XmlFiles\levels\forest_exploration_barn.xml" />
-    </LevelTrigger>
-    <Sprite id="12" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kGroundFront" y="3210.000000" x="-2212.014648" rotation="-1.519999" auto_rotate_value="0.000000" />
+    <Sprite id="11" level_edit_locked="false" updateable="true" always_update="false">
+        <position depth_layer="kGroundFront" y="3109.000000" x="-2230.014648" rotation="-1.519999" auto_rotate_value="0.000000" />
         <dimensions height="512.000000" width="512.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -212,8 +197,8 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="13" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kGroundFront" y="3207.000000" x="2796.985352" rotation="-1.469999" auto_rotate_value="0.000000" />
+    <Sprite id="12" level_edit_locked="false" updateable="true" always_update="false">
+        <position depth_layer="kGroundFront" y="3123.000000" x="5583.985352" rotation="-1.560025" auto_rotate_value="0.000000" />
         <dimensions height="512.000000" width="512.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -227,9 +212,9 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="14" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kNearBackground" y="2731.000000" x="209.985352" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions height="1024.000000" width="7354.119629" native="false" repeatX="true" repeatY="false" />
+    <Sprite id="13" level_edit_locked="false" updateable="true" always_update="false">
+        <position depth_layer="kNearBackground" y="2744.000000" x="387.985352" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions height="1024.000000" width="12393.969727" native="false" repeatX="true" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
@@ -242,9 +227,9 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="15" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kMiddleBackground" y="2793.000000" x="233.985352" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions height="1024.000000" width="7354.119629" native="false" repeatX="true" repeatY="false" />
+    <Sprite id="14" level_edit_locked="false" updateable="true" always_update="false">
+        <position depth_layer="kMiddleBackground" y="2812.000000" x="245.985352" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions height="1024.000000" width="14773.657227" native="false" repeatX="true" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
@@ -257,9 +242,9 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="16" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kMiddleBackground" y="3641.000000" x="847.985352" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions height="1100.000000" width="4465.085938" native="false" repeatX="true" repeatY="false" />
+    <Sprite id="15" level_edit_locked="false" updateable="true" always_update="false">
+        <position depth_layer="kMiddleBackground" y="3648.000000" x="1086.985352" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions height="1100.000000" width="9921.156250" native="false" repeatX="true" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
@@ -272,9 +257,9 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="17" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kNearBackground" y="3579.000000" x="-22.014648" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions height="1238.000000" width="5047.110352" native="false" repeatX="true" repeatY="false" />
+    <Sprite id="16" level_edit_locked="false" updateable="true" always_update="false">
+        <position depth_layer="kNearBackground" y="3580.000000" x="-105.014648" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions height="1238.000000" width="8936.982422" native="false" repeatX="true" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
@@ -287,7 +272,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="18" level_edit_locked="false" updateable="true" always_update="false">
+    <Sprite id="17" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundFront" y="3582.000000" x="134.985352" rotation="-0.079602" auto_rotate_value="0.000000" />
         <dimensions height="2743.384033" width="1112.317383" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
@@ -302,143 +287,58 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="19" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kGroundFront" y="3349.000000" x="598.985352" rotation="-0.079602" auto_rotate_value="0.000000" />
-        <dimensions height="278.153168" width="764.006104" native="false" repeatX="false" repeatY="false" />
+    <Sprite id="18" level_edit_locked="false" updateable="true" always_update="false">
+        <position depth_layer="kGround" y="3405.000000" x="3973.985352" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions height="844.293457" width="1266.440308" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
         <alpha value="1.000000" />
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media/objects/branch_1.png" />
-        <horizontalflip value="true" />
-        <verticalflip value="false" />
-        <isanimated value="false" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-    </Sprite>
-    <SolidLineStrip id="20" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kSolidLines" y="3400.000000" x="683.985352" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions height="458.000000" width="874.000000" native="false" repeatX="false" repeatY="false" />
-        <material value="" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="false" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance y="1.000000" x="1.000000" />
-        <maxvelocity y="0.000000" x="0.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions y="400.000000" x="718.000000" offsetX="-78.000000" offsetY="29.000000" />
-        <passive value="true" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <is_bouncy value="false" bounce_multiplier="1.300000" />
-        <points x_0="-412.000000" y_0="-37.000000" x_1="-63.000000" y_1="-4.000000" x_2="152.000000" y_2="38.000000" x_3="256.000000" y_3="95.000000" num_points="4" />
-        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="false" />
-    </SolidLineStrip>
-    <Sprite id="21" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kGroundFront" y="3671.000000" x="964.985352" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions height="199.370834" width="547.613953" native="false" repeatX="false" repeatY="false" />
-        <material value="grassground" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media/objects/branch_2.png" />
+        <texture filename="Media/blank_white.png" />
         <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <SolidLineStrip id="22" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kSolidLines" y="3560.000000" x="963.985352" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions height="706.000000" width="538.000000" native="false" repeatX="false" repeatY="false" />
-        <material value="" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="false" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance y="1.000000" x="1.000000" />
-        <maxvelocity y="0.000000" x="0.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions y="400.000000" x="528.000000" offsetX="-5.000000" offsetY="153.000000" />
-        <passive value="true" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <is_bouncy value="false" bounce_multiplier="1.300000" />
-        <points x_0="-244.000000" y_0="192.000000" x_1="-79.000000" y_1="182.000000" x_2="234.000000" y_2="114.000000" num_points="3" />
-        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="false" />
-    </SolidLineStrip>
-    <Sprite id="23" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kGroundFront" y="3843.000000" x="1752.985352" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions height="199.370834" width="547.613953" native="false" repeatX="false" repeatY="false" />
-        <material value="grassground" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media/objects/branch_3.png" />
-        <horizontalflip value="true" />
-        <verticalflip value="false" />
-        <isanimated value="false" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-    </Sprite>
-    <SolidLineStrip id="24" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kSolidLines" y="3920.000000" x="1723.985352" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions height="489.000000" width="630.000000" native="false" repeatX="false" repeatY="false" />
-        <material value="" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="false" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance y="1.000000" x="1.000000" />
-        <maxvelocity y="0.000000" x="0.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions y="400.000000" x="555.000000" offsetX="37.500000" offsetY="-44.500000" />
-        <passive value="true" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <is_bouncy value="false" bounce_multiplier="1.300000" />
-        <points x_0="-215.000000" y_0="-55.000000" x_1="196.000000" y_1="-55.000000" x_2="290.000000" y_2="-34.000000" num_points="3" />
-        <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="false" />
-    </SolidLineStrip>
-    <LevelEntry id="25" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kGround" y="3158.000000" x="-2137.014648" rotation="0.000000" auto_rotate_value="0.000000" />
+    <LevelEntry id="19" level_edit_locked="false" updateable="true" always_update="true">
+        <position depth_layer="kGround" y="3057.000000" x="-2173.014648" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="250.000000" width="250.000000" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
-        <level_came_from value="XmlFiles\levels\waterfall_top.xml" />
+        <level_came_from value="XmlFiles\levels\forest_exploration_2.xml" />
         <player_direction x="1.000000" />
         <door_id value="" />
     </LevelEntry>
-    <LevelEntry id="26" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kGround" y="3147.000000" x="2716.985352" rotation="0.000000" auto_rotate_value="0.000000" />
+    <Door id="20" level_edit_locked="false" updateable="true" always_update="false">
+        <position depth_layer="kGround" y="3060.000000" x="3298.985352" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions height="156.393097" width="86.443840" native="false" repeatX="false" repeatY="false" />
+        <material value="grassground" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
+        <alpha value="0.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media\test\door.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="true" />
+        <isanimated value="false" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <to_level_file value="XmlFiles\levels\inside_hanging_shadow.xml" />
+        <player_start_pos x="100.000000" y="-600.000000" />
+        <required_key value="" />
+        <door_sfx open="" locked="" />
+        <door_id value="barn_entrance" />
+    </Door>
+    <LevelEntry id="21" level_edit_locked="false" updateable="true" always_update="true">
+        <position depth_layer="kGround" y="3074.000000" x="3179.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="250.000000" width="250.000000" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
-        <level_came_from value="XmlFiles\levels\forest_exploration_barn.xml" />
+        <level_came_from value="XmlFiles\levels\inside_hanging_shadow.xml" />
         <player_direction x="-1.000000" />
         <door_id value="" />
     </LevelEntry>

@@ -59,6 +59,8 @@ void UIQuickPlayScreen::CreateLevelEntries()
 	mLevelEntries["Z. Waterfall Top"] = "XmlFiles\\levels\\waterfall_top.xml";
 	mLevelEntries["a. Forest Exploration 1"] = "XmlFiles\\levels\\forest_exploration_1.xml";
 	mLevelEntries["b. Forest Exploration 2"] = "XmlFiles\\levels\\forest_exploration_2.xml";
+	mLevelEntries["c. Forest Exploration Barn"] = "XmlFiles\\levels\\forest_exploration_barn.xml";
+	mLevelEntries["d. Village Central"] = "XmlFiles\\levels\\village_central.xml";
 }
 
 void UIQuickPlayScreen::AddLevelButtons()
