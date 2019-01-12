@@ -30,8 +30,8 @@ void UIQuickPlayScreen::Initialise()
 
 void UIQuickPlayScreen::CreateLevelEntries()
 {
-	mLevelEntries["A. Test Level"] = "XmlFiles\\levels\\test.xml";
-	mLevelEntries["B. Test Level 2"] = "XmlFiles\\levels\\test_2.xml";
+	// mLevelEntries["A. Test Level"] = "XmlFiles\\levels\\test.xml";
+	// mLevelEntries["B. Test Level 2"] = "XmlFiles\\levels\\test_2.xml";
 	mLevelEntries["C. Hot Springs"] = "XmlFiles\\levels\\hot_springs.xml";
 	mLevelEntries["D. Cliff"] = "XmlFiles\\levels\\cliff.xml";
 	mLevelEntries["E. Cliff Windmill"] = "XmlFiles\\levels\\cliff_windmill.xml";
@@ -46,7 +46,7 @@ void UIQuickPlayScreen::CreateLevelEntries()
 	mLevelEntries["N. Water Well 1"] = "XmlFiles\\levels\\water_well_1.xml";
 	mLevelEntries["O. Inside Hanging Shadow"] = "XmlFiles\\levels\\inside_hanging_shadow.xml";
 	mLevelEntries["P. Catacombs Entrance 1"] = "XmlFiles\\levels\\catacombs_entrance_1.xml";
-	mLevelEntries["Q. Catacombs Entrance 2"] = "XmlFiles\\levels\\catacombs_entrance_2.xml";
+	// mLevelEntries["Q. Catacombs Entrance 2"] = "XmlFiles\\levels\\catacombs_entrance_2.xml";
 	mLevelEntries["R. Grass River 1"] = "XmlFiles\\levels\\grass_river_1.xml";
 	mLevelEntries["S. Underwater Cave 1"] = "XmlFiles\\levels\\underwater_cave.xml";
 	mLevelEntries["S2. Underwater Cave 1.5"] = "XmlFiles\\levels\\underwater_cave_1_5.xml";
@@ -61,6 +61,9 @@ void UIQuickPlayScreen::CreateLevelEntries()
 	mLevelEntries["b. Forest Exploration 2"] = "XmlFiles\\levels\\forest_exploration_2.xml";
 	mLevelEntries["c. Forest Exploration Barn"] = "XmlFiles\\levels\\forest_exploration_barn.xml";
 	mLevelEntries["d. Village Central"] = "XmlFiles\\levels\\village_central.xml";
+	mLevelEntries["e. Village Shrine"] = "XmlFiles\\levels\\village_shrine.xml";
+	mLevelEntries["f. Village Agri"] = "XmlFiles\\levels\\village_agri.xml";
+	mLevelEntries["g. Village Forts"] = "XmlFiles\\levels\\village_forts.xml";
 }
 
 void UIQuickPlayScreen::AddLevelButtons()
