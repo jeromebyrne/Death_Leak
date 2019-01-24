@@ -11,7 +11,7 @@
   
   <sprite name="21_title_background"
            process_input="false"
-           posX ="-970" posY ="-540" width="1969.2" height ="1115.8"
+           posX ="-990" posY ="-540" width="1969.2" height ="1115.8"
            image="Media\UI\main_menu_blur.png"
            hflip="false" vflip="false"
            alpha="0.45">
@@ -57,7 +57,7 @@
   
   <button name="3_new_game"
           process_input="true"
-          posX ="-500" posY ="-150" width="150" height ="150"
+          posX ="-430" posY ="-100" width="140" height ="140"
           image="Media\UI\buttons\play1.png"
           image_focus="Media\UI\buttons\play2.png"
           image_click="Media\UI\buttons\play2.png"
@@ -71,7 +71,7 @@
       <pushui ui="gameloading" />
       <fadein time="0"/>
       <stopallsounds />
-      <loadlevel level="XmlFiles\deprecated_levels\underwater_cave.xml" />
+      <loadlevel level="XmlFiles\levels\grass_exploration_3.xml" />
       <popui ui="gameloading" />
       <pushui ui="game_hud" />
     </actionspressup>
@@ -82,30 +82,11 @@
     
   </button>
 
-  <button name="5_level_editor"
-          process_input="true"
-          posX ="-165" posY ="-260" width="150" height ="150"
-          image="Media\\UI\\buttons\\edit1.png"
-          image_focus="Media\\UI\\buttons\\edit2.png"
-          image_click="Media\\UI\\buttons\\edit2.png"
-          hflip="false" vflip="false"
-          alpha="1.0"
-          use_standard_effect="true">
-    <actionspressup>
-      <fadeout time="150"/>
-      <popui ui="mainmenu" />
-      <pushui ui="level_select_edit" />
-      <fadein time="50"/>
-    </actionspressup>
-
-    <actionspressdown>
-      <playsoundeffect sound="UI\\click.wav"/>
-    </actionspressdown>
-  </button>
+  
    
   <button name="6_options"
           process_input="true"
-          posX ="175" posY ="-400" width="150" height ="150"
+          posX ="-420" posY ="-275" width="120" height ="120"
           image="Media\\UI\\buttons\\settings1.png"
           image_focus="Media\\UI\\buttons\settings2.png"
           image_click="Media\\UI\\buttons\settings2.png"
@@ -124,7 +105,7 @@
   
   <button name="7_quit"
            process_input="true"
-           posX ="520" posY ="-470" width="150" height ="150"
+           posX ="-395" posY ="-435" width="90" height ="90"
            image="Media\\UI\\buttons\\back1.png"
            image_focus="Media\\UI\\buttons\back2.png"
            image_click="Media\\UI\\buttons\back2.png"
@@ -144,15 +125,37 @@
 
   <sprite name="8_gamepad_warning"
           process_input="false"
-          posX ="-900" posY ="-450" width="500" height ="125"
+          posX ="550" posY ="-450" width="500" height ="125"
           image="Media\\UI\\gamepadwarning.png"
           hflip="false" vflip="false"
           alpha="1.0">
   </sprite>
 
+  <!--
+  <button name="8_1_level_editor"
+          process_input="true"
+          posX ="0" posY ="-260" width="120" height ="120"
+          image="Media\\UI\\buttons\\edit1.png"
+          image_focus="Media\\UI\\buttons\\edit2.png"
+          image_click="Media\\UI\\buttons\\edit2.png"
+          hflip="false" vflip="false"
+          alpha="1.0"
+          use_standard_effect="true">
+    <actionspressup>
+      <fadeout time="150"/>
+      <popui ui="mainmenu" />
+      <pushui ui="level_select_edit" />
+      <fadein time="50"/>
+    </actionspressup>
+
+    <actionspressdown>
+      <playsoundeffect sound="UI\\click.wav"/>
+    </actionspressdown>
+  </button>
+
   <button name="9_quick_play"
           process_input="true"
-          posX ="-500" posY ="-400" width="150" height ="150"
+          posX ="0" posY ="-400" width="120" height ="120"
           image="Media\\UI\\buttons\\edit1.png"
           image_focus="Media\\UI\\buttons\\edit2.png"
           image_click="Media\\UI\\buttons\\edit2.png"
@@ -170,4 +173,5 @@
       <playsoundeffect sound="UI\\click.wav"/>
     </actionspressdown>
   </button>
+  -->
 </uiscreen>
