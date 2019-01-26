@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include "InputManager.h"
+#include "steam_api.h"
 
 class EffectLightTexture;
 class EffectLightTextureVertexWobble;
@@ -61,7 +62,11 @@ public:
 		
 	const InputManager & GetInputManager() const { return mInputManager; }
 
+	void Game::OnSteamGameOverlayActivated(GameOverlayActivated_t* pCallback);
+
 private:
+
+	void * m_steamcallback_OnSteamGameOverlayActivated = nullptr;
 
 	// graphics manager
 	Graphics * m_pGraphics;

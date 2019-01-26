@@ -142,6 +142,8 @@ void Game::Initialise()
 	PlayerLevelManager::GetInstance()->Initialise();
 
 	FeatureUnlockManager::GetInstance()->Initialise();
+
+	STEAM_CALLBACK(Game, OnSteamGameOverlayActivated, GameOverlayActivated_t);
 }
 
 void Game::Update(float delta)
@@ -457,5 +459,10 @@ void Game::DoDamagePauseEffect()
 		return;
 	}
 	mLastTimeDamagePauseEffect = Timing::Instance()->GetTotalTimeSeconds();
+}
+
+void Game::OnSteamGameOverlayActivated(GameOverlayActivated_t* pCallback)
+{
+	mPaused = pCallback->m_bActive;
 }
 

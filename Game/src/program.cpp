@@ -5,6 +5,7 @@
 #include "Timing.h"
 #include "UIManager.h"
 #include "StringManager.h"
+#include "steam_api.h"
 
 //--------------------------------------------------------------------------------------
 // Global Variables
@@ -14,6 +15,8 @@ unsigned int gBackBufferWidth = 1920;
 unsigned int gBackBufferHeight = 1080;
 unsigned int gWindowWidth = 1920;
 unsigned int gWindowHeight = 1080;
+
+static int kSteamAppId = 995990;
 
 DXWindow * g_pWindow = nullptr;
 Graphics * g_pGraphics = nullptr;
@@ -32,7 +35,6 @@ void KillGame();
 bool gDestroyGame = false;
 void PostDestroyMessage();
 
-
 //--------------------------------------------------------------------------------------
 // Entry point to the program. Initializes everything and goes into a message processing 
 // loop. Idle time is used to render the scene.
@@ -41,6 +43,14 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 {
 	if( FAILED(  Initialise(hInstance, nCmdShow) ))
         return 0;
+
+	if (SteamAPI_RestartAppIfNecessary(kSteamAppId));
+	{
+		// exit(0);
+	}
+
+	// Initialize Steam
+	bool steamInit = SteamAPI_Init();
 
 	MSG mssg;                // message from queue
 	double  target_delta = 1.0/60.0; 
@@ -213,6 +223,8 @@ HRESULT Initialise(HINSTANCE hInstance, int nCmdShow)
 }
 void Update(float delta)
 {
+	SteamAPI_RunCallbacks();
+
 	g_pGame->Update(delta);
 }
 void Render()
@@ -253,6 +265,7 @@ void KillGame()
 	delete g_pGraphics;
 	g_pGame->Destroy();
     PostQuitMessage( 0 );
+	SteamAPI_Shutdown();
 }
 
 void PostDestroyMessage()

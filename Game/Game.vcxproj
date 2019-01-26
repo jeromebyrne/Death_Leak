@@ -286,6 +286,7 @@
     <ClInclude Include="src\UI\UIWidget.h" />
     <ClInclude Include="src\Utils\DrawUtilities.h" />
     <ClInclude Include="src\Utils\Utilities.h" />
+    <ClInclude Include="steam\steam_api.h" />
     <ClInclude Include="tinyxml\tinystr.h" />
     <ClInclude Include="tinyxml\tinyxml.h" />
   </ItemGroup>
@@ -422,15 +423,15 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;tinyxml;src/Utils;src/UI;src/Particles;src/Misc;src/GameObjects;src/Effects;src/Core;src/Audio;src/Animation;src/AI;src;DXUT;irrKlang-1.4.0/include;C:\Program Files %28x86%29\Visual Leak Detector\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;tinyxml;src/Utils;src/UI;src/Particles;src/Misc;src/GameObjects;src/Effects;src/Core;src/Audio;src/Animation;src/AI;src;DXUT;irrKlang-1.4.0/include;C:\Program Files %28x86%29\Visual Leak Detector\include;C:\Users\jerom\Documents\git\2DPlatformer\Game\steam;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>irrKlang-1.4.0/lib/x64;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64</AdditionalLibraryDirectories>
-      <AdditionalDependencies>dxerr.lib;dxguid.lib;d3dx9.lib;d3d9.lib;winmm.lib;comctl32.lib;d3dx10d.lib;d3d10.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\jerom\Documents\git\2DPlatformer\Game\steam\redistributable_bin\win64;irrKlang-1.4.0/lib/x64;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64</AdditionalLibraryDirectories>
+      <AdditionalDependencies>dxerr.lib;dxguid.lib;d3dx9.lib;d3d9.lib;winmm.lib;comctl32.lib;d3dx10d.lib;d3d10.lib;steam_api64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
