@@ -8,7 +8,7 @@
 	// will be resolved relative to this root.
 	// If you don't define ContentRoot, then it will be assumed to be
 	// the location of this script file, which probably isn't what you want
-	"ContentRoot"	"D:\MyGame\rel\master\"
+	"ContentRoot"	"C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_142\sdk\tools\ContentBuilder\content\windows_content"
 
 	// include all files recursivley
   "FileMapping"

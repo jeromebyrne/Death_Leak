@@ -17,3 +17,5 @@
 *.db
 .vs/DeathLeak/v15/Browse.VC.opendb
 *.opendb
+steamworks_sdk_142/sdk/tools/ContentBuilder/builder/crashhandler.dll
+steamworks_sdk_142/sdk/tools/ContentBuilder/builder/
