@@ -1,0 +1,12 @@
+"DepotBuildConfig"
+{
+	"DepotID" "995991"
+	"contentroot" "C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_142\sdk\tools\ContentBuilder\content\windows_content"
+	"FileMapping"
+	{
+		"LocalPath" "*"
+		"DepotPath" "."
+		"recursive" "1"
+	}
+	"FileExclusion" "*.pdb"
+}
