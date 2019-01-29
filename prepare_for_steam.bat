@@ -15,3 +15,12 @@ xcopy C:\Users\jerom\Documents\git\2DPlatformer\Game\XmlFiles C:\Users\jerom\Doc
 
 REM delete the steam-appid.txt file used for debugging
 del "C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_142\sdk\tools\ContentBuilder\content\windows_content\steam_appid.txt" /s /q
+
+REM delete other unneeded files
+del "C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_142\sdk\tools\ContentBuilder\content\windows_content\Game.vcxproj" /s /q
+del "C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_142\sdk\tools\ContentBuilder\content\windows_content\Game.vcxproj.user" /s /q
+del "C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_142\sdk\tools\ContentBuilder\content\windows_content\Game.log" /s /q
+del "C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_142\sdk\tools\ContentBuilder\content\windows_content\DeathLeakGame.ilk" /s /q
+del "C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_142\sdk\tools\ContentBuilder\content\windows_content\DeathLeakGame.pdb" /s /q
+
+REM TODO: delete the save.xml file (this should be created at runtime)
