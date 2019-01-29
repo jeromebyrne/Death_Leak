@@ -358,6 +358,12 @@ void Character::Update(float delta)
 	}
 }
 
+void Character::ResetJumpHeightVariables()
+{
+	mHighestPointWhileInAir = -99999.0f;
+	mTimeNotOnSolidSurface = 0.0f;
+}
+
 void Character::DoLandOnSolidSurfaceEffects(float dropDistance)
 {
 	if (dropDistance < kSmallDropDistance)

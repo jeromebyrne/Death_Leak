@@ -37,6 +37,7 @@ void LevelEntry::Initialise()
 		// a match so let's set the players position to this object
 		p->SetXY(m_position.X, m_position.Y);
 		p->AccelerateX(mPlayerDirectionX);
+		p->ResetJumpHeightVariables();
 	}
 }
 

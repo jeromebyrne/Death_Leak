@@ -103,6 +103,8 @@ public:
 
 	bool IsDead();
 
+	void ResetJumpHeightVariables();
+
 protected:
 
 	void SetIsWallJumping(bool value);
