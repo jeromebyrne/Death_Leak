@@ -57,7 +57,7 @@
   
   <button name="3_new_game"
           process_input="true"
-          posX ="-430" posY ="-100" width="140" height ="140"
+          posX ="-435" posY ="-100" width="160" height ="160"
           image="Media\UI\buttons\play1.png"
           image_focus="Media\UI\buttons\play2.png"
           image_click="Media\UI\buttons\play2.png"
@@ -85,7 +85,7 @@
    
   <button name="6_options"
           process_input="true"
-          posX ="-420" posY ="-275" width="120" height ="120"
+          posX ="-410" posY ="-275" width="100" height ="100"
           image="Media\\UI\\buttons\\settings1.png"
           image_focus="Media\\UI\\buttons\settings2.png"
           image_click="Media\\UI\\buttons\settings2.png"

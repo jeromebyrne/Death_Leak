@@ -22,7 +22,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <ParallaxLayer id="2" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kFarBackground" y="-1728.097534" x="5025.157227" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kFarBackground" y="-1088.097656" x="1505.157227" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="2000.000000" width="2560.000000" native="false" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -46,7 +46,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="3" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kFarBackground" y="-1775.000000" x="5025.157227" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kFarBackground" y="-1775.000000" x="1505.157227" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="523.000000" width="2048.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -98,7 +98,7 @@
         <projectileoffsety value="25" />
     </Player>
     <ParallaxLayer id="5" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kFarBackground" y="-1418.000000" x="5025.157227" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kFarBackground" y="-1418.000000" x="1505.157227" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="243.000000" width="4083.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -122,7 +122,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="6" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kFarBackground" y="-1700.000000" x="5025.157227" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kFarBackground" y="-1700.000000" x="1505.157227" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="596.000000" width="1925.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -146,7 +146,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="7" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kFarBackground" y="-1535.000000" x="5025.157227" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kFarBackground" y="-1535.000000" x="1505.157227" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="243.000000" width="4083.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -306,7 +306,7 @@
     </Sprite>
     <SolidLineStrip id="17" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kSolidLines" y="-2091.143799" x="5310.343750" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions height="2724.165527" width="8918.283203" native="false" repeatX="false" repeatY="false" />
+        <dimensions height="2786.092285" width="8936.373047" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
@@ -321,12 +321,12 @@
         <resistance y="1.000000" x="1.000000" />
         <maxvelocity y="0.000000" x="0.000000" />
         <applygravity value="false" />
-        <collisionboxdimensions y="1302.252930" x="6903.955078" offsetX="-1007.164063" offsetY="710.956299" />
+        <collisionboxdimensions y="1333.216309" x="6913.000000" offsetX="-1011.686523" offsetY="726.437988" />
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
-        <points x_0="-4434.141602" y_0="1312.082764" x_1="-2766.141602" y_1="671.082764" x_2="-988.169434" y_2="708.829834" x_3="-815.169434" y_3="662.829834" x_4="-795.141602" y_4="291.082764" x_5="-710.169922" y_5="211.829834" x_6="-599.169922" y_6="202.829834" x_7="166.830566" y_7="109.829834" x_8="942.830078" y_8="207.829834" x_9="1034.858398" y_9="272.082764" x_10="1306.830566" y_10="782.829834" x_11="2419.813477" y_11="758.046265" num_points="12" />
+        <points x_0="-4443.186523" y_0="1343.046143" x_1="-2763.186523" y_1="718.046143" x_2="-988.169434" y_2="708.829834" x_3="-815.169434" y_3="662.829834" x_4="-795.141602" y_4="291.082764" x_5="-710.169922" y_5="211.829834" x_6="-599.169922" y_6="202.829834" x_7="166.830566" y_7="109.829834" x_8="942.830078" y_8="207.829834" x_9="1034.858398" y_9="272.082764" x_10="1306.830566" y_10="782.829834" x_11="2419.813477" y_11="758.046265" num_points="12" />
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="false" />
     </SolidLineStrip>
     <SolidMovingSprite id="18" level_edit_locked="false" updateable="true" always_update="false">
