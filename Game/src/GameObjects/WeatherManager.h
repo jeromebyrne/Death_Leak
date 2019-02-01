@@ -60,9 +60,9 @@ private:
 
 	void RemoveState(WeatherState state);
 
-	void CreateRainAssets();
+	void CreateRainAssets(bool preWarm = false);
 
-	void CreateSnowAssets();
+	void CreateSnowAssets(bool preWarm = false);
 
 	void FadeWeatherIfApplicable(float delta);
 

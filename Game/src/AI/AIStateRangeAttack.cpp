@@ -125,6 +125,15 @@ void AIStateRangeAttack::Update(float delta)
 			GAME_ASSERT(player);
 			m_npc->FireProjectileAtObject(player);
 			mTimeStoodStill += delta;
+
+			if (player->X() < m_npc->X())
+			{
+				m_npc->FlipHorizontal();
+			}
+			else
+			{
+				m_npc->UnFlipHorizontal();
+			}
 		}
 
 		if (mTimeStoodStill > 3.0f)

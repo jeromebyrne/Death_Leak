@@ -6,7 +6,7 @@
 #include "Game.h"
 #include "ParticleEmitterManager.h"
 
-static const float kTimeUntilFirstWeather = 60.0f;
+static const float kTimeUntilFirstWeather = 80.0f;
 static const float kRainSessionMinTime = 70.0f;
 static const float kRainSessionMaxTime = 120.0f;
 static const float kRainIntroTime = 5.0f;
@@ -94,7 +94,7 @@ void WeatherManager::RefreshAssets()
 				mRainSFX = nullptr;
 				mLightningLayer = nullptr;
 				mRainParticleSpray = nullptr;
-				CreateRainAssets();
+				CreateRainAssets(true);
 
 				break;
 			}
@@ -102,7 +102,7 @@ void WeatherManager::RefreshAssets()
 			{
 				mSnowSFX = nullptr;
 				mSnowParticleSpray = nullptr;
-				CreateSnowAssets();
+				CreateSnowAssets(true);
 
 				break;
 			}
@@ -110,7 +110,7 @@ void WeatherManager::RefreshAssets()
 	}
 }
 
-void WeatherManager::CreateRainAssets()
+void WeatherManager::CreateRainAssets(bool preWarm)
 {
 	float gameScale = Game::GetGameScale().X;
 
@@ -178,9 +178,14 @@ void WeatherManager::CreateRainAssets()
 																					true,
 																					1.2f,
 																					140.0f,
-																					20.0f,
+																					40.0f,
 																					0.15f,
 																					0.8f);
+
+		if (preWarm)
+		{
+			mRainParticleSpray->Warm( true);
+		}
 
 		mRainParticleSpray->SetAlwaysUpdate(true);
 
@@ -188,7 +193,7 @@ void WeatherManager::CreateRainAssets()
 	}
 }
 
-void WeatherManager::CreateSnowAssets()
+void WeatherManager::CreateSnowAssets(bool preWarm)
 {
 	float gameScale = Game::GetGameScale().X;
 
@@ -227,9 +232,14 @@ void WeatherManager::CreateSnowAssets()
 			false,
 			1.0f,
 			200.0f,
-			10.0f,
+			60.0f,
 			0.15f,
 			0.9f);
+
+		if (preWarm)
+		{
+			mSnowParticleSpray->Warm(true);
+		}
 
 		mSnowParticleSpray->SetAlwaysUpdate(true);
 
@@ -460,7 +470,7 @@ void WeatherManager::UpdateNoWeather(float delta)
 	if (!mHasHadWeather && mElapsedTime > kTimeUntilFirstWeather)
 	{
 		StartRaining();
-		
+
 		// StartSnowing();
 
 		mHasHadWeather = true;

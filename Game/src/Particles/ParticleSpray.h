@@ -77,6 +77,8 @@ public:
 
 	void SetIsLooping(bool value) { m_isLooping = value; }
 
+	void Warm(bool defer);
+
 protected:
 
 	ID3D10ShaderResourceView* m_texture; // the texture being displayed on each quad of this spray
@@ -122,6 +124,8 @@ private:
 	void UpdateParticleToParent(Particle & particle);
 
 	VertexPositionTextureNormal mVertices[kMaxParticlesPerSpray * 6];
+
+	bool mShouldWarm = false;
 };
 
 #endif

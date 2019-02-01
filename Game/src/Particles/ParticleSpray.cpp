@@ -5,6 +5,11 @@
 #include "DrawUtilities.h"
 #include "Game.h"
 
+D3DXVECTOR2 tex1 = D3DXVECTOR2(1, 1);
+D3DXVECTOR2 tex2 = D3DXVECTOR2(0, 1);
+D3DXVECTOR2 tex3 = D3DXVECTOR2(0, 0);
+D3DXVECTOR2 tex4 = D3DXVECTOR2(1, 0);
+
 ParticleSpray::ParticleSpray(bool isBloodSpray, 
 							Vector2 position,
 							DepthLayer depthLayer,
@@ -154,15 +159,9 @@ void ParticleSpray::Update(float delta)
 {
 	DrawableObject::Update(delta);
 
-	// TODO: This is not optimal creatign these everytime
-	D3DXVECTOR2 tex1 = D3DXVECTOR2(1, 1);
-	D3DXVECTOR2 tex2 = D3DXVECTOR2(0, 1);
-	D3DXVECTOR2 tex3 = D3DXVECTOR2(0, 0);
-	D3DXVECTOR2 tex4 = D3DXVECTOR2(1, 0);
-
 	D3DXVECTOR3 normal = D3DXVECTOR3(1, 1, 1);
 
-	float currentTime = Timing::Instance()->GetTotalTimeSeconds();
+	//float currentTime = Timing::Instance()->GetTotalTimeSeconds();
 	int numAliveParticles = 0; // the total number of particles we actually need to render
 
 	float targetDelta = Timing::Instance()->GetTargetDelta();
@@ -229,8 +228,9 @@ void ParticleSpray::Update(float delta)
 			currentParticle.PosY = posY + (currentParticle.DirectionY * currentParticle.Speed) * percentDelta;
 			currentParticle.PosY -= currentParticle.Gravity * percentDelta; // apply gravity
 
-			float death_time = currentParticle.StartTime + currentParticle.MaxLiveTime;
-			float time_left = death_time - currentTime;
+			currentParticle.CurrentTime += delta;
+
+			float time_left = currentParticle.MaxLiveTime - currentParticle.CurrentTime;
 
 			// set alpha 
 			float percentTimeLeft = time_left / currentParticle.MaxLiveTime;
@@ -271,10 +271,8 @@ void ParticleSpray::Update(float delta)
 				float finalSize = currentParticle.StartSize * m_scaleTo;
 				float sizeDifference = finalSize - startSize;
 
-				float currentLive = currentTime - currentParticle.StartTime;
-
 				// get the current size as a percentage of the final size
-				float livePercent = ((float)currentLive / (float)currentParticle.MaxLiveTime);
+				float livePercent = (currentParticle.CurrentTime / currentParticle.MaxLiveTime);
 
 				float toAdd = sizeDifference * livePercent;
 
@@ -298,7 +296,7 @@ void ParticleSpray::Update(float delta)
 
 					currentParticle.Speed = currentParticle.StartSpeed;
 					currentParticle.Size = currentParticle.StartSize;
-					currentParticle.StartTime = Timing::Instance()->GetTotalTimeSeconds();
+					currentParticle.CurrentTime = 0.0f;
 
 					numAliveParticles++;
 				}
@@ -331,6 +329,34 @@ void ParticleSpray::Update(float delta)
 	{
 		// we have no more particles to show, delete this spray
 		GameObjectManager::Instance()->RemoveGameObject(this);
+		return;
+	}
+
+	if (mShouldWarm)
+	{
+		Warm(false);
+		mShouldWarm = false;
+	}
+}
+
+void ParticleSpray::Warm(bool defer)
+{
+	if (defer)
+	{
+		mShouldWarm = true;
+		return;
+	}
+
+	// The intention is to simulate a few cycles of the spray
+	for (auto & currentParticle : m_particleList)
+	{
+		float randTime = rand() % (int)((currentParticle.MaxLiveTime * 1.0f) * 1000.0f);
+		randTime /= 1000.0f;
+
+		currentParticle.PosX = currentParticle.StartPosX + (currentParticle.DirectionX * currentParticle.Speed) * randTime;
+		currentParticle.PosY = currentParticle.StartPosY + (currentParticle.DirectionY * currentParticle.Speed) * randTime;
+		currentParticle.PosY += currentParticle.Gravity * randTime; // apply gravity
+		currentParticle.CurrentTime += randTime;
 	}
 }
 

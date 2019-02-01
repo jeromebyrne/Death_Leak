@@ -67,7 +67,6 @@ ParticleSpray * ParticleEmitterManager::CreateRadialBloodSpray(unsigned int numP
 	for(int i = 0; i < numParticles; i++)
 	{
 		Particle p;
-		p.StartTime = creationTime;
 
 		float randDirX = ((rand() % 100)+1) * 0.01f;
 		float randDirY = ((rand() % 100)+1) * 0.01f;
@@ -89,11 +88,6 @@ ParticleSpray * ParticleEmitterManager::CreateRadialBloodSpray(unsigned int numP
 		p.DirectionY = randDirY;
 
 		p.MaxLiveTime = kBloodRadialMaxLiveTime - (((kBloodRadialMaxLiveTime - kBloodRadialMinLiveTime) / numParticles) * i);
-
-		if (loop)
-		{
-			p.StartTime = (rand() % (int)(p.MaxLiveTime * 100.0f)) * 0.01f;
-		}
 
 		unsigned spawnSpread = 4 * numParticles;
 		p.PosXOffset = rand() % spawnSpread;
@@ -154,7 +148,6 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedBloodSpray(int numParticle
 	for(int i = 0; i < numParticles; i++)
 	{
 		Particle p;
-		p.StartTime = creationTime;
 
 		float randSpread = ((rand() % (int)(spread * 100)) * 0.01);
 
@@ -248,7 +241,7 @@ ParticleSpray * ParticleEmitterManager::CreateRadialSpray(int numParticles,
 		maxBrightness = 0;
 	}
 
-	float creationTime = Timing::Instance()->GetTotalTimeSeconds();
+	//float creationTime = Timing::Instance()->GetTotalTimeSeconds();
 
 	float gameScale = Game::GetGameScale().X;
 
@@ -257,7 +250,6 @@ ParticleSpray * ParticleEmitterManager::CreateRadialSpray(int numParticles,
 	for(int i = 0; i < numParticles; i++)
 	{
 		Particle p;
-		p.StartTime = creationTime;
 
 		// random direction ======================================
 		float randDirX = ((rand() % 100)+1) * 0.01f;
@@ -434,7 +426,6 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSpray(int numParticles,
 	for(int i = 0; i < numParticles; i++)
 	{
 		Particle p;
-		p.StartTime = creationTime;
 
 		float randSpread = spread != 0.0f ? ((rand() % (int)(spread * 100.0f)) * 0.01f) : 0.0f;
 
@@ -611,10 +602,7 @@ ParticleSpray * ParticleEmitterManager::CreateDirectedSprayLoadTime(int numParti
 	for(int i = 0; i < numParticles; i++)
 	{
 		Particle p;
-		p.StartTime = creationTime;
-		
-		// int flippedVertical = rand() % 2;
-		// int flippedHorizontal = rand() % 2;
+
 		float randSpread = 0.0f; 
 		if (spread > 0.0f)
 		{

@@ -27,7 +27,7 @@ static const float kRollFocusAmount = 20.0f;
 
 Player::Player(float x, float y, float width, float height) :
 Character(x, y, GameObject::kPlayer, width, height),
-	mProjectileFireDelay(0.45f),
+	mProjectileFireDelay(0.25f),
 	mTimeUntilProjectileReady(0.0f),
 	mFireBurstNum(0),
 	mCurrentBurstNum(0),
@@ -249,7 +249,9 @@ void Player::Update(float delta)
 Projectile * Player::FireWeapon(Vector2 direction)
 {
 	if (GetIsCollidingAtObjectSide() ||
-		GetIsRolling())
+		GetIsRolling() ||
+		mWasInWaterLastFrame || 
+		mIsInWater)
 	{
 		return nullptr;
 	}
