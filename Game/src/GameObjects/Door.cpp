@@ -5,7 +5,7 @@
 #include "AudioManager.h"
 #include "SaveManager.h"
 
-static const float kWarmUpTime = 2.0f;
+static const float kWarmUpTime = 1.25f;
 
 Door::Door() :
 	Sprite()

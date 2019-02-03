@@ -346,7 +346,7 @@ void Camera2D::CheckDebugCamerCommands()
 {
 	int movespeed = 40;
 	// test
-	if (GetAsyncKeyState('D') < 0)
+	if (GetAsyncKeyState(VK_RIGHT) < 0)
 	{
 		if (!UIManager::Instance()->IsObjectEditorDisplaying())
 		{
@@ -366,7 +366,7 @@ void Camera2D::CheckDebugCamerCommands()
 			}
 		}
 	}
-	else if (GetAsyncKeyState('A') < 0)
+	else if (GetAsyncKeyState(VK_LEFT) < 0)
 	{
 		if (!UIManager::Instance()->IsObjectEditorDisplaying())
 		{
@@ -386,7 +386,7 @@ void Camera2D::CheckDebugCamerCommands()
 		}
 	}
 
-	if (GetAsyncKeyState('W') < 0)
+	if (GetAsyncKeyState(VK_UP) < 0)
 	{
 		if (!UIManager::Instance()->IsObjectEditorDisplaying())
 		{
@@ -405,7 +405,7 @@ void Camera2D::CheckDebugCamerCommands()
 			}
 		}
 	}
-	else if (GetAsyncKeyState('S') < 0 && GetAsyncKeyState(VK_CONTROL) >= 0)
+	else if (GetAsyncKeyState(VK_DOWN) < 0 && GetAsyncKeyState(VK_CONTROL) >= 0)
 	{
 		if (!UIManager::Instance()->IsObjectEditorDisplaying())
 		{

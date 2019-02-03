@@ -140,7 +140,8 @@ private:
 
 	list<GameObject::InteractableProperties> mInteractableIconsToDraw;
 
-	vector<UISprite *> mInteractableSprites;
+	vector<UISprite *> mInteractableSpritesGamepad;
+	vector<UISprite *> mInteractableSpritesKeyboard;
 };
 
 #endif

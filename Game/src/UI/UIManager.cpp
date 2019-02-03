@@ -164,6 +164,9 @@ void UIManager::Draw(ID3D10Device * device)
 
 	GameObjectManager * gameObjectManager = GameObjectManager::Instance();
 
+	GamePad * gamepad1 = GamePad::GetPad1();
+	bool gamePadConnected = (gamepad1 && gamepad1->IsConnected());
+
 	if (gameObjectManager)
 	{
 		float worldScale = gameObjectManager->GetCurrentLevelProperties().GetZoomInPercent();
@@ -177,7 +180,7 @@ void UIManager::Draw(ID3D10Device * device)
 				break;
 			}
 
-			auto iSprite = mInteractableSprites[iDrawnCount];
+			auto iSprite = gamePadConnected ? mInteractableSpritesGamepad[iDrawnCount] : mInteractableSpritesKeyboard[iDrawnCount];
 
 			Vector2 uiCoords = GetPointInUICoords(i.CurrentScreenPos.X - iSprite->Dimensions().X * 0.5f,
 													i.CurrentScreenPos.Y - iSprite->Dimensions().Y * 0.5f);
@@ -670,19 +673,40 @@ UISprite * UIManager::CreateCursorSprite()
 
 void UIManager::CreateInteractableSprites()
 {
-	mInteractableSprites.reserve(kMaxInteractablesToDraw);
-
-	for (int i = 0; i < kMaxInteractablesToDraw; ++i)
+	// gamepad
 	{
-		UISprite * sprite = new UISprite();
+		mInteractableSpritesGamepad.reserve(kMaxInteractablesToDraw);
 
-		sprite->SetImage("Media\\UI\\gamepad_icons\\x.png");
-		sprite->SetDimensions(kInteractSpriteDimensions);
-		sprite->SetUseStandardEffect(true);
-		sprite->Initialise();
-		sprite->LoadContent(Graphics::GetInstance()->Device());
+		for (int i = 0; i < kMaxInteractablesToDraw; ++i)
+		{
+			UISprite * sprite = new UISprite();
 
-		mInteractableSprites.push_back(sprite);
+			sprite->SetImage("Media\\UI\\gamepad_icons\\x.png");
+			sprite->SetDimensions(kInteractSpriteDimensions);
+			sprite->SetUseStandardEffect(true);
+			sprite->Initialise();
+			sprite->LoadContent(Graphics::GetInstance()->Device());
+
+			mInteractableSpritesGamepad.push_back(sprite);
+		}
+	}
+
+	// keyboard
+	{
+		mInteractableSpritesKeyboard.reserve(kMaxInteractablesToDraw);
+
+		for (int i = 0; i < kMaxInteractablesToDraw; ++i)
+		{
+			UISprite * sprite = new UISprite();
+
+			sprite->SetImage("Media\\UI\\gamepad_icons\\key_e.png");
+			sprite->SetDimensions(kInteractSpriteDimensions);
+			sprite->SetUseStandardEffect(true);
+			sprite->Initialise();
+			sprite->LoadContent(Graphics::GetInstance()->Device());
+
+			mInteractableSpritesKeyboard.push_back(sprite);
+		}
 	}
 }
 
