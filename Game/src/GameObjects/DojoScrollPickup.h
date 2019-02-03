@@ -19,6 +19,7 @@ public:
 	virtual void Initialise() override;
 	virtual void XmlRead(TiXmlElement * element) override;
 	virtual void XmlWrite(TiXmlElement * element) override;
+	virtual void Draw(ID3D10Device * device, Camera2D * camera) override;
 
 protected:
 
@@ -27,7 +28,14 @@ protected:
 
 private:
 
+	void InitialiseCostText();
+
 	FeatureUnlockManager::FeatureType mUnlocksFeature = FeatureUnlockManager::kNone;
+
+	int mOrbCost = 9999;
+
+	ID3DX10Font* mCostText = nullptr;
+	string mOrbCostString;
 };
 
 #endif
