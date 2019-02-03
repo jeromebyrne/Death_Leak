@@ -1,107 +1,16 @@
 <data BoxDimensionsX="32" BoxDimensionsY="48" EllipseDimensionsX="32" EllipseDimensionsY="48">
   
 	<body OffsetX="0" OffsetY="8" SizeX="40" SizeY="80">
-		<Still FrameRate="30" MaxFrameRate="30" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+		<Still FrameRate="10" MaxFrameRate="10" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
       <frame filename="Media\orb\1.png"/>
-      
-      <frame filename="Media\orb\2.png"/>
-      <frame filename="Media\orb\3.png"/>
-      <frame filename="Media\orb\4.png"/>
-      <frame filename="Media\orb\5.png"/>
-      <frame filename="Media\orb\6.png"/>
-      <frame filename="Media\orb\7.png"/>
-      <frame filename="Media\orb\8.png"/>
-      <frame filename="Media\orb\9.png"/>
-      <frame filename="Media\orb\10.png"/>
-
       <frame filename="Media\orb\11.png"/>
-      <frame filename="Media\orb\12.png"/>
-      <frame filename="Media\orb\13.png"/>
-      <frame filename="Media\orb\14.png"/>
-      <frame filename="Media\orb\15.png"/>
-      <frame filename="Media\orb\16.png"/>
-      <frame filename="Media\orb\17.png"/>
-      <frame filename="Media\orb\18.png"/>
-      <frame filename="Media\orb\19.png"/>
-      <frame filename="Media\orb\20.png"/>
-
       <frame filename="Media\orb\21.png"/>
-      <frame filename="Media\orb\22.png"/>
-      <frame filename="Media\orb\23.png"/>
-      <frame filename="Media\orb\24.png"/>
-      <frame filename="Media\orb\25.png"/>
-      <frame filename="Media\orb\26.png"/>
-      <frame filename="Media\orb\27.png"/>
-      <frame filename="Media\orb\28.png"/>
-      <frame filename="Media\orb\29.png"/>
-      <frame filename="Media\orb\30.png"/>
-
       <frame filename="Media\orb\31.png"/>
-      <frame filename="Media\orb\32.png"/>
-      <frame filename="Media\orb\33.png"/>
-      <frame filename="Media\orb\34.png"/>
-      <frame filename="Media\orb\35.png"/>
-      <frame filename="Media\orb\36.png"/>
-      <frame filename="Media\orb\37.png"/>
-      <frame filename="Media\orb\38.png"/>
-      <frame filename="Media\orb\39.png"/>
-      <frame filename="Media\orb\40.png"/>
-
-      <frame filename="Media\orb\41.png"/>
-      <frame filename="Media\orb\42.png"/>
-      <frame filename="Media\orb\43.png"/>
-      <frame filename="Media\orb\44.png"/>
-      <frame filename="Media\orb\45.png"/>
-      <frame filename="Media\orb\46.png"/>
-      <frame filename="Media\orb\47.png"/>
-      <frame filename="Media\orb\48.png"/>
-      <frame filename="Media\orb\49.png"/>
-      <frame filename="Media\orb\50.png"/>
-
-      <frame filename="Media\orb\51.png"/>
-      <frame filename="Media\orb\52.png"/>
-      <frame filename="Media\orb\53.png"/>
-      <frame filename="Media\orb\54.png"/>
-      <frame filename="Media\orb\55.png"/>
-      <frame filename="Media\orb\56.png"/>
-      <frame filename="Media\orb\57.png"/>
-      <frame filename="Media\orb\58.png"/>
-      <frame filename="Media\orb\59.png"/>
-      <frame filename="Media\orb\60.png"/>
-
+      <frame filename="Media\orb\41.png"/>   
+      <frame filename="Media\orb\51.png"/>     
       <frame filename="Media\orb\61.png"/>
-      <frame filename="Media\orb\62.png"/>
-      <frame filename="Media\orb\63.png"/>
-      <frame filename="Media\orb\64.png"/>
-      <frame filename="Media\orb\65.png"/>
-      <frame filename="Media\orb\66.png"/>
-      <frame filename="Media\orb\67.png"/>
-      <frame filename="Media\orb\68.png"/>
-      <frame filename="Media\orb\69.png"/>
-      <frame filename="Media\orb\70.png"/>
-
       <frame filename="Media\orb\71.png"/>
-      <frame filename="Media\orb\72.png"/>
-      <frame filename="Media\orb\73.png"/>
-      <frame filename="Media\orb\74.png"/>
-      <frame filename="Media\orb\75.png"/>
-      <frame filename="Media\orb\76.png"/>
-      <frame filename="Media\orb\77.png"/>
-      <frame filename="Media\orb\78.png"/>
-      <frame filename="Media\orb\79.png"/>
-      <frame filename="Media\orb\80.png"/>
-
       <frame filename="Media\orb\81.png"/>
-      <frame filename="Media\orb\82.png"/>
-      <frame filename="Media\orb\83.png"/>
-      <frame filename="Media\orb\84.png"/>
-      <frame filename="Media\orb\85.png"/>
-      <frame filename="Media\orb\86.png"/>
-      <frame filename="Media\orb\87.png"/>
-      <frame filename="Media\orb\88.png"/>
-      <frame filename="Media\orb\89.png"/>
-      <frame filename="Media\orb\90.png"/>
-
       <frame filename="Media\orb\91.png"/>
     </Still>
 

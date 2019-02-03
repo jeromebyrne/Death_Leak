@@ -6,8 +6,9 @@
 #include "PlayerLevelManager.h"
 #include "AudioManager.h"
 
-const float kHealthMeterDimensionsMultiplier = 3.0f;
-const float kFocusMeterDimensionsMultiplier = 2.0f;
+static const float kHealthMeterDimensionsMultiplier = 3.0f;
+static const float kFocusMeterDimensionsMultiplier = 2.0f;
+static const D3DXCOLOR kOrbTextColor = D3DXCOLOR(0.7f, 0.7f, 0.7f, 0.8f);
 
 UIGameHudScreen::UIGameHudScreen(string name) : 
 	UIScreen(name),
@@ -22,6 +23,12 @@ UIGameHudScreen::~UIGameHudScreen(void)
 	{
 		mMeterUpgradeSound->drop();
 		mMeterUpgradeSound = nullptr;
+	}
+
+	if (mOrbCountText)
+	{
+		mOrbCountText->Release();
+		mOrbCountText = nullptr;
 	}
 }
 
@@ -74,6 +81,10 @@ void UIGameHudScreen::Initialise()
 			}
 		}
 	}
+
+	InitialiseText();
+
+	mSaveManagerCached = SaveManager::GetInstance();
 }
 
 void UIGameHudScreen::UpdatePlayerHealthMeter(Player * player)
@@ -206,5 +217,42 @@ void UIGameHudScreen::DoFocusMeterUpgrade(Player * player)
 		{
 			mMeterUpgradeSound->setIsPaused(true);
 		}
+	}
+}
+
+void UIGameHudScreen::Draw(ID3D10Device * device)
+{
+	UIScreen::Draw(device);
+
+	if (mOrbCountText)
+	{
+		int newOrbs = mSaveManagerCached->GetNumCurrencyOrbsCollected();
+
+		if (mLastOrbCount != newOrbs)
+		{
+			mOrbtext = std::to_string(newOrbs);
+		}
+
+		RECT rect = { 105, 95, 0, 0 };
+		mOrbCountText->DrawTextA(0,  mOrbtext.c_str() , -1, &rect, DT_NOCLIP, kOrbTextColor);
+	}
+}
+
+void UIGameHudScreen::InitialiseText()
+{
+	// orb count text
+	{
+		D3DX10_FONT_DESC fd;
+		fd.Height = 32;
+		fd.Width = 0;
+		fd.Weight = 0;
+		fd.MipLevels = 1;
+		fd.Italic = false;
+		fd.CharSet = OUT_DEFAULT_PRECIS;
+		fd.Quality = DEFAULT_QUALITY;
+		fd.PitchAndFamily = DEFAULT_PITCH | FF_DONTCARE;
+		wcscpy(fd.FaceName, L"Impact");
+
+		D3DX10CreateFontIndirect(Graphics::GetInstance()->Device(), &fd, &mOrbCountText);
 	}
 }

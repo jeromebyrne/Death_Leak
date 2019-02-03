@@ -188,10 +188,9 @@ void UIScreen::Update()
 void UIScreen::Draw(ID3D10Device * device)
 {
 	// loop through our widgets and draw
-	map<string, UIWidget*>::const_iterator current = m_widgetMap.begin();
-	for(;current != m_widgetMap.end(); current++)
+	for(const auto & widgetKVP : m_widgetMap)
 	{
-		UIWidget * widget = (*current).second;
+		UIWidget * widget = widgetKVP.second;
 		if(widget->IsVisible())
 		{
 			widget->Draw(device);

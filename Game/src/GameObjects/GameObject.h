@@ -340,6 +340,8 @@ protected:
 	float mAttachedToCamera = false;
 	Vector2 mCameraAttachOffset;
 
+	SineWave mSinWave;
+
 private:
 
 	int m_id; // our game object ID (this is unique)
@@ -363,8 +365,6 @@ private:
 	Vector2 mLargestPossibleDimensions;
 
 	static unsigned int sGameObjectId;
-
-	SineWave mSinWave;
 
 	bool mHasPlayedPositionalAudio = false;
 	float mPositionalAudioCountdown = 0.0f;

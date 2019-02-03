@@ -36,7 +36,7 @@ void SimpleFontManager::Release()
 	if (mDebugFont)
 	{
 		mDebugFont->Release();
-		mDebugFont = 0;
+		mDebugFont = nullptr;
 	}
 }
 
@@ -49,8 +49,5 @@ void SimpleFontManager::DrawDebugText(const char * text, float top, float left)
 		return;
 	}
 
-	// TODO: optimise, cache the wchar_t rather than constant conversion
-	wchar_t * w_text =  Utilities::ConvertCharStringToWcharString(text);
-	mDebugFont->DrawText(0,w_text, -1, &rectangle, DT_NOCLIP, mDebugFontColor);
-	delete w_text;
+	mDebugFont->DrawTextA(0, text, -1, &rectangle, DT_NOCLIP, mDebugFontColor);
 }

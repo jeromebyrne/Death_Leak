@@ -4,6 +4,7 @@
 #include "uiscreen.h"
 
 class UIMeter;
+class SaveManager;
 
 class UIGameHudScreen : public UIScreen
 {
@@ -12,9 +13,11 @@ public:
 	UIGameHudScreen(string name);
 	virtual ~UIGameHudScreen(void);
 
-	virtual void Update();
+	virtual void Update() override;
 
-	virtual void Initialise();
+	virtual void Draw(ID3D10Device * device) override;
+
+	virtual void Initialise() override;
 
 private:
 
@@ -23,6 +26,8 @@ private:
 
 	void DoFocusMeterUpgrade(Player * player);
 	void UpdatePlayerFocusMeter(Player * player);
+
+	void InitialiseText();
 
 	UIMeter * mPlayerHealthMeter;
 	UIMeter * mPlayerXPMeter;
@@ -33,6 +38,13 @@ private:
 	bool mDoingFocusMeterUpgrade = false;
 
 	ISound * mMeterUpgradeSound = nullptr;
+
+	ID3DX10Font* mOrbCountText = nullptr;
+
+	SaveManager * mSaveManagerCached = nullptr;
+
+	int mLastOrbCount = -1;
+	string mOrbtext;
 };
 
 #endif

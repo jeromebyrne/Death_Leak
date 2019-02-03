@@ -62,6 +62,15 @@
           use_standard_effect="true">
   </sprite>
 
+  <sprite name="40_orb_count"
+          process_input="false"
+          posX ="-900" posY ="400" width="101" height ="64"
+          image="Media\UI\orb_count.png"
+          hflip="false" vflip="true"
+          alpha="0.75"
+          use_standard_effect="true">
+  </sprite>
+
   <meter name="9_health_meter"
         process_input="false"
         posX ="-900" posY ="480" width="300" height ="100"

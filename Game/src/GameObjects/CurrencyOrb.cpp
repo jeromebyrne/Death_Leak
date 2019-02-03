@@ -10,7 +10,7 @@
 static float kTrackingRangeTrigger = 150.0f;
 static float kAccelerateRate = 2.1f;
 static float kHarshAccelerateRate = 3.8f;
-static float kCollisionRange = 50.0f;
+static float kCollisionRange = 80.0f;
 static const float kMinTimeBetweenSFX = 0.2f;
 
 unsigned long CurrencyOrb::mLastTimePlayedSFX = 0;
@@ -37,9 +37,22 @@ void CurrencyOrb::OnDamage(GameObject * damageDealer, float damageAmount, Vector
 
 void CurrencyOrb::Initialise()
 {
+	mSineWaveProps.DoSineWave = true;
 	mSineWaveProps.RandomiseInitialStep = true;
 	mSineWaveProps.Amplitude = 2.0f;
+	mSineWaveProps.OffsetX = 0.0f;
 	mSineWaveProps.OffsetY = 20.0f;
+	mSineWaveProps.InitialXPosition = m_position.X;
+	mSineWaveProps.InitialYPosition = m_position.Y;
+
+	mSinWave.Initialise(rand() % 999999,
+						mSineWaveProps.OffsetY,
+						mSineWaveProps.Amplitude,
+						mSineWaveProps.InitialYPosition,
+						mSineWaveProps.InitialXPosition,
+						mSineWaveProps.OffsetX);
+
+	m_alpha = 0.75f;
 
 	SolidMovingSprite::Initialise();
 

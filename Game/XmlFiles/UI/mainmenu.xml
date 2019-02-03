@@ -57,7 +57,7 @@
   
   <button name="3_new_game"
           process_input="true"
-          posX ="-435" posY ="-100" width="160" height ="160"
+          posX ="-435`" posY ="-100" width="160" height ="160"
           image="Media\UI\buttons\play1.png"
           image_focus="Media\UI\buttons\play2.png"
           image_click="Media\UI\buttons\play2.png"
