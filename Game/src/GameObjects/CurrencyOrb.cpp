@@ -81,6 +81,11 @@ bool CurrencyOrb::OnCollision(SolidMovingSprite * object)
 	}
 #endif
 
+	if (mCollected)
+	{
+		return false;
+	}
+
 	if (mCurrentState == kSpawnPeriod)
 	{
 		return false;
@@ -118,6 +123,8 @@ bool CurrencyOrb::OnCollision(SolidMovingSprite * object)
 		GameObjectManager::Instance()->RemoveGameObject(this);
 
 		SaveManager::GetInstance()->SetNumCurrencyOrbsCollected(SaveManager::GetInstance()->GetNumCurrencyOrbsCollected() + 1);
+
+		mCollected = true;
 
 		if (m_material)
 		{

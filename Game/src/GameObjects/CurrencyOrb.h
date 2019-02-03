@@ -52,6 +52,8 @@ private:
 	float mTimeTracking;
 
 	bool mIsLoadTimeObject;
+
+	bool mCollected = false;
 };
 
 #endif
