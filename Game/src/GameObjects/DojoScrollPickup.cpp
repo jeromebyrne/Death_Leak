@@ -4,6 +4,7 @@
 #include "AudioManager.h"
 #include "SaveManager.h"
 #include "Game.h"
+#include "UIManager.h"
 
 static const D3DXCOLOR kCostTextColor = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 static const float kCostYOffset = -105.0f;
@@ -42,6 +43,15 @@ void DojoScrollPickup::Update(float delta)
 	{
 		GameObjectManager::Instance()->RemoveGameObject(this, true);
 		return;
+	}
+
+	if (CanInteract())
+	{
+		m_alpha = 1.0f;
+	}
+	else
+	{
+		m_alpha = 0.25f;
 	}
 }
 
@@ -130,7 +140,12 @@ void DojoScrollPickup::Draw(ID3D10Device * device, Camera2D * camera)
 {
 	Sprite::Draw(device, camera);
 
+
+	float worldScale = GameObjectManager::Instance()->GetCurrentLevelProperties().GetZoomInPercent();
+	worldScale = (1.0f + (1.0f - worldScale));
+
 	Vector2 worldPos = Vector2((m_position.X - (m_dimensions.X * 0.5f)) + mCostOffsetX, m_position.Y + kCostYOffset);
+	worldPos = worldPos * worldScale;
 	Vector2 screenPos = Utilities::WorldToScreen(worldPos);
 
 	RECT bounds = { screenPos.X, screenPos.Y, screenPos.X + m_dimensions.X, screenPos.Y + m_dimensions.Y };
