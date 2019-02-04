@@ -6,7 +6,7 @@
 #include "Game.h"
 
 static const D3DXCOLOR kCostTextColor = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-static const float kCostYOffset = 80.0f;
+static const float kCostYOffset = -105.0f;
 
 DojoScrollPickup::DojoScrollPickup(float x,
 									float y, 
@@ -63,6 +63,7 @@ void DojoScrollPickup::XmlRead(TiXmlElement * element)
 	mUnlocksFeature = FeatureUnlockManager::GetInstance()->GetFeatureTypeFromString(featureAsString);
 
 	mOrbCost = XmlUtilities::ReadAttributeAsInt(element, "orb_cost", "value");
+	mCostOffsetX = XmlUtilities::ReadAttributeAsInt(element, "orb_cost", "offset_x");
 
 	mOrbCostString = std::to_string(mOrbCost);
 }
@@ -79,6 +80,7 @@ void DojoScrollPickup::XmlWrite(TiXmlElement * element)
 
 	TiXmlElement * orbCostElement = new TiXmlElement("orb_cost");
 	orbCostElement->SetAttribute("value", mOrbCost);
+	orbCostElement->SetAttribute("offset_x", mCostOffsetX);
 	element->LinkEndChild(orbCostElement);
 }
 
@@ -95,7 +97,12 @@ bool DojoScrollPickup::CanInteract()
 		return false;
 	}
 
-	// TODO: check if we have the currency to purchase
+	int currentOrbs = SaveManager::GetInstance()->GetNumCurrencyOrbsCollected();
+
+	if (currentOrbs < mOrbCost)
+	{
+		return false;
+	}
 
 	return true;
 }
@@ -123,7 +130,7 @@ void DojoScrollPickup::Draw(ID3D10Device * device, Camera2D * camera)
 {
 	Sprite::Draw(device, camera);
 
-	Vector2 worldPos = Vector2(m_position.X - (m_dimensions.X * 0.5f) , m_position.Y + kCostYOffset);
+	Vector2 worldPos = Vector2((m_position.X - (m_dimensions.X * 0.5f)) + mCostOffsetX, m_position.Y + kCostYOffset);
 	Vector2 screenPos = Utilities::WorldToScreen(worldPos);
 
 	RECT bounds = { screenPos.X, screenPos.Y, screenPos.X + m_dimensions.X, screenPos.Y + m_dimensions.Y };

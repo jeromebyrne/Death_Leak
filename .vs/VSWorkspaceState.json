@@ -3,12 +3,11 @@
     "",
     "\\Game",
     "\\Game\\src",
-    "\\Game\\src\\Effects",
-    "\\Game\\src\\GameObjects",
-    "\\Game\\src\\Particles",
+    "\\Game\\src\\UI",
     "\\Game\\XmlFiles",
+    "\\Game\\XmlFiles\\levels",
     "\\Game\\XmlFiles\\UI"
   ],
-  "SelectedNode": "\\Game\\XmlFiles\\UI\\game_hud.xml",
+  "SelectedNode": "\\Game\\XmlFiles\\levels\\dojo.xml",
   "PreviewInSolutionExplorer": false
 }

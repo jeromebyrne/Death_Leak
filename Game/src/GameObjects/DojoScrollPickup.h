@@ -36,6 +36,7 @@ private:
 
 	ID3DX10Font* mCostText = nullptr;
 	string mOrbCostString;
+	float mCostOffsetX = 0.0f;
 };
 
 #endif
