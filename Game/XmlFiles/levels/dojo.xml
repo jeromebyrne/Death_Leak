@@ -222,7 +222,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <feature_unlock value="kRoll" />
-        <orb_cost value="0" offset_x="0" />
+        <orb_cost value="0" offset_x="6" desc_offset_x="0.000000" />
     </DojoScrollPickup>
     <DojoScrollPickup id="12" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundBack" y="136.000000" x="349.000000" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -239,7 +239,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <feature_unlock value="kSlowMotion" />
-        <orb_cost value="1000" offset_x="0" />
+        <orb_cost value="0" offset_x="70" desc_offset_x="-220.000000" />
     </DojoScrollPickup>
     <DojoScrollPickup id="13" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundBack" y="136.000000" x="-152.000000" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -256,7 +256,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <feature_unlock value="kCrouchJump" />
-        <orb_cost value="300" offset_x="20" />
+        <orb_cost value="0" offset_x="20" desc_offset_x="-70.000000" />
     </DojoScrollPickup>
     <DojoScrollPickup id="14" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundBack" y="138.000000" x="188.000000" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -273,7 +273,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <feature_unlock value="kDownwardDash" />
-        <orb_cost value="500" offset_x="0" />
+        <orb_cost value="0" offset_x="55" desc_offset_x="-120.000000" />
     </DojoScrollPickup>
     <DojoScrollPickup id="15" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundBack" y="138.000000" x="18.000000" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -290,7 +290,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <feature_unlock value="kDeflection" />
-        <orb_cost value="750" offset_x="0" />
+        <orb_cost value="0" offset_x="38" desc_offset_x="-85.000000" />
     </DojoScrollPickup>
     <LevelEntry id="16" level_edit_locked="false" updateable="true" always_update="true">
         <position depth_layer="kGround" y="40.000000" x="-528.000000" rotation="0.000000" auto_rotate_value="0.000000" />

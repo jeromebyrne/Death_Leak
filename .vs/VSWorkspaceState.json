@@ -8,6 +8,6 @@
     "\\Game\\XmlFiles\\levels",
     "\\Game\\XmlFiles\\UI"
   ],
-  "SelectedNode": "\\Game\\XmlFiles\\levels\\dojo.xml",
+  "SelectedNode": "\\Game\\src\\UI\\UIManager.cpp",
   "PreviewInSolutionExplorer": false
 }

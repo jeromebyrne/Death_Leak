@@ -7,7 +7,7 @@
 #include "UIManager.h"
 
 static const D3DXCOLOR kCostTextColor = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-static const float kCostYOffset = -105.0f;
+static const float kCostYOffset = -111.0f;
 
 DojoScrollPickup::DojoScrollPickup(float x,
 									float y, 
@@ -45,13 +45,24 @@ void DojoScrollPickup::Update(float delta)
 		return;
 	}
 
-	if (CanInteract())
+	if (mHasAddedDescBacking == false)
 	{
-		m_alpha = 1.0f;
+		AddDescriptionBacking();
+		mHasAddedDescBacking = true;
 	}
-	else
+
+	m_alpha = CanInteract() ? 1.0f : 0.25f;
+
+	if (mDescriptionBacking)
 	{
-		m_alpha = 0.25f;
+		if (sCurrentInteractable == ID())
+		{
+			mDescriptionBacking->SetAlpha(1.0f);
+		}
+		else
+		{
+			mDescriptionBacking->SetAlpha(0.0f);
+		}
 	}
 }
 
@@ -60,9 +71,13 @@ void DojoScrollPickup::Initialise()
 	Sprite::Initialise();
 
 	mInteractableProperties.IsInteractable = true;
-	mInteractableProperties.PosOffset = Vector2(0, 0);
+	mInteractableProperties.PosOffset = Vector2(0.0f, 50.0f);
 
-	InitialiseCostText();
+	InitialiseText();
+
+	mLocalizedDescription = "Testing a description blah blah blah eflaminix sclammener dog boxes with clumpers meat";
+
+	SetDepthLayer(GameObject::kGround);
 }
 
 void DojoScrollPickup::XmlRead(TiXmlElement * element)
@@ -74,6 +89,7 @@ void DojoScrollPickup::XmlRead(TiXmlElement * element)
 
 	mOrbCost = XmlUtilities::ReadAttributeAsInt(element, "orb_cost", "value");
 	mCostOffsetX = XmlUtilities::ReadAttributeAsInt(element, "orb_cost", "offset_x");
+	mDescriptionOffsetX = XmlUtilities::ReadAttributeAsFloat(element, "orb_cost", "desc_offset_x");
 
 	mOrbCostString = std::to_string(mOrbCost);
 }
@@ -91,11 +107,17 @@ void DojoScrollPickup::XmlWrite(TiXmlElement * element)
 	TiXmlElement * orbCostElement = new TiXmlElement("orb_cost");
 	orbCostElement->SetAttribute("value", mOrbCost);
 	orbCostElement->SetAttribute("offset_x", mCostOffsetX);
+	orbCostElement->SetDoubleAttribute("desc_offset_x", mDescriptionOffsetX);
 	element->LinkEndChild(orbCostElement);
 }
 
 void DojoScrollPickup::OnInteracted()
 {
+	if (mDescriptionBacking)
+	{
+		mDescriptionBacking->SetAlpha(0.0f);
+	}
+
 	// TODO: remove the currency
 	FeatureUnlockManager::GetInstance()->SetFeatureUnlocked(mUnlocksFeature);
 }
@@ -117,9 +139,9 @@ bool DojoScrollPickup::CanInteract()
 	return true;
 }
 
-void DojoScrollPickup::InitialiseCostText()
+void DojoScrollPickup::InitialiseText()
 {
-	// font setup
+	// cost text
 	{
 		D3DX10_FONT_DESC fd;
 		fd.Height = 32;
@@ -134,6 +156,22 @@ void DojoScrollPickup::InitialiseCostText()
 
 		D3DX10CreateFontIndirect(Graphics::GetInstance()->Device(), &fd, &mCostText);
 	}
+
+	// description text
+	{
+		D3DX10_FONT_DESC fd;
+		fd.Height = 32;
+		fd.Width = 0;
+		fd.Weight = 0;
+		fd.MipLevels = 1;
+		fd.Italic = false;
+		fd.CharSet = OUT_DEFAULT_PRECIS;
+		fd.Quality = DEFAULT_QUALITY;
+		fd.PitchAndFamily = DEFAULT_PITCH | FF_DONTCARE;
+		wcscpy(fd.FaceName, Utilities::ConvertCharStringToWcharString("Impact"));
+
+		D3DX10CreateFontIndirect(Graphics::GetInstance()->Device(), &fd, &mDescriptionText);
+	}
 }
 
 void DojoScrollPickup::Draw(ID3D10Device * device, Camera2D * camera)
@@ -144,11 +182,49 @@ void DojoScrollPickup::Draw(ID3D10Device * device, Camera2D * camera)
 	float worldScale = GameObjectManager::Instance()->GetCurrentLevelProperties().GetZoomInPercent();
 	worldScale = (1.0f + (1.0f - worldScale));
 
-	Vector2 worldPos = Vector2((m_position.X - (m_dimensions.X * 0.5f)) + mCostOffsetX, m_position.Y + kCostYOffset);
-	worldPos = worldPos * worldScale;
-	Vector2 screenPos = Utilities::WorldToScreen(worldPos);
+	// cost text
+	{
+		Vector2 worldPos = Vector2((m_position.X - (m_dimensions.X * 0.5f)) + mCostOffsetX, m_position.Y + kCostYOffset);
+		worldPos = worldPos * worldScale;
+		Vector2 screenPos = Utilities::WorldToScreen(worldPos);
 
-	RECT bounds = { screenPos.X, screenPos.Y, screenPos.X + m_dimensions.X, screenPos.Y + m_dimensions.Y };
-	mCostText->DrawTextA(0, mOrbCostString.c_str(), -1, &bounds, DT_NOCLIP, kCostTextColor);
+		RECT bounds = { screenPos.X, screenPos.Y, screenPos.X + m_dimensions.X, screenPos.Y + m_dimensions.Y };
+		mCostText->DrawTextA(0, mOrbCostString.c_str(), -1, &bounds, DT_NOCLIP, kCostTextColor);
+	}
+	
+	// description text
+	if (mDescriptionBacking && mDescriptionBacking->Alpha() > 0.0f)
+	{
+		Vector2 worldPos = Vector2((mDescriptionBacking->X() - (mDescriptionBacking->Dimensions().X * 0.5f)) + mCostOffsetX, mDescriptionBacking->Y());
+		worldPos = worldPos * worldScale;
+		Vector2 screenPos = Utilities::WorldToScreen(worldPos);
+
+		RECT bounds = { screenPos.X, screenPos.Y, screenPos.X + mDescriptionBacking->Dimensions().X, screenPos.Y + mDescriptionBacking->Dimensions().Y };
+		mCostText->DrawTextA(0, mLocalizedDescription.c_str(), -1, &bounds, DT_WORDBREAK, kCostTextColor);
+	}
+}
+
+void DojoScrollPickup::AddDescriptionBacking()
+{
+	if (mDescriptionBacking)
+	{
+		return;
+	}
+
+	mDescriptionBacking = new Sprite();
+
+	mDescriptionBacking->SetXY((m_position.X + 100.0f) + mDescriptionOffsetX, m_position.Y + 170.0f);
+
+	mDescriptionBacking->SetIsNativeDimensions(true);
+
+	mDescriptionBacking->SetTextureFilename("Media\\levels\\dojo\\desc_backing.png");
+
+	mDescriptionBacking->EffectName = this->EffectName;
+
+	mDescriptionBacking->SetDepthLayer(GameObject::kGroundBack);
+
+	GameObjectManager::Instance()->AddGameObject(mDescriptionBacking);
+
+	mDescriptionBacking->SetAlpha(0.5f);
 }
 
