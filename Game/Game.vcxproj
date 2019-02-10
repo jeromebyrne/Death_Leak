@@ -138,6 +138,7 @@
     <ClCompile Include="src\UI\UIButton.cpp" />
     <ClCompile Include="src\UI\UICheckbox.cpp" />
     <ClCompile Include="src\UI\UIGameHudScreen.cpp" />
+    <ClCompile Include="src\UI\UIGameLoading.cpp" />
     <ClCompile Include="src\UI\UILevelSelectScreen.cpp" />
     <ClCompile Include="src\UI\UIManager.cpp" />
     <ClCompile Include="src\UI\UIMeter.cpp" />
@@ -275,6 +276,7 @@
     <ClInclude Include="src\UI\UIButton.h" />
     <ClInclude Include="src\UI\UICheckbox.h" />
     <ClInclude Include="src\UI\UIGameHudScreen.h" />
+    <ClInclude Include="src\UI\UIGameLoading.h" />
     <ClInclude Include="src\UI\UILevelSelectScreen.h" />
     <ClInclude Include="src\UI\UIManager.h" />
     <ClInclude Include="src\UI\UIMeter.h" />
@@ -327,7 +329,9 @@
     </Xml>
     <Xml Include="XmlFiles\test_smashable.xml" />
     <Xml Include="XmlFiles\UI\fullscreen_fade.xml" />
-    <Xml Include="XmlFiles\UI\gameloading.xml" />
+    <Xml Include="XmlFiles\UI\gameloading.xml">
+      <SubType>Designer</SubType>
+    </Xml>
     <Xml Include="XmlFiles\UI\game_hud.xml" />
     <Xml Include="XmlFiles\UI\language_select.xml" />
     <Xml Include="XmlFiles\UI\language_select_settings.xml" />

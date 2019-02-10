@@ -13,12 +13,7 @@ bool XmlDocument::Load(const string & filename)
 {
 	bool loadOkay = m_document.LoadFile(filename.c_str());
 
-	if ( !loadOkay )
-	{
-		LOG_ERROR("Unable to open xml file %s. Check that the file exists", filename);
- 		GAME_ASSERT(loadOkay);
-	}
-	else
+	if (loadOkay)
 	{
 		// create the handle
 		m_pHandle = new TiXmlHandle(&m_document);

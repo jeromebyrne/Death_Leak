@@ -92,6 +92,10 @@ public:
 
 	void AddInteractableToDraw(GameObject::InteractableProperties iProp);
 
+	void PushUIDeferred(const string & screenName);
+
+	void PopUIDeferred(const string & screenName);
+
 private:
 
 	void DisplayLaunchUI();
@@ -142,6 +146,9 @@ private:
 
 	vector<UISprite *> mInteractableSpritesGamepad;
 	vector<UISprite *> mInteractableSpritesKeyboard;
+
+	string mDeferredPushScreen;
+	string mDeferredPopScreen;
 };
 
 #endif

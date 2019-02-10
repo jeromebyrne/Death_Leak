@@ -248,15 +248,23 @@ void Game::Update(float delta)
 	m_pCam2d->Update();
 }
 
-void Game::PauseGame()
+void Game::PauseGame(bool pushPauseScreen)
 {
 	mPaused = true;
-	UIManager::Instance()->PushUI("pause_menu");
+
+	if (pushPauseScreen)
+	{
+		UIManager::Instance()->PushUI("pause_menu");
+	}
 }
-void Game::UnPauseGame()
+void Game::UnPauseGame(bool popPauseScreen )
 {
 	mPaused = false;
-	UIManager::Instance()->PopUI("pause_menu");
+
+	if (popPauseScreen)
+	{
+		UIManager::Instance()->PopUI("pause_menu");
+	}
 }
 
 void Game::Draw()

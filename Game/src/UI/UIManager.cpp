@@ -14,6 +14,7 @@
 #include "UILevelSelectScreen.h"
 #include "UIQuickPlayScreen.h"
 #include "SaveManager.h"
+#include "UIGameLoading.h"
 
 static const int kMaxInteractablesToDraw = 3;
 static Vector2 kInteractSpriteDimensions = Vector2(50.0f, 50.0f);
@@ -73,6 +74,18 @@ void UIManager::Initialise()
 void UIManager::Update()
 {	
 	m_defaultEffect->SetTimeVariable(Timing::Instance()->GetTotalTimeSeconds()); 
+
+	if (!mDeferredPopScreen.empty())
+	{
+		PopUI(mDeferredPopScreen);
+		mDeferredPopScreen = "";
+	}
+
+	if (!mDeferredPushScreen.empty())
+	{
+		PushUI(mDeferredPushScreen);
+		mDeferredPushScreen = "";
+	}
 
 	bool updateCursor = false;
 	for(const auto & screen : m_currentScreens)
@@ -294,6 +307,10 @@ void UIManager::XmlRead(const char * uiRootPath)
 		else if (name == "level_select_edit")
 		{
 			ui_screen = new UILevelSelectScreen(name);
+		}
+		else if (name == "gameloading")
+		{
+			ui_screen = new UIGameLoading(name);
 		}
 		else
 		{
@@ -776,4 +793,14 @@ void UIManager::ApplyObjectEditChanges()
 			correctScreen->ApplyChanges();
 		}
 	}
+}
+
+void UIManager::PushUIDeferred(const string & screenName)
+{
+	mDeferredPushScreen = screenName;
+}
+
+void UIManager::PopUIDeferred(const string & screenName)
+{
+	mDeferredPopScreen = screenName;
 }

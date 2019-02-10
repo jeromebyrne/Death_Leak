@@ -5,6 +5,7 @@
 #include "SaveManager.h"
 #include "Game.h"
 #include "UIManager.h"
+#include "StringManager.h"
 
 static const D3DXCOLOR kCostTextColor = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 static const float kCostYOffset = -111.0f;
@@ -75,7 +76,10 @@ void DojoScrollPickup::Initialise()
 
 	InitialiseText();
 
-	mLocalizedDescription = "Testing a description blah blah blah eflaminix sclammener dog boxes with clumpers meat";
+	string featureAsString = FeatureUnlockManager::GetInstance()->GetFeatureAsString(mUnlocksFeature);
+	string descKey = "dojo_scroll_desc_";
+	descKey += featureAsString;
+	mLocalizedDescription = StringManager::GetInstance()->GetLocalisedString(descKey.c_str());
 
 	SetDepthLayer(GameObject::kGround);
 }
@@ -118,8 +122,13 @@ void DojoScrollPickup::OnInteracted()
 		mDescriptionBacking->SetAlpha(0.0f);
 	}
 
-	// TODO: remove the currency
+	int currentOrbCount = SaveManager::GetInstance()->GetNumCurrencyOrbsCollected();
+
+	SaveManager::GetInstance()->SetNumCurrencyOrbsCollected(currentOrbCount - mOrbCost);
+	
 	FeatureUnlockManager::GetInstance()->SetFeatureUnlocked(mUnlocksFeature);
+
+	// TODO: do some VFX and SFX
 }
 
 bool DojoScrollPickup::CanInteract()
@@ -160,7 +169,7 @@ void DojoScrollPickup::InitialiseText()
 	// description text
 	{
 		D3DX10_FONT_DESC fd;
-		fd.Height = 32;
+		fd.Height = 28;
 		fd.Width = 0;
 		fd.Weight = 0;
 		fd.MipLevels = 1;
@@ -199,7 +208,7 @@ void DojoScrollPickup::Draw(ID3D10Device * device, Camera2D * camera)
 		worldPos = worldPos * worldScale;
 		Vector2 screenPos = Utilities::WorldToScreen(worldPos);
 
-		RECT bounds = { screenPos.X, screenPos.Y, screenPos.X + mDescriptionBacking->Dimensions().X, screenPos.Y + mDescriptionBacking->Dimensions().Y };
+		RECT bounds = { screenPos.X, screenPos.Y, screenPos.X + (mDescriptionBacking->Dimensions().X * 1.0f), screenPos.Y + (mDescriptionBacking->Dimensions().Y * 1.4f) };
 		mCostText->DrawTextA(0, mLocalizedDescription.c_str(), -1, &bounds, DT_WORDBREAK, kCostTextColor);
 	}
 }

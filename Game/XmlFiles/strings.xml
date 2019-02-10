@@ -1,52 +1,51 @@
 <?xml version="1.0" encoding="iso-8859-1" ?>
 <strings>
-  <village_outskirts_name>
-    <en-gb>Village Outskirts</en-gb>
-    <pt-br>Arredores da Aldeia</pt-br>
-  </village_outskirts_name>
-
-  <village_name>
-    <en-gb>Deserted Village</en-gb>
-    <pt-br>A Vila</pt-br>
-  </village_name>
-
-  <forest_name>
-    <en-gb>Hangman's Grove</en-gb>
-    <pt-br>A Floresta</pt-br>
-  </forest_name>
-
-  <waterfall_level_name>
-    <en-gb>Mirewood Falls</en-gb>
-    <pt-br>A Cachoeira</pt-br>
-  </waterfall_level_name>
-
-  <underwater_cave_name>
-    <en-gb>Underwater Cave</en-gb>
-    <pt-br>Caverna subaquática</pt-br>
-  </underwater_cave_name>
-
-  <level_up_notification>
-    <en-gb>LEVEL UP!</en-gb>
-    <pt-br>UPAR!</pt-br>
-  </level_up_notification>
-
-  <test_string>
-    <en-gb>+ Double Jump unlocked!</en-gb>
-    <pt-br>+ Double Jump unlocked!</pt-br>
-  </test_string>
 
   <game_saved>
     <en-gb>Game Saved</en-gb>
     <pt-br>Jogo Salvo</pt-br>
+    <de>Max. Gesundheit erhöht</de>
   </game_saved>
 
   <test_level_name>
     <en-gb>Test Level</en-gb>
     <pt-br>Test Level</pt-br>
+    <de>Test Level</de>
   </test_level_name>
 
   <health_upgrade_notification>
     <en-gb>Max Health Increased</en-gb>
     <pt-br>Max Health Increased</pt-br>
+    <de>Max Health Increased</de>
   </health_upgrade_notification>
+
+  <dojo_scroll_desc_kRoll>
+    <en-gb>The ROLL technique. Time your rolls on big landings to avoid a delay.</en-gb>
+    <pt-br>A técnica ROLL Tempo seus rolos em grandes aterrissagens para evitar um atraso.</pt-br>
+    <de>Die ROLL-Technik. Zeit für große Landungen, um eine Verzögerung zu vermeiden.</de>
+  </dojo_scroll_desc_kRoll>
+
+  <dojo_scroll_desc_kDownwardDash>
+    <en-gb>The downward SMASH technique. Smash through obstacles with this technique. </en-gb>
+    <pt-br>A técnica descendente de SMASH. Esmagar os obstáculos com esta técnica.</pt-br>
+    <de>Die abwärts gerichtete SMASH-Technik. Besiege Hindernisse mit dieser Technik.</de>
+  </dojo_scroll_desc_kDownwardDash>
+
+  <dojo_scroll_desc_kSlowMotion>
+    <en-gb>The FOCUS technique. Slow down time. TODO</en-gb>
+    <pt-br>A técnica FOCUS. Diminua o tempo. FAÇAM</pt-br>
+    <de>Die FOCUS-Technik. Zeit verlangsamen. MACHEN</de>
+  </dojo_scroll_desc_kSlowMotion>
+
+  <dojo_scroll_desc_kCrouchJump>
+    <en-gb>The CROUCH-JUMP technique. Crouch down and then jump to reach higher highs.</en-gb>
+    <pt-br>A técnica CROUCH-JUMP. Agache-se e pule para alcançar máximas mais altas.</pt-br>
+    <de>Die CROUCH-JUMP-Technik. Crouch down und springe dann zu höheren Höhen.</de>
+  </dojo_scroll_desc_kCrouchJump>
+
+  <dojo_scroll_desc_kDeflection>
+    <en-gb>The DEFLECT technique. Deflect projectiles with your knives and your sword.</en-gb>
+    <pt-br>A técnica DEFLECT. Desvie projéteis com suas facas e sua espada.</pt-br>
+    <de>Die DEFLECT-Technik. Lenken Sie Projektile mit Ihren Messern und Ihrem Schwert ab.</de>
+  </dojo_scroll_desc_kDeflection>
 </strings>

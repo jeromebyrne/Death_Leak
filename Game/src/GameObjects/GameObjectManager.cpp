@@ -46,6 +46,7 @@
 #include "HealthIncreasePickup.h"
 #include "DojoScrollPickup.h"
 #include "LevelEntry.h"
+#include "UIGameLoading.h"
 
 struct DepthSortPredicate
 {
@@ -515,18 +516,14 @@ void GameObjectManager::SwitchToLevel(const string & level, const string & doorI
 
 	CacheSaveData();
 
-	UIManager::Instance()->PopUI("game_hud");
-	UIManager::Instance()->PushUI("gameloading");
-	UIManager::Instance()->RefreshUI();
+	UIGameLoading * loadingScreen = static_cast<UIGameLoading*>(UIManager::Instance()->PushUI("gameloading"));
 
-	DeleteGameObjects();
+	// Pause so that we don't trigger SwitchToLevel again
+	Game::GetInstance()->PauseGame(false);
 
-	LoadObjectsFromFile(level);
+	loadingScreen->StartLoading(level);
 
-	UIManager::Instance()->PopUI("gameloading");
-	UIManager::Instance()->PushUI("game_hud");
-
-	Game::GetInstance()->UnPauseGame();
+	// NOTE: UIGameLoading takes over from here
 }
 
 void GameObjectManager::SaveObjectsToFile(const string & filename)

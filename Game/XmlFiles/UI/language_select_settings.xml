@@ -77,7 +77,7 @@
           alpha="1.0"
           use_standard_effect="true">
     <actionspressup>
-      <set_language language="en-gb" />
+      <set_language language="de" />
       <fadeout time="150"/>
       <popui ui="language_select_settings" />
       <pushui ui="mainmenu" />

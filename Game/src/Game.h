@@ -36,8 +36,8 @@ public:
 	void PostDraw(); // post processsing effects here
 	void Cleanup();
 
-	static void PauseGame();
-	static void UnPauseGame();
+	static void PauseGame(bool pushPauseScreen = true);
+	static void UnPauseGame(bool popPauseScreen = true);
 	static void SetIsLevelEditMode(bool value) { mLevelEditMode = value; }
 
 	static bool GetIsLevelEditMode() { return mLevelEditMode; }

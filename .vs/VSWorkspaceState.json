@@ -3,11 +3,11 @@
     "",
     "\\Game",
     "\\Game\\src",
+    "\\Game\\src\\Core",
     "\\Game\\src\\UI",
     "\\Game\\XmlFiles",
-    "\\Game\\XmlFiles\\levels",
     "\\Game\\XmlFiles\\UI"
   ],
-  "SelectedNode": "\\Game\\src\\UI\\UIManager.cpp",
+  "SelectedNode": "\\Game\\src\\UI\\UIGameLoading.cpp",
   "PreviewInSolutionExplorer": false
 }
