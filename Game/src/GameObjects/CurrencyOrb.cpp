@@ -7,10 +7,10 @@
 #include "MaterialManager.h"
 #include "SaveManager.h"
 
-static float kTrackingRangeTrigger = 150.0f;
-static float kAccelerateRate = 2.1f;
-static float kHarshAccelerateRate = 3.8f;
-static float kCollisionRange = 80.0f;
+static float kTrackingRangeTrigger = 130.0f;
+static float kAccelerateRate = 2.5f;
+static float kHarshAccelerateRate = 4.8f;
+static float kCollisionRange = 100.0f;
 static const float kMinTimeBetweenSFX = 0.2f;
 
 unsigned long CurrencyOrb::mLastTimePlayedSFX = 0;
