@@ -43,9 +43,6 @@ Character(x, y, GameObject::kPlayer, width, height),
 
 Player::~Player(void)
 {
-#if _DEBUG
-	bool testing = true;
-#endif
 }
 
 void Player::Initialise()
@@ -635,14 +632,16 @@ bool Player::HasEnoughFocus(float amountToUse)
 
 bool Player::DoMeleeAttack()
 {
+	/*
 	if (!HasEnoughFocus(kMeleeFocusAmount))
 	{
 		return false;
 	}
+	*/
 
 	if (Character::DoMeleeAttack())
 	{
-		ConsumeFocus(kMeleeFocusAmount);
+		// ConsumeFocus(kMeleeFocusAmount);
 		return true;
 	}
 

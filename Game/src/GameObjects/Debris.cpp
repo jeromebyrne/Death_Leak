@@ -27,17 +27,17 @@ Debris::Debris(SolidMovingSprite * target,
 
 	m_applyGravity = true;
 
-	SetMaxVelocityXY(25 * speedMultiplier, 25.0f * speedMultiplier);
+	SetMaxVelocityXY(25.0f * speedMultiplier, 25.0f * speedMultiplier);
 	
-	m_resistance.X = 0.99;
-	m_resistance.Y = 2.5;
+	m_resistance.X = 0.99f;
+	m_resistance.Y = 1.0f;
 
-	srand(ID() * 500);
+	// srand(ID() * 500);
 	
-	float directionX = ((rand()%99) + 1) * 0.01;
-	float directionY = ((rand()%99) + 1) * 0.01;
+	float directionX = 1.0f; //((rand()%99) + 1) * 0.01f;
+	float directionY = 1.0f; //((rand()%99) + 1) * 0.01f;
 
-	float rand_speed = ((rand()%25) + 1) * speedMultiplier;
+	float rand_speed = ((rand()%20) + 5) * speedMultiplier;
 
 	bool plus_sign = (bool)(rand()%2);
 
@@ -57,8 +57,9 @@ Debris::Debris(SolidMovingSprite * target,
 
 	m_collisionBoxDimensions = collisionDimensions;
 
-	mBouncable = true;
-	mBounceDampening = 0.99f;
+	// disabled bouncing as it's not working correctly
+	mBouncable = false; // true;
+	mBounceDampening = 0.90f;
 }
 
 Debris::~Debris(void)
@@ -67,13 +68,15 @@ Debris::~Debris(void)
 
 void Debris::Update(float delta)
 {
+	mHasUpdatedOnce = true;
+
 	SolidMovingSprite::Update(delta);
 
 	// TODO: review this code
 	float targetDelta =  Timing::Instance()->GetTargetDelta();
 	float percentDelta = delta / targetDelta;
 
-	SetRotationAngle(m_rotationAngle - (m_velocity.X * (mIsOnSolidLine ? 0.005 : 0.02)) * percentDelta);
+	SetRotationAngle(m_rotationAngle - (m_velocity.X * (mIsOnSolidLine ? 0.003 : 0.02)) * percentDelta);
 
 	switch (mCurrentDebrisState)
 	{
@@ -105,6 +108,11 @@ void Debris::Update(float delta)
 
 bool Debris::OnCollision(SolidMovingSprite* object)
 {
+	if (!mHasUpdatedOnce)
+	{
+		return false;
+	}
+
 	if (object->IsCurrencyOrb())
 	{
 		return false;
@@ -124,7 +132,7 @@ bool Debris::OnCollision(SolidMovingSprite* object)
 	{
 		Character * character = static_cast<Character*>(object);
 
-		SetVelocityX(character->GetVelocity().X * 1.2f);
+		// SetVelocityX(character->GetVelocity().X * 1.2f);
 	}
 
 	if (object->IsSolidLineStrip())

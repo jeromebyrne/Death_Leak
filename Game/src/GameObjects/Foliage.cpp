@@ -1,7 +1,7 @@
 #include "precompiled.h"
 #include "Foliage.h"
 
-static float kCollisionSwayTime = 0.25f;
+static float kCollisionSwayTime = 0.15f;
 
 Foliage::Foliage(void)
 {
@@ -17,7 +17,7 @@ void Foliage::LoadContent(ID3D10Device * graphicsdevice)
 	EffectName = "effectfoliagesway";
 
 	mOriginalSwayMultiplier = 0.0f;
-	mCollisionSwayMultiplier = 20.0f;
+	mCollisionSwayMultiplier = 12.0f;
 
 	mFoliageSwayProperties.TopLeftSwayIntensity.X = 10.0f;
 	mFoliageSwayProperties.TopRightSwayIntensity.X = 10.0f;

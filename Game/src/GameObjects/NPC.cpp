@@ -241,6 +241,7 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointO
 	int particleNUmPerOrb = 25;
 	if (mHasExploded && mExplodesGruesomely)
 	{
+		DoNinjaExplosion();
 		// decapitate
 		// if (m_isAnimated && m_animationFile == "XmlFiles\\ninjaAnimation2.xml")
 		// {
@@ -301,134 +302,6 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointO
 				}
 			}
 			*/
-
-
-
-
-
-
-
-
-		// }
-		/*
-		else if (m_isAnimated && m_animationFile == "XmlFiles\\ninjaAnimation3.xml")
-		{
-			{
-				Debris * head = new Debris(nullptr, Vector3(m_position.X, m_position.Y + 50, m_position.Z - 1.1f), Vector3(54, 60, 0), Vector3(30, 30, 0), "Media\\characters\\ninja_enemy_3\\decapitated_head.png", true, 1.4f);
-				GameObjectManager::Instance()->AddGameObject(head);
-
-				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, m_position, true, 2.0f);
-				if (spray)
-				{
-					spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(head->ID()), Vector3(0, 0, 0));
-				}
-			}
-
-			{
-				Debris * arm1 = new Debris(nullptr, Vector3(m_position.X - 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(30, 30, 0), "Media\\characters\\ninja_enemy_3\\arm_destroyed.png", true, 1.4f);
-				GameObjectManager::Instance()->AddGameObject(arm1);
-
-				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, m_position, true, 2.0f);
-				if (spray)
-				{
-					spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(arm1->ID()), Vector3(0, 0, 0));
-				}
-			}
-
-			{
-				Debris * arm2 = new Debris(nullptr, Vector3(m_position.X + 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(30, 30, 0), "Media\\characters\\ninja_enemy_3\\arm_destroyed.png", true, 1.4f);
-				GameObjectManager::Instance()->AddGameObject(arm2);
-
-				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, m_position, true, 2.0f);
-				if (spray)
-				{
-					spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(arm2->ID()), Vector3(0, 0, 0));
-				}
-			}
-
-			{
-				Debris * leg1 = new Debris(nullptr, Vector3(m_position.X + 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(30, 30, 0), "Media\\characters\\ninja_enemy_3\\leg_destroyed.png", true, 1.4f);
-				GameObjectManager::Instance()->AddGameObject(leg1);
-
-				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, m_position, true, 2.0f);
-				if (spray)
-				{
-					spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(leg1->ID()), Vector3(0, 0, 0));
-				}
-			}
-
-			{
-				Debris * leg2 = new Debris(nullptr, Vector3(m_position.X - 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(30, 30, 0), "Media\\characters\\ninja_enemy_1\\leg_destroyed.png", true, 1.4f);
-				GameObjectManager::Instance()->AddGameObject(leg2);
-
-				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, m_position, true, 2.0f);
-				if (spray)
-				{
-					spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(leg2->ID()), Vector3(0, 0, 0));
-				}
-			}
-
-			Debris * hat = new Debris(nullptr, Vector3(m_position.X, m_position.Y + 75, m_position.Z - 1.1f), Vector3(67, 29, 0), Vector3(30, 30, 0), "Media\\objects\\ricehat.png", false, 2.0f);
-			GameObjectManager::Instance()->AddGameObject(hat);
-		}
-		else if (m_isAnimated && m_animationFile == "XmlFiles\\player_female_animation.xml")
-		{
-			{
-				Debris * head = new Debris(nullptr, Vector3(m_position.X, m_position.Y + 250, m_position.Z - 1.1f), Vector3(54, 60, 0), Vector3(15, 15, 0), "Media\\characters\\female\\decapitated_head.png", true, 1.0f);
-				GameObjectManager::Instance()->AddGameObject(head);
-
-				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, m_position, true, 2.0f);
-				if (spray)
-				{
-					spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(head->ID()), Vector3(0, 0, 0));
-				}
-			}
-
-			{
-				Debris * arm1 = new Debris(nullptr, Vector3(m_position.X - 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(30, 30, 0), "Media\\characters\\female\\arm_destroyed.png", true, 1.0f);
-				GameObjectManager::Instance()->AddGameObject(arm1);
-
-				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, m_position, true, 2.0f);
-				if (spray)
-				{
-					spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(arm1->ID()), Vector3(0, 0, 0));
-				}
-			}
-
-			{
-				Debris * arm2 = new Debris(nullptr, Vector3(m_position.X + 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(30, 30, 0), "Media\\characters\\female\\arm_destroyed.png", true, 1.0f);
-				GameObjectManager::Instance()->AddGameObject(arm2);
-
-				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, m_position, true, 2.0f);
-				if (spray)
-				{
-					spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(arm2->ID()), Vector3(0, 0, 0));
-				}
-			}
-
-			{
-				Debris * leg1 = new Debris(nullptr, Vector3(m_position.X + 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(30, 30, 0), "Media\\characters\\female\\leg_destroyed.png", true, 1.0f);
-				GameObjectManager::Instance()->AddGameObject(leg1);
-
-				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, m_position, true, 2.0f);
-				if (spray)
-				{
-					spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(leg1->ID()), Vector3(0, 0, 0));
-				}
-			}
-
-			{
-				Debris * leg2 = new Debris(nullptr, Vector3(m_position.X - 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(30, 30, 0), "Media\\characters\\female\\leg_destroyed.png", true, 1.0f);
-				GameObjectManager::Instance()->AddGameObject(leg2);
-
-				ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, m_position, true, 2.0f);
-				if (spray)
-				{
-					spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(leg2->ID()), Vector3(0, 0, 0));
-				}
-			}
-		}
-		*/
 
 		// Meat chunks
 		list<GameObject *> drawables;
@@ -777,6 +650,82 @@ void NPC::UpdateHealthBar(float delta)
 		{
 			mHealthMeterHealthBeforeDecrease = mHealth;
 		}
+	}
+}
+
+void NPC::DoNinjaExplosion()
+{
+	int numParticlesPerLimb = 20;
+	// decapitate
+	if (m_isAnimated && m_animationFile == "XmlFiles\\animation\\ninjaAnimation.xml")
+	{
+		float speedMultiplier = 0.75f;
+		{
+			Debris * hat = new Debris(nullptr, 
+										Vector2(m_position.X, m_position.Y + 50), 
+										GetDepthLayer(),  
+										Vector2(54, 60), 
+										Vector2(30, 30), 
+										"Media\\characters\\enemy_1\\exploded\\ricehat.png", 
+										true, 
+										speedMultiplier);
+
+			GameObjectManager::Instance()->AddGameObject(hat);
+		}
+
+		{
+			Debris * arm1 = new Debris(nullptr, 
+										Vector2(m_position.X - 50, m_position.Y + 50), 
+										GetDepthLayer(),
+										Vector2(80, 80), 
+										Vector2(30, 30), 
+										"Media\\characters\\enemy_1\\exploded\\forearm_back.png",
+										true, 
+										speedMultiplier);
+
+			GameObjectManager::Instance()->AddGameObject(arm1);
+
+			ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(numParticlesPerLimb, m_position, true, 2.0f);
+			if (spray)
+			{
+				spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(arm1->ID()), Vector2(0, 0), GetDepthLayer());
+			}
+		}
+
+		/*
+		{
+			Debris * arm2 = new Debris(nullptr, Vector3(m_position.X + 50, m_position.Y + 50, m_position.Z - 1.1f), Vector3(80, 80, 0), Vector3(30, 30, 0), "Media\\characters\\ninja_enemy_1\\arm_destroyed.png", true, speedMultiplier);
+			GameObjectManager::Instance()->AddGameObject(arm2);
+
+			ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, m_position, true, 2.0f);
+			if (spray)
+			{
+				spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(arm2->ID()), Vector3(0, 0, 0));
+			}
+		}
+
+		{
+			Debris * leg1 = new Debris(nullptr, Vector3(m_position.X + 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(30, 30, 0), "Media\\characters\\ninja_enemy_1\\leg_destroyed.png", true, speedMultiplier);
+			GameObjectManager::Instance()->AddGameObject(leg1);
+
+			ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, m_position, true, 2.0f);
+			if (spray)
+			{
+				spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(leg1->ID()), Vector3(0, 0, 0));
+			}
+		}
+
+		{
+			Debris * leg2 = new Debris(nullptr, Vector3(m_position.X - 50, m_position.Y - 50, m_position.Z - 1.1f), Vector3(117, 153, 0), Vector3(30, 30, 0), "Media\\characters\\ninja_enemy_1\\leg_destroyed.png", true, speedMultiplier);
+			GameObjectManager::Instance()->AddGameObject(leg2);
+
+			ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(particleNUmPerOrb, m_position, true, 2.0f);
+			if (spray)
+			{
+				spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(leg2->ID()), Vector3(0, 0, 0));
+			}
+		}
+		*/
 	}
 }
 

@@ -39,6 +39,8 @@ private:
 	DebrisState mCurrentDebrisState = kActive;
 
 	float mTimeUntilFadeOutFully = 3.0f;
+
+	bool mHasUpdatedOnce = false;
 };
 
 #endif

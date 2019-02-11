@@ -3,11 +3,11 @@
     "",
     "\\Game",
     "\\Game\\src",
-    "\\Game\\src\\Core",
-    "\\Game\\src\\UI",
-    "\\Game\\XmlFiles",
+    "\\Game\\src\\GameObjects",
+    "\\Game\\XmlFiles\\animation",
+    "\\Game\\XmlFiles\\levels",
     "\\Game\\XmlFiles\\UI"
   ],
-  "SelectedNode": "\\Game\\XmlFiles\\UI\\gameloading.xml",
+  "SelectedNode": "\\Game\\src\\FeatureUnlockManager.cpp",
   "PreviewInSolutionExplorer": false
 }

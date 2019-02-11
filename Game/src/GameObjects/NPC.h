@@ -71,6 +71,8 @@ private:
 	virtual void DebugDraw(ID3D10Device *  device) override;
 	virtual void SetupDebugDraw() override;
 
+	void DoNinjaExplosion();
+
 	AIState * m_currentState;
 	std::set<NPC *> m_resolvedNPCCollisionSet;
 	float mLastFireTime;
