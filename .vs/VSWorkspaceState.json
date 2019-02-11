@@ -8,6 +8,6 @@
     "\\Game\\XmlFiles",
     "\\Game\\XmlFiles\\UI"
   ],
-  "SelectedNode": "\\Game\\src\\UI\\UIGameLoading.cpp",
+  "SelectedNode": "\\Game\\XmlFiles\\UI\\gameloading.xml",
   "PreviewInSolutionExplorer": false
 }

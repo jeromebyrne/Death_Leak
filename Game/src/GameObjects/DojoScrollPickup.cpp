@@ -204,7 +204,7 @@ void DojoScrollPickup::Draw(ID3D10Device * device, Camera2D * camera)
 	// description text
 	if (mDescriptionBacking && mDescriptionBacking->Alpha() > 0.0f)
 	{
-		Vector2 worldPos = Vector2((mDescriptionBacking->X() - (mDescriptionBacking->Dimensions().X * 0.5f)) + mCostOffsetX, mDescriptionBacking->Y());
+		Vector2 worldPos = Vector2((mDescriptionBacking->X() - (mDescriptionBacking->Dimensions().X * 0.5f)) + mCostOffsetX, mDescriptionBacking->Y() + 10.0f);
 		worldPos = worldPos * worldScale;
 		Vector2 screenPos = Utilities::WorldToScreen(worldPos);
 
