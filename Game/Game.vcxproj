@@ -84,6 +84,7 @@
     <ClCompile Include="src\GameObjects\Explosion.cpp" />
     <ClCompile Include="src\GameObjects\FallingPlatform.cpp" />
     <ClCompile Include="src\GameObjects\FocusUpgradePickup.cpp" />
+    <ClCompile Include="src\GameObjects\Foliage.cpp" />
     <ClCompile Include="src\GameObjects\ForceBox.cpp" />
     <ClCompile Include="src\GameObjects\GameObject.cpp" />
     <ClCompile Include="src\GameObjects\GameObjectManager.cpp" />
@@ -223,6 +224,7 @@
     <ClInclude Include="src\GameObjects\Explosion.h" />
     <ClInclude Include="src\GameObjects\FallingPlatform.h" />
     <ClInclude Include="src\GameObjects\FocusUpgradePickup.h" />
+    <ClInclude Include="src\GameObjects\Foliage.h" />
     <ClInclude Include="src\GameObjects\ForceBox.h" />
     <ClInclude Include="src\GameObjects\GameObject.h" />
     <ClInclude Include="src\GameObjects\GameObjectManager.h" />

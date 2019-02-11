@@ -47,6 +47,7 @@
 #include "DojoScrollPickup.h"
 #include "LevelEntry.h"
 #include "UIGameLoading.h"
+#include "Foliage.h"
 
 struct DepthSortPredicate
 {
@@ -756,6 +757,10 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement, const
 	else if (strcmp(gameObjectTypeName, "focusupgradepickup") == 0)
 	{
 		newGameObject = new FocusUpgradePickup();
+	}
+	else if (strcmp(gameObjectTypeName, "foliage") == 0)
+	{
+		newGameObject = new Foliage();
 	}
 
 	if (newGameObject && !dynamic_cast<ParticleSpray*>(newGameObject))

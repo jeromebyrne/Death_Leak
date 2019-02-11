@@ -76,6 +76,10 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 		// don't want projectiles to be impeded by debris
 		return false;
 	}
+	else if (object->IsFoliage())
+	{
+		return false;
+	}
 	else if (object->IsBreakable())
 	{
 		if (GetOwnerType() == kNPCProjectile)

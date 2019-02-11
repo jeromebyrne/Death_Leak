@@ -204,6 +204,8 @@ public:
 
 	bool IsPickup() const { return mIsPickup; }
 
+	bool IsFoliage() const { return mIsFoliage; }
+
 	virtual void AttachTo(std::shared_ptr<GameObject> & parent, Vector2 offset, DepthLayer depthLayer, bool trackOrientation = true);
 	void Detach();
 
@@ -301,6 +303,7 @@ protected:
 	bool mIsSmashable;
 	bool mIsPlayer;
 	bool mIsPickup;
+	bool mIsFoliage;
 
 	std::shared_ptr<GameObject> mAttachedTo;
 	Vector2 mAttachedToOffset;

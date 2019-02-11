@@ -52,7 +52,8 @@ GameObject::GameObject(float x, float y, DepthLayer depthLayer, float width, flo
 	mIsBombProjectile(false),
 	mIsSmashable(false),
 	mIsPlayer(false),
-	mIsPickup(false)
+	mIsPickup(false),
+	mIsFoliage(false)
 {
 	m_id = sGameObjectId;
 	++sGameObjectId;

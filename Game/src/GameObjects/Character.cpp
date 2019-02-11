@@ -537,7 +537,8 @@ bool Character::OnCollision(SolidMovingSprite * object)
 		!object->IsCurrencyOrb() &&
 		!object->IsDebris() &&
 		!object->IsPlatform() &&
-		!object->IsWaterBlock())
+		!object->IsWaterBlock() &&
+		!object->IsFoliage())
 	{
 		SolidMovingSprite::OnCollision(object);
 	}

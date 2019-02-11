@@ -128,12 +128,6 @@ protected:
 	bool mShowingBurstTint;
 	float mBurstTintStartTime;
 
-private:
-
-	friend class NinjaSpawner;
-
-	virtual void UpdateToParent() override;
-
 	struct FoliageSwayProperties
 	{
 		Vector2 TopLeftSwayIntensity;
@@ -142,7 +136,7 @@ private:
 		Vector2 BottomRightSwayIntensity;
 		float TimeMultiplier;
 		float GlobalTimeMultiplier;
-	
+
 		FoliageSwayProperties()
 		{
 			TimeMultiplier = 1.0f;
@@ -150,6 +144,12 @@ private:
 	};
 
 	FoliageSwayProperties mFoliageSwayProperties;
+
+private:
+
+	friend class NinjaSpawner;
+
+	virtual void UpdateToParent() override;
 };
 
 #endif
