@@ -29,13 +29,13 @@ Debris::Debris(SolidMovingSprite * target,
 
 	SetMaxVelocityXY(25.0f * speedMultiplier, 25.0f * speedMultiplier);
 	
-	m_resistance.X = 0.99f;
+	m_resistance.X = 0.95f;
 	m_resistance.Y = 1.0f;
 
 	// srand(ID() * 500);
 	
 	float directionX = 1.0f; //((rand()%99) + 1) * 0.01f;
-	float directionY = 1.0f; //((rand()%99) + 1) * 0.01f;
+	float directionY = 0.5f; //((rand()%99) + 1) * 0.01f;
 
 	float rand_speed = ((rand()%20) + 5) * speedMultiplier;
 
@@ -58,8 +58,7 @@ Debris::Debris(SolidMovingSprite * target,
 	m_collisionBoxDimensions = collisionDimensions;
 
 	// disabled bouncing as it's not working correctly
-	mBouncable = false; // true;
-	mBounceDampening = 0.90f;
+	mBouncable = false;
 }
 
 Debris::~Debris(void)
@@ -113,6 +112,14 @@ bool Debris::OnCollision(SolidMovingSprite* object)
 		return false;
 	}
 
+	if (!mCollidesWithOtherDebris)
+	{
+		if (object->IsDebris())
+		{
+			return false;
+		}
+	}
+
 	if (object->IsCurrencyOrb())
 	{
 		return false;
@@ -128,11 +135,19 @@ bool Debris::OnCollision(SolidMovingSprite* object)
 		return false;
 	}
 
+	if (object->IsFoliage())
+	{
+		return false;
+	}
+
 	if (object->IsCharacter())
 	{
-		Character * character = static_cast<Character*>(object);
+		Character * c = static_cast<Character*>(object);
 
-		// SetVelocityX(character->GetVelocity().X * 1.2f);
+		if (std::abs(c->VelocityX()) > 2.0f)
+		{
+			m_velocity.X *= 2.0f;
+		}
 	}
 
 	if (object->IsSolidLineStrip())

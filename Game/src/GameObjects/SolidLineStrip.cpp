@@ -165,9 +165,12 @@ bool SolidLineStrip::OnCollision(SolidMovingSprite * object)
 						}
 					}
 
-					object->SetIsCollidingOnTopOfObject(true);
+					if (!object->IsDebris())
+					{
+						object->SetIsCollidingOnTopOfObject(true);
 
-					object->SetIsOnSolidLine(true, this);
+						object->SetIsOnSolidLine(true, this);
+					}
 
 					if (object->IsCharacter())
 					{
@@ -175,10 +178,6 @@ bool SolidLineStrip::OnCollision(SolidMovingSprite * object)
 						Character * character = static_cast<Character *>(object);
 
 						character->SetCurrentSolidLineDroppingDownThroughId(-1);
-					}
-					else if (object->IsDebris() && object->VelocityY() < -0.5f)
-					{
-						object->SetVelocityY(object->VelocityY() * -0.65f);
 					}
 
 					if (object == player)

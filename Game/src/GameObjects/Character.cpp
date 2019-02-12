@@ -592,7 +592,7 @@ void Character::DoMeleeCollisions(SolidMovingSprite * object)
 
 			if (objAsProj->isDeflectable() && objAsProj->IsActive())
 			{
-				int yOffset = rand() % 200;
+				int yOffset = rand() % 100;
 				int randOffsetSign = rand() % 2;
 				if (randOffsetSign == 0)
 				{
@@ -603,7 +603,9 @@ void Character::DoMeleeCollisions(SolidMovingSprite * object)
 				Vector2 newDirection = newTargetPosition - Vector2(objAsProj->X(), objAsProj->Y());
 				newDirection.Normalise();
 
-				objAsProj->SetVelocityXY(objAsProj->GetSpeed() * newDirection.X, objAsProj->GetSpeed() * newDirection.Y);
+				float speedMultiplier = 2.5f;
+
+				objAsProj->SetVelocityXY((objAsProj->GetSpeed() * speedMultiplier) * newDirection.X, (objAsProj->GetSpeed() * speedMultiplier) * newDirection.Y);
 
 				if (objAsProj->GetOwnerType() == Projectile::kNPCProjectile)
 				{

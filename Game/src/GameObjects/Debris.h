@@ -30,6 +30,8 @@ public:
 
 	virtual void Initialise() override;
 
+	void SetCollidesWithOtherDebris(bool value) { mCollidesWithOtherDebris = value; }
+
 private:
 
 	float mCreationTime;
@@ -41,6 +43,8 @@ private:
 	float mTimeUntilFadeOutFully = 3.0f;
 
 	bool mHasUpdatedOnce = false;
+
+	bool mCollidesWithOtherDebris = true;
 };
 
 #endif

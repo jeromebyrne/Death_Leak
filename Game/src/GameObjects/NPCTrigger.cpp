@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "NinjaSpawner.h"
 #include "ParticleEmitterManager.h"
+#include "Game.h"
 
 NPCTrigger::NPCTrigger() :
 	GameObject(),
@@ -17,6 +18,13 @@ NPCTrigger::NPCTrigger() :
 void NPCTrigger::Update(float delta) 
 {
 	GameObject::Update(delta);
+
+#if _DEBUG
+	if (Game::GetInstance()->GetIsLevelEditMode())
+	{
+		return;
+	}
+#endif
 
 	if (mCurrentCooldownTime > 0.0f)
 	{

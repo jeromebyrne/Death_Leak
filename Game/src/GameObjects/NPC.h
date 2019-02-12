@@ -73,6 +73,8 @@ private:
 
 	void DoNinjaExplosion();
 
+	void SpawnLimb(const string & filename, bool attachParticles, float speedMultiplier);
+
 	AIState * m_currentState;
 	std::set<NPC *> m_resolvedNPCCollisionSet;
 	float mLastFireTime;

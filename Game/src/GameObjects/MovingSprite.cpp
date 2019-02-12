@@ -1,6 +1,5 @@
 #include "precompiled.h"
 #include "MovingSprite.h"
-#include "Environment.h"
 #include "SolidLineStrip.h"
 #include "ParticleEmitterManager.h"
 #include "Game.h"

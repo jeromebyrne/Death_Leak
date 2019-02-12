@@ -3,7 +3,6 @@
 #include "drawableobject.h"
 #include "sprite.h"
 #include "collisionManager.h"
-#include "Environment.h"
 #include "EffectParticleSpray.h"
 #include "ParticleEmitterManager.h"
 #include "Projectile.h"
@@ -119,9 +118,6 @@ void Game::Initialise()
 
 	// initialise the collision manager, set to 1280 * 4 and 720 * 5 as default, is reset in gameobjectmanager load function
 	CollisionManager::Instance()->Initialise(m_pGraphics->BackBufferWidth() * 4, m_pGraphics->BackBufferHeight() * 5, 8, 4);
-	
-	// initialise environment data
-	Environment::Instance()->Initialise(-8000);
 
 	// initialise the particle manager
 	ParticleEmitterManager::Instance()->Initialise(m_pGraphics);

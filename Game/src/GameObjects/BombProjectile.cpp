@@ -102,6 +102,11 @@ bool BombProjectile::OnCollision(SolidMovingSprite* object)
 		return false;
 	}
 
+	if (object->IsFoliage())
+	{
+		return false;
+	}
+
 	if (object->IsSolidLineStrip())
 	{
 		SolidLineStrip * lineStrip = static_cast<SolidLineStrip*>(object);

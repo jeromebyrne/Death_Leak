@@ -1,7 +1,6 @@
 #include "precompiled.h"
 #include "SolidMovingSprite.h"
 #include "CollisionManager.h"
-#include "Environment.h"
 #include "drawutilities.h"
 #include "ParticleEmittermanager.h"
 #include "Projectile.h"

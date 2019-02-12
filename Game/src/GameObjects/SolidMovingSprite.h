@@ -104,6 +104,10 @@ public:
 	bool IsBouncable() const { return mBouncable;  }
 
 	float GetBounceDampening() const { return mBounceDampening; }
+
+	void SetBouncable(bool value) { mBouncable = value; }
+
+	void SetBounceDampening(float value) { mBounceDampening = value; }
 	
 protected:
 

@@ -30,7 +30,6 @@ using namespace std;
 #include "gameobjectManager.h"
 #include "xmlutilities.h"
 #include "effectmanager.h"
-#include "Environment.h"
 #include "Camera2D.h"
 #include "Logger.h"
 

@@ -53,6 +53,9 @@ void Foliage::Update(float delta)
 {
 	SolidMovingSprite::Update(delta);
 
+	// keep overriding this so it doesn't look weird in rain
+	mFoliageSwayProperties.GlobalTimeMultiplier = 1.0f;
+
 	if (mCollisionSwayWindDownTime > 0.0f)
 	{
 		mCollisionSwayWindDownTime -= delta;
