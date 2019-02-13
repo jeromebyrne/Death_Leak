@@ -1492,36 +1492,36 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 
 					pos.Y = Bottom();
 
 					bool loop = false;
-					unsigned long loopTime = -1;
+					unsigned long loopTime = 10;
 
 					if (m_material != nullptr)
 					{
-						string particletexFile = m_material->GetRandomParticleTexture();
+						string particletexFile = /* "Media\\bloodparticle2.png"; */ m_material->GetRandomParticleTexture();
 
 						ParticleEmitterManager::Instance()->CreateDirectedSpray(40,
-							Vector2(pos.X, pos.Y + 30.0f),
-							GetDepthLayer(),
-							Vector2(0.2f, 0.8f),
-							0.3f,
-							Vector2(3200.0f, 2000.0f),
-							particletexFile,
-							7.0f,
-							12.0f,
-							0.8f,
-							2.0f,
-							50.0f,
-							100.0f,
-							3.4f,
-							loop,
-							0.3f,
-							1.0f,
-							loopTime,
-							true,
-							2.0f,
-							5.0f,
-							16.0f,
-							0.15f,
-							0.8f);
+																				Vector2(pos.X, pos.Y + 30.0f),
+																				/* GetDepthLayer() */ GameObject::kPlayer,
+																				Vector2(0.2f, 0.8f),
+																				0.3f,
+																				Vector2(3200.0f, 2000.0f),
+																				particletexFile,
+																				7.0f,
+																				12.0f,
+																				0.8f,
+																				1.5f,
+																				10.0f,
+																				40.0f,
+																				1.4f,
+																				loop,
+																				0.75f,
+																				1.0f,
+																				loopTime,
+																				true,
+																				8.0f,
+																				5.0f,
+																				10.0f,
+																				0.15f,
+																				0.8f);
 					}
 
 					bool slowTime = (rand() % 8) == 1;

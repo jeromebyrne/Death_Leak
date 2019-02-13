@@ -3,7 +3,7 @@
     "",
     "\\Game",
     "\\Game\\src",
-    "\\Game\\src\\GameObjects",
+    "\\Game\\XmlFiles",
     "\\Game\\XmlFiles\\animation",
     "\\Game\\XmlFiles\\levels",
     "\\Game\\XmlFiles\\UI"

@@ -238,13 +238,24 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointO
 	Character::OnDamage(damageDealer, damageAmount, pointOfContact, shouldExplode);
 
 	// throw out some orbs
-	int particleNUmPerOrb = 25;
 	if (mHasExploded && mExplodesGruesomely)
 	{
 		DoNinjaExplosion();
 
-		// TESTING loot dropping here
-		// GameObjectManager::Instance()->SpawnHealthIncrease(m_position);
+		auto player = GameObjectManager::Instance()->GetPlayer();
+
+		float playerHealth = player != nullptr ? player->GetHealth() : 0.0f;
+
+		if (playerHealth < 30.0f)
+		{
+			// if health is low then there is an n% chance to drop a health pickup
+			int randChance = rand() % 100;
+
+			if (randChance < 26)
+			{
+				GameObjectManager::Instance()->SpawnHealthIncrease(m_position);
+			}
+		}
 	}
 	else
 	{
@@ -512,7 +523,7 @@ void NPC::UpdateHealthBar(float delta)
 
 void NPC::DoNinjaExplosion()
 {
-	int numParticlesPerLimb = 20;
+	int numParticlesPerLimb = 30;
 
 	if (m_isAnimated && m_animationFile == "XmlFiles\\animation\\ninjaAnimation.xml")
 	{
@@ -550,7 +561,7 @@ void NPC::SpawnLimb(const string & filename, bool attachParticles, float speedMu
 
 	if (attachParticles)
 	{
-		ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(10, m_position, true, 2.0f);
+		ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(10, m_position, true, 3.0f);
 		if (spray)
 		{
 			spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(limb->ID()), Vector2(0, 0), GetDepthLayer());
