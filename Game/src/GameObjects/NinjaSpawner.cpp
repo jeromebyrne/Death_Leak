@@ -82,55 +82,19 @@ void NinjaSpawner::SpawnMultiple(const unsigned int numNPC, Vector2 boundsPos, V
 	for (int i = 0; i < numNPC; ++i)
 	{
 		// pick a random position between the middle of the bounds and the upper bounds
-		int randX = (rand() % (int)(boundsDimensions.X * 0.5));
+		int randX = (rand() % (int)(boundsDimensions.X * 0.5f));
 		bool negSign = rand() %2;
 		if (negSign == 1)
 		{
 			randX = -randX;
 		}
-		int randY = (rand() % (int)(boundsDimensions.Y * 0.25)) + (boundsDimensions.Y * 0.25);
+		int randY = (rand() % (int)(boundsDimensions.Y * 0.25f)) + (boundsDimensions.Y * 0.25f);
 
-		// randomly pick an animation
-		std::string animFile;
-		int randAnim = rand() % 5;
+		Vector2 dimensions = Vector2(183.142853f, 231.714279f);
+		Vector2 collisionDimensions = Vector2(100.0f, 200.0f);
+		Vector2 collisionOffset = Vector2(0.0f, 0.0f);
 
-		Vector2 dimensions;
-		Vector2 collisionDimensions;
-		Vector2 collisionOffset;
-
-		switch (randAnim)
-		{
-			// height = "231.714279" width = "183.142853"
-			case 0:
-			case 1:
-			case 2:
-			{
-				dimensions = Vector2(183.142853f, 231.714279f);
-				collisionDimensions = Vector2(100.0f, 200.0f);
-				collisionOffset = Vector2(0.0f, 0.0f);
-				animFile = "XmlFiles\\animation\\ninjaAnimation.xml";
-				break;
-			}
-			case 3:
-			case 4:
-			{
-				dimensions = Vector2(183.142853f, 231.714279f);
-				collisionDimensions = Vector2(100.0f,200.0f);
-				collisionOffset = Vector2(0.0f, 0.0f);
-				animFile = "XmlFiles\\animation\\ninjaAnimation.xml";
-				break;
-			}
-			default:
-			{
-				dimensions = Vector2(183.142853f, 231.714279f);
-				collisionDimensions = Vector2(200.0f, 200.0f);
-				collisionOffset = Vector2(0.0f, 0.0f);
-				animFile = "XmlFiles\\animation\\ninjaAnimation.xml";
-				break;
-			}
-		}
-
-		SpawnNPC(boundsPos.X + randX, boundsPos.Y + randY, false, animFile, dimensions, collisionDimensions, collisionOffset);
+		SpawnNPC(boundsPos.X + randX, boundsPos.Y + randY, false, "XmlFiles\\animation\\ninjaAnimation.xml", dimensions, collisionDimensions, collisionOffset);
 	}
 
 	// AudioManager::Instance()->PlaySoundEffect("gong.wav", false, false, false);

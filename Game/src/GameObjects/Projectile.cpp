@@ -14,6 +14,8 @@
 #include "Smashable.h"
 #include "featureUnlockManager.h"
 
+static const float kBloodSplashOffsetY = -20.0f;
+
 int Projectile::NUM_PROJECTILES_ACTIVE = 0;
 const float kFadeInTime = 0.3f;
 
@@ -721,11 +723,11 @@ void Projectile::DoBloodProjectilePositionJitter()
 
 		if (negativeSign)
 		{
-			SetY(Y() - randY);
+			SetY((Y() - randY) + kBloodSplashOffsetY);
 		}
 		else
 		{
-			SetY(Y() + randY);
+			SetY((Y() + randY) + kBloodSplashOffsetY);
 		}
 
 		SetDepthLayer(GameObject::kGroundBlood);

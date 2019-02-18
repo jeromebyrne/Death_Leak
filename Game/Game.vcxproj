@@ -112,6 +112,8 @@
     <ClCompile Include="src\GameObjects\SaveShrine.cpp" />
     <ClCompile Include="src\GameObjects\ScreenAlignedTexture.cpp" />
     <ClCompile Include="src\GameObjects\ScrollingSprite.cpp" />
+    <ClCompile Include="src\GameObjects\SkeletonEnemy.cpp" />
+    <ClCompile Include="src\GameObjects\SkeletonEnemySpawner.cpp" />
     <ClCompile Include="src\GameObjects\Smashable.cpp" />
     <ClCompile Include="src\GameObjects\SolidLineStrip.cpp" />
     <ClCompile Include="src\GameObjects\SolidMovingSprite.cpp" />
@@ -252,6 +254,8 @@
     <ClInclude Include="src\GameObjects\SaveShrine.h" />
     <ClInclude Include="src\GameObjects\ScreenAlignedTexture.h" />
     <ClInclude Include="src\GameObjects\ScrollingSprite.h" />
+    <ClInclude Include="src\GameObjects\SkeletonEnemy.h" />
+    <ClInclude Include="src\GameObjects\SkeletonEnemySpawner.h" />
     <ClInclude Include="src\GameObjects\Smashable.h" />
     <ClInclude Include="src\GameObjects\SolidLineStrip.h" />
     <ClInclude Include="src\GameObjects\SolidMovingSprite.h" />
