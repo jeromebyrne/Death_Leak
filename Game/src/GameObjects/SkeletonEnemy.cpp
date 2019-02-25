@@ -12,73 +12,23 @@
 SkeletonEnemy::SkeletonEnemy(void) :
 	NPC()
 {
-	mProjectileFilePath = "Media/puke_temp.png";
+	mProjectileFilePath = "Media/fireball.png";
 	mProjectileImpactFilePath = "Media/puke_impact_temp.png";
-	mExplodesGruesomely = false;
-	mHealth = 10.0f;
+	mExplodesGruesomely = true;
+	mHealth = 50.0f;
+	mMaxHealth = 50.0f;
 	mEmitsBlood = false;
+
+	mRunAnimFramerateMultiplier = 2.5f;
 }
 
 SkeletonEnemy::~SkeletonEnemy(void)
 {
 }
 
-void SkeletonEnemy::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointOfContact, bool shouldExplode)
-{
-	Character::OnDamage(damageDealer, damageAmount, pointOfContact, shouldExplode);
-
-	// randomly cry
-	int randNum = rand() % 100;
-
-	if (randNum > 80)
-	{
-		int otherRandNum = rand() % 3;
-
-		switch (otherRandNum)
-		{
-		case 0:
-		{
-			AudioManager::Instance()->PlaySoundEffect("character\\scream.wav");
-			break;
-		}
-		case 1:
-		{
-			break;
-		}
-		case 2:
-		{
-			break;
-		}
-		default:
-		{
-			GAME_ASSERT(false);
-			break;
-		}
-		};
-	}
-}
-
-
-bool SkeletonEnemy::OnCollision(SolidMovingSprite * object)
-{
-	return false;
-}
-
-
 void SkeletonEnemy::Initialise()
 {
 	NPC::Initialise();
-
-	mCheckNPCOverlapCollisions = true;
-
-	m_applyGravity = true;
-
-	m_maxVelocity.X = 2.5f + ((rand()%80) * 0.1f);
-	m_maxVelocity.Y = 3.5f; 
-
-	m_passive = false; // This is so ghosts pass through stuff
-
-	mProjectileSpeed = 4.5f + ((rand() % 30) * 0.1f);
 
 	SetState(AIState::kRangeAttack);
 }
@@ -93,20 +43,45 @@ void SkeletonEnemy::Update(float delta)
 	}
 }
 
-void SkeletonEnemy::XmlRead(TiXmlElement * element)
+Projectile * SkeletonEnemy::FireWeapon(Vector2 direction)
 {
-	NPC::XmlRead(element);
+	Vector2 pos = m_position;
+	pos.X = (direction.X > 0) ? pos.X + m_projectileOffset.X : pos.X -= m_projectileOffset.X;
+	pos.Y += m_projectileOffset.Y;
 
-	// mTravelOffset = XmlUtilities::ReadAttributeAsFloat(element, "travel_offset", "value");
-}
+	if (direction.X > 0)
+	{
+		pos.X += m_projectileOffset.X;
+	}
+	else
+	{
+		pos.X -= m_projectileOffset.X;
+	}
 
-void SkeletonEnemy::XmlWrite(TiXmlElement * element)
-{
-	NPC::XmlWrite(element);
+	// TODO: ideally want these properties configurable per character
+	Projectile * p = new Projectile(Projectile::kNPCProjectile,
+									mProjectileFilePath.c_str(),
+									mProjectileImpactFilePath.c_str(),
+									pos,
+									GameObject::kGhostVomitProjectile,
+									Vector2(95.625, 62.625),
+									Vector2(25.0f, 8.0f),
+									direction,
+									2.0f,
+									5.0f,
+									2.0f);
 
-	/*
-	TiXmlElement * travelOffset = new TiXmlElement("travel_offset");
-	travelOffset->SetAttribute("value", Utilities::ConvertDoubleToString(mTravelOffset).c_str());
-	element->LinkEndChild(travelOffset);
-	*/
+	p->SetIsNativeDimensions(false);
+	p->SetSpinningMovement(false);
+	p->SetProjectileResistance(1.0f);
+	p->SetIsDeflectable(false);
+	p->SetProjectileType(Projectile::kLiquid);
+	p->SetApplyGravity(false);
+
+	if (!WasInWaterLastFrame())
+	{
+		PlayRandomWeaponFireSound();
+	}
+
+	return p;
 }

@@ -60,6 +60,8 @@ public:
 	float GetStrafeDirectionX() const { return mStrafeDirectionX; }
 	void SetStrafeDirectionX(float value) { mStrafeDirectionX = value; }
 
+	virtual bool CanTeleport() const { return true; }
+
 	void Teleport(float posX, float posY, bool showParticles);
 
 	void SetCrouching(bool value);
@@ -91,6 +93,8 @@ public:
 	bool CanIncreaseJumpIntensity() const { return mCanIncreaseJumpVelocity && m_velocity.Y >= 0.0f; }
 
 	virtual bool CanJump() const;
+
+	virtual bool CanRoll() const { return true; }
 
 	// This is used for the animation viewer
 	virtual void UpdateAnimTexture(const string & bodyPart) override;
@@ -182,7 +186,9 @@ protected:
 	Vector2 mRegularCollisionBox;
 	Vector2 mCollisionBoxOffsetOriginal;
 	float mMeleeCollisionBoundsX = 1.5f;
-	float mRollCollisionBoundsY = 0.75f; // This shouldn't go below 0.5f
+	Vector2 mRegularSpriteSize;
+	Vector2 mMeleeSpriteSize;
+	bool mDoMeleeSpriteResize = false;
 	bool mEmitsBlood = true;
 
 	CurrentMeleePhase mCurrentMeleePhase = kMeleePhase1;

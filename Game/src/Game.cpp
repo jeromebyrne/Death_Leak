@@ -38,7 +38,8 @@
 Game * Game::mInstance = nullptr;
 
 static const float kPixelWobbleReverseDelay = 10.0f;
-static const float kPauseDamageEffectDelay = 0.01f;
+static const float kPauseDamageEffectDelay = 0.04f;
+static const float kPauseDamageEffectLongerDelay = 0.2f;
 
 bool Game::mPaused = false;
 bool Game::mLevelEditMode = false;
@@ -153,7 +154,7 @@ void Game::Update(float delta)
 	AudioManager::Instance()->Update();
 
 	bool damageEffectPauseActive = Timing::Instance()->GetTotalTimeSeconds() < (mLastTimeDamagePauseEffect + 
-																			(kPauseDamageEffectDelay * Timing::Instance()->GetTimeModifier()));
+																			(mPauseEffectDelay * Timing::Instance()->GetTimeModifier()));
 
 	if (mGOMInstance->IsLevelLoaded())
 	{
@@ -462,6 +463,17 @@ void Game::DoDamagePauseEffect()
 	{
 		return;
 	}
+	mPauseEffectDelay = kPauseDamageEffectDelay;
+	mLastTimeDamagePauseEffect = Timing::Instance()->GetTotalTimeSeconds();
+}
+
+void Game::DoDamagePauseEffectLonger()
+{
+	if (!mDamagePauseEnabled)
+	{
+		return;
+	}
+	mPauseEffectDelay = kPauseDamageEffectLongerDelay;
 	mLastTimeDamagePauseEffect = Timing::Instance()->GetTotalTimeSeconds();
 }
 

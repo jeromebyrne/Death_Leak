@@ -30,6 +30,7 @@ static const float kLandJumpInputWindow = 0.2f;
 static const float kWallJumpXResistance = 0.99f;
 static const float kWallJumpVelocityXBoost = 15.0f;
 static const float kWaterJumpPercentModifier = 0.4f;
+static Vector2 kMeleeSpriteMultiplier = Vector2(1.1185647f, 1.0801479f);
 
 Character::Character(float x, float y, DepthLayer depthLayer, float width, float height) :
 	SolidMovingSprite(x, y, depthLayer, width, height),
@@ -153,7 +154,14 @@ void Character::Update(float delta)
 			EnableStunParticles(false);
 			if (!IsPlayer())
 			{
-				Roll();
+				if (CanRoll())
+				{
+					Roll();
+				}
+				else
+				{
+					SetCrouching(false);
+				}
 			}
 		}
 	}
@@ -479,6 +487,8 @@ void Character::Initialise()
 	mRegularCollisionBox = m_collisionBoxDimensions;
 	mCollisionBoxOffsetOriginal = mCollisionBoxOffset;
 
+	mRegularSpriteSize = m_dimensions;
+	mMeleeSpriteSize = mRegularSpriteSize * kMeleeSpriteMultiplier;
 }
 
 void Character::XmlRead(TiXmlElement * element)
@@ -610,7 +620,7 @@ void Character::DoMeleeCollisions(SolidMovingSprite * object)
 				if (objAsProj->GetOwnerType() == Projectile::kNPCProjectile)
 				{
 					objAsProj->SetOwnerType(Projectile::kPlayerProjectile);
-					objAsProj->SetDamage(9999); // a large amount ot instantly kill 
+					objAsProj->SetDamage(9999); // a large amount to instantly kill 
 				}
 				else if (objAsProj->GetOwnerType() == Projectile::kPlayerProjectile)
 				{
@@ -618,10 +628,36 @@ void Character::DoMeleeCollisions(SolidMovingSprite * object)
 				}
 
 				// TODO: spark particle
+				/*
+				ParticleEmitterManager::Instance()->CreateRadialSpray(1,
+																		m_position,
+																		GetDepthLayer(),
+																		Vector2(3000.0f, 3000.0f),
+																		"Media\\spark.png",
+																		0.2f,
+																		1.0f,
+																		0.2f,
+																		0.4f,
+																		24.0f,
+																		36.0f,
+																		0.0f,
+																		false,
+																		1.0f,
+																		1.0f,
+																		0.0f,
+																		true,
+																		5.0f,
+																		0.1f,
+																		0.8f,
+																		0.0f,
+																		0.0f);
+																		*/
 
 				AudioManager::Instance()->PlaySoundEffect("metalclink.wav");
 
-				Game::GetInstance()->DoDamagePauseEffect();
+				Game::GetInstance()->DoDamagePauseEffectLonger();
+
+				Camera2D::GetInstance()->DoMediumShake();
 
 				object->TriggerMeleeCooldown();
 			}
@@ -1357,6 +1393,11 @@ void Character::WallJump(int directionX, float percent)
 
 bool Character::Roll()
 {
+	if (!CanRoll())
+	{
+		return false;
+	}
+
 	if (mIsRolling ||
 		!IsOnSolidSurface() /* ||
 		IsStrafing() */)
@@ -1750,6 +1791,11 @@ void Character::DropDown()
 
 void Character::Teleport(float posX, float posY, bool showParticles)
 {
+	if (!CanTeleport())
+	{
+		return;
+	}
+
 	// particles in old position
 	if (showParticles)
 	{
@@ -1791,6 +1837,7 @@ void Character::Teleport(float posX, float posY, bool showParticles)
 	StopXAccelerating();
 	m_velocity.Y = 0.0f;
 	m_velocity.X = 0.0f;
+	SetIsOnSolidLine(false, nullptr);
 
 	// particles in new position
 	if (showParticles)
@@ -1867,6 +1914,17 @@ void Character::SetCrouching(bool value)
 
 bool Character::WillDeflectProjectile(float projectileDirectionX, float projectileCollisionLeft, float projectileCollisionRight)
 {
+	if (projectileDirectionX == 0.0f)
+	{
+		return false;
+	}
+
+	if ((projectileDirectionX > 0.0f && m_direction.X > 0.0f) ||
+		(projectileDirectionX < 0.0f && m_direction.X < 0.0f))
+	{
+		return false;
+	}
+
 	if (mIsDoingMelee &&
 		(mCurrentMeleePhase == kMeleePhase1 || mCurrentMeleePhase == kMeleePhase3))
 	{
@@ -2002,16 +2060,33 @@ void Character::UpdateCollisionBox()
 	m_collisionBoxDimensions = mRegularCollisionBox;
 	mCollisionBoxOffset = mCollisionBoxOffsetOriginal;
 
-	if (mIsDoingMelee && mCurrentMeleePhase == kMeleePhase3)
+	if (mIsDoingMelee)
 	{
-		// this is so the collision box will overlap more and cause damage
-		m_collisionBoxDimensions.X *= mMeleeCollisionBoundsX;
+		if (mDoMeleeSpriteResize)
+		{
+			if (m_dimensions.X != mMeleeSpriteSize.X)
+			{
+				m_dimensions = mMeleeSpriteSize;
+				m_collisionBoxDimensions.Y = mRegularCollisionBox.Y * kMeleeSpriteMultiplier.Y;
+				RecalculateVertices();
+				m_applyChange = true;
+			}
+		}
+
+		if (mCurrentMeleePhase == kMeleePhase3)
+		{
+			// this is so the collision box will overlap more and cause damage
+			m_collisionBoxDimensions.X *= mMeleeCollisionBoundsX;
+		}
 	}
-	else if (mIsRolling)
+	else
 	{
-		// This is so the bounding box will lower and can roll under stuff
-		// mCollisionBoxOffset.Y -= 20.f; (m_collisionBoxDimensions.Y * (1.0f - mRollCollisionBoundsY));
-		// m_collisionBoxDimensions.Y *= mRollCollisionBoundsY;
+		if (m_dimensions.X != mRegularSpriteSize.X)
+		{
+			m_dimensions = mRegularSpriteSize;
+			RecalculateVertices();
+			m_applyChange = true;
+		}
 	}
 
 #if _DEBUG

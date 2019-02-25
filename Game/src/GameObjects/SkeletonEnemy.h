@@ -12,18 +12,16 @@ public:
 	SkeletonEnemy(void);
 	virtual ~SkeletonEnemy(void);
 
-	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointOfContact, bool shouldExplode) override;
 	virtual void Initialise() override;
-	// virtual void UpdateAnimations() override;
-	virtual bool OnCollision(SolidMovingSprite * object) override;
 	virtual void Update(float delta) override;
 
-	virtual void XmlRead(TiXmlElement * element) override;
-	virtual void XmlWrite(TiXmlElement * element) override;
+	bool CanJump() const override { return false; }
+	bool CanRoll() const override { return false; }
+	bool CanTeleport() const override { return false; }
+
+	Projectile * FireWeapon(Vector2 direction) override;
 
 private:
-
-	float mProjectileSpeed = 6.0f;
 
 };
 

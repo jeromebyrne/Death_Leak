@@ -2,11 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\Game",
-    "\\Game\\src",
-    "\\Game\\src\\GameObjects",
     "\\Game\\XmlFiles",
     "\\Game\\XmlFiles\\animation"
   ],
-  "SelectedNode": "\\Game\\src\\GameObjects\\GhostEnemySpawner.h",
+  "SelectedNode": "\\Game\\XmlFiles\\animation\\player_anim_default.xml",
   "PreviewInSolutionExplorer": false
 }

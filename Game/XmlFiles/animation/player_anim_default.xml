@@ -1287,59 +1287,87 @@
           <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
         </skeletonparts>
       </frame>
+      <frame filename="Media\characters\player\melee_2_default\melee_2_default_012.png" >
+        <skeletonparts>
+          <part start_x="12" start_y="170" end_x="-228" end_y="-128"/>
+          <part start_x="-228" start_y="-128" end_x="-96" end_y="-239"/>
+          <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_2_default\melee_2_default_013.png" >
+        <skeletonparts>
+          <part start_x="12" start_y="170" end_x="-228" end_y="-128"/>
+          <part start_x="-228" start_y="-128" end_x="-96" end_y="-239"/>
+          <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_2_default\melee_2_default_014.png" >
+        <skeletonparts>
+          <part start_x="12" start_y="170" end_x="-228" end_y="-128"/>
+          <part start_x="-228" start_y="-128" end_x="-96" end_y="-239"/>
+          <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
+        </skeletonparts>
+      </frame>
     </Melee2>
 
     <Melee3 FrameRate="60" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
-      <frame filename="Media\characters\player\melee_3_default\melee_2_default_012.png" >
+      <frame filename="Media\characters\player\melee_3_default\melee_2_default_015.png" >
         <skeletonparts>
           <part start_x="63" start_y="146" end_x="-228" end_y="-128"/>
           <part start_x="-228" start_y="-128" end_x="-96" end_y="-239"/>
           <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
         </skeletonparts>
       </frame>
-      <frame filename="Media\characters\player\melee_3_default\melee_2_default_013.png" >
+      <frame filename="Media\characters\player\melee_3_default\melee_2_default_016.png" >
         <skeletonparts>
           <part start_x="-45" start_y="100" end_x="-228" end_y="-128"/>
           <part start_x="-228" start_y="-128" end_x="-96" end_y="-239"/>
           <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
         </skeletonparts>
       </frame>
-      <frame filename="Media\characters\player\melee_3_default\melee_2_default_014.png" >
+      <frame filename="Media\characters\player\melee_3_default\melee_2_default_017.png" >
         <skeletonparts>
           <part start_x="-43" start_y="79" end_x="-206" end_y="-153"/>
           <part start_x="-206" start_y="-153" end_x="-96" end_y="-239"/>
           <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
         </skeletonparts>
       </frame>
-      <frame filename="Media\characters\player\melee_3_default\melee_2_default_015.png" >
+      <frame filename="Media\characters\player\melee_3_default\melee_2_default_018.png" >
         <skeletonparts>
           <part start_x="-43" start_y="58" end_x="-206" end_y="-153"/>
           <part start_x="-206" start_y="-153" end_x="-96" end_y="-239"/>
           <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
         </skeletonparts>
       </frame>
-      <frame filename="Media\characters\player\melee_3_default\melee_2_default_015.png" >
+      <frame filename="Media\characters\player\melee_3_default\melee_2_default_019.png" >
         <skeletonparts>
           <part start_x="-43" start_y="58" end_x="-206" end_y="-153"/>
           <part start_x="-206" start_y="-153" end_x="-96" end_y="-239"/>
           <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
         </skeletonparts>
       </frame>
-      <frame filename="Media\characters\player\melee_3_default\melee_2_default_015.png" >
+      <frame filename="Media\characters\player\melee_3_default\melee_2_default_020.png" >
         <skeletonparts>
           <part start_x="-43" start_y="58" end_x="-206" end_y="-153"/>
           <part start_x="-206" start_y="-153" end_x="-96" end_y="-239"/>
           <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
         </skeletonparts>
       </frame>
-      <frame filename="Media\characters\player\melee_3_default\melee_2_default_015.png" >
+      <frame filename="Media\characters\player\melee_3_default\melee_2_default_021.png" >
         <skeletonparts>
           <part start_x="-43" start_y="58" end_x="-206" end_y="-153"/>
           <part start_x="-206" start_y="-153" end_x="-96" end_y="-239"/>
           <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
         </skeletonparts>
       </frame>
-      <frame filename="Media\characters\player\melee_3_default\melee_2_default_015.png" >
+      <frame filename="Media\characters\player\melee_3_default\melee_2_default_022.png" >
+        <skeletonparts>
+          <part start_x="-43" start_y="58" end_x="-206" end_y="-153"/>
+          <part start_x="-206" start_y="-153" end_x="-96" end_y="-239"/>
+          <part start_x="-96" start_y="-239" end_x="-257" end_y="-357"/>
+        </skeletonparts>
+      </frame>
+      <frame filename="Media\characters\player\melee_3_default\melee_2_default_023.png" >
         <skeletonparts>
           <part start_x="-43" start_y="58" end_x="-206" end_y="-153"/>
           <part start_x="-206" start_y="-153" end_x="-96" end_y="-239"/>
@@ -1394,13 +1422,6 @@
       <frame filename="Media\characters\player\melee_finish\melee_finish_006.png" >
         <skeletonparts>
           <part start_x="41" start_y="196" end_x="-70" end_y="-70"/>
-          <part start_x="-70" start_y="-70" end_x="14" end_y="-194"/>
-          <part start_x="14" start_y="-194" end_x="-43" end_y="-349"/>
-        </skeletonparts>
-      </frame>
-      <frame filename="Media\characters\player\melee_finish\melee_finish_007.png" >
-        <skeletonparts>
-          <part start_x="48" start_y="225" end_x="-70" end_y="-70"/>
           <part start_x="-70" start_y="-70" end_x="14" end_y="-194"/>
           <part start_x="14" start_y="-194" end_x="-43" end_y="-349"/>
         </skeletonparts>

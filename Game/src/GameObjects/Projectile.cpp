@@ -189,29 +189,6 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 
 					GameObjectManager::Instance()->RemoveGameObject(objAsProj);
 
-					ParticleEmitterManager::Instance()->CreateRadialSpray(1,
-																			m_position,
-																			GetDepthLayer(),
-																			Vector2(3000.0f, 3000.0f),
-																			"Media\\spark.png",
-																			0.2f,
-																			1.0f,
-																			0.2f,
-																			0.4f,
-																			24.0f,
-																			36.0f,
-																			0.0f,
-																			false,
-																			1.0f,
-																			1.0f,
-																			0.0f,
-																			true,
-																			5.0f,
-																			0.1f,
-																			0.8f,
-																			0.0f,
-																			0.0f);
-
 					AudioManager::Instance()->PlaySoundEffect("metalclink.wav");
 
 					Game::GetInstance()->DoDamagePauseEffect();
@@ -467,7 +444,10 @@ void Projectile::Update(float delta)
 			m_dimensions = mOriginalDimensions;
 		}
 
-		m_velocity.Y -= 0.1f * percentDelta;
+		if (m_applyGravity)
+		{
+			m_velocity.Y -= 0.1f * percentDelta;
+		}
 
 		if (mRotateToDirection)
 		{

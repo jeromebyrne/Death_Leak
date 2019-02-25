@@ -21,9 +21,9 @@ static const float kAimLineOpacityDecreaseRate = 10.0f;
 static const float kFocusUseRate = 150.0f;
 static const float kFocusRechargeRate = 10.0f;
 static const float kFocusCooldownTime = 5.0f;
-static const float kMeleeFocusAmount = 75.0f;
-static const float kDownwardDashFocusAmount = 75.0f;
-static const float kRollFocusAmount = 20.0f;
+static const float kMeleeFocusAmount = 5.0f;
+static const float kDownwardDashFocusAmount = 50.0f;
+static const float kRollFocusAmount = 2.0f;
 
 Player::Player(float x, float y, float width, float height) :
 Character(x, y, GameObject::kPlayer, width, height),
@@ -39,6 +39,7 @@ Character(x, y, GameObject::kPlayer, width, height),
 {
 	mAlwaysUpdate = true;
 	mIsPlayer = true;
+	mDoMeleeSpriteResize = true;
 }
 
 Player::~Player(void)

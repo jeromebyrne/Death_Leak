@@ -56,9 +56,10 @@ public:
 
 	void ResetLevelEditorSelectedObject();
 
-
 	// This is an effect to add pauses for enemy damage etc...
 	void DoDamagePauseEffect();
+
+	void DoDamagePauseEffectLonger();
 		
 	const InputManager & GetInputManager() const { return mInputManager; }
 
@@ -98,6 +99,7 @@ private:
 	bool mDamagePauseEnabled = true;
 	GameObjectManager * mGOMInstance = nullptr;
 	UIManager * mUIManagerInstance = nullptr;
+	float mPauseEffectDelay = 0.0f;
 };
 
 #endif

@@ -29,11 +29,13 @@ AIStateRangeAttack::~AIStateRangeAttack(void)
 
 void AIStateRangeAttack::OnTransition()
 {
+	/*
 	float randMaxXVelocity = rand() % 800;
 	randMaxXVelocity *= 0.001f;
 	randMaxXVelocity += 1.0f;
 
 	m_npc->SetMaxVelocityXY(randMaxXVelocity, 99999.0f);
+	*/
 
 	mRandOffset = rand() % 180;
 

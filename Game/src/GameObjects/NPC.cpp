@@ -204,14 +204,16 @@ void NPC::FireProjectileAtObject(GameObject * target)
 
 	if (mLastFireTime + mNextFireTime < Timing::Instance()->GetTotalTimeSeconds())
 	{
-		float randYOffset = rand() % 220;
+		float randYOffset = rand() % 250;
 
+		/*
 		unsigned randSign = rand() % 2;
 		if (randSign == 1)
 		{
 			// don't fire right into the ground
 			randYOffset *= -0.20f;
 		}
+		*/
 
 		Vector2 dir = Vector2(target->Position().X - m_position.X, (target->Position().Y + randYOffset) - m_position.Y);
 		dir.Normalise();
@@ -324,6 +326,7 @@ Projectile * NPC::FireWeapon(Vector2 direction)
 									0.25f);
 
 	p->SetSpinningMovement(true); // spinning for ninja stars 
+	p->SetGravityApplyAmount(0.1f);
 	
 	if (m_isAnimated && m_animation)
 	{
