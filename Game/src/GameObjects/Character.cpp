@@ -627,33 +627,7 @@ void Character::DoMeleeCollisions(SolidMovingSprite * object)
 					objAsProj->SetOwnerType(Projectile::kNPCProjectile);
 				}
 
-				// TODO: spark particle
-				/*
-				ParticleEmitterManager::Instance()->CreateRadialSpray(1,
-																		m_position,
-																		GetDepthLayer(),
-																		Vector2(3000.0f, 3000.0f),
-																		"Media\\spark.png",
-																		0.2f,
-																		1.0f,
-																		0.2f,
-																		0.4f,
-																		24.0f,
-																		36.0f,
-																		0.0f,
-																		false,
-																		1.0f,
-																		1.0f,
-																		0.0f,
-																		true,
-																		5.0f,
-																		0.1f,
-																		0.8f,
-																		0.0f,
-																		0.0f);
-																		*/
-
-				AudioManager::Instance()->PlaySoundEffect("metalclink.wav");
+				AudioManager::Instance()->PlaySoundEffect(rand() % 2 == 1 ? "projectile_deflect.wav" : "projectile_deflect_2.wav");
 
 				Game::GetInstance()->DoDamagePauseEffectLonger();
 
@@ -743,6 +717,7 @@ void Character::UpdateAnimations()
 					if (current_body_sequence_name != "Melee")
 					{
 						bodyPart->SetSequence("Melee");
+						AudioManager::Instance()->PlaySoundEffect(rand() % 2 == 1 ? "character/sword_1.wav" : "character/sword_3.wav");
 					}
 
 					bodyPart->Animate();
@@ -759,6 +734,7 @@ void Character::UpdateAnimations()
 					if (current_body_sequence_name != "Melee2")
 					{
 						bodyPart->SetSequence("Melee2");
+						//AudioManager::Instance()->PlaySoundEffect("character/sword_2.wav");
 					}
 
 					bodyPart->Animate();
@@ -775,6 +751,7 @@ void Character::UpdateAnimations()
 					if (current_body_sequence_name != "Melee3")
 					{
 						bodyPart->SetSequence("Melee3");
+						AudioManager::Instance()->PlaySoundEffect(rand() % 2 == 1 ? "character/sword_2.wav" : "character/sword_4.wav");
 					}
 
 					bodyPart->Animate();

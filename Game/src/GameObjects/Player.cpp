@@ -18,7 +18,7 @@ static const char * kBombTextureFile = "Media/bomb.png";
 static const float kAimLineOpacityDecrementDelay = 0.05f;
 static const float kAimLineOpacityDecreaseRate = 10.0f;
 
-static const float kFocusUseRate = 150.0f;
+static const float kFocusUseRate = 80.0f;
 static const float kFocusRechargeRate = 10.0f;
 static const float kFocusCooldownTime = 5.0f;
 static const float kMeleeFocusAmount = 5.0f;

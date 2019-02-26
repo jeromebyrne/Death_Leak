@@ -189,7 +189,7 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 
 					GameObjectManager::Instance()->RemoveGameObject(objAsProj);
 
-					AudioManager::Instance()->PlaySoundEffect("metalclink.wav");
+					AudioManager::Instance()->PlaySoundEffect(rand() % 2 == 1 ? "projectile_deflect.wav" : "projectile_deflect_2.wav");
 
 					Game::GetInstance()->DoDamagePauseEffect();
 
@@ -223,7 +223,7 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 				objAsProj->m_timeBecameInactive = Timing::Instance()->GetTotalTimeSeconds();
 				objAsProj->SetVelocityXY(-m_velocity.X * 0.7f, -5.0f);
 
-				AudioManager::Instance()->PlaySoundEffect("metalclink.wav");
+				AudioManager::Instance()->PlaySoundEffect(rand() % 2 == 1 ? "projectile_deflect.wav" : "projectile_deflect_2.wav");
 
 				// 50/50 chance of the players projectile being discarded in a collision
 				if (randOffsetSign == 0) 

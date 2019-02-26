@@ -28,10 +28,12 @@ InputManager::InputManager() :
 
 void InputManager::ProcessGameplayInput()
 {
+	/*
 	if (GetForegroundWindow() != DXWindow::GetInstance()->Hwnd())
 	{
 		return;
 	}
+	*/
 
 #ifdef _DEBUG
 
@@ -133,26 +135,28 @@ void InputManager::ProcessLeftRightMovement_gamepad(XINPUT_STATE padState, Curre
 
 	if (!player->IsDoingMelee() &&
 		!player->IsWallJumping() &&
-		(range > 0.2f || range < -0.2f))
+		absRange > 0.1f)
 	{
 		player->AccelerateX(range, absRange);
-
+		// currentActions.mIsSprinting = true;
+		/*
 		if (absRange > 0.95f)
 		{
 			if (NPCManager::Instance()->IsAnyEnemyNPCInWorld())
 			{
 				// only sprint if there are enemies in the level
 				// don't want to sprint too fast if we're just exploring
-				// currentActions.mIsSprinting = true;
+				currentActions.mIsSprinting = true;
 			}
 		}
+		*/
 	}
 	else
 	{
 		player->StopXAccelerating();
 	}
 
-	player->SetSprintActive(currentActions.mIsSprinting);
+	// player->SetSprintActive(currentActions.mIsSprinting);
 }
 
 void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player)
@@ -597,14 +601,14 @@ void InputManager::ProcessLeftRightMovement_keyboard(CurrentGameplayActions & cu
 			!player->IsWallJumping())
 		{
 			player->AccelerateX(-100);
-			currentActions.mIsSprinting = true;
+			// currentActions.mIsSprinting = true;
 		}
 		else if (GetAsyncKeyState('D') < 0 &&
 			!player->IsDoingMelee() &&
 			!player->IsWallJumping())
 		{
 			player->AccelerateX(100);
-			currentActions.mIsSprinting = true;
+			// currentActions.mIsSprinting = true;
 		}
 		else
 		{
