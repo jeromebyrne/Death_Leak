@@ -34,6 +34,7 @@
 #include "DataValue.h"
 #include "PlayerLevelManager.h"
 #include "FeatureUnlockManager.h"
+#include "UITextModal.h"
 
 Game * Game::mInstance = nullptr;
 
@@ -43,6 +44,8 @@ static const float kPauseDamageEffectLongerDelay = 0.2f;
 
 bool Game::mPaused = false;
 bool Game::mLevelEditMode = false;
+bool Game::mIsDisplayingTextModal = false;
+
 Vector2 Game::mGameScale = Vector2(1.0f, 1.0f);
 
 Game::Game(Graphics * pGraphics) : 
@@ -247,6 +250,11 @@ void Game::Update(float delta)
 
 void Game::PauseGame(bool pushPauseScreen)
 {
+	if (mIsDisplayingTextModal)
+	{
+		return;
+	}
+
 	mPaused = true;
 
 	if (pushPauseScreen)
@@ -256,12 +264,34 @@ void Game::PauseGame(bool pushPauseScreen)
 }
 void Game::UnPauseGame(bool popPauseScreen )
 {
+	if (mIsDisplayingTextModal)
+	{
+		return;
+	}
+
 	mPaused = false;
 
 	if (popPauseScreen)
 	{
 		UIManager::Instance()->PopUI("pause_menu");
 	}
+}
+
+void Game::DisplayTextModal(const string & localizedText)
+{
+	mPaused = true;
+
+	UIScreen * screen = UIManager::Instance()->PushUI("text_modal");
+	UITextModal * textScreen = static_cast<UITextModal*>(screen);
+
+	textScreen->SetLocalizedDescription(localizedText);
+}
+
+void Game::DismissTextModal()
+{
+	mPaused = false;
+
+	UIManager::Instance()->PopUIDeferred("text_modal");
 }
 
 void Game::Draw()

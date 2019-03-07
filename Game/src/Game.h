@@ -40,6 +40,9 @@ public:
 	static void UnPauseGame(bool popPauseScreen = true);
 	static void SetIsLevelEditMode(bool value) { mLevelEditMode = value; }
 
+	static void DisplayTextModal(const string & localizedText);
+	static void DismissTextModal();
+
 	static bool GetIsLevelEditMode() { return mLevelEditMode; }
 
 	static Game * GetInstance() { return mInstance; }
@@ -91,6 +94,7 @@ private:
 	EffectFoliageSway * m_effectFoliageSway;
 	static bool mPaused;
 	static bool mLevelEditMode;
+	static bool mIsDisplayingTextModal;
 	ScreenAlignedTexture * m_screenAlignedPostProcTex1;
 	static Vector2 mGameScale;
 	static Game * mInstance;

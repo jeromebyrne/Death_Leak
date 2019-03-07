@@ -135,9 +135,10 @@ void InputManager::ProcessLeftRightMovement_gamepad(XINPUT_STATE padState, Curre
 
 	if (!player->IsDoingMelee() &&
 		!player->IsWallJumping() &&
-		absRange > 0.1f)
+		absRange > 0.2f)
 	{
-		player->AccelerateX(range, absRange);
+		player->AccelerateX(range * 100.0f/*, absRange */);
+
 		// currentActions.mIsSprinting = true;
 		/*
 		if (absRange > 0.95f)

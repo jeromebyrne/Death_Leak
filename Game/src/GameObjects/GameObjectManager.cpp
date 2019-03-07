@@ -50,6 +50,7 @@
 #include "Foliage.h"
 #include "SkeletonEnemy.h"
 #include "SkeletonEnemySpawner.h"
+#include "PaperPickup.h"
 
 struct DepthSortPredicate
 {
@@ -767,6 +768,10 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement, const
 	else if (strcmp(gameObjectTypeName, "skeletonenemy") == 0)
 	{
 		newGameObject = new SkeletonEnemy();
+	}
+	else if (strcmp(gameObjectTypeName, "paperpickup") == 0)
+	{
+	newGameObject = new PaperPickup();
 	}
 
 	if (newGameObject && !dynamic_cast<ParticleSpray*>(newGameObject))

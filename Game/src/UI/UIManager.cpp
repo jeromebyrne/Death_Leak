@@ -13,6 +13,7 @@
 #include "UIObjectEditScreen.h"
 #include "UILevelSelectScreen.h"
 #include "UIQuickPlayScreen.h"
+#include "UITextModal.h"
 #include "SaveManager.h"
 #include "UIGameLoading.h"
 
@@ -311,6 +312,10 @@ void UIManager::XmlRead(const char * uiRootPath)
 		else if (name == "gameloading")
 		{
 			ui_screen = new UIGameLoading(name);
+		}
+		else if (name == "text_modal")
+		{
+			ui_screen = new UITextModal(name);
 		}
 		else
 		{

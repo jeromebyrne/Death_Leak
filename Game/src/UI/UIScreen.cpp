@@ -25,21 +25,17 @@ UIScreen::~UIScreen(void)
 
 void UIScreen::ApplyAlpha(float newAlpha)
 {
-	map<string, UIWidget*>::iterator iter = m_widgetMap.begin();
-
-	for(; iter != m_widgetMap.end(); iter++)
+	for (auto widget : m_widgetMap)
 	{
-		(*iter).second->SetAlpha(newAlpha);
+		widget.second->SetAlpha(newAlpha);
 	}
 }
 
 void UIScreen::ScaleScreen(float scaleFactorX, float scaleFactorY)
 {
-	map<string, UIWidget*>::iterator iter = m_widgetMap.begin();
-
-	for(; iter != m_widgetMap.end(); iter++)
+	for(auto widget : m_widgetMap)
 	{
-		(*iter).second->Scale(scaleFactorX, scaleFactorY);
+		widget.second->Scale(scaleFactorX, scaleFactorY);
 	}
 }
 
@@ -134,12 +130,9 @@ void UIScreen::Release()
 
 void UIScreen::Update()
 {
-	// loop through our widgets and update
-	map<string, UIWidget*>::const_iterator current = m_widgetMap.begin();
-	for(;current != m_widgetMap.end(); current++)
+	for(auto widget : m_widgetMap)
 	{
-		UIWidget * widget = (*current).second;
-		widget->Update();
+		widget.second->Update();
 	}
 
 	// process input on the screen

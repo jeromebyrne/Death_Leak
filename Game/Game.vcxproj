@@ -102,6 +102,7 @@
     <ClCompile Include="src\GameObjects\NPC.cpp" />
     <ClCompile Include="src\GameObjects\NPCManager.cpp" />
     <ClCompile Include="src\GameObjects\NPCTrigger.cpp" />
+    <ClCompile Include="src\GameObjects\PaperPickup.cpp" />
     <ClCompile Include="src\GameObjects\ParallaxLayer.cpp" />
     <ClCompile Include="src\GameObjects\PathingPlatform.cpp" />
     <ClCompile Include="src\GameObjects\Pickup.cpp" />
@@ -149,6 +150,7 @@
     <ClCompile Include="src\UI\UIScreen.cpp" />
     <ClCompile Include="src\UI\UISprite.cpp" />
     <ClCompile Include="src\UI\UITextBox.cpp" />
+    <ClCompile Include="src\UI\UITextModal.cpp" />
     <ClCompile Include="src\UI\UIWidget.cpp" />
     <ClCompile Include="tinyxml\tinystr.cpp" />
     <ClCompile Include="tinyxml\tinyxml.cpp" />
@@ -244,6 +246,7 @@
     <ClInclude Include="src\GameObjects\NPCManager.h" />
     <ClInclude Include="src\GameObjects\NPCSpawner.h" />
     <ClInclude Include="src\GameObjects\NPCTrigger.h" />
+    <ClInclude Include="src\GameObjects\PaperPickup.h" />
     <ClInclude Include="src\GameObjects\ParallaxLayer.h" />
     <ClInclude Include="src\GameObjects\PathingPlatform.h" />
     <ClInclude Include="src\GameObjects\Pickup.h" />
@@ -289,6 +292,7 @@
     <ClInclude Include="src\UI\UIScreen.h" />
     <ClInclude Include="src\UI\UISprite.h" />
     <ClInclude Include="src\UI\UITextBox.h" />
+    <ClInclude Include="src\UI\UITextModal.h" />
     <ClInclude Include="src\UI\UIWidget.h" />
     <ClInclude Include="src\Utils\DrawUtilities.h" />
     <ClInclude Include="src\Utils\Utilities.h" />

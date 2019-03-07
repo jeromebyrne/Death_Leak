@@ -56,7 +56,7 @@ void Player::Initialise()
 	mRunAnimFramerateMultiplier = 3.0f;
 	m_maxJumpSpeed = 19.0f;
 	mMaxJumpsAllowed = 1;
-	m_maxVelocity.X = 1.0000f;
+	m_maxVelocity.X = 7.5000f;
 	mSprintVelocityX = 17.5f;
 	mAccelXRate = 0.60f;
 

@@ -27,6 +27,12 @@ DojoScrollPickup::~DojoScrollPickup(void)
 		mCostText->Release();
 		mCostText = nullptr;
 	}
+
+	if (mDescriptionText)
+	{
+		mDescriptionText->Release();
+		mDescriptionText = nullptr;
+	}
 }
 
 void DojoScrollPickup::Update(float delta)
@@ -186,7 +192,6 @@ void DojoScrollPickup::InitialiseText()
 void DojoScrollPickup::Draw(ID3D10Device * device, Camera2D * camera)
 {
 	Sprite::Draw(device, camera);
-
 
 	float worldScale = GameObjectManager::Instance()->GetCurrentLevelProperties().GetZoomInPercent();
 	worldScale = (1.0f + (1.0f - worldScale));
