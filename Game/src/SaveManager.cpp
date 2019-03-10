@@ -439,6 +439,63 @@ void SaveManager::SetGameFeatureUnlocked(const int featureType)
 	mSaveMap[key] = vec;
 }
 
+void SaveManager::SetPaperPickupCollected(const string & loc_id)
+{
+	std::string key = "paper_pickups_collected";
+
+	DataValue paperPickupVector = mSaveMap[key];
+
+	if (paperPickupVector.getType() != DataValue::Type::VECTOR)
+	{
+		// we haven't created this vector yet
+		paperPickupVector = DataValue(std::vector<DataValue>());
+	}
+
+	auto vec = paperPickupVector.asVector();
+
+	for (const auto & val : vec)
+	{
+		if (val.asString() == loc_id)
+		{
+			// we already unlocked this so just return
+			return;
+		}
+	}
+
+	vec.push_back(DataValue(loc_id));
+
+	mSaveMap[key] = vec;
+}
+
+bool SaveManager::IsPaperPickupCollected(const string & loc_id)
+{
+	std::string key = "paper_pickups_collected";
+
+	DataValue paperPickupVector = mSaveMap[key];
+
+	if (paperPickupVector.getType() != DataValue::Type::VECTOR)
+	{
+		return false;
+	}
+
+	auto vec = paperPickupVector.asVector();
+
+	for (const auto & item : vec)
+	{
+		if (item.getType() != DataValue::Type::STRING)
+		{
+			continue;
+		}
+
+		if (item.asString() == loc_id)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 bool SaveManager::HasDoorKey(const std::string & keyId)
 {
 	return GetBoolValue(keyId, false);

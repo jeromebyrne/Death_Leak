@@ -277,13 +277,14 @@ void Game::UnPauseGame(bool popPauseScreen )
 	}
 }
 
-void Game::DisplayTextModal(const string & localizedText)
+void Game::DisplayTextModal(const string & localizedTitle, const string & localizedText)
 {
 	mPaused = true;
 
 	UIScreen * screen = UIManager::Instance()->PushUI("text_modal");
 	UITextModal * textScreen = static_cast<UITextModal*>(screen);
 
+	textScreen->SetLocalizedTitle(localizedTitle);
 	textScreen->SetLocalizedDescription(localizedText);
 }
 

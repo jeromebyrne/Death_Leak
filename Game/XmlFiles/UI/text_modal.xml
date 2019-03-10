@@ -9,4 +9,22 @@
           use_standard_effect="true">
   </sprite>
 
+  <sprite name="2_back_button_image_gamepad"
+          process_input="false"
+          posX ="860" posY ="-500" width="64" height ="64"
+          image="Media\UI\gamepad_icons\b.png"
+          hflip="false" vflip="true"
+          alpha="1.0"
+          use_standard_effect="true">
+  </sprite>
+
+  <sprite name="3_back_button_image_keyboard"
+          process_input="false"
+          posX ="860" posY ="-500" width="64" height ="64"
+          image="Media\UI\gamepad_icons\key_esc.png"
+          hflip="false" vflip="true"
+          alpha="1.0"
+          use_standard_effect="true">
+  </sprite>
+
 </uiscreen>

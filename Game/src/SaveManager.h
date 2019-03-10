@@ -32,6 +32,10 @@ public:
 
 	void SetGameFeatureUnlocked(const int featureType);
 
+	void SetPaperPickupCollected(const string & loc_id);
+
+	bool IsPaperPickupCollected(const string & loc_id);
+
 	bool HasDoorKey(const std::string & keyId);
 
 	void SetHasDoorkey(const std::string & keyId, bool value);

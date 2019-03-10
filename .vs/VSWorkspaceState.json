@@ -3,13 +3,10 @@
     "",
     "\\Game",
     "\\Game\\src",
-    "\\Game\\src\\GameObjects",
     "\\Game\\src\\UI",
     "\\Game\\XmlFiles",
-    "\\Game\\XmlFiles\\UI",
-    "\\steamworks_sdk_142",
-    "\\steamworks_sdk_142\\sdk",
-    "\\steamworks_sdk_142\\sdk\\steamworksexample"
+    "\\Game\\XmlFiles\\UI"
   ],
+  "SelectedNode": "\\Game\\XmlFiles\\UI\\text_modal.xml",
   "PreviewInSolutionExplorer": false
 }

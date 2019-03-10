@@ -15,10 +15,16 @@ public:
 
 	virtual void XmlWrite(TiXmlElement * element) override;
 
+	virtual void Update(float delta) override;
+
 protected:
 
-	string mLocalizationId;
-	string mLocalizedString;
+	string mLocTitleId;
+	string mLocTitleString;
+	string mLocDescId;
+	string mLocDescString;
+
+	bool mHasInitCheckedCollected = false;
 };
 
 #endif

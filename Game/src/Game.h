@@ -40,7 +40,7 @@ public:
 	static void UnPauseGame(bool popPauseScreen = true);
 	static void SetIsLevelEditMode(bool value) { mLevelEditMode = value; }
 
-	static void DisplayTextModal(const string & localizedText);
+	static void DisplayTextModal(const string & localizedTitle, const string & localizeddesc);
 	static void DismissTextModal();
 
 	static bool GetIsLevelEditMode() { return mLevelEditMode; }
