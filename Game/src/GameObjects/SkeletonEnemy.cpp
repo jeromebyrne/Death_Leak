@@ -13,13 +13,17 @@ SkeletonEnemy::SkeletonEnemy(void) :
 	NPC()
 {
 	mProjectileFilePath = "Media/fireball.png";
-	mProjectileImpactFilePath = "Media/puke_impact_temp.png";
+	mProjectileImpactFilePath = "Media/fireball.png";
 	mExplodesGruesomely = true;
-	mHealth = 50.0f;
-	mMaxHealth = 50.0f;
+	mHealth = 500.0f;
+	mMaxHealth = 500.0f;
 	mEmitsBlood = false;
+	mFireProjectileRandOffsetMax = -100.0f;
 
-	mRunAnimFramerateMultiplier = 2.5f;
+	mRunAnimFramerateMultiplier = 4.0f;
+	m_projectileOffset.X = 10.0f;
+	m_projectileOffset.Y = 50.0f;
+	mCheckNPCOverlapCollisions = false;
 }
 
 SkeletonEnemy::~SkeletonEnemy(void)

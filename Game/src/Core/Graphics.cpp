@@ -9,12 +9,12 @@ static const float clearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 
 Graphics::Graphics(void):
 	mSimpleFontManager(nullptr),
-	mIsFullScreen(true),
+	mIsFullScreen(false),
 	mVSyncEnabled(true),
 	m_pd3dDevice(nullptr),
 	m_pBackBufferRenderTargetView(nullptr),
 	m_pSwapChain(nullptr),
-	m_driverType(D3D10_DRIVER_TYPE_NULL),
+	m_driverType(D3D10_DRIVER_TYPE_HARDWARE),
 	m_pPreProcessRenderTargetView(nullptr),
 	m_pPreProcessTexture(nullptr),
 	m_preProcessSRV(nullptr),

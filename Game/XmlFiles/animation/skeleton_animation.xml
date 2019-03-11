@@ -191,7 +191,7 @@
       </frame>
     </Running>
 
-    <Crouch FrameRate="40" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+    <Crouch FrameRate="15" MaxFrameRate="15" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
       <frame filename="Media\characters\skeleton\duck_default\duck_default_000.png" >
         <skeletonparts>
           <part start_x="57" start_y="203" end_x="-28" end_y="-30"/>
@@ -238,7 +238,7 @@
       </frame>
     </Crouch>
 
-    <CrouchUp FrameRate="40" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+    <CrouchUp FrameRate="5" MaxFrameRate="5" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
       <frame filename="Media\characters\skeleton\duck_default\duck_default_005.png" >
         <skeletonparts>
           <part start_x="198" start_y="0" end_x="30" end_y="-175"/>

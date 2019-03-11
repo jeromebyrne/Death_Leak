@@ -204,16 +204,12 @@ void NPC::FireProjectileAtObject(GameObject * target)
 
 	if (mLastFireTime + mNextFireTime < Timing::Instance()->GetTotalTimeSeconds())
 	{
-		float randYOffset = rand() % 250;
+		float randYOffset = rand() % mFireProjectileRandOffsetMax;
 
-		/*
-		unsigned randSign = rand() % 2;
-		if (randSign == 1)
+		if (mFireProjectileRandOffsetMax < 0.0f)
 		{
-			// don't fire right into the ground
-			randYOffset *= -0.20f;
+			randYOffset *= -1.0f;
 		}
-		*/
 
 		Vector2 dir = Vector2(target->Position().X - m_position.X, (target->Position().Y + randYOffset) - m_position.Y);
 		dir.Normalise();

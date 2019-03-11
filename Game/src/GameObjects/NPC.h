@@ -63,7 +63,7 @@ protected:
 	bool mCheckNPCOverlapCollisions;
 	bool mAddHealthBar;
 
-private:
+protected:
 
 	void AddHealthBar();
 	void UpdateHealthBar(float delta);
@@ -89,6 +89,7 @@ private:
 	int mRandHealthBarOffsetY;
 	int mDamageInARowCount = 0;
 	float mDamageInARowCountdown = 0.0f;
+	int mFireProjectileRandOffsetMax = 250;
 };
 
 #endif

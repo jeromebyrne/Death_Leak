@@ -473,6 +473,46 @@
     </debris_textures>
   </material>
 
+
+  <!-- skeleton -->
+  <material name="skeleton">
+    <particletextures>
+      <texture file="Media\bloodparticle.png"/>
+      <!--  <texture file="Media\bloodparticle2.png"/> -->
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="character\demon1\damage\damage1.wav" />
+      <sound file="character\demon1\damage\damage2.wav" />
+      <sound file="character\demon1\damage\damage3.wav" />
+      <sound file="character\demon1\damage\damage4.wav" />
+      <sound file="character\demon1\damage\damage5.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+      <sound file="Footstep2.wav" />
+      <sound file="Footstep3.wav" />
+      <sound file="Footstep4.wav" />
+      <sound file="Footstep5.wav" />
+      <sound file="Footstep6.wav" />
+      <sound file="Footstep7.wav" />
+      <sound file="Footstep8.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffects>
+      <sound file="blood\\blood2.wav"/>
+    </destroysoundeffects>
+
+    <is_pierceable value="false" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
+  </material>
+
   <!--Underwater sand-->
   <material name="underwater_sand">
     <particletextures>

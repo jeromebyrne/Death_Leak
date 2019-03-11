@@ -329,30 +329,6 @@ void InputManager::ProcessMelee_gamepad(XINPUT_STATE padState, CurrentGameplayAc
 	}
 }
 
-void InputManager::ProcessWallJump_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player)
-{
-	bool wasPressingJump = mCurrentGamepadState.mPressingWallJump;
-
-	if (!player->JustFellFromLargeDistance() &&
-		!player->JustFellFromShortDistance() &&
-		padState.Gamepad.wButtons & XINPUT_GAMEPAD_A)
-	{
-		mCurrentGamepadState.mPressingWallJump = true;
-	}
-	else
-	{
-		mCurrentGamepadState.mPressingWallJump = false;
-	}
-
-	if (mCurrentGamepadState.mPressingWallJump && !wasPressingJump)
-	{
-		if (player->GetIsCollidingAtObjectSide())
-		{
-			player->WallJump(-player->DirectionX(), 100.0f);
-		}
-	}
-}
-
 void InputManager::ProcessAimDirection_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player, const LevelProperties & levelProps)
 {
 	currentActions.mAimDirection = Vector2(player->IsStrafing() ? player->GetStrafeDirectionX() : player->DirectionX(), 0.0f);
@@ -557,8 +533,6 @@ void InputManager::ProcessGameplay_GamePad(Player * player)
 
 	ProcessJump_gamepad(padState, currentActions, player);
 
-	ProcessWallJump_gamepad(padState, currentActions, player);
-
 	ProcessAimDirection_gamepad(padState, currentActions, player, levelProps);
 
 	ProcessPrimaryWeapon_gamepad(padState, currentActions, player);
@@ -673,6 +647,68 @@ void InputManager::ProcessJump_keyboard(CurrentGameplayActions & currentActions,
 		player->Jump(jumpPower);
 	}
 }
+
+
+
+/*
+if (player->GetIsDownwardDashing())
+	{
+		// prioritise downward dash over double jumping
+		return;
+	}
+
+	bool wasPressingJump = mCurrentGamepadState.mPressingJump;
+
+	// TODO: why am I doing all this before even checking if jumping?
+	static float currentJumpIncreasePercent = kJumpInitialPercent;
+
+	if (player->IsOnSolidSurface() || player->GetIsInWater())
+	{
+		// reset
+		currentJumpIncreasePercent = kJumpInitialPercent;
+	}
+
+	if (!player->JustFellFromLargeDistance() &&
+		!player->JustFellFromShortDistance() &&
+		!player->IsDoingMelee() &&
+		(padState.Gamepad.wButtons & XINPUT_GAMEPAD_A ||
+		padState.Gamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD))
+	{
+		mCurrentGamepadState.mPressingJump = true;
+	}
+	else
+	{
+		mCurrentGamepadState.mPressingJump = false;
+	}
+
+	if (mCurrentGamepadState.mPressingJump && !wasPressingJump)
+	{
+		if (padState.Gamepad.sThumbLY < -30000 &&
+			!player->IsFullyCrouched() && 
+			!player->IsDoingMelee() &&
+			player->IsOnSolidLine() &&
+			player->GetCurrentSolidLineStrip() &&
+			player->GetCurrentSolidLineStrip()->GetCanDropDown())
+		{
+		player->DropDown();
+		}
+		else
+		{
+		mLastTimePressedJump = Timing::Instance()->GetTotalTimeSeconds();
+		float jumpPower = kJumpInitialPercent;
+
+		player->Jump(jumpPower);
+		}
+	}
+	else if (mCurrentGamepadState.mPressingJump &&
+	wasPressingJump &&
+	player->CanIncreaseJumpIntensity() &&
+	currentJumpIncreasePercent < 100.0f)
+	{
+	currentJumpIncreasePercent += kJumpIncrementalIncreasePercent;
+	player->IncreaseJump(currentJumpIncreasePercent);
+	}
+*/
 
 float InputManager::GetThumbstickRange(short thumbstickValue)
 {

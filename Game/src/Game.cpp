@@ -207,36 +207,38 @@ void Game::Update(float delta)
 			mInputManager.ProcessGameplayInput();
 		}
 
-		// TODO: move to the check input function
-		bool pressing_pause_gamepad = false;
-		GamePad * game_pad = GamePad::GetPad1();
-		if (game_pad && game_pad->IsConnected())
+		if (mIsDisplayingTextModal == false)
 		{
-			pressing_pause_gamepad = game_pad->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_START;
-		}
-
-		static bool pressingPause = false;
-		if ((GetAsyncKeyState(VK_ESCAPE) < 0 || pressing_pause_gamepad) && !pressingPause)
-		{
-			Player * player = GameObjectManager::Instance()->GetPlayer();
-
-			if (player && !player->IsDead())
+			bool pressing_pause_gamepad = false;
+			GamePad * game_pad = GamePad::GetPad1();
+			if (game_pad && game_pad->IsConnected())
 			{
-				pressingPause = true;
+				pressing_pause_gamepad = game_pad->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_START;
+			}
 
-				if (mPaused)
+			static bool pressingPause = false;
+			if ((GetAsyncKeyState(VK_ESCAPE) < 0 || pressing_pause_gamepad) && !pressingPause)
+			{
+				Player * player = GameObjectManager::Instance()->GetPlayer();
+
+				if (player && !player->IsDead())
 				{
-					UnPauseGame();
-				}
-				else
-				{
-					PauseGame();
+					pressingPause = true;
+
+					if (mPaused)
+					{
+						UnPauseGame();
+					}
+					else
+					{
+						PauseGame();
+					}
 				}
 			}
-		}
-		else if (!(GetAsyncKeyState(VK_ESCAPE) < 0) && !pressing_pause_gamepad)
-		{
-			pressingPause = false;
+			else if (!(GetAsyncKeyState(VK_ESCAPE) < 0) && !pressing_pause_gamepad)
+			{
+				pressingPause = false;
+			}
 		}
 	}
 	
@@ -286,6 +288,8 @@ void Game::DisplayTextModal(const string & localizedTitle, const string & locali
 
 	textScreen->SetLocalizedTitle(localizedTitle);
 	textScreen->SetLocalizedDescription(localizedText);
+
+	mIsDisplayingTextModal = true;
 }
 
 void Game::DismissTextModal()
@@ -293,6 +297,8 @@ void Game::DismissTextModal()
 	mPaused = false;
 
 	UIManager::Instance()->PopUIDeferred("text_modal");
+
+	mIsDisplayingTextModal = false;
 }
 
 void Game::Draw()

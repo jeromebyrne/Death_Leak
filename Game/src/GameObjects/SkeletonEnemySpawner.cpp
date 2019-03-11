@@ -25,9 +25,9 @@ void SkeletonEnemySpawner::SpawnNPC(const float posX,
 	float randJumpSpeed = rand() % 4000;
 	randJumpSpeed *= 0.001f;
 	randJumpSpeed += 16.0f;
-	float randMaxXVelocity = rand() % 3000;
+	float randMaxXVelocity = rand() % 4000;
 	randMaxXVelocity *= 0.001f;
-	randMaxXVelocity += 4.0f;
+	randMaxXVelocity += 2.0f;
 
 	SkeletonEnemy * npc = new SkeletonEnemy();
 	npc->SetXY(posX, posY);
@@ -50,7 +50,7 @@ void SkeletonEnemySpawner::SpawnNPC(const float posX,
 	npc->SetPlayer(GameObjectManager::Instance()->GetPlayer());
 	npc->SetResistanceXY(0.99f, 1.4f);
 	npc->setAccelXRate(10.0f);
-	npc->SetMaterial(MaterialManager::Instance()->GetMaterial("demon"));
+	npc->SetMaterial(MaterialManager::Instance()->GetMaterial("skeleton"));
 	npc->SetMaxJumpSpeed(randJumpSpeed);
 	npc->SetIsPlayerEnemy(true);
 	npc->SetFadeAlphaWhenPlayerOccluded(false, 0.5f);
