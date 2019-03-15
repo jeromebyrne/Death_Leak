@@ -138,26 +138,11 @@ void InputManager::ProcessLeftRightMovement_gamepad(XINPUT_STATE padState, Curre
 		absRange > 0.2f)
 	{
 		player->AccelerateX(range * 100.0f/*, absRange */);
-
-		// currentActions.mIsSprinting = true;
-		/*
-		if (absRange > 0.95f)
-		{
-			if (NPCManager::Instance()->IsAnyEnemyNPCInWorld())
-			{
-				// only sprint if there are enemies in the level
-				// don't want to sprint too fast if we're just exploring
-				currentActions.mIsSprinting = true;
-			}
-		}
-		*/
 	}
 	else
 	{
 		player->StopXAccelerating();
 	}
-
-	// player->SetSprintActive(currentActions.mIsSprinting);
 }
 
 void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player)
@@ -304,6 +289,18 @@ void InputManager::ProcessRoll_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 	{ 
 		mLastTimePressedRoll = Timing::Instance()->GetTotalTimeSeconds();
 		player->Roll();
+	}
+}
+
+void InputManager::ProcessSprint_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player)
+{
+	if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
+	{
+		player->TrySprint();
+	}
+	else
+	{
+		player->StopSprint();
 	}
 }
 
@@ -529,6 +526,8 @@ void InputManager::ProcessGameplay_GamePad(Player * player)
 
 	ProcessRoll_gamepad(padState, currentActions, player);
 
+	ProcessSprint_gamepad(padState, currentActions, player);
+
 	ProcessLeftRightMovement_gamepad(padState, currentActions, player);
 
 	ProcessJump_gamepad(padState, currentActions, player);
@@ -576,14 +575,12 @@ void InputManager::ProcessLeftRightMovement_keyboard(CurrentGameplayActions & cu
 			!player->IsWallJumping())
 		{
 			player->AccelerateX(-100);
-			// currentActions.mIsSprinting = true;
 		}
 		else if (GetAsyncKeyState('D') < 0 &&
 			!player->IsDoingMelee() &&
 			!player->IsWallJumping())
 		{
 			player->AccelerateX(100);
-			// currentActions.mIsSprinting = true;
 		}
 		else
 		{
@@ -647,68 +644,6 @@ void InputManager::ProcessJump_keyboard(CurrentGameplayActions & currentActions,
 		player->Jump(jumpPower);
 	}
 }
-
-
-
-/*
-if (player->GetIsDownwardDashing())
-	{
-		// prioritise downward dash over double jumping
-		return;
-	}
-
-	bool wasPressingJump = mCurrentGamepadState.mPressingJump;
-
-	// TODO: why am I doing all this before even checking if jumping?
-	static float currentJumpIncreasePercent = kJumpInitialPercent;
-
-	if (player->IsOnSolidSurface() || player->GetIsInWater())
-	{
-		// reset
-		currentJumpIncreasePercent = kJumpInitialPercent;
-	}
-
-	if (!player->JustFellFromLargeDistance() &&
-		!player->JustFellFromShortDistance() &&
-		!player->IsDoingMelee() &&
-		(padState.Gamepad.wButtons & XINPUT_GAMEPAD_A ||
-		padState.Gamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD))
-	{
-		mCurrentGamepadState.mPressingJump = true;
-	}
-	else
-	{
-		mCurrentGamepadState.mPressingJump = false;
-	}
-
-	if (mCurrentGamepadState.mPressingJump && !wasPressingJump)
-	{
-		if (padState.Gamepad.sThumbLY < -30000 &&
-			!player->IsFullyCrouched() && 
-			!player->IsDoingMelee() &&
-			player->IsOnSolidLine() &&
-			player->GetCurrentSolidLineStrip() &&
-			player->GetCurrentSolidLineStrip()->GetCanDropDown())
-		{
-		player->DropDown();
-		}
-		else
-		{
-		mLastTimePressedJump = Timing::Instance()->GetTotalTimeSeconds();
-		float jumpPower = kJumpInitialPercent;
-
-		player->Jump(jumpPower);
-		}
-	}
-	else if (mCurrentGamepadState.mPressingJump &&
-	wasPressingJump &&
-	player->CanIncreaseJumpIntensity() &&
-	currentJumpIncreasePercent < 100.0f)
-	{
-	currentJumpIncreasePercent += kJumpIncrementalIncreasePercent;
-	player->IncreaseJump(currentJumpIncreasePercent);
-	}
-*/
 
 float InputManager::GetThumbstickRange(short thumbstickValue)
 {

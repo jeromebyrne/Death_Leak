@@ -36,6 +36,12 @@ public:
 
 	void StopFocus();
 
+	void TrySprint();
+
+	void StopSprint();
+
+	bool CanSprint();
+
 	void UpdateResistance();
 
 	bool HasEnoughFocus(float amountToUse);
@@ -81,6 +87,8 @@ private:
 	Vector2 mCurrentSolidLineDirection;
 
 	bool mHasTriggeredDiedUI = false;
+
+	float mCameraZoomOnLoad = 1.0f;
 };
 
 #endif

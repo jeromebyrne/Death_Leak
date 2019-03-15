@@ -13,15 +13,18 @@
 #include "DrawUtilities.h"
 #include "FeatureUnlockManager.h"
 #include "UIManager.h"
+#include "Timing.h"
 
 static const char * kBombTextureFile = "Media/bomb.png";
 static const float kAimLineOpacityDecrementDelay = 0.05f;
 static const float kAimLineOpacityDecreaseRate = 10.0f;
+static const float kSprintZoomPercent = 0.97f;
 
 static const float kFocusUseRate = 80.0f;
+static const float kSprintFocusUseRate = 30.0f;
 static const float kFocusRechargeRate = 10.0f;
 static const float kFocusCooldownTime = 5.0f;
-static const float kMeleeFocusAmount = 5.0f;
+static const float kMeleeFocusAmount = 4.0f;
 static const float kDownwardDashFocusAmount = 50.0f;
 static const float kRollFocusAmount = 2.0f;
 
@@ -76,6 +79,8 @@ void Player::Initialise()
 	mMaxHealth = maxHealth;
 
 	mDeltaTimeMultiplierInSloMo = 3.5f;
+
+	mCameraZoomOnLoad = Camera2D::GetInstance()->GetZoomLevel();
 }
 
 void Player::UpdateResistance()
@@ -238,9 +243,26 @@ void Player::Update(float delta)
 
 	UpdateFocus(delta);
 
+	if (GetIsSprintActive() && CanSprint())
+	{
+		ConsumeFocus(kSprintFocusUseRate * delta);
+
+		Camera2D::GetInstance()->DoSmallShake();
+
+		Camera2D::GetInstance()->SetZoomLevel(mCameraZoomOnLoad * kSprintZoomPercent);
+	}
+	else
+	{
+		SetSprintActive(false);
+
+		Camera2D::GetInstance()->SetZoomLevel(mCameraZoomOnLoad);
+	}
+
 	if (IsDead())
 	{
 		Timing::Instance()->SetTimeModifier(0.15f);
+
+		
 	}
 }
 
@@ -633,16 +655,14 @@ bool Player::HasEnoughFocus(float amountToUse)
 
 bool Player::DoMeleeAttack()
 {
-	/*
 	if (!HasEnoughFocus(kMeleeFocusAmount))
 	{
 		return false;
 	}
-	*/
 
 	if (Character::DoMeleeAttack())
 	{
-		// ConsumeFocus(kMeleeFocusAmount);
+		ConsumeFocus(kMeleeFocusAmount);
 		return true;
 	}
 
@@ -704,5 +724,32 @@ void Player::SetMaxHealth(float value)
 	mMaxHealth = value;
 
 	SaveManager::GetInstance()->SetPlayerMaxHealth((int)mMaxHealth);
+}
+
+bool Player::CanSprint()
+{
+	if (GetIsRolling() ||
+		IsDoingMelee() ||
+		!IsOnSolidSurface())
+	{
+		return false;
+	}
+
+	return HasEnoughFocus(0.1f);
+}
+
+void Player::TrySprint()
+{
+	if (!CanSprint())
+	{
+		return;
+	}
+
+	SetSprintActive(true);
+}
+
+void Player::StopSprint()
+{
+	SetSprintActive(false);
 }
 

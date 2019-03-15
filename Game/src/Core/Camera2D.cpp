@@ -135,8 +135,6 @@ void Camera2D::Update()
 		{
 			float shakePercentTime = timeDiff / mCurrentShakeDuration;
 
-			GAME_ASSERT(mTargetObject);
-
 			if (mFollowX == true)
 			{
 				bool minusX = (rand() % 2) == 1;
