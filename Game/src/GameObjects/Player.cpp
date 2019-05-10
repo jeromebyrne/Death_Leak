@@ -18,7 +18,9 @@
 static const char * kBombTextureFile = "Media/bomb.png";
 static const float kAimLineOpacityDecrementDelay = 0.05f;
 static const float kAimLineOpacityDecreaseRate = 10.0f;
-static const float kSprintZoomPercent = 0.97f;
+static const float kSprintZoomPercent = 0.9f;
+static const float kSprintZoomCamChangeRateIn = 0.3f;
+static const float kSprintZoomCamChangeRateOut = 0.10f;
 
 static const float kFocusUseRate = 80.0f;
 static const float kSprintFocusUseRate = 30.0f;
@@ -243,26 +245,50 @@ void Player::Update(float delta)
 
 	UpdateFocus(delta);
 
+	Camera2D * cam = Camera2D::GetInstance();
+
 	if (GetIsSprintActive() && CanSprint())
 	{
 		ConsumeFocus(kSprintFocusUseRate * delta);
 
-		Camera2D::GetInstance()->DoSmallShake();
-
-		Camera2D::GetInstance()->SetZoomLevel(mCameraZoomOnLoad * kSprintZoomPercent);
+		mIsDoingSprintZoom = true;
 	}
 	else
 	{
 		SetSprintActive(false);
+	}
 
-		Camera2D::GetInstance()->SetZoomLevel(mCameraZoomOnLoad);
+	if (mIsDoingSprintZoom)
+	{
+		float currentZoom = cam->GetZoomLevel();
+		if (GetIsSprintActive())
+		{
+			cam->SetZoomLevel(currentZoom - (delta * kSprintZoomCamChangeRateIn));
+		}
+		else
+		{
+			cam->SetZoomLevel(currentZoom + (delta * kSprintZoomCamChangeRateOut));
+		}
+
+		currentZoom = cam->GetZoomLevel();
+		if (currentZoom < mCameraZoomOnLoad * kSprintZoomPercent)
+		{
+			currentZoom = mCameraZoomOnLoad * kSprintZoomPercent;
+
+			cam->DoSmallShake();
+		}
+		else if (currentZoom > mCameraZoomOnLoad)
+		{
+			currentZoom = mCameraZoomOnLoad;
+			mIsDoingSprintZoom = false;
+		}
+
+		cam->SetZoomLevel(currentZoom);
 	}
 
 	if (IsDead())
 	{
 		Timing::Instance()->SetTimeModifier(0.15f);
-
-		
 	}
 }
 

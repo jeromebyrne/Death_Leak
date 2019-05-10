@@ -2,10 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\Game",
-    "\\Game\\src",
-    "\\Game\\src\\UI",
     "\\Game\\XmlFiles",
+    "\\Game\\XmlFiles\\levels",
     "\\Game\\XmlFiles\\UI"
   ],
+  "SelectedNode": "\\Game\\XmlFiles\\levels\\waterfall_top.xml",
   "PreviewInSolutionExplorer": false
 }

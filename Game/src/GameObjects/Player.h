@@ -89,6 +89,8 @@ private:
 	bool mHasTriggeredDiedUI = false;
 
 	float mCameraZoomOnLoad = 1.0f;
+
+	bool mIsDoingSprintZoom = false;
 };
 
 #endif
