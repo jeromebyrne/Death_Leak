@@ -1269,7 +1269,7 @@ void LevelEditor::CheckForSolidLineStripEdgeAssign()
 
 	static bool pressingLeft = false;
 
-	if (!pressingLeft && GetAsyncKeyState(VK_LEFT) < 0)
+	if (!pressingLeft && GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_LEFT) < 0)
 	{
 		pressingLeft = true;
 
@@ -1292,7 +1292,7 @@ void LevelEditor::CheckForSolidLineStripEdgeAssign()
 
 	static bool pressingRight = false;
 
-	if (!pressingRight && GetAsyncKeyState(VK_RIGHT) < 0)
+	if (!pressingRight && GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(VK_RIGHT) < 0)
 	{
 		pressingRight = true;
 
