@@ -308,23 +308,26 @@ void GameObjectManager::Draw(ID3D10Device *  device)
 		}
 	}
 
-	if (Timing::Instance()->GetTimeModifier() < 1.0f && mSlowMotionLayer)
+	if (mSlowMotionLayer != nullptr)
 	{
-		float alpha = mSlowMotionLayer->Alpha();
-		if (alpha < 1.0f)
+		if (Timing::Instance()->GetTimeModifier() < 1.0f)
 		{
-			alpha += 0.1f;
+			float alpha = mSlowMotionLayer->Alpha();
+			if (alpha < 1.0f)
+			{
+				alpha += 0.1f;
+			}
+			mSlowMotionLayer->SetAlpha(alpha);
 		}
-		mSlowMotionLayer->SetAlpha(alpha);
-	}
-	else if (mSlowMotionLayer)
-	{
-		float alpha = mSlowMotionLayer->Alpha();
-		if (alpha > 0.0f)
+		else if (mSlowMotionLayer)
 		{
-			alpha -= 0.1f;
+			float alpha = mSlowMotionLayer->Alpha();
+			if (alpha > 0.0f)
+			{
+				alpha -= 0.1f;
+			}
+			mSlowMotionLayer->SetAlpha(alpha);
 		}
-		mSlowMotionLayer->SetAlpha(alpha);
 	}
 
 	NPCManager::Instance()->Draw();
@@ -993,7 +996,7 @@ GameObject * GameObjectManager::CopyObject(GameObject * toCopy)
 
 void GameObjectManager::AddSlowMotionLayer()
 {
-	if (mSlowMotionLayer)
+	if (mSlowMotionLayer != nullptr)
 	{
 		return;
 	}
