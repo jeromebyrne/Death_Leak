@@ -6,7 +6,7 @@
 #include "Game.h"
 #include "ParticleEmitterManager.h"
 
-static const float kTimeUntilFirstWeather = 10.0f;
+static const float kTimeUntilFirstWeather = 180.0f;
 static const float kRainSessionMinTime = 70.0f;
 static const float kRainSessionMaxTime = 120.0f;
 static const float kRainIntroTime = 5.0f;
@@ -25,8 +25,8 @@ static const float kMinWeatherIntervalTime = 90.0f;
 static const float kMaxWeatherIntervalTime = 200.0f;
 
 static const float kNormalFoliageSwayMultiplier = 2.5f;
-static const float kRainFoliageSwayMultiplier = 4.0f;
-static const float kSnowFoliageSwayMultiplier = 6.0f;
+static const float kRainFoliageSwayMultiplier = 3.5f;
+static const float kSnowFoliageSwayMultiplier = 3.5f;
 
 static const Vector2 kRainParticleCamOffset = Vector2(0.0f, 700.0f);
 
