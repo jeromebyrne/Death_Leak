@@ -1,7 +1,10 @@
 #include "precompiled.h"
 #include "Foliage.h"
+#include "AudioManager.h"
 
-static float kCollisionSwayTime = 0.15f;
+static float kCollisionSwayTime = 0.5f;
+
+static const string kFoliageSFX_1 = "foliage_1.wav";
 
 Foliage::Foliage(void)
 {
@@ -40,9 +43,11 @@ bool Foliage::OnCollision(SolidMovingSprite * object)
 
 	bool isCompletelyInside = c->CollisionLeft() > CollisionLeft() && c->CollisionRight() < CollisionRight();
 
- 	if (velocityXSqr > 5.0f && isCompletelyInside)
+ 	if (velocityXSqr > 5.0f && isCompletelyInside && mCollisionSwayWindDownTime == 0.0f)
 	{
 		mFoliageSwayProperties.TimeMultiplier = mCollisionSwayMultiplier;
+
+		AudioManager::Instance()->PlaySoundEffect(kFoliageSFX_1);
 
 		mCollisionSwayWindDownTime = kCollisionSwayTime;
 	}
