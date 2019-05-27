@@ -778,7 +778,7 @@
         <texture filename="Media/levels/forest_exploration_1/trees_top_small.png" />
         <horizontalflip value="true" />
         <verticalflip value="false" />
-        <isanimated value="false" />
+        <isanimated value="false" /> 
         <foliage_sway_props bottom_left_intensity_x="20.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="20.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <AudioObject id="45" level_edit_locked="false" updateable="true" always_update="true">
@@ -787,7 +787,7 @@
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
-        <audiofile value="ambient/forest_ambience.wav" />
+        <audiofile value="ambient/forest_ambience.wav" /> 
         <adjustvolumetocamera value="true" />
         <repeat value="true" />
         <fadedimensions x="4000.000000" y="3000.000000" />
