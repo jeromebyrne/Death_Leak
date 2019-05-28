@@ -863,9 +863,9 @@ Vector2 GameObject::GetParallaxMultipliersForDepthLayer(DepthLayer depthLayer)
 	{
 		case kFarBackground:
 		{
-			return Vector2(0.025f, 0.95f);
+			return Vector2(0.25f, 0.95f);
 		}
-		case kMiddleBackground:
+		case kMiddleBackground: 
 		{
 			return Vector2(0.5f, 0.97f);
 		}
