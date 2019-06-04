@@ -671,6 +671,10 @@ string GameObject::ConvertDepthLayerToString(DepthLayer depthLayer)
 {
 	switch (depthLayer)
 	{
+		case kMoon:
+		{
+			return "kMoon";
+		}
 		case kFarBackground:
 		{
 			return "kFarBackground";
@@ -766,6 +770,10 @@ string GameObject::ConvertDepthLayerToString(DepthLayer depthLayer)
 
 GameObject::DepthLayer GameObject::ConvertStringToDepthLayer(string depthLayerString)
 {
+	if (depthLayerString == "kMoon")
+	{
+		return kMoon;
+	}
 	if (depthLayerString == "kFarBackground")
 	{
 		return kFarBackground;
@@ -861,6 +869,10 @@ Vector2 GameObject::GetParallaxMultipliersForDepthLayer(DepthLayer depthLayer)
 {
 	switch (depthLayer)
 	{
+		case kMoon:
+		{
+			return Vector2(0.03f, 0.90f);
+		}
 		case kFarBackground:
 		{
 			return Vector2(0.25f, 0.95f);

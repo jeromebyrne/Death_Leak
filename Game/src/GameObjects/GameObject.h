@@ -30,6 +30,7 @@ public:
 	// also update GetParallaxMultipliersForDepthLayer
 	enum DepthLayer
 	{
+		kMoon = 5999, // counter intuitive but need moon to appear on front of background but scroll slower
 		kFarBackground = 6000,
 		kMiddleBackground = 5500,
 		kNearBackground = 5000,

@@ -182,7 +182,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="13" parallax_x="0.010000" parallax_y="1.000000" level_edit_locked="true" updateable="true">
-        <position depth_layer="kGround" z="999.000000" y="360.048126" x="0.000000" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kMoon" z="999.000000" y="360.048126" x="0.000000" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions breadth="0.000000" height="324.000000" width="339.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="true" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />

@@ -100,6 +100,7 @@
         <player_start_pos x="0.000000" y="200.000000" />
         <required_key value="" />
         <door_sfx open="" locked="" />
+        <door_id value="" />
     </Door>
     <Sprite id="5" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGround" y="508.000000" x="-166.000000" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -2131,5 +2132,6 @@
         <player_start_pos x="0.000000" y="200.000000" />
         <required_key value="" />
         <door_sfx open="" locked="" />
+        <door_id value="" />
     </Door>
 </level>
