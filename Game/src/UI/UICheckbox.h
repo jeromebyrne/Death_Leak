@@ -33,10 +33,12 @@ public:
 	virtual void OnFocus() override;
 	virtual void OnLoseFocus() override;
 
-	bool IsChecked()
+	bool IsChecked() const
 	{
 		return mChecked;
 	}
+
+	void SetChecked(bool value);
 };
 
 #endif

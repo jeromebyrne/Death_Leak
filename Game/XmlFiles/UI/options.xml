@@ -58,7 +58,6 @@
     
     <actions_check>
       <unmutemusic/>
-      <playmusic sound="weather\\horror.mp3" loop="true"/>
     </actions_check>
 
     <actions_uncheck>

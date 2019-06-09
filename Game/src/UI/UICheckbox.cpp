@@ -119,4 +119,18 @@ void UICheckbox::OnLoseFocus()
 		m_texture = mUnCheckTexture;
 	}
 }
+
+void UICheckbox::SetChecked(bool value)
+{
+	mChecked = value;
+
+	if (mChecked)
+	{
+		m_texture = mCheckTexture;
+	}
+	else
+	{
+		m_texture = mUnCheckTexture;
+	}
+}
 	

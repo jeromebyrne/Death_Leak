@@ -3,10 +3,10 @@
     "",
     "\\Game",
     "\\Game\\src",
-    "\\Game\\src\\GameObjects",
+    "\\Game\\src\\UI",
     "\\Game\\XmlFiles",
-    "\\Game\\XmlFiles\\levels"
+    "\\Game\\XmlFiles\\UI"
   ],
-  "SelectedNode": "\\Game\\XmlFiles\\levels\\village_agri.xml",
+  "SelectedNode": "\\Game\\src\\UI",
   "PreviewInSolutionExplorer": false
 }

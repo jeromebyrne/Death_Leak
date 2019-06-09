@@ -36,7 +36,7 @@
       <set_language language="en-gb" />
       <fadeout time="150"/>
       <popui ui="language_select_settings" />
-      <pushui ui="mainmenu" />
+      <pushui ui="options" />
       <fadein time="50"/>
     </actionspressup>
 
@@ -58,7 +58,7 @@
       <set_language language="pt-br" />
       <fadeout time="150"/>
       <popui ui="language_select_settings" />
-      <pushui ui="mainmenu" />
+      <pushui ui="options" />
       <fadein time="50"/>
     </actionspressup>
 
@@ -80,7 +80,7 @@
       <set_language language="de" />
       <fadeout time="150"/>
       <popui ui="language_select_settings" />
-      <pushui ui="mainmenu" />
+      <pushui ui="options" />
       <fadein time="50"/>
     </actionspressup>
 

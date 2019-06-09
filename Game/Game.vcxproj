@@ -146,6 +146,7 @@
     <ClCompile Include="src\UI\UIManager.cpp" />
     <ClCompile Include="src\UI\UIMeter.cpp" />
     <ClCompile Include="src\UI\UIObjectEditScreen.cpp" />
+    <ClCompile Include="src\UI\UIOptionsScreen.cpp" />
     <ClCompile Include="src\UI\UIQuickPlayScreen.cpp" />
     <ClCompile Include="src\UI\UIScreen.cpp" />
     <ClCompile Include="src\UI\UISprite.cpp" />
@@ -288,6 +289,7 @@
     <ClInclude Include="src\UI\UIManager.h" />
     <ClInclude Include="src\UI\UIMeter.h" />
     <ClInclude Include="src\UI\UIObjectEditScreen.h" />
+    <ClInclude Include="src\UI\UIOptionsScreen.h" />
     <ClInclude Include="src\UI\UIQuickPlayScreen.h" />
     <ClInclude Include="src\UI\UIScreen.h" />
     <ClInclude Include="src\UI\UISprite.h" />

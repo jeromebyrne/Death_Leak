@@ -14,6 +14,10 @@ public:
 
 	void SetMusicEnabled(bool value, bool writeSettings);
 
+	bool IsMusicEnabled() const;
+
+	bool IsSFXEnabled() const;
+
 private:
 	static Settings * mInstance;
 

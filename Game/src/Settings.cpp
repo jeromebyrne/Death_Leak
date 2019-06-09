@@ -73,3 +73,13 @@ void Settings::SetMusicEnabled(bool value, bool writeSettings)
 		WriteSettings();
 	}
 }
+
+bool Settings::IsMusicEnabled() const
+{
+	return mAudioSettings.MusicOn;
+}
+
+bool Settings::IsSFXEnabled() const
+{
+	return mAudioSettings.SfxOn;
+}

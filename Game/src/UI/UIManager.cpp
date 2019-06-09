@@ -16,6 +16,7 @@
 #include "UITextModal.h"
 #include "SaveManager.h"
 #include "UIGameLoading.h"
+#include "UIOptionsScreen.h"
 
 static const int kMaxInteractablesToDraw = 3;
 static Vector2 kInteractSpriteDimensions = Vector2(50.0f, 50.0f);
@@ -316,6 +317,10 @@ void UIManager::XmlRead(const char * uiRootPath)
 		else if (name == "text_modal")
 		{
 			ui_screen = new UITextModal(name);
+		}
+		else if (name == "options")
+		{
+			ui_screen = new UIOptionsScreen(name);
 		}
 		else
 		{
