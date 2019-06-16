@@ -19,6 +19,8 @@ void AudioManager::Initialise()
 
 	m_audioPath = "Media\\Audio\\";
 	m_irrKlangEngine->setSoundVolume(1.0);
+
+	PreloadCommonSounds();
 }
 
 void AudioManager::Release()
@@ -29,7 +31,7 @@ void AudioManager::Release()
 	}
 }
 
-irrklang::ISound * AudioManager::PlaySoundEffect(string fileName, bool loop, bool track, bool applyTimeMod)
+irrklang::ISound * AudioManager::PlaySoundEffect(const string & fileName, bool loop, bool track, bool applyTimeMod)
 {
 	string file = m_audioPath + fileName;
 
@@ -116,5 +118,17 @@ void AudioManager::Update()
 		sound->drop();
 		sound = nullptr;
 	}
+}
+
+void AudioManager::PreloadCommonSounds()
+{
+	PreloadSound("UI\\default_onfocus.wav");
+	PreloadSound("UI\\click.wav");
+}
+
+void AudioManager::PreloadSound(const string & file)
+{
+	string path = m_audioPath + file;
+	m_irrKlangEngine->addSoundSourceFromFile(path.c_str(), ESM_AUTO_DETECT, true);
 }
 

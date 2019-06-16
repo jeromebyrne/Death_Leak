@@ -22,9 +22,8 @@ public:
 
 	void Initialise();
 	void Release();
-	irrklang::ISound * PlaySoundEffect(string fileName, bool loop = false, bool track = false, bool applyTimeMod = true);
+	irrklang::ISound * PlaySoundEffect(const string & fileName, bool loop = false, bool track = false, bool applyTimeMod = true);
 	void PlayMusic(string fileName, bool loop = false);
-	irrklang::ISound* GetSound(string filename); // get a sound object
 
 	void StopAllSounds();
 
@@ -35,6 +34,11 @@ public:
 	void SetSfxEnabled(bool value) { mSfxEnabled = value; }
 
 private:
+
+	void PreloadCommonSounds();
+
+	void PreloadSound(const string & file);
+
 	static AudioManager * m_instance;
 
 	string m_audioPath;
