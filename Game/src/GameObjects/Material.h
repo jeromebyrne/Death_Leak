@@ -20,6 +20,8 @@ public:
 
 	bool GetIsPierceable() const { return mPierceable; }
 
+	bool IsWater() const { return mIsWater; }
+
 private:
 
 	vector<string> mParticleTextures;
@@ -30,6 +32,8 @@ private:
 	string mMaterialName;
 
 	bool mPierceable;
+
+	bool mIsWater = false;
 };
 
 #endif

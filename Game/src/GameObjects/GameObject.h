@@ -6,6 +6,7 @@
 
 class Material;
 class Camera2D;
+class SolidLineStrip;
 
 class GameObject
 {
@@ -159,6 +160,10 @@ public:
 	{
 		return m_material;
 	}
+
+	virtual bool IsOnSolidLine() const { return false; }
+
+	virtual SolidLineStrip * GetCurrentSolidLineStrip() const  { return nullptr; }
 
 	void SetMaterial(Material * material) { m_material = material; }
 

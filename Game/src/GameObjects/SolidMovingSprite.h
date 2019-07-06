@@ -82,13 +82,13 @@ public:
 
 	virtual void SetupDebugDraw() override;
 
-	virtual bool IsOnSolidLine() const { return mIsOnSolidLine; }
+	virtual bool IsOnSolidLine() const override { return mIsOnSolidLine; }
 
 	virtual void SetIsOnSolidLine(bool value, SolidLineStrip * lineStrip);
 
 	bool IsOnSolidSurface() const override;
 
-	SolidLineStrip * GetCurrentSolidLineStrip() const { return mCurrentSolidLineStrip; }
+	virtual SolidLineStrip * GetCurrentSolidLineStrip() const override { return mCurrentSolidLineStrip; }
 
 	bool CanBeStruckByMelee() const { return mCanBeDamaged && mMeleeStrikeCooldown <= 0.0f; }
 

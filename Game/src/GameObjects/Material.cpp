@@ -5,6 +5,10 @@ Material::Material(const char * materialName):
 	mMaterialName(materialName),
 	mPierceable(false)
 {
+	if (strcmp(materialName,"water")==0)
+	{
+		mIsWater = true;
+	}
 }
 
 Material::~Material(void)

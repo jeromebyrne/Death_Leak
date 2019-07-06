@@ -3,10 +3,9 @@
     "",
     "\\Game",
     "\\Game\\src",
-    "\\Game\\src\\UI",
     "\\Game\\XmlFiles",
-    "\\Game\\XmlFiles\\UI"
+    "\\Game\\XmlFiles\\levels"
   ],
-  "SelectedNode": "\\Game\\XmlFiles\\UI\\options.xml",
+  "SelectedNode": "\\Game\\XmlFiles\\levels\\grass_exploration_2.xml",
   "PreviewInSolutionExplorer": false
 }

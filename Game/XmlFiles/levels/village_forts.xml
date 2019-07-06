@@ -1,7 +1,7 @@
 <level audio="">
     <LevelProperties>
         <camera_properties posx="0.000000" posy="0.000000" zoom_in_percent="1.000000" xOffset="0.000000" yOffset="-100.000000" xLag="15.000000" yLag="7.000000" followx="true" followy="true" />
-        <level_bounds left="-2500.000000" right="8170.000000" top="0.000000" bottom="-1550.000000" />
+        <level_bounds left="-2500.000000" right="8170.000000" top="0.000000" bottom="-1650.000000" />
         <music file="" initial_delay="1.000000" length="96.000000" time_between="120.000000" />
         <weather_properties allow_weather="true" />
         <is_animation_preview value="false" />

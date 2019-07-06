@@ -3,6 +3,7 @@
 #include "SolidLineStrip.h"
 #include "ParticleEmitterManager.h"
 #include "Game.h"
+#include "Material.h"
 
 const float kGravityWhenFallingMultiplier = 3.0f;
 const float kGravityWhenFallingVelocityThreshold = -15.0f;
@@ -166,6 +167,22 @@ void MovingSprite::Update(float delta)
 	}
 	else
 	{
+		if (IsOnSolidLine())
+		{
+			auto solidLine = GetCurrentSolidLineStrip();
+
+			if (solidLine)
+			{
+				auto mat = solidLine->GetMaterial();
+
+				if (mat && mat->IsWater())
+				{
+					// velocity is limited when running through water
+					m_velocity.X *= 0.90f;
+				}
+			}
+		}
+
 		m_position += m_velocity * percentDelta; // update our position by velocity
 	}
 

@@ -1069,35 +1069,38 @@ void Character::DoAnimationEffectIfApplicable(AnimationPart * bodyPart)
 						AudioManager::Instance()->PlaySoundEffect(filename);
 					}
 					
-					// do particles
-					std::string particleFile = material->GetRandomParticleTexture();
-
-					if (!particleFile.empty())
+					if (!material->IsWater())
 					{
-						ParticleEmitterManager::Instance()->CreateDirectedSpray(3,
-							Vector2(m_position.X + (m_direction.X * 12.f), CollisionBottom()),
-							GetDepthLayer(),
-							m_direction.X > 0 ? Vector2(-0.5f, 0.5f) : Vector2(0.5f, 0.5f),
-							0.1,
-							Vector2(1200.0f, 720.0f),
-							particleFile,
-							2.0f,
-							4.0f,
-							0.3f,
-							0.7f,
-							10,
-							30,
-							0.5,
-							false,
-							0.8,
-							1.0,
-							1,
-							true,
-							1.75f,
-							10.0f,
-							0.0f,
-							0.15f,
-							0.7f);
+						// do particles
+						std::string particleFile = material->GetRandomParticleTexture();
+
+						if (!particleFile.empty())
+						{
+							ParticleEmitterManager::Instance()->CreateDirectedSpray(10,
+								Vector2(m_position.X + (m_direction.X * 12.f), CollisionBottom() + 5.0f),
+								GetDepthLayer(),
+								m_direction.X > 0 ? Vector2(-0.5f, 0.5f) : Vector2(0.5f, 0.5f),
+								0.1,
+								Vector2(1200.0f, 720.0f),
+								particleFile,
+								2.0f,
+								4.0f,
+								0.3f,
+								0.7f,
+								40,
+								50,
+								0.5,
+								false,
+								0.8,
+								1.0,
+								1,
+								true,
+								2.5f,
+								10.0f,
+								0.0f,
+								0.15f,
+								0.7f);
+						}
 					}
 				}
 			}
