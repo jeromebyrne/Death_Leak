@@ -94,7 +94,7 @@ public:
 
 	virtual bool CanJump() const;
 
-	virtual bool CanRoll() const { return true; }
+	virtual bool CanRoll() const { return !WasInWaterLastFrame(); }
 
 	// This is used for the animation viewer
 	virtual void UpdateAnimTexture(const string & bodyPart) override;

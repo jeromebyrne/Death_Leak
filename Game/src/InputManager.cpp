@@ -206,21 +206,24 @@ void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 	}
 }
 
-void InputManager::ProcessSwimDown_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player, const LevelProperties & levelProps)
+void InputManager::ProcessSwim_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player, const LevelProperties & levelProps)
 {
 	if (!player->WasInWaterLastFrame())
 	{
 		return;
 	}
-
-	if (player->IsOnSolidSurface())
+	
+	if (padState.Gamepad.sThumbLY > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
 	{
-		return;
+		if (player->IsOnSolidSurface())
+		{
+			player->WaterJump();
+		}
+		player->AccelerateY(1.0f, 0.3f);
 	}
-
-	if (padState.Gamepad.sThumbLY < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+	else if (padState.Gamepad.sThumbLY < -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
 	{
-		player->AccelerateY(-1.0f, 0.1f);
+		player->AccelerateY(-1.0f, 0.3f);
 	}
 }
 
@@ -540,7 +543,7 @@ void InputManager::ProcessGameplay_GamePad(Player * player)
 
 	ProcessStrafing_gamepad(padState, currentActions, player, levelProps);
 
-	ProcessSwimDown_gamepad(padState, currentActions, player, levelProps);
+	ProcessSwim_gamepad(padState, currentActions, player, levelProps);
 
 	ProcessTestActions_gamepad(padState, currentActions, player, levelProps);
 }

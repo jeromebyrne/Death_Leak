@@ -80,7 +80,7 @@ void Player::Initialise()
 
 	mMaxHealth = maxHealth;
 
-	mDeltaTimeMultiplierInSloMo = 3.5f;
+	// mDeltaTimeMultiplierInSloMo = 3.5f;
 
 	mCameraZoomOnLoad = Camera2D::GetInstance()->GetZoomLevel();
 }
@@ -681,6 +681,11 @@ bool Player::HasEnoughFocus(float amountToUse)
 
 bool Player::DoMeleeAttack()
 {
+	if (WasInWaterLastFrame())
+	{
+		return false;
+	}
+
 	if (!HasEnoughFocus(kMeleeFocusAmount))
 	{
 		return false;
@@ -766,6 +771,11 @@ bool Player::CanSprint()
 
 void Player::TrySprint()
 {
+	if (WasInWaterLastFrame())
+	{
+		return;
+	}
+
 	if (!CanSprint())
 	{
 		return;

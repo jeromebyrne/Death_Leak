@@ -891,7 +891,7 @@ void Character::UpdateAnimations()
 					bodyPart->SetSequence("SwimBurst");
 				}
 
-				if (mDoSwimBurstAnim)
+				// if (mDoSwimBurstAnim)
 				{
 					if (bodyPart->IsFinished())
 					{
@@ -899,8 +899,9 @@ void Character::UpdateAnimations()
 						bodyPart->Restart();
 					}
 					
-					mDoSwimBurstAnim = false;
+					// mDoSwimBurstAnim = false;
 				}
+
 				bodyPart->Animate();
 			}
 			else
@@ -1163,7 +1164,7 @@ bool Character::Jump(float percent)
 
 	if (GetIsInWater() || WasInWaterLastFrame())
 	{
-		return WaterJump();
+		return false; // WaterJump();
 	}
 
 	// clamp
@@ -1181,11 +1182,13 @@ bool Character::Jump(float percent)
 	}
 
 	// if we are crouching fully then we get a nice boost to our jump
+	/*
 	if (mIsFullyCrouched &&
 		FeatureUnlockManager::GetInstance()->IsFeatureUnlocked(FeatureUnlockManager::kCrouchJump))
 	{
 		percent *= 5.75f;
 	}
+	*/
 
 	if (mCurrentJumpsBeforeLand == 0)
 	{

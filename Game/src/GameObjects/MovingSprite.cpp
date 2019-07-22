@@ -7,6 +7,7 @@
 
 const float kGravityWhenFallingMultiplier = 3.0f;
 const float kGravityWhenFallingVelocityThreshold = -15.0f;
+const float kMaxVelocityY_InWater = 4.0f;
 
 MovingSprite::MovingSprite(float x, float y, DepthLayer depthLayer, float width, float height, float groundFriction, float airResistance):
 	Sprite(x,y, depthLayer, width, height), 
@@ -75,7 +76,7 @@ void MovingSprite::Update(float delta)
 		DoWaterAccelerationBubbles();
 	}
 
-	float velocityMod = mIsInWater ? 0.2f : 1.0f;
+	float velocityMod = mIsInWater ? 0.4f : 1.0f;
 	Vector2 nextVelocity = m_velocity + (m_acceleration * m_direction) * velocityMod;
 
 	if (nextVelocity.X > m_maxVelocity.X * velocityMod && mMaxVelocityXLimitEnabled)
@@ -87,14 +88,29 @@ void MovingSprite::Update(float delta)
 		nextVelocity.X = -m_maxVelocity.X * velocityMod;
 	}
 
-	if (nextVelocity.Y > m_maxVelocity.Y * velocityMod)
+	if (WasInWaterLastFrame())
 	{
-		nextVelocity.Y = m_maxVelocity.Y * velocityMod;
+		if (nextVelocity.Y > kMaxVelocityY_InWater)
+		{
+			nextVelocity.Y = kMaxVelocityY_InWater;
+		}
+		else if (nextVelocity.Y < -kMaxVelocityY_InWater)
+		{
+			nextVelocity.Y = -kMaxVelocityY_InWater;
+		}
 	}
-	else if (nextVelocity.Y < -m_maxVelocity.Y * velocityMod)
+	else
 	{
-		nextVelocity.Y = -m_maxVelocity.Y * velocityMod;
+		if (nextVelocity.Y > m_maxVelocity.Y * velocityMod)
+		{
+			nextVelocity.Y = m_maxVelocity.Y * velocityMod;
+		}
+		else if (nextVelocity.Y < -m_maxVelocity.Y * velocityMod)
+		{
+			nextVelocity.Y = -m_maxVelocity.Y * velocityMod;
+		}
 	}
+	
 
 	mHittingSolidLineEdge = false;
 
@@ -154,7 +170,7 @@ void MovingSprite::Update(float delta)
 		{
 			if (m_velocity.Y > -2.0f) // TODO: make this a constant
 			{
-				float waterGravityMultiplier = 0.15f; // TODO: make this a constant
+				float waterGravityMultiplier = 0.10f; // TODO: make this a constant
 				AccelerateY(-1.0f, (mGravityApplyAmount * waterGravityMultiplier / mCurrentYResistance) * percentDelta);
 			}
 		}
