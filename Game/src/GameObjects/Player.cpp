@@ -140,6 +140,11 @@ void Player::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 poi
 
 Projectile * Player::FireBomb(Vector2 direction)
 {
+	if (WasInWaterLastFrame())
+	{
+		return nullptr;
+	}
+
 	Vector2 pos = m_position;
 	pos.X = (direction.X > 0) ? pos.X + m_projectileOffset.X : pos.X -= m_projectileOffset.X;
 	pos.Y += m_projectileOffset.Y;

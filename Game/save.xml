@@ -1,17 +1,3 @@
 <save_data>
-    <XmlFiles-levels-hot_springs.xml_breakables_broken type="vector" />
-    <XmlFiles-levels-hot_springs.xml_currency_orbs_collected type="vector" />
-    <XmlFiles-levels-underwater_cave.xml_breakables_broken type="vector" />
-    <XmlFiles-levels-underwater_cave.xml_currency_orbs_collected type="vector" />
-    <XmlFiles-levels-underwater_cave_1_5.xml_breakables_broken type="vector" />
-    <XmlFiles-levels-underwater_cave_1_5.xml_currency_orbs_collected type="vector" />
-    <XmlFiles-levels-underwater_cave_2.xml_breakables_broken type="vector" />
-    <XmlFiles-levels-underwater_cave_2.xml_currency_orbs_collected type="vector" />
-    <XmlFiles-levels-underwater_cave_3.xml_breakables_broken type="vector" />
-    <XmlFiles-levels-underwater_cave_3.xml_currency_orbs_collected type="vector" />
-    <XmlFiles-levels-underwater_cave_4.xml_breakables_broken type="vector" />
-    <XmlFiles-levels-underwater_cave_4.xml_currency_orbs_collected type="vector" />
-    <XmlFiles-levels-village_forts.xml_currency_orbs_collected type="vector" />
     <language_locale_key type="string" value="en-gb" />
-    <last_level_saved type="string" value="XmlFiles\levels\hot_springs.xml" />
 </save_data>

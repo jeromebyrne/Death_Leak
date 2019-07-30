@@ -559,6 +559,8 @@ void InputManager::ProcessGameplay_Keyboard(Player * player)
 	ProcessCrouch_keyboard(currentActions, player);
 	
 	ProcessJump_keyboard(currentActions, player);
+
+	ProcessRoll_keyboard(currentActions, player);
 }
 
 void InputManager::ProcessLeftRightMovement_keyboard(CurrentGameplayActions & currentActions, Player * player)
@@ -613,12 +615,13 @@ void InputManager::ProcessCrouch_keyboard(CurrentGameplayActions & currentAction
 
 void InputManager::ProcessJump_keyboard(CurrentGameplayActions & currentActions, Player * player)
 {
-	// This is temp and only setup for testing
 	if (player->GetIsDownwardDashing())
 	{
 		// prioritise downward dash over double jumping
 		return;
 	}
+
+	bool wasPressingJump = mCurrentGamepadState.mPressingJump;
 
 	// TODO: why am I doing all this before even checking if jumping?
 	static float currentJumpIncreasePercent = kJumpInitialPercent;
@@ -629,22 +632,70 @@ void InputManager::ProcessJump_keyboard(CurrentGameplayActions & currentActions,
 		currentJumpIncreasePercent = kJumpInitialPercent;
 	}
 
-	bool pressingJump = false;
-
 	if (!player->JustFellFromLargeDistance() &&
 		!player->JustFellFromShortDistance() &&
 		!player->IsDoingMelee() &&
 		GetAsyncKeyState('W') < 0)
 	{
-		pressingJump = true;
+		mCurrentGamepadState.mPressingJump = true;
+	}
+	else
+	{
+		mCurrentGamepadState.mPressingJump = false;
 	}
 
-	if (pressingJump)
+	if (mCurrentGamepadState.mPressingJump && !wasPressingJump)
 	{
-		mLastTimePressedJump = Timing::Instance()->GetTotalTimeSeconds();
-		float jumpPower = 100.0f;
+		/*
+		if (padState.Gamepad.sThumbLY < -30000 &&
+			!player->IsFullyCrouched() &&
+			!player->IsDoingMelee() &&
+			player->IsOnSolidLine() &&
+			player->GetCurrentSolidLineStrip() &&
+			player->GetCurrentSolidLineStrip()->GetCanDropDown())
+		{
+			player->DropDown();
+		}
+		else */
+		{
+			mLastTimePressedJump = Timing::Instance()->GetTotalTimeSeconds();
+			float jumpPower = kJumpInitialPercent;
 
-		player->Jump(jumpPower);
+			player->Jump(jumpPower);
+		}
+	}
+	else if (mCurrentGamepadState.mPressingJump &&
+		wasPressingJump &&
+		player->CanIncreaseJumpIntensity() &&
+		currentJumpIncreasePercent < 100.0f)
+	{
+		currentJumpIncreasePercent += kJumpIncrementalIncreasePercent;
+		player->IncreaseJump(currentJumpIncreasePercent);
+	}
+}
+
+void InputManager::ProcessRoll_keyboard(CurrentGameplayActions & currentActions, Player * player)
+{
+	bool wasPressingRoll = mCurrentGamepadState.mPressingRoll;
+
+	if (!player->JustFellFromLargeDistance() &&
+		!player->JustFellFromShortDistance() &&
+		!player->IsDoingMelee() &&
+		GetAsyncKeyState(VK_SPACE) < 0)
+	{
+		mCurrentGamepadState.mPressingRoll = true;
+	}
+	else
+	{
+		mCurrentGamepadState.mPressingRoll = false;
+	}
+
+	if (mCurrentGamepadState.mPressingRoll &&
+		!wasPressingRoll &&
+		!player->GetIsRolling())
+	{
+		mLastTimePressedRoll = Timing::Instance()->GetTotalTimeSeconds();
+		player->Roll();
 	}
 }
 
