@@ -3,7 +3,7 @@
 #include <algorithm>
 
 SaveManager * SaveManager::mInstance = nullptr;
-static const char * saveFilename = "save.xml";
+static const char * fname = "bargon.xml";
 
 SaveManager::SaveManager()
 {
@@ -22,7 +22,7 @@ SaveManager * SaveManager::GetInstance()
 void SaveManager::ReadSaveFile()
 {
 	XmlDocument root_doc;
-	if (!root_doc.Load(saveFilename))
+	if (!root_doc.Load(fname, true))
 	{
 		WriteSaveFile();
 		return;
@@ -53,7 +53,7 @@ void SaveManager::WriteSaveFile()
 		root->LinkEndChild(currentElement);
 	}
 
-	root_doc.Save(saveFilename, root);
+	root_doc.Save(fname, root, true);
 }
 
 void SaveManager::WriteValue(const DataValue & value, TiXmlElement * xmlElement)
@@ -475,6 +475,9 @@ bool SaveManager::IsPaperPickupCollected(const string & loc_id)
 
 	if (paperPickupVector.getType() != DataValue::Type::VECTOR)
 	{
+		// we haven't created this vector yet
+		paperPickupVector = DataValue(std::vector<DataValue>());
+		mSaveMap[key] = paperPickupVector.asVector();
 		return false;
 	}
 

@@ -60,6 +60,8 @@ public:
 
 	string GetLevelLastSavedAt();
 
+	static void WriteValue(const DataValue & value, TiXmlElement * xmlElement);
+
 private:
 
 	static SaveManager * mInstance;
@@ -74,8 +76,6 @@ private:
 	string GetStringValue(const std::string & key, string defaultValue = "") const;
 
 	void AddKeyValuePair(const std::string & key, const DataValue & value);
-
-	void WriteValue(const DataValue & value, TiXmlElement * xmlElement);
 
 	const DataValue ReadValue(TiXmlElement * xmlElement);
 

@@ -22,4 +22,4 @@ del "C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_142\sdk\tools\Cont
 del "C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_142\sdk\tools\ContentBuilder\content\windows_content\Game.log" /s /q
 del "C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_142\sdk\tools\ContentBuilder\content\windows_content\DeathLeakGame.ilk" /s /q
 del "C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_142\sdk\tools\ContentBuilder\content\windows_content\DeathLeakGame.pdb" /s /q
-del "C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_142\sdk\tools\ContentBuilder\content\windows_content\save.xml" /s /q
+del "C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_142\sdk\tools\ContentBuilder\content\windows_content\bargon.xml" /s /q

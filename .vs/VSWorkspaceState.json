@@ -3,10 +3,10 @@
     "",
     "\\Game",
     "\\Game\\src",
-    "\\Game\\src\\GameObjects",
+    "\\Game\\src\\Core",
     "\\Game\\XmlFiles",
     "\\Game\\XmlFiles\\levels"
   ],
-  "SelectedNode": "\\Game\\src\\GameObjects\\Player.cpp",
+  "SelectedNode": "\\Game\\bargon.xml",
   "PreviewInSolutionExplorer": false
 }

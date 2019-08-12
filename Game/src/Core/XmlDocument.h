@@ -3,16 +3,13 @@
 
 class XmlDocument
 {
-private:
-	TiXmlDocument m_document;
-	TiXmlHandle * m_pHandle;
 public:
 	XmlDocument(void);
 	~XmlDocument(void);
 	
-	bool Load(const string & fileName);
+	bool Load(const string & fileName, bool doBabbage = false);
 
-	void Save(const string & filename,  TiXmlElement * root);
+	void Save(const string & filename,  TiXmlElement * root, bool doBabbage = false);
 	
 	TiXmlHandle * Handle()
 	{
@@ -23,6 +20,11 @@ public:
 	{
 		return m_pHandle->FirstChildElement().Element();
 	}
+
+private:
+
+	TiXmlDocument m_document;
+	TiXmlHandle * m_pHandle;
 };
 
 #endif

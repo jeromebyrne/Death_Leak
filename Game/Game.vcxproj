@@ -210,6 +210,9 @@
     <ClInclude Include="src\Effects\EffectParticleSpray.h" />
     <ClInclude Include="src\Effects\EffectReflection.h" />
     <ClInclude Include="src\Effects\EffectSepia.h" />
+    <ClInclude Include="src\encryption\b64.h" />
+    <ClInclude Include="src\encryption\encrypt.h" />
+    <ClInclude Include="src\encryption\vigenere.h" />
     <ClInclude Include="src\FeatureUnlockManager.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\GameObjects\ActiveBird.h" />
