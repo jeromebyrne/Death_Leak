@@ -872,6 +872,9 @@ ParticleSpray * GameObjectManager::ReadParticleSpray(TiXmlElement * element)
 		p->mPositionalAudioStartDelay = XmlUtilities::ReadAttributeAsFloat(element, "pos_audio_props", "play_delay");
 		p->mPositionalAudio.SetRepeat(XmlUtilities::ReadAttributeAsBool(element, "pos_audio_props", "repeat"));
 	}
+
+	p->Warm(true);
+
 	return p;
 }
 
