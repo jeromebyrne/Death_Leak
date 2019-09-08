@@ -214,7 +214,11 @@ void NPC::FireProjectileAtObject(GameObject * target)
 		Vector2 dir = Vector2(target->Position().X - m_position.X, (target->Position().Y + randYOffset) - m_position.Y);
 		dir.Normalise();
 
-		GameObjectManager::Instance()->AddGameObject(FireWeapon(dir));
+		// speed multiplier should be 1.0 when player is standing still
+
+		float velocityPercent = std::abs(m_player->VelocityX() / m_player->GetMaxVelocity().X);
+
+		GameObjectManager::Instance()->AddGameObject(FireWeapon(dir, 1.0f + (velocityPercent * 0.8f)));
 
 		mLastFireTime = Timing::Instance()->GetTotalTimeSeconds();
 
@@ -291,7 +295,7 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointO
 	}
 }
 
-Projectile * NPC::FireWeapon(Vector2 direction)
+Projectile * NPC::FireWeapon(Vector2 direction, float speedMultiplier)
 {
 	Vector2 pos = m_position;
 	pos.X = (direction.X > 0.0f) ? pos.X + m_projectileOffset.X : pos.X -= m_projectileOffset.X;
@@ -306,7 +310,7 @@ Projectile * NPC::FireWeapon(Vector2 direction)
 		pos.X -= m_projectileOffset.X;
 	}
 	
-	float speed = mSprintActive ? 15.0f : 10.0f;
+	float speed = (mSprintActive ? 15.0f : 10.0f) * speedMultiplier;
 
 	// TODO: ideally want these properties configurable per character
 	Projectile * p = new Projectile(Projectile::kNPCProjectile,

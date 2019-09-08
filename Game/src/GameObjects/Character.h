@@ -44,7 +44,7 @@ public:
 	virtual void DebugDraw(ID3D10Device *  device);
 	void SetSprintActive(bool value);
 	bool GetIsSprintActive() { return mSprintActive; }
-	virtual Projectile * FireWeapon(Vector2 direction) = 0;
+	virtual Projectile * FireWeapon(Vector2 direction, float speedMultiplier) = 0;
 	virtual Projectile * FireBomb(Vector2 direction) = 0;
 	virtual bool DoMeleeAttack();
 	unsigned GetMaxJumpsAllowed() const { return mMaxJumpsAllowed; }
@@ -131,6 +131,10 @@ protected:
 
 	void DoJumpParticles();
 
+	void FinishTeleport(float posX, float posY, bool showParticles);
+
+	bool IsTeleporting() { return mTeleportCurrentTime > 0.0f; }
+
 	bool m_isJumping;
 	float m_maxJumpSpeed;
 	float m_lastTimePlayedWaterWadeSFX; 
@@ -190,10 +194,15 @@ protected:
 	Vector2 mMeleeSpriteSize;
 	bool mDoMeleeSpriteResize = false;
 	bool mEmitsBlood = true;
+	static float mTeleportSfxDelay;
 
 	CurrentMeleePhase mCurrentMeleePhase = kMeleePhase1;
 
 	float mMeleeDamage = 500.0f;
+
+	float mTeleportCurrentTime = 0.0f;
+	Vector2 mTeleportPosition;
+	bool mShowTeleportParticles = false;
 };
 
 #endif

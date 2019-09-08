@@ -3,9 +3,13 @@
     "",
     "\\Game",
     "\\Game\\src",
-    "\\Game\\src\\Core",
-    "\\Game\\XmlFiles\\levels"
+    "\\Game\\src\\AI",
+    "\\Game\\src\\GameObjects",
+    "\\Game\\steam",
+    "\\steamworks_sdk_142",
+    "\\steamworks_sdk_142\\sdk",
+    "\\steamworks_sdk_142\\sdk\\public",
+    "\\steamworks_sdk_142\\sdk\\public\\steam"
   ],
-  "SelectedNode": "\\Game\\bargon.xml",
   "PreviewInSolutionExplorer": false
 }

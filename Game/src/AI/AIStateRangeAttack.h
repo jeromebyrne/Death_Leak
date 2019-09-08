@@ -19,7 +19,7 @@ private:
 
 	bool CanAccelerateX(float direction);
 
-	void TeleportBehindPlayer();
+	void TeleportOnFrontOfPlayer();
 
 	float mDesiredRange;
 	float mFollowRange;

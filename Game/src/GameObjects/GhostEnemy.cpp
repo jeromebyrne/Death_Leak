@@ -95,7 +95,7 @@ void GhostEnemy::Update(float delta)
 	}
 }
 
-Projectile * GhostEnemy::FireWeapon(Vector2 direction)
+Projectile * GhostEnemy::FireWeapon(Vector2 direction, float speedMultiplier)
 {
 	Vector2 pos = m_position;
 	pos.X = (direction.X > 0) ? pos.X + m_projectileOffset.X : pos.X -= m_projectileOffset.X;
@@ -120,7 +120,7 @@ Projectile * GhostEnemy::FireWeapon(Vector2 direction)
 		Vector2(25.0f, 8.0f),
 		direction,
 		2.0f,
-		mProjectileSpeed,
+		mProjectileSpeed * speedMultiplier,
 		2.0f);
 
 	p->SetSpinningMovement(false);

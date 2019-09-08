@@ -17,7 +17,7 @@ public:
 	virtual bool OnCollision(SolidMovingSprite * object) override;
 	virtual void Update(float delta) override;
 
-	Projectile * FireWeapon(Vector2 direction) override;
+	Projectile * FireWeapon(Vector2 direction, float speedMultiplier) override;
 
 private:
 

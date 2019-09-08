@@ -364,7 +364,7 @@ void InputManager::ProcessPrimaryWeapon_gamepad(XINPUT_STATE padState, CurrentGa
 		mCurrentGamepadState.mPressingPrimaryWeapon = true;
 
 		// let the player fire and return a projectile object which is added to the world
-		Projectile * p = player->FireWeapon(currentActions.mAimDirection);
+		Projectile * p = player->FireWeapon(currentActions.mAimDirection, 1.0f);
 
 		if (p)
 		{

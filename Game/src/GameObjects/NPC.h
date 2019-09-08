@@ -35,7 +35,7 @@ public:
 
 	virtual void OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointOfContact, bool shouldExplode = true) override;
 
-	virtual Projectile * FireWeapon(Vector2 direction) override;
+	virtual Projectile * FireWeapon(Vector2 direction, float speedMultiplier) override;
 
 	virtual Projectile * FireBomb(Vector2 direction) override { GAME_ASSERT(false); return nullptr; }
 

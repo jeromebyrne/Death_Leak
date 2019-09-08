@@ -19,7 +19,7 @@ public:
 	bool CanRoll() const override { return false; }
 	bool CanTeleport() const override { return false; }
 
-	Projectile * FireWeapon(Vector2 direction) override;
+	Projectile * FireWeapon(Vector2 direction, float speedMultiplier) override;
 
 private:
 

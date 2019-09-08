@@ -31,6 +31,9 @@ static const float kWallJumpXResistance = 0.99f;
 static const float kWallJumpVelocityXBoost = 15.0f;
 static const float kWaterJumpPercentModifier = 0.4f;
 static Vector2 kMeleeSpriteMultiplier = Vector2(1.1185647f, 1.0801479f);
+static const float kTeleportTime = 0.8f;
+
+float Character::mTeleportSfxDelay = 0.0f;
 
 Character::Character(float x, float y, DepthLayer depthLayer, float width, float height) :
 	SolidMovingSprite(x, y, depthLayer, width, height),
@@ -130,6 +133,28 @@ void Character::Update(float delta)
 	if (IsDead())
 	{
 		return;
+	}
+
+	if (mTeleportSfxDelay > 0.0f)
+	{
+		mTeleportSfxDelay -= delta;
+	}
+
+	if (mTeleportCurrentTime > 0.0f)
+	{
+		mTeleportCurrentTime -= delta;
+
+		if (mTeleportCurrentTime > 0.0f)
+		{
+			m_alpha = 0.0f;
+			return;
+		}
+		else
+		{
+			// Just finished teleporting
+			FinishTeleport(mTeleportPosition.X, mTeleportPosition.Y, mShowTeleportParticles);
+			m_alpha = 1.0f;
+		}	
 	}
 
 	if (mDoReboundJump)
@@ -535,6 +560,11 @@ void Character::LoadContent(ID3D10Device * graphicsdevice)
 
 bool Character::OnCollision(SolidMovingSprite * object)
 {
+	if (IsTeleporting())
+	{
+		return false;
+	}
+
 	// see if we are doing melee and damage the other object
 	if (mIsDoingMelee && 
 		object->CanBeStruckByMelee() &&
@@ -1463,6 +1493,11 @@ void Character::AccelerateX(float directionX, float percent)
 
 void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointOfContact, bool shouldExplode)
 {
+	if (IsTeleporting())
+	{
+		return;
+	}
+
 	if (mCanBeDamaged)
 	{
 		mHealth -= damageAmount;
@@ -1779,47 +1814,60 @@ void Character::Teleport(float posX, float posY, bool showParticles)
 		return;
 	}
 
+	mTeleportCurrentTime = kTeleportTime;
+
 	// particles in old position
 	if (showParticles)
 	{
 		Vector2 pos = m_position;
-		pos.Y = CollisionBottom();
+		pos.Y = CollisionBottom() + 40;
 
 		float spawnSpreadX = (m_collisionBoxDimensions.X / 100.0f) * 7.0f;
-		float spawnSpreadY = (m_collisionBoxDimensions.Y / 100.0f) * 10.0f;
+		float spawnSpreadY = (m_collisionBoxDimensions.Y / 100.0f) * 6.0f;
 
-		ParticleEmitterManager::Instance()->CreateRadialSpray(20,
+		// show particles in old position
+		ParticleEmitterManager::Instance()->CreateRadialSpray(10,
 			pos,
 			GetDepthLayer(),
 			Vector2(3200.0f, 2000.0f),
-			"Media\\smoke4.png",
-			1.8f,
-			3.5f,
+			"Media\\smoke5.png",
+			2.8f,
+			5.5f,
 			0.5f,
 			1.0f,
 			75.0f,
 			150.0f,
 			1.0f,
 			false,
-			0.0f,
-			0.1f,
+			0.5f,
+			0.7f,
 			-1.0f,
 			true,
-			3.0f,
-			0.9f,
+			5.0f,
+			0.2f,
 			0.8f,
 			spawnSpreadX * 0.7f,
 			spawnSpreadY * 1.5f);
 
 		// disabling this until only 1 sound is played for all NPCs teleporting
-		// AudioManager::Instance()->PlaySoundEffect("explosion/smoke_explosion.wav");
+		if (mTeleportSfxDelay <= 0.0f)
+		{
+			AudioManager::Instance()->PlaySoundEffect("explosion/smoke_explosion.wav");
+		}
 	}
 
-	m_position.X = posX;
-	m_position.Y = posY;
 	StopXAccelerating();
 	m_velocity.Y = 0.0f;
 	m_velocity.X = 0.0f;
+
+	mShowTeleportParticles = showParticles;
+	mTeleportPosition = Vector2(posX, posY);
+}
+
+void Character::FinishTeleport(float posX, float posY, bool showParticles)
+{
+	m_position.X = posX;
+	m_position.Y = posY;
 	SetIsOnSolidLine(false, nullptr);
 
 	// particles in new position
@@ -1849,33 +1897,10 @@ void Character::Teleport(float posX, float posY, bool showParticles)
 			-1.0f,
 			true,
 			3.0f,
-			0.9f,
+			0.2f,
 			0.8f,
 			spawnSpreadX * 0.7f,
 			spawnSpreadY * 1.5f);
-
-		ParticleEmitterManager::Instance()->CreateRadialSpray(20,
-																pos,
-																GetDepthLayer(),
-																Vector2(3200.0f, 2000.0f),
-																"Media\\smoke.png",
-																1.0f,
-																2.0f,
-																0.5f,
-																1.0f,
-																200.0f,
-																300.0f,
-																1.0f,
-																false,
-																0.7f,
-																1.0f,
-																-1.0f,
-																true,
-																0.1f,
-																0.1f,
-																0.7f,
-																spawnSpreadX * 1.4f,
-																spawnSpreadY * 1.0f);
 	}
 }
 

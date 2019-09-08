@@ -297,7 +297,7 @@ void Player::Update(float delta)
 	}
 }
 
-Projectile * Player::FireWeapon(Vector2 direction)
+Projectile * Player::FireWeapon(Vector2 direction, float speedMultiplier)
 {
 	if (GetIsCollidingAtObjectSide() ||
 		GetIsRolling() ||
@@ -343,7 +343,7 @@ Projectile * Player::FireWeapon(Vector2 direction)
 		pos.X -= m_projectileOffset.X;
 	}
 
-	float speed = mSprintActive ? 25.0f : 20.0f;
+	float speed = (mSprintActive ? 25.0f : 20.0f) * speedMultiplier;
 	bool isInWater = WasInWaterLastFrame();
 
 	Projectile * p = new Projectile(Projectile::kPlayerProjectile,

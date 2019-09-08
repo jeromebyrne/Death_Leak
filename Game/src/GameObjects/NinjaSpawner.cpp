@@ -24,9 +24,9 @@ void NinjaSpawner::SpawnNPC(const float posX,
 	float randJumpSpeed = rand() % 4000;
 	randJumpSpeed *= 0.001f;
 	randJumpSpeed += 16.0f;
-	float randMaxXVelocity = rand() % 3000;
+	float randMaxXVelocity = rand() % 2000;
 	randMaxXVelocity *= 0.001f;
-	randMaxXVelocity += 14.0f;
+	randMaxXVelocity += 8.0f;
 
 	NPC * npc = new NPC(posX, posY, GameObject::kNpc,  49.0f);
 	npc->m_animationFile = animationFile;
@@ -49,27 +49,27 @@ void NinjaSpawner::SpawnNPC(const float posX,
 
 	// show some effects when we spawn - smoke
 	ParticleEmitterManager::Instance()->CreateRadialSpray(20,
-														Vector2(npc->X(), npc->Bottom()),
-														GameObject::kNpc,
-														Vector2(3200.0f, 1200.0f),
-														"Media\\smoke3.png",
-														4.5f,
-														6.0f,
-														0.5f,
-														1.0f,
-														200.0f,
-														400.0f,
-														0.5f,
-														false,
-														0.0f,
-														0.1f,
-														800.0f,
-														true, 
-														3.0f,
-														0.0f,
-														0.5f,
-														10.0f,
-														50.0f);
+															Vector2(npc->X(), npc->Bottom()),
+															GameObject::kNpc,
+															Vector2(3200.0f, 1200.0f),
+															"Media\\smoke3.png",
+															4.5f,
+															6.0f,
+															0.5f,
+															1.0f,
+															200.0f,
+															400.0f,
+															0.5f,
+															false,
+															0.0f,
+															0.1f,
+															800.0f,
+															true, 
+															3.0f,
+															0.0f,
+															0.5f,
+															10.0f,
+															50.0f);
 
 	if (playSoundEffect)
 	{
