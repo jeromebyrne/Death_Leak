@@ -33,7 +33,7 @@ static const float kWaterJumpPercentModifier = 0.4f;
 static Vector2 kMeleeSpriteMultiplier = Vector2(1.1185647f, 1.0801479f);
 static const float kTeleportTime = 0.8f;
 
-float Character::mTeleportSfxDelay = 0.0f;
+float Character::mTeleportSfxDelay = 0.5f;
 
 Character::Character(float x, float y, DepthLayer depthLayer, float width, float height) :
 	SolidMovingSprite(x, y, depthLayer, width, height),

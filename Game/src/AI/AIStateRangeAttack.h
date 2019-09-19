@@ -28,6 +28,9 @@ private:
 	float mTimeUntilRandomlyJumpOrRoll;
 	float mTimeUntilCanTeleport;
 	float mTimeStoodStill;
+
+	bool mWillFireAtTarget = false;
+	float mWillFireAtTargetCountdown = 0.0f;
 };
 
 #endif

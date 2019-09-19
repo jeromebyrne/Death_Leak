@@ -8,7 +8,7 @@ static const float kJumpOrRollRandomDelayMax = 6.5f;
 static const float kTeleportDelayMin = 3.0f;
 static const float kTeleportDelayMax = 5.0f;
 static const float kTeleportDistance = 600.0f;
-static const float mTeleportSfxDelay = 0.25f;
+static const float kFireProjectileWarmUp = 0.25f;
 
 AIStateRangeAttack::AIStateRangeAttack(NPC * npc) :
 	AIState(npc),
@@ -57,15 +57,33 @@ void AIStateRangeAttack::Update(float delta)
 		return;
 	}
 
+	if (mWillFireAtTarget)
+	{
+		m_npc->StopXAccelerating();
+		m_npc->SetVelocityX(0.0f);
+
+		if (mWillFireAtTargetCountdown > 0.0f)
+		{
+			mWillFireAtTargetCountdown -= delta;
+		}
+		else
+		{
+			m_npc->FireProjectileAtObject(m_npc->m_player);
+			mWillFireAtTarget = false;
+		}
+
+		return;
+	}
+
 	if (m_npc->m_player)
 	{
-		if (!CanAccelerateX(1.0f))
+		if (!CanAccelerateX(1.0f) && !m_npc->IsCrouching())
 		{
 			m_npc->Teleport(m_npc->m_player->Position().X - 300, m_npc->m_player->Position().Y + 300, true);
 			mLastTimeRanAway = 0.0f;
 			return; // skip this update
 		}
-		else if (!CanAccelerateX(-1.0f))
+		else if (!CanAccelerateX(-1.0f) && !m_npc->IsCrouching())
 		{
 			m_npc->Teleport(m_npc->m_player->Position().X + 300, m_npc->m_player->Position().Y + 300, true);
 			mLastTimeRanAway = 0.0f;
@@ -127,7 +145,10 @@ void AIStateRangeAttack::Update(float delta)
 
 			auto player = GameObjectManager::Instance()->GetPlayer();
 			GAME_ASSERT(player);
-			m_npc->FireProjectileAtObject(player);
+	
+			mWillFireAtTarget = true;
+			mWillFireAtTargetCountdown = kFireProjectileWarmUp;
+
 			mTimeStoodStill += delta;
 
 			if (player->X() < m_npc->X())
@@ -198,7 +219,7 @@ void AIStateRangeAttack::TeleportOnFrontOfPlayer()
 	}
 
 	m_npc->Teleport(playerX - pOffsetFront, m_npc->m_player->Position().Y + ((rand() % 100) + 200.0f), true);
-	m_npc->FireProjectileAtObject(m_npc->m_player);
+	// m_npc->FireProjectileAtObject(m_npc->m_player);
 }
 
 bool AIStateRangeAttack::CanAccelerateX(float direction)
