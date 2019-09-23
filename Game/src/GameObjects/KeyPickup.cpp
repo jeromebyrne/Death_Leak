@@ -3,6 +3,8 @@
 #include "AudioManager.h"
 #include "ParticleEmitterManager.h"
 #include "SaveManager.h"
+#include "Game.h"
+#include "StringManager.h"
 
 void KeyPickup::DoPickup()
 {
@@ -23,35 +25,50 @@ void KeyPickup::DoPickup()
 	DoPickupEffects(p);
 
 	GameObjectManager::Instance()->RemoveGameObject(this);
+
+	auto strMan = StringManager::GetInstance();
+	
+	Game::GetInstance()->DisplayTextModal(strMan->GetLocalisedString(mKeyNameLocId.c_str()), 
+											strMan->GetLocalisedString(mKeyDescLocId.c_str()));
 }
 
 void KeyPickup::DoPickupEffects(Player * player)
 {
-	Camera2D::GetInstance()->DoBigShake();
+	// TODO:
+}
 
-	ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
-		player->Position(),
-		player->GetDepthLayer(),
-		Vector2(0.0f, 0.0f),
-		0.1f,
-		Vector2(3200.0f, 1200.0f),
-		"Media\\explosion_lines.png",
-		1.0f,
-		1.0f,
-		0.1f,
-		0.1f,
-		256.0f,
-		256.0f,
-		0.0f,
-		false,
-		1.0f,
-		1.0f,
-		0.0f,
-		true,
-		12.0f,
-		0.0f,
-		0.0f,
-		0.05f,
-		0.1f,
-		true);
+void KeyPickup::XmlRead(TiXmlElement * element)
+{
+	Sprite::XmlRead(element);
+
+	mKeyId = XmlUtilities::ReadAttributeAsString(element, "key_props", "id");
+	mKeyNameLocId = XmlUtilities::ReadAttributeAsString(element, "key_props", "name_loc_id");
+	mKeyDescLocId = XmlUtilities::ReadAttributeAsString(element, "key_props", "desc_loc_id");
+}
+
+void KeyPickup::XmlWrite(TiXmlElement * element)
+{
+	Sprite::XmlWrite(element);
+
+	TiXmlElement * keyElem = new TiXmlElement("key_props");
+	keyElem->SetAttribute("id", mKeyId.c_str());
+	keyElem->SetAttribute("name_loc_id", mKeyNameLocId.c_str());
+	keyElem->SetAttribute("desc_loc_id", mKeyDescLocId.c_str());
+	element->LinkEndChild(keyElem);
+}
+
+void KeyPickup::Update(float delta)
+{
+	if (!mHasInitCheckedCollected)
+	{
+		if (SaveManager::GetInstance()->HasDoorKey(mKeyId))
+		{
+			GameObjectManager::Instance()->RemoveGameObject(this, true);
+			return;
+		}
+
+		mHasInitCheckedCollected = true;
+	}
+
+	Pickup::Update(delta);
 }

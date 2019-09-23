@@ -52,6 +52,10 @@ public:
 
 	void SetPlayerMaxHealth(const int value);
 
+	void SetDoorWasUnlocked(const string & doorId, bool value);
+
+	bool DoorWasUnlocked(const string & doorId);
+
 	int GetPlayerMaxHealth();
 
 	std::string GetLanguageSet();

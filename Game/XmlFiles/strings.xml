@@ -60,4 +60,16 @@
     <pt-br>Elimine todas ameaças e proteja os fortes. Não deixe ... [Ilegível] ... e retorne todos ... [Ilegível] ...</pt-br>
     <de>Die DEFLECT-Technik. Lenken Sie Projektile mit Ihren Messern und Ihrem Schwert ab.</de>
   </paper_pickup_desc_test>
+
+  <key_name_test>
+    <en-gb>Granary Key</en-gb>
+    <pt-br>Granary Key</pt-br>
+    <de>Granary Key</de>
+  </key_name_test>
+
+  <key_desc_test>
+    <en-gb>Opens the old Granary door</en-gb>
+    <pt-br>Opens the old Granary door</pt-br>
+    <de>Opens the old Granary door</de>
+  </key_desc_test>
 </strings>

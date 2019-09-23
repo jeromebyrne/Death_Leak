@@ -11,11 +11,21 @@ public:
 
 	void SetKeyId(const string & keyId) { mKeyId = keyId; }
 
+	void XmlRead(TiXmlElement * element) override;
+
+	void XmlWrite(TiXmlElement * element) override;
+
+	void Update(float delta) override;
+
 protected:
 
 	void DoPickupEffects(Player * player);
 
 	string mKeyId;
+	string mKeyNameLocId;
+	string mKeyDescLocId;
+
+	bool mHasInitCheckedCollected = false;
 };
 
 #endif

@@ -51,6 +51,7 @@
 #include "SkeletonEnemy.h"
 #include "SkeletonEnemySpawner.h"
 #include "PaperPickup.h"
+#include "KeyPickup.h"
 
 struct DepthSortPredicate
 {
@@ -161,7 +162,7 @@ void GameObjectManager::LoadContent(ID3D10Device * device)
 
 void GameObjectManager::Initialise()
 {
-	for(auto &obj : m_gameObjects)
+	for(auto &obj : m_gameObjects) 
 	{
 		GAME_ASSERT(obj);
 		if (obj)
@@ -774,7 +775,11 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement, const
 	}
 	else if (strcmp(gameObjectTypeName, "paperpickup") == 0)
 	{
-	newGameObject = new PaperPickup();
+		newGameObject = new PaperPickup();
+	}
+	else if (strcmp(gameObjectTypeName, "keypickup") == 0)
+	{
+		newGameObject = new KeyPickup();
 	}
 
 	if (newGameObject && !dynamic_cast<ParticleSpray*>(newGameObject))

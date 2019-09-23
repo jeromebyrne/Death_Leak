@@ -21,6 +21,7 @@ public:
 		float InteractTime = 0.3f;
 		float InteractCountdown = InteractTime;
 		float CurrentScale = 1.0f;
+		bool DisableInteractivityOnInteract = true;
 
 		InteractableProperties() :
 			IsInteractable(false)

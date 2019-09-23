@@ -3,13 +3,10 @@
     "",
     "\\Game",
     "\\Game\\src",
-    "\\Game\\src\\AI",
     "\\Game\\src\\GameObjects",
-    "\\Game\\steam",
-    "\\steamworks_sdk_142",
-    "\\steamworks_sdk_142\\sdk",
-    "\\steamworks_sdk_142\\sdk\\public",
-    "\\steamworks_sdk_142\\sdk\\public\\steam"
+    "\\Game\\XmlFiles",
+    "\\Game\\XmlFiles\\levels"
   ],
+  "SelectedNode": "\\Game\\XmlFiles\\levels\\forest_exploration_barn.xml",
   "PreviewInSolutionExplorer": false
 }

@@ -278,8 +278,12 @@ void GameObject::UpdateInteractable(float delta)
 			if (mInteractableProperties.InteractCountdown <= 0.0f)
 			{
 				OnInteracted();
-				// Disable the interactivity of this object (NOTE: may not work for all objects)
-				mInteractableProperties.IsInteractable = false;
+
+				if (mInteractableProperties.DisableInteractivityOnInteract)
+				{
+					// Disable the interactivity of this object (NOTE: may not work for all objects)
+					mInteractableProperties.IsInteractable = false;
+				}
 
 				sCurrentInteractable = -1;
 			}

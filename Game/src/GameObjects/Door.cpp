@@ -6,6 +6,8 @@
 #include "SaveManager.h"
 
 static const float kWarmUpTime = 1.25f;
+static const string kDefaultDoorLockedSfx = "koto_c1.wav";
+static const string kDefaultDoorUnlockedSfx = "gong.wav";
 
 Door::Door() :
 	Sprite()
@@ -22,6 +24,7 @@ void Door::Initialise()
 
 	mInteractableProperties.IsInteractable = true;
 	mInteractableProperties.PosOffset = Vector2(0.0f, 30.0f);
+	mInteractableProperties.DisableInteractivityOnInteract = false;
 }
 
 void Door::Update(float delta)
@@ -33,38 +36,6 @@ void Door::Update(float delta)
 		mDoorWarmUpTime += delta;
 		return;
 	}
-
-	/*
-	if (Utilities::IsObjectInRectangle(player, m_position.X, m_position.Y, m_dimensions.X, m_dimensions.Y))
-	{
-		auto inputManager = Game::GetInstance()->GetInputManager();
-		if (mCanTryOpen &&
-			inputManager.IsPressingEnterDoor() &&
-			player->IsOnSolidSurface() && 
-			std::abs(player->GetVelocity().X) < 0.5f)
-		{
-			mCanTryOpen = false;
-
-			if (!mRequiredKey.empty())
-			{
-				if (!SaveManager::GetInstance()->HasDoorKey(mRequiredKey))
-				{
-					if (!mDoorLockedSFX.empty())
-					{
-						AudioManager::Instance()->PlaySoundEffect(mDoorLockedSFX);
-					}
-					return;
-				}
-			}
-
-			EnterDoor();
-		}
-		else if (!inputManager.IsPressingEnterDoor())
-		{
-			mCanTryOpen = true;
-		}
-	}
-	*/
 }
 void Door::XmlRead(TiXmlElement * element)
 {
@@ -136,6 +107,23 @@ void Door::OnInteracted()
 			{
 				AudioManager::Instance()->PlaySoundEffect(mDoorLockedSFX);
 			}
+			else
+			{
+				// play default locked sfx
+				AudioManager::Instance()->PlaySoundEffect(kDefaultDoorLockedSfx);
+				mInteractableProperties.InteractCountdown = 1.0f;
+			}
+			mCanTryOpen = true;
+			return;
+		}
+		else if (!SaveManager::GetInstance()->DoorWasUnlocked(mDoorIdentifier))
+		{
+			// TODO: play unlocking sound effect
+			// TODO: do effects
+			AudioManager::Instance()->PlaySoundEffect(kDefaultDoorUnlockedSfx);
+			SaveManager::GetInstance()->SetDoorWasUnlocked(mDoorIdentifier, true);
+			mInteractableProperties.InteractCountdown = 0.4f;
+			mCanTryOpen = true;
 			return;
 		}
 	}

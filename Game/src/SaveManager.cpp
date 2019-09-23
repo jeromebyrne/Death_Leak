@@ -509,6 +509,16 @@ void SaveManager::SetHasDoorkey(const std::string & keyId, bool value)
 	mSaveMap[keyId] = value;
 }
 
+void SaveManager::SetDoorWasUnlocked(const string & doorId, bool value)
+{
+	mSaveMap[doorId + "_unlocked"] = value;
+}
+
+bool SaveManager::DoorWasUnlocked(const string & doorId)
+{
+	return GetBoolValue(doorId + "_unlocked", false);
+}
+
 void SaveManager::SetLanguage(const std::string & langLocaleKey)
 {
 	mSaveMap["language_locale_key"] = langLocaleKey;
