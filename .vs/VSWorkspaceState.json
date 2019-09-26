@@ -7,6 +7,6 @@
     "\\Game\\XmlFiles",
     "\\Game\\XmlFiles\\levels"
   ],
-  "SelectedNode": "\\Game\\XmlFiles\\levels\\forest_exploration_barn.xml",
+  "SelectedNode": "\\Game\\src\\GameObjects\\GameObject.h",
   "PreviewInSolutionExplorer": false
 }

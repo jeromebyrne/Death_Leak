@@ -18,7 +18,7 @@ public:
 		Vector2 CurrentScreenPos;
 		Vector2 PosOffset;
 		float CurrentAlpha = 1.0f;
-		float InteractTime = 0.3f;
+		float InteractTime = 0.2f;
 		float InteractCountdown = InteractTime;
 		float CurrentScale = 1.0f;
 		bool DisableInteractivityOnInteract = true;

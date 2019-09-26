@@ -32,6 +32,8 @@ private:
 	std::string mDoorLockedSFX;
 	bool mCanTryOpen = true;
 	std::string mDoorIdentifier;
+
+	float mIsUnlockingCurrentTime = 0.0f;
 };
 
 #endif

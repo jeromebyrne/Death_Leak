@@ -4,10 +4,13 @@
 #include "Game.h"
 #include "AudioManager.h"
 #include "SaveManager.h"
+#include "ParticleEmitterManager.h"
 
-static const float kWarmUpTime = 1.25f;
-static const string kDefaultDoorLockedSfx = "koto_c1.wav";
-static const string kDefaultDoorUnlockedSfx = "gong.wav";
+static const float kWarmUpTime = 0.75f;
+static const string kDefaultDoorLockedSfx = "door_locked.wav";
+static const string kDefaultDoorUnlockedSfx = "door_unlock.wav";
+
+static const float kUnlockingTime = 1.0f;
 
 Door::Door() :
 	Sprite()
@@ -35,6 +38,11 @@ void Door::Update(float delta)
 	{
 		mDoorWarmUpTime += delta;
 		return;
+	}
+
+	if (mIsUnlockingCurrentTime > 0.0f)
+	{
+		mIsUnlockingCurrentTime -= delta;
 	}
 }
 void Door::XmlRead(TiXmlElement * element)
@@ -112,6 +120,8 @@ void Door::OnInteracted()
 				// play default locked sfx
 				AudioManager::Instance()->PlaySoundEffect(kDefaultDoorLockedSfx);
 				mInteractableProperties.InteractCountdown = 1.0f;
+
+				Camera2D::GetInstance()->DoSmallShake();
 			}
 			mCanTryOpen = true;
 			return;
@@ -124,6 +134,36 @@ void Door::OnInteracted()
 			SaveManager::GetInstance()->SetDoorWasUnlocked(mDoorIdentifier, true);
 			mInteractableProperties.InteractCountdown = 0.4f;
 			mCanTryOpen = true;
+			mIsUnlockingCurrentTime = kUnlockingTime;
+
+			/*
+			ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
+				Position(),
+				GetDepthLayer(),
+				Vector2(0.0f, 0.0f),
+				0.1f,
+				Vector2(3200.0f, 1200.0f),
+				"Media\\explosion_lines.png",
+				1.0f,
+				1.0f,
+				0.1f,
+				0.1f,
+				256.0f,
+				256.0f,
+				0.0f,
+				false,
+				1.0f,
+				1.0f,
+				0.0f,
+				true,
+				12.0f,
+				0.0f,
+				0.0f,
+				0.05f,
+				0.1f,
+				true);
+				*/
+
 			return;
 		}
 	}
@@ -133,6 +173,11 @@ void Door::OnInteracted()
 
 bool Door::CanInteract()
 {
+	if (mIsUnlockingCurrentTime > 0.0f)
+	{
+		return false;
+	}
+
 	Player * player = GameObjectManager::Instance()->GetPlayer();
 	if (player == nullptr)
 	{

@@ -6,9 +6,11 @@
 #include "Game.h"
 #include "StringManager.h"
 
+static const string kKeyPickupSFX = "key_pickup.wav";
+
 void KeyPickup::DoPickup()
 {
-	AudioManager::Instance()->PlaySoundEffect("character/drink_health_upgrade.wav");
+	AudioManager::Instance()->PlaySoundEffect(kKeyPickupSFX);
 
 	Player * p = GameObjectManager::Instance()->GetPlayer();
 
