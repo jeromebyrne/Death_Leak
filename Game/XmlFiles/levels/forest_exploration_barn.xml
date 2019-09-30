@@ -388,7 +388,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <to_level_file value="XmlFiles\levels\inside_hanging_shadow.xml" />
         <player_start_pos x="100.000000" y="-600.000000" />
-        <required_key value="babson" />
+        <required_key value="granary" />
         <door_sfx open="" locked="" />
         <door_id value="barn_entrance" />
     </Door>
