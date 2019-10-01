@@ -18,7 +18,7 @@
 static const char * kBombTextureFile = "Media/bomb.png";
 static const float kAimLineOpacityDecrementDelay = 0.05f;
 static const float kAimLineOpacityDecreaseRate = 10.0f;
-static const float kSprintZoomPercent = 0.9f;
+static const float kSprintZoomPercent = 0.95f;
 static const float kSprintZoomCamChangeRateIn = 0.3f;
 static const float kSprintZoomCamChangeRateOut = 0.10f;
 

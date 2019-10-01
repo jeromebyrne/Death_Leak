@@ -2,39 +2,39 @@
   
 	<body OffsetX="0" OffsetY="8" SizeX="40" SizeY="80">
 		<Still FrameRate="1" MaxFrameRate="1" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
-      <frame filename="Media\objects\pot.png"/>
+      <frame filename="Media\objects\stone_block_large.png"/>
     </Still>
 
 		<Running FrameRate="10" MaxFrameRate="10" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
-      <frame filename="Media\objects\pot.png"/>
+      <frame filename="Media\objects\stone_block_large.png"/>
 		</Running>
 
     <JumpingUp FrameRate="4" MaxFrameRate="4" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
-      <frame filename="Media\objects\pot.png"/>
+      <frame filename="Media\objects\stone_block_large.png"/>
 		</JumpingUp>
 
     <JumpingDown FrameRate="4" MaxFrameRate="4" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
-      <frame filename="Media\objects\pot.png"/>
+      <frame filename="Media\objects\stone_block_large.png"/>
     </JumpingDown>
 
     <SlidingDown FrameRate="0" MaxFrameRate="0" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
-      <frame filename="Media\objects\pot.png"/>
+      <frame filename="Media\objects\stone_block_large.png"/>
     </SlidingDown>
 
     <Damage1 FrameRate="0" MaxFrameRate="0" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
-      <frame filename="Media\objects\pot_damaged.png"/>
+      <frame filename="Media\objects\stone_block_large_destroyed.png"/>
     </Damage1>
 
     <Damage2 FrameRate="0" MaxFrameRate="0" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
-      <frame filename="Media\objects\pot_damaged.png"/>
+      <frame filename="Media\objects\stone_block_large_destroyed.png"/>
     </Damage2>
 
     <Damage3 FrameRate="0" MaxFrameRate="0" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
-      <frame filename="Media\objects\pot_damaged.png"/>
+      <frame filename="Media\objects\stone_block_large_destroyed.png"/>
     </Damage3>
 
     <Damage4 FrameRate="0" MaxFrameRate="0" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
-      <frame filename="Media\objects\pot_destroyed.png"/>
+      <frame filename="Media\objects\stone_block_large_destroyed.png"/>
     </Damage4>
 
 	</body>
