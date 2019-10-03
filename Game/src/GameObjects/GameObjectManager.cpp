@@ -52,6 +52,7 @@
 #include "SkeletonEnemySpawner.h"
 #include "PaperPickup.h"
 #include "KeyPickup.h"
+#include "SfxPickup.h"
 
 struct DepthSortPredicate
 {
@@ -623,6 +624,8 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement, const
 			if (mCachedPlayerHealth != -1.0f)
 			{
 				m_player->SetHealth(mCachedPlayerHealth);
+
+				// TODO: set focus
 			}
 		}
 	}
@@ -780,6 +783,10 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement, const
 	else if (strcmp(gameObjectTypeName, "keypickup") == 0)
 	{
 		newGameObject = new KeyPickup();
+	}
+	else if (strcmp(gameObjectTypeName, "sfxpickup") == 0)
+	{
+	newGameObject = new SfxPickup();
 	}
 
 	if (newGameObject && !dynamic_cast<ParticleSpray*>(newGameObject))

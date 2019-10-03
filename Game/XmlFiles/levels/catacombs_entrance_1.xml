@@ -414,7 +414,7 @@
         <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="true" />
-        <animationfile value="XmlFiles\test_smashable.xml" />
+        <animationfile value="XmlFiles\stone_smashable.xml" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance y="2.000000" x="0.950000" />
         <maxvelocity y="99999.000000" x="10.000000" />
