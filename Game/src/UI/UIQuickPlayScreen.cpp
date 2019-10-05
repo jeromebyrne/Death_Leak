@@ -65,6 +65,7 @@ void UIQuickPlayScreen::CreateLevelEntries()
 	mLevelEntries["f. Village Agri"] = "XmlFiles\\levels\\village_agri.xml";
 	mLevelEntries["g. Village Forts"] = "XmlFiles\\levels\\village_forts.xml";
 	mLevelEntries["h. Village Hut"] = "XmlFiles\\levels\\village_hut.xml";
+	mLevelEntries["i. Dojo Front"] = "XmlFiles\\levels\\dojo_front.xml";
 }
 
 void UIQuickPlayScreen::AddLevelButtons()
