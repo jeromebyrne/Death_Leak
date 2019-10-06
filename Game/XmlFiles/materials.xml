@@ -298,8 +298,7 @@
 
   <material name="stone">
     <particletextures>
-      <texture file="Media\smoke.dds"/>
-      <texture file="Media\spark.png"/>
+      <texture file="Media\smoke3.png"/>
     </particletextures>
 
     <damagesoundeffects>
@@ -320,15 +319,28 @@
     </footstepsoundeffects>
 
     <destroysoundeffects>
-        <sound file="blood\\blood2.wav"/>
+        <sound file="rock_smash.wav"/>
      </destroysoundeffects>
 
     <is_pierceable value="false" />
 
     <debris_textures>
-      <texture file="Media\crate\debris.png"/>
-      <texture file="Media\crate\debris.png"/>
-      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\rock_debris\1.png"/>
+      <texture file="Media\rock_debris\2.png"/>
+      <texture file="Media\rock_debris\3.png"/>
+      <texture file="Media\rock_debris\1.png"/>
+      <texture file="Media\rock_debris\2.png"/>
+      <texture file="Media\rock_debris\3.png"/>
+      <texture file="Media\rock_debris\1.png"/>
+      <texture file="Media\rock_debris\2.png"/>
+      <texture file="Media\rock_debris\3.png"/>
+      <texture file="Media\rock_debris\1.png"/>
+      <texture file="Media\rock_debris\2.png"/>
+      <texture file="Media\rock_debris\3.png"/>
+      <texture file="Media\rock_debris\1.png"/>
+      <texture file="Media\rock_debris\2.png"/>
+      <texture file="Media\rock_debris\3.png"/>
+
     </debris_textures>
   </material>
 

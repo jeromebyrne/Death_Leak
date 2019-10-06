@@ -167,27 +167,23 @@ void Smashable::SpawnSmashedParticles()
 																0.1f,
 																0.1f);
 
-	/*
-	float debrisPosZ = 51.0f;
-	if (m_position.Z < 50.0f)
-	{
-		debrisPosZ = m_position.Z - 0.01f;
-	}
-	*/
-
 	const auto & debrisTextures = m_material->GetDebrisTextures();
 
 	Vector2 size;
+	bool isNativeDimensions = false;
 
 	// A massive hack...
 	if (m_material->GetMaterialName() == "crate")
 	{
 		size = Vector2(160.0f * scaleX, 443.0f * scaleY);
 	}
+	else if (m_material->GetMaterialName() == "pot")
+	{
+		size = Vector2(310.0f * scaleX, 284.0f * scaleY);
+	}
 	else
 	{
-		// pot
-		size = Vector2(310.0f * scaleX, 284.0f * scaleY);
+		isNativeDimensions = true;
 	}
 
 	for (const auto & d : debrisTextures)
@@ -196,9 +192,9 @@ void Smashable::SpawnSmashedParticles()
 									Vector2(m_position.X, m_position.Y + 50.0f),
 									GetDepthLayer(),
 									size,
-									Vector2(30.0f, 30.0f),
+									Vector2(40.0f, 40.0f),
 									d.c_str(),
-									false,
+									isNativeDimensions,
 									1.0f);
 
 		debris->SetMaterial(m_material);
