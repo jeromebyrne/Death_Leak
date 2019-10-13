@@ -141,10 +141,17 @@ void HealthDevil::GiveReward()
 	switch (rewardIndex)
 	{
 		case 0:
+		case 2:
+		case 4:
 		{
-			// GiveHealthUpgradeReward();
+			GiveHealthUpgradeReward();
+			break;
+		}
+		case 1:
+		case 3:
+		case 5:
+		{
 			GiveFocusUpgradeReward();
-			// GiveKeyRewardTest();
 			break;
 		}
 		default:

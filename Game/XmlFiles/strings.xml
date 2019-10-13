@@ -62,9 +62,9 @@
   </paper_pickup_desc_test>
 
   <key_name_granary>
-    <en-gb>Granary Key</en-gb>
-    <pt-br>Granary Key</pt-br>
-    <de>Granary Key</de>
+    <en-gb>The Granary Key</en-gb>
+    <pt-br>The Granary Key</pt-br>
+    <de>The Granary Key</de>
   </key_name_granary>
 
   <key_desc_granary>
@@ -72,4 +72,16 @@
     <pt-br>Opens the old Granary door</pt-br>
     <de>Opens the old Granary door</de>
   </key_desc_granary>
+
+  <key_name_dojo>
+    <en-gb>The Dojo Key</en-gb>
+    <pt-br>The Dojo Key</pt-br>
+    <de>The Dojo Key</de>
+  </key_name_dojo>
+
+  <key_desc_dojo>
+    <en-gb>Opens up the Dojo</en-gb>
+    <pt-br>Opens up the Dojo</pt-br>
+    <de>Opens up the Dojo</de>
+  </key_desc_dojo>
 </strings>
