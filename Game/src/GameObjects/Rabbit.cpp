@@ -10,10 +10,9 @@
 Rabbit::Rabbit(void) :
 	NPC()
 {
-	mHealth = 1; // 1 hit kills for rabbits
+	mHealth = 0.01f; // 1 hit kills for rabbits/rats
 	mAddHealthBar = false;
 }
-
 
 Rabbit::~Rabbit(void)
 {
@@ -32,7 +31,7 @@ void Rabbit::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 poi
 		float orbCountMultiplier = 1.0f;
 		if (drawables.size() < 200)
 		{
-			// don;t change anything
+			// don't change anything
 		}
 		else if (drawables.size() < 250)
 		{

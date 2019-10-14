@@ -2,12 +2,12 @@
 #include "AIStateGroundAnimalWander.h"
 #include "NPC.h"
 
-static const float kRestDelayMin = 0.5f;
+static const float kRestDelayMin = 1.0f;
 static const float kRestDelayMax = 3.0f;
-static const float kMoveDelayMin = 0.75f;
-static const float kMoveDelayMax = 1.5f;
+static const float kMoveDelayMin = 1.0f;
+static const float kMoveDelayMax = 2.0f;
 static const float kRunAwayMinDelay = 1.0f;
-static const float kRunAwayPlayerDistanceSquared = 200.0f * 200.0f;
+static const float kRunAwayPlayerDistanceSquared = 250.0f * 250.0f;
 
 AIStateGroundAnimalWander::AIStateGroundAnimalWander(NPC * npc) :
 	AIState(npc),
@@ -53,8 +53,8 @@ void AIStateGroundAnimalWander::Update(float delta)
 		}
 		case kRunningFromPlayer:
 		{
-			m_npc->SetMaxVelocityX(mOriginalMaxVelocityX * 3.0f);
-			m_npc->m_resistance.X = 0.97f;
+			m_npc->SetMaxVelocityX(mOriginalMaxVelocityX * 2.0f);
+			m_npc->m_resistance.X = 0.95f;
 			UpdateRunningFromPlayer(delta);
 			break;
 		}
@@ -190,11 +190,11 @@ void AIStateGroundAnimalWander::UpdateRunningFromPlayer(float delta)
 
 			if (xDiff > 0.0f)
 			{
-				m_npc->AccelerateX(-5.0f);
+				m_npc->AccelerateX(-3.0f);
 			}
 			else
 			{
-				m_npc->AccelerateX(5.0f);
+				m_npc->AccelerateX(3.0f);
 			}
 		}
 

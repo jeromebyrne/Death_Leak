@@ -1754,6 +1754,7 @@ void Character::Draw(ID3D10Device * device, Camera2D * camera)
 	if (IsOnSolidSurface())
 	{
 		// TODO: this is a temporary function, just testing the shadow - REMOVE
+		// TODO; Really remove this as it's very slow
 		DrawUtilities::DrawTexture(Vector3(m_position.X, m_position.Y - 150, GetDepthLayer() + 0.1f), Vector2(200, 128), "Media\\characters\\player\\shadow.png");
 	}
 	
