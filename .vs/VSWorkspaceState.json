@@ -3,10 +3,12 @@
     "",
     "\\Game",
     "\\Game\\src",
+    "\\Game\\src\\AI",
     "\\Game\\src\\GameObjects",
     "\\Game\\XmlFiles",
+    "\\Game\\XmlFiles\\deprecated_levels",
     "\\Game\\XmlFiles\\levels"
   ],
-  "SelectedNode": "\\Game\\XmlFiles\\levels\\village_agri.xml",
+  "SelectedNode": "\\Game\\src\\GameObjects\\Character.cpp",
   "PreviewInSolutionExplorer": false
 }

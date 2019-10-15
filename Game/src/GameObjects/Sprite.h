@@ -63,17 +63,6 @@ public:
 
 protected:
 
-	ID3D10ShaderResourceView* m_texture;
-	std::string m_textureFilename;
-
-	ID3D10ShaderResourceView* m_textureBump;
-	std::string m_textureBumpFilename;
-	
-	// for points on a sprite (1 quad)
-	VertexPositionTextureNormal m_vertices[4];
-	VertexPositionTextureNormalTanBiNorm m_verticesBump[4];
-	DWORD  m_indices[4];
-
 	void SetVertexBuffer(ID3D10Device* device, UINT byteSize, VertexPositionTextureNormal vertices[]);
 	void SetVertexBufferBump(ID3D10Device* device, UINT byteSize, VertexPositionTextureNormalTanBiNorm vertices[]);
 	void SetIndexBuffer(ID3D10Device* device, UINT byteSize, DWORD indices[]);
@@ -89,6 +78,17 @@ protected:
 	void Draw_effectNoise(ID3D10Device * graphicsdevice);
 	void Draw_effectPixelWobble(ID3D10Device * graphicsdevice);
 	void Draw_effectFoliageSway(ID3D10Device * graphicsdevice);
+
+	ID3D10ShaderResourceView* m_texture;
+	std::string m_textureFilename;
+
+	ID3D10ShaderResourceView* m_textureBump;
+	std::string m_textureBumpFilename;
+	
+	// for points on a sprite (1 quad)
+	VertexPositionTextureNormal m_vertices[4];
+	VertexPositionTextureNormalTanBiNorm m_verticesBump[4];
+	DWORD  m_indices[4];
 
 	void SetDimensionsAsNative();
 

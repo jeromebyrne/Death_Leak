@@ -48,8 +48,8 @@ void HealthDevil::Update(float delta)
 																500.0f,
 																0.0f,
 																true,
-																0.5f,
-																1.0f,
+																0.2f,
+																0.6f,
 																-1.0f,
 																true,
 																0.4f,
@@ -88,6 +88,7 @@ void HealthDevil::Update(float delta)
 		}
 		else
 		{
+			m_alpha = 1.0f;
 			// shake the camera while talking
 			// Camera2D::GetInstance()->DoSmallShake();
 		}
@@ -113,6 +114,8 @@ void HealthDevil::Initialise()
 			mPositionalAudio.Disable();
 		}
 	}
+
+	m_alpha = 0.0f;
 }
 
 void HealthDevil::XmlRead(TiXmlElement * element)
@@ -173,14 +176,14 @@ void HealthDevil::GiveHealthUpgradeReward()
 	HealthUpgradePickup * huPickup = new HealthUpgradePickup();
 	huPickup->SetTextureFilename("Media\\objects\\health_upgrade.png");
 	huPickup->SetIsNativeDimensions(true);
-	huPickup->SetCollisionDimensions(Vector2(20.0f, 30.0f));
+	huPickup->SetCollisionDimensions(Vector2(50.0f, 70.0f));
 	huPickup->SetApplyGravity(true);
-	huPickup->SetGravityApplyAmount(1.0f);
+	huPickup->SetGravityApplyAmount(0.8f);
 	huPickup->SetUpdateable(true);
 	huPickup->SetPassive(false);
 	huPickup->SetXY(m_position.X, m_position.Y + 20.0f); // spawn above the health devil
-	huPickup->SetMaxVelocityXY(30.0f, 30.0f);
-	huPickup->SetVelocityXY(15.0f, 20.0f);
+	huPickup->SetMaxVelocityXY(30.0f, 20.0f);
+	huPickup->SetVelocityXY(15.0f, 10.0f);
 	huPickup->SetResistanceXY(0.95f, 1.0f);
 	huPickup->EffectName = "effectlighttexture";
 	
@@ -192,14 +195,14 @@ void HealthDevil::GiveFocusUpgradeReward()
 	FocusUpgradePickup * fuPickup = new FocusUpgradePickup();
 	fuPickup->SetTextureFilename("Media\\objects\\focus_upgrade.png");
 	fuPickup->SetIsNativeDimensions(true);
-	fuPickup->SetCollisionDimensions(Vector2(20.0f, 30.0f));
+	fuPickup->SetCollisionDimensions(Vector2(50.0f, 70.0f));
 	fuPickup->SetApplyGravity(true);
-	fuPickup->SetGravityApplyAmount(1.0f);
+	fuPickup->SetGravityApplyAmount(0.8f);
 	fuPickup->SetUpdateable(true);
 	fuPickup->SetPassive(false);
 	fuPickup->SetXY(m_position.X, m_position.Y + 20.0f); // spawn above the health devil
-	fuPickup->SetMaxVelocityXY(30.0f, 30.0f);
-	fuPickup->SetVelocityXY(15.0f, 20.0f);
+	fuPickup->SetMaxVelocityXY(30.0f, 20.0f);
+	fuPickup->SetVelocityXY(15.0f, 10.0f);
 	fuPickup->SetResistanceXY(0.95f, 1.0f);
 	fuPickup->EffectName = "effectlighttexture";
 
@@ -241,6 +244,11 @@ void HealthDevil::OnInteracted()
 
 bool HealthDevil::CanInteract()
 {
+	if (mHasGivenReward)
+	{
+		return false;
+	}
+
 	Player * player = GameObjectManager::Instance()->GetPlayer();
 	if (player == nullptr)
 	{
