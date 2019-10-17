@@ -84,4 +84,16 @@
     <pt-br>Opens up the Dojo</pt-br>
     <de>Opens up the Dojo</de>
   </key_desc_dojo>
+
+  <suicide_note_name>
+    <en-gb>Haruhiko's note</en-gb>
+    <pt-br>needs localization</pt-br>
+    <de>needs localization</de>
+  </suicide_note_name>
+
+  <suicide_note_desc>
+    <en-gb>I've had enough. You'll find most of her body in the water by the falls.</en-gb>
+    <pt-br>needs localization</pt-br>
+    <de>needs localization</de>
+  </suicide_note_desc>
 </strings>

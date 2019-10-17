@@ -54,6 +54,7 @@ void UITextModal::Update()
 			auto padState = gamepad1->GetState();
 			if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_B)
 			{
+				mDismissButtonCurrentWarmup = 0.0f;
 				Game::GetInstance()->DismissTextModal();
 			}
 		}
@@ -63,6 +64,7 @@ void UITextModal::Update()
 
 			if (GetAsyncKeyState(VK_ESCAPE) < 0)
 			{
+				mDismissButtonCurrentWarmup = 0.0f;
 				Game::GetInstance()->DismissTextModal();
 			}
 		}
