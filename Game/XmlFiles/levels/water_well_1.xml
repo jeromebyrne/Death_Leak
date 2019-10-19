@@ -7,7 +7,7 @@
         <is_animation_preview value="false" />
     </LevelProperties>
     <Player id="1" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kPlayer" y="-935.332886" x="324.000000" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kPlayer" y="-931.470093" x="324.000000" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="215.352036" width="181.393768" native="false" repeatX="false" repeatY="false" />
         <material value="maleninja" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -97,7 +97,7 @@
     </Sprite>
     <SolidLineStrip id="6" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kSolidLines" y="-926.000000" x="166.000000" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions height="621.381836" width="1610.000000" native="false" repeatX="false" repeatY="false" />
+        <dimensions height="660.665771" width="1640.000000" native="false" repeatX="false" repeatY="false" />
         <material value="water" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
@@ -112,12 +112,12 @@
         <resistance y="1.000000" x="1.000000" />
         <maxvelocity y="0.000000" x="0.000000" />
         <applygravity value="false" />
-        <collisionboxdimensions y="400.000000" x="1413.000000" offsetX="98.500000" offsetY="-110.690918" />
+        <collisionboxdimensions y="400.000000" x="1428.000000" offsetX="106.000000" offsetY="-130.332886" />
         <passive value="true" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
-        <points x_0="-583.000000" y_0="-98.190918" x_1="780.000000" y_1="-123.190918" num_points="2" />
+        <points x_0="-583.000000" y_0="-111.332886" x_1="102.000000" y_1="-149.332886" x_2="795.000000" y_2="-132.332886" num_points="3" />
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="false" />
     </SolidLineStrip>
     <Sprite id="7" level_edit_locked="false" updateable="true" always_update="false">

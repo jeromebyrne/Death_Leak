@@ -2,13 +2,15 @@
   "ExpandedNodes": [
     "",
     "\\Game",
-    "\\Game\\src",
-    "\\Game\\src\\AI",
-    "\\Game\\src\\GameObjects",
     "\\Game\\XmlFiles",
-    "\\Game\\XmlFiles\\deprecated_levels",
-    "\\Game\\XmlFiles\\levels"
+    "\\Game\\XmlFiles\\levels",
+    "\\steamworks_sdk_142",
+    "\\steamworks_sdk_142\\sdk",
+    "\\steamworks_sdk_142\\sdk\\glmgr",
+    "\\steamworks_sdk_142\\sdk\\public",
+    "\\steamworks_sdk_142\\sdk\\public\\steam",
+    "\\steamworks_sdk_142\\sdk\\steamworksexample"
   ],
-  "SelectedNode": "\\Game\\src\\GameObjects\\HealthDevil.cpp",
+  "SelectedNode": "\\Game\\XmlFiles\\levels\\sea_1.xml",
   "PreviewInSolutionExplorer": false
 }
