@@ -1127,7 +1127,7 @@ void Character::DoAnimationEffectIfApplicable(AnimationPart * bodyPart)
 								1,
 								true,
 								2.5f,
-								10.0f,
+								1.0f,
 								0.0f,
 								0.15f,
 								0.7f);

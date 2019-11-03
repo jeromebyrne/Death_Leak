@@ -2,15 +2,15 @@
   "ExpandedNodes": [
     "",
     "\\Game",
+    "\\Game\\src",
+    "\\Game\\src\\GameObjects",
     "\\Game\\XmlFiles",
     "\\Game\\XmlFiles\\levels",
     "\\steamworks_sdk_142",
     "\\steamworks_sdk_142\\sdk",
     "\\steamworks_sdk_142\\sdk\\glmgr",
-    "\\steamworks_sdk_142\\sdk\\public",
-    "\\steamworks_sdk_142\\sdk\\public\\steam",
-    "\\steamworks_sdk_142\\sdk\\steamworksexample"
+    "\\steamworks_sdk_142\\sdk\\public"
   ],
-  "SelectedNode": "\\Game\\XmlFiles\\levels\\sea_1.xml",
+  "SelectedNode": "\\Game\\src\\GameObjects\\Character.cpp",
   "PreviewInSolutionExplorer": false
 }
