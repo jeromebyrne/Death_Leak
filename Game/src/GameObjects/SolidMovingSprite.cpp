@@ -463,7 +463,7 @@ void SolidMovingSprite::OnDamage(GameObject * damageDealer, float damageAmount, 
 
 		Vector2 pos = Vector2(m_position.X + pointOfContact.X, m_position.Y + pointOfContact.Y);
 
-		if (damageDealer->IsProjectile())
+		if (damageDealer && damageDealer->IsProjectile())
 		{
 			// TODO: optimize this to not be a particle spray
 			ParticleSpray * spray =

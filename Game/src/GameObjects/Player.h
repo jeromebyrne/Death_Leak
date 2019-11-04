@@ -66,6 +66,8 @@ private:
 
 	void UpdateFocus(float delta);
 
+	void TriggerDiedUI();
+
 	float mProjectileFireDelay;
 	float mTimeUntilProjectileReady;
 

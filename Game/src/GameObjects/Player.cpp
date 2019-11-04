@@ -29,6 +29,8 @@ static const float kFocusCooldownTime = 5.0f;
 static const float kMeleeFocusAmount = 4.0f;
 static const float kDownwardDashFocusAmount = 50.0f;
 static const float kRollFocusAmount = 2.0f;
+static const float kWaterFocusUseRate = 0.5f;
+static const float kDrownHealthLossRate = 2.0f;
 
 Player::Player(float x, float y, float width, float height) :
 Character(x, y, GameObject::kPlayer, width, height),
@@ -130,11 +132,16 @@ void Player::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 poi
 	{
 		m_alpha = 0.0f;
 
-		if (mHasTriggeredDiedUI == false)
-		{
-			mHasTriggeredDiedUI = true;
-			UIManager::Instance()->PushUI("you_died");
-		}
+		TriggerDiedUI();
+	}
+}
+
+void Player::TriggerDiedUI()
+{
+	if (mHasTriggeredDiedUI == false)
+	{
+		mHasTriggeredDiedUI = true;
+		UIManager::Instance()->PushUI("you_died");
 	}
 }
 
@@ -639,6 +646,11 @@ void Player::TryFocus()
 		return;
 	}
 
+	if (WasInWaterLastFrame())
+	{
+		return;
+	}
+
 	Timing::Instance()->SetTimeModifier(0.15f);
 	mIsFocusing = true;
 }
@@ -655,7 +667,7 @@ void Player::UpdateFocus(float delta)
 	{
 		ConsumeFocus(kFocusUseRate * delta);
 	}
-	else
+	else if (!WasInWaterLastFrame())
 	{
 		if (mCurrentFocusCooldown > 0.0f)
 		{
@@ -664,6 +676,24 @@ void Player::UpdateFocus(float delta)
 		else if (mCurrentFocusAmount < mMaxFocusAmount)
 		{
 			mCurrentFocusAmount += kFocusRechargeRate * delta;
+		}
+	}
+	else
+	{
+		ConsumeFocus(kWaterFocusUseRate * delta);
+
+		if (mCurrentFocusAmount <= 0.0f)
+		{
+			mHealth -= kDrownHealthLossRate * delta;
+
+			if (mHealth < 25.0f && mHealth > 0.0f)
+			{
+				Camera2D::GetInstance()->DoSmallShake();
+			}
+			else if (mHealth <= 0.0f)
+			{
+				TriggerDiedUI();
+			}
 		}
 	}
 }
