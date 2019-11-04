@@ -58,7 +58,7 @@ void Player::Initialise()
 
 	// Just hardcoding these variables now
 	// because I want to get this shit locked down and finished
-	mRunAnimFramerateMultiplier = 3.0f;
+	mRunAnimFramerateMultiplier = 3.0f; 
 	m_maxJumpSpeed = 19.0f;
 	mMaxJumpsAllowed = 1;
 	m_maxVelocity.X = 9.0000f;

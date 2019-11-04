@@ -6,11 +6,10 @@
     "\\Game\\src\\GameObjects",
     "\\Game\\XmlFiles",
     "\\Game\\XmlFiles\\levels",
-    "\\steamworks_sdk_142",
     "\\steamworks_sdk_142\\sdk",
     "\\steamworks_sdk_142\\sdk\\glmgr",
     "\\steamworks_sdk_142\\sdk\\public"
   ],
-  "SelectedNode": "\\Game\\src\\GameObjects\\Character.cpp",
+  "SelectedNode": "\\Game\\src\\GameObjects\\Player.cpp",
   "PreviewInSolutionExplorer": false
 }
