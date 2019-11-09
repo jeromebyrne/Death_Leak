@@ -5,11 +5,8 @@
     "\\Game\\src",
     "\\Game\\src\\GameObjects",
     "\\Game\\XmlFiles",
-    "\\Game\\XmlFiles\\levels",
-    "\\steamworks_sdk_142\\sdk",
-    "\\steamworks_sdk_142\\sdk\\glmgr",
-    "\\steamworks_sdk_142\\sdk\\public"
+    "\\Game\\XmlFiles\\levels"
   ],
-  "SelectedNode": "\\Game\\src\\GameObjects\\Player.cpp",
+  "SelectedNode": "\\Game\\src\\GameObjects\\WaterBlock.cpp",
   "PreviewInSolutionExplorer": false
 }
