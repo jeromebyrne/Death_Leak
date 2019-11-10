@@ -248,6 +248,8 @@ void Game::Update(float delta)
 	
 	// m_pCam2d->CheckBoundaryCollisions();
 	m_pCam2d->Update();
+
+	mInputManager.Update(delta);
 }
 
 void Game::PauseGame(bool pushPauseScreen)

@@ -15,6 +15,7 @@ const float kAimOffsetX = 450.0f;
 const float kAimOffsetY = 300.0f;
 const float kJumpInitialPercent = 30.0f;
 const float kJumpIncrementalIncreasePercent = 3.75f;
+const int kMaxVibrationValue = 65535;
 
 InputManager::InputManager() :
 	mShowDebugInfo(false),
@@ -24,6 +25,43 @@ InputManager::InputManager() :
 	mEnableGraphicsPostProcessing(true),
 	mPressingPostProcessingKey(false)
 {
+}
+
+void InputManager::Update(float delta)
+{
+	if (m_CurrentTimeVibrating > 0.0f)
+	{
+		m_CurrentTimeVibrating -= delta;
+
+		if (m_CurrentTimeVibrating < 0.0f)
+		{
+			Vibrate(0.0f, 0.0f, 0.0f);
+		}
+	}
+}
+
+void InputManager::Vibrate(float leftPercent, float rightPercent, float time)
+{
+	GamePad * gamepad1 = GamePad::GetPad1();
+
+	if (gamepad1 == nullptr || !gamepad1->IsConnected())
+	{
+		return;
+	}
+
+	m_CurrentTimeVibrating = time;
+
+	if (leftPercent > 1.0f)
+	{
+		leftPercent = 1.0f;
+	}
+
+	if (rightPercent > 1.0f)
+	{
+		rightPercent = 1.0f;
+	}
+
+	gamepad1->Vibrate(kMaxVibrationValue * leftPercent, kMaxVibrationValue * rightPercent);
 }
 
 void InputManager::ProcessGameplayInput()
@@ -369,6 +407,8 @@ void InputManager::ProcessPrimaryWeapon_gamepad(XINPUT_STATE padState, CurrentGa
 		if (p)
 		{
 			GameObjectManager::Instance()->AddGameObject(p);
+
+			Vibrate(0.03f, 0.0f, 0.05f);
 		}
 	}
 	else
@@ -579,13 +619,13 @@ void InputManager::ProcessLeftRightMovement_keyboard(CurrentGameplayActions & cu
 			!player->IsDoingMelee() &&
 			!player->IsWallJumping())
 		{
-			player->AccelerateX(-100);
+			player->AccelerateX(-100.0f);
 		}
 		else if (GetAsyncKeyState('D') < 0 &&
 			!player->IsDoingMelee() &&
 			!player->IsWallJumping())
 		{
-			player->AccelerateX(100);
+			player->AccelerateX(100.0f);
 		}
 		else
 		{

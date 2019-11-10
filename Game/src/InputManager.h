@@ -27,6 +27,10 @@ public:
 
 	bool IsPressingInteractButton() const;
 
+	void Vibrate(float leftPercent, float rightPercent, float timeSeconds);
+
+	void Update(float delta);
+
 private:
 
 	struct CurrentGameplayActions
@@ -99,6 +103,8 @@ private:
 
 	float mLastTimePressedRoll;
 	float mLastTimePressedJump;
+
+	float m_CurrentTimeVibrating = 0.0f;
 };
 
 #endif

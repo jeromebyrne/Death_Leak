@@ -1,7 +1,7 @@
 #include "precompiled.h"
 #include "GamePad.h"
 
-GamePad * GamePad::mController1 = 0;
+GamePad * GamePad::mController1 = nullptr;
 
 GamePad::GamePad(int playerNum)
 {
