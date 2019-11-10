@@ -1150,6 +1150,21 @@
       <frame filename="Media\characters\player\swim_burst_kick_default\swim_burst_kick_default_009.png" />
     </SwimBurstKick>
 
+    <SwimForward FrameRate="12" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\swim_forward\swim_forward_000.png" />
+      <frame filename="Media\characters\player\swim_forward\swim_forward_001.png" />
+      <frame filename="Media\characters\player\swim_forward\swim_forward_002.png" />
+      <frame filename="Media\characters\player\swim_forward\swim_forward_003.png" />
+      <frame filename="Media\characters\player\swim_forward\swim_forward_004.png" />
+      <frame filename="Media\characters\player\swim_forward\swim_forward_005.png" />
+      <frame filename="Media\characters\player\swim_forward\swim_forward_006.png" />
+      <frame filename="Media\characters\player\swim_forward\swim_forward_007.png" />
+      <frame filename="Media\characters\player\swim_forward\swim_forward_008.png" />
+      <frame filename="Media\characters\player\swim_forward\swim_forward_009.png" />
+      <frame filename="Media\characters\player\swim_forward\swim_forward_010.png" />
+      <frame filename="Media\characters\player\swim_forward\swim_forward_011.png" />
+    </SwimForward>
+
     <Melee FrameRate="60" MaxFrameRate="60" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
       <frame filename="Media\characters\player\melee_1_default\melee_1_default_000.png" >
         <skeletonparts>

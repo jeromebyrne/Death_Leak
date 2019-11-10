@@ -876,23 +876,22 @@ void Character::UpdateAnimations()
 			{
 				if (isInWater)
 				{
-					if (current_body_sequence_name == "SwimBurst" ||
-						current_body_sequence_name == "SwimBurstKick")
+					if (std::abs(VelocityX()) > 0.0f)
 					{
-						bodyPart->SetSequence("SwimBurstSettle");
-						bodyPart->Animate();
-					}
-					else if (!bodyPart->IsFinished() && current_body_sequence_name == "SwimBurstSettle")
-					{
-						bodyPart->Animate();
-					}
-					else if (current_body_sequence_name != "SwimIdle")
-					{
-						bodyPart->SetSequence("SwimIdle");
+						if (current_body_sequence_name != "SwimForward")
+						{
+							bodyPart->SetSequence("SwimForward");
+						}
+
 						bodyPart->AnimateLooped();
 					}
 					else
 					{
+						if (current_body_sequence_name != "SwimIdle")
+						{
+							bodyPart->SetSequence("SwimIdle");
+						}
+
 						bodyPart->AnimateLooped();
 					}
 				}
@@ -915,24 +914,12 @@ void Character::UpdateAnimations()
 		{
 			if (isInWater)
 			{
-				if (current_body_sequence_name != "SwimBurst" &&
-					current_body_sequence_name != "SwimBurstKick")
+				if (current_body_sequence_name != "SwimForward")
 				{
-					bodyPart->SetSequence("SwimBurst");
+					bodyPart->SetSequence("SwimForward");
 				}
 
-				// if (mDoSwimBurstAnim)
-				{
-					if (bodyPart->IsFinished())
-					{
-						bodyPart->SetSequence("SwimBurstKick");
-						bodyPart->Restart();
-					}
-					
-					// mDoSwimBurstAnim = false;
-				}
-
-				bodyPart->Animate();
+				bodyPart->AnimateLooped();
 			}
 			else
 			{
