@@ -479,11 +479,6 @@ void Character::DoLandOnSolidSurfaceEffects(float dropDistance)
 						{
 							Game::GetInstance()->Vibrate(0.35f, 0.5f, 0.5f);
 						}
-						else
-						{
-							// we should still vibrate since falling from a large distance, just vibrate less
-							Game::GetInstance()->Vibrate(0.15f, 0.25f, 0.25f);
-						}
 					}
 				}
 			}
@@ -617,6 +612,11 @@ void Character::DoMeleeCollisions(SolidMovingSprite * object)
 			{
 				object->OnDamage(this, mMeleeDamage, Vector2(0.0f, 0.0f), true);
 				object->TriggerMeleeCooldown();
+
+				if (object->IsCharacter())
+				{
+					Game::GetInstance()->Vibrate(0.6f, 1.0f, 0.3f);
+				}
 			}
 		}
 		else if (m_direction.X < 0)
@@ -626,6 +626,11 @@ void Character::DoMeleeCollisions(SolidMovingSprite * object)
 			{
 				object->OnDamage(this, mMeleeDamage, Vector2(0.0f, 0.0f), true);
 				object->TriggerMeleeCooldown();
+
+				if (object->IsCharacter())
+				{
+					Game::GetInstance()->Vibrate(0.6f, 1.0f, 0.3f);
+				}
 			}
 		}
 	}
@@ -667,11 +672,16 @@ void Character::DoMeleeCollisions(SolidMovingSprite * object)
 
 				AudioManager::Instance()->PlaySoundEffect(rand() % 2 == 1 ? "projectile_deflect.wav" : "projectile_deflect_2.wav");
 
-				Game::GetInstance()->DoDamagePauseEffectLonger();
-
-				Camera2D::GetInstance()->DoMediumShake();
-
 				object->TriggerMeleeCooldown();
+
+				if (IsPlayer())
+				{
+					Game::GetInstance()->DoDamagePauseEffectLonger();
+
+					Camera2D::GetInstance()->DoMediumShake();
+
+					Game::GetInstance()->Vibrate(0.4f, 0.5f, 0.15f);
+				}
 			}
 		}
 		else if (object->IsDebris())
@@ -1130,7 +1140,7 @@ void Character::DoAnimationEffectIfApplicable(AnimationPart * bodyPart)
 
 						if (IsPlayer() && material->ShouldVibrate())
 						{
-							Game::GetInstance()->Vibrate(0.1f, 0.0f, 0.05f);
+							// Game::GetInstance()->Vibrate(0.03f, 0.03f, 0.06f);
 						}
 					}
 				}

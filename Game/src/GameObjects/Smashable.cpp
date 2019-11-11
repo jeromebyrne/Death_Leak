@@ -80,6 +80,8 @@ bool Smashable::OnCollision(SolidMovingSprite * object)
 			SpawnSmashedParticles();
 
 			Camera2D::GetInstance()->DoBigShake();
+
+			Game::GetInstance()->Vibrate(0.75f, 1.0f, 0.4f);
 		}
 	}
 

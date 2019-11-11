@@ -128,9 +128,16 @@ void Player::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 poi
 {
 	Character::OnDamage(damageDealer, damageAmount, pointOfContact, shouldExplode);
 
+	if (damageAmount > 0.5f)
+	{
+		Game::GetInstance()->Vibrate(0.0f, 0.4f, 0.15f);
+	}
+
 	if (IsDead())
 	{
 		m_alpha = 0.0f;
+
+		Game::GetInstance()->Vibrate(1.0f, 1.0f, 0.3f);
 
 		TriggerDiedUI();
 	}
@@ -780,7 +787,7 @@ bool Player::Roll()
 	if (Character::Roll())
 	{
 		ConsumeFocus(kRollFocusAmount);
-		Game::GetInstance()->Vibrate(0.0f, 0.15f, 0.20f);
+		Game::GetInstance()->Vibrate(0.0f, 0.075f, 0.20f);
 		return true;
 	}
 

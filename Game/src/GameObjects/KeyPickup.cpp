@@ -37,6 +37,8 @@ void KeyPickup::DoPickup()
 void KeyPickup::DoPickupEffects(Player * player)
 {
 	// TODO:
+
+	Game::GetInstance()->Vibrate(0.1f, 0.0f, 0.1f);
 }
 
 void KeyPickup::XmlRead(TiXmlElement * element)

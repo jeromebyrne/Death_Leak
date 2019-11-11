@@ -5,6 +5,7 @@
 #include "NPCManager.h"
 #include "Debris.h"
 #include "Projectile.h"
+#include "Game.h"
 
 static const unsigned int kExplosionAliveTime = 2000;
 
@@ -84,6 +85,8 @@ void Explosion::Update(float delta)
 		PlaySFX();
 		Display();
 		Inflict();
+
+		Game::GetInstance()->Vibrate(0.8f, 1.0f, 0.2f);
 	}
 	else if (mFramesActive == 2)
 	{

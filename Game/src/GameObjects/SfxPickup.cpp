@@ -70,4 +70,8 @@ void SfxPickup::PlayRandomSfx()
 	int randNum = rand() % mSfxList.size();
 
 	AudioManager::Instance()->PlaySoundEffect(mSfxList[randNum]);
+
+	int randor = (rand() % 15) + 5;
+
+	Game::GetInstance()->Vibrate(randor * 0.01f, 0.0f, 0.1f);
 }

@@ -119,22 +119,24 @@ void Door::OnInteracted()
 			{
 				// play default locked sfx
 				AudioManager::Instance()->PlaySoundEffect(kDefaultDoorLockedSfx);
-				mInteractableProperties.InteractCountdown = 1.0f;
-
-				Camera2D::GetInstance()->DoSmallShake();
 			}
+
+			mInteractableProperties.InteractCountdown = 1.0f;
+			Camera2D::GetInstance()->DoSmallShake();
+			Game::GetInstance()->Vibrate(0.0f, 0.6f, 0.25f);
 			mCanTryOpen = true;
 			return;
 		}
 		else if (!SaveManager::GetInstance()->DoorWasUnlocked(mDoorIdentifier))
 		{
-			// TODO: play unlocking sound effect
 			// TODO: do effects
 			AudioManager::Instance()->PlaySoundEffect(kDefaultDoorUnlockedSfx);
 			SaveManager::GetInstance()->SetDoorWasUnlocked(mDoorIdentifier, true);
 			mInteractableProperties.InteractCountdown = 0.4f;
 			mCanTryOpen = true;
 			mIsUnlockingCurrentTime = kUnlockingTime;
+
+			Game::GetInstance()->Vibrate(0.2f, 0.1f, 0.2f);
 
 			/*
 			ParticleEmitterManager::Instance()->CreateDirectedSpray(1,

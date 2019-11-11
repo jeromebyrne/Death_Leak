@@ -408,7 +408,7 @@ void InputManager::ProcessPrimaryWeapon_gamepad(XINPUT_STATE padState, CurrentGa
 		{
 			GameObjectManager::Instance()->AddGameObject(p);
 
-			Vibrate(0.03f, 0.0f, 0.05f);
+			Vibrate(0.0f, 0.08f, 0.06f);
 		}
 	}
 	else
