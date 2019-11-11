@@ -252,6 +252,11 @@ void Game::Update(float delta)
 	mInputManager.Update(delta);
 }
 
+void Game::Vibrate(float leftPercent, float rightPercent, float time)
+{
+	mInputManager.Vibrate(leftPercent, rightPercent, time);
+}
+
 void Game::PauseGame(bool pushPauseScreen)
 {
 	if (mIsDisplayingTextModal)

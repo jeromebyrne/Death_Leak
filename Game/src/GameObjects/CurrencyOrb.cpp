@@ -277,6 +277,8 @@ void CurrencyOrb::DoCollisionSmallType(Player * player)
 	{
 		GameObjectManager::Instance()->SetCurrencyOrbCollected(ID());
 	}
+
+	Game::GetInstance()->Vibrate(0.1f, 0.2f, 0.2f);
 }
 
 void CurrencyOrb::DoCollisionLargeType(Player * player)
@@ -317,6 +319,8 @@ void CurrencyOrb::DoCollisionLargeType(Player * player)
 		Vector2 position(m_position.X, m_position.Y);
 		SpawnOrbs(position, 10);
 	}
+
+	Game::GetInstance()->Vibrate(0.0f, 0.3f, 0.25f);
 }
 
 void CurrencyOrb::AddTrailParticles()

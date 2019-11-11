@@ -3,10 +3,12 @@
     "",
     "\\Game",
     "\\Game\\src",
-    "\\Game\\src\\GameObjects",
-    "\\Game\\XmlFiles",
-    "\\Game\\XmlFiles\\levels"
+    "\\Game\\src\\Core",
+    "\\Game\\steam",
+    "\\steamworks_sdk_142",
+    "\\steamworks_sdk_142\\sdk",
+    "\\steamworks_sdk_142\\sdk\\public",
+    "\\steamworks_sdk_142\\sdk\\public\\steam"
   ],
-  "SelectedNode": "\\Game\\src\\GameObjects\\WaterBlock.cpp",
   "PreviewInSolutionExplorer": false
 }

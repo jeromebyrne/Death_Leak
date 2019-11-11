@@ -66,7 +66,9 @@ public:
 		
 	const InputManager & GetInputManager() const { return mInputManager; }
 
-	void Game::OnSteamGameOverlayActivated(GameOverlayActivated_t* pCallback);
+	void OnSteamGameOverlayActivated(GameOverlayActivated_t* pCallback);
+
+	void Vibrate(float leftPercent, float rightPercent, float time);
 
 private:
 

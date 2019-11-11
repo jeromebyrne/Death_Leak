@@ -9,6 +9,12 @@ Material::Material(const char * materialName):
 	{
 		mIsWater = true;
 	}
+	else if (strcmp(materialName, "softwood") == 0 ||
+		strcmp(materialName, "caverock") == 0 ||
+		strcmp(materialName, "stone") == 0)
+	{
+		mShouldVibrate = true;
+	}
 }
 
 Material::~Material(void)

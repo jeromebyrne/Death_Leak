@@ -689,6 +689,7 @@ void Player::UpdateFocus(float delta)
 			if (mHealth < 25.0f && mHealth > 0.0f)
 			{
 				Camera2D::GetInstance()->DoSmallShake();
+				Game::GetInstance()->Vibrate(0.25, 0.25f, 0.1f);
 			}
 			else if (mHealth <= 0.0f)
 			{
@@ -779,6 +780,7 @@ bool Player::Roll()
 	if (Character::Roll())
 	{
 		ConsumeFocus(kRollFocusAmount);
+		Game::GetInstance()->Vibrate(0.0f, 0.15f, 0.20f);
 		return true;
 	}
 

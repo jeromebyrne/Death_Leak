@@ -235,10 +235,12 @@ void HealthDevil::OnInteracted()
 	// play audio, after audio finishes the reward will be given
 	if (!mHasPlayedDialog)
 	{
-		Camera2D::GetInstance()->DoMediumShake();
+		Camera2D::GetInstance()->DoBigShake();
 		mPositionalAudio.SetRepeat(false);
 		mVoiceOverSoundPlaying = AudioManager::Instance()->PlaySoundEffect("character\\health_devil\\vo\\test.wav", false, true);
 		mHasPlayedDialog = true;
+
+		Game::GetInstance()->Vibrate(1.0f, 1.0f, 0.4f);
 	}
 }
 

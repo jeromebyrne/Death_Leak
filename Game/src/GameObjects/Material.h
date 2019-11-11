@@ -22,6 +22,8 @@ public:
 
 	bool IsWater() const { return mIsWater; }
 
+	bool ShouldVibrate() const { return mShouldVibrate; }
+
 private:
 
 	vector<string> mParticleTextures;
@@ -34,6 +36,8 @@ private:
 	bool mPierceable;
 
 	bool mIsWater = false;
+
+	bool mShouldVibrate = false;
 };
 
 #endif

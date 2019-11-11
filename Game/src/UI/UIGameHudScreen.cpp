@@ -5,6 +5,7 @@
 #include "SaveManager.h"
 #include "PlayerLevelManager.h"
 #include "AudioManager.h"
+#include "Game.h"
 
 static const float kHealthMeterDimensionsMultiplier = 3.0f;
 static const float kFocusMeterDimensionsMultiplier = 2.0f;
@@ -182,6 +183,7 @@ void UIGameHudScreen::DoHealthMeterUpgrade(Player * player)
 	{
 		mPlayerHealthMeter->SetMeterLength(currentDimensions + 0.20f);
 		Camera2D::GetInstance()->DoSmallShake();
+		Game::GetInstance()->Vibrate(0.15f, 0.1f, 0.1f);
 	}
 	else if (currentDimensions >= finalDimensions)
 	{
@@ -206,6 +208,7 @@ void UIGameHudScreen::DoFocusMeterUpgrade(Player * player)
 	{
 		mPlayerXPMeter->SetMeterLength(currentDimensions + (player_max_focus <= 100.0f ? 0.5f : 0.20f));
 		Camera2D::GetInstance()->DoSmallShake();
+		Game::GetInstance()->Vibrate(0.15f, 0.1f, 0.1f);
 	}
 	else if (currentDimensions >= finalDimensions)
 	{

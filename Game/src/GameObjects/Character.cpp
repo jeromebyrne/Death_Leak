@@ -125,7 +125,10 @@ void Character::DoLargeImpactLanding()
 
 	StopXAccelerating();
 
-	Camera2D::GetInstance()->DoMediumShake();
+	if (IsPlayer())
+	{
+		Camera2D::GetInstance()->DoMediumShake(); 
+	}
 }
 
 void Character::Update(float delta)
@@ -353,14 +356,6 @@ void Character::Update(float delta)
 						mJustfellFromLargeDistance = false;
 
 						StopXAccelerating();
-
-						/*
-						float jumpDiff = totalTime - inputManager.GetLastTimePressedJump();
-						if (!mIsDownwardDashing && !mWasDownwardDashing && jumpDiff >= 0.0f && jumpDiff < kLandJumpInputWindow)
-						{
-							mDoReboundJump = true;
-							Jump(95.0f);
-						}*/
 					}
 					else if (dropDistance >= kLargeDropDistance)
 					{
@@ -447,6 +442,11 @@ void Character::DoLandOnSolidSurfaceEffects(float dropDistance)
 							0.2f,
 							0.15f,
 							0.9f);
+
+						if (IsPlayer() && objectMaterial->ShouldVibrate())
+						{
+							Game::GetInstance()->Vibrate(0.0f, 0.2f, 0.2f);
+						}
 					}
 					else
 					{
@@ -474,9 +474,17 @@ void Character::DoLandOnSolidSurfaceEffects(float dropDistance)
 							0.2f,
 							0.15f,
 							0.9f);
-					}
 
-					
+						if (IsPlayer() && objectMaterial->ShouldVibrate())
+						{
+							Game::GetInstance()->Vibrate(0.35f, 0.5f, 0.5f);
+						}
+						else
+						{
+							// we should still vibrate since falling from a large distance, just vibrate less
+							Game::GetInstance()->Vibrate(0.15f, 0.25f, 0.25f);
+						}
+					}
 				}
 			}
 		}
@@ -1118,6 +1126,11 @@ void Character::DoAnimationEffectIfApplicable(AnimationPart * bodyPart)
 								0.0f,
 								0.15f,
 								0.7f);
+						}
+
+						if (IsPlayer() && material->ShouldVibrate())
+						{
+							Game::GetInstance()->Vibrate(0.1f, 0.0f, 0.05f);
 						}
 					}
 				}
