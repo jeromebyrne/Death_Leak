@@ -18,7 +18,7 @@
 static const char * kBombTextureFile = "Media/bomb.png";
 static const float kAimLineOpacityDecrementDelay = 0.05f;
 static const float kAimLineOpacityDecreaseRate = 10.0f;
-static const float kSprintZoomPercent = 0.95f;
+static const float kSprintZoomPercent = 0.97f;
 static const float kSprintZoomCamChangeRateIn = 0.3f;
 static const float kSprintZoomCamChangeRateOut = 0.10f;
 
@@ -63,7 +63,7 @@ void Player::Initialise()
 	mRunAnimFramerateMultiplier = 3.0f; 
 	m_maxJumpSpeed = 19.0f;
 	mMaxJumpsAllowed = 1;
-	m_maxVelocity.X = 9.0000f;
+	m_maxVelocity.X = 13.0000f;
 	mSprintVelocityX = 17.5f;
 	mAccelXRate = 0.60f;
 
@@ -787,7 +787,7 @@ bool Player::Roll()
 	if (Character::Roll())
 	{
 		ConsumeFocus(kRollFocusAmount);
-		Game::GetInstance()->Vibrate(0.0f, 0.075f, 0.20f);
+		Game::GetInstance()->Vibrate(0.0f, 0.04f, 0.15f);
 		return true;
 	}
 
