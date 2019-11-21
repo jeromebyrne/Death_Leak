@@ -6,7 +6,22 @@
         <weather_properties allow_weather="false" />
         <is_animation_preview value="false" />
     </LevelProperties>
-    <Player id="1" level_edit_locked="false" updateable="true" always_update="true">
+    <Sprite id="1" level_edit_locked="false" updateable="true" always_update="false">
+        <position depth_layer="kMiddleBackground" y="947.900269" x="-697.648071" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions height="1313.000000" width="4815.895996" native="false" repeatX="true" repeatY="false" />
+        <material value="grassground" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
+        <alpha value="0.150000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media/levels/underwater_cave/cave_background.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+    </Sprite>
+    <Player id="2" level_edit_locked="false" updateable="true" always_update="true">
         <position depth_layer="kPlayer" y="569.000000" x="-2391.548096" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="215.352036" width="181.393768" native="false" repeatX="false" repeatY="false" />
         <material value="maleninja" />
@@ -21,7 +36,7 @@
         <isanimated value="true" />
         <animationfile value="XmlFiles\animation\player_anim_default.xml" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance y="0.880000" x="0.999900" />
+        <resistance y="0.880000" x="0.800000" />
         <maxvelocity y="99999.000000" x="7.500000" />
         <applygravity value="true" />
         <collisionboxdimensions y="214.898743" x="128.959793" offsetX="0.000000" offsetY="0.000000" />
@@ -34,7 +49,7 @@
         <projectileoffsetx value="5" />
         <projectileoffsety value="25" />
     </Player>
-    <Sprite id="2" level_edit_locked="false" updateable="true" always_update="false">
+    <Sprite id="3" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundBack" y="4.627930" x="-533.000000" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="1133.000000" width="2680.000000" native="true" repeatX="true" repeatY="false" />
         <material value="water" />
@@ -49,7 +64,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <SolidMovingSprite id="3" level_edit_locked="false" updateable="true" always_update="false">
+    <SolidMovingSprite id="4" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGround" y="660.000000" x="-2956.000000" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="2.000000" width="2.000000" native="true" repeatX="false" repeatY="false" />
         <material value="caverock" />
@@ -72,7 +87,7 @@
         <can_be_damaged value="false" />
         <is_bouncy value="true" bounce_multiplier="1.100000" />
     </SolidMovingSprite>
-    <LevelTrigger id="4" level_edit_locked="false" updateable="true" always_update="true">
+    <LevelTrigger id="5" level_edit_locked="false" updateable="true" always_update="true">
         <position depth_layer="kGround" y="-198.372070" x="-586.000000" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="677.938599" width="2000.000000" />
         <material value="" />
@@ -80,7 +95,7 @@
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
         <level_to_load value="XmlFiles\levels\underwater_cave_3.xml" />
     </LevelTrigger>
-    <SolidLineStrip id="5" level_edit_locked="false" updateable="true" always_update="false">
+    <SolidLineStrip id="6" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kSolidLines" y="588.627930" x="-480.000000" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="829.627930" width="4362.000000" native="false" repeatX="false" repeatY="false" />
         <material value="caverock" />
@@ -105,7 +120,7 @@
         <points x_0="-2156.000000" y_0="-102.000000" x_1="-1494.000000" y_1="-175.000000" x_2="-1065.000000" y_2="-236.000000" x_3="-221.548096" y_3="-327.627930" num_points="4" />
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="false" />
     </SolidLineStrip>
-    <SolidLineStrip id="6" level_edit_locked="false" updateable="true" always_update="false">
+    <SolidLineStrip id="7" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kSolidLines" y="588.627930" x="160.000000" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="753.255859" width="5058.000000" native="false" repeatX="false" repeatY="false" />
         <material value="caverock" />
@@ -130,7 +145,7 @@
         <points x_0="-612.548096" y_0="-326.627930" x_1="306.000000" y_1="-246.000000" x_2="1308.000000" y_2="-85.000000" x_3="2504.000000" y_3="43.372070" num_points="4" />
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="false" />
     </SolidLineStrip>
-    <Sprite id="7" level_edit_locked="false" updateable="true" always_update="false">
+    <Sprite id="8" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundBack" y="423.627930" x="-1798.000000" rotation="-0.170000" auto_rotate_value="0.000000" />
         <dimensions height="413.000000" width="2048.000000" native="true" repeatX="true" repeatY="false" />
         <material value="water" />
@@ -145,7 +160,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="8" level_edit_locked="false" updateable="true" always_update="false">
+    <Sprite id="9" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kNearBackground" y="381.627930" x="-541.000000" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="413.000000" width="5538.981445" native="false" repeatX="true" repeatY="false" />
         <material value="water" />
@@ -160,7 +175,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="9" level_edit_locked="false" updateable="true" always_update="false">
+    <Sprite id="10" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundBack" y="429.000000" x="615.000000" rotation="-0.170000" auto_rotate_value="0.000000" />
         <dimensions height="413.000000" width="2048.000000" native="true" repeatX="true" repeatY="false" />
         <material value="water" />
@@ -175,7 +190,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="10" level_edit_locked="false" updateable="true" always_update="false">
+    <Sprite id="11" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundFront" y="362.000000" x="-597.548096" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="545.527771" width="511.853485" native="false" repeatX="false" repeatY="false" />
         <material value="water" />
@@ -190,7 +205,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <LevelTrigger id="11" level_edit_locked="false" updateable="true" always_update="true">
+    <LevelTrigger id="12" level_edit_locked="false" updateable="true" always_update="true">
         <position depth_layer="kGround" y="630.000000" x="-3629.000000" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="677.938599" width="2000.000000" />
         <material value="" />
@@ -198,7 +213,7 @@
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
         <level_to_load value="XmlFiles\levels\hot_springs.xml" />
     </LevelTrigger>
-    <LevelTrigger id="12" level_edit_locked="false" updateable="true" always_update="true">
+    <LevelTrigger id="13" level_edit_locked="false" updateable="true" always_update="true">
         <position depth_layer="kGround" y="744.000000" x="2542.451904" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="677.938599" width="2000.000000" />
         <material value="" />
@@ -206,7 +221,7 @@
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
         <level_to_load value="XmlFiles\levels\underwater_cave_5.xml" />
     </LevelTrigger>
-    <SolidMovingSprite id="13" level_edit_locked="false" updateable="true" always_update="false">
+    <SolidMovingSprite id="14" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGround" y="688.000000" x="1898.451904" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="2.000000" width="2.000000" native="true" repeatX="false" repeatY="false" />
         <material value="caverock" />
@@ -229,7 +244,7 @@
         <can_be_damaged value="false" />
         <is_bouncy value="true" bounce_multiplier="1.100000" />
     </SolidMovingSprite>
-    <Sprite id="14" level_edit_locked="false" updateable="true" always_update="false">
+    <Sprite id="15" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundFront" y="651.627930" x="-2404.000000" rotation="-1.680533" auto_rotate_value="0.000000" />
         <dimensions height="449.339661" width="449.339661" native="false" repeatX="false" repeatY="false" />
         <material value="water" />
@@ -244,7 +259,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="15" level_edit_locked="false" updateable="true" always_update="false">
+    <Sprite id="16" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundFront" y="665.627930" x="1243.000000" rotation="-1.680533" auto_rotate_value="0.000000" />
         <dimensions height="449.339661" width="449.339661" native="false" repeatX="false" repeatY="false" />
         <material value="water" />
@@ -259,7 +274,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="16" level_edit_locked="false" updateable="true" always_update="false">
+    <Sprite id="17" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundBack" y="352.000000" x="-2614.000000" rotation="-0.170000" auto_rotate_value="0.000000" />
         <dimensions height="413.000000" width="2048.000000" native="true" repeatX="true" repeatY="false" />
         <material value="water" />
@@ -274,7 +289,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="17" level_edit_locked="false" updateable="true" always_update="false">
+    <Sprite id="18" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundBack" y="419.000000" x="1977.000000" rotation="-0.170000" auto_rotate_value="0.000000" />
         <dimensions height="413.000000" width="2048.000000" native="true" repeatX="true" repeatY="false" />
         <material value="water" />
@@ -289,7 +304,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <AudioObject id="18" level_edit_locked="false" updateable="true" always_update="true">
+    <AudioObject id="19" level_edit_locked="false" updateable="true" always_update="true">
         <position depth_layer="kGround" y="642.000000" x="844.000000" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="500.000000" width="500.000000" />
         <material value="" />
@@ -300,7 +315,7 @@
         <repeat value="true" />
         <fadedimensions x="2000.000000" y="3000.000000" />
     </AudioObject>
-    <AudioObject id="19" level_edit_locked="false" updateable="true" always_update="true">
+    <AudioObject id="20" level_edit_locked="false" updateable="true" always_update="true">
         <position depth_layer="kGround" y="571.000000" x="-1605.000000" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="500.000000" width="300.000000" />
         <material value="" />
@@ -311,7 +326,7 @@
         <repeat value="true" />
         <fadedimensions x="2500.000000" y="3000.000000" />
     </AudioObject>
-    <ParticleSpray id="20" level_edit_locked="false" updateable="true" always_update="false">
+    <ParticleSpray id="21" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundBack" y="1226.000000" x="-594.000000" rotation="0.000000" auto_rotate_value="0.000000" spawn_spread_x="150.000000" spawn_spread_y="5.000000" />
         <dimensions height="3000.000000" width="400.000000" />
         <material value="" />
@@ -332,7 +347,7 @@
         <brightness min="1.000000" max="1.000000" />
         <fade_time_percent out="0.500000" in="0.100000" />
     </ParticleSpray>
-    <LevelEntry id="21" level_edit_locked="false" updateable="true" always_update="true">
+    <LevelEntry id="22" level_edit_locked="false" updateable="true" always_update="true">
         <position depth_layer="kGround" y="410.000000" x="-364.548096" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="250.000000" width="250.000000" />
         <material value="" />
@@ -342,7 +357,7 @@
         <player_direction x="-1.000000" />
         <door_id value="" />
     </LevelEntry>
-    <LevelEntry id="22" level_edit_locked="false" updateable="true" always_update="true">
+    <LevelEntry id="23" level_edit_locked="false" updateable="true" always_update="true">
         <position depth_layer="kGround" y="582.000000" x="1200.451904" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="250.000000" width="250.000000" />
         <material value="" />
@@ -352,7 +367,7 @@
         <player_direction x="-1.000000" />
         <door_id value="" />
     </LevelEntry>
-    <LevelEntry id="23" level_edit_locked="false" updateable="true" always_update="true">
+    <LevelEntry id="24" level_edit_locked="false" updateable="true" always_update="true">
         <position depth_layer="kGround" y="569.000000" x="-2391.548096" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="250.000000" width="250.000000" />
         <material value="" />
@@ -362,7 +377,7 @@
         <player_direction x="1.000000" />
         <door_id value="" />
     </LevelEntry>
-    <Sprite id="24" level_edit_locked="false" updateable="true" always_update="false">
+    <Sprite id="25" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kFarForeground" y="1240.000000" x="1235.652100" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="1077.518799" width="1336.200684" native="false" repeatX="false" repeatY="false" />
         <material value="water" />
@@ -377,7 +392,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="25" level_edit_locked="false" updateable="true" always_update="false">
+    <Sprite id="26" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kFarForeground" y="1361.199951" x="439.251831" rotation="-0.059104" auto_rotate_value="0.000000" />
         <dimensions height="1422.170532" width="1763.593628" native="false" repeatX="false" repeatY="false" />
         <material value="water" />
@@ -392,7 +407,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="26" level_edit_locked="false" updateable="true" always_update="false">
+    <Sprite id="27" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kFarForeground" y="1490.700073" x="3.151906" rotation="-1.460679" auto_rotate_value="0.000000" />
         <dimensions height="1454.763428" width="1804.011475" native="false" repeatX="false" repeatY="false" />
         <material value="water" />
@@ -407,7 +422,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="27" level_edit_locked="false" updateable="true" always_update="false">
+    <Sprite id="28" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kFarForeground" y="-213.000000" x="-444.548096" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="1434.261230" width="1778.587280" native="false" repeatX="false" repeatY="false" />
         <material value="water" />
@@ -422,7 +437,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="28" level_edit_locked="false" updateable="true" always_update="false">
+    <Sprite id="29" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kFarForeground" y="-107.000000" x="636.351440" rotation="0.098579" auto_rotate_value="0.000000" />
         <dimensions height="1434.261230" width="1778.587280" native="false" repeatX="false" repeatY="false" />
         <material value="water" />
@@ -437,7 +452,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="29" level_edit_locked="false" updateable="true" always_update="false">
+    <Sprite id="30" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kFarForeground" y="-29.499998" x="1591.353394" rotation="-0.061136" auto_rotate_value="0.000000" />
         <dimensions height="1434.261230" width="1778.587280" native="false" repeatX="false" repeatY="false" />
         <material value="water" />
@@ -452,7 +467,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="30" level_edit_locked="false" updateable="true" always_update="false">
+    <Sprite id="31" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kFarForeground" y="-79.000000" x="-1464.548096" rotation="-0.191663" auto_rotate_value="0.000000" />
         <dimensions height="1313.000000" width="1750.000000" native="true" repeatX="false" repeatY="false" />
         <material value="water" />
@@ -467,7 +482,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="31" level_edit_locked="false" updateable="true" always_update="false">
+    <Sprite id="32" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kFarForeground" y="-6.000000" x="-2255.548096" rotation="-0.282540" auto_rotate_value="0.000000" />
         <dimensions height="1313.000000" width="1750.000000" native="true" repeatX="false" repeatY="false" />
         <material value="water" />
@@ -482,7 +497,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="32" level_edit_locked="false" updateable="true" always_update="false">
+    <Sprite id="33" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kFarForeground" y="1621.000000" x="-1285.047729" rotation="-1.460679" auto_rotate_value="0.000000" />
         <dimensions height="1127.560913" width="1398.256836" native="false" repeatX="false" repeatY="false" />
         <material value="water" />
@@ -497,7 +512,7 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
-    <Sprite id="33" level_edit_locked="false" updateable="true" always_update="false">
+    <Sprite id="34" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kFarForeground" y="1754.800293" x="-1808.248169" rotation="0.278617" auto_rotate_value="0.000000" />
         <dimensions height="1548.899658" width="1920.747314" native="false" repeatX="false" repeatY="false" />
         <material value="water" />
