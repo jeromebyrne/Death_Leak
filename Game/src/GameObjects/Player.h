@@ -30,6 +30,8 @@ public:
 
 	float GetCurrentFocusAmount() const { return mCurrentFocusAmount; }
 
+	void SetCurrentFocusAmount(float value) { mCurrentFocusAmount = value; }
+
 	void SetMaxFocus(float value) { mMaxFocusAmount = value; }
 
 	void TryFocus();

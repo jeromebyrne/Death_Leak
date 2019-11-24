@@ -158,7 +158,8 @@ private:
 	list<GameObject *> mPostUpdateObjects;
 
 	// save the health between levels
-	float mCachedPlayerHealth = -1;
+	float mCachedPlayerHealth = -1.0f;
+	float mCachedPlayerFocus = -1.0f;
 };
 
 #endif

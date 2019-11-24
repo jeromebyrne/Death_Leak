@@ -523,6 +523,8 @@ void GameObjectManager::SwitchToLevel(const string & level, const string & doorI
 
 	mCachedPlayerHealth = m_player != nullptr ? m_player->GetHealth() : -1.0f;
 
+	mCachedPlayerFocus = m_player != nullptr ? m_player->GetCurrentFocusAmount() : -1.0f;
+
 	CacheSaveData();
 
 	UIGameLoading * loadingScreen = static_cast<UIGameLoading*>(UIManager::Instance()->PushUI("gameloading"));
@@ -624,8 +626,11 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement, const
 			if (mCachedPlayerHealth != -1.0f)
 			{
 				m_player->SetHealth(mCachedPlayerHealth);
+			}
 
-				// TODO: set focus
+			if (mCachedPlayerFocus != -1.0f)
+			{
+				m_player->SetCurrentFocusAmount(mCachedPlayerFocus);
 			}
 		}
 	}
