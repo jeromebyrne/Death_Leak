@@ -4,13 +4,10 @@
     "\\Game",
     "\\Game\\src",
     "\\Game\\src\\GameObjects",
+    "\\Game\\src\\UI",
     "\\Game\\steam",
     "\\Game\\XmlFiles",
-    "\\Game\\XmlFiles\\levels",
-    "\\steamworks_sdk_142\\sdk",
-    "\\steamworks_sdk_142\\sdk\\public",
-    "\\steamworks_sdk_142\\sdk\\public\\steam"
+    "\\Game\\XmlFiles\\levels"
   ],
-  "SelectedNode": "\\Game\\XmlFiles\\levels\\hot_springs.xml",
   "PreviewInSolutionExplorer": false
 }
