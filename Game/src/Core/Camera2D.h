@@ -114,11 +114,11 @@ public:
 
 	void CheckBoundaryCollisions();
 
+	void DoShake(float intensity, float shakeDuration);
+
 private:
 
 	void CheckDebugCamerCommands();
-
-	void Camera2D::DoShake(float intensity, float shakeDuration);
 
 	// wvp matrices
 	D3DXMATRIX                  m_world;

@@ -66,7 +66,7 @@ public:
 
 private:
 
-	void UpdateIsPullingSwordFromStomach();
+	void UpdateIsPullingSwordFromStomach(float delta);
 
 	virtual void DebugDraw(ID3D10Device *  device) override;
 
@@ -101,6 +101,8 @@ private:
 	float mCameraZoomOnLoad = 1.0f;
 
 	bool mIsDoingSprintZoom = false;
+
+	float mCurrentTimePullingSword = 0.0f;
 };
 
 #endif

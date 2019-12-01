@@ -22,6 +22,8 @@ static const float kSprintZoomPercent = 0.97f;
 static const float kSprintZoomCamChangeRateIn = 0.3f;
 static const float kSprintZoomCamChangeRateOut = 0.10f;
 
+static const float kStomachPullTimeRate = 0.001f;
+
 static const float kFocusUseRate = 80.0f;
 static const float kSprintFocusUseRate = 30.0f;
 static const float kFocusRechargeRate = 10.0f;
@@ -31,6 +33,7 @@ static const float kDownwardDashFocusAmount = 50.0f;
 static const float kRollFocusAmount = 2.0f;
 static const float kWaterFocusUseRate = 0.5f;
 static const float kDrownHealthLossRate = 2.0f;
+static const float kStomachSwordPullTime = 5.0f;
 
 Player::Player(float x, float y, float width, float height) :
 Character(x, y, GameObject::kPlayer, width, height),
@@ -208,7 +211,7 @@ void Player::Update(float delta)
 
 	if (!SaveManager::GetInstance()->HasPulledSwordFromStomach())
 	{
-		UpdateIsPullingSwordFromStomach();
+		UpdateIsPullingSwordFromStomach(delta);
 		return;
 	}
 
@@ -898,7 +901,7 @@ void Player::UpdateAnimations()
 	}
 }
 
-void Player::UpdateIsPullingSwordFromStomach()
+void Player::UpdateIsPullingSwordFromStomach(float delta)
 {
 	AnimationPart * bodyPart = m_animation->GetPart("body");
 	GAME_ASSERT(bodyPart);
@@ -916,7 +919,49 @@ void Player::UpdateIsPullingSwordFromStomach()
 		const InputManager & i = Game::GetInstance()->GetInputManager();
 		if (i.IsPressingInteractButton())
 		{
-			bodyPart->SetSequence("IntroCutscene2");
+			mCurrentTimePullingSword += delta;
+
+			if (mCurrentTimePullingSword > kStomachSwordPullTime)
+			{
+				mCurrentTimePullingSword = 0.0f;
+				bodyPart->SetSequence("IntroCutscene2");
+
+				Game::GetInstance()->Vibrate(1.0f, 1.0f, 2.0f);
+			}
+
+			float time = mCurrentTimePullingSword / kStomachSwordPullTime;
+
+			Camera2D::GetInstance()->DoShake(time * 10.0f, 0.1f);
+
+			Game::GetInstance()->Vibrate(time * 0.75f, time * 0.5f, 0.1f);
+
+			// camera zoom
+			{
+				auto cam = Camera2D::GetInstance();
+				float currentZoom = cam->GetZoomLevel();
+				cam->SetZoomLevel(currentZoom - (delta * kStomachPullTimeRate));
+
+				currentZoom = cam->GetZoomLevel();
+				if (currentZoom < mCameraZoomOnLoad * kSprintZoomPercent)
+				{
+					currentZoom = mCameraZoomOnLoad * kSprintZoomPercent;
+				}
+				else if (currentZoom > mCameraZoomOnLoad)
+				{
+					currentZoom = mCameraZoomOnLoad;
+					mIsDoingSprintZoom = false;
+				}
+
+				cam->SetZoomLevel(currentZoom);
+			}
+		}
+		else
+		{
+			mCurrentTimePullingSword = 0.0f;
+
+			auto cam = Camera2D::GetInstance();
+			float currentZoom = cam->GetZoomLevel();
+			cam->SetZoomLevel(currentZoom + (delta * kStomachPullTimeRate));
 		}
 	}
 	else if (current_body_sequence_name == "IntroCutscene2")
