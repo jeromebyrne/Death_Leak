@@ -66,6 +66,10 @@ public:
 
 	static void WriteValue(const DataValue & value, TiXmlElement * xmlElement);
 
+	bool HasPulledSwordFromStomach();
+
+	void SetHasPulledSwordFromStomach(bool value);
+
 private:
 
 	static SaveManager * mInstance;

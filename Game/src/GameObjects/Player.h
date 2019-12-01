@@ -60,7 +60,13 @@ public:
 
 	void SetHealth(float value) { mHealth = value; }
 
+	void UpdateAnimations() override;
+
+	bool CanBeControlled();
+
 private:
+
+	void UpdateIsPullingSwordFromStomach();
 
 	virtual void DebugDraw(ID3D10Device *  device) override;
 

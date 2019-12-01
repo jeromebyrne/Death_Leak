@@ -3,11 +3,13 @@
     "",
     "\\Game",
     "\\Game\\src",
-    "\\Game\\src\\GameObjects",
     "\\Game\\src\\UI",
     "\\Game\\steam",
     "\\Game\\XmlFiles",
-    "\\Game\\XmlFiles\\levels"
+    "\\Game\\XmlFiles\\UI",
+    "\\steamworks_sdk_142",
+    "\\steamworks_sdk_142\\sdk",
+    "\\steamworks_sdk_142\\sdk\\steamworksexample"
   ],
   "PreviewInSolutionExplorer": false
 }

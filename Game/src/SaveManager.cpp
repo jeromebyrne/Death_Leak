@@ -1,6 +1,7 @@
 #include "precompiled.h"
 #include "SaveManager.h"
 #include <algorithm>
+#include "Game.h"
 
 SaveManager * SaveManager::mInstance = nullptr;
 static const char * fname = "bargon.xml";
@@ -583,3 +584,21 @@ string SaveManager::GetLevelLastSavedAt()
 {
 	return GetStringValue("last_level_saved");
 }
+
+bool SaveManager::HasPulledSwordFromStomach()
+{
+#ifdef DEBUG
+	if (Game::GetInstance()->GetIsLevelEditMode())
+	{
+		return true;
+	}
+#endif
+
+	return GetBoolValue("has_ungutted");
+}
+
+void SaveManager::SetHasPulledSwordFromStomach(bool value)
+{
+	mSaveMap["has_ungutted"] = value;
+}
+

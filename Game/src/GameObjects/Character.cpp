@@ -30,7 +30,7 @@ static const float kLandJumpInputWindow = 0.2f;
 static const float kWallJumpXResistance = 0.99f;
 static const float kWallJumpVelocityXBoost = 15.0f;
 static const float kWaterJumpPercentModifier = 0.4f;
-static Vector2 kMeleeSpriteMultiplier = Vector2(1.1185647f, 1.0801479f);
+static Vector2 kMeleeSpriteMultiplier = Vector2(1.1585647f, 1.1201479f);
 static const float kTeleportTime = 0.8f;
 
 float Character::mTeleportSfxDelay = 0.5f;
@@ -517,6 +517,8 @@ void Character::Initialise()
 
 	mRegularSpriteSize = m_dimensions;
 	mMeleeSpriteSize = mRegularSpriteSize * kMeleeSpriteMultiplier;
+
+	mHighestPointWhileInAir = m_position.Y;
 }
 
 void Character::XmlRead(TiXmlElement * element)
@@ -1065,7 +1067,7 @@ void Character::UpdateAnimations()
 		// update the arm
 		AnimationPart * armPart = m_animation->GetPart("arm");
 
-		if(armPart != 0)
+		if(armPart != nullptr)
 		{
 			if (!armPart->IsFinished())
 			{

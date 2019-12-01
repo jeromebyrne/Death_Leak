@@ -1443,6 +1443,42 @@
       </frame>
     </MeleeFinish>
 
+    <IntroCutscene1 FrameRate="15" MaxFrameRate="30" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\intro_cutscene_1\intro_cutscene_1_000.png" />
+      <frame filename="Media\characters\player\intro_cutscene_1\intro_cutscene_1_001.png" />
+      <frame filename="Media\characters\player\intro_cutscene_1\intro_cutscene_1_002.png" />
+      <frame filename="Media\characters\player\intro_cutscene_1\intro_cutscene_1_003.png" />
+      <frame filename="Media\characters\player\intro_cutscene_1\intro_cutscene_1_004.png" />
+      <frame filename="Media\characters\player\intro_cutscene_1\intro_cutscene_1_005.png" />
+      <frame filename="Media\characters\player\intro_cutscene_1\intro_cutscene_1_006.png" />
+      <frame filename="Media\characters\player\intro_cutscene_1\intro_cutscene_1_007.png" />
+      <frame filename="Media\characters\player\intro_cutscene_1\intro_cutscene_1_008.png" />
+      <frame filename="Media\characters\player\intro_cutscene_1\intro_cutscene_1_009.png" />
+    </IntroCutscene1>
+
+    <IntroCutscene2 FrameRate="40" MaxFrameRate="30" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\player\intro_cutscene_2\intro_cutscene_2_000.png" />
+      <frame filename="Media\characters\player\intro_cutscene_2\intro_cutscene_2_001.png" />
+      <frame filename="Media\characters\player\intro_cutscene_2\intro_cutscene_2_002.png" />
+      <frame filename="Media\characters\player\intro_cutscene_2\intro_cutscene_2_003.png" />
+      <frame filename="Media\characters\player\intro_cutscene_2\intro_cutscene_2_004.png" />
+      <frame filename="Media\characters\player\intro_cutscene_2\intro_cutscene_2_005.png" />
+      <frame filename="Media\characters\player\intro_cutscene_2\intro_cutscene_2_006.png" />
+      <frame filename="Media\characters\player\intro_cutscene_2\intro_cutscene_2_007.png" />
+      <frame filename="Media\characters\player\intro_cutscene_2\intro_cutscene_2_008.png" />
+      <frame filename="Media\characters\player\intro_cutscene_2\intro_cutscene_2_009.png" />
+      <frame filename="Media\characters\player\intro_cutscene_2\intro_cutscene_2_010.png" />
+      <frame filename="Media\characters\player\intro_cutscene_2\intro_cutscene_2_011.png" />
+      <frame filename="Media\characters\player\intro_cutscene_2\intro_cutscene_2_012.png" />
+      <frame filename="Media\characters\player\intro_cutscene_2\intro_cutscene_2_013.png" />
+      <frame filename="Media\characters\player\intro_cutscene_2\intro_cutscene_2_014.png" />
+      <frame filename="Media\characters\player\intro_cutscene_2\intro_cutscene_2_015.png" />
+      <frame filename="Media\characters\player\intro_cutscene_2\intro_cutscene_2_016.png" />
+      <frame filename="Media\characters\player\intro_cutscene_2\intro_cutscene_2_017.png" />
+      <frame filename="Media\characters\player\intro_cutscene_2\intro_cutscene_2_018.png" />
+      <frame filename="Media\characters\player\intro_cutscene_2\intro_cutscene_2_019.png" />
+    </IntroCutscene2>
+
 	</body>
 
 	<arm OffsetX="0" OffsetY="0" SizeX="10" SizeY="10">
@@ -1493,6 +1529,12 @@
 
     <SlidingDown FrameRate="30" MaxFrameRate="30" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
     </SlidingDown>
+
+    <IntroCutscene1 FrameRate="30" MaxFrameRate="30" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+    </IntroCutscene1>
+
+    <IntroCutscene2 FrameRate="30" MaxFrameRate="30" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+    </IntroCutscene2>
 	</arm>
 
 </data>

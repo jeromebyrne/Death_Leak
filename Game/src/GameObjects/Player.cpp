@@ -206,6 +206,12 @@ void Player::Update(float delta)
 	// update base classes
 	Character::Update(delta);
 
+	if (!SaveManager::GetInstance()->HasPulledSwordFromStomach())
+	{
+		UpdateIsPullingSwordFromStomach();
+		return;
+	}
+
 	UpdateResistance();
 
 	if (mBurstFireEnabled && mFireBurstNum > 0 && mCurrentBurstNum >= mFireBurstNum)
@@ -831,5 +837,107 @@ void Player::TrySprint()
 void Player::StopSprint()
 {
 	SetSprintActive(false);
+}
+
+void Player::UpdateAnimations()
+{
+	bool hasStarted = SaveManager::GetInstance()->HasPulledSwordFromStomach();
+
+	if (!hasStarted)
+	{
+		AnimationPart * bodyPart = m_animation->GetPart("body");
+		GAME_ASSERT(bodyPart);
+
+		if (bodyPart == nullptr)
+		{
+			return;
+		}
+
+		string current_body_sequence_name = bodyPart->CurrentSequence()->Name();
+
+		if (current_body_sequence_name != "IntroCutscene1" && current_body_sequence_name != "IntroCutscene2")
+		{
+			bodyPart->SetSequence("IntroCutscene1");
+		}
+
+		if (bodyPart->CurrentSequence()->Name() == "IntroCutscene1")
+		{
+			bodyPart->AnimateLooped();
+		}
+		else
+		{
+			bodyPart->Animate();
+		}
+		
+		m_texture = bodyPart->CurrentFrame();
+
+		m_mainBodyTexture = m_texture;
+
+		// arm anim
+		{
+			AnimationPart * armPart = m_animation->GetPart("arm");
+
+			if (armPart != nullptr)
+			{
+				if (!armPart->IsFinished())
+				{
+					armPart->Animate();
+				}
+				if (armPart->CurrentSequence()->Name() != current_body_sequence_name)
+				{
+					// arm part must have the same sequences as the body for this to work
+					armPart->SetSequence(current_body_sequence_name);
+					armPart->Finish();
+				}
+			}
+		}
+	}
+	else
+	{
+		Character::UpdateAnimations();
+	}
+}
+
+void Player::UpdateIsPullingSwordFromStomach()
+{
+	AnimationPart * bodyPart = m_animation->GetPart("body");
+	GAME_ASSERT(bodyPart);
+
+	if (bodyPart == nullptr)
+	{
+		return;
+	}
+
+	string current_body_sequence_name = bodyPart->CurrentSequence()->Name();
+
+	if (current_body_sequence_name == "IntroCutscene1")
+	{
+		// Phase 1
+		const InputManager & i = Game::GetInstance()->GetInputManager();
+		if (i.IsPressingInteractButton())
+		{
+			bodyPart->SetSequence("IntroCutscene2");
+		}
+	}
+	else if (current_body_sequence_name == "IntroCutscene2")
+	{
+		if (bodyPart->IsFinished())
+		{
+			SaveManager::GetInstance()->SetHasPulledSwordFromStomach(true);
+		}
+	}
+	else
+	{
+		SaveManager::GetInstance()->SetHasPulledSwordFromStomach(true);
+	}
+}
+
+bool Player::CanBeControlled()
+{
+	if (!SaveManager::GetInstance()->HasPulledSwordFromStomach())
+	{
+		return false;
+	}
+	return true;
 }
 

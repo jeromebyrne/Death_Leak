@@ -125,7 +125,7 @@ void InputManager::ProcessGameplayInput()
 	
 	Player * player = GameObjectManager::Instance()->GetPlayer();
 
-	if (!player || player->IsDead())
+	if (!player || player->IsDead() || !player->CanBeControlled())
 	{
 		return;
 	}
