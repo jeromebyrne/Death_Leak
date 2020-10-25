@@ -48,8 +48,8 @@ NPC::NPC(float x, float y, DepthLayer depthLayer, float width, float height) :
 	mGroundAnimalWanderState(nullptr),
 	mFlyingState(nullptr)
 {
-	mHealth = 20.0f;
-	mMaxHealth = 20.0f;
+	mHealth = 5.0f;
+	mMaxHealth = 5.0f;
 	mProjectileFilePath = "Media/ninjastar.png";
 	mProjectileImpactFilePath = "Media/ninjastar_impact.png";
 	mHealthMeterHealthBeforeDecrease = mHealth;

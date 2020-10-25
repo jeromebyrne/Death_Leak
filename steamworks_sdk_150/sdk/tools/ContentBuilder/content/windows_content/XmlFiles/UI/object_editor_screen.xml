@@ -1,0 +1,30 @@
+<uiscreen show_cursor="true">
+	
+<sprite name="1_bg"
+          process_input="false"
+          posX ="-1024" posY ="-540" width="2048" height ="2048"
+          image="Media\\UI\\blank_dark.png"
+          hflip="false" vflip="false"
+          alpha="0.55"
+          use_standard_effect="true">
+  </sprite>
+
+  <button name="21_apply"
+          process_input="true"
+          posX ="810" posY ="-515" width="120" height ="60"
+          image="Media\UI\buttons\apply_changes.png"
+          image_focus="Media\UI\buttons\apply_changes_2.png"
+          image_click="Media\UI\buttons\apply_changes_2.png"
+          hflip="false" vflip="false"
+          alpha="1.0"
+          use_standard_effect="true">
+    <actionspressup>
+      <apply_object_edit_changes/>
+    </actionspressup>
+
+    <actionspressdown>
+      <playsoundeffect sound="UI\\click.wav"/>
+    </actionspressdown>
+  </button>
+  
+</uiscreen>

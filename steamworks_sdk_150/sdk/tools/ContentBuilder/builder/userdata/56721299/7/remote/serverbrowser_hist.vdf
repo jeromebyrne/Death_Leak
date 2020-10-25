@@ -1,0 +1,98 @@
+"Filters"
+{
+	"Favorites"
+	{
+	}
+	"history"
+	{
+		"1"
+		{
+			"name"		"192.168.2.7:27015"
+			"address"		"192.168.2.7:27015"
+			"LastPlayed"		"1264298579"
+			"appid"		"0"
+			"accountid"		"0"
+		}
+		"2"
+		{
+			"name"		"192.168.1.33:27015"
+			"address"		"192.168.1.33:27015"
+			"LastPlayed"		"1277769393"
+			"appid"		"0"
+			"accountid"		"0"
+		}
+		"3"
+		{
+			"name"		"192.168.1.12:27015"
+			"address"		"192.168.1.12:27015"
+			"LastPlayed"		"1266102304"
+			"appid"		"0"
+			"accountid"		"0"
+		}
+		"4"
+		{
+			"name"		"192.168.1.10:27015"
+			"address"		"192.168.1.10:27015"
+			"LastPlayed"		"1266280845"
+			"appid"		"0"
+			"accountid"		"0"
+		}
+		"5"
+		{
+			"name"		"127.0.0.1:27015"
+			"address"		"127.0.0.1:27015"
+			"LastPlayed"		"1266874151"
+			"appid"		"0"
+			"accountid"		"0"
+		}
+		"6"
+		{
+			"name"		"79.141.174.24:27037"
+			"address"		"79.141.174.24:27037"
+			"LastPlayed"		"1281824368"
+			"appid"		"0"
+			"accountid"		"0"
+		}
+		"7"
+		{
+			"name"		"79.141.174.20:27017"
+			"address"		"79.141.174.20:27017"
+			"LastPlayed"		"1281825431"
+			"appid"		"0"
+			"accountid"		"0"
+		}
+		"8"
+		{
+			"name"		"79.141.174.18:27042"
+			"address"		"79.141.174.18:27042"
+			"LastPlayed"		"1281827405"
+			"appid"		"0"
+			"accountid"		"0"
+		}
+		"9"
+		{
+			"name"		"109.70.148.28:27019"
+			"address"		"109.70.148.28:27019"
+			"LastPlayed"		"0"
+			"appid"		"0"
+			"accountid"		"0"
+		}
+		"10"
+		{
+			"name"		"162.254.194.158:27062"
+			"address"		"162.254.194.158:27062"
+			"LastPlayed"		"1492321466"
+			"appid"		"0"
+			"accountid"		"0"
+		}
+		"11"
+		{
+			"name"		"10.0.0.31:27015"
+			"address"		"10.0.0.31:27015"
+			"LastPlayed"		"1492324460"
+			"appid"		"0"
+			"accountid"		"0"
+		}
+	}
+	"lastupdate"		"1603522910"
+}

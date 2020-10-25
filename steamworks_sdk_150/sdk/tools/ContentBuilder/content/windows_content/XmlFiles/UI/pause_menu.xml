@@ -1,0 +1,84 @@
+<uiscreen>
+
+  <animatedsprite name="0_scratch_anim"
+                   process_input="false"
+                   posX ="-960" posY ="-540" width="1920" height ="1080"
+                   image="Media\UI\noise_layer.png"
+                   hflip="false" vflip="false"
+                   alpha="0.10"
+                  use_standard_effect="true"
+                   fps ="11">
+    <frames frame1="Media\UI\film_frame.png"
+            frame2="Media\UI\film_frame_2.png"
+            frame3="Media\UI\film_frame_3.png"
+            frame4="Media\UI\film_frame_4.png"
+    />
+  </animatedsprite>
+  
+  <sprite name="1_bg"
+          process_input="false"
+          posX ="-1024" posY ="-540" width="2048" height ="2048"
+          image="Media\\UI\\blank_dark.png"
+          hflip="false" vflip="false"
+          alpha="0.6"
+          use_standard_effect="true">
+  </sprite>
+
+  <sprite name="2_menu_backing"
+         process_input="false"
+         posX ="-250" posY ="-275" width="400" height ="512"
+         image="Media\\UI\\pause_backing_2.png"
+         hflip="false" vflip="false"
+         alpha="0.6"
+          use_standard_effect="true">
+  </sprite>
+
+  <button name="3_resume"
+           process_input="true"
+           posX ="-135" posY ="0" width="160" height ="160"
+           image="Media\\UI\\buttons\\play1.png"
+           image_focus="Media\\UI\\buttons\\play2.png"
+           image_click="Media\\UI\\buttons\\play2.png"
+           hflip="false" vflip="false"
+           alpha="1.0"
+          use_standard_effect="true">
+
+    <actionspressup>
+      <unpausegame />
+    </actionspressup>
+
+    <actionspressdown>
+      <playsoundeffect sound="UI\\click.wav" />
+    </actionspressdown>
+
+  </button>
+  
+  <button name="4_quit"
+           process_input="true"
+           posX ="-95" posY ="-200" width="120" height ="120"
+           image="Media\\UI\\buttons\\back1.png"
+           image_focus="Media\\UI\\buttons\\back2.png"
+           image_click="Media\\UI\\buttons\\back2.png"
+           hflip="false" vflip="false"
+           alpha="1.0"
+          use_standard_effect="true">
+
+    <actionspressup>
+      <stopallsounds/>
+      <fadeout time="150"/>
+      <unpausegame />
+      <destroylevel />
+      <popui ui="pause_menu"/>
+      <popui ui="game_hud"/>
+      <pushui ui="mainmenu"/>
+      <playmusic sound="" loop="true"/>
+      <fadein time="50"/>
+    </actionspressup>
+
+    <actionspressdown>
+      <playsoundeffect sound="UI\\click.wav" />
+    </actionspressdown>
+
+  </button>
+  
+</uiscreen>

@@ -1,0 +1,31 @@
+<data BoxDimensionsX="32" BoxDimensionsY="48" EllipseDimensionsX="32" EllipseDimensionsY="48">
+
+	<body OffsetX="0" OffsetY="8" SizeX="40" SizeY="80">
+
+		<Still FrameRate="90" MaxFrameRate="90" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\bird\2.png"/>
+    </Still>
+
+		<Running FrameRate="90" MaxFrameRate="90" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+
+      <frame filename="Media\characters\bird\1.png"/>
+      <frame filename="Media\characters\bird\2.png"/>
+      <frame filename="Media\characters\bird\3.png"/>
+
+		</Running>
+
+    <JumpingUp FrameRate="4" MaxFrameRate="4" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\bird\1.png"/>
+		</JumpingUp>
+
+    <JumpingDown FrameRate="4" MaxFrameRate="4" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\bird\1.png"/>
+    </JumpingDown>
+
+    <SlidingDown FrameRate="0" MaxFrameRate="0" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\bird\1.png"/>
+    </SlidingDown>
+
+	</body>
+
+</data>

@@ -1,0 +1,14 @@
+"appbuild"
+{
+	"appid" "995990"
+	"desc" "testing october 2020"
+	"buildoutput" "C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\output"
+	"contentroot" ""
+	"setlive" ""
+	"preview" "0"
+	"local"	""
+	"depots"
+	{
+		"995991"	"C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\scripts\depot_995991.vdf"
+	}
+}

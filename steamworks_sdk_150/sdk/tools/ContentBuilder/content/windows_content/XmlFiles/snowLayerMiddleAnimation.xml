@@ -1,0 +1,9 @@
+<data BoxDimensionsX="32" BoxDimensionsY="48" EllipseDimensionsX="32" EllipseDimensionsY="48">
+	<body OffsetX="0" OffsetY="8" SizeX="40" SizeY="80">
+		<Still FrameRate="5" MaxFrameRate="5" MinFrameRate="0">
+			<frame filename="Media\\snowLayer_near.png"/>
+     	<frame filename="Media\\snowLayer_near2.png"/>
+      <frame filename="Media\\snowLayer_near3.png"/>
+   	</Still>
+	</body>
+</data>

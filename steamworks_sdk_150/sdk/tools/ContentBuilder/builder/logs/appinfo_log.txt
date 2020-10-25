@@ -1,0 +1,33 @@
+
+
+[2020-10-24 22:53:56] RequestAppInfoUpdate: nNumAppIDs 1
+[2020-10-24 22:53:57] Change number 0->9834303, apps: 0/0, packages: 0/0
+[2020-10-24 22:53:57] Requesting 1 apps, 165 packages (meta data, 1024 prev attempts)
+[2020-10-24 22:53:57] Requesting 1 apps, 165 packages (full data, 1024 prev attempts)
+[2020-10-24 22:53:57] UpdatesJob: finished OK, nAppsUpdated 1 (3 KB), nPackagesUpdated 165 (45 KB)
+[2020-10-24 22:53:57] Requesting 564 apps, 0 packages (meta data, 1024 prev attempts)
+[2020-10-24 22:53:58] Requested 68 app access tokens, 46 received, 22 denied
+[2020-10-24 22:53:58] Updated SHAs with 46 new access tokens
+[2020-10-24 22:53:59] Downloaded 69 apps via HTTP, 2264 KB (527 KB compressed)
+[2020-10-24 22:53:59] Requesting 495 apps, 0 packages (full data, 1024 prev attempts)
+[2020-10-24 22:54:01] UpdatesJob: finished OK, nAppsUpdated 564 (3533 KB), nPackagesUpdated 0 (0 KB)
+[2020-10-24 22:54:16] Starting async write C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder/appcache/appinfo.vdf (2643958 bytes)
+
+
+[2020-10-24 23:14:36] RequestAppInfoUpdate: nNumAppIDs 1
+[2020-10-24 23:14:36] Packages changed: 
+[2020-10-24 23:14:36] Apps changed: 995990=9834319,
+[2020-10-24 23:14:36] Change number 9834303->9834339, apps: 1/29, packages: 0/1
+[2020-10-24 23:14:36] Requesting 24 apps, 0 packages (meta data, 1024 prev attempts)
+[2020-10-24 23:14:37] Requested 22 app access tokens, 0 received, 22 denied
+[2020-10-24 23:14:37] Requesting 1 apps, 0 packages (full data, 1024 prev attempts)
+[2020-10-24 23:14:37] UpdatesJob: finished OK, nAppsUpdated 1 (1 KB), nPackagesUpdated 0 (0 KB)
+[2020-10-24 23:14:40] Starting async write C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder/appcache/appinfo.vdf (2643972 bytes)
+
+
+[2020-10-24 23:21:57] RequestAppInfoUpdate: nNumAppIDs 1
+[2020-10-24 23:21:58] Apps changed: 
+[2020-10-24 23:21:58] Change number 9834339->9834343, apps: 0/3, packages: 0/0
+[2020-10-24 23:21:58] Requesting 23 apps, 0 packages (meta data, 1024 prev attempts)
+[2020-10-24 23:21:58] Requested 22 app access tokens, 0 received, 22 denied
+[2020-10-24 23:21:58] UpdatesJob: finished OK, nAppsUpdated 0 (0 KB), nPackagesUpdated 0 (0 KB)

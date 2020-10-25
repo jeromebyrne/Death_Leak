@@ -1474,7 +1474,7 @@ void Character::AccelerateX(float directionX, float percent)
 	}
 	else
 	{
-		MovingSprite::AccelerateX(directionX, accelVal /* * deepWaterModifier */);
+		MovingSprite::AccelerateX(directionX, accelVal/* * deepWaterModifier */);
 	}
 
 	if (mIsStrafing)

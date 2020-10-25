@@ -5,7 +5,7 @@
                    posX ="-960" posY ="-540" width="1920" height ="1080"
                    image="Media\UI\noise_layer.png"
                    hflip="false" vflip="false"
-                   alpha="0.11"
+                   alpha="0.2"
                   use_standard_effect="true"
                    fps ="11">
     <frames frame1="Media\UI\film_frame.png"
@@ -26,6 +26,7 @@
   </sprite>
   -->
 
+  <!--
   <sprite name="27_frame_left"
           process_input="false"
           posX ="-960" posY ="-540" width="230" height ="1080"
@@ -43,10 +44,11 @@
           alpha="1.0"
           use_standard_effect="true">
   </sprite>
+    -->
 
   <sprite name="29_frame_top"
           process_input="false"
-          posX ="-730" posY ="320" width="1460" height ="220"
+          posX ="-960" posY ="490" width="1920" height ="80"
           image="Media\UI\frame_top.png"
           hflip="false" vflip="false"
           alpha="1.0"
@@ -55,7 +57,7 @@
 
   <sprite name="30_frame_bottom"
           process_input="false"
-          posX ="-730" posY ="-540" width="1460" height ="220"
+          posX ="-960" posY ="-540" width="1920" height ="80"
           image="Media\UI\frame_top.png"
           hflip="false" vflip="true"
           alpha="1.0"
@@ -64,7 +66,7 @@
 
   <sprite name="40_orb_count"
           process_input="false"
-          posX ="-900" posY ="400" width="101" height ="64"
+          posX ="-900" posY ="360" width="101" height ="64"
           image="Media\UI\orb_count.png"
           hflip="false" vflip="true"
           alpha="0.75"
@@ -73,7 +75,7 @@
 
   <meter name="9_health_meter"
         process_input="false"
-        posX ="-900" posY ="480" width="300" height ="100"
+        posX ="-900" posY ="460" width="300" height ="100"
         image="Media\\UI\\meter_overlay.png"
         meter_edge="Media\\UI\\meter_edge_2.png"
         meter_middle="Media\\UI\\meter_overlay.png"
@@ -85,7 +87,7 @@
 
   <meter name="91_xp_meter"
         process_input="false"
-        posX ="-900" posY ="460" width="200" height ="100"
+        posX ="-900" posY ="440" width="200" height ="100"
         image="Media\\UI\\meter_overlay.png"
         meter_edge="Media\\UI\\meter_edge_2.png"
         meter_middle="Media\\UI\\meter_overlay.png"

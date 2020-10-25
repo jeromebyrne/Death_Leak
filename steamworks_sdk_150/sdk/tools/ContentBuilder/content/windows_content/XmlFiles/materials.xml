@@ -1,0 +1,868 @@
+<materials>
+
+  <material name="default_orb">
+    <particletextures>
+      <texture file="Media\bloodparticle.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="character\replenish.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffects>
+        <sound file="blood\\blood2.wav"/>
+     </destroysoundeffects>
+
+    <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
+  </material>
+
+  <material name="water">
+    <particletextures>
+      <texture file="Media\large_splash.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="water\water_splash_projectile_4.wav" />
+      <sound file="water\water_splash_projectile_5.wav" />
+      <sound file="water\water_splash_projectile_6.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="water\water_wade.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffects>
+        <sound file="blood\\blood2.wav"/>
+     </destroysoundeffects>
+
+    <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
+
+    <landsoundeffects>
+      <sound file="water\water_splash_medium.wav" />
+      <sound file="water\water_splash_medium_2.wav" />
+    </landsoundeffects>
+  </material>
+
+  <material name="shallow_water">
+    <particletextures>
+      <texture file="Media\large_splash.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="water\water_splash_projectile_4.wav" />
+      <sound file="water\water_splash_projectile_5.wav" />
+      <sound file="water\water_splash_projectile_6.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="water\shallow_footsteps\1.wav" />
+      <sound file="water\shallow_footsteps\2.wav" />
+      <sound file="water\shallow_footsteps\3.wav" />
+      <sound file="water\shallow_footsteps\4.wav" />
+      <sound file="water\shallow_footsteps\5.wav" />
+      <sound file="water\shallow_footsteps\6.wav" />
+      <sound file="water\shallow_footsteps\7.wav" />
+      <sound file="water\shallow_footsteps\8.wav" />
+      <sound file="water\shallow_footsteps\9.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffect file="blood\\blood2.wav"/>
+    
+    <destroysoundeffects>
+        <sound file="blood\\blood2.wav"/>
+     </destroysoundeffects>
+
+    <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
+  </material>
+
+  <!--cave rock-->
+  <material name="caverock">  
+    <particletextures>
+      <texture file="Media\rock_particle.png"/>
+    </particletextures>
+      
+    <damagesoundeffects>
+      <sound file="stonehit.wav" />
+      <sound file="stonehit2.wav" />
+      <sound file="stonehit3.wav" />
+    </damagesoundeffects>
+       
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+      <sound file="Footstep2.wav" />
+      <sound file="Footstep3.wav" />
+      <sound file="Footstep4.wav" />
+      <sound file="Footstep5.wav" />
+      <sound file="Footstep6.wav" />
+      <sound file="Footstep7.wav" />
+      <sound file="Footstep8.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffect file="stonehit.wav"/>
+    
+    <destroysoundeffects>
+        <sound file="stonehit.wav"/>
+     </destroysoundeffects>
+
+    <is_pierceable value="false" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
+  </material>
+
+  <material name="softwood">
+    <particletextures>
+      <texture file="Media\softwoodparticle2.png" />
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="woodhit.wav" />
+      <sound file="woodhit2.wav" />
+      <sound file="woodhit3.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+      <sound file="Footstep2.wav" />
+      <sound file="Footstep3.wav" />
+      <sound file="Footstep4.wav" />
+      <sound file="Footstep5.wav" />
+      <sound file="Footstep6.wav" />
+      <sound file="Footstep7.wav" />
+      <sound file="Footstep8.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffects>
+        <sound file="blood\\blood2.wav"/>
+     </destroysoundeffects>
+
+    <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
+  </material>
+
+  <!--Grass Ground-->
+  <material name="grassground">
+    <particletextures>
+      <!--<texture file="Media\grassParticle4.png"/>-->
+      <!--<texture file="Media\wetsplashparticle.png"/>-->
+      <texture file="Media\rock_particle.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <!--<sound file="woodhit.wav" />-->
+      <sound file="footsteps_2/3.wav" />
+      <sound file="footsteps_2/7.wav" />
+      <sound file="footsteps_2/9.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <!--<sound file="footsteps_2/1.wav" />-->
+       <sound file="footsteps_2/2.wav" />
+      <sound file="footsteps_2/3.wav" />
+      <sound file="footsteps_2/4.wav" />
+      <!--<sound file="footsteps_2/5.wav" />-->
+      <sound file="footsteps_2/6.wav" />
+      <sound file="footsteps_2/7.wav" />
+      <sound file="footsteps_2/8.wav" />
+      <sound file="footsteps_2/9.wav" />
+      <sound file="footsteps_2/10.wav" />
+      <sound file="footsteps_2/11.wav" />
+      <sound file="footsteps_2/12.wav" />
+      <sound file="footsteps_2/13.wav" />
+      <sound file="footsteps_2/14.wav" />
+      <sound file="footsteps_2/15.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffects>
+        <sound file="blood\\blood2.wav"/>
+     </destroysoundeffects>
+
+    <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
+  </material>
+
+  <!--Grass Ground TWO-->
+  <material name="grassground2">
+    <particletextures>
+      <!--<texture file="Media\grassParticle.png"/>-->
+      <texture file="Media\grassParticle3.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <!--<sound file="woodhit.wav" />-->
+      <sound file="footsteps_2/3.wav" />
+      <sound file="footsteps_2/7.wav" />
+      <sound file="footsteps_2/9.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <!--<sound file="footsteps_2/1.wav" />-->
+      <sound file="footsteps_2/2.wav" />
+      <sound file="footsteps_2/3.wav" />
+      <sound file="footsteps_2/4.wav" />
+      <sound file="footsteps_2/5.wav" />
+      <sound file="footsteps_2/6.wav" />
+      <sound file="footsteps_2/7.wav" />
+      <sound file="footsteps_2/8.wav" />
+      <sound file="footsteps_2/9.wav" />
+      <sound file="footsteps_2/10.wav" />
+      <sound file="footsteps_2/11.wav" />
+      <sound file="footsteps_2/12.wav" />
+      <sound file="footsteps_2/13.wav" />
+      <sound file="footsteps_2/14.wav" />
+      <sound file="footsteps_2/15.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffects>
+        <sound file="blood\\blood2.wav"/>
+     </destroysoundeffects>
+
+    <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
+  </material>
+
+  <!--Metal-->
+  <material name="metal">
+    <particletextures>
+      <texture file="Media\smoke.png"/>
+      <texture file="Media\spark.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="metalhit.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+      <sound file="Footstep2.wav" />
+      <sound file="Footstep3.wav" />
+      <sound file="Footstep4.wav" />
+      <sound file="Footstep5.wav" />
+      <sound file="Footstep6.wav" />
+      <sound file="Footstep7.wav" />
+      <sound file="Footstep8.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffects>
+        <sound file="blood\\blood2.wav"/>
+     </destroysoundeffects>
+
+    <is_pierceable value="false" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
+  </material>
+
+  <material name="stone">
+    <particletextures>
+      <texture file="Media\smoke3.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="stonehit.wav" />
+      <sound file="stonehit2.wav" />
+      <sound file="stonehit3.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+      <sound file="Footstep2.wav" />
+      <sound file="Footstep3.wav" />
+      <sound file="Footstep4.wav" />
+      <sound file="Footstep5.wav" />
+      <sound file="Footstep6.wav" />
+      <sound file="Footstep7.wav" />
+      <sound file="Footstep8.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffects>
+        <sound file="rock_smash.wav"/>
+     </destroysoundeffects>
+
+    <is_pierceable value="false" />
+
+    <debris_textures>
+      <texture file="Media\rock_debris\1.png"/>
+      <texture file="Media\rock_debris\2.png"/>
+      <texture file="Media\rock_debris\3.png"/>
+      <texture file="Media\rock_debris\1.png"/>
+      <texture file="Media\rock_debris\2.png"/>
+      <texture file="Media\rock_debris\3.png"/>
+      <texture file="Media\rock_debris\1.png"/>
+      <texture file="Media\rock_debris\2.png"/>
+      <texture file="Media\rock_debris\3.png"/>
+      <texture file="Media\rock_debris\1.png"/>
+      <texture file="Media\rock_debris\2.png"/>
+      <texture file="Media\rock_debris\3.png"/>
+      <texture file="Media\rock_debris\1.png"/>
+      <texture file="Media\rock_debris\2.png"/>
+      <texture file="Media\rock_debris\3.png"/>
+
+    </debris_textures>
+  </material>
+
+  <!--Flesh-->
+  <material name="flesh">
+    <particletextures>
+      <texture file="Media\bloodparticle.png"/>
+      <texture file="Media\bloodparticle2.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="Blood1.wav" />
+      <sound file="Blood2.wav" />
+      <sound file="Blood3.wav" />
+      <sound file="Blood4.wav" />
+      <sound file="Blood5.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+      <sound file="Footstep2.wav" />
+      <sound file="Footstep3.wav" />
+      <sound file="Footstep4.wav" />
+      <sound file="Footstep5.wav" />
+      <sound file="Footstep6.wav" />
+      <sound file="Footstep7.wav" />
+      <sound file="Footstep8.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffects>
+        <sound file="blood\\blood2.wav"/>
+     </destroysoundeffects>
+
+    <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
+  </material>
+
+  <!--male ninja-->
+  <material name="maleninja">
+    <particletextures>
+      <texture file="Media\bloodparticle.png"/>
+      <texture file="Media\bloodparticle2.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="character\replenish.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+      <sound file="Footstep2.wav" />
+      <sound file="Footstep3.wav" />
+      <sound file="Footstep4.wav" />
+      <sound file="Footstep5.wav" />
+      <sound file="Footstep6.wav" />
+      <sound file="Footstep7.wav" />
+      <sound file="Footstep8.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffects>
+        <sound file="blood\\blood2.wav"/>
+     </destroysoundeffects>
+
+    <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
+  </material>
+
+  <!--rabbit-->
+  <material name="rabbit">
+    <particletextures>
+      <texture file="Media\bloodparticle.png"/>
+      <texture file="Media\bloodparticle2.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="blood\\blood1.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffects>
+        <sound file="blood\\blood2.wav"/>
+     </destroysoundeffects>
+
+    <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
+  </material>
+  
+  <!-- demon 1-->
+  <material name="demon1">
+    <particletextures>
+      <texture file="Media\bloodparticle.png"/>
+      <!--  <texture file="Media\bloodparticle2.png"/> -->
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="character\demon1\damage\damage1.wav" />
+      <sound file="character\demon1\damage\damage2.wav" />
+      <sound file="character\demon1\damage\damage3.wav" />
+      <sound file="character\demon1\damage\damage4.wav" />
+      <sound file="character\demon1\damage\damage5.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+      <sound file="Footstep2.wav" />
+      <sound file="Footstep3.wav" />
+      <sound file="Footstep4.wav" />
+      <sound file="Footstep5.wav" />
+      <sound file="Footstep6.wav" />
+      <sound file="Footstep7.wav" />
+      <sound file="Footstep8.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffects>
+        <sound file="blood\\blood2.wav"/>
+     </destroysoundeffects>
+
+    <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
+  </material>
+
+
+  <!-- skeleton -->
+  <material name="skeleton">
+    <particletextures>
+      <texture file="Media\bloodparticle.png"/>
+      <!--  <texture file="Media\bloodparticle2.png"/> -->
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="character\demon1\damage\damage1.wav" />
+      <sound file="character\demon1\damage\damage2.wav" />
+      <sound file="character\demon1\damage\damage3.wav" />
+      <sound file="character\demon1\damage\damage4.wav" />
+      <sound file="character\demon1\damage\damage5.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+      <sound file="Footstep2.wav" />
+      <sound file="Footstep3.wav" />
+      <sound file="Footstep4.wav" />
+      <sound file="Footstep5.wav" />
+      <sound file="Footstep6.wav" />
+      <sound file="Footstep7.wav" />
+      <sound file="Footstep8.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffects>
+      <sound file="blood\\blood2.wav"/>
+    </destroysoundeffects>
+
+    <is_pierceable value="false" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
+  </material>
+
+  <!--Underwater sand-->
+  <material name="underwater_sand">
+    <particletextures>
+      <texture file="Media\sand_water_particle.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <!--<sound file="woodhit.wav" />-->
+      <sound file="footsteps_2/3.wav" />
+      <sound file="footsteps_2/7.wav" />
+      <sound file="footsteps_2/9.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <!--<sound file="footsteps_2/1.wav" />-->
+      <sound file="footsteps_2/2.wav" />
+      <sound file="footsteps_2/3.wav" />
+      <sound file="footsteps_2/4.wav" />
+      <sound file="footsteps_2/5.wav" />
+      <sound file="footsteps_2/6.wav" />
+      <sound file="footsteps_2/7.wav" />
+      <sound file="footsteps_2/8.wav" />
+      <sound file="footsteps_2/9.wav" />
+      <sound file="footsteps_2/10.wav" />
+      <sound file="footsteps_2/11.wav" />
+      <sound file="footsteps_2/12.wav" />
+      <sound file="footsteps_2/13.wav" />
+      <sound file="footsteps_2/14.wav" />
+      <sound file="footsteps_2/15.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffect file="blood\\blood2.wav"/>
+    
+    <destroysoundeffects>
+        <sound file="blood\\blood2.wav"/>
+     </destroysoundeffects>
+
+    <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
+  </material>
+
+  <!--cave rock-->
+  <material name="ethereal_walkway">
+    <particletextures>
+      <texture file="Media\bloodparticle3.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="blood\\blood1.wav" />
+      <sound file="blood\\blood2.wav" />
+      <sound file="blood\\blood3.wav" />
+      <sound file="blood\\blood4.wav" />
+      <sound file="blood\\blood5.wav" />
+      <sound file="blood\\blood6.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+      <sound file="Footstep2.wav" />
+      <sound file="Footstep3.wav" />
+      <sound file="Footstep4.wav" />
+      <sound file="Footstep5.wav" />
+      <sound file="Footstep6.wav" />
+      <sound file="Footstep7.wav" />
+      <sound file="Footstep8.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffects>
+        <sound file="stonehit.wav"/>
+     </destroysoundeffects>
+
+    <is_pierceable value="false" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
+  </material>
+
+
+  <!--flame orb material-->
+  <material name="flame_orb">
+    <particletextures>
+      <texture file="Media\orb_shatter.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="orb\collect_1.wav" />
+      <sound file="orb\collect_2.wav" />
+      <sound file="orb\collect_3.wav" />
+      <sound file="orb\collect_4.wav" />
+      <sound file="orb\collect_5.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="orb\\shatter1.wav" />
+      <sound file="orb\\shatter2.wav" />
+      <sound file="orb\\shatter3.wav" />
+      <sound file="orb\\shatter4.wav" />
+      <sound file="orb\\shatter5.wav" />
+      <sound file="orb\\shatter6.wav" />
+      <sound file="orb\\shatter7.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffects>
+        <sound file="blood\\blood2.wav"/>
+     </destroysoundeffects>
+
+    <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
+  </material>
+
+  <material name="flame_orb_large">
+    <particletextures>
+      <texture file="Media\orb_shatter.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="orb\collect_large.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="orb\collect_large.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffects>
+        <sound file="blood\\blood2.wav"/>
+     </destroysoundeffects>
+
+    <is_pierceable value="true" />
+    
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
+  </material>
+
+  <material name="crate">
+    <particletextures>
+      <texture file="Media\crate\particle_5.png" />
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="crate\hit_1.wav" />
+      <sound file="crate\hit_2.wav" />
+      <sound file="crate\hit_3.wav" />
+      <sound file="crate\hit_4.wav" />
+      <sound file="crate\hit_5.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+      <sound file="Footstep2.wav" />
+      <sound file="Footstep3.wav" />
+      <sound file="Footstep4.wav" />
+      <sound file="Footstep5.wav" />
+      <sound file="Footstep6.wav" />
+      <sound file="Footstep7.wav" />
+      <sound file="Footstep8.wav" />
+    </footstepsoundeffects>
+
+      <destroysoundeffects>
+        <sound file="crate\damage.wav"/>
+        <sound file="crate\damage_2.wav"/>
+        <sound file="crate\damage_3.wav"/>
+        <sound file="crate\damage_4.wav"/>
+        <sound file="crate\damage_5.wav"/>
+      </destroysoundeffects>
+
+    <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
+  </material>
+
+  <material name="water">
+    <particletextures>
+      <texture file="Media\large_splash.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="water\water_splash_projectile_4.wav" />
+      <sound file="water\water_splash_projectile_5.wav" />
+      <sound file="water\water_splash_projectile_6.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="water\shallow_footsteps\1.wav" />
+      <sound file="water\shallow_footsteps\2.wav" />
+      <sound file="water\shallow_footsteps\3.wav" />
+      <sound file="water\shallow_footsteps\4.wav" />
+      <sound file="water\shallow_footsteps\5.wav" />
+      <sound file="water\shallow_footsteps\6.wav" />
+      <sound file="water\shallow_footsteps\7.wav" />
+      <sound file="water\shallow_footsteps\8.wav" />
+      <sound file="water\shallow_footsteps\9.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffects>
+        <sound file="blood\\blood2.wav"/>
+      </destroysoundeffects>
+
+    <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
+  </material>
+
+  <material name="skype_monkey">
+    <particletextures>
+      <texture file="Media\bloodparticle.png"/>
+      <texture file="Media\bloodparticle2.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="character\replenish.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+      <sound file="Footstep2.wav" />
+      <sound file="Footstep3.wav" />
+      <sound file="Footstep4.wav" />
+      <sound file="Footstep5.wav" />
+      <sound file="Footstep6.wav" />
+      <sound file="Footstep7.wav" />
+      <sound file="Footstep8.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffects>
+      <sound file="chimp_2.wav"/>
+      <sound file="chimp_3.wav"/>
+      <sound file="chimp_4.wav"/>
+    </destroysoundeffects>
+
+    <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
+  </material>
+
+
+  <material name="pot">
+    <particletextures>
+      <texture file="Media\crate\particle_5.png" />
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="pot\pot_hit.wav"/>
+      <sound file="pot\pot_hit_2.wav"/>
+      <sound file="pot\pot_hit_3.wav"/>
+      <sound file="pot\pot_hit_4.wav"/>
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+      <sound file="Footstep2.wav" />
+      <sound file="Footstep3.wav" />
+      <sound file="Footstep4.wav" />
+      <sound file="Footstep5.wav" />
+      <sound file="Footstep6.wav" />
+      <sound file="Footstep7.wav" />
+      <sound file="Footstep8.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffects>
+      <sound file="pot\pot_break.wav"/>
+      <sound file="pot\pot_break_2.wav"/>
+      <sound file="pot\pot_break_3.wav"/>
+      <sound file="pot\pot_break_4.wav"/>
+      <sound file="pot\pot_break_5.wav"/>
+    </destroysoundeffects>
+
+    <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\objects\pot_debris_1.png"/>
+      <texture file="Media\objects\pot_debris_2.png"/>
+      <texture file="Media\objects\pot_debris_3.png"/>
+      <texture file="Media\objects\pot_debris_3.png"/>
+      <texture file="Media\objects\pot_debris_3.png"/>
+      <texture file="Media\objects\pot_debris_3.png"/>
+      <texture file="Media\objects\pot_debris_4.png"/>
+      <texture file="Media\objects\pot_debris_4.png"/>
+      <texture file="Media\objects\pot_debris_4.png"/>
+      <texture file="Media\objects\pot_debris_4.png"/>
+      <texture file="Media\objects\pot_debris_4.png"/>
+    </debris_textures>
+  </material>
+
+
+  <material name="ghost">
+    <particletextures>
+      <texture file="Media\large_splash.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="water\water_splash_projectile_4.wav" />
+      <sound file="water\water_splash_projectile_5.wav" />
+      <sound file="water\water_splash_projectile_6.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="water\water_wade.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffects>
+      <sound file="blood\\blood2.wav"/>
+    </destroysoundeffects>
+
+    <is_pierceable value="true" />
+
+    <debris_textures>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+      <texture file="Media\crate\debris.png"/>
+    </debris_textures>
+  </material>
+
+</materials>

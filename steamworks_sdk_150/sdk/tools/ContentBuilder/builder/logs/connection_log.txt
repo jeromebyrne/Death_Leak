@@ -1,0 +1,110 @@
+
+
+[2020-10-24 22:46:56] Log session started
+[2020-10-24 22:46:56] [0,0] SetSteamID( [U:1:0] )
+[2020-10-24 22:46:56] CCMInterface::OnNetworkDeviceStateChange -- Saw device up, connecting to Steam
+[2020-10-24 22:46:56] CCMInterface::OnNetworkDeviceStateChange -- Saw device up, connecting to Steam
+[2020-10-24 22:46:56] CCMInterface::OnNetworkDeviceStateChange -- Saw device up, connecting to Steam
+[2020-10-24 22:46:56] IPv6 HTTP connectivity test (ipv6check-http.steamcontent.com / [2602:801:f00b:1::cdc4:68e]:80 ([2602:801:f00b:1::cdc4:68e]:80)) - SUCCESS
+[2020-10-24 22:46:56] IPv6 HTTP connectivity test (ipv6check-http.steamcontent.com / [2602:801:f00b:1::cdc4:68e]:80 ([2602:801:f00b:1::cdc4:68e]:80)) - server indicated we are using ipv6, external address = '2601:646:4100:24b0:e3:184a:369b:333'
+[2020-10-24 22:46:56] IPv6 UDP connectivity test (ipv6check-udp.steamcontent.com / [2602:801:f008:100::a2fe:c782]:27019) - SUCCESS
+
+
+[2020-10-24 22:53:40] Log session started
+[2020-10-24 22:53:40] [0,0] SetSteamID( [U:1:0] )
+[2020-10-24 22:53:40] CCMInterface::OnNetworkDeviceStateChange -- Saw device up, connecting to Steam
+[2020-10-24 22:53:40] CCMInterface::OnNetworkDeviceStateChange -- Saw device up, connecting to Steam
+[2020-10-24 22:53:40] CCMInterface::OnNetworkDeviceStateChange -- Saw device up, connecting to Steam
+[2020-10-24 22:53:40] [0,0] SetSteamID( [U:1:0] )
+[2020-10-24 22:53:40] [0,0] SetSteamID( [U:1:0] )
+[2020-10-24 22:53:40] [0,0] Server says 0% of connections should be websockets, we rolled 26 - using UDP as default.
+[2020-10-24 22:53:40] CCMInterface::YieldingConnect -- no CMs cached locally, calling ISteamDirectory/GetCMList web api for launcher type 'steamcmd'. . .
+[2020-10-24 22:53:40] CCMInterface::YieldingConnect -- got 100 CMs and 100 WebSocket CMS from ISteamDirectory/GetCMList.
+[2020-10-24 22:53:40] [1,2] Connect() starting connection (eNetQOSLevelHigh, 162.254.195.87:27017, UDP)
+[2020-10-24 22:53:40] IPv6 HTTP connectivity test (ipv6check-http.steamcontent.com / [2602:801:f002:101::a2fe:c005]:80 ([2602:801:f002:101::a2fe:c005]:80)) - SUCCESS
+[2020-10-24 22:53:40] IPv6 HTTP connectivity test (ipv6check-http.steamcontent.com / [2602:801:f002:101::a2fe:c005]:80 ([2602:801:f002:101::a2fe:c005]:80)) - server indicated we are using ipv6, external address = '2601:646:4100:24b0:e3:184a:369b:333'
+[2020-10-24 22:53:40] IPv6 UDP connectivity test (ipv6check-udp.steamcontent.com / [2602:801:f002:101::a2fe:c002]:27019) - SUCCESS
+[2020-10-24 22:53:41] [1,2] ConnectionCompleted() (162.254.195.66:27019, UDP)
+[2020-10-24 22:53:41] [1,2] RecvMsgClientLogOnResponse() : [I:0:0] 'Account logon denied, need two-factor code'
+[2020-10-24 22:53:41] [1,2] AsyncDisconnect()
+[2020-10-24 22:53:41] [0,0] ConnectionDisconnected('Disconnected By Remote Host') : 'Account logon denied, need two-factor code' (162.254.195.66:27019, UDP)
+[2020-10-24 22:53:41] [0,0] ConnectionDisconnected() not auto reconnecting due to eResultLogonSession specifies no reconnect
+[2020-10-24 22:53:55] [0,0] SetSteamID( [U:1:0] )
+[2020-10-24 22:53:55] [0,0] Server says 0% of connections should be websockets, we rolled 50 - using UDP as default.
+[2020-10-24 22:53:55] [1,10] Connect() starting connection (eNetQOSLevelHigh, 162.254.195.87:27017, UDP)
+[2020-10-24 22:53:56] [1,10] ConnectionCompleted() (162.254.195.87:27024, UDP)
+[2020-10-24 22:53:56] [1,10] RecvMsgClientLogOnResponse() : [U:1:56721299] 'OK'
+[2020-10-24 22:53:56] CClientJobGetClientUpdateHosts: failed to load, 'File 'update_hosts_cached.vdf' not found'
+[2020-10-24 22:53:57] CClientJobGetClientUpdateHosts: received update from server
+[2020-10-24 22:53:57] CClientJobGetClientUpdateHosts: cached copy new expiration: Sun Oct 25 01:52:47 2020
+[2020-10-24 22:54:50] [3,10] ResetVoiceRecording() (was recording: 0) (last get voice time: 1603605290 seconds ago)
+[2020-10-24 22:54:50] [3,10] LogOff()
+[2020-10-24 22:54:50] [2,10] AsyncDisconnect()
+[2020-10-24 22:54:50] [2,10] Log session ended
+
+
+[2020-10-24 23:14:15] Log session started
+[2020-10-24 23:14:15] [0,0] SetSteamID( [U:1:0] )
+[2020-10-24 23:14:15] CCMInterface::OnNetworkDeviceStateChange -- Saw device up, connecting to Steam
+[2020-10-24 23:14:15] CCMInterface::OnNetworkDeviceStateChange -- Saw device up, connecting to Steam
+[2020-10-24 23:14:15] CCMInterface::OnNetworkDeviceStateChange -- Saw device up, connecting to Steam
+[2020-10-24 23:14:15] [0,0] SetSteamID( [U:1:56721299] )
+[2020-10-24 23:14:15] [0,0] SetSteamID( [U:1:56721299] )
+[2020-10-24 23:14:15] [0,0] Server says 50% of connections should be websockets, we rolled 95 - using UDP as default.
+[2020-10-24 23:14:15] [1,2] Connect() starting connection (eNetQOSLevelHigh, 162.254.195.71:27026, UDP)
+[2020-10-24 23:14:15] IPv6 HTTP connectivity test (ipv6check-http.steamcontent.com / [2602:801:f002:102::a2fe:c024]:80 ([2602:801:f002:102::a2fe:c024]:80)) - SUCCESS
+[2020-10-24 23:14:15] IPv6 HTTP connectivity test (ipv6check-http.steamcontent.com / [2602:801:f002:102::a2fe:c024]:80 ([2602:801:f002:102::a2fe:c024]:80)) - server indicated we are using ipv6, external address = '2601:646:4100:24b0:e3:184a:369b:333'
+[2020-10-24 23:14:15] IPv6 UDP connectivity test (ipv6check-udp.steamcontent.com / [2602:801:f00b:1104::cdc4:689]:27019) - SUCCESS
+[2020-10-24 23:14:16] [1,2] ConnectionCompleted() (162.254.195.71:27026, UDP)
+[2020-10-24 23:14:16] [1,2] RecvMsgClientLogOnResponse() : [I:0:0] 'Account logon denied, need two-factor code'
+[2020-10-24 23:14:16] [1,2] AsyncDisconnect()
+[2020-10-24 23:14:16] [0,0] ConnectionDisconnected('Disconnected By Remote Host') : 'Account logon denied, need two-factor code' (162.254.195.71:27026, UDP)
+[2020-10-24 23:14:16] [0,0] ConnectionDisconnected() not auto reconnecting due to eResultLogonSession specifies no reconnect
+[2020-10-24 23:14:35] [0,0] SetSteamID( [U:1:56721299] )
+[2020-10-24 23:14:35] [0,0] Server says 50% of connections should be websockets, we rolled 96 - using UDP as default.
+[2020-10-24 23:14:35] [1,10] Connect() starting connection (eNetQOSLevelHigh, 162.254.195.71:27026, UDP)
+[2020-10-24 23:14:35] [1,10] ConnectionCompleted() (162.254.195.87:27024, UDP)
+[2020-10-24 23:14:36] [1,10] RecvMsgClientLogOnResponse() : [U:1:56721299] 'OK'
+[2020-10-24 23:14:36] CClientJobGetClientUpdateHosts: cached version not expired
+[2020-10-24 23:14:40] [3,10] ResetVoiceRecording() (was recording: 0) (last get voice time: 1603606480 seconds ago)
+[2020-10-24 23:14:40] [3,10] LogOff()
+[2020-10-24 23:14:40] [2,10] AsyncDisconnect()
+[2020-10-24 23:14:40] [2,10] Log session ended
+
+
+[2020-10-24 23:21:44] Log session started
+[2020-10-24 23:21:44] [0,0] SetSteamID( [U:1:0] )
+[2020-10-24 23:21:44] CCMInterface::OnNetworkDeviceStateChange -- Saw device up, connecting to Steam
+[2020-10-24 23:21:44] CCMInterface::OnNetworkDeviceStateChange -- Saw device up, connecting to Steam
+[2020-10-24 23:21:44] CCMInterface::OnNetworkDeviceStateChange -- Saw device up, connecting to Steam
+[2020-10-24 23:21:44] [0,0] SetSteamID( [U:1:56721299] )
+[2020-10-24 23:21:44] [0,0] SetSteamID( [U:1:56721299] )
+[2020-10-24 23:21:44] [0,0] Server says 50% of connections should be websockets, we rolled 27 - using WebSockets as default.
+[2020-10-24 23:21:44] [0,0] PingWebSocketCM() (cm6-lax1.cm.steampowered.com:443) starting...
+[2020-10-24 23:21:44] [0,0] PingWebSocketCM() (cm6-lax1.cm.steampowered.com:27032) starting...
+[2020-10-24 23:21:44] [0,0] PingWebSocketCM() (cm6-lax1.cm.steampowered.com:27038) starting...
+[2020-10-24 23:21:44] [0,0] PingWebSocketCM() (cm5-lax1.cm.steampowered.com:27029) starting...
+[2020-10-24 23:21:44] IPv6 HTTP connectivity test (ipv6check-http.steamcontent.com / [2602:801:f002:102::a2fe:c024]:80 ([2602:801:f002:102::a2fe:c024]:80)) - SUCCESS
+[2020-10-24 23:21:44] IPv6 HTTP connectivity test (ipv6check-http.steamcontent.com / [2602:801:f002:102::a2fe:c024]:80 ([2602:801:f002:102::a2fe:c024]:80)) - server indicated we are using ipv6, external address = '2601:646:4100:24b0:e3:184a:369b:333'
+[2020-10-24 23:21:44] [0,0] PingWebSocketCM() (cm6-lax1.cm.steampowered.com:27038) results: 49.5535ms + load 18.0000
+[2020-10-24 23:21:44] [0,0] PingWebSocketCM() (cm6-lax1.cm.steampowered.com:27032) results: 49.7996ms + load 19.0000
+[2020-10-24 23:21:44] [0,0] PingWebSocketCM() stopping early for good host (cm6-lax1.cm.steampowered.com:27038)
+[2020-10-24 23:21:44] IPv6 UDP connectivity test (ipv6check-udp.steamcontent.com / [2602:801:f008:102::a2fe:c7c2]:27019) - SUCCESS
+[2020-10-24 23:21:44] [0,0] PingWebSocketCM() (cm5-lax1.cm.steampowered.com:27029) results: 74.5163ms + load 19.0000
+[2020-10-24 23:21:44] [0,0] PingWebSocketCM() (cm6-lax1.cm.steampowered.com:443) results: 85.8764ms + load 19.0000
+[2020-10-24 23:21:44] [1,3] Connect() starting connection (eNetQOSLevelHigh, cm6-lax1.cm.steampowered.com:27038, WebSocket)
+[2020-10-24 23:21:45] [1,3] ConnectionCompleted() (162.254.195.87:27038, WebSocket)
+[2020-10-24 23:21:45] [1,3] RecvMsgClientLogOnResponse() : [I:0:0] 'Account logon denied, need two-factor code'
+[2020-10-24 23:21:45] [1,3] AsyncDisconnect()
+[2020-10-24 23:21:45] [0,0] ConnectionDisconnected('I/O Operation Failed') : 'Account logon denied, need two-factor code' (162.254.195.87:27038, WebSocket)
+[2020-10-24 23:21:45] [0,0] ConnectionDisconnected() not auto reconnecting due to eResultLogonSession specifies no reconnect
+[2020-10-24 23:21:56] [0,0] SetSteamID( [U:1:56721299] )
+[2020-10-24 23:21:56] [0,0] Server says 50% of connections should be websockets, we rolled 80 - using UDP as default.
+[2020-10-24 23:21:56] [1,2] Connect() starting connection (eNetQOSLevelHigh, 162.254.195.87:27021, UDP)
+[2020-10-24 23:21:57] [1,2] ConnectionCompleted() (162.254.195.83:27018, UDP)
+[2020-10-24 23:21:57] [1,2] RecvMsgClientLogOnResponse() : [U:1:56721299] 'OK'
+[2020-10-24 23:21:57] CClientJobGetClientUpdateHosts: cached version not expired
+[2020-10-24 23:22:01] [3,2] ResetVoiceRecording() (was recording: 0) (last get voice time: 1603606921 seconds ago)
+[2020-10-24 23:22:01] [3,2] LogOff()
+[2020-10-24 23:22:01] [2,2] AsyncDisconnect()
+[2020-10-24 23:22:01] [2,2] Log session ended

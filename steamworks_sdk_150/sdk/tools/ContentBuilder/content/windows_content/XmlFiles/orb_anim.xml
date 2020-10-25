@@ -1,0 +1,35 @@
+<data BoxDimensionsX="32" BoxDimensionsY="48" EllipseDimensionsX="32" EllipseDimensionsY="48">
+  
+	<body OffsetX="0" OffsetY="8" SizeX="40" SizeY="80">
+		<Still FrameRate="10" MaxFrameRate="10" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\orb\1.png"/>
+      <frame filename="Media\orb\11.png"/>
+      <frame filename="Media\orb\21.png"/>
+      <frame filename="Media\orb\31.png"/>
+      <frame filename="Media\orb\41.png"/>   
+      <frame filename="Media\orb\51.png"/>     
+      <frame filename="Media\orb\61.png"/>
+      <frame filename="Media\orb\71.png"/>
+      <frame filename="Media\orb\81.png"/>
+      <frame filename="Media\orb\91.png"/>
+    </Still>
+
+		<Running FrameRate="10" MaxFrameRate="10" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\orb\1.png"/>
+		</Running>
+
+    <JumpingUp FrameRate="4" MaxFrameRate="4" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\orb\1.png"/>
+		</JumpingUp>
+
+    <JumpingDown FrameRate="4" MaxFrameRate="4" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\characters\rabbit\\bunny2.png"/>
+    </JumpingDown>
+
+    <SlidingDown FrameRate="0" MaxFrameRate="0" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
+      <frame filename="Media\orb\1.png"/>
+    </SlidingDown>
+
+	</body>
+
+</data>

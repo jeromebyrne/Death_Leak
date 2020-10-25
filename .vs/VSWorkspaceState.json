@@ -2,14 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\Game",
-    "\\Game\\src",
-    "\\Game\\src\\UI",
-    "\\Game\\steam",
     "\\Game\\XmlFiles",
-    "\\Game\\XmlFiles\\UI",
-    "\\steamworks_sdk_142",
-    "\\steamworks_sdk_142\\sdk",
-    "\\steamworks_sdk_142\\sdk\\steamworksexample"
+    "\\Game\\XmlFiles\\levels"
   ],
+  "SelectedNode": "\\Game\\XmlFiles\\levels\\first_ninja_arena.xml",
   "PreviewInSolutionExplorer": false
 }

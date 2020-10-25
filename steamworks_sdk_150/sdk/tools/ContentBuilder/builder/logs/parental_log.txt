@@ -1,0 +1,22 @@
+
+
+[2020-10-24 22:53:56] Failed to get ParentalSettings\Settings from config file for account ID 56721299
+[2020-10-24 22:53:56] Got parental settings for account ID 56721299
+
+
+[2020-10-24 23:14:36] Validating parental settings
+[2020-10-24 23:14:36] Settings dump:
+[2020-10-24 23:14:36] 	Account ID: 56721299
+[2020-10-24 23:14:36] 	Enabled: false
+[2020-10-24 23:14:36] 	Base list: 0 ()
+[2020-10-24 23:14:36] 	No custom list
+[2020-10-24 23:14:36] 	No enabled features
+
+
+[2020-10-24 23:21:57] Validating parental settings
+[2020-10-24 23:21:57] Settings dump:
+[2020-10-24 23:21:57] 	Account ID: 56721299
+[2020-10-24 23:21:57] 	Enabled: false
+[2020-10-24 23:21:57] 	Base list: 0 ()
+[2020-10-24 23:21:57] 	No custom list
+[2020-10-24 23:21:57] 	No enabled features

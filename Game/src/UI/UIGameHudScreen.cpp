@@ -236,7 +236,7 @@ void UIGameHudScreen::Draw(ID3D10Device * device)
 			mOrbtext = std::to_string(newOrbs);
 		}
 
-		RECT rect = { 105, 95, 0, 0 };
+		RECT rect = { 105, 135, 0, 0 };
 		mOrbCountText->DrawTextA(0,  mOrbtext.c_str() , -1, &rect, DT_NOCLIP, kOrbTextColor);
 	}
 }

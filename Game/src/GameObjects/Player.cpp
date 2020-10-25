@@ -33,7 +33,7 @@ static const float kDownwardDashFocusAmount = 50.0f;
 static const float kRollFocusAmount = 2.0f;
 static const float kWaterFocusUseRate = 0.5f;
 static const float kDrownHealthLossRate = 2.0f;
-static const float kStomachSwordPullTime = 5.0f;
+static const float kStomachSwordPullTime = 0.15f;
 
 Player::Player(float x, float y, float width, float height) :
 Character(x, y, GameObject::kPlayer, width, height),
@@ -63,12 +63,13 @@ void Player::Initialise()
 
 	// Just hardcoding these variables now
 	// because I want to get this shit locked down and finished
-	mRunAnimFramerateMultiplier = 3.0f; 
+	mRunAnimFramerateMultiplier = 2.65f; 
 	m_maxJumpSpeed = 19.0f;
 	mMaxJumpsAllowed = 1;
-	m_maxVelocity.X = 13.0000f;
 	mSprintVelocityX = 17.5f;
-	mAccelXRate = 0.60f;
+	mAccelXRate = 1.00f;
+	m_maxVelocity.X = 9.5f;
+	mDefaultVelocityX = m_maxVelocity.X;
 
 	UpdateResistance();
 
@@ -105,7 +106,7 @@ void Player::UpdateResistance()
 		// m_resistance.X = 0.895f; // HAS to be lower than 1.0 (TODO: really need to change this)
 		if (m_acceleration.X == 0.0f)
 		{
-			m_resistance.X = 0.8f;
+			m_resistance.X = 0.80f;
 		}
 		else
 		{
@@ -926,14 +927,14 @@ void Player::UpdateIsPullingSwordFromStomach(float delta)
 				mCurrentTimePullingSword = 0.0f;
 				bodyPart->SetSequence("IntroCutscene2");
 
-				Game::GetInstance()->Vibrate(1.0f, 1.0f, 2.0f);
+				Game::GetInstance()->Vibrate(0.5f, 0.5f, 0.5f);
 			}
 
 			float time = mCurrentTimePullingSword / kStomachSwordPullTime;
 
-			Camera2D::GetInstance()->DoShake(time * 10.0f, 0.1f);
+			Camera2D::GetInstance()->DoShake(time * 2.0f, 0.1f);
 
-			Game::GetInstance()->Vibrate(time * 0.75f, time * 0.5f, 0.1f);
+			Game::GetInstance()->Vibrate(time * 0.25f, time * 0.5f, 0.1f);
 
 			// camera zoom
 			{
@@ -969,6 +970,11 @@ void Player::UpdateIsPullingSwordFromStomach(float delta)
 		if (bodyPart->IsFinished())
 		{
 			SaveManager::GetInstance()->SetHasPulledSwordFromStomach(true);
+
+			// Do blood spray
+			// ParticleEmitterManager::Instance()->CreateRadialBloodSpray(40, m_position, false, 0.0f);
+
+			// TODO: play audio
 		}
 	}
 	else

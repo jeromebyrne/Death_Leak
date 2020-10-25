@@ -1,0 +1,17 @@
+<!--Contains the names and locations of all the xml files-->
+<ui base_width="1920" base_height="1080">
+  <uiscreen name="mainmenu" filepath="XmlFiles\\UI\\mainmenu.xml"/>
+  <uiscreen name="game_hud" filepath="XmlFiles\\UI\\game_hud.xml"/>
+  <uiscreen name="options" filepath="XmlFiles\\UI\\options.xml"/>
+  <uiscreen name="gameloading" filepath="XmlFiles\\UI\\gameloading.xml"/>
+  <uiscreen name="pause_menu" filepath="XmlFiles\\UI\\pause_menu.xml"/>
+  <uiscreen name="fullscreen_fade" filepath="XmlFiles\\UI\\fullscreen_fade.xml"/>
+  <uiscreen name="level_select_edit" filepath="XmlFiles\\UI\\level_select_edit.xml" />
+  <uiscreen name="language_select" filepath="XmlFiles\\UI\\language_select.xml" />
+  <uiscreen name="level_edit_hud" filepath="XmlFiles\\UI\\level_edit_hud.xml" />
+  <uiscreen name="object_editor" filepath="XmlFiles\\UI\\object_editor_screen.xml" />
+  <uiscreen name="level_select" filepath="XmlFiles\\UI\\level_select.xml" />
+  <uiscreen name="language_select_settings" filepath="XmlFiles\\UI\\language_select_settings.xml" />
+  <uiscreen name="you_died" filepath="XmlFiles\\UI\\you_died.xml" />
+  <uiscreen name="text_modal" filepath="XmlFiles\\UI\\text_modal.xml" />
+</ui>

@@ -335,6 +335,7 @@ void InputManager::ProcessRoll_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 
 void InputManager::ProcessSprint_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player)
 {
+	/*
 	if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
 	{
 		player->TrySprint();
@@ -343,6 +344,7 @@ void InputManager::ProcessSprint_gamepad(XINPUT_STATE padState, CurrentGameplayA
 	{
 		player->StopSprint();
 	}
+	*/
 }
 
 void InputManager::ProcessMelee_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player)

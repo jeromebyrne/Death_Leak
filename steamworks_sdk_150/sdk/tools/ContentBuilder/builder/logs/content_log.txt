@@ -1,0 +1,12 @@
+
+
+[2020-10-24 22:46:56] Loaded 0 apps from install folder "C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\steamapps\appmanifest_*.acf".
+
+
+[2020-10-24 22:53:40] Loaded 0 apps from install folder "C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\steamapps\appmanifest_*.acf".
+
+
+[2020-10-24 23:14:15] Loaded 0 apps from install folder "C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\steamapps\appmanifest_*.acf".
+
+
+[2020-10-24 23:21:44] Loaded 0 apps from install folder "C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\steamapps\appmanifest_*.acf".

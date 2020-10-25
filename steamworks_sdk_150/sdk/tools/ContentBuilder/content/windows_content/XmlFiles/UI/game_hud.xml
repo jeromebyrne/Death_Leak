@@ -1,0 +1,98 @@
+<uiscreen show_cursor="false">
+ 
+  <animatedsprite name="26_scratch_anim"
+                   process_input="false"
+                   posX ="-960" posY ="-540" width="1920" height ="1080"
+                   image="Media\UI\noise_layer.png"
+                   hflip="false" vflip="false"
+                   alpha="0.2"
+                  use_standard_effect="true"
+                   fps ="11">
+    <frames frame1="Media\UI\film_frame.png"
+            frame2="Media\UI\film_frame_2.png"
+            frame3="Media\UI\film_frame_3.png"
+            frame4="Media\UI\film_frame_4.png"
+    />
+  </animatedsprite>
+
+  <!--
+  <sprite name="265_crt_effect"
+          process_input="false"
+          posX ="-960" posY ="-640" width="1920" height ="1280"
+          image="Media\UI\canvas_layer.png"
+          hflip="false" vflip="false"
+          alpha="0.15"
+          use_standard_effect="true">
+  </sprite>
+  -->
+
+  <sprite name="27_frame_left"
+          process_input="false"
+          posX ="-960" posY ="-540" width="230" height ="1080"
+          image="Media\UI\frame_left.png"
+          hflip="false" vflip="false"
+          alpha="1.0"
+          use_standard_effect="true">
+  </sprite>
+
+  <sprite name="28_frame_right"
+          process_input="false"
+          posX ="730" posY ="-540" width="230" height ="1080"
+          image="Media\UI\frame_right.png"
+          hflip="false" vflip="false"
+          alpha="1.0"
+          use_standard_effect="true">
+  </sprite>
+
+  <sprite name="29_frame_top"
+          process_input="false"
+          posX ="-730" posY ="320" width="1460" height ="220"
+          image="Media\UI\frame_top.png"
+          hflip="false" vflip="false"
+          alpha="1.0"
+          use_standard_effect="true">
+  </sprite>
+
+  <sprite name="30_frame_bottom"
+          process_input="false"
+          posX ="-730" posY ="-540" width="1460" height ="220"
+          image="Media\UI\frame_top.png"
+          hflip="false" vflip="true"
+          alpha="1.0"
+          use_standard_effect="true">
+  </sprite>
+
+  <sprite name="40_orb_count"
+          process_input="false"
+          posX ="-900" posY ="400" width="101" height ="64"
+          image="Media\UI\orb_count.png"
+          hflip="false" vflip="true"
+          alpha="0.75"
+          use_standard_effect="true">
+  </sprite>
+
+  <meter name="9_health_meter"
+        process_input="false"
+        posX ="-900" posY ="480" width="300" height ="100"
+        image="Media\\UI\\meter_overlay.png"
+        meter_edge="Media\\UI\\meter_edge_2.png"
+        meter_middle="Media\\UI\\meter_overlay.png"
+        meter_bar_middle="Media\\UI\\meter_bar_middle.png"
+        hflip="false" vflip="false"
+        alpha="0.7"
+        use_standard_effect="true">
+  </meter>
+
+  <meter name="91_xp_meter"
+        process_input="false"
+        posX ="-900" posY ="460" width="200" height ="100"
+        image="Media\\UI\\meter_overlay.png"
+        meter_edge="Media\\UI\\meter_edge_2.png"
+        meter_middle="Media\\UI\\meter_overlay.png"
+        meter_bar_middle="Media\\UI\\xp_meter_bar_middle.png"
+        hflip="false" vflip="true"
+        alpha="0.7"
+        use_standard_effect="true">
+  </meter>
+  
+</uiscreen>
