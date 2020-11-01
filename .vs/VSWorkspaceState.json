@@ -2,9 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\Game",
+    "\\Game\\src",
+    "\\Game\\src\\UI",
     "\\Game\\XmlFiles",
     "\\Game\\XmlFiles\\levels"
   ],
-  "SelectedNode": "\\Game\\XmlFiles\\levels\\first_ninja_arena.xml",
+  "SelectedNode": "\\Game\\src\\UI\\UIGameHudScreen.h",
   "PreviewInSolutionExplorer": false
 }

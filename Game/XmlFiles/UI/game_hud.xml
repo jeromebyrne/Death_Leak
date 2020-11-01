@@ -48,7 +48,7 @@
 
   <sprite name="29_frame_top"
           process_input="false"
-          posX ="-960" posY ="490" width="1920" height ="80"
+          posX ="-960" posY ="490" width="1920" height ="50"
           image="Media\UI\frame_top.png"
           hflip="false" vflip="false"
           alpha="1.0"
@@ -57,7 +57,7 @@
 
   <sprite name="30_frame_bottom"
           process_input="false"
-          posX ="-960" posY ="-540" width="1920" height ="80"
+          posX ="-960" posY ="-540" width="1920" height ="50"
           image="Media\UI\frame_top.png"
           hflip="false" vflip="true"
           alpha="1.0"

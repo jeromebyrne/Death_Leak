@@ -156,26 +156,6 @@ void UIScreen::Update()
 			}
 		}
 	}
-
-	// HACK: here to enable disable gamepad warning
-	if (m_name == "mainmenu")
-	{
-		if (!GamePad::GetPad1() || !GamePad::GetPad1()->IsConnected())
-		{
-			// enable gamepad warning
-			// get the gamepad warning widget
-			UIWidget * widget = m_widgetMap["8_gamepad_warning"]; // warning, crash potential
-
-			widget->SetVisible(true);
-		}
-		else
-		{
-			// disable gamepad warning
-			UIWidget * widget = m_widgetMap["8_gamepad_warning"]; // warning, crash potential
-
-			widget->SetVisible(false);
-		}
-	}
 }
 
 void UIScreen::Draw(ID3D10Device * device)

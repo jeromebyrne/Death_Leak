@@ -17,6 +17,7 @@
 #include "SaveManager.h"
 #include "UIGameLoading.h"
 #include "UIOptionsScreen.h"
+#include "UIMainMenuScreen.h"
 
 static const int kMaxInteractablesToDraw = 3;
 static Vector2 kInteractSpriteDimensions = Vector2(50.0f, 50.0f);
@@ -298,6 +299,18 @@ void UIManager::XmlRead(const char * uiRootPath)
 		{
 			ui_screen= new UIGameHudScreen(name);
 		}
+		else if (name == "gameloading")
+		{
+			ui_screen = new UIGameLoading(name);
+		}
+		else if (name == "text_modal")
+		{
+			ui_screen = new UITextModal(name);
+		}
+		else if (name == "mainmenu")
+		{
+			ui_screen = new UIMainMenuScreen(name);
+		}
 		else if (name == "object_editor")
 		{
 			ui_screen = new UIObjectEditScreen(name);
@@ -309,14 +322,6 @@ void UIManager::XmlRead(const char * uiRootPath)
 		else if (name == "level_select_edit")
 		{
 			ui_screen = new UILevelSelectScreen(name);
-		}
-		else if (name == "gameloading")
-		{
-			ui_screen = new UIGameLoading(name);
-		}
-		else if (name == "text_modal")
-		{
-			ui_screen = new UITextModal(name);
 		}
 		else if (name == "options")
 		{

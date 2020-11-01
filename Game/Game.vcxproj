@@ -144,6 +144,7 @@
     <ClCompile Include="src\UI\UIGameHudScreen.cpp" />
     <ClCompile Include="src\UI\UIGameLoading.cpp" />
     <ClCompile Include="src\UI\UILevelSelectScreen.cpp" />
+    <ClCompile Include="src\UI\UIMainMenuScreen.cpp" />
     <ClCompile Include="src\UI\UIManager.cpp" />
     <ClCompile Include="src\UI\UIMeter.cpp" />
     <ClCompile Include="src\UI\UIObjectEditScreen.cpp" />
@@ -291,6 +292,7 @@
     <ClInclude Include="src\UI\UIGameHudScreen.h" />
     <ClInclude Include="src\UI\UIGameLoading.h" />
     <ClInclude Include="src\UI\UILevelSelectScreen.h" />
+    <ClInclude Include="src\UI\UIMainMenuScreen.h" />
     <ClInclude Include="src\UI\UIManager.h" />
     <ClInclude Include="src\UI\UIMeter.h" />
     <ClInclude Include="src\UI\UIObjectEditScreen.h" />

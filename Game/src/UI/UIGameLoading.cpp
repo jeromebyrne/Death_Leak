@@ -29,7 +29,7 @@ void UIGameLoading::Initialise()
 			if (s->Name().find("1_load_splash") != std::string::npos)
 			{
 				mBGSprite = s;
-				mBGSprite->SetAlpha(0.0f);
+				// mBGSprite->SetAlpha(0.0f);
 
 				break;
 			}
