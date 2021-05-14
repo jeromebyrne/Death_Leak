@@ -13,8 +13,8 @@
 
 unsigned int gBackBufferWidth = 1920;
 unsigned int gBackBufferHeight = 1080;
-unsigned int gWindowWidth = 1280;
-unsigned int gWindowHeight = 720;
+unsigned int gWindowWidth = 1920;
+unsigned int gWindowHeight = 1080;
 
 static int kSteamAppId = 995990;
 

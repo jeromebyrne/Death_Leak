@@ -933,7 +933,7 @@
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="false" />
         <is_bouncy value="true" bounce_multiplier="1.100000" />
-        <loc_id title="paper_pickup_hot_springs" desc="paper_pickup_hotsprings_desc" />
+        <loc_id title="save_shrine_hint_title" desc="save_shrine_hint_desc" />
     </PaperPickup>
     <Sprite id="56" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGround" y="-484.799927" x="1555.852295" rotation="-0.179599" auto_rotate_value="0.000000" />

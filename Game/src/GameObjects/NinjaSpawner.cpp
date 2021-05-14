@@ -4,6 +4,7 @@
 #include "MaterialManager.h";
 #include "ParticleEmittermanager.h"
 #include "AudioManager.h"
+#include "SaveManager.h"
 
 NinjaSpawner::NinjaSpawner(void)
 {
@@ -99,4 +100,9 @@ void NinjaSpawner::SpawnMultiple(const unsigned int numNPC, Vector2 boundsPos, V
 
 	// AudioManager::Instance()->PlaySoundEffect("gong.wav", false, false, false);
 	AudioManager::Instance()->PlaySoundEffect("explosion\\smoke_explosion.wav");
+}
+
+bool NinjaSpawner::CanSpawnNPC()
+{
+	return true;
 }

@@ -96,4 +96,43 @@
     <pt-br>needs localization</pt-br>
     <de>needs localization</de>
   </suicide_note_desc>
+
+  <paper_pickup_title_granary_key_hint>
+    <en-gb>Grain Supply Status</en-gb>
+    <pt-br>Grain Supply Status</pt-br>
+    <de>Grain Supply Status</de>
+  </paper_pickup_title_granary_key_hint>
+
+  <paper_pickup_desc_granary_key_hint>
+    <en-gb>Grain levels critical. 
+           Requesting an increase in supply. 
+           Granary key misplaced by Haruki. 
+           Haruki's last known location, old windmill.
+           Punish Haruki. </en-gb>
+    <pt-br>
+      Grain levels critical.
+      Requesting an increase in supply.
+      Granary key misplaced by Haruki.
+      Haruki's last known location, old windmill.
+      Punish Haruki..</pt-br>
+    <de>
+      Grain levels critical.
+      Requesting an increase in supply.
+      Granary key misplaced by Haruki.
+      Haruki's last known location, old windmill.
+      Punish Haruki.
+    </de>
+  </paper_pickup_desc_granary_key_hint>
+
+  <save_shrine_hint_title>
+    <en-gb>Kato's note</en-gb>
+    <pt-br>Kato's note</pt-br>
+    <de>Kato's note</de>
+  </save_shrine_hint_title>
+
+  <save_shrine_hint_desc>
+    <en-gb>I found a nearby hotspring and its healing waters have saved me from my own memories. I feel like a new man. Can I make up for my sins?</en-gb>
+    <pt-br>I found a nearby hotspring and its healing waters have saved me from my own memories. I feel like a new man. Can I make up for my sins?</pt-br>
+    <de>I found a nearby hotspring and its healing waters have saved me from my own memories. I feel like a new man. Can I make up for my sins?</de>
+  </save_shrine_hint_desc>
 </strings>

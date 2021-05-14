@@ -34,6 +34,7 @@ static const float kRollFocusAmount = 2.0f;
 static const float kWaterFocusUseRate = 0.5f;
 static const float kDrownHealthLossRate = 2.0f;
 static const float kStomachSwordPullTime = 0.15f;
+static const float kResistanceY = 0.55f;
 
 Player::Player(float x, float y, float width, float height) :
 Character(x, y, GameObject::kPlayer, width, height),
@@ -64,7 +65,7 @@ void Player::Initialise()
 	// Just hardcoding these variables now
 	// because I want to get this shit locked down and finished
 	mRunAnimFramerateMultiplier = 2.65f; 
-	m_maxJumpSpeed = 19.0f;
+	m_maxJumpSpeed = 21.0f;
 	mMaxJumpsAllowed = 1;
 	mSprintVelocityX = 17.5f;
 	mAccelXRate = 1.00f;
@@ -114,7 +115,7 @@ void Player::UpdateResistance()
 		}
 	}
 
-	m_resistance.Y = 0.88f;
+	m_resistance.Y = kResistanceY;
 }
 
 void Player::XmlRead(TiXmlElement * element)
@@ -375,8 +376,8 @@ Projectile * Player::FireWeapon(Vector2 direction, float speedMultiplier)
 									mProjectileImpactFilePath.c_str(),
 									pos,
 									GameObject::kPlayerProjectile,
-									Vector2(112.66,33.33f),
-									Vector2(112.66,33.33f),
+									Vector2(84.50,25.0f),
+									Vector2(84.50,25.0f),
 									direction,
 									0.5f,
 									isInWater ? speed * 0.6f : speed,

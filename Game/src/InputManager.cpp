@@ -13,8 +13,8 @@
 const float kMaxGamepadAnalogRange = (std::numeric_limits<short>::max)();
 const float kAimOffsetX = 450.0f;
 const float kAimOffsetY = 300.0f;
-const float kJumpInitialPercent = 30.0f;
-const float kJumpIncrementalIncreasePercent = 3.75f;
+const float kJumpInitialPercent = 70.0f;
+const float kJumpIncrementalIncreasePercent = 3.0f;
 const int kMaxVibrationValue = 65535;
 
 InputManager::InputManager() :

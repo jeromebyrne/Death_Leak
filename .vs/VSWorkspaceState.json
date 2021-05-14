@@ -2,11 +2,16 @@
   "ExpandedNodes": [
     "",
     "\\Game",
-    "\\Game\\src",
-    "\\Game\\src\\UI",
     "\\Game\\XmlFiles",
-    "\\Game\\XmlFiles\\levels"
+    "\\steamworks_sdk_150",
+    "\\steamworks_sdk_150\\sdk",
+    "\\steamworks_sdk_150\\sdk\\tools",
+    "\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder",
+    "\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder\\content",
+    "\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder\\content\\windows_content",
+    "\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder\\content\\windows_content\\XmlFiles",
+    "\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder\\content\\windows_content\\XmlFiles\\levels"
   ],
-  "SelectedNode": "\\Game\\src\\UI\\UIGameHudScreen.h",
+  "SelectedNode": "\\Game\\XmlFiles\\levels\\inside_hanging_shadow.xml",
   "PreviewInSolutionExplorer": false
 }

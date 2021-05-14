@@ -225,6 +225,24 @@ int SaveManager::GetIntValue(const std::string & key, int defaultValue) const
 	return iter->second.asInt();
 }
 
+int SaveManager::GetDoubleValue(const std::string& key, double defaultValue) const
+{
+	const auto& iter = mSaveMap.find(key);
+
+	if (iter == mSaveMap.end())
+	{
+		return defaultValue;
+	}
+
+	if (iter->second.getType() != DataValue::Type::DOUBLE)
+	{
+		GAME_ASSERT(false);
+		return defaultValue;
+	}
+
+	return iter->second.asDouble();
+}
+
 bool SaveManager::GetBoolValue(const std::string & key, bool defaultValue) const
 {
 	const auto & iter = mSaveMap.find(key);
@@ -600,5 +618,23 @@ bool SaveManager::HasPulledSwordFromStomach()
 void SaveManager::SetHasPulledSwordFromStomach(bool value)
 {
 	mSaveMap["has_ungutted"] = value;
+}
+
+double SaveManager::GetLastTimeNPCSpawnerTriggered(const string& levelName, int objectID)
+{
+	std::string key = levelName + "_npc_" + Utilities::ConvertDoubleToString(objectID);
+
+	std::replace(key.begin(), key.end(), '\\', '-'); // replace back slashes as they will mess up the xml file
+
+	return GetDoubleValue(key);
+}
+
+void SaveManager::SetLastTimeNPCSpawnerTriggered(const string& levelName, int objectID, double time)
+{
+	std::string key = levelName + "_npc_" + Utilities::ConvertDoubleToString(objectID);
+
+	std::replace(key.begin(), key.end(), '\\', '-'); // replace back slashes as they will mess up the xml file
+
+	mSaveMap[key] = time;
 }
 

@@ -27,6 +27,8 @@ private:
 	NpcType GetNPCTypeFromString(const string & typeAsString);
 	string GetNPCStringFromType(NpcType);
 
+	virtual void Initialise() override;
+
 	virtual void NPCTrigger::DebugDraw(ID3D10Device *  device) override;
 	
 	void SpawnEnemies(Player * player);
@@ -36,9 +38,13 @@ private:
 
 	void ShowSpawnIcon();
 
-	float mCooldownTime;
-	float mCurrentCooldownTime;
+	void RecordLastSpawnTime();
+
+	void RemoveTriggerFromLevel();
+
 	unsigned int mNumEnemies;
+
+	bool mIsRemoved = false;
 
 	NpcType mType = kNinja;
 };

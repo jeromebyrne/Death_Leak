@@ -122,3 +122,8 @@ void SkeletonEnemySpawner::SpawnMultiple(const unsigned int numNPC, Vector2 boun
 	// AudioManager::Instance()->PlaySoundEffect("gong.wav", false, false, false);
 	AudioManager::Instance()->PlaySoundEffect("explosion\\smoke_explosion.wav");
 }
+
+bool SkeletonEnemySpawner::CanSpawnNPC()
+{
+	return true;
+}

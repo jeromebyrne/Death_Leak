@@ -14,6 +14,8 @@ public:
 							Vector2 & collisionBoxOffset = Vector2(0.0f,0.0f)) = 0;
 
 	virtual void SpawnMultiple(const unsigned int numNPC, Vector2 boundsPos, Vector2 boundsDimensions) = 0;
+
+	virtual bool CanSpawnNPC() = 0;
 };
 
 #endif

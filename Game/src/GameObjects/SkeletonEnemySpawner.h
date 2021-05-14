@@ -18,6 +18,8 @@ public:
 							Vector2 & collisionBoxOffset = Vector2(0.0f,0.0f)) override;
 
 	virtual void SpawnMultiple(const unsigned int numNPC, Vector2 boundsPos, Vector2 boundsDimensions) override;
+
+	virtual bool CanSpawnNPC() override;
 };
 
 #endif

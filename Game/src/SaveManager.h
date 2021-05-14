@@ -70,6 +70,10 @@ public:
 
 	void SetHasPulledSwordFromStomach(bool value);
 
+	double GetLastTimeNPCSpawnerTriggered(const string & levelName, int objectID);
+
+	void SetLastTimeNPCSpawnerTriggered(const string& levelName, int objectID, double time);
+
 private:
 
 	static SaveManager * mInstance;
@@ -78,6 +82,8 @@ private:
 	~SaveManager(void) { }
 
 	int GetIntValue(const std::string & key, int defaultValue = 0) const;
+
+	int GetDoubleValue(const std::string& key, double defaultValue = 0.0) const;
 
 	bool GetBoolValue(const std::string & key, bool defaultValue = false) const;
 

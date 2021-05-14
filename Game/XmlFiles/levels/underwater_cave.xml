@@ -7,7 +7,7 @@
         <is_animation_preview value="false" />
     </LevelProperties>
     <Player id="1" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kPlayer" y="-1184.195557" x="51.933533" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kPlayer" y="-1361.195557" x="1659.933594" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="215.352036" width="181.393768" native="false" repeatX="false" repeatY="false" />
         <material value="maleninja" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -21,16 +21,16 @@
         <isanimated value="true" />
         <animationfile value="XmlFiles\animation\player_anim_default.xml" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance y="0.880000" x="0.800000" />
-        <maxvelocity y="99999.000000" x="7.500000" />
+        <resistance y="0.550000" x="0.999900" />
+        <maxvelocity y="99999.000000" x="9.500000" />
         <applygravity value="true" />
         <collisionboxdimensions y="214.898743" x="128.959793" offsetX="0.000000" offsetY="0.000000" />
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="0.000000" />
-        <maxjumpspeed value="19" />
-        <xaccelrate value="0.6" />
+        <maxjumpspeed value="21" />
+        <xaccelrate value="1" />
         <projectileoffsetx value="5" />
         <projectileoffsety value="25" />
     </Player>
@@ -341,7 +341,7 @@
         <is_bouncy value="true" bounce_multiplier="1.100000" />
     </SolidMovingSprite>
     <LevelTrigger id="19" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kGround" y="-548.195557" x="-1202.066406" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kGround" y="-579.195557" x="-1216.066406" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="677.938599" width="903.918274" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -349,7 +349,7 @@
         <level_to_load value="XmlFiles\levels\underwater_cave_1_5.xml" />
     </LevelTrigger>
     <LevelTrigger id="20" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kGround" y="-1391.195557" x="2280.933594" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kGround" y="-1366.995850" x="2397.627441" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="677.938599" width="903.918274" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />

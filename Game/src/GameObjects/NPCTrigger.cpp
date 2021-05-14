@@ -7,19 +7,55 @@
 #include "DrawUtilities.h"
 #include "GhostEnemySpawner.h"
 #include "SkeletonEnemySpawner.h"
+#include "SaveManager.h"
+
+static const float kCooldownTime = 120000; 
 
 NPCTrigger::NPCTrigger() :
 	GameObject(),
-	mCooldownTime(7.0f),
-	mCurrentCooldownTime(0.0f),
 	mNumEnemies(0)
 
 {
 	mAlwaysUpdate = true;
 }
 
+void NPCTrigger::Initialise()
+{
+	GameObject::Initialise();
+
+	string levelFilename = GameObjectManager::Instance()->GetCurrentLevelFile();
+
+	double lastTimeSpawned = SaveManager::GetInstance()->GetLastTimeNPCSpawnerTriggered(levelFilename, ID());
+
+	double currentTime = timeGetTime();
+
+	double timeDiff = currentTime - lastTimeSpawned;
+
+	if (timeDiff < kCooldownTime)
+	{
+		RemoveTriggerFromLevel();
+	}
+}
+
+void NPCTrigger::RemoveTriggerFromLevel()
+{
+	if (Game::GetInstance()->GetIsLevelEditMode())
+	{
+		return;
+	}
+
+	GameObjectManager::Instance()->RemoveGameObject(this);
+
+	mIsRemoved = true;
+}
+
 void NPCTrigger::Update(float delta) 
 {
+	if (mIsRemoved)
+	{
+		return;
+	}
+
 	GameObject::Update(delta);
 
 #if _DEBUG
@@ -28,13 +64,6 @@ void NPCTrigger::Update(float delta)
 		return;
 	}
 #endif
-
-	if (mCurrentCooldownTime > 0.0f)
-	{
-		mCurrentCooldownTime -= delta;
-		return;
-	}
-	mCurrentCooldownTime = 0.0f;
 
 	Player * player = GameObjectManager::Instance()->GetPlayer();
 	GAME_ASSERT(player);
@@ -50,7 +79,9 @@ void NPCTrigger::Update(float delta)
 	{
 		SpawnEnemies(player);
 
-		mCurrentCooldownTime = mCooldownTime;
+		RecordLastSpawnTime();
+
+		RemoveTriggerFromLevel();
 	}
 }
 
@@ -76,10 +107,17 @@ void NPCTrigger::SpawnEnemies(Player * player)
 	}
 }
 
+void NPCTrigger::RecordLastSpawnTime()
+{
+	string levelFile = GameObjectManager::Instance()->GetCurrentLevelFile();
+	SaveManager::GetInstance()->SetLastTimeNPCSpawnerTriggered(levelFile, ID(), (double)timeGetTime());
+}
+
 void NPCTrigger::SpawnNinjas(Player * player)
 {
 	NinjaSpawner ninjaSpawner;
 	ninjaSpawner.SpawnMultiple(mNumEnemies, Vector2(player->X(), player->Y()), Vector2(1200, 1200));
+
 	// Timing::Instance()->SetTimeModifierForNumSeconds(0.1f, 3.5f);
 	ShowSpawnIcon();
 }
@@ -133,7 +171,6 @@ void NPCTrigger::XmlRead(TiXmlElement * element)
 {
 	GameObject::XmlRead(element);
 
-	mCooldownTime = XmlUtilities::ReadAttributeAsFloat(element, "cooldown_time", "value");
 	mNumEnemies = XmlUtilities::ReadAttributeAsFloat(element, "num_enemies", "value");
 	string enemyTypeStr = XmlUtilities::ReadAttributeAsString(element, "num_enemies", "enemy_type");
 	mType = GetNPCTypeFromString(enemyTypeStr);
@@ -142,10 +179,6 @@ void NPCTrigger::XmlRead(TiXmlElement * element)
 void NPCTrigger::XmlWrite(TiXmlElement * element) 
 {
 	GameObject::XmlWrite(element);
-
-	TiXmlElement * cooldownElem = new TiXmlElement("cooldown_time");
-	cooldownElem->SetDoubleAttribute("value", mCooldownTime);
-	element->LinkEndChild(cooldownElem);
 
 	TiXmlElement * numEnemiesElem = new TiXmlElement("num_enemies");
 	numEnemiesElem->SetDoubleAttribute("value", mNumEnemies);

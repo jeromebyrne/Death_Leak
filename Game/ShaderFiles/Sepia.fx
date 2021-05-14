@@ -57,13 +57,15 @@ float4 PS( PS_INPUT input) : SV_Target
 	float4 color = txDiffuse.Sample( samLinear, input.Tex);
 	
 	float4 sepiaColor;
-	// sepiaColor.r = (color.r * 0.393) + (color.g * 0.769) + (color.b * 0.189);
-	// sepiaColor.g = (color.r * 0.349) + (color.g * 0.686) + (color.b * 0.168);
-	// sepiaColor.b = (color.r * 0.272) + (color.g * 0.534) + (color.b * 0.131);
 
-	sepiaColor.r = (color.r * 0.293) + (color.g * 0.669) + (color.b * 0.089);
-	sepiaColor.g = (color.r * 0.249) + (color.g * 0.586) + (color.b * 0.068);
-	sepiaColor.b = (color.r * 0.172) + (color.g * 0.434) + (color.b * 0.031);
+	// sepiaColor.r = (color.r * 0.293) + (color.g * 0.669) + (color.b * 0.089);
+	// sepiaColor.g = (color.r * 0.249) + (color.g * 0.586) + (color.b * 0.068);
+	// sepiaColor.b = (color.r * 0.172) + (color.g * 0.434) + (color.b * 0.031);
+
+    float colorMult = 0.75; // TODO: precalculate once finished tweaking
+    sepiaColor.r = (color.r * 0.293 * colorMult) + (color.g * 0.669 * colorMult) + (color.b * 0.089 * colorMult);
+    sepiaColor.g = (color.r * 0.249 * colorMult) + (color.g * 0.586 * colorMult) + (color.b * 0.068 * colorMult);
+    sepiaColor.b = (color.r * 0.172 * colorMult) + (color.g * 0.434 * colorMult) + (color.b * 0.031 * colorMult);
 
 	float4 finalColor = { 1.0, 1.0, 1.0, 1.0 };
 

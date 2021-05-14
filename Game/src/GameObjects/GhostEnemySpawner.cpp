@@ -120,3 +120,8 @@ void GhostEnemySpawner::SpawnMultiple(const unsigned int numNPC, Vector2 boundsP
 	// AudioManager::Instance()->PlaySoundEffect("gong.wav", false, false, false);
 	AudioManager::Instance()->PlaySoundEffect("explosion\\smoke_explosion.wav");
 }
+
+bool GhostEnemySpawner::CanSpawnNPC() 
+{
+	return true;
+}
