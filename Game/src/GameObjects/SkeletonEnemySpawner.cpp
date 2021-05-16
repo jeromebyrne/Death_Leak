@@ -54,7 +54,7 @@ void SkeletonEnemySpawner::SpawnNPC(const float posX,
 	npc->SetMaxJumpSpeed(randJumpSpeed);
 	npc->SetIsPlayerEnemy(true);
 	npc->SetFadeAlphaWhenPlayerOccluded(false, 0.5f);
-	npc->SetAlpha(1.0f);
+	npc->SetAlpha(0.9f);
 
 	GameObjectManager::Instance()->AddGameObject(npc);
 	npc->FlipVertical();

@@ -36,13 +36,15 @@ static const float kDrownHealthLossRate = 2.0f;
 static const float kStomachSwordPullTime = 0.15f;
 static const float kResistanceY = 0.55f;
 
+static const float kProjectileDamage = 1.25f;
+
 Player::Player(float x, float y, float width, float height) :
 Character(x, y, GameObject::kPlayer, width, height),
-	mProjectileFireDelay(0.25f),
+	mProjectileFireDelay(0.1f),
 	mTimeUntilProjectileReady(0.0f),
-	mFireBurstNum(0),
+	mFireBurstNum(3),
 	mCurrentBurstNum(0),
-	mFireBurstDelay(0.45f),
+	mFireBurstDelay(0.55f),
 	mTimeUntilFireBurstAvailable(0.0f),
 	mBurstFireEnabled(true),
 	mAimLineSprite(nullptr),
@@ -82,7 +84,7 @@ void Player::Initialise()
 	int maxHealth = SaveManager::GetInstance()->GetPlayerMaxHealth();
 	if (maxHealth == 0)
 	{
-		maxHealth = 100;
+		maxHealth = 50;
 	}
 
 	mMaxHealth = maxHealth;
@@ -368,7 +370,7 @@ Projectile * Player::FireWeapon(Vector2 direction, float speedMultiplier)
 		pos.X -= m_projectileOffset.X;
 	}
 
-	float speed = (mSprintActive ? 25.0f : 20.0f) * speedMultiplier;
+	float speed = (mSprintActive ? 30.0f : 25.0f) * speedMultiplier;
 	bool isInWater = WasInWaterLastFrame();
 
 	Projectile * p = new Projectile(Projectile::kPlayerProjectile,
@@ -379,7 +381,7 @@ Projectile * Player::FireWeapon(Vector2 direction, float speedMultiplier)
 									Vector2(84.50,25.0f),
 									Vector2(84.50,25.0f),
 									direction,
-									0.5f,
+									kProjectileDamage,
 									isInWater ? speed * 0.6f : speed,
 									0.25f);
 	p->SetIsNativeDimensions(false);

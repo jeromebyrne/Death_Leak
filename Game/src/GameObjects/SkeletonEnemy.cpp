@@ -71,7 +71,7 @@ Projectile * SkeletonEnemy::FireWeapon(Vector2 direction, float speedMultiplier)
 									Vector2(95.625, 62.625),
 									Vector2(25.0f, 8.0f),
 									direction,
-									2.0f,
+									35.0f,
 									5.0f * speedMultiplier,
 									2.0f);
 

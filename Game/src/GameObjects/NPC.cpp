@@ -24,6 +24,8 @@ static const float kHealthBarDimensionsX = 128.0f * 0.5f;
 static const float kHealthBarDimensionsY = 8.0f;
 static const float kHealthBarOverlayDimensionsX = 128.0f * 0.5f;
 static const float kHealthBarOverlayDimensionsY = 8.0f;
+static const float kEnemyProjectileDamage = 8.0f;
+static const float kEnemyProjectileSpeed = 12.0f;
 
 static const D3DXVECTOR2 kDefaultTex1 = D3DXVECTOR2(0.0f, 0.0f);
 static const D3DXVECTOR2 kDefaultTex2 = D3DXVECTOR2(1.0f, 0.0f);
@@ -214,11 +216,7 @@ void NPC::FireProjectileAtObject(GameObject * target)
 		Vector2 dir = Vector2(target->Position().X - m_position.X, (target->Position().Y + randYOffset) - m_position.Y);
 		dir.Normalise();
 
-		// speed multiplier should be 1.0 when player is standing still
-
-		float velocityPercent = std::abs(m_player->VelocityX() / m_player->GetMaxVelocity().X);
-
-		GameObjectManager::Instance()->AddGameObject(FireWeapon(dir, 1.0f + (velocityPercent * 0.8f)));
+		GameObjectManager::Instance()->AddGameObject(FireWeapon(dir, 1.0f));
 
 		mLastFireTime = Timing::Instance()->GetTotalTimeSeconds();
 
@@ -309,8 +307,6 @@ Projectile * NPC::FireWeapon(Vector2 direction, float speedMultiplier)
 	{
 		pos.X -= m_projectileOffset.X;
 	}
-	
-	float speed = (mSprintActive ? 15.0f : 10.0f) * speedMultiplier;
 
 	// TODO: ideally want these properties configurable per character
 	Projectile * p = new Projectile(Projectile::kNPCProjectile,
@@ -321,12 +317,11 @@ Projectile * NPC::FireWeapon(Vector2 direction, float speedMultiplier)
 									Vector2(20.0f,20.0f),
 									Vector2(25.0f,8.0f),
 									direction,
-									2.0f,
-									speed,
+									kEnemyProjectileDamage,
+									kEnemyProjectileSpeed,
 									0.25f);
 
 	p->SetSpinningMovement(true); // spinning for ninja stars 
-	p->SetGravityApplyAmount(0.1f);
 	
 	if (m_isAnimated && m_animation)
 	{

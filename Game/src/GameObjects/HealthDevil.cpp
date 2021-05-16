@@ -141,6 +141,7 @@ void HealthDevil::GiveReward()
 {
 	int rewardIndex = SaveManager::GetInstance()->GetHealthDevilRewardCount();
 
+	/*
 	switch (rewardIndex)
 	{
 		case 0:
@@ -162,6 +163,9 @@ void HealthDevil::GiveReward()
 			break;
 		}
 	}
+	*/
+
+	GiveHealthUpgradeReward();
 
 	SaveManager::GetInstance()->SetHealthDevilRewardCount(rewardIndex + 1);
 
