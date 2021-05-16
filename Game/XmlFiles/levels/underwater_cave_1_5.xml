@@ -21,16 +21,16 @@
         <isanimated value="true" />
         <animationfile value="XmlFiles\animation\player_anim_default.xml" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance y="0.880000" x="0.999900" />
-        <maxvelocity y="99999.000000" x="7.500000" />
+        <resistance y="0.550000" x="0.800000" />
+        <maxvelocity y="99999.000000" x="9.500000" />
         <applygravity value="true" />
         <collisionboxdimensions y="214.898743" x="128.959793" offsetX="0.000000" offsetY="0.000000" />
         <passive value="false" />
         <applydamage flag="false" amount="0.000000" />
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="0.000000" />
-        <maxjumpspeed value="19" />
-        <xaccelrate value="0.6" />
+        <maxjumpspeed value="21" />
+        <xaccelrate value="1" />
         <projectileoffsetx value="5" />
         <projectileoffsety value="25" />
     </Player>
@@ -219,7 +219,7 @@
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
         <alpha value="1.000000" />
-        <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.002000" pixelwobblespeedmod="6.000000" />
+        <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.003000" pixelwobblespeedmod="6.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media/sun_shaft_2.png" />
         <horizontalflip value="true" />
@@ -236,7 +236,7 @@
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </WaterBlock>
     <LevelTrigger id="13" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kGround" y="-1062.372192" x="-3108.066406" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kGround" y="-1061.372192" x="-3187.066406" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="677.938599" width="903.918274" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -413,4 +413,25 @@
         <player_direction x="1.000000" />
         <door_id value="" />
     </LevelEntry>
+    <ParticleSpray id="25" level_edit_locked="false" updateable="true" always_update="false">
+        <position depth_layer="kGroundFront" y="-1051.372192" x="-979.066406" rotation="0.000000" auto_rotate_value="0.000000" spawn_spread_x="30.000000" spawn_spread_y="20.000000" />
+        <dimensions height="10000.000000" width="5000.000000" />
+        <material value="" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
+        <numparticles value="100.000000" />
+        <texture filename="Media\Ambient\bubble.png" />
+        <direction x="-1.000000" y="0.000000" />
+        <spread value="1.000000" />
+        <speed min="1.000000" max="3.000000" />
+        <livetime min="8.000000" max="20.000000" />
+        <size min="4.000000" max="8.000000" scaleto="true" scaletovalue="4.000000" />
+        <gravity value="0.000000" />
+        <loop value="true" looptime="0.000000" />
+        <brightness min="1.000000" max="1.000000" />
+        <fade_time_percent out="0.250000" in="0.250000" />
+    </ParticleSpray>
 </level>

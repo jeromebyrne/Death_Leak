@@ -24,7 +24,7 @@ bool XmlDocument::Load(const string & filename, bool doBabbage)
 			return false;
 		}
 
-		TiXmlElement * rootContent = d.FirstChildElement();
+		TiXmlElement* rootContent = d.FirstChildElement();
 
 		string content = rootContent->Attribute("z");
 

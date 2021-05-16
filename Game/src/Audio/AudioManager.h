@@ -33,6 +33,11 @@ public:
 
 	void SetSfxEnabled(bool value) { mSfxEnabled = value; }
 
+	bool AreSFXenabled()
+	{
+		return mSfxEnabled;
+	}
+
 private:
 
 	void PreloadCommonSounds();

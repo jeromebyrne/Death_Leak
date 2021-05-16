@@ -70,7 +70,7 @@ void HealthDevil::Update(float delta)
 
 	if (mHasPlayedDialog && mVoiceOverSoundPlaying != nullptr)
 	{
-		if (mVoiceOverSoundPlaying->isFinished())
+		if (mVoiceOverSoundPlaying->isFinished() || !AudioManager::Instance()->AreSFXenabled())
 		{
 			// we should do reward now
 			GiveReward();
