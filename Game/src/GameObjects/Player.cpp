@@ -42,7 +42,7 @@ Player::Player(float x, float y, float width, float height) :
 Character(x, y, GameObject::kPlayer, width, height),
 	mProjectileFireDelay(0.1f),
 	mTimeUntilProjectileReady(0.0f),
-	mFireBurstNum(3),
+	mFireBurstNum(4),
 	mCurrentBurstNum(0),
 	mFireBurstDelay(0.55f),
 	mTimeUntilFireBurstAvailable(0.0f),
@@ -370,7 +370,7 @@ Projectile * Player::FireWeapon(Vector2 direction, float speedMultiplier)
 		pos.X -= m_projectileOffset.X;
 	}
 
-	float speed = (mSprintActive ? 30.0f : 25.0f) * speedMultiplier;
+	float speed = (mSprintActive ? 25.0f : 20.0f) * speedMultiplier;
 	bool isInWater = WasInWaterLastFrame();
 
 	Projectile * p = new Projectile(Projectile::kPlayerProjectile,

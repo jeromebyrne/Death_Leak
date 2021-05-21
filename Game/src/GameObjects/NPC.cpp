@@ -24,8 +24,8 @@ static const float kHealthBarDimensionsX = 128.0f * 0.5f;
 static const float kHealthBarDimensionsY = 8.0f;
 static const float kHealthBarOverlayDimensionsX = 128.0f * 0.5f;
 static const float kHealthBarOverlayDimensionsY = 8.0f;
-static const float kEnemyProjectileDamage = 8.0f;
-static const float kEnemyProjectileSpeed = 12.0f;
+static const float kEnemyProjectileDamage = 4.0f;
+static const float kEnemyProjectileSpeed = 7.0f;
 
 static const D3DXVECTOR2 kDefaultTex1 = D3DXVECTOR2(0.0f, 0.0f);
 static const D3DXVECTOR2 kDefaultTex2 = D3DXVECTOR2(1.0f, 0.0f);

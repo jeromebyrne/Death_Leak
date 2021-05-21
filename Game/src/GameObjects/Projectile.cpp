@@ -446,7 +446,14 @@ void Projectile::Update(float delta)
 
 		if (m_applyGravity)
 		{
-			m_velocity.Y -= 0.1f * percentDelta;
+			if (mOwnerType == kPlayerProjectile)
+			{
+				m_velocity.Y -= 0.3f * percentDelta;
+			}
+			else
+			{
+				 m_velocity.Y -= 0.01f * percentDelta;
+			}
 		}
 
 		if (mRotateToDirection)

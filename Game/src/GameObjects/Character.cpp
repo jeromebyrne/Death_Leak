@@ -18,7 +18,7 @@
 float Character::mLastTimePlayedDeathSFX = 0.0f;
 static const float kMinTimeBetweenDeathSFX = 0.1f;
 static const float kJumpDelay = 0.05f;
-static const int kDamageKickback = 20;
+static const int kDamageKickback = 30;
 static const float kTimeAllowedToJumpAfterLeaveSolidGround = 0.3f;
 static const float kSmallDropDistance = 300.0f;
 static const float kLargeDropDistance = 700.0f;
