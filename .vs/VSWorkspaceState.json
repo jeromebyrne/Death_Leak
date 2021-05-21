@@ -3,15 +3,8 @@
     "",
     "\\Game",
     "\\Game\\XmlFiles",
-    "\\steamworks_sdk_150",
-    "\\steamworks_sdk_150\\sdk",
-    "\\steamworks_sdk_150\\sdk\\tools",
-    "\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder",
-    "\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder\\content",
-    "\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder\\content\\windows_content",
-    "\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder\\content\\windows_content\\XmlFiles",
-    "\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder\\content\\windows_content\\XmlFiles\\levels"
+    "\\Game\\XmlFiles\\levels"
   ],
-  "SelectedNode": "\\Game\\XmlFiles\\levels\\inside_hanging_shadow.xml",
+  "SelectedNode": "\\Game\\XmlFiles\\levels\\village_shrine.xml",
   "PreviewInSolutionExplorer": false
 }

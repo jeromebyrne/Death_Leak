@@ -452,7 +452,15 @@ void Projectile::Update(float delta)
 			}
 			else
 			{
-				 m_velocity.Y -= 0.01f * percentDelta;
+				if (mType == kBloodFXProjectile ||
+					mType == kLiquid)
+				{
+					m_velocity.Y -= 0.5f * percentDelta;
+				}
+				else
+				{
+					m_velocity.Y -= 0.01f * percentDelta;
+				}
 			}
 		}
 

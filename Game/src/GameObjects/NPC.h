@@ -89,7 +89,7 @@ protected:
 	int mRandHealthBarOffsetY;
 	int mDamageInARowCount = 0;
 	float mDamageInARowCountdown = 0.0f;
-	int mFireProjectileRandOffsetMax = 250;
+	int mFireProjectileRandOffsetMax = 100;
 };
 
 #endif

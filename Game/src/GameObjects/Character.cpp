@@ -1142,7 +1142,18 @@ void Character::DoAnimationEffectIfApplicable(AnimationPart * bodyPart)
 
 						if (IsPlayer() && material->ShouldVibrate())
 						{
-							// Game::GetInstance()->Vibrate(0.03f, 0.03f, 0.06f);
+							static bool left = true;
+
+							if (left)
+							{
+								Game::GetInstance()->Vibrate(0.1f, 0.0f, 0.04f);
+							}
+							else
+							{
+								Game::GetInstance()->Vibrate(0.0f, 0.2f, 0.06f);
+							}
+							
+							left = !left;
 						}
 					}
 				}
@@ -1621,7 +1632,7 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 
 					// spawn some orbs
 					if (GameObjectManager::Instance()->GetPlayer() != this)
 					{
-						CurrencyOrb::SpawnOrbs(m_position, 3);
+						CurrencyOrb::SpawnOrbs(Vector2(m_position.X, m_position.Y + 200.0f), 5);
 					}
 				}
 				else if (shouldExplode && !mExplodesGruesomely)
