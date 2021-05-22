@@ -36,11 +36,15 @@ void AudioObject::Update(float delta)
 
 	if (!mHasStartedPlaying)
 	{
-		mSoundInstance = AudioManager::Instance()->PlaySoundEffect(mAudioFilename, mRepeat, true);
+		mSoundInstance = AudioManager::Instance()->PlaySoundEffect(mAudioFilename, mRepeat, true, true, true);
 
 		if (mSoundInstance != nullptr && mAdjustVolumeToCamera)
 		{
+			// sound needs to be paused initially as it will play at 100% volume
+			// so we must play it and start it paused, then set volume to 0, then unpause
+			// the actual volume based on position will be set further down
 			mSoundInstance->setVolume(0.0f);
+			mSoundInstance->setIsPaused(false); 
 		}
 		mHasStartedPlaying = true;
 	}

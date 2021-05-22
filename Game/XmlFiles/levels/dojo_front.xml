@@ -187,7 +187,7 @@
     </SolidLineStrip>
     <Door id="10" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGround" y="163.099945" x="-137.600037" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions height="24.745888" width="24.596699" native="false" repeatX="false" repeatY="false" />
+        <dimensions height="24.745888" width="250.596699" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />

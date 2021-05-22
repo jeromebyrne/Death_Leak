@@ -22,7 +22,7 @@ public:
 
 	void Initialise();
 	void Release();
-	irrklang::ISound * PlaySoundEffect(const string & fileName, bool loop = false, bool track = false, bool applyTimeMod = true);
+	irrklang::ISound * PlaySoundEffect(const string & fileName, bool loop = false, bool track = false, bool applyTimeMod = true, bool startPaused = false);
 	void PlayMusic(string fileName, bool loop = false);
 
 	void StopAllSounds();

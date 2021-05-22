@@ -31,7 +31,7 @@ void AudioManager::Release()
 	}
 }
 
-irrklang::ISound * AudioManager::PlaySoundEffect(const string & fileName, bool loop, bool track, bool applyTimeMod)
+irrklang::ISound * AudioManager::PlaySoundEffect(const string & fileName, bool loop, bool track, bool applyTimeMod, bool startPaused)
 {
 	string file = m_audioPath + fileName;
 
@@ -45,7 +45,7 @@ irrklang::ISound * AudioManager::PlaySoundEffect(const string & fileName, bool l
 		}
 		track = true;
 	}
-	irrklang::ISound * sound = m_irrKlangEngine->play2D(file.c_str(), loop, false, track);
+	irrklang::ISound * sound = m_irrKlangEngine->play2D(file.c_str(), loop, startPaused, track);
 	if (!sound)
 	{
 		LOG_ERROR("Sound file not found: %s", fileName.c_str());
