@@ -5,8 +5,8 @@
 static const float kRunAwayDelay = 0.5f;
 static const float kJumpOrRollRandomDelayMin = 2.0f;
 static const float kJumpOrRollRandomDelayMax = 6.5f;
-static const float kTeleportDelayMin = 3.0f;
-static const float kTeleportDelayMax = 5.0f;
+static const float kTeleportDelayMin = 8.0f;
+static const float kTeleportDelayMax = 12.0f;
 static const float kTeleportDistance = 600.0f;
 static const float kFireProjectileWarmUp = 0.25f;
 

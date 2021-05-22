@@ -448,7 +448,7 @@ void Projectile::Update(float delta)
 		{
 			if (mOwnerType == kPlayerProjectile)
 			{
-				m_velocity.Y -= 0.3f * percentDelta;
+				m_velocity.Y -= 0.25f * percentDelta;
 			}
 			else
 			{

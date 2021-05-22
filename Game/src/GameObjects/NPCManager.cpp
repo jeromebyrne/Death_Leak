@@ -79,13 +79,13 @@ void NPCManager::Draw()
 			indicatorPos.X = camRight - 45;
 		}
 
-		if (npc->Bottom() > camTop)
+		if (npc->Bottom() > (camTop - 45.0f))
 		{
-			indicatorPos.Y = camTop - 45;
+			indicatorPos.Y = camTop - 90;
 		}
 		else if (npc->Top() < camBottom)
 		{
-			indicatorPos.Y = camBottom + 45;
+			indicatorPos.Y = camBottom + 90;
 		}
 
 		// TODO: don't use the draw utilities as it's very slow

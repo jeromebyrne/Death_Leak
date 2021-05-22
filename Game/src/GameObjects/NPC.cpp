@@ -14,8 +14,8 @@
 #include "AIStateButterflyWander.h"
 #include "AIStateFlying.h"
 
-static float kMinReloadTime = 1.25f;
-static float kMaxReloadTime = 2.0f;
+static float kMinReloadTime = 1.0f;
+static float kMaxReloadTime = 1.6f;
 static float kDamageComboWindowDelay = 0.5f;
 static int kDamageInARowToStun = 6;
 static float kTimeStunned = 2.0f;
