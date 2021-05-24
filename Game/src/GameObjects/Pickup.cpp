@@ -42,5 +42,5 @@ bool Pickup::CanInteract()
 		return false;
 	}
 
-	return player->IsCrouching();
+	return true; // player->IsCrouching();
 }

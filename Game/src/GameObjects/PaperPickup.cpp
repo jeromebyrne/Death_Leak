@@ -7,7 +7,6 @@
 
 void PaperPickup::DoPickup()
 {
-	// TODO: chnage this sound effect
 	AudioManager::Instance()->PlaySoundEffect("paper_pickup.wav");
 
 	SaveManager::GetInstance()->SetPaperPickupCollected(mLocDescId);

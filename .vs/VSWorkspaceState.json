@@ -2,9 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\Game",
+    "\\Game\\src\\AI",
     "\\Game\\XmlFiles",
     "\\Game\\XmlFiles\\levels"
   ],
-  "SelectedNode": "\\Game\\XmlFiles\\levels\\village_shrine.xml",
+  "SelectedNode": "\\Game\\XmlFiles\\levels\\waterfall_cave.xml",
   "PreviewInSolutionExplorer": false
 }

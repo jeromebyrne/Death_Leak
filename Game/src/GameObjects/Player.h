@@ -16,6 +16,7 @@ public:
 	virtual Projectile * FireWeapon(Vector2 direction, float speedMultiplier) override;
 	virtual Projectile * FireBomb(Vector2 direction) override;
 	void ResetProjectileFireDelay();
+	void Draw(ID3D10Device* device, Camera2D* camera) override;
 
 	void AddAimLineSprite();
 	void SetAimLineDirection(Vector2 & dir);
@@ -103,6 +104,8 @@ private:
 	bool mIsDoingSprintZoom = false;
 
 	float mCurrentTimePullingSword = 0.0f;
+
+	float mTotalTimePullingSword = 0.0f;
 };
 
 #endif

@@ -919,6 +919,8 @@ void Player::UpdateIsPullingSwordFromStomach(float delta)
 
 	if (current_body_sequence_name == "IntroCutscene1")
 	{
+		mTotalTimePullingSword += delta;
+
 		// Phase 1
 		const InputManager & i = Game::GetInstance()->GetInputManager();
 		if (i.IsPressingInteractButton())
@@ -970,6 +972,7 @@ void Player::UpdateIsPullingSwordFromStomach(float delta)
 	}
 	else if (current_body_sequence_name == "IntroCutscene2")
 	{
+		mTotalTimePullingSword = 0.0f;
 		if (bodyPart->IsFinished())
 		{
 			SaveManager::GetInstance()->SetHasPulledSwordFromStomach(true);
@@ -982,6 +985,7 @@ void Player::UpdateIsPullingSwordFromStomach(float delta)
 	}
 	else
 	{
+		mTotalTimePullingSword = 0.0f; 
 		SaveManager::GetInstance()->SetHasPulledSwordFromStomach(true);
 	}
 }
@@ -993,5 +997,17 @@ bool Player::CanBeControlled()
 		return false;
 	}
 	return true;
+}
+
+void Player::Draw(ID3D10Device* device, Camera2D* camera)
+{
+	Character::Draw(device, camera);
+
+	if (mTotalTimePullingSword > 8.0f)
+	{
+		DrawUtilities::DrawTexture(Vector3(m_position.X, m_position.Y + 15.0f, GetDepthLayer() +0.1f),
+			Vector2(50.0f, 50.0f),
+			"Media\\UI\\gamepad_icons\\x.png");
+	}
 }
 
