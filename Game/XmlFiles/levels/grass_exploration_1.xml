@@ -1000,4 +1000,6 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
+
+ 
 </level>
