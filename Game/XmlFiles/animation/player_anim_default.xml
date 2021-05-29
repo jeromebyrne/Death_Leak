@@ -1478,7 +1478,6 @@
       <frame filename="Media\characters\player\intro_cutscene_2\intro_cutscene_2_018.png" />
       <frame filename="Media\characters\player\intro_cutscene_2\intro_cutscene_2_019.png" />
     </IntroCutscene2>
-
 	</body>
 
 	<arm OffsetX="0" OffsetY="0" SizeX="10" SizeY="10">

@@ -18,11 +18,11 @@
 static const char * kBombTextureFile = "Media/bomb.png";
 static const float kAimLineOpacityDecrementDelay = 0.05f;
 static const float kAimLineOpacityDecreaseRate = 10.0f;
-static const float kSprintZoomPercent = 0.97f;
+static const float kSprintZoomPercent = 0.75f;
 static const float kSprintZoomCamChangeRateIn = 0.3f;
 static const float kSprintZoomCamChangeRateOut = 0.10f;
 
-static const float kStomachPullTimeRate = 0.001f;
+static const float kStomachPullTimeRate = 0.05f;
 
 static const float kFocusUseRate = 80.0f;
 static const float kSprintFocusUseRate = 30.0f;
@@ -33,7 +33,7 @@ static const float kDownwardDashFocusAmount = 50.0f;
 static const float kRollFocusAmount = 2.0f;
 static const float kWaterFocusUseRate = 0.5f;
 static const float kDrownHealthLossRate = 2.0f;
-static const float kStomachSwordPullTime = 0.15f;
+static const float kStomachSwordPullTime = 2.75f;
 static const float kResistanceY = 0.55f;
 
 static const float kProjectileDamage = 1.25f;
@@ -932,14 +932,69 @@ void Player::UpdateIsPullingSwordFromStomach(float delta)
 				mCurrentTimePullingSword = 0.0f;
 				bodyPart->SetSequence("IntroCutscene2");
 
-				Game::GetInstance()->Vibrate(0.5f, 0.5f, 0.5f);
+				auto cam = Camera2D::GetInstance();
+				cam->SetZoomLevel(mCameraZoomOnLoad);
+
+				Game::GetInstance()->Vibrate(1.0f, 0.25f, 0.75f);
+
+				ParticleEmitterManager::Instance()->CreateDirectedSpray(20,
+					Vector2(m_position.X - 35.0f, m_position.Y - 15.0f),
+					GetDepthLayer(),
+					Vector2(-0.75f, 0.25f),
+					0.2f,
+					Vector2(4000, 4000),
+					"Media\\bloodparticle2.png",
+					1.0f,
+					8.0f,
+					0.25f,
+					0.75f,
+					20.0f,
+					50.0f,
+					1.5f,
+					false,
+					0.5f,
+					1.0f,
+					0.0f,
+					true,
+					3.0f,
+					0.1f,
+					0.8f,
+					5.0f,
+					1.0f);
+
+				ParticleEmitterManager::Instance()->CreateDirectedSpray(50,
+					Vector2(m_position.X , m_position.Y - 20.0f),
+					GetDepthLayer(),
+					Vector2(-0.5f, 0.5f),
+					0.45f,
+					Vector2(4000, 4000),
+					"Media\\bloodparticle3.png",
+					8.0f,
+					18.0f,
+					0.45f,
+					0.75f,
+					50.0f,
+					75.0f,
+					1.5f,
+					false,
+					0.5f,
+					1.0f,
+					0.0f,
+					true,
+					1.75f,
+					0.1f,
+					0.8f,
+					5.0f,
+					1.0f);
+
+				return;
 			}
 
 			float time = mCurrentTimePullingSword / kStomachSwordPullTime;
 
-			Camera2D::GetInstance()->DoShake(time * 2.0f, 0.1f);
+			Camera2D::GetInstance()->DoShake(time * 5.0f, 0.1f);
 
-			Game::GetInstance()->Vibrate(time * 0.25f, time * 0.5f, 0.1f);
+			Game::GetInstance()->Vibrate(0.0f, time * 0.4f, 0.1f);
 
 			// camera zoom
 			{
@@ -972,19 +1027,16 @@ void Player::UpdateIsPullingSwordFromStomach(float delta)
 	}
 	else if (current_body_sequence_name == "IntroCutscene2")
 	{
+		// Timing::Instance()->SetTimeModifier(0.15f);
 		mTotalTimePullingSword = 0.0f;
 		if (bodyPart->IsFinished())
 		{
 			SaveManager::GetInstance()->SetHasPulledSwordFromStomach(true);
-
-			// Do blood spray
-			// ParticleEmitterManager::Instance()->CreateRadialBloodSpray(40, m_position, false, 0.0f);
-
-			// TODO: play audio
 		}
 	}
 	else
 	{
+		// Timing::Instance()->SetTimeModifier(1.0f);
 		mTotalTimePullingSword = 0.0f; 
 		SaveManager::GetInstance()->SetHasPulledSwordFromStomach(true);
 	}
@@ -1005,7 +1057,7 @@ void Player::Draw(ID3D10Device* device, Camera2D* camera)
 
 	if (mTotalTimePullingSword > 8.0f)
 	{
-		DrawUtilities::DrawTexture(Vector3(m_position.X, m_position.Y + 15.0f, GetDepthLayer() +0.1f),
+		DrawUtilities::DrawTexture(Vector3(m_position.X - 35.0f, m_position.Y + 50.0f, GetDepthLayer() +0.1f),
 			Vector2(50.0f, 50.0f),
 			"Media\\UI\\gamepad_icons\\x.png");
 	}
