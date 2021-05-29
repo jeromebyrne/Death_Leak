@@ -135,4 +135,16 @@
     <pt-br>I found a nearby hotspring and its healing waters have saved me from my own memories. I feel like a new man. Can I make up for my sins?</pt-br>
     <de>I found a nearby hotspring and its healing waters have saved me from my own memories. I feel like a new man. Can I make up for my sins?</de>
   </save_shrine_hint_desc>
+
+  <paper_pickup_gametip>
+    <en-gb>GAME TIP</en-gb>
+    <pt-br>GAME TIP</pt-br>
+    <de>GAME TIP</de>
+  </paper_pickup_gametip>
+
+  <paper_pickup_gametip_projectile>
+    <en-gb>Use the RIGHT THUMBSTICK to throw a flying dagger</en-gb>
+    <pt-br>Use the RIGHT THUMBSTICK to throw a flying dagger</pt-br>
+    <de>Use the RIGHT THUMBSTICK to throw a flying dagger</de>
+  </paper_pickup_gametip_projectile>
 </strings>

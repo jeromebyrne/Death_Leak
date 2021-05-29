@@ -21,8 +21,8 @@ static const float kSnowSessionMaxTime = 90.0f;
 static const float kSnowIntroTime = 10.0f;
 static const float kSnowOutroTime = 6.0f;
 
-static const float kMinWeatherIntervalTime = 90.0f;
-static const float kMaxWeatherIntervalTime = 200.0f;
+static const float kMinWeatherIntervalTime = 160.0f;
+static const float kMaxWeatherIntervalTime = 300.0f;
 
 static const float kNormalFoliageSwayMultiplier = 2.5f;
 static const float kRainFoliageSwayMultiplier = 3.5f;
@@ -484,12 +484,11 @@ void WeatherManager::UpdateNoWeather(float delta)
 			{
 				StartRaining();
 			}
-			else if (!mHasSnowed)
-			{
-				StartSnowing();
-			}
 			else
 			{
+				// only allowing rain now
+				StartRaining();
+				/*
 				// pick some random weather
 				int randNum = rand() % 2;
 
@@ -511,6 +510,7 @@ void WeatherManager::UpdateNoWeather(float delta)
 							break;
 						}
 				}
+				*/
 			}
 		}
 	}

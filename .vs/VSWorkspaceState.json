@@ -2,10 +2,8 @@
   "ExpandedNodes": [
     "",
     "\\Game",
-    "\\Game\\src\\AI",
     "\\Game\\XmlFiles",
     "\\Game\\XmlFiles\\levels"
   ],
-  "SelectedNode": "\\Game\\XmlFiles\\levels\\grass_exploration_dead_end_below_2.xml",
   "PreviewInSolutionExplorer": false
 }
