@@ -9,6 +9,7 @@
 
 static const D3DXCOLOR kCostTextColor = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 static const float kCostYOffset = -111.0f;
+static const float kCostYOffsetCliffhut = -100.0f;
 
 DojoScrollPickup::DojoScrollPickup(float x,
 									float y, 
@@ -88,6 +89,14 @@ void DojoScrollPickup::Initialise()
 	mLocalizedDescription = StringManager::GetInstance()->GetLocalisedString(descKey.c_str());
 
 	SetDepthLayer(GameObject::kGround);
+
+	mCostOffsetY = kCostYOffset;
+
+	string currentLevel = GameObjectManager::Instance()->GetCurrentLevelFile();
+	if (currentLevel == "XmlFiles\\levels\\cliff_hut.xml")
+	{
+		mCostOffsetY = kCostYOffsetCliffhut;
+	}
 }
 
 void DojoScrollPickup::XmlRead(TiXmlElement * element)
@@ -198,7 +207,8 @@ void DojoScrollPickup::Draw(ID3D10Device * device, Camera2D * camera)
 
 	// cost text
 	{
-		Vector2 worldPos = Vector2((m_position.X - (m_dimensions.X * 0.5f)) + mCostOffsetX, m_position.Y + kCostYOffset);
+		Vector2 worldPos = Vector2((m_position.X - (m_dimensions.X * 0.5f)) + mCostOffsetX, m_position.Y + mCostOffsetY);
+
 		worldPos = worldPos * worldScale;
 		Vector2 screenPos = Utilities::WorldToScreen(worldPos);
 

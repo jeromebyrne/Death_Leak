@@ -39,6 +39,7 @@ private:
 	ID3DX10Font* mCostText = nullptr;
 	string mOrbCostString;
 	float mCostOffsetX = 0.0f;
+	float mCostOffsetY = 0.0f;
 
 	Sprite * mDescriptionBacking = nullptr;
 

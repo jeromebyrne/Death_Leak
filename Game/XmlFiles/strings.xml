@@ -20,19 +20,19 @@
   </health_upgrade_notification>
 
   <dojo_scroll_desc_kRoll>
-    <en-gb>The ROLL technique. Time your rolls on big landings to avoid a delay.</en-gb>
+    <en-gb>The ROLL technique. Use for evasive actions and time your rolls on big landings to avoid a delay. Roll with the LEFT BUMPER.</en-gb>
     <pt-br>A técnica ROLL Tempo seus rolos em grandes aterrissagens para evitar um atraso.</pt-br>
     <de>Die ROLL-Technik. Zeit für große Landungen, um eine Verzögerung zu vermeiden.</de>
   </dojo_scroll_desc_kRoll>
 
   <dojo_scroll_desc_kDownwardDash>
-    <en-gb>The downward SMASH technique. Smash through obstacles with this technique. </en-gb>
+    <en-gb>The downward SMASH technique. Smash through obstacles with this technique. Press the RIGHT BUMPER in mid-air to trigger.</en-gb>
     <pt-br>A técnica descendente de SMASH. Esmagar os obstáculos com esta técnica.</pt-br>
     <de>Die abwärts gerichtete SMASH-Technik. Besiege Hindernisse mit dieser Technik.</de>
   </dojo_scroll_desc_kDownwardDash>
 
   <dojo_scroll_desc_kSlowMotion>
-    <en-gb>The FOCUS technique. Slow down time. TODO</en-gb>
+    <en-gb>The FOCUS technique. Slow down time. Hold the LEFT TRIGGER to activate.</en-gb>
     <pt-br>A técnica FOCUS. Diminua o tempo. FAÇAM</pt-br>
     <de>Die FOCUS-Technik. Zeit verlangsamen. MACHEN</de>
   </dojo_scroll_desc_kSlowMotion>
