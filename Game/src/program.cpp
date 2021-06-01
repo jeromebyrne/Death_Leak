@@ -92,6 +92,11 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 
 		double delta = (currentTime - last_update_time) * 0.001;
 
+		if (delta < timing->GetTargetDelta())
+		{
+			continue;
+		}
+
 		double gameSpeed = 1.0; 
 
 		delta *= gameSpeed;

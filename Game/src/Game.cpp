@@ -150,9 +150,12 @@ void Game::Update(float delta)
 {
 	m_pCam2d->CheckBoundaryCollisions();
 
-	m_pCam2d->FollowTargetObjectWithLag();
+	if (!mPaused)
+	{
+		m_pCam2d->FollowTargetObjectWithLag();
 
-	m_pCam2d->CheckBoundaryCollisions();
+		m_pCam2d->CheckBoundaryCollisions();
+	}
 
 	AudioManager::Instance()->Update();
 
@@ -247,6 +250,7 @@ void Game::Update(float delta)
 	mUIManagerInstance->HandleEvents();
 	
 	// m_pCam2d->CheckBoundaryCollisions();
+
 	m_pCam2d->Update();
 
 	mInputManager.Update(delta);
