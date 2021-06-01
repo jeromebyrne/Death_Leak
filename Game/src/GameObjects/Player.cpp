@@ -73,7 +73,7 @@ void Player::Initialise()
 	mMaxJumpsAllowed = 1;
 	mSprintVelocityX = 17.5f;
 	mAccelXRate = 1.00f;
-	m_maxVelocity.X = 9.5f;
+	m_maxVelocity.X = 11.0f;
 	mDefaultVelocityX = m_maxVelocity.X;
 
 	UpdateResistance();
