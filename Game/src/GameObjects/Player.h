@@ -59,7 +59,7 @@ public:
 
 	void SetMaxHealth(float value);
 
-	void SetHealth(float value) { mHealth = value; }
+	void SetHealth(float value);
 
 	void UpdateAnimations() override;
 

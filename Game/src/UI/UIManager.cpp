@@ -225,6 +225,14 @@ void UIManager::AddInteractableToDraw(GameObject::InteractableProperties iProp)
 
 UIScreen * UIManager::PushUI(string uiName)
 {
+	if (uiName == "mainmenu")
+	{
+		// hack: everytime we get to the mainmenu, reload savefile
+		SaveManager::GetInstance()->ReadSaveFile();
+
+		// hack fix for bugs where time is slowed for death
+		Timing::Instance()->SetTimeModifier(1.0f);
+	}
 	// check that it's not already in the currentUI screen list
 	for(const auto & screen : m_currentScreens)
 	{

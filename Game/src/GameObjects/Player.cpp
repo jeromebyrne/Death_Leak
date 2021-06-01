@@ -91,6 +91,11 @@ void Player::Initialise()
 
 	mMaxHealth = maxHealth;
 
+	if (mHealth > mMaxHealth)
+	{
+		mHealth = mMaxHealth;
+	}
+
 	// mDeltaTimeMultiplierInSloMo = 3.5f;
 
 	mCameraZoomOnLoad = Camera2D::GetInstance()->GetZoomLevel();
@@ -788,6 +793,11 @@ void Player::SetMaxHealth(float value)
 	mMaxHealth = value;
 
 	SaveManager::GetInstance()->SetPlayerMaxHealth((int)mMaxHealth);
+}
+
+void Player::SetHealth(float value)
+{
+	mHealth = value;
 }
 
 bool Player::CanSprint()
