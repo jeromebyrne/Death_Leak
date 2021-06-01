@@ -33,14 +33,16 @@ static const float kDownwardDashFocusAmount = 50.0f;
 static const float kRollFocusAmount = 2.0f;
 static const float kWaterFocusUseRate = 0.5f;
 static const float kDrownHealthLossRate = 2.0f;
-static const float kStomachSwordPullTime = 2.75f;
+static const float kStomachSwordPullTime = 5.0f;
 static const float kResistanceY = 0.55f;
+static const float kInitialSwordPullBreathingVolume = 0.35f;
+static const float kSwordPullIdleShowPromptDelay = 10.0f;
 
 static const float kProjectileDamage = 1.25f;
 
 Player::Player(float x, float y, float width, float height) :
 Character(x, y, GameObject::kPlayer, width, height),
-	mProjectileFireDelay(0.125f),
+	mProjectileFireDelay(0.225f),
 	mTimeUntilProjectileReady(0.0f),
 	mFireBurstNum(4),
 	mCurrentBurstNum(0),
@@ -221,12 +223,14 @@ void Player::Update(float delta)
 
 	UpdateResistance();
 
-	if (mBurstFireEnabled && mFireBurstNum > 0 && mCurrentBurstNum >= mFireBurstNum)
+	float timeMod = Timing::Instance()->GetTimeModifier();
+
+	if ((mBurstFireEnabled && timeMod == 1.0f) && mFireBurstNum > 0 && mCurrentBurstNum >= mFireBurstNum)
 	{
 		mCurrentBurstNum = 0;
 		mTimeUntilFireBurstAvailable = mFireBurstDelay;
 	}
-	else if (mBurstFireEnabled && mTimeUntilFireBurstAvailable > 0.0f)
+	else if ((mBurstFireEnabled && timeMod == 1.0f) && mTimeUntilFireBurstAvailable > 0.0f)
 	{
 		mTimeUntilFireBurstAvailable -= delta;
 
@@ -238,7 +242,7 @@ void Player::Update(float delta)
 	else if (mTimeUntilProjectileReady > 0.0f)
 	{
 		float projectileReloadDelta = delta;
-		if (Timing::Instance()->GetTimeModifier() < 1.0f)
+		if (timeMod < 1.0f)
 		{
 			projectileReloadDelta *= 5.0f;
 		}
@@ -277,8 +281,6 @@ void Player::Update(float delta)
 
 	UpdateFocus(delta);
 
-	Camera2D * cam = Camera2D::GetInstance();
-
 	if (GetIsSprintActive() && CanSprint())
 	{
 		ConsumeFocus(kSprintFocusUseRate * delta);
@@ -288,34 +290,6 @@ void Player::Update(float delta)
 	else
 	{
 		SetSprintActive(false);
-	}
-
-	if (mIsDoingSprintZoom)
-	{
-		float currentZoom = cam->GetZoomLevel();
-		if (GetIsSprintActive())
-		{
-			cam->SetZoomLevel(currentZoom - (delta * kSprintZoomCamChangeRateIn));
-		}
-		else
-		{
-			cam->SetZoomLevel(currentZoom + (delta * kSprintZoomCamChangeRateOut));
-		}
-
-		currentZoom = cam->GetZoomLevel();
-		if (currentZoom < mCameraZoomOnLoad * kSprintZoomPercent)
-		{
-			currentZoom = mCameraZoomOnLoad * kSprintZoomPercent;
-
-			cam->DoSmallShake();
-		}
-		else if (currentZoom > mCameraZoomOnLoad)
-		{
-			currentZoom = mCameraZoomOnLoad;
-			mIsDoingSprintZoom = false;
-		}
-
-		cam->SetZoomLevel(currentZoom);
 	}
 
 	if (IsDead())
@@ -334,14 +308,16 @@ Projectile * Player::FireWeapon(Vector2 direction, float speedMultiplier)
 		return nullptr;
 	}
 
+	float timeMod = Timing::Instance()->GetTimeModifier();
+
 	mTimeUntilAimLineStartDisappearing = kAimLineOpacityDecrementDelay;
-	if ((mBurstFireEnabled && (mCurrentBurstNum >= mFireBurstNum && mFireBurstNum > 0)) ||
+	if (((mBurstFireEnabled && timeMod == 1.0f) && (mCurrentBurstNum >= mFireBurstNum && mFireBurstNum > 0)) ||
 		mTimeUntilProjectileReady > 0.0f)
 	{
 		return nullptr;
 	}
 
-	if (mBurstFireEnabled)
+	if ((mBurstFireEnabled && timeMod == 1.0f))
 	{
 		++mCurrentBurstNum;
 	}
@@ -921,11 +897,24 @@ void Player::UpdateIsPullingSwordFromStomach(float delta)
 	{
 		mTotalTimePullingSword += delta;
 
+		if (mBreathingIntroSFX == nullptr)
+		{
+			mBreathingIntroSFX = AudioManager::Instance()->PlaySoundEffect("character\\breathing_intro.wav", true, true, true);
+			mBreathingIntroSFX->setVolume(kInitialSwordPullBreathingVolume);
+		}
+
 		// Phase 1
 		const InputManager & i = Game::GetInstance()->GetInputManager();
 		if (i.IsPressingInteractButton())
 		{
 			mCurrentTimePullingSword += delta;
+
+			if (mBreathingIntroSFX != nullptr)
+			{
+				float percent = mCurrentTimePullingSword / kStomachSwordPullTime;
+
+				mBreathingIntroSFX->setVolume(kInitialSwordPullBreathingVolume + ((1.0f - kInitialSwordPullBreathingVolume) * percent));
+			}
 
 			if (mCurrentTimePullingSword > kStomachSwordPullTime)
 			{
@@ -987,6 +976,18 @@ void Player::UpdateIsPullingSwordFromStomach(float delta)
 					5.0f,
 					1.0f);
 
+				AudioManager::Instance()->PlaySoundEffect("blood\\blood2.wav");
+				AudioManager::Instance()->PlaySoundEffect("character\\sword_pull_grunt.wav");
+
+				FireBloodSpatter(Vector2(-1.6f, 1.4f), Vector2(m_position.X, m_position.Y + 5.0f));
+
+				if (mBreathingIntroSFX != nullptr)
+				{
+					mBreathingIntroSFX->stop();
+					mBreathingIntroSFX->drop();
+					mBreathingIntroSFX = nullptr;
+				}
+
 				return;
 			}
 
@@ -1022,7 +1023,19 @@ void Player::UpdateIsPullingSwordFromStomach(float delta)
 
 			auto cam = Camera2D::GetInstance();
 			float currentZoom = cam->GetZoomLevel();
-			cam->SetZoomLevel(currentZoom + (delta * kStomachPullTimeRate));
+			cam->SetZoomLevel(currentZoom + (delta * kStomachPullTimeRate * 2.0f));
+
+			if (mBreathingIntroSFX)
+			{
+				if (mBreathingIntroSFX->getVolume() > kInitialSwordPullBreathingVolume)
+				{
+					mBreathingIntroSFX->setVolume(mBreathingIntroSFX->getVolume() - 0.01f);
+				}
+				else
+				{
+					mBreathingIntroSFX->setVolume(kInitialSwordPullBreathingVolume);
+				}
+			}
 		}
 	}
 	else if (current_body_sequence_name == "IntroCutscene2")
@@ -1055,11 +1068,15 @@ void Player::Draw(ID3D10Device* device, Camera2D* camera)
 {
 	Character::Draw(device, camera);
 
-	if (mTotalTimePullingSword > 8.0f)
+	if (mTotalTimePullingSword > kSwordPullIdleShowPromptDelay)
 	{
-		DrawUtilities::DrawTexture(Vector3(m_position.X - 35.0f, m_position.Y + 50.0f, GetDepthLayer() +0.1f),
-			Vector2(50.0f, 50.0f),
-			"Media\\UI\\gamepad_icons\\x.png");
+		const InputManager& i = Game::GetInstance()->GetInputManager();
+		if (i.IsPressingInteractButton() == false)
+		{
+			DrawUtilities::DrawTexture(Vector3(m_position.X - 35.0f, m_position.Y + 50.0f, GetDepthLayer() + 0.1f),
+				Vector2(50.0f, 50.0f),
+				"Media\\UI\\gamepad_icons\\x.png");
+		}
 	}
 }
 

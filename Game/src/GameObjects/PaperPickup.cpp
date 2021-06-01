@@ -51,6 +51,14 @@ void PaperPickup::XmlWrite(TiXmlElement * element)
 
 void PaperPickup::Update(float delta)
 {
+#if _DEBUG
+	if (Game::GetInstance()->GetIsLevelEditMode())
+	{
+		Pickup::Update(delta);
+		return;
+	}
+#endif
+
 	if (!mHasInitCheckedCollected)
 	{
 		if (!mLocDescId.empty() && SaveManager::GetInstance()->IsPaperPickupCollected(mLocDescId))

@@ -92,7 +92,7 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 
 		double delta = (currentTime - last_update_time) * 0.001;
 
-		double gameSpeed = 1.0; // TODO: final "normal" level should be 0.7 (70%)
+		double gameSpeed = 1.0; 
 
 		delta *= gameSpeed;
 

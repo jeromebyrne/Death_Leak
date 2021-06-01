@@ -9,7 +9,7 @@ static const float clearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 
 Graphics::Graphics(void):
 	mSimpleFontManager(nullptr),
-	mIsFullScreen(false),
+	mIsFullScreen(true),
 	mVSyncEnabled(true),
 	m_pd3dDevice(nullptr),
 	m_pBackBufferRenderTargetView(nullptr),
@@ -252,7 +252,7 @@ void Graphics::SetSwapChainProperties(HWND hWnd, int bufferWidth, int bufferHeig
 	// set back buffer properties
     ZeroMemory( &m_swapChainDescription, sizeof(m_swapChainDescription) );
 
-    m_swapChainDescription.BufferCount = 3;
+    m_swapChainDescription.BufferCount = 1;
     m_swapChainDescription.BufferDesc.Width = bufferWidth;
     m_swapChainDescription.BufferDesc.Height = bufferHeight;
     m_swapChainDescription.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;

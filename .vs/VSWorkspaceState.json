@@ -1,10 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Game",
-    "\\Game\\XmlFiles",
-    "\\Game\\XmlFiles\\levels"
+    "\\Game"
   ],
-  "SelectedNode": "\\Game\\XmlFiles\\levels\\village_hut.xml",
+  "SelectedNode": "\\Game\\src\\Core\\Graphics.cpp",
   "PreviewInSolutionExplorer": false
 }

@@ -63,6 +63,14 @@ void KeyPickup::XmlWrite(TiXmlElement * element)
 
 void KeyPickup::Update(float delta)
 {
+#if _DEBUG
+	if (Game::GetInstance()->GetIsLevelEditMode())
+	{
+		Pickup::Update(delta);
+		return;
+	}
+#endif
+
 	if (!mHasInitCheckedCollected)
 	{
 		if (SaveManager::GetInstance()->HasDoorKey(mKeyId))

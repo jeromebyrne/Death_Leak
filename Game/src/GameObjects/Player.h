@@ -106,6 +106,8 @@ private:
 	float mCurrentTimePullingSword = 0.0f;
 
 	float mTotalTimePullingSword = 0.0f;
+
+	irrklang::ISound* mBreathingIntroSFX = nullptr;
 };
 
 #endif
