@@ -131,9 +131,9 @@
   </save_shrine_hint_title>
 
   <save_shrine_hint_desc>
-    <en-gb>I found a nearby hotspring. The healing waters have saved me from my own memories. I feel like a new man. Can I make up for my sins?</en-gb>
-    <pt-br>I found a nearby hotspring. The healing waters have saved me from my own memories. I feel like a new man. Can I make up for my sins?</pt-br>
-    <de>I found a nearby hotspring. The healing waters have saved me from my own memories. I feel like a new man. Can I make up for my sins?</de>
+    <en-gb>I found a nearby hotspring. The healing waters saved me from my own memories. I feel like a new man. Can I make up for my sins?</en-gb>
+    <pt-br>I found a nearby hotspring. The healing waters saved me from my own memories. I feel like a new man. Can I make up for my sins?</pt-br>
+    <de>I found a nearby hotspring. The healing waters saved me from my own memories. I feel like a new man. Can I make up for my sins?</de>
   </save_shrine_hint_desc>
 
   <paper_pickup_gametip>
@@ -179,9 +179,9 @@
   </paper_pickup_cave_clue_name>
   
 <paper_pickup_cave_clue_desc>
-    <en-gb>I told Akio about the hidden cave earlier. He was mad at me. He said it was too dangerous diving beneath the waterfall. I told him I had seen the stream of bubbles and had to investigate. That's what an adventurer does.</en-gb>
-    <pt-br>I told Akio about the hidden cave earlier. He was mad at me. He said it was too dangerous diving beneath the waterfall. I told him I had seen the stream of bubbles and had to investigate. That's what an adventurer does.</pt-br>
-    <de>I told Akio about the hidden cave earlier. He was mad at me. He said it was too dangerous diving beneath the waterfall. I told him I had seen the stream of bubbles and had to investigate. That's what an adventurer does.</de>
+    <en-gb>I told Akio about the hidden cave earlier. He was mad at me. He said it was too dangerous diving beneath the waterfall. I told him I had seen a stream of bubbles and had to investigate. That's what an adventurer does.</en-gb>
+    <pt-br>I told Akio about the hidden cave earlier. He was mad at me. He said it was too dangerous diving beneath the waterfall. I told him I had seen a stream of bubbles and had to investigate. That's what an adventurer does.</pt-br>
+    <de>I told Akio about the hidden cave earlier. He was mad at me. He said it was too dangerous diving beneath the waterfall. I told him I had seen a stream of bubbles and had to investigate. That's what an adventurer does.</de>
   </paper_pickup_cave_clue_desc>
 
 </strings>

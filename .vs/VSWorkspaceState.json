@@ -2,6 +2,7 @@
   "ExpandedNodes": [
     "",
     "\\Game",
+    "\\Game\\src",
     "\\Game\\XmlFiles",
     "\\Game\\XmlFiles\\levels"
   ],
