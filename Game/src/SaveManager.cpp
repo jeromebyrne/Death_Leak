@@ -620,6 +620,16 @@ void SaveManager::SetHasPulledSwordFromStomach(bool value)
 	mSaveMap["has_ungutted"] = value;
 }
 
+bool SaveManager::HasRepairTools()
+{
+	return GetBoolValue("has_repair_tools");
+}
+
+void SaveManager::SetHasRepairTools(bool value)
+{
+	mSaveMap["has_repair_tools"] = value;
+}
+
 double SaveManager::GetLastTimeNPCSpawnerTriggered(const string& levelName, int objectID)
 {
 	std::string key = levelName + "_npc_" + Utilities::ConvertDoubleToString(objectID);

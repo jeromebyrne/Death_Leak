@@ -68,9 +68,9 @@
   </key_name_granary>
 
   <key_desc_granary>
-    <en-gb>Opens the old Granary door</en-gb>
-    <pt-br>Opens the old Granary door</pt-br>
-    <de>Opens the old Granary door</de>
+    <en-gb>Opens the old Granary door in the forest</en-gb>
+    <pt-br>Opens the old Granary door in the forest</pt-br>
+    <de>Opens the old Granary door in the forest</de>
   </key_desc_granary>
 
   <key_name_dojo>
@@ -131,9 +131,9 @@
   </save_shrine_hint_title>
 
   <save_shrine_hint_desc>
-    <en-gb>I found a nearby hotspring and its healing waters have saved me from my own memories. I feel like a new man. Can I make up for my sins?</en-gb>
-    <pt-br>I found a nearby hotspring and its healing waters have saved me from my own memories. I feel like a new man. Can I make up for my sins?</pt-br>
-    <de>I found a nearby hotspring and its healing waters have saved me from my own memories. I feel like a new man. Can I make up for my sins?</de>
+    <en-gb>I found a nearby hotspring. The healing waters have saved me from my own memories. I feel like a new man. Can I make up for my sins?</en-gb>
+    <pt-br>I found a nearby hotspring. The healing waters have saved me from my own memories. I feel like a new man. Can I make up for my sins?</pt-br>
+    <de>I found a nearby hotspring. The healing waters have saved me from my own memories. I feel like a new man. Can I make up for my sins?</de>
   </save_shrine_hint_desc>
 
   <paper_pickup_gametip>
@@ -147,4 +147,41 @@
     <pt-br>Use the RIGHT THUMBSTICK to throw a flying dagger</pt-br>
     <de>Use the RIGHT THUMBSTICK to throw a flying dagger</de>
   </paper_pickup_gametip_projectile>
+
+  <key_name_tools>
+    <en-gb>Tools</en-gb>
+    <pt-br>Tools</pt-br>
+    <de>Tools</de>
+  </key_name_tools>
+
+  <key_desc_tools>
+    <en-gb>An assortment of woodworking tools. These could be useful for repairing something broken.</en-gb>
+    <pt-br>An assortment of woodworking tools. These could be useful for repairing something broken.</pt-br>
+    <de>An assortment of woodworking tools. These could be useful for repairing something broken.</de>
+  </key_desc_tools>
+
+  <key_name_village_hut>
+    <en-gb>Hut Key</en-gb>
+    <pt-br>Hut Keys</pt-br>
+    <de>Hut Key</de>
+  </key_name_village_hut>
+
+  <key_desc_village_hut>
+    <en-gb>This key looks like it would open one of the common huts.</en-gb>
+    <pt-br>This key looks like it would open one of the common huts.</pt-br>
+    <de>This key looks like it would open one of the common huts.</de>
+  </key_desc_village_hut>
+  
+<paper_pickup_cave_clue_name>
+    <en-gb>Himari's Note</en-gb>
+    <pt-br>Himari's Note</pt-br>
+    <de>Himari's Note</de>
+  </paper_pickup_cave_clue_name>
+  
+<paper_pickup_cave_clue_desc>
+    <en-gb>I told Akio about the hidden cave earlier. He was mad at me. He said it was too dangerous diving beneath the waterfall. I told him I had seen the stream of bubbles and had to investigate. That's what an adventurer does.</en-gb>
+    <pt-br>I told Akio about the hidden cave earlier. He was mad at me. He said it was too dangerous diving beneath the waterfall. I told him I had seen the stream of bubbles and had to investigate. That's what an adventurer does.</pt-br>
+    <de>I told Akio about the hidden cave earlier. He was mad at me. He said it was too dangerous diving beneath the waterfall. I told him I had seen the stream of bubbles and had to investigate. That's what an adventurer does.</de>
+  </paper_pickup_cave_clue_desc>
+
 </strings>

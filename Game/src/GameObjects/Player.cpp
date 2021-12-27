@@ -33,10 +33,10 @@ static const float kDownwardDashFocusAmount = 50.0f;
 static const float kRollFocusAmount = 2.0f;
 static const float kWaterFocusUseRate = 0.5f;
 static const float kDrownHealthLossRate = 2.0f;
-static const float kStomachSwordPullTime = 5.0f;
+static const float kStomachSwordPullTime = 3.5f;
 static const float kResistanceY = 0.55f;
 static const float kInitialSwordPullBreathingVolume = 0.35f;
-static const float kSwordPullIdleShowPromptDelay = 10.0f;
+static const float kSwordPullIdleShowPromptDelay = 8.0f;
 
 static const float kProjectileDamage = 1.25f;
 

@@ -53,6 +53,7 @@
 #include "PaperPickup.h"
 #include "KeyPickup.h"
 #include "SfxPickup.h"
+#include "Boat.h"
 
 struct DepthSortPredicate
 {
@@ -791,7 +792,11 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement, const
 	}
 	else if (strcmp(gameObjectTypeName, "sfxpickup") == 0)
 	{
-	newGameObject = new SfxPickup();
+		newGameObject = new SfxPickup();
+	}
+	else if (strcmp(gameObjectTypeName, "boat") == 0)
+	{
+		newGameObject = new Boat();
 	}
 
 	if (newGameObject && !dynamic_cast<ParticleSpray*>(newGameObject))

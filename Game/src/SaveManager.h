@@ -70,6 +70,10 @@ public:
 
 	void SetHasPulledSwordFromStomach(bool value);
 
+	bool HasRepairTools();
+
+	void SetHasRepairTools(bool value);
+
 	double GetLastTimeNPCSpawnerTriggered(const string & levelName, int objectID);
 
 	void SetLastTimeNPCSpawnerTriggered(const string& levelName, int objectID, double time);

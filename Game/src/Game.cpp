@@ -380,8 +380,8 @@ void Game::Draw()
 		mlevelEditor->Draw();
 	}
 	
-	Vector3 camPos = Camera2D::GetInstance()->Position();
-	Graphics::GetInstance()->DrawDebugText(Utilities::getFormattedString("Cam X,Y: %f %f", camPos.X, camPos.Y).c_str(), 100, 400);
+	// Vector3 camPos = Camera2D::GetInstance()->Position();
+	// Graphics::GetInstance()->DrawDebugText(Utilities::getFormattedString("Cam X,Y: %f %f", camPos.X, camPos.Y).c_str(), 100, 400);
 
 #endif
 }

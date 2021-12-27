@@ -71,6 +71,7 @@
     <ClCompile Include="src\GameObjects\ActiveBird.cpp" />
     <ClCompile Include="src\GameObjects\AmbientBird.cpp" />
     <ClCompile Include="src\GameObjects\BlackHole.cpp" />
+    <ClCompile Include="src\GameObjects\Boat.cpp" />
     <ClCompile Include="src\GameObjects\BombProjectile.cpp" />
     <ClCompile Include="src\GameObjects\Breakable.cpp" />
     <ClCompile Include="src\GameObjects\butterfly.cpp" />
@@ -220,6 +221,7 @@
     <ClInclude Include="src\GameObjects\ActiveBird.h" />
     <ClInclude Include="src\GameObjects\AmbientBird.h" />
     <ClInclude Include="src\GameObjects\BlackHole.h" />
+    <ClInclude Include="src\GameObjects\Boat.h" />
     <ClInclude Include="src\GameObjects\BombProjectile.h" />
     <ClInclude Include="src\GameObjects\Breakable.h" />
     <ClInclude Include="src\GameObjects\butterfly.h" />

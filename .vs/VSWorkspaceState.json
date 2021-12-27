@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Game"
+    "\\Game",
+    "\\Game\\XmlFiles",
+    "\\Game\\XmlFiles\\levels"
   ],
   "PreviewInSolutionExplorer": false
 }

@@ -1,5 +1,5 @@
 #include "precompiled.h"
-#include "Door.h"
+#include "Boat.h"
 #include "InputManager.h"
 #include "Game.h"
 #include "AudioManager.h"
@@ -13,32 +13,32 @@ static const string kDefaultDoorUnlockedSfx = "door_unlock.wav";
 
 static const float kUnlockingTime = 1.0f;
 
-Door::Door() :
+Boat::Boat() :
 	Sprite()
 {
 }
 
-Door::~Door()
+Boat::~Boat()
 {
 }
 
-void Door::Initialise()
+void Boat::Initialise()
 {
 	Sprite::Initialise();
 
 	mInteractableProperties.IsInteractable = true;
 	mInteractableProperties.PosOffset = Vector2(0.0f, 30.0f);
 	mInteractableProperties.DisableInteractivityOnInteract = false;
-	mInteractableProperties.InteractTime = 0.05f;
+	mInteractableProperties.InteractTime = 3.0f;
 }
 
-void Door::Update(float delta)
+void Boat::Update(float delta)
 {
 	Sprite::Update(delta);
 
-	if (mDoorWarmUpTime < kWarmUpTime)
+	if (mBoatWarmUpTime < kWarmUpTime)
 	{
-		mDoorWarmUpTime += delta;
+		mBoatWarmUpTime += delta;
 		return;
 	}
 
@@ -47,7 +47,7 @@ void Door::Update(float delta)
 		mIsUnlockingCurrentTime -= delta;
 	}
 }
-void Door::XmlRead(TiXmlElement * element)
+void Boat::XmlRead(TiXmlElement * element)
 {
 	Sprite::XmlRead(element);
 
@@ -56,15 +56,13 @@ void Door::XmlRead(TiXmlElement * element)
 	mToLevelPosition.X = XmlUtilities::ReadAttributeAsFloat(element, "player_start_pos", "x");
 	mToLevelPosition.Y = XmlUtilities::ReadAttributeAsFloat(element, "player_start_pos", "y");
 
-	mRequiredKey = XmlUtilities::ReadAttributeAsString(element, "required_key", "value");
+	// mRequiredKey = XmlUtilities::ReadAttributeAsString(element, "required_key", "value");
 
-	mDoorOpenSFX = XmlUtilities::ReadAttributeAsString(element, "door_sfx", "open");
-	mDoorLockedSFX = XmlUtilities::ReadAttributeAsString(element, "door_sfx", "locked");
-
-	mDoorIdentifier = XmlUtilities::ReadAttributeAsString(element, "door_id", "value");
+	// mDoorOpenSFX = XmlUtilities::ReadAttributeAsString(element, "door_sfx", "open");
+	// mDoorLockedSFX = XmlUtilities::ReadAttributeAsString(element, "door_sfx", "locked");
 }
 
-void Door::XmlWrite(TiXmlElement * element)
+void Boat::XmlWrite(TiXmlElement * element)
 {
 	Sprite::XmlWrite(element);
 
@@ -77,40 +75,34 @@ void Door::XmlWrite(TiXmlElement * element)
 	posElem->SetDoubleAttribute("y", mToLevelPosition.Y);
 	element->LinkEndChild(posElem);
 
+	/*
 	TiXmlElement * requiredKey = new TiXmlElement("required_key");
 	requiredKey->SetAttribute("value", mRequiredKey.c_str());
 	element->LinkEndChild(requiredKey);
 
+	
 	TiXmlElement * doorSFX = new TiXmlElement("door_sfx");
 	doorSFX->SetAttribute("open", mDoorOpenSFX.c_str());
 	doorSFX->SetAttribute("locked", mDoorLockedSFX.c_str());
 	element->LinkEndChild(doorSFX);
-
-	TiXmlElement * doorId = new TiXmlElement("door_id");
-	doorId->SetAttribute("value", mDoorIdentifier.c_str());
-	element->LinkEndChild(doorId);
+	*/
 }
 
-void Door::EnterDoor()
+void Boat::EnterBoat()
 {
 	// pause when we open a door so as not to get hit by projectiles etc...
 	// Game::GetInstance()->PauseGame();
 
-	if (!mDoorOpenSFX.empty())
-	{
-		AudioManager::Instance()->PlaySoundEffect(mDoorOpenSFX);
-	}
-
-	GAME_ASSERT(mDoorIdentifier.empty() == false);
-	GameObjectManager::Instance()->SwitchToLevel(mToLevelFile, mDoorIdentifier, true);
+	// GameObjectManager::Instance()->SwitchToLevel(mToLevelFile, mDoorIdentifier, true);
 }
 
-void Door::OnInteracted()
+void Boat::OnInteracted()
 {
 	mCanTryOpen = false;
 
-	if (!mRequiredKey.empty())
+	if (!SaveManager::GetInstance()->HasRepairTools())
 	{
+		/*
 		if (!SaveManager::GetInstance()->HasDoorKey(mRequiredKey))
 		{
 			if (!mDoorLockedSFX.empty())
@@ -143,44 +135,21 @@ void Door::OnInteracted()
 
 			return;
 		}
+		*/
+
+		return;
 	}
 
-	EnterDoor();
+	EnterBoat();
 }
 
-void Door::DisplayDoorLockedEffect()
+bool Boat::CanInteract()
 {
-	ParticleEmitterManager::Instance()->CreateDirectedSpray(1,
-															Vector2(m_position.X, m_position.Y + 140.0f),
-															GetDepthLayer(),
-															Vector2(0.0f, 1.0f),
-															0.1f,
-															Vector2(3200.0f, 1200.0f),
-															"Media\\objects\\locked_icon.png",
-															1.0f,
-															5.0f,
-															0.5f,
-															0.5f,
-															64.0f,
-															64.0f,
-															0.0f,
-															false,
-															1.0f,
-															1.0f,
-															0.0f,
-															true,
-															1.5f,
-															0.0f,
-															0.0f,
-															0.05f,
-															0.1f,
-															true);
-}
+	if (!SaveManager::GetInstance()->HasRepairTools())
+	{
+		return false;
+	}
 
-
-
-bool Door::CanInteract()
-{
 	if (mIsUnlockingCurrentTime > 0.0f)
 	{
 		return false;
@@ -192,7 +161,7 @@ bool Door::CanInteract()
 		return false;
 	}
 
-	if (mDoorWarmUpTime < kWarmUpTime)
+	if (mBoatWarmUpTime < kWarmUpTime)
 	{
 		return false;
 	}
