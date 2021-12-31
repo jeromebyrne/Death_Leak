@@ -36,7 +36,7 @@ void AudioObject::Update(float delta)
 
 	if (!mHasStartedPlaying)
 	{
-		mSoundInstance = AudioManager::Instance()->PlaySoundEffect(mAudioFilename, mRepeat, true, true, true);
+		mSoundInstance = AudioManager::Instance()->PlaySoundEffect(mAudioFilename, mRepeat, true, true, mAdjustVolumeToCamera);
 
 		if (mSoundInstance != nullptr && mAdjustVolumeToCamera)
 		{
@@ -44,8 +44,9 @@ void AudioObject::Update(float delta)
 			// so we must play it and start it paused, then set volume to 0, then unpause
 			// the actual volume based on position will be set further down
 			mSoundInstance->setVolume(0.0f);
-			mSoundInstance->setIsPaused(false); 
+			mSoundInstance->setIsPaused(false);
 		}
+
 		mHasStartedPlaying = true;
 	}
 
@@ -210,6 +211,26 @@ void AudioObject::SetVolume(float value)
 	{
 		mSoundInstance->setVolume(value);
 	}
+}
+
+float AudioObject::GetVolume()
+{
+	if (mSoundInstance ==  nullptr)
+	{
+		return 0.0f;
+	}
+
+	return mSoundInstance->getVolume();
+}
+
+bool AudioObject::IsPaused()
+{
+	if (mSoundInstance == nullptr)
+	{
+		return false;
+	}
+
+	return mSoundInstance->getIsPaused();
 }
 
 void AudioObject::DebugDraw(ID3D10Device *  device)

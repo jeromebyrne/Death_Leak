@@ -6,7 +6,7 @@
 #include "Game.h"
 #include "ParticleEmitterManager.h"
 
-static const float kTimeUntilFirstWeather = 180.0f;
+static const float kTimeUntilFirstWeather = 5.0f; // 180.0f;
 static const float kRainSessionMinTime = 70.0f;
 static const float kRainSessionMaxTime = 120.0f;
 static const float kRainIntroTime = 5.0f;
@@ -117,11 +117,11 @@ void WeatherManager::CreateRainAssets(bool preWarm)
 	// add the audio object
 	if (!mRainSFX)
 	{
-		mRainSFX = new AudioObject(0.0f, 1500.0f, GameObject::kNearForeground, 50000.0f, 3000.0f);
+		mRainSFX = new AudioObject(0.0f, 1500.0f, GameObject::kNearForeground, 999999.0f, 3000.0f);
 		mRainSFX->SetAdjustVolumeToCamera(false);
 		mRainSFX->SetAudioFilename("weather\\heavy_rain.wav");
 		mRainSFX->SetRepeat(true);
-		mRainSFX->SetVolumeFadeDimensions(Vector2(50000.0f, 3000.0f));
+		mRainSFX->SetVolumeFadeDimensions(Vector2(9999999.0f, 3010.0f));
 
 		GameObjectManager::Instance()->AddGameObject(mRainSFX);
 	}
@@ -202,7 +202,7 @@ void WeatherManager::CreateSnowAssets(bool preWarm)
 	{
 		mSnowSFX = new AudioObject(0.0f, 1500.0f, GameObject::kNearForeground, 50000.0f, 3000.0f);
 		mSnowSFX->SetAdjustVolumeToCamera(false);
-		mSnowSFX->SetAudioFilename("weather\\wind.mp3");
+		mSnowSFX->SetAudioFilename("weather\\wind.wav");
 		mSnowSFX->SetRepeat(true);
 		mSnowSFX->SetVolumeFadeDimensions(Vector2(50000.0f, 3000.0f));
 
@@ -410,6 +410,12 @@ void WeatherManager::UpdateRaining(float delta)
 			float alphaVal = timeSinceRain / kRainIntroTime;
 			mRainSFX->SetVolume(alphaVal);
 		}
+		else
+		{
+			float rainVol = mRainSFX->GetVolume();
+			bool isPaused = mRainSFX->IsPaused();
+			mRainSFX->SetVolume(1.0f);
+		}
 
 		if (mPLayingLightningEffect)
 		{
@@ -471,7 +477,7 @@ void WeatherManager::UpdateNoWeather(float delta)
 	{
 		StartRaining();
 
-		// StartSnowing();
+		//StartSnowing();
 
 		mHasHadWeather = true;
 	}

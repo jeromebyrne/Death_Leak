@@ -20,6 +20,10 @@ public:
 	void SetVolumeFadeDimensions(Vector2 value) { mFadeDimensions = value; }
 	void SetVolume(float value);
 
+	float GetVolume();
+
+	bool IsPaused();
+
 private:
 
 	virtual void DebugDraw(ID3D10Device *  device) override;
