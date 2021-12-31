@@ -22,7 +22,7 @@
         <animationfile value="XmlFiles\animation\player_anim_default.xml" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance y="0.550000" x="0.800000" />
-        <maxvelocity y="34.000000" x="9.500000" />
+        <maxvelocity y="34.000000" x="11.000000" />
         <applygravity value="true" />
         <collisionboxdimensions y="214.898743" x="128.959793" offsetX="0.000000" offsetY="0.000000" />
         <passive value="false" />
@@ -135,7 +135,7 @@
         <level_to_load value="XmlFiles\levels\waterfall_bottom.xml" />
     </LevelTrigger>
     <Sprite id="8" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kNearBackground" y="-1544.143677" x="-595.215332" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kNearBackground" y="-1542.044189" x="-594.115601" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="1313.000000" width="7102.569824" native="false" repeatX="true" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -183,7 +183,7 @@
         <is_bouncy value="true" bounce_multiplier="1.100000" />
     </SolidMovingSprite>
     <Sprite id="11" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kFarForeground" y="-865.841309" x="-577.015137" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kFarForeground" y="-868.440674" x="-578.514771" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="1313.000000" width="1750.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -223,7 +223,7 @@
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="true" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="20.000000" can_drop_down="true" />
     </SolidLineStrip>
     <Sprite id="13" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kFarForeground" y="-2308.041504" x="-386.014648" rotation="1.339450" auto_rotate_value="0.000000" />
+        <position depth_layer="kFarForeground" y="-2307.240723" x="-386.014648" rotation="1.339450" auto_rotate_value="0.000000" />
         <dimensions height="1313.000000" width="1750.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -264,7 +264,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="16" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kFarForeground" y="-2211.041504" x="-1077.014648" rotation="0.129999" auto_rotate_value="0.000000" />
+        <position depth_layer="kFarForeground" y="-2211.041504" x="-1073.915405" rotation="0.129999" auto_rotate_value="0.000000" />
         <dimensions height="1313.000000" width="1750.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -279,7 +279,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="17" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kFarForeground" y="-2211.440918" x="-1426.014648" rotation="0.129999" auto_rotate_value="0.000000" />
+        <position depth_layer="kFarForeground" y="-2211.140625" x="-1427.914185" rotation="0.129999" auto_rotate_value="0.000000" />
         <dimensions height="1313.000000" width="1750.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -1174,4 +1174,19 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
+    <HealthDevil id="58" level_edit_locked="false" updateable="true" always_update="true">
+        <position depth_layer="kNpc" y="-1441.041504" x="-3205.714844" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions height="800.000000" width="800.000000" native="true" repeatX="false" repeatY="false" />
+        <material value="grassground" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <pos_audio_props enabled="true" file="character\health_devil\siren.wav" dim_x="500.000000" dim_y="500.000000" fade_dim_x="8000.000000" fade_dim_y="4000.000000" play_delay="-0.000002" repeat="true" />
+        <alpha value="1.000000" />
+        <effect name="effectnoise" noiseintensity="0.002000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="true" alphawhenoccluding="1.000000" alphawhennotoccluding="0.000000" />
+        <texture filename="Media/characters/health_devil/devil.png" />
+        <horizontalflip value="false" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+    </HealthDevil>
 </level>

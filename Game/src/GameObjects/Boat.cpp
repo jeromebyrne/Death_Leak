@@ -6,6 +6,7 @@
 #include "SaveManager.h"
 #include "ParticleEmitterManager.h"
 #include "DrawUtilities.h"
+#include "StringManager.h"
 
 static const float kWarmUpTime = 0.75f;
 static const string kDefaultDoorLockedSfx = "door_locked.wav";
@@ -29,7 +30,10 @@ void Boat::Initialise()
 	mInteractableProperties.IsInteractable = true;
 	mInteractableProperties.PosOffset = Vector2(0.0f, 30.0f);
 	mInteractableProperties.DisableInteractivityOnInteract = false;
-	mInteractableProperties.InteractTime = 3.0f;
+	mInteractableProperties.InteractTime = SaveManager::GetInstance()->HasRepairTools() ? 3.0f : 0.05f;
+
+	mBoatBrokenMessageTitle = StringManager::GetInstance()->GetLocalisedString("broken_boat_message_title");
+	mBoatBrokenMessageDesc = StringManager::GetInstance()->GetLocalisedString("broken_boat_message_desc");
 }
 
 void Boat::Update(float delta)
@@ -102,6 +106,9 @@ void Boat::OnInteracted()
 
 	if (!SaveManager::GetInstance()->HasRepairTools())
 	{
+		// show message about broken boat
+		Game::GetInstance()->DisplayTextModal(mBoatBrokenMessageTitle, mBoatBrokenMessageDesc);
+
 		/*
 		if (!SaveManager::GetInstance()->HasDoorKey(mRequiredKey))
 		{
@@ -145,10 +152,12 @@ void Boat::OnInteracted()
 
 bool Boat::CanInteract()
 {
+	/*
 	if (!SaveManager::GetInstance()->HasRepairTools())
 	{
 		return false;
 	}
+	*/
 
 	if (mIsUnlockingCurrentTime > 0.0f)
 	{

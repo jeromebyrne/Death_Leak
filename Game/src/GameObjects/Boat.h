@@ -32,6 +32,9 @@ private:
 	bool mCanTryOpen = true;
 
 	float mIsUnlockingCurrentTime = 0.0f;
+
+	string mBoatBrokenMessageTitle;
+	string mBoatBrokenMessageDesc;
 };
 
 #endif

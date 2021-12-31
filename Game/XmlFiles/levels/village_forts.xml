@@ -4001,19 +4001,4 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <HealthDevil id="209" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kNpc" y="-462.210144" x="4003.781250" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions height="800.000000" width="800.000000" native="true" repeatX="false" repeatY="false" />
-        <material value="grassground" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <pos_audio_props enabled="true" file="character\health_devil\siren.wav" dim_x="500.000000" dim_y="500.000000" fade_dim_x="8000.000000" fade_dim_y="4000.000000" play_delay="-0.000002" repeat="true" />
-        <alpha value="1.000000" />
-        <effect name="effectnoise" noiseintensity="0.002000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="true" alphawhenoccluding="1.000000" alphawhennotoccluding="0.000000" />
-        <texture filename="Media/characters/health_devil/devil.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="false" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-    </HealthDevil>
 </level>

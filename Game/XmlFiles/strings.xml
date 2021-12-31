@@ -184,4 +184,16 @@
     <de>I told Akio about the hidden cave earlier. He was mad at me. He said it was too dangerous diving beneath the waterfall. I told him I had seen a stream of bubbles and had to investigate. That's what an adventurer does.</de>
   </paper_pickup_cave_clue_desc>
 
+  <broken_boat_message_title>
+    <en-gb>Damaged Boat</en-gb>
+    <pt-br>Damaged Boat</pt-br>
+    <de>Damaged Boat</de>
+  </broken_boat_message_title>
+
+  <broken_boat_message_desc>
+    <en-gb>A boat that seems to have smashed up on the rocks.</en-gb>
+    <pt-br>A boat that seems to have smashed up on the rocks.</pt-br>
+    <de>A boat that seems to have smashed up on the rocks.</de>
+  </broken_boat_message_desc>
+
 </strings>
