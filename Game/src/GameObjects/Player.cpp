@@ -37,8 +37,8 @@ static const float kStomachSwordPullTime = 3.5f;
 static const float kResistanceY = 0.55f;
 static const float kInitialSwordPullBreathingVolume = 0.35f;
 static const float kSwordPullIdleShowPromptDelay = 8.0f;
-
 static const float kProjectileDamage = 1.25f;
+static const float kTotalTimeInFinalLevel = 4.0f;
 
 Player::Player(float x, float y, float width, float height) :
 Character(x, y, GameObject::kPlayer, width, height),
@@ -99,6 +99,9 @@ void Player::Initialise()
 	// mDeltaTimeMultiplierInSloMo = 3.5f;
 
 	mCameraZoomOnLoad = Camera2D::GetInstance()->GetZoomLevel();
+
+	string currentLevel = GameObjectManager::Instance()->GetCurrentLevelFile();
+	mIsInFinalLevel = (currentLevel == "XmlFiles\\levels\\sea_2.xml");
 }
 
 void Player::UpdateResistance()
@@ -215,6 +218,13 @@ Projectile * Player::FireBomb(Vector2 direction)
 	return p;
 }
 
+void Player::EndStory()
+{
+	// end story
+
+	UIManager::Instance()->EndStory();
+}
+
 void Player::Update(float delta)
 {
 	// update base classes
@@ -223,6 +233,21 @@ void Player::Update(float delta)
 	if (!SaveManager::GetInstance()->HasPulledSwordFromStomach())
 	{
 		UpdateIsPullingSwordFromStomach(delta);
+		return;
+	}
+
+	if (mIsInFinalLevel)
+	{
+		SetCrouching(true);
+		SetVelocityX(0.0f);
+		SetMaxVelocityX(0.0f);
+
+		mCurrentTimeInFinalLevel += delta;
+
+		if (mCurrentTimeInFinalLevel > kTotalTimeInFinalLevel)
+		{
+			EndStory();	
+		}
 		return;
 	}
 
@@ -1067,7 +1092,8 @@ void Player::UpdateIsPullingSwordFromStomach(float delta)
 
 bool Player::CanBeControlled()
 {
-	if (!SaveManager::GetInstance()->HasPulledSwordFromStomach())
+	if (!SaveManager::GetInstance()->HasPulledSwordFromStomach() ||
+		mIsInFinalLevel)
 	{
 		return false;
 	}

@@ -118,6 +118,13 @@ void UIManager::Update()
 	}
 }
 
+void UIManager::EndStory()
+{
+	EventStruct eventStruct;
+	eventStruct.EventName = "end_story";
+	mCurrentEventList.push_back(eventStruct);
+}
+
 void UIManager::HandleEvents()
 {
 	// handle any pending UI events
@@ -376,7 +383,7 @@ void UIManager::DisplayLaunchUI()
 	}
 
 	PushBackEvent("pushui", params);
-	// AudioManager::Instance()->PlayMusic("weather\\2minutestorm.mp3");
+
 	AudioManager::Instance()->PlayMusic("music\\Ripples.mp3");
 }
 
@@ -662,7 +669,13 @@ void UIManager::HandleEvent(string eventName, list<string> params)
 		DismissObjectEditor();
 		break;
 	}
-
+	case END_STORY:
+	{
+		GameObjectManager::Instance()->QuitLevel();
+		PushUI("mainmenu");
+		GameObjectManager::Instance()->SetLevelFreshLaunch(true);
+		break;
+	}
 	default:
 		break;
 	};
@@ -692,6 +705,7 @@ void UIManager::InitActionStringToEnumMap()
 	m_ActionStringToEnumMap["leveledit"] = LEVEL_EDIT; 
 	m_ActionStringToEnumMap["set_language"] = SET_LANGUAGE;
 	m_ActionStringToEnumMap["apply_object_edit_changes"] = APPLY_OBJECT_EDIT_CHANGES;
+	m_ActionStringToEnumMap["end_story"] = END_STORY;
 }
 
 UISprite * UIManager::CreateCursorSprite()

@@ -77,6 +77,8 @@ private:
 
 	void TriggerDiedUI();
 
+	void EndStory();
+
 	float mProjectileFireDelay;
 	float mTimeUntilProjectileReady;
 
@@ -108,6 +110,10 @@ private:
 	float mTotalTimePullingSword = 0.0f;
 
 	irrklang::ISound* mBreathingIntroSFX = nullptr;
+
+	bool mIsInFinalLevel = false;
+
+	float mCurrentTimeInFinalLevel = 0.0f;
 };
 
 #endif

@@ -26,8 +26,6 @@ private:
 	bool mIsInitiallyLocked = false;
 	// this is to prevent the player entering the door immediately when we load the level
 	float mBoatWarmUpTime = 0.0f;
-	std::string mToLevelFile;
-	Vector2 mToLevelPosition;
 	std::string mBoatLockedSFX;
 	bool mCanTryOpen = true;
 

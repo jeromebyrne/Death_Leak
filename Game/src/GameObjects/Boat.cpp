@@ -55,11 +55,6 @@ void Boat::XmlRead(TiXmlElement * element)
 {
 	Sprite::XmlRead(element);
 
-	mToLevelFile = XmlUtilities::ReadAttributeAsString(element, "to_level_file", "value");
-
-	mToLevelPosition.X = XmlUtilities::ReadAttributeAsFloat(element, "player_start_pos", "x");
-	mToLevelPosition.Y = XmlUtilities::ReadAttributeAsFloat(element, "player_start_pos", "y");
-
 	// mRequiredKey = XmlUtilities::ReadAttributeAsString(element, "required_key", "value");
 
 	// mDoorOpenSFX = XmlUtilities::ReadAttributeAsString(element, "door_sfx", "open");
@@ -70,14 +65,6 @@ void Boat::XmlWrite(TiXmlElement * element)
 {
 	Sprite::XmlWrite(element);
 
-	TiXmlElement * levelFile = new TiXmlElement("to_level_file");
-	levelFile->SetAttribute("value", mToLevelFile.c_str());
-	element->LinkEndChild(levelFile);
-
-	TiXmlElement * posElem = new TiXmlElement("player_start_pos");
-	posElem->SetDoubleAttribute("x", mToLevelPosition.X);
-	posElem->SetDoubleAttribute("y", mToLevelPosition.Y);
-	element->LinkEndChild(posElem);
 
 	/*
 	TiXmlElement * requiredKey = new TiXmlElement("required_key");
@@ -98,6 +85,8 @@ void Boat::EnterBoat()
 	// Game::GetInstance()->PauseGame();
 
 	// GameObjectManager::Instance()->SwitchToLevel(mToLevelFile, mDoorIdentifier, true);
+
+	GameObjectManager::Instance()->SwitchToLevel("XmlFiles\\levels\\sea_2.xml", "", true);
 }
 
 void Boat::OnInteracted()

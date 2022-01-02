@@ -29,7 +29,8 @@ enum UIEventActions
 	QUIT_TO_DESKTOP,
 	LEVEL_EDIT,
 	SET_LANGUAGE,
-	APPLY_OBJECT_EDIT_CHANGES
+	APPLY_OBJECT_EDIT_CHANGES,
+	END_STORY
 };
 
 class UIManager
@@ -95,6 +96,8 @@ public:
 	void PushUIDeferred(const string & screenName);
 
 	void PopUIDeferred(const string & screenName);
+
+	void EndStory();
 
 private:
 
