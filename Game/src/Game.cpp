@@ -268,6 +268,16 @@ void Game::PauseGame(bool pushPauseScreen)
 		return;
 	}
 
+	Player* player = GameObjectManager::Instance()->GetPlayer();
+
+	if (player)
+	{
+		if (player->IsInFinalLevel())
+		{
+			return;
+		}
+	}
+
 	mPaused = true;
 
 	if (pushPauseScreen)

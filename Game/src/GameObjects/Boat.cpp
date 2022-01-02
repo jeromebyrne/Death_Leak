@@ -7,6 +7,7 @@
 #include "ParticleEmitterManager.h"
 #include "DrawUtilities.h"
 #include "StringManager.h"
+#include "UImanager.h"
 
 static const float kWarmUpTime = 0.75f;
 static const string kDefaultDoorLockedSfx = "door_locked.wav";
@@ -87,6 +88,8 @@ void Boat::EnterBoat()
 	// GameObjectManager::Instance()->SwitchToLevel(mToLevelFile, mDoorIdentifier, true);
 
 	GameObjectManager::Instance()->SwitchToLevel("XmlFiles\\levels\\sea_2.xml", "", true);
+	UIManager::Instance()->PopUI("game_hud");
+	UIManager::Instance()->PushUI("final_scene_hud");
 }
 
 void Boat::OnInteracted()

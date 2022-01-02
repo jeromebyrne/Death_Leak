@@ -38,7 +38,7 @@ static const float kResistanceY = 0.55f;
 static const float kInitialSwordPullBreathingVolume = 0.35f;
 static const float kSwordPullIdleShowPromptDelay = 8.0f;
 static const float kProjectileDamage = 1.25f;
-static const float kTotalTimeInFinalLevel = 4.0f;
+static const float kTotalTimeInFinalLevel = 60.0f;
 
 Player::Player(float x, float y, float width, float height) :
 Character(x, y, GameObject::kPlayer, width, height),

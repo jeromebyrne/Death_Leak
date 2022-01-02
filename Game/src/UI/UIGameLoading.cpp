@@ -104,8 +104,6 @@ void UIGameLoading::FinishedLoading()
 
 void UIGameLoading::Load()
 {
-	// UIManager::Instance()->PopUI("game_hud");
-
 	mHasStartedLoading = true;
 	mLoadTimeStartTime = Timing::Instance()->GetTotalTimeSeconds();
 

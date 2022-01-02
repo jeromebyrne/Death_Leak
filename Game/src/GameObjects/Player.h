@@ -65,6 +65,10 @@ public:
 
 	bool CanBeControlled();
 
+	bool IsInFinalLevel() {
+		return mIsInFinalLevel;
+	}
+
 private:
 
 	void UpdateIsPullingSwordFromStomach(float delta);
