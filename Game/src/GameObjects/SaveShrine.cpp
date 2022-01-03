@@ -52,9 +52,13 @@ void SaveShrine::Update(float delta)
 
 			DisplaySaveParticles();
 
+			//Note: I'm no longer allowing saving here
+			// The game now always saves permanent upgrades and is a roguelike similar to Returnal
+			/*
 			SaveManager::GetInstance()->SetLevelLastSavedAt(GameObjectManager::Instance()->GetCurrentLevelFile());
 
 			GameObjectManager::Instance()->SaveGame();
+			*/
 
 			mHasSaved = true;
 

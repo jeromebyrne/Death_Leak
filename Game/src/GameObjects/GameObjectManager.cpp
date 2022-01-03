@@ -494,6 +494,7 @@ void GameObjectManager::ParseLevelProperties(TiXmlElement * element)
 
 void GameObjectManager::CacheSaveData()
 {
+	// JB: need to do this still even when we save between levels?
 	SaveManager::GetInstance()->SetCurrencyOrbsCollected(mCurrentLevelFile, mCurrentCurrencyOrbIdsCollected);
 	SaveManager::GetInstance()->SetBreakablesBroken(mCurrentLevelFile, mCurrentBreakablesBroken);
 
@@ -517,6 +518,8 @@ void GameObjectManager::SwitchToLevel(const string & level, const string & doorI
 		mDoorIdCameFrom = doorId;
 		return;
 	}
+
+	SaveGame();
 
 	mLastLevel = mCurrentLevelFile;
 
@@ -1083,6 +1086,12 @@ void GameObjectManager::SetBreakableBroken(unsigned int breakableId)
 
 void GameObjectManager::QuitLevel()
 {
+	SaveManager::GetInstance()->ResetSession();
+
+	mLastLevel = "";
+	mSwitchToLevel = false;
+	mLevelToSwitch = "";
+	mDoorIdCameFrom = "";
 	mCachedPlayerHealth = -1.0f;
 	DeleteGameObjects();
 }

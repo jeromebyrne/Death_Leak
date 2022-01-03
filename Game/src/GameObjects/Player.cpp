@@ -455,6 +455,7 @@ void Player::ResetProjectileFireDelay()
 
 void Player::CheckForAndDoLevelUp()
 {
+	/*
 	unsigned int playerLevel = SaveManager::GetInstance()->GetPlayerLevel();
 	unsigned int orbsCollected = SaveManager::GetInstance()->GetNumCurrencyOrbsCollected();
 
@@ -555,7 +556,9 @@ void Player::CheckForAndDoLevelUp()
 			mechanicDescriptionText->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), Vector2(0.0f, 80.0f),GameObject::kPlayer,  false);
 		}
 		// ************************************
-	}
+
+		
+	}*/
 }
 
 void Player::AddAimLineSprite()

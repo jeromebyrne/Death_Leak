@@ -12,10 +12,6 @@ public:
 
 	void WriteSaveFile();
 
-	int GetPlayerLevel() const;
-
-	void SetPlayerLevel(int value);
-
 	int GetNumCurrencyOrbsCollected() const;
 
 	void SetNumCurrencyOrbsCollected(int value);
@@ -80,6 +76,8 @@ public:
 
 	void WipeSaveFile();
 
+	void ResetSession();
+
 private:
 
 	static SaveManager * mInstance;
@@ -87,19 +85,18 @@ private:
 	SaveManager();
 	~SaveManager(void) { }
 
-	int GetIntValue(const std::string & key, int defaultValue = 0) const;
+	int GetIntValue(std::map<std::string, DataValue> dataMap, const std::string & key, int defaultValue = 0) const;
 
-	int GetDoubleValue(const std::string& key, double defaultValue = 0.0) const;
+	int GetDoubleValue(std::map<std::string, DataValue> dataMap, const std::string& key, double defaultValue = 0.0) const;
 
-	bool GetBoolValue(const std::string & key, bool defaultValue = false) const;
+	bool GetBoolValue(std::map<std::string, DataValue> dataMap, const std::string & key, bool defaultValue = false) const;
 
-	string GetStringValue(const std::string & key, string defaultValue = "") const;
-
-	void AddKeyValuePair(const std::string & key, const DataValue & value);
+	string GetStringValue(std::map<std::string, DataValue> dataMap, const std::string & key, string defaultValue = "") const;
 
 	const DataValue ReadValue(TiXmlElement * xmlElement);
 
-	std::map<std::string, DataValue> mSaveMap;
+	std::map<std::string, DataValue> mSaveMapPermanentData;
+	std::map<std::string, DataValue> mSaveMapTemporaryData;
 
 };
 

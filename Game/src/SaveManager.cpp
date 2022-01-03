@@ -31,13 +31,14 @@ void SaveManager::ReadSaveFile()
 
 	TiXmlElement * rootElement = root_doc.GetRoot();
 
-	mSaveMap.clear();
+	// only permanent items exist in the save file
+	mSaveMapPermanentData.clear();
 
 	TiXmlElement * currentChild = rootElement->FirstChildElement();
 
 	while (currentChild)
 	{
-		mSaveMap[currentChild->Value()] = ReadValue(currentChild);
+		mSaveMapPermanentData[currentChild->Value()] = ReadValue(currentChild);
 		currentChild = currentChild->NextSiblingElement();
 	}
 }
@@ -47,7 +48,7 @@ void SaveManager::WriteSaveFile()
 	XmlDocument root_doc;
 	TiXmlElement * root = new TiXmlElement("save_data");
 
-	for (const auto & kvp : mSaveMap)
+	for (const auto & kvp : mSaveMapPermanentData)
 	{
 		TiXmlElement * currentElement = new TiXmlElement(kvp.first.c_str());
 		WriteValue(kvp.second, currentElement);
@@ -62,12 +63,21 @@ void SaveManager::WipeSaveFile()
 	// Just make sure save the language that was set
 	string language = GetLanguageSet();
 
-	mSaveMap.clear();
+	mSaveMapTemporaryData.clear();
+	mSaveMapPermanentData.clear();
 
 	if (language.empty() == false)
 	{
 		SetLanguage(language);
 	}
+
+	WriteSaveFile();
+}
+
+void SaveManager::ResetSession()
+{
+	// wipe all temp data and save permanent data
+	mSaveMapTemporaryData.clear();
 
 	WriteSaveFile();
 }
@@ -217,16 +227,11 @@ const DataValue SaveManager::ReadValue(TiXmlElement * xmlElement)
 	return dataValue;
 }
 
-void SaveManager::AddKeyValuePair(const std::string & key, const DataValue & value)
+int SaveManager::GetIntValue(std::map<std::string, DataValue> dataMap, const std::string & key, int defaultValue) const
 {
-	mSaveMap[key] = value;
-}
-
-int SaveManager::GetIntValue(const std::string & key, int defaultValue) const
-{
-	const auto & iter = mSaveMap.find(key);
+	const auto & iter = dataMap.find(key);
 	
-	if (iter == mSaveMap.end())
+	if (iter == dataMap.end())
 	{
 		return defaultValue;
 	}
@@ -240,11 +245,11 @@ int SaveManager::GetIntValue(const std::string & key, int defaultValue) const
 	return iter->second.asInt();
 }
 
-int SaveManager::GetDoubleValue(const std::string& key, double defaultValue) const
+int SaveManager::GetDoubleValue(std::map<std::string, DataValue> dataMap, const std::string& key, double defaultValue) const
 {
-	const auto& iter = mSaveMap.find(key);
+	const auto& iter = dataMap.find(key);
 
-	if (iter == mSaveMap.end())
+	if (iter == dataMap.end())
 	{
 		return defaultValue;
 	}
@@ -258,11 +263,11 @@ int SaveManager::GetDoubleValue(const std::string& key, double defaultValue) con
 	return iter->second.asDouble();
 }
 
-bool SaveManager::GetBoolValue(const std::string & key, bool defaultValue) const
+bool SaveManager::GetBoolValue(std::map<std::string, DataValue> dataMap, const std::string & key, bool defaultValue) const
 {
-	const auto & iter = mSaveMap.find(key);
+	const auto & iter = dataMap.find(key);
 
-	if (iter == mSaveMap.end())
+	if (iter == dataMap.end())
 	{
 		return defaultValue;
 	}
@@ -276,11 +281,11 @@ bool SaveManager::GetBoolValue(const std::string & key, bool defaultValue) const
 	return iter->second.asBool();
 }
 
-string SaveManager::GetStringValue(const std::string & key, string defaultValue) const
+string SaveManager::GetStringValue(std::map<std::string, DataValue> dataMap, const std::string & key, string defaultValue) const
 {
-	const auto & iter = mSaveMap.find(key);
+	const auto & iter = dataMap.find(key);
 
-	if (iter == mSaveMap.end())
+	if (iter == dataMap.end())
 	{
 		return defaultValue;
 	}
@@ -294,24 +299,14 @@ string SaveManager::GetStringValue(const std::string & key, string defaultValue)
 	return iter->second.asString();
 }
 
-int SaveManager::GetPlayerLevel() const
-{
-	return GetIntValue("player_level", 1);
-}
-
-void SaveManager::SetPlayerLevel(int value)
-{
-	mSaveMap["player_level"] = value;
-}
-
 int SaveManager::GetNumCurrencyOrbsCollected() const
 {
-	return GetIntValue("currency_orbs_collected");
+	return GetIntValue(mSaveMapTemporaryData, "currency_orbs_collected");
 }
 
 void SaveManager::SetNumCurrencyOrbsCollected(int value)
 {
-	mSaveMap["currency_orbs_collected"] = value;
+	mSaveMapTemporaryData["currency_orbs_collected"] = value;
 }
 
 void SaveManager::SetCurrencyOrbsCollected(const std::string & levelFile, std::vector<unsigned int> orbGameIds)
@@ -320,7 +315,7 @@ void SaveManager::SetCurrencyOrbsCollected(const std::string & levelFile, std::v
 
 	std::replace(key.begin(), key.end(), '\\', '-'); // replace back slashes as they will mess up the xml file
 
-	DataValue orbVector = mSaveMap[key];
+	DataValue orbVector = mSaveMapTemporaryData[key];
 
 	if (orbVector.getType() != DataValue::Type::VECTOR)
 	{
@@ -335,7 +330,7 @@ void SaveManager::SetCurrencyOrbsCollected(const std::string & levelFile, std::v
 		vec.push_back(DataValue((int)i));
 	}
 
-	mSaveMap[key] = vec;
+	mSaveMapTemporaryData[key] = vec;
 }
 
 void SaveManager::GetCurrencyOrbsCollected(const std::string & levelFile, std::vector<unsigned int> & orbGameIdsOut)
@@ -344,11 +339,11 @@ void SaveManager::GetCurrencyOrbsCollected(const std::string & levelFile, std::v
 
 	std::replace(key.begin(), key.end(), '\\', '-'); // replace back slashes as they will mess up the xml file
 
-	DataValue orbVector = mSaveMap[key];
+	DataValue orbVector = mSaveMapTemporaryData[key];
 
 	if (orbVector.getType() != DataValue::Type::VECTOR)
 	{
-		mSaveMap[key] = DataValue(std::vector<DataValue>());
+		mSaveMapTemporaryData[key] = DataValue(std::vector<DataValue>());
 		return;
 	}
 
@@ -371,11 +366,11 @@ void SaveManager::GetBreakablesBroken(const std::string & levelFile, std::vector
 
 	std::replace(key.begin(), key.end(), '\\', '-'); // replace back slashes as they will mess up the xml file
 
-	DataValue breakablesVector = mSaveMap[key];
+	DataValue breakablesVector = mSaveMapPermanentData[key];
 
 	if (breakablesVector.getType() != DataValue::Type::VECTOR)
 	{
-		mSaveMap[key] = DataValue(std::vector<DataValue>());
+		mSaveMapPermanentData[key] = DataValue(std::vector<DataValue>());
 		return;
 	}
 
@@ -398,7 +393,7 @@ void SaveManager::SetBreakablesBroken(const std::string & levelFile, std::vector
 
 	std::replace(key.begin(), key.end(), '\\', '-'); // replace back slashes as they will mess up the xml file
 
-	DataValue breakablesVector = mSaveMap[key];
+	DataValue breakablesVector = mSaveMapPermanentData[key];
 
 	if (breakablesVector.getType() != DataValue::Type::VECTOR)
 	{
@@ -413,19 +408,19 @@ void SaveManager::SetBreakablesBroken(const std::string & levelFile, std::vector
 		vec.push_back(DataValue((int)i));
 	}
 
-	mSaveMap[key] = vec;
+	mSaveMapPermanentData[key] = vec;
 }
 
 bool SaveManager::IsGameFeatureUnlocked(const int featureType)
 {
 	std::string key = "gameplay_features_unlocked";
 
-	DataValue featuresVector = mSaveMap[key];
+	DataValue featuresVector = mSaveMapPermanentData[key];
 
 	if (featuresVector.getType() != DataValue::Type::VECTOR)
 	{
 		featuresVector = DataValue(std::vector<DataValue>());
-		mSaveMap[key] = featuresVector.asVector();
+		mSaveMapPermanentData[key] = featuresVector.asVector();
 		return false;
 	}
 
@@ -451,7 +446,7 @@ void SaveManager::SetGameFeatureUnlocked(const int featureType)
 {
 	std::string key = "gameplay_features_unlocked";
 
-	DataValue featuresVector = mSaveMap[key];
+	DataValue featuresVector = mSaveMapPermanentData[key];
 
 	if (featuresVector.getType() != DataValue::Type::VECTOR)
 	{
@@ -472,14 +467,14 @@ void SaveManager::SetGameFeatureUnlocked(const int featureType)
 
 	vec.push_back(DataValue(featureType));
 
-	mSaveMap[key] = vec;
+	mSaveMapPermanentData[key] = vec;
 }
 
 void SaveManager::SetPaperPickupCollected(const string & loc_id)
 {
 	std::string key = "paper_pickups_collected";
 
-	DataValue paperPickupVector = mSaveMap[key];
+	DataValue paperPickupVector = mSaveMapPermanentData[key];
 
 	if (paperPickupVector.getType() != DataValue::Type::VECTOR)
 	{
@@ -500,20 +495,20 @@ void SaveManager::SetPaperPickupCollected(const string & loc_id)
 
 	vec.push_back(DataValue(loc_id));
 
-	mSaveMap[key] = vec;
+	mSaveMapPermanentData[key] = vec;
 }
 
 bool SaveManager::IsPaperPickupCollected(const string & loc_id)
 {
 	std::string key = "paper_pickups_collected";
 
-	DataValue paperPickupVector = mSaveMap[key];
+	DataValue paperPickupVector = mSaveMapPermanentData[key];
 
 	if (paperPickupVector.getType() != DataValue::Type::VECTOR)
 	{
 		// we haven't created this vector yet
 		paperPickupVector = DataValue(std::vector<DataValue>());
-		mSaveMap[key] = paperPickupVector.asVector();
+		mSaveMapPermanentData[key] = paperPickupVector.asVector();
 		return false;
 	}
 
@@ -537,32 +532,32 @@ bool SaveManager::IsPaperPickupCollected(const string & loc_id)
 
 bool SaveManager::HasDoorKey(const std::string & keyId)
 {
-	return GetBoolValue(keyId, false);
+	return GetBoolValue(mSaveMapPermanentData, keyId, false);
 }
 
 void SaveManager::SetHasDoorkey(const std::string & keyId, bool value)
 {
-	mSaveMap[keyId] = value;
+	mSaveMapPermanentData[keyId] = value;
 }
 
 void SaveManager::SetDoorWasUnlocked(const string & doorId, bool value)
 {
-	mSaveMap[doorId + "_unlocked"] = value;
+	mSaveMapPermanentData[doorId + "_unlocked"] = value;
 }
 
 bool SaveManager::DoorWasUnlocked(const string & doorId)
 {
-	return GetBoolValue(doorId + "_unlocked", false);
+	return GetBoolValue(mSaveMapPermanentData, doorId + "_unlocked", false);
 }
 
 void SaveManager::SetLanguage(const std::string & langLocaleKey)
 {
-	mSaveMap["language_locale_key"] = langLocaleKey;
+	mSaveMapPermanentData["language_locale_key"] = langLocaleKey;
 }
 
 std::string SaveManager::GetLanguageSet()
 {
-	DataValue asDataValue = mSaveMap["language_locale_key"];
+	DataValue asDataValue = mSaveMapPermanentData["language_locale_key"];
 
 	if (asDataValue.getType() != DataValue::Type::STRING)
 	{
@@ -574,12 +569,12 @@ std::string SaveManager::GetLanguageSet()
 
 int SaveManager::GetHealthDevilRewardCount()
 {
-	return GetIntValue("health_devil_reward_count");
+	return GetIntValue(mSaveMapPermanentData, "health_devil_reward_count");
 }
 
 void SaveManager::SetHealthDevilRewardCount(int value)
 {
-	mSaveMap["health_devil_reward_count"] = value;
+	mSaveMapPermanentData["health_devil_reward_count"] = value;
 }
 
 bool SaveManager::HasHealthDevilGivenReward(const string & healthDevilId)
@@ -588,7 +583,7 @@ bool SaveManager::HasHealthDevilGivenReward(const string & healthDevilId)
 
 	std::replace(key.begin(), key.end(), '\\', '-'); // replace back slashes as they will mess up the xml file
 
-	return GetBoolValue(key);
+	return GetBoolValue(mSaveMapPermanentData, key);
 }
 
 void SaveManager::SetHealthDevilGivenReward(const string & healthDevilId, bool value)
@@ -597,27 +592,28 @@ void SaveManager::SetHealthDevilGivenReward(const string & healthDevilId, bool v
 
 	std::replace(key.begin(), key.end(), '\\', '-'); // replace back slashes as they will mess up the xml file
 
-	mSaveMap[key] = value;
+	mSaveMapPermanentData[key] = value;
 }
 
 void SaveManager::SetPlayerMaxHealth(const int value)
 {
-	mSaveMap["player_max_health"] = value;
+	mSaveMapPermanentData["player_max_health"] = value;
 }
 
 int SaveManager::GetPlayerMaxHealth()
 {
-	return GetIntValue("player_max_health", 0);
+	return GetIntValue(mSaveMapPermanentData, "player_max_health", 0);
 }
 
 void SaveManager::SetLevelLastSavedAt(const string & levelId)
 {
-	mSaveMap["last_level_saved"] = levelId;
+	// mSaveMap["last_level_saved"] = levelId;
 }
 
 string SaveManager::GetLevelLastSavedAt()
 {
-	return GetStringValue("last_level_saved");
+	return "";
+	//return GetStringValue("last_level_saved");
 }
 
 bool SaveManager::HasPulledSwordFromStomach()
@@ -629,22 +625,22 @@ bool SaveManager::HasPulledSwordFromStomach()
 	}
 #endif
 
-	return GetBoolValue("has_ungutted");
+	return GetBoolValue(mSaveMapTemporaryData, "has_ungutted");
 }
 
 void SaveManager::SetHasPulledSwordFromStomach(bool value)
 {
-	mSaveMap["has_ungutted"] = value;
+	mSaveMapTemporaryData["has_ungutted"] = value;
 }
 
 bool SaveManager::HasRepairTools()
 {
-	return GetBoolValue("has_repair_tools");
+	return GetBoolValue(mSaveMapPermanentData, "has_repair_tools");
 }
 
 void SaveManager::SetHasRepairTools(bool value)
 {
-	mSaveMap["has_repair_tools"] = value;
+	mSaveMapPermanentData["has_repair_tools"] = value;
 }
 
 double SaveManager::GetLastTimeNPCSpawnerTriggered(const string& levelName, int objectID)
@@ -653,7 +649,7 @@ double SaveManager::GetLastTimeNPCSpawnerTriggered(const string& levelName, int 
 
 	std::replace(key.begin(), key.end(), '\\', '-'); // replace back slashes as they will mess up the xml file
 
-	return GetDoubleValue(key);
+	return GetDoubleValue(mSaveMapTemporaryData, key);
 }
 
 void SaveManager::SetLastTimeNPCSpawnerTriggered(const string& levelName, int objectID, double time)
@@ -662,6 +658,6 @@ void SaveManager::SetLastTimeNPCSpawnerTriggered(const string& levelName, int ob
 
 	std::replace(key.begin(), key.end(), '\\', '-'); // replace back slashes as they will mess up the xml file
 
-	mSaveMap[key] = time;
+	mSaveMapTemporaryData[key] = time;
 }
 

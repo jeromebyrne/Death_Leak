@@ -234,6 +234,8 @@ UIScreen * UIManager::PushUI(string uiName)
 {
 	if (uiName == "mainmenu")
 	{
+		SaveManager::GetInstance()->ResetSession();
+
 		// hack: everytime we get to the mainmenu, reload savefile
 		SaveManager::GetInstance()->ReadSaveFile();
 
