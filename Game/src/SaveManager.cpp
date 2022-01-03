@@ -57,6 +57,21 @@ void SaveManager::WriteSaveFile()
 	root_doc.Save(fname, root, true);
 }
 
+void SaveManager::WipeSaveFile()
+{
+	// Just make sure save the language that was set
+	string language = GetLanguageSet();
+
+	mSaveMap.clear();
+
+	if (language.empty() == false)
+	{
+		SetLanguage(language);
+	}
+
+	WriteSaveFile();
+}
+
 void SaveManager::WriteValue(const DataValue & value, TiXmlElement * xmlElement)
 {
 	switch (value.getType())
@@ -409,6 +424,8 @@ bool SaveManager::IsGameFeatureUnlocked(const int featureType)
 
 	if (featuresVector.getType() != DataValue::Type::VECTOR)
 	{
+		featuresVector = DataValue(std::vector<DataValue>());
+		mSaveMap[key] = featuresVector.asVector();
 		return false;
 	}
 

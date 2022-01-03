@@ -78,6 +78,8 @@ public:
 
 	void SetLastTimeNPCSpawnerTriggered(const string& levelName, int objectID, double time);
 
+	void WipeSaveFile();
+
 private:
 
 	static SaveManager * mInstance;
@@ -98,6 +100,7 @@ private:
 	const DataValue ReadValue(TiXmlElement * xmlElement);
 
 	std::map<std::string, DataValue> mSaveMap;
+
 };
 
 #endif

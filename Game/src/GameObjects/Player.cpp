@@ -220,8 +220,8 @@ Projectile * Player::FireBomb(Vector2 direction)
 
 void Player::EndStory()
 {
-	// end story
-
+	SaveManager::GetInstance()->WipeSaveFile();
+	UIManager::Instance()->PopUI("final_scene_hud");
 	UIManager::Instance()->EndStory();
 }
 
