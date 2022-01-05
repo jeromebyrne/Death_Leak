@@ -37,20 +37,20 @@ bool FeatureUnlockManager::IsFeatureUnlocked(const FeatureType type)
 
 void FeatureUnlockManager::SetFeatureUnlocked(const FeatureType type)
 {
+	if (type == kProjectileDamageIncrease)
+	{
+		Player* player = GameObjectManager::Instance()->GetPlayer();
+		if (player)
+		{
+			player->SetUpgradedKnifeTexture();
+		}
+	}
 	SaveManager::GetInstance()->SetGameFeatureUnlocked(type);
 }
 
 FeatureUnlockManager::FeatureType FeatureUnlockManager::GetFeatureTypeFromString(const string & asString)
 {
-	if (asString == "kDoubleJump")
-	{
-		return kDoubleJump;
-	}
-	else if (asString == "kCrouchJump")
-	{
-		return kCrouchJump;
-	}
-	else if (asString == "kDownwardDash")
+	if (asString == "kDownwardDash")
 	{
 		return kDownwardDash;
 	}
@@ -66,6 +66,18 @@ FeatureUnlockManager::FeatureType FeatureUnlockManager::GetFeatureTypeFromString
 	{
 		return kDeflection;
 	}
+	else if (asString == "kSpeedIncrease")
+	{
+		return kSpeedIncrease;
+	}
+	else if (asString == "kProjectileDamageIncrease")
+	{
+		return kProjectileDamageIncrease;
+	}
+	else if (asString == "kProjectileSpeedIncrease")
+	{
+		return kProjectileSpeedIncrease;
+	}
 	
 	GAME_ASSERT(false);
 	return kNone;
@@ -75,14 +87,6 @@ string FeatureUnlockManager::GetFeatureAsString(FeatureType featureType)
 {
 	switch (featureType)
 	{
-		case kDoubleJump:
-		{
-			return "kDoubleJump";
-		}
-		case kCrouchJump:
-		{
-			return "kCrouchJump";
-		}
 		case kDownwardDash:
 		{
 			return "kDownwardDash";
@@ -98,6 +102,18 @@ string FeatureUnlockManager::GetFeatureAsString(FeatureType featureType)
 		case kDeflection:
 		{
 			return "kDeflection";
+		}
+		case kSpeedIncrease:
+		{
+			return "kSpeedIncrease";
+		}
+		case kProjectileDamageIncrease:
+		{
+			return "kProjectileDamageIncrease";
+		}
+		case kProjectileSpeedIncrease:
+		{
+			return "kProjectileSpeedIncrease";
 		}
 	}
 

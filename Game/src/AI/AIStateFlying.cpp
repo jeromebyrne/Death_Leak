@@ -6,7 +6,7 @@ const float kHeightFollowRange = 10.0f;
 const float kXPosFollowRangeMin = 150.0f;
 const float kXPosFollowRangeMax = 400.0f;
 const float kHeightReadjustmentDelay = 2.0f;
-const float kMinHeight = 550.0f;
+const float kMinHeight = 250.0f;
 const int kHeightRandVariationMax = 150.0f;
 const float MaxHeightBelowCameraTop = 170.0f;
 

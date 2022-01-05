@@ -3,26 +3,26 @@
 	<body OffsetX="0" OffsetY="8" SizeX="40" SizeY="80">
 
 		<Still FrameRate="45" MaxFrameRate="45" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
-      <frame filename="Media\characters\mask_1\mask.png"/>
+      <frame filename="Media\characters\banshee.png"/>
 
     </Still>
 
 		<Running FrameRate="45" MaxFrameRate="45" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
 
-      <frame filename="Media\characters\mask_1\mask.png"/>
+      <frame filename="Media\characters\banshee.png"/>
 
 		</Running>
 
     <JumpingUp FrameRate="4" MaxFrameRate="4" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
-      <frame filename="Media\characters\mask_1\mask.png"/>
+      <frame filename="Media\characters\banshee.png"/>
 		</JumpingUp>
 
     <JumpingDown FrameRate="4" MaxFrameRate="4" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
-      <frame filename="Media\characters\mask_1\mask.png"/>
+      <frame filename="Media\characters\banshee.png"/>
     </JumpingDown>
 
     <SlidingDown FrameRate="0" MaxFrameRate="0" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
-      <frame filename="Media\characters\mask_1\mask.png"/>
+      <frame filename="Media\characters\banshee.png"/>
     </SlidingDown>
 
 	</body>

@@ -32,13 +32,14 @@ static const float kMeleeFocusAmount = 4.0f;
 static const float kDownwardDashFocusAmount = 50.0f;
 static const float kRollFocusAmount = 2.0f;
 static const float kWaterFocusUseRate = 0.5f;
-static const float kDrownHealthLossRate = 2.0f;
-static const float kStomachSwordPullTime = 3.5f;
+static const float kDrownHealthLossRate = 3.0f;
+static const float kStomachSwordPullTime = 2.75f;
 static const float kResistanceY = 0.55f;
 static const float kInitialSwordPullBreathingVolume = 0.35f;
 static const float kSwordPullIdleShowPromptDelay = 8.0f;
 static const float kProjectileDamage = 1.25f;
-static const float kTotalTimeInFinalLevel = 60.0f;
+static const float kProjectileDamageUpgrade = 2.0f;
+static const float kTotalTimeInFinalLevel = 40.0f;
 
 Player::Player(float x, float y, float width, float height) :
 Character(x, y, GameObject::kPlayer, width, height),
@@ -73,7 +74,13 @@ void Player::Initialise()
 	mMaxJumpsAllowed = 1;
 	mSprintVelocityX = 17.5f;
 	mAccelXRate = 1.00f;
-	m_maxVelocity.X = 11.0f;
+
+	m_maxVelocity.X = 8.0f;
+	if (FeatureUnlockManager::GetInstance()->IsFeatureUnlocked(FeatureUnlockManager::kSpeedIncrease))
+	{
+		m_maxVelocity.X = 11.0f;
+	}
+
 	mDefaultVelocityX = m_maxVelocity.X;
 
 	UpdateResistance();
@@ -102,6 +109,15 @@ void Player::Initialise()
 
 	string currentLevel = GameObjectManager::Instance()->GetCurrentLevelFile();
 	mIsInFinalLevel = (currentLevel == "XmlFiles\\levels\\sea_2.xml");
+
+	bool highDamageProjectilesUnlocked = FeatureUnlockManager::GetInstance()->IsFeatureUnlocked(FeatureUnlockManager::kProjectileDamageIncrease);
+	mProjectileFilePath = highDamageProjectilesUnlocked ? "Media/knife_2.png" : "Media/knife.png";
+	mProjectileImpactFilePath = "Media/knife_impact_2.png";
+}
+
+void Player::SetUpgradedKnifeTexture()
+{
+	mProjectileFilePath = "Media/knife_2.png";
 }
 
 void Player::UpdateResistance()
@@ -338,6 +354,16 @@ Projectile * Player::FireWeapon(Vector2 direction, float speedMultiplier)
 		return nullptr;
 	}
 
+	FeatureUnlockManager* fum = FeatureUnlockManager::GetInstance();
+
+	// TODO: can optimize if needed
+	bool highSpeedProjectilesUnlocked = fum->IsFeatureUnlocked(FeatureUnlockManager::kProjectileSpeedIncrease);
+
+	if (highSpeedProjectilesUnlocked)
+	{
+		mBurstFireEnabled = false;
+	}
+
 	float timeMod = Timing::Instance()->GetTimeModifier();
 
 	mTimeUntilAimLineStartDisappearing = kAimLineOpacityDecrementDelay;
@@ -379,6 +405,9 @@ Projectile * Player::FireWeapon(Vector2 direction, float speedMultiplier)
 	float speed = (mSprintActive ? 25.0f : 20.0f) * speedMultiplier;
 	bool isInWater = WasInWaterLastFrame();
 
+	// TODO: can optimize if needed
+	bool highDamageProjectilesUnlocked = fum->IsFeatureUnlocked(FeatureUnlockManager::kProjectileDamageIncrease);
+
 	Projectile * p = new Projectile(Projectile::kPlayerProjectile,
 									mProjectileFilePath.c_str(),
 									mProjectileImpactFilePath.c_str(),
@@ -387,7 +416,7 @@ Projectile * Player::FireWeapon(Vector2 direction, float speedMultiplier)
 									Vector2(84.50,25.0f),
 									Vector2(84.50,25.0f),
 									direction,
-									kProjectileDamage,
+									highDamageProjectilesUnlocked ? kProjectileDamageUpgrade : kProjectileDamage,
 									isInWater ? speed * 0.6f : speed,
 									0.25f);
 	p->SetIsNativeDimensions(false);
@@ -642,12 +671,6 @@ bool Player::CanJump() const
 	if (GetIsInWater())
 	{
 		return true;
-	}
-
-	if (mCurrentJumpsBeforeLand > 1 &&
-		!FeatureUnlockManager::GetInstance()->IsFeatureUnlocked(FeatureUnlockManager::kDoubleJump))
-	{
-		return false;
 	}
 
 	return true;

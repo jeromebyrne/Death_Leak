@@ -22,7 +22,7 @@
         <animationfile value="XmlFiles\animation\player_anim_default.xml" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance y="0.550000" x="0.800000" />
-        <maxvelocity y="99999.000000" x="11.000000" />
+        <maxvelocity y="99999.000000" x="8.000000" />
         <applygravity value="true" />
         <collisionboxdimensions y="214.898743" x="128.959793" offsetX="0.000000" offsetY="0.000000" />
         <passive value="false" />
@@ -199,8 +199,8 @@
         <level_to_load value="XmlFiles\levels\cliff.xml" />
     </LevelTrigger>
     <DojoScrollPickup id="12" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kGround" y="13.000000" x="-172.000000" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions height="153.239487" width="91.432899" native="false" repeatX="false" repeatY="false" />
+        <position depth_layer="kGround" y="14.000000" x="-219.000000" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions height="175.991425" width="175.991425" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="true" x_offset="0.000000" y_offset="7.000000" amplitude="0.750000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
@@ -216,8 +216,8 @@
         <orb_cost value="3" offset_x="20" desc_offset_x="0.000000" />
     </DojoScrollPickup>
     <DojoScrollPickup id="13" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kGround" y="13.000000" x="16.000000" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions height="151.256851" width="90.249908" native="false" repeatX="false" repeatY="false" />
+        <position depth_layer="kGround" y="17.000000" x="-1.000000" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions height="173.382523" width="173.382523" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="true" x_offset="0.000000" y_offset="7.000000" amplitude="0.750000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />

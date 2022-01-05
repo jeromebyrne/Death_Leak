@@ -15,8 +15,8 @@ GhostEnemy::GhostEnemy(void) :
 	mProjectileFilePath = "Media/puke_temp.png";
 	mProjectileImpactFilePath = "Media/puke_impact_temp.png";
 	mExplodesGruesomely = false;
-	mHealth = 10.0f;
-	mMaxHealth = 10.0f;
+	mHealth = 50.0f;
+	mMaxHealth = 50.0f;
 	mEmitsBlood = false;
 }
 
@@ -40,7 +40,7 @@ void GhostEnemy::OnDamage(GameObject * damageDealer, float damageAmount, Vector2
 		{
 		case 0:
 		{
-			AudioManager::Instance()->PlaySoundEffect("character\\scream.wav");
+			// AudioManager::Instance()->PlaySoundEffect("character\\scream.wav");
 			break;
 		}
 		case 1:
@@ -75,7 +75,7 @@ void GhostEnemy::Initialise()
 
 	m_applyGravity = false;
 
-	m_maxVelocity.X = 2.5f + ((rand()%80) * 0.1f);
+	m_maxVelocity.X = 2.5f + ((rand()%60) * 0.1f);
 	m_maxVelocity.Y = 3.5f; 
 
 	m_passive = true; // This is so ghosts pass through stuff

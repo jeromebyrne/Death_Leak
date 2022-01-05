@@ -9,12 +9,13 @@ public:
 	enum FeatureType
 	{
 		kNone = 0,
-		kDoubleJump,
-		kCrouchJump,
 		kDownwardDash,
 		kRoll,
 		kSlowMotion,
-		kDeflection
+		kDeflection,
+		kSpeedIncrease,
+		kProjectileDamageIncrease,
+		kProjectileSpeedIncrease
 	};
 
 	FeatureUnlockManager(void);

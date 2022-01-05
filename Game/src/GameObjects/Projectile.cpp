@@ -448,7 +448,9 @@ void Projectile::Update(float delta)
 		{
 			if (mOwnerType == kPlayerProjectile)
 			{
-				m_velocity.Y -= 0.25f * percentDelta;
+				// TODO: optimize if needed
+				bool highSpeedProjectilesUnlocked = FeatureUnlockManager::GetInstance()->IsFeatureUnlocked(FeatureUnlockManager::kProjectileSpeedIncrease);
+				m_velocity.Y -= (highSpeedProjectilesUnlocked ? 0.1f : 0.25f) * percentDelta;
 			}
 			else
 			{

@@ -85,7 +85,8 @@ Character::Character(float x, float y, DepthLayer depthLayer, float width, float
 	mRegularCollisionBox(0.0f, 0.0f),
 	mCollisionBoxOffsetOriginal(0.0f, 0.0f)
 {
-	mProjectileFilePath = "Media/knife_2.png";
+	// mProjectileFilePath = "Media/knife_2.png";
+	mProjectileFilePath = "Media/knife.png";
 	mProjectileImpactFilePath = "Media/knife_impact_2.png";
 	mIsCharacter = true;
 
@@ -2154,7 +2155,7 @@ void Character::FireBloodSpatter(Vector2 direction, const Vector2 & origin)
 											direction,
 											0.0f,
 											speed,
-											3.5f);
+											5.5f);
 
 	p->SetProjectileType(Projectile::kBloodFXProjectile);
 	p->SetDoAlphaFadeOut(false);

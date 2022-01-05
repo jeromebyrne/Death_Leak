@@ -7,7 +7,9 @@
 #include "UIManager.h"
 #include "StringManager.h"
 
-static const D3DXCOLOR kCostTextColor = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+static const D3DXCOLOR kCostTextColor = D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f);
+static const D3DXCOLOR kDescTextColor = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+
 static const float kCostYOffset = -111.0f;
 static const float kCostYOffsetCliffhut = -100.0f;
 
@@ -224,7 +226,7 @@ void DojoScrollPickup::Draw(ID3D10Device * device, Camera2D * camera)
 		Vector2 screenPos = Utilities::WorldToScreen(worldPos);
 
 		RECT bounds = { screenPos.X, screenPos.Y, screenPos.X + (mDescriptionBacking->Dimensions().X * 1.0f), screenPos.Y + (mDescriptionBacking->Dimensions().Y * 1.4f) };
-		mCostText->DrawTextA(0, mLocalizedDescription.c_str(), -1, &bounds, DT_WORDBREAK, kCostTextColor);
+		mCostText->DrawTextA(0, mLocalizedDescription.c_str(), -1, &bounds, DT_WORDBREAK, kDescTextColor);
 	}
 }
 

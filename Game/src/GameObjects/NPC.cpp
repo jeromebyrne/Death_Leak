@@ -50,8 +50,8 @@ NPC::NPC(float x, float y, DepthLayer depthLayer, float width, float height) :
 	mGroundAnimalWanderState(nullptr),
 	mFlyingState(nullptr)
 {
-	mHealth = 5.0f;
-	mMaxHealth = 5.0f;
+	mHealth = 30.0f;
+	mMaxHealth = 30.0f;
 	mProjectileFilePath = "Media/ninjastar.png";
 	mProjectileImpactFilePath = "Media/ninjastar_impact.png";
 	mHealthMeterHealthBeforeDecrease = mHealth;
@@ -315,7 +315,7 @@ Projectile * NPC::FireWeapon(Vector2 direction, float speedMultiplier)
 									pos,
 									GameObject::kNinjaStarProjectile, //TODO: this won't always be a ninja star
 									Vector2(20.0f,20.0f),
-									Vector2(25.0f,8.0f),
+									Vector2(25.0f,13.0f),
 									direction,
 									kEnemyProjectileDamage,
 									kEnemyProjectileSpeed,

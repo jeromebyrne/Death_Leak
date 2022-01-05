@@ -816,4 +816,12 @@
         <is_bouncy value="true" bounce_multiplier="1.100000" />
         <loc_id title="paper_pickup_cave_clue_name" desc="paper_pickup_cave_clue_desc" />
     </PaperPickup>
+    <NPCTrigger id="43" level_edit_locked="false" updateable="true" always_update="true">
+        <position depth_layer="kGround" y="-102.333008" x="261.000000" rotation="0.000000" auto_rotate_value="0.000000" />
+        <dimensions height="146.848907" width="440.546753" />
+        <material value="" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
+        <num_enemies value="1.000000" enemy_type="kGhost" />
+    </NPCTrigger>
 </level>

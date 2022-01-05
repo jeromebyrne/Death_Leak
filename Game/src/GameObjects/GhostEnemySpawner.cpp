@@ -26,8 +26,8 @@ void GhostEnemySpawner::SpawnNPC(const float posX,
 	randJumpSpeed *= 0.001f;
 	randJumpSpeed += 16.0f;
 	float randMaxXVelocity = rand() % 3000;
-	randMaxXVelocity *= 0.001f;
-	randMaxXVelocity += 14.0f;
+	randMaxXVelocity *= 0.0015f;
+	randMaxXVelocity += 11.0f;
 
 	GhostEnemy * npc = new GhostEnemy();
 	npc->SetXY(posX, posY);
@@ -36,14 +36,15 @@ void GhostEnemySpawner::SpawnNPC(const float posX,
 	npc->m_drawAtNativeDimensions = false;
 	npc->m_dimensions = Vector2(dimensions.X, dimensions.Y);
 	npc->m_isAnimated = true;
+	
 	/*
 	npc->EffectName = "effectpixelwobble";
 	npc->mPixelWobbleIntensity = 0.035f;
 	npc->mPixelWobbleSpeedMod = 0.75f;
 	*/
 
-	npc->EffectName = "effectnoise";
-	npc->mNoiseShaderIntensity = 0.02f;
+	npc->EffectName = "effectlighttexture";
+	// npc->mNoiseShaderIntensity = 0.01f;
 	npc->SetMaxVelocityXY(randMaxXVelocity, 99999.0f);
 	npc->SetCollisionDimensions(Vector2(collisionDimensions.X, collisionDimensions.Y));
 	npc->SetCollisionBoxOffset(Vector2(collisionBoxOffset.X, collisionBoxOffset.Y));   
@@ -54,7 +55,7 @@ void GhostEnemySpawner::SpawnNPC(const float posX,
 	npc->SetMaxJumpSpeed(randJumpSpeed);
 	npc->SetIsPlayerEnemy(true);
 	npc->SetFadeAlphaWhenPlayerOccluded(false, 0.5f);
-	npc->SetAlpha(0.4f);
+	npc->SetAlpha(1.0f);
 
 	GameObjectManager::Instance()->AddGameObject(npc);
 	npc->FlipVertical();
@@ -109,9 +110,9 @@ void GhostEnemySpawner::SpawnMultiple(const unsigned int numNPC, Vector2 boundsP
 		Vector2 collisionDimensions;
 		Vector2 collisionOffset;
 
-		dimensions = Vector2(256.0f, 256.0f);
-		collisionDimensions = Vector2(100.0f, 200.0f);
-		collisionOffset = Vector2(0.0f, 0.0f);
+		dimensions = Vector2(113.25f, 208.5f);
+		collisionDimensions = Vector2(55.0f, 130.0f);
+		collisionOffset = Vector2(0.0f, 20.0f);
 		animFile = "XmlFiles\\animation\\ghost_enemy_anim.xml";
 
 		SpawnNPC(boundsPos.X + randX, boundsPos.Y + randY, false, animFile, dimensions, collisionDimensions, collisionOffset);

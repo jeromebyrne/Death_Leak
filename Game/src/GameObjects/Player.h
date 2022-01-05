@@ -69,6 +69,8 @@ public:
 		return mIsInFinalLevel;
 	}
 
+	void SetUpgradedKnifeTexture();
+
 private:
 
 	void UpdateIsPullingSwordFromStomach(float delta);
