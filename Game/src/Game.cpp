@@ -35,6 +35,7 @@
 #include "PlayerLevelManager.h"
 #include "FeatureUnlockManager.h"
 #include "UITextModal.h"
+#include "NinjaSpawner.h"
 
 Game * Game::mInstance = nullptr;
 
@@ -144,6 +145,8 @@ void Game::Initialise()
 	FeatureUnlockManager::GetInstance()->Initialise();
 
 	STEAM_CALLBACK(Game, OnSteamGameOverlayActivated, GameOverlayActivated_t);
+
+	LoadCachedObjectsForPerformance();
 }
 
 void Game::Update(float delta)
@@ -538,5 +541,43 @@ void Game::DoDamagePauseEffectLonger()
 void Game::OnSteamGameOverlayActivated(GameOverlayActivated_t* pCallback)
 {
 	mPaused = pCallback->m_bActive;
+}
+
+void Game::LoadCachedObjectsForPerformance()
+{
+	if (GameObjectManager::Instance() == nullptr)
+	{
+		return;
+	}
+
+	// the following loads anims from disk and caches them
+	Animation * preloadAnim = new Animation("XmlFiles\\animation\\ninjaAnimation.xml");
+	delete preloadAnim;
+	preloadAnim = new Animation("XmlFiles\\animation\\ghost_enemy_anim.xml");
+	delete preloadAnim;
+	preloadAnim = new Animation("XmlFiles\\animation\\player_anim_default.xml");
+	delete preloadAnim;
+	preloadAnim = new Animation("XmlFiles\\animation\\skeleton_animation.xml");
+	delete preloadAnim;
+	preloadAnim = new Animation("XmlFiles\\bird_anim.xml");
+	delete preloadAnim;
+	preloadAnim = new Animation("XmlFiles\\bird_anim_2.xml");
+	delete preloadAnim;
+	preloadAnim = new Animation("XmlFiles\\butterfly_anim.xml");
+	delete preloadAnim;
+	preloadAnim = new Animation("XmlFiles\\crate_anim.xml");
+	delete preloadAnim;
+	preloadAnim = new Animation("XmlFiles\\orb_anim.xml");
+	delete preloadAnim;
+	preloadAnim = new Animation("XmlFiles\\pot_anim.xml");
+	delete preloadAnim;
+	preloadAnim = new Animation("XmlFiles\\rabbit_anim.xml");
+	delete preloadAnim;
+	preloadAnim = new Animation("XmlFiles\\rat_anim.xml");
+	delete preloadAnim;
+	preloadAnim = new Animation("XmlFiles\\small_rat_anim.xml");
+	delete preloadAnim;
+	preloadAnim = new Animation("XmlFiles\\stone_smashable.xml");
+	delete preloadAnim;
 }
 

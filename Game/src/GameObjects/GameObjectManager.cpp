@@ -945,6 +945,7 @@ void GameObjectManager::AddGameObject(GameObject * object, bool editModeAdd)
 	{
 		object->LoadContent(Graphics::GetInstance()->Device());
 	}
+
 	object->Initialise();
 	
 	// SCALE

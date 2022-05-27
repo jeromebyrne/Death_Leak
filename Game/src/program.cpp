@@ -41,6 +41,8 @@ void PostDestroyMessage();
 //--------------------------------------------------------------------------------------
 int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow )
 {
+	Timing::Create();
+
 	if( FAILED(  Initialise(hInstance, nCmdShow) ))
         return 0;
 
@@ -55,7 +57,6 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 	MSG mssg;                // message from queue
 	double  target_delta = 1.0/60.0; 
 
-	Timing::Create();
 	Timing::Instance()->SetTargetDelta(target_delta);
 
 	double last_update_time = 0.0;

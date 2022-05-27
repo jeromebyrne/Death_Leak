@@ -136,7 +136,7 @@ void UIScreen::Update()
 	}
 
 	// process input on the screen
-	if (GetForegroundWindow() == DXWindow::GetInstance()->Hwnd())
+	//if (GetForegroundWindow() == DXWindow::GetInstance()->Hwnd())
 	{
 		if (m_name == "level_select_edit" || 
 			m_name == "level_select")

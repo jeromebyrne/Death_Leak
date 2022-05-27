@@ -372,17 +372,18 @@ void UIManager::DisplayLaunchUI()
 	list<string> params;
 
 	// just set the current ui screen here - TEMP
+	/*
 	std::string languageSet = SaveManager::GetInstance()->GetLanguageSet();
 	if (languageSet.empty())
 	{
 		params.push_back("language_select");
 	}
 	else
-	{
-		// the language was set so tell the strings
-		StringManager::GetInstance()->SetLocale(languageSet);
+	{*/
+		string lang = "en-gb";
+		StringManager::GetInstance()->SetLocale(lang);
 		params.push_back("mainmenu");
-	}
+	//}
 
 	PushBackEvent("pushui", params);
 

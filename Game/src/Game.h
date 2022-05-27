@@ -72,6 +72,8 @@ public:
 
 private:
 
+	void LoadCachedObjectsForPerformance();
+
 	void * m_steamcallback_OnSteamGameOverlayActivated = nullptr;
 
 	// graphics manager

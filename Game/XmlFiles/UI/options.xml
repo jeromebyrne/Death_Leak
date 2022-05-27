@@ -90,25 +90,6 @@
     </actions_uncheck>
 
   </checkbox>
-
-  <button name="4_language_select"
-          process_input="true"
-          posX ="-420" posY ="-340" width="132" height ="132"
-          image="Media\UI\buttons\language.png"
-          image_focus="Media\UI\buttons\language2.png"
-          image_click="Media\UI\buttons\language2.png"
-          hflip="false" vflip="false"
-          alpha="1.0"
-          use_standard_effect="true">
-    <actionspressup>
-      <popui ui="options" />
-      <pushui ui="language_select_settings" />
-    </actionspressup>
-
-    <actionspressdown>
-      <playsoundeffect sound="UI\\click.wav"/>
-    </actionspressdown>
-  </button>
   
   <button name="6_back"
          process_input="true"
