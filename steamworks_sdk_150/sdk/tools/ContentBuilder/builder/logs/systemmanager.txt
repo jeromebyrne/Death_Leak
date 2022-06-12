@@ -1,0 +1,89 @@
+
+
+[2022-05-27 02:19:05] Initializing System Manager
+[2022-05-27 02:19:05] Node mode active on resume 0
+[2022-05-27 02:19:05] wifi power management: 1
+[2022-05-27 02:19:05] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:19:07] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+
+
+[2022-05-27 02:20:17] Initializing System Manager
+[2022-05-27 02:20:17] Node mode active on resume 0
+[2022-05-27 02:20:17] wifi power management: 1
+[2022-05-27 02:20:17] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+
+
+[2022-05-27 02:23:44] Initializing System Manager
+[2022-05-27 02:23:44] Node mode active on resume 0
+[2022-05-27 02:23:44] wifi power management: 1
+[2022-05-27 02:23:44] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+
+
+[2022-05-27 02:26:17] Initializing System Manager
+[2022-05-27 02:26:17] Node mode active on resume 0
+[2022-05-27 02:26:17] wifi power management: 1
+[2022-05-27 02:26:17] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:26:19] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:26:21] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:26:23] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:26:25] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:26:27] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:26:29] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:26:31] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:26:33] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:26:35] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:26:37] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:26:39] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:26:41] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:26:43] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:26:45] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:26:47] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:26:49] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:26:51] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+
+
+[2022-05-27 02:27:33] Initializing System Manager
+[2022-05-27 02:27:33] Node mode active on resume 0
+[2022-05-27 02:27:33] wifi power management: 1
+[2022-05-27 02:27:33] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:27:35] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:27:37] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:27:39] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:27:41] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:27:43] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:27:45] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:27:47] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:27:49] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:27:51] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+
+
+[2022-05-27 02:35:29] Initializing System Manager
+[2022-05-27 02:35:29] Node mode active on resume 0
+[2022-05-27 02:35:29] wifi power management: 1
+[2022-05-27 02:35:29] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:35:31] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:35:33] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:35:35] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:35:37] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:35:39] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:35:41] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:35:43] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:35:45] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:35:47] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:35:49] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:35:51] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+
+
+[2022-05-27 02:43:24] Initializing System Manager
+[2022-05-27 02:43:24] Node mode active on resume 0
+[2022-05-27 02:43:24] wifi power management: 1
+[2022-05-27 02:43:24] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:43:26] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:43:28] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:43:31] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:43:33] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:43:34] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:43:36] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:43:38] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:43:40] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+[2022-05-27 02:43:43] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state

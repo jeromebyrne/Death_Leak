@@ -1,0 +1,36 @@
+<uiscreen show_cursor="false">
+ 
+  <animatedsprite name="26_scratch_anim"
+                   process_input="false"
+                   posX ="-960" posY ="-540" width="1920" height ="1080"
+                   image="Media\UI\noise_layer.png"
+                   hflip="false" vflip="false"
+                   alpha="0.25"
+                  use_standard_effect="true"
+                   fps ="11">
+    <frames frame1="Media\UI\film_frame.png"
+            frame2="Media\UI\film_frame_2.png"
+            frame3="Media\UI\film_frame_3.png"
+            frame4="Media\UI\film_frame_4.png"
+    />
+  </animatedsprite>
+
+  <sprite name="29_frame_top"
+          process_input="false"
+          posX ="-960" posY ="390" width="1920" height ="150"
+          image="Media\UI\frame_top.png"
+          hflip="false" vflip="false"
+          alpha="1.0"
+          use_standard_effect="true">
+  </sprite>
+
+  <sprite name="30_frame_bottom"
+          process_input="false"
+          posX ="-960" posY ="-540" width="1920" height ="150"
+          image="Media\UI\frame_top.png"
+          hflip="false" vflip="true"
+          alpha="1.0"
+          use_standard_effect="true">
+  </sprite>
+  
+</uiscreen>

@@ -85,6 +85,8 @@ private:
 
 	void EndStory();
 
+	void InitialiseFinalLevelText();
+
 	float mProjectileFireDelay;
 	float mTimeUntilProjectileReady;
 
@@ -120,6 +122,10 @@ private:
 	bool mIsInFinalLevel = false;
 
 	float mCurrentTimeInFinalLevel = 0.0f;
+
+	bool mHasDisplayedFinalLevelText = false;
+
+	ID3DX10Font* mFinalLevelTitleText = nullptr;
 };
 
 #endif

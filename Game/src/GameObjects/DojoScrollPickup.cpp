@@ -6,6 +6,7 @@
 #include "Game.h"
 #include "UIManager.h"
 #include "StringManager.h"
+#include "TextObject.h"
 
 static const D3DXCOLOR kCostTextColor = D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f);
 static const D3DXCOLOR kDescTextColor = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
@@ -146,6 +147,38 @@ void DojoScrollPickup::OnInteracted()
 	FeatureUnlockManager::GetInstance()->SetFeatureUnlocked(mUnlocksFeature);
 
 	// TODO: do some VFX and SFX
+	Game::GetInstance()->Vibrate(1.0f, 1.0f, 1.0f);
+
+	// Do effects
+	AudioManager::Instance()->PlaySoundEffect("gong.wav", false, false, false);
+	AudioManager::Instance()->PlaySoundEffect("music\\japanese1.wav", false, false, false);
+	Camera2D::GetInstance()->DoBigShake();
+
+	ParticleEmitterManager::Instance()->CreateDirectedSpray(20,
+															m_position,
+															GameObject::kGroundFront,
+															Vector2(0.0f, 0.0f),
+															0.1f,
+															Vector2(3200.0f, 1200.0f),
+															"Media\\explosion_lines.png",
+															1.5f,
+															4.0f,
+															0.5f,
+															0.9f,
+															128.0f,
+															256.0f,
+															0.0f,
+															false,
+															1.0f,
+															1.0f,
+															0.0f,
+															true,
+															12.0f,
+															0.0f,
+															0.0f,
+															0.05f,
+															0.1f,
+															true);
 }
 
 bool DojoScrollPickup::CanInteract()

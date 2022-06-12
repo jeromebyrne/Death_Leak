@@ -299,7 +299,7 @@ void GameObjectManager::Draw(ID3D10Device *  device)
 		DrawableObject * drawObj = static_cast<DrawableObject*>(obj.get());
 
 		// only draw if object is in view
-		if (drawObj->Alpha() > 0.0f && (m_camera->IsObjectInView(drawObj) /*|| drawObj->GetParallaxMultiplierX() > 1.0f*/)) // Parallax multiplier X hack (keeps popping into view)
+		if (drawObj->Alpha() > 0.0f && (m_camera->IsObjectInView(drawObj) || drawObj->IsPlayer()))
 		{
 			// apply any changes needed
 			if (drawObj->IsChangeRequired())

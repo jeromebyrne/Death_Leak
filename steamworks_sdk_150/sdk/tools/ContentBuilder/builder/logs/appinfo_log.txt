@@ -31,3 +31,47 @@
 [2020-10-24 23:21:58] Requesting 23 apps, 0 packages (meta data, 1024 prev attempts)
 [2020-10-24 23:21:58] Requested 22 app access tokens, 0 received, 22 denied
 [2020-10-24 23:21:58] UpdatesJob: finished OK, nAppsUpdated 0 (0 KB), nPackagesUpdated 0 (0 KB)
+
+
+[2022-05-27 02:26:37] RequestAppInfoUpdate: AppIDs 7
+[2022-05-27 02:26:37] Packages changed: force all
+[2022-05-27 02:26:37] Apps changed: force all
+[2022-05-27 02:26:37] Change number 9834343->14938806, apps: 0/0, packages: 0/0
+[2022-05-27 02:26:37] Requesting 565 apps, 166 packages (meta data, 1024 prev attempts)
+[2022-05-27 02:26:37] Requested 68 app access tokens, 45 received, 23 denied
+[2022-05-27 02:26:38] Updated SHAs with 45 new access tokens
+[2022-05-27 02:26:38] Downloaded 80 apps via HTTP, 2408 KB (559 KB compressed)
+[2022-05-27 02:26:38] Requesting 312 apps, 15 packages (full data, 1024 prev attempts)
+[2022-05-27 02:26:40] UpdatesJob: finished OK, apps updated 392 (3484 KB), packages updated 15 (13 KB)
+[2022-05-27 02:26:40] Requesting 15 apps, 0 packages (meta data, 1024 prev attempts)
+[2022-05-27 02:26:40] Requested 8 app access tokens, 7 received, 1 denied
+[2022-05-27 02:26:40] Updated SHAs with 7 new access tokens
+[2022-05-27 02:26:40] Requesting 14 apps, 0 packages (full data, 1024 prev attempts)
+[2022-05-27 02:26:40] UpdatesJob: finished OK, apps updated 14 (16 KB), packages updated 0 (0 KB)
+[2022-05-27 02:26:52] Starting async write C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder/appcache/appinfo.vdf (2770090 bytes)
+
+
+[2022-05-27 02:27:47] RequestAppInfoUpdate: AppIDs 7
+[2022-05-27 02:27:47] Apps changed: 
+[2022-05-27 02:27:47] Change number 14938806->14938841, apps: 0/37, packages: 0/0
+[2022-05-27 02:27:47] Requesting 24 apps, 0 packages (meta data, 1024 prev attempts)
+[2022-05-27 02:27:47] Requested 23 app access tokens, 0 received, 23 denied
+[2022-05-27 02:27:47] UpdatesJob: finished OK, apps updated 0 (0 KB), packages updated 0 (0 KB)
+
+
+[2022-05-27 02:35:48] RequestAppInfoUpdate: AppIDs 7
+[2022-05-27 02:35:49] Packages changed: 
+[2022-05-27 02:35:49] Apps changed: 
+[2022-05-27 02:35:49] Change number 14938841->14938903, apps: 0/47, packages: 0/2
+[2022-05-27 02:35:49] Requesting 24 apps, 0 packages (meta data, 1024 prev attempts)
+[2022-05-27 02:35:49] Requested 23 app access tokens, 0 received, 23 denied
+[2022-05-27 02:35:49] UpdatesJob: finished OK, apps updated 0 (0 KB), packages updated 0 (0 KB)
+
+
+[2022-05-27 02:43:41] RequestAppInfoUpdate: AppIDs 7
+[2022-05-27 02:43:42] Packages changed: 
+[2022-05-27 02:43:42] Apps changed: 
+[2022-05-27 02:43:42] Change number 14938903->14938958, apps: 0/45, packages: 0/4
+[2022-05-27 02:43:42] Requesting 24 apps, 0 packages (meta data, 1024 prev attempts)
+[2022-05-27 02:43:42] Requested 23 app access tokens, 0 received, 23 denied
+[2022-05-27 02:43:42] UpdatesJob: finished OK, apps updated 0 (0 KB), packages updated 0 (0 KB)

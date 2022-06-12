@@ -1,11 +1,11 @@
 "appbuild"
 {
 	"appid" "995990"
-	"desc" "testing october 2020"
+	"desc" "May 2022_2"
 	"buildoutput" "C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\output"
 	"contentroot" ""
 	"setlive" ""
-	"preview" "0"
+	"preview" "1"
 	"local"	""
 	"depots"
 	{

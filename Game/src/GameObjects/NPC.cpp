@@ -535,6 +535,32 @@ void NPC::DoNinjaExplosion()
 		SpawnLimb("Media\\orb2.png", true, 0.94f);
 		SpawnLimb("Media\\orb2.png", true, 0.79f);
 		SpawnLimb("Media\\orb3.png", true, 1.12f);
+
+		ParticleEmitterManager::Instance()->CreateDirectedSpray(10,
+																m_position,
+																GameObject::kGroundFront,
+																Vector2(0.0f, 0.0f),
+																0.1f,
+																Vector2(3200.0f, 1200.0f),
+																"Media\\explosion_lines.png",
+																3.5f,
+																5.0f,
+																0.3f,
+																0.7f,
+																32.0f,
+																128.0f,
+																0.0f,
+																false,
+																1.0f,
+																1.0f,
+																0.0f,
+																true,
+																16.0f,
+																0.0f,
+																0.0f,
+																0.05f,
+																0.1f,
+																true);
 	}
 }
 

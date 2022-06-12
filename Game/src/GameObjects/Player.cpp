@@ -39,7 +39,9 @@ static const float kInitialSwordPullBreathingVolume = 0.35f;
 static const float kSwordPullIdleShowPromptDelay = 8.0f;
 static const float kProjectileDamage = 1.25f;
 static const float kProjectileDamageUpgrade = 2.0f;
-static const float kTotalTimeInFinalLevel = 40.0f;
+static const float kTotalTimeInFinalLevel = 35.0f;
+static const float kFinalLevelTimeUntilTitle = 15.0f;
+static const D3DXCOLOR kFinalLevelTitleColor = D3DXCOLOR(1.0f, 0.0f, 0.0f, 0.96f);
 
 Player::Player(float x, float y, float width, float height) :
 Character(x, y, GameObject::kPlayer, width, height),
@@ -109,6 +111,11 @@ void Player::Initialise()
 
 	string currentLevel = GameObjectManager::Instance()->GetCurrentLevelFile();
 	mIsInFinalLevel = (currentLevel == "XmlFiles\\levels\\sea_2.xml");
+
+	if (mIsInFinalLevel)
+	{
+		InitialiseFinalLevelText();
+	}
 
 	bool highDamageProjectilesUnlocked = FeatureUnlockManager::GetInstance()->IsFeatureUnlocked(FeatureUnlockManager::kProjectileDamageIncrease);
 	mProjectileFilePath = highDamageProjectilesUnlocked ? "Media/knife_2.png" : "Media/knife.png";
@@ -246,7 +253,7 @@ void Player::Update(float delta)
 	// update base classes
 	Character::Update(delta);
 
-	if (!SaveManager::GetInstance()->HasPulledSwordFromStomach())
+	if (!SaveManager::GetInstance()->HasPulledSwordFromStomach() && !mIsInFinalLevel)
 	{
 		UpdateIsPullingSwordFromStomach(delta);
 		return;
@@ -260,6 +267,14 @@ void Player::Update(float delta)
 
 		mCurrentTimeInFinalLevel += delta;
 
+		if (mCurrentTimeInFinalLevel > kFinalLevelTimeUntilTitle)
+		{
+			if (!mHasDisplayedFinalLevelText)
+			{
+				AudioManager::Instance()->PlaySoundEffect("boomy_intro.wav");
+				mHasDisplayedFinalLevelText = true;
+			}
+		}
 		if (mCurrentTimeInFinalLevel > kTotalTimeInFinalLevel)
 		{
 			EndStory();	
@@ -378,7 +393,7 @@ Projectile * Player::FireWeapon(Vector2 direction, float speedMultiplier)
 		++mCurrentBurstNum;
 	}
 
-	mTimeUntilProjectileReady = mProjectileFireDelay;
+	mTimeUntilProjectileReady = highSpeedProjectilesUnlocked ? mProjectileFireDelay* 0.75f :  mProjectileFireDelay;
 
 	Vector2 pos = m_position;
 	pos.X = (direction.X > 0.0f) ? pos.X + m_projectileOffset.X : pos.X -= m_projectileOffset.X;
@@ -1139,6 +1154,34 @@ void Player::Draw(ID3D10Device* device, Camera2D* camera)
 				Vector2(50.0f, 50.0f),
 				"Media\\UI\\gamepad_icons\\x.png");
 		}
+	}
+
+	if (mIsInFinalLevel && mCurrentTimeInFinalLevel > kFinalLevelTimeUntilTitle)
+	{
+		if (mFinalLevelTitleText)
+		{
+			RECT rect = { 300, 450, 0, 0 };
+			mFinalLevelTitleText->DrawTextA(0, "DEATH LEAK", -1, &rect, DT_NOCLIP, kFinalLevelTitleColor);
+		}
+	}
+}
+
+void Player::InitialiseFinalLevelText()
+{
+	// orb count text
+	{
+		D3DX10_FONT_DESC fd;
+		fd.Height = 350;
+		fd.Width = 0;
+		fd.Weight = 0;
+		fd.MipLevels = 1;
+		fd.Italic = false;
+		fd.CharSet = OUT_DEFAULT_PRECIS;
+		fd.Quality = DEFAULT_QUALITY;
+		fd.PitchAndFamily = DEFAULT_PITCH | FF_DONTCARE;
+		wcscpy(fd.FaceName, L"Impact");
+
+		D3DX10CreateFontIndirect(Graphics::GetInstance()->Device(), &fd, &mFinalLevelTitleText);
 	}
 }
 

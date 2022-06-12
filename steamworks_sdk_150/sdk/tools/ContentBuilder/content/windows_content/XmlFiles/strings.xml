@@ -20,19 +20,19 @@
   </health_upgrade_notification>
 
   <dojo_scroll_desc_kRoll>
-    <en-gb>The ROLL technique. Time your rolls on big landings to avoid a delay.</en-gb>
+    <en-gb>The ROLL technique. Use for evasive actions and time your rolls on big landings to avoid a delay. Roll with the LEFT BUMPER.</en-gb>
     <pt-br>A técnica ROLL Tempo seus rolos em grandes aterrissagens para evitar um atraso.</pt-br>
     <de>Die ROLL-Technik. Zeit für große Landungen, um eine Verzögerung zu vermeiden.</de>
   </dojo_scroll_desc_kRoll>
 
   <dojo_scroll_desc_kDownwardDash>
-    <en-gb>The downward SMASH technique. Smash through obstacles with this technique. </en-gb>
+    <en-gb>The downward SMASH technique. Smash through obstacles with this technique. Press the RIGHT BUMPER in mid-air to trigger.</en-gb>
     <pt-br>A técnica descendente de SMASH. Esmagar os obstáculos com esta técnica.</pt-br>
     <de>Die abwärts gerichtete SMASH-Technik. Besiege Hindernisse mit dieser Technik.</de>
   </dojo_scroll_desc_kDownwardDash>
 
   <dojo_scroll_desc_kSlowMotion>
-    <en-gb>The FOCUS technique. Slow down time. TODO</en-gb>
+    <en-gb>The FOCUS technique. Slow down time. Hold the LEFT TRIGGER to activate.</en-gb>
     <pt-br>A técnica FOCUS. Diminua o tempo. FAÇAM</pt-br>
     <de>Die FOCUS-Technik. Zeit verlangsamen. MACHEN</de>
   </dojo_scroll_desc_kSlowMotion>
@@ -68,9 +68,9 @@
   </key_name_granary>
 
   <key_desc_granary>
-    <en-gb>Opens the old Granary door</en-gb>
-    <pt-br>Opens the old Granary door</pt-br>
-    <de>Opens the old Granary door</de>
+    <en-gb>Opens the old Granary door in the forest</en-gb>
+    <pt-br>Opens the old Granary door in the forest</pt-br>
+    <de>Opens the old Granary door in the forest</de>
   </key_desc_granary>
 
   <key_name_dojo>
@@ -96,4 +96,104 @@
     <pt-br>needs localization</pt-br>
     <de>needs localization</de>
   </suicide_note_desc>
+
+  <paper_pickup_title_granary_key_hint>
+    <en-gb>Grain Supply Status</en-gb>
+    <pt-br>Grain Supply Status</pt-br>
+    <de>Grain Supply Status</de>
+  </paper_pickup_title_granary_key_hint>
+
+  <paper_pickup_desc_granary_key_hint>
+    <en-gb>Grain levels critical. 
+           Requesting an increase in supply. 
+           Granary key misplaced by Haruki. 
+           Haruki's last known location, old windmill.
+           Punish Haruki. </en-gb>
+    <pt-br>
+      Grain levels critical.
+      Requesting an increase in supply.
+      Granary key misplaced by Haruki.
+      Haruki's last known location, old windmill.
+      Punish Haruki..</pt-br>
+    <de>
+      Grain levels critical.
+      Requesting an increase in supply.
+      Granary key misplaced by Haruki.
+      Haruki's last known location, old windmill.
+      Punish Haruki.
+    </de>
+  </paper_pickup_desc_granary_key_hint>
+
+  <save_shrine_hint_title>
+    <en-gb>Kato's note</en-gb>
+    <pt-br>Kato's note</pt-br>
+    <de>Kato's note</de>
+  </save_shrine_hint_title>
+
+  <save_shrine_hint_desc>
+    <en-gb>I found a nearby hotspring. The healing waters saved me from my own memories. I feel like a new man. Can I make up for my sins?</en-gb>
+    <pt-br>I found a nearby hotspring. The healing waters saved me from my own memories. I feel like a new man. Can I make up for my sins?</pt-br>
+    <de>I found a nearby hotspring. The healing waters saved me from my own memories. I feel like a new man. Can I make up for my sins?</de>
+  </save_shrine_hint_desc>
+
+  <paper_pickup_gametip>
+    <en-gb>GAME TIP</en-gb>
+    <pt-br>GAME TIP</pt-br>
+    <de>GAME TIP</de>
+  </paper_pickup_gametip>
+
+  <paper_pickup_gametip_projectile>
+    <en-gb>Use the RIGHT THUMBSTICK to throw a flying dagger</en-gb>
+    <pt-br>Use the RIGHT THUMBSTICK to throw a flying dagger</pt-br>
+    <de>Use the RIGHT THUMBSTICK to throw a flying dagger</de>
+  </paper_pickup_gametip_projectile>
+
+  <key_name_tools>
+    <en-gb>Tools</en-gb>
+    <pt-br>Tools</pt-br>
+    <de>Tools</de>
+  </key_name_tools>
+
+  <key_desc_tools>
+    <en-gb>An assortment of woodworking tools. These could be useful for repairing something broken.</en-gb>
+    <pt-br>An assortment of woodworking tools. These could be useful for repairing something broken.</pt-br>
+    <de>An assortment of woodworking tools. These could be useful for repairing something broken.</de>
+  </key_desc_tools>
+
+  <key_name_village_hut>
+    <en-gb>Hut Key</en-gb>
+    <pt-br>Hut Keys</pt-br>
+    <de>Hut Key</de>
+  </key_name_village_hut>
+
+  <key_desc_village_hut>
+    <en-gb>This key looks like it would open one of the common huts.</en-gb>
+    <pt-br>This key looks like it would open one of the common huts.</pt-br>
+    <de>This key looks like it would open one of the common huts.</de>
+  </key_desc_village_hut>
+  
+<paper_pickup_cave_clue_name>
+    <en-gb>Himari's Note</en-gb>
+    <pt-br>Himari's Note</pt-br>
+    <de>Himari's Note</de>
+  </paper_pickup_cave_clue_name>
+  
+<paper_pickup_cave_clue_desc>
+    <en-gb>I told Akio about the hidden cave earlier. He was mad at me. He said it was too dangerous diving beneath the waterfall. I told him I had seen a stream of bubbles and had to investigate. That's what an adventurer does.</en-gb>
+    <pt-br>I told Akio about the hidden cave earlier. He was mad at me. He said it was too dangerous diving beneath the waterfall. I told him I had seen a stream of bubbles and had to investigate. That's what an adventurer does.</pt-br>
+    <de>I told Akio about the hidden cave earlier. He was mad at me. He said it was too dangerous diving beneath the waterfall. I told him I had seen a stream of bubbles and had to investigate. That's what an adventurer does.</de>
+  </paper_pickup_cave_clue_desc>
+
+  <broken_boat_message_title>
+    <en-gb>Damaged Boat</en-gb>
+    <pt-br>Damaged Boat</pt-br>
+    <de>Damaged Boat</de>
+  </broken_boat_message_title>
+
+  <broken_boat_message_desc>
+    <en-gb>A boat that seems to have smashed up on the rocks.</en-gb>
+    <pt-br>A boat that seems to have smashed up on the rocks.</pt-br>
+    <de>A boat that seems to have smashed up on the rocks.</de>
+  </broken_boat_message_desc>
+
 </strings>

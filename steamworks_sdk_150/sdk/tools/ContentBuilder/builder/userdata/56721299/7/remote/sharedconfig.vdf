@@ -674,5 +674,10 @@
 			"rgPromptDismissals"		"1"
 			"bWasAskedToRevise"		"0"
 		}
+		"spotlight.review.995990"
+		{
+			"rgPromptDismissals"		"3"
+			"bWasAskedToRevise"		"0"
+		}
 	}
 }

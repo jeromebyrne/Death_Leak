@@ -1,5 +1,15 @@
-"LibraryFolders"
+"libraryfolders"
 {
-	"TimeNextStatsReport"		"1603656861"
-	"ContentStatsID"		"-5070527131182404283"
+	"0"
+	{
+		"path"		"C:\\Users\\jerom\\Documents\\git\\2DPlatformer\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder\\builder"
+		"label"		""
+		"contentid"		"5311860521451393987"
+		"totalsize"		"0"
+		"update_clean_bytes_tally"		"0"
+		"time_last_update_corruption"		"0"
+		"apps"
+		{
+		}
+	}
 }
