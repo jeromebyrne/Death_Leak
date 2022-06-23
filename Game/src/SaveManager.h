@@ -32,6 +32,10 @@ public:
 
 	bool IsPaperPickupCollected(const string & loc_id);
 
+	void SetSmashableBroken(const string& levelId);
+
+	bool IsSmashableBroken(const string& levelId);
+
 	bool HasDoorKey(const std::string & keyId);
 
 	void SetHasDoorkey(const std::string & keyId, bool value);

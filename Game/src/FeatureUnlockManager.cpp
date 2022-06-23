@@ -45,6 +45,15 @@ void FeatureUnlockManager::SetFeatureUnlocked(const FeatureType type)
 			player->SetUpgradedKnifeTexture();
 		}
 	}
+	else if (type == kSpeedIncrease)
+	{
+		Player* player = GameObjectManager::Instance()->GetPlayer();
+		if (player)
+		{
+			player->OnPurchaseSpeedUpgrade();
+		}
+	}
+
 	SaveManager::GetInstance()->SetGameFeatureUnlocked(type);
 }
 

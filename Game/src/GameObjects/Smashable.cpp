@@ -33,10 +33,9 @@ void Smashable::Initialise()
 
 	if (!Game::GetInstance()->GetIsLevelEditMode() )
 	{
-		std::vector<unsigned int> breakablesBroken;
-		SaveManager::GetInstance()->GetBreakablesBroken(GameObjectManager::Instance()->GetCurrentLevelFile(), breakablesBroken);
+		bool broken = SaveManager::GetInstance()->IsSmashableBroken(GameObjectManager::Instance()->GetCurrentLevelFile());
 
-		if (std::find(breakablesBroken.begin(), breakablesBroken.end(), ID()) != breakablesBroken.end())
+		if (broken)
 		{
 			mState = kSmashed;
 		}
@@ -71,7 +70,7 @@ bool Smashable::OnCollision(SolidMovingSprite * object)
 			player->CollisionBottom() > CollisionCentreY())
 		{
 			mState = kSmashed;
-			GameObjectManager::Instance()->SetBreakableBroken(ID());
+			SaveManager::GetInstance()->SetSmashableBroken(GameObjectManager::Instance()->GetCurrentLevelFile());
 			CurrencyOrb::SpawnOrbs(m_position, (rand() % 8) + 1);
 			if (m_material)
 			{

@@ -389,7 +389,7 @@
         <door_id value="" />
     </LevelEntry>
     <DojoScrollPickup id="22" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kGround" y="-1370.019531" x="1200.533691" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kGround" y="-1459.019531" x="303.933594" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="141.268387" width="141.268387" native="false" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -403,6 +403,6 @@
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <feature_unlock value="kDeflection" />
-        <orb_cost value="3" />
+        <orb_cost value="500" />
     </DojoScrollPickup>
 </level>

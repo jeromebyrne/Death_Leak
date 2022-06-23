@@ -43,6 +43,8 @@ static const float kTotalTimeInFinalLevel = 35.0f;
 static const float kFinalLevelTimeUntilTitle = 15.0f;
 static const D3DXCOLOR kFinalLevelTitleColor = D3DXCOLOR(1.0f, 0.0f, 0.0f, 0.96f);
 
+static const float kMaxVelocityUpgraded = 11.0f;
+
 Player::Player(float x, float y, float width, float height) :
 Character(x, y, GameObject::kPlayer, width, height),
 	mProjectileFireDelay(0.225f),
@@ -80,7 +82,7 @@ void Player::Initialise()
 	m_maxVelocity.X = 8.0f;
 	if (FeatureUnlockManager::GetInstance()->IsFeatureUnlocked(FeatureUnlockManager::kSpeedIncrease))
 	{
-		m_maxVelocity.X = 11.0f;
+		m_maxVelocity.X = kMaxVelocityUpgraded;
 	}
 
 	mDefaultVelocityX = m_maxVelocity.X;
@@ -95,7 +97,7 @@ void Player::Initialise()
 	int maxHealth = SaveManager::GetInstance()->GetPlayerMaxHealth();
 	if (maxHealth == 0)
 	{
-		maxHealth = 50;
+		maxHealth = 25;
 	}
 
 	mMaxHealth = maxHealth;
@@ -120,6 +122,13 @@ void Player::Initialise()
 	bool highDamageProjectilesUnlocked = FeatureUnlockManager::GetInstance()->IsFeatureUnlocked(FeatureUnlockManager::kProjectileDamageIncrease);
 	mProjectileFilePath = highDamageProjectilesUnlocked ? "Media/knife_2.png" : "Media/knife.png";
 	mProjectileImpactFilePath = "Media/knife_impact_2.png";
+}
+
+void Player::OnPurchaseSpeedUpgrade()
+{
+	m_maxVelocity.X = kMaxVelocityUpgraded;
+
+	mDefaultVelocityX = m_maxVelocity.X;
 }
 
 void Player::SetUpgradedKnifeTexture()

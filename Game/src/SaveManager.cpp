@@ -366,11 +366,11 @@ void SaveManager::GetBreakablesBroken(const std::string & levelFile, std::vector
 
 	std::replace(key.begin(), key.end(), '\\', '-'); // replace back slashes as they will mess up the xml file
 
-	DataValue breakablesVector = mSaveMapPermanentData[key];
+	DataValue breakablesVector = mSaveMapTemporaryData[key];
 
 	if (breakablesVector.getType() != DataValue::Type::VECTOR)
 	{
-		mSaveMapPermanentData[key] = DataValue(std::vector<DataValue>());
+		mSaveMapTemporaryData[key] = DataValue(std::vector<DataValue>());
 		return;
 	}
 
@@ -393,7 +393,7 @@ void SaveManager::SetBreakablesBroken(const std::string & levelFile, std::vector
 
 	std::replace(key.begin(), key.end(), '\\', '-'); // replace back slashes as they will mess up the xml file
 
-	DataValue breakablesVector = mSaveMapPermanentData[key];
+	DataValue breakablesVector = mSaveMapTemporaryData[key];
 
 	if (breakablesVector.getType() != DataValue::Type::VECTOR)
 	{
@@ -408,7 +408,7 @@ void SaveManager::SetBreakablesBroken(const std::string & levelFile, std::vector
 		vec.push_back(DataValue((int)i));
 	}
 
-	mSaveMapPermanentData[key] = vec;
+	mSaveMapTemporaryData[key] = vec;
 }
 
 bool SaveManager::IsGameFeatureUnlocked(const int featureType)
@@ -528,6 +528,24 @@ bool SaveManager::IsPaperPickupCollected(const string & loc_id)
 	}
 
 	return false;
+}
+
+void SaveManager::SetSmashableBroken(const string& levelName)
+{
+	std::string key = "smashable_" + levelName;
+
+	std::replace(key.begin(), key.end(), '\\', '-'); // replace back slashes as they will mess up the xml file
+
+	mSaveMapPermanentData[key] = true;
+}
+
+bool SaveManager::IsSmashableBroken(const string& levelName)
+{
+	std::string key = "smashable_" + levelName;
+
+	std::replace(key.begin(), key.end(), '\\', '-'); // replace back slashes as they will mess up the xml file
+
+	return GetBoolValue(mSaveMapPermanentData, key, false);
 }
 
 bool SaveManager::HasDoorKey(const std::string & keyId)

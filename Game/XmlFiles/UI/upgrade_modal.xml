@@ -29,7 +29,7 @@
 
   <sprite name="4_upgrade_button_image_gamepad"
           process_input="false"
-          posX ="140" posY ="-305" width="96" height ="96"
+          posX ="80" posY ="-305" width="96" height ="96"
           image="Media\UI\gamepad_icons\y.png"
           hflip="false" vflip="true"
           alpha="1.0"

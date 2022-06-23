@@ -71,6 +71,8 @@ public:
 
 	void SetUpgradedKnifeTexture();
 
+	void OnPurchaseSpeedUpgrade();
+
 private:
 
 	void UpdateIsPullingSwordFromStomach(float delta);

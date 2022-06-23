@@ -1633,7 +1633,7 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 
 					// spawn some orbs
 					if (GameObjectManager::Instance()->GetPlayer() != this)
 					{
-						CurrencyOrb::SpawnOrbs(Vector2(m_position.X, m_position.Y + 200.0f), 5);
+						CurrencyOrb::SpawnOrbs(Vector2(m_position.X, m_position.Y + 200.0f), 25);
 					}
 				}
 				else if (shouldExplode && !mExplodesGruesomely)

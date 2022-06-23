@@ -16,6 +16,8 @@ static const float kDismissWarmup = 1.0f;
 
 static const D3DXCOLOR kTitleColor = D3DXCOLOR(0.6f, 0.6f, 0.6f, 1.0f);
 static const D3DXCOLOR kDescColor = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+static const D3DXCOLOR kInsuffientOrbsColor = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+
 
 UIUpgradeModal::UIUpgradeModal(string name) :
 	UIScreen(name)
@@ -34,12 +36,6 @@ UIUpgradeModal::~UIUpgradeModal(void)
 	{
 		mTitleFont->Release();
 		mTitleFont = nullptr;
-	}
-
-	if (mCostFont)
-	{
-		mCostFont->Release();
-		mCostFont = nullptr;
 	}
 }
 
@@ -92,6 +88,7 @@ void UIUpgradeModal::Update()
 			else
 			{
 				// play some failure SFX
+				// AudioManager::Instance()->PlaySoundEffect("stonehit.wav");
 			}
 		}
 	}
@@ -104,7 +101,7 @@ void UIUpgradeModal::Initialise()
 	// create title font
 	{
 		D3DX10_FONT_DESC fd;
-		fd.Height = 75;
+		fd.Height = 50;
 		fd.Width = 0;
 		fd.Weight = 0;
 		fd.MipLevels = 1;
@@ -131,22 +128,6 @@ void UIUpgradeModal::Initialise()
 		wcscpy(fd.FaceName, Utilities::ConvertCharStringToWcharString("Impact"));
 
 		D3DX10CreateFontIndirect(Graphics::GetInstance()->Device(), &fd, &mDescriptionFont);
-	}
-
-	// create cost font
-	{
-		D3DX10_FONT_DESC fd;
-		fd.Height = 95;
-		fd.Width = 0;
-		fd.Weight = 0;
-		fd.MipLevels = 1;
-		fd.Italic = false;
-		fd.CharSet = OUT_DEFAULT_PRECIS;
-		fd.Quality = DEFAULT_QUALITY;
-		fd.PitchAndFamily = DEFAULT_PITCH | FF_DONTCARE;
-		wcscpy(fd.FaceName, Utilities::ConvertCharStringToWcharString("Impact"));
-
-		D3DX10CreateFontIndirect(Graphics::GetInstance()->Device(), &fd, &mCostFont);
 	}
 
 	for (const auto & kvp : m_widgetMap)
@@ -197,18 +178,6 @@ void UIUpgradeModal::Draw(ID3D10Device * device)
 		}
 	}
 
-	// upgrade cost
-	{
-		if (!mUpgradeCostAsString.empty())
-		{
-			float halfDimensionsX = kTitleTextDimensionsX * 0.5f;
-			float halfDimensionsY = kTitleTextDimensionsY * 0.5f;
-
-			RECT bounds = { 960.0f - halfDimensionsX, 750, 960.0f + halfDimensionsX, 850 };
-			mCostFont->DrawTextA(0, mUpgradeCostAsString.c_str(), -1, &bounds, DT_CENTER | DT_BOTTOM | DT_LEFT, kTitleColor);
-		}
-	}
-
 	// description
 	{
 		if (!mLocalizedDescription.empty())
@@ -222,6 +191,28 @@ void UIUpgradeModal::Draw(ID3D10Device * device)
 							540.0f + halfDimensionsY - 75.0f };
 			mDescriptionFont->DrawTextA(0, mLocalizedDescription.c_str(), -1, &bounds, DT_WORDBREAK | DT_CENTER | DT_VCENTER, kDescColor);
 		}
+	}
+
+	// upgrade cost
+	{
+		if (!mUpgradeCostAsString.empty())
+		{
+			float halfDimensionsX = kTitleTextDimensionsX * 0.5f;
+			float halfDimensionsY = kTitleTextDimensionsY * 0.5f;
+
+			RECT bounds = { 960.0f - halfDimensionsX - 50.0, 735, 960.0f + halfDimensionsX, 835 };
+			mTitleFont->DrawTextA(0, mUpgradeCostAsString.c_str(), -1, &bounds, DT_CENTER | DT_BOTTOM | DT_LEFT, CanPurchase() ? kTitleColor : kInsuffientOrbsColor);
+		}
+	}
+
+	// insufficient orbs text
+	if (!CanPurchase())
+	{
+		float halfDimensionsX = kTitleTextDimensionsX * 0.5f;
+		float halfDimensionsY = kTitleTextDimensionsY * 0.5f;
+
+		RECT bounds = { 960.0f - halfDimensionsX, 850, 960.0f + halfDimensionsX, 950 };
+		mTitleFont->DrawTextA(0, "NOT ENOUGH ORBS", -1, &bounds, DT_CENTER | DT_BOTTOM | DT_LEFT, kInsuffientOrbsColor);
 	}
 }
 
@@ -248,8 +239,10 @@ void UIUpgradeModal::SetUpgradeCost(int cost)
 
 bool UIUpgradeModal::CanPurchase()
 {
+#if _DEBUG
 	// testing
-	// return true;
+	//return true;
+#endif
 
 	int currentOrbs = SaveManager::GetInstance()->GetNumCurrencyOrbsCollected();
 
@@ -271,7 +264,7 @@ void UIUpgradeModal::DoPurchase()
 	Game::GetInstance()->Vibrate(1.0f, 1.0f, 1.0f);
 
 	// Do effects
-	AudioManager::Instance()->PlaySoundEffect("gong.wav", false, false, false);
+	// AudioManager::Instance()->PlaySoundEffect("gong.wav", false, false, false);
 	AudioManager::Instance()->PlaySoundEffect("music\\japanese1.wav", false, false, false);
 	Camera2D::GetInstance()->DoBigShake();
 

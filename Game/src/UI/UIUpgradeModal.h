@@ -40,7 +40,6 @@ private:
 	string mLocalizedDescription;
 	ID3DX10Font* mDescriptionFont = nullptr;
 	ID3DX10Font* mTitleFont = nullptr;
-	ID3DX10Font* mCostFont = nullptr;
 
 	float mDismissButtonCurrentWarmup = 0.0f;
 
