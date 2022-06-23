@@ -39,15 +39,20 @@
       <fadeout time="150"/>
       <unpausegame />
       <destroylevel />
+      <pushui ui="mainmenu" />
+      <popui ui="mainmenu" />
       <popui ui="you_died"/>
       <popui ui="game_hud"/>
-      <pushui ui="mainmenu"/>
-      <playmusic sound="" loop="true"/>
-      <fadein time="50"/>
+      <pushui ui="gameloading" />
+      <fadein time="0"/>
+      <stopallsounds />
+      <loadlevel level="XmlFiles\levels\grass_exploration_3.xml" />
+      <popui ui="gameloading" />
+      <pushui ui="game_hud" />
     </actionspressup>
 
     <actionspressdown>
-      <playsoundeffect sound="UI\\click.wav" />
+      <playsoundeffect sound="UI\\click.wav" />F
     </actionspressdown>
 
   </button>
