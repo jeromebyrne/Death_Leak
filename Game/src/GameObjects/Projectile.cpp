@@ -650,7 +650,7 @@ void Projectile::HandleSolidLineStripCollision(SolidLineStrip * solidLineStrip)
 
 			// play sound for non-characters, characters handle their sounds in OnDamage
 
-			if (!GetIsInWater())
+			if (!GetIsInWater() && mType != kBloodFXProjectile)
 			{
 				string soundFile = objectMaterial->GetRandomDamageSoundFilename();
 				AudioManager::Instance()->PlaySoundEffect(soundFile);

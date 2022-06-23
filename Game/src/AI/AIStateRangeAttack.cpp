@@ -146,7 +146,7 @@ void AIStateRangeAttack::Update(float delta)
 			auto player = GameObjectManager::Instance()->GetPlayer();
 			GAME_ASSERT(player);
 	
-			mWillFireAtTarget = true;
+			mWillFireAtTarget = !player->IsDead();
 			mWillFireAtTargetCountdown = kFireProjectileWarmUp;
 
 			mTimeStoodStill += delta;
