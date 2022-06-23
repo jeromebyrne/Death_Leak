@@ -19,7 +19,6 @@ public:
 	virtual void Initialise() override;
 	virtual void XmlRead(TiXmlElement * element) override;
 	virtual void XmlWrite(TiXmlElement * element) override;
-	virtual void Draw(ID3D10Device * device, Camera2D * camera) override;
 
 protected:
 
@@ -28,26 +27,11 @@ protected:
 
 private:
 
-	void InitialiseText();
-
-	void AddDescriptionBacking();
-
 	FeatureUnlockManager::FeatureType mUnlocksFeature = FeatureUnlockManager::kNone;
 
 	int mOrbCost = 9999;
-
-	ID3DX10Font* mCostText = nullptr;
 	string mOrbCostString;
-	float mCostOffsetX = 0.0f;
-	float mCostOffsetY = 0.0f;
-
-	Sprite * mDescriptionBacking = nullptr;
-
-	bool mHasAddedDescBacking = false;
-	float mDescriptionOffsetX = 0.0f;
-
 	string mLocalizedDescription;
-	ID3DX10Font* mDescriptionText = nullptr;
 };
 
 #endif

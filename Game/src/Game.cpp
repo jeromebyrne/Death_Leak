@@ -35,6 +35,7 @@
 #include "PlayerLevelManager.h"
 #include "FeatureUnlockManager.h"
 #include "UITextModal.h"
+#include "UIUpgradeModal.h"
 #include "NinjaSpawner.h"
 
 Game * Game::mInstance = nullptr;
@@ -316,11 +317,35 @@ void Game::DisplayTextModal(const string & localizedTitle, const string & locali
 	mIsDisplayingTextModal = true;
 }
 
+void Game::DisplayUpgradeModal(const string& localizedTitle, const string& localizedText, FeatureUnlockManager::FeatureType upgradeType, int upgradeCost)
+{
+	mPaused = true;
+
+	UIScreen* screen = UIManager::Instance()->PushUI("upgrade_modal");
+	UIUpgradeModal* upgradeScreen = static_cast<UIUpgradeModal*>(screen);
+
+	upgradeScreen->SetLocalizedTitle(localizedTitle);
+	upgradeScreen->SetLocalizedDescription(localizedText);
+	upgradeScreen->SetUpgradeType(upgradeType);
+	upgradeScreen->SetUpgradeCost(upgradeCost);
+
+	mIsDisplayingTextModal = true;
+}
+
 void Game::DismissTextModal()
 {
 	mPaused = false;
 
 	UIManager::Instance()->PopUIDeferred("text_modal");
+
+	mIsDisplayingTextModal = false;
+}
+
+void Game::DismissUpgradeModal()
+{
+	mPaused = false;
+
+	UIManager::Instance()->PopUIDeferred("upgrade_modal");
 
 	mIsDisplayingTextModal = false;
 }

@@ -10,8 +10,6 @@ static const string kKeyPickupSFX = "key_pickup.wav";
 
 void KeyPickup::DoPickup()
 {
-	AudioManager::Instance()->PlaySoundEffect(kKeyPickupSFX);
-
 	Player * p = GameObjectManager::Instance()->GetPlayer();
 
 	if (p == nullptr)
@@ -37,6 +35,7 @@ void KeyPickup::DoPickup()
 void KeyPickup::DoPickupEffects(Player * player)
 {
 	// TODO:
+	AudioManager::Instance()->PlaySoundEffect(kKeyPickupSFX);
 
 	Game::GetInstance()->Vibrate(0.1f, 0.0f, 0.1f);
 }

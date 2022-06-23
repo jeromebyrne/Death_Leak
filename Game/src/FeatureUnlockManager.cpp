@@ -119,3 +119,39 @@ string FeatureUnlockManager::GetFeatureAsString(FeatureType featureType)
 
 	return "kNone";
 }
+
+int FeatureUnlockManager::GetFeatureCost(const FeatureType featureType)
+{
+	switch (featureType)
+	{
+		case kDownwardDash:
+		{
+			return 1000;
+		}
+		case kRoll:
+		{
+			return 50;
+		}
+		case kSlowMotion:
+		{
+			return 500;
+		}
+		case kDeflection:
+		{
+			return 500;
+		}
+		case kSpeedIncrease:
+		{
+			return 150;
+		}
+		case kProjectileDamageIncrease:
+		{
+			return 200;
+		}
+		case kProjectileSpeedIncrease:
+		{
+			return 200;
+		}
+		default: return 0;
+	}
+}

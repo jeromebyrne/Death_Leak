@@ -33,6 +33,8 @@ public:
 
 	string GetFeatureAsString(FeatureType featureType);
 
+	int GetFeatureCost(const FeatureType featureType);
+
 private:
 
 	static FeatureUnlockManager * m_instance;

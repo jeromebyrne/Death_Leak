@@ -3,6 +3,7 @@
 
 #include "InputManager.h"
 #include "steam_api.h"
+#include "FeatureUnlockManager.h"
 
 class EffectLightTexture;
 class EffectLightTextureVertexWobble;
@@ -42,6 +43,9 @@ public:
 
 	static void DisplayTextModal(const string & localizedTitle, const string & localizeddesc);
 	static void DismissTextModal();
+
+	static void DisplayUpgradeModal(const string& localizedTitle, const string& localizedText, FeatureUnlockManager::FeatureType upgradeType, int upgradeCost);
+	static void DismissUpgradeModal();
 
 	static bool GetIsLevelEditMode() { return mLevelEditMode; }
 

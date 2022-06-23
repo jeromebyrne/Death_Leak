@@ -14,6 +14,7 @@
 #include "UILevelSelectScreen.h"
 #include "UIQuickPlayScreen.h"
 #include "UITextModal.h"
+#include "UIUpgradeModal.h"
 #include "SaveManager.h"
 #include "UIGameLoading.h"
 #include "UIOptionsScreen.h"
@@ -323,6 +324,10 @@ void UIManager::XmlRead(const char * uiRootPath)
 		else if (name == "text_modal")
 		{
 			ui_screen = new UITextModal(name);
+		}
+		else if (name == "upgrade_modal")
+		{
+			ui_screen = new UIUpgradeModal(name);
 		}
 		else if (name == "mainmenu")
 		{

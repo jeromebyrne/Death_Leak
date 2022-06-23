@@ -107,6 +107,12 @@ void Door::EnterDoor()
 
 void Door::OnInteracted()
 {
+	// just to make testing easier
+#if _DEBUG
+	// EnterDoor();
+	// return;
+#endif
+
 	mCanTryOpen = false;
 
 	if (!mRequiredKey.empty())

@@ -1,8 +1,17 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Game"
+    "\\Game",
+    "\\Game\\XmlFiles",
+    "\\Game\\XmlFiles\\UI",
+    "\\steamworks_sdk_150\\sdk",
+    "\\steamworks_sdk_150\\sdk\\tools",
+    "\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder",
+    "\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder\\content",
+    "\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder\\content\\windows_content",
+    "\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder\\content\\windows_content\\XmlFiles",
+    "\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder\\content\\windows_content\\XmlFiles\\levels"
   ],
-  "SelectedNode": "\\Game\\bargon.xml",
+  "SelectedNode": "\\Game\\XmlFiles\\UI\\upgrade_modal.xml",
   "PreviewInSolutionExplorer": false
 }

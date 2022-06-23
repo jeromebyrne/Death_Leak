@@ -26,17 +26,6 @@ DojoScrollPickup::DojoScrollPickup(float x,
 
 DojoScrollPickup::~DojoScrollPickup(void)
 {
-	if (mCostText)
-	{
-		mCostText->Release();
-		mCostText = nullptr;
-	}
-
-	if (mDescriptionText)
-	{
-		mDescriptionText->Release();
-		mDescriptionText = nullptr;
-	}
 }
 
 void DojoScrollPickup::Update(float delta)
@@ -52,28 +41,14 @@ void DojoScrollPickup::Update(float delta)
 
 	if (FeatureUnlockManager::GetInstance()->IsFeatureUnlocked(mUnlocksFeature))
 	{
-		GameObjectManager::Instance()->RemoveGameObject(this, true);
-		return;
-	}
-
-	if (mHasAddedDescBacking == false)
-	{
-		AddDescriptionBacking();
-		mHasAddedDescBacking = true;
-	}
-
-	m_alpha = CanInteract() ? 1.0f : 0.25f;
-
-	if (mDescriptionBacking)
-	{
 		if (sCurrentInteractable == ID())
 		{
-			mDescriptionBacking->SetAlpha(1.0f);
+			// bug fix 
+			sCurrentInteractable = -1;
 		}
-		else
-		{
-			mDescriptionBacking->SetAlpha(0.0f);
-		}
+
+		GameObjectManager::Instance()->RemoveGameObject(this, true);
+		return;
 	}
 }
 
@@ -81,10 +56,13 @@ void DojoScrollPickup::Initialise()
 {
 	Sprite::Initialise();
 
+	mOrbCost = FeatureUnlockManager::GetInstance()->GetFeatureCost(mUnlocksFeature);
+	mOrbCostString = std::to_string(mOrbCost);
+
 	mInteractableProperties.IsInteractable = true;
 	mInteractableProperties.PosOffset = Vector2(0.0f, 50.0f);
-
-	InitialiseText();
+	mInteractableProperties.DisableInteractivityOnInteract = false;
+	mInteractableProperties.InteractCountdown = 0.5f;
 
 	string featureAsString = FeatureUnlockManager::GetInstance()->GetFeatureAsString(mUnlocksFeature);
 	string descKey = "dojo_scroll_desc_";
@@ -92,14 +70,6 @@ void DojoScrollPickup::Initialise()
 	mLocalizedDescription = StringManager::GetInstance()->GetLocalisedString(descKey.c_str());
 
 	SetDepthLayer(GameObject::kGround);
-
-	mCostOffsetY = kCostYOffset;
-
-	string currentLevel = GameObjectManager::Instance()->GetCurrentLevelFile();
-	if (currentLevel == "XmlFiles\\levels\\cliff_hut.xml")
-	{
-		mCostOffsetY = kCostYOffsetCliffhut;
-	}
 }
 
 void DojoScrollPickup::XmlRead(TiXmlElement * element)
@@ -109,11 +79,8 @@ void DojoScrollPickup::XmlRead(TiXmlElement * element)
 	string featureAsString = XmlUtilities::ReadAttributeAsString(element, "feature_unlock", "value");
 	mUnlocksFeature = FeatureUnlockManager::GetInstance()->GetFeatureTypeFromString(featureAsString);
 
-	mOrbCost = XmlUtilities::ReadAttributeAsInt(element, "orb_cost", "value");
-	mCostOffsetX = XmlUtilities::ReadAttributeAsInt(element, "orb_cost", "offset_x");
-	mDescriptionOffsetX = XmlUtilities::ReadAttributeAsFloat(element, "orb_cost", "desc_offset_x");
-
-	mOrbCostString = std::to_string(mOrbCost);
+	// Just hardcoding this now as it's easier to set values quicker
+	// mOrbCost = XmlUtilities::ReadAttributeAsInt(element, "orb_cost", "value");
 }
 
 void DojoScrollPickup::XmlWrite(TiXmlElement * element)
@@ -128,57 +95,12 @@ void DojoScrollPickup::XmlWrite(TiXmlElement * element)
 
 	TiXmlElement * orbCostElement = new TiXmlElement("orb_cost");
 	orbCostElement->SetAttribute("value", mOrbCost);
-	orbCostElement->SetAttribute("offset_x", mCostOffsetX);
-	orbCostElement->SetDoubleAttribute("desc_offset_x", mDescriptionOffsetX);
 	element->LinkEndChild(orbCostElement);
 }
 
 void DojoScrollPickup::OnInteracted()
 {
-	if (mDescriptionBacking)
-	{
-		mDescriptionBacking->SetAlpha(0.0f);
-	}
-
-	int currentOrbCount = SaveManager::GetInstance()->GetNumCurrencyOrbsCollected();
-
-	SaveManager::GetInstance()->SetNumCurrencyOrbsCollected(currentOrbCount - mOrbCost);
-	
-	FeatureUnlockManager::GetInstance()->SetFeatureUnlocked(mUnlocksFeature);
-
-	// TODO: do some VFX and SFX
-	Game::GetInstance()->Vibrate(1.0f, 1.0f, 1.0f);
-
-	// Do effects
-	AudioManager::Instance()->PlaySoundEffect("gong.wav", false, false, false);
-	AudioManager::Instance()->PlaySoundEffect("music\\japanese1.wav", false, false, false);
-	Camera2D::GetInstance()->DoBigShake();
-
-	ParticleEmitterManager::Instance()->CreateDirectedSpray(20,
-															m_position,
-															GameObject::kGroundFront,
-															Vector2(0.0f, 0.0f),
-															0.1f,
-															Vector2(3200.0f, 1200.0f),
-															"Media\\explosion_lines.png",
-															1.5f,
-															4.0f,
-															0.5f,
-															0.9f,
-															128.0f,
-															256.0f,
-															0.0f,
-															false,
-															1.0f,
-															1.0f,
-															0.0f,
-															true,
-															12.0f,
-															0.0f,
-															0.0f,
-															0.05f,
-															0.1f,
-															true);
+	Game::GetInstance()->DisplayUpgradeModal("NEW TECHNIQUE", mLocalizedDescription, mUnlocksFeature, mOrbCost);
 }
 
 bool DojoScrollPickup::CanInteract()
@@ -188,102 +110,5 @@ bool DojoScrollPickup::CanInteract()
 		return false;
 	}
 
-	int currentOrbs = SaveManager::GetInstance()->GetNumCurrencyOrbsCollected();
-
-	if (currentOrbs < mOrbCost)
-	{
-		return false;
-	}
-
 	return true;
 }
-
-void DojoScrollPickup::InitialiseText()
-{
-	// cost text
-	{
-		D3DX10_FONT_DESC fd;
-		fd.Height = 32;
-		fd.Width = 0;
-		fd.Weight = 0;
-		fd.MipLevels = 1;
-		fd.Italic = false;
-		fd.CharSet = OUT_DEFAULT_PRECIS;
-		fd.Quality = DEFAULT_QUALITY;
-		fd.PitchAndFamily = DEFAULT_PITCH | FF_DONTCARE;
-		wcscpy(fd.FaceName, Utilities::ConvertCharStringToWcharString("Impact"));
-
-		D3DX10CreateFontIndirect(Graphics::GetInstance()->Device(), &fd, &mCostText);
-	}
-
-	// description text
-	{
-		D3DX10_FONT_DESC fd;
-		fd.Height = 28;
-		fd.Width = 0;
-		fd.Weight = 0;
-		fd.MipLevels = 1;
-		fd.Italic = false;
-		fd.CharSet = OUT_DEFAULT_PRECIS;
-		fd.Quality = DEFAULT_QUALITY;
-		fd.PitchAndFamily = DEFAULT_PITCH | FF_DONTCARE;
-		wcscpy(fd.FaceName, Utilities::ConvertCharStringToWcharString("Impact"));
-
-		D3DX10CreateFontIndirect(Graphics::GetInstance()->Device(), &fd, &mDescriptionText);
-	}
-}
-
-void DojoScrollPickup::Draw(ID3D10Device * device, Camera2D * camera)
-{
-	Sprite::Draw(device, camera);
-
-	float worldScale = GameObjectManager::Instance()->GetCurrentLevelProperties().GetZoomInPercent();
-	worldScale = (1.0f + (1.0f - worldScale));
-
-	// cost text
-	{
-		Vector2 worldPos = Vector2((m_position.X - (m_dimensions.X * 0.5f)) + mCostOffsetX, m_position.Y + mCostOffsetY);
-
-		worldPos = worldPos * worldScale;
-		Vector2 screenPos = Utilities::WorldToScreen(worldPos);
-
-		RECT bounds = { screenPos.X, screenPos.Y, screenPos.X + m_dimensions.X, screenPos.Y + m_dimensions.Y };
-		mCostText->DrawTextA(0, mOrbCostString.c_str(), -1, &bounds, DT_NOCLIP, kCostTextColor);
-	}
-	
-	// description text
-	if (mDescriptionBacking && mDescriptionBacking->Alpha() > 0.0f)
-	{
-		Vector2 worldPos = Vector2((mDescriptionBacking->X() - (mDescriptionBacking->Dimensions().X * 0.5f)) + mCostOffsetX, mDescriptionBacking->Y() + 10.0f);
-		worldPos = worldPos * worldScale;
-		Vector2 screenPos = Utilities::WorldToScreen(worldPos);
-
-		RECT bounds = { screenPos.X, screenPos.Y, screenPos.X + (mDescriptionBacking->Dimensions().X * 1.0f), screenPos.Y + (mDescriptionBacking->Dimensions().Y * 1.4f) };
-		mCostText->DrawTextA(0, mLocalizedDescription.c_str(), -1, &bounds, DT_WORDBREAK, kDescTextColor);
-	}
-}
-
-void DojoScrollPickup::AddDescriptionBacking()
-{
-	if (mDescriptionBacking)
-	{
-		return;
-	}
-
-	mDescriptionBacking = new Sprite();
-
-	mDescriptionBacking->SetXY((m_position.X + 100.0f) + mDescriptionOffsetX, m_position.Y + 170.0f);
-
-	mDescriptionBacking->SetIsNativeDimensions(true);
-
-	mDescriptionBacking->SetTextureFilename("Media\\levels\\dojo\\desc_backing.png");
-
-	mDescriptionBacking->EffectName = this->EffectName;
-
-	mDescriptionBacking->SetDepthLayer(GameObject::kGroundBack);
-
-	GameObjectManager::Instance()->AddGameObject(mDescriptionBacking);
-
-	mDescriptionBacking->SetAlpha(0.5f);
-}
-

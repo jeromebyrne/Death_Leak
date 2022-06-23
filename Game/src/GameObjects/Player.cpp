@@ -1160,7 +1160,7 @@ void Player::Draw(ID3D10Device* device, Camera2D* camera)
 	{
 		if (mFinalLevelTitleText)
 		{
-			RECT rect = { 300, 450, 0, 0 };
+			RECT rect = { 300, 385, 0, 0 };
 			mFinalLevelTitleText->DrawTextA(0, "DEATH LEAK", -1, &rect, DT_NOCLIP, kFinalLevelTitleColor);
 		}
 	}

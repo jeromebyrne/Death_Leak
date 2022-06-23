@@ -416,23 +416,6 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <DojoScrollPickup id="22" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kGround" y="136.000000" x="88.000000" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions height="145.772034" width="145.772034" native="false" repeatX="false" repeatY="false" />
-        <material value="grassground" />
-        <sine_wave_props active="true" x_offset="0.000000" y_offset="7.000000" amplitude="0.750000" rand_init_step="0" />
-        <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
-        <alpha value="1.000000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.000000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media/levels/dojo/scroll_extra_damage.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="false" />
-        <isanimated value="false" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <feature_unlock value="kProjectileDamageIncrease" />
-        <orb_cost value="0" offset_x="10" desc_offset_x="-85.000000" />
-    </DojoScrollPickup>
     <LevelTrigger id="23" level_edit_locked="false" updateable="true" always_update="true">
         <position depth_layer="kGround" y="268.000000" x="-1523.000488" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="4000.000000" width="1200.000000" />

@@ -7,7 +7,7 @@
         <is_animation_preview value="false" />
     </LevelProperties>
     <ParallaxLayer id="1" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kFarBackground" y="3580.000000" x="1236.985352" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kFarBackground" y="3580.000000" x="876.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="1090.000000" width="1985.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -46,7 +46,7 @@
         <animationfile value="XmlFiles\animation\player_anim_default.xml" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance y="0.550000" x="0.800000" />
-        <maxvelocity y="34.000000" x="11.000000" />
+        <maxvelocity y="34.000000" x="8.000000" />
         <applygravity value="true" />
         <collisionboxdimensions y="214.898743" x="128.959793" offsetX="0.000000" offsetY="0.000000" />
         <passive value="false" />
@@ -610,7 +610,7 @@
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="false" />
     </SolidLineStrip>
     <ParallaxLayer id="37" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kMiddleForeground" y="2800.000000" x="1236.985352" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kMiddleForeground" y="2800.000000" x="876.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="512.000000" width="2048.000000" native="false" repeatX="true" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -664,7 +664,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <ParallaxLayer id="40" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kMiddleForeground" y="4100.000000" x="1236.985352" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kMiddleForeground" y="4100.000000" x="876.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="677.000000" width="2048.000000" native="false" repeatX="true" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -1083,15 +1083,7 @@
         <points x_0="-145.000000" y_0="-35.000000" x_1="332.000000" y_1="-153.000000" num_points="2" />
         <edge_properties has_right_hard_edge="false" has_left_hard_edge="false" right_hard_edge_offset_x="0.000000" left_hard_edge_offset_x="0.000000" can_drop_down="false" />
     </SolidLineStrip>
-    <NPCTrigger id="66" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kGround" y="3366.000000" x="1048.985352" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions height="146.848907" width="440.546753" />
-        <material value="" />
-        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
-        <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
-        <num_enemies value="1.000000" enemy_type="kGhost" />
-    </NPCTrigger>
-    <CurrencyOrb id="67" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="66" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3162.000000" x="-172.014648" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1115,7 +1107,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="68" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="67" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3183.000000" x="-69.014648" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1139,7 +1131,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="69" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="68" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3206.000000" x="53.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1163,7 +1155,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="70" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="69" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3218.000000" x="195.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1187,7 +1179,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="71" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="70" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3213.000000" x="335.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1211,7 +1203,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="72" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="71" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3182.000000" x="487.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1235,7 +1227,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="73" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="72" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3133.000000" x="661.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1259,7 +1251,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="74" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="73" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3090.000000" x="801.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1283,7 +1275,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="75" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="74" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3422.000000" x="54.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1307,7 +1299,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="76" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="75" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3426.000000" x="200.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1331,7 +1323,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="77" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="76" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3406.000000" x="341.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1355,7 +1347,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="78" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="77" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3570.000000" x="339.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1379,7 +1371,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="79" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="78" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3582.000000" x="196.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1403,7 +1395,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="80" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="79" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3589.000000" x="44.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1427,7 +1419,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="81" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="80" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3383.000000" x="740.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1452,7 +1444,7 @@
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <CurrencyOrb id="82" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kOrb" y="3360.000000" x="850.985352" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kOrb" y="3360.000000" x="854.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
         <sine_wave_props active="true" x_offset="0.000000" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
@@ -1476,78 +1468,6 @@
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
     <CurrencyOrb id="83" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kOrb" y="3347.000000" x="962.985352" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
-        <material value="flame_orb" />
-        <sine_wave_props active="true" x_offset="0.000000" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
-        <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
-        <alpha value="0.750000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="true" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\orb_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance y="3.000000" x="1.000000" />
-        <maxvelocity y="99999.000000" x="20.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions y="40.938286" x="40.938286" offsetX="0.000000" offsetY="10.000000" />
-        <passive value="false" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <is_bouncy value="false" bounce_multiplier="1.300000" />
-    </CurrencyOrb>
-    <CurrencyOrb id="84" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kOrb" y="3341.000000" x="1056.985352" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
-        <material value="flame_orb" />
-        <sine_wave_props active="true" x_offset="0.000000" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
-        <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
-        <alpha value="0.750000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="true" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\orb_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance y="3.000000" x="1.000000" />
-        <maxvelocity y="99999.000000" x="20.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions y="40.938286" x="40.938286" offsetX="0.000000" offsetY="10.000000" />
-        <passive value="false" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <is_bouncy value="false" bounce_multiplier="1.300000" />
-    </CurrencyOrb>
-    <CurrencyOrb id="85" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kOrb" y="3347.000000" x="1141.985352" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
-        <material value="flame_orb" />
-        <sine_wave_props active="true" x_offset="0.000000" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
-        <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
-        <alpha value="0.750000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="true" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\orb_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance y="3.000000" x="1.000000" />
-        <maxvelocity y="99999.000000" x="20.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions y="40.938286" x="40.938286" offsetX="0.000000" offsetY="10.000000" />
-        <passive value="false" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <is_bouncy value="false" bounce_multiplier="1.300000" />
-    </CurrencyOrb>
-    <CurrencyOrb id="86" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3882.000000" x="836.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1571,7 +1491,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="87" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="84" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3875.000000" x="953.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1595,7 +1515,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="88" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="85" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3858.000000" x="1060.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1619,7 +1539,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="89" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="86" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3854.000000" x="1148.086060" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1643,7 +1563,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="90" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="87" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3505.000000" x="-911.014648" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1667,7 +1587,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="91" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="88" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3508.000000" x="-826.014648" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1691,7 +1611,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="92" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="89" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3507.000000" x="-745.014648" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1715,7 +1635,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="93" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="90" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3512.000000" x="-661.014648" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1739,7 +1659,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="94" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="91" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3861.000000" x="-1544.014648" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1763,7 +1683,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="95" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="92" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3830.000000" x="-1467.014648" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1787,7 +1707,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="96" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="93" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3785.000000" x="-1370.116333" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1811,7 +1731,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="97" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="94" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3458.000000" x="1630.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1835,7 +1755,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="98" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="95" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3420.000000" x="1735.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1859,7 +1779,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="99" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="96" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3384.000000" x="1850.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1883,7 +1803,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="100" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="97" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3334.000000" x="1976.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1907,7 +1827,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="101" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="98" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3271.000000" x="2062.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1931,7 +1851,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="102" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="99" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3527.000000" x="1820.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1955,7 +1875,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="103" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="100" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3597.000000" x="1926.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -1979,7 +1899,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="104" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="101" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3647.000000" x="2079.987305" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -2003,7 +1923,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="105" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="102" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3608.000000" x="2279.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -2027,7 +1947,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="106" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="103" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3541.000000" x="2426.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -2051,7 +1971,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="107" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="104" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3447.000000" x="2545.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -2075,7 +1995,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="108" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="105" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3299.000000" x="2620.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -2099,7 +2019,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="109" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="106" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3145.000000" x="2644.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -2123,7 +2043,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="110" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="107" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3105.000000" x="2406.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -2147,7 +2067,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="111" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="108" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3102.000000" x="2537.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -2171,7 +2091,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="112" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="109" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3072.000000" x="1672.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -2195,7 +2115,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="113" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="110" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3073.000000" x="1778.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -2219,7 +2139,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="114" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="111" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3203.000000" x="1666.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -2243,7 +2163,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="115" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="112" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3190.000000" x="1775.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -2267,7 +2187,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="116" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="113" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3080.000000" x="1154.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -2291,7 +2211,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="117" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="114" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3076.500488" x="974.685669" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -2315,31 +2235,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="118" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kOrb" y="3463.000000" x="1146.985352" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
-        <material value="flame_orb" />
-        <sine_wave_props active="true" x_offset="0.000000" y_offset="20.000000" amplitude="2.000000" rand_init_step="1" />
-        <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
-        <alpha value="0.750000" />
-        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
-        <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="false" />
-        <verticalflip value="true" />
-        <isanimated value="true" />
-        <animationfile value="XmlFiles\orb_anim.xml" />
-        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance y="3.000000" x="1.000000" />
-        <maxvelocity y="99999.000000" x="20.000000" />
-        <applygravity value="false" />
-        <collisionboxdimensions y="40.938286" x="40.938286" offsetX="0.000000" offsetY="10.000000" />
-        <passive value="false" />
-        <applydamage flag="false" amount="0.000000" />
-        <can_be_damaged value="true" />
-        <is_bouncy value="false" bounce_multiplier="1.300000" />
-    </CurrencyOrb>
-    <CurrencyOrb id="119" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="115" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3572.000000" x="1143.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -2363,7 +2259,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="120" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="116" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3686.000000" x="1136.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -2387,7 +2283,7 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
-    <CurrencyOrb id="121" level_edit_locked="false" updateable="true" always_update="false">
+    <CurrencyOrb id="117" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="3578.000000" x="1615.985352" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="72.831207" width="47.697300" native="false" repeatX="false" repeatY="false" />
         <material value="flame_orb" />
@@ -2411,4 +2307,21 @@
         <can_be_damaged value="true" />
         <is_bouncy value="false" bounce_multiplier="1.300000" />
     </CurrencyOrb>
+    <DojoScrollPickup id="118" level_edit_locked="false" updateable="true" always_update="false">
+        <position depth_layer="kGround" y="3350.000000" x="1167.985352" rotation="-0.630003" auto_rotate_value="0.000000" />
+        <dimensions height="170.515411" width="170.515411" native="false" repeatX="false" repeatY="false" />
+        <material value="grassground" />
+        <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
+        <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
+        <alpha value="1.000000" />
+        <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
+        <fade_when_player_occluded value="false" alphawhenoccluding="0.000000" alphawhennotoccluding="1.000000" />
+        <texture filename="Media/objects/katana_in_ground.png" />
+        <horizontalflip value="true" />
+        <verticalflip value="false" />
+        <isanimated value="false" />
+        <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
+        <feature_unlock value="kProjectileDamageIncrease" />
+        <orb_cost value="3" />
+    </DojoScrollPickup>
 </level>
