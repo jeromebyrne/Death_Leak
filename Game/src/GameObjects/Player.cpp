@@ -38,8 +38,8 @@ static const float kStomachSwordPullTime = 2.75f;
 static const float kResistanceY = 0.55f;
 static const float kInitialSwordPullBreathingVolume = 0.35f;
 static const float kSwordPullIdleShowPromptDelay = 8.0f;
-static const float kProjectileDamage = 1.25f;
-static const float kProjectileDamageUpgrade = 3.0f;
+static const float kProjectileDamage = 1.5f;
+static const float kProjectileDamageUpgrade = 4.0f;
 static const float kTotalTimeInFinalLevel = 35.0f;
 static const float kFinalLevelTimeUntilTitle = 15.0f;
 static const D3DXCOLOR kFinalLevelTitleColor = D3DXCOLOR(1.0f, 0.0f, 0.0f, 0.96f);
@@ -48,9 +48,9 @@ static const float kMaxVelocityUpgraded = 11.0f;
 
 Player::Player(float x, float y, float width, float height) :
 Character(x, y, GameObject::kPlayer, width, height),
-	mProjectileFireDelay(0.225f),
+	mProjectileFireDelay(0.220f),
 	mTimeUntilProjectileReady(0.0f),
-	mFireBurstNum(4),
+	mFireBurstNum(5),
 	mCurrentBurstNum(0),
 	mFireBurstDelay(0.50f),
 	mTimeUntilFireBurstAvailable(0.0f),

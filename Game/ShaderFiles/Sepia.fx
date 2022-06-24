@@ -71,7 +71,7 @@ float4 PS( PS_INPUT input) : SV_Target
 
 	float sepiaTrue = step((color.r - (color.g + color.b)), 0.5);
 	float redTrue = step(0.5, (color.r - (color.g + color.b)));
-	finalColor.r = (sepiaTrue * sepiaColor.r) + (redTrue * color.r);
+	finalColor.r = (sepiaTrue * sepiaColor.r) + (redTrue * color.r) * 0.6;
 	finalColor.g = (sepiaTrue * sepiaColor.g) + (redTrue * color.g);
 	finalColor.b = (sepiaTrue * sepiaColor.b) + (redTrue * color.b);
 
