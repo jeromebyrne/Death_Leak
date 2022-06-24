@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\jerom\documents\git\2dplatformer\game\dxut</FILEPATH>
+      <FILENAME>dxutmisc.cpp</FILENAME>
+      <LINE>24</LINE>
+      <COLUMN>12</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'CDXUTTimer::m_bUsingQPF' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>CDXUTTimer::{ctor}</FUNCTION>
+    <DECORATED>??0CDXUTTimer@@QEAA@XZ</DECORATED>
+    <FUNCLINE>24</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

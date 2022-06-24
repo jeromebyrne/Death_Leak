@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\jerom\documents\git\2dplatformer\game\src</FILEPATH>
+      <FILENAME>encryption.h</FILENAME>
+      <LINE>91</LINE>
+      <COLUMN>53</COLUMN>
+    </SFA>
+    <DEFECTCODE>26451</DEFECTCODE>
+    <DESCRIPTION>Arithmetic overflow: Using operator '+' on a 4 byte value and then casting the result to a 8 byte value. Cast the value to the wider type before calling operator '+' to avoid overflow (io.2).</DESCRIPTION>
+    <FUNCTION>encrypt_vigenere</FUNCTION>
+    <DECORATED>?encrypt_vigenere@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEAV12@0@Z</DECORATED>
+    <FUNCLINE>80</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\jerom\documents\git\2dplatformer\game\src</FILEPATH>
+      <FILENAME>encryption.h</FILENAME>
+      <LINE>109</LINE>
+      <COLUMN>63</COLUMN>
+    </SFA>
+    <DEFECTCODE>26451</DEFECTCODE>
+    <DESCRIPTION>Arithmetic overflow: Using operator '-' on a 4 byte value and then casting the result to a 8 byte value. Cast the value to the wider type before calling operator '-' to avoid overflow (io.2).</DESCRIPTION>
+    <FUNCTION>decrypt_vigenere</FUNCTION>
+    <DECORATED>?decrypt_vigenere@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEAV12@0@Z</DECORATED>
+    <FUNCLINE>102</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\jerom\documents\git\2dplatformer\game\src\core</FILEPATH>
+      <FILENAME>xmldocument.cpp</FILENAME>
+      <LINE>7</LINE>
+      <COLUMN>13</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'XmlDocument::m_pHandle' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>XmlDocument::{ctor}</FUNCTION>
+    <DECORATED>??0XmlDocument@@QEAA@XZ</DECORATED>
+    <FUNCLINE>7</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

@@ -2,16 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\Game",
-    "\\steamworks_sdk_150\\sdk",
-    "\\steamworks_sdk_150\\sdk\\tools",
-    "\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder",
-    "\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder\\content",
-    "\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder\\content\\windows_content",
-    "\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder\\content\\windows_content\\Media",
-    "\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder\\content\\windows_content\\Media\\UI",
-    "\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder\\content\\windows_content\\XmlFiles",
-    "\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder\\content\\windows_content\\XmlFiles\\animation"
+    "\\Game\\XmlFiles",
+    "\\Game\\XmlFiles\\levels"
   ],
-  "SelectedNode": "\\Game\\bargon.xml",
+  "SelectedNode": "\\Game\\Game.vcxproj",
   "PreviewInSolutionExplorer": false
 }

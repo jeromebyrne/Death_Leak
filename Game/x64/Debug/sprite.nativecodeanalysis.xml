@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\jerom\documents\git\2dplatformer\game\src\gameobjects</FILEPATH>
+      <FILENAME>sprite.cpp</FILENAME>
+      <LINE>29</LINE>
+      <COLUMN>8</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Sprite::m_indices' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Sprite::{ctor}</FUNCTION>
+    <DECORATED>??0Sprite@@QEAA@MMW4DepthLayer@GameObject@@MM@Z</DECORATED>
+    <FUNCLINE>29</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\jerom\documents\git\2dplatformer\game\src\gameobjects</FILEPATH>
+      <FILENAME>sprite.cpp</FILENAME>
+      <LINE>29</LINE>
+      <COLUMN>8</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Sprite::m_animation' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Sprite::{ctor}</FUNCTION>
+    <DECORATED>??0Sprite@@QEAA@MMW4DepthLayer@GameObject@@MM@Z</DECORATED>
+    <FUNCLINE>29</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

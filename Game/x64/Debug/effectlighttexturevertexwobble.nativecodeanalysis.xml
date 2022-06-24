@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\jerom\documents\git\2dplatformer\game\src\effects</FILEPATH>
+      <FILENAME>effectlighttexturevertexwobble.cpp</FILENAME>
+      <LINE>4</LINE>
+      <COLUMN>32</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'EffectLightTextureVertexWobble::m_pWavinessVariable' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>EffectLightTextureVertexWobble::{ctor}</FUNCTION>
+    <DECORATED>??0EffectLightTextureVertexWobble@@QEAA@XZ</DECORATED>
+    <FUNCLINE>4</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>c:\users\jerom\documents\git\2dplatformer\game\src\effects</FILEPATH>
+      <FILENAME>effectlighttexturevertexwobble.cpp</FILENAME>
+      <LINE>4</LINE>
+      <COLUMN>32</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'EffectLightTextureVertexWobble::m_pTimeVariable' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>EffectLightTextureVertexWobble::{ctor}</FUNCTION>
+    <DECORATED>??0EffectLightTextureVertexWobble@@QEAA@XZ</DECORATED>
+    <FUNCLINE>4</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>
