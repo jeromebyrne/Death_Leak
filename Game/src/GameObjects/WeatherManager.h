@@ -30,6 +30,8 @@ public:
 
 	void StopAllWeather();
 
+	void StartRainingIfNotAlready();
+
 private:
 
 	WeatherManager(void);

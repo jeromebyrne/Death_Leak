@@ -20,7 +20,7 @@
 						"weight"		"100"
 						"https"		"1"
 					}
-					"media.st.dl.pinyuncloud.com"
+					"media.st.dl.eccdnx.com"
 					{
 						"base_url"		"/client/"
 						"weight"		"10000"
@@ -28,9 +28,9 @@
 						"https"		"1"
 					}
 				}
-				"SteamChina"
+				"steamchina"
 				{
-					"media.st.dl.pinyuncloud.com"
+					"media.st.dl.eccdnx.com"
 					{
 						"base_url"		"/client/"
 						"weight"		"100"
@@ -42,12 +42,12 @@
 		}
 		"kvsign2"
 		{
-			"Hosts"		"0da3ef8e55a58afb9fa5466255eb9017abcb3f4b0d7df33dc5a886d86584adbba4c23558df23771b20e07a5086d5c3fe743fd2907b194befa9dd26fecaf8ea04"
+			"Hosts"		"e6b2ba253c049eb9896f7ddd77ea9d3183248d66b44f40a00e1de9269861ca7ad51ce14e8ccb7c8e12f3238197734bcbd858318c43f8671ea94bc15be64c3d0c"
 		}
 	}
 	"ClientInfo"
 	{
-		"valid_until"		"1653810003"
+		"valid_until"		"1656041558"
 		"ip_country_code"		"US"
 	}
 }

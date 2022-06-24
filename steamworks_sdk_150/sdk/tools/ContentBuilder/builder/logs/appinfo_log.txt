@@ -75,3 +75,32 @@
 [2022-05-27 02:43:42] Requesting 24 apps, 0 packages (meta data, 1024 prev attempts)
 [2022-05-27 02:43:42] Requested 23 app access tokens, 0 received, 23 denied
 [2022-05-27 02:43:42] UpdatesJob: finished OK, apps updated 0 (0 KB), packages updated 0 (0 KB)
+
+
+[2022-06-23 03:16:38] RequestAppInfoUpdate: AppIDs 7
+[2022-06-23 03:16:38] Packages changed: force all
+[2022-06-23 03:16:38] Apps changed: force all
+[2022-06-23 03:16:38] Change number 14938958->15212018, apps: 0/0, packages: 0/0
+[2022-06-23 03:16:38] Requesting 579 apps, 166 packages (meta data, 1024 prev attempts)
+[2022-06-23 03:16:38] Requested 75 app access tokens, 52 received, 23 denied
+[2022-06-23 03:16:39] Updated SHAs with 52 new access tokens
+[2022-06-23 03:16:39] Downloaded 45 apps via HTTP, 1752 KB (379 KB compressed)
+[2022-06-23 03:16:39] Requesting 82 apps, 1 packages (full data, 1024 prev attempts)
+[2022-06-23 03:16:39] UpdatesJob: finished OK, apps updated 127 (2074 KB), packages updated 1 (9 KB)
+[2022-06-23 03:16:39] Requesting 2 apps, 0 packages (meta data, 1024 prev attempts)
+[2022-06-23 03:16:40] Requested 2 app access tokens, 1 received, 1 denied
+[2022-06-23 03:16:40] Updated SHAs with 1 new access tokens
+[2022-06-23 03:16:40] Requesting 1 apps, 0 packages (full data, 1024 prev attempts)
+[2022-06-23 03:16:40] UpdatesJob: finished OK, apps updated 1 (0 KB), packages updated 0 (0 KB)
+[2022-06-23 03:16:46] Starting async write C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder/appcache/appinfo.vdf (2794332 bytes)
+
+
+[2022-06-23 03:32:54] RequestAppInfoUpdate: AppIDs 7
+[2022-06-23 03:32:54] Packages changed: 
+[2022-06-23 03:32:54] Apps changed: 995990=15212079,
+[2022-06-23 03:32:54] Change number 15212018->15212185, apps: 1/117, packages: 0/3
+[2022-06-23 03:32:55] Requesting 25 apps, 0 packages (meta data, 1024 prev attempts)
+[2022-06-23 03:32:55] Requested 23 app access tokens, 0 received, 23 denied
+[2022-06-23 03:32:55] Requesting 1 apps, 0 packages (full data, 1024 prev attempts)
+[2022-06-23 03:32:55] UpdatesJob: finished OK, apps updated 1 (1 KB), packages updated 0 (0 KB)
+[2022-06-23 03:33:01] Starting async write C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder/appcache/appinfo.vdf (2794333 bytes)

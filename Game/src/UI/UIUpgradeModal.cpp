@@ -265,7 +265,8 @@ void UIUpgradeModal::DoPurchase()
 
 	// Do effects
 	// AudioManager::Instance()->PlaySoundEffect("gong.wav", false, false, false);
-	AudioManager::Instance()->PlaySoundEffect("music\\japanese1.wav", false, false, false);
+	// AudioManager::Instance()->PlaySoundEffect("music\\japanese1.wav", false, false, false);
+	AudioManager::Instance()->PlaySoundEffect("boomy_intro.wav");
 	Camera2D::GetInstance()->DoBigShake();
 
 	auto player = GameObjectManager::Instance()->GetPlayer();

@@ -20,9 +20,9 @@
   </health_upgrade_notification>
 
   <dojo_scroll_desc_kRoll>
-    <en-gb>The ROLL technique. Use for evasive actions and time your rolls on big landings to avoid a delay. Roll with the LEFT BUMPER.</en-gb>
-    <pt-br>A técnica ROLL Tempo seus rolos em grandes aterrissagens para evitar um atraso.</pt-br>
-    <de>Die ROLL-Technik. Zeit für große Landungen, um eine Verzögerung zu vermeiden.</de>
+    <en-gb>The ROLL technique. Rolling can be used to evade enemy projectiles. You can also roll just before landing from a fall to avoid slowing down. Press the LEFT BUMPER (LB) to roll.</en-gb>
+    <pt-br>The ROLL technique. Rolling can be used to evade enemy projectiles. You can also roll just before landing from a fall to avoid slowing down. Press the LEFT BUMPER to roll.</pt-br>
+    <de>The ROLL technique. Rolling can be used to evade enemy projectiles. You can also roll just before landing from a fall to avoid slowing down. Press the LEFT BUMPER to roll.</de>
   </dojo_scroll_desc_kRoll>
 
   <dojo_scroll_desc_kDownwardDash>
@@ -32,7 +32,7 @@
   </dojo_scroll_desc_kDownwardDash>
 
   <dojo_scroll_desc_kSlowMotion>
-    <en-gb>The FOCUS technique. Slow down time. Hold the LEFT TRIGGER to activate.</en-gb>
+    <en-gb>The FOCUS technique. Slow down time. Hold the LEFT TRIGGER (LT) to activate.</en-gb>
     <pt-br>A técnica FOCUS. Diminua o tempo. FAÇAM</pt-br>
     <de>Die FOCUS-Technik. Zeit verlangsamen. MACHEN</de>
   </dojo_scroll_desc_kSlowMotion>
@@ -44,10 +44,30 @@
   </dojo_scroll_desc_kCrouchJump>
 
   <dojo_scroll_desc_kDeflection>
-    <en-gb>The DEFLECT technique. Deflect projectiles with your knives and your sword.</en-gb>
+    <en-gb>The DEFLECT technique. Deflect projectiles with your knives and your sword. Incredibly effective when attacked by large groups of enemies.</en-gb>
     <pt-br>A técnica DEFLECT. Desvie projéteis com suas facas e sua espada.</pt-br>
     <de>Die DEFLECT-Technik. Lenken Sie Projektile mit Ihren Messern und Ihrem Schwert ab.</de>
   </dojo_scroll_desc_kDeflection>
+
+  <dojo_scroll_desc_kSpeedIncrease>
+    <en-gb>The AGILITY technique. Move at a quicker pace.</en-gb>
+    <pt-br>The AGILITY technique. Move at a quicker pace.</pt-br>
+    <de>The AGILITY technique. Move at a quicker pace</de>
+  </dojo_scroll_desc_kSpeedIncrease>
+
+  
+  <dojo_scroll_desc_kProjectileDamageIncrease>
+    <en-gb>The EXTRA DAMAGE technique. A huge increase to your attack damage.</en-gb>
+    <pt-br>The EXTRA DAMAGE technique. A huge increase to your attack damage..</pt-br>
+    <de>The EXTRA DAMAGE technique. A huge increase to your attack damage.</de>
+  </dojo_scroll_desc_kProjectileDamageIncrease>
+
+  <dojo_scroll_desc_kProjectileSpeedIncrease>
+    <en-gb>The EXTRA THROWING SPEED technique. Throw projectiles at a much faster rate.</en-gb>
+    <pt-br>The EXTRA THROWING SPEED technique. Throw projectiles at a much faster rate.</pt-br>
+    <de>The EXTRA THROWING SPEED technique. Throw projectiles at a much faster rate.</de>
+  </dojo_scroll_desc_kProjectileSpeedIncrease>
+
 
   <paper_pickup_title_test>
     <en-gb>BY ORDER OF THE SHOGUNATE</en-gb>
@@ -195,5 +215,6 @@
     <pt-br>A boat that seems to have smashed up on the rocks.</pt-br>
     <de>A boat that seems to have smashed up on the rocks.</de>
   </broken_boat_message_desc>
+
 
 </strings>

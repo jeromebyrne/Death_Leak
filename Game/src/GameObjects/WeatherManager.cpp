@@ -647,3 +647,13 @@ void WeatherManager::StopAllWeather()
 	mStateKillList.clear();
 	mCurrentStates.clear();
 }
+
+void WeatherManager::StartRainingIfNotAlready()
+{
+	if (HasCurrentWeatherState(kRaining))
+	{
+		return;
+	}
+
+	StartRaining();
+}

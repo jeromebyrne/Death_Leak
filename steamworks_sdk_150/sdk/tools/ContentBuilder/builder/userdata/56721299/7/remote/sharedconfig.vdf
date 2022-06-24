@@ -6,7 +6,7 @@
 		{
 			"Steam"
 			{
-				"Apps"
+				"apps"
 				{
 					"3840"
 					{
@@ -373,6 +373,13 @@
 					"239030"
 					{
 						"CloudEnabled"		"1"
+					}
+					"995990"
+					{
+						"tags"
+						{
+							"0"		"favorite"
+						}
 					}
 				}
 				"SteamDefaultDialog"		"#app_store"

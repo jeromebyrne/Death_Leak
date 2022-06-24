@@ -15,4 +15,5 @@
   <uiscreen name="you_died" filepath="XmlFiles\\UI\\you_died.xml" />
   <uiscreen name="text_modal" filepath="XmlFiles\\UI\\text_modal.xml" />
   <uiscreen name="final_scene_hud" filepath="XmlFiles\\UI\\final_scene_hud.xml" />
+  <uiscreen name="upgrade_modal" filepath="XmlFiles\\UI\\upgrade_modal.xml" />
 </ui>

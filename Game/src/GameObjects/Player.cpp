@@ -14,6 +14,7 @@
 #include "FeatureUnlockManager.h"
 #include "UIManager.h"
 #include "Timing.h"
+#include "WeatherManager.h"
 
 static const char * kBombTextureFile = "Media/bomb.png";
 static const float kAimLineOpacityDecrementDelay = 0.05f;
@@ -273,6 +274,8 @@ void Player::Update(float delta)
 		SetCrouching(true);
 		SetVelocityX(0.0f);
 		SetMaxVelocityX(0.0f);
+
+		WeatherManager::GetInstance()->StartRainingIfNotAlready();
 
 		mCurrentTimeInFinalLevel += delta;
 

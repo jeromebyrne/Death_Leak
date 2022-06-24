@@ -87,3 +87,13 @@
 [2022-05-27 02:43:38] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
 [2022-05-27 02:43:40] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
 [2022-05-27 02:43:43] Error: CUpdateBatteryStateJob::BYieldingRunJob: failed to query system battery state
+
+
+[2022-06-23 03:16:18] Initializing System Manager
+[2022-06-23 03:16:18] Node mode active on resume 0
+[2022-06-23 03:16:18] wifi power management: 1
+
+
+[2022-06-23 03:32:43] Initializing System Manager
+[2022-06-23 03:32:43] Node mode active on resume 0
+[2022-06-23 03:32:43] wifi power management: 1

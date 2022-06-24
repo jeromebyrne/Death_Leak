@@ -331,3 +331,83 @@
 [2022-05-27 02:43:24] Performing checksum verification of executable files
 [2022-05-27 02:43:24] Verification complete
 [2022-05-27 02:43:45] Shutdown
+
+
+[2022-06-23 03:16:10] Startup - updater built May 20 2022 19:24:14
+[2022-06-23 03:16:10] Using the following download hosts for Public, Realm steamglobal
+[2022-06-23 03:16:10] 1. https://cdn.akamai.steamstatic.com, /client/, Realm 'steamglobal', weight was 100, source = 'update_hosts_cached.vdf'
+[2022-06-23 03:16:10] 2. https://cdn.cloudflare.steamstatic.com, /client/, Realm 'steamglobal', weight was 100, source = 'update_hosts_cached.vdf'
+[2022-06-23 03:16:10] 3. http://media.steampowered.com, /client/, Realm 'steamglobal', weight was 1, source = 'baked in'
+[2022-06-23 03:16:10] Checking for update on startup
+[2022-06-23 03:16:10] Checking for available updates...
+[2022-06-23 03:16:10] Downloading manifest: https://cdn.akamai.steamstatic.com/client/steam_cmd_win32
+[2022-06-23 03:16:10] Manifest download: send request
+[2022-06-23 03:16:10] Manifest download: waiting for download to finish
+[2022-06-23 03:16:11] Manifest download: finished
+[2022-06-23 03:16:11] Downloaded new manifest: /client/steam_cmd_win32 version 1654574676, installed version 1653101151, existing pending version 0
+[2022-06-23 03:16:11] Package file steamcmd_bins_win32.zip.vz.d90bd98d22011b0df989aaeca259b79660797a3a_6213469 missing or incorrect size
+[2022-06-23 03:16:11] Package file steamcmd_steamservice_win32.zip.vz.5696d66a1e7546455b62cc1d10d742597df2bc01_1682627 missing or incorrect size
+[2022-06-23 03:16:11] Package file steamcmd_steamerrorreporter_win32.zip.420bb048ca721a06812453f995ef4ffff0cfe857 missing or incorrect size
+[2022-06-23 03:16:11] Package file steamcmd_win32.zip.vz.19aa5da8b19fa6ddea0460bf4f09d74a6112f772_1687109 missing or incorrect size
+[2022-06-23 03:16:11] Add pending download: https://cdn.akamai.steamstatic.com/client/steamcmd_bins_win32.zip.vz.d90bd98d22011b0df989aaeca259b79660797a3a_6213469
+[2022-06-23 03:16:11] Manifest download: send request
+[2022-06-23 03:16:11] Add pending download: https://cdn.akamai.steamstatic.com/client/steamcmd_steamservice_win32.zip.vz.5696d66a1e7546455b62cc1d10d742597df2bc01_1682627
+[2022-06-23 03:16:12] Manifest download: send request
+[2022-06-23 03:16:12] Add pending download: https://cdn.akamai.steamstatic.com/client/steamcmd_steamerrorreporter_win32.zip.420bb048ca721a06812453f995ef4ffff0cfe857
+[2022-06-23 03:16:12] Manifest download: send request
+[2022-06-23 03:16:12] Add pending download: https://cdn.akamai.steamstatic.com/client/steamcmd_win32.zip.vz.19aa5da8b19fa6ddea0460bf4f09d74a6112f772_1687109
+[2022-06-23 03:16:12] Manifest download: send request
+[2022-06-23 03:16:12] Downloading update (224 of 9,538 KB)...
+[2022-06-23 03:16:12] Downloading update (6,990 of 9,538 KB)...
+[2022-06-23 03:16:12] Downloading update (9,538 of 9,538 KB)...
+[2022-06-23 03:16:12] Download complete.
+[2022-06-23 03:16:12] Saving metrics to disk (C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\package\steam_cmd_metrics.bin)
+[2022-06-23 03:16:12] uninstalled manifest found in C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\package\steam_cmd_win32 (1).
+[2022-06-23 03:16:12] Found pending update
+[2022-06-23 03:16:12] Installing update...
+[2022-06-23 03:16:12] Extracting package...
+[2022-06-23 03:16:15] Installing update...
+[2022-06-23 03:16:15] Committing NTFS transaction (0 non-transactional backup files)
+[2022-06-23 03:16:15] Cleaning up...
+[2022-06-23 03:16:15] Update complete, launching Steamcmd...
+[2022-06-23 03:16:15] Shutdown
+
+
+[2022-06-23 03:16:15] Startup - updater built Jun  6 2022 20:20:03
+[2022-06-23 03:16:15] Loading cached metrics from disk (C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\package\steam_cmd_metrics.bin)
+[2022-06-23 03:16:15] Using the following download hosts for Public, Realm steamglobal
+[2022-06-23 03:16:15] 1. https://cdn.akamai.steamstatic.com, /client/, Realm 'steamglobal', weight was 100, source = 'update_hosts_cached.vdf'
+[2022-06-23 03:16:15] 2. https://cdn.cloudflare.steamstatic.com, /client/, Realm 'steamglobal', weight was 100, source = 'update_hosts_cached.vdf'
+[2022-06-23 03:16:15] 3. http://media.steampowered.com, /client/, Realm 'steamglobal', weight was 1, source = 'baked in'
+[2022-06-23 03:16:15] Checking for update on startup
+[2022-06-23 03:16:15] Checking for available updates...
+[2022-06-23 03:16:15] Downloading manifest: https://cdn.akamai.steamstatic.com/client/steam_cmd_win32
+[2022-06-23 03:16:15] Manifest download: send request
+[2022-06-23 03:16:16] Manifest download: waiting for download to finish
+[2022-06-23 03:16:16] Manifest download: finished
+[2022-06-23 03:16:16] Download skipped: /client/steam_cmd_win32 version 1654574676, installed version 1654574676, existing pending version 0
+[2022-06-23 03:16:16] Nothing to do
+[2022-06-23 03:16:16] Verifying installation...
+[2022-06-23 03:16:16] Performing checksum verification of executable files
+[2022-06-23 03:16:18] Verification complete
+[2022-06-23 03:16:39] Clearing cached metrics (C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\package\steam_cmd_metrics.bin)
+[2022-06-23 03:16:46] Shutdown
+
+
+[2022-06-23 03:32:41] Startup - updater built Jun  6 2022 20:20:03
+[2022-06-23 03:32:42] Using the following download hosts for Public, Realm steamglobal
+[2022-06-23 03:32:42] 1. https://cdn.akamai.steamstatic.com, /client/, Realm 'steamglobal', weight was 100, source = 'update_hosts_cached.vdf'
+[2022-06-23 03:32:42] 2. https://cdn.cloudflare.steamstatic.com, /client/, Realm 'steamglobal', weight was 100, source = 'update_hosts_cached.vdf'
+[2022-06-23 03:32:42] 3. http://media.steampowered.com, /client/, Realm 'steamglobal', weight was 1, source = 'baked in'
+[2022-06-23 03:32:42] Checking for update on startup
+[2022-06-23 03:32:42] Checking for available updates...
+[2022-06-23 03:32:42] Downloading manifest: https://cdn.akamai.steamstatic.com/client/steam_cmd_win32
+[2022-06-23 03:32:42] Manifest download: send request
+[2022-06-23 03:32:42] Manifest download: waiting for download to finish
+[2022-06-23 03:32:42] Manifest download: finished
+[2022-06-23 03:32:42] Download skipped: /client/steam_cmd_win32 version 1654574676, installed version 1654574676, existing pending version 0
+[2022-06-23 03:32:42] Nothing to do
+[2022-06-23 03:32:42] Verifying installation...
+[2022-06-23 03:32:42] Performing checksum verification of executable files
+[2022-06-23 03:32:42] Verification complete
+[2022-06-23 03:33:01] Shutdown

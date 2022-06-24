@@ -13,8 +13,9 @@
 const float kMaxGamepadAnalogRange = (std::numeric_limits<short>::max)();
 const float kAimOffsetX = 450.0f;
 const float kAimOffsetY = 300.0f;
-const float kJumpInitialPercent = 70.0f;
-const float kJumpIncrementalIncreasePercent = 3.0f;
+const float kJumpInitialPercent = 40.0f;
+const float kJumpIncrementalIncreasePercent = 6.5f;
+const float kMaxJumpPercent = 115.0f;
 const int kMaxVibrationValue = 65535;
 
 InputManager::InputManager() :
@@ -237,7 +238,7 @@ void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 	else if (mCurrentGamepadState.mPressingJump && 
 		wasPressingJump && 
 		player->CanIncreaseJumpIntensity() && 
-		currentJumpIncreasePercent < 100.0f)
+		currentJumpIncreasePercent < kMaxJumpPercent)
 	{
 		currentJumpIncreasePercent += kJumpIncrementalIncreasePercent;
 		player->IncreaseJump(currentJumpIncreasePercent);
