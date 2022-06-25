@@ -376,10 +376,7 @@
 					}
 					"995990"
 					{
-						"tags"
-						{
-							"0"		"favorite"
-						}
+						"Hidden"		"0"
 					}
 				}
 				"SteamDefaultDialog"		"#app_store"

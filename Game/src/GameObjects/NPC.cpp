@@ -260,6 +260,7 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointO
 	else
 	{
 		// randomly cry
+		/*
 		int randNum = rand() % 100;
 
 		if (randNum > 80)
@@ -290,6 +291,7 @@ void NPC::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 pointO
 				}
 			};
 		}
+		*/
 	}
 }
 

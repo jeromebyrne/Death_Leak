@@ -151,3 +151,34 @@
 [2022-06-23 03:32:55] Flushed store 'userlocal' to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\userdata\56721299\config\localconfig.vdf'
 [2022-06-23 03:32:56] Flushed store 'userlocal' to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\userdata\56721299\config\localconfig.vdf'
 [2022-06-23 03:32:57] Flushed store 'install' to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\config\config.vdf'
+
+
+[2022-06-24 23:18:21] Loaded store 'install' from 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\config\config.vdf' successfully
+[2022-06-24 23:18:21] Loaded store 'install' from 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\config\config.vdf' successfully
+[2022-06-24 23:18:21] Loaded store 'install' from 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\config\config.vdf' successfully
+[2022-06-24 23:18:21] Loaded store 'install' from 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\config\config.vdf' successfully
+[2022-06-24 23:18:21] Loaded store 'userlocal' from 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\userdata\56721299\config\localconfig.vdf' successfully
+[2022-06-24 23:18:21] Loaded store 'install' from 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\config\config.vdf' successfully
+[2022-06-24 23:18:21] Flushed store 'install' to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\config\config.vdf'
+[2022-06-24 23:18:22] Flushed store 'install' to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\config\config.vdf'
+[2022-06-24 23:18:23] Flushed store 'install' to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\config\config.vdf'
+[2022-06-24 23:18:39] Flushed store 'install' to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\config\config.vdf'
+[2022-06-24 23:18:39] Flushed store 'userlocal' to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\userdata\56721299\config\localconfig.vdf'
+[2022-06-24 23:18:39] Flushed store 'install' to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\config\config.vdf'
+[2022-06-24 23:18:40] Flushed store 'userlocal' to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\userdata\56721299\config\localconfig.vdf'
+[2022-06-24 23:18:41] Flushed store 'userlocal' to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\userdata\56721299\config\localconfig.vdf'
+
+
+[2022-06-24 23:57:20] Loaded store 'install' from 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\config\config.vdf' successfully
+[2022-06-24 23:57:20] Loaded store 'install' from 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\config\config.vdf' successfully
+[2022-06-24 23:57:20] Loaded store 'install' from 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\config\config.vdf' successfully
+[2022-06-24 23:57:20] Loaded store 'install' from 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\config\config.vdf' successfully
+[2022-06-24 23:57:20] Loaded store 'userlocal' from 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\userdata\56721299\config\localconfig.vdf' successfully
+[2022-06-24 23:57:20] Loaded store 'install' from 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\config\config.vdf' successfully
+[2022-06-24 23:57:20] Flushed store 'install' to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\config\config.vdf'
+[2022-06-24 23:57:21] Flushed store 'install' to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\config\config.vdf'
+[2022-06-24 23:57:32] Flushed store 'install' to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\config\config.vdf'
+[2022-06-24 23:57:32] Flushed store 'userlocal' to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\userdata\56721299\config\localconfig.vdf'
+[2022-06-24 23:57:33] Flushed store 'userlocal' to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\userdata\56721299\config\localconfig.vdf'
+[2022-06-24 23:57:34] Flushed store 'userlocal' to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\userdata\56721299\config\localconfig.vdf'
+[2022-06-24 23:57:34] Flushed store 'install' to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder\config\config.vdf'

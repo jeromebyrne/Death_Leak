@@ -1648,7 +1648,7 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 
 																			pos,
 																			GetDepthLayer(),
 																			Vector2(3200.0f, 2000.0f),
-																			"Media\\smoke4.png",
+																			"Media\\ghost_damage.png",
 																			1.8f,
 																			3.5f,
 																			0.5f,

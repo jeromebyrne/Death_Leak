@@ -2,9 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\Game",
-    "\\Game\\XmlFiles",
+    "\\Game\\ShaderFiles",
     "\\Game\\XmlFiles\\levels"
   ],
-  "SelectedNode": "\\Game\\Game.vcxproj",
+  "SelectedNode": "\\.$Map.drawio.bkp",
   "PreviewInSolutionExplorer": false
 }

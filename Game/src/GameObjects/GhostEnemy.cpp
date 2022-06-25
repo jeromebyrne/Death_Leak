@@ -30,6 +30,7 @@ void GhostEnemy::OnDamage(GameObject * damageDealer, float damageAmount, Vector2
 	Character::OnDamage(damageDealer, damageAmount, pointOfContact, shouldExplode);
 
 	// randomly cry
+	/*
 	int randNum = rand() % 100;
 
 	if (randNum > 80)
@@ -58,6 +59,7 @@ void GhostEnemy::OnDamage(GameObject * damageDealer, float damageAmount, Vector2
 		}
 		};
 	}
+	*/
 }
 
 
@@ -75,7 +77,7 @@ void GhostEnemy::Initialise()
 
 	m_applyGravity = false;
 
-	m_maxVelocity.X = 2.5f + ((rand()%60) * 0.1f);
+	m_maxVelocity.X = 5.0f;
 	m_maxVelocity.Y = 3.5f; 
 
 	m_passive = true; // This is so ghosts pass through stuff
