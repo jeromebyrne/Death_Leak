@@ -20,7 +20,7 @@
   <sprite name="22_title_death_leak"
           process_input="false"
           posX ="-750" posY ="300" width="753" height ="194"
-          image="Media\UI\title.png"
+          image="Media\UI\title_blurred.png"
           hflip="false" vflip="false"
           alpha="0.5">
   </sprite>

@@ -7,7 +7,7 @@
         <is_animation_preview value="false" />
     </LevelProperties>
     <ParallaxLayer id="1" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kFarBackground" y="3360.000000" x="-861.014648" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kFarBackground" y="3360.000000" x="-2101.014648" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="1090.000000" width="1985.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -46,7 +46,7 @@
         <animationfile value="XmlFiles\animation\player_anim_default.xml" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance y="0.550000" x="0.800000" />
-        <maxvelocity y="34.000000" x="8.000000" />
+        <maxvelocity y="34.000000" x="11.000000" />
         <applygravity value="true" />
         <collisionboxdimensions y="214.898743" x="128.959793" offsetX="0.000000" offsetY="0.000000" />
         <passive value="false" />
@@ -370,7 +370,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="18" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kGroundBack" y="2549.958496" x="1970.985352" rotation="0.089953" auto_rotate_value="0.000000" />
+        <position depth_layer="kGroundBack" y="2549.958496" x="1968.286011" rotation="0.089953" auto_rotate_value="0.000000" />
         <dimensions height="1024.000000" width="2377.010986" native="false" repeatX="true" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -1032,7 +1032,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <ParallaxLayer id="59" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kMiddleForeground" y="2500.000000" x="-861.014648" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kMiddleForeground" y="2500.000000" x="-2101.014648" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="512.000000" width="2048.000000" native="false" repeatX="true" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -1146,7 +1146,7 @@
         <foliage_sway_props bottom_left_intensity_x="20.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="20.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <Sprite id="66" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kGround" y="2915.000000" x="2160.784180" rotation="-0.099903" auto_rotate_value="0.000000" />
+        <position depth_layer="kGround" y="2914.399414" x="2160.483887" rotation="-0.099903" auto_rotate_value="0.000000" />
         <dimensions height="252.000000" width="2000.000000" native="false" repeatX="true" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -2281,7 +2281,7 @@
         <material value="grassground" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
-        <alpha value="0.500000" />
+        <alpha value="0.600000" />
         <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.100000" pixelwobblespeedmod="0.100000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\fog.png" />
@@ -2289,15 +2289,15 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <scroll_properties StartLerpX="-1675.014648" StartLerpY="2873.000000" LerpDistanceX="1250.000000" LerpDistanceY="0.000000" LerpTime="70.000000" FadeInTime="6.000000" FadeOutTime="6.000000" />
+        <scroll_properties StartLerpX="-1675.014648" StartLerpY="2873.000000" LerpDistanceX="1250.000000" LerpDistanceY="0.000000" LerpTime="70.000000" FadeInTime="2.000000" FadeOutTime="6.000000" />
     </ScrollingSprite>
-    <ScrollingSprite id="120" level_edit_locked="false" updateable="true" always_update="false">
+    <ScrollingSprite id="118" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundFront" y="2712.000000" x="-1103.014648" rotation="0.110000" auto_rotate_value="0.000000" />
         <dimensions height="1290.000000" width="1988.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
-        <alpha value="0.500000" />
+        <alpha value="0.600000" />
         <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.100000" pixelwobblespeedmod="0.100000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\fog.png" />
@@ -2307,13 +2307,13 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <scroll_properties StartLerpX="-1103.014648" StartLerpY="2712.000000" LerpDistanceX="400.000000" LerpDistanceY="0.000000" LerpTime="110.000000" FadeInTime="6.000000" FadeOutTime="6.000000" />
     </ScrollingSprite>
-    <ScrollingSprite id="122" level_edit_locked="false" updateable="true" always_update="false">
+    <ScrollingSprite id="119" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundFront" y="2879.000000" x="1511.384766" rotation="0.110000" auto_rotate_value="0.000000" />
         <dimensions height="1290.000000" width="1988.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
-        <alpha value="0.500000" />
+        <alpha value="0.600000" />
         <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.100000" pixelwobblespeedmod="0.100000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\fog.png" />
@@ -2323,13 +2323,13 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <scroll_properties StartLerpX="1508.985352" StartLerpY="2879.000000" LerpDistanceX="1250.000000" LerpDistanceY="0.000000" LerpTime="70.000000" FadeInTime="6.000000" FadeOutTime="6.000000" />
     </ScrollingSprite>
-    <ScrollingSprite id="123" level_edit_locked="false" updateable="true" always_update="false">
+    <ScrollingSprite id="120" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundFront" y="3104.000000" x="3073.985352" rotation="0.110000" auto_rotate_value="0.000000" />
         <dimensions height="1290.000000" width="1988.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
-        <alpha value="0.500000" />
+        <alpha value="0.600000" />
         <effect name="effectpixelwobble" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.100000" pixelwobblespeedmod="0.100000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\fog.png" />
@@ -2337,9 +2337,9 @@
         <verticalflip value="false" />
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <scroll_properties StartLerpX="3073.985352" StartLerpY="3104.000000" LerpDistanceX="-800.000000" LerpDistanceY="0.000000" LerpTime="70.000000" FadeInTime="6.000000" FadeOutTime="6.000000" />
+        <scroll_properties StartLerpX="3073.985352" StartLerpY="3104.000000" LerpDistanceX="-800.000000" LerpDistanceY="0.000000" LerpTime="70.000000" FadeInTime="1.000000" FadeOutTime="6.000000" />
     </ScrollingSprite>
-    <ScrollingSprite id="125" level_edit_locked="false" updateable="true" always_update="false">
+    <ScrollingSprite id="121" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundFront" y="2893.000000" x="-1179.014648" rotation="0.110000" auto_rotate_value="0.000000" />
         <dimensions height="1290.000000" width="1988.000000" native="true" repeatX="false" repeatY="false" />
         <material value="grassground" />

@@ -82,13 +82,13 @@
   </paper_pickup_desc_test>
 
   <key_name_granary>
-    <en-gb>The Granary Key</en-gb>
+    <en-gb>Haruki's Key</en-gb>
     <pt-br>The Granary Key</pt-br>
     <de>The Granary Key</de>
   </key_name_granary>
 
   <key_desc_granary>
-    <en-gb>Opens the old Granary door in the forest</en-gb>
+    <en-gb>A key with a note: "Haruki - The Granary"</en-gb>
     <pt-br>Opens the old Granary door in the forest</pt-br>
     <de>Opens the old Granary door in the forest</de>
   </key_desc_granary>
@@ -100,7 +100,7 @@
   </key_name_dojo>
 
   <key_desc_dojo>
-    <en-gb>Opens up the Dojo</en-gb>
+    <en-gb>It looks like this key opens up the Dojo.</en-gb>
     <pt-br>Opens up the Dojo</pt-br>
     <de>Opens up the Dojo</de>
   </key_desc_dojo>
@@ -117,6 +117,18 @@
     <de>needs localization</de>
   </suicide_note_desc>
 
+  <dojo_closed_name>
+    <en-gb>DOJO NOTE</en-gb>
+    <pt-br>needs localization</pt-br>
+    <de>needs localization</de>
+  </dojo_closed_name>
+
+  <dojo_closed_desc>
+    <en-gb>The dojo is closed until further notice. Military riders are enroute and if you are reading this you need to evacuate as soon as possible.</en-gb>
+    <pt-br>needs localization</pt-br>
+    <de>needs localization</de>
+  </dojo_closed_desc>
+
   <paper_pickup_title_granary_key_hint>
     <en-gb>Grain Supply Status</en-gb>
     <pt-br>Grain Supply Status</pt-br>
@@ -127,8 +139,7 @@
     <en-gb>Grain levels critical. 
            Requesting an increase in supply. 
            Granary key misplaced by Haruki. 
-           Haruki's last known location, old windmill.
-           Punish Haruki. </en-gb>
+           Haruki's location unknown.</en-gb>
     <pt-br>
       Grain levels critical.
       Requesting an increase in supply.

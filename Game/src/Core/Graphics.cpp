@@ -9,7 +9,7 @@ static const float clearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 
 Graphics::Graphics(void):
 	mSimpleFontManager(nullptr),
-	mIsFullScreen(false),
+	mIsFullScreen(true),
 	mVSyncEnabled(true),
 	m_pd3dDevice(nullptr),
 	m_pBackBufferRenderTargetView(nullptr),
