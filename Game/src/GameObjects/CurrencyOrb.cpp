@@ -317,7 +317,7 @@ void CurrencyOrb::DoCollisionLargeType(Player * player)
 																5.0f);
 
 		Vector2 position(m_position.X, m_position.Y);
-		SpawnOrbs(position, 10);
+		SpawnOrbs(position, 50);
 	}
 
 	// Game::GetInstance()->Vibrate(0.0f, 0.3f, 0.25f);

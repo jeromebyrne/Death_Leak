@@ -31,7 +31,7 @@ void Boat::Initialise()
 	mInteractableProperties.IsInteractable = true;
 	mInteractableProperties.PosOffset = Vector2(0.0f, 30.0f);
 	mInteractableProperties.DisableInteractivityOnInteract = false;
-	mInteractableProperties.InteractTime = SaveManager::GetInstance()->HasRepairTools() ? 3.0f : 0.05f;
+	mInteractableProperties.InteractTime = SaveManager::GetInstance()->HasRepairTools() ? 0.0f : 0.05f;
 
 	mBoatBrokenMessageTitle = StringManager::GetInstance()->GetLocalisedString("broken_boat_message_title");
 	mBoatBrokenMessageDesc = StringManager::GetInstance()->GetLocalisedString("broken_boat_message_desc");
@@ -82,11 +82,7 @@ void Boat::XmlWrite(TiXmlElement * element)
 
 void Boat::EnterBoat()
 {
-	// pause when we open a door so as not to get hit by projectiles etc...
-	// Game::GetInstance()->PauseGame();
-
-	// GameObjectManager::Instance()->SwitchToLevel(mToLevelFile, mDoorIdentifier, true);
-
+	AudioManager::Instance()->PlaySoundEffect("hitting_wood.mp3");
 	GameObjectManager::Instance()->SwitchToLevel("XmlFiles\\levels\\sea_2.xml", "", true);
 	UIManager::Instance()->PopUI("game_hud");
 	UIManager::Instance()->PushUI("final_scene_hud");
@@ -100,41 +96,6 @@ void Boat::OnInteracted()
 	{
 		// show message about broken boat
 		Game::GetInstance()->DisplayTextModal(mBoatBrokenMessageTitle, mBoatBrokenMessageDesc);
-
-		/*
-		if (!SaveManager::GetInstance()->HasDoorKey(mRequiredKey))
-		{
-			if (!mDoorLockedSFX.empty())
-			{
-				AudioManager::Instance()->PlaySoundEffect(mDoorLockedSFX);
-			}
-			else
-			{
-				// play default locked sfx
-				AudioManager::Instance()->PlaySoundEffect(kDefaultDoorLockedSfx);
-			}
-
-			mInteractableProperties.InteractCountdown = 1.0f;
-			Camera2D::GetInstance()->DoSmallShake();
-			Game::GetInstance()->Vibrate(0.0f, 0.6f, 0.25f);
-			mCanTryOpen = true;
-			DisplayDoorLockedEffect();
-			return;
-		}
-		else if (!SaveManager::GetInstance()->DoorWasUnlocked(mDoorIdentifier))
-		{
-			// TODO: do effects
-			AudioManager::Instance()->PlaySoundEffect(kDefaultDoorUnlockedSfx);
-			SaveManager::GetInstance()->SetDoorWasUnlocked(mDoorIdentifier, true);
-			mInteractableProperties.InteractCountdown = 0.4f;
-			mCanTryOpen = true;
-			mIsUnlockingCurrentTime = kUnlockingTime;
-
-			Game::GetInstance()->Vibrate(0.2f, 0.1f, 0.2f);
-
-			return;
-		}
-		*/
 
 		return;
 	}

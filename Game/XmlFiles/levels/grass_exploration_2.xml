@@ -7,7 +7,7 @@
         <is_animation_preview value="false" />
     </LevelProperties>
     <ParallaxLayer id="1" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kFarBackground" y="-200.000000" x="-1253.656250" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kFarBackground" y="-200.000000" x="-1693.656250" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="2048.000000" width="2048.000000" native="false" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -31,7 +31,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="2" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kFarBackground" y="-1425.000000" x="-1253.656250" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kFarBackground" y="-1425.000000" x="-1693.656250" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="523.000000" width="2048.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -70,7 +70,7 @@
         <animationfile value="XmlFiles\animation\player_anim_default.xml" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance y="0.550000" x="0.800000" />
-        <maxvelocity y="99999.000000" x="9.500000" />
+        <maxvelocity y="99999.000000" x="11.000000" />
         <applygravity value="true" />
         <collisionboxdimensions y="214.898743" x="128.959793" offsetX="0.000000" offsetY="0.000000" />
         <passive value="false" />
@@ -83,7 +83,7 @@
         <projectileoffsety value="25" />
     </Player>
     <ParallaxLayer id="4" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kFarBackground" y="-1068.000000" x="-1253.656250" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kFarBackground" y="-1068.000000" x="-1693.656250" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="243.000000" width="4083.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -107,7 +107,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="5" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kFarBackground" y="-1350.000000" x="-1253.656250" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kFarBackground" y="-1350.000000" x="-1693.656250" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="596.000000" width="1925.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -131,7 +131,7 @@
         <autoscrollyspeed value="0.000000" />
     </ParallaxLayer>
     <ParallaxLayer id="6" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kFarBackground" y="-1185.000000" x="-1253.656250" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kFarBackground" y="-1185.000000" x="-1693.656250" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="243.000000" width="4083.000000" native="true" repeatX="false" repeatY="false" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -1669,7 +1669,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <NPCTrigger id="101" level_edit_locked="false" updateable="true" always_update="true">
-        <position depth_layer="kGround" y="-1033.000000" x="505.243561" rotation="0.000000" auto_rotate_value="0.000000" />
+        <position depth_layer="kGround" y="-1032.100220" x="503.043427" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="300.000000" width="900.000000" />
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
@@ -1682,7 +1682,7 @@
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
-        <num_enemies value="2.000000" enemy_type="kNinja" />
+        <num_enemies value="2.000000" enemy_type="kGhost" />
     </NPCTrigger>
     <NPCTrigger id="103" level_edit_locked="false" updateable="true" always_update="true">
         <position depth_layer="kGround" y="-556.000000" x="-2026.656250" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -1690,7 +1690,7 @@
         <material value="" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
-        <num_enemies value="4.000000" enemy_type="kNinja" />
+        <num_enemies value="3.000000" enemy_type="kNinja" />
     </NPCTrigger>
     <CurrencyOrb id="104" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kOrb" y="-229.000000" x="-612.656250" rotation="0.000000" auto_rotate_value="0.000000" />
@@ -3733,7 +3733,7 @@
         <is_bouncy value="false" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="191" level_edit_locked="false" updateable="true" always_update="false">
+    <Breakable id="189" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGround" y="-279.000000" x="-361.656250" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="151.007477" width="151.007477" native="false" repeatX="false" repeatY="false" />
         <material value="crate" />
@@ -3758,7 +3758,7 @@
         <is_bouncy value="false" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="192" level_edit_locked="false" updateable="true" always_update="false">
+    <Breakable id="190" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGround" y="-826.000000" x="-2116.656250" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="151.007477" width="151.007477" native="false" repeatX="false" repeatY="false" />
         <material value="crate" />
@@ -3783,7 +3783,7 @@
         <is_bouncy value="false" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="193" level_edit_locked="false" updateable="true" always_update="false">
+    <Breakable id="191" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundFront" y="-863.000000" x="-2364.656250" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="151.007477" width="151.007477" native="false" repeatX="false" repeatY="false" />
         <material value="crate" />
@@ -3808,7 +3808,7 @@
         <is_bouncy value="false" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="195" level_edit_locked="false" updateable="true" always_update="false">
+    <Breakable id="192" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundFront" y="-865.000000" x="-1280.456055" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="151.007477" width="151.007477" native="false" repeatX="false" repeatY="false" />
         <material value="crate" />
@@ -3833,7 +3833,7 @@
         <is_bouncy value="false" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="196" level_edit_locked="false" updateable="true" always_update="false">
+    <Breakable id="193" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundFront" y="-406.000000" x="-1256.456787" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="151.007477" width="151.007477" native="false" repeatX="false" repeatY="false" />
         <material value="crate" />
@@ -3858,7 +3858,7 @@
         <is_bouncy value="false" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="197" level_edit_locked="false" updateable="true" always_update="false">
+    <Breakable id="194" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundFront" y="-881.000000" x="507.343750" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="151.007477" width="151.007477" native="false" repeatX="false" repeatY="false" />
         <material value="crate" />
@@ -3883,7 +3883,7 @@
         <is_bouncy value="false" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="198" level_edit_locked="false" updateable="true" always_update="false">
+    <Breakable id="195" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundFront" y="-683.900024" x="-583.955688" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="151.007477" width="151.007477" native="false" repeatX="false" repeatY="false" />
         <material value="crate" />
