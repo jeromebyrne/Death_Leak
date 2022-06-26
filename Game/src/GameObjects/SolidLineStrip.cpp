@@ -544,12 +544,6 @@ Vector2 SolidLineStrip::GetLeftMostPoint() const
 
 Vector2 & const SolidLineStrip::GetNormalForLineIndex(unsigned int lineIndex)
 {
-	if (lineIndex >= mLines.size())
-	{
-		Vector2 vec(0,1);
-		return vec;
-	}
-
 	return mLines[lineIndex].Normal;
 }
 

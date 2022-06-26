@@ -825,7 +825,7 @@
         <verticalflip value="true" />
         <isanimated value="false" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <key_props id="village_hut" name_loc_id="key_name_village_hut" desc_loc_id="key_desc_village_hut" />
+        <key_props id="dojo" name_loc_id="key_name_dojo" desc_loc_id="key_desc_dojo" />
     </KeyPickup>
     <Sprite id="47" level_edit_locked="false" updateable="true" always_update="true">
         <position depth_layer="kGround" y="-1421.043701" x="3442.177734" rotation="0.111131" auto_rotate_value="0.000000" />

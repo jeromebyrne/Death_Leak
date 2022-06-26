@@ -35,3 +35,6 @@
 [2022-06-24 23:57:32] Loaded client id: 17600768354460081554
 [2022-06-24 23:57:32] Listening for IPv4 broadcast on: 27036
 [2022-06-24 23:57:32] Listening for connections on: 0.0.0.0:27036
+
+
+[2022-06-25 02:08:57] Couldn't bind to broadcast port 27036

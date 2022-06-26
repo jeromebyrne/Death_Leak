@@ -136,7 +136,7 @@ shared_ptr<GameObject> & GameObjectManager::GetObjectByID(int id)
 
 	LOG_INFO("Did not find object with id: %i", id);
 	GAME_ASSERT(false);
-	return shared_ptr<GameObject>(nullptr);
+	return shared_ptr<GameObject>(nullptr); // JB: this is bad
 }
 
 // this is to be called before initialise

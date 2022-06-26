@@ -109,8 +109,8 @@ void Door::OnInteracted()
 {
 	// just to make testing easier
 #if _DEBUG
-	// EnterDoor();
-	// return;
+	EnterDoor();
+	return;
 #endif
 
 	mCanTryOpen = false;

@@ -217,7 +217,22 @@ void HealthDevil::OnInteracted()
 	{
 		Camera2D::GetInstance()->DoBigShake();
 		mPositionalAudio.SetRepeat(false);
-		mVoiceOverSoundPlaying = AudioManager::Instance()->PlaySoundEffect("character\\health_devil\\vo\\test.wav", false, true);
+
+		int rewardIndex = SaveManager::GetInstance()->GetHealthDevilRewardCount();
+
+		if (rewardIndex == 0)
+		{
+			mVoiceOverSoundPlaying = AudioManager::Instance()->PlaySoundEffect("character\\health_devil\\vo\\devil_1_fx.wav", false, true);
+		}
+		else if (rewardIndex == 1)
+		{
+			mVoiceOverSoundPlaying = AudioManager::Instance()->PlaySoundEffect("character\\health_devil\\vo\\devil_1_fx.wav", false, true);
+		}
+		else
+		{
+			mVoiceOverSoundPlaying = AudioManager::Instance()->PlaySoundEffect("character\\health_devil\\vo\\devil_3_fx.wav", false, true);
+		}
+		
 		mHasPlayedDialog = true;
 
 		Game::GetInstance()->Vibrate(1.0f, 1.0f, 0.4f);

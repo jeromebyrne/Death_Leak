@@ -839,13 +839,13 @@
 
   <material name="ghost">
     <particletextures>
-      <texture file="Media\large_splash.png"/>
+      <texture file="Media\ghost_damage.png"/>
     </particletextures>
 
     <damagesoundeffects>
-      <sound file="water\water_splash_projectile_4.wav" />
-      <sound file="water\water_splash_projectile_5.wav" />
-      <sound file="water\water_splash_projectile_6.wav" />
+      <sound file="character\ghost\damage_1.wav" />
+    <sound file="character\ghost\damage_2.wav" />
+    <sound file="character\ghost\damage_3.wav" />
     </damagesoundeffects>
 
     <footstepsoundeffects>
@@ -853,7 +853,7 @@
     </footstepsoundeffects>
 
     <destroysoundeffects>
-      <sound file="blood\\blood2.wav"/>
+     <sound file="character\ghost\damage_1.wav" />
     </destroysoundeffects>
 
     <is_pierceable value="true" />

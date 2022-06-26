@@ -135,6 +135,8 @@ protected:
 
 	bool IsTeleporting() { return mTeleportCurrentTime > 0.0f; }
 
+	void PlayJumpSFX();
+
 	bool m_isJumping;
 	float m_maxJumpSpeed;
 	float m_lastTimePlayedWaterWadeSFX; 

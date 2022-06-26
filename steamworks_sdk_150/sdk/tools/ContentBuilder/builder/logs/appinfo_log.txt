@@ -128,3 +128,15 @@
 [2022-06-24 23:57:32] Requesting 1 apps, 0 packages (full data, 1024 prev attempts)
 [2022-06-24 23:57:32] UpdatesJob: finished OK, apps updated 1 (1 KB), packages updated 0 (0 KB)
 [2022-06-24 23:57:39] Starting async write C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder/appcache/appinfo.vdf (2797545 bytes)
+
+
+[2022-06-25 02:08:57] RequestAppInfoUpdate: AppIDs 7
+[2022-06-25 02:08:58] Packages changed: 
+[2022-06-25 02:08:58] Apps changed: 443030=15234235,995990=15233806,
+[2022-06-25 02:08:58] Change number 15233801->15234477, apps: 2/449, packages: 0/48
+[2022-06-25 02:08:58] Requesting 26 apps, 78 packages (meta data, 1024 prev attempts)
+[2022-06-25 02:08:58] Requested 23 app access tokens, 0 received, 23 denied
+[2022-06-25 02:08:58] Downloaded 1 apps via HTTP, 8 KB (2 KB compressed)
+[2022-06-25 02:08:58] Requesting 1 apps, 0 packages (full data, 1024 prev attempts)
+[2022-06-25 02:08:58] UpdatesJob: finished OK, apps updated 2 (10 KB), packages updated 0 (0 KB)
+[2022-06-25 02:09:05] Starting async write C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder/appcache/appinfo.vdf (2797545 bytes)

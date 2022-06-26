@@ -250,6 +250,8 @@ bool UIUpgradeModal::CanPurchase()
 	{
 		return false;
 	}
+
+	return true;
 }
 
 void UIUpgradeModal::DoPurchase()

@@ -1225,8 +1225,7 @@ bool Character::Jump(float percent)
 	percent = percent > 100.0f ? 100.0f : percent;
 	percent = percent <= 0.0f ? 1.0f : percent;
 
-	// play jump sound
-	AudioManager::Instance()->PlaySoundEffect("jump.wav");
+	PlayJumpSFX();
 
 	if (!mIsMidAirMovingUp)
 	{
@@ -1460,7 +1459,39 @@ bool Character::Roll()
 
 	SetVelocityY(kRollVelocityY);
 
+	PlayJumpSFX();
+
 	return true;
+}
+
+void Character::PlayJumpSFX()
+{
+	if (!IsPlayer())
+	{
+		return;
+	}
+
+	int randomNum = rand() % 20;
+	if (randomNum == 0)
+	{
+		AudioManager::Instance()->PlaySoundEffect("character\\jump_1.wav");
+	}
+	else if (randomNum == 1)
+	{
+		AudioManager::Instance()->PlaySoundEffect("character\\jump_2.wav");
+	}
+	else if (randomNum == 2)
+	{
+		AudioManager::Instance()->PlaySoundEffect("character\\jump_3.wav");
+	}
+	else if (randomNum == 3)
+	{
+		AudioManager::Instance()->PlaySoundEffect("character\\jump_4.wav");
+	}
+	else if (randomNum == 4)
+	{
+		AudioManager::Instance()->PlaySoundEffect("character\\jump_5.wav");
+	}
 }
 
 void Character::AccelerateX(float directionX, float percent)
