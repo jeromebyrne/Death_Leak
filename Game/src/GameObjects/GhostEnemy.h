@@ -21,7 +21,7 @@ public:
 
 private:
 
-	float mProjectileSpeed = 6.0f;
+	float mProjectileSpeed = 12.0f;
 
 };
 

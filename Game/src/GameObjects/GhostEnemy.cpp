@@ -77,12 +77,12 @@ void GhostEnemy::Initialise()
 
 	m_applyGravity = false;
 
-	m_maxVelocity.X = 5.0f;
+	m_maxVelocity.X = 12.0f;
 	m_maxVelocity.Y = 3.5f; 
 
 	m_passive = true; // This is so ghosts pass through stuff
 
-	mProjectileSpeed = 4.5f + ((rand() % 30) * 0.1f);
+	mProjectileSpeed = 8.5f + ((rand() % 30) * 0.1f);
 
 	SetState(AIState::kFlying); // let's just handle our own state
 }
@@ -119,7 +119,7 @@ Projectile * GhostEnemy::FireWeapon(Vector2 direction, float speedMultiplier)
 		pos,
 		GameObject::kGhostVomitProjectile,
 		Vector2(20.0f, 20.0f),
-		Vector2(25.0f, 8.0f),
+		Vector2(40.0f, 25.0f),
 		direction,
 		2.0f,
 		mProjectileSpeed * speedMultiplier,
