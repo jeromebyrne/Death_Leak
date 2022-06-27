@@ -697,8 +697,8 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
     </Sprite>
     <KeyPickup id="34" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kGroundFront" y="-1050.000000" x="44.000000" rotation="0.000000" auto_rotate_value="0.000000" />
-        <dimensions height="96.000000" width="128.000000" native="true" repeatX="false" repeatY="false" />
+        <position depth_layer="kGroundFront" y="-1050.000000" x="44.000000" rotation="0.000000" auto_rotate_value="0.050000" />
+        <dimensions height="57.000000" width="55.000000" native="true" repeatX="false" repeatY="false" />
         <material value="caverock" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />

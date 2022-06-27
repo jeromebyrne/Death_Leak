@@ -174,7 +174,7 @@
   </paper_pickup_gametip>
 
   <paper_pickup_gametip_projectile>
-    <en-gb>Use the RIGHT THUMBSTICK to throw a flying dagger</en-gb>
+    <en-gb>Hold the RIGHT THUMBSTICK to throw a flying dagger in any direction. You can move independently with the LEFT THUMBSTICK. Press the RIGHT TRIGGER (RT) to Jump.</en-gb>
     <pt-br>Use the RIGHT THUMBSTICK to throw a flying dagger</pt-br>
     <de>Use the RIGHT THUMBSTICK to throw a flying dagger</de>
   </paper_pickup_gametip_projectile>
@@ -226,6 +226,18 @@
     <pt-br>A boat that seems to have smashed up on the rocks.</pt-br>
     <de>A boat that seems to have smashed up on the rocks.</de>
   </broken_boat_message_desc>
+
+  <paper_pickup_strange_stones_title>
+    <en-gb>Himari's Note</en-gb>
+    <pt-br>Himari's Note</pt-br>
+    <de>Himari's Note</de>
+  </paper_pickup_strange_stones_title>
+  
+  <paper_pickup_strange_stones_desc>
+    <en-gb>The enemy is doing everything in their power to bring suffering and misery to our home. They blocked our food and water storage with these large stones. They look weak at the top, I wonder is there something we can use to SMASH them?</en-gb>
+    <pt-br>Himari's Note</pt-br>
+    <de>Himari's Note</de>
+  </paper_pickup_strange_stones_desc>
 
 
 </strings>

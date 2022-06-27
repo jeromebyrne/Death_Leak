@@ -52,6 +52,14 @@ void SaveShrine::Update(float delta)
 
 			DisplaySaveParticles();
 
+			// heal the player
+			Player * player = GameObjectManager::Instance()->GetPlayer();
+
+			if (player)
+			{
+				player->SetHealth(player->GetMaxHealth());
+			}
+
 			//Note: I'm no longer allowing saving here
 			// The game now always saves permanent upgrades and is a roguelike similar to Returnal
 			/*

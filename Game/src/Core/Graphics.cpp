@@ -24,6 +24,10 @@ Graphics::Graphics(void):
 	m_defaultRasterState(nullptr),
 	m_alphaToCoverageEnabled(false)
 {
+#ifndef _DEBUG
+	mIsFullScreen = true;
+#endif
+
 	GAME_ASSERT(!mInstance);
 	mInstance = this;
 }
