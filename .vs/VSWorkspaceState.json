@@ -1,11 +1,18 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Game",
-    "\\Game\\src\\UI",
-    "\\Game\\XmlFiles",
-    "\\Game\\XmlFiles\\levels"
+    "\\source_audio",
+    "\\source_audio\\soundsnap_sampler",
+    "\\source_audio\\soundsnap_sampler\\Soundsnap Sampler",
+    "\\steamworks_sdk_150",
+    "\\steamworks_sdk_150\\sdk",
+    "\\steamworks_sdk_150\\sdk\\tools",
+    "\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder",
+    "\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder\\content",
+    "\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder\\content\\windows_content",
+    "\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder\\content\\windows_content\\Media",
+    "\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder\\content\\windows_content\\Media\\objects"
   ],
-  "SelectedNode": "\\Game\\XmlFiles\\levels\\grass_exploration_dead_end_below_2.xml",
+  "SelectedNode": "\\Game\\bargon.xml",
   "PreviewInSolutionExplorer": false
 }

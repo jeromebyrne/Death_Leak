@@ -23,7 +23,7 @@
 		</JumpingUp>
 
     <JumpingDown FrameRate="4" MaxFrameRate="4" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">
-      <frame filename="Media\characters\rabbit\\bunny2.png"/>
+      <frame filename="Media\orb\91.png"/>
     </JumpingDown>
 
     <SlidingDown FrameRate="0" MaxFrameRate="0" MinFrameRate="0" skeleton_offset_x="0" skeleton_offset_y="0">

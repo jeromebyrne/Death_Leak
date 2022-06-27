@@ -582,8 +582,6 @@ void Game::LoadCachedObjectsForPerformance()
 	delete preloadAnim;
 	preloadAnim = new Animation("XmlFiles\\animation\\player_anim_default.xml");
 	delete preloadAnim;
-	preloadAnim = new Animation("XmlFiles\\animation\\skeleton_animation.xml");
-	delete preloadAnim;
 	preloadAnim = new Animation("XmlFiles\\bird_anim.xml");
 	delete preloadAnim;
 	preloadAnim = new Animation("XmlFiles\\bird_anim_2.xml");
@@ -595,8 +593,6 @@ void Game::LoadCachedObjectsForPerformance()
 	preloadAnim = new Animation("XmlFiles\\orb_anim.xml");
 	delete preloadAnim;
 	preloadAnim = new Animation("XmlFiles\\pot_anim.xml");
-	delete preloadAnim;
-	preloadAnim = new Animation("XmlFiles\\rabbit_anim.xml");
 	delete preloadAnim;
 	preloadAnim = new Animation("XmlFiles\\rat_anim.xml");
 	delete preloadAnim;
