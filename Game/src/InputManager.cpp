@@ -594,6 +594,10 @@ void InputManager::ProcessGameplay_GamePad(Player * player)
 
 void InputManager::ProcessGameplay_Keyboard(Player * player)
 {
+#ifndef _DEBUG
+	return;
+#endif
+
 	const auto & levelProps = GameObjectManager::Instance()->GetCurrentLevelProperties();
 
 	CurrentGameplayActions currentActions;

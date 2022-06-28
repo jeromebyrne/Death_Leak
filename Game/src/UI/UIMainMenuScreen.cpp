@@ -8,6 +8,8 @@
 #include "Game.h"
 #include "GamePad.h"
 
+extern void PostDestroyMessage();
+
 UIMainMenuScreen::UIMainMenuScreen(string name) :
 	UIScreen(name)
 {
@@ -22,6 +24,12 @@ void UIMainMenuScreen::Update()
 	UIScreen::Update();
 
 	UpdateGamepadWarningWidget();
+
+	// if pressing escap on teh main menu then quit to desktop
+	if (GetAsyncKeyState(VK_ESCAPE) < 0)
+	{
+		PostDestroyMessage();
+	}
 }
 
 void UIMainMenuScreen::Initialise()

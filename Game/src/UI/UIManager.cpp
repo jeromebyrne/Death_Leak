@@ -419,6 +419,7 @@ Vector2 UIManager::GetPointInUICoords(float x, float y)
 	float backBufferWidth = graphics->BackBufferWidth();
 	float backBufferHeight = graphics->BackBufferHeight();
 
+	/*
 	if (windowWidth != backBufferWidth)
 	{
 		xScale = backBufferWidth / windowWidth;
@@ -428,9 +429,10 @@ Vector2 UIManager::GetPointInUICoords(float x, float y)
 	{
 		yScale = backBufferHeight / windowHeight;
 	}
+	*/
 
-	int halfWidth = DXWindow::GetInstance()->GetWindowDimensions().X * 0.5f;
-	int halfHeight = DXWindow::GetInstance()->GetWindowDimensions().Y * 0.5f;
+	int halfWidth = backBufferWidth * 0.5f;// DXWindow::GetInstance()->GetWindowDimensions().X * 0.5f;
+	int halfHeight = backBufferHeight * 0.5f; // DXWindow::GetInstance()->GetWindowDimensions().Y * 0.5f;
 
 	ui_coords.X = (x - halfWidth) * xScale;
 	ui_coords.Y = (halfHeight - y) * yScale;

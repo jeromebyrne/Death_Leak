@@ -22,7 +22,12 @@ public:
 	// scale all of the widgets on the screen - for resolution changes
 	void ScaleScreen(float scaleFactorX, float scaleFactorY);
 
-	bool GetShowCursor() const { return mShowCursor; }
+	bool GetShowCursor() const {
+#ifndef _DEBUG
+		return false;
+#endif
+		return mShowCursor; 
+	}
 
 protected:
 

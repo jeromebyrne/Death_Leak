@@ -194,6 +194,10 @@ void UIScreen::ProcessKeyStrokes()
 
 void UIScreen::ProcessCursorInput()
 {
+#ifndef _DEBUG
+	return;
+#endif
+
 	// get the mouse position
 	POINT currentMouse;
 	GetCursorPos(&currentMouse);

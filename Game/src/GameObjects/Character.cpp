@@ -336,7 +336,8 @@ void Character::Update(float delta)
 
 				float totalTime = Timing::Instance()->GetTotalTimeSeconds();
 				float rollDiff = totalTime - inputManager.GetLastTimePressedRoll();
-				if (rollDiff >= 0.0f && rollDiff < kLandRollInputWindow)
+				bool rollUnlocked = FeatureUnlockManager::GetInstance()->IsFeatureUnlocked(FeatureUnlockManager::kRoll);
+				if (rollUnlocked && rollDiff >= 0.0f && rollDiff < kLandRollInputWindow)
 				{
 					Roll();
 					if (dropDistance >= kLargeDropDistance)
