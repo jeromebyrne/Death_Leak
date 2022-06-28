@@ -344,6 +344,48 @@
     </debris_textures>
   </material>
 
+  <material name="lantern">
+    <particletextures>
+      <texture file="Media\smoke3.png"/>
+    </particletextures>
+
+    <damagesoundeffects>
+      <sound file="stonehit.wav" />
+      <sound file="stonehit2.wav" />
+      <sound file="stonehit3.wav" />
+    </damagesoundeffects>
+
+    <footstepsoundeffects>
+      <sound file="Footstep1.wav" />
+      <sound file="Footstep2.wav" />
+      <sound file="Footstep3.wav" />
+      <sound file="Footstep4.wav" />
+      <sound file="Footstep5.wav" />
+      <sound file="Footstep6.wav" />
+      <sound file="Footstep7.wav" />
+      <sound file="Footstep8.wav" />
+    </footstepsoundeffects>
+
+    <destroysoundeffects>
+      <sound file="rock_smash.wav"/>
+    </destroysoundeffects>
+
+    <is_pierceable value="false" />
+
+    <debris_textures>
+      <texture file="Media\lantern_debris\1.png"/>
+      <texture file="Media\lantern_debris\2.png"/>
+      <texture file="Media\lantern_debris\3.png"/>
+      <texture file="Media\lantern_debris\3.png"/>
+      <texture file="Media\lantern_debris\4.png"/>
+      <texture file="Media\lantern_debris\1.png"/>
+      <texture file="Media\lantern_debris\1.png"/>
+      <texture file="Media\lantern_debris\1.png"/>
+      <texture file="Media\lantern_debris\5.png"/>
+      <texture file="Media\lantern_debris\6.png"/>
+    </debris_textures>
+  </material>
+
   <!--Flesh-->
   <material name="flesh">
     <particletextures>

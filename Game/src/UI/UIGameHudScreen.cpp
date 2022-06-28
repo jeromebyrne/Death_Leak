@@ -106,7 +106,7 @@ void UIGameHudScreen::UpdatePlayerHealthMeter(Player * player)
 		mDoingHealthMeterUpgrade = true;
 		if (mMeterUpgradeSound == nullptr)
 		{
-			mMeterUpgradeSound = AudioManager::Instance()->PlaySoundEffect("character/meter_upgrade.wav", true, true);
+			mMeterUpgradeSound = AudioManager::Instance()->PlaySoundEffect("character/replenish.wav", true, true);
 		}
 		else
 		{

@@ -273,10 +273,15 @@ void Breakable::SpawnDamageTransitionParticles()
 	{
 		size = Vector2(160.0f * scaleX, 443.0f * scaleY);
 	}
-	else
+	else if (m_material->GetMaterialName() == "pot")
 	{
 		// pot
 		size = Vector2(310.0f * scaleX, 284.0f * scaleY);
+	}
+	else
+	{
+		// lantern
+		size = Vector2(170.0f * scaleX * 1.1f, 150.0f * scaleY * 1.1f);
 	}
 
 	for (const auto & d : debrisTextures)

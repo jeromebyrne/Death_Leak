@@ -135,7 +135,7 @@ int FeatureUnlockManager::GetFeatureCost(const FeatureType featureType)
 	{
 		case kDownwardDash:
 		{
-			return 500;
+			return 450;
 		}
 		case kRoll:
 		{
@@ -151,7 +151,7 @@ int FeatureUnlockManager::GetFeatureCost(const FeatureType featureType)
 			// testing
 			return 2;
 #endif
-			return 400;
+			return 375;
 		}
 		case kSpeedIncrease:
 		{
@@ -159,11 +159,11 @@ int FeatureUnlockManager::GetFeatureCost(const FeatureType featureType)
 		}
 		case kProjectileDamageIncrease:
 		{
-			return 350;
+			return 225;
 		}
 		case kProjectileSpeedIncrease:
 		{
-			return 250;
+			return 200;
 		}
 		default: return 0;
 	}

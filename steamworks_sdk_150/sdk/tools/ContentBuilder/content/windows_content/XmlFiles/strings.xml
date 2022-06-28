@@ -88,7 +88,7 @@
   </key_name_granary>
 
   <key_desc_granary>
-    <en-gb>A key with a note: "Haruki - The Granary"</en-gb>
+    <en-gb>A key with a note: "Haruki - The Forest Granary"</en-gb>
     <pt-br>Opens the old Granary door in the forest</pt-br>
     <de>Opens the old Granary door in the forest</de>
   </key_desc_granary>
@@ -222,8 +222,8 @@
   </broken_boat_message_title>
 
   <broken_boat_message_desc>
-    <en-gb>A boat that seems to have smashed up on the rocks.</en-gb>
-    <pt-br>A boat that seems to have smashed up on the rocks.</pt-br>
+    <en-gb>A wooden boat that seems to have smashed up on the rocks. It needs repairing.</en-gb>
+    <pt-br>A wooden boat that seems to have smashed up on the rocks.</pt-br>
     <de>A boat that seems to have smashed up on the rocks.</de>
   </broken_boat_message_desc>
 
