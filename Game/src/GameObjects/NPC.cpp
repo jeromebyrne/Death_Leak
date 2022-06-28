@@ -24,8 +24,8 @@ static const float kHealthBarDimensionsX = 128.0f * 0.5f;
 static const float kHealthBarDimensionsY = 8.0f;
 static const float kHealthBarOverlayDimensionsX = 128.0f * 0.5f;
 static const float kHealthBarOverlayDimensionsY = 8.0f;
-static const float kEnemyProjectileDamage = 4.0f;
-static const float kEnemyProjectileSpeed = 7.0f;
+static const float kEnemyProjectileDamage = 3.0f;
+static const float kEnemyProjectileSpeed = 9.0f;
 
 static const D3DXVECTOR2 kDefaultTex1 = D3DXVECTOR2(0.0f, 0.0f);
 static const D3DXVECTOR2 kDefaultTex2 = D3DXVECTOR2(1.0f, 0.0f);
@@ -50,8 +50,8 @@ NPC::NPC(float x, float y, DepthLayer depthLayer, float width, float height) :
 	mGroundAnimalWanderState(nullptr),
 	mFlyingState(nullptr)
 {
-	mHealth = 30.0f;
-	mMaxHealth = 30.0f;
+	mHealth = 20.0f;
+	mMaxHealth = 20.0f;
 	mProjectileFilePath = "Media/ninjastar.png";
 	mProjectileImpactFilePath = "Media/ninjastar_impact.png";
 	mHealthMeterHealthBeforeDecrease = mHealth;
@@ -313,7 +313,7 @@ Projectile * NPC::FireWeapon(Vector2 direction, float speedMultiplier)
 	// TODO: ideally want these properties configurable per character
 	Projectile * p = new Projectile(Projectile::kNPCProjectile,
 									mProjectileFilePath.c_str(),
-									mProjectileImpactFilePath.c_str(), 
+									mProjectileImpactFilePath.c_str(),
 									pos,
 									GameObject::kNinjaStarProjectile, //TODO: this won't always be a ninja star
 									Vector2(20.0f,20.0f),

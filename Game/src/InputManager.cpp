@@ -206,7 +206,7 @@ void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 	if (!player->JustFellFromLargeDistance() &&
 		!player->JustFellFromShortDistance() &&
 		!player->IsDoingMelee() &&
-		(padState.Gamepad.wButtons & XINPUT_GAMEPAD_A || 
+		(/* padState.Gamepad.wButtons & XINPUT_GAMEPAD_A || */
 		padState.Gamepad.bRightTrigger > XINPUT_GAMEPAD_TRIGGER_THRESHOLD))
 	{
 		mCurrentGamepadState.mPressingJump = true;

@@ -173,27 +173,26 @@ void Character::Update(float delta)
 
 	UpdateCollisionBox();
 
-	if (mCurrentStunTime > 0.0f)
+	if (!IsPlayer())
 	{
-		SetCrouching(true);
-		mCurrentStunTime -= delta;
-
-		if (mCurrentStunTime <= 0.0f)
+		if (mCurrentStunTime > 0.0f)
 		{
-			EnableStunParticles(false);
-			if (!IsPlayer())
+			SetCrouching(true);
+			mCurrentStunTime -= delta;
+
+			if (mCurrentStunTime <= 0.0f)
 			{
-				if (CanRoll())
-				{
-					Roll();
-				}
-				else
-				{
-					SetCrouching(false);
-				}
+				EnableStunParticles(false);
+
+				SetCrouching(false);
 			}
 		}
+		else
+		{
+			SetCrouching(false);
+		}
 	}
+	
 
 	if (IsOnSolidSurface())
 	{
