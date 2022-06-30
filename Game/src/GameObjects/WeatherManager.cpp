@@ -25,7 +25,7 @@ static const float kMinWeatherIntervalTime = 160.0f;
 static const float kMaxWeatherIntervalTime = 300.0f;
 
 static const float kNormalFoliageSwayMultiplier = 2.5f;
-static const float kRainFoliageSwayMultiplier = 3.5f;
+static const float kRainFoliageSwayMultiplier = kNormalFoliageSwayMultiplier * 1.05;
 static const float kSnowFoliageSwayMultiplier = 3.5f;
 
 static const Vector2 kRainParticleCamOffset = Vector2(0.0f, 700.0f);

@@ -10,6 +10,10 @@
 				"SurveyDateVersion"		"-3468785898090582116"
 				"StartMenuShortcutCheck"		"1"
 				"DesktopShortcutCheck"		"1"
+				"SteamDefaultDialog"		"#app_store"
+				"ShowScreenshotManager"
+				{
+				}
 			}
 		}
 	}

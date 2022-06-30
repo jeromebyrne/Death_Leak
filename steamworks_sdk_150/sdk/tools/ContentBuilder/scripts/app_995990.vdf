@@ -1,7 +1,7 @@
 "appbuild"
 {
 	"appid" "995990"
-	"desc" "June_2022_RC_2"
+	"desc" "June_2022_RC_3"
 	"buildoutput" "C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\output"
 	"contentroot" ""
 	"setlive" ""

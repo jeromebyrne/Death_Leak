@@ -238,7 +238,7 @@
         <alpha value="1.000000" />
         <effect name="effectlighttexture" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <numparticles value="50.000000" />
+        <numparticles value="30.000000" />
         <texture filename="Media\Ambient\bubble.png" />
         <direction x="0.000000" y="1.000000" />
         <spread value="1.000000" />
@@ -259,7 +259,7 @@
         <alpha value="1.000000" />
         <effect name="effectlighttexture" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <numparticles value="50.000000" />
+        <numparticles value="30.000000" />
         <texture filename="Media\levels\hot_spring\fog_2.png" />
         <direction x="0.000000" y="1.000000" />
         <spread value="1.000000" />
@@ -280,7 +280,7 @@
         <alpha value="1.000000" />
         <effect name="effectlighttexture" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <numparticles value="50.000000" />
+        <numparticles value="30.000000" />
         <texture filename="Media\levels\hot_spring\fog_2.png" />
         <direction x="0.000000" y="1.000000" />
         <spread value="1.000000" />
@@ -301,7 +301,7 @@
         <alpha value="1.000000" />
         <effect name="effectlighttexture" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <numparticles value="40.000000" />
+        <numparticles value="20.000000" />
         <texture filename="Media\levels\hot_spring\fog_3.png" />
         <direction x="0.000000" y="1.000000" />
         <spread value="1.000000" />
@@ -556,7 +556,7 @@
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\subzero\still1.png" />
-        <horizontalflip value="true" />
+        <horizontalflip value="false" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
@@ -584,7 +584,7 @@
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\smoke6.png" />
-        <horizontalflip value="false" />
+        <horizontalflip value="true" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\butterfly_anim.xml" />
@@ -838,7 +838,7 @@
         <alpha value="1.000000" />
         <effect name="effectlighttexture" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
-        <numparticles value="45.000000" />
+        <numparticles value="30.000000" />
         <texture filename="Media\levels\hot_spring\fog_2.png" />
         <direction x="0.000000" y="1.000000" />
         <spread value="1.000000" />

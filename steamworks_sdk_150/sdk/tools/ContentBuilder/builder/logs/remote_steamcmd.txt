@@ -58,3 +58,6 @@
 [2022-06-28 01:16:21] Received broadcast message from client 1844144715057445572 (JB): 10.0.0.146:27036
 [2022-06-28 01:16:21] Received broadcast message from client 1844144715057445572 (JB): 1844144715057445572:27036
 [2022-06-28 01:16:26] Received broadcast message from client 1844144715057445572 (JB): 1844144715057445572:27036
+
+
+[2022-06-30 00:37:01] Couldn't bind to broadcast port 27036
