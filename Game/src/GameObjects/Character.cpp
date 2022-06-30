@@ -193,7 +193,6 @@ void Character::Update(float delta)
 		}
 	}
 	
-
 	if (IsOnSolidSurface())
 	{
 		if (mWasDownwardDashing)
@@ -209,6 +208,18 @@ void Character::Update(float delta)
 			mWasDownwardDashing = false;
 		}
 		mIsDownwardDashing = false;
+
+		if (mShadowSprite != nullptr)
+		{
+			mShadowSprite->SetAlpha(1.0f);
+		}
+	}
+	else
+	{
+		if (mShadowSprite != nullptr)
+		{
+			mShadowSprite->SetAlpha(0.0f);
+		}
 	}
 
 	if (mIsRolling)
@@ -419,7 +430,7 @@ void Character::DoLandOnSolidSurfaceEffects(float dropDistance)
 				{
 					if (dropDistance < kLargeDropDistance)
 					{
-						ParticleEmitterManager::Instance()->CreateDirectedSpray(10,
+						ParticleEmitterManager::Instance()->CreateDirectedSpray(5,
 							Vector2(m_position.X + (m_direction.X * 10.f), CollisionBottom() + 35.0f),
 							GetDepthLayer(),
 							Vector2(0.0f, 1.0f),
@@ -451,7 +462,7 @@ void Character::DoLandOnSolidSurfaceEffects(float dropDistance)
 					}
 					else
 					{
-						ParticleEmitterManager::Instance()->CreateDirectedSpray(30,
+						ParticleEmitterManager::Instance()->CreateDirectedSpray(10,
 							Vector2(m_position.X + (m_direction.X * 10.f), CollisionBottom()),
 							GetDepthLayer(),
 							Vector2(0.0f, 1.0f),
@@ -1115,7 +1126,7 @@ void Character::DoAnimationEffectIfApplicable(AnimationPart * bodyPart)
 
 						if (!particleFile.empty())
 						{
-							ParticleEmitterManager::Instance()->CreateDirectedSpray(10,
+							ParticleEmitterManager::Instance()->CreateDirectedSpray(3,
 								Vector2(m_position.X + (m_direction.X * 12.f), CollisionBottom() + 17.0f),
 								GetDepthLayer(),
 								m_direction.X > 0 ? Vector2(-0.5f, 0.5f) : Vector2(0.5f, 0.5f),
@@ -1804,15 +1815,40 @@ void Character::PlayRandomWeaponFireSound()
 	}
 }
 
-void Character::Draw(ID3D10Device * device, Camera2D * camera)
+void Character::AddShadowSprite()
 {
-	if (IsOnSolidSurface())
+	GAME_ASSERT(!mShadowSprite);
+
+	if (mShadowSprite)
 	{
+		return;
+	}
+
+	mShadowSprite = new Sprite();
+
+	mShadowSprite->SetIsNativeDimensions(false);
+	mShadowSprite->SetDimensionsXY(200.0f, 128.0f);
+
+	// if (IsOnSolidSurface())
+	//{
 		// TODO: this is a temporary function, just testing the shadow - REMOVE
 		// TODO: Really remove this as it's very slow
-		DrawUtilities::DrawTexture(Vector3(m_position.X, m_position.Y - 150, GetDepthLayer() + 0.1f), Vector2(200, 128), "Media\\characters\\player\\shadow.png");
-	}
-	
+		// DrawUtilities::DrawTexture(Vector3(m_position.X, m_position.Y - 150, GetDepthLayer() + 0.1f), Vector2(200, 128), "Media\\characters\\player\\shadow.png");
+	//}
+
+	mShadowSprite->SetTextureFilename("Media\\characters\\player\\shadow.png");
+
+	mShadowSprite->EffectName = this->EffectName;
+
+	mShadowSprite->SetDepthLayer(DepthLayer::kGround);
+
+	mShadowSprite->AttachTo(GameObjectManager::Instance()->GetObjectByID(ID()), Vector2(0.0f, -150.0f), DepthLayer::kGround, false);
+
+	GameObjectManager::Instance()->AddGameObject(mShadowSprite);
+}
+
+void Character::Draw(ID3D10Device * device, Camera2D * camera)
+{
 	// draw the arm first because it should be behind the body
 	if (m_isAnimated)
 	{
@@ -1882,7 +1918,7 @@ void Character::Teleport(float posX, float posY, bool showParticles)
 		float spawnSpreadY = (m_collisionBoxDimensions.Y / 100.0f) * 6.0f;
 
 		// show particles in old position
-		ParticleEmitterManager::Instance()->CreateRadialSpray(10,
+		ParticleEmitterManager::Instance()->CreateRadialSpray(5,
 			pos,
 			GetDepthLayer(),
 			Vector2(3200.0f, 2000.0f),

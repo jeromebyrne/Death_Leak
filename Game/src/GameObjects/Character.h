@@ -109,6 +109,8 @@ public:
 
 	void ResetJumpHeightVariables();
 
+	void AddShadowSprite();
+
 protected:
 
 	void SetIsWallJumping(bool value);
@@ -136,6 +138,8 @@ protected:
 	bool IsTeleporting() { return mTeleportCurrentTime > 0.0f; }
 
 	void PlayJumpSFX();
+
+	Sprite* mShadowSprite = nullptr;
 
 	bool m_isJumping;
 	float m_maxJumpSpeed;

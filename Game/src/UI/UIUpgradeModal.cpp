@@ -278,7 +278,7 @@ void UIUpgradeModal::DoPurchase()
 		return;
 	}
 
-	ParticleEmitterManager::Instance()->CreateDirectedSpray(20,
+	ParticleEmitterManager::Instance()->CreateDirectedSpray(5,
 															player->Position(),
 															GameObject::kGroundFront,
 															Vector2(0.0f, 0.0f),

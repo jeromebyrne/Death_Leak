@@ -423,6 +423,7 @@ void GameObjectManager::LoadObjectsFromFile(const string & filename)
 	if (m_player)
 	{
 		m_player->AddAimLineSprite();
+		m_player->AddShadowSprite();
 	}
 
 	// now order the objects by z value

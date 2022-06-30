@@ -46,3 +46,15 @@
 
 
 [2022-06-27 00:31:46] Couldn't bind to broadcast port 27036
+
+
+[2022-06-28 01:16:19] Loaded client id: 17600768354460081554
+[2022-06-28 01:16:19] Listening for IPv4 broadcast on: 27036
+[2022-06-28 01:16:19] Listening for connections on: 0.0.0.0:27036
+[2022-06-28 01:16:19] Connecting to remote: 0x51 10.0.0.146:27036
+[2022-06-28 01:16:19] Received broadcast message from client 1844144715057445572 (JB): 10.0.0.146:27036
+[2022-06-28 01:16:19] Connected to remote client: 0x51
+[2022-06-28 01:16:19] Received broadcast message from client 1844144715057445572 (JB): 1844144715057445572:27036
+[2022-06-28 01:16:21] Received broadcast message from client 1844144715057445572 (JB): 10.0.0.146:27036
+[2022-06-28 01:16:21] Received broadcast message from client 1844144715057445572 (JB): 1844144715057445572:27036
+[2022-06-28 01:16:26] Received broadcast message from client 1844144715057445572 (JB): 1844144715057445572:27036

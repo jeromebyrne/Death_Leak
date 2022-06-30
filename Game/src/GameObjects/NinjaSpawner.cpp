@@ -48,8 +48,10 @@ void NinjaSpawner::SpawnNPC(const float posX,
 	GameObjectManager::Instance()->AddGameObject(npc);
 	npc->FlipVertical();
 
+	npc->AddShadowSprite();
+
 	// show some effects when we spawn - smoke
-	ParticleEmitterManager::Instance()->CreateRadialSpray(20,
+	ParticleEmitterManager::Instance()->CreateRadialSpray(10,
 															Vector2(npc->X(), npc->Bottom()),
 															GameObject::kNpc,
 															Vector2(3200.0f, 1200.0f),
@@ -66,7 +68,7 @@ void NinjaSpawner::SpawnNPC(const float posX,
 															0.1f,
 															800.0f,
 															true, 
-															3.0f,
+															5.0f,
 															0.0f,
 															0.5f,
 															10.0f,
