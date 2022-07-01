@@ -8,8 +8,8 @@
 			{
 				"SurveyDate"		"2018-01-02"
 				"SurveyDateVersion"		"-3468785898090582116"
-				"StartMenuShortcutCheck"		"1"
-				"DesktopShortcutCheck"		"1"
+				"StartMenuShortcutCheck"		"0"
+				"DesktopShortcutCheck"		"0"
 				"SteamDefaultDialog"		"#app_store"
 				"ShowScreenshotManager"
 				{

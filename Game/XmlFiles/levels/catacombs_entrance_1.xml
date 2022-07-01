@@ -21,8 +21,8 @@
         <isanimated value="true" />
         <animationfile value="XmlFiles\animation\player_anim_default.xml" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
-        <resistance y="0.550000" x="0.999900" />
-        <maxvelocity y="99999.000000" x="11.000000" />
+        <resistance y="0.550000" x="0.800000" />
+        <maxvelocity y="99999.000000" x="8.000000" />
         <applygravity value="true" />
         <collisionboxdimensions y="214.898743" x="128.959793" offsetX="0.000000" offsetY="0.000000" />
         <passive value="false" />
@@ -422,7 +422,7 @@
         <animationfile value="XmlFiles\small_rat_anim.xml" />
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <resistance y="1.000000" x="0.950000" />
-        <maxvelocity y="100000000.000000" x="720.000000" />
+        <maxvelocity y="100000000.000000" x="1440.000000" />
         <applygravity value="true" />
         <collisionboxdimensions y="13.270956" x="36.741764" offsetX="5.000000" offsetY="0.000000" />
         <passive value="false" />
@@ -444,7 +444,7 @@
         <effect name="effectlighttexture" noiseintensity="0.000000" wobbleintensity="0.000000" pixelwobbleintensity="0.000000" pixelwobblespeedmod="0.000000" />
         <fade_when_player_occluded value="false" alphawhenoccluding="0.500000" alphawhennotoccluding="1.000000" />
         <texture filename="Media\characters\rat\1.png" />
-        <horizontalflip value="false" />
+        <horizontalflip value="true" />
         <verticalflip value="false" />
         <isanimated value="true" />
         <animationfile value="XmlFiles\small_rat_anim.xml" />
@@ -538,8 +538,8 @@
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
     <KeyPickup id="30" level_edit_locked="false" updateable="true" always_update="false">
-        <position depth_layer="kGround" y="-1018.024048" x="1479.580078" rotation="-0.060005" auto_rotate_value="0.000000" />
-        <dimensions height="49.241795" width="111.563438" native="false" repeatX="false" repeatY="false" />
+        <position depth_layer="kGround" y="-1018.023987" x="1479.580200" rotation="-0.060005" auto_rotate_value="0.000000" />
+        <dimensions height="35.221821" width="79.799431" native="false" repeatX="false" repeatY="false" />
         <material value="caverock" />
         <sine_wave_props active="false" x_offset="0.000000" y_offset="0.000000" amplitude="0.000000" rand_init_step="0" />
         <pos_audio_props enabled="false" file="" dim_x="0.000000" dim_y="0.000000" fade_dim_x="0.000000" fade_dim_y="0.000000" play_delay="0.100000" repeat="false" />
@@ -553,7 +553,7 @@
         <foliage_sway_props bottom_left_intensity_x="0.000000" bottom_left_intensity_y="0.000000" bottom_right_intensity_x="0.000000" bottom_right_intensity_y="0.000000" top_left_intensity_x="0.000000" top_left_intensity_y="0.000000" top_right_intensity_x="0.000000" top_right_intensity_y="0.000000" time_multiplier="1.000000" />
         <key_props id="has_repair_tools" name_loc_id="key_name_tools" desc_loc_id="key_desc_tools" />
     </KeyPickup>
-    <Breakable id="33" level_edit_locked="false" updateable="true" always_update="false">
+    <Breakable id="31" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundFront" y="-990.000000" x="533.580200" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="151.007477" width="151.007477" native="false" repeatX="false" repeatY="false" />
         <material value="crate" />
@@ -578,7 +578,7 @@
         <is_bouncy value="false" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="34" level_edit_locked="false" updateable="true" always_update="false">
+    <Breakable id="32" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGround" y="-972.000000" x="68.380157" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="151.007477" width="151.007477" native="false" repeatX="false" repeatY="false" />
         <material value="crate" />
@@ -603,7 +603,7 @@
         <is_bouncy value="false" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="35" level_edit_locked="false" updateable="true" always_update="false">
+    <Breakable id="33" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundFront" y="-1018.000000" x="1297.580200" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="151.007477" width="151.007477" native="false" repeatX="false" repeatY="false" />
         <material value="crate" />
@@ -628,7 +628,7 @@
         <is_bouncy value="false" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="36" level_edit_locked="false" updateable="true" always_update="false">
+    <Breakable id="34" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundFront" y="-1001.000000" x="1726.580200" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="151.007477" width="151.007477" native="false" repeatX="false" repeatY="false" />
         <material value="crate" />
@@ -653,7 +653,7 @@
         <is_bouncy value="false" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="37" level_edit_locked="false" updateable="true" always_update="false">
+    <Breakable id="35" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundFront" y="-1017.000000" x="1646.580200" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="151.007477" width="151.007477" native="false" repeatX="false" repeatY="false" />
         <material value="crate" />
@@ -678,7 +678,7 @@
         <is_bouncy value="false" bounce_multiplier="1.300000" />
         <health value="10.000000" delete_on_break="false" />
     </Breakable>
-    <Breakable id="38" level_edit_locked="false" updateable="true" always_update="false">
+    <Breakable id="36" level_edit_locked="false" updateable="true" always_update="false">
         <position depth_layer="kGroundFront" y="-1038.000000" x="1819.580200" rotation="0.000000" auto_rotate_value="0.000000" />
         <dimensions height="151.007477" width="151.007477" native="false" repeatX="false" repeatY="false" />
         <material value="crate" />

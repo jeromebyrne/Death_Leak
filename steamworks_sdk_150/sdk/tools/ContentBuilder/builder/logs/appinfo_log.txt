@@ -192,3 +192,27 @@
 [2022-06-30 00:37:02] Requesting 16 apps, 0 packages (full data, 1024 prev attempts)
 [2022-06-30 00:37:02] UpdatesJob: finished OK, apps updated 29 (928 KB), packages updated 0 (0 KB)
 [2022-06-30 00:37:08] Starting async write C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder/appcache/appinfo.vdf (2799056 bytes)
+
+
+[2022-06-30 23:58:39] RequestAppInfoUpdate: AppIDs 7
+[2022-06-30 23:58:39] Packages changed: force all
+[2022-06-30 23:58:39] Apps changed: force all
+[2022-06-30 23:58:39] Change number 15280267->15292070, apps: 0/0, packages: 0/0
+[2022-06-30 23:58:39] Requesting 580 apps, 166 packages (meta data, 1024 prev attempts)
+[2022-06-30 23:58:39] Requested 76 app access tokens, 53 received, 23 denied
+[2022-06-30 23:58:39] Updated SHAs with 53 new access tokens
+[2022-06-30 23:58:40] Downloaded 11 apps via HTTP, 794 KB (133 KB compressed)
+[2022-06-30 23:58:40] Requesting 10 apps, 0 packages (full data, 1024 prev attempts)
+[2022-06-30 23:58:40] UpdatesJob: finished OK, apps updated 21 (829 KB), packages updated 0 (0 KB)
+[2022-06-30 23:58:44] Starting async write C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder/appcache/appinfo.vdf (2799250 bytes)
+
+
+[2022-07-01 00:23:43] RequestAppInfoUpdate: AppIDs 7
+[2022-07-01 00:23:43] Packages changed: 
+[2022-07-01 00:23:43] Apps changed: 995990=15292301,
+[2022-07-01 00:23:43] Change number 15292070->15292331, apps: 1/210, packages: 0/17
+[2022-07-01 00:23:43] Requesting 25 apps, 78 packages (meta data, 1024 prev attempts)
+[2022-07-01 00:23:43] Requested 23 app access tokens, 0 received, 23 denied
+[2022-07-01 00:23:43] Requesting 1 apps, 0 packages (full data, 1024 prev attempts)
+[2022-07-01 00:23:43] UpdatesJob: finished OK, apps updated 1 (1 KB), packages updated 0 (0 KB)
+[2022-07-01 00:23:49] Starting async write C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder/appcache/appinfo.vdf (2799250 bytes)

@@ -1724,6 +1724,12 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 
 				// mark ourselves for deletion (only if we are not a player)
 				if (GameObjectManager::Instance()->GetPlayer() != this)
 				{
+					if (mShadowSprite)
+					{
+						mShadowSprite->Detach();
+						GameObjectManager::Instance()->RemoveGameObject(mShadowSprite);
+						mShadowSprite = nullptr;
+					}
 					GameObjectManager::Instance()->RemoveGameObject(this);
 				}
 			}
