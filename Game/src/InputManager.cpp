@@ -216,7 +216,7 @@ void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 		mCurrentGamepadState.mPressingJump = false;
 	}
 
-	if (mCurrentGamepadState.mPressingJump && !wasPressingJump)
+	/*if (mCurrentGamepadState.mPressingJump && !wasPressingJump)
 	{
 		if (padState.Gamepad.sThumbLY < -30000 &&
 			player->IsCrouching() && 
@@ -235,7 +235,7 @@ void InputManager::ProcessJump_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 			player->Jump(jumpPower);
 		}
 	}
-	else if (mCurrentGamepadState.mPressingJump && 
+	else*/ if (mCurrentGamepadState.mPressingJump && 
 		wasPressingJump && 
 		player->CanIncreaseJumpIntensity() && 
 		currentJumpIncreasePercent < kMaxJumpPercent)
@@ -692,7 +692,7 @@ void InputManager::ProcessJump_keyboard(CurrentGameplayActions & currentActions,
 		mCurrentGamepadState.mPressingJump = false;
 	}
 
-	if (mCurrentGamepadState.mPressingJump && !wasPressingJump)
+	/*if (mCurrentGamepadState.mPressingJump && !wasPressingJump)
 	{
 		if (player->IsCrouching() &&
 			!player->IsDoingMelee() &&
@@ -710,7 +710,7 @@ void InputManager::ProcessJump_keyboard(CurrentGameplayActions & currentActions,
 			player->Jump(jumpPower);
 		}
 	}
-	else if (mCurrentGamepadState.mPressingJump &&
+	else */if (mCurrentGamepadState.mPressingJump &&
 		wasPressingJump &&
 		player->CanIncreaseJumpIntensity() &&
 		currentJumpIncreasePercent < 100.0f)
