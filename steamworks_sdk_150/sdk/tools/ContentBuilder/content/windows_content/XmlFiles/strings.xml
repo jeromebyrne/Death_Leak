@@ -179,6 +179,12 @@
     <de>Use the RIGHT THUMBSTICK to throw a flying dagger</de>
   </paper_pickup_gametip_projectile>
 
+  <paper_pickup_gametip_death>
+    <en-gb>When you die you will lose all of your current orbs but will keep all techniques acquired, keys and other pickups.</en-gb>
+    <pt-br>Use the RIGHT THUMBSTICK to throw a flying dagger</pt-br>
+    <de>Use the RIGHT THUMBSTICK to throw a flying dagger</de>
+  </paper_pickup_gametip_death>
+
   <key_name_tools>
     <en-gb>Tools</en-gb>
     <pt-br>Tools</pt-br>

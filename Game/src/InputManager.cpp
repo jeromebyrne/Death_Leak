@@ -269,7 +269,7 @@ void InputManager::ProcessSwim_gamepad(XINPUT_STATE padState, CurrentGameplayAct
 
 void InputManager::ProcessDownwardDash_gamepad(XINPUT_STATE padState, CurrentGameplayActions & currentActions, Player * player)
 {
-	if (player->GetIsDownwardDashing())
+	if (player->GetIsDownwardDashing() || player->GetIsInWater())
 	{
 		return;
 	}
