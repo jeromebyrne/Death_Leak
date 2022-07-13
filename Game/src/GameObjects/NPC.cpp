@@ -587,7 +587,7 @@ void NPC::SpawnLimb(const string & filename, bool attachParticles, float speedMu
 
 	if (attachParticles)
 	{
-		ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(10, m_position, true, 3.0f);
+		ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(5, m_position, true, 3.0f);
 		if (spray)
 		{
 			spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(limb->ID()), Vector2(0, 0), GetDepthLayer());

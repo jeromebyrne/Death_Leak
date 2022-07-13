@@ -1623,7 +1623,7 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 
 					{
 						string particletexFile = /* "Media\\bloodparticle2.png"; */ m_material->GetRandomParticleTexture();
 
-						ParticleEmitterManager::Instance()->CreateDirectedSpray(40,
+						ParticleEmitterManager::Instance()->CreateDirectedSpray(20,
 																				Vector2(pos.X, pos.Y + 30.0f),
 																				/* GetDepthLayer() */ GameObject::kPlayer,
 																				Vector2(0.2f, 0.8f),

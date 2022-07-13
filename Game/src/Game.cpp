@@ -438,8 +438,8 @@ void Game::PostDraw() // post processsing effects here
 	// draw the scene to a texture
 	//m_screenAlignedPostProcTex1->SetEffect(m_effectLightTexture);
 	//m_screenAlignedPostProcTex1->SetEffect(m_effectLightTextureVertexWobble);
-	// m_screenAlignedPostProcTex1->SetEffect(m_effectSepia);
-	//m_screenAlignedPostProcTex1->SetEffect(m_effectMonochrome);
+	m_screenAlignedPostProcTex1->SetEffect(m_effectSepia);
+	// m_screenAlignedPostProcTex1->SetEffect(m_effectMonochrome);
 	// m_screenAlignedPostProcTex1->SetEffect(m_effectMonochromeRed);
 
 	m_screenAlignedPostProcTex1->Draw();
@@ -449,11 +449,11 @@ void Game::PostDraw() // post processsing effects here
 	//m_effectLightTexture->SetTexture(NULL);
 	//m_effectLightTexture->CurrentTechnique->GetPassByIndex(0)->Apply(0);
 
-	// m_effectSepia->SetTexture(nullptr);
+	m_effectSepia->SetTexture(nullptr);
 	m_effectSepia->CurrentTechnique->GetPassByIndex( 0 )->Apply(0);
 
-	//m_effectMonochrome->SetTexture(NULL);
-	//m_effectMonochrome->CurrentTechnique->GetPassByIndex( 0 )->Apply(0);
+	// m_effectMonochrome->SetTexture(NULL);
+	// m_effectMonochrome->CurrentTechnique->GetPassByIndex( 0 )->Apply(0);
 
 	// m_effectMonochromeRed->SetTexture(nullptr);
 	// m_effectMonochromeRed->CurrentTechnique->GetPassByIndex( 0 )->Apply(0);
