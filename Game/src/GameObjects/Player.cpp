@@ -16,6 +16,8 @@
 #include "Timing.h"
 #include "WeatherManager.h"
 
+extern CSteamAchievements* g_SteamAchievements;
+
 static const char * kBombTextureFile = "Media/bomb.png";
 static const float kAimLineOpacityDecrementDelay = 0.05f;
 static const float kAimLineOpacityDecreaseRate = 10.0f;
@@ -1076,6 +1078,9 @@ void Player::UpdateIsPullingSwordFromStomach(float delta)
 					mBreathingIntroSFX = nullptr;
 				}
 
+				if (g_SteamAchievements)
+					g_SteamAchievements->SetAchievement("ACH_PULL_SWORD_ONCE");
+
 				return;
 			}
 
@@ -1163,7 +1168,7 @@ void Player::Draw(ID3D10Device* device, Camera2D* camera)
 		if (i.IsPressingInteractButton() == false)
 		{
 			DrawUtilities::DrawTexture(Vector3(m_position.X - 35.0f, m_position.Y + 50.0f, GetDepthLayer() + 0.1f),
-				Vector2(50.0f, 50.0f),
+				Vector2(150.0f, 90.0f),
 				"Media\\UI\\gamepad_icons\\x.png");
 		}
 	}

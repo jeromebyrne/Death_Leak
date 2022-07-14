@@ -23,6 +23,7 @@
     <ClCompile Include="DXUT\DXUTenum.cpp" />
     <ClCompile Include="DXUT\DXUTmisc.cpp" />
     <ClCompile Include="DXUT\SDKmisc.cpp" />
+    <ClCompile Include="src\Achievements\Achievement.cpp" />
     <ClCompile Include="src\AI\AIState.cpp" />
     <ClCompile Include="src\AI\AIStateButterflyWander.cpp" />
     <ClCompile Include="src\AI\AIStateFlying.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="DXUT\DXUTenum.h" />
     <ClInclude Include="DXUT\DXUTmisc.h" />
     <ClInclude Include="DXUT\SDKmisc.h" />
+    <ClInclude Include="src\Achievements\Achievement.h" />
     <ClInclude Include="src\AI\AIState.h" />
     <ClInclude Include="src\AI\AIStateButterflyWander.h" />
     <ClInclude Include="src\AI\AIStateFlying.h" />

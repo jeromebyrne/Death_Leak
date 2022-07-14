@@ -561,3 +561,112 @@
 [2022-07-02 12:36:18] [AppID 7] Successfully synced to ChangeNumber 0
 [2022-07-02 12:36:18] [Roaming Config] OnRemoteStorageSyncedClient() - result OK
 [2022-07-02 12:36:18] [AppID 7] YldWriteCacheDirectoryToFile - saved to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder/userdata/56721299/7/remotecache.vdf'
+
+
+[2022-07-12 23:32:49] [AppID 7] Starting sync (init,)
+[2022-07-12 23:32:49] [AppID 7] AutoCloud checking local state for user 56721299
+[2022-07-12 23:32:49] [U:1:56721299] [AppID 7] Init cache request complete
+[2022-07-12 23:32:49] [AppID 7] YldWriteCacheDirectoryToFile - saved to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder/userdata/56721299/7/remotecache.vdf'
+[2022-07-12 23:33:07] [AppID 7] Starting sync (init,)
+[2022-07-12 23:33:07] [AppID 7] AutoCloud checking local state for user 56721299
+[2022-07-12 23:33:07] [U:1:56721299] [AppID 7] Init cache request complete
+[2022-07-12 23:33:07] [AppID 7] YldWriteCacheDirectoryToFile - saved to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder/userdata/56721299/7/remotecache.vdf'
+[2022-07-12 23:33:08] [Roaming Config] PerformSyncCloud - evaluating sync state
+[2022-07-12 23:33:08] [AppID 7] Starting sync (eval,)
+[2022-07-12 23:33:08] [AppID 7] AutoCloud checking local state for user 56721299
+[2022-07-12 23:33:08] [AppID 7] Currently already synced to global change number '15658676364529805985', should be nothing to download
+[2022-07-12 23:33:08] [AppID 7] File is in sync serverbrowser_hist.vdf
+[2022-07-12 23:33:08] [AppID 7] File is in sync sharedconfig.vdf
+[2022-07-12 23:33:08] [AppID 7] Eval complete
+[2022-07-12 23:33:08] [Roaming Config] OnRemoteStorageStateEvaluated - result OK
+[2022-07-12 23:33:08] [AppID 7] Starting sync (down,)
+[2022-07-12 23:33:08] [AppID 7] YldWriteCacheDirectoryToFile - saved to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder/userdata/56721299/7/remotecache.vdf'
+[2022-07-12 23:33:08] [AppID 7] Currently already synced to global change number '15658676364529805985', should be nothing to download
+[2022-07-12 23:33:08] [AppID 7] Download complete in build list
+[2022-07-12 23:33:08] [AppID 7] Successfully synced to ChangeNumber 0
+[2022-07-12 23:33:08] [Roaming Config] OnRemoteStorageSyncedClient() - result OK
+[2022-07-12 23:33:08] [AppID 7] YldWriteCacheDirectoryToFile - saved to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder/userdata/56721299/7/remotecache.vdf'
+
+
+[2022-07-13 01:00:23] [AppID 7] Starting sync (init,)
+[2022-07-13 01:00:23] [AppID 7] AutoCloud checking local state for user 56721299
+[2022-07-13 01:00:23] [U:1:56721299] [AppID 7] Init cache request complete
+[2022-07-13 01:00:23] [AppID 7] YldWriteCacheDirectoryToFile - saved to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder/userdata/56721299/7/remotecache.vdf'
+[2022-07-13 01:00:38] [AppID 7] Starting sync (init,)
+[2022-07-13 01:00:38] [AppID 7] AutoCloud checking local state for user 56721299
+[2022-07-13 01:00:38] [U:1:56721299] [AppID 7] Init cache request complete
+[2022-07-13 01:00:38] [AppID 7] YldWriteCacheDirectoryToFile - saved to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder/userdata/56721299/7/remotecache.vdf'
+[2022-07-13 01:00:39] [Roaming Config] PerformSyncCloud - evaluating sync state
+[2022-07-13 01:00:39] [AppID 7] Starting sync (eval,)
+[2022-07-13 01:00:39] [AppID 7] AutoCloud checking local state for user 56721299
+[2022-07-13 01:00:39] [AppID 7] Need to sync from local change number '15658676364529805985' to global change number '11376512850266232291', but not attempting now
+[2022-07-13 01:00:39] [AppID 7] Need to download file serverbrowser_hist.vdf
+[2022-07-13 01:00:39] [AppID 7] Need to download file sharedconfig.vdf
+[2022-07-13 01:00:39] [AppID 7] Eval complete
+[2022-07-13 01:00:39] [Roaming Config] OnRemoteStorageStateEvaluated - result OK
+[2022-07-13 01:00:39] [AppID 7] Starting sync (down,)
+[2022-07-13 01:00:39] [AppID 7] YldWriteCacheDirectoryToFile - saved to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder/userdata/56721299/7/remotecache.vdf'
+[2022-07-13 01:00:39] [AppID 7] Attempting to sync from local change number '15658676364529805985' to global change number '11376512850266232291'
+[2022-07-13 01:00:39] [AppID 7] Need to download file serverbrowser_hist.vdf
+[2022-07-13 01:00:39] [AppID 7] Need to download file sharedconfig.vdf
+[2022-07-13 01:00:39] [AppID 7] HTTP download for file 'sharedconfig.vdf' from host 'steamcloud-us-west1.storage.googleapis.com' beginning. . .
+[2022-07-13 01:00:39] [AppID 7] HTTP download for file 'serverbrowser_hist.vdf' from host 'steamcloud-us-west1.storage.googleapis.com' beginning. . .
+[2022-07-13 01:00:40] [AppID 7] HTTP download for file 'sharedconfig.vdf' from host 'steamcloud-us-west1.storage.googleapis.com' - Success.
+[2022-07-13 01:00:40] [AppID 7] Download OK for file sharedconfig.vdf
+[2022-07-13 01:00:40] [AppID 7] HTTP download for file 'serverbrowser_hist.vdf' from host 'steamcloud-us-west1.storage.googleapis.com' - Success.
+[2022-07-13 01:00:40] [AppID 7] Download OK for file serverbrowser_hist.vdf
+[2022-07-13 01:00:40] [AppID 7] Download complete, result OK
+[2022-07-13 01:00:40] [AppID 7] Successfully synced to ChangeNumber 11376512850266232291
+[2022-07-13 01:00:40] [Roaming Config] OnRemoteStorageSyncedClient() - result OK
+[2022-07-13 01:00:40] [AppID 7] YldWriteCacheDirectoryToFile - saved to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder/userdata/56721299/7/remotecache.vdf'
+
+
+[2022-07-13 13:52:35] [AppID 7] Starting sync (init,)
+[2022-07-13 13:52:35] [AppID 7] AutoCloud checking local state for user 56721299
+[2022-07-13 13:52:35] [U:1:56721299] [AppID 7] Init cache request complete
+[2022-07-13 13:52:35] [AppID 7] YldWriteCacheDirectoryToFile - saved to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder/userdata/56721299/7/remotecache.vdf'
+[2022-07-13 13:52:44] [AppID 7] Starting sync (init,)
+[2022-07-13 13:52:44] [AppID 7] AutoCloud checking local state for user 56721299
+[2022-07-13 13:52:44] [U:1:56721299] [AppID 7] Init cache request complete
+[2022-07-13 13:52:44] [AppID 7] YldWriteCacheDirectoryToFile - saved to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder/userdata/56721299/7/remotecache.vdf'
+[2022-07-13 13:52:45] [Roaming Config] PerformSyncCloud - evaluating sync state
+[2022-07-13 13:52:45] [AppID 7] Starting sync (eval,)
+[2022-07-13 13:52:45] [AppID 7] AutoCloud checking local state for user 56721299
+[2022-07-13 13:52:45] [AppID 7] Currently already synced to global change number '11376512850266232291', should be nothing to download
+[2022-07-13 13:52:45] [AppID 7] File is in sync serverbrowser_hist.vdf
+[2022-07-13 13:52:45] [AppID 7] File is in sync sharedconfig.vdf
+[2022-07-13 13:52:45] [AppID 7] Eval complete
+[2022-07-13 13:52:45] [Roaming Config] OnRemoteStorageStateEvaluated - result OK
+[2022-07-13 13:52:45] [AppID 7] Starting sync (down,)
+[2022-07-13 13:52:45] [AppID 7] YldWriteCacheDirectoryToFile - saved to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder/userdata/56721299/7/remotecache.vdf'
+[2022-07-13 13:52:45] [AppID 7] Currently already synced to global change number '11376512850266232291', should be nothing to download
+[2022-07-13 13:52:45] [AppID 7] Download complete in build list
+[2022-07-13 13:52:45] [AppID 7] Successfully synced to ChangeNumber 0
+[2022-07-13 13:52:45] [Roaming Config] OnRemoteStorageSyncedClient() - result OK
+[2022-07-13 13:52:45] [AppID 7] YldWriteCacheDirectoryToFile - saved to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder/userdata/56721299/7/remotecache.vdf'
+
+
+[2022-07-13 18:32:34] [AppID 7] Starting sync (init,)
+[2022-07-13 18:32:34] [AppID 7] AutoCloud checking local state for user 56721299
+[2022-07-13 18:32:34] [U:1:56721299] [AppID 7] Init cache request complete
+[2022-07-13 18:32:34] [AppID 7] YldWriteCacheDirectoryToFile - saved to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder/userdata/56721299/7/remotecache.vdf'
+[2022-07-13 22:19:29] [AppID 7] Starting sync (init,)
+[2022-07-13 22:19:29] [AppID 7] AutoCloud checking local state for user 56721299
+[2022-07-13 22:19:29] [U:1:56721299] [AppID 7] Init cache request complete
+[2022-07-13 22:19:29] [AppID 7] YldWriteCacheDirectoryToFile - saved to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder/userdata/56721299/7/remotecache.vdf'
+[2022-07-13 22:19:30] [Roaming Config] PerformSyncCloud - evaluating sync state
+[2022-07-13 22:19:30] [AppID 7] Starting sync (eval,)
+[2022-07-13 22:19:30] [AppID 7] AutoCloud checking local state for user 56721299
+[2022-07-13 22:19:30] [AppID 7] Currently already synced to global change number '11376512850266232291', should be nothing to download
+[2022-07-13 22:19:30] [AppID 7] File is in sync serverbrowser_hist.vdf
+[2022-07-13 22:19:30] [AppID 7] File is in sync sharedconfig.vdf
+[2022-07-13 22:19:30] [AppID 7] Eval complete
+[2022-07-13 22:19:30] [Roaming Config] OnRemoteStorageStateEvaluated - result OK
+[2022-07-13 22:19:30] [AppID 7] Starting sync (down,)
+[2022-07-13 22:19:30] [AppID 7] YldWriteCacheDirectoryToFile - saved to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder/userdata/56721299/7/remotecache.vdf'
+[2022-07-13 22:19:30] [AppID 7] Currently already synced to global change number '11376512850266232291', should be nothing to download
+[2022-07-13 22:19:30] [AppID 7] Download complete in build list
+[2022-07-13 22:19:30] [AppID 7] Successfully synced to ChangeNumber 0
+[2022-07-13 22:19:30] [Roaming Config] OnRemoteStorageSyncedClient() - result OK
+[2022-07-13 22:19:30] [Roaming Config] PerformSyncCloud - all sync'd up
+[2022-07-13 22:19:30] [AppID 7] YldWriteCacheDirectoryToFile - saved to 'C:\Users\jerom\Documents\git\2DPlatformer\steamworks_sdk_150\sdk\tools\ContentBuilder\builder/userdata/56721299/7/remotecache.vdf'

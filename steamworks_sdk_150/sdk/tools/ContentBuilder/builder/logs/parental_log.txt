@@ -173,3 +173,39 @@
 [2022-07-02 12:36:18] 	Base list: 0 ()
 [2022-07-02 12:36:18] 	No custom list
 [2022-07-02 12:36:18] 	No enabled features
+
+
+[2022-07-12 23:33:08] Validating parental settings
+[2022-07-12 23:33:08] Settings dump:
+[2022-07-12 23:33:08] 	Account ID: 56721299
+[2022-07-12 23:33:08] 	Enabled: false
+[2022-07-12 23:33:08] 	Base list: 0 ()
+[2022-07-12 23:33:08] 	No custom list
+[2022-07-12 23:33:08] 	No enabled features
+
+
+[2022-07-13 01:00:38] Validating parental settings
+[2022-07-13 01:00:38] Settings dump:
+[2022-07-13 01:00:38] 	Account ID: 56721299
+[2022-07-13 01:00:38] 	Enabled: false
+[2022-07-13 01:00:38] 	Base list: 0 ()
+[2022-07-13 01:00:38] 	No custom list
+[2022-07-13 01:00:38] 	No enabled features
+
+
+[2022-07-13 13:52:45] Validating parental settings
+[2022-07-13 13:52:45] Settings dump:
+[2022-07-13 13:52:45] 	Account ID: 56721299
+[2022-07-13 13:52:45] 	Enabled: false
+[2022-07-13 13:52:45] 	Base list: 0 ()
+[2022-07-13 13:52:45] 	No custom list
+[2022-07-13 13:52:45] 	No enabled features
+
+
+[2022-07-13 22:19:30] Validating parental settings
+[2022-07-13 22:19:30] Settings dump:
+[2022-07-13 22:19:30] 	Account ID: 56721299
+[2022-07-13 22:19:30] 	Enabled: false
+[2022-07-13 22:19:30] 	Base list: 0 ()
+[2022-07-13 22:19:30] 	No custom list
+[2022-07-13 22:19:30] 	No enabled features

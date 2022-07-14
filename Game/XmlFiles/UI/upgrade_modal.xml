@@ -11,7 +11,7 @@
 
   <sprite name="2_back_button_image_gamepad"
           process_input="false"
-          posX ="860" posY ="-500" width="64" height ="64"
+          posX ="774" posY ="-460" width="150" height ="90"
           image="Media\UI\gamepad_icons\b.png"
           hflip="false" vflip="true"
           alpha="1.0"
@@ -29,7 +29,7 @@
 
   <sprite name="4_upgrade_button_image_gamepad"
           process_input="false"
-          posX ="80" posY ="-305" width="96" height ="96"
+          posX ="60" posY ="-325" width="225" height ="135"
           image="Media\UI\gamepad_icons\y.png"
           hflip="false" vflip="true"
           alpha="1.0"

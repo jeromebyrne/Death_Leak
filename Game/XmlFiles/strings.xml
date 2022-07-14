@@ -20,19 +20,19 @@
   </health_upgrade_notification>
 
   <dojo_scroll_desc_kRoll>
-    <en-gb>The ROLL technique. Rolling can be used to evade enemy projectiles. You can also roll just before landing from a fall to avoid slowing down. Press the LEFT BUMPER (LB) to roll.</en-gb>
+    <en-gb>The ROLL technique. Rolling can be used to evade enemy projectiles. You can also roll just before landing from a fall to avoid slowing down. Press the LEFT BUMPER (LB on Xbox pad, L1 on PlayStation pad) to roll.</en-gb>
     <pt-br>The ROLL technique. Rolling can be used to evade enemy projectiles. You can also roll just before landing from a fall to avoid slowing down. Press the LEFT BUMPER to roll.</pt-br>
     <de>The ROLL technique. Rolling can be used to evade enemy projectiles. You can also roll just before landing from a fall to avoid slowing down. Press the LEFT BUMPER to roll.</de>
   </dojo_scroll_desc_kRoll>
 
   <dojo_scroll_desc_kDownwardDash>
-    <en-gb>The downward SMASH technique. Smash through obstacles with this technique. Press the RIGHT BUMPER in mid-air to trigger.</en-gb>
+    <en-gb>The downward SMASH technique. Smash through obstacles with this technique. Press the RIGHT BUMPER (RB on Xbox pad, R1 on PlayStation pad) in mid-air to trigger.</en-gb>
     <pt-br>A técnica descendente de SMASH. Esmagar os obstáculos com esta técnica.</pt-br>
     <de>Die abwärts gerichtete SMASH-Technik. Besiege Hindernisse mit dieser Technik.</de>
   </dojo_scroll_desc_kDownwardDash>
 
   <dojo_scroll_desc_kSlowMotion>
-    <en-gb>The FOCUS technique. Slow down time. Hold the LEFT TRIGGER (LT) to activate.</en-gb>
+    <en-gb>The FOCUS technique. Slow down time. Hold the LEFT TRIGGER (LT on Xbox pad, L2 on PlayStation pad) to activate.</en-gb>
     <pt-br>A técnica FOCUS. Diminua o tempo. FAÇAM</pt-br>
     <de>Die FOCUS-Technik. Zeit verlangsamen. MACHEN</de>
   </dojo_scroll_desc_kSlowMotion>
@@ -174,7 +174,7 @@
   </paper_pickup_gametip>
 
   <paper_pickup_gametip_projectile>
-    <en-gb>Hold the RIGHT THUMBSTICK to throw a flying dagger in any direction. You can move independently with the LEFT THUMBSTICK. Press the RIGHT TRIGGER (RT) to Jump.</en-gb>
+    <en-gb>Hold the RIGHT THUMBSTICK to throw a flying dagger in any direction. You can move independently with the LEFT THUMBSTICK. Press the RIGHT TRIGGER (RT on Xbox pad, R2 on PlayStation pad) to Jump.</en-gb>
     <pt-br>Use the RIGHT THUMBSTICK to throw a flying dagger</pt-br>
     <de>Use the RIGHT THUMBSTICK to throw a flying dagger</de>
   </paper_pickup_gametip_projectile>

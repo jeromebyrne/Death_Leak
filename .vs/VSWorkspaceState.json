@@ -2,10 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\Game",
-    "\\Game\\src",
     "\\Game\\XmlFiles",
-    "\\Game\\XmlFiles\\levels"
+    "\\Game\\XmlFiles\\levels",
+    "\\Game\\XmlFiles\\UI"
   ],
-  "SelectedNode": "\\Game\\XmlFiles\\levels\\village_agri.xml",
+  "SelectedNode": "\\Game\\XmlFiles\\UI\\game_hud.xml",
   "PreviewInSolutionExplorer": false
 }

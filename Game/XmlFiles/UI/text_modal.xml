@@ -11,7 +11,7 @@
 
   <sprite name="2_back_button_image_gamepad"
           process_input="false"
-          posX ="860" posY ="-500" width="64" height ="64"
+          posX ="774" posY ="-460" width="150" height ="90"
           image="Media\UI\gamepad_icons\b.png"
           hflip="false" vflip="true"
           alpha="1.0"

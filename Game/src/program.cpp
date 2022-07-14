@@ -6,6 +6,7 @@
 #include "UIManager.h"
 #include "StringManager.h"
 #include "steam_api.h"
+#include <Achievements\Achievement.h>
 
 //--------------------------------------------------------------------------------------
 // Global Variables
@@ -21,6 +22,25 @@ static int kSteamAppId = 995990;
 DXWindow * g_pWindow = nullptr;
 Graphics * g_pGraphics = nullptr;
 Game * g_pGame = nullptr;
+
+
+// ------------------------------------
+// 11th hour achievement code that should really not live here
+// ------------------------------------
+
+// Defining our achievements
+enum EAchievements
+{
+	ACH_PULL_SWORD_ONCE = 0
+};
+
+// Achievement array which will hold data about the achievements and their state
+Achievement_t g_Achievements[] =
+{
+	_ACH_ID(ACH_PULL_SWORD_ONCE, "Sword in the Stomach")
+};
+
+CSteamAchievements* g_SteamAchievements = nullptr;
 
 //--------------------------------------------------------------------------------------
 // Forward declarations
@@ -46,6 +66,7 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 	if( FAILED(  Initialise(hInstance, nCmdShow) ))
         return 0;
 
+	// TODO: maybe this needs to be called after init?
 	if (SteamAPI_RestartAppIfNecessary(kSteamAppId));
 	{
 		// exit(0);
@@ -53,6 +74,10 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 
 	// Initialize Steam
 	bool steamInit = SteamAPI_Init();
+	if (steamInit)
+	{
+		g_SteamAchievements = new CSteamAchievements(g_Achievements, 1);
+	}
 
 	MSG mssg;                // message from queue
 	double  target_delta = 1.0/60.0; 
@@ -272,6 +297,8 @@ void KillGame()
 	g_pGame->Destroy();
     PostQuitMessage( 0 );
 	SteamAPI_Shutdown();
+	if (g_SteamAchievements)
+		delete g_SteamAchievements;
 }
 
 void PostDestroyMessage()

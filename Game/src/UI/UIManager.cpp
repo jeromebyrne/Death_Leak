@@ -21,7 +21,7 @@
 #include "UIMainMenuScreen.h"
 
 static const int kMaxInteractablesToDraw = 3;
-static Vector2 kInteractSpriteDimensions = Vector2(50.0f, 50.0f);
+static Vector2 kInteractSpriteDimensions = Vector2(150.0f, 90.0f);
 
 extern void PostDestroyMessage();
 
