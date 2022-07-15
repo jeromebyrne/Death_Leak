@@ -8,6 +8,8 @@
 #include "FocusUpgradePickup.h"
 #include "KeyPickup.h"
 
+extern CSteamAchievements* g_SteamAchievements;
+
 HealthDevil::HealthDevil(float x, 
 	float y, 
 	DepthLayer 
@@ -231,6 +233,9 @@ void HealthDevil::OnInteracted()
 		else
 		{
 			mVoiceOverSoundPlaying = AudioManager::Instance()->PlaySoundEffect("character\\health_devil\\vo\\devil_3_fx.wav", false, true);
+
+			if ( g_SteamAchievements)
+				g_SteamAchievements->SetAchievement("ACH_THREE_DEVILS");
 		}
 		
 		mHasPlayedDialog = true;

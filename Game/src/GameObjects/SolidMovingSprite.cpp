@@ -10,6 +10,8 @@
 #include "Smashable.h"
 #include "Game.h"
 
+extern CSteamAchievements* g_SteamAchievements;
+
 SolidMovingSprite::SolidMovingSprite(float x, float y , DepthLayer depthLayer , float width , float height , float groundFriction , float airResistance ):
 	MovingSprite(x,y, depthLayer, width, height, groundFriction, airResistance),
 	m_collisionBoxDimensions(width, height),
@@ -440,6 +442,19 @@ bool SolidMovingSprite::OnCollision(SolidMovingSprite * object)
 			GAME_ASSERT(dynamic_cast<Character*>(object));
 			Character * character = static_cast<Character*>(object);
 			character->OnDamage(this, m_applyDamageAmount, Vector2(0.0f,0.0f));
+
+			// The following is GARBAGE code for an achievement added at the 11th hour
+			if (character->IsPlayer())
+			{
+				if (character->GetHealth() <= 0.0f)
+				{
+					if (ID() == 14)
+					{
+						if (g_SteamAchievements)
+							g_SteamAchievements->SetAchievement("ACH_FIRE_DEATH");
+					}
+				}
+			}
 		}
 	}
 

@@ -4,12 +4,22 @@
 #include "SaveManager.h"
 #include "Game.h"
 
+extern CSteamAchievements* g_SteamAchievements;
+
 void SfxPickup::DoPickup()
 {
 	PlayRandomSfx();
 
 	mInteractableProperties.InteractCountdown = 2.0f;
 	mInteractableProperties.DisableInteractivityOnInteract = false;
+
+	if (!mDefinitelyHasAchievement)
+	{
+		if (g_SteamAchievements)
+			g_SteamAchievements->SetAchievement("ACH_HEALING_WATER");
+
+		mDefinitelyHasAchievement = true;
+	}
 }
 
 void SfxPickup::Initialise()

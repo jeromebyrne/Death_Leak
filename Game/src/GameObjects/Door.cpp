@@ -13,6 +13,8 @@ static const string kDefaultDoorUnlockedSfx = "door_unlock.wav";
 
 static const float kUnlockingTime = 1.0f;
 
+extern CSteamAchievements* g_SteamAchievements;
+
 Door::Door() :
 	Sprite()
 {
@@ -146,6 +148,12 @@ void Door::OnInteracted()
 			mIsUnlockingCurrentTime = kUnlockingTime;
 
 			Game::GetInstance()->Vibrate(0.2f, 0.1f, 0.2f);
+
+			// achievement for entering the Dojo
+			if (mRequiredKey == "dojo" && g_SteamAchievements)
+			{
+				g_SteamAchievements->SetAchievement("ACH_ACCESS_DOJO");
+			}
 
 			return;
 		}

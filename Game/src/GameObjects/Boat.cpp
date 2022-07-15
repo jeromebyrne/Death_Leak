@@ -15,6 +15,8 @@ static const string kDefaultDoorUnlockedSfx = "door_unlock.wav";
 
 static const float kUnlockingTime = 1.0f;
 
+extern CSteamAchievements* g_SteamAchievements;
+
 Boat::Boat() :
 	Sprite()
 {
@@ -82,6 +84,9 @@ void Boat::XmlWrite(TiXmlElement * element)
 
 void Boat::EnterBoat()
 {
+	if (g_SteamAchievements)
+		g_SteamAchievements->SetAchievement("ACH_REPAIR_BOAT");
+
 	AudioManager::Instance()->PlaySoundEffect("hitting_wood.mp3");
 	GameObjectManager::Instance()->SwitchToLevel("XmlFiles\\levels\\sea_2.xml", "", true);
 	UIManager::Instance()->PopUI("game_hud");

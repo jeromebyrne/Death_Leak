@@ -15,6 +15,8 @@
 #include "FeatureUnlockManager.h"
 #include "ParticleSpray.h"
 
+extern CSteamAchievements* g_SteamAchievements;
+
 float Character::mLastTimePlayedDeathSFX = 0.0f;
 static const float kMinTimeBetweenDeathSFX = 0.1f;
 static const float kJumpDelay = 0.05f;
@@ -624,13 +626,22 @@ void Character::DoMeleeCollisions(SolidMovingSprite * object)
 			// left edge of the object must be greater than the center of the character
 			if (object->CollisionLeft() > CollisionLeft())
 			{
+				if (object->IsCharacter())
+				{
+					Character* character = static_cast<Character*>(object);
+					if (character->IsStunned())
+					{
+						if (g_SteamAchievements)
+							g_SteamAchievements->SetAchievement("ACH_STUN_KILL");
+					}
+
+					Game::GetInstance()->Vibrate(0.6f, 1.0f, 0.3f);
+				}
+
 				object->OnDamage(this, mMeleeDamage, Vector2(0.0f, 0.0f), true);
 				object->TriggerMeleeCooldown();
 
-				if (object->IsCharacter())
-				{
-					Game::GetInstance()->Vibrate(0.6f, 1.0f, 0.3f);
-				}
+				
 			}
 		}
 		else if (m_direction.X < 0)
@@ -638,13 +649,20 @@ void Character::DoMeleeCollisions(SolidMovingSprite * object)
 			// right edge of the object must be less than the center of the character
 			if (object->CollisionRight() < CollisionRight())
 			{
-				object->OnDamage(this, mMeleeDamage, Vector2(0.0f, 0.0f), true);
-				object->TriggerMeleeCooldown();
-
 				if (object->IsCharacter())
 				{
+					Character* character = static_cast<Character*>(object);
+					if (character->IsStunned())
+					{
+						if (g_SteamAchievements)
+							g_SteamAchievements->SetAchievement("ACH_STUN_KILL");
+					}
+
 					Game::GetInstance()->Vibrate(0.6f, 1.0f, 0.3f);
 				}
+
+				object->OnDamage(this, mMeleeDamage, Vector2(0.0f, 0.0f), true);
+				object->TriggerMeleeCooldown();
 			}
 		}
 	}

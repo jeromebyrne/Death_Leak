@@ -31,13 +31,33 @@ Game * g_pGame = nullptr;
 // Defining our achievements
 enum EAchievements
 {
-	ACH_PULL_SWORD_ONCE = 0
+	ACH_PULL_SWORD_ONCE = 0,
+	ACH_ACCESS_DOJO = 1,
+	ACH_REPAIR_BOAT = 2,
+	ACH_STUN_KILL = 3,
+	ACH_HEALING_WATER = 4,
+	ACH_PLAY_KOTO = 5,
+	ACH_FIRE_DEATH = 6,
+	ACH_THREE_DEVILS = 7,
+	ACH_FOCUS_UNLOCK = 8,
+	ACH_STONE_SMASH = 9,
+	ACH_ROLL_UNLOCK = 10
 };
 
 // Achievement array which will hold data about the achievements and their state
 Achievement_t g_Achievements[] =
 {
-	_ACH_ID(ACH_PULL_SWORD_ONCE, "Sword in the Stomach")
+	_ACH_ID(ACH_PULL_SWORD_ONCE, "Sword in the Stomach"),
+	_ACH_ID(ACH_ACCESS_DOJO, "Stop Trying to Hit Me"),
+	_ACH_ID(ACH_REPAIR_BOAT, "I'm on a Boat"),
+	_ACH_ID(ACH_STUN_KILL, "Dazed and Confused"),
+	_ACH_ID(ACH_HEALING_WATER, "Holy Dip!"),
+	_ACH_ID(ACH_PLAY_KOTO, "Strummin' My Pain"),
+	_ACH_ID(ACH_FIRE_DEATH, "Yes, It Does Kill You"),
+	_ACH_ID(ACH_THREE_DEVILS, "He’s Buried in Killarney"),
+	_ACH_ID(ACH_FOCUS_UNLOCK, "And Hit Me!"),
+	_ACH_ID(ACH_STONE_SMASH, "Stoneybatter"),
+	_ACH_ID(ACH_ROLL_UNLOCK, "Now Move in, Now move out")
 };
 
 CSteamAchievements* g_SteamAchievements = nullptr;
@@ -76,7 +96,7 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 	bool steamInit = SteamAPI_Init();
 	if (steamInit)
 	{
-		g_SteamAchievements = new CSteamAchievements(g_Achievements, 1);
+		g_SteamAchievements = new CSteamAchievements(g_Achievements, 11);
 	}
 
 	MSG mssg;                // message from queue

@@ -8,6 +8,8 @@
 #include "SaveManager.h"
 #include "Game.h"
 
+extern CSteamAchievements* g_SteamAchievements;
+
 Smashable::Smashable(float x, float y, DepthLayer depthLayer, float width, float height) :
 	SolidMovingSprite(x,y, depthLayer, width, height),
 	mState(kNotSmashed)
@@ -81,6 +83,9 @@ bool Smashable::OnCollision(SolidMovingSprite * object)
 			Camera2D::GetInstance()->DoBigShake();
 
 			Game::GetInstance()->Vibrate(0.75f, 1.0f, 0.4f);
+
+			if (g_SteamAchievements)
+				g_SteamAchievements->SetAchievement("ACH_STONE_SMASH");
 		}
 	}
 

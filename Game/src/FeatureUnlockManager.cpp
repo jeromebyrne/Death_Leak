@@ -1,6 +1,9 @@
 #include "precompiled.h"
 #include "FeatureUnlockManager.h"
 #include "SaveManager.h"
+#include <Achievements\Achievement.h>
+
+extern CSteamAchievements* g_SteamAchievements;
 
 FeatureUnlockManager * FeatureUnlockManager::m_instance = nullptr;
 
@@ -52,6 +55,16 @@ void FeatureUnlockManager::SetFeatureUnlocked(const FeatureType type)
 		{
 			player->OnPurchaseSpeedUpgrade();
 		}
+	}
+	else if (type == kSlowMotion)
+	{
+		if (g_SteamAchievements)
+			g_SteamAchievements->SetAchievement("ACH_FOCUS_UNLOCK");
+	}
+	else if (type == kRoll)
+	{
+		if (g_SteamAchievements)
+			g_SteamAchievements->SetAchievement("ACH_ROLL_UNLOCK");
 	}
 
 	SaveManager::GetInstance()->SetGameFeatureUnlocked(type);

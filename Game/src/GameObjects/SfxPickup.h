@@ -24,6 +24,8 @@ private:
 	void PlayRandomSfx();
 
 	vector<string> mSfxList;
+
+	bool mDefinitelyHasAchievement = false;
 };
 
 #endif

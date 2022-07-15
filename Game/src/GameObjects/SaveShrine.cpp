@@ -8,6 +8,8 @@
 
 static const float kTimeBetweenSaves = 5.0f;
 
+extern CSteamAchievements* g_SteamAchievements;
+
 SaveShrine::SaveShrine(float x, float y, DepthLayer depthLayer, float width, float height) :
 	GameObject(x, y, depthLayer, width, height)
 {
@@ -59,6 +61,9 @@ void SaveShrine::Update(float delta)
 			{
 				player->SetHealth(player->GetMaxHealth());
 			}
+
+			if (g_SteamAchievements)
+				g_SteamAchievements->SetAchievement("ACH_HEALING_WATER");
 
 			//Note: I'm no longer allowing saving here
 			// The game now always saves permanent upgrades and is a roguelike similar to Returnal
