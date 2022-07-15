@@ -16,7 +16,7 @@ void SfxPickup::DoPickup()
 	if (!mDefinitelyHasAchievement)
 	{
 		if (g_SteamAchievements)
-			g_SteamAchievements->SetAchievement("ACH_HEALING_WATER");
+			g_SteamAchievements->SetAchievement("ACH_PLAY_KOTO");
 
 		mDefinitelyHasAchievement = true;
 	}
