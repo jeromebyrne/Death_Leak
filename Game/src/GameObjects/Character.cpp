@@ -696,6 +696,7 @@ void Character::DoMeleeCollisions(SolidMovingSprite * object)
 				{
 					objAsProj->SetOwnerType(Projectile::kPlayerProjectile);
 					objAsProj->SetDamage(9999); // a large amount to instantly kill 
+					objAsProj->SetWasDeflected(true);
 				}
 				else if (objAsProj->GetOwnerType() == Projectile::kPlayerProjectile)
 				{
@@ -1588,7 +1589,9 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 
 
 		Vector2 damageDealerDirection = Vector2(0.0f, 0.0f);
 
-		if (damageDealer && damageDealer->IsProjectile() && GameObjectManager::Instance()->GetPlayer() != this)
+		bool isProjectileDamageAndNotPlayer = (damageDealer && damageDealer->IsProjectile() && GameObjectManager::Instance()->GetPlayer() != this);
+
+		if (isProjectileDamageAndNotPlayer)
 		{
 			Projectile * asProjectile = static_cast<Projectile *>(damageDealer);
 
@@ -1625,6 +1628,17 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 
 		{
 			mHealth = 0;
 			// DEAD, do dead stuff
+
+			if (isProjectileDamageAndNotPlayer)
+			{
+				Projectile* asProjectile = static_cast<Projectile*>(damageDealer);
+
+				if (asProjectile->WasDeflected())
+				{
+					if (g_SteamAchievements)
+						g_SteamAchievements->SetAchievement("ACH_DEFLECT_KILL");
+				}
+			}
 
 			// explode
 			if (!mHasExploded)

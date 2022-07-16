@@ -82,6 +82,10 @@ public:
 
 	void SetShouldRotateToDirection(bool value) { mRotateToDirection = value; }
 
+	void SetWasDeflected(bool value) { mWasDeflected = value; }
+
+	bool WasDeflected() const { return mWasDeflected; }
+
 protected:
 
 	void HandleSolidLineStripCollision(SolidLineStrip * solidLineStrip);
@@ -124,6 +128,8 @@ protected:
 	bool mRotateToDirection = true;
 
 	float mTimeActive = 0.0f;
+
+	bool mWasDeflected = false;
 };
 
 #endif
