@@ -8,7 +8,7 @@ static const float kTitleTextDimensionsX = 1600.0f;
 static const float kTitleTextDimensionsY = 100.0f;
 
 static const float kDescriptionTextDimensionsX = 1600.0f;
-static const float kDescriptionTextDimensionsY = 500.0f;
+static const float kDescriptionTextDimensionsY = 1000.0f;
 static const float kDismissWarmup = 1.0f;
 
 static const D3DXCOLOR kTitleColor = D3DXCOLOR(0.6f, 0.6f, 0.6f, 1.0f);
@@ -94,7 +94,7 @@ void UITextModal::Initialise()
 	// create description font
 	{
 		D3DX10_FONT_DESC fd;
-		fd.Height = 95;
+		fd.Height = 75;
 		fd.Width = 0;
 		fd.Weight = 0;
 		fd.MipLevels = 1;
