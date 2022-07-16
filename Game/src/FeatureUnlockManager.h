@@ -15,7 +15,8 @@ public:
 		kDeflection,
 		kSpeedIncrease,
 		kProjectileDamageIncrease,
-		kProjectileSpeedIncrease
+		kProjectileSpeedIncrease,
+		kBombUnlock
 	};
 
 	FeatureUnlockManager(void);

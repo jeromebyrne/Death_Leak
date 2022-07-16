@@ -100,6 +100,10 @@ FeatureUnlockManager::FeatureType FeatureUnlockManager::GetFeatureTypeFromString
 	{
 		return kProjectileSpeedIncrease;
 	}
+	else if (asString == "kBombUnlock")
+	{
+		return kBombUnlock;
+	}
 	
 	GAME_ASSERT(false);
 	return kNone;
@@ -136,6 +140,10 @@ string FeatureUnlockManager::GetFeatureAsString(FeatureType featureType)
 		case kProjectileSpeedIncrease:
 		{
 			return "kProjectileSpeedIncrease";
+		}
+		case kBombUnlock:
+		{
+			return "kBombUnlock";
 		}
 	}
 
@@ -177,6 +185,10 @@ int FeatureUnlockManager::GetFeatureCost(const FeatureType featureType)
 		case kProjectileSpeedIncrease:
 		{
 			return 200;
+		}
+		case kBombUnlock:
+		{
+			return 1000;
 		}
 		default: return 0;
 	}

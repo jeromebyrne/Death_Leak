@@ -16,6 +16,10 @@ public:
 
 	void SetNumCurrencyOrbsCollected(int value);
 
+	int GetNumTimesGameCompleted() const;
+
+	void SetNumTimesGameCompleted(int value);
+
 	void SetCurrencyOrbsCollected(const std::string & levelFile, std::vector<unsigned int> orbGameIds);
 
 	void GetCurrencyOrbsCollected(const std::string & levelFile, std::vector<unsigned int> & orbGameIdsOut);

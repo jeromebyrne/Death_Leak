@@ -39,7 +39,8 @@ void DojoScrollPickup::Update(float delta)
 	}
 #endif
 
-	if (FeatureUnlockManager::GetInstance()->IsFeatureUnlocked(mUnlocksFeature))
+	if (FeatureUnlockManager::GetInstance()->IsFeatureUnlocked(mUnlocksFeature) ||
+		(mUnlocksFeature == FeatureUnlockManager::kBombUnlock && SaveManager::GetInstance()->GetNumTimesGameCompleted() < 1)) // bombs only unlock in new game +
 	{
 		if (sCurrentInteractable == ID())
 		{

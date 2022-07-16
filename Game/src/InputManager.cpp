@@ -584,7 +584,7 @@ void InputManager::ProcessGameplay_GamePad(Player * player)
 	ProcessPrimaryWeapon_gamepad(padState, currentActions, player);
 
 	// rmeoving bombs for now
-	// ProcessSecondaryWeapon_gamepad(padState, currentActions, player);
+	ProcessSecondaryWeapon_gamepad(padState, currentActions, player);
 
 	ProcessStrafing_gamepad(padState, currentActions, player, levelProps);
 

@@ -60,8 +60,9 @@ void SaveManager::WriteSaveFile()
 
 void SaveManager::WipeSaveFile()
 {
-	// Just make sure save the language that was set
+	// keep some stuff
 	string language = GetLanguageSet();
+	int numTimesComplete = GetNumTimesGameCompleted();
 
 	mSaveMapTemporaryData.clear();
 	mSaveMapPermanentData.clear();
@@ -70,6 +71,8 @@ void SaveManager::WipeSaveFile()
 	{
 		SetLanguage(language);
 	}
+
+	SetNumTimesGameCompleted(numTimesComplete);
 
 	WriteSaveFile();
 }
@@ -307,6 +310,16 @@ int SaveManager::GetNumCurrencyOrbsCollected() const
 void SaveManager::SetNumCurrencyOrbsCollected(int value)
 {
 	mSaveMapTemporaryData["currency_orbs_collected"] = value;
+}
+
+int SaveManager::GetNumTimesGameCompleted() const
+{
+	return GetIntValue(mSaveMapPermanentData, "num_times_game_completed");
+}
+
+void SaveManager::SetNumTimesGameCompleted(int value)
+{
+	mSaveMapPermanentData["num_times_game_completed"] = value;
 }
 
 void SaveManager::SetCurrencyOrbsCollected(const std::string & levelFile, std::vector<unsigned int> orbGameIds)

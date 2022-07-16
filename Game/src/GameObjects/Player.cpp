@@ -211,6 +211,11 @@ Projectile * Player::FireBomb(Vector2 direction)
 		return nullptr;
 	}
 
+	if (!FeatureUnlockManager::GetInstance()->IsFeatureUnlocked(FeatureUnlockManager::kBombUnlock))
+	{
+		return nullptr;
+	}
+
 	Vector2 pos = m_position;
 	pos.X = (direction.X > 0) ? pos.X + m_projectileOffset.X : pos.X -= m_projectileOffset.X;
 	pos.Y += m_projectileOffset.Y;
@@ -224,7 +229,7 @@ Projectile * Player::FireBomb(Vector2 direction)
 		pos.X -= m_projectileOffset.X;
 	}
 
-	float speed = mSprintActive ? 15 : 11;
+	float speed = mSprintActive ? 20 : 15;
 
 	Projectile * p = new BombProjectile(Projectile::kPlayerProjectile,
 										kBombTextureFile,
@@ -255,9 +260,14 @@ Projectile * Player::FireBomb(Vector2 direction)
 
 void Player::EndStory()
 {
+	int numTimesComplete = SaveManager::GetInstance()->GetNumTimesGameCompleted() + 1;
+	SaveManager::GetInstance()->SetNumTimesGameCompleted(numTimesComplete);
+
 	SaveManager::GetInstance()->WipeSaveFile();
 	UIManager::Instance()->PopUI("final_scene_hud");
 	UIManager::Instance()->EndStory();
+
+	
 }
 
 void Player::Update(float delta)
