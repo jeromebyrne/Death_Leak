@@ -102,6 +102,18 @@ bool BombProjectile::OnCollision(SolidMovingSprite* object)
 		return false;
 	}
 
+	if (object->IsProjectile())
+	{
+		Projectile* projectile = static_cast<Projectile*>(object);
+
+		auto t = projectile->GetProjectileType();
+		if (t == Projectile::kBladeProjectile)
+		{
+			// explode if hit by a blade
+			GameObjectManager::Instance()->RemoveGameObject(this);
+		}
+	}
+
 	if (object->IsFoliage())
 	{
 		return false;

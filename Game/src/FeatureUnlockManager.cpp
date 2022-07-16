@@ -188,6 +188,10 @@ int FeatureUnlockManager::GetFeatureCost(const FeatureType featureType)
 		}
 		case kBombUnlock:
 		{
+#if _DEBUG
+			// testing
+			return 2;
+#endif
 			return 1000;
 		}
 		default: return 0;

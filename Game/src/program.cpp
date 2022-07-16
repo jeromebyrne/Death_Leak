@@ -42,7 +42,8 @@ enum EAchievements
 	ACH_FOCUS_UNLOCK = 8,
 	ACH_STONE_SMASH = 9,
 	ACH_ROLL_UNLOCK = 10,
-	ACH_DEFLECT_KILL = 11
+	ACH_DEFLECT_KILL = 11,
+	ACH_BOMB_5_KILL = 12
 };
 
 // Achievement array which will hold data about the achievements and their state
@@ -59,7 +60,8 @@ Achievement_t g_Achievements[] =
 	_ACH_ID(ACH_FOCUS_UNLOCK, "And Hit Me!"),
 	_ACH_ID(ACH_STONE_SMASH, "Stoneybatter"),
 	_ACH_ID(ACH_ROLL_UNLOCK, "Now Move in, Now move out"),
-	_ACH_ID(ACH_DEFLECT_KILL, "The Art of Deflection")
+	_ACH_ID(ACH_DEFLECT_KILL, "The Art of Deflection"),
+	_ACH_ID(ACH_BOMB_5_KILL, "Fatal Frame(rate)")
 };
 
 CSteamAchievements* g_SteamAchievements = nullptr;
@@ -98,7 +100,7 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 	bool steamInit = SteamAPI_Init();
 	if (steamInit)
 	{
-		g_SteamAchievements = new CSteamAchievements(g_Achievements, 12);
+		g_SteamAchievements = new CSteamAchievements(g_Achievements, 13);
 	}
 
 	MSG mssg;                // message from queue

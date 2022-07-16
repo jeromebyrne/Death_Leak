@@ -836,6 +836,12 @@ void Projectile::DoRotateToDirection()
 
 bool Projectile::isDeflectable() const
 { 
+	if (mType == kBombProjectile)
+	{
+		// we always want collisions with bombs
+		return true;
+	}
+
 	if (!FeatureUnlockManager::GetInstance()->IsFeatureUnlocked(FeatureUnlockManager::kDeflection))
 	{
 		return false;

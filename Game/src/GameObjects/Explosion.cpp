@@ -9,6 +9,8 @@
 
 static const unsigned int kExplosionAliveTime = 2000;
 
+extern CSteamAchievements* g_SteamAchievements;
+
 Explosion::Explosion(float damage,float radius, float x, float y, GameObject::DepthLayer depthLayer, float width, float height, char* effectName) :
 	DrawableObject(x, y, depthLayer, width, height, effectName),
 	mDamage(damage),
@@ -27,6 +29,8 @@ void Explosion::ApplyDamage()
 	list<GameObject*> objects;
 	GameObjectManager::Instance()->GetSolidSpritesOnScreen(objects);
 
+	int numCharactersKilled = 0;
+
 	Player * player = GameObjectManager::Instance()->GetPlayer();
 	for (auto obj : objects)
 	{
@@ -42,6 +46,23 @@ void Explosion::ApplyDamage()
 		if (distSquared < (mRadius * mRadius))
 		{
 			obj->OnDamage(this, mDamage, Vector2());
+
+			if (obj->IsCharacter())
+			{
+				Character* character = static_cast<Character*>(obj);
+				if (character->GetHealth() <= 0)
+				{
+					numCharactersKilled++;
+				}
+			}
+		}
+	}
+
+	if (numCharactersKilled > 4)
+	{
+		if (g_SteamAchievements)
+		{
+			g_SteamAchievements->SetAchievement("ACH_BOMB_5_KILL");
 		}
 	}
 }
