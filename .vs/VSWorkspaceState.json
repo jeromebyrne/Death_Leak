@@ -3,9 +3,14 @@
     "",
     "\\Game",
     "\\Game\\XmlFiles",
-    "\\Game\\XmlFiles\\levels",
-    "\\Game\\XmlFiles\\UI"
+    "\\steamworks_sdk_150",
+    "\\steamworks_sdk_150\\sdk",
+    "\\steamworks_sdk_150\\sdk\\tools",
+    "\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder",
+    "\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder\\content",
+    "\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder\\content\\windows_content",
+    "\\steamworks_sdk_150\\sdk\\tools\\ContentBuilder\\content\\windows_content\\XmlFiles"
   ],
-  "SelectedNode": "\\Game\\XmlFiles\\UI\\game_hud.xml",
+  "SelectedNode": "\\Game\\XmlFiles\\levels\\grass_exploration_3.xml",
   "PreviewInSolutionExplorer": false
 }
