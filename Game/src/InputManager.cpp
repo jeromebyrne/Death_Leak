@@ -427,7 +427,7 @@ void InputManager::ProcessSecondaryWeapon_gamepad(XINPUT_STATE padState, Current
 		!player->JustFellFromShortDistance() &&
 		!player->GetIsCollidingAtObjectSide() &&
 		!player->IsDoingMelee() &&
-		padState.Gamepad.wButtons & XINPUT_GAMEPAD_Y)
+		padState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_THUMB)
 	{
 		mCurrentGamepadState.mPressingSecondaryWeapon = true;
 	}
