@@ -90,6 +90,8 @@ void Debris::Update(float delta)
 			if (mTimeUntilFadeOutFully <= 0.0f)
 			{
 				mTimeUntilFadeOutFully = 0.0f;
+				mAlwaysUpdate = false;
+				m_updateable = false;
 				GameObjectManager::Instance()->RemoveGameObject(this, true);
 			}
 			else if (mTimeUntilFadeOutFully <= 0.2f)

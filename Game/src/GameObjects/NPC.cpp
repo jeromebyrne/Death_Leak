@@ -528,15 +528,15 @@ void NPC::DoNinjaExplosion()
 	if (m_isAnimated && m_animationFile == "XmlFiles\\animation\\ninjaAnimation.xml")
 	{
 		SpawnLimb("Media\\characters\\enemy_1\\exploded\\ricehat.png", false, 1.3f);
-		SpawnLimb("Media\\characters\\enemy_1\\exploded\\head.png", true, 0.8f);
-		SpawnLimb("Media\\characters\\enemy_1\\exploded\\forearm_back.png", true, 0.95f);
-		SpawnLimb("Media\\characters\\enemy_1\\exploded\\forearm_back.png", true, 1.1f);
-		SpawnLimb("Media\\characters\\enemy_1\\exploded\\hand_front.png", true, 0.65f);
-		SpawnLimb("Media\\orb.png", true, 1.25f);
-		SpawnLimb("Media\\orb2.png", true, 1.20f);
-		SpawnLimb("Media\\orb2.png", true, 0.94f);
-		SpawnLimb("Media\\orb2.png", true, 0.79f);
-		SpawnLimb("Media\\orb3.png", true, 1.12f);
+		SpawnLimb("Media\\characters\\enemy_1\\exploded\\head.png", false, 0.8f);
+		SpawnLimb("Media\\characters\\enemy_1\\exploded\\forearm_back.png", false, 0.95f);
+		SpawnLimb("Media\\characters\\enemy_1\\exploded\\forearm_back.png", false, 1.1f);
+		SpawnLimb("Media\\characters\\enemy_1\\exploded\\hand_front.png", false, 0.65f);
+		SpawnLimb("Media\\orb.png", false, 1.25f);
+		SpawnLimb("Media\\orb2.png", false, 1.20f);
+		SpawnLimb("Media\\orb2.png", false, 0.94f);
+		SpawnLimb("Media\\orb2.png", false, 0.79f);
+		SpawnLimb("Media\\orb3.png", false, 1.12f);
 
 		ParticleEmitterManager::Instance()->CreateDirectedSpray(5,
 																m_position,

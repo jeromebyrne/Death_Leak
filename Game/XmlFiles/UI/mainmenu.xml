@@ -130,6 +130,7 @@
           alpha="1.0">
   </sprite>
 
+  <!--
   <button name="8_1_level_editor"
           process_input="true"
           posX ="0" posY ="-260" width="120" height ="120"
@@ -171,5 +172,7 @@
       <playsoundeffect sound="UI\\click.wav"/>
     </actionspressdown>
   </button>
+  -->
+  
 
 </uiscreen>

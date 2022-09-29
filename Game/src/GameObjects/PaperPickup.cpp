@@ -61,13 +61,13 @@ void PaperPickup::Update(float delta)
 
 	if (!mHasInitCheckedCollected)
 	{
+		mHasInitCheckedCollected = true;
+
 		if (!mLocDescId.empty() && SaveManager::GetInstance()->IsPaperPickupCollected(mLocDescId))
 		{
 			GameObjectManager::Instance()->RemoveGameObject(this, true);
 			return;
 		}
-
-		mHasInitCheckedCollected = true;
 	}
 
 	Pickup::Update(delta);

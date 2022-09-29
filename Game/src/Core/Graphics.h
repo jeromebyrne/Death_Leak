@@ -97,7 +97,7 @@ private:
 
 	 DXGI_SWAP_CHAIN_DESC m_swapChainDescription; // swap chain properties
 	 void SetSwapChainProperties(HWND hWnd,int bufferWidth, int bufferHeight);
-	 HRESULT CreateRenderTargetViews(int bufferWidth, int bufferHeight);
+	 HRESULT CreateRenderTargetViews();
 	 HRESULT CreateDepthStencilBuffer(int bufferWidth, int bufferHeight);
 
 	 void CreateAlphaEnabledBlendState();

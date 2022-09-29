@@ -29,7 +29,7 @@ void ActiveBird::OnDamage(GameObject * damageDealer, float damageAmount, Vector2
 	ParticleSpray * spray = ParticleEmitterManager::Instance()->CreateRadialBloodSpray(5, m_position, true, 2.0f);
 	if (spray)
 	{
-		spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(deadBird->ID()), Vector2(0, 0), GetDepthLayer());
+		//spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(deadBird->ID()), Vector2(0, 0), GetDepthLayer());
 	}
 
 	ParticleEmitterManager::Instance()->CreateRadialSpray(10,

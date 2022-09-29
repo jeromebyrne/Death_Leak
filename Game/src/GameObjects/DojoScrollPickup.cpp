@@ -49,6 +49,7 @@ void DojoScrollPickup::Update(float delta)
 		}
 
 		GameObjectManager::Instance()->RemoveGameObject(this, true);
+		m_updateable = false; // this stops us hitting this code again
 		return;
 	}
 }

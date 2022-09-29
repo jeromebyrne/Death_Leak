@@ -53,6 +53,8 @@ ParticleSpray::ParticleSpray(bool isBloodSpray,
 
 ParticleSpray::~ParticleSpray(void)
 {
+	Detach();
+
 	m_particleList.clear();
 
 	if(m_vertexBuffer)
@@ -457,6 +459,11 @@ void ParticleSpray::LoadContent(ID3D10Device* device)
 
 void ParticleSpray::AttachTo(std::shared_ptr<GameObject> & parent, Vector2 offset, DepthLayer depthLayer, bool trackParentsOrientation)
 {
+	if (parent->IsDebris())
+	{
+		return;
+	}
+
 	DrawableObject::AttachTo(parent, offset, depthLayer, trackParentsOrientation);
 
 	Sprite * sprite = dynamic_cast<Sprite *>(parent.get());

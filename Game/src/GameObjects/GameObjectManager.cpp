@@ -89,14 +89,32 @@ void GameObjectManager::RemoveGameObject(GameObject * object, bool defer)
 
 #if _DEBUG
 	Game::GetInstance()->ResetLevelEditorSelectedObject();
+
+	if (object->IsDebris())
+	{
+		bool debug = true;
+	}
 #endif
 	
 	if (defer)
 	{
+		for (auto obj : m_killList)
+		{
+			if (obj->ID() == object->ID())
+			{
+				// already on the kill list 
+				LOG_ERROR("Attempting to remove GameObject with ID: %u when already scheduled for removal", object->ID());
+				GAME_ASSERT(false);
+				return;
+			}
+		}
+
 		m_killList.push_back(object);
 	}
 	else
 	{
+		object->Detach(); // always detach from anything first
+
 		auto iter = m_gameObjects.begin();
 		for (auto & obj : m_gameObjects)
 		{
@@ -116,7 +134,7 @@ void GameObjectManager::RemoveGameObject(GameObject * object, bool defer)
 			if (refCount > 1)
 			{
 				LOG_ERROR("POSSIBLE MEMORY LEAK!!! GameObject with ID: %u is being removed but still has a ref count greater than 1.", (*iter)->ID());
-				// GAME_ASSERT(false);
+				GAME_ASSERT(false);
 			}
 #endif
 			m_gameObjects.remove(*iter);
@@ -233,6 +251,7 @@ void GameObjectManager::Update(bool paused, float delta)
 					// if a projectile has gone outside the bounds then just remove it
 					RemoveGameObject(obj.get());
 				}
+
 			}
 		}
 	} // end of if paused

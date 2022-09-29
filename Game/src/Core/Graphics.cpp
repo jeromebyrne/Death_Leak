@@ -25,7 +25,7 @@ Graphics::Graphics(void):
 	m_alphaToCoverageEnabled(false)
 {
 #ifndef _DEBUG
-	mIsFullScreen = true;
+	// mIsFullScreen = true;
 #endif
 
 	GAME_ASSERT(!mInstance);
@@ -195,7 +195,7 @@ HRESULT Graphics::SetupDevice(HWND hWnd, int bufferWidth, int bufferHeight)
 	}
 
 	// Create a render target view
-    CreateRenderTargetViews(m_backBufferWidth, m_backBufferHeight);
+    CreateRenderTargetViews();
 
 	// create stencil buffer view, use the native buffer width and height
 	CreateDepthStencilBuffer(m_backBufferWidth, m_backBufferHeight);
@@ -257,8 +257,8 @@ void Graphics::SetSwapChainProperties(HWND hWnd, int bufferWidth, int bufferHeig
     ZeroMemory( &m_swapChainDescription, sizeof(m_swapChainDescription) );
 
     m_swapChainDescription.BufferCount = 1;
-    m_swapChainDescription.BufferDesc.Width = bufferWidth;
-    m_swapChainDescription.BufferDesc.Height = bufferHeight;
+	m_swapChainDescription.BufferDesc.Width = bufferWidth;
+	m_swapChainDescription.BufferDesc.Height = bufferHeight;
     m_swapChainDescription.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	m_swapChainDescription.BufferDesc.RefreshRate.Numerator = 0;
     m_swapChainDescription.BufferDesc.RefreshRate.Denominator = 1;
@@ -273,7 +273,7 @@ void Graphics::SetSwapChainProperties(HWND hWnd, int bufferWidth, int bufferHeig
 	m_swapChainDescription.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 }
 
-HRESULT Graphics::CreateRenderTargetViews(int bufferWidth, int bufferHeight)
+HRESULT Graphics::CreateRenderTargetViews()
 {
 	HRESULT hr = S_OK;
 

@@ -37,8 +37,16 @@ void UIMainMenuScreen::Initialise()
 	UIScreen::Initialise();
 
 	m_GamePadWarningWidget = m_widgetMap["8_gamepad_warning"];
-	m_LevelEditorButton = m_widgetMap["8_1_level_editor"];
-	m_LevelSelectButton = m_widgetMap["9_quick_play"];
+
+	if (m_widgetMap.find("8_1_level_editor") != m_widgetMap.end())
+	{
+		m_LevelEditorButton = m_widgetMap["8_1_level_editor"];
+	}
+
+	if (m_widgetMap.find("9_quick_play") != m_widgetMap.end())
+	{
+		m_LevelSelectButton = m_widgetMap["9_quick_play"];
+	}
 
 	UpdateDebugWidgets();
 }
@@ -49,8 +57,10 @@ void UIMainMenuScreen::UpdateDebugWidgets()
 	{
 #ifdef _DEBUG
 		m_LevelEditorButton->SetVisible(true);
+		m_LevelEditorButton->SetIsProcessInput(true);
 #else
 		m_LevelEditorButton->SetVisible(false);
+		m_LevelEditorButton->SetIsProcessInput(false);
 #endif
 	}
 

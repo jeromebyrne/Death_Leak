@@ -632,6 +632,13 @@ void GameObject::AttachTo(std::shared_ptr<GameObject> & parent, Vector2 offset, 
 
 void GameObject::Detach()
 {
+#ifdef _DEBUG
+	if (mAttachedTo != nullptr && mAttachedTo->IsDebris())
+	{
+		bool debug = true;
+	}
+#endif
+
 	mAttachedTo.reset();
 	mAttachedToOffset = Vector2(0.0f, 0.0f);
 

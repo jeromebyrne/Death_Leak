@@ -355,7 +355,7 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 																										1.4f);
 					if (spray)
 					{
-						spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(object->ID()), Vector2(-offset.X, -offset.Y), GetDepthLayer());
+						// spray->AttachTo(GameObjectManager::Instance()->GetObjectByID(object->ID()), Vector2(-offset.X, -offset.Y), GetDepthLayer());
 					}
 				}
 				else
