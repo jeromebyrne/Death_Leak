@@ -1,6 +1,7 @@
 #include "precompiled.h"
 #include "Graphics.h"
 #include "simplefontmanager.h"
+#include "ISteamUtils.h"
 
 Graphics * Graphics::mInstance = nullptr;
 
@@ -24,9 +25,16 @@ Graphics::Graphics(void):
 	m_defaultRasterState(nullptr),
 	m_alphaToCoverageEnabled(false)
 {
-#ifndef _DEBUG
-	// mIsFullScreen = true;
+#ifdef _RELEASE
+	mIsFullScreen = true;
 #endif
+
+	bool isSteamDeck = SteamUtils() != nullptr ? SteamUtils()->IsSteamRunningOnSteamDeck() : false;
+
+	if (isSteamDeck)
+	{
+		mIsFullScreen = false;
+	}
 
 	GAME_ASSERT(!mInstance);
 	mInstance = this;

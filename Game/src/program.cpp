@@ -87,9 +87,6 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 {
 	Timing::Create();
 
-	if( FAILED(  Initialise(hInstance, nCmdShow) ))
-        return 0;
-
 	// TODO: maybe this needs to be called after init?
 	if (SteamAPI_RestartAppIfNecessary(kSteamAppId));
 	{
@@ -102,6 +99,17 @@ int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdL
 	{
 		g_SteamAchievements = new CSteamAchievements(g_Achievements, 13);
 	}
+
+	bool isSteamDeck = SteamUtils() != nullptr ? SteamUtils()->IsSteamRunningOnSteamDeck() : false;
+
+	if (isSteamDeck)
+	{
+		gWindowWidth = 1280;
+		gWindowHeight = 720; // in conjunction with fullscreen off, this will mean the game is not stretched vertically
+	}
+
+	if( FAILED(  Initialise(hInstance, nCmdShow) ))
+        return 0;
 
 	MSG mssg;                // message from queue
 	double  target_delta = 1.0/60.0; 
