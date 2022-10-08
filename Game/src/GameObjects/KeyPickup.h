@@ -24,8 +24,6 @@ protected:
 	string mKeyId;
 	string mKeyNameLocId;
 	string mKeyDescLocId;
-
-	bool mHasInitCheckedCollected = false;
 };
 
 #endif

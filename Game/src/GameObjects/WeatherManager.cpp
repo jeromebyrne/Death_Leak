@@ -641,8 +641,8 @@ void WeatherManager::FadeWeatherIfApplicable(float delta)
 
 void WeatherManager::StopAllWeather()
 {
-	StopRaining();
-	StopSnowing();
+	// StopRaining();
+	// StopSnowing();
 
 	mStateKillList.clear();
 	mCurrentStates.clear();

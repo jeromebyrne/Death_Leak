@@ -10,6 +10,11 @@ static const string kKeyPickupSFX = "key_pickup.wav";
 
 void KeyPickup::DoPickup()
 {
+	if (!m_updateable)
+	{
+		return;
+	}
+
 	Player * p = GameObjectManager::Instance()->GetPlayer();
 
 	if (p == nullptr)
@@ -30,6 +35,8 @@ void KeyPickup::DoPickup()
 	
 	Game::GetInstance()->DisplayTextModal(strMan->GetLocalisedString(mKeyNameLocId.c_str()), 
 											strMan->GetLocalisedString(mKeyDescLocId.c_str()));
+
+	m_updateable = false;
 }
 
 void KeyPickup::DoPickupEffects(Player * player)
@@ -70,15 +77,11 @@ void KeyPickup::Update(float delta)
 	}
 #endif
 
-	if (!mHasInitCheckedCollected)
+	if (SaveManager::GetInstance()->HasDoorKey(mKeyId))
 	{
-		if (SaveManager::GetInstance()->HasDoorKey(mKeyId))
-		{
-			GameObjectManager::Instance()->RemoveGameObject(this, true);
-			return;
-		}
-
-		mHasInitCheckedCollected = true;
+		GameObjectManager::Instance()->RemoveGameObject(this, true);
+		m_updateable = false;
+		return;
 	}
 
 	Pickup::Update(delta);
