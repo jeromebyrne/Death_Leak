@@ -378,7 +378,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B09D5975-BA6E-4BFD-A9DF-35827CC583C4}</ProjectGuid>
     <RootNamespace>Game</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
     <ProjectName>DeathLeakGame</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
