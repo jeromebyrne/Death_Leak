@@ -260,7 +260,7 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 
 HRESULT Initialise(HINSTANCE hInstance, int nCmdShow)
 {
-	g_pWindow = new DXWindow("Death Leak", "Death Leak", gWindowWidth, gWindowHeight);
+	g_pWindow = new DXWindow(gWindowWidth, gWindowHeight);
 	g_pGraphics = new Graphics();
 	Game::Create();
 	g_pGame = Game::GetInstance();

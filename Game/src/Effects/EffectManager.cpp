@@ -31,7 +31,7 @@ EffectManager::~EffectManager(void)
 	// release all of our texture resources
 	for(auto current : m_effectMap)
 	{
-		if(current.second)
+		if(current.second != nullptr)
 		{
 			delete current.second;
 			current.second = nullptr;

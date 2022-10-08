@@ -7,7 +7,7 @@
 #include <memory>
 #include <limits>
 #include <Mmsystem.h>
-#include <typeinfo.h>
+#include <typeinfo>
 #include "resource.h"
 #include "dxut.h"
 #include <string>

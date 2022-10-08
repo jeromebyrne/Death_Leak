@@ -7,22 +7,22 @@ class EffectAbstract
 {
 protected:
 	// our dx effect variable
-	ID3D10Effect* m_pEffect;
+	ID3D10Effect* m_pEffect = nullptr;
 
 	// every effect should have a world view projection dx variable
-	ID3D10EffectMatrixVariable* m_pWorldVariable;
-    ID3D10EffectMatrixVariable* m_pViewVariable;
-    ID3D10EffectMatrixVariable* m_pProjectionVariable;
+	ID3D10EffectMatrixVariable* m_pWorldVariable = nullptr;
+    ID3D10EffectMatrixVariable* m_pViewVariable = nullptr;
+    ID3D10EffectMatrixVariable* m_pProjectionVariable = nullptr;
 
 public:
 
 	// the input layout
-	ID3D10InputLayout * InputLayout;
+	ID3D10InputLayout * InputLayout = nullptr;
 
 	// the current effect technique
-	ID3D10EffectTechnique * CurrentTechnique;
+	ID3D10EffectTechnique * CurrentTechnique = nullptr;
 
-	wchar_t* FileName;
+	wchar_t* FileName = nullptr;
 
 	void SetWorldViewProjection(float * pWorldData, float * pViewData, float * pProjData)
 	{
@@ -53,7 +53,7 @@ public:
 		FileName = L"ShaderFiles\\Basic.fx";
 	}
 
-	~EffectAbstract(void)
+	virtual ~EffectAbstract(void)
 	{
 		if( m_pEffect )
 		{

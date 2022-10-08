@@ -1000,7 +1000,11 @@ void Player::UpdateIsPullingSwordFromStomach(float delta)
 		if (mBreathingIntroSFX == nullptr)
 		{
 			mBreathingIntroSFX = AudioManager::Instance()->PlaySoundEffect("character\\breathing_intro.wav", true, true, true);
-			mBreathingIntroSFX->setVolume(kInitialSwordPullBreathingVolume);
+
+			if (mBreathingIntroSFX)
+			{
+				mBreathingIntroSFX->setVolume(kInitialSwordPullBreathingVolume);
+			}
 		}
 
 		// Phase 1

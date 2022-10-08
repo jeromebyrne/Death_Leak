@@ -3,9 +3,7 @@
 
 DXWindow * DXWindow::mInstance = 0;
 
-DXWindow::DXWindow(char * winClassName, char * windowTitle, int width, int height) : 
-	m_winClassName(winClassName),
-	m_windowTitle(windowTitle),
+DXWindow::DXWindow(int width, int height) : 
 	m_width(width),
 	m_height(height),
 	m_topLeftX(0),
@@ -36,7 +34,7 @@ HRESULT DXWindow::Initialise(HINSTANCE hInstance, int nCmdShow, WNDPROC wndproc)
     wcex.hCursor = LoadCursor( NULL, IDC_ARROW );
     wcex.hbrBackground = ( HBRUSH )( COLOR_WINDOW + 1 );
     wcex.lpszMenuName = NULL;
-	wcex.lpszClassName = (LPCWSTR)m_winClassName;
+	wcex.lpszClassName = L"Death Leak";
     wcex.hIconSm = NULL;
     if( !RegisterClassEx( &wcex ) )
         return E_FAIL;
@@ -52,8 +50,8 @@ HRESULT DXWindow::Initialise(HINSTANCE hInstance, int nCmdShow, WNDPROC wndproc)
 
 
 	m_hWnd = CreateWindow(
-							(LPCWSTR)m_winClassName, 
-							Utilities::ConvertCharStringToWcharString(m_windowTitle),
+							L"Death Leak",
+							L"Death Leak",
 							dwStyle,
 							CW_USEDEFAULT, 
 							CW_USEDEFAULT, 

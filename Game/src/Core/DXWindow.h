@@ -8,7 +8,7 @@ class DXWindow
 {
 public:
 
-	DXWindow(char * winClassName, char * windowTitle, int windowWidth = 640, int windowHeight = 480);
+	DXWindow( int windowWidth = 640, int windowHeight = 480);
 	~DXWindow(void);
 	
 	HRESULT Initialise(HINSTANCE hInstance, int nCmdShow, WNDPROC wndproc);
@@ -43,8 +43,6 @@ private:
 	ID3D10Device*           m_pGraphicsDevice; // pointer to the graphics device
 	IDXGISwapChain*         m_pGraphicsSwapChain; // pointer to the object for switching front and back buffers
 
-	char * m_winClassName;
-	char * m_windowTitle;
 	int m_width;
 	int m_height;
 	int m_topLeftX;
