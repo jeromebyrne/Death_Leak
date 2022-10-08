@@ -516,7 +516,7 @@ bool SolidLineStrip::GetBombProjectileCollisionData(Projectile * projectile, Vec
 }
 Vector2 SolidLineStrip::GetRightMostPoint() const
 {
-	unsigned int linesSize = mLines.size();
+	unsigned int linesSize = (unsigned int)mLines.size();
 	GAME_ASSERT(linesSize > 0);
 
 	if (linesSize == 0)
@@ -530,7 +530,7 @@ Vector2 SolidLineStrip::GetRightMostPoint() const
 
 Vector2 SolidLineStrip::GetLeftMostPoint() const
 {
-	unsigned int linesSize = mLines.size();
+	unsigned int linesSize = (unsigned int)mLines.size();
 	GAME_ASSERT(linesSize > 0);
 
 	if (linesSize == 0)
@@ -542,7 +542,7 @@ Vector2 SolidLineStrip::GetLeftMostPoint() const
 	return solidLine.StartPoint.WorldPosition; 
 }
 
-Vector2 & const SolidLineStrip::GetNormalForLineIndex(unsigned int lineIndex)
+const Vector2 & SolidLineStrip::GetNormalForLineIndex(unsigned int lineIndex)
 {
 	return mLines[lineIndex].Normal;
 }

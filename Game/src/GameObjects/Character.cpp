@@ -1044,7 +1044,7 @@ void Character::UpdateAnimations()
 
 					if (Timing::Instance()->GetTimeModifier() < 1.0f)
 					{
-						animFramerate * mDeltaTimeMultiplierInSloMo;
+						animFramerate *= mDeltaTimeMultiplierInSloMo;
 					}
 
 					bodyPart->CurrentSequence()->SetFrameRate(animFramerate);
@@ -1434,7 +1434,7 @@ void Character::WallJump(int directionX, float percent)
 		percent = 1.0f;
 	}
 
-	SetDirectionX(directionX);
+	SetDirectionX((float)directionX);
 
 	if (directionX > 0.0f)
 	{
@@ -1452,7 +1452,7 @@ void Character::WallJump(int directionX, float percent)
 
 	SetIsWallJumping(true);
 
-	mCurrentWallJumpXDirection = directionX;
+	mCurrentWallJumpXDirection = (float)directionX;
 
 	AudioManager::Instance()->PlaySoundEffect("jump.wav");
 }
@@ -1672,7 +1672,7 @@ void Character::OnDamage(GameObject * damageDealer, float damageAmount, Vector2 
 																				loop,
 																				0.75f,
 																				1.0f,
-																				loopTime,
+																				(float)loopTime,
 																				true,
 																				8.0f,
 																				5.0f,

@@ -27,7 +27,7 @@ Camera2D::Camera2D(int screenWidth, int screenHeight, float x, float y, float z)
 	D3DXMatrixTranslation(&m_view, -m_position.X, -m_position.Y, m_position.Z);
 
 	// create orthographic projection
-	D3DXMatrixOrthoLH(&m_projection, screenWidth, screenHeight, 0.0f, (std::numeric_limits<float>::max)());
+	D3DXMatrixOrthoLH(&m_projection, (float)screenWidth, (float)screenHeight, 0.0f, (std::numeric_limits<float>::max)());
 
 	mInstance = this;
 }

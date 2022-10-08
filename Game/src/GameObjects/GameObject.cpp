@@ -7,7 +7,7 @@
 #include "SolidLineStrip.h"
 #include "UIManager.h"
 
-const float kMaxRadians = 6.28318531; // 360 degrees
+const float kMaxRadians = 6.28318531f; // 360 degrees
 
 unsigned int GameObject::sGameObjectId = 1;
 int GameObject::sCurrentInteractable = -1;
@@ -118,7 +118,7 @@ void GameObject::Initialise()
 	mLargestPossibleDimensions = Vector2(maxWidth, maxWidth);
 
 	// sine wave
-	float initialStep = mSineWaveProps.RandomiseInitialStep ? (rand() % 999999) : 0;
+	float initialStep = mSineWaveProps.RandomiseInitialStep ? (float)(rand() % 999999) : 0.0f;
 	mSinWave.Initialise(initialStep, 
 						mSineWaveProps.OffsetY, 
 						mSineWaveProps.Amplitude,
@@ -162,7 +162,7 @@ void GameObject::Update(float delta)
 	// reset the world matrix and recalculate transformations
 	D3DXMatrixIdentity( &m_world ); 
 
-	float targetDelta = Timing::Instance()->GetTargetDelta();
+	float targetDelta = (float)Timing::Instance()->GetTargetDelta();
 	float percentDelta = delta / targetDelta;
 
 	if (mAutoRotationValue != 0.0f)

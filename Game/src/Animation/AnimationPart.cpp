@@ -105,7 +105,7 @@ int AnimationPart::FrameCount()
 	// if the sequence is null then return 0
 	if(m_currentSequence != 0)
 	{
-		return m_currentSequence->Frames()->size();
+		return (int)m_currentSequence->Frames()->size();
 	}
 	else
 	{
@@ -121,7 +121,7 @@ int AnimationPart::FrameNumber()
 		return 0;
 	}
 	
-	int numFrames = m_currentSequence->Frames()->size();
+	int numFrames = (int)m_currentSequence->Frames()->size();
 
 	// if there are no frames then return 0
 	if(numFrames <= 0)
@@ -170,11 +170,11 @@ void AnimationPart::AnimateLooped(float frameRate)
 {
 	if(m_currentSequence != nullptr  && frameRate > 0)
 	{
-		int numFrames = m_currentSequence->Frames()->size();
+		int numFrames = (int)m_currentSequence->Frames()->size();
 		if(numFrames > 0)
 		{
 			// increment the frame time elapsed
-			m_frameTimeElapsed += Timing::Instance()->GetLastUpdateDelta();
+			m_frameTimeElapsed += (float)Timing::Instance()->GetLastUpdateDelta();
 
 			// get the amount of time each frame takes
 			float timePerFrame = 1 / frameRate;
@@ -202,14 +202,14 @@ void AnimationPart::Animate(float frameRate)
 {
 	if(m_currentSequence != nullptr && frameRate > 0)
 	{
-		int numFrames = m_currentSequence->Frames()->size();
+		int numFrames = (int)m_currentSequence->Frames()->size();
 		if(numFrames > 0)
 		{
 			// if not finished then move the animation on
 			if(!IsFinished())
 			{
 				// increment the frame time elapsed
-				m_frameTimeElapsed += Timing::Instance()->GetLastUpdateDelta();
+				m_frameTimeElapsed += (float)Timing::Instance()->GetLastUpdateDelta();
 
 				// get the amount of time a frame takes
 				float timePerFrame = 1 / frameRate;

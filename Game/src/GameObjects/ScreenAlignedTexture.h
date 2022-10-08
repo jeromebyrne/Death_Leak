@@ -20,8 +20,8 @@ public:
 
 	void SetDimensions(int width, int height)
 	{
-		m_dimensions.X = width;
-		m_dimensions.Y = height;
+		m_dimensions.X = (float)width;
+		m_dimensions.Y = (float)height;
 
 		if (VertexBuffer) // only do this if the vertex buffer has already been initialised
 		{

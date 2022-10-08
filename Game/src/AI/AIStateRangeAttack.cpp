@@ -38,7 +38,7 @@ void AIStateRangeAttack::OnTransition()
 	m_npc->SetMaxVelocityXY(randMaxXVelocity, 99999.0f);
 	*/
 
-	mRandOffset = rand() % 180;
+	mRandOffset = (float)(rand() % 180);
 
 	mTimeUntilRandomlyJumpOrRoll = kJumpOrRollRandomDelayMin + (rand() % (int)((kJumpOrRollRandomDelayMax - kJumpOrRollRandomDelayMin) * 100.0f)) * 0.01f;
 }

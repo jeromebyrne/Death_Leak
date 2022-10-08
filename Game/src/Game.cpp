@@ -206,7 +206,7 @@ void Game::Update(float delta)
 			// do collision detection
 			if (!damageEffectPauseActive)
 			{
-				CollisionManager::Instance()->DetectAndResolve(m_pCam2d->X(), m_pCam2d->Y());
+				CollisionManager::Instance()->DetectAndResolve((int)m_pCam2d->X(), (int)m_pCam2d->Y());
 			}
 			
 			mGOMInstance->PostUpdate(mPaused, delta);
@@ -381,7 +381,7 @@ void Game::Draw()
 
 	if (!inReverse)
 	{
-		pixelWobbleShaderTime += Timing::Instance()->GetLastUpdateDelta();
+		pixelWobbleShaderTime += (float)Timing::Instance()->GetLastUpdateDelta();
 		if (pixelWobbleShaderTime > kPixelWobbleReverseDelay)
 		{
 			m_effectPixelWobble->ReverseMotion();
@@ -390,7 +390,7 @@ void Game::Draw()
 	}
 	else
 	{
-		pixelWobbleShaderTime -= Timing::Instance()->GetLastUpdateDelta();
+		pixelWobbleShaderTime -= (float)Timing::Instance()->GetLastUpdateDelta();
 		if (pixelWobbleShaderTime < kPixelWobbleReverseDelay * 0.5f)
 		{
 			m_effectPixelWobble->ReverseMotion();

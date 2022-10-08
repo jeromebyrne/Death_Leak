@@ -7,7 +7,7 @@ const float kXPosFollowRangeMin = 150.0f;
 const float kXPosFollowRangeMax = 400.0f;
 const float kHeightReadjustmentDelay = 2.0f;
 const float kMinHeight = 250.0f;
-const int kHeightRandVariationMax = 150.0f;
+const int kHeightRandVariationMax = 150;
 const float MaxHeightBelowCameraTop = 170.0f;
 
 AIStateFlying::AIStateFlying(NPC * npc) :
@@ -28,7 +28,7 @@ void AIStateFlying::OnTransition()
 	{
 		mCurrentHeightTarget = m_npc->m_player->Y() + (kMinHeight + (rand() % kHeightRandVariationMax));
 
-		mRandXTargetOffset = kXPosFollowRangeMin + rand() % (int)(kXPosFollowRangeMax - kXPosFollowRangeMin);
+		mRandXTargetOffset = (int)(kXPosFollowRangeMin + rand() % (int)(kXPosFollowRangeMax - kXPosFollowRangeMin));
 	}
 }
 

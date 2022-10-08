@@ -124,7 +124,7 @@ void Animation::JumpToNextFrame(const string & bodyPart)
 		return;
 	}
 
-	int numFrames = sequence->Frames()->size();
+	int numFrames = (int)sequence->Frames()->size();
 
 	int nextFrame = part->FrameNumber() + 1;
 
@@ -150,7 +150,7 @@ void Animation::JumpToPreviousFrame(const string & bodyPart)
 		return;
 	}
 
-	int numFrames = sequence->Frames()->size();
+	int numFrames = (int)sequence->Frames()->size();
 
 	int nextFrame = part->FrameNumber() - 1;
 
@@ -241,14 +241,16 @@ const string & Animation::CurrentSequenceName(const string & bodyPart)
 	AnimationPart * part = GetPart(bodyPart);
 	if (part == nullptr)
 	{
-		return "Invalid body part";
+		// TODO: not good
+		return nullptr;
 	}
 
 	auto sequence = part->CurrentSequence();
 
 	if (!sequence)
 	{
-		return "Sequence not set";
+		// TODO: not good
+		return nullptr;
 	}
 
 	return sequence->Name();

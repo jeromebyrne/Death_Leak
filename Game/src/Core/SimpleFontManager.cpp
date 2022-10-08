@@ -42,7 +42,7 @@ void SimpleFontManager::Release()
 
 void SimpleFontManager::DrawDebugText(const char * text, float top, float left)
 {
-	RECT rectangle = {top, left, 0, 0};
+	RECT rectangle = {(LONG)top, (LONG)left, 0l, 0l};
 
 	if (strcmp(text, "")==0)
 	{

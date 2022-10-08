@@ -29,7 +29,7 @@ void AIStateGroundAnimalWander::OnTransition()
 	// do stuff
 	mCurrentInternalState = kMoving;
 	PickRandomXDirection();
-	mCurrentMovingTime = (rand() % (int)((kMoveDelayMax - kMoveDelayMin) * 100)) * 0.01 + kMoveDelayMin;
+	mCurrentMovingTime = (rand() % (int)((kMoveDelayMax - kMoveDelayMin) * 100)) * 0.01f + kMoveDelayMin;
 	mOriginalMaxVelocityX = m_npc->GetMaxVelocity().X;
 }
 
@@ -101,7 +101,7 @@ void AIStateGroundAnimalWander::UpdateMoving(float delta)
 	{
 		mCurrentInternalState = kResting;
 		mCurrentMovingTime = 0.0f;
-		mCurrentRestTime = (rand() % (int)((kRestDelayMax - kRestDelayMin) * 100)) * 0.01 + kRestDelayMin;
+		mCurrentRestTime = (rand() % (int)((kRestDelayMax - kRestDelayMin) * 100)) * 0.01f + kRestDelayMin;
 	}
 }
 
@@ -124,13 +124,13 @@ void AIStateGroundAnimalWander::UpdateResting(float delta)
 		mCurrentInternalState = kMoving;
 		PickRandomXDirection();
 		mCurrentRestTime = 0.0f;
-		mCurrentMovingTime = (rand() % (int)((kMoveDelayMax - kMoveDelayMin) * 100)) * 0.01 + kMoveDelayMin;
+		mCurrentMovingTime = (rand() % (int)((kMoveDelayMax - kMoveDelayMin) * 100)) * 0.01f + kMoveDelayMin;
 	}
 }
 
 void AIStateGroundAnimalWander::PickRandomXDirection()
 {
-	float dirX = rand() % 2;
+	float dirX = (float)(rand() % 2);
 
 	if (dirX == 0)
 	{

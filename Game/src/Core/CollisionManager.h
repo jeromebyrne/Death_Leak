@@ -21,8 +21,8 @@ public:
 
 	void SetCollisionArea(int width, int height) 
 	{
-		m_detectAreaDimensions.X = width;
-		m_detectAreaDimensions.Y = height;
+		m_detectAreaDimensions.X = (float)width;
+		m_detectAreaDimensions.Y = (float)height;
 	}
 
 private:

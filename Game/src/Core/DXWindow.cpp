@@ -79,7 +79,7 @@ Vector2 DXWindow::GetWindowDimensions()
 	RECT dimensions;
 	GetClientRect(m_hWnd, &dimensions);
 
-	Vector2 retVal = Vector2(dimensions.right, dimensions.bottom);
+	Vector2 retVal = Vector2((float)dimensions.right, (float)dimensions.bottom);
 
 	return retVal;
 }

@@ -64,7 +64,7 @@ public:
 
 	void SetHardLeftEdgeOffsetX(float value) { mHardLeftEdgeOffsetX = value; }
 
-	Vector2 & const GetNormalForLineIndex(unsigned int lineIndex);
+	const Vector2 & GetNormalForLineIndex(unsigned int lineIndex);
 
 	static bool Intersect(SolidLine & solidLine, Vector2 & otherStart, Vector2 & otherEnd, Vector2 & intersectPointOut);
 

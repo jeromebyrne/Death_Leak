@@ -45,7 +45,7 @@ void CurrencyOrb::Initialise()
 	mSineWaveProps.InitialXPosition = m_position.X;
 	mSineWaveProps.InitialYPosition = m_position.Y;
 
-	mSinWave.Initialise(rand() % 999999,
+	mSinWave.Initialise((float)(rand() % 999999),
 						mSineWaveProps.OffsetY,
 						mSineWaveProps.Amplitude,
 						mSineWaveProps.InitialYPosition,
@@ -178,7 +178,7 @@ void CurrencyOrb::Update(float delta)
 								AudioManager::Instance()->PlaySoundEffect(soundFile);
 							}
 
-							mLastTimePlayedSFX = currentTime;
+							mLastTimePlayedSFX = (unsigned long)currentTime;
 						}
 					}
 				}
@@ -398,8 +398,8 @@ void CurrencyOrb::SpawnOrbs(Vector2 & position, unsigned int numOrbs)
 	for (unsigned int i = 0; i < numOrbs; ++i)
 	{
 		CurrencyOrb * newOrb = new CurrencyOrb();
-		newOrb->m_dimensions.X = 47.697300;
-		newOrb->m_dimensions.Y = 72.831207;
+		newOrb->m_dimensions.X = 47.697300f;
+		newOrb->m_dimensions.Y = 72.831207f;
 		newOrb->m_alpha = 0.8f;
 		newOrb->m_drawAtNativeDimensions = false;
 		newOrb->m_collisionBoxDimensions.X = 20.0f;

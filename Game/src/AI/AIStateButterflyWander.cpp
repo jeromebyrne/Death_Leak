@@ -64,8 +64,8 @@ void AIStateButterflyWander::DoWander(float delta)
 	{
 		m_npc->StopYAccelerating();
 
-		mLastYVelocityBurst = 1000 + (rand() % 2500);
-		mLastYVelocityBurst *= 0.001;
+		mLastYVelocityBurst = 1000.f + (float)(rand() % 2500);
+		mLastYVelocityBurst *= 0.001f;
 
 		m_npc->SetVelocityY(mLastYVelocityBurst);
 
@@ -86,7 +86,7 @@ void AIStateButterflyWander::DoWander(float delta)
 			m_npc->m_direction.X = 1;
 		}
 
-		mCurrentDirectionChangeDelay = 500 + (rand() % 1500);
+		mCurrentDirectionChangeDelay = 500.0f + (float)(rand() % 1500);
 		mCurrentDirectionChangeDelay *= 0.001f;
 
 		mLastDirectionChangeDelay = mCurrentDirectionChangeDelay;

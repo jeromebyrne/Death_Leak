@@ -28,7 +28,7 @@ MovingSprite::MovingSprite(float x, float y, DepthLayer depthLayer, float width,
 {
 	if (m_maxVelocity.Y < 0.0f)  // less than 0 actually signifies no maximum
 	{
-		m_maxVelocity.Y = (numeric_limits<int>::max)();
+		m_maxVelocity.Y = (numeric_limits<float>::max)();
 	}
 }
 
@@ -149,7 +149,7 @@ void MovingSprite::Update(float delta)
 
 	bool isOnSolidSurface = IsOnSolidSurface();
 
-	float targetDelta = Timing::Instance()->GetTargetDelta();
+	float targetDelta = (float)Timing::Instance()->GetTargetDelta();
 	float percentDelta = delta / targetDelta;
 
 	if (m_applyGravity && !isOnSolidSurface)

@@ -21,7 +21,7 @@ void ScreenAlignedTexture::Initialise()
 	// create orthographic projection
 	int bb_width = Graphics::GetInstance()->BackBufferWidth();
 	int bb_height = Graphics::GetInstance()->BackBufferHeight();
-	D3DXMatrixOrthoLH(&m_projection, bb_width, bb_height, 0.1f, 100000.0f);
+	D3DXMatrixOrthoLH(&m_projection, (float)bb_width, (float)bb_height, 0.1f, 100000.0f);
 
 	D3DXVECTOR2 tex1 = D3DXVECTOR2(0,1);
 	D3DXVECTOR2 tex2 = D3DXVECTOR2(1,1);

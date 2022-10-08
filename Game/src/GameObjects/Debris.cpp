@@ -72,7 +72,7 @@ void Debris::Update(float delta)
 	SolidMovingSprite::Update(delta);
 
 	// TODO: review this code
-	float targetDelta =  Timing::Instance()->GetTargetDelta();
+	float targetDelta =  (float)Timing::Instance()->GetTargetDelta();
 	float percentDelta = delta / targetDelta;
 
 	SetRotationAngle(m_rotationAngle - (m_velocity.X * (mIsOnSolidLine ? 0.003 : 0.02)) * percentDelta);

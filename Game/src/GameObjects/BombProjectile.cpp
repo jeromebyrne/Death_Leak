@@ -31,7 +31,7 @@ Projectile(ownerType,
 			 direction, 
 			 damage,
 			 speed,
-			 maxTimeInActive),
+			 (float)maxTimeInActive),
 			 mTimeUntilNextParticleSpray(0.0f)
 {
 	mIsBombProjectile = true;
@@ -139,7 +139,7 @@ bool BombProjectile::OnCollision(SolidMovingSprite* object)
 
 void BombProjectile::Update(float delta)
 {
-	float targetDelta =  Timing::Instance()->GetTargetDelta();
+	float targetDelta =  (float)Timing::Instance()->GetTargetDelta();
 	float percentDelta = delta / targetDelta;
 
 	// apply gravity to the 
@@ -176,22 +176,22 @@ void BombProjectile::Update(float delta)
 
 		if (!mIsInWater)
 		{
-			SetRotationAngle(GetRotationAngle() + ((m_velocity.X * -0.04) *percentDelta));
+			SetRotationAngle(GetRotationAngle() + ((m_velocity.X * -0.04f) *percentDelta));
 		}
 		else
 		{
-			SetRotationAngle(GetRotationAngle() + ((m_velocity.X * -0.009) *percentDelta));
+			SetRotationAngle(GetRotationAngle() + ((m_velocity.X * -0.009f) *percentDelta));
 		}
 	}
 	else
 	{
 		if (!mIsInWater)
 		{
-			SetRotationAngle(GetRotationAngle() + ((m_velocity.X * -0.01) * percentDelta));
+			SetRotationAngle(GetRotationAngle() + ((m_velocity.X * -0.01f) * percentDelta));
 		}
 		else
 		{
-			SetRotationAngle(GetRotationAngle() + ((m_velocity.X * -0.005) * percentDelta));
+			SetRotationAngle(GetRotationAngle() + ((m_velocity.X * -0.005f) * percentDelta));
 		}
 	}
 

@@ -12,8 +12,8 @@ CollisionManager::~CollisionManager(void)
 
 void CollisionManager::Initialise(int collisionAreaWidth, int collisionAreaHeight, int numXDivisions, int numYDivisions)
 {
-	m_detectAreaDimensions = Vector2(collisionAreaWidth, collisionAreaHeight);
-	m_dimensionDivisions = Vector2(numXDivisions, numYDivisions);
+	m_detectAreaDimensions = Vector2((float)collisionAreaWidth, (float)collisionAreaHeight);
+	m_dimensionDivisions = Vector2((float)numXDivisions, (float)numYDivisions);
 }
 
 // do collision detection and then resolve collisions
@@ -37,7 +37,7 @@ void CollisionManager::DetectAndResolve(int camX, int camY)
 		SolidMovingSprite * solidSprite = static_cast<SolidMovingSprite*>(obj.get());
 		GAME_ASSERT(dynamic_cast<SolidMovingSprite *>(obj.get()));
 
-		if (!Utilities::IsSolidSpriteInRectangle(solidSprite, camX, camY, m_detectAreaDimensions.X, m_detectAreaDimensions.Y))
+		if (!Utilities::IsSolidSpriteInRectangle(solidSprite, (float)camX, (float)camY, m_detectAreaDimensions.X, m_detectAreaDimensions.Y))
 		{
 			continue;
 		}

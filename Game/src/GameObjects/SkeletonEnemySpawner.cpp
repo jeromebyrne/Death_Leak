@@ -93,7 +93,7 @@ void SkeletonEnemySpawner::SpawnNPC(const float posX,
 
 void SkeletonEnemySpawner::SpawnMultiple(const unsigned int numNPC, Vector2 boundsPos, Vector2 boundsDimensions)
 {
-	for (int i = 0; i < numNPC; ++i)
+	for (unsigned int i = 0; i < numNPC; ++i)
 	{
 		// pick a random position between the middle of the bounds and the upper bounds
 		int randX = (rand() % (int)(boundsDimensions.X * 0.5));

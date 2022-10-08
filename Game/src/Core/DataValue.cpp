@@ -426,7 +426,7 @@ float DataValue::asFloat() const
 
     if (_type == Type::STRING)
     {
-		return Utilities::ConvertStringToDouble(_field.strVal->c_str());
+		return (float)Utilities::ConvertStringToDouble(_field.strVal->c_str());
     }
 
     if (_type == Type::INTEGER)

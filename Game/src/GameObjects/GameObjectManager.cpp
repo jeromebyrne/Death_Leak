@@ -396,7 +396,7 @@ void GameObjectManager::LoadObjectsFromFile(const string & filename)
 	// space in which include objects for Updates() and collision detection
 	m_updateZoneDimensions = Vector2(4000.0f, 4000.0f);
 
-	CollisionManager::Instance()->SetCollisionArea(m_updateZoneDimensions.X, m_updateZoneDimensions.Y);
+	CollisionManager::Instance()->SetCollisionArea((int)m_updateZoneDimensions.X, (int)m_updateZoneDimensions.Y);
 
 	m_camera = camera;
 
@@ -451,14 +451,14 @@ void GameObjectManager::LoadObjectsFromFile(const string & filename)
 
 	// get the backbuffer width and height and determine how much we need to scale by
 	// base width and height are 1920x1080 (need to not hard code this)
-	float bbWidth = Graphics::GetInstance()->BackBufferWidth();
-	float bbHeight = Graphics::GetInstance()->BackBufferHeight();
+	float bbWidth = (float)Graphics::GetInstance()->BackBufferWidth();
+	float bbHeight = (float)Graphics::GetInstance()->BackBufferHeight();
 
 	float scaleX = bbWidth / 1920.0f;
 	float scaleY = bbHeight / 1080.0f;
 
-	m_updateZoneDimensions.X * scaleX;
-	m_updateZoneDimensions.Y * scaleY;
+	m_updateZoneDimensions.X *= scaleX;
+	m_updateZoneDimensions.Y *= scaleY;
 
 	ScaleObjects(scaleX, scaleY);
 
@@ -876,7 +876,7 @@ ParticleSpray * GameObjectManager::ReadParticleSpray(TiXmlElement * element)
 	float fadeOutPercentTime = XmlUtilities::ReadAttributeAsFloat(element, "fade_time_percent", "out");
 
 	Vector3 pos = Vector3(0, -23, 16);
-	ParticleSpray * p = ParticleEmitterManager::Instance()->CreateDirectedSprayLoadTime(numParticles,
+	ParticleSpray * p = ParticleEmitterManager::Instance()->CreateDirectedSprayLoadTime((int)numParticles,
 																						Vector2(posX, posY),
 																						depthLayer,
 																						Vector2(dirX, dirY),
@@ -971,8 +971,8 @@ void GameObjectManager::AddGameObject(GameObject * object, bool editModeAdd)
 	// SCALE
 	// get the backbuffer width and height and determine how much we need to scale by
 	// base width and height are 1920x1080 (need to not hard code this)
-	float bbWidth = Graphics::GetInstance()->BackBufferWidth();
-	float bbHeight = Graphics::GetInstance()->BackBufferHeight();
+	float bbWidth = (float)Graphics::GetInstance()->BackBufferWidth();
+	float bbHeight = (float)Graphics::GetInstance()->BackBufferHeight();
 
 	float scaleX = bbWidth / 1920.0f;
 	float scaleY = bbHeight / 1080.0f;
@@ -1128,7 +1128,7 @@ void GameObjectManager::SpawnHealthIncrease(const Vector2 & position)
 	p->SetUpdateable(true);
 	p->SetPassive(false);
 	p->SetXY(position.X, position.Y + 20.0f);
-	float xSign = rand() % 2 == 0 ? 1.0 : -1.0f;
+	float xSign = (float)(rand() % 2 == 0 ? 1.0 : -1.0f);
 	float randVelX = (rand() % 15) + 15.0f;
 	float randVelY = (rand() % 10) + 5.0f;
 	p->SetMaxVelocityXY(30.0f, 20.0f);

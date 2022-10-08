@@ -2,7 +2,7 @@
 #include "GhostEnemySpawner.h"
 #include "GhostEnemy.h"
 #include "NPC.h"
-#include "MaterialManager.h";
+#include "MaterialManager.h"
 #include "ParticleEmittermanager.h"
 #include "AudioManager.h"
 
@@ -22,10 +22,10 @@ void GhostEnemySpawner::SpawnNPC(const float posX,
 							Vector2 & collisionDimensions, 
 							Vector2 & collisionBoxOffset)
 {
-	float randJumpSpeed = rand() % 4000;
+	float randJumpSpeed = float(rand() % 4000);
 	randJumpSpeed *= 0.001f;
 	randJumpSpeed += 16.0f;
-	float randMaxXVelocity = rand() % 3000;
+	float randMaxXVelocity = (float)(rand() % 3000);
 	randMaxXVelocity *= 0.0015f;
 	randMaxXVelocity += 11.0f;
 
@@ -92,7 +92,7 @@ void GhostEnemySpawner::SpawnNPC(const float posX,
 
 void GhostEnemySpawner::SpawnMultiple(const unsigned int numNPC, Vector2 boundsPos, Vector2 boundsDimensions)
 {
-	for (int i = 0; i < numNPC; ++i)
+	for (unsigned int i = 0; i < numNPC; ++i)
 	{
 		// pick a random position between the middle of the bounds and the upper bounds
 		int randX = (rand() % (int)(boundsDimensions.X * 0.5));

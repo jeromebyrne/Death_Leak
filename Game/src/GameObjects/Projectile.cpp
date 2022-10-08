@@ -409,7 +409,7 @@ bool Projectile::OnCollision(SolidMovingSprite* object)
 
 void Projectile::Update(float delta)
 {
-	float targetDelta = Timing::Instance()->GetTargetDelta();
+	float targetDelta = (float)Timing::Instance()->GetTargetDelta();
 	float percentDelta = delta / targetDelta;
 
 	if (percentDelta > 2.0f)
