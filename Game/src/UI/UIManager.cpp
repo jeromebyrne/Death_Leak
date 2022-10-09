@@ -391,8 +391,6 @@ void UIManager::DisplayLaunchUI()
 	//}
 
 	PushBackEvent("pushui", params);
-
-	AudioManager::Instance()->PlayMusic("music\\Ripples.mp3");
 }
 
 void UIManager::PushBackEvent(string eventName, list<string> eventParams)

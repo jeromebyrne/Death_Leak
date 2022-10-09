@@ -80,6 +80,11 @@ void KeyPickup::Update(float delta)
 	if (SaveManager::GetInstance()->HasDoorKey(mKeyId))
 	{
 		GameObjectManager::Instance()->RemoveGameObject(this, true);
+		if (sCurrentInteractable == ID())
+		{
+			// bug fix 
+			sCurrentInteractable = -1;
+		}
 		m_updateable = false;
 		return;
 	}

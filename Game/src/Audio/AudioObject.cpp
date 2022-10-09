@@ -32,6 +32,13 @@ void AudioObject::Initialise()
 
 void AudioObject::Update(float delta)
 {
+#ifdef _DEBUG
+	if (mAudioFilename.empty() || mAudioFilename == "Media\\Audio\\")
+	{
+		GAME_ASSERT(false);
+	}
+#endif
+
 	GameObject::Update(delta);
 
 	if (!mHasStartedPlaying)

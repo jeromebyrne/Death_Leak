@@ -33,6 +33,12 @@ void AudioManager::Release()
 
 irrklang::ISound * AudioManager::PlaySoundEffect(const string & fileName, bool loop, bool track, bool applyTimeMod, bool startPaused)
 {
+#ifdef _DEBUG
+	if (fileName.empty())
+	{
+		GAME_ASSERT(false);
+	}
+#endif
 	string file = m_audioPath + fileName;
 
 	bool manuallyTrackSloMo = false;

@@ -23,8 +23,6 @@ protected:
 	string mLocTitleString;
 	string mLocDescId;
 	string mLocDescString;
-
-	bool mHasInitCheckedCollected = false;
 };
 
 #endif

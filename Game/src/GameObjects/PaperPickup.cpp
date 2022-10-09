@@ -59,17 +59,18 @@ void PaperPickup::Update(float delta)
 	}
 #endif
 
-	if (!mHasInitCheckedCollected)
+	if (!mLocDescId.empty() && SaveManager::GetInstance()->IsPaperPickupCollected(mLocDescId))
 	{
-		mHasInitCheckedCollected = true;
-
-		if (!mLocDescId.empty() && SaveManager::GetInstance()->IsPaperPickupCollected(mLocDescId))
+		if (sCurrentInteractable == ID())
 		{
-			GameObjectManager::Instance()->RemoveGameObject(this, true);
-			return;
+			// bug fix 
+			sCurrentInteractable = -1;
 		}
-	}
 
+		GameObjectManager::Instance()->RemoveGameObject(this, true);
+		m_updateable = false;
+		return;
+	}
 	Pickup::Update(delta);
 }
 
