@@ -22,6 +22,7 @@
 
 static const int kMaxInteractablesToDraw = 3;
 static Vector2 kInteractSpriteDimensions = Vector2(150.0f, 90.0f);
+static Vector2 kInteractSpriteDimensionsSteamDeck = Vector2(60.0f, 60.0f);
 
 extern void PostDestroyMessage();
 
@@ -63,6 +64,8 @@ UIManager* UIManager::Instance()
 
 void UIManager::Initialise()
 {
+	mIsOnSteamDeck = SteamUtils() != nullptr ? SteamUtils()->IsSteamRunningOnSteamDeck() : false;
+
 	InitActionStringToEnumMap();
 
 	for (const auto & screen : m_allScreens)
@@ -212,7 +215,7 @@ void UIManager::Draw(ID3D10Device * device)
 			uiCoords = uiCoords * worldScale;
 
 			// mInteractableProperties.CurrentScale
-			iSprite->SetDimensions(kInteractSpriteDimensions * i.CurrentScale);
+			iSprite->SetDimensions(mIsOnSteamDeck ? kInteractSpriteDimensionsSteamDeck : kInteractSpriteDimensions * i.CurrentScale);
 			iSprite->SetBottomLeft(uiCoords);
 			iSprite->SetAlpha(i.CurrentAlpha);
 			iSprite->RebuildBuffers();
@@ -743,8 +746,8 @@ void UIManager::CreateInteractableSprites()
 		{
 			UISprite * sprite = new UISprite();
 
-			sprite->SetImage("Media\\UI\\gamepad_icons\\x.png");
-			sprite->SetDimensions(kInteractSpriteDimensions);
+			sprite->SetImage(mIsOnSteamDeck ? "Media\\UI\\gamepad_icons\\x_deck.png" : "Media\\UI\\gamepad_icons\\x.png");
+			sprite->SetDimensions(mIsOnSteamDeck ? kInteractSpriteDimensionsSteamDeck :  kInteractSpriteDimensions);
 			sprite->SetUseStandardEffect(true);
 			sprite->Initialise();
 			sprite->LoadContent(Graphics::GetInstance()->Device());

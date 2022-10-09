@@ -45,13 +45,17 @@ private:
 
 	UISprite * mBackButtonSprite_gamepad = nullptr;
 	UISprite * mBackButtonSprite_keyboard = nullptr;
+	UISprite* mBackButtonSprite_steamdeck = nullptr;
 
 	UISprite* mUpgradeButtonSprite_gamepad = nullptr;
+	UISprite* mUpgradeButtonSprite_steamdeck = nullptr;
 
 	FeatureUnlockManager::FeatureType mFeatureType = FeatureUnlockManager::FeatureType::kNone;
 
 	int mUpgradeCost = 0;
 	string mUpgradeCostAsString;
+
+	bool mIsOnSteamDeck = false;
 };
 
 #endif

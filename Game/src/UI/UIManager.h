@@ -152,6 +152,8 @@ private:
 
 	string mDeferredPushScreen;
 	string mDeferredPopScreen;
+
+	bool mIsOnSteamDeck = false;
 };
 
 #endif

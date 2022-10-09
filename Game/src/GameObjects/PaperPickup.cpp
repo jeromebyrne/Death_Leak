@@ -13,6 +13,8 @@ void PaperPickup::DoPickup()
 
 	GameObjectManager::Instance()->RemoveGameObject(this);
 
+	m_updateable = false;
+
 	Game::GetInstance()->DisplayTextModal(mLocTitleString, mLocDescString);
 }
 

@@ -49,7 +49,14 @@ void UITextModal::Update()
 
 		if (gamepad1 && gamepad1->IsConnected())
 		{
-			mBackButtonSprite_gamepad->SetAlpha(1.0f);
+			if (mIsOnSteamDeck)
+			{
+				mBackButtonSprite_steamdeck->SetAlpha(1.0f);
+			}
+			else
+			{
+				mBackButtonSprite_gamepad->SetAlpha(1.0f);
+			}
 
 			auto padState = gamepad1->GetState();
 			if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_B)
@@ -73,6 +80,8 @@ void UITextModal::Update()
 
 void UITextModal::Initialise()
 {
+	mIsOnSteamDeck = SteamUtils() != nullptr ? SteamUtils()->IsSteamRunningOnSteamDeck() : false;
+
 	UIScreen::Initialise();
 
 	// create title font
@@ -120,6 +129,11 @@ void UITextModal::Initialise()
 		{
 			mBackButtonSprite_gamepad = s;
 			mBackButtonSprite_gamepad->SetAlpha(0.0f);
+		}
+		else if (s->Name().find("2_back_button_image_steamdeck") != std::string::npos)
+		{
+			mBackButtonSprite_steamdeck = s;
+			mBackButtonSprite_steamdeck->SetAlpha(0.0f);
 		}
 		else if (s->Name().find("3_back_button_image_keyboard") != std::string::npos)
 		{

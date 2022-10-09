@@ -31,6 +31,8 @@ private:
 	static StringManager * mInstance;
 
 	std::string mCurrentLocale;
+
+	bool m_IsOnSteamDeck = false;
 };
 
 #endif

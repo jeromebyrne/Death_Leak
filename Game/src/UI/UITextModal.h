@@ -36,6 +36,9 @@ private:
 
 	UISprite * mBackButtonSprite_gamepad = nullptr;
 	UISprite * mBackButtonSprite_keyboard = nullptr;
+	UISprite* mBackButtonSprite_steamdeck = nullptr;
+
+	bool mIsOnSteamDeck = false;
 };
 
 #endif

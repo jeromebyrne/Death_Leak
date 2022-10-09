@@ -71,6 +71,8 @@ Player::~Player(void)
 
 void Player::Initialise()
 {
+	mIsOnSteamDeck = SteamUtils() != nullptr ? SteamUtils()->IsSteamRunningOnSteamDeck() : false;
+
 	// update the base classes
 	Character::Initialise();
 
@@ -1181,9 +1183,19 @@ void Player::Draw(ID3D10Device* device, Camera2D* camera)
 		const InputManager& i = Game::GetInstance()->GetInputManager();
 		if (i.IsPressingInteractButton() == false)
 		{
-			DrawUtilities::DrawTexture(Vector3(m_position.X - 35.0f, m_position.Y + 50.0f, GetDepthLayer() + 0.1f),
-				Vector2(150.0f, 90.0f),
-				"Media\\UI\\gamepad_icons\\x.png");
+			if (mIsOnSteamDeck)
+			{
+				DrawUtilities::DrawTexture(Vector3(m_position.X - 35.0f, m_position.Y + 50.0f, GetDepthLayer() + 0.1f),
+					Vector2(60.0f, 60.0f),
+					"Media\\UI\\gamepad_icons\\x_deck.png");
+			}
+			else
+			{
+				DrawUtilities::DrawTexture(Vector3(m_position.X - 35.0f, m_position.Y + 50.0f, GetDepthLayer() + 0.1f),
+					Vector2(150.0f, 90.0f),
+					"Media\\UI\\gamepad_icons\\x.png");
+			}
+			
 		}
 	}
 

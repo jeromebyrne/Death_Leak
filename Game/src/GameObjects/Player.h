@@ -128,6 +128,8 @@ private:
 	bool mHasDisplayedFinalLevelText = false;
 
 	ID3DX10Font* mFinalLevelTitleText = nullptr;
+
+	bool mIsOnSteamDeck = false;
 };
 
 #endif

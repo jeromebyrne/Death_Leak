@@ -1,5 +1,6 @@
 #include "precompiled.h"
 #include "StringManager.h"
+#include <isteamutils.h>
 
 StringManager * StringManager::mInstance = nullptr;
 
@@ -50,6 +51,8 @@ void StringManager::LoadStringsFile(const char * file)
 	}
 
 	mLocaleStrings = mStringsMap[mCurrentLocale];
+
+	m_IsOnSteamDeck = SteamUtils() != nullptr ? SteamUtils()->IsSteamRunningOnSteamDeck() : false;
 }
 
 void StringManager::SetLocale(string & locale)
@@ -62,5 +65,16 @@ void StringManager::SetLocale(string & locale)
 
 string StringManager::GetLocalisedString(const char * key)
 {
+	if (m_IsOnSteamDeck)
+	{
+		string altkey = key;
+		altkey += "_steamdeck";
+
+		if (mLocaleStrings.find(altkey) != mLocaleStrings.end())
+		{
+			return mLocaleStrings[altkey];
+		}
+	}
+
 	return mLocaleStrings[key];
 }

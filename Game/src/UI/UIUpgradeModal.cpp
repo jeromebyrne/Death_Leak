@@ -55,7 +55,14 @@ void UIUpgradeModal::Update()
 	{
 		if (gamepad1 && gamepad1->IsConnected())
 		{
-			mBackButtonSprite_gamepad->SetAlpha(1.0f);
+			if (mIsOnSteamDeck)
+			{
+				mBackButtonSprite_steamdeck->SetAlpha(1.0f);
+			}
+			else
+			{
+				mBackButtonSprite_gamepad->SetAlpha(1.0f);
+			}
 
 			if (padState.Gamepad.wButtons & XINPUT_GAMEPAD_B)
 			{
@@ -96,6 +103,8 @@ void UIUpgradeModal::Update()
 
 void UIUpgradeModal::Initialise()
 {
+	mIsOnSteamDeck = SteamUtils() != nullptr ? SteamUtils()->IsSteamRunningOnSteamDeck() : false;
+
 	UIScreen::Initialise();
 
 	// create title font
@@ -144,6 +153,11 @@ void UIUpgradeModal::Initialise()
 			mBackButtonSprite_gamepad = s;
 			mBackButtonSprite_gamepad->SetAlpha(0.0f);
 		}
+		else if (s->Name().find("2_back_button_image_steamdeck") != std::string::npos)
+		{
+			mBackButtonSprite_steamdeck = s;
+			mBackButtonSprite_steamdeck->SetAlpha(0.0f);
+		}
 		else if (s->Name().find("3_back_button_image_keyboard") != std::string::npos)
 		{
 			mBackButtonSprite_keyboard = s;
@@ -152,7 +166,12 @@ void UIUpgradeModal::Initialise()
 		else if (s->Name().find("4_upgrade_button_image_gamepad") != std::string::npos)
 		{
 			mUpgradeButtonSprite_gamepad = s;
-			// mUpgradeButtonSprite_gamepad->SetAlpha(0.0f);
+			mUpgradeButtonSprite_gamepad->SetAlpha(mIsOnSteamDeck ? 0.0f : 1.0f);
+		}
+		else if (s->Name().find("4_upgrade_button_image_steamdeck") != std::string::npos)
+		{
+			mUpgradeButtonSprite_steamdeck = s;
+			mUpgradeButtonSprite_steamdeck->SetAlpha(mIsOnSteamDeck ? 1.0f : 0.0f);
 		}
 	}
 }
