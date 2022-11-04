@@ -11,7 +11,7 @@ public:
 	enum WeatherState
 	{
 		kRaining,
-		kSnowing,
+		// kSnowing, REMOVING SNOW CODE to simplify
 		kNone
 	};
 
@@ -26,11 +26,9 @@ public:
 
 	float GetFoliageSwayMultiplier() const { return mFoliageSwayMultiplier; }
 
-	void SetAllowWeather(bool value) { mAllowWeather = value; }
-
-	void StopAllWeather();
-
 	void StartRainingIfNotAlready();
+
+	void AllowWeather(bool allow);
 
 private:
 
@@ -39,9 +37,6 @@ private:
 
 	void StartRaining();
 	void StopRaining();
-
-	void StartSnowing();
-	void StopSnowing();
 
 	void DoLightningEffect();
 
@@ -54,17 +49,13 @@ private:
 	ParallaxLayer * mLightningLayer;
 
 	ParticleSpray * mRainParticleSpray = nullptr;
-	ParticleSpray * mSnowParticleSpray = nullptr;
 
 	void UpdateRaining(float delta);
-	void UpdateSnowing(float delta);
 	void UpdateNoWeather(float delta);
 
 	void RemoveState(WeatherState state);
 
 	void CreateRainAssets(bool preWarm = false);
-
-	void CreateSnowAssets(bool preWarm = false);
 
 	void FadeWeatherIfApplicable(float delta);
 
@@ -74,13 +65,9 @@ private:
 
 	double mRainStartTime;
 
-	double mSnowStartTime;
-
 	double mLightningStartTime;
 
 	double mCurrentRainSessionTime;
-
-	double mCurrentSnowSessionTime;
 
 	bool mHasHadWeather;
 
@@ -88,12 +75,7 @@ private:
 
 	AudioObject * mRainSFX;
 
-	AudioObject * mSnowSFX;
-
 	float mLastWeatherTime;
-
-	bool mHasRained;
-	bool mHasSnowed;
 
 	float mNextWeatherDecisionTime;
 
