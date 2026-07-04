@@ -1,6 +1,8 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
+#include <string>
+
 #ifndef LOG_INFO_ENABLED
 	#ifdef _RELEASE
 		#define LOG_INFO_ENABLED 0
@@ -43,13 +45,13 @@ class Logger
 {
 public:
 
-	static void LogInfo(string info, ...);
+	static void LogInfo(std::string info, ...);
 
-	static void LogError(string error, ...);
+	static void LogError(std::string error, ...);
 
 private:
 
-	static void Log(string type, string output, ...);
+	static void Log(std::string type, std::string output, ...);
 };
 
 #endif

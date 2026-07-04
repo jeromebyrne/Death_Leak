@@ -3,7 +3,7 @@
 
 const unsigned int kMaxLogBufferSize = 4096;
 
-void Logger::LogInfo(string info, ...)
+void Logger::LogInfo(std::string info, ...)
 {
 	char buffer[kMaxLogBufferSize];
 	va_list args;
@@ -14,7 +14,7 @@ void Logger::LogInfo(string info, ...)
 	Log("\nGameInfo: ", buffer);
 }
 
-void Logger::LogError(string error, ...)
+void Logger::LogError(std::string error, ...)
 {
 	char buffer[kMaxLogBufferSize];
 	va_list args;
@@ -25,7 +25,11 @@ void Logger::LogError(string error, ...)
 	Log("\nGameError: ", buffer);
 }
 
-void Logger::Log(string type, string output, ...)
+void Logger::Log(std::string type, std::string output, ...)
 {
+#if defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC
+	std::fprintf(stderr, "%s%s", type.c_str(), output.c_str());
+#else
 	OutputDebugStringA((type + output).c_str());
+#endif
 }

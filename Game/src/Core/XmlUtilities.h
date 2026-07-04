@@ -1,6 +1,12 @@
 #ifndef XMLUTILITIES_H
 #define XMLUTILITIES_H
 
+#include <cctype>
+#include <cstring>
+#include <cstdlib>
+#include <string>
+#include "tinyxml.h"
+
 class XmlUtilities
 {
 public:
@@ -18,10 +24,9 @@ public:
 		bool returnValue = false;
 
 		const char * boolAsString = ReadAttributeAsString(element, subElementName, key);
-		Utilities::ToLower((char *)boolAsString); // convert to lower
+		std::string lowerValue = ToLowerCopy(boolAsString);
 
-		if(strcmp(boolAsString, "true") == 0 ||
-			strcmp(boolAsString, "1") == 0)
+		if(lowerValue == "true" || lowerValue == "1")
 		{
 			returnValue = true;
 		}
@@ -43,7 +48,7 @@ public:
 		}
 
 		const char* floatAsString = attributeElement->Attribute(key);
-		float value = Utilities::ConvertStringToDouble(floatAsString);
+		float value = static_cast<float>(ConvertStringToDouble(floatAsString));
 
 		return value;
 	}
@@ -62,7 +67,7 @@ public:
 		}
 
 		const char* intAsString = attributeElement->Attribute(key);
-		int value = Utilities::ConvertStringToInt(intAsString);
+		int value = intAsString != nullptr ? std::atoi(intAsString) : 0;
 
 		return value;
 	}
@@ -107,6 +112,39 @@ public:
 		}
 
 		return false;
+	}
+
+private:
+	static std::string ToLowerCopy(const char* value)
+	{
+		std::string lowerValue = value != nullptr ? value : "";
+		for (char& c : lowerValue)
+		{
+			c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
+		}
+
+		return lowerValue;
+	}
+
+	static double ConvertStringToDouble(const char* str)
+	{
+		if (str == nullptr)
+		{
+			return 0.0;
+		}
+
+		static const unsigned int kBufferSize = 256;
+		char buf[kBufferSize];
+		std::strncpy(buf, str, kBufferSize);
+		buf[kBufferSize - 1] = '\0';
+
+		char* dot = std::strchr(buf, '.');
+		if (dot != nullptr && dot - buf + 8 < kBufferSize)
+		{
+			dot[8] = '\0';
+		}
+
+		return std::atof(buf);
 	}
 };
 

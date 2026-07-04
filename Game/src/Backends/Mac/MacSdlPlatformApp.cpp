@@ -1,0 +1,78 @@
+#include "Backends/Mac/MacSdlPlatformApp.h"
+
+#include <iostream>
+
+MacSdlPlatformApp::~MacSdlPlatformApp()
+{
+    if (mWindow != nullptr)
+    {
+        SDL_DestroyWindow(mWindow);
+        mWindow = nullptr;
+    }
+
+    SDL_Quit();
+}
+
+bool MacSdlPlatformApp::Initialise(const PlatformWindowConfig& config)
+{
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER | SDL_INIT_HAPTIC) != 0)
+    {
+        std::cerr << "SDL_Init failed: " << SDL_GetError() << "\n";
+        return false;
+    }
+
+    Uint32 windowFlags = SDL_WINDOW_SHOWN | SDL_WINDOW_ALLOW_HIGHDPI;
+    if (config.Fullscreen)
+    {
+        windowFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+    }
+
+    mWindow = SDL_CreateWindow(
+        config.Title.c_str(),
+        SDL_WINDOWPOS_CENTERED,
+        SDL_WINDOWPOS_CENTERED,
+        config.Width,
+        config.Height,
+        windowFlags);
+
+    if (mWindow == nullptr)
+    {
+        std::cerr << "SDL_CreateWindow failed: " << SDL_GetError() << "\n";
+        return false;
+    }
+
+    return true;
+}
+
+bool MacSdlPlatformApp::PumpEvents()
+{
+    SDL_Event event;
+    while (SDL_PollEvent(&event) != 0)
+    {
+        if (event.type == SDL_QUIT)
+        {
+            RequestQuit();
+        }
+        else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
+        {
+            RequestQuit();
+        }
+    }
+
+    return !ShouldQuit();
+}
+
+void MacSdlPlatformApp::RequestQuit()
+{
+    mShouldQuit = true;
+}
+
+bool MacSdlPlatformApp::ShouldQuit() const
+{
+    return mShouldQuit;
+}
+
+void MacSdlPlatformApp::SetCursorVisible(bool visible)
+{
+    SDL_ShowCursor(visible ? SDL_ENABLE : SDL_DISABLE);
+}

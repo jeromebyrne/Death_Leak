@@ -1,15 +1,18 @@
 #ifndef XMLDOCUMENT_H
 #define XMLDOCUMENT_H
 
+#include <string>
+#include "tinyxml.h"
+
 class XmlDocument
 {
 public:
 	XmlDocument(void);
 	~XmlDocument(void);
 	
-	bool Load(const string & fileName, bool doBabbage = false);
+	bool Load(const std::string & fileName, bool doBabbage = false);
 
-	void Save(const string & filename,  TiXmlElement * root, bool doBabbage = false);
+	void Save(const std::string & filename,  TiXmlElement * root, bool doBabbage = false);
 	
 	TiXmlHandle * Handle()
 	{

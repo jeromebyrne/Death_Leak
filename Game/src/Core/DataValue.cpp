@@ -3,6 +3,31 @@
 #include <sstream>
 #include <iomanip>
 
+namespace
+{
+static const unsigned int kDataValueConversionBufferSize = 256;
+
+double ConvertStringToDouble(const char* str)
+{
+    if (str == nullptr)
+    {
+        return 0.0;
+    }
+
+    char buf[kDataValueConversionBufferSize];
+    std::strncpy(buf, str, kDataValueConversionBufferSize);
+    buf[kDataValueConversionBufferSize - 1] = '\0';
+
+    char* dot = std::strchr(buf, '.');
+    if (dot != nullptr && dot - buf + 8 < kDataValueConversionBufferSize)
+    {
+        dot[8] = '\0';
+    }
+
+    return std::atof(buf);
+}
+}
+
 const std::vector<DataValue> VectorNull;
 const std::map<std::string, DataValue> MapNull;
 
@@ -426,7 +451,7 @@ float DataValue::asFloat() const
 
     if (_type == Type::STRING)
     {
-		return (float)Utilities::ConvertStringToDouble(_field.strVal->c_str());
+		return static_cast<float>(ConvertStringToDouble(_field.strVal->c_str()));
     }
 
     if (_type == Type::INTEGER)
@@ -462,7 +487,7 @@ double DataValue::asDouble() const
 
     if (_type == Type::STRING)
     {
-		return static_cast<double>(Utilities::ConvertStringToDouble(_field.strVal->c_str()));
+		return ConvertStringToDouble(_field.strVal->c_str());
     }
 
     if (_type == Type::INTEGER)

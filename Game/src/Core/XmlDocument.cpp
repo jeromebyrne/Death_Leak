@@ -2,7 +2,7 @@
 #include "XmlDocument.h"
 #include "encryption.h"
 
-string kKey = "babson";
+std::string kKey = "babson";
 
 XmlDocument::XmlDocument(void)
 {
@@ -12,7 +12,7 @@ XmlDocument::~XmlDocument(void)
 {
 }
 
-bool XmlDocument::Load(const string & filename, bool doBabbage)
+bool XmlDocument::Load(const std::string & filename, bool doBabbage)
 {
 	bool loadOkay = false;
 	if (doBabbage)
@@ -26,9 +26,9 @@ bool XmlDocument::Load(const string & filename, bool doBabbage)
 
 		TiXmlElement* rootContent = d.FirstChildElement();
 
-		string content = rootContent->Attribute("z");
+		std::string content = rootContent->Attribute("z");
 
-		string decrypted = decrypt(content, kKey);
+		std::string decrypted = decrypt(content, kKey);
 
 		m_document.Parse(decrypted.c_str(), 0, TIXML_ENCODING_UTF8);
 
@@ -50,7 +50,7 @@ bool XmlDocument::Load(const string & filename, bool doBabbage)
 	return loadOkay;
 }
 
-void XmlDocument::Save(const string & filename, TiXmlElement * root, bool doBabbage)
+void XmlDocument::Save(const std::string & filename, TiXmlElement * root, bool doBabbage)
 {
 	TiXmlDocument doc;
 
@@ -62,9 +62,9 @@ void XmlDocument::Save(const string & filename, TiXmlElement * root, bool doBabb
 		// attach it to the document you want to convert in to a std::string 
 		root->Accept(&printer);
 
-		string xmlAsStr = printer.CStr();
+		std::string xmlAsStr = printer.CStr();
 
-		string encrypted = encrypt(xmlAsStr, kKey);
+		std::string encrypted = encrypt(xmlAsStr, kKey);
 
 		TiXmlElement * newElement = new TiXmlElement("a");
 		newElement->SetAttribute("z", encrypted.c_str());

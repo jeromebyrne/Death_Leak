@@ -4,7 +4,7 @@
 Vector3::Vector3() : X(0), Y(0), Z(0)
 {
 }
-Vector3::Vector3(float x = 0, float y = 0, float z = 0): X(x), Y(y), Z(z)
+Vector3::Vector3(float x, float y, float z): X(x), Y(y), Z(z)
 {
 }
 

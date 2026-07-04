@@ -1,6 +1,10 @@
 #ifndef DATAVALUE_H
 #define DATAVALUE_H
 
+#include <map>
+#include <string>
+#include <vector>
+
 /* 
 * This class is based on the cocos2d::Value class.
 * https://github.com/cocos2d/cocos2d-x/blob/001614a9c57e4c62b63d4858de91bb7c728c81a6/cocos/base/CCValue.h

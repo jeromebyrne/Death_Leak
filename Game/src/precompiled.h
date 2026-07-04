@@ -1,6 +1,52 @@
 #ifndef PRECOMPILED_H
 #define PRECOMPILED_H
 
+#if defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC
+
+#include <cstdarg>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <cmath>
+#include <cfloat>
+#include <limits>
+#include <list>
+#include <map>
+#include <memory>
+#include <new>
+#include <string>
+#include <typeinfo>
+#include <vector>
+
+#include "tinyxml.h"
+
+#define PI_VAL 3.14159265
+using namespace std;
+
+#ifndef GAME_ASSERT_ENABLED
+	#ifdef _RELEASE
+		#define GAME_ASSERT_ENABLED 0
+	#else
+		#define GAME_ASSERT_ENABLED 1
+	#endif
+#endif
+
+#if GAME_ASSERT_ENABLED == 1
+	#define GAME_ASSERT(CONDITION)\
+		do\
+		{\
+			if (!(CONDITION))\
+			{\
+				std::fprintf(stderr, "*** GameAssert FAILED! ***: %s\nFile: %s, Line: %i\n", #CONDITION, __FILE__, __LINE__);\
+				__builtin_trap();\
+			}\
+		} while (0)
+#else
+	#define GAME_ASSERT(CONDITION)
+#endif
+
+#else
+
 #define _CRT_SECURE_NO_DEPRECATE
 
 #include <windows.h>
@@ -73,6 +119,8 @@ public:
 		} while (0)
 #else
 	#define GAME_ASSERT(CONDITION)
+#endif
+
 #endif
 
 #endif

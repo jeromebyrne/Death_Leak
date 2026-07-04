@@ -1,6 +1,6 @@
 #ifndef VECTOR4_H
 #define VECTOR4_H
-#include "vector3.h"
+#include "Vector3.h"
 
 class Vector4 : public Vector3
 {
