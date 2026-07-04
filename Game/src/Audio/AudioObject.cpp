@@ -1,6 +1,91 @@
 #include "precompiled.h"
 #include "AudioObject.h"
 #include "AudioManager.h"
+
+#if defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC
+
+AudioObject::AudioObject(float x, float y, DepthLayer depthLayer, float width, float height):
+	GameObject(x,y,depthLayer,width,height),
+	mAdjustVolumeToCamera(false),
+	mRepeat(false),
+	mSoundInstance(nullptr),
+	mHasStartedPlaying(false)
+{
+	mFadeDimensions = Vector2(m_dimensions.X * 2.0f, m_dimensions.Y * 2.0f);
+	mIsAudioObject = true;
+	mAlwaysUpdate = true;
+}
+
+AudioObject::~AudioObject(void)
+{
+}
+
+void AudioObject::Initialise()
+{
+	GameObject::Initialise();
+}
+
+void AudioObject::Update(float delta)
+{
+	GameObject::Update(delta);
+	mHasStartedPlaying = true;
+}
+
+void AudioObject::XmlRead(TiXmlElement * element)
+{
+	GameObject::XmlRead(element);
+
+	mAudioFilename = XmlUtilities::ReadAttributeAsString(element, "audiofile", "value");
+	mAdjustVolumeToCamera = XmlUtilities::ReadAttributeAsBool(element, "adjustvolumetocamera", "value");
+	mRepeat = XmlUtilities::ReadAttributeAsBool(element, "repeat", "value");
+
+	mFadeDimensions.X = XmlUtilities::ReadAttributeAsFloat(element, "fadedimensions", "x");
+	mFadeDimensions.Y = XmlUtilities::ReadAttributeAsFloat(element, "fadedimensions", "y");
+}
+
+void AudioObject::XmlWrite(TiXmlElement * element)
+{
+	GameObject::XmlWrite(element);
+
+	TiXmlElement * audioFile = new TiXmlElement("audiofile");
+	audioFile->SetAttribute("value", mAudioFilename.c_str());
+	element->LinkEndChild(audioFile);
+
+	TiXmlElement * adjustVolumeToCam = new TiXmlElement("adjustvolumetocamera");
+	adjustVolumeToCam->SetAttribute("value", mAdjustVolumeToCamera ? "true" : "false");
+	element->LinkEndChild(adjustVolumeToCam);
+
+	TiXmlElement * repeat = new TiXmlElement("repeat");
+	repeat->SetAttribute("value", mRepeat ? "true" : "false");
+	element->LinkEndChild(repeat);
+
+	TiXmlElement * fadeDimElem = new TiXmlElement("fadedimensions");
+	fadeDimElem->SetDoubleAttribute("x", mFadeDimensions.X);
+	fadeDimElem->SetDoubleAttribute("y", mFadeDimensions.Y);
+	element->LinkEndChild(fadeDimElem);
+}
+
+void AudioObject::SetVolume(float value)
+{
+	(void)value;
+}
+
+float AudioObject::GetVolume()
+{
+	return 0.0f;
+}
+
+bool AudioObject::IsPaused()
+{
+	return false;
+}
+
+void AudioObject::DebugDraw(ID3D10Device*)
+{
+}
+
+#else
+
 #include "DrawUtilities.h"
 
 AudioObject::AudioObject(float x, float y, DepthLayer depthLayer, float width, float height):
@@ -246,3 +331,5 @@ void AudioObject::DebugDraw(ID3D10Device *  device)
 
 	DrawUtilities::DrawTexture(Vector3(m_position.X, m_position.Y, 3), Vector2(GetLevelEditSelectionDimensions().X, GetLevelEditSelectionDimensions().Y), "Media\\editor\\audio.png");
 }
+
+#endif

@@ -84,7 +84,7 @@ public:
 
 	bool IsCameraOriginInsideRect(Vector2 pos, Vector2 dimensions);
 
-	bool IsWorldPosInView(Vector2 & pos, float parallaxXOffset, float parallaxYOffset);
+	bool IsWorldPosInView(const Vector2 & pos, float parallaxXOffset, float parallaxYOffset);
 
 	void SetZoomLevel(float value);
 

@@ -4,7 +4,6 @@
 #include "Graphics.h"
 #include "DrawUtilities.h"
 #include "UISprite.h"
-#include <conio.h>  
 #include <ctype.h> 
 
 static const float kEditFadeAmount = 0.05f;

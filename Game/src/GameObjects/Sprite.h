@@ -59,7 +59,7 @@ public:
 	void SetburstTintStartTime(float value) { mBurstTintStartTime = value; }
 
 	// This is used for the animation viewer
-	virtual void Sprite::UpdateAnimTexture(const string & bodyPart);
+	virtual void UpdateAnimTexture(const string & bodyPart);
 
 protected:
 

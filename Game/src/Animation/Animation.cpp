@@ -72,7 +72,13 @@ void Animation::SetPartSequence(const std::string & partName, const std::string 
 
 AnimationSkeleton * Animation::GetSkeletonForCurrentSequence(const std::string & bodyPart)
 {
-	AnimationSequence * currentSequence = m_animationParts[bodyPart]->CurrentSequence();
+	auto partIter = m_animationParts.find(bodyPart);
+	if (partIter == m_animationParts.end() || partIter->second == nullptr)
+	{
+		return nullptr;
+	}
+
+	AnimationSequence * currentSequence = partIter->second->CurrentSequence();
 	GAME_ASSERT(currentSequence);
 
 	if (!currentSequence)
@@ -98,11 +104,21 @@ void Animation::ScaleSkeleton(float value)
 {
 	for (auto & kvp : m_animationParts)
 	{
+		if (kvp.second == nullptr)
+		{
+			continue;
+		}
+
 		auto & sequences = kvp.second->GetAllSequences();
 
-		for (auto & kvp : sequences)
+		for (auto & sequenceKvp : sequences)
 		{
-			auto skeleton = kvp.second->GetSkeleton();
+			if (sequenceKvp.second == nullptr)
+			{
+				continue;
+			}
+
+			auto skeleton = sequenceKvp.second->GetSkeleton();
 
 			if (skeleton)
 			{
@@ -258,4 +274,3 @@ const std::string & Animation::CurrentSequenceName(const std::string & bodyPart)
 
 	return sequence->Name();
 }
-

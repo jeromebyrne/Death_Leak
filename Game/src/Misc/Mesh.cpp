@@ -14,7 +14,12 @@ Mesh::~Mesh(void)
 
 void Mesh::Load(wchar_t* fileName, ID3D10Device * graphicsDevice)
 {
+#if defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC
+	(void)fileName;
+	(void)graphicsDevice;
+#else
 	m_mesh.Create( graphicsDevice, (LPCTSTR)fileName, true );
+#endif
 }
 
 void Mesh::Update(D3DXMATRIX globalWorld)
@@ -24,7 +29,12 @@ void Mesh::Update(D3DXMATRIX globalWorld)
 
 void Mesh::Draw(ID3D10Device * graphicsDevice, ID3D10EffectTechnique* technique, ID3D10EffectShaderResourceVariable* shaderResourceVar)
 {
-	UINT Strides[1];
+#if defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC
+	(void)graphicsDevice;
+	(void)technique;
+	(void)shaderResourceVar;
+#else
+    UINT Strides[1];
     UINT Offsets[1];
     ID3D10Buffer* pVB[1];
     pVB[0] = m_mesh.GetVB10( 0, 0 );
@@ -58,4 +68,5 @@ void Mesh::Draw(ID3D10Device * graphicsDevice, ID3D10EffectTechnique* technique,
 
 	//the mesh class also had a render method that allows rendering the mesh with the most common options
     //g_Mesh.Render( pd3dDevice, g_pTechnique, g_ptxDiffuseVariable );
+#endif
 }

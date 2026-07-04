@@ -66,7 +66,7 @@ public:
 
 	const Vector2 & GetNormalForLineIndex(unsigned int lineIndex);
 
-	static bool Intersect(SolidLine & solidLine, Vector2 & otherStart, Vector2 & otherEnd, Vector2 & intersectPointOut);
+	static bool Intersect(SolidLine & solidLine, const Vector2 & otherStart, const Vector2 & otherEnd, Vector2 & intersectPointOut);
 
 	bool GetCanDropDown() const { return mCanDropDown; }
 

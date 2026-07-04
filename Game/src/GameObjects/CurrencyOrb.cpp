@@ -391,7 +391,7 @@ void CurrencyOrb::AddTrailParticles()
 	}
 }
 
-void CurrencyOrb::SpawnOrbs(Vector2 & position, unsigned int numOrbs)
+void CurrencyOrb::SpawnOrbs(const Vector2 & position, unsigned int numOrbs)
 {
 	std::string animFile = "XmlFiles\\orb_anim.xml";
 

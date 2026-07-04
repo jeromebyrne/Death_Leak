@@ -192,7 +192,11 @@ void UIUpgradeModal::Draw(ID3D10Device * device)
 			float halfDimensionsX = kTitleTextDimensionsX * 0.5f;
 			float halfDimensionsY = kTitleTextDimensionsY * 0.5f;
 
-			RECT bounds = { 960.0f - halfDimensionsX, 100, 960.0f + halfDimensionsX, 200 };
+			RECT bounds;
+			bounds.left = static_cast<LONG>(960.0f - halfDimensionsX);
+			bounds.top = static_cast<LONG>(100);
+			bounds.right = static_cast<LONG>(960.0f + halfDimensionsX);
+			bounds.bottom = static_cast<LONG>(200);
 			mTitleFont->DrawTextA(0, mLocalizedTitle.c_str(), -1, &bounds, DT_CENTER | DT_TOP, kTitleColor);
 		}
 	}
@@ -204,10 +208,11 @@ void UIUpgradeModal::Draw(ID3D10Device * device)
 			float halfDimensionsX = kDescriptionTextDimensionsX * 0.5f;
 			float halfDimensionsY = kDescriptionTextDimensionsY * 0.5f;
 
-			RECT bounds = { 960.0f - halfDimensionsX + 100.0f,
-							540.0f - halfDimensionsY - 75.0f, 
-							960.0f + halfDimensionsX - 100.0f, 
-							540.0f + halfDimensionsY - 75.0f };
+			RECT bounds;
+			bounds.left = static_cast<LONG>(960.0f - halfDimensionsX + 100.0f);
+			bounds.top = static_cast<LONG>(540.0f - halfDimensionsY - 75.0f);
+			bounds.right = static_cast<LONG>(960.0f + halfDimensionsX - 100.0f);
+			bounds.bottom = static_cast<LONG>(540.0f + halfDimensionsY - 75.0f);
 			mDescriptionFont->DrawTextA(0, mLocalizedDescription.c_str(), -1, &bounds, DT_WORDBREAK | DT_CENTER | DT_VCENTER, kDescColor);
 		}
 	}
@@ -219,7 +224,11 @@ void UIUpgradeModal::Draw(ID3D10Device * device)
 			float halfDimensionsX = kTitleTextDimensionsX * 0.5f;
 			float halfDimensionsY = kTitleTextDimensionsY * 0.5f;
 
-			RECT bounds = { 960.0f - halfDimensionsX - 50.0, 735, 960.0f + halfDimensionsX, 835 };
+			RECT bounds;
+			bounds.left = static_cast<LONG>(960.0f - halfDimensionsX - 50.0f);
+			bounds.top = static_cast<LONG>(735);
+			bounds.right = static_cast<LONG>(960.0f + halfDimensionsX);
+			bounds.bottom = static_cast<LONG>(835);
 			mTitleFont->DrawTextA(0, mUpgradeCostAsString.c_str(), -1, &bounds, DT_CENTER | DT_BOTTOM | DT_LEFT, CanPurchase() ? kTitleColor : kInsuffientOrbsColor);
 		}
 	}
@@ -230,7 +239,11 @@ void UIUpgradeModal::Draw(ID3D10Device * device)
 		float halfDimensionsX = kTitleTextDimensionsX * 0.5f;
 		float halfDimensionsY = kTitleTextDimensionsY * 0.5f;
 
-		RECT bounds = { 960.0f - halfDimensionsX, 850, 960.0f + halfDimensionsX, 950 };
+		RECT bounds;
+		bounds.left = static_cast<LONG>(960.0f - halfDimensionsX);
+		bounds.top = static_cast<LONG>(850);
+		bounds.right = static_cast<LONG>(960.0f + halfDimensionsX);
+		bounds.bottom = static_cast<LONG>(950);
 		mTitleFont->DrawTextA(0, "NOT ENOUGH ORBS", -1, &bounds, DT_CENTER | DT_BOTTOM | DT_LEFT, kInsuffientOrbsColor);
 	}
 }
@@ -323,4 +336,3 @@ void UIUpgradeModal::DoPurchase()
 															0.1f,
 															true);
 }
-

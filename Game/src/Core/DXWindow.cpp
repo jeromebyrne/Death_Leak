@@ -1,6 +1,44 @@
 #include "precompiled.h"
 #include "DXWindow.h"
 
+#if defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC
+
+DXWindow * DXWindow::mInstance = 0;
+
+DXWindow::DXWindow(int width, int height) :
+	m_width(width),
+	m_height(height),
+	m_topLeftX(0),
+	m_topLeftY(0),
+	m_hInstance(nullptr),
+	m_hWnd(nullptr),
+	m_pGraphicsDevice(nullptr),
+	m_pGraphicsSwapChain(nullptr)
+{
+	mInstance = this;
+}
+
+DXWindow::~DXWindow(void)
+{
+	Destroy();
+}
+
+HRESULT DXWindow::Initialise(HINSTANCE, int, WNDPROC)
+{
+	return S_OK;
+}
+
+void DXWindow::Destroy()
+{
+}
+
+Vector2 DXWindow::GetWindowDimensions()
+{
+	return Vector2((float)m_width, (float)m_height);
+}
+
+#else
+
 DXWindow * DXWindow::mInstance = 0;
 
 DXWindow::DXWindow(int width, int height) : 
@@ -84,4 +122,5 @@ Vector2 DXWindow::GetWindowDimensions()
 	return retVal;
 }
 
+#endif
 

@@ -53,6 +53,7 @@
     <ClCompile Include="src\Core\Vector3.cpp" />
     <ClCompile Include="src\Core\Vector4.cpp" />
     <ClCompile Include="src\Core\XmlDocument.cpp" />
+    <ClCompile Include="src\Engine\Runtime\GameLoopController.cpp" />
     <ClCompile Include="src\Effects\EffectBasic.cpp" />
     <ClCompile Include="src\Effects\EffectBloodParticleSpray.cpp" />
     <ClCompile Include="src\Effects\EffectFoliageSway.cpp" />
@@ -69,6 +70,8 @@
     <ClCompile Include="src\Effects\EffectSepia.cpp" />
     <ClCompile Include="src\FeatureUnlockManager.cpp" />
     <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="src\Windows\WindowsFileSystem.cpp" />
+    <ClCompile Include="src\Windows\WindowsGameRuntime.cpp" />
     <ClCompile Include="src\GameObjects\ActiveBird.cpp" />
     <ClCompile Include="src\GameObjects\AmbientBird.cpp" />
     <ClCompile Include="src\GameObjects\BlackHole.cpp" />

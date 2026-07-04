@@ -1,6 +1,32 @@
 #include "precompiled.h"
 #include "SimpleFontManager.h"
 
+#if defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC
+
+SimpleFontManager::SimpleFontManager(void):
+	mDebugFont(nullptr)
+{
+}
+
+SimpleFontManager::~SimpleFontManager(void)
+{
+}
+
+void SimpleFontManager::Init(Graphics *)
+{
+}
+
+void SimpleFontManager::Release()
+{
+	mDebugFont = nullptr;
+}
+
+void SimpleFontManager::DrawDebugText(const char *, float, float)
+{
+}
+
+#else
+
 SimpleFontManager::SimpleFontManager(void):
 	mDebugFont(nullptr)
 {
@@ -51,3 +77,5 @@ void SimpleFontManager::DrawDebugText(const char * text, float top, float left)
 
 	mDebugFont->DrawTextA(0, text, -1, &rectangle, DT_NOCLIP, mDebugFontColor);
 }
+
+#endif

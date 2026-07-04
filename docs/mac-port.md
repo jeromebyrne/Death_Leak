@@ -46,6 +46,8 @@ The bundle copies `Game/Media`, `Game/XmlFiles`, and `Game/ShaderFiles` into `Co
 
 The frame cadence now runs through `GameLoopController`, which centralises the platform pump, audio update, Steam update, and fixed-step timing around injected services.
 
+The Windows entry point has been reduced to a thin launcher in `Game/src/program.cpp`, with the old boot loop moved into `Game/src/Windows/WindowsGameRuntime.cpp`.
+
 The smoke app reads the real settings XML and writes a temporary encrypted save file at:
 
 `~/Library/Application Support/Death Leak/Saves/mac_smoke_save.xml`

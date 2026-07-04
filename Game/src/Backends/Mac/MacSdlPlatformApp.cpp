@@ -2,6 +2,16 @@
 
 #include <iostream>
 
+namespace
+{
+SDL_Window* gCurrentWindow = nullptr;
+}
+
+SDL_Window* MacSdlPlatformApp::CurrentWindow()
+{
+    return gCurrentWindow;
+}
+
 MacSdlPlatformApp::~MacSdlPlatformApp()
 {
     if (mWindow != nullptr)
@@ -10,11 +20,18 @@ MacSdlPlatformApp::~MacSdlPlatformApp()
         mWindow = nullptr;
     }
 
+    if (gCurrentWindow != nullptr)
+    {
+        gCurrentWindow = nullptr;
+    }
+
     SDL_Quit();
 }
 
 bool MacSdlPlatformApp::Initialise(const PlatformWindowConfig& config)
 {
+    SDL_SetMainReady();
+
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER | SDL_INIT_HAPTIC) != 0)
     {
         std::cerr << "SDL_Init failed: " << SDL_GetError() << "\n";
@@ -40,6 +57,8 @@ bool MacSdlPlatformApp::Initialise(const PlatformWindowConfig& config)
         std::cerr << "SDL_CreateWindow failed: " << SDL_GetError() << "\n";
         return false;
     }
+
+    gCurrentWindow = mWindow;
 
     SDL_ShowWindow(mWindow);
     SDL_RaiseWindow(mWindow);

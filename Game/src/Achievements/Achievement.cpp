@@ -1,5 +1,28 @@
 #include "precompiled.h"
 #include "Achievement.h"
+
+#if defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC
+
+CSteamAchievements::CSteamAchievements(Achievement_t*, int)
+{
+}
+
+CSteamAchievements::~CSteamAchievements()
+{
+}
+
+bool CSteamAchievements::RequestStats()
+{
+	return false;
+}
+
+bool CSteamAchievements::SetAchievement(const char*)
+{
+	return false;
+}
+
+#else
+
 #include <isteamutils.h>
 #include <isteamuser.h>
 
@@ -107,3 +130,5 @@ void CSteamAchievements::OnAchievementStored(UserAchievementStored_t* pCallback)
 		OutputDebugString(L"Stored Achievement for Steam\n");
 	}
 }
+
+#endif

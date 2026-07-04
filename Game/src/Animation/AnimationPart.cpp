@@ -14,10 +14,18 @@ AnimationPart::AnimationPart(TiXmlElement * element):m_sizeX(64), m_sizeY(64), m
 	
 	ReadXml(element); 
 
-    // Get the first animation sequence and set it as the current sequence
-	std::map<std::string,AnimationSequence*>::iterator firstSequence = m_sequences.begin();
-
-	m_currentSequence = (*firstSequence).second;
+	// Get the first animation sequence and set it as the current sequence.
+	// Some content paths on Mac can fail to load and leave this empty; keep that
+	// case non-fatal so the game can continue booting.
+	if (!m_sequences.empty())
+	{
+		std::map<std::string,AnimationSequence*>::iterator firstSequence = m_sequences.begin();
+		m_currentSequence = (*firstSequence).second;
+	}
+	else
+	{
+		m_currentSequence = nullptr;
+	}
 
 }
 

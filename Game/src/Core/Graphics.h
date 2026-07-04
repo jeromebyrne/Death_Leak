@@ -1,8 +1,12 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
+#if defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC
+#include "Engine/Platform/MacDxCompat.h"
+#else
 #include <d3d10.h>
 #include <d3dx10.h>
+#endif
 #include "InputLayoutDescriptions.h"
 
 class SimpleFontManager;

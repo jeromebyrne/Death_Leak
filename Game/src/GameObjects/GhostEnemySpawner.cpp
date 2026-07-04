@@ -18,9 +18,9 @@ void GhostEnemySpawner::SpawnNPC(const float posX,
 							const float posY,
 							bool playSoundEffect, 
 							std::string animationFile, 
-							Vector2 & dimensions, 
-							Vector2 & collisionDimensions, 
-							Vector2 & collisionBoxOffset)
+							const Vector2 & dimensions, 
+							const Vector2 & collisionDimensions, 
+							const Vector2 & collisionBoxOffset)
 {
 	float randJumpSpeed = float(rand() % 4000);
 	randJumpSpeed *= 0.001f;

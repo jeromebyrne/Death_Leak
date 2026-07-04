@@ -19,9 +19,37 @@
 #include <vector>
 
 #include "tinyxml.h"
+#include "Engine/Platform/MacDxCompat.h"
+using namespace std;
 
 #define PI_VAL 3.14159265
-using namespace std;
+
+enum EffectTypesEnum {EFFECT_BASIC, EFFECT_LIGHT_TEXTURE, EFFECT_VERTEX_WOBBLE, EFFECT_REFLECT, EFFECT_PARTICLE_SPRAY, EFFECT_BUMP, EFFECT_NOISE, EFFECT_PIXEL_WOBBLE, EFFECT_FOLIAGE_SWAY};
+
+enum UIEventTypesEnum { UI_PRESS_DOWN, UI_PRESS_UP };
+
+struct EventStruct
+{
+public:
+	string EventName;
+	list<string> EventParams;
+};
+
+#include "Core/Vector2.h"
+#include "Core/Vector3.h"
+#include "Core/Vector4.h"
+#include "Core/VertexTypes.h"
+#include "Core/Timing.h"
+#include "Utils/Utilities.h"
+#include "Core/XmlDocument.h"
+#include "Core/XmlUtilities.h"
+#include "Core/Logger.h"
+#include "TextureManager.h"
+#include "Core/Graphics.h"
+#include "GameObjects/GameObjectManager.h"
+#include "Effects/EffectManager.h"
+#include "Camera2D.h"
+using namespace irrklang;
 
 #ifndef GAME_ASSERT_ENABLED
 	#ifdef _RELEASE

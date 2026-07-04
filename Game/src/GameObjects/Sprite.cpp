@@ -875,7 +875,13 @@ void Sprite::UpdateAnimations()
 
 	if(bodyPart != nullptr)
 	{
-		if(bodyPart->CurrentSequence()->Name() != "Still")
+		AnimationSequence* currentSequence = bodyPart->CurrentSequence();
+		if (currentSequence == nullptr)
+		{
+			return;
+		}
+
+		if(currentSequence->Name() != "Still")
 		{
 			bodyPart->SetSequence("Still");
 		}
@@ -1065,5 +1071,3 @@ void Sprite::AttachTo(std::shared_ptr<GameObject> & parent, Vector2 offset, Dept
 	mParentHFlipInitial = sprite->IsHFlipped();
 	mHflippedOnAttach = m_horizontalFlip;
 }
-
-

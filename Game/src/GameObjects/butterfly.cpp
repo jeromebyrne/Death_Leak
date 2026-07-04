@@ -65,11 +65,20 @@ void Butterfly::Initialise()
 void Butterfly::UpdateAnimations()
 {
 	AnimationPart * bodyPart = m_animation->GetPart("body");
-	GAME_ASSERT(bodyPart);
+	if (bodyPart == nullptr)
+	{
+		return;
+	}
 
 	if (bodyPart != nullptr)
 	{
-		if (bodyPart->CurrentSequence()->Name() != "Still")
+		AnimationSequence* currentSequence = bodyPart->CurrentSequence();
+		if (currentSequence == nullptr)
+		{
+			return;
+		}
+
+		if (currentSequence->Name() != "Still")
 		{
 			bodyPart->SetSequence("Still");
 		}
@@ -78,13 +87,13 @@ void Butterfly::UpdateAnimations()
 		{
 			float animFramerate = std::abs((GetVelocity().Y * 4.0f));
 
-			bodyPart->CurrentSequence()->SetFrameRate(animFramerate);
+			currentSequence->SetFrameRate(animFramerate);
 		}
 		else
 		{
 			float animFramerate = 45;
 
-			bodyPart->CurrentSequence()->SetFrameRate(animFramerate);
+			currentSequence->SetFrameRate(animFramerate);
 		}
 		
 

@@ -9,11 +9,7 @@
 
 class AnimationSkeleton;
 
-#if defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC
-using AnimationFrameResource = std::string;
-#else
 using AnimationFrameResource = ID3D10ShaderResourceView*;
-#endif
 
 class AnimationSequence
 {

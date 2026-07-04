@@ -1,9 +1,10 @@
 #include "Backends/Mac/MacGameBootstrap.h"
+#include "Backends/Mac/MacLaunchPaths.h"
 
 #include <filesystem>
 
 int main()
 {
-    MacGameBootstrap bootstrap(std::filesystem::current_path());
+    MacGameBootstrap bootstrap(MacLaunchPaths::DetectRepoRoot());
     return bootstrap.RunSmoke();
 }

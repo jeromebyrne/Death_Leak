@@ -61,7 +61,7 @@ void UIAnimatedSprite::XmlRead(TiXmlElement * element)
 void UIAnimatedSprite::Update()
 {
 	// check the last time we animated 
-	unsigned long currentTime = timeGetTime();
+	unsigned long currentTime = static_cast<unsigned long>(Timing::Instance()->GetTotalTimeSeconds() * 1000.0f);
 	if ((mLastFrameSwitch + (1000/mFramesPerSecond)) < currentTime )
 	{
 		mCurrentFrame++;

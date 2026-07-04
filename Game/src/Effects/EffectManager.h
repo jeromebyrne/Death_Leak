@@ -3,6 +3,8 @@
 
 #include "EffectAbstract.h"
 
+class Graphics;
+
 class EffectManager
 {
 	static EffectManager * m_instance;

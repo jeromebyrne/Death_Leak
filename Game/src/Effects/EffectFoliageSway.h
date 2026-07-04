@@ -13,17 +13,26 @@ public:
 
 	void SetTimeVariable(float time)
 	{
-		mTimeVariable->SetFloat(time);
+		if (mTimeVariable != nullptr)
+		{
+			mTimeVariable->SetFloat(time);
+		}
 	}
 
 	void SetTimeMultiplier(float multiplier)
 	{
-		mTimeMultiplier->SetFloat(multiplier);
+		if (mTimeMultiplier != nullptr)
+		{
+			mTimeMultiplier->SetFloat(multiplier);
+		}
 	}
 
 	void SetGlobalTimeMultiplier(float multiplier)
 	{
-		mGlobalTimeMultiplier->SetFloat(multiplier);
+		if (mGlobalTimeMultiplier != nullptr)
+		{
+			mGlobalTimeMultiplier->SetFloat(multiplier);
+		}
 	}
 
 private:

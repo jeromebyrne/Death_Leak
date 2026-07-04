@@ -71,7 +71,11 @@ Player::~Player(void)
 
 void Player::Initialise()
 {
+#if defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC
+	mIsOnSteamDeck = false;
+#else
 	mIsOnSteamDeck = SteamUtils() != nullptr ? SteamUtils()->IsSteamRunningOnSteamDeck() : false;
+#endif
 
 	// update the base classes
 	Character::Initialise();
@@ -658,7 +662,7 @@ void Player::AddAimLineSprite()
 	mAimLineSprite->SetAlpha(0.0f);
 }
 
-void Player::SetAimLineDirection(Vector2 & dir)
+void Player::SetAimLineDirection(const Vector2 & dir)
 {
 	if (!mAimLineSprite)
 	{
@@ -931,21 +935,25 @@ void Player::UpdateAnimations()
 	if (!hasStarted)
 	{
 		AnimationPart * bodyPart = m_animation->GetPart("body");
-		GAME_ASSERT(bodyPart);
-
 		if (bodyPart == nullptr)
 		{
 			return;
 		}
 
-		string current_body_sequence_name = bodyPart->CurrentSequence()->Name();
+		AnimationSequence* currentSequence = bodyPart->CurrentSequence();
+		if (currentSequence == nullptr)
+		{
+			return;
+		}
+
+		string current_body_sequence_name = currentSequence->Name();
 
 		if (current_body_sequence_name != "IntroCutscene1" && current_body_sequence_name != "IntroCutscene2")
 		{
 			bodyPart->SetSequence("IntroCutscene1");
 		}
 
-		if (bodyPart->CurrentSequence()->Name() == "IntroCutscene1")
+		if (bodyPart->CurrentSequence() != nullptr && bodyPart->CurrentSequence()->Name() == "IntroCutscene1")
 		{
 			bodyPart->AnimateLooped();
 		}
@@ -968,7 +976,8 @@ void Player::UpdateAnimations()
 				{
 					armPart->Animate();
 				}
-				if (armPart->CurrentSequence()->Name() != current_body_sequence_name)
+				AnimationSequence* armSequence = armPart->CurrentSequence();
+				if (armSequence != nullptr && armSequence->Name() != current_body_sequence_name)
 				{
 					// arm part must have the same sequences as the body for this to work
 					armPart->SetSequence(current_body_sequence_name);
@@ -986,14 +995,18 @@ void Player::UpdateAnimations()
 void Player::UpdateIsPullingSwordFromStomach(float delta)
 {
 	AnimationPart * bodyPart = m_animation->GetPart("body");
-	GAME_ASSERT(bodyPart);
-
 	if (bodyPart == nullptr)
 	{
 		return;
 	}
 
-	string current_body_sequence_name = bodyPart->CurrentSequence()->Name();
+	AnimationSequence* currentSequence = bodyPart->CurrentSequence();
+	if (currentSequence == nullptr)
+	{
+		return;
+	}
+
+	string current_body_sequence_name = currentSequence->Name();
 
 	if (current_body_sequence_name == "IntroCutscene1")
 	{
@@ -1227,4 +1240,3 @@ void Player::InitialiseFinalLevelText()
 		D3DX10CreateFontIndirect(Graphics::GetInstance()->Device(), &fd, &mFinalLevelTitleText);
 	}
 }
-

@@ -4,6 +4,65 @@
 
 #pragma comment(lib, "irrKlang.lib") // link with irrKlang.dll
 
+#if defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC
+
+PositionalAudio::PositionalAudio()
+{
+}
+
+PositionalAudio::~PositionalAudio()
+{
+}
+
+void PositionalAudio::Initialise(const string & audioFilename,
+									bool repeat,
+									const Vector2 & dimensions,
+									const Vector2 & fadeDimensions)
+{
+	mAudioFilename = audioFilename;
+	mDimensions = dimensions;
+	mRepeat = repeat;
+	mFadeDimensions = fadeDimensions;
+	mIsInitialised = true;
+}
+
+void PositionalAudio::Update(float, const Vector2 &)
+{
+}
+
+void PositionalAudio::Play()
+{
+	mPlaying = true;
+}
+
+void PositionalAudio::Stop()
+{
+	mPlaying = false;
+}
+
+void PositionalAudio::DeleteSoundInstance()
+{
+	mSoundInstance = nullptr;
+}
+
+bool PositionalAudio::IsInitialised() const
+{
+	return mIsInitialised;
+}
+
+void PositionalAudio::Disable()
+{
+	mIsDisabled = true;
+	mPlaying = false;
+}
+
+void PositionalAudio::SetRepeat(bool repeat)
+{
+	mRepeat = repeat;
+}
+
+#else
+
 PositionalAudio::PositionalAudio()
 {
 }
@@ -227,3 +286,5 @@ void PositionalAudio::SetRepeat(bool repeat)
 		mSoundInstance->setIsLooped(mRepeat);
 	}
 }
+
+#endif

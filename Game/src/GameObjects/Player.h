@@ -19,7 +19,7 @@ public:
 	void Draw(ID3D10Device* device, Camera2D* camera) override;
 
 	void AddAimLineSprite();
-	void SetAimLineDirection(Vector2 & dir);
+	void SetAimLineDirection(const Vector2 & dir);
 
 	void SetCurrentSolidLineDirection(const Vector2 & direction);
 

@@ -122,7 +122,7 @@ public:
 		DrawTexture(centrePoint, Vector2(radius, radius), "Media\\debug\\circle.png");
 	}
 
-	static void DrawLine(Vector2 & startPos, Vector2 &endPos)
+	static void DrawLine(const Vector2 & startPos, const Vector2 &endPos)
 	{
 		EffectBasic * basicEffect = static_cast<EffectBasic*>(EffectManager::Instance()->GetEffect("effectbasic"));
 

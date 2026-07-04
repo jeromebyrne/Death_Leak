@@ -52,26 +52,43 @@ void AmbientBird::Initialise()
 void AmbientBird::UpdateAnimations()
 {
 	AnimationPart * bodyPart = m_animation->GetPart("body");
-	GAME_ASSERT(bodyPart);
+	if (bodyPart == nullptr)
+	{
+		return;
+	}
 
 	if (bodyPart != nullptr)
 	{
+		AnimationSequence* currentSequence = bodyPart->CurrentSequence();
+		if (currentSequence == nullptr)
+		{
+			return;
+		}
+
 		if (mIsGliding)
 		{
-			if (bodyPart->CurrentSequence()->Name() != "Still")
+			if (currentSequence->Name() != "Still")
 			{
 				bodyPart->SetSequence("Still");
 
-				bodyPart->CurrentSequence()->SetFrameRate(1);
+				AnimationSequence* updatedSequence = bodyPart->CurrentSequence();
+				if (updatedSequence != nullptr)
+				{
+					updatedSequence->SetFrameRate(1);
+				}
 			}
 		}
 		else
 		{
-			if (bodyPart->CurrentSequence()->Name() != "Running")
+			if (currentSequence->Name() != "Running")
 			{
 				bodyPart->SetSequence("Running");
 
-				bodyPart->CurrentSequence()->SetFrameRate(9.0f);
+				AnimationSequence* updatedSequence = bodyPart->CurrentSequence();
+				if (updatedSequence != nullptr)
+				{
+					updatedSequence->SetFrameRate(9.0f);
+				}
 			}
 		}
 		

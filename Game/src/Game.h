@@ -2,9 +2,16 @@
 #define GAME_H
 
 #include "InputManager.h"
-#include "steam_api.h"
+#include "Engine/Platform/IFileSystem.h"
 #include "FeatureUnlockManager.h"
+
+#if !(defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC)
+#include "steam_api.h"
 #include <Achievements\Achievement.h>
+#else
+#include "Achievements/Achievement.h"
+struct GameOverlayActivated_t;
+#endif
 
 class EffectLightTexture;
 class EffectLightTextureVertexWobble;
@@ -30,7 +37,7 @@ class Game
 {
 public:
 
-	Game(Graphics * pGraphics);
+	Game(Graphics * pGraphics, const IFileSystem* fileSystem = nullptr);
 	~Game(void);
 	void Initialise();
 	void Update(float delta);
@@ -51,7 +58,7 @@ public:
 	static bool GetIsLevelEditMode() { return mLevelEditMode; }
 
 	static Game * GetInstance() { return mInstance; }
-	static void Create();
+	static void Create(const IFileSystem* fileSystem = nullptr);
 	static void Destroy();
 
 	bool IsLevelEditTerrainMode() const;
@@ -71,18 +78,24 @@ public:
 		
 	const InputManager & GetInputManager() const { return mInputManager; }
 
+#if !(defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC)
 	void OnSteamGameOverlayActivated(GameOverlayActivated_t* pCallback);
+#endif
 
 	void Vibrate(float leftPercent, float rightPercent, float time);
 
 private:
 
 	void LoadCachedObjectsForPerformance();
+	std::string ResolveAssetPath(const std::string& relativePath) const;
+	std::string ResolveSavePath(const std::string& relativePath) const;
+	std::string ResolveSettingsPath(const std::string& relativePath) const;
 
 	void * m_steamcallback_OnSteamGameOverlayActivated = nullptr;
 
 	// graphics manager
 	Graphics * m_pGraphics;
+	const IFileSystem* mFileSystem = nullptr;
 
 	// 2D camera
 	Camera2D * m_pCam2d;

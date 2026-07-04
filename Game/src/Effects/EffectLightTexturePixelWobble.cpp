@@ -26,6 +26,11 @@ void EffectLightTexturePixelWobble::Load(ID3D10Device * device)
 
 void EffectLightTexturePixelWobble::ReverseMotion()
 {
+	if (m_pWavinessVariable == nullptr || m_pSpeedMod == nullptr)
+	{
+		return;
+	}
+
 	float waviness = 0.0f;
 	m_pWavinessVariable->GetFloat(&waviness);
 	m_pWavinessVariable->SetFloat(waviness * -1);

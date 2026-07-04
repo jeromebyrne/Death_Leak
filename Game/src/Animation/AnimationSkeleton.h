@@ -27,7 +27,7 @@ public:
 
 	std::vector<AnimationSkeletonFramePiece> GetDataForFrame(unsigned int frame)  { return mSkeletonLines[frame]; }
 
-	bool HasCollidedOnFrame(unsigned int frame, bool isHFlipped, Vector2 & skeletonWorldPos, Vector2 & startPoint, Vector2 & endPoint, Vector2 & intersectPointOut);
+	bool HasCollidedOnFrame(unsigned int frame, bool isHFlipped, const Vector2 & skeletonWorldPos, const Vector2 & startPoint, const Vector2 & endPoint, Vector2 & intersectPointOut);
 
 	bool HasBonesForFrame(unsigned int frame);
 
@@ -35,7 +35,7 @@ public:
 	
 private:
 
-	bool Intersect(bool isHFlipped, Vector2 & skeletonWorldPos, AnimationSkeletonFramePiece & framePiece, Vector2 & otherStart, Vector2 & otherEnd, Vector2 & intersectPointOut);
+	bool Intersect(bool isHFlipped, const Vector2 & skeletonWorldPos, AnimationSkeletonFramePiece & framePiece, const Vector2 & otherStart, const Vector2 & otherEnd, Vector2 & intersectPointOut);
 
 	std::map<unsigned int, std::vector<AnimationSkeletonFramePiece>> mSkeletonLines;
 };

@@ -11,6 +11,8 @@ public:
     MacSdlPlatformApp() = default;
     ~MacSdlPlatformApp() override;
 
+    static SDL_Window* CurrentWindow();
+
     bool Initialise(const PlatformWindowConfig& config) override;
     bool PumpEvents() override;
     void RequestQuit() override;

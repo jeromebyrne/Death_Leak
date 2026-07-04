@@ -11,6 +11,7 @@
 class Camera2D;
 class AudioObject;
 class ParallaxLayer;
+class Graphics;
 
 class GameObjectManager
 {

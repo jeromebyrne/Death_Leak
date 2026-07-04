@@ -14,6 +14,33 @@
 #include "EffectLightTexturePixelWobble.h"
 #include "EffectFoliageSway.h"
 
+#if defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC
+
+EffectManager* EffectManager::m_instance = nullptr;
+
+EffectManager::EffectManager(void)
+{
+}
+
+void EffectManager::Release()
+{
+	delete this;
+}
+
+EffectManager::~EffectManager(void)
+{
+	for(auto current : m_effectMap)
+	{
+		delete current.second;
+	}
+}
+
+void EffectManager::Initialise(Graphics *)
+{
+}
+
+#else
+
 EffectManager* EffectManager::m_instance = nullptr;
 
 EffectManager::EffectManager(void)
@@ -104,3 +131,5 @@ void EffectManager::Initialise(Graphics * graphicsSystem)
 	m_effectMap["effectpixelwobble"] = effectLightTexturePIxelWobble;
 	m_effectMap["effectfoliagesway"] = effectFoliageSway;
 }
+
+#endif

@@ -38,6 +38,7 @@
 #include "ActiveBird.h"
 #include "Smashable.h"
 #include "SaveShrine.h"
+#include <cmath>
 #include "Door.h"
 #include "GhostEnemy.h"
 #include "HealthDevil.h"
@@ -102,9 +103,8 @@ void GameObjectManager::RemoveGameObject(GameObject * object, bool defer)
 		{
 			if (obj->ID() == object->ID())
 			{
-				// already on the kill list 
-				LOG_ERROR("Attempting to remove GameObject with ID: %u when already scheduled for removal", object->ID());
-				GAME_ASSERT(false);
+				// already on the kill list
+				LOG_INFO("Ignoring duplicate removal request for GameObject ID: %u", object->ID());
 				return;
 			}
 		}
@@ -144,6 +144,8 @@ void GameObjectManager::RemoveGameObject(GameObject * object, bool defer)
 
 shared_ptr<GameObject> & GameObjectManager::GetObjectByID(int id)
 {
+	static shared_ptr<GameObject> s_nullObject;
+
 	for (auto & obj : m_gameObjects)
 	{
 		if(obj->ID() == id)
@@ -154,12 +156,16 @@ shared_ptr<GameObject> & GameObjectManager::GetObjectByID(int id)
 
 	LOG_INFO("Did not find object with id: %i", id);
 	GAME_ASSERT(false);
-	return shared_ptr<GameObject>(nullptr); // JB: this is bad
+	return s_nullObject;
 }
 
 // this is to be called before initialise
 void GameObjectManager::LoadContent(ID3D10Device * device)
 {
+#if defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC
+	(void)device;
+	return;
+#else
 	for(auto & obj : m_gameObjects)
 	{
 		if (!obj)
@@ -178,6 +184,7 @@ void GameObjectManager::LoadContent(ID3D10Device * device)
 
 		drawObj->LoadContent(device);
 	}
+#endif
 }
 
 void GameObjectManager::Initialise()
@@ -194,11 +201,18 @@ void GameObjectManager::Initialise()
 	GAME_ASSERT(m_player);
  	if (m_player)
 	{
-		// set the camera to the players position initially
-		m_camera->FollowObjectsOrigin(m_player);
-
 		// now tell the camera that the player is the object we should follow
 		m_camera->SetTargetObject(m_player);
+
+		// keep the initial level camera position when an axis is not configured to follow
+		if (mLevelProperties.ShouldFollowX())
+		{
+			m_camera->SetPositionX(m_player->X());
+		}
+		if (mLevelProperties.ShouldFollowY())
+		{
+			m_camera->SetPositionY(m_player->Y());
+		}
 	}
 }
 
@@ -210,6 +224,8 @@ void GameObjectManager::Update(bool paused, float delta)
 	{
 		float camX = m_camera->X();
 		float camY = m_camera->Y();
+		Player* player = GetPlayer();
+		const bool playerWasFinite = player == nullptr || (std::isfinite(player->X()) && std::isfinite(player->Y()));
 
 		NPCManager::Instance()->Update();
 
@@ -241,11 +257,15 @@ void GameObjectManager::Update(bool paused, float delta)
 				bool inView = 
 					Utilities::IsObjectInRectangle(obj.get(), camX, camY, m_updateZoneDimensions.X, m_updateZoneDimensions.Y);
 
-				if (inView)
+			if (inView)
+			{
+				obj->Update(delta);
+				if (player != nullptr && playerWasFinite && (!std::isfinite(player->X()) || !std::isfinite(player->Y())))
 				{
-					obj->Update(delta);
-					mPostUpdateObjects.push_back(obj.get());
+					LOG_ERROR("Player became non-finite during %s::Update (object id=%u): pos=(%f,%f)", obj->GetTypeName().c_str(), obj->ID(), player->X(), player->Y());
 				}
+				mPostUpdateObjects.push_back(obj.get());
+			}
 				else if (obj->IsProjectile() || obj->IsDebris())
 				{
 					// if a projectile has gone outside the bounds then just remove it
@@ -301,6 +321,10 @@ void GameObjectManager::ScaleObjects(float xScale, float yScale)
 
 void GameObjectManager::Draw(ID3D10Device *  device)
 {
+#if defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC
+	(void)device;
+	return;
+#else
 	for (auto & obj : m_gameObjects)
 	{
 		GAME_ASSERT(obj);
@@ -353,6 +377,7 @@ void GameObjectManager::Draw(ID3D10Device *  device)
 	}
 
 	NPCManager::Instance()->Draw();
+#endif
 }
 
 void GameObjectManager::DebugDraw()
@@ -377,6 +402,8 @@ void GameObjectManager::DebugDraw()
 void GameObjectManager::LoadObjectsFromFile(const string & filename)
 {
 	mCurrentLevelFile = filename;
+	m_killList.clear();
+	mPostUpdateObjects.clear();
 
 	GameObject::ResetGameIds();
 
@@ -401,12 +428,36 @@ void GameObjectManager::LoadObjectsFromFile(const string & filename)
 	m_camera = camera;
 
 	XmlDocument doc;
-	doc.Load(filename);
+	if (!doc.Load(filename))
+	{
+		LOG_ERROR("Failed to load level XML: %s", filename.c_str());
+		m_levelLoaded = false;
+		return;
+	}
 
 	TiXmlHandle * hdoc = doc.Handle();
+	if (hdoc == nullptr)
+	{
+		LOG_ERROR("Level XML handle missing: %s", filename.c_str());
+		m_levelLoaded = false;
+		return;
+	}
+
 	TiXmlElement * root = hdoc->FirstChildElement().Element();
+	if (root == nullptr)
+	{
+		LOG_ERROR("Level XML root missing: %s", filename.c_str());
+		m_levelLoaded = false;
+		return;
+	}
 
 	TiXmlElement * child = root->FirstChildElement();
+	if (child == nullptr)
+	{
+		LOG_ERROR("Level XML has no child objects: %s", filename.c_str());
+		m_levelLoaded = false;
+		return;
+	}
 
 	// get the orbs that have already been created so that we don't create them
 	std::vector<unsigned int> currencyOrbsCollected;
@@ -493,11 +544,13 @@ void GameObjectManager::ParseLevelProperties(TiXmlElement * element)
 	while (child)
 	{
 		// what type of object is this
-		const char* objName = child->Value();
-		Utilities::ToLower((char *)objName); // TODO: this is nasty, pass a const char * and return a new std::string
+		std::string objName = child->Value() != nullptr ? child->Value() : "";
+		std::transform(objName.begin(), objName.end(), objName.begin(), [](unsigned char c) {
+			return static_cast<char>(std::tolower(c));
+		});
 
 		// start looking at what object we need to make
-		if (strcmp(objName, "levelproperties") == 0)
+		if (objName == "levelproperties")
 		{
 			mLevelProperties.XmlRead(child);
 
@@ -509,7 +562,10 @@ void GameObjectManager::ParseLevelProperties(TiXmlElement * element)
 		child = child->NextSiblingElement();
 	}
 
-	GAME_ASSERT(foundLevelProperties);
+	if (!foundLevelProperties)
+	{
+		LOG_ERROR("LevelProperties not found while loading level");
+	}
 }
 
 void GameObjectManager::CacheSaveData()
@@ -634,13 +690,15 @@ TiXmlElement * GameObjectManager::ConvertObjectToXmlElement(GameObject * object)
 GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement, const std::vector<unsigned int> & orbsCollected)
 {
 	// what type of object is this
-	const char* gameObjectTypeName = objectElement->Value();
-	Utilities::ToLower((char *)gameObjectTypeName); // TODO: this is nasty, pass a const char * and return a new std::string
-	
+	std::string gameObjectTypeName = objectElement->Value() != nullptr ? objectElement->Value() : "";
+	std::transform(gameObjectTypeName.begin(), gameObjectTypeName.end(), gameObjectTypeName.begin(), [](unsigned char c) {
+		return static_cast<char>(std::tolower(c));
+	});
+
 	GameObject * newGameObject = nullptr;
 
 	// start looking at what object we need to make
-	if(strcmp(gameObjectTypeName, "player") == 0)
+	if(gameObjectTypeName == "player")
 	{
 		if (!m_player || Game::GetInstance()->GetIsLevelEditMode()) // only create 1 player unless in editor
 		{
@@ -658,107 +716,107 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement, const
 			}
 		}
 	}
-	else if (strcmp(gameObjectTypeName, "parallaxlayer") == 0)
+	else if (gameObjectTypeName == "parallaxlayer")
 	{
 		newGameObject = new ParallaxLayer(m_camera);
 	}
-	else if (strcmp(gameObjectTypeName, "levelentry") == 0)
+	else if (gameObjectTypeName == "levelentry")
 	{
 		newGameObject = new LevelEntry();
 	}
-	else if (strcmp(gameObjectTypeName, "solidmovingsprite") == 0)
+	else if (gameObjectTypeName == "solidmovingsprite")
 	{
 		newGameObject = new SolidMovingSprite();
 	}
-	else if (strcmp(gameObjectTypeName, "sprite") == 0)
+	else if (gameObjectTypeName == "sprite")
 	{
 		newGameObject = new Sprite();
 	}
-	else if (strcmp(gameObjectTypeName, "movingsprite") == 0)
+	else if (gameObjectTypeName == "movingsprite")
 	{
 		newGameObject = new MovingSprite();
 	}
-	else if (strcmp(gameObjectTypeName, "platform") == 0)
+	else if (gameObjectTypeName == "platform")
 	{
 		newGameObject = new Platform();
 	}
-	else if (strcmp(gameObjectTypeName, "pathingplatform") == 0)
+	else if (gameObjectTypeName == "pathingplatform")
 	{
 		newGameObject = new PathingPlatform();
 	}
-	else if (strcmp(gameObjectTypeName, "fallingplatform") == 0)
+	else if (gameObjectTypeName == "fallingplatform")
 	{
 		newGameObject = new FallingPlatform();
 	}
-	else if(strcmp(gameObjectTypeName, "particlespray") == 0)
+	else if(gameObjectTypeName == "particlespray")
 	{
 		newGameObject = ReadParticleSpray(objectElement);
 	}
-	else if (strcmp(gameObjectTypeName, "audioobject") == 0)
+	else if (gameObjectTypeName == "audioobject")
 	{
 		newGameObject = new AudioObject();
 	}
-	else if (strcmp(gameObjectTypeName, "npc") == 0)
+	else if (gameObjectTypeName == "npc")
 	{
 		newGameObject = new NPC();
 	}
-	else if (strcmp(gameObjectTypeName, "rabbit") == 0)
+	else if (gameObjectTypeName == "rabbit")
 	{
 		newGameObject = new Rabbit();
 	}
-	else if (strcmp(gameObjectTypeName, "leveltrigger") == 0)
+	else if (gameObjectTypeName == "leveltrigger")
 	{
 		newGameObject = new LevelTrigger();
 	}
-	else if (strcmp(gameObjectTypeName, "waterblock") == 0)
+	else if (gameObjectTypeName == "waterblock")
 	{
 		newGameObject = new WaterBlock();
 	}
-	else if (strcmp(gameObjectTypeName, "butterfly") == 0)
+	else if (gameObjectTypeName == "butterfly")
 	{
 		newGameObject = new Butterfly();
 	}
-	else if (strcmp(gameObjectTypeName, "scrollingsprite") == 0)
+	else if (gameObjectTypeName == "scrollingsprite")
 	{
 		newGameObject = new ScrollingSprite();
 	}
-	else if (strcmp(gameObjectTypeName, "solidlinestrip") == 0)
+	else if (gameObjectTypeName == "solidlinestrip")
 	{
 		newGameObject = new SolidLineStrip();
 	}
-	else if (strcmp(gameObjectTypeName, "npctrigger") == 0)
+	else if (gameObjectTypeName == "npctrigger")
 	{
 		newGameObject = new NPCTrigger();
 	}
-	else if (strcmp(gameObjectTypeName, "forcebox") == 0)
+	else if (gameObjectTypeName == "forcebox")
 	{
 		newGameObject = new ForceBox();
 	}
-	else if (strcmp(gameObjectTypeName, "textobject") == 0)
+	else if (gameObjectTypeName == "textobject")
 	{
 		newGameObject = new TextObject();
 	}
-	else if (strcmp(gameObjectTypeName, "ambientbird") == 0)
+	else if (gameObjectTypeName == "ambientbird")
 	{
 		newGameObject = new AmbientBird();
 	}
-	else if (strcmp(gameObjectTypeName, "activebird") == 0)
+	else if (gameObjectTypeName == "activebird")
 	{
 		newGameObject = new ActiveBird();
 	}
-	else if (strcmp(gameObjectTypeName, "saveshrine") == 0)
+	else if (gameObjectTypeName == "saveshrine")
 	{
 		newGameObject = new SaveShrine();
 	}
-    else if (strcmp(gameObjectTypeName, "door") == 0)
+    else if (gameObjectTypeName == "door")
     {
         newGameObject = new Door();
     }
-	else if (strcmp(gameObjectTypeName, "dojoscrollpickup") == 0)
+	else if (gameObjectTypeName == "dojoscrollpickup")
 	{
 		newGameObject = new DojoScrollPickup();
 	}
-	else if (strcmp(gameObjectTypeName, "currencyorb") == 0)
+	else if (gameObjectTypeName == "currencyorb")
 	{
 		bool alreadyCollected = std::find(orbsCollected.begin(), orbsCollected.end(), GameObject::GetCurrentGameObjectCount()) != orbsCollected.end();
 		if (alreadyCollected && !Game::GetIsLevelEditMode())
@@ -773,51 +831,51 @@ GameObject * GameObjectManager::CreateObject(TiXmlElement * objectElement, const
 			static_cast<CurrencyOrb*>(newGameObject)->SetIsLoadTimeObject(true);
 		}
 	}
-	else if (strcmp(gameObjectTypeName, "breakable") == 0)
+	else if (gameObjectTypeName == "breakable")
 	{
 		newGameObject = new Breakable();
 	}
-	else if (strcmp(gameObjectTypeName, "smashable") == 0)
+	else if (gameObjectTypeName == "smashable")
 	{
 		newGameObject = new Smashable();
 	}
-	else if (strcmp(gameObjectTypeName, "ghostenemy") == 0)
+	else if (gameObjectTypeName == "ghostenemy")
 	{
 		newGameObject = new GhostEnemy();
 	}
-	else if (strcmp(gameObjectTypeName, "healthdevil") == 0)
+	else if (gameObjectTypeName == "healthdevil")
 	{
 		newGameObject = new HealthDevil();
 	}
-	else if (strcmp(gameObjectTypeName, "healthupgradepickup") == 0)
+	else if (gameObjectTypeName == "healthupgradepickup")
 	{
 		newGameObject = new HealthUpgradePickup();
 	}
-	else if (strcmp(gameObjectTypeName, "focusupgradepickup") == 0)
+	else if (gameObjectTypeName == "focusupgradepickup")
 	{
 		newGameObject = new FocusUpgradePickup();
 	}
-	else if (strcmp(gameObjectTypeName, "foliage") == 0)
+	else if (gameObjectTypeName == "foliage")
 	{
 		newGameObject = new Foliage();
 	}
-	else if (strcmp(gameObjectTypeName, "skeletonenemy") == 0)
+	else if (gameObjectTypeName == "skeletonenemy")
 	{
 		newGameObject = new SkeletonEnemy();
 	}
-	else if (strcmp(gameObjectTypeName, "paperpickup") == 0)
+	else if (gameObjectTypeName == "paperpickup")
 	{
 		newGameObject = new PaperPickup();
 	}
-	else if (strcmp(gameObjectTypeName, "keypickup") == 0)
+	else if (gameObjectTypeName == "keypickup")
 	{
 		newGameObject = new KeyPickup();
 	}
-	else if (strcmp(gameObjectTypeName, "sfxpickup") == 0)
+	else if (gameObjectTypeName == "sfxpickup")
 	{
 		newGameObject = new SfxPickup();
 	}
-	else if (strcmp(gameObjectTypeName, "boat") == 0)
+	else if (gameObjectTypeName == "boat")
 	{
 		newGameObject = new Boat();
 	}
@@ -925,6 +983,9 @@ ParticleSpray * GameObjectManager::ReadParticleSpray(TiXmlElement * element)
 
 void GameObjectManager::DeleteGameObjects()
 {
+	m_killList.clear();
+	mPostUpdateObjects.clear();
+
 	for (auto g : m_gameObjects)
 	{
 		g.reset();

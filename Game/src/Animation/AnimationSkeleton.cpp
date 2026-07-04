@@ -25,9 +25,9 @@ void AnimationSkeleton::PopulateFrameData(unsigned int frame, std::list<Animatio
 
 bool AnimationSkeleton::HasCollidedOnFrame(unsigned int frame, 
 											bool isHFlipped, 
-											Vector2 & skeletonWorldPos, 
-											Vector2 & startPoint, 
-											Vector2 & endPoint,
+											const Vector2 & skeletonWorldPos, 
+											const Vector2 & startPoint, 
+											const Vector2 & endPoint,
 											Vector2 & intersectPointOut)
 {
 	std::vector<AnimationSkeletonFramePiece> & vec = mSkeletonLines[frame];
@@ -51,10 +51,10 @@ bool AnimationSkeleton::HasCollidedOnFrame(unsigned int frame,
 }
 
 bool AnimationSkeleton::Intersect(bool isHFlipped, 
-									Vector2 & skeletonWorldPos, 
+									const Vector2 & skeletonWorldPos, 
 									AnimationSkeletonFramePiece & framePiece, 
-									Vector2 & otherStart, 
-									Vector2 & otherEnd,
+									const Vector2 & otherStart, 
+									const Vector2 & otherEnd,
 									Vector2 & intersectPointOut)
 {
 	Vector2 pieceWorldStart(skeletonWorldPos.X + framePiece.mStartPos.X,

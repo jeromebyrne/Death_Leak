@@ -7,6 +7,10 @@
 
 class AIStateFollow;
 class AIStateRepel;
+class AIStateRangeAttack;
+class AIStateButterflyWander;
+class AIStateGroundAnimalWander;
+class AIStateFlying;
 
 class NPC : public Character
 {

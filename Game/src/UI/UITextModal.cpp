@@ -159,7 +159,11 @@ void UITextModal::Draw(ID3D10Device * device)
 			float halfDimensionsX = kTitleTextDimensionsX * 0.5f;
 			float halfDimensionsY = kTitleTextDimensionsY * 0.5f;
 
-			RECT bounds = { 960.0f - halfDimensionsX, 100, 960.0f + halfDimensionsX, 200 };
+			RECT bounds;
+			bounds.left = static_cast<LONG>(960.0f - halfDimensionsX);
+			bounds.top = static_cast<LONG>(100);
+			bounds.right = static_cast<LONG>(960.0f + halfDimensionsX);
+			bounds.bottom = static_cast<LONG>(200);
 			mTitleFont->DrawTextA(0, mLocalizedTitle.c_str(), -1, &bounds, DT_CENTER | DT_TOP, kTitleColor);
 		}
 	}
@@ -171,7 +175,11 @@ void UITextModal::Draw(ID3D10Device * device)
 			float halfDimensionsX = kDescriptionTextDimensionsX * 0.5f;
 			float halfDimensionsY = kDescriptionTextDimensionsY * 0.5f;
 
-			RECT bounds = { 960.0f - halfDimensionsX, 540.0f - halfDimensionsY, 960.0f + halfDimensionsX, 540.0f + halfDimensionsY };
+			RECT bounds;
+			bounds.left = static_cast<LONG>(960.0f - halfDimensionsX);
+			bounds.top = static_cast<LONG>(540.0f - halfDimensionsY);
+			bounds.right = static_cast<LONG>(960.0f + halfDimensionsX);
+			bounds.bottom = static_cast<LONG>(540.0f + halfDimensionsY);
 			mDescriptionFont->DrawTextA(0, mLocalizedDescription.c_str(), -1, &bounds, DT_WORDBREAK | DT_CENTER | DT_VCENTER, kDescColor);
 		}
 	}
@@ -186,4 +194,3 @@ void UITextModal::SetLocalizedTitle(const string & title)
 {
 	mLocalizedTitle = title;
 }
-

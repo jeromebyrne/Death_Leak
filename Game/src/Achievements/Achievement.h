@@ -1,6 +1,33 @@
 #ifndef ACHIEVEMENT_H
 #define ACHIEVEMENT_H
 
+#if defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC
+
+#include <cstdint>
+
+#define _ACH_ID( id, name ) { id, #id, name, "", 0, 0 }
+struct Achievement_t
+{
+	int m_eAchievementID;
+	const char* m_pchAchievementID;
+	char m_rgchName[128];
+	char m_rgchDescription[256];
+	bool m_bAchieved;
+	int m_iIconImage;
+};
+
+class CSteamAchievements
+{
+public:
+	CSteamAchievements(Achievement_t* Achievements, int NumAchievements);
+	~CSteamAchievements();
+
+	bool RequestStats();
+	bool SetAchievement(const char* ID);
+};
+
+#else
+
 #include <steamtypes.h>
 #include <isteamuserstats.h>
 
@@ -37,5 +64,7 @@ public:
 	STEAM_CALLBACK(CSteamAchievements, OnAchievementStored,
 		UserAchievementStored_t, m_CallbackAchievementStored);
 };
+
+#endif
 
 #endif

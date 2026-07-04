@@ -12,23 +12,23 @@ public:
 	float Length();
 	void Normalise();
 
-	inline float Dot(Vector2 & v)
+	inline float Dot(const Vector2 & v) const
 	{
 		float value = X * v.X + Y * v.Y;
 		return value;
 	}
 
-	inline float Cross(Vector2 v)
+	inline float Cross(const Vector2 & v)
 	{
 		return (X * v.Y) - (Y * v.X);
 	}
 
-	inline static Vector2 Cross(Vector2 v1, Vector2 v2)
+	inline static Vector2 Cross(const Vector2 & v1, const Vector2 & v2)
 	{
 		return (v1.X * v2.Y) - (v1.Y * v2.X);
 	}
 
-	inline Vector2 operator - ( Vector2 & v )
+	inline Vector2 operator - ( const Vector2 & v ) const
 	{
 		float newX = X - v.X;
 		float newY = Y - v.Y;
@@ -36,7 +36,7 @@ public:
 		return Vector2(newX, newY);
 	}
 
-	inline Vector2 operator + ( Vector2  & v )
+	inline Vector2 operator + ( const Vector2  & v ) const
 	{
 		float newX = X + v.X;
 		float newY = Y + v.Y;
@@ -44,13 +44,13 @@ public:
 		return Vector2(newX, newY);
 	}
 
-	inline void operator += (Vector2 & value)
+	inline void operator += (const Vector2 & value)
 	{
 		X += value.X;
 		Y += value.Y;
 	}
 
-	inline void operator -= (Vector2 & value)
+	inline void operator -= (const Vector2 & value)
 	{
 		X -= value.X;
 		Y -= value.Y;
@@ -64,7 +64,7 @@ public:
 		return Vector2(newX, newY);
 	}
 
-	inline Vector2 operator * (Vector2 & value)
+	inline Vector2 operator * (const Vector2 & value) const
 	{
 		Vector2 returnValue(X * value.X, Y * value.Y);
 

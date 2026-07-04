@@ -120,11 +120,20 @@ void Smashable::UpdateAnimations()
 	}
 
 	AnimationPart * bodyPart = m_animation->GetPart("body");
-	GAME_ASSERT(bodyPart);
+	if (bodyPart == nullptr)
+	{
+		return;
+	}
 
 	if (bodyPart)
 	{
-		std::string sequence_name = bodyPart->CurrentSequence()->Name();
+		AnimationSequence* activeSequence = bodyPart->CurrentSequence();
+		if (activeSequence == nullptr)
+		{
+			return;
+		}
+
+		std::string sequence_name = activeSequence->Name();
 		if (sequence_name != currentSequence)
 		{
 			bodyPart->SetSequence(currentSequence);

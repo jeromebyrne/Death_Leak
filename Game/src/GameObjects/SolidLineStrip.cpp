@@ -347,7 +347,7 @@ void SolidLineStrip::CalculateLines()
 							m_collisionBoxDimensions.Y + std::abs(mCollisionBoxOffset.Y) * 2.0f);
 }
 
-bool SolidLineStrip::Intersect(SolidLine & solidLine, Vector2 & otherStart, Vector2 & otherEnd, Vector2 & intersectPointOut)
+bool SolidLineStrip::Intersect(SolidLine & solidLine, const Vector2 & otherStart, const Vector2 & otherEnd, Vector2 & intersectPointOut)
 {
 	// Calculate matrix determinants
 	float det1 = (solidLine.StartPoint.WorldPosition.X * solidLine.EndPoint.WorldPosition.Y) - 
@@ -546,4 +546,3 @@ const Vector2 & SolidLineStrip::GetNormalForLineIndex(unsigned int lineIndex)
 {
 	return mLines[lineIndex].Normal;
 }
-

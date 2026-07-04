@@ -1,9 +1,7 @@
 #include "precompiled.h"
 #include "LevelProperties.h"
 #include "XmlUtilities.h"
-#if !(defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC)
-	#include "WeatherManager.h"
-#endif
+#include "WeatherManager.h"
 
 LevelProperties::LevelProperties(void) :
 	mCameraZoomInPercent(1.0f),
@@ -43,26 +41,22 @@ void LevelProperties::XmlRead(TiXmlElement * element)
 	mMusicLength = XmlUtilities::ReadAttributeAsFloat(element, "music", "length");
 	mMusicTimeBetween = XmlUtilities::ReadAttributeAsFloat(element, "music", "time_between");
 
-#if !(defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC)
-		Camera2D * cam2d = Camera2D::GetInstance();
-		if (cam2d)
-		{
-			cam2d->SetBounds(mCamBoundsTopLeft.X, mCamBoundsBottomRight.X, mCamBoundsTopLeft.Y, mCamBoundsBottomRight.Y);
-			cam2d->SetZoomLevel(mCameraZoomInPercent);
-			cam2d->SetTargetOffset(mTargetOffset);
-			cam2d->SetTargetLag(mTargetLag);
-			cam2d->SetShouldFollowX(mFollowX);
-			cam2d->SetShouldFollowY(mFollowY);
-			cam2d->SetPositionX(mInitialCamPos.X);
-			cam2d->SetPositionY(mInitialCamPos.Y);
-		}
-#endif
+	Camera2D * cam2d = Camera2D::GetInstance();
+	if (cam2d)
+	{
+		cam2d->SetBounds(mCamBoundsTopLeft.X, mCamBoundsBottomRight.X, mCamBoundsTopLeft.Y, mCamBoundsBottomRight.Y);
+		cam2d->SetZoomLevel(mCameraZoomInPercent);
+		cam2d->SetTargetOffset(mTargetOffset);
+		cam2d->SetTargetLag(mTargetLag);
+		cam2d->SetShouldFollowX(mFollowX);
+		cam2d->SetShouldFollowY(mFollowY);
+		cam2d->SetPositionX(mInitialCamPos.X);
+		cam2d->SetPositionY(mInitialCamPos.Y);
+	}
 
 	mAllowWeather = XmlUtilities::ReadAttributeAsBool(element, "weather_properties", "allow_weather");
 
-#if !(defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC)
 	WeatherManager::GetInstance()->AllowWeather(mAllowWeather);
-#endif
 }
 
 void LevelProperties::XmlWrite(TiXmlElement * element)

@@ -66,7 +66,13 @@ public:
 	}
 
 	// finish the animation abruptly
-	void Finish() { m_currentFrameNumber = m_currentSequence->Frames()->size(); }
+	void Finish()
+	{
+		if (m_currentSequence != nullptr)
+		{
+			m_currentFrameNumber = static_cast<int>(m_currentSequence->Frames()->size());
+		}
+	}
 
 	// set the current sequence
 	void SetSequence(const std::string & name);

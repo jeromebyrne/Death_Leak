@@ -89,6 +89,17 @@ SDL_Surface* LoadPngSurface(const std::string& assetPath)
     CGContextRelease(context);
     CGImageRelease(image);
 
+    const int rowBytes = pitch;
+    for (int y = 0; y < height / 2; ++y)
+    {
+        unsigned char* topRow = pixels.data() + static_cast<std::size_t>(y * rowBytes);
+        unsigned char* bottomRow = pixels.data() + static_cast<std::size_t>((height - 1 - y) * rowBytes);
+        for (int x = 0; x < rowBytes; ++x)
+        {
+            std::swap(topRow[x], bottomRow[x]);
+        }
+    }
+
     SDL_Surface* surface = SDL_CreateRGBSurfaceWithFormatFrom(
         pixels.data(),
         width,
@@ -144,8 +155,13 @@ bool MacSdlRenderer::Initialise(int backBufferWidth, int backBufferHeight)
     mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (mRenderer == nullptr)
     {
-        std::cerr << "SDL_CreateRenderer failed: " << SDL_GetError() << "\n";
-        return false;
+        std::cerr << "SDL_CreateRenderer accelerated failed: " << SDL_GetError() << "\n";
+        mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_SOFTWARE);
+        if (mRenderer == nullptr)
+        {
+            std::cerr << "SDL_CreateRenderer software failed: " << SDL_GetError() << "\n";
+            return false;
+        }
     }
 
     SDL_RenderSetLogicalSize(mRenderer, mBackBufferWidth, mBackBufferHeight);

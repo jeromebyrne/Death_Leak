@@ -1,8 +1,12 @@
 #ifndef DXWINDOW_H
 #define DXWINDOW_H
 
+#if defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC
+#include "Engine/Platform/MacDxCompat.h"
+#else
 #include <d3d10.h>
 #include <d3dx10.h>
+#endif
 
 class DXWindow
 {

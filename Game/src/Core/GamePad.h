@@ -1,8 +1,12 @@
 #ifndef GAMEPAD_H
 #define GAMEPAD_H
 
+#if defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC
+#include "Engine/Platform/MacDxCompat.h"
+#else
 #include <XInput.h>
 #pragma comment(lib, "XInput.lib")
+#endif
 
 class GamePad
 {

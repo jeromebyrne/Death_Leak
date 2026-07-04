@@ -23,7 +23,7 @@ public:
 	{
 	}
 
-	static Vector2 WorldToScreen(Vector2 & worldPos)
+	static Vector2 WorldToScreen(const Vector2 & worldPos)
 	{
 		Camera2D * cam = Camera2D::GetInstance();
 

@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "UIManager.h"
 #include "NPCManager.h"
+#include <cmath>
 
 Camera2D * Camera2D::mInstance = 0;
 
@@ -82,7 +83,7 @@ bool Camera2D::IsObjectInView(GameObject * object)
 	return inView;
 }
 
-bool Camera2D::IsWorldPosInView(Vector2 & pos, float parallaxXOffset, float parallaxYOffset)
+bool Camera2D::IsWorldPosInView(const Vector2 & pos, float parallaxXOffset, float parallaxYOffset)
 {
 	bool inView = false;
 
@@ -184,12 +185,35 @@ void Camera2D::FollowTargetObjectWithLag(bool forceUpdate, float overrideLagX, f
 		return;
 	}
 
+	const float targetX = mTargetObject->X() + (mTargetOffset.X * mZoomPercent);
+	const float targetY = mTargetObject->Y() + (mTargetOffset.Y * mZoomPercent);
+	if (!std::isfinite(targetX) || !std::isfinite(targetY))
+	{
+		LOG_ERROR("Camera target became non-finite: target=(%f,%f) camera=(%f,%f)", targetX, targetY, m_position.X, m_position.Y);
+		return;
+	}
+
+	if (forceUpdate)
+	{
+		if (mFollowX)
+		{
+			m_position.X = targetX;
+		}
+
+		if (mFollowY)
+		{
+			m_position.Y = targetY;
+		}
+
+		return;
+	}
+
 	if (mFollowX)
 	{
 		// get the x and y distance between the camera and the object
 		float distanceX = 0.0f;
 
-		distanceX = m_position.X - (mTargetObject->X() + (mTargetOffset.X * mZoomPercent));
+		distanceX = m_position.X - targetX;
 
 		bool enemiesInWorld = NPCManager::Instance()->IsAnyEnemyNPCInWorld();
 
@@ -201,11 +225,16 @@ void Camera2D::FollowTargetObjectWithLag(bool forceUpdate, float overrideLagX, f
 			xLag = overrideLagX;
 		}
 
-		if (xLag < 1.0f)
+		if (!std::isfinite(xLag) || xLag < 1.0f)
 		{
 			xLag = 1.0f;
 		}
-		m_position.X -= distanceX / xLag;
+
+		const float nextX = m_position.X - distanceX / xLag;
+		if (std::isfinite(nextX))
+		{
+			m_position.X = nextX;
+		}
 	}
 	
 	if (mFollowY)
@@ -217,14 +246,18 @@ void Camera2D::FollowTargetObjectWithLag(bool forceUpdate, float overrideLagX, f
 			yLag = overrideLagY;
 		}
 
-		if (yLag < 1.0f)
+		if (!std::isfinite(yLag) || yLag < 1.0f)
 		{
 			yLag = 1.0f;
 		}
 
-		float distanceY = m_position.Y - (mTargetObject->Y() + mTargetOffset.Y * mZoomPercent);
+		float distanceY = m_position.Y - targetY;
 
-		m_position.Y -= distanceY / yLag;
+		const float nextY = m_position.Y - distanceY / yLag;
+		if (std::isfinite(nextY))
+		{
+			m_position.Y = nextY;
+		}
 	}
 }
 
@@ -423,4 +456,3 @@ void Camera2D::CheckDebugCamerCommands()
 		}
 	}
 }
-

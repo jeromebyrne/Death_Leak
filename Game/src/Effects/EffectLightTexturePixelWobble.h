@@ -12,17 +12,26 @@ public:
 
 	void SetWobbleIntensity(float value)
 	{
-		m_pWavinessVariable->SetFloat(value);
+		if (m_pWavinessVariable != nullptr)
+		{
+			m_pWavinessVariable->SetFloat(value);
+		}
 	}
 
 	void SetTimeVariable(float delta)
 	{
-		m_pTimeVariable->SetFloat( delta );
+		if (m_pTimeVariable != nullptr)
+		{
+			m_pTimeVariable->SetFloat(delta);
+		}
 	}
 
 	void SetSpeedMod(float value)
 	{
-		m_pSpeedMod->SetFloat(value);
+		if (m_pSpeedMod != nullptr)
+		{
+			m_pSpeedMod->SetFloat(value);
+		}
 	}
 
 	void ReverseMotion();

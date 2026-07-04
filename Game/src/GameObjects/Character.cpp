@@ -735,13 +735,22 @@ void Character::UpdateAnimTexture(const string & bodyPart)
 void Character::UpdateAnimations()
 {
 	AnimationPart * bodyPart = m_animation->GetPart("body");
-	GAME_ASSERT(bodyPart);
+	if (bodyPart == nullptr)
+	{
+		return;
+	}
 
 	bool isInWater = WasInWaterLastFrame();
 
 	if (bodyPart)
 	{
-		string current_body_sequence_name = bodyPart->CurrentSequence()->Name();
+		AnimationSequence* currentSequence = bodyPart->CurrentSequence();
+		if (currentSequence == nullptr)
+		{
+			return;
+		}
+
+		string current_body_sequence_name = currentSequence->Name();
 
 		if (mJustfellFromLargeDistance)
 		{
@@ -1104,7 +1113,8 @@ void Character::UpdateAnimations()
 			{
 				armPart->Animate();
 			}
-			if (armPart->CurrentSequence()->Name() != current_body_sequence_name)
+			AnimationSequence* armSequence = armPart->CurrentSequence();
+			if (armSequence != nullptr && armSequence->Name() != current_body_sequence_name)
 			{
 				// arm part must have the same sequences as the body for this to work
 				armPart->SetSequence(current_body_sequence_name);
@@ -1292,12 +1302,13 @@ bool Character::Jump(float percent)
 			m_velocity.Y = 14.0f;
 		}
 
-		// we just double jumped so reset jump animation
-		AnimationPart * bodyPart = m_animation->GetPart("body");
-		GAME_ASSERT(bodyPart);
-
-		bodyPart->Restart();
-	}
+			// we just double jumped so reset jump animation
+			AnimationPart * bodyPart = m_animation->GetPart("body");
+			if (bodyPart != nullptr)
+			{
+				bodyPart->Restart();
+			}
+		}
 
 	SetY(m_position.Y + 10.0f); // bump us up so that solid lines don't keep us grounded
 
@@ -2277,7 +2288,4 @@ bool Character::IsDead()
 {
 	return mHealth <= 0.0f;
 }
-
-
-
 

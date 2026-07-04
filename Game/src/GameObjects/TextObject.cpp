@@ -155,7 +155,11 @@ void TextObject::Draw(ID3D10Device * device, Camera2D * camera)
 
 	mFontColor.a = Alpha();
 
-	RECT bounds = { screenPos.X, screenPos.Y, screenPos.X + m_dimensions.X, screenPos.Y + m_dimensions.Y };
+	RECT bounds;
+	bounds.left = static_cast<LONG>(screenPos.X);
+	bounds.top = static_cast<LONG>(screenPos.Y);
+	bounds.right = static_cast<LONG>(screenPos.X + m_dimensions.X);
+	bounds.bottom = static_cast<LONG>(screenPos.Y + m_dimensions.Y);
 	mFont->DrawText(0, mCachedWideString, -1, &bounds, mNoClip ? DT_NOCLIP : DT_WORDBREAK, mFontColor);
 }
 

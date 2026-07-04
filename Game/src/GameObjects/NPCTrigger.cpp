@@ -27,7 +27,7 @@ void NPCTrigger::Initialise()
 
 	double lastTimeSpawned = SaveManager::GetInstance()->GetLastTimeNPCSpawnerTriggered(levelFilename, ID());
 
-	double currentTime = timeGetTime();
+	double currentTime = Timing::Instance()->GetTotalTimeSeconds() * 1000.0;
 
 	double timeDiff = currentTime - lastTimeSpawned;
 
@@ -110,7 +110,7 @@ void NPCTrigger::SpawnEnemies(Player * player)
 void NPCTrigger::RecordLastSpawnTime()
 {
 	string levelFile = GameObjectManager::Instance()->GetCurrentLevelFile();
-	SaveManager::GetInstance()->SetLastTimeNPCSpawnerTriggered(levelFile, ID(), (double)timeGetTime());
+	SaveManager::GetInstance()->SetLastTimeNPCSpawnerTriggered(levelFile, ID(), Timing::Instance()->GetTotalTimeSeconds() * 1000.0);
 }
 
 void NPCTrigger::SpawnNinjas(Player * player)

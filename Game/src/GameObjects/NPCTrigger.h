@@ -29,7 +29,7 @@ private:
 
 	virtual void Initialise() override;
 
-	virtual void NPCTrigger::DebugDraw(ID3D10Device *  device) override;
+	virtual void DebugDraw(ID3D10Device *  device) override;
 	
 	void SpawnEnemies(Player * player);
 	void SpawnNinjas(Player * player);

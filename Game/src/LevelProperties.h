@@ -22,6 +22,7 @@ public:
 	float GetMusicTimeBetween() const  { return mMusicTimeBetween; }
 	Vector2 GetTargetOffset() const { return mTargetOffset; }
 	Vector2 GetOriginalTargetOffset() const { return mOriginalTargetOffset; }
+	Vector2 GetTargetLag() const { return mTargetLag; }
 	void SetTargetOffset(Vector2 offset) { mTargetOffset = offset; }
 	bool ShouldFollowX() const { return mFollowX; }
 	bool ShouldFollowY() const { return mFollowY; }

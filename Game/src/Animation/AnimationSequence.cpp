@@ -64,19 +64,12 @@ void AnimationSequence::ReadXml(TiXmlElement * element)
 			mSFXmap[frame_count] = XmlUtilities::ReadAttributeAsString(child, "", "sfx_type");
 		}
 
-#if defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC
-		if (textureName != nullptr)
-		{
-			m_frames->push_back(textureName);
-		}
-#else
 		ID3D10ShaderResourceView* texture = TextureManager::Instance()->LoadTexture(textureName);
 
 		if(texture != 0)
 		{
 			m_frames->push_back(texture); // add the frame to the list of frames
 		}
-#endif
 
 		// read skeleton data
 		TiXmlElement * skeleton_root = child->FirstChildElement();

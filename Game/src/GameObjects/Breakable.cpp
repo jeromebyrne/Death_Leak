@@ -210,12 +210,21 @@ void Breakable::UpdateAnimations()
 	}
 
 	AnimationPart * bodyPart = m_animation->GetPart("body");
-	GAME_ASSERT(bodyPart);
+	if (bodyPart == nullptr)
+	{
+		return;
+	}
 
 	if (bodyPart)
 	{
-		std::string sequence_name = bodyPart->CurrentSequence()->Name();
-		if (sequence_name != currentSequence)
+		AnimationSequence* activeSequence = bodyPart->CurrentSequence();
+		if (activeSequence == nullptr)
+		{
+			return;
+		}
+
+		const std::string activeSequenceName = activeSequence->Name();
+		if (activeSequenceName != currentSequence)
 		{
 			bodyPart->SetSequence(currentSequence);
 		}

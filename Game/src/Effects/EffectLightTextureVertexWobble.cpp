@@ -1,12 +1,12 @@
 #include "precompiled.h"
 #include "EffectLightTextureVertexWobble.h"
 
-EffectLightTextureVertexWobble::EffectLightTextureVertexWobble(void):EffectLightTexture()
+EffectLightTextureVertexWobble::EffectLightTextureVertexWobble(void):
+	EffectLightTexture(),
+	m_pWavinessVariable(nullptr),
+	m_pTimeVariable(nullptr)
 {
 	FileName = L"ShaderFiles\\BasicLightTexture_VertexWobble.fx";
-
-	ID3D10EffectScalarVariable*         m_pWavinessVariable = NULL;
-	ID3D10EffectScalarVariable*         m_pTimeVariable = NULL;
 }
 
 EffectLightTextureVertexWobble::~EffectLightTextureVertexWobble(void)

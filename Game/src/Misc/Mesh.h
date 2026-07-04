@@ -4,7 +4,9 @@
 class Mesh
 {
 private:
+#if !(defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC)
 	CDXUTSDKMesh m_mesh;
+#endif
 
 	D3DXMATRIX m_world; // world matrix
 public:

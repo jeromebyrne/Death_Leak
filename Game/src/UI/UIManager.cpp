@@ -80,7 +80,10 @@ void UIManager::Initialise()
 
 void UIManager::Update()
 {	
-	m_defaultEffect->SetTimeVariable(Timing::Instance()->GetTotalTimeSeconds()); 
+	if (m_defaultEffect != nullptr)
+	{
+		m_defaultEffect->SetTimeVariable(Timing::Instance()->GetTotalTimeSeconds()); 
+	}
 
 	if (!mDeferredPopScreen.empty())
 	{
@@ -141,6 +144,10 @@ void UIManager::HandleEvents()
 
 void UIManager::LoadContent(Graphics * graphicsSystem)
 {
+#if defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC
+	(void)graphicsSystem;
+	return;
+#else
 	// create the default UI shader effect
 	m_defaultEffect = new EffectLightTextureVertexWobble();
 	m_defaultEffect->Load(graphicsSystem->Device());
@@ -169,10 +176,15 @@ void UIManager::LoadContent(Graphics * graphicsSystem)
 	{
 		current->second->LoadContent(graphicsSystem->Device());
 	}
+#endif
 }	
 
 void UIManager::Draw(ID3D10Device * device)
 {
+#if defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC
+	(void)device;
+	return;
+#else
 	bool drawCursor = false;
 	for(const auto & screen : m_currentScreens)
 	{
@@ -227,6 +239,7 @@ void UIManager::Draw(ID3D10Device * device)
 
 	// clear the interactables every frame
 	mInteractableIconsToDraw.clear();
+#endif
 }
 
 void UIManager::AddInteractableToDraw(GameObject::InteractableProperties iProp)
