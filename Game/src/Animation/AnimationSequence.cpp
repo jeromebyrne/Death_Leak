@@ -1,15 +1,18 @@
 #include "precompiled.h"
 #include "AnimationSequence.h"
 #include "AnimationSkeleton.h"
+#include "XmlUtilities.h"
+
+#include <stdexcept>
 
 AnimationSequence::AnimationSequence(TiXmlElement * element) :
 	mSkeleton(nullptr)
 {
 	mSkeleton = new AnimationSkeleton();
-	m_frames = new list<ID3D10ShaderResourceView*>();
+	m_frames = new std::list<AnimationFrameResource>();
 	if(element == nullptr)
 	{
-		throw new exception("cannot load animation part, null element");
+		throw std::runtime_error("cannot load animation part, null element");
 	}
 	ReadXml(element);
 
@@ -31,7 +34,7 @@ void AnimationSequence::ReadXml(TiXmlElement * element)
 	// do stuff
 
 	// Read the name of the sequence.
-	m_name = (string)element->Value();
+	m_name = (std::string)element->Value();
 
 	// get frame rate attrib
 	m_framerate = XmlUtilities::ReadAttributeAsFloat(element, "", "FrameRate");
@@ -61,20 +64,27 @@ void AnimationSequence::ReadXml(TiXmlElement * element)
 			mSFXmap[frame_count] = XmlUtilities::ReadAttributeAsString(child, "", "sfx_type");
 		}
 
+#if defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC
+		if (textureName != nullptr)
+		{
+			m_frames->push_back(textureName);
+		}
+#else
 		ID3D10ShaderResourceView* texture = TextureManager::Instance()->LoadTexture(textureName);
 
 		if(texture != 0)
 		{
 			m_frames->push_back(texture); // add the frame to the list of frames
 		}
+#endif
 
 		// read skeleton data
 		TiXmlElement * skeleton_root = child->FirstChildElement();
 
-		list<AnimationSkeleton::AnimationSkeletonFramePiece> skeletonPiecesList;
+		std::list<AnimationSkeleton::AnimationSkeletonFramePiece> skeletonPiecesList;
 		if (skeleton_root )
 		{
-			string root_name = skeleton_root->Value();
+			std::string root_name = skeleton_root->Value();
 			if (root_name == "skeletonparts")
 			{
 				// loop through each skeleton part and add to skeleton map

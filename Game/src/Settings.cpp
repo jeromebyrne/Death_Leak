@@ -1,6 +1,10 @@
 #include "precompiled.h"
 #include "Settings.h"
-#include "AudioManager.h"
+#include "XmlDocument.h"
+#include "XmlUtilities.h"
+#if !(defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC)
+	#include "AudioManager.h"
+#endif
 
 Settings* Settings::mInstance = nullptr;
 static const char * settingsFilename = "XmlFiles\\settings.xml";
@@ -22,8 +26,13 @@ Settings* Settings::GetInstance()
 
 void Settings::ReadSettingsFile()
 {
+	ReadSettingsFile(settingsFilename);
+}
+
+void Settings::ReadSettingsFile(const std::string& filename)
+{
 	XmlDocument root_doc;
-	if (!root_doc.Load(settingsFilename))
+	if (!root_doc.Load(filename))
 	{
 		return;
 	}
@@ -36,11 +45,20 @@ void Settings::ReadSettingsFile()
 
 void Settings::ApplySettings()
 {
+#if defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC
+	// The Mac port applies these through IAudioSystem once a real audio backend is connected.
+#else
 	AudioManager::Instance()->SetMusicEnabled(mAudioSettings.MusicOn);
 	AudioManager::Instance()->SetSfxEnabled(mAudioSettings.SfxOn);
+#endif
 }
 
 void Settings::WriteSettings()
+{
+	WriteSettings(settingsFilename);
+}
+
+void Settings::WriteSettings(const std::string& filename)
 {
 	XmlDocument root_doc;
 	TiXmlElement * root = new TiXmlElement("settings");
@@ -51,7 +69,7 @@ void Settings::WriteSettings()
 	audioProps->SetAttribute("sfx_enabled", mAudioSettings.SfxOn);
 	root->LinkEndChild(audioProps);
 
-	root_doc.Save(settingsFilename, root);
+	root_doc.Save(filename, root);
 }
 
 void Settings::SetSfxEnabled(bool value, bool writeSettings)

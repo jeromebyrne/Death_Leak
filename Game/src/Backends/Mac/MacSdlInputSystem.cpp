@@ -115,6 +115,11 @@ void MacSdlInputSystem::SetVibration(float leftPercent, float rightPercent, floa
         durationMs);
 }
 
+bool MacSdlInputSystem::IsKeyDown(SDL_Scancode scancode) const
+{
+    return mKeyboardState != nullptr && mKeyboardState[scancode];
+}
+
 SDL_GameController* MacSdlInputSystem::Controller() const
 {
     if (mController != nullptr)

@@ -2,6 +2,10 @@
 #define ANIMATIONPART_H
 #include "AnimationSequence.h"
 
+#include <map>
+#include <string>
+#include <vector>
+
 class AnimationPart
 {
 public:
@@ -15,7 +19,7 @@ public:
 	bool IsFinished();
 
 	// returns the currently displayed frame (texture) in the current sequence being played
-	ID3D10ShaderResourceView* CurrentFrame();
+	AnimationFrameResource CurrentFrame();
 
 	// returns the number of frames in the current sequence
 	int FrameCount();
@@ -48,9 +52,9 @@ public:
 		return m_currentSequence;
 	}
 
-	AnimationSequence * GetSequence(const string & sequenceName);
+	AnimationSequence * GetSequence(const std::string & sequenceName);
 
-	inline string Name()
+	inline std::string Name()
 	{
 		return m_name;
 	}
@@ -65,7 +69,7 @@ public:
 	void Finish() { m_currentFrameNumber = m_currentSequence->Frames()->size(); }
 
 	// set the current sequence
-	void SetSequence(const string & name);
+	void SetSequence(const std::string & name);
 
 	// animate, when we reach the last frame go back to the first
 	void AnimateLooped();
@@ -83,14 +87,14 @@ public:
 		m_currentFrameNumber = frame;
 	}
 
-	map<string, AnimationSequence*> & GetAllSequences()
+	std::map<std::string, AnimationSequence*> & GetAllSequences()
 	{
 		return m_sequences;
 	}
 
 private:
 	// a map containing all the animation sequences for this part
-	map<string,AnimationSequence*> m_sequences;
+	std::map<std::string,AnimationSequence*> m_sequences;
 	
 	// the current sequence playing on this part
 	AnimationSequence* m_currentSequence;
@@ -114,7 +118,7 @@ private:
 	float m_sizeY;
 
 	// the name of this animation part
-	string m_name;
+	std::string m_name;
 };
 
 #endif

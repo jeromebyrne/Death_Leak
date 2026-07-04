@@ -1,6 +1,8 @@
 #include "precompiled.h"
 #include "SineWave.h"
 
+#include <cmath>
+
 void SineWave::Initialise(float currentStep, float yOffset, float speed, float initialPoisitionY, float initialPositionX, float offsetX)
 {
 	mStep = currentStep;
@@ -18,10 +20,10 @@ void SineWave::Update(float delta)
 
 float SineWave::GetValueY() const
 {
-	return mInitialPositionY + (mOffsetY * sin(mStep));
+	return mInitialPositionY + (mOffsetY * std::sin(mStep));
 }
 
 float SineWave::GetValueX() const
 {
-	return mInitialPositionX + (mOffsetX * sin(mStep));
+	return mInitialPositionX + (mOffsetX * std::sin(mStep));
 }

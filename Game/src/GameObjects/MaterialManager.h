@@ -3,6 +3,9 @@
 
 #include "Material.h"
 
+#include <map>
+#include <string>
+
 class MaterialManager
 {
 public:
@@ -12,14 +15,14 @@ public:
 
 	static MaterialManager* Instance();
 
-	void Initialise(char* materialXMLFile);
+	void Initialise(const char* materialXMLFile);
 	void Release();
-	Material * GetMaterial(string name);
+	Material * GetMaterial(std::string name);
 
 private:
 
 	static MaterialManager* m_instance;
-	map<string, Material*> m_materialMap;
+	std::map<std::string, Material*> m_materialMap;
 };
 
 #endif

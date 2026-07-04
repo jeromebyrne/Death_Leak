@@ -18,6 +18,7 @@ public:
     float RightStickX() const override;
     float RightStickY() const override;
     void SetVibration(float leftPercent, float rightPercent, float seconds) override;
+    bool IsKeyDown(SDL_Scancode scancode) const;
 
 private:
     SDL_GameController* Controller() const;

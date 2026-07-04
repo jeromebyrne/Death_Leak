@@ -1,6 +1,8 @@
 #ifndef FEATUREUNLOCKMANAGER_H
 #define FEATUREUNLOCKMANAGER_H
 
+#include <string>
+
 class FeatureUnlockManager
 {
 public:
@@ -30,9 +32,9 @@ public:
 
 	void SetFeatureUnlocked(const FeatureType type);
 
-	FeatureType GetFeatureTypeFromString(const string & asString);
+	FeatureType GetFeatureTypeFromString(const std::string & asString);
 
-	string GetFeatureAsString(FeatureType featureType);
+	std::string GetFeatureAsString(FeatureType featureType);
 
 	int GetFeatureCost(const FeatureType featureType);
 

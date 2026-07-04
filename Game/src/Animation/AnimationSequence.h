@@ -1,7 +1,19 @@
 #ifndef ANIMATIONSEQUENCE_H
 #define ANIMATIONSEQUENCE_H
 
+#include "tinyxml.h"
+
+#include <list>
+#include <map>
+#include <string>
+
 class AnimationSkeleton;
+
+#if defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC
+using AnimationFrameResource = std::string;
+#else
+using AnimationFrameResource = ID3D10ShaderResourceView*;
+#endif
 
 class AnimationSequence
 {
@@ -25,7 +37,7 @@ public:
 		}
 	}
 
-	inline list<ID3D10ShaderResourceView*> * Frames()
+	inline std::list<AnimationFrameResource> * Frames()
 	{
 		return m_frames;
 	}
@@ -41,7 +53,7 @@ public:
 	{
 		return m_maxFramerate;
 	}
-	inline const string & Name()
+	inline const std::string & Name()
 	{
 		return m_name;
 	}
@@ -55,12 +67,12 @@ public:
 
 private:
 
-	list<ID3D10ShaderResourceView*> * m_frames; // holds a list of textures
-	map<unsigned, string> mSFXmap;
+	std::list<AnimationFrameResource> * m_frames; // holds texture resources or asset names
+	std::map<unsigned, std::string> mSFXmap;
 	float m_framerate; // the desired framerate at which the frames will be displayed in order
 	float m_minFramerate; // the minimum frame speed
 	float m_maxFramerate; // the maximum framerate
-	string m_name; // the name of this animation sequence
+	std::string m_name; // the name of this animation sequence
 	void ScaleBones();
 	AnimationSkeleton * mSkeleton;
 };

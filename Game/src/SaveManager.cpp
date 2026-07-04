@@ -1,7 +1,11 @@
 #include "precompiled.h"
 #include "SaveManager.h"
+#include "XmlDocument.h"
+#include "XmlUtilities.h"
 #include <algorithm>
-#include "Game.h"
+#if !(defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC)
+	#include "Game.h"
+#endif
 
 SaveManager * SaveManager::mInstance = nullptr;
 static const char * fname = "bargon.xml";
@@ -22,10 +26,15 @@ SaveManager * SaveManager::GetInstance()
 
 void SaveManager::ReadSaveFile()
 {
+	ReadSaveFile(fname);
+}
+
+void SaveManager::ReadSaveFile(const std::string& filename)
+{
 	XmlDocument root_doc;
-	if (!root_doc.Load(fname, true))
+	if (!root_doc.Load(filename, true))
 	{
-		WriteSaveFile();
+		WriteSaveFile(filename);
 		return;
 	}
 
@@ -45,6 +54,11 @@ void SaveManager::ReadSaveFile()
 
 void SaveManager::WriteSaveFile()
 {
+	WriteSaveFile(fname);
+}
+
+void SaveManager::WriteSaveFile(const std::string& filename)
+{
 	XmlDocument root_doc;
 	TiXmlElement * root = new TiXmlElement("save_data");
 
@@ -55,7 +69,7 @@ void SaveManager::WriteSaveFile()
 		root->LinkEndChild(currentElement);
 	}
 
-	root_doc.Save(fname, root, true);
+	root_doc.Save(filename, root, true);
 }
 
 void SaveManager::WipeSaveFile()
@@ -127,7 +141,7 @@ void SaveManager::WriteValue(const DataValue & value, TiXmlElement * xmlElement)
 				unsigned count = 1;
 				for (const auto & v : value.asVector())
 				{
-					string elementName = std::string("e_") + Utilities::ConvertDoubleToString(count).c_str();
+					std::string elementName = std::string("e_") + std::to_string(count);
 					TiXmlElement * elem = new TiXmlElement(elementName.c_str());
 					WriteValue(v, elem);
 					xmlElement->LinkEndChild(elem);
@@ -284,7 +298,7 @@ bool SaveManager::GetBoolValue(std::map<std::string, DataValue> dataMap, const s
 	return iter->second.asBool();
 }
 
-string SaveManager::GetStringValue(std::map<std::string, DataValue> dataMap, const std::string & key, string defaultValue) const
+std::string SaveManager::GetStringValue(std::map<std::string, DataValue> dataMap, const std::string & key, std::string defaultValue) const
 {
 	const auto & iter = dataMap.find(key);
 
@@ -649,7 +663,7 @@ string SaveManager::GetLevelLastSavedAt()
 
 bool SaveManager::HasPulledSwordFromStomach()
 {
-#ifdef DEBUG
+#if defined(DEBUG) && !(defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC)
 	if (Game::GetInstance()->GetIsLevelEditMode())
 	{
 		return true;
@@ -674,21 +688,20 @@ void SaveManager::SetHasRepairTools(bool value)
 	mSaveMapPermanentData["has_repair_tools"] = value;
 }
 
-double SaveManager::GetLastTimeNPCSpawnerTriggered(const string& levelName, int objectID)
+double SaveManager::GetLastTimeNPCSpawnerTriggered(const std::string& levelName, int objectID)
 {
-	std::string key = levelName + "_npc_" + Utilities::ConvertDoubleToString(objectID);
+	std::string key = levelName + "_npc_" + std::to_string(objectID);
 
 	std::replace(key.begin(), key.end(), '\\', '-'); // replace back slashes as they will mess up the xml file
 
 	return GetDoubleValue(mSaveMapTemporaryData, key);
 }
 
-void SaveManager::SetLastTimeNPCSpawnerTriggered(const string& levelName, int objectID, double time)
+void SaveManager::SetLastTimeNPCSpawnerTriggered(const std::string& levelName, int objectID, double time)
 {
-	std::string key = levelName + "_npc_" + Utilities::ConvertDoubleToString(objectID);
+	std::string key = levelName + "_npc_" + std::to_string(objectID);
 
 	std::replace(key.begin(), key.end(), '\\', '-'); // replace back slashes as they will mess up the xml file
 
 	mSaveMapTemporaryData[key] = time;
 }
-

@@ -1,9 +1,11 @@
 #include "precompiled.h"
 #include "FeatureUnlockManager.h"
 #include "SaveManager.h"
-#include <Achievements\Achievement.h>
 
-extern CSteamAchievements* g_SteamAchievements;
+#if !(defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC)
+	#include <Achievements\Achievement.h>
+	extern CSteamAchievements* g_SteamAchievements;
+#endif
 
 FeatureUnlockManager * FeatureUnlockManager::m_instance = nullptr;
 
@@ -40,6 +42,7 @@ bool FeatureUnlockManager::IsFeatureUnlocked(const FeatureType type)
 
 void FeatureUnlockManager::SetFeatureUnlocked(const FeatureType type)
 {
+#if !(defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC)
 	if (type == kProjectileDamageIncrease)
 	{
 		Player* player = GameObjectManager::Instance()->GetPlayer();
@@ -66,11 +69,12 @@ void FeatureUnlockManager::SetFeatureUnlocked(const FeatureType type)
 		if (g_SteamAchievements)
 			g_SteamAchievements->SetAchievement("ACH_ROLL_UNLOCK");
 	}
+#endif
 
 	SaveManager::GetInstance()->SetGameFeatureUnlocked(type);
 }
 
-FeatureUnlockManager::FeatureType FeatureUnlockManager::GetFeatureTypeFromString(const string & asString)
+FeatureUnlockManager::FeatureType FeatureUnlockManager::GetFeatureTypeFromString(const std::string & asString)
 {
 	if (asString == "kDownwardDash")
 	{
@@ -109,10 +113,14 @@ FeatureUnlockManager::FeatureType FeatureUnlockManager::GetFeatureTypeFromString
 	return kNone;
 }
 
-string FeatureUnlockManager::GetFeatureAsString(FeatureType featureType)
+std::string FeatureUnlockManager::GetFeatureAsString(FeatureType featureType)
 {
 	switch (featureType)
 	{
+		case kNone:
+		{
+			return "kNone";
+		}
 		case kDownwardDash:
 		{
 			return "kDownwardDash";

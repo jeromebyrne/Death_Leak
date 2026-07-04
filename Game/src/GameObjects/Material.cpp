@@ -1,5 +1,7 @@
 #include "precompiled.h"
 #include "Material.h"
+#include "Logger.h"
+#include "XmlUtilities.h"
 
 Material::Material(const char * materialName):
 	mMaterialName(materialName),
@@ -31,7 +33,7 @@ void Material::ReadXml(TiXmlElement * element)
 	{
 		const char * texFile = XmlUtilities::ReadAttributeAsString(currentTexture, "", "file");
 
-		mParticleTextures.push_back(string(texFile));
+		mParticleTextures.push_back(std::string(texFile));
 
 		currentTexture = currentTexture->NextSiblingElement();
 	}
@@ -44,7 +46,7 @@ void Material::ReadXml(TiXmlElement * element)
 	{
 		const char * soundFile = XmlUtilities::ReadAttributeAsString(currentDamageSound, "", "file");
 		
-		mDamageSoundEffects.push_back(string(soundFile));
+		mDamageSoundEffects.push_back(std::string(soundFile));
 
 		currentDamageSound = currentDamageSound->NextSiblingElement();
 	}
@@ -57,7 +59,7 @@ void Material::ReadXml(TiXmlElement * element)
 	{
 		const char * soundFile = XmlUtilities::ReadAttributeAsString(currentFootstepSound, "", "file");
 		
-		mFootstepSoundEffects.push_back(string(soundFile));
+		mFootstepSoundEffects.push_back(std::string(soundFile));
 
 		currentFootstepSound = currentFootstepSound->NextSiblingElement();
 	}
@@ -69,7 +71,7 @@ void Material::ReadXml(TiXmlElement * element)
 	{
 		const char * soundFile = XmlUtilities::ReadAttributeAsString(currentDestroyedSound, "", "file");
 
-		mDestroySoundEffects.push_back(string(soundFile));
+		mDestroySoundEffects.push_back(std::string(soundFile));
 
 		currentDestroyedSound = currentDestroyedSound->NextSiblingElement();
 	}
@@ -85,13 +87,13 @@ void Material::ReadXml(TiXmlElement * element)
 	{
 		const char * soundFile = XmlUtilities::ReadAttributeAsString(currentDebrisTexture, "", "file");
 
-		mDebrisTextures.push_back(string(soundFile));
+		mDebrisTextures.push_back(std::string(soundFile));
 
 		currentDebrisTexture = currentDebrisTexture->NextSiblingElement();
 	}
 }
 
-string Material::GetRandomDamageSoundFilename()
+std::string Material::GetRandomDamageSoundFilename()
 {
 	int soundCount = mDamageSoundEffects.size();
 	if (soundCount == 0)
@@ -105,7 +107,7 @@ string Material::GetRandomDamageSoundFilename()
 	return mDamageSoundEffects[randNum];
 }
 
-string Material::GetRandomDestroyedSound()
+std::string Material::GetRandomDestroyedSound()
 {
 	int soundCount = mDestroySoundEffects.size();
 	if (soundCount == 0)
@@ -119,7 +121,7 @@ string Material::GetRandomDestroyedSound()
 	return mDestroySoundEffects[randNum];
 }
 
-string Material::GetRandomFootstepSoundFilename()
+std::string Material::GetRandomFootstepSoundFilename()
 {
 	int soundCount = mFootstepSoundEffects.size();
 	if (soundCount == 0)
@@ -133,7 +135,7 @@ string Material::GetRandomFootstepSoundFilename()
 	return mFootstepSoundEffects[randNum];
 }
 
-string Material::GetRandomParticleTexture()
+std::string Material::GetRandomParticleTexture()
 {
 	int texCount = mParticleTextures.size();
 	if (texCount == 0)

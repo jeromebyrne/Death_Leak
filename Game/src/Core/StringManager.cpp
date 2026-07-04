@@ -1,6 +1,9 @@
 #include "precompiled.h"
 #include "StringManager.h"
-#include <isteamutils.h>
+#include "XmlDocument.h"
+#if !(defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC)
+	#include <isteamutils.h>
+#endif
 
 StringManager * StringManager::mInstance = nullptr;
 
@@ -36,7 +39,7 @@ void StringManager::LoadStringsFile(const char * file)
 
 	while (stringXml)
 	{
-		string key = stringXml->Value();
+		std::string key = stringXml->Value();
 
 		TiXmlElement * langEntriesXml = stringXml->FirstChildElement();
 
@@ -52,10 +55,12 @@ void StringManager::LoadStringsFile(const char * file)
 
 	mLocaleStrings = mStringsMap[mCurrentLocale];
 
+#if !(defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC)
 	m_IsOnSteamDeck = SteamUtils() != nullptr ? SteamUtils()->IsSteamRunningOnSteamDeck() : false;
+#endif
 }
 
-void StringManager::SetLocale(string & locale)
+void StringManager::SetLocale(const std::string & locale)
 {
 	mCurrentLocale = locale;
 
@@ -63,11 +68,11 @@ void StringManager::SetLocale(string & locale)
 	// TODO: maybe do some locale validation
 }
 
-string StringManager::GetLocalisedString(const char * key)
+std::string StringManager::GetLocalisedString(const char * key)
 {
 	if (m_IsOnSteamDeck)
 	{
-		string altkey = key;
+		std::string altkey = key;
 		altkey += "_steamdeck";
 
 		if (mLocaleStrings.find(altkey) != mLocaleStrings.end())

@@ -4,6 +4,10 @@
 #include "AnimationPart.h"
 #include "AnimationSkeleton.h"
 
+#include <map>
+#include <string>
+#include <vector>
+
 class Animation
 {
 public:
@@ -11,35 +15,35 @@ public:
 	Animation(const char* filename);
 	~Animation(void);
 
-	AnimationPart* GetPart(const string & partName);
-	void SetPartSequence(const string & partName, const string & sequenceName);
+	AnimationPart* GetPart(const std::string & partName);
+	void SetPartSequence(const std::string & partName, const std::string & sequenceName);
 
-	AnimationSkeleton * GetSkeletonForCurrentSequence(const string & bodyPart);
+	AnimationSkeleton * GetSkeletonForCurrentSequence(const std::string & bodyPart);
 
 	std::vector<std::string> GetSequenceNamesForBodyPart(const std::string & bodyPart);
 
 	void ScaleSkeleton(float value);
 
 	// This function is needed for viewing animations
-	void JumpToNextFrame(const string & bodyPart);
+	void JumpToNextFrame(const std::string & bodyPart);
 
 	// This function is needed for viewing animations
-	void JumpToPreviousFrame(const string & bodyPart);
+	void JumpToPreviousFrame(const std::string & bodyPart);
 
 	// This function is needed for viewing animations
-	void JumpToNextSequence(const string & bodyPart);
+	void JumpToNextSequence(const std::string & bodyPart);
 
 	// This function is needed for viewing animations
-	void JumpToPreviousSequence(const string & bodyPart);
+	void JumpToPreviousSequence(const std::string & bodyPart);
 
 	// used for animation viewer
-	int CurrentFrame(const string & bodyPart);
+	int CurrentFrame(const std::string & bodyPart);
 
-	const string & CurrentSequenceName(const string & bodyPart);
+	const std::string & CurrentSequenceName(const std::string & bodyPart);
 
 private:
 
-	map<string, AnimationPart*> m_animationParts;
+	std::map<std::string, AnimationPart*> m_animationParts;
 
 	void ReadXml(const char* filename);
 };

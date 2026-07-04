@@ -16,6 +16,7 @@ public:
     std::string SettingsPath(const std::string& relativePath) const override;
 
 private:
+    std::filesystem::path BundleResourcesRoot() const;
     std::filesystem::path AppSupportRoot() const;
     std::filesystem::path NormalizeRelativePath(const std::string& relativePath) const;
 

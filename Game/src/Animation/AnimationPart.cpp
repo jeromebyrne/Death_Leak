@@ -1,17 +1,21 @@
 #include "precompiled.h"
 #include "AnimationPart.h"
+#include "Timing.h"
+#include "XmlUtilities.h"
+
+#include <stdexcept>
 
 AnimationPart::AnimationPart(TiXmlElement * element):m_sizeX(64), m_sizeY(64), m_offsetX(0), m_offsetY(0), m_currentFrameNumber(0), m_frameTimeElapsed(0)
 {
 	if(element == 0)
 	{
-		throw new exception("cannot load animation part, null element");
+		throw std::runtime_error("cannot load animation part, null element");
 	}
 	
 	ReadXml(element); 
 
     // Get the first animation sequence and set it as the current sequence
-	map<string,AnimationSequence*>::iterator firstSequence = m_sequences.begin();
+	std::map<std::string,AnimationSequence*>::iterator firstSequence = m_sequences.begin();
 
 	m_currentSequence = (*firstSequence).second;
 
@@ -24,7 +28,7 @@ AnimationPart::~AnimationPart(void)
 void AnimationPart::ReadXml(TiXmlElement * element)
 {
 	//get the name 
-	m_name = (string)element->Value();
+	m_name = (std::string)element->Value();
 
 	// read the size
 	m_sizeX = XmlUtilities::ReadAttributeAsFloat(element, "", "SizeX");
@@ -37,7 +41,7 @@ void AnimationPart::ReadXml(TiXmlElement * element)
 	TiXmlElement * sequence = element->FirstChildElement();
 	while(sequence != 0)
 	{
-		string sequenceName = (string)sequence->Value();
+		std::string sequenceName = (std::string)sequence->Value();
 		m_sequences[sequenceName] = new AnimationSequence(sequence);
 
 		sequence = sequence->NextSiblingElement();
@@ -64,30 +68,30 @@ bool AnimationPart::IsFinished()
 	return false;
 }
 
-ID3D10ShaderResourceView* AnimationPart::CurrentFrame()
+AnimationFrameResource AnimationPart::CurrentFrame()
 {
 	if(m_currentSequence == 0)
 	{
-		return 0;
+		return AnimationFrameResource();
 	}
 
 	if(m_currentSequence->Frames()->size() <= 0)
 	{
-		return 0;
+		return AnimationFrameResource();
 	}
 
 	// if we are past the end then just return the last frame
 	if(m_currentFrameNumber >= m_currentSequence->Frames()->size())
 	{
-		list<ID3D10ShaderResourceView*>::iterator end = m_currentSequence->Frames()->end();
+		std::list<AnimationFrameResource>::iterator end = m_currentSequence->Frames()->end();
 		end--;
 
 		return (*end);
 	}
 
 	// return the current frame normally
-	list<ID3D10ShaderResourceView*>::iterator current = m_currentSequence->Frames()->begin();
-	list<ID3D10ShaderResourceView*>::iterator end = m_currentSequence->Frames()->end();
+	std::list<AnimationFrameResource>::iterator current = m_currentSequence->Frames()->begin();
+	std::list<AnimationFrameResource>::iterator end = m_currentSequence->Frames()->end();
 
 	for(int frameNum = 0; current!=end; current++, frameNum++)
 	{
@@ -97,7 +101,7 @@ ID3D10ShaderResourceView* AnimationPart::CurrentFrame()
 		}
 	}
 
-	return 0;
+	return AnimationFrameResource();
 }
 
 int AnimationPart::FrameCount()
@@ -139,7 +143,7 @@ int AnimationPart::FrameNumber()
 	return m_currentFrameNumber;
 }
 
-void AnimationPart::SetSequence(const string & name)
+void AnimationPart::SetSequence(const std::string & name)
 {	
 	// start from the first frame
 	Restart();
@@ -259,9 +263,9 @@ std::vector<std::string> AnimationPart::GetSequenceNames() const
 	return retVal;
 }
 
-AnimationSequence * AnimationPart::GetSequence(const string & sequenceName)
+AnimationSequence * AnimationPart::GetSequence(const std::string & sequenceName)
 {
-	auto & iter = m_sequences.find(sequenceName);
+	auto iter = m_sequences.find(sequenceName);
 	if (iter == m_sequences.end())
 	{
 		return nullptr;
@@ -269,4 +273,3 @@ AnimationSequence * AnimationPart::GetSequence(const string & sequenceName)
 
 	return iter->second;
 }
-

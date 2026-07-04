@@ -1,6 +1,11 @@
 #ifndef LEVELPROPERTIES_H
 #define LEVELPROPERTIES_H
 
+#include "Vector2.h"
+#include "tinyxml.h"
+
+#include <string>
+
 class LevelProperties
 {
 public:
@@ -22,6 +27,9 @@ public:
 	bool ShouldFollowY() const { return mFollowY; }
 	bool IsAnimationPreview() const { return mIsAnimationPreview; }
 	float GetZoomInPercent() const { return mCameraZoomInPercent; }
+	Vector2 GetInitialCamPos() const { return mInitialCamPos; }
+	Vector2 GetCamBoundsTopLeft() const { return mCamBoundsTopLeft; }
+	Vector2 GetCamBoundsBottomRight() const { return mCamBoundsBottomRight; }
 
 private:
 
@@ -32,7 +40,7 @@ private:
 	Vector2 mOriginalTargetOffset;
 	Vector2 mTargetLag;
 	Vector2 mInitialCamPos;
-	string mLevelMusic;
+	std::string mLevelMusic;
 	float mMusicLength;
 	float mMusicInitialDelay;
 	float mMusicTimeBetween;

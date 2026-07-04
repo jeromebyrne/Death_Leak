@@ -10,7 +10,7 @@ AnimationSkeleton::~AnimationSkeleton()
 {
 }
 
-void AnimationSkeleton::PopulateFrameData(unsigned int frame, list<AnimationSkeletonFramePiece> framePieces)
+void AnimationSkeleton::PopulateFrameData(unsigned int frame, std::list<AnimationSkeletonFramePiece> framePieces)
 {
 	mSkeletonLines[frame].clear();
 	mSkeletonLines[frame].reserve(framePieces.size());
@@ -30,7 +30,7 @@ bool AnimationSkeleton::HasCollidedOnFrame(unsigned int frame,
 											Vector2 & endPoint,
 											Vector2 & intersectPointOut)
 {
-	vector<AnimationSkeletonFramePiece> & vec = mSkeletonLines[frame];
+	std::vector<AnimationSkeletonFramePiece> & vec = mSkeletonLines[frame];
 
 	for (auto & piece : vec)
 	{

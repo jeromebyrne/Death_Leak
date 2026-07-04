@@ -1,5 +1,7 @@
 #include "precompiled.h"
 #include "MaterialManager.h"
+#include "XmlDocument.h"
+#include "XmlUtilities.h"
 
 MaterialManager * MaterialManager::m_instance = 0;
 
@@ -20,7 +22,7 @@ MaterialManager::~MaterialManager(void)
 {
 }
 
-void MaterialManager::Initialise(char *materialXMLFile)
+void MaterialManager::Initialise(const char *materialXMLFile)
 {
 	// read through the xml file and load all materials
 	XmlDocument doc;
@@ -52,7 +54,7 @@ void MaterialManager::Release()
 {
 }
 
-Material* MaterialManager::GetMaterial(string name)
+Material* MaterialManager::GetMaterial(std::string name)
 {
 	return m_materialMap[name];
 }

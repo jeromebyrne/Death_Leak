@@ -1,11 +1,14 @@
 #include "precompiled.h"
 #include "Animation.h"
+#include "XmlDocument.h"
+
+#include <stdexcept>
 
 Animation::Animation(const char* filename)
 {
 	if(filename == 0 || strlen(filename) <= 0)
 	{
-		throw new exception("invalid filename for animation");
+		throw std::runtime_error("invalid filename for animation");
 	}
 
 	ReadXml(filename);
@@ -34,7 +37,7 @@ void Animation::ReadXml(const char* filename)
 		while(child)
 		{
 			// whats the name of this part
-			string partName = (string)child->Value();
+			std::string partName = (std::string)child->Value();
 
 			// add this part to the part map
 			m_animationParts[partName] = new AnimationPart(child);
@@ -45,7 +48,7 @@ void Animation::ReadXml(const char* filename)
 	}
 }
 
-AnimationPart* Animation::GetPart(const string & partName)
+AnimationPart* Animation::GetPart(const std::string & partName)
 {
 	if(!partName.empty())
 	{
@@ -57,7 +60,7 @@ AnimationPart* Animation::GetPart(const string & partName)
 	return nullptr;
 }
 
-void Animation::SetPartSequence(const string & partName, const string & sequenceName)
+void Animation::SetPartSequence(const std::string & partName, const std::string & sequenceName)
 {
 	AnimationPart* part = GetPart(partName);
 
@@ -67,7 +70,7 @@ void Animation::SetPartSequence(const string & partName, const string & sequence
 	}
 }
 
-AnimationSkeleton * Animation::GetSkeletonForCurrentSequence(const string & bodyPart)
+AnimationSkeleton * Animation::GetSkeletonForCurrentSequence(const std::string & bodyPart)
 {
 	AnimationSequence * currentSequence = m_animationParts[bodyPart]->CurrentSequence();
 	GAME_ASSERT(currentSequence);
@@ -109,7 +112,7 @@ void Animation::ScaleSkeleton(float value)
 	}
 }
 
-void Animation::JumpToNextFrame(const string & bodyPart)
+void Animation::JumpToNextFrame(const std::string & bodyPart)
 {
 	// move to the next fram in the curent sequence
 	AnimationPart * part = GetPart(bodyPart);
@@ -136,7 +139,7 @@ void Animation::JumpToNextFrame(const string & bodyPart)
 	part->SetFrame(nextFrame);
 }
 
-void Animation::JumpToPreviousFrame(const string & bodyPart)
+void Animation::JumpToPreviousFrame(const std::string & bodyPart)
 {
 	AnimationPart * part = GetPart(bodyPart);
 	if (part == nullptr)
@@ -162,7 +165,7 @@ void Animation::JumpToPreviousFrame(const string & bodyPart)
 	part->SetFrame(nextFrame);
 }
 
-void Animation::JumpToNextSequence(const string & bodyPart)
+void Animation::JumpToNextSequence(const std::string & bodyPart)
 {
 	AnimationPart * part = GetPart(bodyPart);
 	if (part == nullptr)
@@ -193,7 +196,7 @@ void Animation::JumpToNextSequence(const string & bodyPart)
 	part->SetSequence(seqIter->first);
 }
 
-void Animation::JumpToPreviousSequence(const string & bodyPart)
+void Animation::JumpToPreviousSequence(const std::string & bodyPart)
 {
 	AnimationPart * part = GetPart(bodyPart);
 	if (part == nullptr)
@@ -225,7 +228,7 @@ void Animation::JumpToPreviousSequence(const string & bodyPart)
 	part->SetSequence(seqIter->first);
 }
 
-int Animation::CurrentFrame(const string & bodyPart)
+int Animation::CurrentFrame(const std::string & bodyPart)
 {
 	AnimationPart * part = GetPart(bodyPart);
 	if (part == nullptr)
@@ -236,25 +239,23 @@ int Animation::CurrentFrame(const string & bodyPart)
 	return part->FrameNumber();
 }
 
-const string & Animation::CurrentSequenceName(const string & bodyPart)
+const std::string & Animation::CurrentSequenceName(const std::string & bodyPart)
 {
 	AnimationPart * part = GetPart(bodyPart);
 	if (part == nullptr)
 	{
-		// TODO: not good
-		return nullptr;
+		static const std::string kEmptySequenceName;
+		return kEmptySequenceName;
 	}
 
 	auto sequence = part->CurrentSequence();
 
 	if (!sequence)
 	{
-		// TODO: not good
-		return nullptr;
+		static const std::string kEmptySequenceName;
+		return kEmptySequenceName;
 	}
 
 	return sequence->Name();
 }
-
-
 

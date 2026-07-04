@@ -2,8 +2,7 @@
 #define STRINGMANAGER_H
 
 #include <map>
-
-using namespace std;
+#include <string>
 
 class StringManager
 {
@@ -18,15 +17,17 @@ public:
 
 	void LoadStringsFile(const char * file);
 
-	void SetLocale(string & locale);
+	void SetLocale(const std::string & locale);
 
-	string GetLocalisedString(const char * key);
+	std::string GetLocalisedString(const char * key);
+
+	void SetIsOnSteamDeck(bool value) { m_IsOnSteamDeck = value; }
 
 private:
 
-	map<string, map<string, string>> mStringsMap;
+	std::map<std::string, std::map<std::string, std::string>> mStringsMap;
 
-	map<string, string> mLocaleStrings;
+	std::map<std::string, std::string> mLocaleStrings;
 
 	static StringManager * mInstance;
 
@@ -36,4 +37,3 @@ private:
 };
 
 #endif
-

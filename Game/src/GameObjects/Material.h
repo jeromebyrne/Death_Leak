@@ -1,6 +1,11 @@
 #ifndef MATERIAL_H
 #define MATERIAL_H
 
+#include "tinyxml.h"
+
+#include <string>
+#include <vector>
+
 class Material
 {
 public:
@@ -10,13 +15,13 @@ public:
 
 	void ReadXml(TiXmlElement * element);
 
-	string GetRandomDamageSoundFilename();
-	string GetRandomFootstepSoundFilename();
-	string GetRandomParticleTexture();
-	string GetRandomDestroyedSound();
-	string GetMaterialName() const { return mMaterialName; }
+	std::string GetRandomDamageSoundFilename();
+	std::string GetRandomFootstepSoundFilename();
+	std::string GetRandomParticleTexture();
+	std::string GetRandomDestroyedSound();
+	std::string GetMaterialName() const { return mMaterialName; }
 
-	const vector<string> GetDebrisTextures() const { return mDebrisTextures; }
+	const std::vector<std::string> GetDebrisTextures() const { return mDebrisTextures; }
 
 	bool GetIsPierceable() const { return mPierceable; }
 
@@ -26,12 +31,12 @@ public:
 
 private:
 
-	vector<string> mParticleTextures;
-	vector<string> mDamageSoundEffects;
-	vector<string> mFootstepSoundEffects;
-	vector<string> mDestroySoundEffects;
-	vector<string> mDebrisTextures;
-	string mMaterialName;
+	std::vector<std::string> mParticleTextures;
+	std::vector<std::string> mDamageSoundEffects;
+	std::vector<std::string> mFootstepSoundEffects;
+	std::vector<std::string> mDestroySoundEffects;
+	std::vector<std::string> mDebrisTextures;
+	std::string mMaterialName;
 
 	bool mPierceable;
 

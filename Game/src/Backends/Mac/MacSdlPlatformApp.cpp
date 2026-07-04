@@ -41,6 +41,9 @@ bool MacSdlPlatformApp::Initialise(const PlatformWindowConfig& config)
         return false;
     }
 
+    SDL_ShowWindow(mWindow);
+    SDL_RaiseWindow(mWindow);
+
     return true;
 }
 

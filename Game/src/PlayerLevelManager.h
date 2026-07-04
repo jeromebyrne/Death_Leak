@@ -1,6 +1,8 @@
 #ifndef PLAYERLEVELMANAGER_H
 #define PLAYERLEVELMANAGER_H
 
+#include <map>
+
 class PlayerLevelManager
 {
 public:
