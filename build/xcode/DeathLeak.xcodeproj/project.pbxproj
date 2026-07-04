@@ -1,0 +1,1711 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		40707EC15D4A4800CFED9F0F /* ZERO_CHECK */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 59E2D2D63F664C1A913E0C3D /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */;
+			buildPhases = (
+				4B4B567C4130D2C82EFEFFB3 /* Generate CMakeFiles/ZERO_CHECK */,
+			);
+			dependencies = (
+			);
+			name = ZERO_CHECK;
+			productName = ZERO_CHECK;
+		};
+		7D08128EBE31E926C9EF653C /* ALL_BUILD */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 7B0C18A6ED6040F68667797E /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */;
+			buildPhases = (
+				524258E187CA580929BD1A15 /* Generate CMakeFiles/ALL_BUILD */,
+			);
+			dependencies = (
+				20FCECB649DA4F3BA00CF2A9 /* PBXTargetDependency */,
+				2E52719081E84D5DB3240F62 /* PBXTargetDependency */,
+				188C186D4ED5439DA24A309B /* PBXTargetDependency */,
+			);
+			name = ALL_BUILD;
+			productName = ALL_BUILD;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		03BD8700F9874612B037613D /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/PositionalAudio.cpp */ = {isa = PBXBuildFile; fileRef = CB60F1885C7E4D8A9B53E3AD /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/PositionalAudio.cpp */; };
+		062253FDBFFE4776A6AA76C9 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/LevelEditor.cpp */ = {isa = PBXBuildFile; fileRef = 42481DEC60374702B9E60693 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/LevelEditor.cpp */; };
+		089745D933F84EB681E799D2 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacLaunchPaths.cpp */ = {isa = PBXBuildFile; fileRef = EDDE9D5603DB4B029DE0E7C9 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacLaunchPaths.cpp */; };
+		08E4B387AB544619B712537A /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Vector4.cpp */ = {isa = PBXBuildFile; fileRef = 4638F7C884DD4F3CA9040E37 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Vector4.cpp */; };
+		09DC0C65ECDB4E788DCBDE9A /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/SineWave.cpp */ = {isa = PBXBuildFile; fileRef = 4A4581449A9E49A898B5881B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/SineWave.cpp */; };
+		0A55EFF884CB4A6E9873CA96 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/Animation.cpp */ = {isa = PBXBuildFile; fileRef = BEC45BBFE5E24048825CBA3F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/Animation.cpp */; };
+		0A9CDC2EB6A249E2AE51D6FE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIWidget.cpp */ = {isa = PBXBuildFile; fileRef = C78D956E8AD945A29BA773F2 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIWidget.cpp */; };
+		0CD30CD0FC96428DAFEE2CC6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/DXWindow.cpp */ = {isa = PBXBuildFile; fileRef = D13CE7246EEB40FD9CAE0BEF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/DXWindow.cpp */; };
+		0EE9DC5616B548D695992002 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Timing.cpp */ = {isa = PBXBuildFile; fileRef = CD35CA01A12449EAB62F313F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Timing.cpp */; };
+		0F8F7AA5B887471BB84B55A7 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacNullSteamService.cpp */ = {isa = PBXBuildFile; fileRef = F08C25FB36564615B3B4EEFC /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacNullSteamService.cpp */; };
+		11049D1D686B49ABADBFF807 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Achievements/Achievement.cpp */ = {isa = PBXBuildFile; fileRef = 7E5E73A88A9B40168398BB97 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Achievements/Achievement.cpp */; };
+		126D5A725021411CAF27FA22 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/CurrencyOrb.cpp */ = {isa = PBXBuildFile; fileRef = 18C0BC0F9DD049ED9EDCDFB3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/CurrencyOrb.cpp */; };
+		159A8E4C40AE49C59434C9C4 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIScreen.cpp */ = {isa = PBXBuildFile; fileRef = 82952B1D9EB147D5914253E3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIScreen.cpp */; };
+		161CAF58BD78451BB4B17B53 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Sprite.cpp */ = {isa = PBXBuildFile; fileRef = 248C7CD3816D409485AB6BDC /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Sprite.cpp */; };
+		1875BDB166944E2D8BC3E19E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/FallingPlatform.cpp */ = {isa = PBXBuildFile; fileRef = C94C33EBB5A64E7BB3AABE29 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/FallingPlatform.cpp */; };
+		19077489437544F78312330F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinyxmlparser.cpp */ = {isa = PBXBuildFile; fileRef = 099FBA15579E4CE9B620B8C6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinyxmlparser.cpp */; };
+		191F9A96BE804785BCC765EC /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Material.cpp */ = {isa = PBXBuildFile; fileRef = 9190CC6745D5481F952E3598 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Material.cpp */; };
+		1966DCED3597421491D6A9CD /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIManager.cpp */ = {isa = PBXBuildFile; fileRef = 940E67CA4844475684C0E38E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIManager.cpp */; };
+		19B9338B17A8448FAC3F1D14 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/PlayerLevelManager.cpp */ = {isa = PBXBuildFile; fileRef = C6854065E9204482BC5F8CF5 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/PlayerLevelManager.cpp */; };
+		1AC2598209074887ACD0500F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectParticleSpray.cpp */ = {isa = PBXBuildFile; fileRef = 6DDFA7F49177438EBA62492B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectParticleSpray.cpp */; };
+		1C8B63FCAEAA441FB6E4D1AE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacNullAudioSystem.cpp */ = {isa = PBXBuildFile; fileRef = AD046F27E5ED47668EE4FE3C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacNullAudioSystem.cpp */; };
+		1C992154D68849C5A8C643B1 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/SaveManager.cpp */ = {isa = PBXBuildFile; fileRef = AB3E1F67F999493DB8D25E14 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/SaveManager.cpp */; };
+		1D444C8AD45F4406BB3594BA /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinyxmlerror.cpp */ = {isa = PBXBuildFile; fileRef = F47932974937451C9E5BE6E3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinyxmlerror.cpp */; };
+		1EFCB2517F754BE0926ACA1B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/StringManager.cpp */ = {isa = PBXBuildFile; fileRef = 47D48C59686B45C0A92433F7 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/StringManager.cpp */; };
+		1F48AF457ACB452DBC7B8FAE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UITextBox.cpp */ = {isa = PBXBuildFile; fileRef = 8A8293EB85C94B6188DFBA6F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UITextBox.cpp */; };
+		209FFA1C33A0440C9C480BC4 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Camera2D.cpp */ = {isa = PBXBuildFile; fileRef = 5288D9046200428EBE9E6B63 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Camera2D.cpp */; };
+		2139369E0F5643AC849B556E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIQuickPlayScreen.cpp */ = {isa = PBXBuildFile; fileRef = 0872C31F91A24D62967F852A /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIQuickPlayScreen.cpp */; };
+		23A6C647602846CBB754CA3E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SfxPickup.cpp */ = {isa = PBXBuildFile; fileRef = 00BA9000F8574770871085F1 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SfxPickup.cpp */; };
+		28C5011622104C8099E95AAF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacSdlRenderer.cpp */ = {isa = PBXBuildFile; fileRef = BD806752623345FB9787B217 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacSdlRenderer.cpp */; };
+		2B914DA6F74B4333B97D128D /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIStateFlying.cpp */ = {isa = PBXBuildFile; fileRef = B24A393663D8441985F5F534 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIStateFlying.cpp */; };
+		2CCDBC9570EC45A98187ADE9 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/HealthIncreasePickup.cpp */ = {isa = PBXBuildFile; fileRef = ED9DDEE9C664450BB14EF6F5 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/HealthIncreasePickup.cpp */; };
+		2EC1D35E265640128CCCB526 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectManager.cpp */ = {isa = PBXBuildFile; fileRef = 8BD8DB6E8B8B4635B91E1D15 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectManager.cpp */; };
+		310610D699234E0D8CA1B8D0 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UICheckbox.cpp */ = {isa = PBXBuildFile; fileRef = A93FEFDE69CE4FC683A35C02 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UICheckbox.cpp */; };
+		310E72BDAF3444C5A43FC9ED /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/AnimationPart.cpp */ = {isa = PBXBuildFile; fileRef = 4BE61BC48E4F441A91FFDAE3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/AnimationPart.cpp */; };
+		332B5FB345E343A49E23DBEE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Rabbit.cpp */ = {isa = PBXBuildFile; fileRef = 2765AAF06AE146F3938022C6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Rabbit.cpp */; };
+		33AE479E2B134C49B765AF86 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/WaterBlock.cpp */ = {isa = PBXBuildFile; fileRef = 7A239D09051D42A792C604DF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/WaterBlock.cpp */; };
+		33CB6987E9F34C0991986D2E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIMeter.cpp */ = {isa = PBXBuildFile; fileRef = C1BC752874954F748FA94E82 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIMeter.cpp */; };
+		33DCDD8266954A63AA6E9A86 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Timing.cpp */ = {isa = PBXBuildFile; fileRef = 447D409E05D246499A86B1EE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Timing.cpp */; };
+		3668DCE03FC241CFB08980BA /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SolidMovingSprite.cpp */ = {isa = PBXBuildFile; fileRef = 9F110F2C36C640CCBE5A3180 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SolidMovingSprite.cpp */; };
+		39B5693A84064ADEA3AC6AD6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/PaperPickup.cpp */ = {isa = PBXBuildFile; fileRef = 17075DE1AABC4A96A7C49EE6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/PaperPickup.cpp */; };
+		3C8181AC42BA4DFFB99EFE6F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/WeatherManager.cpp */ = {isa = PBXBuildFile; fileRef = 0BE0604AB7C34A1A9D2A0AD4 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/WeatherManager.cpp */; };
+		3F123D63094A4400A0DA2FE2 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Audio/MusicManager.cpp */ = {isa = PBXBuildFile; fileRef = 3221B54E090F411C8A0B2E77 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Audio/MusicManager.cpp */; };
+		3F8EAB8395694A86AA36CBBA /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Vector3.cpp */ = {isa = PBXBuildFile; fileRef = DC54F21347DE4C7CA0C125A3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Vector3.cpp */; };
+		4083AEA7BF0E4D14B448DBC4 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinyxmlparser.cpp */ = {isa = PBXBuildFile; fileRef = BF5305634C07417D816EFA11 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinyxmlparser.cpp */; };
+		4137C9A7252C48CBAF428727 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/FeatureUnlockManager.cpp */ = {isa = PBXBuildFile; fileRef = 2B2C825D5A154599BBD72B35 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/FeatureUnlockManager.cpp */; };
+		41F555A1528845639C82566D /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/TextureManager.cpp */ = {isa = PBXBuildFile; fileRef = 09CAE73888CD467BBB67D2F5 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/TextureManager.cpp */; };
+		4293EE0BAC19400C845A0BFF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/BombProjectile.cpp */ = {isa = PBXBuildFile; fileRef = 8EF5D41FE349469E91787C5F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/BombProjectile.cpp */; };
+		436DFED4EB8C4DDA92E99C54 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/SimpleFontManager.cpp */ = {isa = PBXBuildFile; fileRef = 406C54291AFE42C790F3AA44 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/SimpleFontManager.cpp */; };
+		446F2AA867EF4089A1B979A7 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/PathingPlatform.cpp */ = {isa = PBXBuildFile; fileRef = 662369BCCEE54216B675B16C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/PathingPlatform.cpp */; };
+		4489B8D7DCE14387962FAF4B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacFileSystem.cpp */ = {isa = PBXBuildFile; fileRef = CD85BFCC31C24A51BA04FF74 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacFileSystem.cpp */; };
+		44E360A64CA9479CB08EAA04 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/AnimationSequence.cpp */ = {isa = PBXBuildFile; fileRef = 1FDDC388553E40F58142A663 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/AnimationSequence.cpp */; };
+		45B7608D00724F2F988003AC /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectBloodParticleSpray.cpp */ = {isa = PBXBuildFile; fileRef = E522BF40E82044ADAC17D5DA /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectBloodParticleSpray.cpp */; };
+		45D24BC7A26B4ED2A2FEE8BF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/SineWave.cpp */ = {isa = PBXBuildFile; fileRef = 9C62BE4E9996494AA73B5883 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/SineWave.cpp */; };
+		475274BD4A18452281A92650 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIButton.cpp */ = {isa = PBXBuildFile; fileRef = 77CE7307725D41D18671BBDA /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIButton.cpp */; };
+		476F4AFDA27E4396AFDF6C24 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Misc/Cube.cpp */ = {isa = PBXBuildFile; fileRef = 1ACF086E96474DDDAB12877D /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Misc/Cube.cpp */; };
+		4909B10FA80645539BC97B4A /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/SaveManager.cpp */ = {isa = PBXBuildFile; fileRef = B9D47601FDA14178ADF02BB0 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/SaveManager.cpp */; };
+		49A53B4C8D7147B894599491 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SkeletonEnemySpawner.cpp */ = {isa = PBXBuildFile; fileRef = 5CD4AC7B3EA642C6993371C6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SkeletonEnemySpawner.cpp */; };
+		4C4CFE0A3F244BBFA543C266 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinystr.cpp */ = {isa = PBXBuildFile; fileRef = 4B244268449C47B09FD841A4 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinystr.cpp */; };
+		4CCDB2DF69CA40BF8B667F35 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIMainMenuScreen.cpp */ = {isa = PBXBuildFile; fileRef = A47D9A7E4DD146C38888E240 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIMainMenuScreen.cpp */; };
+		4FBC63D2FCE045A5BB152581 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SpriteRecord.cpp */ = {isa = PBXBuildFile; fileRef = F7116DB825514AA08A6AA7E8 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SpriteRecord.cpp */; };
+		51BA47CB94EE466C9E61AB25 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Pickup.cpp */ = {isa = PBXBuildFile; fileRef = B844C26403464F3895045262 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Pickup.cpp */; };
+		5212B22114344F41AF3DBD47 /* /Users/jeromebyrne/Documents/git/Death_Leak/CMakeLists.txt */ = {isa = PBXBuildFile; fileRef = 948939E926124C9BBFD15D01 /* /Users/jeromebyrne/Documents/git/Death_Leak/CMakeLists.txt */; };
+		524791C8577740349B091073 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacGameMain.cpp */ = {isa = PBXBuildFile; fileRef = 7F605BA659784F85A755607C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacGameMain.cpp */; };
+		549417015A85489E8E74D2B4 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/LevelEntry.cpp */ = {isa = PBXBuildFile; fileRef = 781B5E927F1C48F4B7A6C523 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/LevelEntry.cpp */; };
+		549DC63959C6451AAA6E70BE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Vector3.cpp */ = {isa = PBXBuildFile; fileRef = 31386F5E779F4C69A1DB7EB8 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Vector3.cpp */; };
+		55FF0AE0639D4723BE46762B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UILevelSelectScreen.cpp */ = {isa = PBXBuildFile; fileRef = 8B685A9DA9834D99A4368C60 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UILevelSelectScreen.cpp */; };
+		597509F457A748AABE567CB0 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Logger.cpp */ = {isa = PBXBuildFile; fileRef = 639440BB8BE441CCB82D2395 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Logger.cpp */; };
+		5AA2E8D28F0F486A82B4947F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectLightTextureVertexWobble.cpp */ = {isa = PBXBuildFile; fileRef = 1ADEC125A2EA46C5963D3C8E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectLightTextureVertexWobble.cpp */; };
+		612AF11E97024D4382B940AE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Vector2.cpp */ = {isa = PBXBuildFile; fileRef = 4FB8E16510984E0DBE16F6DE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Vector2.cpp */; };
+		61C99FC2492D4F94B05C9F67 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/DrawableObject.cpp */ = {isa = PBXBuildFile; fileRef = 734863DDB1D942DE87CE8E13 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/DrawableObject.cpp */; };
+		63179F41AF7A43A98BEECE4F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Settings.cpp */ = {isa = PBXBuildFile; fileRef = E830EA01DDFA4170BBC0DC2B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Settings.cpp */; };
+		63A2DCE509D4497B9C0D23C6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Audio/AudioManager.cpp */ = {isa = PBXBuildFile; fileRef = 01187C88EA38451698C50A7A /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Audio/AudioManager.cpp */; };
+		645F06F5B1CD48B1B4E6EEFA /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectNoise.cpp */ = {isa = PBXBuildFile; fileRef = CF6F40DC6CDD425E880524DB /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectNoise.cpp */; };
+		664B809586894C4CAB3BEADB /* /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/CMakeFiles/DeathLeakMacGame.dir/Info.plist */ = {isa = PBXBuildFile; fileRef = 16B49CB2B8BA4051B2FDD19C /* /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/CMakeFiles/DeathLeakMacGame.dir/Info.plist */; };
+		680E00A2A61E46AABF265F1F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/NPC.cpp */ = {isa = PBXBuildFile; fileRef = 278087B260F4448BBF53035D /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/NPC.cpp */; };
+		6935B72EC6044C55A690B2F4 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIStateGroundAnimalWander.cpp */ = {isa = PBXBuildFile; fileRef = 14CFFF752616485E816D8B57 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIStateGroundAnimalWander.cpp */; };
+		695C4AB004594A1280A87C6B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Explosion.cpp */ = {isa = PBXBuildFile; fileRef = 7FABE1C3E3CD43BB8CDF6AE3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Explosion.cpp */; };
+		6B3099C7C0484A45949EEA0D /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/Animation.cpp */ = {isa = PBXBuildFile; fileRef = 3015B06AD4624EF69CB29B9F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/Animation.cpp */; };
+		6B71397CC2C24ADC8C19BF70 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectMonochrome.cpp */ = {isa = PBXBuildFile; fileRef = 646A6463C3AF47D3950C3D60 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectMonochrome.cpp */; };
+		6F721921855B4A138801ED3F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIStateButterflyWander.cpp */ = {isa = PBXBuildFile; fileRef = 4EDEA8E7EE884C5EB0EB94AE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIStateButterflyWander.cpp */; };
+		72A846FA669541258C4C3810 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/ScreenAlignedTexture.cpp */ = {isa = PBXBuildFile; fileRef = D09D1A26B42B4618B279095B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/ScreenAlignedTexture.cpp */; };
+		7511F876D7A14222B1283489 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine/Runtime/GameLoopController.cpp */ = {isa = PBXBuildFile; fileRef = 20332DF66C034D7180EAEB2F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine/Runtime/GameLoopController.cpp */; };
+		77B9F45647534D6B95B767BF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Audio/AudioObject.cpp */ = {isa = PBXBuildFile; fileRef = 67BF98D38FF64D129DB12B40 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Audio/AudioObject.cpp */; };
+		7C350DE1AE4B401FAF4B2383 /* /Users/jeromebyrne/Documents/git/Death_Leak/CMakeLists.txt */ = {isa = PBXBuildFile; fileRef = C530A50A7DBB41A4B3549FFA /* /Users/jeromebyrne/Documents/git/Death_Leak/CMakeLists.txt */; };
+		7C5320C53D0B47478BA64194 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectFoliageSway.cpp */ = {isa = PBXBuildFile; fileRef = 8C9BFFC3ABE544FF84F35D3D /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectFoliageSway.cpp */; };
+		7D84D7329A5646A5962D0C11 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/GhostEnemySpawner.cpp */ = {isa = PBXBuildFile; fileRef = 8F8231D8B97B4699B304C5FB /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/GhostEnemySpawner.cpp */; };
+		7E1419ACCA734650B471CD08 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/precompiled.cpp */ = {isa = PBXBuildFile; fileRef = 219E1E5485F6470DBB455A2A /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/precompiled.cpp */; };
+		7EBC184353DF4F0E834BC86D /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Vector2.cpp */ = {isa = PBXBuildFile; fileRef = 8393FFD6BC7749E59DECC4E6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Vector2.cpp */; };
+		8189AA7FD758494E8113AF59 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/LevelObjectRecord.cpp */ = {isa = PBXBuildFile; fileRef = 5AA5AA42F56A41CC82F5463F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/LevelObjectRecord.cpp */; };
+		81A026BB141A45418B02E23E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinystr.cpp */ = {isa = PBXBuildFile; fileRef = DEE7EBAEB06540ADAE95BC71 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinystr.cpp */; };
+		81B4687E5E4941DE94DDDF1B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/LevelTrigger.cpp */ = {isa = PBXBuildFile; fileRef = 0321779FACE04F3B8C4162E0 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/LevelTrigger.cpp */; };
+		8256836B0D4148938E5B5093 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/GameObjectManager.cpp */ = {isa = PBXBuildFile; fileRef = 629B135A0A2C449BB689C03B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/GameObjectManager.cpp */; };
+		82BCBF8F8AC44E71BF6D466A /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinyxml.cpp */ = {isa = PBXBuildFile; fileRef = 68B025B5D17F4126B8455630 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinyxml.cpp */; };
+		84118A9E8E1246749B5CCC5E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/BlackHole.cpp */ = {isa = PBXBuildFile; fileRef = B64AFFBC60F5404EB7B26AC2 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/BlackHole.cpp */; };
+		84E4551464054E4BA901D327 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/GhostEnemy.cpp */ = {isa = PBXBuildFile; fileRef = 4D4E7CCB03234797B54EC4A6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/GhostEnemy.cpp */; };
+		8584983F23A4415B84C99349 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinyxmlerror.cpp */ = {isa = PBXBuildFile; fileRef = 4C3AF00ACD4B4644BA33A18C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinyxmlerror.cpp */; };
+		859AC60B2A1E477B956C6CDD /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectLightTexturePixelWobble.cpp */ = {isa = PBXBuildFile; fileRef = 35992FA92CC148CB85C1D64F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectLightTexturePixelWobble.cpp */; };
+		871A49F8CAE0443E9EA188E6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/LevelProperties.cpp */ = {isa = PBXBuildFile; fileRef = 180D29C0A7C54CFF9CAB5105 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/LevelProperties.cpp */; };
+		885ACADBEC1B44B9900ADB75 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/AnimationSkeleton.cpp */ = {isa = PBXBuildFile; fileRef = BB3A882CEC4C45FBB31ED0B7 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/AnimationSkeleton.cpp */; };
+		898D11E8C9194BAC8E2B07BB /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/FeatureUnlockManager.cpp */ = {isa = PBXBuildFile; fileRef = CD99F4938F9745A69B856E61 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/FeatureUnlockManager.cpp */; };
+		89C631745BB34FA582091885 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/AnimationSkeleton.cpp */ = {isa = PBXBuildFile; fileRef = 660DE8B2167347C1BC2D8785 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/AnimationSkeleton.cpp */; };
+		8B9D7F50941E46C1B30E4355 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Vector4.cpp */ = {isa = PBXBuildFile; fileRef = 72D3C55F19884C86BFE885A2 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Vector4.cpp */; };
+		8CB3463C06924813B64AB79F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/NPCTrigger.cpp */ = {isa = PBXBuildFile; fileRef = 2402834417854079964C04FD /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/NPCTrigger.cpp */; };
+		8D3306CB1D54490F85B5792A /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIGameHudScreen.cpp */ = {isa = PBXBuildFile; fileRef = 144F84DF29214D59B3FABC8F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIGameHudScreen.cpp */; };
+		8EC3AE62F6CD42FCAFF4CABE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Smashable.cpp */ = {isa = PBXBuildFile; fileRef = 033393C4770B4AD9994634AF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Smashable.cpp */; };
+		90104A8DFD3641768A980A50 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectBasic.cpp */ = {isa = PBXBuildFile; fileRef = F26C59604A1A4A318C0AC7A0 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectBasic.cpp */; };
+		9072080D67CB48DCB3413704 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/DojoScrollPickup.cpp */ = {isa = PBXBuildFile; fileRef = 6C920990096A4471A0DF097B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/DojoScrollPickup.cpp */; };
+		908335BEFB314958904BE43F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/KeyPickup.cpp */ = {isa = PBXBuildFile; fileRef = 033BE3A0CAA843678C0E84D5 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/KeyPickup.cpp */; };
+		90CBDC760CBA4A3C877BF0D9 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/LevelProperties.cpp */ = {isa = PBXBuildFile; fileRef = D4A1FF8DF1E140078E52EFF6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/LevelProperties.cpp */; };
+		921F452707F94E339B891A07 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Particles/ParticleSpray.cpp */ = {isa = PBXBuildFile; fileRef = BC94A1E42F4F466EA9AFB383 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Particles/ParticleSpray.cpp */; };
+		96D0D2E5611D44F7A33882C6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine/Runtime/GameLoopController.cpp */ = {isa = PBXBuildFile; fileRef = 7283095B76714F03980C99CE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine/Runtime/GameLoopController.cpp */; };
+		96E8DB06005E473A88B0B961 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/TextObject.cpp */ = {isa = PBXBuildFile; fileRef = A20D0AA0D19848DBAA8C0657 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/TextObject.cpp */; };
+		9715B1D6772A428BA5ECA26D /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/AnimationSequence.cpp */ = {isa = PBXBuildFile; fileRef = D93A06B7C46A479690CFA0D7 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/AnimationSequence.cpp */; };
+		97893A01FF8741368B0C5911 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/XmlDocument.cpp */ = {isa = PBXBuildFile; fileRef = 093CACC8B00E45F08F665D50 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/XmlDocument.cpp */; };
+		988FA737EC194ED186980584 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/NPCManager.cpp */ = {isa = PBXBuildFile; fileRef = ED649478DA7E467B9CF0C00E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/NPCManager.cpp */; };
+		99E81601FDF94206A228BAE8 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectReflection.cpp */ = {isa = PBXBuildFile; fileRef = EEDFFFA9E8BA41938CFC77E8 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectReflection.cpp */; };
+		9A743F3190244D38BF022804 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/XmlDocument.cpp */ = {isa = PBXBuildFile; fileRef = BC9E6CD08F914CAEB106503C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/XmlDocument.cpp */; };
+		9D2296CC24BD46B88785658B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/StringManager.cpp */ = {isa = PBXBuildFile; fileRef = 6BB185C8AE4B4D249D910E1F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/StringManager.cpp */; };
+		9E8137271BC540B59DD3D255 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/HealthDevil.cpp */ = {isa = PBXBuildFile; fileRef = CEBD82F04C5447ADBC2D1D53 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/HealthDevil.cpp */; };
+		A00EF5B0B07440C7A69B6AFF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectSepia.cpp */ = {isa = PBXBuildFile; fileRef = D095F50DFE0E43569AF9939E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectSepia.cpp */; };
+		A0CC7A6CA67B4ED8BBC4FE04 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIOptionsScreen.cpp */ = {isa = PBXBuildFile; fileRef = D10BA88356FF4FEAACB095EE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIOptionsScreen.cpp */; };
+		A18469F8E6724F389660C722 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIState.cpp */ = {isa = PBXBuildFile; fileRef = F85410507C70413990AB9D87 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIState.cpp */; };
+		A2C79FCD82CD442D81B48F43 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/AnimationPart.cpp */ = {isa = PBXBuildFile; fileRef = 2F534F92D4A444E1AE3343AE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/AnimationPart.cpp */; };
+		A323C0D5E4CF4166B782043A /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/DataValue.cpp */ = {isa = PBXBuildFile; fileRef = C02A7D98C46C49A8B0FE183B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/DataValue.cpp */; };
+		A326BEB9D4944B37A8EA1E68 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacSdlInputSystem.cpp */ = {isa = PBXBuildFile; fileRef = 49B6307E253B46B186DF67AE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacSdlInputSystem.cpp */; };
+		A5742EA6ED374C998CC87C06 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/ParallaxLayer.cpp */ = {isa = PBXBuildFile; fileRef = A4038B7B1F1041E49CE7CBB2 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/ParallaxLayer.cpp */; };
+		A8E5EA7382EC4CC58C3FED79 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Door.cpp */ = {isa = PBXBuildFile; fileRef = 80F0A85464264DDC9D8666C3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Door.cpp */; };
+		A9B7F9D046AA4A759B36C389 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Player.cpp */ = {isa = PBXBuildFile; fileRef = CD4BEBF0CEDF4226946A0B5B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Player.cpp */; };
+		AB7315E46ACC4268A440D665 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectLightTexture.cpp */ = {isa = PBXBuildFile; fileRef = 05416C7AF8AD458296A5F8E5 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectLightTexture.cpp */; };
+		AC045077DC094B859432483B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIAnimatedSprite.cpp */ = {isa = PBXBuildFile; fileRef = 72790BD28912405F91A88547 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIAnimatedSprite.cpp */; };
+		AEBB388CFFE84903A0CA312D /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Misc/BasicLight.cpp */ = {isa = PBXBuildFile; fileRef = 4FD11C3CA6AA4D2D92B23AAD /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Misc/BasicLight.cpp */; };
+		AF0AF2E2AB314A02AB690BE8 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Game.cpp */ = {isa = PBXBuildFile; fileRef = 92A2F64E68364EB7B3017AAB /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Game.cpp */; };
+		B2EF0502C7DE4EC9A38FB570 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UITextModal.cpp */ = {isa = PBXBuildFile; fileRef = 4BDDD96C3EEA4C89ABCAF954 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UITextModal.cpp */; };
+		B36A4EB434584EC7A98BBC43 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/butterfly.cpp */ = {isa = PBXBuildFile; fileRef = 3D45C0D67E684DB1B48D94DC /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/butterfly.cpp */; };
+		B39B9F1453E84A5F972183CF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/ScrollingSprite.cpp */ = {isa = PBXBuildFile; fileRef = 9598E9E7305E4D6F82C7FC82 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/ScrollingSprite.cpp */; };
+		B3F02BE1F4C6470DAAD808A3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectMonochromeRed.cpp */ = {isa = PBXBuildFile; fileRef = 9B55BB1746FF4B3DADC5314B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectMonochromeRed.cpp */; };
+		B5F75DC54CA644BA856AFD20 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/FocusUpgradePickup.cpp */ = {isa = PBXBuildFile; fileRef = 72E246DFED044DAA862C660A /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/FocusUpgradePickup.cpp */; };
+		B8AD5E9C394F44749ADB1529 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIStateRepel.cpp */ = {isa = PBXBuildFile; fileRef = 901C661BE8D84FAEB85141FA /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIStateRepel.cpp */; };
+		BACD0E43E4EF4A1B9973E547 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIStateRangeAttack.cpp */ = {isa = PBXBuildFile; fileRef = 52C0AAEEE47C4E249BD0B5BF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIStateRangeAttack.cpp */; };
+		BB95D48431F344CCB3A92E8C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/GameObject.cpp */ = {isa = PBXBuildFile; fileRef = A2A28AEF40E84567958047D3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/GameObject.cpp */; };
+		BCD9FE030D2C403DBA7FE293 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Projectile.cpp */ = {isa = PBXBuildFile; fileRef = F536863D6B1C4D079E15E3D6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Projectile.cpp */; };
+		BE92C36E258446B988495180 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacSdlPlatformApp.cpp */ = {isa = PBXBuildFile; fileRef = F9E29A0A71A3453A942EC9FB /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacSdlPlatformApp.cpp */; };
+		C240CF791C404B628DCF922B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIObjectEditScreen.cpp */ = {isa = PBXBuildFile; fileRef = BFA62A7D2BD149FD8053A347 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIObjectEditScreen.cpp */; };
+		C448B99894B64AD5877077A3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SpriteRecord.cpp */ = {isa = PBXBuildFile; fileRef = A93806FE12224C1486B78B0F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SpriteRecord.cpp */; };
+		C633D5455AA441CC97959819 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Platform.cpp */ = {isa = PBXBuildFile; fileRef = 71F634081C844BEAB0FEC92F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Platform.cpp */; };
+		C6D02D4CD3A34E9E8D88580B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Boat.cpp */ = {isa = PBXBuildFile; fileRef = F8EC2AD64BD74ACBAFFFE3F3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Boat.cpp */; };
+		CC561B727EAA4A8D92A85FF4 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/MovingSprite.cpp */ = {isa = PBXBuildFile; fileRef = 30A6782756054087AF734746 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/MovingSprite.cpp */; };
+		CC9FB0B82D184B8AA1B4B90B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/MaterialManager.cpp */ = {isa = PBXBuildFile; fileRef = 20DFFD97EF4844FE8E12D53E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/MaterialManager.cpp */; };
+		CCC6580CA73C49E49CF8FAFF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UISprite.cpp */ = {isa = PBXBuildFile; fileRef = 654B3A4B089B4C4DA176D923 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UISprite.cpp */; };
+		D0753ED125FA479F891D9EDF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/GraphicsMac.cpp */ = {isa = PBXBuildFile; fileRef = 00B21BC530F641D1B17A79A0 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/GraphicsMac.cpp */; };
+		D1DAC4012A3A4E6CAC5AF68C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIUpgradeModal.cpp */ = {isa = PBXBuildFile; fileRef = C0E9D8F3CDB044E087C3672C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIUpgradeModal.cpp */; };
+		D2EBA4EAC9AF4B36813906DF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/CollisionManager.cpp */ = {isa = PBXBuildFile; fileRef = 4F9A87725AD745BA830C1BD4 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/CollisionManager.cpp */; };
+		D4D7EBC41DD7441884CA598E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Character.cpp */ = {isa = PBXBuildFile; fileRef = B816AB6FAD2C4AE488A42263 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Character.cpp */; };
+		D5E84F5849024ACF84B56D25 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Foliage.cpp */ = {isa = PBXBuildFile; fileRef = 753D713A53FF4A6A8E7D5F51 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Foliage.cpp */; };
+		D78B56C1CA2D4922A09BDA5A /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Settings.cpp */ = {isa = PBXBuildFile; fileRef = 91AC052F750B4E89B0B93640 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Settings.cpp */; };
+		D936D0006F5C441B8CC40ADE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/InputManager.cpp */ = {isa = PBXBuildFile; fileRef = 26D86BAAAF2E4E31AB844E0D /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/InputManager.cpp */; };
+		D9A8D8E14F2A4C5DB1EF5E2F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/PlayerLevelManager.cpp */ = {isa = PBXBuildFile; fileRef = EF25B373839B4231B86658B2 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/PlayerLevelManager.cpp */; };
+		DA5AB9C091224D19897B276F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/LevelObjectRecord.cpp */ = {isa = PBXBuildFile; fileRef = A5D08CB7D1544E2695503DA4 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/LevelObjectRecord.cpp */; };
+		E273545F291F45D89918D3C2 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SolidLineStrip.cpp */ = {isa = PBXBuildFile; fileRef = D8740E796DCB4E2F9B098265 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SolidLineStrip.cpp */; };
+		E34DC1722EEE47BB91DA94FF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/HealthUpgradePickup.cpp */ = {isa = PBXBuildFile; fileRef = 798FD00437024AD6B59C59EB /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/HealthUpgradePickup.cpp */; };
+		E43930CD1234413E9C9B517B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/DataValue.cpp */ = {isa = PBXBuildFile; fileRef = EF51BE3BC112406592000233 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/DataValue.cpp */; };
+		E4B159426CD947AAA340DB51 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Misc/Mesh.cpp */ = {isa = PBXBuildFile; fileRef = F53B7AA180204B2DA87368DD /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Misc/Mesh.cpp */; };
+		E4E05D3DB43945E7B96C1F3E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/MaterialManager.cpp */ = {isa = PBXBuildFile; fileRef = 2171A67E1D0749819911550A /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/MaterialManager.cpp */; };
+		E58B3C7FC1514FD8BF4D2CB6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIStateFollow.cpp */ = {isa = PBXBuildFile; fileRef = 65F80DDACA124A9E90267DAF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIStateFollow.cpp */; };
+		E5E948287D984A6E8007A035 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Debris.cpp */ = {isa = PBXBuildFile; fileRef = 48F4F0C629D14911B3823E5C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Debris.cpp */; };
+		E7B742DE02D849369ADE128C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Particles/ParticleEmitterManager.cpp */ = {isa = PBXBuildFile; fileRef = 1FBFDB5BC0A44FF6A70BD9F4 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Particles/ParticleEmitterManager.cpp */; };
+		E9450D5B49454C4F9B577974 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIGameLoading.cpp */ = {isa = PBXBuildFile; fileRef = 9719837CB74C4565AA470AD7 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIGameLoading.cpp */; };
+		E98F79F59F134AB1A8738887 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Logger.cpp */ = {isa = PBXBuildFile; fileRef = 7E580A9F6E0541D6BC6240CD /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Logger.cpp */; };
+		EA3BD9B29511444196876AAC /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectLightTextureBump.cpp */ = {isa = PBXBuildFile; fileRef = 6265BD51962540D398C47F82 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectLightTextureBump.cpp */; };
+		EC7C10682DA14DC28CDC447D /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/GamePad.cpp */ = {isa = PBXBuildFile; fileRef = BFA0713B86CF4A80AA7F0842 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/GamePad.cpp */; };
+		ED6A696B79094679B7BC170E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/NinjaSpawner.cpp */ = {isa = PBXBuildFile; fileRef = E5260333909B4E408C55F65C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/NinjaSpawner.cpp */; };
+		EFE2CCA71EF64E28A2EEEDBE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/ForceBox.cpp */ = {isa = PBXBuildFile; fileRef = 648777A76C6E4CA58D273664 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/ForceBox.cpp */; };
+		F4628691652C4418BC1C5ED1 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SkeletonEnemy.cpp */ = {isa = PBXBuildFile; fileRef = C122A9078625435088A0B54F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SkeletonEnemy.cpp */; };
+		F4D01759BA554103A500B334 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Material.cpp */ = {isa = PBXBuildFile; fileRef = CDD9F416011A443EB7752472 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Material.cpp */; };
+		F7120522130448B7BC36F686 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SaveShrine.cpp */ = {isa = PBXBuildFile; fileRef = 89FC6EFE6C4D46398F395205 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SaveShrine.cpp */; };
+		F988EF14B9004FF7BE3E4F64 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/AmbientBird.cpp */ = {isa = PBXBuildFile; fileRef = A1A93918592F468198845731 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/AmbientBird.cpp */; };
+		FB78492D10B4411FB9CC39A9 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Breakable.cpp */ = {isa = PBXBuildFile; fileRef = BE4D275E69E74A4489A78069 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Breakable.cpp */; };
+		FC41A2ED29494086AB074DA3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinyxml.cpp */ = {isa = PBXBuildFile; fileRef = 452249D3EED0457FBB5B1F0C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinyxml.cpp */; };
+		FD62DD5AFEB847FCBAE9CCAC /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/ActiveBird.cpp */ = {isa = PBXBuildFile; fileRef = 0AB7A7FD401B4E4087D60A00 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/ActiveBird.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildStyle section */
+		1FFF4EEEDE3F4AFBBA2A62FB /* MinSizeRel */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = MinSizeRel;
+		};
+		7E0D5999A6F947A39FB1A043 /* Release */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Release;
+		};
+		9BE6820DB5B94E1AB87EE419 /* Debug */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Debug;
+		};
+		DE87F6BCD223478594BAC14E /* RelWithDebInfo */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = RelWithDebInfo;
+		};
+/* End PBXBuildStyle section */
+
+/* Begin PBXContainerItemProxy section */
+		2012A7A6D640403EBAA0A74E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C809EE4487D041C3B5E5367E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8C04F3ACBF17C1BD760F0C6A;
+			remoteInfo = DeathLeakMacGame;
+		};
+		80DDA39844D44522BF6A0D13 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C809EE4487D041C3B5E5367E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 40707EC15D4A4800CFED9F0F;
+			remoteInfo = ZERO_CHECK;
+		};
+		83386B6EE1194E4284215876 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C809EE4487D041C3B5E5367E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 85E2C67C1053E5E7E422A7CE;
+			remoteInfo = DeathLeakPortableCore;
+		};
+		B39EFE73C388409B8A993C83 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C809EE4487D041C3B5E5367E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 40707EC15D4A4800CFED9F0F;
+			remoteInfo = ZERO_CHECK;
+		};
+		C7F3EC25F69B480B9095035A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C809EE4487D041C3B5E5367E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 40707EC15D4A4800CFED9F0F;
+			remoteInfo = ZERO_CHECK;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		00B21BC530F641D1B17A79A0 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/GraphicsMac.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = GraphicsMac.cpp; path = Game/src/Core/GraphicsMac.cpp; sourceTree = SOURCE_ROOT; };
+		00BA9000F8574770871085F1 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SfxPickup.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = SfxPickup.cpp; path = Game/src/GameObjects/SfxPickup.cpp; sourceTree = SOURCE_ROOT; };
+		01187C88EA38451698C50A7A /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Audio/AudioManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = AudioManager.cpp; path = Game/src/Audio/AudioManager.cpp; sourceTree = SOURCE_ROOT; };
+		0321779FACE04F3B8C4162E0 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/LevelTrigger.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = LevelTrigger.cpp; path = Game/src/GameObjects/LevelTrigger.cpp; sourceTree = SOURCE_ROOT; };
+		033393C4770B4AD9994634AF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Smashable.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Smashable.cpp; path = Game/src/GameObjects/Smashable.cpp; sourceTree = SOURCE_ROOT; };
+		03358077950C478F9EF390BC /* DeathLeakPortableCore */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libDeathLeakPortableCore.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		033BE3A0CAA843678C0E84D5 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/KeyPickup.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = KeyPickup.cpp; path = Game/src/GameObjects/KeyPickup.cpp; sourceTree = SOURCE_ROOT; };
+		05416C7AF8AD458296A5F8E5 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectLightTexture.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = EffectLightTexture.cpp; path = Game/src/Effects/EffectLightTexture.cpp; sourceTree = SOURCE_ROOT; };
+		0872C31F91A24D62967F852A /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIQuickPlayScreen.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = UIQuickPlayScreen.cpp; path = Game/src/UI/UIQuickPlayScreen.cpp; sourceTree = SOURCE_ROOT; };
+		093CACC8B00E45F08F665D50 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/XmlDocument.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = XmlDocument.cpp; path = Game/src/Core/XmlDocument.cpp; sourceTree = SOURCE_ROOT; };
+		099FBA15579E4CE9B620B8C6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinyxmlparser.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = tinyxmlparser.cpp; path = Game/tinyxml/tinyxmlparser.cpp; sourceTree = SOURCE_ROOT; };
+		09CAE73888CD467BBB67D2F5 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/TextureManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = TextureManager.cpp; path = Game/src/Core/TextureManager.cpp; sourceTree = SOURCE_ROOT; };
+		0AB7A7FD401B4E4087D60A00 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/ActiveBird.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ActiveBird.cpp; path = Game/src/GameObjects/ActiveBird.cpp; sourceTree = SOURCE_ROOT; };
+		0BE0604AB7C34A1A9D2A0AD4 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/WeatherManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = WeatherManager.cpp; path = Game/src/GameObjects/WeatherManager.cpp; sourceTree = SOURCE_ROOT; };
+		144F84DF29214D59B3FABC8F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIGameHudScreen.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = UIGameHudScreen.cpp; path = Game/src/UI/UIGameHudScreen.cpp; sourceTree = SOURCE_ROOT; };
+		14CFFF752616485E816D8B57 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIStateGroundAnimalWander.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = AIStateGroundAnimalWander.cpp; path = Game/src/AI/AIStateGroundAnimalWander.cpp; sourceTree = SOURCE_ROOT; };
+		16B49CB2B8BA4051B2FDD19C /* /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/CMakeFiles/DeathLeakMacGame.dir/Info.plist */ = {isa = PBXFileReference; explicitFileType = sourcecode.text.plist; fileEncoding = 4; name = Info.plist; path = build/xcode/CMakeFiles/DeathLeakMacGame.dir/Info.plist; sourceTree = SOURCE_ROOT; };
+		17075DE1AABC4A96A7C49EE6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/PaperPickup.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = PaperPickup.cpp; path = Game/src/GameObjects/PaperPickup.cpp; sourceTree = SOURCE_ROOT; };
+		180D29C0A7C54CFF9CAB5105 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/LevelProperties.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = LevelProperties.cpp; path = Game/src/LevelProperties.cpp; sourceTree = SOURCE_ROOT; };
+		18C0BC0F9DD049ED9EDCDFB3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/CurrencyOrb.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CurrencyOrb.cpp; path = Game/src/GameObjects/CurrencyOrb.cpp; sourceTree = SOURCE_ROOT; };
+		1ACF086E96474DDDAB12877D /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Misc/Cube.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Cube.cpp; path = Game/src/Misc/Cube.cpp; sourceTree = SOURCE_ROOT; };
+		1ADEC125A2EA46C5963D3C8E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectLightTextureVertexWobble.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = EffectLightTextureVertexWobble.cpp; path = Game/src/Effects/EffectLightTextureVertexWobble.cpp; sourceTree = SOURCE_ROOT; };
+		1FBFDB5BC0A44FF6A70BD9F4 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Particles/ParticleEmitterManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ParticleEmitterManager.cpp; path = Game/src/Particles/ParticleEmitterManager.cpp; sourceTree = SOURCE_ROOT; };
+		1FDDC388553E40F58142A663 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/AnimationSequence.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = AnimationSequence.cpp; path = Game/src/Animation/AnimationSequence.cpp; sourceTree = SOURCE_ROOT; };
+		20332DF66C034D7180EAEB2F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine/Runtime/GameLoopController.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = GameLoopController.cpp; path = Game/src/Engine/Runtime/GameLoopController.cpp; sourceTree = SOURCE_ROOT; };
+		20DFFD97EF4844FE8E12D53E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/MaterialManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = MaterialManager.cpp; path = Game/src/GameObjects/MaterialManager.cpp; sourceTree = SOURCE_ROOT; };
+		2171A67E1D0749819911550A /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/MaterialManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = MaterialManager.cpp; path = Game/src/GameObjects/MaterialManager.cpp; sourceTree = SOURCE_ROOT; };
+		219E1E5485F6470DBB455A2A /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/precompiled.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = precompiled.cpp; path = Game/src/precompiled.cpp; sourceTree = SOURCE_ROOT; };
+		2402834417854079964C04FD /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/NPCTrigger.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = NPCTrigger.cpp; path = Game/src/GameObjects/NPCTrigger.cpp; sourceTree = SOURCE_ROOT; };
+		248C7CD3816D409485AB6BDC /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Sprite.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Sprite.cpp; path = Game/src/GameObjects/Sprite.cpp; sourceTree = SOURCE_ROOT; };
+		26D86BAAAF2E4E31AB844E0D /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/InputManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = InputManager.cpp; path = Game/src/InputManager.cpp; sourceTree = SOURCE_ROOT; };
+		2765AAF06AE146F3938022C6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Rabbit.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Rabbit.cpp; path = Game/src/GameObjects/Rabbit.cpp; sourceTree = SOURCE_ROOT; };
+		278087B260F4448BBF53035D /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/NPC.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = NPC.cpp; path = Game/src/GameObjects/NPC.cpp; sourceTree = SOURCE_ROOT; };
+		2B2C825D5A154599BBD72B35 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/FeatureUnlockManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = FeatureUnlockManager.cpp; path = Game/src/FeatureUnlockManager.cpp; sourceTree = SOURCE_ROOT; };
+		2F534F92D4A444E1AE3343AE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/AnimationPart.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = AnimationPart.cpp; path = Game/src/Animation/AnimationPart.cpp; sourceTree = SOURCE_ROOT; };
+		3015B06AD4624EF69CB29B9F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/Animation.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Animation.cpp; path = Game/src/Animation/Animation.cpp; sourceTree = SOURCE_ROOT; };
+		30A6782756054087AF734746 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/MovingSprite.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = MovingSprite.cpp; path = Game/src/GameObjects/MovingSprite.cpp; sourceTree = SOURCE_ROOT; };
+		31386F5E779F4C69A1DB7EB8 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Vector3.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Vector3.cpp; path = Game/src/Core/Vector3.cpp; sourceTree = SOURCE_ROOT; };
+		3221B54E090F411C8A0B2E77 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Audio/MusicManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = MusicManager.cpp; path = Game/src/Audio/MusicManager.cpp; sourceTree = SOURCE_ROOT; };
+		35992FA92CC148CB85C1D64F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectLightTexturePixelWobble.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = EffectLightTexturePixelWobble.cpp; path = Game/src/Effects/EffectLightTexturePixelWobble.cpp; sourceTree = SOURCE_ROOT; };
+		3D45C0D67E684DB1B48D94DC /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/butterfly.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = butterfly.cpp; path = Game/src/GameObjects/butterfly.cpp; sourceTree = SOURCE_ROOT; };
+		406C54291AFE42C790F3AA44 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/SimpleFontManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = SimpleFontManager.cpp; path = Game/src/Core/SimpleFontManager.cpp; sourceTree = SOURCE_ROOT; };
+		42481DEC60374702B9E60693 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/LevelEditor.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = LevelEditor.cpp; path = Game/src/LevelEditor.cpp; sourceTree = SOURCE_ROOT; };
+		447D409E05D246499A86B1EE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Timing.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Timing.cpp; path = Game/src/Core/Timing.cpp; sourceTree = SOURCE_ROOT; };
+		452249D3EED0457FBB5B1F0C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinyxml.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = tinyxml.cpp; path = Game/tinyxml/tinyxml.cpp; sourceTree = SOURCE_ROOT; };
+		4638F7C884DD4F3CA9040E37 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Vector4.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Vector4.cpp; path = Game/src/Core/Vector4.cpp; sourceTree = SOURCE_ROOT; };
+		47D48C59686B45C0A92433F7 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/StringManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = StringManager.cpp; path = Game/src/Core/StringManager.cpp; sourceTree = SOURCE_ROOT; };
+		48F4F0C629D14911B3823E5C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Debris.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Debris.cpp; path = Game/src/GameObjects/Debris.cpp; sourceTree = SOURCE_ROOT; };
+		49B6307E253B46B186DF67AE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacSdlInputSystem.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = MacSdlInputSystem.cpp; path = Game/src/Backends/Mac/MacSdlInputSystem.cpp; sourceTree = SOURCE_ROOT; };
+		4A4581449A9E49A898B5881B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/SineWave.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = SineWave.cpp; path = Game/src/SineWave.cpp; sourceTree = SOURCE_ROOT; };
+		4ABE8C3CC72C432096A9432B /* /Users/jeromebyrne/Documents/git/Death_Leak/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		4B244268449C47B09FD841A4 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinystr.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = tinystr.cpp; path = Game/tinyxml/tinystr.cpp; sourceTree = SOURCE_ROOT; };
+		4BDDD96C3EEA4C89ABCAF954 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UITextModal.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = UITextModal.cpp; path = Game/src/UI/UITextModal.cpp; sourceTree = SOURCE_ROOT; };
+		4BE61BC48E4F441A91FFDAE3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/AnimationPart.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = AnimationPart.cpp; path = Game/src/Animation/AnimationPart.cpp; sourceTree = SOURCE_ROOT; };
+		4C3AF00ACD4B4644BA33A18C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinyxmlerror.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = tinyxmlerror.cpp; path = Game/tinyxml/tinyxmlerror.cpp; sourceTree = SOURCE_ROOT; };
+		4D4E7CCB03234797B54EC4A6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/GhostEnemy.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = GhostEnemy.cpp; path = Game/src/GameObjects/GhostEnemy.cpp; sourceTree = SOURCE_ROOT; };
+		4EDEA8E7EE884C5EB0EB94AE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIStateButterflyWander.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = AIStateButterflyWander.cpp; path = Game/src/AI/AIStateButterflyWander.cpp; sourceTree = SOURCE_ROOT; };
+		4F9A87725AD745BA830C1BD4 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/CollisionManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = CollisionManager.cpp; path = Game/src/Core/CollisionManager.cpp; sourceTree = SOURCE_ROOT; };
+		4FB8E16510984E0DBE16F6DE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Vector2.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Vector2.cpp; path = Game/src/Core/Vector2.cpp; sourceTree = SOURCE_ROOT; };
+		4FD11C3CA6AA4D2D92B23AAD /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Misc/BasicLight.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = BasicLight.cpp; path = Game/src/Misc/BasicLight.cpp; sourceTree = SOURCE_ROOT; };
+		5288D9046200428EBE9E6B63 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Camera2D.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Camera2D.cpp; path = Game/src/Core/Camera2D.cpp; sourceTree = SOURCE_ROOT; };
+		52C0AAEEE47C4E249BD0B5BF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIStateRangeAttack.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = AIStateRangeAttack.cpp; path = Game/src/AI/AIStateRangeAttack.cpp; sourceTree = SOURCE_ROOT; };
+		5AA5AA42F56A41CC82F5463F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/LevelObjectRecord.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = LevelObjectRecord.cpp; path = Game/src/GameObjects/LevelObjectRecord.cpp; sourceTree = SOURCE_ROOT; };
+		5CD4AC7B3EA642C6993371C6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SkeletonEnemySpawner.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = SkeletonEnemySpawner.cpp; path = Game/src/GameObjects/SkeletonEnemySpawner.cpp; sourceTree = SOURCE_ROOT; };
+		6265BD51962540D398C47F82 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectLightTextureBump.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = EffectLightTextureBump.cpp; path = Game/src/Effects/EffectLightTextureBump.cpp; sourceTree = SOURCE_ROOT; };
+		629B135A0A2C449BB689C03B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/GameObjectManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = GameObjectManager.cpp; path = Game/src/GameObjects/GameObjectManager.cpp; sourceTree = SOURCE_ROOT; };
+		639440BB8BE441CCB82D2395 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Logger.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Logger.cpp; path = Game/src/Core/Logger.cpp; sourceTree = SOURCE_ROOT; };
+		646A6463C3AF47D3950C3D60 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectMonochrome.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = EffectMonochrome.cpp; path = Game/src/Effects/EffectMonochrome.cpp; sourceTree = SOURCE_ROOT; };
+		648777A76C6E4CA58D273664 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/ForceBox.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ForceBox.cpp; path = Game/src/GameObjects/ForceBox.cpp; sourceTree = SOURCE_ROOT; };
+		654B3A4B089B4C4DA176D923 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UISprite.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = UISprite.cpp; path = Game/src/UI/UISprite.cpp; sourceTree = SOURCE_ROOT; };
+		65F80DDACA124A9E90267DAF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIStateFollow.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = AIStateFollow.cpp; path = Game/src/AI/AIStateFollow.cpp; sourceTree = SOURCE_ROOT; };
+		660DE8B2167347C1BC2D8785 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/AnimationSkeleton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = AnimationSkeleton.cpp; path = Game/src/Animation/AnimationSkeleton.cpp; sourceTree = SOURCE_ROOT; };
+		662369BCCEE54216B675B16C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/PathingPlatform.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = PathingPlatform.cpp; path = Game/src/GameObjects/PathingPlatform.cpp; sourceTree = SOURCE_ROOT; };
+		67BF98D38FF64D129DB12B40 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Audio/AudioObject.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = AudioObject.cpp; path = Game/src/Audio/AudioObject.cpp; sourceTree = SOURCE_ROOT; };
+		68B025B5D17F4126B8455630 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinyxml.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = tinyxml.cpp; path = Game/tinyxml/tinyxml.cpp; sourceTree = SOURCE_ROOT; };
+		6BB185C8AE4B4D249D910E1F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/StringManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = StringManager.cpp; path = Game/src/Core/StringManager.cpp; sourceTree = SOURCE_ROOT; };
+		6C920990096A4471A0DF097B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/DojoScrollPickup.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = DojoScrollPickup.cpp; path = Game/src/GameObjects/DojoScrollPickup.cpp; sourceTree = SOURCE_ROOT; };
+		6DDFA7F49177438EBA62492B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectParticleSpray.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = EffectParticleSpray.cpp; path = Game/src/Effects/EffectParticleSpray.cpp; sourceTree = SOURCE_ROOT; };
+		71F634081C844BEAB0FEC92F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Platform.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Platform.cpp; path = Game/src/GameObjects/Platform.cpp; sourceTree = SOURCE_ROOT; };
+		72790BD28912405F91A88547 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIAnimatedSprite.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = UIAnimatedSprite.cpp; path = Game/src/UI/UIAnimatedSprite.cpp; sourceTree = SOURCE_ROOT; };
+		7283095B76714F03980C99CE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine/Runtime/GameLoopController.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = GameLoopController.cpp; path = Game/src/Engine/Runtime/GameLoopController.cpp; sourceTree = SOURCE_ROOT; };
+		72D3C55F19884C86BFE885A2 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Vector4.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Vector4.cpp; path = Game/src/Core/Vector4.cpp; sourceTree = SOURCE_ROOT; };
+		72E246DFED044DAA862C660A /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/FocusUpgradePickup.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = FocusUpgradePickup.cpp; path = Game/src/GameObjects/FocusUpgradePickup.cpp; sourceTree = SOURCE_ROOT; };
+		734863DDB1D942DE87CE8E13 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/DrawableObject.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = DrawableObject.cpp; path = Game/src/GameObjects/DrawableObject.cpp; sourceTree = SOURCE_ROOT; };
+		753D713A53FF4A6A8E7D5F51 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Foliage.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Foliage.cpp; path = Game/src/GameObjects/Foliage.cpp; sourceTree = SOURCE_ROOT; };
+		77CE7307725D41D18671BBDA /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIButton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = UIButton.cpp; path = Game/src/UI/UIButton.cpp; sourceTree = SOURCE_ROOT; };
+		781B5E927F1C48F4B7A6C523 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/LevelEntry.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = LevelEntry.cpp; path = Game/src/GameObjects/LevelEntry.cpp; sourceTree = SOURCE_ROOT; };
+		798FD00437024AD6B59C59EB /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/HealthUpgradePickup.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = HealthUpgradePickup.cpp; path = Game/src/GameObjects/HealthUpgradePickup.cpp; sourceTree = SOURCE_ROOT; };
+		7A239D09051D42A792C604DF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/WaterBlock.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = WaterBlock.cpp; path = Game/src/GameObjects/WaterBlock.cpp; sourceTree = SOURCE_ROOT; };
+		7E580A9F6E0541D6BC6240CD /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Logger.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Logger.cpp; path = Game/src/Core/Logger.cpp; sourceTree = SOURCE_ROOT; };
+		7E5E73A88A9B40168398BB97 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Achievements/Achievement.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Achievement.cpp; path = Game/src/Achievements/Achievement.cpp; sourceTree = SOURCE_ROOT; };
+		7F605BA659784F85A755607C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacGameMain.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = MacGameMain.cpp; path = Game/src/Backends/Mac/MacGameMain.cpp; sourceTree = SOURCE_ROOT; };
+		7FABE1C3E3CD43BB8CDF6AE3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Explosion.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Explosion.cpp; path = Game/src/GameObjects/Explosion.cpp; sourceTree = SOURCE_ROOT; };
+		80F0A85464264DDC9D8666C3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Door.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Door.cpp; path = Game/src/GameObjects/Door.cpp; sourceTree = SOURCE_ROOT; };
+		82952B1D9EB147D5914253E3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIScreen.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = UIScreen.cpp; path = Game/src/UI/UIScreen.cpp; sourceTree = SOURCE_ROOT; };
+		8393FFD6BC7749E59DECC4E6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Vector2.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Vector2.cpp; path = Game/src/Core/Vector2.cpp; sourceTree = SOURCE_ROOT; };
+		89FC6EFE6C4D46398F395205 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SaveShrine.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = SaveShrine.cpp; path = Game/src/GameObjects/SaveShrine.cpp; sourceTree = SOURCE_ROOT; };
+		8A8293EB85C94B6188DFBA6F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UITextBox.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = UITextBox.cpp; path = Game/src/UI/UITextBox.cpp; sourceTree = SOURCE_ROOT; };
+		8B685A9DA9834D99A4368C60 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UILevelSelectScreen.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = UILevelSelectScreen.cpp; path = Game/src/UI/UILevelSelectScreen.cpp; sourceTree = SOURCE_ROOT; };
+		8BD8DB6E8B8B4635B91E1D15 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = EffectManager.cpp; path = Game/src/Effects/EffectManager.cpp; sourceTree = SOURCE_ROOT; };
+		8C9BFFC3ABE544FF84F35D3D /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectFoliageSway.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = EffectFoliageSway.cpp; path = Game/src/Effects/EffectFoliageSway.cpp; sourceTree = SOURCE_ROOT; };
+		8EF5D41FE349469E91787C5F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/BombProjectile.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = BombProjectile.cpp; path = Game/src/GameObjects/BombProjectile.cpp; sourceTree = SOURCE_ROOT; };
+		8F8231D8B97B4699B304C5FB /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/GhostEnemySpawner.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = GhostEnemySpawner.cpp; path = Game/src/GameObjects/GhostEnemySpawner.cpp; sourceTree = SOURCE_ROOT; };
+		901C661BE8D84FAEB85141FA /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIStateRepel.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = AIStateRepel.cpp; path = Game/src/AI/AIStateRepel.cpp; sourceTree = SOURCE_ROOT; };
+		9190CC6745D5481F952E3598 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Material.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Material.cpp; path = Game/src/GameObjects/Material.cpp; sourceTree = SOURCE_ROOT; };
+		91AC052F750B4E89B0B93640 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Settings.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Settings.cpp; path = Game/src/Settings.cpp; sourceTree = SOURCE_ROOT; };
+		92A2F64E68364EB7B3017AAB /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Game.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Game.cpp; path = Game/src/Game.cpp; sourceTree = SOURCE_ROOT; };
+		940E67CA4844475684C0E38E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = UIManager.cpp; path = Game/src/UI/UIManager.cpp; sourceTree = SOURCE_ROOT; };
+		948939E926124C9BBFD15D01 /* /Users/jeromebyrne/Documents/git/Death_Leak/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		9598E9E7305E4D6F82C7FC82 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/ScrollingSprite.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ScrollingSprite.cpp; path = Game/src/GameObjects/ScrollingSprite.cpp; sourceTree = SOURCE_ROOT; };
+		9719837CB74C4565AA470AD7 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIGameLoading.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = UIGameLoading.cpp; path = Game/src/UI/UIGameLoading.cpp; sourceTree = SOURCE_ROOT; };
+		9B55BB1746FF4B3DADC5314B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectMonochromeRed.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = EffectMonochromeRed.cpp; path = Game/src/Effects/EffectMonochromeRed.cpp; sourceTree = SOURCE_ROOT; };
+		9C62BE4E9996494AA73B5883 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/SineWave.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = SineWave.cpp; path = Game/src/SineWave.cpp; sourceTree = SOURCE_ROOT; };
+		9F110F2C36C640CCBE5A3180 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SolidMovingSprite.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = SolidMovingSprite.cpp; path = Game/src/GameObjects/SolidMovingSprite.cpp; sourceTree = SOURCE_ROOT; };
+		A1A93918592F468198845731 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/AmbientBird.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = AmbientBird.cpp; path = Game/src/GameObjects/AmbientBird.cpp; sourceTree = SOURCE_ROOT; };
+		A20D0AA0D19848DBAA8C0657 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/TextObject.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = TextObject.cpp; path = Game/src/GameObjects/TextObject.cpp; sourceTree = SOURCE_ROOT; };
+		A2A28AEF40E84567958047D3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/GameObject.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = GameObject.cpp; path = Game/src/GameObjects/GameObject.cpp; sourceTree = SOURCE_ROOT; };
+		A4038B7B1F1041E49CE7CBB2 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/ParallaxLayer.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ParallaxLayer.cpp; path = Game/src/GameObjects/ParallaxLayer.cpp; sourceTree = SOURCE_ROOT; };
+		A47D9A7E4DD146C38888E240 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIMainMenuScreen.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = UIMainMenuScreen.cpp; path = Game/src/UI/UIMainMenuScreen.cpp; sourceTree = SOURCE_ROOT; };
+		A5D08CB7D1544E2695503DA4 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/LevelObjectRecord.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = LevelObjectRecord.cpp; path = Game/src/GameObjects/LevelObjectRecord.cpp; sourceTree = SOURCE_ROOT; };
+		A93806FE12224C1486B78B0F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SpriteRecord.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = SpriteRecord.cpp; path = Game/src/GameObjects/SpriteRecord.cpp; sourceTree = SOURCE_ROOT; };
+		A93FEFDE69CE4FC683A35C02 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UICheckbox.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = UICheckbox.cpp; path = Game/src/UI/UICheckbox.cpp; sourceTree = SOURCE_ROOT; };
+		AB3E1F67F999493DB8D25E14 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/SaveManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = SaveManager.cpp; path = Game/src/SaveManager.cpp; sourceTree = SOURCE_ROOT; };
+		AD046F27E5ED47668EE4FE3C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacNullAudioSystem.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = MacNullAudioSystem.cpp; path = Game/src/Backends/Mac/MacNullAudioSystem.cpp; sourceTree = SOURCE_ROOT; };
+		B24A393663D8441985F5F534 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIStateFlying.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = AIStateFlying.cpp; path = Game/src/AI/AIStateFlying.cpp; sourceTree = SOURCE_ROOT; };
+		B64AFFBC60F5404EB7B26AC2 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/BlackHole.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = BlackHole.cpp; path = Game/src/GameObjects/BlackHole.cpp; sourceTree = SOURCE_ROOT; };
+		B816AB6FAD2C4AE488A42263 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Character.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Character.cpp; path = Game/src/GameObjects/Character.cpp; sourceTree = SOURCE_ROOT; };
+		B844C26403464F3895045262 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Pickup.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Pickup.cpp; path = Game/src/GameObjects/Pickup.cpp; sourceTree = SOURCE_ROOT; };
+		B9D47601FDA14178ADF02BB0 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/SaveManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = SaveManager.cpp; path = Game/src/SaveManager.cpp; sourceTree = SOURCE_ROOT; };
+		BB3A882CEC4C45FBB31ED0B7 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/AnimationSkeleton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = AnimationSkeleton.cpp; path = Game/src/Animation/AnimationSkeleton.cpp; sourceTree = SOURCE_ROOT; };
+		BC94A1E42F4F466EA9AFB383 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Particles/ParticleSpray.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ParticleSpray.cpp; path = Game/src/Particles/ParticleSpray.cpp; sourceTree = SOURCE_ROOT; };
+		BC9E6CD08F914CAEB106503C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/XmlDocument.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = XmlDocument.cpp; path = Game/src/Core/XmlDocument.cpp; sourceTree = SOURCE_ROOT; };
+		BD806752623345FB9787B217 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacSdlRenderer.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = MacSdlRenderer.cpp; path = Game/src/Backends/Mac/MacSdlRenderer.cpp; sourceTree = SOURCE_ROOT; };
+		BE4D275E69E74A4489A78069 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Breakable.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Breakable.cpp; path = Game/src/GameObjects/Breakable.cpp; sourceTree = SOURCE_ROOT; };
+		BEC45BBFE5E24048825CBA3F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/Animation.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Animation.cpp; path = Game/src/Animation/Animation.cpp; sourceTree = SOURCE_ROOT; };
+		BF5305634C07417D816EFA11 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinyxmlparser.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = tinyxmlparser.cpp; path = Game/tinyxml/tinyxmlparser.cpp; sourceTree = SOURCE_ROOT; };
+		BFA0713B86CF4A80AA7F0842 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/GamePad.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = GamePad.cpp; path = Game/src/Core/GamePad.cpp; sourceTree = SOURCE_ROOT; };
+		BFA62A7D2BD149FD8053A347 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIObjectEditScreen.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = UIObjectEditScreen.cpp; path = Game/src/UI/UIObjectEditScreen.cpp; sourceTree = SOURCE_ROOT; };
+		C02A7D98C46C49A8B0FE183B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/DataValue.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = DataValue.cpp; path = Game/src/Core/DataValue.cpp; sourceTree = SOURCE_ROOT; };
+		C0E9D8F3CDB044E087C3672C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIUpgradeModal.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = UIUpgradeModal.cpp; path = Game/src/UI/UIUpgradeModal.cpp; sourceTree = SOURCE_ROOT; };
+		C122A9078625435088A0B54F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SkeletonEnemy.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = SkeletonEnemy.cpp; path = Game/src/GameObjects/SkeletonEnemy.cpp; sourceTree = SOURCE_ROOT; };
+		C1BC752874954F748FA94E82 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIMeter.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = UIMeter.cpp; path = Game/src/UI/UIMeter.cpp; sourceTree = SOURCE_ROOT; };
+		C3F2F632C93C48E78A2A35D0 /* DeathLeakMacGame */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = DeathLeakMacGame; sourceTree = BUILT_PRODUCTS_DIR; };
+		C530A50A7DBB41A4B3549FFA /* /Users/jeromebyrne/Documents/git/Death_Leak/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		C6854065E9204482BC5F8CF5 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/PlayerLevelManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = PlayerLevelManager.cpp; path = Game/src/PlayerLevelManager.cpp; sourceTree = SOURCE_ROOT; };
+		C78D956E8AD945A29BA773F2 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIWidget.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = UIWidget.cpp; path = Game/src/UI/UIWidget.cpp; sourceTree = SOURCE_ROOT; };
+		C94C33EBB5A64E7BB3AABE29 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/FallingPlatform.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = FallingPlatform.cpp; path = Game/src/GameObjects/FallingPlatform.cpp; sourceTree = SOURCE_ROOT; };
+		CB60F1885C7E4D8A9B53E3AD /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/PositionalAudio.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = PositionalAudio.cpp; path = Game/src/PositionalAudio.cpp; sourceTree = SOURCE_ROOT; };
+		CD35CA01A12449EAB62F313F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Timing.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Timing.cpp; path = Game/src/Core/Timing.cpp; sourceTree = SOURCE_ROOT; };
+		CD4BEBF0CEDF4226946A0B5B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Player.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Player.cpp; path = Game/src/GameObjects/Player.cpp; sourceTree = SOURCE_ROOT; };
+		CD85BFCC31C24A51BA04FF74 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacFileSystem.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = MacFileSystem.cpp; path = Game/src/Backends/Mac/MacFileSystem.cpp; sourceTree = SOURCE_ROOT; };
+		CD99F4938F9745A69B856E61 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/FeatureUnlockManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = FeatureUnlockManager.cpp; path = Game/src/FeatureUnlockManager.cpp; sourceTree = SOURCE_ROOT; };
+		CDD9F416011A443EB7752472 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Material.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Material.cpp; path = Game/src/GameObjects/Material.cpp; sourceTree = SOURCE_ROOT; };
+		CEBD82F04C5447ADBC2D1D53 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/HealthDevil.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = HealthDevil.cpp; path = Game/src/GameObjects/HealthDevil.cpp; sourceTree = SOURCE_ROOT; };
+		CF6F40DC6CDD425E880524DB /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectNoise.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = EffectNoise.cpp; path = Game/src/Effects/EffectNoise.cpp; sourceTree = SOURCE_ROOT; };
+		D095F50DFE0E43569AF9939E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectSepia.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = EffectSepia.cpp; path = Game/src/Effects/EffectSepia.cpp; sourceTree = SOURCE_ROOT; };
+		D09D1A26B42B4618B279095B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/ScreenAlignedTexture.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ScreenAlignedTexture.cpp; path = Game/src/GameObjects/ScreenAlignedTexture.cpp; sourceTree = SOURCE_ROOT; };
+		D10BA88356FF4FEAACB095EE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIOptionsScreen.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = UIOptionsScreen.cpp; path = Game/src/UI/UIOptionsScreen.cpp; sourceTree = SOURCE_ROOT; };
+		D13CE7246EEB40FD9CAE0BEF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/DXWindow.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = DXWindow.cpp; path = Game/src/Core/DXWindow.cpp; sourceTree = SOURCE_ROOT; };
+		D4A1FF8DF1E140078E52EFF6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/LevelProperties.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = LevelProperties.cpp; path = Game/src/LevelProperties.cpp; sourceTree = SOURCE_ROOT; };
+		D8740E796DCB4E2F9B098265 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SolidLineStrip.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = SolidLineStrip.cpp; path = Game/src/GameObjects/SolidLineStrip.cpp; sourceTree = SOURCE_ROOT; };
+		D93A06B7C46A479690CFA0D7 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/AnimationSequence.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = AnimationSequence.cpp; path = Game/src/Animation/AnimationSequence.cpp; sourceTree = SOURCE_ROOT; };
+		DC54F21347DE4C7CA0C125A3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Vector3.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Vector3.cpp; path = Game/src/Core/Vector3.cpp; sourceTree = SOURCE_ROOT; };
+		DEE7EBAEB06540ADAE95BC71 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinystr.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = tinystr.cpp; path = Game/tinyxml/tinystr.cpp; sourceTree = SOURCE_ROOT; };
+		E522BF40E82044ADAC17D5DA /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectBloodParticleSpray.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = EffectBloodParticleSpray.cpp; path = Game/src/Effects/EffectBloodParticleSpray.cpp; sourceTree = SOURCE_ROOT; };
+		E5260333909B4E408C55F65C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/NinjaSpawner.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = NinjaSpawner.cpp; path = Game/src/GameObjects/NinjaSpawner.cpp; sourceTree = SOURCE_ROOT; };
+		E830EA01DDFA4170BBC0DC2B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Settings.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Settings.cpp; path = Game/src/Settings.cpp; sourceTree = SOURCE_ROOT; };
+		ED649478DA7E467B9CF0C00E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/NPCManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = NPCManager.cpp; path = Game/src/GameObjects/NPCManager.cpp; sourceTree = SOURCE_ROOT; };
+		ED9DDEE9C664450BB14EF6F5 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/HealthIncreasePickup.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = HealthIncreasePickup.cpp; path = Game/src/GameObjects/HealthIncreasePickup.cpp; sourceTree = SOURCE_ROOT; };
+		EDDE9D5603DB4B029DE0E7C9 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacLaunchPaths.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = MacLaunchPaths.cpp; path = Game/src/Backends/Mac/MacLaunchPaths.cpp; sourceTree = SOURCE_ROOT; };
+		EEDFFFA9E8BA41938CFC77E8 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectReflection.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = EffectReflection.cpp; path = Game/src/Effects/EffectReflection.cpp; sourceTree = SOURCE_ROOT; };
+		EF25B373839B4231B86658B2 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/PlayerLevelManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = PlayerLevelManager.cpp; path = Game/src/PlayerLevelManager.cpp; sourceTree = SOURCE_ROOT; };
+		EF51BE3BC112406592000233 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/DataValue.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = DataValue.cpp; path = Game/src/Core/DataValue.cpp; sourceTree = SOURCE_ROOT; };
+		F08C25FB36564615B3B4EEFC /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacNullSteamService.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = MacNullSteamService.cpp; path = Game/src/Backends/Mac/MacNullSteamService.cpp; sourceTree = SOURCE_ROOT; };
+		F26C59604A1A4A318C0AC7A0 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectBasic.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = EffectBasic.cpp; path = Game/src/Effects/EffectBasic.cpp; sourceTree = SOURCE_ROOT; };
+		F47932974937451C9E5BE6E3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinyxmlerror.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = tinyxmlerror.cpp; path = Game/tinyxml/tinyxmlerror.cpp; sourceTree = SOURCE_ROOT; };
+		F536863D6B1C4D079E15E3D6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Projectile.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Projectile.cpp; path = Game/src/GameObjects/Projectile.cpp; sourceTree = SOURCE_ROOT; };
+		F53B7AA180204B2DA87368DD /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Misc/Mesh.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Mesh.cpp; path = Game/src/Misc/Mesh.cpp; sourceTree = SOURCE_ROOT; };
+		F7116DB825514AA08A6AA7E8 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SpriteRecord.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = SpriteRecord.cpp; path = Game/src/GameObjects/SpriteRecord.cpp; sourceTree = SOURCE_ROOT; };
+		F85410507C70413990AB9D87 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIState.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = AIState.cpp; path = Game/src/AI/AIState.cpp; sourceTree = SOURCE_ROOT; };
+		F8EC2AD64BD74ACBAFFFE3F3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Boat.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Boat.cpp; path = Game/src/GameObjects/Boat.cpp; sourceTree = SOURCE_ROOT; };
+		F9E29A0A71A3453A942EC9FB /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacSdlPlatformApp.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = MacSdlPlatformApp.cpp; path = Game/src/Backends/Mac/MacSdlPlatformApp.cpp; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		02F4BE1CC4594F08883A0FB5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CD0867C6D0AC482595A0416D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		11AB9573DF8A4704AC7B48EC /* Source Files */ = {
+			isa = PBXGroup;
+			children = (
+				F85410507C70413990AB9D87 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIState.cpp */,
+				4EDEA8E7EE884C5EB0EB94AE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIStateButterflyWander.cpp */,
+				B24A393663D8441985F5F534 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIStateFlying.cpp */,
+				65F80DDACA124A9E90267DAF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIStateFollow.cpp */,
+				14CFFF752616485E816D8B57 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIStateGroundAnimalWander.cpp */,
+				52C0AAEEE47C4E249BD0B5BF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIStateRangeAttack.cpp */,
+				901C661BE8D84FAEB85141FA /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIStateRepel.cpp */,
+				7E5E73A88A9B40168398BB97 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Achievements/Achievement.cpp */,
+				3015B06AD4624EF69CB29B9F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/Animation.cpp */,
+				4BE61BC48E4F441A91FFDAE3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/AnimationPart.cpp */,
+				1FDDC388553E40F58142A663 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/AnimationSequence.cpp */,
+				BB3A882CEC4C45FBB31ED0B7 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/AnimationSkeleton.cpp */,
+				01187C88EA38451698C50A7A /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Audio/AudioManager.cpp */,
+				67BF98D38FF64D129DB12B40 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Audio/AudioObject.cpp */,
+				3221B54E090F411C8A0B2E77 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Audio/MusicManager.cpp */,
+				CD85BFCC31C24A51BA04FF74 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacFileSystem.cpp */,
+				7F605BA659784F85A755607C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacGameMain.cpp */,
+				EDDE9D5603DB4B029DE0E7C9 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacLaunchPaths.cpp */,
+				AD046F27E5ED47668EE4FE3C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacNullAudioSystem.cpp */,
+				F08C25FB36564615B3B4EEFC /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacNullSteamService.cpp */,
+				49B6307E253B46B186DF67AE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacSdlInputSystem.cpp */,
+				F9E29A0A71A3453A942EC9FB /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacSdlPlatformApp.cpp */,
+				BD806752623345FB9787B217 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacSdlRenderer.cpp */,
+				5288D9046200428EBE9E6B63 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Camera2D.cpp */,
+				4F9A87725AD745BA830C1BD4 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/CollisionManager.cpp */,
+				D13CE7246EEB40FD9CAE0BEF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/DXWindow.cpp */,
+				EF51BE3BC112406592000233 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/DataValue.cpp */,
+				BFA0713B86CF4A80AA7F0842 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/GamePad.cpp */,
+				00B21BC530F641D1B17A79A0 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/GraphicsMac.cpp */,
+				639440BB8BE441CCB82D2395 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Logger.cpp */,
+				406C54291AFE42C790F3AA44 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/SimpleFontManager.cpp */,
+				6BB185C8AE4B4D249D910E1F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/StringManager.cpp */,
+				09CAE73888CD467BBB67D2F5 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/TextureManager.cpp */,
+				447D409E05D246499A86B1EE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Timing.cpp */,
+				8393FFD6BC7749E59DECC4E6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Vector2.cpp */,
+				DC54F21347DE4C7CA0C125A3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Vector3.cpp */,
+				4638F7C884DD4F3CA9040E37 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Vector4.cpp */,
+				093CACC8B00E45F08F665D50 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/XmlDocument.cpp */,
+				F26C59604A1A4A318C0AC7A0 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectBasic.cpp */,
+				E522BF40E82044ADAC17D5DA /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectBloodParticleSpray.cpp */,
+				8C9BFFC3ABE544FF84F35D3D /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectFoliageSway.cpp */,
+				05416C7AF8AD458296A5F8E5 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectLightTexture.cpp */,
+				6265BD51962540D398C47F82 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectLightTextureBump.cpp */,
+				35992FA92CC148CB85C1D64F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectLightTexturePixelWobble.cpp */,
+				1ADEC125A2EA46C5963D3C8E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectLightTextureVertexWobble.cpp */,
+				8BD8DB6E8B8B4635B91E1D15 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectManager.cpp */,
+				646A6463C3AF47D3950C3D60 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectMonochrome.cpp */,
+				9B55BB1746FF4B3DADC5314B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectMonochromeRed.cpp */,
+				CF6F40DC6CDD425E880524DB /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectNoise.cpp */,
+				6DDFA7F49177438EBA62492B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectParticleSpray.cpp */,
+				EEDFFFA9E8BA41938CFC77E8 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectReflection.cpp */,
+				D095F50DFE0E43569AF9939E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectSepia.cpp */,
+				20332DF66C034D7180EAEB2F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine/Runtime/GameLoopController.cpp */,
+				CD99F4938F9745A69B856E61 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/FeatureUnlockManager.cpp */,
+				92A2F64E68364EB7B3017AAB /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Game.cpp */,
+				0AB7A7FD401B4E4087D60A00 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/ActiveBird.cpp */,
+				A1A93918592F468198845731 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/AmbientBird.cpp */,
+				B64AFFBC60F5404EB7B26AC2 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/BlackHole.cpp */,
+				F8EC2AD64BD74ACBAFFFE3F3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Boat.cpp */,
+				8EF5D41FE349469E91787C5F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/BombProjectile.cpp */,
+				BE4D275E69E74A4489A78069 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Breakable.cpp */,
+				B816AB6FAD2C4AE488A42263 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Character.cpp */,
+				18C0BC0F9DD049ED9EDCDFB3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/CurrencyOrb.cpp */,
+				48F4F0C629D14911B3823E5C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Debris.cpp */,
+				6C920990096A4471A0DF097B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/DojoScrollPickup.cpp */,
+				80F0A85464264DDC9D8666C3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Door.cpp */,
+				734863DDB1D942DE87CE8E13 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/DrawableObject.cpp */,
+				7FABE1C3E3CD43BB8CDF6AE3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Explosion.cpp */,
+				C94C33EBB5A64E7BB3AABE29 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/FallingPlatform.cpp */,
+				72E246DFED044DAA862C660A /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/FocusUpgradePickup.cpp */,
+				753D713A53FF4A6A8E7D5F51 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Foliage.cpp */,
+				648777A76C6E4CA58D273664 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/ForceBox.cpp */,
+				A2A28AEF40E84567958047D3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/GameObject.cpp */,
+				629B135A0A2C449BB689C03B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/GameObjectManager.cpp */,
+				4D4E7CCB03234797B54EC4A6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/GhostEnemy.cpp */,
+				8F8231D8B97B4699B304C5FB /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/GhostEnemySpawner.cpp */,
+				CEBD82F04C5447ADBC2D1D53 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/HealthDevil.cpp */,
+				ED9DDEE9C664450BB14EF6F5 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/HealthIncreasePickup.cpp */,
+				798FD00437024AD6B59C59EB /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/HealthUpgradePickup.cpp */,
+				033BE3A0CAA843678C0E84D5 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/KeyPickup.cpp */,
+				781B5E927F1C48F4B7A6C523 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/LevelEntry.cpp */,
+				A5D08CB7D1544E2695503DA4 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/LevelObjectRecord.cpp */,
+				0321779FACE04F3B8C4162E0 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/LevelTrigger.cpp */,
+				CDD9F416011A443EB7752472 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Material.cpp */,
+				20DFFD97EF4844FE8E12D53E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/MaterialManager.cpp */,
+				30A6782756054087AF734746 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/MovingSprite.cpp */,
+				278087B260F4448BBF53035D /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/NPC.cpp */,
+				ED649478DA7E467B9CF0C00E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/NPCManager.cpp */,
+				2402834417854079964C04FD /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/NPCTrigger.cpp */,
+				E5260333909B4E408C55F65C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/NinjaSpawner.cpp */,
+				17075DE1AABC4A96A7C49EE6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/PaperPickup.cpp */,
+				A4038B7B1F1041E49CE7CBB2 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/ParallaxLayer.cpp */,
+				662369BCCEE54216B675B16C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/PathingPlatform.cpp */,
+				B844C26403464F3895045262 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Pickup.cpp */,
+				71F634081C844BEAB0FEC92F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Platform.cpp */,
+				CD4BEBF0CEDF4226946A0B5B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Player.cpp */,
+				F536863D6B1C4D079E15E3D6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Projectile.cpp */,
+				2765AAF06AE146F3938022C6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Rabbit.cpp */,
+				89FC6EFE6C4D46398F395205 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SaveShrine.cpp */,
+				D09D1A26B42B4618B279095B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/ScreenAlignedTexture.cpp */,
+				9598E9E7305E4D6F82C7FC82 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/ScrollingSprite.cpp */,
+				00BA9000F8574770871085F1 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SfxPickup.cpp */,
+				C122A9078625435088A0B54F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SkeletonEnemy.cpp */,
+				5CD4AC7B3EA642C6993371C6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SkeletonEnemySpawner.cpp */,
+				033393C4770B4AD9994634AF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Smashable.cpp */,
+				D8740E796DCB4E2F9B098265 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SolidLineStrip.cpp */,
+				9F110F2C36C640CCBE5A3180 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SolidMovingSprite.cpp */,
+				248C7CD3816D409485AB6BDC /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Sprite.cpp */,
+				A93806FE12224C1486B78B0F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SpriteRecord.cpp */,
+				A20D0AA0D19848DBAA8C0657 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/TextObject.cpp */,
+				7A239D09051D42A792C604DF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/WaterBlock.cpp */,
+				0BE0604AB7C34A1A9D2A0AD4 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/WeatherManager.cpp */,
+				3D45C0D67E684DB1B48D94DC /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/butterfly.cpp */,
+				26D86BAAAF2E4E31AB844E0D /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/InputManager.cpp */,
+				42481DEC60374702B9E60693 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/LevelEditor.cpp */,
+				D4A1FF8DF1E140078E52EFF6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/LevelProperties.cpp */,
+				4FD11C3CA6AA4D2D92B23AAD /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Misc/BasicLight.cpp */,
+				1ACF086E96474DDDAB12877D /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Misc/Cube.cpp */,
+				F53B7AA180204B2DA87368DD /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Misc/Mesh.cpp */,
+				1FBFDB5BC0A44FF6A70BD9F4 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Particles/ParticleEmitterManager.cpp */,
+				BC94A1E42F4F466EA9AFB383 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Particles/ParticleSpray.cpp */,
+				C6854065E9204482BC5F8CF5 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/PlayerLevelManager.cpp */,
+				CB60F1885C7E4D8A9B53E3AD /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/PositionalAudio.cpp */,
+				B9D47601FDA14178ADF02BB0 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/SaveManager.cpp */,
+				91AC052F750B4E89B0B93640 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Settings.cpp */,
+				4A4581449A9E49A898B5881B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/SineWave.cpp */,
+				72790BD28912405F91A88547 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIAnimatedSprite.cpp */,
+				77CE7307725D41D18671BBDA /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIButton.cpp */,
+				A93FEFDE69CE4FC683A35C02 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UICheckbox.cpp */,
+				144F84DF29214D59B3FABC8F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIGameHudScreen.cpp */,
+				9719837CB74C4565AA470AD7 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIGameLoading.cpp */,
+				8B685A9DA9834D99A4368C60 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UILevelSelectScreen.cpp */,
+				A47D9A7E4DD146C38888E240 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIMainMenuScreen.cpp */,
+				940E67CA4844475684C0E38E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIManager.cpp */,
+				C1BC752874954F748FA94E82 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIMeter.cpp */,
+				BFA62A7D2BD149FD8053A347 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIObjectEditScreen.cpp */,
+				D10BA88356FF4FEAACB095EE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIOptionsScreen.cpp */,
+				0872C31F91A24D62967F852A /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIQuickPlayScreen.cpp */,
+				82952B1D9EB147D5914253E3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIScreen.cpp */,
+				654B3A4B089B4C4DA176D923 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UISprite.cpp */,
+				8A8293EB85C94B6188DFBA6F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UITextBox.cpp */,
+				4BDDD96C3EEA4C89ABCAF954 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UITextModal.cpp */,
+				C0E9D8F3CDB044E087C3672C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIUpgradeModal.cpp */,
+				C78D956E8AD945A29BA773F2 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIWidget.cpp */,
+				219E1E5485F6470DBB455A2A /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/precompiled.cpp */,
+				DEE7EBAEB06540ADAE95BC71 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinystr.cpp */,
+				452249D3EED0457FBB5B1F0C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinyxml.cpp */,
+				F47932974937451C9E5BE6E3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinyxmlerror.cpp */,
+				099FBA15579E4CE9B620B8C6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinyxmlparser.cpp */,
+			);
+			name = "Source Files";
+			sourceTree = "<group>";
+		};
+		2691E70482004067A0A752A8 /* DeathLeakMacGame */ = {
+			isa = PBXGroup;
+			children = (
+				4C8CF2E4E7564F63A52985EC /* Resources */,
+				11AB9573DF8A4704AC7B48EC /* Source Files */,
+				C530A50A7DBB41A4B3549FFA /* /Users/jeromebyrne/Documents/git/Death_Leak/CMakeLists.txt */,
+			);
+			name = DeathLeakMacGame;
+			sourceTree = "<group>";
+		};
+		4C8CF2E4E7564F63A52985EC /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				16B49CB2B8BA4051B2FDD19C /* /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/CMakeFiles/DeathLeakMacGame.dir/Info.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		570BB3E23C3B4BD0BD901FB4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C3F2F632C93C48E78A2A35D0 /* DeathLeakMacGame */,
+				03358077950C478F9EF390BC /* DeathLeakPortableCore */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7C3178586A834EC79C2A2E05 /* DeathLeakPortableCore */ = {
+			isa = PBXGroup;
+			children = (
+				D86367F8F5E84D6CB3616452 /* Source Files */,
+				948939E926124C9BBFD15D01 /* /Users/jeromebyrne/Documents/git/Death_Leak/CMakeLists.txt */,
+			);
+			name = DeathLeakPortableCore;
+			sourceTree = "<group>";
+		};
+		9264D16531454EE8ACB14E95 = {
+			isa = PBXGroup;
+			children = (
+				DE317CA0C5DE4BBA9C4BA180 /* ALL_BUILD */,
+				2691E70482004067A0A752A8 /* DeathLeakMacGame */,
+				7C3178586A834EC79C2A2E05 /* DeathLeakPortableCore */,
+				570BB3E23C3B4BD0BD901FB4 /* Products */,
+				E222F6101C6B41F6838D8393 /* Frameworks */,
+				E0E067BA24224A1EA58A0A67 /* Resources */,
+			);
+			sourceTree = "<group>";
+		};
+		B3D7F4E17932497BA89BC4CF /* CMake Rules */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "CMake Rules";
+			sourceTree = "<group>";
+		};
+		D86367F8F5E84D6CB3616452 /* Source Files */ = {
+			isa = PBXGroup;
+			children = (
+				BEC45BBFE5E24048825CBA3F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/Animation.cpp */,
+				2F534F92D4A444E1AE3343AE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/AnimationPart.cpp */,
+				D93A06B7C46A479690CFA0D7 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/AnimationSequence.cpp */,
+				660DE8B2167347C1BC2D8785 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/AnimationSkeleton.cpp */,
+				C02A7D98C46C49A8B0FE183B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/DataValue.cpp */,
+				7E580A9F6E0541D6BC6240CD /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Logger.cpp */,
+				47D48C59686B45C0A92433F7 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/StringManager.cpp */,
+				CD35CA01A12449EAB62F313F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Timing.cpp */,
+				4FB8E16510984E0DBE16F6DE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Vector2.cpp */,
+				31386F5E779F4C69A1DB7EB8 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Vector3.cpp */,
+				72D3C55F19884C86BFE885A2 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Vector4.cpp */,
+				BC9E6CD08F914CAEB106503C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/XmlDocument.cpp */,
+				7283095B76714F03980C99CE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine/Runtime/GameLoopController.cpp */,
+				2B2C825D5A154599BBD72B35 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/FeatureUnlockManager.cpp */,
+				5AA5AA42F56A41CC82F5463F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/LevelObjectRecord.cpp */,
+				9190CC6745D5481F952E3598 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Material.cpp */,
+				2171A67E1D0749819911550A /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/MaterialManager.cpp */,
+				F7116DB825514AA08A6AA7E8 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SpriteRecord.cpp */,
+				180D29C0A7C54CFF9CAB5105 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/LevelProperties.cpp */,
+				EF25B373839B4231B86658B2 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/PlayerLevelManager.cpp */,
+				AB3E1F67F999493DB8D25E14 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/SaveManager.cpp */,
+				E830EA01DDFA4170BBC0DC2B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Settings.cpp */,
+				9C62BE4E9996494AA73B5883 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/SineWave.cpp */,
+				4B244268449C47B09FD841A4 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinystr.cpp */,
+				68B025B5D17F4126B8455630 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinyxml.cpp */,
+				4C3AF00ACD4B4644BA33A18C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinyxmlerror.cpp */,
+				BF5305634C07417D816EFA11 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinyxmlparser.cpp */,
+			);
+			name = "Source Files";
+			sourceTree = "<group>";
+		};
+		DE317CA0C5DE4BBA9C4BA180 /* ALL_BUILD */ = {
+			isa = PBXGroup;
+			children = (
+				B3D7F4E17932497BA89BC4CF /* CMake Rules */,
+				4ABE8C3CC72C432096A9432B /* /Users/jeromebyrne/Documents/git/Death_Leak/CMakeLists.txt */,
+			);
+			name = ALL_BUILD;
+			sourceTree = "<group>";
+		};
+		E0E067BA24224A1EA58A0A67 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		E222F6101C6B41F6838D8393 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		85E2C67C1053E5E7E422A7CE /* DeathLeakPortableCore */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E61167F136894826858C11A8 /* Build configuration list for PBXNativeTarget "DeathLeakPortableCore" */;
+			buildPhases = (
+				A98B0B14A01F4A3C8201E428 /* Sources */,
+				CD0867C6D0AC482595A0416D /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9A748B16B0164C8B828D6BD3 /* PBXTargetDependency */,
+			);
+			name = DeathLeakPortableCore;
+			productName = DeathLeakPortableCore;
+			productReference = 03358077950C478F9EF390BC /* DeathLeakPortableCore */;
+			productType = "com.apple.product-type.library.static";
+		};
+		8C04F3ACBF17C1BD760F0C6A /* DeathLeakMacGame */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 438983BBCBDE4EBCA1C81774 /* Build configuration list for PBXNativeTarget "DeathLeakMacGame" */;
+			buildPhases = (
+				6161603258CE46B89E63DDC6 /* Sources */,
+				02F4BE1CC4594F08883A0FB5 /* Frameworks */,
+				2BEA14FD15ABA51CDA3AEA52 /* CMake PostBuild Rules */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AEA47A9DD7F84EC8AA23EDAA /* PBXTargetDependency */,
+			);
+			name = DeathLeakMacGame;
+			productName = DeathLeakMacGame;
+			productReference = C3F2F632C93C48E78A2A35D0 /* DeathLeakMacGame */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C809EE4487D041C3B5E5367E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 2650;
+			};
+			buildConfigurationList = BE253DACFF734D6AB7D4EB34 /* Build configuration list for PBXProject "DeathLeak" */;
+			buildSettings = {
+			};
+			buildStyles = (
+				9BE6820DB5B94E1AB87EE419 /* Debug */,
+				7E0D5999A6F947A39FB1A043 /* Release */,
+				1FFF4EEEDE3F4AFBBA2A62FB /* MinSizeRel */,
+				DE87F6BCD223478594BAC14E /* RelWithDebInfo */,
+			);
+			compatibilityVersion = "Xcode 3.2";
+			hasScannedForEncodings = 0;
+			mainGroup = 9264D16531454EE8ACB14E95;
+			projectDirPath = /Users/jeromebyrne/Documents/git/Death_Leak;
+			projectRoot = "";
+			targets = (
+				7D08128EBE31E926C9EF653C /* ALL_BUILD */,
+				8C04F3ACBF17C1BD760F0C6A /* DeathLeakMacGame */,
+				85E2C67C1053E5E7E422A7CE /* DeathLeakPortableCore */,
+				40707EC15D4A4800CFED9F0F /* ZERO_CHECK */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		2BEA14FD15ABA51CDA3AEA52 /* CMake PostBuild Rules */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}","${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist","$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)","$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)"			);
+			name = "CMake PostBuild Rules";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e
+if test \"$CONFIGURATION\" = \"Debug\"; then :
+  cd /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode
+  /opt/homebrew/bin/cmake -E make_directory /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/Debug/DeathLeakMacGame.app/Contents/Resources
+  /opt/homebrew/bin/cmake -E copy_directory /Users/jeromebyrne/Documents/git/Death_Leak/Game/Media /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/Debug/DeathLeakMacGame.app/Contents/Resources/Media
+  /opt/homebrew/bin/cmake -E copy_directory /Users/jeromebyrne/Documents/git/Death_Leak/Game/XmlFiles /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/Debug/DeathLeakMacGame.app/Contents/Resources/XmlFiles
+  /opt/homebrew/bin/cmake -E copy_directory /Users/jeromebyrne/Documents/git/Death_Leak/Game/ShaderFiles /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/Debug/DeathLeakMacGame.app/Contents/Resources/ShaderFiles
+fi
+if test \"$CONFIGURATION\" = \"Release\"; then :
+  cd /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode
+  /opt/homebrew/bin/cmake -E make_directory /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/Release/DeathLeakMacGame.app/Contents/Resources
+  /opt/homebrew/bin/cmake -E copy_directory /Users/jeromebyrne/Documents/git/Death_Leak/Game/Media /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/Release/DeathLeakMacGame.app/Contents/Resources/Media
+  /opt/homebrew/bin/cmake -E copy_directory /Users/jeromebyrne/Documents/git/Death_Leak/Game/XmlFiles /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/Release/DeathLeakMacGame.app/Contents/Resources/XmlFiles
+  /opt/homebrew/bin/cmake -E copy_directory /Users/jeromebyrne/Documents/git/Death_Leak/Game/ShaderFiles /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/Release/DeathLeakMacGame.app/Contents/Resources/ShaderFiles
+fi
+if test \"$CONFIGURATION\" = \"MinSizeRel\"; then :
+  cd /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode
+  /opt/homebrew/bin/cmake -E make_directory /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/MinSizeRel/DeathLeakMacGame.app/Contents/Resources
+  /opt/homebrew/bin/cmake -E copy_directory /Users/jeromebyrne/Documents/git/Death_Leak/Game/Media /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/MinSizeRel/DeathLeakMacGame.app/Contents/Resources/Media
+  /opt/homebrew/bin/cmake -E copy_directory /Users/jeromebyrne/Documents/git/Death_Leak/Game/XmlFiles /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/MinSizeRel/DeathLeakMacGame.app/Contents/Resources/XmlFiles
+  /opt/homebrew/bin/cmake -E copy_directory /Users/jeromebyrne/Documents/git/Death_Leak/Game/ShaderFiles /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/MinSizeRel/DeathLeakMacGame.app/Contents/Resources/ShaderFiles
+fi
+if test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :
+  cd /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode
+  /opt/homebrew/bin/cmake -E make_directory /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/RelWithDebInfo/DeathLeakMacGame.app/Contents/Resources
+  /opt/homebrew/bin/cmake -E copy_directory /Users/jeromebyrne/Documents/git/Death_Leak/Game/Media /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/RelWithDebInfo/DeathLeakMacGame.app/Contents/Resources/Media
+  /opt/homebrew/bin/cmake -E copy_directory /Users/jeromebyrne/Documents/git/Death_Leak/Game/XmlFiles /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/RelWithDebInfo/DeathLeakMacGame.app/Contents/Resources/XmlFiles
+  /opt/homebrew/bin/cmake -E copy_directory /Users/jeromebyrne/Documents/git/Death_Leak/Game/ShaderFiles /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/RelWithDebInfo/DeathLeakMacGame.app/Contents/Resources/ShaderFiles
+fi
+";
+			showEnvVarsInLog = 0;
+		};
+		3C0110FC8322DE7E50886E21 = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		4B4B567C4130D2C82EFEFFB3 /* Generate CMakeFiles/ZERO_CHECK */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Generate CMakeFiles/ZERO_CHECK";
+			outputPaths = (
+/Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/CMakeFiles/ZERO_CHECK			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e
+if test \"$CONFIGURATION\" = \"Debug\"; then :
+  cd /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode
+  make -f /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/CMakeScripts/ReRunCMake.make
+fi
+if test \"$CONFIGURATION\" = \"Release\"; then :
+  cd /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode
+  make -f /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/CMakeScripts/ReRunCMake.make
+fi
+if test \"$CONFIGURATION\" = \"MinSizeRel\"; then :
+  cd /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode
+  make -f /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/CMakeScripts/ReRunCMake.make
+fi
+if test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :
+  cd /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode
+  make -f /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/CMakeScripts/ReRunCMake.make
+fi
+";
+			showEnvVarsInLog = 0;
+		};
+		524258E187CA580929BD1A15 /* Generate CMakeFiles/ALL_BUILD */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Generate CMakeFiles/ALL_BUILD";
+			outputPaths = (
+/Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/CMakeFiles/ALL_BUILD			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e
+if test \"$CONFIGURATION\" = \"Debug\"; then :
+  cd /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode
+  echo Build\\ all\\ projects
+fi
+if test \"$CONFIGURATION\" = \"Release\"; then :
+  cd /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode
+  echo Build\\ all\\ projects
+fi
+if test \"$CONFIGURATION\" = \"MinSizeRel\"; then :
+  cd /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode
+  echo Build\\ all\\ projects
+fi
+if test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :
+  cd /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode
+  echo Build\\ all\\ projects
+fi
+";
+			showEnvVarsInLog = 0;
+		};
+		9B50530E35CC49C82C2FACCF = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6161603258CE46B89E63DDC6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A18469F8E6724F389660C722 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIState.cpp */,
+				6F721921855B4A138801ED3F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIStateButterflyWander.cpp */,
+				2B914DA6F74B4333B97D128D /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIStateFlying.cpp */,
+				E58B3C7FC1514FD8BF4D2CB6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIStateFollow.cpp */,
+				6935B72EC6044C55A690B2F4 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIStateGroundAnimalWander.cpp */,
+				BACD0E43E4EF4A1B9973E547 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIStateRangeAttack.cpp */,
+				B8AD5E9C394F44749ADB1529 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI/AIStateRepel.cpp */,
+				11049D1D686B49ABADBFF807 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Achievements/Achievement.cpp */,
+				6B3099C7C0484A45949EEA0D /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/Animation.cpp */,
+				310E72BDAF3444C5A43FC9ED /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/AnimationPart.cpp */,
+				44E360A64CA9479CB08EAA04 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/AnimationSequence.cpp */,
+				885ACADBEC1B44B9900ADB75 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/AnimationSkeleton.cpp */,
+				63A2DCE509D4497B9C0D23C6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Audio/AudioManager.cpp */,
+				77B9F45647534D6B95B767BF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Audio/AudioObject.cpp */,
+				3F123D63094A4400A0DA2FE2 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Audio/MusicManager.cpp */,
+				4489B8D7DCE14387962FAF4B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacFileSystem.cpp */,
+				524791C8577740349B091073 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacGameMain.cpp */,
+				089745D933F84EB681E799D2 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacLaunchPaths.cpp */,
+				1C8B63FCAEAA441FB6E4D1AE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacNullAudioSystem.cpp */,
+				0F8F7AA5B887471BB84B55A7 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacNullSteamService.cpp */,
+				A326BEB9D4944B37A8EA1E68 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacSdlInputSystem.cpp */,
+				BE92C36E258446B988495180 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacSdlPlatformApp.cpp */,
+				28C5011622104C8099E95AAF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac/MacSdlRenderer.cpp */,
+				209FFA1C33A0440C9C480BC4 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Camera2D.cpp */,
+				D2EBA4EAC9AF4B36813906DF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/CollisionManager.cpp */,
+				0CD30CD0FC96428DAFEE2CC6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/DXWindow.cpp */,
+				E43930CD1234413E9C9B517B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/DataValue.cpp */,
+				EC7C10682DA14DC28CDC447D /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/GamePad.cpp */,
+				D0753ED125FA479F891D9EDF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/GraphicsMac.cpp */,
+				597509F457A748AABE567CB0 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Logger.cpp */,
+				436DFED4EB8C4DDA92E99C54 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/SimpleFontManager.cpp */,
+				9D2296CC24BD46B88785658B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/StringManager.cpp */,
+				41F555A1528845639C82566D /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/TextureManager.cpp */,
+				33DCDD8266954A63AA6E9A86 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Timing.cpp */,
+				7EBC184353DF4F0E834BC86D /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Vector2.cpp */,
+				3F8EAB8395694A86AA36CBBA /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Vector3.cpp */,
+				08E4B387AB544619B712537A /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Vector4.cpp */,
+				97893A01FF8741368B0C5911 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/XmlDocument.cpp */,
+				90104A8DFD3641768A980A50 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectBasic.cpp */,
+				45B7608D00724F2F988003AC /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectBloodParticleSpray.cpp */,
+				7C5320C53D0B47478BA64194 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectFoliageSway.cpp */,
+				AB7315E46ACC4268A440D665 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectLightTexture.cpp */,
+				EA3BD9B29511444196876AAC /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectLightTextureBump.cpp */,
+				859AC60B2A1E477B956C6CDD /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectLightTexturePixelWobble.cpp */,
+				5AA2E8D28F0F486A82B4947F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectLightTextureVertexWobble.cpp */,
+				2EC1D35E265640128CCCB526 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectManager.cpp */,
+				6B71397CC2C24ADC8C19BF70 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectMonochrome.cpp */,
+				B3F02BE1F4C6470DAAD808A3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectMonochromeRed.cpp */,
+				645F06F5B1CD48B1B4E6EEFA /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectNoise.cpp */,
+				1AC2598209074887ACD0500F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectParticleSpray.cpp */,
+				99E81601FDF94206A228BAE8 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectReflection.cpp */,
+				A00EF5B0B07440C7A69B6AFF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects/EffectSepia.cpp */,
+				7511F876D7A14222B1283489 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine/Runtime/GameLoopController.cpp */,
+				898D11E8C9194BAC8E2B07BB /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/FeatureUnlockManager.cpp */,
+				AF0AF2E2AB314A02AB690BE8 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Game.cpp */,
+				FD62DD5AFEB847FCBAE9CCAC /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/ActiveBird.cpp */,
+				F988EF14B9004FF7BE3E4F64 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/AmbientBird.cpp */,
+				84118A9E8E1246749B5CCC5E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/BlackHole.cpp */,
+				C6D02D4CD3A34E9E8D88580B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Boat.cpp */,
+				4293EE0BAC19400C845A0BFF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/BombProjectile.cpp */,
+				FB78492D10B4411FB9CC39A9 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Breakable.cpp */,
+				D4D7EBC41DD7441884CA598E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Character.cpp */,
+				126D5A725021411CAF27FA22 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/CurrencyOrb.cpp */,
+				E5E948287D984A6E8007A035 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Debris.cpp */,
+				9072080D67CB48DCB3413704 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/DojoScrollPickup.cpp */,
+				A8E5EA7382EC4CC58C3FED79 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Door.cpp */,
+				61C99FC2492D4F94B05C9F67 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/DrawableObject.cpp */,
+				695C4AB004594A1280A87C6B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Explosion.cpp */,
+				1875BDB166944E2D8BC3E19E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/FallingPlatform.cpp */,
+				B5F75DC54CA644BA856AFD20 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/FocusUpgradePickup.cpp */,
+				D5E84F5849024ACF84B56D25 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Foliage.cpp */,
+				EFE2CCA71EF64E28A2EEEDBE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/ForceBox.cpp */,
+				BB95D48431F344CCB3A92E8C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/GameObject.cpp */,
+				8256836B0D4148938E5B5093 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/GameObjectManager.cpp */,
+				84E4551464054E4BA901D327 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/GhostEnemy.cpp */,
+				7D84D7329A5646A5962D0C11 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/GhostEnemySpawner.cpp */,
+				9E8137271BC540B59DD3D255 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/HealthDevil.cpp */,
+				2CCDBC9570EC45A98187ADE9 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/HealthIncreasePickup.cpp */,
+				E34DC1722EEE47BB91DA94FF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/HealthUpgradePickup.cpp */,
+				908335BEFB314958904BE43F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/KeyPickup.cpp */,
+				549417015A85489E8E74D2B4 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/LevelEntry.cpp */,
+				DA5AB9C091224D19897B276F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/LevelObjectRecord.cpp */,
+				81B4687E5E4941DE94DDDF1B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/LevelTrigger.cpp */,
+				F4D01759BA554103A500B334 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Material.cpp */,
+				CC9FB0B82D184B8AA1B4B90B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/MaterialManager.cpp */,
+				CC561B727EAA4A8D92A85FF4 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/MovingSprite.cpp */,
+				680E00A2A61E46AABF265F1F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/NPC.cpp */,
+				988FA737EC194ED186980584 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/NPCManager.cpp */,
+				8CB3463C06924813B64AB79F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/NPCTrigger.cpp */,
+				ED6A696B79094679B7BC170E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/NinjaSpawner.cpp */,
+				39B5693A84064ADEA3AC6AD6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/PaperPickup.cpp */,
+				A5742EA6ED374C998CC87C06 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/ParallaxLayer.cpp */,
+				446F2AA867EF4089A1B979A7 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/PathingPlatform.cpp */,
+				51BA47CB94EE466C9E61AB25 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Pickup.cpp */,
+				C633D5455AA441CC97959819 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Platform.cpp */,
+				A9B7F9D046AA4A759B36C389 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Player.cpp */,
+				BCD9FE030D2C403DBA7FE293 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Projectile.cpp */,
+				332B5FB345E343A49E23DBEE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Rabbit.cpp */,
+				F7120522130448B7BC36F686 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SaveShrine.cpp */,
+				72A846FA669541258C4C3810 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/ScreenAlignedTexture.cpp */,
+				B39B9F1453E84A5F972183CF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/ScrollingSprite.cpp */,
+				23A6C647602846CBB754CA3E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SfxPickup.cpp */,
+				F4628691652C4418BC1C5ED1 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SkeletonEnemy.cpp */,
+				49A53B4C8D7147B894599491 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SkeletonEnemySpawner.cpp */,
+				8EC3AE62F6CD42FCAFF4CABE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Smashable.cpp */,
+				E273545F291F45D89918D3C2 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SolidLineStrip.cpp */,
+				3668DCE03FC241CFB08980BA /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SolidMovingSprite.cpp */,
+				161CAF58BD78451BB4B17B53 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Sprite.cpp */,
+				C448B99894B64AD5877077A3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SpriteRecord.cpp */,
+				96E8DB06005E473A88B0B961 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/TextObject.cpp */,
+				33AE479E2B134C49B765AF86 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/WaterBlock.cpp */,
+				3C8181AC42BA4DFFB99EFE6F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/WeatherManager.cpp */,
+				B36A4EB434584EC7A98BBC43 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/butterfly.cpp */,
+				D936D0006F5C441B8CC40ADE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/InputManager.cpp */,
+				062253FDBFFE4776A6AA76C9 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/LevelEditor.cpp */,
+				90CBDC760CBA4A3C877BF0D9 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/LevelProperties.cpp */,
+				AEBB388CFFE84903A0CA312D /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Misc/BasicLight.cpp */,
+				476F4AFDA27E4396AFDF6C24 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Misc/Cube.cpp */,
+				E4B159426CD947AAA340DB51 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Misc/Mesh.cpp */,
+				E7B742DE02D849369ADE128C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Particles/ParticleEmitterManager.cpp */,
+				921F452707F94E339B891A07 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Particles/ParticleSpray.cpp */,
+				19B9338B17A8448FAC3F1D14 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/PlayerLevelManager.cpp */,
+				03BD8700F9874612B037613D /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/PositionalAudio.cpp */,
+				4909B10FA80645539BC97B4A /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/SaveManager.cpp */,
+				D78B56C1CA2D4922A09BDA5A /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Settings.cpp */,
+				09DC0C65ECDB4E788DCBDE9A /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/SineWave.cpp */,
+				AC045077DC094B859432483B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIAnimatedSprite.cpp */,
+				475274BD4A18452281A92650 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIButton.cpp */,
+				310610D699234E0D8CA1B8D0 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UICheckbox.cpp */,
+				8D3306CB1D54490F85B5792A /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIGameHudScreen.cpp */,
+				E9450D5B49454C4F9B577974 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIGameLoading.cpp */,
+				55FF0AE0639D4723BE46762B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UILevelSelectScreen.cpp */,
+				4CCDB2DF69CA40BF8B667F35 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIMainMenuScreen.cpp */,
+				1966DCED3597421491D6A9CD /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIManager.cpp */,
+				33CB6987E9F34C0991986D2E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIMeter.cpp */,
+				C240CF791C404B628DCF922B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIObjectEditScreen.cpp */,
+				A0CC7A6CA67B4ED8BBC4FE04 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIOptionsScreen.cpp */,
+				2139369E0F5643AC849B556E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIQuickPlayScreen.cpp */,
+				159A8E4C40AE49C59434C9C4 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIScreen.cpp */,
+				CCC6580CA73C49E49CF8FAFF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UISprite.cpp */,
+				1F48AF457ACB452DBC7B8FAE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UITextBox.cpp */,
+				B2EF0502C7DE4EC9A38FB570 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UITextModal.cpp */,
+				D1DAC4012A3A4E6CAC5AF68C /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIUpgradeModal.cpp */,
+				0A9CDC2EB6A249E2AE51D6FE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI/UIWidget.cpp */,
+				7E1419ACCA734650B471CD08 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/precompiled.cpp */,
+				81A026BB141A45418B02E23E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinystr.cpp */,
+				FC41A2ED29494086AB074DA3 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinyxml.cpp */,
+				1D444C8AD45F4406BB3594BA /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinyxmlerror.cpp */,
+				19077489437544F78312330F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinyxmlparser.cpp */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A98B0B14A01F4A3C8201E428 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A55EFF884CB4A6E9873CA96 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/Animation.cpp */,
+				A2C79FCD82CD442D81B48F43 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/AnimationPart.cpp */,
+				9715B1D6772A428BA5ECA26D /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/AnimationSequence.cpp */,
+				89C631745BB34FA582091885 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation/AnimationSkeleton.cpp */,
+				A323C0D5E4CF4166B782043A /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/DataValue.cpp */,
+				E98F79F59F134AB1A8738887 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Logger.cpp */,
+				1EFCB2517F754BE0926ACA1B /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/StringManager.cpp */,
+				0EE9DC5616B548D695992002 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Timing.cpp */,
+				612AF11E97024D4382B940AE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Vector2.cpp */,
+				549DC63959C6451AAA6E70BE /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Vector3.cpp */,
+				8B9D7F50941E46C1B30E4355 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/Vector4.cpp */,
+				9A743F3190244D38BF022804 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core/XmlDocument.cpp */,
+				96D0D2E5611D44F7A33882C6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine/Runtime/GameLoopController.cpp */,
+				4137C9A7252C48CBAF428727 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/FeatureUnlockManager.cpp */,
+				8189AA7FD758494E8113AF59 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/LevelObjectRecord.cpp */,
+				191F9A96BE804785BCC765EC /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/Material.cpp */,
+				E4E05D3DB43945E7B96C1F3E /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/MaterialManager.cpp */,
+				4FBC63D2FCE045A5BB152581 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects/SpriteRecord.cpp */,
+				871A49F8CAE0443E9EA188E6 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/LevelProperties.cpp */,
+				D9A8D8E14F2A4C5DB1EF5E2F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/PlayerLevelManager.cpp */,
+				1C992154D68849C5A8C643B1 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/SaveManager.cpp */,
+				63179F41AF7A43A98BEECE4F /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Settings.cpp */,
+				45D24BC7A26B4ED2A2FEE8BF /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/src/SineWave.cpp */,
+				4C4CFE0A3F244BBFA543C266 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinystr.cpp */,
+				82BCBF8F8AC44E71BF6D466A /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinyxml.cpp */,
+				8584983F23A4415B84C99349 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinyxmlerror.cpp */,
+				4083AEA7BF0E4D14B448DBC4 /* /Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml/tinyxmlparser.cpp */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		188C186D4ED5439DA24A309B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 40707EC15D4A4800CFED9F0F /* ZERO_CHECK */;
+			targetProxy = C7F3EC25F69B480B9095035A /* PBXContainerItemProxy */;
+		};
+		20FCECB649DA4F3BA00CF2A9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8C04F3ACBF17C1BD760F0C6A /* DeathLeakMacGame */;
+			targetProxy = 2012A7A6D640403EBAA0A74E /* PBXContainerItemProxy */;
+		};
+		2E52719081E84D5DB3240F62 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 85E2C67C1053E5E7E422A7CE /* DeathLeakPortableCore */;
+			targetProxy = 83386B6EE1194E4284215876 /* PBXContainerItemProxy */;
+		};
+		9A748B16B0164C8B828D6BD3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 40707EC15D4A4800CFED9F0F /* ZERO_CHECK */;
+			targetProxy = B39EFE73C388409B8A993C83 /* PBXContainerItemProxy */;
+		};
+		AEA47A9DD7F84EC8AA23EDAA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 40707EC15D4A4800CFED9F0F /* ZERO_CHECK */;
+			targetProxy = 80DDA39844D44522BF6A0D13 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		02F85FD8D2014C4EACEEC720 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		037FFBAC99BA4C00871AF2BF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		1CBD1BB3C6BA466785725440 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/Release;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .a;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","'DEATHLEAK_PLATFORM_MAC=1'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/jeromebyrne/Documents/git/Death_Leak/Game/src,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Audio,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine/Platform,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine/Runtime,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Misc,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Particles,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Utils,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI,/Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml,"$(inherited)");
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = STATIC;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG '-std=c++17' ";
+				OTHER_LIBTOOLFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = DeathLeakPortableCore;
+				SECTORDER_FLAGS = "";
+				TARGET_TEMP_DIR = "/Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/build/DeathLeakPortableCore.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		213A06094A1F411DB21713A9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		24D0D811AC9F4CF3BAD82C12 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/RelWithDebInfo;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","'DEATHLEAK_PLATFORM_MAC=1'","'SDL_MAIN_HANDLED=1'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/jeromebyrne/Documents/git/Death_Leak/Game/src,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Audio,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine/Platform,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine/Runtime,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Misc,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Particles,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Utils,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI,/Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml,/opt/homebrew/include,/opt/homebrew/include/SDL2,"$(inherited)");
+				INFOPLIST_FILE = /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/CMakeFiles/DeathLeakMacGame.dir/Info.plist;
+				INSTALL_PATH = "";
+				LD_RUNPATH_SEARCH_PATHS = (/opt/homebrew/lib,"$(inherited)");
+				LIBRARY_SEARCH_PATHS = ("/opt/homebrew/lib/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)",/opt/homebrew/lib,"$(inherited)");
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CPLUSPLUSFLAGS = "       -DNDEBUG '-std=c++17' -D_THREAD_SAFE ";
+				OTHER_LDFLAGS = (" -Wl,-search_paths_first -Wl,-headerpad_max_install_names","-lSDL2","-framework AppKit","-framework CoreFoundation","-framework CoreGraphics","-framework ImageIO","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = DeathLeakMacGame;
+				SECTORDER_FLAGS = "";
+				TARGET_TEMP_DIR = "/Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/build/DeathLeakMacGame.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		2A483A5E04AD4BC8834D5E73 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/MinSizeRel;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","'DEATHLEAK_PLATFORM_MAC=1'","'SDL_MAIN_HANDLED=1'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/jeromebyrne/Documents/git/Death_Leak/Game/src,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Audio,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine/Platform,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine/Runtime,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Misc,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Particles,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Utils,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI,/Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml,/opt/homebrew/include,/opt/homebrew/include/SDL2,"$(inherited)");
+				INFOPLIST_FILE = /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/CMakeFiles/DeathLeakMacGame.dir/Info.plist;
+				INSTALL_PATH = "";
+				LD_RUNPATH_SEARCH_PATHS = (/opt/homebrew/lib,"$(inherited)");
+				LIBRARY_SEARCH_PATHS = ("/opt/homebrew/lib/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)",/opt/homebrew/lib,"$(inherited)");
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG '-std=c++17' -D_THREAD_SAFE ";
+				OTHER_LDFLAGS = (" -Wl,-search_paths_first -Wl,-headerpad_max_install_names","-lSDL2","-framework AppKit","-framework CoreFoundation","-framework CoreGraphics","-framework ImageIO","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = DeathLeakMacGame;
+				SECTORDER_FLAGS = "";
+				TARGET_TEMP_DIR = "/Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/build/DeathLeakMacGame.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		2F5016C439644F1FA54CC2DE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		36875E6E87C4480CB45AD3C1 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		44A78D1705B44F26BE4B7809 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/Debug;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","'DEATHLEAK_PLATFORM_MAC=1'","'SDL_MAIN_HANDLED=1'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/jeromebyrne/Documents/git/Death_Leak/Game/src,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Audio,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine/Platform,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine/Runtime,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Misc,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Particles,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Utils,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI,/Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml,/opt/homebrew/include,/opt/homebrew/include/SDL2,"$(inherited)");
+				INFOPLIST_FILE = /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/CMakeFiles/DeathLeakMacGame.dir/Info.plist;
+				INSTALL_PATH = "";
+				LD_RUNPATH_SEARCH_PATHS = (/opt/homebrew/lib,"$(inherited)");
+				LIBRARY_SEARCH_PATHS = ("/opt/homebrew/lib/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)",/opt/homebrew/lib,"$(inherited)");
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CPLUSPLUSFLAGS = "   '-std=c++17' -D_THREAD_SAFE ";
+				OTHER_LDFLAGS = (" -Wl,-search_paths_first -Wl,-headerpad_max_install_names","-lSDL2","-framework AppKit","-framework CoreFoundation","-framework CoreGraphics","-framework ImageIO","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = DeathLeakMacGame;
+				SECTORDER_FLAGS = "";
+				TARGET_TEMP_DIR = "/Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/build/DeathLeakMacGame.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		4F41F9E20B17469DBBB188A6 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				SDKROOT = "";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SYMROOT = /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/build;
+			};
+			name = MinSizeRel;
+		};
+		5C361A0C7C6542BE9A7C67F2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		90C843A6EC8047EAACE46208 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		A468D665C6CB4442815E0C65 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				SDKROOT = "";
+				SYMROOT = /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/build;
+			};
+			name = Debug;
+		};
+		A519B670CA854A4FAA480575 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				SDKROOT = "";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SYMROOT = /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/build;
+			};
+			name = Release;
+		};
+		AA1DDA8331A1425388774F5B /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				SDKROOT = "";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SYMROOT = /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/build;
+			};
+			name = RelWithDebInfo;
+		};
+		B69F8636A15A42838D582B2F /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		E4B37B5110684BE7977697B3 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/MinSizeRel;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .a;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","'DEATHLEAK_PLATFORM_MAC=1'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/jeromebyrne/Documents/git/Death_Leak/Game/src,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Audio,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine/Platform,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine/Runtime,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Misc,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Particles,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Utils,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI,/Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml,"$(inherited)");
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = STATIC;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG '-std=c++17' ";
+				OTHER_LIBTOOLFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = DeathLeakPortableCore;
+				SECTORDER_FLAGS = "";
+				TARGET_TEMP_DIR = "/Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/build/DeathLeakPortableCore.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		EE29C81B4CF64DE1B5847064 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/Release;
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","'DEATHLEAK_PLATFORM_MAC=1'","'SDL_MAIN_HANDLED=1'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/jeromebyrne/Documents/git/Death_Leak/Game/src,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Audio,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine/Platform,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine/Runtime,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Misc,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Particles,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Utils,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI,/Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml,/opt/homebrew/include,/opt/homebrew/include/SDL2,"$(inherited)");
+				INFOPLIST_FILE = /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/CMakeFiles/DeathLeakMacGame.dir/Info.plist;
+				INSTALL_PATH = "";
+				LD_RUNPATH_SEARCH_PATHS = (/opt/homebrew/lib,"$(inherited)");
+				LIBRARY_SEARCH_PATHS = ("/opt/homebrew/lib/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)",/opt/homebrew/lib,"$(inherited)");
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG '-std=c++17' -D_THREAD_SAFE ";
+				OTHER_LDFLAGS = (" -Wl,-search_paths_first -Wl,-headerpad_max_install_names","-lSDL2","-framework AppKit","-framework CoreFoundation","-framework CoreGraphics","-framework ImageIO","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = DeathLeakMacGame;
+				SECTORDER_FLAGS = "";
+				TARGET_TEMP_DIR = "/Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/build/DeathLeakMacGame.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		F2AC22D172E14BCFAB9DBE94 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/RelWithDebInfo;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .a;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","'DEATHLEAK_PLATFORM_MAC=1'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/jeromebyrne/Documents/git/Death_Leak/Game/src,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Audio,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine/Platform,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine/Runtime,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Misc,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Particles,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Utils,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI,/Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml,"$(inherited)");
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = STATIC;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CPLUSPLUSFLAGS = "       -DNDEBUG '-std=c++17' ";
+				OTHER_LIBTOOLFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = DeathLeakPortableCore;
+				SECTORDER_FLAGS = "";
+				TARGET_TEMP_DIR = "/Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/build/DeathLeakPortableCore.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		F81D9D40F6D944B9BF25EB01 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = /Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/Debug;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .a;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","'DEATHLEAK_PLATFORM_MAC=1'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/jeromebyrne/Documents/git/Death_Leak/Game/src,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Core,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/AI,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Animation,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Audio,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Backends/Mac,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Effects,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine/Platform,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Engine/Runtime,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/GameObjects,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Misc,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Particles,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/Utils,/Users/jeromebyrne/Documents/git/Death_Leak/Game/src/UI,/Users/jeromebyrne/Documents/git/Death_Leak/Game/tinyxml,"$(inherited)");
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = STATIC;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CPLUSPLUSFLAGS = "   '-std=c++17' ";
+				OTHER_LIBTOOLFLAGS = ("");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = DeathLeakPortableCore;
+				SECTORDER_FLAGS = "";
+				TARGET_TEMP_DIR = "/Users/jeromebyrne/Documents/git/Death_Leak/build/xcode/build/DeathLeakPortableCore.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		438983BBCBDE4EBCA1C81774 /* Build configuration list for PBXNativeTarget "DeathLeakMacGame" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				44A78D1705B44F26BE4B7809 /* Debug */,
+				EE29C81B4CF64DE1B5847064 /* Release */,
+				2A483A5E04AD4BC8834D5E73 /* MinSizeRel */,
+				24D0D811AC9F4CF3BAD82C12 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		59E2D2D63F664C1A913E0C3D /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				213A06094A1F411DB21713A9 /* Debug */,
+				037FFBAC99BA4C00871AF2BF /* Release */,
+				02F85FD8D2014C4EACEEC720 /* MinSizeRel */,
+				B69F8636A15A42838D582B2F /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		7B0C18A6ED6040F68667797E /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2F5016C439644F1FA54CC2DE /* Debug */,
+				5C361A0C7C6542BE9A7C67F2 /* Release */,
+				90C843A6EC8047EAACE46208 /* MinSizeRel */,
+				36875E6E87C4480CB45AD3C1 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		BE253DACFF734D6AB7D4EB34 /* Build configuration list for PBXProject "DeathLeak" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A468D665C6CB4442815E0C65 /* Debug */,
+				A519B670CA854A4FAA480575 /* Release */,
+				4F41F9E20B17469DBBB188A6 /* MinSizeRel */,
+				AA1DDA8331A1425388774F5B /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E61167F136894826858C11A8 /* Build configuration list for PBXNativeTarget "DeathLeakPortableCore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F81D9D40F6D944B9BF25EB01 /* Debug */,
+				1CBD1BB3C6BA466785725440 /* Release */,
+				E4B37B5110684BE7977697B3 /* MinSizeRel */,
+				F2AC22D172E14BCFAB9DBE94 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C809EE4487D041C3B5E5367E /* Project object */;
+}

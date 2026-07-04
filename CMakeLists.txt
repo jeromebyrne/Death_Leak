@@ -6,25 +6,10 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-option(DEATHLEAK_BUILD_MAC_SMOKE "Build the macOS port smoke executable" ON)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(SDL2 REQUIRED sdl2)
 
-if(DEATHLEAK_BUILD_MAC_SMOKE)
-    find_package(PkgConfig REQUIRED)
-    pkg_check_modules(SDL2 REQUIRED sdl2)
-
-    set(DEATHLEAK_MAC_BUNDLE_EXECUTABLE_NAME "DeathLeakMacSmoke")
-    set(DEATHLEAK_MAC_BUNDLE_IDENTIFIER "com.deathleak.smoke")
-    set(DEATHLEAK_MAC_BUNDLE_NAME "Death Leak")
-    set(DEATHLEAK_MAC_BUNDLE_SHORT_VERSION_STRING "0.1")
-    set(DEATHLEAK_MAC_BUNDLE_VERSION "0.1")
-
-    set(DEATHLEAK_MAC_SMOKE_PLIST "${CMAKE_CURRENT_BINARY_DIR}/DeathLeakMacSmoke-Info.plist")
-    configure_file(
-        "${CMAKE_SOURCE_DIR}/Game/src/Backends/Mac/MacInfo.plist.in"
-        "${DEATHLEAK_MAC_SMOKE_PLIST}"
-        @ONLY
-    )
-
+if(APPLE)
     add_library(DeathLeakPortableCore STATIC
         Game/src/Core/DataValue.cpp
         Game/src/Core/Logger.cpp
@@ -76,75 +61,6 @@ if(DEATHLEAK_BUILD_MAC_SMOKE)
 
     target_compile_definitions(DeathLeakPortableCore PRIVATE
         DEATHLEAK_PLATFORM_MAC=1
-    )
-
-    add_executable(DeathLeakMacSmoke MACOSX_BUNDLE
-        Game/src/Backends/Mac/MacGameBootstrap.cpp
-        Game/src/Backends/Mac/MacLaunchPaths.cpp
-        Game/src/Backends/Mac/MacSmokeMain.cpp
-        Game/src/Backends/Mac/MacFileSystem.cpp
-        Game/src/Backends/Mac/MacNullAudioSystem.cpp
-        Game/src/Backends/Mac/MacNullSteamService.cpp
-        Game/src/Backends/Mac/MacSdlInputSystem.cpp
-        Game/src/Backends/Mac/MacSdlPlatformApp.cpp
-        Game/src/Backends/Mac/MacSdlRenderer.cpp
-    )
-
-    target_include_directories(DeathLeakMacSmoke PRIVATE
-        Game/src
-        Game/src/Core
-        Game/src/AI
-        Game/src/Animation
-        Game/src/Audio
-        Game/src/Backends/Mac
-        Game/src/Effects
-        Game/src/Engine
-        Game/src/Engine/Platform
-        Game/src/Engine/Runtime
-        Game/src/GameObjects
-        Game/src/Misc
-        Game/src/Particles
-        Game/src/Utils
-        Game/src/UI
-        Game/tinyxml
-        ${SDL2_INCLUDE_DIRS}
-    )
-
-    target_compile_definitions(DeathLeakMacSmoke PRIVATE
-        DEATHLEAK_PLATFORM_MAC=1
-        SDL_MAIN_HANDLED=1
-    )
-
-    target_compile_options(DeathLeakMacSmoke PRIVATE
-        ${SDL2_CFLAGS_OTHER}
-    )
-
-    target_link_directories(DeathLeakMacSmoke PRIVATE
-        ${SDL2_LIBRARY_DIRS}
-    )
-
-    target_link_libraries(DeathLeakMacSmoke PRIVATE
-        DeathLeakPortableCore
-        ${SDL2_LIBRARIES}
-        "-framework AppKit"
-        "-framework CoreFoundation"
-        "-framework CoreGraphics"
-        "-framework ImageIO"
-    )
-
-    set_target_properties(DeathLeakMacSmoke PROPERTIES
-        MACOSX_BUNDLE_INFO_PLIST "${DEATHLEAK_MAC_SMOKE_PLIST}"
-        MACOSX_BUNDLE_BUNDLE_NAME "Death Leak"
-        MACOSX_BUNDLE_GUI_IDENTIFIER "com.deathleak.smoke"
-        MACOSX_BUNDLE_SHORT_VERSION_STRING "0.1"
-        MACOSX_BUNDLE_BUNDLE_VERSION "0.1"
-    )
-
-    add_custom_command(TARGET DeathLeakMacSmoke POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_BUNDLE_DIR:DeathLeakMacSmoke>/Contents/Resources"
-        COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/Game/Media" "$<TARGET_BUNDLE_DIR:DeathLeakMacSmoke>/Contents/Resources/Media"
-        COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/Game/XmlFiles" "$<TARGET_BUNDLE_DIR:DeathLeakMacSmoke>/Contents/Resources/XmlFiles"
-        COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/Game/ShaderFiles" "$<TARGET_BUNDLE_DIR:DeathLeakMacSmoke>/Contents/Resources/ShaderFiles"
     )
 
     file(GLOB_RECURSE DEATHLEAK_MAC_GAME_SOURCES CONFIGURE_DEPENDS
