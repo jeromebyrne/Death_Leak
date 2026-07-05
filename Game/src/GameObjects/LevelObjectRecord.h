@@ -31,6 +31,9 @@ struct LevelObjectRecord
     bool VerticalFlip = false;
     bool IsAnimated = false;
     std::string AnimationFile;
+    bool RepeatTextureX = false;
+    bool RepeatTextureY = false;
+    bool DrawAtNativeDimensions = true;
 
     static LevelObjectRecord FromXml(TiXmlElement* element);
     static std::vector<LevelObjectRecord> ReadLevelObjects(TiXmlElement* levelRoot);

@@ -21,6 +21,7 @@ public:
 
 	bool GetDoesRepeatX() { return mRepeatTextureX; }
 	bool GetDoesRepeatY() { return mRepeatTextureY; }
+	bool GetDrawAtNativeDimensions() const { return m_drawAtNativeDimensions; }
 
 	void SetNoiseSHaderIntensity(float value) { mNoiseShaderIntensity = value; }
 
@@ -29,6 +30,8 @@ public:
 	{
 		return m_isAnimated;
 	}
+	const std::string & GetTextureFilename() const { return m_textureFilename; }
+	const std::string & GetCurrentTextureFilename() const { return m_currentTextureFilename.empty() ? m_textureFilename : m_currentTextureFilename; }
 
 	// these functions determine texture coords
 	void FlipHorizontal();
@@ -50,7 +53,11 @@ public:
 
 	virtual void AttachTo(std::shared_ptr<GameObject> & parent, Vector2 offset, DepthLayer depthLayer, bool trackParentsOrientation = true) override;
 
-	void SetTextureFilename(const char * fileName) { m_textureFilename = fileName; }
+	void SetTextureFilename(const char * fileName)
+	{
+		m_textureFilename = fileName;
+		m_currentTextureFilename = m_textureFilename;
+	}
 
 	virtual void DebugDraw(ID3D10Device * graphicsdevice) override;
 
@@ -103,6 +110,7 @@ protected:
 	Animation * m_animation;
 	std::string m_animationFile;
 	virtual void UpdateAnimations();
+	void SetCurrentAnimFrame(const AnimationFrameResource & frame);
 
 	// buffers
 	ID3D10Buffer* mVertexBuffer;
@@ -115,6 +123,7 @@ protected:
 	bool mRepeatTextureY;
 
 	Vector2 mTextureDimensions;
+	std::string m_currentTextureFilename;
 
 	float mNoiseShaderIntensity;
 	float mWobbleShaderIntensity;

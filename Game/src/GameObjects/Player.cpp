@@ -962,7 +962,7 @@ void Player::UpdateAnimations()
 			bodyPart->Animate();
 		}
 		
-		m_texture = bodyPart->CurrentFrame();
+		SetCurrentAnimFrame(bodyPart->CurrentFrame());
 
 		m_mainBodyTexture = m_texture;
 
@@ -1007,9 +1007,16 @@ void Player::UpdateIsPullingSwordFromStomach(float delta)
 	}
 
 	string current_body_sequence_name = currentSequence->Name();
+	const bool keyboardPullSword = GetAsyncKeyState('X') < 0 || GetAsyncKeyState(VK_RETURN) < 0 || GetAsyncKeyState(VK_SPACE) < 0;
+	const bool pullSwordInputActive = keyboardPullSword || Game::GetInstance()->GetInputManager().IsPressingInteractButton();
 
 	if (current_body_sequence_name == "IntroCutscene1")
 	{
+		if (keyboardPullSword)
+		{
+			mCurrentTimePullingSword = kStomachSwordPullTime;
+		}
+
 		mTotalTimePullingSword += delta;
 
 		if (mBreathingIntroSFX == nullptr)
@@ -1023,8 +1030,7 @@ void Player::UpdateIsPullingSwordFromStomach(float delta)
 		}
 
 		// Phase 1
-		const InputManager & i = Game::GetInstance()->GetInputManager();
-		if (i.IsPressingInteractButton())
+		if (pullSwordInputActive)
 		{
 			mCurrentTimePullingSword += delta;
 

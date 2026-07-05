@@ -85,6 +85,8 @@ int main()
         return 1;
     }
 
+    Timing::Instance()->SetTargetDelta(1.0 / 60.0);
+
     Game::Create(&files);
     Game* game = Game::GetInstance();
     game->Initialise();

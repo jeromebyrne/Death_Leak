@@ -18,9 +18,11 @@ public:
     void BeginFrame(const Color& clearColor) override;
     void EndFrame() override;
     TextureHandle LoadTexture(const std::string& assetPath) override;
+    TextureSize GetTextureSize(TextureHandle texture) const override;
     void DrawSprite(const SpriteDrawCommand& command) override;
     void DrawRect(const RectDrawCommand& command) override;
     void DrawDebugText(const char* text, float top, float left) override;
+    void DrawLine(float x1, float y1, float x2, float y2, const Color& color);
 
 private:
     struct TextureResource

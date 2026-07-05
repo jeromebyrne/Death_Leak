@@ -16,6 +16,9 @@ SpriteRecord SpriteRecord::FromLevelObjectRecord(
     record.RotationRadians = object.Rotation;
     record.Alpha = object.Alpha;
     record.Depth = object.DepthValue;
+    record.RepeatTextureX = object.RepeatTextureX;
+    record.RepeatTextureY = object.RepeatTextureY;
+    record.DrawAtNativeDimensions = object.DrawAtNativeDimensions;
 
     if (object.HorizontalFlip && object.VerticalFlip)
     {

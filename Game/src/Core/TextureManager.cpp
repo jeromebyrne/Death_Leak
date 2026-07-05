@@ -1,6 +1,8 @@
 #include "precompiled.h"
 #include "TextureManager.h"
 
+#include <filesystem>
+
 #if defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC
 
 #include <CoreFoundation/CoreFoundation.h>
@@ -11,6 +13,67 @@ TextureManager * TextureManager:: m_instance = 0;
 
 namespace
 {
+std::filesystem::path NormalizeTexturePath(const char* fileName)
+{
+    std::string path = fileName != nullptr ? fileName : "";
+    for (char& c : path)
+    {
+        if (c == '\\')
+        {
+            c = '/';
+        }
+    }
+
+    return std::filesystem::path(path).relative_path();
+}
+
+std::filesystem::path ResolveTexturePath(const char* fileName)
+{
+    if (fileName == nullptr || *fileName == '\0')
+    {
+        return {};
+    }
+
+    const std::filesystem::path rawPath(fileName);
+    if (rawPath.is_absolute())
+    {
+        return rawPath.lexically_normal();
+    }
+
+    const std::filesystem::path normalized = NormalizeTexturePath(fileName);
+    if (normalized.empty())
+    {
+        return {};
+    }
+
+    const std::filesystem::path cwd = std::filesystem::current_path();
+    const std::vector<std::filesystem::path> roots = {
+        cwd,
+        cwd.parent_path(),
+        cwd.parent_path().parent_path(),
+        cwd.parent_path().parent_path().parent_path(),
+        cwd / "Game",
+        cwd.parent_path() / "Game",
+        cwd.parent_path().parent_path() / "Game",
+    };
+
+    for (const auto& root : roots)
+    {
+        if (root.empty())
+        {
+            continue;
+        }
+
+        const std::filesystem::path candidate = root / normalized;
+        if (std::filesystem::exists(candidate))
+        {
+            return candidate.lexically_normal();
+        }
+    }
+
+    return (cwd / normalized).lexically_normal();
+}
+
 bool ReadImageDimensions(const char* fileName, int& width, int& height)
 {
 	width = 1;
@@ -21,14 +84,17 @@ bool ReadImageDimensions(const char* fileName, int& width, int& height)
 		return false;
 	}
 
-	CFStringRef path = CFStringCreateWithCString(nullptr, fileName, kCFStringEncodingUTF8);
-	if (path == nullptr)
+	const std::filesystem::path resolved = ResolveTexturePath(fileName);
+	const std::string resolvedPath = resolved.string();
+
+	CFStringRef cfPath = CFStringCreateWithCString(nullptr, resolvedPath.c_str(), kCFStringEncodingUTF8);
+	if (cfPath == nullptr)
 	{
 		return false;
 	}
 
-	CFURLRef url = CFURLCreateWithFileSystemPath(nullptr, path, kCFURLPOSIXPathStyle, false);
-	CFRelease(path);
+	CFURLRef url = CFURLCreateWithFileSystemPath(nullptr, cfPath, kCFURLPOSIXPathStyle, false);
+	CFRelease(cfPath);
 	if (url == nullptr)
 	{
 		return false;
@@ -136,33 +202,51 @@ void TextureManager::Initialise(ID3D10Device * graphicsDevice)
 
 ID3D10ShaderResourceView* TextureManager::LoadTexture(const char * fileName)
 {
-    if (m_textureIDmap[fileName] != nullptr)
+    if (fileName == nullptr || *fileName == '\0')
     {
-        return m_textureIDmap[fileName];
+        LOG_ERROR("LoadTexture called with invalid file name");
+        return nullptr;
+    }
+
+    const std::filesystem::path resolvedPath = ResolveTexturePath(fileName);
+    const std::string cacheKey = resolvedPath.string();
+
+    if (m_textureIDmap[cacheKey] != nullptr)
+    {
+        return m_textureIDmap[cacheKey];
     }
 
 	int width = 1;
 	int height = 1;
-	ReadImageDimensions(fileName, width, height);
+	ReadImageDimensions(cacheKey.c_str(), width, height);
 
 	auto * texture = new MacShaderResourceView(width, height);
-    m_textureIDmap[fileName] = texture;
+    m_textureIDmap[cacheKey] = texture;
     return texture;
 }
 
 ID3D10ShaderResourceView* TextureManager::LoadTexture_ui(const char * fileName)
 {
-    if (m_textureIDmap_ui[fileName] != nullptr)
+    if (fileName == nullptr || *fileName == '\0')
     {
-        return m_textureIDmap_ui[fileName];
+        LOG_ERROR("LoadTexture_ui called with invalid file name");
+        return nullptr;
+    }
+
+    const std::filesystem::path resolvedPath = ResolveTexturePath(fileName);
+    const std::string cacheKey = resolvedPath.string();
+
+    if (m_textureIDmap_ui[cacheKey] != nullptr)
+    {
+        return m_textureIDmap_ui[cacheKey];
     }
 
 	int width = 1;
 	int height = 1;
-	ReadImageDimensions(fileName, width, height);
+	ReadImageDimensions(cacheKey.c_str(), width, height);
 
 	auto * texture = new MacShaderResourceView(width, height);
-    m_textureIDmap_ui[fileName] = texture;
+    m_textureIDmap_ui[cacheKey] = texture;
     return texture;
 }
 

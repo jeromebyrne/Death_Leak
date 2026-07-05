@@ -309,6 +309,11 @@ void GameObjectManager::PostUpdate(bool paused, float delta)
 
 void GameObjectManager::ScaleObjects(float xScale, float yScale)
 {
+#if defined(DEATHLEAK_PLATFORM_MAC) && DEATHLEAK_PLATFORM_MAC
+	(void)xScale;
+	(void)yScale;
+	return;
+#else
 	for (auto &obj : m_gameObjects)
 	{
 		GAME_ASSERT(obj);
@@ -317,6 +322,7 @@ void GameObjectManager::ScaleObjects(float xScale, float yScale)
 			obj->Scale(xScale, yScale);
 		}
 	}
+#endif
 }
 
 void GameObjectManager::Draw(ID3D10Device *  device)
@@ -508,8 +514,10 @@ void GameObjectManager::LoadObjectsFromFile(const string & filename)
 	float scaleX = bbWidth / 1920.0f;
 	float scaleY = bbHeight / 1080.0f;
 
+#if !defined(DEATHLEAK_PLATFORM_MAC) || !DEATHLEAK_PLATFORM_MAC
 	m_updateZoneDimensions.X *= scaleX;
 	m_updateZoneDimensions.Y *= scaleY;
+#endif
 
 	ScaleObjects(scaleX, scaleY);
 

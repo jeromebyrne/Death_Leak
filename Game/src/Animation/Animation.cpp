@@ -22,29 +22,37 @@ void Animation::ReadXml(const char* filename)
 {
 	m_animationParts.clear(); // clear our parts list first
 
+	if (filename == nullptr || *filename == '\0')
+	{
+		LOG_ERROR("Animation::ReadXml called with invalid filename");
+		return;
+	}
+
 	// create a new xml document 
 	XmlDocument doc;
 	doc.Load(filename);
 
 	TiXmlHandle * hdoc = doc.Handle();
 	TiXmlElement * root = hdoc->FirstChildElement().Element();
-
-	if(root != 0)
+	if (root == nullptr)
 	{
-		TiXmlElement * child = root->FirstChildElement();
+		LOG_ERROR("Animation xml has no root element: %s", filename);
+		return;
+	}
 
-		// loop through children
-		while(child)
-		{
-			// whats the name of this part
-			std::string partName = (std::string)child->Value();
+	TiXmlElement * child = root->FirstChildElement();
 
-			// add this part to the part map
-			m_animationParts[partName] = new AnimationPart(child);
+	// loop through children
+	while(child)
+	{
+		// whats the name of this part
+		std::string partName = (std::string)child->Value();
 
-			// move to the next game object
-			child = child->NextSiblingElement();
-		}
+		// add this part to the part map
+		m_animationParts[partName] = new AnimationPart(child);
+
+		// move to the next game object
+		child = child->NextSiblingElement();
 	}
 }
 

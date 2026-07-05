@@ -6,10 +6,32 @@
 #include <list>
 #include <map>
 #include <string>
+#include <utility>
 
 class AnimationSkeleton;
 
-using AnimationFrameResource = ID3D10ShaderResourceView*;
+struct AnimationFrameResource
+{
+	ID3D10ShaderResourceView* Texture = nullptr;
+	std::string TextureFilename;
+
+	AnimationFrameResource() = default;
+	AnimationFrameResource(ID3D10ShaderResourceView* texture, std::string filename) :
+		Texture(texture),
+		TextureFilename(std::move(filename))
+	{
+	}
+
+	operator ID3D10ShaderResourceView*() const
+	{
+		return Texture;
+	}
+
+	operator bool() const
+	{
+		return Texture != nullptr;
+	}
+};
 
 class AnimationSequence
 {

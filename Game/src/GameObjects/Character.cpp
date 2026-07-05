@@ -108,7 +108,16 @@ void Character::Scale(float xScale, float yScale, bool scalePosition)
 	mAccelXRate = mAccelXRate * xScale;
 
 	m_projectileOffset.X = m_projectileOffset.X * xScale;
-	m_projectileOffset.Y = m_projectileOffset.Y * xScale;
+	m_projectileOffset.Y = m_projectileOffset.Y * yScale;
+
+	mRegularCollisionBox.X *= xScale;
+	mRegularCollisionBox.Y *= yScale;
+	mCollisionBoxOffsetOriginal.X *= xScale;
+	mCollisionBoxOffsetOriginal.Y *= yScale;
+	mRegularSpriteSize.X *= xScale;
+	mRegularSpriteSize.Y *= yScale;
+	mMeleeSpriteSize.X *= xScale;
+	mMeleeSpriteSize.Y *= yScale;
 }
 
 void Character::SetIsWallJumping(bool value)
@@ -763,7 +772,7 @@ void Character::UpdateAnimations()
 
 			bodyPart->Animate();
 
-			m_texture = bodyPart->CurrentFrame(); // set the current texture
+			SetCurrentAnimFrame(bodyPart->CurrentFrame()); // set the current texture
 
 			if (bodyPart->IsFinished())
 			{
@@ -784,7 +793,7 @@ void Character::UpdateAnimations()
 
 			bodyPart->Animate();
 
-			m_texture = bodyPart->CurrentFrame(); // set the current texture
+			SetCurrentAnimFrame(bodyPart->CurrentFrame()); // set the current texture
 
 			m_mainBodyTexture = m_texture;
 
@@ -811,7 +820,7 @@ void Character::UpdateAnimations()
 					}
 
 					bodyPart->Animate();
-					m_texture = bodyPart->CurrentFrame(); // set the current texture
+						SetCurrentAnimFrame(bodyPart->CurrentFrame()); // set the current texture
 
 					if (bodyPart->IsFinished())
 					{
@@ -828,7 +837,7 @@ void Character::UpdateAnimations()
 					}
 
 					bodyPart->Animate();
-					m_texture = bodyPart->CurrentFrame(); // set the current texture
+						SetCurrentAnimFrame(bodyPart->CurrentFrame()); // set the current texture
 
 					if (bodyPart->IsFinished())
 					{
@@ -845,7 +854,7 @@ void Character::UpdateAnimations()
 					}
 
 					bodyPart->Animate();
-					m_texture = bodyPart->CurrentFrame(); // set the current texture
+						SetCurrentAnimFrame(bodyPart->CurrentFrame()); // set the current texture
 
 					if (bodyPart->IsFinished())
 					{
@@ -861,7 +870,7 @@ void Character::UpdateAnimations()
 					}
 
 					bodyPart->Animate();
-					m_texture = bodyPart->CurrentFrame(); // set the current texture
+						SetCurrentAnimFrame(bodyPart->CurrentFrame()); // set the current texture
 
 					if (bodyPart->IsFinished())
 					{
@@ -889,7 +898,7 @@ void Character::UpdateAnimations()
 			}
 
 			bodyPart->Animate();
-			m_texture = bodyPart->CurrentFrame(); // set the current texture
+				SetCurrentAnimFrame(bodyPart->CurrentFrame()); // set the current texture
 
 			if (bodyPart->IsFinished())
 			{
@@ -919,7 +928,7 @@ void Character::UpdateAnimations()
 			}
 
 			bodyPart->Animate();
-			m_texture = bodyPart->CurrentFrame(); // set the current texture
+				SetCurrentAnimFrame(bodyPart->CurrentFrame()); // set the current texture
 
 			if (bodyPart->IsFinished())
 			{
@@ -965,7 +974,7 @@ void Character::UpdateAnimations()
 				}
 			}
 
-			m_texture = bodyPart->CurrentFrame(); // set the current texture
+			SetCurrentAnimFrame(bodyPart->CurrentFrame()); // set the current texture
 			mIsFullyCrouched = false;
 			mWasCrouching = false;
 			// mJustFellFromDistance = false;
@@ -990,7 +999,7 @@ void Character::UpdateAnimations()
 				bodyPart->Animate();
 			}
 
-			m_texture = bodyPart->CurrentFrame(); // set the current texture
+			SetCurrentAnimFrame(bodyPart->CurrentFrame()); // set the current texture
 
 			mIsFullyCrouched = false;
 			mWasCrouching = false;
@@ -1006,7 +1015,7 @@ void Character::UpdateAnimations()
 
 			bodyPart->AnimateLooped();
 
-			m_texture = bodyPart->CurrentFrame(); // set the current texture
+			SetCurrentAnimFrame(bodyPart->CurrentFrame()); // set the current texture
 
 			mIsFullyCrouched = false;
 			mWasCrouching = false;
@@ -1062,7 +1071,7 @@ void Character::UpdateAnimations()
 
 			DoAnimationEffectIfApplicable(bodyPart);
 			
-			m_texture = bodyPart->CurrentFrame(); // set the current texture
+			SetCurrentAnimFrame(bodyPart->CurrentFrame()); // set the current texture
 
 			mIsFullyCrouched = false;
 			mWasCrouching = false;
@@ -1079,7 +1088,7 @@ void Character::UpdateAnimations()
 
 			bodyPart->Animate();
 
-			m_texture = bodyPart->CurrentFrame(); // set the current texture
+			SetCurrentAnimFrame(bodyPart->CurrentFrame()); // set the current texture
 
 			if (bodyPart->IsFinished())
 			{
@@ -1098,7 +1107,7 @@ void Character::UpdateAnimations()
 
 			bodyPart->AnimateLooped();
 
-			m_texture = bodyPart->CurrentFrame(); // set the current texture
+			SetCurrentAnimFrame(bodyPart->CurrentFrame()); // set the current texture
 
 			mIsFullyCrouched = false;
 			mWasCrouching = false;
@@ -2288,4 +2297,3 @@ bool Character::IsDead()
 {
 	return mHealth <= 0.0f;
 }
-

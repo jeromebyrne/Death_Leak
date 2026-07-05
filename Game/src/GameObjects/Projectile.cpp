@@ -593,9 +593,8 @@ void Projectile::Scale(float xScale, float yScale, bool scalePosition)
 	SolidMovingSprite::Scale(xScale, yScale, scalePosition);
 	
 	// scale the velocity
-	// only use xScale
 	m_velocity.X = m_velocity.X * xScale;
-	m_velocity.Y = m_velocity.Y * xScale;
+	m_velocity.Y = m_velocity.Y * yScale;
 }
 
 void Projectile::LoadContent(ID3D10Device * graphicsdevice)

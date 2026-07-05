@@ -595,7 +595,7 @@ void InputManager::ProcessGameplay_GamePad(Player * player)
 
 void InputManager::ProcessGameplay_Keyboard(Player * player)
 {
-#ifndef _DEBUG
+#ifdef _RELEASE
 	return;
 #endif
 
@@ -624,13 +624,13 @@ void InputManager::ProcessLeftRightMovement_keyboard(CurrentGameplayActions & cu
 		!currentActions.mIsCrouching &&
 		!player->GetIsRolling())
 	{
-		if (GetAsyncKeyState('A') < 0 &&
+		if ((GetAsyncKeyState('A') < 0 || GetAsyncKeyState(VK_LEFT) < 0) &&
 			!player->IsDoingMelee() &&
 			!player->IsWallJumping())
 		{
 			player->AccelerateX(-100.0f);
 		}
-		else if (GetAsyncKeyState('D') < 0 &&
+		else if ((GetAsyncKeyState('D') < 0 || GetAsyncKeyState(VK_RIGHT) < 0) &&
 			!player->IsDoingMelee() &&
 			!player->IsWallJumping())
 		{
@@ -648,7 +648,7 @@ void InputManager::ProcessLeftRightMovement_keyboard(CurrentGameplayActions & cu
 
 void InputManager::ProcessCrouch_keyboard(CurrentGameplayActions & currentActions, Player * player)
 {
-	if (GetAsyncKeyState('S') < 0 &&
+	if ((GetAsyncKeyState('S') < 0 || GetAsyncKeyState(VK_DOWN) < 0) &&
 		!player->IsDoingMelee() &&
 		player->IsOnSolidSurface() &&
 		/*!player->IsStrafing() &&*/
@@ -684,7 +684,7 @@ void InputManager::ProcessJump_keyboard(CurrentGameplayActions & currentActions,
 	if (!player->JustFellFromLargeDistance() &&
 		!player->JustFellFromShortDistance() &&
 		!player->IsDoingMelee() &&
-		GetAsyncKeyState('W') < 0)
+		(GetAsyncKeyState('W') < 0 || GetAsyncKeyState(VK_UP) < 0))
 	{
 		mCurrentGamepadState.mPressingJump = true;
 	}

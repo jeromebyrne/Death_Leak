@@ -30,10 +30,21 @@ struct SpriteDrawCommand
     float Y = 0.0f;
     float Width = 0.0f;
     float Height = 0.0f;
+    float SourceX = 0.0f;
+    float SourceY = 0.0f;
+    float SourceWidth = 0.0f;
+    float SourceHeight = 0.0f;
     float RotationRadians = 0.0f;
     float Alpha = 1.0f;
     float Depth = 0.0f;
     SpriteFlip Flip = SpriteFlip::None;
+    bool UseSourceRect = false;
+};
+
+struct TextureSize
+{
+    int Width = 0;
+    int Height = 0;
 };
 
 struct RectDrawCommand
@@ -56,6 +67,7 @@ public:
     virtual void BeginFrame(const Color& clearColor) = 0;
     virtual void EndFrame() = 0;
     virtual TextureHandle LoadTexture(const std::string& assetPath) = 0;
+    virtual TextureSize GetTextureSize(TextureHandle texture) const = 0;
     virtual void DrawSprite(const SpriteDrawCommand& command) = 0;
     virtual void DrawRect(const RectDrawCommand& command) = 0;
     virtual void DrawDebugText(const char* text, float top, float left) = 0;

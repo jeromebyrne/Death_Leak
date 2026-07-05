@@ -50,6 +50,7 @@
 #include "Backends/Mac/MacSdlPlatformApp.h"
 #include "Backends/Mac/MacSdlRenderer.h"
 #include "GameObjects/GameObjectManager.h"
+#include "GameObjects/SolidLineStrip.h"
 #include <algorithm>
 #include <filesystem>
 #include <cstdlib>
@@ -130,6 +131,11 @@ MacMenuState& MenuState()
     return state;
 }
 
+const char* MacDefaultLevelFile()
+{
+    return "XmlFiles\\levels\\grass_exploration_3.xml";
+}
+
 float UiLeftToScreenX(float uiX, int screenWidth)
 {
     return (uiX + 960.0f) * (static_cast<float>(screenWidth) / 1920.0f);
@@ -194,8 +200,9 @@ void LoadMacMainMenuIfNeeded(const IFileSystem* fileSystem, MacSdlRenderer* rend
     };
 
     addButton("new_game", "loadlevel", "Media\\UI\\buttons\\play1.png", "Media\\UI\\buttons\\play2.png", "Media\\UI\\buttons\\play2.png", -435.0f, -100.0f, 160.0f, 160.0f);
-    addButton("options", "options", "Media\\UI\\buttons\\settings1.png", "Media\\UI\\buttons\\settings2.png", "Media\\UI\\buttons\\settings2.png", -410.0f, -275.0f, 100.0f, 100.0f);
-    addButton("quit", "quit", "Media\\UI\\buttons\\back1.png", "Media\\UI\\buttons\\back2.png", "Media\\UI\\buttons\\back2.png", -395.0f, -435.0f, 90.0f, 90.0f);
+    addButton("level_editor", "leveledit", "Media\\UI\\buttons\\edit1.png", "Media\\UI\\buttons\\edit2.png", "Media\\UI\\buttons\\edit2.png", -410.0f, -240.0f, 110.0f, 110.0f);
+    addButton("options", "options", "Media\\UI\\buttons\\settings1.png", "Media\\UI\\buttons\\settings2.png", "Media\\UI\\buttons\\settings2.png", -410.0f, -365.0f, 100.0f, 100.0f);
+    addButton("quit", "quit", "Media\\UI\\buttons\\back1.png", "Media\\UI\\buttons\\back2.png", "Media\\UI\\buttons\\back2.png", -395.0f, -500.0f, 90.0f, 90.0f);
 }
 
 bool HitTestButton(const MacMenuButton& button, float mouseUiX, float mouseUiY)
@@ -277,8 +284,14 @@ void HandleMacMainMenuInput(const IFileSystem* fileSystem)
     if (!sAutoLoadedLevel && autoStartLevel != nullptr && autoStartLevel[0] == '1')
     {
         sAutoLoadedLevel = true;
+        const char* autoStartLevelFile = std::getenv("DEATHLEAK_MAC_AUTOSTART_LEVEL_FILE");
+        const char* levelFile = (autoStartLevelFile != nullptr && autoStartLevelFile[0] != '\0')
+            ? autoStartLevelFile
+            : MacDefaultLevelFile();
+        SaveManager::GetInstance()->SetHasPulledSwordFromStomach(false);
+        Game::SetIsLevelEditMode(false);
         GameObjectManager::Instance()->DeleteGameObjects();
-        GameObjectManager::Instance()->LoadObjectsFromFile(fileSystem->AssetPath("XmlFiles\\levels\\grass_exploration_3.xml"));
+        GameObjectManager::Instance()->LoadObjectsFromFile(fileSystem->AssetPath(levelFile));
         return;
     }
 
@@ -292,8 +305,10 @@ void HandleMacMainMenuInput(const IFileSystem* fileSystem)
     {
         if (keyboard[SDL_SCANCODE_RETURN] || keyboard[SDL_SCANCODE_KP_ENTER])
         {
+            SaveManager::GetInstance()->SetHasPulledSwordFromStomach(false);
+            Game::SetIsLevelEditMode(false);
             GameObjectManager::Instance()->DeleteGameObjects();
-            GameObjectManager::Instance()->LoadObjectsFromFile(fileSystem->AssetPath("XmlFiles\\levels\\grass_exploration_3.xml"));
+            GameObjectManager::Instance()->LoadObjectsFromFile(fileSystem->AssetPath(MacDefaultLevelFile()));
             return;
         }
 
@@ -328,8 +343,18 @@ void HandleMacMainMenuInput(const IFileSystem* fileSystem)
 
             if (button.Action == "loadlevel")
             {
+                SaveManager::GetInstance()->SetHasPulledSwordFromStomach(false);
+                Game::SetIsLevelEditMode(false);
                 GameObjectManager::Instance()->DeleteGameObjects();
-                GameObjectManager::Instance()->LoadObjectsFromFile(fileSystem->AssetPath("XmlFiles\\levels\\grass_exploration_3.xml"));
+                GameObjectManager::Instance()->LoadObjectsFromFile(fileSystem->AssetPath(MacDefaultLevelFile()));
+            }
+            else if (button.Action == "leveledit")
+            {
+                SaveManager::GetInstance()->SetHasPulledSwordFromStomach(false);
+                Game::GetInstance()->ResetLevelEditor();
+                Game::SetIsLevelEditMode(true);
+                GameObjectManager::Instance()->DeleteGameObjects();
+                GameObjectManager::Instance()->LoadObjectsFromFile(fileSystem->AssetPath(MacDefaultLevelFile()));
             }
             else if (button.Action == "quit")
             {
@@ -398,6 +423,11 @@ void LoadPreviewLevelIfNeeded(const IFileSystem* fileSystem, MacSdlRenderer* ren
             continue;
         }
 
+        if (record.TypeName == "parallaxlayer")
+        {
+            continue;
+        }
+
         if (record.IsAnimated && !record.AnimationFile.empty())
         {
             const std::string animationPath = fileSystem->AssetPath(record.AnimationFile);
@@ -461,14 +491,101 @@ void LoadPreviewLevelIfNeeded(const IFileSystem* fileSystem, MacSdlRenderer* ren
     (void)previewLevelProperties;
 }
 
-void DrawPreviewLevel(MacSdlRenderer* renderer, const MacPreviewState& state, int screenWidth, int screenHeight, Camera2D* camera)
+std::vector<SpriteRecord> BuildLiveSpriteOverlay(const IFileSystem* fileSystem)
 {
-    static bool sPrintedPreviewTrace = false;
-    static int sPreviewTraceFrame = 0;
-    const float runtimeCameraX = camera != nullptr ? camera->X() : 0.0f;
-    const float runtimeCameraY = camera != nullptr ? camera->Y() : 0.0f;
-    const float runtimeZoom = camera != nullptr ? camera->GetZoomLevel() : 1.0f;
+    std::vector<SpriteRecord> sprites;
+    if (fileSystem == nullptr)
+    {
+        return sprites;
+    }
+
+    auto& objects = GameObjectManager::Instance()->GetGameObjectList();
+    sprites.reserve(objects.size());
+
+    for (const auto& objectPtr : objects)
+    {
+        if (!objectPtr)
+        {
+            continue;
+        }
+
+        GameObject* object = objectPtr.get();
+        if (!object->IsDrawable())
+        {
+            continue;
+        }
+
+        if (object->IsParallaxLayer())
+        {
+            continue;
+        }
+
+        Sprite* spriteObject = dynamic_cast<Sprite*>(object);
+        if (spriteObject == nullptr)
+        {
+            continue;
+        }
+
+        if (!spriteObject->GetIsAnimated() && !object->AlwaysUpdate())
+        {
+            continue;
+        }
+
+        const std::string& textureFilename = spriteObject->GetCurrentTextureFilename();
+        if (textureFilename.empty())
+        {
+            continue;
+        }
+
+        SpriteRecord sprite;
+        sprite.SourceLevel = GameObjectManager::Instance()->GetCurrentLevelFile();
+        sprite.TypeName = object->GetTypeName();
+        sprite.Id = object->ID();
+        sprite.TexturePath = fileSystem->AssetPath(textureFilename);
+        sprite.TextureExists = std::filesystem::exists(sprite.TexturePath);
+        sprite.WorldPosition = object->Position();
+        sprite.Dimensions = object->Dimensions();
+        sprite.RotationRadians = object->GetRotationAngle();
+        sprite.Alpha = object->IsPlayer() ? 1.0f : 1.0f;
+        sprite.Depth = static_cast<int>(object->GetDepthLayer());
+        if (spriteObject->IsHFlipped() && spriteObject->IsVFlipped())
+        {
+            sprite.Flip = SpriteFlip::Both;
+        }
+        else if (spriteObject->IsHFlipped())
+        {
+            sprite.Flip = SpriteFlip::Horizontal;
+        }
+        else if (spriteObject->IsVFlipped())
+        {
+            sprite.Flip = SpriteFlip::Vertical;
+        }
+        sprite.RepeatTextureX = spriteObject->GetDoesRepeatX();
+        sprite.RepeatTextureY = spriteObject->GetDoesRepeatY();
+        sprite.DrawAtNativeDimensions = spriteObject->GetDrawAtNativeDimensions();
+
+        sprites.push_back(std::move(sprite));
+    }
+
+    std::sort(sprites.begin(), sprites.end(), [](const auto& a, const auto& b) {
+        return a.Depth > b.Depth;
+    });
+
+    return sprites;
+}
+
+int DrawSpriteRecords(MacSdlRenderer* renderer, const std::vector<SpriteRecord>& sprites, int screenWidth, int screenHeight, Camera2D* camera)
+{
+    if (renderer == nullptr || camera == nullptr)
+    {
+        return 0;
+    }
+
+    const float runtimeCameraX = camera->X();
+    const float runtimeCameraY = camera->Y();
+    const float runtimeZoom = camera->GetZoomLevel();
     int visibleSpriteCount = 0;
+
     auto toScreen = [&](const Vector2& worldPos) {
         Vector2 screen;
         screen.X = screenWidth * 0.5f + (worldPos.X - runtimeCameraX) * runtimeZoom;
@@ -483,50 +600,105 @@ void DrawPreviewLevel(MacSdlRenderer* renderer, const MacPreviewState& state, in
             y - h * 0.5f <= static_cast<float>(screenHeight);
     };
 
-    for (const SpriteRecord& sprite : state.StaticSprites)
+    for (const SpriteRecord& sprite : sprites)
     {
+        if (sprite.TexturePath.empty())
+        {
+            continue;
+        }
+
         const Vector2 screenPos = toScreen(sprite.WorldPosition);
-        const float width = sprite.Dimensions.X * runtimeZoom;
-        const float height = sprite.Dimensions.Y * runtimeZoom;
+        const float width = std::max(1.0f, sprite.Dimensions.X * runtimeZoom);
+        const float height = std::max(1.0f, sprite.Dimensions.Y * runtimeZoom);
         if (!isVisible(screenPos.X, screenPos.Y, width, height))
         {
             continue;
         }
 
-        SpriteDrawCommand command;
-        command.Texture = sprite.Texture;
-        command.X = screenPos.X;
-        command.Y = screenPos.Y;
-        command.Width = width;
-        command.Height = height;
-        command.RotationRadians = -sprite.RotationRadians;
-        command.Alpha = sprite.Alpha;
-        command.Depth = static_cast<float>(sprite.Depth);
-        command.Flip = sprite.Flip;
-        renderer->DrawSprite(command);
-        ++visibleSpriteCount;
-    }
-
-    for (const SpriteRecord& sprite : state.MissingTextureSprites)
-    {
-        const Vector2 screenPos = toScreen(sprite.WorldPosition);
-        const float width = std::max(8.0f, sprite.Dimensions.X * runtimeZoom);
-        const float height = std::max(8.0f, sprite.Dimensions.Y * runtimeZoom);
-        if (!isVisible(screenPos.X, screenPos.Y, width, height))
+        const TextureHandle texture = renderer->LoadTexture(sprite.TexturePath);
+        if (texture == 0)
         {
             continue;
         }
 
-        RectDrawCommand command;
-        command.X = screenPos.X;
-        command.Y = screenPos.Y;
-        command.Width = width;
-        command.Height = height;
-        command.Fill = Color{1.0f, 0.0f, 0.45f, 0.22f};
-        command.Outline = Color{1.0f, 0.85f, 0.1f, 0.9f};
-        renderer->DrawRect(command);
+        const TextureSize textureSize = renderer->GetTextureSize(texture);
+        const float textureWidth = std::max(1.0f, static_cast<float>(textureSize.Width));
+        const float textureHeight = std::max(1.0f, static_cast<float>(textureSize.Height));
+
+        const float objectLeft = screenPos.X - (width * 0.5f);
+        const float objectTop = screenPos.Y - (height * 0.5f);
+
+        if ((sprite.RepeatTextureX || sprite.RepeatTextureY) && !sprite.DrawAtNativeDimensions)
+        {
+            const float tileWidth = sprite.RepeatTextureX ? textureWidth * runtimeZoom : width;
+            const float tileHeight = sprite.RepeatTextureY ? textureHeight * runtimeZoom : height;
+
+            for (float y = 0.0f; y < height; y += tileHeight)
+            {
+                const float drawHeight = std::min(tileHeight, height - y);
+                const float sourceHeight = sprite.RepeatTextureY ? drawHeight / runtimeZoom : textureHeight;
+
+                for (float x = 0.0f; x < width; x += tileWidth)
+                {
+                    const float drawWidth = std::min(tileWidth, width - x);
+                    const float sourceWidth = sprite.RepeatTextureX ? drawWidth / runtimeZoom : textureWidth;
+
+                    SpriteDrawCommand command;
+                    command.Texture = texture;
+                    command.X = objectLeft + x + (std::min(tileWidth, width - x) * 0.5f);
+                    command.Y = objectTop + y + (std::min(tileHeight, height - y) * 0.5f);
+                    command.Width = drawWidth;
+                    command.Height = drawHeight;
+                    command.UseSourceRect = true;
+                    command.SourceX = 0.0f;
+                    command.SourceY = 0.0f;
+                    command.SourceWidth = sourceWidth;
+                    command.SourceHeight = sourceHeight;
+                    command.RotationRadians = sprite.RotationRadians;
+                    command.Alpha = sprite.Alpha;
+                    command.Depth = static_cast<float>(sprite.Depth);
+                    command.Flip = sprite.Flip;
+                    renderer->DrawSprite(command);
+                }
+            }
+        }
+        else
+        {
+            SpriteDrawCommand command;
+            command.Texture = texture;
+            command.X = screenPos.X;
+            command.Y = screenPos.Y;
+            command.Width = width;
+            command.Height = height;
+            command.RotationRadians = sprite.RotationRadians;
+            command.Alpha = sprite.Alpha;
+            command.Depth = static_cast<float>(sprite.Depth);
+            command.Flip = sprite.Flip;
+            renderer->DrawSprite(command);
+        }
+
+        RectDrawCommand bounds;
+        bounds.X = screenPos.X;
+        bounds.Y = screenPos.Y;
+        bounds.Width = width;
+        bounds.Height = height;
+        bounds.Fill = Color{0.0f, 0.0f, 0.0f, 0.0f};
+        bounds.Outline = Color{0.10f, 1.0f, 1.0f, 0.85f};
+        renderer->DrawRect(bounds);
         ++visibleSpriteCount;
     }
+
+    return visibleSpriteCount;
+}
+
+void DrawPreviewLevel(MacSdlRenderer* renderer, const MacPreviewState& state, int screenWidth, int screenHeight, Camera2D* camera)
+{
+    static bool sPrintedPreviewTrace = false;
+    static int sPreviewTraceFrame = 0;
+    const float runtimeCameraX = camera != nullptr ? camera->X() : 0.0f;
+    const float runtimeCameraY = camera != nullptr ? camera->Y() : 0.0f;
+    const float runtimeZoom = camera != nullptr ? camera->GetZoomLevel() : 1.0f;
+    const int visibleSpriteCount = DrawSpriteRecords(renderer, state.StaticSprites, screenWidth, screenHeight, camera);
 
     if (!sPrintedPreviewTrace || sPreviewTraceFrame < 5 || (sPreviewTraceFrame % 60) == 0)
     {
@@ -542,6 +714,283 @@ void DrawPreviewLevel(MacSdlRenderer* renderer, const MacPreviewState& state, in
     }
 
     ++sPreviewTraceFrame;
+}
+
+void DrawLiveObjects(MacSdlRenderer* renderer, const IFileSystem* fileSystem, int screenWidth, int screenHeight, Camera2D* camera)
+{
+    const std::vector<SpriteRecord> liveSprites = BuildLiveSpriteOverlay(fileSystem);
+    const int visibleLiveCount = DrawSpriteRecords(renderer, liveSprites, screenWidth, screenHeight, camera);
+
+    static int sLiveTraceFrame = 0;
+    if (sLiveTraceFrame < 8 || (sLiveTraceFrame % 60) == 0)
+    {
+        Player* player = GameObjectManager::Instance()->GetPlayer();
+        if (player != nullptr)
+        {
+            LOG_INFO("mac live trace: player pos=(%f,%f) texture=%s objects=%zu visible=%d camera=(%f,%f) zoom=%f",
+                player->X(),
+                player->Y(),
+                player->GetCurrentTextureFilename().c_str(),
+                liveSprites.size(),
+                visibleLiveCount,
+                camera != nullptr ? camera->X() : 0.0f,
+                camera != nullptr ? camera->Y() : 0.0f,
+                camera != nullptr ? camera->GetZoomLevel() : 1.0f);
+        }
+        else
+        {
+            LOG_INFO("mac live trace: no player objects=%zu visible=%d camera=(%f,%f) zoom=%f",
+                liveSprites.size(),
+                visibleLiveCount,
+                camera != nullptr ? camera->X() : 0.0f,
+                camera != nullptr ? camera->Y() : 0.0f,
+                camera != nullptr ? camera->GetZoomLevel() : 1.0f);
+        }
+    }
+
+    ++sLiveTraceFrame;
+}
+
+void DrawSolidLineStripDebug(MacSdlRenderer* renderer, const SolidLineStrip* lineStrip, Camera2D* camera, int screenWidth, int screenHeight)
+{
+    if (renderer == nullptr || lineStrip == nullptr || camera == nullptr)
+    {
+        return;
+    }
+
+    const std::vector<SolidLineStrip::SolidLinePoint> points = lineStrip->GetLinePoints();
+    if (points.size() < 2)
+    {
+        return;
+    }
+
+    const float zoom = camera->GetZoomLevel();
+    const float centerX = static_cast<float>(screenWidth) * 0.5f;
+    const float centerY = static_cast<float>(screenHeight) * 0.5f;
+    const Color lineColor{0.10f, 1.00f, 0.35f, 0.95f};
+    const Color pointFill{0.90f, 0.20f, 0.95f, 0.90f};
+    const Color pointOutline{0.05f, 0.05f, 0.05f, 1.00f};
+
+    auto toScreen = [&](const Vector2& worldPos) {
+        Vector2 screen;
+        screen.X = centerX + (worldPos.X - camera->X()) * zoom;
+        screen.Y = centerY - (worldPos.Y - camera->Y()) * zoom;
+        return screen;
+    };
+
+    for (std::size_t i = 0; i + 1 < points.size(); ++i)
+    {
+        const Vector2 start = toScreen(points[i].WorldPosition);
+        const Vector2 end = toScreen(points[i + 1].WorldPosition);
+        renderer->DrawLine(start.X, start.Y, end.X, end.Y, lineColor);
+
+        RectDrawCommand marker;
+        marker.Width = 8.0f;
+        marker.Height = 8.0f;
+        marker.Fill = pointFill;
+        marker.Outline = pointOutline;
+        marker.X = start.X;
+        marker.Y = start.Y;
+        renderer->DrawRect(marker);
+
+        if (i + 1 == points.size() - 1)
+        {
+            marker.X = end.X;
+            marker.Y = end.Y;
+            renderer->DrawRect(marker);
+        }
+    }
+}
+
+void DrawSolidLineDebugOverlay(MacSdlRenderer* renderer, Camera2D* camera, int screenWidth, int screenHeight)
+{
+    if (renderer == nullptr || camera == nullptr)
+    {
+        return;
+    }
+
+    const auto& objects = GameObjectManager::Instance()->GetGameObjectList();
+    for (const auto& object : objects)
+    {
+        if (!object || !object->IsSolidLineStrip())
+        {
+            continue;
+        }
+
+        DrawSolidLineStripDebug(renderer, static_cast<SolidLineStrip*>(object.get()), camera, screenWidth, screenHeight);
+    }
+}
+
+void DrawAnimatedSkeletonDebugOverlay(MacSdlRenderer* renderer, Camera2D* camera, int screenWidth, int screenHeight)
+{
+    if (renderer == nullptr || camera == nullptr)
+    {
+        return;
+    }
+
+    const auto& objects = GameObjectManager::Instance()->GetGameObjectList();
+    const float centerX = static_cast<float>(screenWidth) * 0.5f;
+    const float centerY = static_cast<float>(screenHeight) * 0.5f;
+    const Color boneColor{0.95f, 0.85f, 0.15f, 0.95f};
+    const Color jointFill{0.98f, 0.40f, 0.20f, 0.95f};
+    const Color jointOutline{0.08f, 0.08f, 0.08f, 1.0f};
+
+    auto toScreen = [&](const Vector2& worldPos) {
+        Vector2 screen;
+        screen.X = centerX + (worldPos.X - camera->X()) * camera->GetZoomLevel();
+        screen.Y = centerY - (worldPos.Y - camera->Y()) * camera->GetZoomLevel();
+        return screen;
+    };
+
+    auto drawThickLine = [&](const Vector2& start, const Vector2& end, const Color& color)
+    {
+        renderer->DrawLine(start.X, start.Y, end.X, end.Y, color);
+
+        const float dx = end.X - start.X;
+        const float dy = end.Y - start.Y;
+        const float length = std::max(1.0f, std::sqrt(dx * dx + dy * dy));
+        const float nx = -dy / length;
+        const float ny = dx / length;
+
+        for (float offset : {-1.5f, 1.5f})
+        {
+            renderer->DrawLine(
+                start.X + nx * offset,
+                start.Y + ny * offset,
+                end.X + nx * offset,
+                end.Y + ny * offset,
+                color);
+        }
+    };
+
+    int skeletonCount = 0;
+    for (const auto& object : objects)
+    {
+        if (!object)
+        {
+            continue;
+        }
+
+        Sprite* sprite = dynamic_cast<Sprite*>(object.get());
+        if (sprite == nullptr || !sprite->GetIsAnimated())
+        {
+            continue;
+        }
+
+        Animation* animation = sprite->GetAnimation();
+        if (animation == nullptr)
+        {
+            continue;
+        }
+
+        AnimationPart* bodyPart = animation->GetPart("body");
+        if (bodyPart == nullptr)
+        {
+            continue;
+        }
+
+        AnimationSequence* sequence = bodyPart->CurrentSequence();
+        if (sequence == nullptr)
+        {
+            continue;
+        }
+
+        AnimationSkeleton* skeleton = sequence->GetSkeleton();
+        if (skeleton == nullptr)
+        {
+            continue;
+        }
+
+        const unsigned frameNumber = static_cast<unsigned>(bodyPart->FrameNumber());
+        if (!skeleton->HasBonesForFrame(frameNumber))
+        {
+            continue;
+        }
+
+        const std::vector<AnimationSkeleton::AnimationSkeletonFramePiece> pieces = skeleton->GetDataForFrame(frameNumber);
+        if (pieces.empty())
+        {
+            continue;
+        }
+
+        const Vector2 worldPos(sprite->X(), sprite->Y());
+        const Vector2 screenPos = toScreen(worldPos);
+        const bool hFlipped = sprite->IsHFlipped();
+
+        int drawnPieces = 0;
+        for (const auto& piece : pieces)
+        {
+            Vector2 startWorld(worldPos.X + piece.mStartPos.X, worldPos.Y + piece.mStartPos.Y);
+            Vector2 endWorld(worldPos.X + piece.mEndPos.X, worldPos.Y + piece.mEndPos.Y);
+
+            if (hFlipped)
+            {
+                startWorld.X = worldPos.X - piece.mStartPos.X;
+                endWorld.X = worldPos.X - piece.mEndPos.X;
+            }
+
+            const Vector2 startScreen = toScreen(startWorld);
+            const Vector2 endScreen = toScreen(endWorld);
+            const float screenDx = endScreen.X - startScreen.X;
+            const float screenDy = endScreen.Y - startScreen.Y;
+            if ((screenDx * screenDx + screenDy * screenDy) < 1.0f)
+            {
+                continue;
+            }
+
+            drawThickLine(startScreen, endScreen, boneColor);
+            ++drawnPieces;
+
+            RectDrawCommand marker;
+            marker.Width = 10.0f;
+            marker.Height = 10.0f;
+            marker.Fill = jointFill;
+            marker.Outline = jointOutline;
+            marker.X = startScreen.X;
+            marker.Y = startScreen.Y;
+            renderer->DrawRect(marker);
+
+            marker.X = endScreen.X;
+            marker.Y = endScreen.Y;
+            renderer->DrawRect(marker);
+        }
+
+        RectDrawCommand centerMarker;
+        centerMarker.Width = 14.0f;
+        centerMarker.Height = 14.0f;
+        centerMarker.Fill = Color{0.10f, 0.95f, 1.0f, 0.85f};
+        centerMarker.Outline = Color{0.0f, 0.0f, 0.0f, 1.0f};
+        centerMarker.X = screenPos.X;
+        centerMarker.Y = screenPos.Y;
+        renderer->DrawRect(centerMarker);
+        ++skeletonCount;
+
+        static int sSkeletonDetailTraceCount = 0;
+        if (sSkeletonDetailTraceCount < 16)
+        {
+            LOG_INFO("mac skeleton trace: id=%u type=%s player=%d sequence=%s frame=%u pieces=%zu drawn=%d pos=(%f,%f)",
+                sprite->ID(),
+                sprite->GetTypeName().c_str(),
+                sprite->IsPlayer() ? 1 : 0,
+                sequence->Name().c_str(),
+                frameNumber,
+                pieces.size(),
+                drawnPieces,
+                sprite->X(),
+                sprite->Y());
+            ++sSkeletonDetailTraceCount;
+        }
+    }
+
+    static int sSkeletonTraceFrame = 0;
+    if (skeletonCount == 0 && (sSkeletonTraceFrame < 8 || (sSkeletonTraceFrame % 60) == 0))
+    {
+        LOG_INFO("mac skeleton trace: no animated skeletons found camera=(%f,%f) zoom=%f",
+            camera->X(),
+            camera->Y(),
+            camera->GetZoomLevel());
+    }
+    ++sSkeletonTraceFrame;
 }
 
 void DrawSepiaOverlay(MacSdlRenderer* renderer, int screenWidth, int screenHeight)
@@ -759,6 +1208,7 @@ void Game::Update(float delta)
 				m_pCam2d->SetPositionY(initialCamPos.Y);
 			}
 
+			m_pCam2d->SetZoomLevel(levelProps.GetZoomInPercent());
 			m_pCam2d->FollowTargetObjectWithLag(cameraInvalid);
 			m_pCam2d->CheckBoundaryCollisions();
 
@@ -948,7 +1398,10 @@ void Game::Draw()
     {
         LoadPreviewLevelIfNeeded(mFileSystem, s_macRenderer.get());
         DrawPreviewLevel(s_macRenderer.get(), PreviewState(), static_cast<int>(screenWidth), static_cast<int>(screenHeight), camera);
+        DrawLiveObjects(s_macRenderer.get(), mFileSystem, static_cast<int>(screenWidth), static_cast<int>(screenHeight), camera);
         DrawSepiaOverlay(s_macRenderer.get(), static_cast<int>(screenWidth), static_cast<int>(screenHeight));
+        DrawAnimatedSkeletonDebugOverlay(s_macRenderer.get(), camera, static_cast<int>(screenWidth), static_cast<int>(screenHeight));
+        DrawSolidLineDebugOverlay(s_macRenderer.get(), camera, static_cast<int>(screenWidth), static_cast<int>(screenHeight));
     }
 
     s_macRenderer->EndFrame();

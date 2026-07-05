@@ -35,6 +35,12 @@ AnimationPart::~AnimationPart(void)
 
 void AnimationPart::ReadXml(TiXmlElement * element)
 {
+	if (element == nullptr)
+	{
+		LOG_ERROR("AnimationPart::ReadXml called with null element");
+		return;
+	}
+
 	//get the name 
 	m_name = (std::string)element->Value();
 

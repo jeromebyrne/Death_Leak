@@ -73,6 +73,7 @@ Sprite::~Sprite(void)
 void Sprite::Initialise()
 {
 	DrawableObject::Initialise();
+	m_currentTextureFilename = m_textureFilename;
 
 	if(m_isAnimated) // if we are using animations
 	{
@@ -101,6 +102,12 @@ void Sprite::Initialise()
 		float scaleX = m_dimensions.X / mTextureDimensions.X;
 
 		m_animation->ScaleSkeleton(scaleX);
+
+		AnimationPart * bodyPart = m_animation->GetPart("body");
+		if (bodyPart != nullptr)
+		{
+			SetCurrentAnimFrame(bodyPart->CurrentFrame());
+		}
 	}
 }
 
@@ -115,12 +122,22 @@ Vector2 Sprite::GetTextureDimensions()
 	ID3D10ShaderResourceView * srv; 
 	if (m_isAnimated)
 	{
-		m_animation->SetPartSequence("body", "Still");
 		AnimationPart * body_anim = m_animation->GetPart("body");
 
 		if (body_anim)
 		{
+			AnimationSequence* previousSequence = body_anim->CurrentSequence();
+			const std::string previousSequenceName = previousSequence != nullptr ? previousSequence->Name() : "";
+			const int previousFrame = body_anim->FrameNumber();
+
+			m_animation->SetPartSequence("body", "Still");
 			srv = body_anim->CurrentFrame();
+
+			if (!previousSequenceName.empty())
+			{
+				body_anim->SetSequence(previousSequenceName);
+				body_anim->SetFrame(previousFrame);
+			}
 		}
 		else
 		{
@@ -294,6 +311,11 @@ void Sprite::Scale(float xScale, float yScale, bool scalePosition)
 {
 	mTextureDimensions.X *= xScale;
 	mTextureDimensions.Y *= yScale;
+
+	if (m_isAnimated && m_animation)
+	{
+		m_animation->ScaleSkeleton(xScale);
+	}
 
 	DrawableObject::Scale(xScale, yScale, scalePosition);
 	
@@ -888,7 +910,7 @@ void Sprite::UpdateAnimations()
 
 		bodyPart->AnimateLooped();
 
-		m_texture = bodyPart->CurrentFrame(); // set the current texture
+		SetCurrentAnimFrame(bodyPart->CurrentFrame()); // set the current texture
 	}
 }
 
@@ -900,7 +922,20 @@ void Sprite::UpdateAnimTexture(const string & bodyPart)
 		return;
 	}
 
-	m_texture = part->CurrentFrame();
+	SetCurrentAnimFrame(part->CurrentFrame());
+}
+
+void Sprite::SetCurrentAnimFrame(const AnimationFrameResource & frame)
+{
+	m_texture = frame;
+	if (!frame.TextureFilename.empty())
+	{
+		m_currentTextureFilename = frame.TextureFilename;
+	}
+	else if (!m_textureFilename.empty())
+	{
+		m_currentTextureFilename = m_textureFilename;
+	}
 }
 
 Animation * Sprite::GetAnimation()

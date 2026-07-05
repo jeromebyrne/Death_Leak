@@ -39,6 +39,7 @@ MacGameBootstrap::~MacGameBootstrap() = default;
 int MacGameBootstrap::RunSmoke()
 {
     Timing::Create();
+    Timing::Instance()->SetTargetDelta(1.0 / 60.0);
     InitialiseLegacyData();
 
     PlatformWindowConfig config;

@@ -11,6 +11,8 @@
 #include <vector>
 #include <thread>
 
+#include <SDL.h>
+
 using BYTE = unsigned char;
 using UINT = unsigned int;
 using DWORD = unsigned long;
@@ -151,9 +153,62 @@ constexpr int VK_DELETE = 0x2E;
 constexpr int VK_LSHIFT = 0xA0;
 constexpr size_t _TRUNCATE = static_cast<size_t>(-1);
 
-inline SHORT GetAsyncKeyState(int)
+inline SDL_Scancode MapVirtualKeyToScancode(int key)
 {
-    return 0;
+    switch (key)
+    {
+        case VK_ESCAPE: return SDL_SCANCODE_ESCAPE;
+        case VK_SPACE: return SDL_SCANCODE_SPACE;
+        case VK_RETURN: return SDL_SCANCODE_RETURN;
+        case VK_TAB: return SDL_SCANCODE_TAB;
+        case VK_LEFT: return SDL_SCANCODE_LEFT;
+        case VK_UP: return SDL_SCANCODE_UP;
+        case VK_RIGHT: return SDL_SCANCODE_RIGHT;
+        case VK_DOWN: return SDL_SCANCODE_DOWN;
+        case VK_CONTROL: return SDL_SCANCODE_LCTRL;
+        case VK_DELETE: return SDL_SCANCODE_DELETE;
+        case VK_LSHIFT: return SDL_SCANCODE_LSHIFT;
+        default:
+            break;
+    }
+
+    if (key >= 'A' && key <= 'Z')
+    {
+        return static_cast<SDL_Scancode>(SDL_SCANCODE_A + (key - 'A'));
+    }
+
+    if (key >= '0' && key <= '9')
+    {
+        return static_cast<SDL_Scancode>(SDL_SCANCODE_0 + (key - '0'));
+    }
+
+    return SDL_SCANCODE_UNKNOWN;
+}
+
+inline SHORT GetAsyncKeyState(int key)
+{
+    const Uint8* keyboard = SDL_GetKeyboardState(nullptr);
+    if (keyboard != nullptr)
+    {
+        const SDL_Scancode scancode = MapVirtualKeyToScancode(key);
+        if (scancode != SDL_SCANCODE_UNKNOWN && keyboard[scancode] != 0)
+        {
+            return static_cast<SHORT>(0x8000);
+        }
+    }
+
+    Uint32 mouseButtons = SDL_GetMouseState(nullptr, nullptr);
+    switch (key)
+    {
+        case VK_LBUTTON:
+            return (mouseButtons & SDL_BUTTON(SDL_BUTTON_LEFT)) != 0 ? static_cast<SHORT>(0x8000) : 0;
+        case VK_RBUTTON:
+            return (mouseButtons & SDL_BUTTON(SDL_BUTTON_RIGHT)) != 0 ? static_cast<SHORT>(0x8000) : 0;
+        case VK_MBUTTON:
+            return (mouseButtons & SDL_BUTTON(SDL_BUTTON_MIDDLE)) != 0 ? static_cast<SHORT>(0x8000) : 0;
+        default:
+            return 0;
+    }
 }
 
 inline void Sleep(unsigned long milliseconds)

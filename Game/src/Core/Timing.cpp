@@ -4,7 +4,7 @@
 Timing * Timing::m_instance = nullptr;
 
 Timing::Timing(void) :
-	mTargetDelta(0.0f),
+	mTargetDelta(1.0 / 60.0),
 	mLastUpdateDelta(0.0f),
 	mTotalTimeSeconds(0.0f),
 	mTimeModifier(1.0f),

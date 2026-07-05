@@ -84,9 +84,9 @@ protected:
 	float mLastFireTime;
 	float mNextFireTime;
 
-	Sprite * mHealthBarSprite;
-	Sprite * mHealthBarUnderlaySprite;
-	Sprite * mHealthBarOverlaySprite;
+	Sprite * mHealthBarSprite = nullptr;
+	Sprite * mHealthBarUnderlaySprite = nullptr;
+	Sprite * mHealthBarOverlaySprite = nullptr;
 	float mCurrentHealthMeterScale;
 	float mHealthMeterHealthBeforeDecrease;
 	bool mIsPlayerEnemy;

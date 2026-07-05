@@ -107,5 +107,3 @@ bool CollisionManager::IsColliding(SolidMovingSprite* first, SolidMovingSprite* 
 
 	return colliding;
 }
-
-

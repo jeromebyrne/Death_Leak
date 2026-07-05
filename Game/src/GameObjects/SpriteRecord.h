@@ -20,6 +20,9 @@ struct SpriteRecord
     float Alpha = 1.0f;
     int Depth = 0;
     SpriteFlip Flip = SpriteFlip::None;
+    bool RepeatTextureX = false;
+    bool RepeatTextureY = false;
+    bool DrawAtNativeDimensions = true;
 
     static SpriteRecord FromLevelObjectRecord(
         const LevelObjectRecord& object,

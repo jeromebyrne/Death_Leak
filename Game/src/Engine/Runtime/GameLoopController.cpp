@@ -19,6 +19,11 @@ GameLoopController::GameLoopController(
 int GameLoopController::Run(const GameLoopConfig& config, const std::function<void(float)>& frameCallback)
 {
     int frameCount = 0;
+    if (Timing::Instance() != nullptr)
+    {
+        Timing::Instance()->SetTargetDelta(config.TargetDeltaSeconds);
+    }
+
     while (mPlatform.PumpEvents())
     {
         mInput.Update();
@@ -27,10 +32,18 @@ int GameLoopController::Run(const GameLoopConfig& config, const std::function<vo
 
         if (Timing::Instance() != nullptr)
         {
-            Timing::Instance()->Update(static_cast<float>(config.TargetDeltaSeconds));
-        }
+            Timing* timing = Timing::Instance();
+            timing->Update(static_cast<float>(config.TargetDeltaSeconds));
 
-        frameCallback(static_cast<float>(config.TargetDeltaSeconds));
+            const float scaledDelta = static_cast<float>(config.TargetDeltaSeconds * timing->GetTimeModifier());
+            timing->SetLastUpdateDelta(scaledDelta);
+            timing->IncrementTotalTimeSeconds(scaledDelta);
+            frameCallback(scaledDelta);
+        }
+        else
+        {
+            frameCallback(static_cast<float>(config.TargetDeltaSeconds));
+        }
 
         if (config.MaxFrames >= 0 && ++frameCount >= config.MaxFrames)
         {

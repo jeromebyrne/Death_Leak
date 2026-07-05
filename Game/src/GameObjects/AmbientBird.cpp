@@ -94,7 +94,7 @@ void AmbientBird::UpdateAnimations()
 		
 		bodyPart->AnimateLooped();
 
-		m_texture = bodyPart->CurrentFrame(); // set the current texture
+		SetCurrentAnimFrame(bodyPart->CurrentFrame()); // set the current texture
 	}
 
 	m_mainBodyTexture = m_texture;

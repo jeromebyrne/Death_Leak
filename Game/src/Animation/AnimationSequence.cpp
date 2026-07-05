@@ -31,6 +31,12 @@ AnimationSequence::~AnimationSequence(void)
 
 void AnimationSequence::ReadXml(TiXmlElement * element)
 {
+	if (element == nullptr)
+	{
+		LOG_ERROR("AnimationSequence::ReadXml called with null element");
+		return;
+	}
+
 	// do stuff
 
 	// Read the name of the sequence.
@@ -64,12 +70,18 @@ void AnimationSequence::ReadXml(TiXmlElement * element)
 			mSFXmap[frame_count] = XmlUtilities::ReadAttributeAsString(child, "", "sfx_type");
 		}
 
-		ID3D10ShaderResourceView* texture = TextureManager::Instance()->LoadTexture(textureName);
-
-		if(texture != 0)
+		ID3D10ShaderResourceView* texture = nullptr;
+		std::string textureFilename = textureName != nullptr ? textureName : "";
+		if (!textureFilename.empty())
 		{
-			m_frames->push_back(texture); // add the frame to the list of frames
+			texture = TextureManager::Instance()->LoadTexture(textureName);
 		}
+		else
+		{
+			LOG_ERROR("Animation frame missing filename in sequence %s frame %d", m_name.c_str(), frame_count);
+		}
+
+		m_frames->push_back(AnimationFrameResource(texture, std::move(textureFilename))); // keep frame count stable even if the texture is missing
 
 		// read skeleton data
 		TiXmlElement * skeleton_root = child->FirstChildElement();

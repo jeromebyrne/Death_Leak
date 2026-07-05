@@ -375,6 +375,11 @@ void Camera2D::CheckBoundaryCollisions()
 
 void Camera2D::CheckDebugCamerCommands()
 {
+	if (!Game::GetInstance()->GetIsLevelEditMode())
+	{
+		return;
+	}
+
 	int movespeed = 40;
 	// test
 	if (GetAsyncKeyState(VK_RIGHT) < 0)

@@ -133,6 +133,15 @@ LevelObjectRecord LevelObjectRecord::FromXml(TiXmlElement* element)
         record.VerticalFlip = SafeBool(element, "verticalflip", "value");
         record.IsAnimated = SafeBool(element, "isanimated", "value");
         record.AnimationFile = SafeAttribute(element, "animationfile", "value");
+        record.DrawAtNativeDimensions = SafeBool(element, "dimensions", "native", true);
+        if (HasAttribute(element, "dimensions", "repeatX"))
+        {
+            record.RepeatTextureX = SafeBool(element, "dimensions", "repeatX");
+        }
+        if (HasAttribute(element, "dimensions", "repeatY"))
+        {
+            record.RepeatTextureY = SafeBool(element, "dimensions", "repeatY");
+        }
     }
 
     return record;

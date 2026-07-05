@@ -25,6 +25,12 @@ SolidLineStrip::~SolidLineStrip(void)
 void SolidLineStrip::Scale(float xScale, float yScale, bool scalePosition)
 {
 	SolidMovingSprite::Scale(xScale, yScale, scalePosition);
+	for (auto & point : mPoints)
+	{
+		point.LocalPosition.X *= xScale;
+		point.LocalPosition.Y *= yScale;
+	}
+	CalculateLines();
 }
 
 void SolidLineStrip::Update(float delta)
@@ -399,11 +405,15 @@ bool SolidLineStrip::Intersect(SolidLine & solidLine, const Vector2 & otherStart
 
 bool SolidLineStrip::BoxHitCheck(SolidLine & solidLine, SolidMovingSprite * object)
 {
+	const float broadphasePadding = 80.0f;
+	const float width = std::max(solidLine.BoundingBox.X + object->CollisionDimensions().X, broadphasePadding);
+	const float height = std::max(solidLine.BoundingBox.Y + object->CollisionDimensions().Y + 60.0f, broadphasePadding);
+
 	return Utilities::IsSolidSpriteInRectangle(object,
 												solidLine.MidPointWorld.X,
 												solidLine.MidPointWorld.Y,
-												solidLine.BoundingBox.X,
-												solidLine.BoundingBox.Y);
+												width,
+												height);
 }
 
 void SolidLineStrip::RecalculateLines(std::vector<SolidLinePoint> & points)
