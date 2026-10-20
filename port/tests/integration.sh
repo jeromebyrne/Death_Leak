@@ -99,6 +99,25 @@ printf '%s\n' "$east_route" | grep -q 'Entered Game/XmlFiles/levels/waterfall_to
 printf '%s\n' "$east_route" | grep -q 'Entered Game/XmlFiles/levels/waterfall_bottom.xml'
 printf '%s\n' "$east_route" | grep -q 'Entered Game/XmlFiles/levels/underwater_cave.xml'
 printf '%s\n' "$east_route" | grep -q 'underwater_cave.xml player=.*orbs=14 .*balance=14'
+# A rightward held jump at the authored waterfall-top gap (frame 710)
+# crosses its fall trigger and reaches forest 2 from the original forest-1
+# spawn. Normal knife fire then carries the same, unmodified run into village
+# central; no loaded balance, warp, or test-hit injection is used.
+continuous_save=port/build/continuous-village-save.txt
+continuous_route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script R:710,E:40,B:4500 --fixed-dt 0.0166667 --simulate-only --save-file "$continuous_save")
+printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 410 .*waterfall_top.xml'
+printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 1081 .*forest_exploration_2.xml'
+printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 1749 .*forest_exploration_barn.xml'
+printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 2760 .*village_forts.xml'
+printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 4095 .*village_central.xml'
+printf '%s\n' "$continuous_route" | grep -q 'village_central.xml player=(6823.18,-1464.18) orbs=96 .*health=1 .*balance=96'
+python3 - <<'PYTEST'
+from pathlib import Path
+lines = Path('port/build/continuous-village-save.txt').read_text().splitlines()
+orb_ids = [line for line in lines if line.startswith('Game/XmlFiles/levels/') and '#' in line]
+assert len(orb_ids) == len(set(orb_ids)) == 96, (len(orb_ids), len(set(orb_ids)))
+assert 'B:96' in lines
+PYTEST
 # Forest 2's authored barn LevelEntry starts about 21 units embedded in its
 # ground strip. The one-frame shallow floor resolution preserves the route.
 # These are independent authored branches, not a connected 375-orb itinerary.
