@@ -111,10 +111,12 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
                 static_cast<int>(Attr(spec, "value")), spec && spec->Attribute("enemy_type") ? spec->Attribute("enemy_type") : "",
                 std::filesystem::path(path).lexically_normal().string() + "#" + (object->Attribute("id") ? object->Attribute("id") : "")});
         }
+        // Keep solid entries in the positional hazard list for existing start-hazard
+        // indices, but their damage is applied by solid-box contact below.
         if (kind == "WaterBlock" || object->FirstChildElement("applydamage")) {
             auto* damage = object->FirstChildElement("applydamage");
-            float amount = Flag(damage, "flag") ? Attr(damage, "amount") : 0.f;
-            if (kind == "WaterBlock" || amount > 0)
+            float amount = kind != "SolidMovingSprite" && Flag(damage, "flag") ? Attr(damage, "amount") : 0.f;
+            if (kind == "WaterBlock" || amount > 0 || (kind == "SolidMovingSprite" && Flag(damage, "flag")))
                 hazards_.push_back({x, y, Attr(dimensions, "width"), Attr(dimensions, "height"), kind == "WaterBlock", amount});
         }
         if (kind == "SolidLineStrip") {
@@ -133,7 +135,8 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
                 const float cx = x + Attr(box, "offsetX"), cy = y + Attr(box, "offsetY");
                 const float halfX = Attr(box, "x") * 0.5f, halfY = Attr(box, "y") * 0.5f;
                 if (halfX > 0 && halfY > 0)
-                    solidBoxes_.push_back({cx-halfX, cx+halfX, cy-halfY, cy+halfY});
+                    solidBoxes_.push_back({cx-halfX, cx+halfX, cy-halfY, cy+halfY,
+                        Flag(object->FirstChildElement("applydamage"), "flag") ? Attr(object->FirstChildElement("applydamage"), "amount") : 0.f});
             }
         }
         if (!asset) continue;

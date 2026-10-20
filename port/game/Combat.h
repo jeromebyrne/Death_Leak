@@ -48,6 +48,7 @@ public:
     void Draw(render::Renderer& renderer, float cameraX, float cameraY) const;
     void SetTriggerHistory(std::unordered_map<std::string, std::int64_t> history) { triggerHistory_ = std::move(history); }
     const std::unordered_map<std::string, std::int64_t>& TriggerHistory() const { return triggerHistory_; }
+    void ApplySolidContactDamage(float damage) { health_ = std::max(0.f, health_ - damage); }
     float Health() const { return health_; }
     float Focus() const { return focus_; }
     void SetFocus(float focus) { focus_ = std::clamp(focus, 0.f, 100.f); }

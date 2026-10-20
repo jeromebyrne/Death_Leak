@@ -142,7 +142,8 @@ PYTEST
 # left+jump avoids the optional village well; two previously missed village
 # orbs are earned before the route reaches the authored forts west barrier.
 agri_wall=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script R:710,E:40,B:4520,E:40,B:50,E:40,B:80,E:40,B:3700,E:40,R:200 --fixed-dt 0.0166667 --simulate-only)
-printf '%s\n' "$agri_wall" | grep -q 'village_agri.xml player=(3519.8,-1288.5) orbs=190 .*health=1 .*balance=190'
+printf '%s\n' "$agri_wall" | grep -q 'Player died at frame 9032 in Game/XmlFiles/levels/village_agri.xml'
+printf '%s\n' "$agri_wall" | grep -q 'village_agri.xml player=(3519.8,-1288.5) orbs=190 .*health=0 .*balance=190'
 return_save=port/build/agri-return-save.txt
 return_route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script R:710,E:40,B:4520,E:40,B:50,E:40,B:80,E:40,B:3500,L:3535,Q:40,L:5000 --fixed-dt 0.0166667 --simulate-only --save-file "$return_save")
 printf '%s\n' "$return_route" | grep -q 'Trigger at frame 9798 from .*village_agri.xml .*village_shrine.xml'
@@ -157,6 +158,15 @@ orb_ids = [line for line in lines if line.startswith('Game/XmlFiles/levels/') an
 assert len(orb_ids) == len(set(orb_ids)) == 192, (len(orb_ids), len(set(orb_ids)))
 assert 'B:192' in lines
 PYTEST
+# Source SolidMovingSprite boundaries share geometry but not damage policy.
+# An attempted side overlap calls OnCollision once per simulated frame here;
+# unlike a water region, 2 damage is not multiplied by dt.
+solid_hit=$($bin --play port/tests/fixtures/solid_boundary_damaging.xml --script R:18 --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$solid_hit" | grep -q 'player=(115.52,107.449) .*health=23 '
+solid_repeat=$($bin --play port/tests/fixtures/solid_boundary_damaging.xml --script R:19 --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$solid_repeat" | grep -q 'player=(115.52,107.449) .*health=21 '
+solid_safe=$($bin --play port/tests/fixtures/solid_boundary_harmless.xml --script R:18 --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$solid_safe" | grep -q 'player=(115.52,107.449) .*health=25 '
 # Forest 2's authored barn LevelEntry starts about 21 units embedded in its
 # ground strip. The one-frame shallow floor resolution preserves the route.
 # These are independent authored branches, not a connected 375-orb itinerary.

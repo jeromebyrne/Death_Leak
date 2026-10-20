@@ -259,6 +259,8 @@ int main(int argc, char** argv) {
             const bool fire = !script.empty() ? (command == 'F' || command == 'B' || command == 'N') : renderer->KeyDown(Down);
             const int firedBefore = combat.Fired();
             combat.Update(scene, worldX, worldY, dt, fire, melee, motion.Grounded(), facing, *renderer);
+            // SolidMovingSprite::OnCollision applies authored damage per contact, not per second.
+            combat.ApplySolidContactDamage(motion.SolidContactDamage());
             // H remains a simulation-only direct hit for isolated combo/stun
             // checks; normal melee comes through Combat::Update above.
             if (simulateOnly && command == 'H') combat.DamageEnemy(0,1.5f);

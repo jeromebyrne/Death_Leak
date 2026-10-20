@@ -1,0 +1,5 @@
+<level>
+  <Player id="1"><position x="0" y="107.44937"/><dimensions width="181.393768" height="215.352036"/><texture filename="Media/UI/player_silhouette.png"/></Player>
+  <SolidLineStrip id="2"><position x="-500" y="0"/><dimensions width="1000" height="1"/><points num_points="2" x_0="0" y_0="0" x_1="1000" y_1="0"/></SolidLineStrip>
+  <SolidMovingSprite id="3"><position x="200" y="100"/><dimensions width="2" height="2"/><collisionboxdimensions x="40" y="4000" offsetX="0" offsetY="0"/><passive value="true"/><applydamage flag="false" amount="2"/><is_bouncy value="true" bounce_multiplier="1.1"/></SolidMovingSprite>
+</level>

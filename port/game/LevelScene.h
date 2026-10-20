@@ -21,7 +21,7 @@ struct SceneSprite {
 };
 
 struct GroundSegment { float x1, y1, x2, y2; };
-struct SolidBox { float left, right, bottom, top; };
+struct SolidBox { float left, right, bottom, top; float damage = 0; };
 struct LevelTrigger { float x, y, width, height; std::string destination; };
 struct EncounterTrigger { float x, y, width, height; int count; std::string type; std::string id; };
 struct Door { float x, y, width, height; std::string destination, requiredKey, id; };

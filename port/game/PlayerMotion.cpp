@@ -14,11 +14,12 @@ constexpr float kWallJumpSpeedY = 20.f * 60.f;
 }
 void PlayerMotion::Reset(float x, float y, bool authoredEntry) {
     x_ = x; y_ = y; vx_ = vy_ = 0; sinceGround_ = 1; jumpHeld_ = false; grounded_ = false; initialPlacement_ = authoredEntry;
-    wallSide_ = 0; wallJumpRemaining_ = 0; jumpPercent_ = 40.f;
+    wallSide_ = 0; wallJumpRemaining_ = 0; jumpPercent_ = 40.f; solidContactDamage_ = 0.f;
 }
 void PlayerMotion::Update(const LevelScene& scene, float dt, int direction, bool jump) {
     if (dt <= 0) return;
     const float ticks = dt * 60.f;
+    solidContactDamage_ = 0.f;
     bool inWater = false;
     for (const auto& hazard : scene.Hazards())
         if (hazard.water && std::abs(x_-hazard.x) <= hazard.width*0.5f &&
@@ -71,9 +72,9 @@ void PlayerMotion::Update(const LevelScene& scene, float dt, int direction, bool
     for (const auto& box : scene.SolidBoxes()) {
         if (oldY+kHalfHeight <= box.bottom || oldY-kHalfHeight >= box.top) continue;
         if (vx_ > 0 && oldX+kHalfWidth <= box.left && x_+kHalfWidth > box.left)
-            { x_ = box.left-kHalfWidth; vx_ = 0; wallSide_ = 1; }
+            { x_ = box.left-kHalfWidth; vx_ = 0; wallSide_ = 1; solidContactDamage_ = std::max(solidContactDamage_, box.damage); }
         else if (vx_ < 0 && oldX-kHalfWidth >= box.right && x_-kHalfWidth < box.right)
-            { x_ = box.right+kHalfWidth; vx_ = 0; wallSide_ = -1; }
+            { x_ = box.right+kHalfWidth; vx_ = 0; wallSide_ = -1; solidContactDamage_ = std::max(solidContactDamage_, box.damage); }
     }
     if (!grounded_) {
         // Original MovingSprite applies gravity after velocity integration;
@@ -105,6 +106,7 @@ void PlayerMotion::Update(const LevelScene& scene, float dt, int direction, bool
             best = std::max(best, box.top);
         // Reject upward penetration through the underside of a solid object.
         if (vy_ > 0 && oldY+kHalfHeight <= box.bottom && y_+kHalfHeight > box.bottom) {
+            solidContactDamage_ = std::max(solidContactDamage_, box.damage);
             y_ = box.bottom-kHalfHeight;
             vy_ = 0;
         }
