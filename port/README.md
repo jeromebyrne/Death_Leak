@@ -158,3 +158,7 @@ loading decodes whole files into memory and should become streaming for release.
 The SDL renderer currently requests acceleration first but permits a software fallback;
 software rendering is **not acceptable for release**. Dummy/headless checks are functional
 only. Real-display testing must prove an accelerated backend and GPU behavior.
+
+## Real-display GPU smoke (2026-10-20)
+
+A host Xorg `:0` run via the build container selected SDL's strict accelerated OpenGL renderer (`accelerated=1 software=0`). `glxinfo -B` inside the same display/device configuration identified direct-rendered **nouveau NVE7**, not llvmpipe. A 600-frame active forest gameplay run with normal right/left input and five earned orbs completed in 10.0383 s (~59.77 FPS with vsync), with 0.146579 s in game update and 9.87605 s in draw/present. This is the first measured hardware-display sample; it does not verify full-game visual/control/audio parity or worst-case GPU performance. The port remains partial.
