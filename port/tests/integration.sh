@@ -46,6 +46,15 @@ ghost=$($bin --play Game/XmlFiles/levels/forest_exploration_2.xml --start-encoun
 printf '%s\n' "$ghost" | grep -q 'spawned=1 enemies=1'
 
 
+# Original CollisionManager calls both character handlers on strict AABB
+# overlap, but Character::OnCollision excludes other characters from body
+# separation. Contact must not create touch damage or an NPC landing surface.
+contact_side=$($bin --play port/tests/fixtures/encounter_npc_wall.xml --script R:90 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$contact_side" | grep -q 'player=(160.52,107.449).*health=25 .*grounded=1'
+printf '%s\n' "$contact_side" | grep -q 'Player/NPC contacts=1 contact_frames=79'
+contact_descend=$($bin --play port/tests/fixtures/encounter_npc_wall.xml --script R:30,J:15,.:23 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$contact_descend" | grep -q 'player=(160.52,200.419).*health=25 .*grounded=0'
+printf '%s\n' "$contact_descend" | grep -q 'Player/NPC contacts=1 contact_frames=36'
 # AIStateRangeAttack: hold a 200-unit standoff and wind up for 0.25 s.
 range_warmup=$($bin --play port/tests/fixtures/encounter_open.xml --frames 90 --fixed-dt 0.0166667 --simulate-only --combat-state)
 printf '%s\n' "$range_warmup" | grep -q 'Enemy kNinja x=200 .*windup=0.049'
@@ -162,4 +171,4 @@ legacy=$($bin --load-save port/build/legacy-dl3-save.txt --frames 1 --fixed-dt 0
 printf '%s\n' "$legacy" | grep -q 'keys=1'
 
 if printf '%s\n' "$key_only_resume" | grep -q 'Collected key'; then exit 1; fi
-printf '%s\n' 'PASS: source-held-jump arena climb and exit, three-level route, burst/water fire, swim, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, solid box, wall jump, death/restart, key/door gate, ghost flight, ranged warmup/terrain shots and kill, grounded NPC fall/wall/box, NPC combo/stun/recovery, NPC teleport timing/exclusion, ranged NPC jump/roll and projectile kickback, DL3 compatibility and DL4 encounter persistence'
+printf '%s\n' 'PASS: source-held-jump arena climb and exit, three-level route, burst/water fire, swim, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, solid box, wall jump, death/restart, key/door gate, ghost flight, ranged warmup/terrain shots and kill, grounded NPC fall/wall/box, NPC combo/stun/recovery, NPC teleport timing/exclusion, ranged NPC jump/roll and projectile kickback, source-faithful player/NPC contact pass-through, DL3 compatibility and DL4 encounter persistence'

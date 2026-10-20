@@ -247,6 +247,18 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
             ghost ? 0.9f : 1.f, !skeleton});
         enemy.fireCooldown=1.3f; // fixed within NPC's original 1.0..1.6 s randomized reload
     }
+    // CollisionManager dispatches each strict-AABB character contact in both
+    // directions. Character::OnCollision deliberately skips SolidMovingSprite
+    // displacement for another Character, so contact alone must not move,
+    // ground, knock back, or damage either participant. Record the pair for
+    // deterministic diagnostics and future source-equivalent melee handling.
+    playerContacts_ = 0;
+    for (const auto& enemy : enemies_) {
+        if (enemy.health <= 0.f || enemy.teleportTime > 0.f) continue;
+        if (std::abs(x-enemy.x) < (128.959793f+100.f)*0.5f &&
+            std::abs(y-enemy.y) < (214.898743f+200.f)*0.5f) ++playerContacts_;
+    }
+    if (playerContacts_ > 0) ++contactFrames_;
     for (auto& shot : shots_) {
         if (shot.life<=0) continue;
         const float oldX=shot.x, oldY=shot.y;

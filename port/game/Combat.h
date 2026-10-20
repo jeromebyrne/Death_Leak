@@ -31,7 +31,7 @@ struct Shot {
 };
 class Combat {
 public:
-    void ClearLevel() { enemies_.clear(); shots_.clear(); activeTriggers_.clear(); fireCooldown_ = burstCooldown_ = hurtCooldown_ = 0; burstCount_ = 0; }
+    void ClearLevel() { enemies_.clear(); shots_.clear(); activeTriggers_.clear(); fireCooldown_ = burstCooldown_ = hurtCooldown_ = 0; burstCount_ = 0; playerContacts_ = contactFrames_ = 0; }
     void SetArt(render::Renderer& renderer);
     void Update(const LevelScene& scene, float x, float y, float dt, bool fire, int facing, render::Renderer& renderer);
     bool DamageEnemy(size_t index, float damage, float projectileDirectionX = 0.f); // shared hit path for projectiles and future melee
@@ -46,6 +46,8 @@ public:
     int Kills() const { return kills_; }
     int Spawned() const { return spawned_; }
     int Fired() const { return fired_; }
+    int PlayerContacts() const { return playerContacts_; }
+    int ContactFrames() const { return contactFrames_; }
     size_t EnemyCount() const { return enemies_.size(); }
     size_t ShotCount() const { return shots_.size(); }
     const std::vector<Enemy>& Enemies() const { return enemies_; }
@@ -60,5 +62,6 @@ private:
     float focusCooldown_ = 0.f, hurtCooldown_ = 0.f;
     int burstCount_ = 0;
     int hits_ = 0, kills_ = 0, spawned_ = 0, fired_ = 0;
+    int playerContacts_ = 0, contactFrames_ = 0;
 };
 }
