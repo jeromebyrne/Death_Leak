@@ -136,6 +136,27 @@ orb_ids = [line for line in lines if line.startswith('Game/XmlFiles/levels/') an
 assert len(orb_ids) == len(set(orb_ids)) == 190, (len(orb_ids), len(set(orb_ids)))
 assert 'B:190' in lines
 PYTEST
+# Agriculture's east edge is an authored 4,000-unit-tall SolidMovingSprite
+# (id 14), not a missing LevelTrigger. Its left face stops this route at
+# x=3519.8 even with a normal held right+jump. Returning west with one timed
+# left+jump avoids the optional village well; two previously missed village
+# orbs are earned before the route reaches the authored forts west barrier.
+agri_wall=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script R:710,E:40,B:4520,E:40,B:50,E:40,B:80,E:40,B:3700,E:40,R:200 --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$agri_wall" | grep -q 'village_agri.xml player=(3519.8,-1288.5) orbs=190 .*health=1 .*balance=190'
+return_save=port/build/agri-return-save.txt
+return_route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script R:710,E:40,B:4520,E:40,B:50,E:40,B:80,E:40,B:3500,L:3535,Q:40,L:5000 --fixed-dt 0.0166667 --simulate-only --save-file "$return_save")
+printf '%s\n' "$return_route" | grep -q 'Trigger at frame 9798 from .*village_agri.xml .*village_shrine.xml'
+printf '%s\n' "$return_route" | grep -q 'Trigger at frame 12225 from .*village_shrine.xml .*village_central.xml'
+printf '%s\n' "$return_route" | grep -q 'Trigger at frame 13994 from .*village_central.xml .*village_forts.xml'
+printf '%s\n' "$return_route" | grep -q 'village_forts.xml player=(-2558.05,-1398.96) orbs=192 .*health=1 .*balance=192'
+if printf '%s\n' "$return_route" | grep -q 'Player died\|water_well_1.xml'; then exit 1; fi
+python3 - <<'PYTEST'
+from pathlib import Path
+lines = Path('port/build/agri-return-save.txt').read_text().splitlines()
+orb_ids = [line for line in lines if line.startswith('Game/XmlFiles/levels/') and '#' in line]
+assert len(orb_ids) == len(set(orb_ids)) == 192, (len(orb_ids), len(set(orb_ids)))
+assert 'B:192' in lines
+PYTEST
 # Forest 2's authored barn LevelEntry starts about 21 units embedded in its
 # ground strip. The one-frame shallow floor resolution preserves the route.
 # These are independent authored branches, not a connected 375-orb itinerary.
