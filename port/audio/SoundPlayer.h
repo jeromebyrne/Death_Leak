@@ -3,7 +3,7 @@
 #include <string>
 
 namespace deathleak::audio {
-enum class Cue { KnifeThrow, OrbCollect, FinalTitle };
+enum class Cue { KnifeThrow, OrbCollect, FinalTitle, StoneSmash };
 
 // Optional game audio boundary; SDL and device handles stay in the backend.
 class SoundPlayer {

@@ -113,6 +113,15 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
     assert 'Smashed ' + grass_smash + ' at frame 21' in dashed, dashed
     assert 'grounded=0' in dashed and 'focus=51.5' in dashed, dashed
     assert 'Z:' + grass_smash in smash_saved.read_text().splitlines()
+    # Dynamic smash rewards have a source 0.01..0.109 s spawn lockout. They
+    # credit only the balance when caught, never an authored persistent orb ID.
+    delayed = smash_trace(smash_start, '.:20,M:1,.:2')
+    assert 'spawned_orbs=3' in delayed and 'orbs=9' in delayed and 'pending_smash_orbs=3' in delayed and 'balance=9' in delayed, delayed
+    assert 'orbs=9' in dashed and 'pending_smash_orbs=2' in dashed and 'balance=10' in dashed, dashed
+    assert 'B:10' in smash_saved.read_text().splitlines()
+    assert len([line for line in smash_saved.read_text().splitlines() if line.startswith(grass_smash + '#')]) == 9
+    resumed_reward = smash_trace(smash_saved, '.:1')
+    assert 'Smashed ' not in resumed_reward and 'pending_smash_orbs=0' in resumed_reward and 'balance=10' in resumed_reward, resumed_reward
     assert 'Smashed ' not in smash_trace(smash_saved, '.:20,M:1,.:8')
     smash_export = root / 'smash-earned.xml'
     run('export', smash_saved, smash_export, '--discard-runtime')
@@ -123,6 +132,25 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
     imported_smash.write_text('\n'.join(imported_lines) + '\n')
     imported_pass = smash_trace(imported_smash, '.:29')
     assert 'Smashed ' not in imported_pass and 'grounded=0' in imported_pass, imported_pass
+    # Connected normal-control playtest from the authored village-central
+    # spawn: clear solid #38, jump above stone #95, then dash onto its top.
+    village = 'Game/XmlFiles/levels/village_central.xml'
+    village_start = root / 'village-smash-start.dl5'
+    village_start.write_text('DL5\n' + village + '\n7470.876953 -1538.940674 25 100\nB:0\nU:kDownwardDash\n')
+    village_route = 'R:65,E:40,R:50,E:35,M:1,.:240'
+    village_saved = root / 'village-smash-earned.dl5'
+    village_result = smash_trace(village_start, village_route, village_saved)
+    assert 'Smashed ' + village + ' at frame 190 spawned_orbs=8' in village_result, village_result
+    assert 'village_central.xml player=(8915.14,-1223.31) orbs=10' in village_result and 'pending_smash_orbs=0' in village_result, village_result
+    assert 'health=25' in village_result and 'balance=18' in village_result, village_result
+    village_lines = village_saved.read_text().splitlines()
+    assert 'Z:' + village in village_lines and 'B:18' in village_lines
+    assert sum(line.startswith(village + '#') for line in village_lines) == 10
+    village_resume = smash_trace(village_saved, '.:120')
+    assert 'Smashed ' not in village_resume and 'pending_smash_orbs=0' in village_resume and 'balance=18' in village_resume, village_resume
+    village_export = root / 'village-smash-earned.xml'
+    run('export', village_saved, village_export, '--discard-runtime')
+    assert bridge.windows_fields(village_export)[bridge.smash_field(village)] == ('bool', 'true')
     bad_smash = root / 'smash-bad.dl5'
     bad_smash.write_text(target.read_text().replace('Z:' + grass_smash + '\n', ''))
     run('export', bad_smash, root / 'smash-bad.xml', '--discard-runtime', success=False)

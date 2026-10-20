@@ -34,7 +34,8 @@ struct DojoScroll { float x, y, width, height; std::string feature; std::string 
 struct KeyPickup { float x, y, width, height; std::string keyId; };
 struct PaperPickup { float x, y, width, height; std::string descriptionId; };
 struct HealthDevil { float x, y, width, height; };
-struct Smashable { SolidBox box; bool smashed = false; };
+struct Smashable { SolidBox box; float x = 0, y = 0; bool smashed = false; };
+struct SpawnedOrb { float x, y, vx, vy, spawnDelay, trackingTime = 0; };
 struct HazardRegion { float x, y, width, height; bool water; float damage; };
 
 class LevelScene {
@@ -64,6 +65,8 @@ public:
     const std::vector<HealthDevil>& HealthDevils() const { return healthDevils_; }
     const std::vector<Smashable>& Smashables() const { return smashables_; }
     bool SmashAt(size_t index);
+    size_t UpdateSpawnedOrbs(float playerX, float playerY, float dt);
+    size_t PendingSpawnedOrbs() const { return spawnedOrbs_.size(); }
     void ApplySmashable(bool smashed);
     const std::vector<DojoScroll>& Scrolls() const { return scrolls_; }
     void ApplyDeflection(bool unlocked);
@@ -83,6 +86,8 @@ private:
     std::vector<PaperPickup> papers_;
     std::vector<HealthDevil> healthDevils_;
     std::vector<Smashable> smashables_;
+    std::vector<SpawnedOrb> spawnedOrbs_;
+    render::TextureId spawnedOrbTexture_ = render::InvalidTexture;
     std::vector<DojoScroll> scrolls_;
     float playerX_ = 0, playerY_ = 0;
     float playerVisualWidth_ = 0, playerVisualHeight_ = 0;

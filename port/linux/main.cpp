@@ -559,14 +559,16 @@ int main(int argc, char** argv) {
                           jump && !combat.MeleeActive());
             if (motion.SmashedSomething()) {
                 brokenSmashables.insert(currentLevel);
-                std::cout << "Smashed " << currentLevel << " at frame " << frame << '\n';
+                if (sound) sound->Play(deathleak::audio::Cue::StoneSmash);
+                std::cout << "Smashed " << currentLevel << " at frame " << frame << " spawned_orbs=" << scene.PendingSpawnedOrbs() << '\n';
             }
             if (motion.Grounded() && combat.Health() > 0.f && motion.TryBufferedRoll(combat.HasFocus(2.f)))
                 combat.ConsumeFocus(2.f);
             worldX = motion.X(); worldY = motion.Y();
             const auto collectedNow = scene.CollectCurrencyOrbs(worldX, worldY, collectedOrbs);
-            orbBalance += static_cast<int>(collectedNow);
-            if (sound && collectedNow) sound->Play(deathleak::audio::Cue::OrbCollect);
+            const auto collectedSpawned = scene.UpdateSpawnedOrbs(worldX, worldY, dt);
+            orbBalance += static_cast<int>(collectedNow + collectedSpawned);
+            if (sound && (collectedNow || collectedSpawned)) sound->Play(deathleak::audio::Cue::OrbCollect);
             const bool fire = !script.empty() ? (command == 'F' || command == 'B' || command == 'N') : renderer->KeyDown(Down);
             const int firedBefore = combat.Fired();
             combat.Update(scene, worldX, worldY, dt, fire, melee, motion.Grounded(), motion.Rolling(), facing, *renderer);
@@ -890,7 +892,7 @@ int main(int argc, char** argv) {
                   << " hits=" << combat.Hits() << " kills=" << combat.Kills() << " fired=" << combat.Fired()
                   << " shots=" << combat.ShotCount() << " grounded=" << motion.Grounded() << " elapsed=" << elapsed << "s"
                   << " downward_dash_upgrade=" << downwardDashUnlocked << " roll_upgrade=" << rollUnlocked << " dash_active=" << motion.DownwardDashing() << " roll_active=" << motion.Rolling() << " vx=" << motion.VelocityX() << " vy=" << motion.VelocityY()
-                  << " max_health=" << combat.MaxHealth() << " speed_upgrade=" << speedUnlocked << " projectile_damage_upgrade=" << projectileDamageUnlocked << " projectile_speed_upgrade=" << projectileSpeedUnlocked << "\n";
+                  << " max_health=" << combat.MaxHealth() << " speed_upgrade=" << speedUnlocked << " projectile_damage_upgrade=" << projectileDamageUnlocked << " projectile_speed_upgrade=" << projectileSpeedUnlocked << " pending_smash_orbs=" << scene.PendingSpawnedOrbs() << "\n";
         if (combatState) {
             std::cout << "Player/NPC contacts=" << combat.PlayerContacts() << " contact_frames=" << combat.ContactFrames() << "\n";
             std::cout << "Melee active=" << combat.MeleeActive() << " strikes=" << combat.MeleeStrikes() << "\n";

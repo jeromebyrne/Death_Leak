@@ -59,7 +59,8 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     auto* level = document.RootElement();
     if (!level || std::string(level->Value()) != "level") { error = "Not a Death Leak level: " + path; return false; }
     playerVisualWidth_ = playerVisualHeight_ = 0;
-    sprites_.clear(); ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); doors_.clear(); boats_.clear(); keys_.clear(); papers_.clear(); healthDevils_.clear(); smashables_.clear(); scrolls_.clear(); skipped_ = 0;
+    spawnedOrbTexture_ = render::InvalidTexture;
+    sprites_.clear(); ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); doors_.clear(); boats_.clear(); keys_.clear(); papers_.clear(); healthDevils_.clear(); smashables_.clear(); spawnedOrbs_.clear(); scrolls_.clear(); skipped_ = 0;
     if (auto* props = level->FirstChildElement("LevelProperties")) {
         auto* camera = props->FirstChildElement("camera_properties");
         cameraX_ = Attr(camera, "posx"); cameraY_ = Attr(camera, "posy");
@@ -149,7 +150,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
             if (box) {
                 const float cx = x + Attr(box, "offsetX"), cy = y + Attr(box, "offsetY");
                 const float halfX = Attr(box, "x") * 0.5f, halfY = Attr(box, "y") * 0.5f;
-                if (halfX > 0 && halfY > 0) smashables_.push_back({{cx-halfX,cx+halfX,cy-halfY,cy+halfY,0.f},false});
+                if (halfX > 0 && halfY > 0) smashables_.push_back({{cx-halfX,cx+halfX,cy-halfY,cy+halfY,0.f},x,y,false});
             }
         }
         if (kind == "SolidMovingSprite") {
@@ -211,6 +212,10 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         sprite.tint.a = static_cast<std::uint8_t>(std::lround(alpha * 255));
         if (sprite.width > 0 && sprite.height > 0) sprites_.push_back(sprite);
     }
+    if (!smashables_.empty()) {
+        const auto frame = AnimationFrame("Game/XmlFiles/orb_anim.xml", "Still");
+        if (!frame.empty()) spawnedOrbTexture_ = renderer.LoadTexture(frame, error);
+    }
     std::stable_sort(sprites_.begin(), sprites_.end(), [](const auto& a, const auto& b) { return a.depth > b.depth; });
     if (sprites_.empty()) { error = "Level has no renderable assets: " + path; return false; }
     return true;
@@ -254,12 +259,61 @@ void LevelScene::ApplySmashable(bool smashed) {
 bool LevelScene::SmashAt(size_t index) {
     if (index >= smashables_.size() || smashables_[index].smashed) return false;
     smashables_[index].smashed = true;
+    // Windows uses rand()%8+1 and SpawnOrbs with random launch velocity and
+    // 0.01..0.109 s pickup lockout. A stable per-object sequence makes Linux
+    // scripted routes reproducible without claiming a Windows RNG match.
+    const auto& origin = smashables_[index];
+    unsigned int random = static_cast<unsigned int>(std::lround(std::abs(origin.x)*100.f)) ^
+                          (static_cast<unsigned int>(std::lround(std::abs(origin.y)*100.f)) << 1) ^
+                          (static_cast<unsigned int>(index+1) * 0x9e3779b9u);
+    auto next = [&random]() { random = random * 1664525u + 1013904223u; return random; };
+    const unsigned int count = next() % 8 + 1;
+    for (unsigned int i = 0; i < count; ++i) {
+        const float vx = (next()%100) * 0.18f * ((next()%2) ? -1.f : 1.f) * 60.f;
+        const float vy = ((next()%100) * 0.3f + 30.f) * ((next()%2) ? -1.f : 1.f) * 60.f;
+        const float delay = (next()%100) * 0.001f + 0.01f;
+        spawnedOrbs_.push_back({origin.x, origin.y, vx, vy, delay});
+    }
     // The shipped levels have one Smashable each; keep other objects independent.
     const auto& box = smashables_[index].box;
     for (auto& sprite : sprites_) if (sprite.smashable && sprite.smashedTexture &&
         sprite.x >= box.left && sprite.x <= box.right && sprite.y >= box.bottom && sprite.y <= box.top)
         sprite.texture = sprite.smashedTexture;
     return true;
+}
+size_t LevelScene::UpdateSpawnedOrbs(float playerX, float playerY, float dt) {
+    size_t collected = 0;
+    for (auto it = spawnedOrbs_.begin(); it != spawnedOrbs_.end();) {
+        auto& orb = *it;
+        if (orb.spawnDelay > 0) {
+            orb.spawnDelay -= dt;
+            orb.x += orb.vx * dt;
+            orb.y += orb.vy * dt;
+            ++it;
+            continue;
+        }
+        orb.trackingTime += dt;
+        const float dx = playerX-orb.x, dy = playerY-orb.y;
+        const float distance = std::hypot(dx, dy);
+        if (distance < 100.f) {
+            it = spawnedOrbs_.erase(it);
+            ++collected;
+            continue;
+        }
+        if (distance > 0.001f) {
+            // Source DoTrackPlayer accelerates 2.5 units/tick (3x after 2 s),
+            // prioritizing the dominant axis, with a 20-unit/tick horizontal cap.
+            const float acceleration = 2.5f * 60.f * 60.f * (orb.trackingTime > 2.f ? 3.f : 1.f);
+            if (std::abs(dx) > std::abs(dy)) orb.vx += acceleration * dx/distance * dt;
+            else orb.vy += acceleration * dy/distance * dt;
+            orb.vx = std::clamp(orb.vx, -1200.f, 1200.f);
+            orb.vy = std::clamp(orb.vy, -3000.f, 3000.f);
+        }
+        orb.x += orb.vx * dt;
+        orb.y += orb.vy * dt;
+        ++it;
+    }
+    return collected;
 }
 void LevelScene::ApplyDeflection(bool unlocked) {
     if (!unlocked) return;
@@ -270,6 +324,15 @@ void LevelScene::ApplyDeflection(bool unlocked) {
 }
 void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY) const {
     constexpr float scale = 2.f / 3.f; // Original world is authored for 1920x1080.
+    for (const auto& orb : spawnedOrbs_) if (spawnedOrbTexture_) {
+        render::Sprite draw;
+        draw.texture = spawnedOrbTexture_;
+        draw.destination = {640.f + (orb.x-cameraX-23.84865f)*scale,
+                            360.f + (cameraY-orb.y-36.415604f)*scale,
+                            47.6973f*scale, 72.831207f*scale};
+        draw.tint = {255,255,255,204};
+        renderer.DrawSprite(draw);
+    }
     for (const auto& object : sprites_) {
         if (object.collected) continue;
         const float worldX = object.player ? playerX : object.x;
