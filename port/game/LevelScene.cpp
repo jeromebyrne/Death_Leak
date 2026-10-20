@@ -49,12 +49,13 @@ std::string FirstAnimationFrame(const std::string& xmlPath) {
     return {};
 }
 }
-bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::string& error) {
+bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::string& error,
+                      const std::string& fromLevel) {
     TiXmlDocument document(path.c_str());
     if (!document.LoadFile()) { error = "Cannot parse level: " + path + ": " + document.ErrorDesc(); return false; }
     auto* level = document.RootElement();
     if (!level || std::string(level->Value()) != "level") { error = "Not a Death Leak level: " + path; return false; }
-    sprites_.clear(); skipped_ = 0;
+    sprites_.clear(); ground_.clear(); triggers_.clear(); skipped_ = 0;
     if (auto* props = level->FirstChildElement("LevelProperties")) {
         auto* camera = props->FirstChildElement("camera_properties");
         cameraX_ = Attr(camera, "posx"); cameraY_ = Attr(camera, "posy");
@@ -64,7 +65,33 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         auto* position = object->FirstChildElement("position");
         auto* dimensions = object->FirstChildElement("dimensions");
         auto* asset = object->FirstChildElement("texture");
-        if (!position || !dimensions || !asset) continue;
+        if (!position || !dimensions) continue;
+        const std::string kind = object->Value();
+        const float x = Attr(position, "x"), y = Attr(position, "y");
+        if (kind == "Player") { playerX_ = x; playerY_ = y; }
+        if (kind == "LevelEntry" && !fromLevel.empty()) {
+            auto* cameFrom = object->FirstChildElement("level_came_from");
+            if (NormalizeAsset(cameFrom ? cameFrom->Attribute("value") : nullptr) == fromLevel) {
+                playerX_ = x; playerY_ = y;
+            }
+        }
+        if (kind == "LevelTrigger") {
+            auto* destination = object->FirstChildElement("level_to_load");
+            auto file = NormalizeAsset(destination ? destination->Attribute("value") : nullptr);
+            if (!file.empty() && std::filesystem::exists(file))
+                triggers_.push_back({x, y, Attr(dimensions, "width"), Attr(dimensions, "height"), file});
+        }
+        if (kind == "SolidLineStrip") {
+            auto* points = object->FirstChildElement("points");
+            int count = static_cast<int>(Attr(points, "num_points"));
+            for (int i = 1; i < count; ++i) {
+                const std::string x0 = "x_" + std::to_string(i - 1), y0 = "y_" + std::to_string(i - 1);
+                const std::string x1 = "x_" + std::to_string(i), y1 = "y_" + std::to_string(i);
+                ground_.push_back({x + Attr(points, x0.c_str()), y + Attr(points, y0.c_str()),
+                                   x + Attr(points, x1.c_str()), y + Attr(points, y1.c_str())});
+            }
+        }
+        if (!asset) continue;
         std::string filename = NormalizeAsset(asset->Attribute("filename"));
         if (Flag(object->FirstChildElement("isanimated"), "value")) {
             auto* animation = object->FirstChildElement("animationfile");
@@ -86,6 +113,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         sprite.width = Attr(dimensions, "width"); sprite.height = Attr(dimensions, "height");
         sprite.rotation = Attr(position, "rotation");
         sprite.depth = Depth(position->Attribute("depth_layer"));
+        sprite.player = kind == "Player";
         sprite.flipX = Flag(object->FirstChildElement("horizontalflip"), "value");
         sprite.flipY = Flag(object->FirstChildElement("verticalflip"), "value");
         auto alpha = std::clamp(Attr(object->FirstChildElement("alpha"), "value", 1), 0.f, 1.f);
@@ -96,13 +124,15 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     if (sprites_.empty()) { error = "Level has no renderable assets: " + path; return false; }
     return true;
 }
-void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY) const {
+void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY) const {
     constexpr float scale = 2.f / 3.f; // Original world is authored for 1920x1080.
     for (const auto& object : sprites_) {
+        const float worldX = object.player ? playerX : object.x;
+        const float worldY = object.player ? playerY : object.y;
         render::Sprite draw;
         draw.texture = object.texture;
-        draw.destination = {640.f + (object.x - cameraX - object.width / 2) * scale,
-                            360.f + (cameraY - object.y - object.height / 2) * scale,
+        draw.destination = {640.f + (worldX - cameraX - object.width / 2) * scale,
+                            360.f + (cameraY - worldY - object.height / 2) * scale,
                             object.width * scale, object.height * scale};
         draw.tint = object.tint; draw.flipX = object.flipX; draw.flipY = object.flipY;
         draw.rotationDegrees = -object.rotation;

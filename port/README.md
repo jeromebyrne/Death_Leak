@@ -52,3 +52,18 @@ docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/src" -w /src -e SDL_VIDEODRIVER
   port/build/deathleak-linux --level-preview Game/XmlFiles/levels/forest_exploration_1.xml \
   --frames 2 --capture port/build/forest-preview.bmp
 ```
+
+## Experimental gameplay slice
+
+`--play Game/XmlFiles/levels/forest_exploration_1.xml` now enables a prototype player simulation: the player starts at the original XML position, moves with A/D or left/right, jumps with W/space/up, collides with `SolidLineStrip` segments, follows the camera, and enters `LevelTrigger` destinations. SDL game-controller left stick/D-pad and A button are also mapped. Escape or controller Start exits. The original level assets still render through `Renderer.h`.
+
+This is **not yet a complete or release-ready Death Leak port**. It does not reproduce original Character/Player physics, combat, enemies, pickups, NPCs, UI/menus, audio, saves, shaders, particles, or animation; level entry placement and door semantics are incomplete. Keyboard play is an added Linux convenience (the Windows release build's keyboard gameplay path is disabled). The default executable screen remains a renderer demo, not the game's original menu.
+
+Headless integration smoke:
+
+```sh
+docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/src" -w /src -e SDL_VIDEODRIVER=dummy deathleak-linux-build:bookworm \
+  port/build/deathleak-linux --play Game/XmlFiles/levels/forest_exploration_1.xml --frames 120 --capture port/build/gameplay.bmp
+```
+
+The dummy SDL software renderer is slow on large transparent source art; on this development host, 120 frames took 73.5 s (~1.6 fps), including a frame capture. That is not an acceptable performance result. A GPU-backed window needs a separate real-display benchmark, and texture/culling/render-path profiling remains necessary.
