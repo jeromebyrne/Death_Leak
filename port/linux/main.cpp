@@ -24,6 +24,7 @@
 #include <iomanip>
 #include <sstream>
 #include <optional>
+#include <limits>
 
 using namespace deathleak::render;
 
@@ -668,9 +669,9 @@ int main(int argc, char** argv) {
                 return std::abs(worldX-ox) <= (128.959793f+ow)*0.5f &&
                        std::abs(worldY-oy) <= (214.898743f+oh)*0.5f;
             };
-            // GameObjectManager sorts authored objects by depth once (stable
-            // within a layer), then appends dynamically spawned pickups. Its
-            // sCurrentInteractable retains the selected object while overlapping.
+            // AddGameObject re-sorts the live list by descending depth. A
+            // spawned pickup defaults to kPlayer (3000) and follows authored
+            // objects on the same layer; sCurrentInteractable keeps its lock.
             std::string target;
             int selectedDepth = -2;
             size_t selectedOrder = 0;
@@ -684,9 +685,10 @@ int main(int argc, char** argv) {
             const bool nearbyHealthPickup = healthPickup &&
                 std::abs(worldX-healthPickup->x) < (128.959793f+50.f)*0.5f &&
                 std::abs(worldY-healthPickup->y) < (214.898743f+70.f)*0.5f;
-            // Spawned objects are appended to the live list after the load-time
-            // depth sort, regardless of their own depth layer.
-            if (nearbyHealthPickup) select("H:" + currentLevel, -1, 0);
+            // The spawned kPlayer pickup sorts ahead of lower-depth authored
+            // interactables, but after earlier-authored kPlayer peers.
+            if (nearbyHealthPickup) select("H:" + currentLevel, 3000,
+                                           std::numeric_limits<size_t>::max());
             const deathleak::game::KeyPickup* nearbyKey = nullptr;
             const deathleak::game::PaperPickup* nearbyPaper = nullptr;
             const deathleak::game::HealthDevil* nearbyDevil = nullptr;

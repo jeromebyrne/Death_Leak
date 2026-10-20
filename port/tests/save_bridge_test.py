@@ -274,6 +274,20 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
                                  capture_output=True, text=True, check=True)
     assert 'Collected key pickup_overlap_key at frame 751' in then_pickup.stdout, then_pickup.stdout
     assert 'Health upgrade collected port/tests/fixtures/health_pickup_arbitration.xml at frame 754 max_health=45' in then_pickup.stdout, then_pickup.stdout
+    # AddGameObject re-sorts on insertion: its kPlayer pickup precedes a
+    # kGroundFront key, even though the key is earlier in XML. Neither target
+    # overlaps until the first post-spawn movement tick, so there is no prior
+    # sCurrentInteractable lock obscuring the depth comparison.
+    depth_cmd = ['port/build/deathleak-linux', '--play',
+                 'port/tests/fixtures/health_pickup_depth_priority.xml',
+                 '--fixed-dt', '0.0166667', '--simulate-only']
+    depth_first = subprocess.run(depth_cmd + ['--script', 'I:4,.:745,L:2,I:3'],
+                                 capture_output=True, text=True, check=True)
+    assert 'Health upgrade collected port/tests/fixtures/health_pickup_depth_priority.xml at frame 753 max_health=45' in depth_first.stdout, depth_first.stdout
+    assert 'Collected key pickup_overlap_key' not in depth_first.stdout, depth_first.stdout
+    depth_second = subprocess.run(depth_cmd + ['--script', 'I:4,.:745,L:2,I:8'],
+                                  capture_output=True, text=True, check=True)
+    assert 'Collected key pickup_overlap_key at frame 756' in depth_second.stdout, depth_second.stdout
     assert {'V:' + hot, 'J:1'} <= set(uncollected.read_text().splitlines())
     assert 'H:45' not in uncollected.read_text().splitlines()
     returned = subprocess.run(['port/build/deathleak-linux', '--load-save', str(hot_start),
