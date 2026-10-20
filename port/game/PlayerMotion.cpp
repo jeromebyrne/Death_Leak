@@ -12,8 +12,8 @@ constexpr float kGravity = (0.75f / 0.55f) * 60.f * 60.f;
 constexpr float kWallJumpSpeedX = 15.f * 60.f;
 constexpr float kWallJumpSpeedY = 20.f * 60.f;
 }
-void PlayerMotion::Reset(float x, float y) {
-    x_ = x; y_ = y; vx_ = vy_ = 0; sinceGround_ = 1; jumpHeld_ = false; grounded_ = false;
+void PlayerMotion::Reset(float x, float y, bool authoredEntry) {
+    x_ = x; y_ = y; vx_ = vy_ = 0; sinceGround_ = 1; jumpHeld_ = false; grounded_ = false; initialPlacement_ = authoredEntry;
     wallSide_ = 0; wallJumpRemaining_ = 0; jumpPercent_ = 40.f;
 }
 void PlayerMotion::Update(const LevelScene& scene, float dt, int direction, bool jump) {
@@ -95,13 +95,13 @@ void PlayerMotion::Update(const LevelScene& scene, float dt, int direction, bool
         if (t < 0 || t > 1) continue;
         const float surface = line.y1+t*(line.y2-line.y1);
         if ((wasGrounded && std::abs(surface-(oldY-kHalfHeight)) <= 20.f) ||
-            (vy_ <= 0 && oldY-kHalfHeight >= surface-4.f && y_-kHalfHeight <= surface))
+            (vy_ <= 0 && (oldY-kHalfHeight >= surface-4.f || (initialPlacement_ && oldY-kHalfHeight >= surface-32.f)) && y_-kHalfHeight <= surface))
             best = std::max(best,surface);
     }
     for (const auto& box : scene.SolidBoxes()) {
         if (x_+kHalfWidth <= box.left || x_-kHalfWidth >= box.right) continue;
         if ((wasGrounded && std::abs(box.top-(oldY-kHalfHeight)) <= 20.f) ||
-            (vy_ <= 0 && oldY-kHalfHeight >= box.top-4.f && y_-kHalfHeight <= box.top))
+            (vy_ <= 0 && (oldY-kHalfHeight >= box.top-4.f || (initialPlacement_ && oldY-kHalfHeight >= box.top-32.f)) && y_-kHalfHeight <= box.top))
             best = std::max(best, box.top);
         // Reject upward penetration through the underside of a solid object.
         if (vy_ > 0 && oldY+kHalfHeight <= box.bottom && y_+kHalfHeight > box.bottom) {
@@ -111,5 +111,9 @@ void PlayerMotion::Update(const LevelScene& scene, float dt, int direction, bool
     }
     if (best > -1e8f) { y_ = best+kHalfHeight; vy_ = 0; grounded_ = true; sinceGround_ = 0; }
     else sinceGround_ += dt;
+    // Authored LevelEntry centers can begin a few units inside a solid line.
+    // Allow a one-frame shallow floor depenetration; ordinary jumps still
+    // require crossing the surface from above.
+    initialPlacement_ = false;
 }
 }

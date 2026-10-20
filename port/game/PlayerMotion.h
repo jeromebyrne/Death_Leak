@@ -6,7 +6,7 @@ namespace deathleak::game {
 // original MovingSprite values are per 60 Hz target update.
 class PlayerMotion {
 public:
-    void Reset(float x, float y);
+    void Reset(float x, float y, bool authoredEntry = false);
     void Update(const LevelScene& scene, float dt, int direction, bool jump);
     float X() const { return x_; }
     float Y() const { return y_; }
@@ -19,6 +19,7 @@ private:
     float sinceGround_ = 1;
     bool jumpHeld_ = false;
     bool grounded_ = false;
+    bool initialPlacement_ = false;
     int wallSide_ = 0; // -1: wall to left, +1: wall to right
     float wallJumpRemaining_ = 0;
     float jumpPercent_ = 40.f; // InputManager initial 40%, +6.5% each held update

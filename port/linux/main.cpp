@@ -324,7 +324,7 @@ int main(int argc, char** argv) {
                         scene = std::move(nextScene);
                         std::cout << "Door at frame " << frame << " from " << currentLevel << " to " << door.destination << '\n';
                         currentLevel = door.destination;
-                        motion.Reset(scene.PlayerX(),scene.PlayerY());
+                        motion.Reset(scene.PlayerX(),scene.PlayerY(), true);
                         worldX = motion.X(); worldY = motion.Y();
                         cameraX = scene.CameraX(); cameraY = scene.CameraY();
                         combat.ClearLevel(); levelTime = interactHeldTime = doorUnlockWait = 0; unlockingDoor = false; interactionTarget.clear();
@@ -347,7 +347,7 @@ int main(int argc, char** argv) {
                         currentLevel = destination;
                         worldX = scene.PlayerX(); worldY = scene.PlayerY();
                         cameraX = scene.CameraX(); cameraY = scene.CameraY();
-                        motion.Reset(worldX, worldY); combat.ClearLevel();
+                        motion.Reset(worldX, worldY, true); combat.ClearLevel();
                         levelTime = interactHeldTime = doorUnlockWait = 0; unlockingDoor = false; interactionTarget.clear();
                         std::cout << "Entered " << currentLevel << '\n';
                     } else std::cerr << "Transition failed: " << error << '\n';

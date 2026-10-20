@@ -99,6 +99,24 @@ printf '%s\n' "$east_route" | grep -q 'Entered Game/XmlFiles/levels/waterfall_to
 printf '%s\n' "$east_route" | grep -q 'Entered Game/XmlFiles/levels/waterfall_bottom.xml'
 printf '%s\n' "$east_route" | grep -q 'Entered Game/XmlFiles/levels/underwater_cave.xml'
 printf '%s\n' "$east_route" | grep -q 'underwater_cave.xml player=.*orbs=14 .*balance=14'
+# Forest 2's authored barn LevelEntry starts about 21 units embedded in its
+# ground strip. The one-frame shallow floor resolution preserves the route.
+# These are independent authored branches, not a connected 375-orb itinerary.
+village_route=$($bin --play Game/XmlFiles/levels/forest_exploration_2.xml --script R:3500 --fixed-dt 0.0166667 --simulate-only --save-file port/build/village-route-save.txt)
+printf '%s\n' "$village_route" | grep -q 'Trigger at frame 92 .*forest_exploration_barn.xml'
+printf '%s\n' "$village_route" | grep -q 'Trigger at frame 1103 .*village_forts.xml'
+printf '%s\n' "$village_route" | grep -q 'Trigger at frame 2438 .*village_central.xml'
+printf '%s\n' "$village_route" | grep -q 'village_central.xml player=(6079.18,-1407.35) orbs=60 .*health=10 .*balance=60'
+python3 - <<'PYTEST'
+from pathlib import Path
+lines = Path('port/build/village-route-save.txt').read_text().splitlines()
+orb_ids = [line for line in lines if line.startswith('Game/XmlFiles/levels/') and '#' in line]
+assert len(orb_ids) == len(set(orb_ids)) == 60, (len(orb_ids), len(set(orb_ids)))
+assert 'B:60' in lines
+PYTEST
+grass_route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script L:1500,Q:40,L:1800 --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$grass_route" | grep -q 'Entered Game/XmlFiles/levels/grass_exploration_dead_end_below_2.xml'
+printf '%s\n' "$grass_route" | grep -q 'orbs=50 .*health=22 .*balance=50'
 # DojoScrollPickup ignores authored debug orb_cost=2; production feature cost is
 # 375. One normal orb pickup adds to a loaded 374-orb balance. Modal pauses
 # world updates, purchase debits once, hides the scroll, and survives reload.
