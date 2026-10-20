@@ -7,6 +7,7 @@ sys.dont_write_bytecode = True
 from pathlib import Path
 import subprocess
 import tempfile
+import re
 import xml.etree.ElementTree as ET
 
 spec = importlib.util.spec_from_file_location('save_bridge', 'port/tools/save_bridge.py')
@@ -231,6 +232,23 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
                           capture_output=True, text=True, check=True)
     assert 'Health devil reward spawned ' + hot + ' at frame 767 count=1' in away.stdout
     assert 'Health upgrade collected ' not in away.stdout and 'max_health=25' in away.stdout
+    assert 'Health upgrade pickup landed ' + hot + ' at frame 796' in away.stdout
+    landed = re.search(r'Health upgrade pickup state x=([^ ]+) y=([^ ]+) vx=([^ ]+) vy=([^ ]+) grounded=(\d+)', away.stdout)
+    assert landed and abs(float(landed[1]) - (-935.589)) < .02 and abs(float(landed[2]) - (-97.3599)) < .02, away.stdout
+    assert landed[4] == '0' and landed[5] == '1', away.stdout
+    # The authored pickup launches from the devil's (-1234.3479, 24) at
+    # (15,10). MovingSprite integrates old acceleration, then applies .8
+    # gravity on ascent and 2.4 while descending above -15 speed.
+    for idle, expected in ((650, (-1143.849, 97.2, 5.2)),
+                           (660, (-1059.784, 95.6, -7.6))):
+        flight = subprocess.run(['port/build/deathleak-linux', '--load-save', str(hot_start),
+                                 '--save-file', str(root / f'devil-flight-{idle}.dl5'),
+                                 '--script', f'I:25,L:100,.:{idle}', '--fixed-dt', '0.0166667', '--simulate-only'],
+                                capture_output=True, text=True, check=True)
+        state = re.search(r'Health upgrade pickup state x=([^ ]+) y=([^ ]+) vx=([^ ]+) vy=([^ ]+) grounded=(\d+)', flight.stdout)
+        assert state and state[5] == '0', flight.stdout
+        for actual, wanted in zip((float(state[1]), float(state[2]), float(state[4])), expected):
+            assert abs(actual - wanted) < .02, flight.stdout
     assert {'V:' + hot, 'J:1'} <= set(uncollected.read_text().splitlines())
     assert 'H:45' not in uncollected.read_text().splitlines()
     returned = subprocess.run(['port/build/deathleak-linux', '--load-save', str(hot_start),
