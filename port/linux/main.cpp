@@ -175,12 +175,17 @@ int main(int argc, char** argv) {
     if (exhaustedFocus) combat.SetFocus(0);
     double updateSeconds = 0, drawSeconds = 0;
     bool wasDead = false, restartHeld = false;
+    // Player::Update freezes the final scene, reveals its title after 15 s,
+    // and calls EndStory after 35 s (both thresholds are strict).
+    float finalSceneTime = 0.f;
+    bool finalTitleShown = false, storyEnded = false;
     float levelTime = 0.f, interactHeldTime = 0.f, doorUnlockWait = 0.f;
     bool unlockingDoor = false;
     bool upgradeModal = false;
     float modalWarmup = 0.f;
     bool purchaseHeld = false, dismissHeld = false;
     auto modalBackground = playLevel.empty() ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/blank_dark.png", error);
+    auto finalFrame = playLevel.empty() ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/frame_top.png", error);
     auto modalOrb = playLevel.empty() ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/orb.png", error);
     auto modalButton = playLevel.empty() ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/gamepad_icons/y.png", error);
     std::string interactionTarget;
@@ -203,6 +208,17 @@ int main(int argc, char** argv) {
             if (renderer->KeyDown(Up)) playerY -= 250 * dt;
             if (renderer->KeyDown(Down)) playerY += 250 * dt;
         } else {
+            if (currentLevel == "Game/XmlFiles/levels/sea_2.xml") {
+                finalSceneTime += dt;
+                if (!finalTitleShown && finalSceneTime > 15.f) {
+                    finalTitleShown = true;
+                    std::cout << "Final title DEATH LEAK at frame " << frame << " time=" << finalSceneTime << "\n";
+                }
+                if (finalSceneTime > 35.f) {
+                    storyEnded = true;
+                    std::cout << "EndStory at frame " << frame << " time=" << finalSceneTime << "\n";
+                }
+            } else {
             const char command = frame < static_cast<int>(scriptedInput.size()) ? scriptedInput[frame] : 0;
             if (upgradeModal) {
                 modalWarmup += dt;
@@ -394,7 +410,9 @@ int main(int argc, char** argv) {
             }
             }
             }
+            }
         }
+        if (storyEnded) break;
         auto afterUpdate = std::chrono::steady_clock::now();
         updateSeconds += std::chrono::duration<double>(afterUpdate-now).count();
         if (simulateOnly) continue;
@@ -408,7 +426,15 @@ int main(int argc, char** argv) {
         else {
             scene.Draw(*renderer, cameraX, cameraY, worldX, worldY);
             combat.Draw(*renderer, cameraX, cameraY);
-            hud.Draw(*renderer, combat.Health(), combat.Focus(), orbBalance);
+            if (currentLevel == "Game/XmlFiles/levels/sea_2.xml") {
+                // final_scene_hud: film matte and red 350pt Impact title. The
+                // bitmap-font scaling is a backend-neutral typography fallback.
+                if (finalFrame) {
+                    renderer->DrawSprite({finalFrame, {}, {0,0,1280,100}});
+                    renderer->DrawSprite({finalFrame, {}, {0,620,1280,100}, {255,255,255,255}, 0, true});
+                }
+                if (finalTitleShown) deathleak::game::DrawBitmapText(*renderer, "DEATH LEAK", 200, 255, 16, {255,0,0,245});
+            } else hud.Draw(*renderer, combat.Health(), combat.Focus(), orbBalance);
             if (upgradeModal) {
                 if (modalBackground) renderer->DrawSprite({modalBackground, {}, {0,0,1280,720}, {255,255,255,204}});
                 if (modalOrb) renderer->DrawSprite({modalOrb, {}, {520,460,56,85}});
@@ -428,7 +454,14 @@ int main(int argc, char** argv) {
         renderer->EndFrame();
         drawSeconds += std::chrono::duration<double>(std::chrono::steady_clock::now()-afterUpdate).count();
     }
-    if (!playLevel.empty() && !saveFile.empty()) {
+    if (storyEnded && !saveFile.empty()) {
+        // SaveManager::WipeSaveFile clears progression on EndStory. The Linux
+        // slice has no persistent language/completion-count metadata yet.
+        std::error_code ec;
+        std::filesystem::remove(saveFile, ec);
+        if (ec) { std::cerr << "Save wipe failed: " << ec.message() << '\n'; return 1; }
+    }
+    if (!playLevel.empty() && !saveFile.empty() && !storyEnded) {
         const std::string temporary = saveFile + ".tmp";
         std::ofstream saved(temporary, std::ios::trunc);
         saved << "DL5\n" << currentLevel << '\n' << std::setprecision(9) << worldX << ' ' << worldY
@@ -447,6 +480,7 @@ int main(int argc, char** argv) {
     }
     if (!playLevel.empty()) {
         const auto elapsed = std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();
+        if (storyEnded) std::cout << "Returned to main menu after story completion\n";
         std::cout << "Simulation ended at " << currentLevel << " player=(" << worldX << "," << worldY
                   << ") orbs=" << collectedOrbs.size() << " keys=" << ownedKeys.size() << " health=" << combat.Health()
                   << " focus=" << combat.Focus() << " balance=" << orbBalance << " spawned=" << combat.Spawned() << " enemies=" << combat.EnemyCount()

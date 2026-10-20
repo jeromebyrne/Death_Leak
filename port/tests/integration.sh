@@ -345,6 +345,51 @@ boat_repaired=$($bin --play port/tests/fixtures/boat_gate.xml --script I:4,R:43,
 printf '%s\n' "$boat_repaired" | grep -q 'Collected key has_repair_tools at frame 2'
 printf '%s\n' "$boat_repaired" | grep -q 'Boat at frame .* from port/tests/fixtures/boat_gate.xml to Game/XmlFiles/levels/sea_2.xml'
 printf '%s\n' "$boat_repaired" | grep -q 'Simulation ended at Game/XmlFiles/levels/sea_2.xml'
+# Source Player::Update freezes input in sea 2, shows the red title after
+# strictly >15 s, and invokes EndStory after strictly >35 s. The Linux
+# completion clears its progression save and returns to the menu state.
+final_before=$($bin --play Game/XmlFiles/levels/sea_2.xml --script R:900 --fixed-dt 0.0166667 --simulate-only)
+if printf '%s\n' "$final_before" | grep -q 'Final title'; then exit 1; fi
+printf '%s\n' "$final_before" | grep -q 'player=(-4208.85,-1028.31)'
+final_title=$($bin --play Game/XmlFiles/levels/sea_2.xml --script R:901 --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$final_title" | grep -q 'Final title DEATH LEAK at frame 900'
+if printf '%s\n' "$final_title" | grep -q 'EndStory'; then exit 1; fi
+printf 'stale progression\n' > port/build/integration-final-wipe.txt
+final_end=$($bin --play Game/XmlFiles/levels/sea_2.xml --script R:2160 --fixed-dt 0.0166667 --simulate-only --save-file port/build/integration-final-wipe.txt)
+printf '%s\n' "$final_end" | grep -q 'EndStory at frame 2100'
+printf '%s\n' "$final_end" | grep -q 'Returned to main menu after story completion'
+if test -e port/build/integration-final-wipe.txt; then exit 1; fi
+# Full source-authored progression: one process, original forest spawn, only
+# ordinary controls, no save load/state injection. The pre-boat snapshot is
+# inspected separately because EndStory clears the selected progression save.
+earned_full_script=$(cat port/tests/routes/earned_full_ending.script)
+full_preboat=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$earned_full_script" --frames 57822 --fixed-dt 0.0166667 --simulate-only --save-file port/build/earned-full-preboat.txt)
+printf '%s\n' "$full_preboat" | grep -q 'Collected key granary at frame 25665'
+printf '%s\n' "$full_preboat" | grep -q 'Purchased kDeflection at frame 33211 balance=9'
+printf '%s\n' "$full_preboat" | grep -q 'Collected key dojo at frame 42034'
+printf '%s\n' "$full_preboat" | grep -q 'Collected key village_hut at frame 44248'
+printf '%s\n' "$full_preboat" | grep -q 'Collected key has_repair_tools at frame 49742'
+printf '%s\n' "$full_preboat" | grep -q 'Simulation ended at Game/XmlFiles/levels/cliff.xml.*orbs=406 keys=4 health=1 .*balance=31'
+python3 - <<'PYTEST'
+from pathlib import Path
+lines = Path('port/build/earned-full-preboat.txt').read_text().splitlines()
+assert lines[0] == 'DL5' and lines[1].endswith('/cliff.xml')
+ids = [line for line in lines[4:] if '#' in line and not line.startswith('N:')]
+assert len(ids) == len(set(ids)) == 406
+assert 'B:31' in lines
+assert set(x for x in lines if x.startswith('K:')) == {'K:granary','K:dojo','K:village_hut','K:has_repair_tools'}
+assert 'U:kDeflection' in lines
+PYTEST
+printf 'stale progression\n' > port/build/earned-full-completion-save.txt
+full_end=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$earned_full_script" --fixed-dt 0.0166667 --simulate-only --combat-state --save-file port/build/earned-full-completion-save.txt)
+printf '%s\n' "$full_end" | grep -q 'Boat at frame 57822 from .*cliff.xml to .*sea_2.xml'
+printf '%s\n' "$full_end" | grep -q 'Final title DEATH LEAK at frame 58723'
+printf '%s\n' "$full_end" | grep -q 'EndStory at frame 59923'
+printf '%s\n' "$full_end" | grep -q 'Returned to main menu after story completion'
+printf '%s\n' "$full_end" | grep -q 'orbs=406 keys=4 health=1 .*balance=31'
+printf '%s\n' "$full_end" | grep -q 'Deflection unlocked=1 count=1'
+if printf '%s\n' "$full_end" | grep -q 'Player died'; then exit 1; fi
+if test -e port/build/earned-full-completion-save.txt; then exit 1; fi
 grep -q '^K:has_repair_tools$' port/build/boat-repaired-save.txt
 
 # A held left+jump just before grass 1's lower dead-end trigger keeps the
