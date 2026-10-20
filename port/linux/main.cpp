@@ -5,6 +5,8 @@
 #include "../game/Hud.h"
 #include "../audio/SoundPlayer.h"
 #include <chrono>
+#include <cstdint>
+#include <unordered_map>
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>
@@ -30,6 +32,7 @@ int main(int argc, char** argv) {
     float savedX = 0, savedY = 0, savedHealth = 25, savedFocus = 100;
     bool restorePosition = false;
     std::unordered_set<std::string> collectedOrbs, ownedKeys, unlockedDoors;
+    std::unordered_map<std::string, std::int64_t> triggerHistory;
     bool simulateOnly = false;
     bool profile = false;
     int startEncounter = -1;
@@ -58,7 +61,7 @@ int main(int argc, char** argv) {
         std::ifstream saved(loadSaveFile);
         std::string version;
         std::string positionLine;
-        if (!std::getline(saved, version) || (version != "DL1" && version != "DL2" && version != "DL3") ||
+        if (!std::getline(saved, version) || (version != "DL1" && version != "DL2" && version != "DL3" && version != "DL4") ||
             !std::getline(saved, playLevel) || !std::getline(saved, positionLine) ||
             !std::filesystem::exists(playLevel)) {
             std::cerr << "Invalid or missing save: " << loadSaveFile << '\n'; return 2;
@@ -74,7 +77,13 @@ int main(int argc, char** argv) {
         while (std::getline(saved, line)) {
             if (line.rfind("K:", 0) == 0) ownedKeys.insert(line.substr(2));
             else if (line.rfind("D:", 0) == 0) unlockedDoors.insert(line.substr(2));
-            else if (!line.empty()) collectedOrbs.insert(line);
+            else if (version == "DL4" && line.rfind("N:", 0) == 0) {
+                const auto tab = line.rfind('\t');
+                if (tab != std::string::npos) {
+                    try { triggerHistory[line.substr(2, tab-2)] = std::stoll(line.substr(tab+1)); }
+                    catch (const std::exception&) { std::cerr << "Invalid trigger history in save\n"; return 2; }
+                }
+            } else if (!line.empty()) collectedOrbs.insert(line);
         }
         restorePosition = true;
         if (saveFile.empty()) saveFile = loadSaveFile;
@@ -142,6 +151,7 @@ int main(int argc, char** argv) {
     deathleak::game::Hud hud;
     if (!playLevel.empty()) hud.Load(*renderer);
     deathleak::game::Combat combat;
+    combat.SetTriggerHistory(std::move(triggerHistory));
     if (restorePosition) combat.SetVitals(savedHealth, savedFocus);
     if (exhaustedFocus) combat.SetFocus(0);
     double updateSeconds = 0, drawSeconds = 0;
@@ -311,11 +321,12 @@ int main(int argc, char** argv) {
     if (!playLevel.empty() && !saveFile.empty()) {
         const std::string temporary = saveFile + ".tmp";
         std::ofstream saved(temporary, std::ios::trunc);
-        saved << "DL3\n" << currentLevel << '\n' << std::setprecision(9) << worldX << ' ' << worldY
+        saved << "DL4\n" << currentLevel << '\n' << std::setprecision(9) << worldX << ' ' << worldY
               << ' ' << combat.Health() << ' ' << combat.Focus() << '\n';
         for (const auto& orb : collectedOrbs) saved << orb << '\n';
         for (const auto& key : ownedKeys) saved << "K:" << key << '\n';
         for (const auto& door : unlockedDoors) saved << "D:" << door << '\n';
+        for (const auto& [id, time] : combat.TriggerHistory()) saved << "N:" << id << '\t' << time << '\n';
         saved.close();
         if (!saved) { std::cerr << "Save write failed: " << temporary << '\n'; return 1; }
         std::error_code ec;

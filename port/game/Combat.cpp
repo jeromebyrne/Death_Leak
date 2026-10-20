@@ -1,5 +1,6 @@
 #include "Combat.h"
 #include <algorithm>
+#include <chrono>
 #include <cmath>
 #include <filesystem>
 
@@ -26,6 +27,13 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
         if (hazard.water && Inside(x,y,hazard.x,hazard.y,hazard.width,hazard.height)) inWater = true;
     for (const auto& trigger : scene.Encounters()) {
         if (!Inside(x,y,trigger.x,trigger.y,trigger.width,trigger.height) || !activeTriggers_.insert(trigger.id).second) continue;
+        // NPCTrigger::Initialise removes a trigger if it last fired less than
+        // 120000 ms ago. Keep wall-clock history across levels and saves.
+        const auto nowMs = std::chrono::duration_cast<std::chrono::milliseconds>(
+            std::chrono::system_clock::now().time_since_epoch()).count();
+        const auto previous = triggerHistory_.find(trigger.id);
+        if (previous != triggerHistory_.end() && nowMs - previous->second < 120000) continue;
+        triggerHistory_[trigger.id] = nowMs;
         if (!ninjaArt_) SetArt(renderer);
         for (int i=0; i<std::clamp(trigger.count,0,20); ++i) {
             // Original spawners use a 1200x1200 box around the player. Fixed offsets make scripted runs reproducible.
@@ -50,8 +58,8 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
         const float dx=x-enemy.x, dy=y-enemy.y;
         enemy.fireCooldown -= dt;
         if (enemy.type == "kGhost") {
-            enemy.x += std::clamp(dx, -210.f*dt, 210.f*dt);
-            enemy.y += std::clamp(dy, -100.f*dt, 100.f*dt);
+            enemy.x += std::clamp(dx, -720.f*dt, 720.f*dt);
+            enemy.y += std::clamp(dy, -210.f*dt, 210.f*dt);
         } else {
             if (std::abs(dx)>130.f) enemy.x += std::copysign(220.f*dt,dx);
             // Ground-following and jumping still differ from original NPC/AIState.
@@ -59,9 +67,13 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
         }
         if (enemy.fireCooldown <= 0 && std::abs(dx)<700.f && std::abs(dy)<300.f) {
             const float length=std::max(1.f,std::hypot(dx,dy));
-            const float speed=enemy.type == "kSkeleton" ? 300.f : 420.f;
-            shots_.push_back({enemy.x,enemy.y+35.f,dx/length*speed,dy/length*speed,2.f,
-                enemy.type == "kSkeleton" ? 35.f : 2.f,true});
+            // Source NPC: ninja star 9 units/tick, 3 damage, 0.25 s;
+            // GhostEnemy: 8.5-11.4 units/tick, 2 damage, 2 s;
+            // SkeletonEnemy: fireball 5 units/tick, 35 damage, 2 s.
+            const bool skeleton = enemy.type == "kSkeleton", ghost = enemy.type == "kGhost";
+            const float speed = skeleton ? 300.f : ghost ? 510.f : 540.f;
+            shots_.push_back({enemy.x,enemy.y+35.f,dx/length*speed,dy/length*speed,
+                ghost || skeleton ? 2.f : 0.25f, skeleton ? 35.f : ghost ? 2.f : 3.f,true});
             enemy.fireCooldown=enemy.type == "kSkeleton" ? 2.2f : 1.5f;
         }
     }
@@ -70,7 +82,9 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
         const float oldX=shot.x, oldY=shot.y;
         shot.x+=shot.vx*dt; shot.y+=shot.vy*dt; shot.life-=dt;
         if (shot.enemy) {
-            if (Inside(shot.x,shot.y,x,y,70.f,180.f) && hurtCooldown_<=0) {
+            const float vx=shot.x-oldX, vy=shot.y-oldY;
+            const float t=std::clamp(((x-oldX)*vx+(y-oldY)*vy)/(vx*vx+vy*vy+0.0001f),0.f,1.f);
+            if (Inside(oldX+t*vx,oldY+t*vy,x,y,70.f,180.f) && hurtCooldown_<=0) {
                 health_=std::max(0.f,health_-shot.damage); hurtCooldown_=0.5f; shot.life=0; ++hits_;
             }
         } else for (auto& enemy : enemies_) {

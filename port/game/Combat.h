@@ -2,6 +2,8 @@
 #include "LevelScene.h"
 #include <string>
 #include <algorithm>
+#include <cstdint>
+#include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
@@ -21,6 +23,8 @@ public:
     void SetArt(render::Renderer& renderer);
     void Update(const LevelScene& scene, float x, float y, float dt, bool fire, int facing, render::Renderer& renderer);
     void Draw(render::Renderer& renderer, float cameraX, float cameraY) const;
+    void SetTriggerHistory(std::unordered_map<std::string, std::int64_t> history) { triggerHistory_ = std::move(history); }
+    const std::unordered_map<std::string, std::int64_t>& TriggerHistory() const { return triggerHistory_; }
     float Health() const { return health_; }
     float Focus() const { return focus_; }
     void SetFocus(float focus) { focus_ = std::clamp(focus, 0.f, 100.f); }
@@ -35,6 +39,7 @@ private:
     std::vector<Enemy> enemies_;
     std::vector<Shot> shots_;
     std::unordered_set<std::string> activeTriggers_;
+    std::unordered_map<std::string, std::int64_t> triggerHistory_;
     render::TextureId ninjaArt_ = 0, ghostArt_ = 0, skeletonArt_ = 0, knifeArt_ = 0, hostileArt_ = 0;
     float health_ = 25.f, focus_ = 100.f, fireCooldown_ = 0.f, burstCooldown_ = 0.f;
     float focusCooldown_ = 0.f, hurtCooldown_ = 0.f;
