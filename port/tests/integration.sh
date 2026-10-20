@@ -78,6 +78,27 @@ melee_empty=$($bin --play port/tests/fixtures/encounter_npc_wall.xml --exhaust-f
 printf '%s\n' "$melee_empty" | grep -q 'Melee active=0 strikes=0'
 melee_water=$($bin --play Game/XmlFiles/levels/test.xml --start-hazard 1 --script M:1 --fixed-dt 0.0166667 --simulate-only --combat-state)
 printf '%s\n' "$melee_water" | grep -q 'Melee active=0 strikes=0'
+# The authored forest deflection scroll is reached from the real spawn by
+# ordinary rightward movement, a held right-jump, and the 0.5-second E hold.
+# These four orbs are actually collected, not supplied by a synthetic save.
+authored_scroll_save=port/build/authored-scroll-route-save.txt
+authored_scroll=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script R:130,E:25,I:31,P:1 --fixed-dt 0.0166667 --simulate-only --combat-state --save-file "$authored_scroll_save")
+printf '%s\n' "$authored_scroll" | grep -q 'Opened kDeflection upgrade modal at frame 184 cost=375 balance=4'
+printf '%s\n' "$authored_scroll" | grep -q 'Not enough orbs for kDeflection at frame 186 balance=4'
+printf '%s\n' "$authored_scroll" | grep -q 'forest_exploration_1.xml player=(1200.52,3387.19) orbs=4 .*balance=4'
+printf '%s\n' "$authored_scroll" | grep -q 'Deflection unlocked=0 count=0'
+grep -q '^B:4$' "$authored_scroll_save"
+if grep -q '^U:kDeflection$' "$authored_scroll_save"; then exit 1; fi
+authored_scroll_resume=$($bin --load-save "$authored_scroll_save" --frames 1 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$authored_scroll_resume" | grep -q 'orbs=4 .*balance=4'
+printf '%s\n' "$authored_scroll_resume" | grep -q 'Deflection unlocked=0 count=0'
+# The same source spawn also reaches two later authored transitions with normal
+# movement. This is progression evidence, not a 375-orb purchase route.
+east_route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script R:1100,Q:40,R:300 --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$east_route" | grep -q 'Entered Game/XmlFiles/levels/waterfall_top.xml'
+printf '%s\n' "$east_route" | grep -q 'Entered Game/XmlFiles/levels/waterfall_bottom.xml'
+printf '%s\n' "$east_route" | grep -q 'Entered Game/XmlFiles/levels/underwater_cave.xml'
+printf '%s\n' "$east_route" | grep -q 'underwater_cave.xml player=.*orbs=14 .*balance=14'
 # DojoScrollPickup ignores authored debug orb_cost=2; production feature cost is
 # 375. One normal orb pickup adds to a loaded 374-orb balance. Modal pauses
 # world updates, purchase debits once, hides the scroll, and survives reload.
@@ -113,7 +134,7 @@ printf '%s\n' "$dojo_cancel" | grep -q 'balance=375'
 printf '%s\n' "$dojo_cancel" | grep -q 'Deflection unlocked=0 count=0'
 # Source Character::WillDeflectProjectile accepts only front-side, opposing
 # shots during melee phase 1 or 3. The feature flag represents an already
-# purchased upgrade in the Linux save; the interaction/modal is not ported.
+# purchased upgrade in the Linux save; this fixture isolates combat gates.
 deflect_save=port/build/integration-deflection-save.txt
 make_deflect_save() {
     printf 'DL4\n%s\n0 107.44937 25 100\nU:kDeflection\n' "$1" > "$deflect_save"
