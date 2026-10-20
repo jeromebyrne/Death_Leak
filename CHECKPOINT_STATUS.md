@@ -9,7 +9,7 @@
 - Blocker: legacy gameplay, update and rendering rely on Win32, DXUT, D3D10 and Steam in 114 files; no executable is checked into the repository. No external approval needed. This is implementation scope, not a solved port.
 - Implemented: original XML static scene loader, asset normalization, texture reuse and depth ordering, reproducible Docker build definition.
 - Tested: Linux compile, existing smoke capture, forest preview capture. Neither is gameplay testing.
-- Deployed: not applicable. Committed/pushed: pending current milestone.
+- Deployed: not applicable. Committed/pushed: level-preview milestone `b621359` pushed and remote SHA verified; complete port pending.
 - Evidence: `port/game/LevelScene.cpp`, `port/build/forest-preview.bmp` (local/ignored), `port/README.md`.
 - Notification destination: originating Discord direct conversation with Jerome. Current turn replies directly; no background notification mechanism is configured.
 
@@ -19,4 +19,4 @@
 - Original gameplay and levels: XML scene display only; simulation, interactions and transitions pending.
 - Input, audio, saves, UI, effects: pending (preview camera pan is not gameplay input).
 - Performance/playtesting: pending; no playable build exists.
-- Tested commit pushed to GitHub: pending for this milestone and complete port.
+- Tested commit pushed to GitHub: preview milestone verified at `b621359`; playable port pending.
