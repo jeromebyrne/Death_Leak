@@ -11,4 +11,15 @@ resume=$($bin --load-save port/build/integration-save.txt --frames 1 --fixed-dt 
 printf '%s\n' "$resume" | grep -q 'health=19 focus=100'
 water=$($bin --play Game/XmlFiles/levels/test.xml --start-hazard 1 --exhaust-focus --script .:1 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$water" | grep -q 'health=24.95 focus=0'
-printf '%s\n' 'PASS: authored transition, NPC-trigger encounter, health save/resume, focus-exhausted drowning'
+landing=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script .:120 --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$landing" | grep -q 'player=(-43.0146,3206.9).*grounded=1'
+jump=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script .:120,J:1 --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$jump" | grep -q 'player=(-43.0146,3237.22).*grounded=0'
+printf 'DL2\nGame/XmlFiles/levels/forest_exploration_1.xml\n-43.014648 3385 0 100\n' > port/build/integration-dead-save.txt
+restart=$($bin --load-save port/build/integration-dead-save.txt --script .:1,T:1,.:1 --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$restart" | grep -q 'Player died at frame 0'
+printf '%s\n' "$restart" | grep -q 'Restarted Game/XmlFiles/levels/grass_exploration_3.xml at frame 1'
+printf '%s\n' "$restart" | grep -q 'health=25 focus=100'
+slope=$($bin --play port/tests/fixtures/slope_wall.xml --script R:90 --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$slope" | grep -q 'player=(235.52,154.553).*grounded=1'
+printf '%s\n' 'PASS: transition, encounter, save/resume, drowning, landing/jump, slope/wall, death/restart'

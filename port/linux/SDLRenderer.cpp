@@ -31,6 +31,11 @@ public:
         renderer_ = SDL_CreateRenderer(window_, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
         if (!renderer_) renderer_ = SDL_CreateRenderer(window_, -1, SDL_RENDERER_SOFTWARE);
         if (!renderer_) { error = SDL_GetError(); return false; }
+        if (std::getenv("DEATHLEAK_RENDER_PROFILE")) {
+            SDL_RendererInfo info{};
+            if (SDL_GetRendererInfo(renderer_, &info) == 0)
+                std::cerr << "SDL renderer=" << info.name << " flags=" << info.flags << "\n";
+        }
         if (SDL_RenderSetLogicalSize(renderer_, 1280, 720) != 0) { error = SDL_GetError(); return false; }
         SDL_SetRenderDrawBlendMode(renderer_, SDL_BLENDMODE_BLEND);
         for (int i = 0; i < SDL_NumJoysticks(); ++i)
@@ -124,6 +129,7 @@ public:
             case Right: return keys[SDL_SCANCODE_RIGHT] || keys[SDL_SCANCODE_D] || button(SDL_CONTROLLER_BUTTON_DPAD_RIGHT) || axis(SDL_CONTROLLER_AXIS_LEFTX) > 8000;
             case Up: return keys[SDL_SCANCODE_UP] || keys[SDL_SCANCODE_W] || keys[SDL_SCANCODE_SPACE] || button(SDL_CONTROLLER_BUTTON_DPAD_UP) || button(SDL_CONTROLLER_BUTTON_A);
             case Down: return keys[SDL_SCANCODE_DOWN] || keys[SDL_SCANCODE_S] || button(SDL_CONTROLLER_BUTTON_DPAD_DOWN);
+            case Restart: return keys[SDL_SCANCODE_R];
             case Escape: return keys[SDL_SCANCODE_ESCAPE] || button(SDL_CONTROLLER_BUTTON_START);
             default: return false;
         }

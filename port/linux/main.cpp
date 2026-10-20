@@ -1,6 +1,8 @@
 #include "../render/Renderer.h"
 #include "../game/LevelScene.h"
 #include "../game/Combat.h"
+#include "../game/PlayerMotion.h"
+#include "../game/Hud.h"
 #include <chrono>
 #include <algorithm>
 #include <cmath>
@@ -79,7 +81,7 @@ int main(int argc, char** argv) {
         std::istringstream parts(script); std::string token;
         while (std::getline(parts, token, ',')) {
             auto colon = token.find(':');
-            if (colon == std::string::npos || token.empty() || std::string("LRJ.FBN").find(token[0]) == std::string::npos) { std::cerr << "Bad --script token\n"; return 2; }
+            if (colon == std::string::npos || token.empty() || std::string("LRJ.FBNT").find(token[0]) == std::string::npos) { std::cerr << "Bad --script token\n"; return 2; }
             int count = std::atoi(token.c_str() + colon + 1);
             if (count < 1 || count > 100000 || scriptedInput.size() + count > 100000) { std::cerr << "Bad --script duration\n"; return 2; }
             scriptedInput.insert(scriptedInput.end(), count, token[0]);
@@ -107,23 +109,28 @@ int main(int argc, char** argv) {
     auto player = levelPath.empty() ? renderer->LoadTexture("Game/Media/UI/player_silhouette.png", error) : InvalidTexture;
     if (levelPath.empty() && !player) { std::cerr << "Player art load failed: " << error << '\n'; return 1; }
     float playerX = 590, playerY = 430;
-    float worldX = restorePosition ? savedX : scene.PlayerX(), worldY = restorePosition ? savedY : scene.PlayerY(), velocityX = 0, velocityY = 0;
+    deathleak::game::PlayerMotion motion;
+    motion.Reset(restorePosition ? savedX : scene.PlayerX(), restorePosition ? savedY : scene.PlayerY());
+    float worldX = motion.X(), worldY = motion.Y();
     float cameraX = scene.CameraX(), cameraY = scene.CameraY();
     if (startEncounter >= 0) {
         if (playLevel.empty() || startEncounter >= static_cast<int>(scene.Encounters().size())) { std::cerr << "Invalid --start-encounter index\n"; return 2; }
         worldX = scene.Encounters()[startEncounter].x; worldY = scene.Encounters()[startEncounter].y;
-        cameraX = worldX; cameraY = worldY;
+        cameraX = worldX; cameraY = worldY; motion.Reset(worldX, worldY);
     }
     if (startHazard >= 0) {
         if (playLevel.empty() || startHazard >= static_cast<int>(scene.Hazards().size())) { std::cerr << "Invalid --start-hazard index\n"; return 2; }
         worldX = scene.Hazards()[startHazard].x; worldY = scene.Hazards()[startHazard].y;
-        cameraX = worldX; cameraY = worldY;
+        cameraX = worldX; cameraY = worldY; motion.Reset(worldX, worldY);
     }
+    auto deathArt = playLevel.empty() ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/you_died.png", error);
+    deathleak::game::Hud hud;
+    if (!playLevel.empty()) hud.Load(*renderer);
     deathleak::game::Combat combat;
     if (restorePosition) combat.SetVitals(savedHealth, savedFocus);
     if (exhaustedFocus) combat.SetFocus(0);
     double updateSeconds = 0, drawSeconds = 0;
-    bool grounded = false, jumpHeld = false;
+    bool wasDead = false, restartHeld = false;
     std::string currentLevel = playLevel;
     auto start = std::chrono::steady_clock::now();
     auto last = std::chrono::steady_clock::now();
@@ -144,27 +151,31 @@ int main(int argc, char** argv) {
             const char command = frame < static_cast<int>(scriptedInput.size()) ? scriptedInput[frame] : 0;
             const float direction = !script.empty() ? static_cast<float>(command == 'R' || command == 'B') - static_cast<float>(command == 'L' || command == 'N') :
                 static_cast<float>(renderer->KeyDown(Right)) - static_cast<float>(renderer->KeyDown(Left));
-            velocityX = std::clamp(velocityX + direction * 1700.f * dt, -470.f, 470.f);
-            if (direction == 0) velocityX *= std::max(0.f, 1.f - 9.f * dt);
+            const bool restart = !script.empty() ? command == 'T' : renderer->KeyDown(Restart);
+            if (combat.Health() <= 0) {
+                if (!wasDead) { std::cout << "Player died at frame " << frame << " in " << currentLevel << '\n'; wasDead = true; }
+                if (restart && !restartHeld) {
+                    deathleak::game::LevelScene nextScene;
+                    // Authored you_died.xml reloads grass_exploration_3.xml.
+                    const std::string restartLevel = "Game/XmlFiles/levels/grass_exploration_3.xml";
+                    if (nextScene.Load(restartLevel, *renderer, error)) {
+                        nextScene.ApplyCollected(collectedOrbs);
+                        scene = std::move(nextScene);
+                        currentLevel = restartLevel;
+                        motion.Reset(scene.PlayerX(), scene.PlayerY());
+                        worldX = motion.X(); worldY = motion.Y();
+                        cameraX = scene.CameraX(); cameraY = scene.CameraY();
+                        combat.ClearLevel(); combat.SetVitals(25.f, 100.f);
+                        wasDead = false;
+                        std::cout << "Restarted " << currentLevel << " at frame " << frame << '\n';
+                    } else std::cerr << "Restart failed: " << error << '\n';
+                }
+                restartHeld = restart;
+            } else {
+            restartHeld = restart;
             const bool jump = !script.empty() ? command == 'J' : renderer->KeyDown(Up);
-            if (jump && !jumpHeld && grounded) { velocityY = 790.f; grounded = false; }
-            jumpHeld = jump;
-            float oldFeet = worldY - 107.f;
-            worldX += velocityX * dt;
-            worldY += velocityY * dt - 0.5f * 1900.f * dt * dt;
-            velocityY -= 1900.f * dt;
-            grounded = false;
-            float bestGround = -1e9f;
-            for (const auto& line : scene.Ground()) {
-                const float dx = line.x2 - line.x1;
-                if (std::abs(dx) < 0.01f) continue;
-                const float t = (worldX - line.x1) / dx;
-                if (t < 0.f || t > 1.f) continue;
-                const float surface = line.y1 + t * (line.y2 - line.y1);
-                if (velocityY <= 0 && oldFeet >= surface - 4.f && worldY - 107.f <= surface && surface > bestGround)
-                    bestGround = surface;
-            }
-            if (bestGround > -1e8f) { worldY = bestGround + 107.f; velocityY = 0; grounded = true; }
+            motion.Update(scene, dt, static_cast<int>(direction), jump);
+            worldX = motion.X(); worldY = motion.Y();
             scene.CollectCurrencyOrbs(worldX, worldY, collectedOrbs);
             const bool fire = !script.empty() ? (command == 'F' || command == 'B' || command == 'N') : renderer->KeyDown(Down);
             combat.Update(scene, worldX, worldY, dt, fire, direction < 0 ? -1 : 1, *renderer);
@@ -183,11 +194,12 @@ int main(int argc, char** argv) {
                         currentLevel = destination;
                         worldX = scene.PlayerX(); worldY = scene.PlayerY();
                         cameraX = scene.CameraX(); cameraY = scene.CameraY();
-                        velocityX = velocityY = 0; grounded = false; combat.ClearLevel();
+                        motion.Reset(worldX, worldY); combat.ClearLevel();
                         std::cout << "Entered " << currentLevel << '\n';
                     } else std::cerr << "Transition failed: " << error << '\n';
                     break;
                 }
+            }
             }
         }
         auto afterUpdate = std::chrono::steady_clock::now();
@@ -200,7 +212,13 @@ int main(int argc, char** argv) {
         } else if (playLevel.empty())
             scene.Draw(*renderer, scene.CameraX() + (playerX - 590) * 1.5f,
                        scene.CameraY() + (430 - playerY) * 1.5f, scene.PlayerX(), scene.PlayerY());
-        else { scene.Draw(*renderer, cameraX, cameraY, worldX, worldY); combat.Draw(*renderer, cameraX, cameraY); }
+        else {
+            scene.Draw(*renderer, cameraX, cameraY, worldX, worldY);
+            combat.Draw(*renderer, cameraX, cameraY);
+            hud.Draw(*renderer, combat.Health(), combat.Focus());
+            if (combat.Health() <= 0 && deathArt)
+                renderer->DrawSprite({deathArt, {}, {0, 0, 1280, 720}});
+        }
         if (!capture.empty() && frame == frameLimit - 1 && !renderer->SaveFrame(capture, error)) {
             std::cerr << "Capture failed: " << error << '\n'; return 1;
         }
@@ -225,7 +243,7 @@ int main(int argc, char** argv) {
                   << ") orbs=" << collectedOrbs.size() << " health=" << combat.Health()
                   << " focus=" << combat.Focus() << " spawned=" << combat.Spawned() << " enemies=" << combat.EnemyCount()
                   << " hits=" << combat.Hits() << " kills=" << combat.Kills()
-                  << " shots=" << combat.ShotCount() << " elapsed=" << elapsed << "s\n";
+                  << " shots=" << combat.ShotCount() << " grounded=" << motion.Grounded() << " elapsed=" << elapsed << "s\n";
         if (profile) std::cout << "Profile update=" << updateSeconds << "s draw/present=" << drawSeconds << "s\n";
     }
     return 0;
