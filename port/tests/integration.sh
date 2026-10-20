@@ -357,8 +357,41 @@ if printf '%s\n' "$final_title" | grep -q 'EndStory'; then exit 1; fi
 printf 'stale progression\n' > port/build/integration-final-wipe.txt
 final_end=$($bin --play Game/XmlFiles/levels/sea_2.xml --script R:2160 --fixed-dt 0.0166667 --simulate-only --save-file port/build/integration-final-wipe.txt)
 printf '%s\n' "$final_end" | grep -q 'EndStory at frame 2100'
-printf '%s\n' "$final_end" | grep -q 'Returned to main menu after story completion'
-if test -e port/build/integration-final-wipe.txt; then exit 1; fi
+printf '%s\n' "$final_end" | grep -q 'Main menu return event after story completion'
+python3 - <<'PYMETA'
+from pathlib import Path
+p = Path('port/build/integration-final-wipe.txt')
+assert p.read_text().splitlines() == ['DL6', 'MENU', 'C:1']
+PYMETA
+# Original SaveManager retains language and increments completion count across
+# wipes. A metadata-only save must not be resumable as live progression.
+printf 'DL6\nMENU\nC:2\nG:pt-br\nK:stale_key\n' > port/build/integration-final-wipe.txt
+final_again=$($bin --play Game/XmlFiles/levels/sea_2.xml --script R:2160 --fixed-dt 0.0166667 --simulate-only --save-file port/build/integration-final-wipe.txt)
+printf '%s\n' "$final_again" | grep -q 'completion count=3 language=pt-br'
+python3 - <<'PYMETA'
+from pathlib import Path
+assert Path('port/build/integration-final-wipe.txt').read_text().splitlines() == ['DL6', 'MENU', 'C:3', 'G:pt-br']
+PYMETA
+if $bin --load-save port/build/integration-final-wipe.txt --frames 1 --fixed-dt 0.0166667 --simulate-only >/dev/null 2>&1; then exit 1; fi
+# A fresh run using the same file keeps metadata but begins at the XML spawn.
+fresh=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script .:1 --fixed-dt 0.0166667 --simulate-only --save-file port/build/integration-final-wipe.txt)
+printf '%s\n' "$fresh" | grep -q 'orbs=0 keys=0 health=25'
+grep -q '^C:3$' port/build/integration-final-wipe.txt
+grep -q '^G:pt-br$' port/build/integration-final-wipe.txt
+if grep -q '^K:stale_key$' port/build/integration-final-wipe.txt; then exit 1; fi
+# The Linux CLI stands in for the source language-selection UI until menu
+# parity exists; the selection persists through active save and EndStory.
+locale_save=port/build/integration-language-save.txt
+printf 'DL6\nMENU\nC:0\n' > "$locale_save"
+$bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script .:1 --fixed-dt 0.0166667 --simulate-only --language de --save-file "$locale_save" >/dev/null
+grep -q '^G:de$' "$locale_save"
+$bin --load-save "$locale_save" --script .:1 --fixed-dt 0.0166667 --simulate-only >/dev/null
+grep -q '^G:de$' "$locale_save"
+$bin --play Game/XmlFiles/levels/sea_2.xml --script .:2160 --fixed-dt 0.0166667 --simulate-only --save-file "$locale_save" >/dev/null
+python3 - <<'PYMETA'
+from pathlib import Path
+assert Path('port/build/integration-language-save.txt').read_text().splitlines() == ['DL6', 'MENU', 'C:1', 'G:de']
+PYMETA
 # Full source-authored progression: one process, original forest spawn, only
 # ordinary controls, no save load/state injection. The pre-boat snapshot is
 # inspected separately because EndStory clears the selected progression save.
@@ -385,11 +418,14 @@ full_end=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$
 printf '%s\n' "$full_end" | grep -q 'Boat at frame 57822 from .*cliff.xml to .*sea_2.xml'
 printf '%s\n' "$full_end" | grep -q 'Final title DEATH LEAK at frame 58723'
 printf '%s\n' "$full_end" | grep -q 'EndStory at frame 59923'
-printf '%s\n' "$full_end" | grep -q 'Returned to main menu after story completion'
+printf '%s\n' "$full_end" | grep -q 'Main menu return event after story completion'
 printf '%s\n' "$full_end" | grep -q 'orbs=406 keys=4 health=1 .*balance=31'
 printf '%s\n' "$full_end" | grep -q 'Deflection unlocked=1 count=1'
 if printf '%s\n' "$full_end" | grep -q 'Player died'; then exit 1; fi
-if test -e port/build/earned-full-completion-save.txt; then exit 1; fi
+python3 - <<'PYMETA'
+from pathlib import Path
+assert Path('port/build/earned-full-completion-save.txt').read_text().splitlines() == ['DL6', 'MENU', 'C:1']
+PYMETA
 grep -q '^K:has_repair_tools$' port/build/boat-repaired-save.txt
 
 # A held left+jump just before grass 1's lower dead-end trigger keeps the
@@ -693,4 +729,4 @@ legacy=$($bin --load-save port/build/legacy-dl3-save.txt --frames 1 --fixed-dt 0
 printf '%s\n' "$legacy" | grep -q 'keys=1'
 
 if printf '%s\n' "$key_only_resume" | grep -q 'Collected key'; then exit 1; fi
-printf '%s\n' 'PASS: source-held-jump arena climb and exit, three-level route, burst/water fire, swim, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, solid box, wall jump, death/restart, key/door gate, ghost flight, ranged warmup/terrain shots and kill, grounded NPC fall/wall/box, NPC combo/stun/recovery, NPC teleport timing/exclusion, ranged NPC jump/roll and projectile kickback, source-faithful player/NPC contact pass-through, grounded phase-three melee and its negative gates, DL3/DL4 compatibility, DL5 orb-balance persistence, authentic 375-orb purchase/debit and same-run authored ninja deflection, continuous dojo/hut key-door route, and repair-gated boat transition'
+printf '%s\n' 'PASS: source-held-jump arena climb and exit, three-level route, burst/water fire, swim, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, solid box, wall jump, death/restart, key/door gate, ghost flight, ranged warmup/terrain shots and kill, grounded NPC fall/wall/box, NPC combo/stun/recovery, NPC teleport timing/exclusion, ranged NPC jump/roll and projectile kickback, source-faithful player/NPC contact pass-through, grounded phase-three melee and its negative gates, DL3/DL4 compatibility, DL5 orb-balance persistence, authentic 375-orb purchase/debit and same-run authored ninja deflection, continuous dojo/hut key-door route, repair-gated boat transition, and retained completion count/language after source-style progression wipe'

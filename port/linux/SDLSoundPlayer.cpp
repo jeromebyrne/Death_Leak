@@ -21,9 +21,10 @@ public:
         desired.samples = 1024; desired.callback = Callback; desired.userdata = this;
         device_ = SDL_OpenAudioDevice(nullptr, 0, &desired, &spec_, 0);
         if (!device_) { error = SDL_GetError(); return false; }
-        constexpr std::array<const char*, 4> files = {
+        constexpr std::array<const char*, 5> files = {
             "Game/Media/Audio/knifeThrow.wav", "Game/Media/Audio/knifeThrow2.wav",
-            "Game/Media/Audio/knifeThrow3.wav", "Game/Media/Audio/orb/collect_1.wav"};
+            "Game/Media/Audio/knifeThrow3.wav", "Game/Media/Audio/orb/collect_1.wav",
+            "Game/Media/Audio/boomy_intro.wav"};
         for (size_t i = 0; i < files.size(); ++i) {
             SDL_AudioSpec source{}; Uint8* data = nullptr; Uint32 length = 0;
             if (!SDL_LoadWAV(files[i], &source, &data, &length)) { error = SDL_GetError(); return false; }
@@ -45,7 +46,7 @@ public:
     }
     void Play(Cue cue, int variation) override {
         if (!device_) return;
-        const size_t index = cue == Cue::OrbCollect ? 3 : static_cast<size_t>((variation % 3 + 3) % 3);
+        const size_t index = cue == Cue::OrbCollect ? 3 : cue == Cue::FinalTitle ? 4 : static_cast<size_t>((variation % 3 + 3) % 3);
         SDL_LockAudioDevice(device_);
         if (voices_.size() < 16) voices_.push_back({index, 0});
         SDL_UnlockAudioDevice(device_);
@@ -68,7 +69,7 @@ private:
     bool audioInitialized_ = false;
     SDL_AudioDeviceID device_ = 0;
     SDL_AudioSpec spec_{};
-    std::array<std::vector<Uint8>, 4> samples_;
+    std::array<std::vector<Uint8>, 5> samples_;
     std::vector<Voice> voices_;
 };
 }

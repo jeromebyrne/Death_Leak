@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <unordered_map>
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
@@ -36,6 +37,9 @@ int main(int argc, char** argv) {
     bool deflectionUnlocked = false;
     int orbBalance = 0;
     bool balanceLoaded = false;
+    int completions = 0;
+    std::string language;
+    std::string selectedLanguage;
     std::unordered_map<std::string, std::int64_t> triggerHistory;
     bool simulateOnly = false;
     bool profile = false;
@@ -51,6 +55,7 @@ int main(int argc, char** argv) {
         else if (arg == "--level-preview" && i + 1 < argc) levelPreview = argv[++i];
         else if (arg == "--play" && i + 1 < argc) playLevel = argv[++i];
         else if (arg == "--save-file" && i + 1 < argc) saveFile = argv[++i];
+        else if (arg == "--language" && i + 1 < argc) selectedLanguage = argv[++i];
         else if (arg == "--load-save" && i + 1 < argc) loadSaveFile = argv[++i];
         else if (arg == "--script" && i + 1 < argc) script = argv[++i];
         else if (arg == "--fixed-dt" && i + 1 < argc) fixedDt = std::atof(argv[++i]);
@@ -61,6 +66,27 @@ int main(int argc, char** argv) {
         else if (arg == "--start-encounter" && i + 1 < argc) startEncounter = std::atoi(argv[++i]);
         else if (arg == "--start-hazard" && i + 1 < argc) startHazard = std::atoi(argv[++i]);
         else { std::cerr << "Usage: deathleak-linux [--frames N] [--capture output.bmp] [--level-preview level.xml | --play level.xml]\n"; return 2; }
+    }
+    if (!selectedLanguage.empty() && selectedLanguage != "en-gb" && selectedLanguage != "pt-br" && selectedLanguage != "de") {
+        std::cerr << "Unsupported language locale\n"; return 2;
+    }
+    // A completed run leaves a metadata-only save, matching the original
+    // SaveManager wipe: language and number of completions survive, progress does not.
+    // A new game may select the same save path without loading old progress.
+    if (!saveFile.empty() && saveFile != loadSaveFile) {
+        std::ifstream previous(saveFile);
+        std::string line;
+        if (std::getline(previous, line) && (line == "DL5" || line == "DL6")) {
+            while (std::getline(previous, line)) {
+                if (line.rfind("C:", 0) == 0) {
+                    try {
+                        size_t end = 0;
+                        const auto value = std::stoll(line.substr(2), &end);
+                        if (end == line.size()-2 && value >= 0 && value < 1000000000) completions = static_cast<int>(value);
+                    } catch (const std::exception&) {}
+                } else if (line.rfind("G:", 0) == 0) language = line.substr(2);
+            }
+        }
     }
     if (!playLevel.empty() && !levelPreview.empty()) { std::cerr << "Choose either --play or --level-preview\n"; return 2; }
     if (!loadSaveFile.empty()) {
@@ -84,6 +110,15 @@ int main(int argc, char** argv) {
             if (line.rfind("K:", 0) == 0) ownedKeys.insert(line.substr(2));
             else if (line.rfind("D:", 0) == 0) unlockedDoors.insert(line.substr(2));
             else if (line == "U:kDeflection") deflectionUnlocked = true;
+            else if (line.rfind("C:", 0) == 0) {
+                try {
+                    size_t end = 0;
+                    const auto value = std::stoll(line.substr(2), &end);
+                    if (end != line.size()-2 || value < 0 || value >= 1000000000) throw std::invalid_argument("completions");
+                    completions = static_cast<int>(value);
+                } catch (const std::exception&) { std::cerr << "Invalid completion count in save\n"; return 2; }
+            }
+            else if (line.rfind("G:", 0) == 0) language = line.substr(2);
             else if (version == "DL5" && line.rfind("B:", 0) == 0) {
                 try {
                     size_t end = 0;
@@ -105,6 +140,7 @@ int main(int argc, char** argv) {
         restorePosition = true;
         if (saveFile.empty()) saveFile = loadSaveFile;
     }
+    if (!selectedLanguage.empty()) language = selectedLanguage;
     if ((simulateOnly || !script.empty()) && playLevel.empty()) { std::cerr << "Simulation options require --play\n"; return 2; }
     if (fixedDt < 0 || fixedDt > 0.05f) { std::cerr << "--fixed-dt must be between 0 and 0.05\n"; return 2; }
     std::vector<char> scriptedInput;
@@ -186,6 +222,15 @@ int main(int argc, char** argv) {
     bool purchaseHeld = false, dismissHeld = false;
     auto modalBackground = playLevel.empty() ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/blank_dark.png", error);
     auto finalFrame = playLevel.empty() ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/frame_top.png", error);
+    std::array<TextureId, 4> filmFrames{};
+    auto loadFilmFrames = [&] {
+        if (simulateOnly || filmFrames[0]) return;
+        constexpr std::array<const char*, 4> filmPaths = {
+            "Game/Media/UI/film_frame.png", "Game/Media/UI/film_frame_2.png",
+            "Game/Media/UI/film_frame_3.png", "Game/Media/UI/film_frame_4.png"};
+        for (size_t i = 0; i < filmPaths.size(); ++i) filmFrames[i] = renderer->LoadTexture(filmPaths[i], error);
+    };
+    if (playLevel == "Game/XmlFiles/levels/sea_2.xml") loadFilmFrames();
     auto modalOrb = playLevel.empty() ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/orb.png", error);
     auto modalButton = playLevel.empty() ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/gamepad_icons/y.png", error);
     std::string interactionTarget;
@@ -212,10 +257,12 @@ int main(int argc, char** argv) {
                 finalSceneTime += dt;
                 if (!finalTitleShown && finalSceneTime > 15.f) {
                     finalTitleShown = true;
+                    if (sound) sound->Play(deathleak::audio::Cue::FinalTitle);
                     std::cout << "Final title DEATH LEAK at frame " << frame << " time=" << finalSceneTime << "\n";
                 }
                 if (finalSceneTime > 35.f) {
                     storyEnded = true;
+                    ++completions;
                     std::cout << "EndStory at frame " << frame << " time=" << finalSceneTime << "\n";
                 }
             } else {
@@ -373,6 +420,7 @@ int main(int argc, char** argv) {
                         scene = std::move(nextScene);
                         std::cout << "Boat at frame " << frame << " from " << currentLevel << " to " << destination << '\n';
                         currentLevel = destination;
+                        loadFilmFrames();
                         motion.Reset(scene.PlayerX(),scene.PlayerY(), true);
                         worldX = motion.X(); worldY = motion.Y();
                         cameraX = scene.CameraX(); cameraY = scene.CameraY();
@@ -427,8 +475,11 @@ int main(int argc, char** argv) {
             scene.Draw(*renderer, cameraX, cameraY, worldX, worldY);
             combat.Draw(*renderer, cameraX, cameraY);
             if (currentLevel == "Game/XmlFiles/levels/sea_2.xml") {
-                // final_scene_hud: film matte and red 350pt Impact title. The
-                // bitmap-font scaling is a backend-neutral typography fallback.
+                // final_scene_hud: four authored film frames at 11 FPS and
+                // quarter opacity, plus the original frame_top art. Bitmap
+                // lettering remains a typography fallback for Impact.
+                const int filmIndex = static_cast<int>(finalSceneTime * 11.f) % 4;
+                if (filmFrames[filmIndex]) renderer->DrawSprite({filmFrames[filmIndex], {}, {0,0,1280,720}, {255,255,255,64}});
                 if (finalFrame) {
                     renderer->DrawSprite({finalFrame, {}, {0,0,1280,100}});
                     renderer->DrawSprite({finalFrame, {}, {0,620,1280,100}, {255,255,255,255}, 0, true});
@@ -455,11 +506,15 @@ int main(int argc, char** argv) {
         drawSeconds += std::chrono::duration<double>(std::chrono::steady_clock::now()-afterUpdate).count();
     }
     if (storyEnded && !saveFile.empty()) {
-        // SaveManager::WipeSaveFile clears progression on EndStory. The Linux
-        // slice has no persistent language/completion-count metadata yet.
+        const std::string temporary = saveFile + ".tmp";
+        std::ofstream saved(temporary, std::ios::trunc);
+        saved << "DL6\nMENU\nC:" << completions << '\n';
+        if (!language.empty()) saved << "G:" << language << '\n';
+        saved.close();
+        if (!saved) { std::cerr << "Completion save write failed: " << temporary << '\n'; return 1; }
         std::error_code ec;
-        std::filesystem::remove(saveFile, ec);
-        if (ec) { std::cerr << "Save wipe failed: " << ec.message() << '\n'; return 1; }
+        std::filesystem::rename(temporary, saveFile, ec);
+        if (ec) { std::cerr << "Completion save commit failed: " << ec.message() << '\n'; return 1; }
     }
     if (!playLevel.empty() && !saveFile.empty() && !storyEnded) {
         const std::string temporary = saveFile + ".tmp";
@@ -467,6 +522,8 @@ int main(int argc, char** argv) {
         saved << "DL5\n" << currentLevel << '\n' << std::setprecision(9) << worldX << ' ' << worldY
               << ' ' << combat.Health() << ' ' << combat.Focus() << '\n';
         saved << "B:" << orbBalance << '\n';
+        if (completions) saved << "C:" << completions << '\n';
+        if (!language.empty()) saved << "G:" << language << '\n';
         for (const auto& orb : collectedOrbs) saved << orb << '\n';
         for (const auto& key : ownedKeys) saved << "K:" << key << '\n';
         for (const auto& door : unlockedDoors) saved << "D:" << door << '\n';
@@ -480,7 +537,7 @@ int main(int argc, char** argv) {
     }
     if (!playLevel.empty()) {
         const auto elapsed = std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();
-        if (storyEnded) std::cout << "Returned to main menu after story completion\n";
+        if (storyEnded) std::cout << "Main menu return event after story completion count=" << completions << " language=" << language << "\n";
         std::cout << "Simulation ended at " << currentLevel << " player=(" << worldX << "," << worldY
                   << ") orbs=" << collectedOrbs.size() << " keys=" << ownedKeys.size() << " health=" << combat.Health()
                   << " focus=" << combat.Focus() << " balance=" << orbBalance << " spawned=" << combat.Spawned() << " enemies=" << combat.EnemyCount()
