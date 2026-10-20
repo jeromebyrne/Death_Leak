@@ -1,6 +1,8 @@
 #include "../render/Renderer.h"
 #include <SDL.h>
+#include <algorithm>
 #include <chrono>
+#include <cctype>
 #include <cstdlib>
 #include <iostream>
 #include <png.h>
@@ -66,6 +68,41 @@ public:
                 return false;
             }
             std::cerr << "TEST-ONLY software renderer accepted; this is not release/GPU evidence\n";
+        }
+        // SDL's ACCELERATED flag also covers OpenGL implemented by Mesa's CPU
+        // rasterizers. Query the live GL context before claiming a hardware path.
+        const std::string driver = info.name ? info.name : "";
+        if ((info.flags & SDL_RENDERER_ACCELERATED) && !(info.flags & SDL_RENDERER_SOFTWARE) &&
+            driver != "opengl" && driver != "opengles2") {
+            if (!testAllowSoftware_) {
+                error = "physical GPU renderer required; cannot verify SDL driver " + driver;
+                return false;
+            }
+            std::cerr << "TEST-ONLY unverified renderer accepted; this is not release/GPU evidence\n";
+        }
+        if (driver == "opengl" || driver == "opengles2") {
+            using GetString = const unsigned char* (*)(unsigned int);
+            auto getString = reinterpret_cast<GetString>(SDL_GL_GetProcAddress("glGetString"));
+            const char* vendor = getString && SDL_GL_GetCurrentContext()
+                ? reinterpret_cast<const char*>(getString(0x1F00)) : nullptr; // GL_VENDOR
+            const char* device = getString && SDL_GL_GetCurrentContext()
+                ? reinterpret_cast<const char*>(getString(0x1F01)) : nullptr; // GL_RENDERER
+            std::cerr << "OpenGL device vendor=" << (vendor ? vendor : "unavailable")
+                      << " renderer=" << (device ? device : "unavailable") << "\n";
+            std::string identity = std::string(vendor ? vendor : "") + " " + (device ? device : "");
+            std::transform(identity.begin(), identity.end(), identity.begin(),
+                           [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+            const bool softwareGL = identity.find("llvmpipe") != std::string::npos ||
+                identity.find("softpipe") != std::string::npos ||
+                identity.find("swrast") != std::string::npos ||
+                identity.find("software rasterizer") != std::string::npos;
+            if (!vendor || !device || softwareGL) {
+                if (!testAllowSoftware_) {
+                    error = "physical GPU OpenGL renderer required; software or unidentified GL device refused";
+                    return false;
+                }
+                std::cerr << "TEST-ONLY software/unidentified OpenGL accepted; this is not release/GPU evidence\n";
+            }
         }
         if (SDL_RenderSetLogicalSize(renderer_, 1280, 720) != 0) { error = SDL_GetError(); return false; }
         SDL_SetRenderDrawBlendMode(renderer_, SDL_BLENDMODE_BLEND);

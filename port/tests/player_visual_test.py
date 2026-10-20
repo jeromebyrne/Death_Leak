@@ -14,7 +14,6 @@ CROP = (550, 360, 680, 540)  # player near center after camera settles
 def capture(script, frame, destination):
     env = os.environ.copy()
     env.update(SDL_VIDEODRIVER="offscreen", SDL_RENDER_DRIVER="opengl", SDL_AUDIODRIVER="dummy")
-    env.pop("DEATHLEAK_TEST_ALLOW_SOFTWARE_RENDERER", None)
     result = subprocess.run(
         [BINARY, "--play", LEVEL, "--script", script, "--fixed-dt", "0.0166667",
          "--frames", str(frame), "--capture", str(destination)],

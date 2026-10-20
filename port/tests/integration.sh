@@ -20,9 +20,16 @@ grep -q 'accelerated=0 software=1' "$software_log"
 grep -q 'TEST-ONLY software renderer accepted' "$software_log"
 rm -f "$software_log"
 accelerated_log=$(mktemp)
-env -u DEATHLEAK_TEST_ALLOW_SOFTWARE_RENDERER "$bin" --frames 1 >"$accelerated_log" 2>&1
+if env -u DEATHLEAK_TEST_ALLOW_SOFTWARE_RENDERER "$bin" --frames 1 >"$accelerated_log" 2>&1; then
+    echo "strict renderer unexpectedly accepted offscreen software OpenGL" >&2; rm -f "$accelerated_log"; exit 1
+fi
 grep -q 'video_driver=offscreen name=opengl' "$accelerated_log"
-grep -q 'accelerated=1 software=0.*mode=strict-accelerated' "$accelerated_log"
+grep -q 'physical GPU OpenGL renderer required' "$accelerated_log"
+rm -f "$accelerated_log"
+accelerated_log=$(mktemp)
+"$bin" --frames 1 >"$accelerated_log" 2>&1
+grep -q 'video_driver=offscreen name=opengl' "$accelerated_log"
+grep -q 'TEST-ONLY software/unidentified OpenGL accepted' "$accelerated_log"
 rm -f "$accelerated_log"
 python3 port/tests/player_visual_test.py
 transition=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script L:340 --fixed-dt 0.0166667 --simulate-only)
