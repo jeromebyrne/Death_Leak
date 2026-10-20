@@ -118,6 +118,24 @@ orb_ids = [line for line in lines if line.startswith('Game/XmlFiles/levels/') an
 assert len(orb_ids) == len(set(orb_ids)) == 96, (len(orb_ids), len(set(orb_ids)))
 assert 'B:96' in lines
 PYTEST
+# The village-central eastward death at frame 5322 is avoidable by ordinary
+# right+jump timing: the first jump evades the ninja shot, the second clears
+# the authored village obstacle, and the third stays above the optional well
+# entrance. This same forest-spawn simulation reaches shrine and agriculture;
+# every orb is a distinct collected authored object, never injected currency.
+extended_save=port/build/extended-village-save.txt
+extended_route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script R:710,E:40,B:4520,E:40,B:50,E:40,B:80,E:40,B:3500 --fixed-dt 0.0166667 --simulate-only --save-file "$extended_save")
+printf '%s\n' "$extended_route" | grep -q 'Trigger at frame 5854 .*village_shrine.xml'
+printf '%s\n' "$extended_route" | grep -q 'Trigger at frame 8286 .*village_agri.xml'
+printf '%s\n' "$extended_route" | grep -q 'village_agri.xml player=(3431.18,-1288.29) orbs=190 .*health=1 .*balance=190'
+if printf '%s\n' "$extended_route" | grep -q 'Player died'; then exit 1; fi
+python3 - <<'PYTEST'
+from pathlib import Path
+lines = Path('port/build/extended-village-save.txt').read_text().splitlines()
+orb_ids = [line for line in lines if line.startswith('Game/XmlFiles/levels/') and '#' in line]
+assert len(orb_ids) == len(set(orb_ids)) == 190, (len(orb_ids), len(set(orb_ids)))
+assert 'B:190' in lines
+PYTEST
 # Forest 2's authored barn LevelEntry starts about 21 units embedded in its
 # ground strip. The one-frame shallow floor resolution preserves the route.
 # These are independent authored branches, not a connected 375-orb itinerary.
