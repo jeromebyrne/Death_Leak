@@ -45,6 +45,7 @@ public:
     int Deflections() const { return deflections_; }
     void SetDeflectionUnlocked(bool unlocked) { deflectionUnlocked_ = unlocked; }
     bool DeflectionUnlocked() const { return deflectionUnlocked_; }
+    void SetProjectileUpgrades(bool damage, bool speed) { projectileDamageUpgrade_ = damage; projectileSpeedUpgrade_ = speed; }
     void Draw(render::Renderer& renderer, float cameraX, float cameraY) const;
     void SetTriggerHistory(std::unordered_map<std::string, std::int64_t> history) { triggerHistory_ = std::move(history); }
     const std::unordered_map<std::string, std::int64_t>& TriggerHistory() const { return triggerHistory_; }
@@ -78,6 +79,7 @@ private:
     int meleeStrikes_ = 0;
     int deflections_ = 0;
     bool deflectionUnlocked_ = false;
+    bool projectileDamageUpgrade_ = false, projectileSpeedUpgrade_ = false;
     int burstCount_ = 0;
     int hits_ = 0, kills_ = 0, spawned_ = 0, fired_ = 0;
     int playerContacts_ = 0, contactFrames_ = 0;

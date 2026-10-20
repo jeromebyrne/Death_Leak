@@ -56,6 +56,7 @@ int main(int argc, char** argv) {
     bool restorePosition = false;
     std::unordered_set<std::string> collectedOrbs, ownedKeys, unlockedDoors;
     bool deflectionUnlocked = false, speedUnlocked = false;
+    bool projectileDamageUnlocked = false, projectileSpeedUnlocked = false;
     float savedMaxHealth = 25;
     bool hasSavedMaxHealth = false;
     int orbBalance = 0;
@@ -142,6 +143,8 @@ int main(int argc, char** argv) {
             else if (line.rfind("D:", 0) == 0) unlockedDoors.insert(line.substr(2));
             else if (line == "U:kDeflection") deflectionUnlocked = true;
             else if (line == "U:kSpeedIncrease") speedUnlocked = true;
+            else if (line == "U:kProjectileDamageIncrease") projectileDamageUnlocked = true;
+            else if (line == "U:kProjectileSpeedIncrease") projectileSpeedUnlocked = true;
             else if (line.rfind("H:", 0) == 0) {
                 try {
                     size_t end = 0;
@@ -274,6 +277,7 @@ int main(int argc, char** argv) {
     if (!playLevel.empty() || menuLoop) hud.Load(*renderer);
     deathleak::game::Combat combat;
     combat.SetDeflectionUnlocked(deflectionUnlocked);
+    combat.SetProjectileUpgrades(projectileDamageUnlocked, projectileSpeedUnlocked);
     combat.SetMaxHealth(savedMaxHealth);
     combat.SetTriggerHistory(std::move(triggerHistory));
     if (restorePosition) combat.SetVitals(savedHealth, savedFocus);
@@ -439,7 +443,7 @@ int main(int argc, char** argv) {
                     playLevel = levelPath = currentLevel = freshLevel;
                     collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear();
                     orbBalance = 0; combat = deathleak::game::Combat{};
-                    speedUnlocked = false; savedMaxHealth = 25; hasSavedMaxHealth = false; windowsPermanentExtension.clear();
+                    speedUnlocked = projectileDamageUnlocked = projectileSpeedUnlocked = false; savedMaxHealth = 25; hasSavedMaxHealth = false; windowsPermanentExtension.clear();
                     motion.SetSpeedUpgrade(false);
                     motion.Reset(scene.PlayerX(), scene.PlayerY());
                     worldX = motion.X(); worldY = motion.Y();
@@ -673,7 +677,7 @@ int main(int argc, char** argv) {
             collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear();
             orbBalance = 0; scene = deathleak::game::LevelScene{};
             combat = deathleak::game::Combat{};
-            speedUnlocked = false; savedMaxHealth = 25; hasSavedMaxHealth = false; windowsPermanentExtension.clear();
+            speedUnlocked = projectileDamageUnlocked = projectileSpeedUnlocked = false; savedMaxHealth = 25; hasSavedMaxHealth = false; windowsPermanentExtension.clear();
             motion.SetSpeedUpgrade(false);
             finalSceneTime = 0; finalTitleShown = storyEnded = false;
             menuSelection = 0; menuOptions = menuLanguages = false;
@@ -783,6 +787,8 @@ int main(int argc, char** argv) {
         for (const auto& door : unlockedDoors) saved << "D:" << door << '\n';
         if (combat.DeflectionUnlocked()) saved << "U:kDeflection\n";
         if (speedUnlocked) saved << "U:kSpeedIncrease\n";
+        if (projectileDamageUnlocked) saved << "U:kProjectileDamageIncrease\n";
+        if (projectileSpeedUnlocked) saved << "U:kProjectileSpeedIncrease\n";
         if (hasSavedMaxHealth) saved << "H:" << savedMaxHealth << '\n';
         if (!windowsPermanentExtension.empty()) saved << windowsPermanentExtension << '\n';
         for (const auto& [id, time] : combat.TriggerHistory()) saved << "N:" << id << '\t' << time << '\n';
@@ -801,7 +807,7 @@ int main(int argc, char** argv) {
                   << " focus=" << combat.Focus() << " balance=" << orbBalance << " spawned=" << combat.Spawned() << " enemies=" << combat.EnemyCount()
                   << " hits=" << combat.Hits() << " kills=" << combat.Kills() << " fired=" << combat.Fired()
                   << " shots=" << combat.ShotCount() << " grounded=" << motion.Grounded() << " elapsed=" << elapsed << "s"
-                  << " max_health=" << combat.MaxHealth() << " speed_upgrade=" << speedUnlocked << "\n";
+                  << " max_health=" << combat.MaxHealth() << " speed_upgrade=" << speedUnlocked << " projectile_damage_upgrade=" << projectileDamageUnlocked << " projectile_speed_upgrade=" << projectileSpeedUnlocked << "\n";
         if (combatState) {
             std::cout << "Player/NPC contacts=" << combat.PlayerContacts() << " contact_frames=" << combat.ContactFrames() << "\n";
             std::cout << "Melee active=" << combat.MeleeActive() << " strikes=" << combat.MeleeStrikes() << "\n";

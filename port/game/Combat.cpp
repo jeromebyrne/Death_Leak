@@ -167,10 +167,10 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
     // before its 0.5-second burst pause. The authored projectile lifetime is 0.25 s.
     if (fire && meleeTime_ <= 0.f && fireCooldown_ <= 0 && burstCooldown_ <= 0 && !inWater && health_ > 0) {
         if (!knifeArt_) SetArt(renderer);
-        shots_.push_back({x+facing*10.f,y+25.f,facing*1200.f,0.f,0.25f,1.5f,false});
-        fireCooldown_ = 0.220f;
+        shots_.push_back({x+facing*10.f,y+25.f,facing*1200.f,0.f,0.25f,projectileDamageUpgrade_ ? 4.f : 1.5f,false});
+        fireCooldown_ = projectileSpeedUpgrade_ ? 0.220f*0.75f : 0.220f;
         ++fired_;
-        if (++burstCount_ == 5) { burstCount_ = 0; burstCooldown_ = 0.5f; }
+        if (!projectileSpeedUpgrade_ && ++burstCount_ == 5) { burstCount_ = 0; burstCooldown_ = 0.5f; }
     }
     for (auto& enemy : enemies_) {
         if (enemy.health <= 0) continue;
@@ -313,7 +313,7 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
         const float oldX=shot.x, oldY=shot.y;
         // Projectile::Update uses 60-Hz-equivalent gravity and displacement resistance.
         const float ticks=std::min(2.f,dt*60.f);
-        if (shot.gravity) shot.vy -= (shot.enemy ? (shot.resistance < 1.f ? 0.5f : 0.01f) : 0.25f)*60.f*ticks;
+        if (shot.gravity) shot.vy -= (shot.enemy ? (shot.resistance < 1.f ? 0.5f : 0.01f) : (projectileSpeedUpgrade_ ? 0.1f : 0.25f))*60.f*ticks;
         const float newX=shot.x+shot.vx*dt*shot.resistance;
         const float newY=shot.y+shot.vy*dt*shot.resistance;
         float terrainT=1.f;

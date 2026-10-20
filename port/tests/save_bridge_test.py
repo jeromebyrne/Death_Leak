@@ -111,6 +111,33 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
     assert sum(line.startswith('W1:') for line in resumed.read_text().splitlines()) == 1
     assert 'H:65' in resumed.read_text().splitlines()
     assert 'U:kSpeedIncrease' in resumed.read_text().splitlines()
+    for unlock in ('kProjectileDamageIncrease', 'kProjectileSpeedIncrease'):
+        assert 'U:' + unlock in target.read_text().splitlines()
+        assert 'U:' + unlock in resumed.read_text().splitlines()
+    def simulate_projectiles(lines, script, encounter=False):
+        fresh = root / ('projectile-' + str(len(list(root.glob('projectile-*.dl5')))) + '.dl5')
+        data = lines.copy()
+        if encounter:
+            data[1] = 'port/tests/fixtures/encounter_open.xml'
+            data[2] = '0 107.44937 25 100'
+        fresh.write_text('\n'.join(data) + '\n')
+        result = subprocess.run(['port/build/deathleak-linux', '--load-save', str(fresh),
+                                 '--script', script, '--fixed-dt', '0.0166667',
+                                 '--simulate-only', '--combat-state'],
+                                capture_output=True, text=True, check=True)
+        return result.stdout
+    upgraded = target.read_text().splitlines()
+    ordinary = [line for line in upgraded if line not in ('U:kProjectileDamageIncrease', 'U:kProjectileSpeedIncrease')]
+    fast = simulate_projectiles(upgraded, 'F:120')
+    slow = simulate_projectiles(ordinary, 'F:120')
+    assert 'fired=12' in fast and 'fired=8' in slow, (fast, slow)
+    fast_fall = simulate_projectiles(upgraded, 'F:1,.:5')
+    slow_fall = simulate_projectiles(ordinary, 'F:1,.:5')
+    assert float(re.search(r'Shot player .* vy=([-0-9.]+)', fast_fall).group(1)) > float(re.search(r'Shot player .* vy=([-0-9.]+)', slow_fall).group(1)), (fast_fall, slow_fall)
+    damage_only = [line for line in upgraded if line != 'U:kProjectileSpeedIncrease']
+    upgraded_hit = simulate_projectiles(damage_only, 'F:110', encounter=True)
+    ordinary_hit = simulate_projectiles(ordinary, 'F:110', encounter=True)
+    assert 'hits=5 kills=1' in upgraded_hit and 'kills=0' in ordinary_hit, (upgraded_hit, ordinary_hit)
     restored = root / 'restored.xml'
     run('export', resumed, restored, '--discard-runtime')
     # Windows defaults absent completion count to zero; export writes it explicitly.
@@ -121,6 +148,9 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
     assert not (root / 'conflict.xml').exists()
     conflict.write_text(resumed.read_text().replace('U:kSpeedIncrease\n', ''))
     run('export', conflict, root / 'conflict.xml', '--discard-runtime', success=False)
+    for unlock in ('kProjectileDamageIncrease', 'kProjectileSpeedIncrease'):
+        conflict.write_text(resumed.read_text().replace('U:' + unlock + '\n', ''))
+        run('export', conflict, root / 'conflict.xml', '--discard-runtime', success=False)
     damaged = root / 'damaged.dl5'
     damaged.write_text(resumed.read_text().replace('W1:', 'W1:!'))
     run('export', damaged, root / 'damaged.xml', '--discard-runtime', success=False)
