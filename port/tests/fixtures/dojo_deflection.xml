@@ -1,0 +1,6 @@
+<level>
+  <Player id="1"><position x="0" y="107.44937" depth_layer="kPlayer"/><dimensions width="181.393768" height="215.352036"/><texture filename="Media/UI/player_silhouette.png"/></Player>
+  <SolidLineStrip id="2"><position x="-500" y="0"/><dimensions width="1000" height="1"/><points num_points="2" x_0="0" y_0="0" x_1="1000" y_1="0"/></SolidLineStrip>
+  <DojoScrollPickup id="117" updateable="true"><position x="0" y="107.44937" depth_layer="kGround"/><dimensions width="170.515411" height="170.515411"/><texture filename="Media/objects/katana_in_ground.png"/><feature_unlock value="kDeflection"/><orb_cost value="2"/></DojoScrollPickup>
+  <CurrencyOrb id="4"><position x="0" y="107.44937" depth_layer="kOrb"/><dimensions width="20" height="20"/><texture filename="Media/UI/orb.png"/></CurrencyOrb>
+</level>

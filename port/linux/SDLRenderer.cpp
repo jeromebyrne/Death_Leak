@@ -101,6 +101,11 @@ public:
         ++drawCalls_;
         copySeconds_ += std::chrono::duration<double>(std::chrono::steady_clock::now()-began).count();
     }
+    void FillRect(Rect rect, Color color) override {
+        SDL_SetRenderDrawColor(renderer_, color.r, color.g, color.b, color.a);
+        SDL_FRect box{rect.x, rect.y, rect.width, rect.height};
+        SDL_RenderFillRectF(renderer_, &box);
+    }
     void EndFrame() override {
         const auto began = std::chrono::steady_clock::now();
         SDL_RenderPresent(renderer_);
@@ -131,6 +136,7 @@ public:
             case Down: return keys[SDL_SCANCODE_DOWN] || keys[SDL_SCANCODE_S] || button(SDL_CONTROLLER_BUTTON_DPAD_DOWN);
             case Restart: return keys[SDL_SCANCODE_R];
             case Interact: return keys[SDL_SCANCODE_E] || button(SDL_CONTROLLER_BUTTON_X);
+            case Purchase: return keys[SDL_SCANCODE_Y] || button(SDL_CONTROLLER_BUTTON_Y);
             case Melee: return keys[SDL_SCANCODE_C] || button(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
             case Escape: return keys[SDL_SCANCODE_ESCAPE] || button(SDL_CONTROLLER_BUTTON_START);
             default: return false;

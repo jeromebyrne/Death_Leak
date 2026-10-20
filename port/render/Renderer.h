@@ -39,6 +39,7 @@ public:
     virtual TextureId LoadTexture(const std::string& path, std::string& error) = 0;
     virtual void BeginFrame(Color clear) = 0;
     virtual void DrawSprite(const Sprite& sprite) = 0;
+    virtual void FillRect(Rect rect, Color color) = 0;
     virtual void EndFrame() = 0;
     virtual bool PollQuit() = 0;
     virtual bool KeyDown(int key) const = 0;
@@ -46,7 +47,7 @@ public:
 };
 
 // Key codes are intentionally backend-neutral.
-enum Key { Left = 1, Right, Up, Down, Escape, Restart, Interact, Melee };
+enum Key { Left = 1, Right, Up, Down, Escape, Restart, Interact, Melee, Purchase };
 std::unique_ptr<Renderer> CreateRenderer();
 
 } // namespace deathleak::render

@@ -78,6 +78,39 @@ melee_empty=$($bin --play port/tests/fixtures/encounter_npc_wall.xml --exhaust-f
 printf '%s\n' "$melee_empty" | grep -q 'Melee active=0 strikes=0'
 melee_water=$($bin --play Game/XmlFiles/levels/test.xml --start-hazard 1 --script M:1 --fixed-dt 0.0166667 --simulate-only --combat-state)
 printf '%s\n' "$melee_water" | grep -q 'Melee active=0 strikes=0'
+# DojoScrollPickup ignores authored debug orb_cost=2; production feature cost is
+# 375. One normal orb pickup adds to a loaded 374-orb balance. Modal pauses
+# world updates, purchase debits once, hides the scroll, and survives reload.
+dojo=port/tests/fixtures/dojo_deflection.xml
+dojo_save=port/build/integration-dojo-save.txt
+printf 'DL5\n%s\n0 107.44937 25 100\nB:373\n' "$dojo" > "$dojo_save"
+dojo_short=$($bin --load-save "$dojo_save" --script I:29 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$dojo_short" | grep -q 'balance=374'
+printf '%s\n' "$dojo_short" | grep -q 'Deflection unlocked=0 count=0'
+printf 'DL5\n%s\n0 107.44937 25 50\nB:374\n' "$dojo" > "$dojo_save"
+dojo_paused=$($bin --load-save "$dojo_save" --script I:31,.:60 --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$dojo_paused" | grep -q 'focus=55 balance=375'
+printf 'DL5\n%s\n0 107.44937 25 100\nB:373\n' "$dojo" > "$dojo_save"
+dojo_insufficient=$($bin --load-save "$dojo_save" --script I:31,P:1 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$dojo_insufficient" | grep -q 'Opened kDeflection upgrade modal.*cost=375 balance=374'
+printf '%s\n' "$dojo_insufficient" | grep -q 'Not enough orbs.*balance=374'
+printf '%s\n' "$dojo_insufficient" | grep -q 'Deflection unlocked=0 count=0'
+printf 'DL5\n%s\n0 107.44937 25 100\nB:374\n' "$dojo" > "$dojo_save"
+dojo_purchased=$($bin --load-save "$dojo_save" --script I:31,P:1 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$dojo_purchased" | grep -q 'Purchased kDeflection.*balance=0'
+printf '%s\n' "$dojo_purchased" | grep -q 'Deflection unlocked=1 count=0'
+grep -q '^B:0$' "$dojo_save"
+grep -q '^U:kDeflection$' "$dojo_save"
+dojo_resume=$($bin --load-save "$dojo_save" --script I:40,P:2 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$dojo_resume" | grep -q 'balance=0'
+printf '%s\n' "$dojo_resume" | grep -q 'Deflection unlocked=1 count=0'
+if printf '%s\n' "$dojo_resume" | grep -q 'Opened kDeflection'; then exit 1; fi
+# Cancel after modal warmup without spending; world remains paused while open.
+printf 'DL5\n%s\n0 107.44937 25 100\nB:374\n' "$dojo" > "$dojo_save"
+dojo_cancel=$($bin --load-save "$dojo_save" --script I:31,.:61,X:1 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$dojo_cancel" | grep -q 'Dismissed kDeflection modal'
+printf '%s\n' "$dojo_cancel" | grep -q 'balance=375'
+printf '%s\n' "$dojo_cancel" | grep -q 'Deflection unlocked=0 count=0'
 # Source Character::WillDeflectProjectile accepts only front-side, opposing
 # shots during melee phase 1 or 3. The feature flag represents an already
 # purchased upgrade in the Linux save; the interaction/modal is not ported.
@@ -229,4 +262,4 @@ legacy=$($bin --load-save port/build/legacy-dl3-save.txt --frames 1 --fixed-dt 0
 printf '%s\n' "$legacy" | grep -q 'keys=1'
 
 if printf '%s\n' "$key_only_resume" | grep -q 'Collected key'; then exit 1; fi
-printf '%s\n' 'PASS: source-held-jump arena climb and exit, three-level route, burst/water fire, swim, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, solid box, wall jump, death/restart, key/door gate, ghost flight, ranged warmup/terrain shots and kill, grounded NPC fall/wall/box, NPC combo/stun/recovery, NPC teleport timing/exclusion, ranged NPC jump/roll and projectile kickback, source-faithful player/NPC contact pass-through, grounded phase-three melee and its negative gates, DL3 compatibility and DL4 encounter persistence'
+printf '%s\n' 'PASS: source-held-jump arena climb and exit, three-level route, burst/water fire, swim, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, solid box, wall jump, death/restart, key/door gate, ghost flight, ranged warmup/terrain shots and kill, grounded NPC fall/wall/box, NPC combo/stun/recovery, NPC teleport timing/exclusion, ranged NPC jump/roll and projectile kickback, source-faithful player/NPC contact pass-through, grounded phase-three melee and its negative gates, DL3/DL4 compatibility, DL5 orb-balance persistence and scroll modal purchase'

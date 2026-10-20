@@ -56,7 +56,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     if (!document.LoadFile()) { error = "Cannot parse level: " + path + ": " + document.ErrorDesc(); return false; }
     auto* level = document.RootElement();
     if (!level || std::string(level->Value()) != "level") { error = "Not a Death Leak level: " + path; return false; }
-    sprites_.clear(); ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); doors_.clear(); keys_.clear(); skipped_ = 0;
+    sprites_.clear(); ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); doors_.clear(); keys_.clear(); scrolls_.clear(); skipped_ = 0;
     if (auto* props = level->FirstChildElement("LevelProperties")) {
         auto* camera = props->FirstChildElement("camera_properties");
         cameraX_ = Attr(camera, "posx"); cameraY_ = Attr(camera, "posy");
@@ -78,6 +78,11 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
                 std::string(doorId && doorId->Attribute("value") ? doorId->Attribute("value") : "") == entryDoorId) {
                 playerX_ = x; playerY_ = y;
             }
+        }
+        if (kind == "DojoScrollPickup") {
+            auto* feature = object->FirstChildElement("feature_unlock");
+            if (feature && feature->Attribute("value") && object->Attribute("id"))
+                scrolls_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),feature->Attribute("value"),std::filesystem::path(path).lexically_normal().string() + "#" + object->Attribute("id")});
         }
         if (kind == "KeyPickup") {
             auto* props = object->FirstChildElement("key_props");
@@ -156,7 +161,8 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         sprite.player = kind == "Player";
         sprite.currencyOrb = kind == "CurrencyOrb";
         sprite.keyPickup = kind == "KeyPickup";
-        if (sprite.currencyOrb && object->Attribute("id"))
+        sprite.dojoScroll = kind == "DojoScrollPickup";
+        if ((sprite.currencyOrb || sprite.dojoScroll) && object->Attribute("id"))
             sprite.persistentId = std::filesystem::path(path).lexically_normal().string() + "#" + object->Attribute("id");
         sprite.flipX = Flag(object->FirstChildElement("horizontalflip"), "value");
         sprite.flipY = Flag(object->FirstChildElement("verticalflip"), "value");
@@ -189,6 +195,13 @@ void LevelScene::ApplyKeys(const std::unordered_set<std::string>& keys) {
     for (auto& object : sprites_) if (object.keyPickup) {
         for (const auto& key : keys_) if (key.x == object.x && key.y == object.y && keys.count(key.keyId))
             object.collected = true;
+    }
+}
+void LevelScene::ApplyDeflection(bool unlocked) {
+    if (!unlocked) return;
+    for (auto& object : sprites_) if (object.dojoScroll) {
+        for (const auto& scroll : scrolls_) if (scroll.feature == "kDeflection" &&
+            object.persistentId == scroll.id) object.collected = true;
     }
 }
 void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY) const {

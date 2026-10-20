@@ -15,6 +15,7 @@ struct SceneSprite {
     bool player = false;
     bool currencyOrb = false;
     bool keyPickup = false;
+    bool dojoScroll = false;
     bool collected = false;
     std::string persistentId;
 };
@@ -24,6 +25,7 @@ struct SolidBox { float left, right, bottom, top; };
 struct LevelTrigger { float x, y, width, height; std::string destination; };
 struct EncounterTrigger { float x, y, width, height; int count; std::string type; std::string id; };
 struct Door { float x, y, width, height; std::string destination, requiredKey, id; };
+struct DojoScroll { float x, y, width, height; std::string feature; std::string id; };
 struct KeyPickup { float x, y, width, height; std::string keyId; };
 struct HazardRegion { float x, y, width, height; bool water; float damage; };
 
@@ -47,6 +49,8 @@ public:
     const std::vector<HazardRegion>& Hazards() const { return hazards_; }
     const std::vector<Door>& Doors() const { return doors_; }
     const std::vector<KeyPickup>& Keys() const { return keys_; }
+    const std::vector<DojoScroll>& Scrolls() const { return scrolls_; }
+    void ApplyDeflection(bool unlocked);
     void ApplyKeys(const std::unordered_set<std::string>& keys);
 private:
     std::vector<SceneSprite> sprites_;
@@ -57,6 +61,7 @@ private:
     std::vector<HazardRegion> hazards_;
     std::vector<Door> doors_;
     std::vector<KeyPickup> keys_;
+    std::vector<DojoScroll> scrolls_;
     float playerX_ = 0, playerY_ = 0;
     float cameraX_ = 0, cameraY_ = 0;
     size_t skipped_ = 0;

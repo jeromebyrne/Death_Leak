@@ -3,6 +3,7 @@
 #include "../game/Combat.h"
 #include "../game/PlayerMotion.h"
 #include "../game/Hud.h"
+#include "../game/BitmapText.h"
 #include "../audio/SoundPlayer.h"
 #include <chrono>
 #include <cstdint>
@@ -33,6 +34,8 @@ int main(int argc, char** argv) {
     bool restorePosition = false;
     std::unordered_set<std::string> collectedOrbs, ownedKeys, unlockedDoors;
     bool deflectionUnlocked = false;
+    int orbBalance = 0;
+    bool balanceLoaded = false;
     std::unordered_map<std::string, std::int64_t> triggerHistory;
     bool simulateOnly = false;
     bool profile = false;
@@ -64,7 +67,7 @@ int main(int argc, char** argv) {
         std::ifstream saved(loadSaveFile);
         std::string version;
         std::string positionLine;
-        if (!std::getline(saved, version) || (version != "DL1" && version != "DL2" && version != "DL3" && version != "DL4") ||
+        if (!std::getline(saved, version) || (version != "DL1" && version != "DL2" && version != "DL3" && version != "DL4" && version != "DL5") ||
             !std::getline(saved, playLevel) || !std::getline(saved, positionLine) ||
             !std::filesystem::exists(playLevel)) {
             std::cerr << "Invalid or missing save: " << loadSaveFile << '\n'; return 2;
@@ -81,7 +84,15 @@ int main(int argc, char** argv) {
             if (line.rfind("K:", 0) == 0) ownedKeys.insert(line.substr(2));
             else if (line.rfind("D:", 0) == 0) unlockedDoors.insert(line.substr(2));
             else if (line == "U:kDeflection") deflectionUnlocked = true;
-            else if (version == "DL4" && line.rfind("N:", 0) == 0) {
+            else if (version == "DL5" && line.rfind("B:", 0) == 0) {
+                try {
+                    size_t end = 0;
+                    const auto value = std::stoll(line.substr(2), &end);
+                    if (balanceLoaded || end != line.size()-2 || value < 0 || value > 1000000000) throw std::invalid_argument("balance");
+                    orbBalance = static_cast<int>(value); balanceLoaded = true;
+                } catch (const std::exception&) { std::cerr << "Invalid orb balance in save\n"; return 2; }
+            }
+            else if ((version == "DL4" || version == "DL5") && line.rfind("N:", 0) == 0) {
                 const auto tab = line.rfind('\t');
                 if (tab != std::string::npos) {
                     try { triggerHistory[line.substr(2, tab-2)] = std::stoll(line.substr(tab+1)); }
@@ -89,6 +100,8 @@ int main(int argc, char** argv) {
                 }
             } else if (!line.empty()) collectedOrbs.insert(line);
         }
+        if (!balanceLoaded) orbBalance = static_cast<int>(collectedOrbs.size());
+        if (version == "DL5" && !balanceLoaded) { std::cerr << "Missing orb balance in save\n"; return 2; }
         restorePosition = true;
         if (saveFile.empty()) saveFile = loadSaveFile;
     }
@@ -99,7 +112,7 @@ int main(int argc, char** argv) {
         std::istringstream parts(script); std::string token;
         while (std::getline(parts, token, ',')) {
             auto colon = token.find(':');
-            if (colon == std::string::npos || token.empty() || std::string("LRJ.FBNTQEIHM").find(token[0]) == std::string::npos) { std::cerr << "Bad --script token\n"; return 2; }
+            if (colon == std::string::npos || token.empty() || std::string("LRJ.FBNTQEIHMPX").find(token[0]) == std::string::npos) { std::cerr << "Bad --script token\n"; return 2; }
             int count = std::atoi(token.c_str() + colon + 1);
             if (count < 1 || count > 100000 || scriptedInput.size() + count > 100000) { std::cerr << "Bad --script duration\n"; return 2; }
             scriptedInput.insert(scriptedInput.end(), count, token[0]);
@@ -127,6 +140,7 @@ int main(int argc, char** argv) {
     }
     if (restorePosition) scene.ApplyCollected(collectedOrbs);
     scene.ApplyKeys(ownedKeys);
+    scene.ApplyDeflection(deflectionUnlocked);
     if (!levelPath.empty()) {
         std::cout << "Loaded " << scene.SpriteCount() << " original level sprites; "
                   << scene.SkippedCount() << " missing or unsupported assets; "
@@ -163,6 +177,12 @@ int main(int argc, char** argv) {
     bool wasDead = false, restartHeld = false;
     float levelTime = 0.f, interactHeldTime = 0.f, doorUnlockWait = 0.f;
     bool unlockingDoor = false;
+    bool upgradeModal = false;
+    float modalWarmup = 0.f;
+    bool purchaseHeld = false, dismissHeld = false;
+    auto modalBackground = playLevel.empty() ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/blank_dark.png", error);
+    auto modalOrb = playLevel.empty() ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/orb.png", error);
+    auto modalButton = playLevel.empty() ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/gamepad_icons/y.png", error);
     std::string interactionTarget;
     int facing = 1;
     std::string currentLevel = playLevel;
@@ -175,7 +195,8 @@ int main(int argc, char** argv) {
         last = now;
         if (fixedDt > 0) dt = fixedDt;
         if (dt > 0.05f) dt = 0.05f;
-        if (renderer->KeyDown(Escape)) break;
+        if (renderer->KeyDown(Escape) && !upgradeModal && !dismissHeld) break;
+        if (!renderer->KeyDown(Escape) && !upgradeModal) dismissHeld = false;
         if (playLevel.empty()) {
             if (renderer->KeyDown(Left)) playerX -= 250 * dt;
             if (renderer->KeyDown(Right)) playerX += 250 * dt;
@@ -183,6 +204,24 @@ int main(int argc, char** argv) {
             if (renderer->KeyDown(Down)) playerY += 250 * dt;
         } else {
             const char command = frame < static_cast<int>(scriptedInput.size()) ? scriptedInput[frame] : 0;
+            if (upgradeModal) {
+                modalWarmup += dt;
+                const bool purchase = !script.empty() ? command == 'P' : renderer->KeyDown(Purchase);
+                const bool dismiss = !script.empty() ? command == 'X' : renderer->KeyDown(Escape);
+                if (purchase && !purchaseHeld) {
+                    if (orbBalance >= 375) {
+                        orbBalance -= 375;
+                        combat.SetDeflectionUnlocked(true);
+                        scene.ApplyDeflection(true);
+                        upgradeModal = false;
+                        std::cout << "Purchased kDeflection at frame " << frame << " balance=" << orbBalance << '\n';
+                    } else std::cout << "Not enough orbs for kDeflection at frame " << frame << " balance=" << orbBalance << '\n';
+                } else if (dismiss && !dismissHeld && modalWarmup >= 1.f) {
+                    upgradeModal = false;
+                    std::cout << "Dismissed kDeflection modal at frame " << frame << '\n';
+                }
+                purchaseHeld = purchase; dismissHeld = dismiss;
+            } else {
             const float direction = !script.empty() ? static_cast<float>(command == 'R' || command == 'B' || command == 'E') - static_cast<float>(command == 'L' || command == 'N' || command == 'Q') :
                 static_cast<float>(renderer->KeyDown(Right)) - static_cast<float>(renderer->KeyDown(Left));
             if (direction != 0) facing = direction < 0 ? -1 : 1;
@@ -196,6 +235,7 @@ int main(int argc, char** argv) {
                     if (nextScene.Load(restartLevel, *renderer, error)) {
                         nextScene.ApplyCollected(collectedOrbs);
                         nextScene.ApplyKeys(ownedKeys);
+                        nextScene.ApplyDeflection(combat.DeflectionUnlocked());
                         scene = std::move(nextScene);
                         currentLevel = restartLevel;
                         motion.Reset(scene.PlayerX(), scene.PlayerY());
@@ -214,6 +254,7 @@ int main(int argc, char** argv) {
             motion.Update(scene, dt, combat.MeleeActive() ? 0 : static_cast<int>(direction), jump && !combat.MeleeActive());
             worldX = motion.X(); worldY = motion.Y();
             const auto collectedNow = scene.CollectCurrencyOrbs(worldX, worldY, collectedOrbs);
+            orbBalance += static_cast<int>(collectedNow);
             if (sound && collectedNow) sound->Play(deathleak::audio::Cue::OrbCollect);
             const bool fire = !script.empty() ? (command == 'F' || command == 'B' || command == 'N') : renderer->KeyDown(Down);
             const int firedBefore = combat.Fired();
@@ -237,11 +278,16 @@ int main(int argc, char** argv) {
             };
             std::string target;
             const deathleak::game::KeyPickup* nearbyKey = nullptr;
+            const deathleak::game::DojoScroll* nearbyScroll = nullptr;
             const deathleak::game::Door* nearbyDoor = nullptr;
             for (const auto& key : scene.Keys()) if (!ownedKeys.count(key.keyId) && overlap(key.x,key.y,key.width,key.height)) {
                 nearbyKey = &key; target = "K:" + key.keyId; break;
             }
-            if (!nearbyKey && levelTime >= 0.75f && motion.Grounded())
+            if (!nearbyKey && !combat.DeflectionUnlocked())
+                for (const auto& scroll : scene.Scrolls()) if (scroll.feature == "kDeflection" && overlap(scroll.x,scroll.y,scroll.width,scroll.height)) {
+                    nearbyScroll = &scroll; target = "S:" + scroll.id; break;
+                }
+            if (!nearbyKey && !nearbyScroll && levelTime >= 0.75f && motion.Grounded())
                 for (const auto& door : scene.Doors()) if (overlap(door.x,door.y,door.width,door.height)) {
                     nearbyDoor = &door; target = "D:" + door.id + door.destination; break;
                 }
@@ -253,6 +299,10 @@ int main(int argc, char** argv) {
                 scene.ApplyKeys(ownedKeys);
                 std::cout << "Collected key " << nearbyKey->keyId << " at frame " << frame << '\n';
                 interactHeldTime = 0; interactionTarget.clear();
+            } else if (interactHeldTime >= 0.5f && nearbyScroll) {
+                upgradeModal = true; modalWarmup = 0; purchaseHeld = dismissHeld = false;
+                interactHeldTime = 0; interactionTarget.clear();
+                std::cout << "Opened kDeflection upgrade modal at frame " << frame << " cost=375 balance=" << orbBalance << '\n';
             } else if (interactHeldTime >= (unlockingDoor ? 0.4f : 0.05f) && nearbyDoor && doorUnlockWait <= 0) {
                 const auto door = *nearbyDoor;
                 interactHeldTime = 0;
@@ -270,6 +320,7 @@ int main(int argc, char** argv) {
                     if (nextScene.Load(door.destination, *renderer, error, currentLevel, door.id)) {
                         nextScene.ApplyCollected(collectedOrbs);
                         nextScene.ApplyKeys(ownedKeys);
+                        nextScene.ApplyDeflection(combat.DeflectionUnlocked());
                         scene = std::move(nextScene);
                         std::cout << "Door at frame " << frame << " from " << currentLevel << " to " << door.destination << '\n';
                         currentLevel = door.destination;
@@ -291,6 +342,7 @@ int main(int argc, char** argv) {
                     if (nextScene.Load(destination, *renderer, error, currentLevel)) {
                         nextScene.ApplyCollected(collectedOrbs);
                         nextScene.ApplyKeys(ownedKeys);
+                        nextScene.ApplyDeflection(combat.DeflectionUnlocked());
                         scene = std::move(nextScene);
                         currentLevel = destination;
                         worldX = scene.PlayerX(); worldY = scene.PlayerY();
@@ -301,6 +353,7 @@ int main(int argc, char** argv) {
                     } else std::cerr << "Transition failed: " << error << '\n';
                     break;
                 }
+            }
             }
             }
         }
@@ -318,6 +371,16 @@ int main(int argc, char** argv) {
             scene.Draw(*renderer, cameraX, cameraY, worldX, worldY);
             combat.Draw(*renderer, cameraX, cameraY);
             hud.Draw(*renderer, combat.Health(), combat.Focus());
+            if (upgradeModal) {
+                if (modalBackground) renderer->DrawSprite({modalBackground, {}, {0,0,1280,720}, {255,255,255,204}});
+                if (modalOrb) renderer->DrawSprite({modalOrb, {}, {520,460,56,85}});
+                if (modalButton) renderer->DrawSprite({modalButton, {}, {590,460,150,90}});
+                deathleak::game::DrawBitmapText(*renderer, "NEW TECHNIQUE", 340, 120, 6);
+                deathleak::game::DrawBitmapText(*renderer, "DEFLECTION", 400, 240, 7);
+                deathleak::game::DrawBitmapText(*renderer, "COST 375 ORBS", 355, 360, 5);
+                deathleak::game::DrawBitmapText(*renderer, "BALANCE: " + std::to_string(orbBalance), 380, 410, 5);
+                deathleak::game::DrawBitmapText(*renderer, orbBalance >= 375 ? "Y BUY / ESC BACK" : "NOT ENOUGH ORBS / ESC BACK", 260, 565, 4);
+            }
             if (combat.Health() <= 0 && deathArt)
                 renderer->DrawSprite({deathArt, {}, {0, 0, 1280, 720}});
         }
@@ -330,8 +393,9 @@ int main(int argc, char** argv) {
     if (!playLevel.empty() && !saveFile.empty()) {
         const std::string temporary = saveFile + ".tmp";
         std::ofstream saved(temporary, std::ios::trunc);
-        saved << "DL4\n" << currentLevel << '\n' << std::setprecision(9) << worldX << ' ' << worldY
+        saved << "DL5\n" << currentLevel << '\n' << std::setprecision(9) << worldX << ' ' << worldY
               << ' ' << combat.Health() << ' ' << combat.Focus() << '\n';
+        saved << "B:" << orbBalance << '\n';
         for (const auto& orb : collectedOrbs) saved << orb << '\n';
         for (const auto& key : ownedKeys) saved << "K:" << key << '\n';
         for (const auto& door : unlockedDoors) saved << "D:" << door << '\n';
@@ -347,7 +411,7 @@ int main(int argc, char** argv) {
         const auto elapsed = std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();
         std::cout << "Simulation ended at " << currentLevel << " player=(" << worldX << "," << worldY
                   << ") orbs=" << collectedOrbs.size() << " keys=" << ownedKeys.size() << " health=" << combat.Health()
-                  << " focus=" << combat.Focus() << " spawned=" << combat.Spawned() << " enemies=" << combat.EnemyCount()
+                  << " focus=" << combat.Focus() << " balance=" << orbBalance << " spawned=" << combat.Spawned() << " enemies=" << combat.EnemyCount()
                   << " hits=" << combat.Hits() << " kills=" << combat.Kills() << " fired=" << combat.Fired()
                   << " shots=" << combat.ShotCount() << " grounded=" << motion.Grounded() << " elapsed=" << elapsed << "s\n";
         if (combatState) {
