@@ -41,7 +41,7 @@ The executable can now parse original XML level files through the repository's T
 ./port/build/deathleak-linux --level-preview Game/XmlFiles/levels/forest_exploration_1.xml
 ```
 
-WASD/arrow keys pan the preview camera. This **does not run game simulation**. Animated objects use only the first animation frame. Collision, player movement, transitions, UI, audio, shaders, repeated textures and parallax behavior remain unported. The current preview also has known vertical-flip and repeat/parallax visual differences from the original. Do not package it as a playable game.
+WASD/arrow keys pan the preview camera. This **does not run game simulation**. Animated objects use only the first animation frame. This preview mode does not simulate collision, movement, transitions, HUD or audio; `--play` contains partial implementations described below. The current preview also has known vertical-flip and repeat/parallax visual differences from the original. Do not package it as a playable game.
 
 To build without modifying host development packages, use the reproducible Linux build image:
 
@@ -57,7 +57,7 @@ docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/src" -w /src -e SDL_VIDEODRIVER
 
 `--play Game/XmlFiles/levels/forest_exploration_1.xml` now enables a prototype player simulation: the player starts at the original XML position, moves with A/D or left/right, jumps with W/space/up, collides with `SolidLineStrip` segments, follows the camera, and enters `LevelTrigger` destinations. SDL game-controller left stick/D-pad and A button are also mapped. Escape or controller Start exits. The original level assets still render through `Renderer.h`.
 
-This is **not yet a complete or release-ready Death Leak port**. The current encounter slice parses authored `NPCTrigger` and `WaterBlock` objects, spawns simplified ninja/ghost/skeleton opponents, runs knife and enemy projectiles, applies damage, and models focus depletion before drowning. It does **not** reproduce original Character/Player physics, full AI and attack patterns, melee, most NPC interactions, UI/menus, audio, complete saves, shaders, particles, or animation; level entry placement and door semantics are incomplete. Keyboard play is an added Linux convenience (the Windows release build's keyboard gameplay path is disabled). The default executable screen remains a renderer demo, not the game's original menu.
+This is **not yet a complete or release-ready Death Leak port**. The current encounter slice parses authored `NPCTrigger` and `WaterBlock` objects, spawns simplified ninja/ghost/skeleton opponents, runs knife and enemy projectiles, applies damage, and models focus depletion before drowning. It only approximates original Character/Player physics and does **not** reproduce full collision/AI and attack patterns, melee, most NPC interactions, complete UI/menus, audio, complete saves, shaders, particles, or animation; level entry placement and door semantics are incomplete. Keyboard play is an added Linux convenience (the Windows release build's keyboard gameplay path is disabled). The default executable screen remains a renderer demo, not the game's original menu.
 
 Headless integration smoke:
 
@@ -78,7 +78,7 @@ SDL_VIDEODRIVER=dummy port/build/deathleak-linux \
   --script L:340 --fixed-dt 0.0166667 --simulate-only
 ```
 
-This scripted left movement enters `grass_exploration_3.xml` through the authored trigger at frame 322 and places the player at that level's matching `LevelEntry`. `--script` supports `L`, `R`, `J` (jump), `F` (fire), `B` (right+fire), `N` (left+fire), and `.` (idle), each followed by `:frame-count`, comma-separated. This harness validates simulation and transitions, **not** rendered frame rate or human playability.
+This scripted left movement enters `grass_exploration_3.xml` through an authored trigger and places the player at that level's matching `LevelEntry`. `--script` supports `L`, `R`, `J` (jump), `F` (fire), `B` (right+fire), `N` (left+fire), `T` (restart after death), and `.` (idle), each followed by `:frame-count`, comma-separated. This harness validates simulation and transitions, **not** rendered frame rate or human playability.
 
 Experimental `--save-file <path>` writes the current level, position, and collected currency-orb IDs when the process exits. `--load-save <path>` resumes these values and updates the same file on exit. These are a limited Linux-port save format, not the original game's complete save/upgrade system. Currency orbs currently use the original 100-world-unit pickup radius and disappear on collection, but do not yet implement tracking animation, audio, upgrades, or the original UI.
 
@@ -89,3 +89,13 @@ Build with the Docker image above, then run `port/tests/integration.sh` in that 
 The Linux-only save format is now `DL2` (level, position, health, focus, collected orb IDs); `DL1` remains readable. It is not the original Windows save format, and encounter state is not persisted.
 
 For a measured headless render run, use `--profile` and `DEATHLEAK_RENDER_PROFILE=1`. On this Docker/dummy-video host, a five-frame forest sample reported 226 SDL draw calls, ~0.00008 s in `SDL_RenderCopy*`, and ~3.005 s in `SDL_RenderPresent`; update time was ~0.00002 s. This isolates the slow path to deferred software rasterization/presentation. It **does not** measure GPU performance, and there is no demonstrated optimization yet.
+
+## Player motion, death, and partial HUD continuation
+
+`PlayerMotion` now uses original player collision dimensions and source-scaled movement/jump/gravity/friction values at a 60 Hz target. Static `SolidLineStrip` slopes support landing and ground following; near-vertical segments block horizontal movement. This remains an approximation: moving solids, platform drop-through, wall-jump, water movement, other collision types, and per-level upgrade/state behavior are not implemented.
+
+At zero health the original `you_died.png` is shown. Press R to reload `grass_exploration_3.xml`, the destination hardcoded in the original death-screen UI action. The HUD currently shows only an original-art health bar and orb icon; it does not yet show count, XP, focus, text, or menus.
+
+Run `sh port/tests/integration.sh` for deterministic transition, encounter, save/resume, water, jump/landing, slope/wall, and death/restart checks. The script includes a synthetic geometry fixture at `port/tests/fixtures/slope_wall.xml`; passing it does not imply all original collision cases work.
+
+The latest five-frame dummy-video software run spent 3.210 s in present. Offscreen SDL OpenGL took 0.010 s for five frames, but the sandbox cannot open the DRM render devices and Vulkan sees only llvmpipe, so this is **not GPU-backed gameplay performance evidence**. A real display benchmark remains mandatory.
