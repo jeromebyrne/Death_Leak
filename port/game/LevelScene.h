@@ -32,7 +32,7 @@ struct Door { float x, y, width, height; std::string destination, requiredKey, i
 struct Boat { float x, y, width, height; std::string id; };
 struct DojoScroll { float x, y, width, height; std::string feature; std::string id; };
 struct KeyPickup { float x, y, width, height; std::string keyId; };
-struct PaperPickup { float x, y, width, height; std::string descriptionId; };
+struct PaperPickup { float x, y, width, height; std::string descriptionId, titleId; };
 struct HealthDevil { float x, y, width, height; };
 struct Smashable { SolidBox box; float x = 0, y = 0; bool smashed = false; };
 struct SpawnedOrb { float x, y, vx, vy, spawnDelay, trackingTime = 0; };

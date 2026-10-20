@@ -4,6 +4,7 @@
 #include "../game/PlayerMotion.h"
 #include "../game/Hud.h"
 #include "../game/BitmapText.h"
+#include "../game/PaperText.h"
 #include "../game/Settings.h"
 #include "../audio/SoundPlayer.h"
 #include <chrono>
@@ -309,7 +310,10 @@ int main(int argc, char** argv) {
     bool finalTitleShown = false, storyEnded = false;
     float levelTime = 0.f, interactHeldTime = 0.f, doorUnlockWait = 0.f;
     bool unlockingDoor = false;
-    bool upgradeModal = false;
+    bool upgradeModal = false, paperModal = false;
+    deathleak::game::PaperText paperText;
+    if (!paperText.Load("Game/XmlFiles/strings.xml")) { std::cerr << "Cannot load Game/XmlFiles/strings.xml\n"; return 1; }
+    std::string paperTitle, paperDescription;
     float modalWarmup = 0.f;
     bool purchaseHeld = false, dismissHeld = false;
     auto modalBackground = (playLevel.empty() && !menuLoop) ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/blank_dark.png", error);
@@ -324,6 +328,7 @@ int main(int argc, char** argv) {
     };
     if (playLevel == "Game/XmlFiles/levels/sea_2.xml") loadFilmFrames();
     auto modalOrb = (playLevel.empty() && !menuLoop) ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/orb.png", error);
+    auto paperBackButton = (playLevel.empty() && !menuLoop) ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/gamepad_icons/key_esc.png", error);
     auto modalButton = (playLevel.empty() && !menuLoop) ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/gamepad_icons/y.png", error);
     std::string interactionTarget;
     int facing = 1;
@@ -389,8 +394,8 @@ int main(int argc, char** argv) {
         if (fixedDt > 0) dt = fixedDt;
         if (dt > 0.05f) dt = 0.05f;
         const char command = frame < static_cast<int>(scriptedInput.size()) ? scriptedInput[frame] : 0;
-        if (renderer->KeyDown(Escape) && !upgradeModal && !dismissHeld && (!menuLoop || !playLevel.empty())) break;
-        if (!renderer->KeyDown(Escape) && !upgradeModal) dismissHeld = false;
+        if (renderer->KeyDown(Escape) && !upgradeModal && !paperModal && !dismissHeld && (!menuLoop || !playLevel.empty())) break;
+        if (!renderer->KeyDown(Escape) && !upgradeModal && !paperModal) dismissHeld = false;
         if (menuLoop && playLevel.empty()) {
             menuFilmTime += dt;
             if (auto scripted = scriptedMouse.find(frame); scripted != scriptedMouse.end()) scriptedMouseState = scripted->second;
@@ -468,7 +473,7 @@ int main(int argc, char** argv) {
                     worldX = motion.X(); worldY = motion.Y();
                     cameraX = scene.CameraX(); cameraY = scene.CameraY();
                     finalSceneTime = levelTime = interactHeldTime = doorUnlockWait = 0;
-                    finalTitleShown = storyEnded = wasDead = unlockingDoor = upgradeModal = false;
+                    finalTitleShown = storyEnded = wasDead = unlockingDoor = upgradeModal = paperModal = false;
                     interactionTarget.clear(); menuSelection = 0;
                     std::cout << "Menu New Game at frame " << frame << " entered " << currentLevel
                               << " completion count=" << completions << " language=" << language << '\n';
@@ -494,7 +499,15 @@ int main(int argc, char** argv) {
                     std::cout << "EndStory at frame " << frame << " time=" << finalSceneTime << "\n";
                 }
             } else {
-            if (upgradeModal) {
+            if (paperModal) {
+                modalWarmup += dt;
+                const bool dismiss = !script.empty() ? command == 'X' : renderer->KeyDown(Escape);
+                if (dismiss && !dismissHeld && modalWarmup >= 1.f) {
+                    paperModal = false;
+                    std::cout << "Dismissed paper modal at frame " << frame << '\n';
+                }
+                dismissHeld = dismiss;
+            } else if (upgradeModal) {
                 modalWarmup += dt;
                 const bool purchase = !script.empty() ? command == 'P' : renderer->KeyDown(Purchase);
                 const bool dismiss = !script.empty() ? command == 'X' : renderer->KeyDown(Escape);
@@ -632,6 +645,14 @@ int main(int argc, char** argv) {
             } else if (interactHeldTime >= 0.05f && nearbyPaper) {
                 collectedPapers.insert(nearbyPaper->descriptionId);
                 scene.ApplyPapers(collectedPapers);
+                paperTitle = paperText.Lookup(nearbyPaper->titleId, language);
+                paperDescription = paperText.Lookup(nearbyPaper->descriptionId, language);
+                paperModal = true; modalWarmup = 0.f; dismissHeld = false;
+                if (sound) sound->Play(deathleak::audio::Cue::PaperPickup);
+                std::cout << "Opened paper modal title=" << std::quoted(paperTitle)
+                          << " description=" << std::quoted(paperDescription)
+                          << " locale=" << (language.empty() ? "en-gb" : language)
+                          << " at frame " << frame << '\n';
                 std::cout << "Collected paper " << nearbyPaper->descriptionId << " at frame " << frame << '\n';
                 interactHeldTime = 0; interactionTarget.clear();
             } else if (interactHeldTime >= 0.05f && nearbyDevil) {
@@ -822,6 +843,9 @@ int main(int argc, char** argv) {
                 }
                 if (finalTitleShown) deathleak::game::DrawBitmapText(*renderer, "DEATH LEAK", 200, 255, 16, {255,0,0,245});
             } else hud.Draw(*renderer, combat.Health(), combat.MaxHealth(), combat.Focus(), orbBalance);
+            if (paperModal)
+                deathleak::game::DrawPaperModal(*renderer, paperTitle, paperDescription,
+                    modalBackground, paperBackButton, modalWarmup >= 1.f);
             if (upgradeModal) {
                 if (modalBackground) renderer->DrawSprite({modalBackground, {}, {0,0,1280,720}, {255,255,255,204}});
                 if (modalOrb) renderer->DrawSprite({modalOrb, {}, {520,460,56,85}});

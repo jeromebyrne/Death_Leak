@@ -171,6 +171,26 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
     paper_id = 'paper_pickup_gametip_projectile'
     assert 'Collected paper ' + paper_id + ' at frame 2' in collected.stdout, collected.stdout
     assert 'P:' + paper_id in paper_saved.read_text().splitlines()
+    assert 'Opened paper modal title="GAME TIP" description="Hold the RIGHT THUMBSTICK' in collected.stdout
+    # The modal freezes world simulation, ignores dismissal before one second,
+    # then resumes normal movement after an explicit later dismissal.
+    def paper_modal_trace(script, locale=None):
+        args = ['port/build/deathleak-linux', '--load-save', str(paper_fresh),
+                '--save-file', str(root / ('paper-modal-' + str(len(list(root.iterdir()))) + '.dl5')),
+                '--script', script, '--fixed-dt', '0.0166667', '--simulate-only']
+        if locale: args += ['--language', locale]
+        return subprocess.run(args, capture_output=True, text=True, check=True).stdout
+    opened = paper_modal_trace('I:3')
+    frozen = paper_modal_trace('I:3,R:30,X:1,.:65')
+    dismissed = paper_modal_trace('I:3,R:30,X:1,.:65,X:1,R:30')
+    position = lambda trace: trace.split(' player=(', 1)[1].split(')', 1)[0]
+    assert position(opened) == position(frozen), (opened, frozen)
+    assert 'Dismissed paper modal' not in frozen
+    assert 'Dismissed paper modal at frame 99' in dismissed and position(dismissed) != position(frozen)
+    # strings.xml currently contains only en-gb; selected pt-br falls back to
+    # that actual authored string while retaining the selected locale.
+    localized = paper_modal_trace('I:3', 'pt-br')
+    assert 'locale=pt-br' in localized and 'title="GAME TIP" description="Hold the RIGHT THUMBSTICK' in localized
     paper_repeat = subprocess.run(['port/build/deathleak-linux', '--load-save', str(paper_saved),
                                    '--script', 'I:5', '--fixed-dt', '0.0166667', '--simulate-only'],
                                   capture_output=True, text=True, check=True)

@@ -101,7 +101,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         if (kind == "PaperPickup") {
             auto* loc = object->FirstChildElement("loc_id");
             if (loc && loc->Attribute("desc") && *loc->Attribute("desc"))
-                papers_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),loc->Attribute("desc")});
+                papers_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),loc->Attribute("desc"),loc->Attribute("title") ? loc->Attribute("title") : ""});
         }
         if (kind == "Boat" && object->Attribute("id"))
             boats_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),object->Attribute("id")});
