@@ -377,7 +377,7 @@ int main(int argc, char** argv) {
         else {
             scene.Draw(*renderer, cameraX, cameraY, worldX, worldY);
             combat.Draw(*renderer, cameraX, cameraY);
-            hud.Draw(*renderer, combat.Health(), combat.Focus());
+            hud.Draw(*renderer, combat.Health(), combat.Focus(), orbBalance);
             if (upgradeModal) {
                 if (modalBackground) renderer->DrawSprite({modalBackground, {}, {0,0,1280,720}, {255,255,255,204}});
                 if (modalOrb) renderer->DrawSprite({modalOrb, {}, {520,460,56,85}});

@@ -264,6 +264,39 @@ assert Counter(x.split('/')[-1].split('#')[0] for x in set(earned) - old) == {
 assert 'B:343' in current and 'U:kDeflection' not in current
 PYREFINED
 
+# One continuous normal-control forest-start run earns exactly 375 distinct
+# authored orbs, buys the actual forest scroll at production price, then
+# revisits the authored village graph and deflects a fresh shrine ninja star.
+# The separate saved snapshots prove the debit without respawning pickups.
+earned_purchase_script=$(cat port/tests/routes/earned_deflection_purchase.script)
+earned_purchase_save=port/build/earned-purchase-save.txt
+earned_purchase=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$earned_purchase_script" --fixed-dt 0.0166667 --simulate-only --combat-state --save-file "$earned_purchase_save")
+printf '%s\n' "$earned_purchase" | grep -q 'Opened kDeflection upgrade modal at frame 31619 cost=375 balance=375'
+printf '%s\n' "$earned_purchase" | grep -q 'Purchased kDeflection at frame 31621 balance=0'
+printf '%s\n' "$earned_purchase" | grep -q 'forest_exploration_1.xml player=(1176.53,3381.52) orbs=375 .*health=1 .*balance=0'
+printf '%s\n' "$earned_purchase" | grep -q 'Deflection unlocked=1 count=0'
+if printf '%s\n' "$earned_purchase" | grep -q 'Player died'; then exit 1; fi
+earned_deflect_suffix='R:550,E:40,B:1200,E:40,B:1060,E:40,B:260,E:40,B:760,E:40,B:160,E:40,B:460,E:40,B:340,E:40,B:50,E:40,B:50,E:40,B:50,E:40,B:550,E:40,B:70,M:25,B:25,E:40,B:160,E:40,B:760,E:40,B:1060,E:40,B:60,E:40,B:360'
+earned_deflect_save=port/build/earned-deflect-save.txt
+earned_deflect=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$earned_purchase_script,$earned_deflect_suffix" --fixed-dt 0.0166667 --simulate-only --combat-state --save-file "$earned_deflect_save")
+printf '%s\n' "$earned_deflect" | grep -q 'Purchased kDeflection at frame 31621 balance=0'
+printf '%s\n' "$earned_deflect" | grep -q 'Trigger at frame 37304 from .*village_central.xml .*village_shrine.xml'
+printf '%s\n' "$earned_deflect" | grep -q 'village_agri.xml player=(1951.18,-1278.17) orbs=383 .*health=1 .*balance=8 .*spawned=18'
+printf '%s\n' "$earned_deflect" | grep -q 'Deflection unlocked=1 count=1'
+if printf '%s\n' "$earned_deflect" | grep -q 'Player died'; then exit 1; fi
+python3 - <<'PYEARNEDEDFLECT'
+from pathlib import Path
+ids = lambda lines: [line for line in lines if line.startswith('Game/XmlFiles/levels/') and '#' in line]
+purchase = Path('port/build/earned-purchase-save.txt').read_text().splitlines()
+deflected = Path('port/build/earned-deflect-save.txt').read_text().splitlines()
+a, b = ids(purchase), ids(deflected)
+assert len(a) == len(set(a)) == 375
+assert len(b) == len(set(b)) == 383 and set(a) <= set(b)
+assert 'B:0' in purchase and 'B:8' in deflected
+assert 'U:kDeflection' in purchase and 'U:kDeflection' in deflected
+assert any(line.startswith('N:Game/XmlFiles/levels/village_shrine.xml#189\t') for line in deflected)
+PYEARNEDEDFLECT
+
 # A held left+jump just before grass 1's lower dead-end trigger keeps the
 # player on the upper route to grass 2 and the authored cliff. Reversing on
 # the reachable lower cliff path collects more distinct authored orbs; its
@@ -565,4 +598,4 @@ legacy=$($bin --load-save port/build/legacy-dl3-save.txt --frames 1 --fixed-dt 0
 printf '%s\n' "$legacy" | grep -q 'keys=1'
 
 if printf '%s\n' "$key_only_resume" | grep -q 'Collected key'; then exit 1; fi
-printf '%s\n' 'PASS: source-held-jump arena climb and exit, three-level route, burst/water fire, swim, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, solid box, wall jump, death/restart, key/door gate, ghost flight, ranged warmup/terrain shots and kill, grounded NPC fall/wall/box, NPC combo/stun/recovery, NPC teleport timing/exclusion, ranged NPC jump/roll and projectile kickback, source-faithful player/NPC contact pass-through, grounded phase-three melee and its negative gates, DL3/DL4 compatibility, DL5 orb-balance persistence and scroll modal purchase'
+printf '%s\n' 'PASS: source-held-jump arena climb and exit, three-level route, burst/water fire, swim, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, solid box, wall jump, death/restart, key/door gate, ghost flight, ranged warmup/terrain shots and kill, grounded NPC fall/wall/box, NPC combo/stun/recovery, NPC teleport timing/exclusion, ranged NPC jump/roll and projectile kickback, source-faithful player/NPC contact pass-through, grounded phase-three melee and its negative gates, DL3/DL4 compatibility, DL5 orb-balance persistence, authentic 375-orb purchase/debit and same-run authored ninja deflection'
