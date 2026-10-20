@@ -308,6 +308,29 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
                                     capture_output=True, text=True, check=True)
     assert 'Collected key lock_first at frame 9' in reset_on_visit.stdout, reset_on_visit.stdout
     assert 'Collected key lock_second' not in reset_on_visit.stdout, reset_on_visit.stdout
+    # Manager visitation is depth-descending. Momentum carries the player out
+    # of the selected key's overlap on the first renewed I frame. A competing
+    # earlier object has already run and misses that frame's hold; a later
+    # object acquires immediately when the selected key releases its lock.
+    release_fixture = Path('port/tests/fixtures/interactable_release_order.xml')
+    release_camera = root / 'release-order-camera.csv'
+    release_camera.write_text(''.join(f'{at},-2000,107.44937\n' for at in range(3)) +
+                              '3,100,107.44937\n')
+    def release_trace(fixture):
+        return subprocess.run(['port/build/deathleak-linux', '--play', str(fixture),
+                               '--script', 'I:2,R:1,I:5', '--fixed-dt', '0.0166667',
+                               '--simulate-only', '--camera-script', str(release_camera)],
+                              capture_output=True, text=True, check=True).stdout
+    earlier = release_trace(release_fixture)
+    assert 'Collected key candidate_earlier at frame 6' in earlier, earlier
+    assert 'Collected key release_later' not in earlier, earlier
+    later_fixture = root / 'interactable-release-later-candidate.xml'
+    later_fixture.write_text(release_fixture.read_text().replace(
+        'x="0" y="107.44937" depth_layer="kGroundFront"',
+        'x="0" y="107.44937" depth_layer="kGround"'))
+    later = release_trace(later_fixture)
+    assert 'Collected key candidate_earlier at frame 5' in later, later
+    assert 'Collected key release_later' not in later, later
     rejected_live_camera = subprocess.run(['port/build/deathleak-linux', '--play', lock_fixture,
                                            '--camera-script', str(camera_trace)],
                                           capture_output=True, text=True)

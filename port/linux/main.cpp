@@ -733,11 +733,15 @@ int main(int argc, char** argv) {
                     inManagerZone(object.x, object.y, object.width, object.height));
             };
             bool lockFound = false, lockVisited = false, lockOverlaps = false;
+            int releasedDepth = -2;
+            size_t releasedOrder = 0;
+            bool releasedThisFrame = false;
             auto inspectLock = [&](const std::string& id, const auto& object) {
                 if (interactionTarget != id) return;
                 lockFound = true;
                 lockVisited = visited(object);
                 lockOverlaps = overlap(object.x, object.y, object.width, object.height);
+                releasedDepth = object.depth; releasedOrder = object.order;
             };
             for (const auto& key : scene.Keys()) inspectLock("K:" + key.keyId, key);
             for (const auto& paper : scene.Papers()) inspectLock("P:" + paper.descriptionId, paper);
@@ -748,11 +752,13 @@ int main(int argc, char** argv) {
             if (interactionTarget == "H:" + currentLevel && healthPickup) {
                 lockFound = true;
                 lockVisited = pickupUpdatedThisFrame;
+                releasedDepth = 3000; releasedOrder = std::numeric_limits<size_t>::max();
                 lockOverlaps = std::abs(worldX-pickupInteractionX) < (128.959793f+50.f)*0.5f &&
                     std::abs(worldY-pickupInteractionY) < (214.898743f+70.f)*0.5f;
             }
             const bool frozenInteractable = !interactionTarget.empty() && lockFound && !lockVisited;
             if (!interactionTarget.empty() && (!lockFound || (lockVisited && !lockOverlaps))) {
+                releasedThisFrame = lockFound && lockVisited;
                 interactionTarget.clear(); interactHeldTime = 0.f;
             }
             // AddGameObject re-sorts the live list by descending depth. A
@@ -763,6 +769,11 @@ int main(int argc, char** argv) {
             size_t selectedOrder = 0;
             auto select = [&](const std::string& id, int depth, size_t order) {
                 if (frozenInteractable || (!interactionTarget.empty() && id != interactionTarget)) return;
+                // Objects earlier in the live manager list were already visited
+                // while the old lock was held; only later objects can acquire
+                // a lock after its owner releases it in this same update pass.
+                if (releasedThisFrame && (depth > releasedDepth ||
+                    (depth == releasedDepth && order <= releasedOrder))) return;
                 const bool held = !interactionTarget.empty() && id == interactionTarget;
                 const bool selectedHeld = !interactionTarget.empty() && target == interactionTarget;
                 if (!held && (selectedHeld || (depth < selectedDepth) ||
