@@ -45,13 +45,21 @@ public:
         return true;
     }
     void Play(Cue cue, int variation) override {
-        if (!device_) return;
+        if (!device_ || !sfxEnabled_) return;
         const size_t index = cue == Cue::OrbCollect ? 3 : cue == Cue::FinalTitle ? 4 : static_cast<size_t>((variation % 3 + 3) % 3);
         SDL_LockAudioDevice(device_);
         if (voices_.size() < 16) voices_.push_back({index, 0});
         SDL_UnlockAudioDevice(device_);
     }
+    void SetSfxEnabled(bool enabled) override {
+        if (!device_) { sfxEnabled_ = enabled; return; }
+        SDL_LockAudioDevice(device_);
+        sfxEnabled_ = enabled;
+        if (!enabled) voices_.clear();
+        SDL_UnlockAudioDevice(device_);
+    }
 private:
+    bool sfxEnabled_ = true;
     struct Voice { size_t sample, offset; };
     static void Callback(void* userdata, Uint8* stream, int length) {
         auto& self = *static_cast<SDLSoundPlayer*>(userdata);

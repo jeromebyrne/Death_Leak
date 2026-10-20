@@ -404,13 +404,33 @@ grep -q '^G:pt-br$' "$menu_save"
 if grep -q '^K:stale_key$' "$menu_save"; then exit 1; fi
 # Navigate from Play to Options, choose German, return to menu, then quit.
 printf 'DL6\nMENU\nC:2\nG:pt-br\n' > "$menu_save"
-menu_options=$($bin --menu-loop --script N:1,S:1,N:1,.:1,N:1,S:1,X:1,.:1,X:1 --fixed-dt 0.0166667 --simulate-only --save-file "$menu_save")
-printf '%s\n' "$menu_options" | grep -q 'Menu language selected de at frame 5'
+menu_options=$($bin --menu-loop --script N:1,S:1,N:1,.:1,N:1,S:1,N:1,.:1,N:1,S:1,X:1,.:1,X:1,.:1,X:1 --fixed-dt 0.0166667 --simulate-only --save-file "$menu_save")
+printf '%s\n' "$menu_options" | grep -q 'Menu language selected de at frame 9'
 printf '%s\n' "$menu_options" | grep -q 'Menu idle completion count=2 language=de'
 python3 - <<'PYMENU'
 from pathlib import Path
 assert Path('port/build/integration-menu-save.txt').read_text().splitlines() == ['DL6','MENU','C:2','G:de']
 PYMENU
+# Original Settings persists music/SFX separately from the bargon save.
+settings_file=port/build/integration-settings.xml
+rm -f "$settings_file"
+settings_first=$($bin --menu-loop --script N:1,S:1,.:1,S:1,N:1,.:1,S:1 --fixed-dt 0.0166667 --simulate-only --save-file "$menu_save" --settings-file "$settings_file")
+printf '%s\n' "$settings_first" | grep -q 'Menu settings music=0 sfx=1 at frame 3'
+printf '%s\n' "$settings_first" | grep -q 'Menu settings music=0 sfx=0 at frame 6'
+python3 - <<'PYSETTINGS'
+from pathlib import Path
+import xml.etree.ElementTree as ET
+audio=ET.parse('port/build/integration-settings.xml').getroot().find('audio')
+assert audio.attrib == {'music_enabled':'0','sfx_enabled':'0'}
+assert Path('port/build/integration-menu-save.txt').read_text().splitlines() == ['DL6','MENU','C:2','G:de']
+PYSETTINGS
+settings_reload=$($bin --menu-loop --script N:1,S:1,.:1,S:1 --fixed-dt 0.0166667 --simulate-only --settings-file "$settings_file")
+printf '%s\n' "$settings_reload" | grep -q 'Menu settings music=1 sfx=0 at frame 3'
+python3 - <<'PYSETTINGS'
+import xml.etree.ElementTree as ET
+audio=ET.parse('port/build/integration-settings.xml').getroot().find('audio')
+assert audio.attrib == {'music_enabled':'1','sfx_enabled':'0'}
+PYSETTINGS
 # The ending returns to an actual menu in-process. A following normal menu
 # action starts a fresh authored spawn with completion metadata but no old keys.
 printf 'DL6\nMENU\nC:2\nG:de\nK:stale_key\n' > "$menu_save"

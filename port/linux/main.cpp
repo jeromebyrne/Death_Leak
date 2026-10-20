@@ -4,6 +4,7 @@
 #include "../game/PlayerMotion.h"
 #include "../game/Hud.h"
 #include "../game/BitmapText.h"
+#include "../game/Settings.h"
 #include "../audio/SoundPlayer.h"
 #include <chrono>
 #include <cstdint>
@@ -31,6 +32,7 @@ int main(int argc, char** argv) {
     std::string playLevel;
     std::string script;
     std::string saveFile, loadSaveFile;
+    std::string settingsFile = "deathleak-settings.xml";
     float savedX = 0, savedY = 0, savedHealth = 25, savedFocus = 100;
     bool restorePosition = false;
     std::unordered_set<std::string> collectedOrbs, ownedKeys, unlockedDoors;
@@ -56,6 +58,7 @@ int main(int argc, char** argv) {
         else if (arg == "--level-preview" && i + 1 < argc) levelPreview = argv[++i];
         else if (arg == "--play" && i + 1 < argc) playLevel = argv[++i];
         else if (arg == "--save-file" && i + 1 < argc) saveFile = argv[++i];
+        else if (arg == "--settings-file" && i + 1 < argc) settingsFile = argv[++i];
         else if (arg == "--language" && i + 1 < argc) selectedLanguage = argv[++i];
         else if (arg == "--load-save" && i + 1 < argc) loadSaveFile = argv[++i];
         else if (arg == "--script" && i + 1 < argc) script = argv[++i];
@@ -72,6 +75,8 @@ int main(int argc, char** argv) {
     if (!selectedLanguage.empty() && selectedLanguage != "en-gb" && selectedLanguage != "pt-br" && selectedLanguage != "de") {
         std::cerr << "Unsupported language locale\n"; return 2;
     }
+    deathleak::game::Settings settings;
+    if (!settings.Load(settingsFile)) { std::cerr << "Invalid settings file: " << settingsFile << '\n'; return 2; }
     // A completed run leaves a metadata-only save, matching the original
     // SaveManager wipe: language and number of completions survive, progress does not.
     // A new game may select the same save path without loading old progress.
@@ -171,7 +176,7 @@ int main(int argc, char** argv) {
         if (!sound->Initialize(audioError)) {
             std::cerr << "Audio unavailable: " << audioError << '\n';
             sound.reset();
-        }
+        } else sound->SetSfxEnabled(settings.sfx);
     }
     deathleak::game::LevelScene scene;
     std::string levelPath = !playLevel.empty() ? playLevel : levelPreview;
@@ -255,7 +260,7 @@ int main(int argc, char** argv) {
         }
     }
     int menuSelection = 0;
-    bool menuOptions = false, menuUpHeld = false, menuDownHeld = false, menuActivateHeld = false, menuBackHeld = false;
+    bool menuOptions = false, menuLanguages = false, menuUpHeld = false, menuDownHeld = false, menuActivateHeld = false, menuBackHeld = false;
     bool completionOccurred = false;
     const auto persistMenuMetadata = [&]() -> bool {
         if (saveFile.empty()) return true;
@@ -287,18 +292,30 @@ int main(int argc, char** argv) {
             const bool down = script.empty() ? renderer->KeyDown(Down) : command == 'N';
             const bool activate = script.empty() ? renderer->KeyDown(Interact) : command == 'S';
             const bool back = script.empty() ? renderer->KeyDown(Escape) : command == 'X';
-            if (back && !menuBackHeld && menuOptions) { menuOptions = false; menuSelection = 0; }
+            if (back && !menuBackHeld && menuLanguages) { menuLanguages = false; menuSelection = 2; }
+            else if (back && !menuBackHeld && menuOptions) { menuOptions = false; menuSelection = 0; }
             else if (back && !menuBackHeld) break;
-            if (up && !menuUpHeld) menuSelection = (menuSelection + (menuOptions ? 3 : 2)) % (menuOptions ? 4 : 3);
-            if (down && !menuDownHeld) menuSelection = (menuSelection + 1) % (menuOptions ? 4 : 3);
+            const int menuCount = menuLanguages || menuOptions ? 4 : 3;
+            if (up && !menuUpHeld) menuSelection = (menuSelection + menuCount - 1) % menuCount;
+            if (down && !menuDownHeld) menuSelection = (menuSelection + 1) % menuCount;
             if (activate && !menuActivateHeld) {
-                if (menuOptions) {
-                    if (menuSelection == 3) { menuOptions = false; menuSelection = 0; }
+                if (menuLanguages) {
+                    if (menuSelection == 3) { menuLanguages = false; menuSelection = 2; }
                     else {
                         constexpr std::array<const char*, 3> locales = {"en-gb", "pt-br", "de"};
                         language = locales[menuSelection];
                         std::cout << "Menu language selected " << language << " at frame " << frame << '\n';
                         if (!persistMenuMetadata()) return 1;
+                    }
+                } else if (menuOptions) {
+                    if (menuSelection == 3) { menuOptions = false; menuSelection = 0; }
+                    else if (menuSelection == 2) { menuLanguages = true; menuSelection = 0; }
+                    else {
+                        if (menuSelection == 0) settings.music = !settings.music;
+                        else settings.sfx = !settings.sfx;
+                        if (!settings.Save(settingsFile)) { std::cerr << "Settings write failed: " << settingsFile << '\n'; return 1; }
+                        if (sound) sound->SetSfxEnabled(settings.sfx);
+                        std::cout << "Menu settings music=" << settings.music << " sfx=" << settings.sfx << " at frame " << frame << '\n';
                     }
                 } else if (menuSelection == 2) break;
                 else if (menuSelection == 1) { menuOptions = true; menuSelection = 0; }
@@ -311,6 +328,7 @@ int main(int argc, char** argv) {
                         sound = deathleak::audio::CreateSoundPlayer();
                         std::string audioError;
                         if (!sound->Initialize(audioError)) { std::cerr << "Audio unavailable: " << audioError << '\n'; sound.reset(); }
+                        else sound->SetSfxEnabled(settings.sfx);
                     }
                     playLevel = levelPath = currentLevel = freshLevel;
                     collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear();
@@ -548,7 +566,7 @@ int main(int argc, char** argv) {
             orbBalance = 0; scene = deathleak::game::LevelScene{};
             combat = deathleak::game::Combat{};
             finalSceneTime = 0; finalTitleShown = storyEnded = false;
-            menuSelection = 0; menuOptions = false;
+            menuSelection = 0; menuOptions = menuLanguages = false;
         }
         auto afterUpdate = std::chrono::steady_clock::now();
         updateSeconds += std::chrono::duration<double>(afterUpdate-now).count();
@@ -559,8 +577,15 @@ int main(int argc, char** argv) {
             if (menuLoop) {
                 if (menuTitle) renderer->DrawSprite({menuTitle, {}, {140, 92, 502, 129}});
                 if (menuFrame) renderer->DrawSprite({menuFrame, {}, {0, 0, 1280, 720}});
-                if (menuOptions) {
+                if (menuLanguages) {
                     constexpr std::array<const char*, 4> labels = {"ENGLISH", "PORTUGUESE", "DEUTSCH", "BACK"};
+                    for (int i = 0; i < 4; ++i)
+                        deathleak::game::DrawBitmapText(*renderer, labels[i], 400, 270 + i*65, 4,
+                            i == menuSelection ? Color{255,0,0,255} : Color{255,255,255,255});
+                } else if (menuOptions) {
+                    const std::array<std::string, 4> labels = {
+                        std::string("MUSIC: ") + (settings.music ? "ON" : "OFF"),
+                        std::string("SFX: ") + (settings.sfx ? "ON" : "OFF"), "LANGUAGE", "BACK"};
                     for (int i = 0; i < 4; ++i)
                         deathleak::game::DrawBitmapText(*renderer, labels[i], 400, 270 + i*65, 4,
                             i == menuSelection ? Color{255,0,0,255} : Color{255,255,255,255});

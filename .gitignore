@@ -24,3 +24,4 @@ steamworks_sdk_142/sdk/tools/ContentBuilder/content/
 steamworks_sdk_142/sdk/tools/ContentBuilder/output/
 
 /port/build/
+/deathleak-settings.xml
