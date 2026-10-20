@@ -19,14 +19,22 @@ void PlayerMotion::Reset(float x, float y) {
 void PlayerMotion::Update(const LevelScene& scene, float dt, int direction, bool jump) {
     if (dt <= 0) return;
     const float ticks = dt * 60.f;
+    bool inWater = false;
+    for (const auto& hazard : scene.Hazards())
+        if (hazard.water && std::abs(x_-hazard.x) <= hazard.width*0.5f &&
+            std::abs(y_-hazard.y) <= hazard.height*0.5f) inWater = true;
     if (wallJumpRemaining_ > 0) wallJumpRemaining_ = std::max(0.f, wallJumpRemaining_ - dt);
     if (wallJumpRemaining_ <= 0) {
-        if (direction) vx_ = std::clamp(vx_ + direction * 60.f * ticks, -kMaxSpeed, kMaxSpeed);
+        if (direction) vx_ = std::clamp(vx_ + direction * 60.f * ticks, -kMaxSpeed*(inWater ? 0.4f : 1.f), kMaxSpeed*(inWater ? 0.4f : 1.f));
         else vx_ *= std::pow(0.80f, ticks); // Player::UpdateResistance without acceleration
     } else vx_ *= std::pow(0.99f, ticks);
     if (std::abs(vx_) < 6.f) vx_ = 0;
     // Character::CanJump permits a 0.3 s post-edge window.
-    if (jump && !jumpHeld_ && (grounded_ || sinceGround_ <= 0.3f || wallSide_)) {
+    if (inWater && jump) {
+        // Gamepad swim applies AccelerateY(1, 0.3) each target update.
+        // MovingSprite clamps submerged vertical speed to four units/tick.
+        vy_ = std::min(4.f*60.f, vy_ + 0.3f*60.f*ticks);
+    } else if (jump && !jumpHeld_ && (grounded_ || sinceGround_ <= 0.3f || wallSide_)) {
         if (!grounded_ && sinceGround_ > 0.3f && wallSide_) {
             vx_ = -wallSide_ * kWallJumpSpeedX;
             vy_ = kWallJumpSpeedY;
@@ -63,9 +71,10 @@ void PlayerMotion::Update(const LevelScene& scene, float dt, int direction, bool
         // Original MovingSprite applies gravity after velocity integration;
         // this continuous equivalent preserves the source jump/gravity scale.
         const float wallGravity = wallSide_ ? kGravity * 0.5f : kGravity;
-        const float gravity = vy_ < 0 && vy_ > -15.f*60.f ? wallGravity*3.f : wallGravity;
+        const float gravity = inWater ? kGravity * 0.1f :
+            (vy_ < 0 && vy_ > -15.f*60.f ? wallGravity*3.f : wallGravity);
         y_ += vy_*dt - 0.5f*gravity*dt*dt;
-        vy_ = std::max(-34.f*60.f, vy_-gravity*dt);
+        vy_ = std::max(inWater ? -4.f*60.f : -34.f*60.f, vy_-gravity*dt);
         if (wallSide_ && vy_ < 0) vy_ *= std::pow(0.7f, ticks);
     }
     const bool wasGrounded = grounded_;
