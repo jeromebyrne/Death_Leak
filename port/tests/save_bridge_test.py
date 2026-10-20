@@ -235,16 +235,23 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
     assert 'H:45' not in uncollected.read_text().splitlines()
     returned = subprocess.run(['port/build/deathleak-linux', '--load-save', str(hot_start),
                                '--save-file', str(root / 'devil-returned.dl5'),
-                               '--script', 'I:25,L:100,.:750,R:100,.:100',
+                               '--script', 'I:25,L:100,.:750,R:50,I:50',
                                '--fixed-dt', '0.0166667', '--simulate-only'],
                               capture_output=True, text=True, check=True)
     assert 'Health devil reward spawned ' + hot + ' at frame 767 count=1' in returned.stdout
-    assert 'Health upgrade collected ' + hot + ' at frame 925 max_health=45' in returned.stdout
+    assert 'Health upgrade collected ' + hot + ' at frame 927 max_health=45' in returned.stdout
     uncollected_reload = subprocess.run(['port/build/deathleak-linux', '--load-save', str(uncollected),
                                          '--script', 'I:800', '--fixed-dt', '0.0166667', '--simulate-only'],
                                         capture_output=True, text=True, check=True)
     assert 'Health devil dialog ' not in uncollected_reload.stdout
     assert 'max_health=25' in uncollected_reload.stdout
+    # Overlap alone must not grant the upgrade: Pickup::OnInteracted owns it.
+    untouched = subprocess.run(['port/build/deathleak-linux', '--load-save', str(hot_start),
+                                '--save-file', str(root / 'devil-untouched.dl5'),
+                                '--script', 'I:25,.:775', '--fixed-dt', '0.0166667', '--simulate-only'],
+                               capture_output=True, text=True, check=True)
+    assert 'Health devil reward spawned ' + hot in untouched.stdout
+    assert 'Health upgrade collected ' not in untouched.stdout and 'max_health=25' in untouched.stdout
     hot_earned = root / 'devil-earned.dl5'
     earned = subprocess.run(['port/build/deathleak-linux', '--load-save', str(hot_start),
                              '--save-file', str(hot_earned), '--script', 'I:800',
@@ -252,7 +259,7 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
                             capture_output=True, text=True, check=True)
     assert 'Health devil dialog ' + hot + ' at frame 20 voice=1' in earned.stdout, earned.stdout
     assert 'Health devil reward spawned ' + hot + ' at frame 767 count=1' in earned.stdout, earned.stdout
-    assert 'Health upgrade collected ' + hot + ' at frame 768 max_health=45' in earned.stdout, earned.stdout
+    assert 'Health upgrade collected ' + hot + ' at frame 769 max_health=45' in earned.stdout, earned.stdout
     assert 'health=25' in earned.stdout and 'max_health=45' in earned.stdout, earned.stdout
     assert {'V:' + hot, 'J:1', 'H:45'} <= set(hot_earned.read_text().splitlines())
     repeated = subprocess.run(['port/build/deathleak-linux', '--load-save', str(hot_earned),
@@ -287,7 +294,7 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
                            capture_output=True, text=True, check=True)
     assert 'Health devil dialog ' + cliff + ' at frame 21 voice=3' in third.stdout, third.stdout
     assert 'Health devil reward spawned ' + cliff + ' at frame 732 count=3' in third.stdout, third.stdout
-    assert 'Health upgrade collected ' + cliff + ' at frame 733 max_health=85' in third.stdout, third.stdout
+    assert 'Health upgrade collected ' + cliff + ' at frame 734 max_health=85' in third.stdout, third.stdout
     third_win = root / 'devil-third.xml'
     run('export', third_earned, third_win, '--discard-runtime')
     third_fields = bridge.windows_fields(third_win)

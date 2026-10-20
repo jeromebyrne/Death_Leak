@@ -9,7 +9,7 @@ struct AmbientSource {
     float x = 0, y = 0, width = 0, height = 0, fadeWidth = 0, fadeHeight = 0;
     bool adjustToCamera = false, repeat = false;
 };
-enum class Cue { KnifeThrow, OrbCollect, FinalTitle, StoneSmash, PaperPickup };
+enum class Cue { KnifeThrow, OrbCollect, FinalTitle, StoneSmash, PaperPickup, HealthUpgrade };
 
 // Optional game audio boundary; SDL and device handles stay in the backend.
 class SoundPlayer {

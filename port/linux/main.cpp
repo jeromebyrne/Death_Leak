@@ -656,15 +656,6 @@ int main(int argc, char** argv) {
                             healthPickup->y = y + 35.f; healthPickup->vy = 0.f;
                         }
                     }
-                    if (std::abs(worldX-healthPickup->x) <= (128.959793f+50.f)*0.5f &&
-                        std::abs(worldY-healthPickup->y) <= (214.898743f+70.f)*0.5f) {
-                        savedMaxHealth = combat.MaxHealth() + 20.f;
-                        hasSavedMaxHealth = true;
-                        combat.SetMaxHealth(savedMaxHealth);
-                        std::cout << "Health upgrade collected " << currentLevel
-                                  << " at frame " << frame << " max_health=" << savedMaxHealth << '\n';
-                        healthPickup.reset();
-                    }
                 }
             }
             if (doorUnlockWait > 0) {
@@ -678,39 +669,54 @@ int main(int argc, char** argv) {
                        std::abs(worldY-oy) <= (214.898743f+oh)*0.5f;
             };
             std::string target;
+            // Pickup::Initialise makes this an interactable (0.05 s), and
+            // GameObject::UpdateInteractable uses the player collision box.
+            const bool nearbyHealthPickup = healthPickup &&
+                std::abs(worldX-healthPickup->x) < (128.959793f+50.f)*0.5f &&
+                std::abs(worldY-healthPickup->y) < (214.898743f+70.f)*0.5f;
+            if (nearbyHealthPickup) target = "H:" + currentLevel;
             const deathleak::game::KeyPickup* nearbyKey = nullptr;
             const deathleak::game::PaperPickup* nearbyPaper = nullptr;
             const deathleak::game::HealthDevil* nearbyDevil = nullptr;
             const deathleak::game::DojoScroll* nearbyScroll = nullptr;
             const deathleak::game::Door* nearbyDoor = nullptr;
             const deathleak::game::Boat* nearbyBoat = nullptr;
-            for (const auto& key : scene.Keys()) if (!ownedKeys.count(key.keyId) && overlap(key.x,key.y,key.width,key.height)) {
+            for (const auto& key : scene.Keys()) if (!nearbyHealthPickup && !ownedKeys.count(key.keyId) && overlap(key.x,key.y,key.width,key.height)) {
                 nearbyKey = &key; target = "K:" + key.keyId; break;
             }
-            if (!nearbyKey)
+            if (!nearbyHealthPickup && !nearbyKey)
                 for (const auto& paper : scene.Papers()) if (!collectedPapers.count(paper.descriptionId) && overlap(paper.x,paper.y,paper.width,paper.height)) {
                     nearbyPaper = &paper; target = "P:" + paper.descriptionId; break;
                 }
-            if (!nearbyKey && !nearbyPaper && !devilDialog && motion.Grounded() && !rewardedHealthDevils.count(currentLevel))
+            if (!nearbyHealthPickup && !nearbyKey && !nearbyPaper && !devilDialog && motion.Grounded() && !rewardedHealthDevils.count(currentLevel))
                 for (const auto& devil : scene.HealthDevils()) if (overlap(devil.x,devil.y,devil.width,devil.height)) {
                     nearbyDevil = &devil; target = "V:" + currentLevel; break;
                 }
-            if (!nearbyKey && !nearbyPaper && !nearbyDevil && !combat.DeflectionUnlocked())
+            if (!nearbyHealthPickup && !nearbyKey && !nearbyPaper && !nearbyDevil && !combat.DeflectionUnlocked())
                 for (const auto& scroll : scene.Scrolls()) if (scroll.feature == "kDeflection" && overlap(scroll.x,scroll.y,scroll.width,scroll.height)) {
                     nearbyScroll = &scroll; target = "S:" + scroll.id; break;
                 }
-            if (!nearbyKey && !nearbyPaper && !nearbyDevil && !nearbyScroll && levelTime >= 0.75f && motion.Grounded())
+            if (!nearbyHealthPickup && !nearbyKey && !nearbyPaper && !nearbyDevil && !nearbyScroll && levelTime >= 0.75f && motion.Grounded())
                 for (const auto& door : scene.Doors()) if (overlap(door.x,door.y,door.width,door.height)) {
                     nearbyDoor = &door; target = "D:" + door.id + door.destination; break;
                 }
-            if (!nearbyKey && !nearbyPaper && !nearbyDevil && !nearbyScroll && !nearbyDoor && levelTime >= 0.75f && motion.Grounded())
+            if (!nearbyHealthPickup && !nearbyKey && !nearbyPaper && !nearbyDevil && !nearbyScroll && !nearbyDoor && levelTime >= 0.75f && motion.Grounded())
                 for (const auto& boat : scene.Boats()) if (overlap(boat.x,boat.y,boat.width,boat.height)) {
                     nearbyBoat = &boat; target = "B:" + boat.id; break;
                 }
             if (!interact || target != interactionTarget) interactHeldTime = 0;
             interactionTarget = target;
             if (interact && !target.empty()) interactHeldTime += dt;
-            if (interactHeldTime >= 0.05f && nearbyKey) {
+            if (interactHeldTime >= 0.05f && nearbyHealthPickup) {
+                savedMaxHealth = combat.MaxHealth() + 20.f;
+                hasSavedMaxHealth = true;
+                combat.SetMaxHealth(savedMaxHealth);
+                if (sound) sound->Play(deathleak::audio::Cue::HealthUpgrade);
+                std::cout << "Health upgrade collected " << currentLevel
+                          << " at frame " << frame << " max_health=" << savedMaxHealth << '\n';
+                healthPickup.reset();
+                interactHeldTime = 0; interactionTarget.clear();
+            } else if (interactHeldTime >= 0.05f && nearbyKey) {
                 ownedKeys.insert(nearbyKey->keyId);
                 scene.ApplyKeys(ownedKeys);
                 std::cout << "Collected key " << nearbyKey->keyId << " at frame " << frame << '\n';
