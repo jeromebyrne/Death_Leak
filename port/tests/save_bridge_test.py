@@ -113,6 +113,64 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
                                      '--script', 'I:5', '--fixed-dt', '0.0166667', '--simulate-only'],
                                     capture_output=True, text=True, check=True)
     assert 'Collected paper ' not in imported_paper.stdout, imported_paper.stdout
+    # HealthDevil is level-keyed in Windows permanent data. A grounded held
+    # interaction grants one +20 health cap in this bounded Linux path; health
+    # itself is not healed, and save/revisit cannot grant it again.
+    hot = 'Game/XmlFiles/levels/hot_springs.xml'
+    hot_start = root / 'devil-fresh.dl5'
+    hot_start.write_text('DL5\n' + hot + '\n-1234.3479 450 25 100\nB:0\n')
+    hot_earned = root / 'devil-earned.dl5'
+    earned = subprocess.run(['port/build/deathleak-linux', '--load-save', str(hot_start),
+                             '--save-file', str(hot_earned), '--script', 'I:120',
+                             '--fixed-dt', '0.0166667', '--simulate-only'],
+                            capture_output=True, text=True, check=True)
+    assert 'Health devil reward ' + hot + ' at frame 20 count=1 max_health=45' in earned.stdout, earned.stdout
+    assert 'health=25' in earned.stdout and 'max_health=45' in earned.stdout, earned.stdout
+    assert {'V:' + hot, 'J:1', 'H:45'} <= set(hot_earned.read_text().splitlines())
+    repeated = subprocess.run(['port/build/deathleak-linux', '--load-save', str(hot_earned),
+                               '--script', 'I:120', '--fixed-dt', '0.0166667', '--simulate-only'],
+                              capture_output=True, text=True, check=True)
+    assert 'Health devil reward ' not in repeated.stdout and 'max_health=45' in repeated.stdout, repeated.stdout
+    hot_export = root / 'devil-export.xml'
+    run('export', hot_earned, hot_export, '--discard-runtime')
+    assert bridge.windows_fields(hot_export)['health_devil_reward_XmlFiles-levels-hot_springs.xml'] == ('bool', 'true')
+    assert bridge.windows_fields(hot_export)['health_devil_reward_count'] == ('int', '1')
+    # Shipped flags/count become active, and the third authored devil can
+    # extend the migrated cap/count without losing original typed fields.
+    target_lines = target.read_text().splitlines()
+    assert {'J:2', 'V:' + hot, 'V:Game/XmlFiles/levels/waterfall_cave.xml'} <= set(target_lines)
+    imported_hot = root / 'devil-import-location.dl5'
+    imported_lines = target_lines.copy()
+    imported_lines[1] = hot
+    imported_lines[2] = '-1234.3479 450 25 100'
+    imported_hot.write_text('\n'.join(imported_lines) + '\n')
+    already = subprocess.run(['port/build/deathleak-linux', '--load-save', str(imported_hot),
+                              '--script', 'I:120', '--fixed-dt', '0.0166667', '--simulate-only'],
+                             capture_output=True, text=True, check=True)
+    assert 'Health devil reward ' not in already.stdout and 'max_health=65' in already.stdout, already.stdout
+    cliff = 'Game/XmlFiles/levels/cliff.xml'
+    third_start = root / 'devil-third.dl5'
+    third_lines = target_lines.copy(); third_lines[1] = cliff; third_lines[2] = '-2097.966797 -500 25 100'
+    third_start.write_text('\n'.join(third_lines) + '\n')
+    third_earned = root / 'devil-third-earned.dl5'
+    third = subprocess.run(['port/build/deathleak-linux', '--load-save', str(third_start),
+                            '--save-file', str(third_earned), '--script', 'I:120',
+                            '--fixed-dt', '0.0166667', '--simulate-only'],
+                           capture_output=True, text=True, check=True)
+    assert 'Health devil reward ' + cliff + ' at frame 21 count=3 max_health=85' in third.stdout, third.stdout
+    third_win = root / 'devil-third.xml'
+    run('export', third_earned, third_win, '--discard-runtime')
+    third_fields = bridge.windows_fields(third_win)
+    assert third_fields['health_devil_reward_XmlFiles-levels-cliff.xml'] == ('bool', 'true')
+    assert third_fields['health_devil_reward_count'] == ('int', '3')
+    assert third_fields['player_max_health'] == ('int', '85')
+    for name, value in shipped.items():
+        if name not in ('player_max_health', 'health_devil_reward_count'): assert third_fields[name] == value
+    bad_reward = root / 'devil-bad.dl5'
+    bad_reward.write_text(target.read_text().replace('V:' + hot + '\n', ''))
+    run('export', bad_reward, root / 'devil-bad.xml', '--discard-runtime', success=False)
+    bad_reward.write_text(target.read_text().replace('J:2', 'J:1'))
+    run('export', bad_reward, root / 'devil-bad.xml', '--discard-runtime', success=False)
     for movement_unlock in ('kDownwardDash', 'kRoll'):
         assert 'U:' + movement_unlock in target.read_text().splitlines()
     resumed = root / 'resumed.dl5'
@@ -244,7 +302,7 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
                            capture_output=True, text=True, check=True)
     assert 'Menu New Game at frame 2101' in ended.stdout, ended.stdout
     fresh_lines = ending.read_text().splitlines()
-    assert fresh_lines[0] == 'DL5' and not any(line.startswith(('U:', 'W1:', 'H:', 'P:')) for line in fresh_lines), fresh_lines
+    assert fresh_lines[0] == 'DL5' and not any(line.startswith(('U:', 'W1:', 'H:', 'P:', 'V:', 'J:')) for line in fresh_lines), fresh_lines
     damaged = root / 'damaged.dl5'
     damaged.write_text(resumed.read_text().replace('W1:', 'W1:!'))
     run('export', damaged, root / 'damaged.xml', '--discard-runtime', success=False)

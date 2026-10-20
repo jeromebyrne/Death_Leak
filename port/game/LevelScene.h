@@ -16,6 +16,7 @@ struct SceneSprite {
     bool currencyOrb = false;
     bool keyPickup = false;
     bool paperPickup = false;
+    bool healthDevil = false;
     bool dojoScroll = false;
     bool collected = false;
     std::string persistentId;
@@ -30,6 +31,7 @@ struct Boat { float x, y, width, height; std::string id; };
 struct DojoScroll { float x, y, width, height; std::string feature; std::string id; };
 struct KeyPickup { float x, y, width, height; std::string keyId; };
 struct PaperPickup { float x, y, width, height; std::string descriptionId; };
+struct HealthDevil { float x, y, width, height; };
 struct HazardRegion { float x, y, width, height; bool water; float damage; };
 
 class LevelScene {
@@ -56,10 +58,12 @@ public:
     const std::vector<Boat>& Boats() const { return boats_; }
     const std::vector<KeyPickup>& Keys() const { return keys_; }
     const std::vector<PaperPickup>& Papers() const { return papers_; }
+    const std::vector<HealthDevil>& HealthDevils() const { return healthDevils_; }
     const std::vector<DojoScroll>& Scrolls() const { return scrolls_; }
     void ApplyDeflection(bool unlocked);
     void ApplyKeys(const std::unordered_set<std::string>& keys);
     void ApplyPapers(const std::unordered_set<std::string>& papers);
+    void ApplyHealthDevil(bool rewarded);
 private:
     std::vector<SceneSprite> sprites_;
     std::vector<GroundSegment> ground_;
@@ -71,6 +75,7 @@ private:
     std::vector<Boat> boats_;
     std::vector<KeyPickup> keys_;
     std::vector<PaperPickup> papers_;
+    std::vector<HealthDevil> healthDevils_;
     std::vector<DojoScroll> scrolls_;
     float playerX_ = 0, playerY_ = 0;
     float playerVisualWidth_ = 0, playerVisualHeight_ = 0;

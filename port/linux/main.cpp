@@ -54,7 +54,8 @@ int main(int argc, char** argv) {
     std::string settingsFile = "deathleak-settings.xml";
     float savedX = 0, savedY = 0, savedHealth = 25, savedFocus = 100;
     bool restorePosition = false;
-    std::unordered_set<std::string> collectedOrbs, ownedKeys, unlockedDoors, collectedPapers;
+    std::unordered_set<std::string> collectedOrbs, ownedKeys, unlockedDoors, collectedPapers, rewardedHealthDevils;
+    int healthDevilRewardCount = 0;
     bool deflectionUnlocked = false, speedUnlocked = false;
     bool downwardDashUnlocked = false, rollUnlocked = false;
     bool projectileDamageUnlocked = false, projectileSpeedUnlocked = false;
@@ -143,6 +144,14 @@ int main(int argc, char** argv) {
             if (line.rfind("K:", 0) == 0) ownedKeys.insert(line.substr(2));
             else if (line.rfind("D:", 0) == 0) unlockedDoors.insert(line.substr(2));
             else if (line.rfind("P:", 0) == 0) collectedPapers.insert(line.substr(2));
+            else if (line.rfind("V:", 0) == 0) rewardedHealthDevils.insert(line.substr(2));
+            else if (line.rfind("J:", 0) == 0) {
+                try {
+                    size_t end = 0; const auto value = std::stoll(line.substr(2), &end);
+                    if (end != line.size()-2 || value < 0 || value >= 1000000000) throw std::invalid_argument("devil count");
+                    healthDevilRewardCount = static_cast<int>(value);
+                } catch (const std::exception&) { std::cerr << "Invalid health devil count in save\n"; return 2; }
+            }
             else if (line == "U:kDeflection") deflectionUnlocked = true;
             else if (line == "U:kSpeedIncrease") speedUnlocked = true;
             else if (line == "U:kDownwardDash") downwardDashUnlocked = true;
@@ -251,6 +260,7 @@ int main(int argc, char** argv) {
     if (restorePosition) scene.ApplyCollected(collectedOrbs);
     scene.ApplyKeys(ownedKeys);
     scene.ApplyPapers(collectedPapers);
+    scene.ApplyHealthDevil(rewardedHealthDevils.count(levelPath) != 0);
     scene.ApplyDeflection(deflectionUnlocked);
     if (!levelPath.empty()) {
         std::cout << "Loaded " << scene.SpriteCount() << " original level sprites; "
@@ -448,7 +458,7 @@ int main(int argc, char** argv) {
                         else sound->SetSfxEnabled(settings.sfx);
                     }
                     playLevel = levelPath = currentLevel = freshLevel;
-                    collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear(); collectedPapers.clear();
+                    collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear(); collectedPapers.clear(); rewardedHealthDevils.clear(); healthDevilRewardCount = 0;
                     orbBalance = 0; combat = deathleak::game::Combat{};
                     speedUnlocked = projectileDamageUnlocked = projectileSpeedUnlocked = false; downwardDashUnlocked = rollUnlocked = false; savedMaxHealth = 25; hasSavedMaxHealth = false; windowsPermanentExtension.clear();
                     motion.SetSpeedUpgrade(false); motion.SetMovementUnlocks(false, false);
@@ -514,6 +524,7 @@ int main(int argc, char** argv) {
                         nextScene.ApplyCollected(collectedOrbs);
                         nextScene.ApplyKeys(ownedKeys);
                         nextScene.ApplyPapers(collectedPapers);
+                        nextScene.ApplyHealthDevil(rewardedHealthDevils.count(restartLevel) != 0);
                         nextScene.ApplyDeflection(combat.DeflectionUnlocked());
                         scene = std::move(nextScene);
                         currentLevel = restartLevel;
@@ -574,6 +585,7 @@ int main(int argc, char** argv) {
             std::string target;
             const deathleak::game::KeyPickup* nearbyKey = nullptr;
             const deathleak::game::PaperPickup* nearbyPaper = nullptr;
+            const deathleak::game::HealthDevil* nearbyDevil = nullptr;
             const deathleak::game::DojoScroll* nearbyScroll = nullptr;
             const deathleak::game::Door* nearbyDoor = nullptr;
             const deathleak::game::Boat* nearbyBoat = nullptr;
@@ -584,15 +596,19 @@ int main(int argc, char** argv) {
                 for (const auto& paper : scene.Papers()) if (!collectedPapers.count(paper.descriptionId) && overlap(paper.x,paper.y,paper.width,paper.height)) {
                     nearbyPaper = &paper; target = "P:" + paper.descriptionId; break;
                 }
-            if (!nearbyKey && !nearbyPaper && !combat.DeflectionUnlocked())
+            if (!nearbyKey && !nearbyPaper && motion.Grounded() && !rewardedHealthDevils.count(currentLevel))
+                for (const auto& devil : scene.HealthDevils()) if (overlap(devil.x,devil.y,devil.width,devil.height)) {
+                    nearbyDevil = &devil; target = "V:" + currentLevel; break;
+                }
+            if (!nearbyKey && !nearbyPaper && !nearbyDevil && !combat.DeflectionUnlocked())
                 for (const auto& scroll : scene.Scrolls()) if (scroll.feature == "kDeflection" && overlap(scroll.x,scroll.y,scroll.width,scroll.height)) {
                     nearbyScroll = &scroll; target = "S:" + scroll.id; break;
                 }
-            if (!nearbyKey && !nearbyPaper && !nearbyScroll && levelTime >= 0.75f && motion.Grounded())
+            if (!nearbyKey && !nearbyPaper && !nearbyDevil && !nearbyScroll && levelTime >= 0.75f && motion.Grounded())
                 for (const auto& door : scene.Doors()) if (overlap(door.x,door.y,door.width,door.height)) {
                     nearbyDoor = &door; target = "D:" + door.id + door.destination; break;
                 }
-            if (!nearbyKey && !nearbyPaper && !nearbyScroll && !nearbyDoor && levelTime >= 0.75f && motion.Grounded())
+            if (!nearbyKey && !nearbyPaper && !nearbyDevil && !nearbyScroll && !nearbyDoor && levelTime >= 0.75f && motion.Grounded())
                 for (const auto& boat : scene.Boats()) if (overlap(boat.x,boat.y,boat.width,boat.height)) {
                     nearbyBoat = &boat; target = "B:" + boat.id; break;
                 }
@@ -608,6 +624,18 @@ int main(int argc, char** argv) {
                 collectedPapers.insert(nearbyPaper->descriptionId);
                 scene.ApplyPapers(collectedPapers);
                 std::cout << "Collected paper " << nearbyPaper->descriptionId << " at frame " << frame << '\n';
+                interactHeldTime = 0; interactionTarget.clear();
+            } else if (interactHeldTime >= 0.05f && nearbyDevil) {
+                // Bounded reward path: original VO then spawns a separate +20 HP pickup.
+                // Apply the cap at interaction here; current HP is unchanged.
+                rewardedHealthDevils.insert(currentLevel);
+                ++healthDevilRewardCount;
+                savedMaxHealth = combat.MaxHealth() + 20.f;
+                hasSavedMaxHealth = true;
+                combat.SetMaxHealth(savedMaxHealth);
+                scene.ApplyHealthDevil(true);
+                std::cout << "Health devil reward " << currentLevel << " at frame " << frame
+                          << " count=" << healthDevilRewardCount << " max_health=" << savedMaxHealth << '\n';
                 interactHeldTime = 0; interactionTarget.clear();
             } else if (interactHeldTime >= 0.5f && nearbyScroll) {
                 upgradeModal = true; modalWarmup = 0; purchaseHeld = dismissHeld = false;
@@ -631,6 +659,7 @@ int main(int argc, char** argv) {
                         nextScene.ApplyCollected(collectedOrbs);
                         nextScene.ApplyKeys(ownedKeys);
                         nextScene.ApplyPapers(collectedPapers);
+                        nextScene.ApplyHealthDevil(rewardedHealthDevils.count(door.destination) != 0);
                         nextScene.ApplyDeflection(combat.DeflectionUnlocked());
                         scene = std::move(nextScene);
                         std::cout << "Door at frame " << frame << " from " << currentLevel << " to " << door.destination << '\n';
@@ -658,6 +687,7 @@ int main(int argc, char** argv) {
                         nextScene.ApplyCollected(collectedOrbs);
                         nextScene.ApplyKeys(ownedKeys);
                         nextScene.ApplyPapers(collectedPapers);
+                        nextScene.ApplyHealthDevil(rewardedHealthDevils.count(destination) != 0);
                         nextScene.ApplyDeflection(combat.DeflectionUnlocked());
                         scene = std::move(nextScene);
                         std::cout << "Boat at frame " << frame << " from " << currentLevel << " to " << destination << '\n';
@@ -687,6 +717,7 @@ int main(int argc, char** argv) {
                         nextScene.ApplyCollected(collectedOrbs);
                         nextScene.ApplyKeys(ownedKeys);
                         nextScene.ApplyPapers(collectedPapers);
+                        nextScene.ApplyHealthDevil(rewardedHealthDevils.count(destination) != 0);
                         nextScene.ApplyDeflection(combat.DeflectionUnlocked());
                         scene = std::move(nextScene);
                         currentLevel = destination;
@@ -709,7 +740,7 @@ int main(int argc, char** argv) {
             if (!persistMenuMetadata()) return 1;
             std::cout << "Main menu return after story completion count=" << completions << " language=" << language << '\n';
             playLevel.clear(); levelPath.clear(); currentLevel.clear();
-            collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear(); collectedPapers.clear();
+            collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear(); collectedPapers.clear(); rewardedHealthDevils.clear(); healthDevilRewardCount = 0;
             orbBalance = 0; scene = deathleak::game::LevelScene{};
             combat = deathleak::game::Combat{};
             speedUnlocked = projectileDamageUnlocked = projectileSpeedUnlocked = false; downwardDashUnlocked = rollUnlocked = false; savedMaxHealth = 25; hasSavedMaxHealth = false; windowsPermanentExtension.clear();
@@ -820,6 +851,8 @@ int main(int argc, char** argv) {
         for (const auto& orb : collectedOrbs) saved << orb << '\n';
         for (const auto& key : ownedKeys) saved << "K:" << key << '\n';
         for (const auto& paper : collectedPapers) saved << "P:" << paper << '\n';
+        for (const auto& level : rewardedHealthDevils) saved << "V:" << level << '\n';
+        if (healthDevilRewardCount) saved << "J:" << healthDevilRewardCount << '\n';
         for (const auto& door : unlockedDoors) saved << "D:" << door << '\n';
         if (combat.DeflectionUnlocked()) saved << "U:kDeflection\n";
         if (speedUnlocked) saved << "U:kSpeedIncrease\n";

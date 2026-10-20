@@ -57,7 +57,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     auto* level = document.RootElement();
     if (!level || std::string(level->Value()) != "level") { error = "Not a Death Leak level: " + path; return false; }
     playerVisualWidth_ = playerVisualHeight_ = 0;
-    sprites_.clear(); ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); doors_.clear(); boats_.clear(); keys_.clear(); papers_.clear(); scrolls_.clear(); skipped_ = 0;
+    sprites_.clear(); ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); doors_.clear(); boats_.clear(); keys_.clear(); papers_.clear(); healthDevils_.clear(); scrolls_.clear(); skipped_ = 0;
     if (auto* props = level->FirstChildElement("LevelProperties")) {
         auto* camera = props->FirstChildElement("camera_properties");
         cameraX_ = Attr(camera, "posx"); cameraY_ = Attr(camera, "posy");
@@ -94,6 +94,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
             if (props && props->Attribute("id") && *props->Attribute("id"))
                 keys_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),props->Attribute("id")});
         }
+        if (kind == "HealthDevil") healthDevils_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height")});
         if (kind == "PaperPickup") {
             auto* loc = object->FirstChildElement("loc_id");
             if (loc && loc->Attribute("desc") && *loc->Attribute("desc"))
@@ -177,6 +178,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         sprite.currencyOrb = kind == "CurrencyOrb";
         sprite.keyPickup = kind == "KeyPickup";
         sprite.paperPickup = kind == "PaperPickup";
+        sprite.healthDevil = kind == "HealthDevil";
         sprite.dojoScroll = kind == "DojoScrollPickup";
         if ((sprite.currencyOrb || sprite.dojoScroll) && object->Attribute("id"))
             sprite.persistentId = std::filesystem::path(path).lexically_normal().string() + "#" + object->Attribute("id");
@@ -218,6 +220,9 @@ void LevelScene::ApplyPapers(const std::unordered_set<std::string>& papers) {
         for (const auto& paper : papers_) if (paper.x == object.x && paper.y == object.y && papers.count(paper.descriptionId))
             object.collected = true;
     }
+}
+void LevelScene::ApplyHealthDevil(bool rewarded) {
+    for (auto& object : sprites_) if (object.healthDevil) object.collected = rewarded;
 }
 void LevelScene::ApplyDeflection(bool unlocked) {
     if (!unlocked) return;

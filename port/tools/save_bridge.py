@@ -14,14 +14,23 @@ KEY = 'babson'
 KEYS = {'granary', 'dojo', 'village_hut', 'has_repair_tools'}
 DOORS = {'barn_entrance', 'dojo', 'village_hut_entrance'}
 LOCALES = {'en-gb', 'pt-br', 'de'}
-# Windows permanent fields without active Linux gameplay support.
+# Windows permanent fields allowed in the typed migration record.
 OPAQUE_BOOL = {
     'health_devil_reward_XmlFiles-levels-hot_springs.xml',
+    'health_devil_reward_XmlFiles-levels-cliff.xml',
     'health_devil_reward_XmlFiles-levels-waterfall_cave.xml',
     'smashable_XmlFiles-levels-grass_exploration_1.xml',
     'smashable_XmlFiles-levels-village_central.xml',
 }
 OPAQUE_INT = {'health_devil_reward_count', 'player_max_health'}
+DEVILS = {
+    'Game/XmlFiles/levels/hot_springs.xml',
+    'Game/XmlFiles/levels/waterfall_cave.xml',
+    'Game/XmlFiles/levels/cliff.xml',
+}
+def devil_field(level):
+    return 'health_devil_reward_XmlFiles-levels-' + Path(level).name
+
 PAPERS = {
     'paper_pickup_gametip_death', 'paper_pickup_gametip_projectile',
     'paper_pickup_strange_stones_desc', 'paper_pickup_desc_test',
@@ -164,6 +173,9 @@ def windows_to_dl5(fields, level):
     if 'player_max_health' in fields: lines.append('H:' + max_health)
     papers = fields.get('paper_pickups_collected', ('vector', []))[1]
     lines += ['P:' + value for kind, value in papers]
+    for devil in sorted(DEVILS):
+        if fields.get(devil_field(devil)) == ('bool', 'true'): lines.append('V:' + devil)
+    if 'health_devil_reward_count' in fields: lines.append('J:' + fields['health_devil_reward_count'][1])
     if fields: lines.append('W1:' + base64.b64encode(field_xml(fields)).decode())
     return lines
 
@@ -178,7 +190,7 @@ def dl5_to_windows(path):
         data = lines[3:]
     elif lines[1] == 'MENU': data = lines[2:]
     else: raise ValueError('invalid DL6 MENU save')
-    fields, keys, doors, papers, runtime = {}, set(), set(), set(), []
+    fields, keys, doors, papers, devils, runtime = {}, set(), set(), set(), set(), []
     migration = None
     for line in data:
         if line.startswith('C:'):
@@ -194,6 +206,13 @@ def dl5_to_windows(path):
         elif line.startswith('D:'):
             if line[2:] not in DOORS or line[2:] in doors: raise ValueError('unmapped/duplicate door')
             doors.add(line[2:])
+        elif line.startswith('V:'):
+            if line[2:] not in DEVILS or line[2:] in devils: raise ValueError('unmapped/duplicate health devil')
+            devils.add(line[2:])
+        elif line.startswith('J:'):
+            if 'J' in fields or not re.fullmatch(r'\d+', line[2:]) or int(line[2:]) >= 1000000000:
+                raise ValueError('invalid/duplicate health devil count')
+            fields['J'] = line[2:]
         elif line.startswith('P:'):
             if line[2:] not in PAPERS or line[2:] in papers: raise ValueError('unmapped/duplicate paper')
             papers.add(line[2:])
@@ -210,7 +229,7 @@ def dl5_to_windows(path):
             migration = extension_fields(line[3:])
         elif line.startswith(('B:', 'N:')) or '#' in line: runtime.append(line)
         else: raise ValueError('unmapped Linux line: ' + line)
-    if lines[0] == 'DL6' and (keys or doors or papers or runtime or fields.get('kDeflection') or fields.get('kSpeedIncrease') or fields.get('kProjectileDamageIncrease') or fields.get('kProjectileSpeedIncrease') or fields.get('kDownwardDash') or fields.get('kRoll') or fields.get('H') or migration):
+    if lines[0] == 'DL6' and (keys or doors or papers or devils or runtime or fields.get('J') or fields.get('kDeflection') or fields.get('kSpeedIncrease') or fields.get('kProjectileDamageIncrease') or fields.get('kProjectileSpeedIncrease') or fields.get('kDownwardDash') or fields.get('kRoll') or fields.get('H') or migration):
         raise ValueError('DL6 MENU cannot carry progression')
     if lines[0] == 'DL5' and len([v for v in runtime if v.startswith('B:')]) != 1:
         raise ValueError('DL5 requires one balance')
@@ -225,7 +244,10 @@ def dl5_to_windows(path):
         if migration is None: migration = {}
         previous = migration.get('player_max_health')
         if previous and previous != ('int', fields['H']):
-            raise ValueError('max health migration conflicts with Linux value')
+            old_count = int(migration.get('health_devil_reward_count', ('int', '0'))[1])
+            new_count = int(fields.get('J', str(old_count)))
+            if new_count < old_count or int(fields['H']) != int(previous[1]) + 20 * (new_count - old_count):
+                raise ValueError('max health migration conflicts with Linux value')
         migration['player_max_health'] = ('int', fields['H'])
     for name, feature_id in (('kDownwardDash', '1'), ('kRoll', '2'), ('kDeflection', '4'), ('kSpeedIncrease', '5'), ('kProjectileDamageIncrease', '6'), ('kProjectileSpeedIncrease', '7')):
         if fields.get(name):
@@ -233,6 +255,24 @@ def dl5_to_windows(path):
             features = migration.get('gameplay_features_unlocked', ('vector', []))[1]
             if ('int', feature_id) not in features:
                 migration['gameplay_features_unlocked'] = ('vector', features + [('int', feature_id)])
+    if migration and 'health_devil_reward_count' in migration and int(fields.get('J', '0')) < int(migration['health_devil_reward_count'][1]):
+        raise ValueError('health devil count migration conflicts with Linux count')
+    if migration:
+        for devil in DEVILS:
+            old = migration.get(devil_field(devil))
+            if old == ('bool', 'true') and devil not in devils:
+                raise ValueError('health devil migration conflicts with Linux reward')
+    if devils or fields.get('J') is not None:
+        if migration is not None and 'health_devil_reward_count' in migration:
+            old_count = int(migration['health_devil_reward_count'][1])
+            old_devils = {devil for devil in DEVILS if migration.get(devil_field(devil)) == ('bool', 'true')}
+            if int(fields.get('J', '0')) - old_count != len(devils - old_devils):
+                raise ValueError('health devil count does not match newly earned rewards')
+        if migration is None: migration = {}
+        for devil in devils: migration[devil_field(devil)] = ('bool', 'true')
+        if int(fields.get('J', '0')) < len(devils):
+            raise ValueError('health devil count below rewarded locations')
+        migration['health_devil_reward_count'] = ('int', fields.get('J', '0'))
     if migration and 'paper_pickups_collected' in migration:
         old_papers = [value for kind, value in migration['paper_pickups_collected'][1]]
         if not set(old_papers).issubset(papers):
