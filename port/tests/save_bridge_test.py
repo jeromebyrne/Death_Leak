@@ -82,6 +82,52 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
     assert sum(line.startswith('W1:') for line in target.read_text().splitlines()) == 1
     assert 'H:65' in target.read_text().splitlines()
     assert 'U:kSpeedIncrease' in target.read_text().splitlines()
+    # Both shipped permanent smashable flags become active Linux state.
+    shipped_smashes = {smash for smash in bridge.SMASHABLES
+                       if shipped.get(bridge.smash_field(smash)) == ('bool', 'true')}
+    assert shipped_smashes == bridge.SMASHABLES
+    assert {'Z:' + smash for smash in shipped_smashes} <= set(target.read_text().splitlines())
+    grass_smash = 'Game/XmlFiles/levels/grass_exploration_1.xml'
+    smash_spawn = '-909.65625 -600 25 100'
+    smash_start = root / 'smash-start.dl5'
+    smash_start.write_text('DL5\n' + grass_smash + '\n' + smash_spawn + '\nB:0\nU:kDownwardDash\n')
+    smash_run = 0
+    def smash_trace(save, script, output=None):
+        global smash_run
+        smash_run += 1
+        working = root / f'smash-run-{smash_run}.dl5'
+        working.write_bytes(save.read_bytes())
+        args = ['port/build/deathleak-linux', '--load-save', str(working), '--script', script,
+                '--fixed-dt', '0.0166667', '--simulate-only']
+        if output: args += ['--save-file', str(output)]
+        return subprocess.run(args, capture_output=True, text=True, check=True).stdout
+    normal = smash_trace(smash_start, '.:29')
+    assert 'Smashed ' not in normal and 'grounded=1' in normal, normal
+    early = smash_trace(smash_start, 'M:1,.:28')
+    assert 'Smashed ' not in early, early  # air-time gate rejects immediate dash
+    no_unlock = root / 'smash-no-unlock.dl5'
+    no_unlock.write_text(smash_start.read_text().replace('U:kDownwardDash\n', ''))
+    assert 'Smashed ' not in smash_trace(no_unlock, '.:20,M:1,.:8')
+    smash_saved = root / 'smash-earned.dl5'
+    dashed = smash_trace(smash_start, '.:20,M:1,.:8', smash_saved)
+    assert 'Smashed ' + grass_smash + ' at frame 21' in dashed, dashed
+    assert 'grounded=0' in dashed and 'focus=51.5' in dashed, dashed
+    assert 'Z:' + grass_smash in smash_saved.read_text().splitlines()
+    assert 'Smashed ' not in smash_trace(smash_saved, '.:20,M:1,.:8')
+    smash_export = root / 'smash-earned.xml'
+    run('export', smash_saved, smash_export, '--discard-runtime')
+    assert bridge.windows_fields(smash_export)[bridge.smash_field(grass_smash)] == ('bool', 'true')
+    imported_smash = root / 'smash-import.dl5'
+    imported_lines = target.read_text().splitlines()
+    imported_lines[1] = grass_smash; imported_lines[2] = smash_spawn
+    imported_smash.write_text('\n'.join(imported_lines) + '\n')
+    imported_pass = smash_trace(imported_smash, '.:29')
+    assert 'Smashed ' not in imported_pass and 'grounded=0' in imported_pass, imported_pass
+    bad_smash = root / 'smash-bad.dl5'
+    bad_smash.write_text(target.read_text().replace('Z:' + grass_smash + '\n', ''))
+    run('export', bad_smash, root / 'smash-bad.xml', '--discard-runtime', success=False)
+    bad_smash.write_text(target.read_text() + 'Z:' + grass_smash + '\n')
+    run('export', bad_smash, root / 'smash-bad.xml', '--discard-runtime', success=False)
     shipped_papers = [value for kind, value in shipped['paper_pickups_collected'][1]]
     assert {'P:' + paper for paper in shipped_papers} <= set(target.read_text().splitlines())
     # Original grass-3 PaperPickup #103 uses its description loc_id as the
@@ -201,6 +247,7 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
     assert 'health=50' in hp_result.stdout and 'max_health=65' in hp_result.stdout, hp_result.stdout
     assert sum(line.startswith('W1:') for line in resumed.read_text().splitlines()) == 1
     assert {'P:' + paper for paper in shipped_papers} <= set(resumed.read_text().splitlines())
+    assert {'Z:' + smash for smash in shipped_smashes} <= set(resumed.read_text().splitlines())
     assert 'H:65' in resumed.read_text().splitlines()
     assert 'U:kSpeedIncrease' in resumed.read_text().splitlines()
     for movement_unlock in ('kDownwardDash', 'kRoll'):
@@ -302,7 +349,7 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
                            capture_output=True, text=True, check=True)
     assert 'Menu New Game at frame 2101' in ended.stdout, ended.stdout
     fresh_lines = ending.read_text().splitlines()
-    assert fresh_lines[0] == 'DL5' and not any(line.startswith(('U:', 'W1:', 'H:', 'P:', 'V:', 'J:')) for line in fresh_lines), fresh_lines
+    assert fresh_lines[0] == 'DL5' and not any(line.startswith(('U:', 'W1:', 'H:', 'P:', 'V:', 'J:', 'Z:')) for line in fresh_lines), fresh_lines
     damaged = root / 'damaged.dl5'
     damaged.write_text(resumed.read_text().replace('W1:', 'W1:!'))
     run('export', damaged, root / 'damaged.xml', '--discard-runtime', success=False)

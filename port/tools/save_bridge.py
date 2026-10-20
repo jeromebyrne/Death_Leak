@@ -28,6 +28,13 @@ DEVILS = {
     'Game/XmlFiles/levels/waterfall_cave.xml',
     'Game/XmlFiles/levels/cliff.xml',
 }
+SMASHABLES = {
+    'Game/XmlFiles/levels/grass_exploration_1.xml',
+    'Game/XmlFiles/levels/village_central.xml',
+}
+def smash_field(level):
+    return 'smashable_XmlFiles-levels-' + Path(level).name
+
 def devil_field(level):
     return 'health_devil_reward_XmlFiles-levels-' + Path(level).name
 
@@ -176,6 +183,8 @@ def windows_to_dl5(fields, level):
     for devil in sorted(DEVILS):
         if fields.get(devil_field(devil)) == ('bool', 'true'): lines.append('V:' + devil)
     if 'health_devil_reward_count' in fields: lines.append('J:' + fields['health_devil_reward_count'][1])
+    for smash in sorted(SMASHABLES):
+        if fields.get(smash_field(smash)) == ('bool', 'true'): lines.append('Z:' + smash)
     if fields: lines.append('W1:' + base64.b64encode(field_xml(fields)).decode())
     return lines
 
@@ -190,7 +199,7 @@ def dl5_to_windows(path):
         data = lines[3:]
     elif lines[1] == 'MENU': data = lines[2:]
     else: raise ValueError('invalid DL6 MENU save')
-    fields, keys, doors, papers, devils, runtime = {}, set(), set(), set(), set(), []
+    fields, keys, doors, papers, devils, smashes, runtime = {}, set(), set(), set(), set(), set(), []
     migration = None
     for line in data:
         if line.startswith('C:'):
@@ -209,6 +218,9 @@ def dl5_to_windows(path):
         elif line.startswith('V:'):
             if line[2:] not in DEVILS or line[2:] in devils: raise ValueError('unmapped/duplicate health devil')
             devils.add(line[2:])
+        elif line.startswith('Z:'):
+            if line[2:] not in SMASHABLES or line[2:] in smashes: raise ValueError('unmapped/duplicate smashable')
+            smashes.add(line[2:])
         elif line.startswith('J:'):
             if 'J' in fields or not re.fullmatch(r'\d+', line[2:]) or int(line[2:]) >= 1000000000:
                 raise ValueError('invalid/duplicate health devil count')
@@ -229,7 +241,7 @@ def dl5_to_windows(path):
             migration = extension_fields(line[3:])
         elif line.startswith(('B:', 'N:')) or '#' in line: runtime.append(line)
         else: raise ValueError('unmapped Linux line: ' + line)
-    if lines[0] == 'DL6' and (keys or doors or papers or devils or runtime or fields.get('J') or fields.get('kDeflection') or fields.get('kSpeedIncrease') or fields.get('kProjectileDamageIncrease') or fields.get('kProjectileSpeedIncrease') or fields.get('kDownwardDash') or fields.get('kRoll') or fields.get('H') or migration):
+    if lines[0] == 'DL6' and (keys or doors or papers or devils or smashes or runtime or fields.get('J') or fields.get('kDeflection') or fields.get('kSpeedIncrease') or fields.get('kProjectileDamageIncrease') or fields.get('kProjectileSpeedIncrease') or fields.get('kDownwardDash') or fields.get('kRoll') or fields.get('H') or migration):
         raise ValueError('DL6 MENU cannot carry progression')
     if lines[0] == 'DL5' and len([v for v in runtime if v.startswith('B:')]) != 1:
         raise ValueError('DL5 requires one balance')
@@ -273,6 +285,13 @@ def dl5_to_windows(path):
         if int(fields.get('J', '0')) < len(devils):
             raise ValueError('health devil count below rewarded locations')
         migration['health_devil_reward_count'] = ('int', fields.get('J', '0'))
+    if migration:
+        for smash in SMASHABLES:
+            if migration.get(smash_field(smash)) == ('bool', 'true') and smash not in smashes:
+                raise ValueError('smashable migration conflicts with Linux state')
+    if smashes:
+        if migration is None: migration = {}
+        for smash in smashes: migration[smash_field(smash)] = ('bool', 'true')
     if migration and 'paper_pickups_collected' in migration:
         old_papers = [value for kind, value in migration['paper_pickups_collected'][1]]
         if not set(old_papers).issubset(papers):

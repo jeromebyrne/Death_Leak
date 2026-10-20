@@ -15,7 +15,7 @@ constexpr float kWallJumpSpeedY = 20.f * 60.f;
 void PlayerMotion::Reset(float x, float y, bool authoredEntry) {
     x_ = x; y_ = y; vx_ = vy_ = 0; sinceGround_ = 1; airTime_ = 0; jumpHeld_ = false; grounded_ = false; initialPlacement_ = authoredEntry;
     wallSide_ = 0; wallJumpRemaining_ = 0; jumpPercent_ = 40.f; solidContactDamage_ = 0.f;
-    downwardDashing_ = inWater_ = false; rollTime_ = rollBuffer_ = 0.f; facing_ = 1;
+    downwardDashing_ = inWater_ = smashedSomething_ = false; rollTime_ = rollBuffer_ = 0.f; facing_ = 1;
 }
 bool PlayerMotion::TryDownwardDash(bool hasFocus) {
     if (!dashUnlocked_ || !hasFocus || grounded_ || airTime_ < 0.25f || inWater_ || downwardDashing_) return false;
@@ -35,10 +35,11 @@ bool PlayerMotion::TryBufferedRoll(bool hasFocus) {
     if (rollBuffer_ <= 0.f) return false;
     return TryRoll(hasFocus);
 }
-void PlayerMotion::Update(const LevelScene& scene, float dt, int direction, bool jump) {
+void PlayerMotion::Update(LevelScene& scene, float dt, int direction, bool jump) {
     if (dt <= 0) return;
     const float ticks = dt * 60.f;
     solidContactDamage_ = 0.f;
+    smashedSomething_ = false;
     if (rollBuffer_ > 0.f) rollBuffer_ = std::max(0.f, rollBuffer_ - dt);
     if (rollTime_ > 0.f) rollTime_ = std::max(0.f, rollTime_ - dt);
     if (direction) facing_ = direction < 0 ? -1 : 1;
@@ -136,6 +137,28 @@ void PlayerMotion::Update(const LevelScene& scene, float dt, int direction, bool
             solidContactDamage_ = std::max(solidContactDamage_, box.damage);
             y_ = box.bottom-kHalfHeight;
             vy_ = 0;
+        }
+    }
+    // Smashable::OnCollision only accepts a downward-dashing player entering
+    // the upper half of its collision box. A normal landing remains solid.
+    // Do not alter the established non-upgraded traversal route: the Linux
+    // slice currently activates this additional solid only with dash ownership.
+    for (size_t i = 0; dashUnlocked_ && i < scene.Smashables().size(); ++i) {
+        const auto& smash = scene.Smashables()[i];
+        if (smash.smashed) continue;
+        const auto box = smash.box;
+        if (x_+kHalfWidth <= box.left || x_-kHalfWidth >= box.right) continue;
+        const float previousBottom = oldY-kHalfHeight, bottom = y_-kHalfHeight;
+        if (downwardDashing_ && vy_ <= 0 && previousBottom >= box.top-4.f &&
+            bottom <= box.top && bottom > (box.top+box.bottom)*0.5f) {
+            smashedSomething_ |= scene.SmashAt(i);
+            continue;
+        }
+        if ((wasGrounded && std::abs(box.top-previousBottom) <= 20.f) ||
+            (vy_ <= 0 && previousBottom >= box.top-4.f && bottom <= box.top))
+            best = std::max(best, box.top);
+        if (vy_ > 0 && oldY+kHalfHeight <= box.bottom && y_+kHalfHeight > box.bottom) {
+            y_ = box.bottom-kHalfHeight; vy_ = 0;
         }
     }
     if (best > -1e8f) { y_ = best+kHalfHeight; vy_ = 0; grounded_ = true; sinceGround_ = 0; airTime_ = 0; downwardDashing_ = false; }

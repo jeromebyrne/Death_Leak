@@ -15,7 +15,8 @@ public:
     bool TryBufferedRoll(bool hasFocus);
     bool DownwardDashing() const { return downwardDashing_; }
     bool Rolling() const { return rollTime_ > 0.f; }
-    void Update(const LevelScene& scene, float dt, int direction, bool jump);
+    void Update(LevelScene& scene, float dt, int direction, bool jump);
+    bool SmashedSomething() const { return smashedSomething_; }
     float X() const { return x_; }
     float Y() const { return y_; }
     float VelocityX() const { return vx_; }
@@ -27,6 +28,7 @@ private:
     float x_ = 0, y_ = 0, vx_ = 0, vy_ = 0;
     bool speedUpgrade_ = false, dashUnlocked_ = false, rollUnlocked_ = false;
     bool downwardDashing_ = false, inWater_ = false;
+    bool smashedSomething_ = false;
     float rollTime_ = 0.f, rollBuffer_ = 0.f;
     int facing_ = 1;
     float sinceGround_ = 1, airTime_ = 0;

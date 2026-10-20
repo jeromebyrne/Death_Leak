@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
     std::string settingsFile = "deathleak-settings.xml";
     float savedX = 0, savedY = 0, savedHealth = 25, savedFocus = 100;
     bool restorePosition = false;
-    std::unordered_set<std::string> collectedOrbs, ownedKeys, unlockedDoors, collectedPapers, rewardedHealthDevils;
+    std::unordered_set<std::string> collectedOrbs, ownedKeys, unlockedDoors, collectedPapers, rewardedHealthDevils, brokenSmashables;
     int healthDevilRewardCount = 0;
     bool deflectionUnlocked = false, speedUnlocked = false;
     bool downwardDashUnlocked = false, rollUnlocked = false;
@@ -145,6 +145,7 @@ int main(int argc, char** argv) {
             else if (line.rfind("D:", 0) == 0) unlockedDoors.insert(line.substr(2));
             else if (line.rfind("P:", 0) == 0) collectedPapers.insert(line.substr(2));
             else if (line.rfind("V:", 0) == 0) rewardedHealthDevils.insert(line.substr(2));
+            else if (line.rfind("Z:", 0) == 0) brokenSmashables.insert(line.substr(2));
             else if (line.rfind("J:", 0) == 0) {
                 try {
                     size_t end = 0; const auto value = std::stoll(line.substr(2), &end);
@@ -261,6 +262,7 @@ int main(int argc, char** argv) {
     scene.ApplyKeys(ownedKeys);
     scene.ApplyPapers(collectedPapers);
     scene.ApplyHealthDevil(rewardedHealthDevils.count(levelPath) != 0);
+    scene.ApplySmashable(brokenSmashables.count(levelPath) != 0);
     scene.ApplyDeflection(deflectionUnlocked);
     if (!levelPath.empty()) {
         std::cout << "Loaded " << scene.SpriteCount() << " original level sprites; "
@@ -458,7 +460,7 @@ int main(int argc, char** argv) {
                         else sound->SetSfxEnabled(settings.sfx);
                     }
                     playLevel = levelPath = currentLevel = freshLevel;
-                    collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear(); collectedPapers.clear(); rewardedHealthDevils.clear(); healthDevilRewardCount = 0;
+                    collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear(); collectedPapers.clear(); rewardedHealthDevils.clear(); brokenSmashables.clear(); healthDevilRewardCount = 0;
                     orbBalance = 0; combat = deathleak::game::Combat{};
                     speedUnlocked = projectileDamageUnlocked = projectileSpeedUnlocked = false; downwardDashUnlocked = rollUnlocked = false; savedMaxHealth = 25; hasSavedMaxHealth = false; windowsPermanentExtension.clear();
                     motion.SetSpeedUpgrade(false); motion.SetMovementUnlocks(false, false);
@@ -525,6 +527,7 @@ int main(int argc, char** argv) {
                         nextScene.ApplyKeys(ownedKeys);
                         nextScene.ApplyPapers(collectedPapers);
                         nextScene.ApplyHealthDevil(rewardedHealthDevils.count(restartLevel) != 0);
+                        nextScene.ApplySmashable(brokenSmashables.count(restartLevel) != 0);
                         nextScene.ApplyDeflection(combat.DeflectionUnlocked());
                         scene = std::move(nextScene);
                         currentLevel = restartLevel;
@@ -554,6 +557,10 @@ int main(int argc, char** argv) {
             rollHeld = roll;
             motion.Update(scene, dt, (combat.MeleeActive() || motion.Rolling()) ? 0 : static_cast<int>(direction),
                           jump && !combat.MeleeActive());
+            if (motion.SmashedSomething()) {
+                brokenSmashables.insert(currentLevel);
+                std::cout << "Smashed " << currentLevel << " at frame " << frame << '\n';
+            }
             if (motion.Grounded() && combat.Health() > 0.f && motion.TryBufferedRoll(combat.HasFocus(2.f)))
                 combat.ConsumeFocus(2.f);
             worldX = motion.X(); worldY = motion.Y();
@@ -660,6 +667,7 @@ int main(int argc, char** argv) {
                         nextScene.ApplyKeys(ownedKeys);
                         nextScene.ApplyPapers(collectedPapers);
                         nextScene.ApplyHealthDevil(rewardedHealthDevils.count(door.destination) != 0);
+                        nextScene.ApplySmashable(brokenSmashables.count(door.destination) != 0);
                         nextScene.ApplyDeflection(combat.DeflectionUnlocked());
                         scene = std::move(nextScene);
                         std::cout << "Door at frame " << frame << " from " << currentLevel << " to " << door.destination << '\n';
@@ -688,6 +696,7 @@ int main(int argc, char** argv) {
                         nextScene.ApplyKeys(ownedKeys);
                         nextScene.ApplyPapers(collectedPapers);
                         nextScene.ApplyHealthDevil(rewardedHealthDevils.count(destination) != 0);
+                        nextScene.ApplySmashable(brokenSmashables.count(destination) != 0);
                         nextScene.ApplyDeflection(combat.DeflectionUnlocked());
                         scene = std::move(nextScene);
                         std::cout << "Boat at frame " << frame << " from " << currentLevel << " to " << destination << '\n';
@@ -718,6 +727,7 @@ int main(int argc, char** argv) {
                         nextScene.ApplyKeys(ownedKeys);
                         nextScene.ApplyPapers(collectedPapers);
                         nextScene.ApplyHealthDevil(rewardedHealthDevils.count(destination) != 0);
+                        nextScene.ApplySmashable(brokenSmashables.count(destination) != 0);
                         nextScene.ApplyDeflection(combat.DeflectionUnlocked());
                         scene = std::move(nextScene);
                         currentLevel = destination;
@@ -740,7 +750,7 @@ int main(int argc, char** argv) {
             if (!persistMenuMetadata()) return 1;
             std::cout << "Main menu return after story completion count=" << completions << " language=" << language << '\n';
             playLevel.clear(); levelPath.clear(); currentLevel.clear();
-            collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear(); collectedPapers.clear(); rewardedHealthDevils.clear(); healthDevilRewardCount = 0;
+            collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear(); collectedPapers.clear(); rewardedHealthDevils.clear(); brokenSmashables.clear(); healthDevilRewardCount = 0;
             orbBalance = 0; scene = deathleak::game::LevelScene{};
             combat = deathleak::game::Combat{};
             speedUnlocked = projectileDamageUnlocked = projectileSpeedUnlocked = false; downwardDashUnlocked = rollUnlocked = false; savedMaxHealth = 25; hasSavedMaxHealth = false; windowsPermanentExtension.clear();
@@ -852,6 +862,7 @@ int main(int argc, char** argv) {
         for (const auto& key : ownedKeys) saved << "K:" << key << '\n';
         for (const auto& paper : collectedPapers) saved << "P:" << paper << '\n';
         for (const auto& level : rewardedHealthDevils) saved << "V:" << level << '\n';
+        for (const auto& level : brokenSmashables) saved << "Z:" << level << '\n';
         if (healthDevilRewardCount) saved << "J:" << healthDevilRewardCount << '\n';
         for (const auto& door : unlockedDoors) saved << "D:" << door << '\n';
         if (combat.DeflectionUnlocked()) saved << "U:kDeflection\n";

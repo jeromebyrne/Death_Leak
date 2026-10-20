@@ -36,19 +36,21 @@ int Depth(const char* name) {
     auto it = layers.find(name ? name : "");
     return it == layers.end() ? 3000 : it->second;
 }
-std::string FirstAnimationFrame(const std::string& xmlPath) {
+std::string AnimationFrame(const std::string& xmlPath, const char* requestedSequence) {
     TiXmlDocument animation(xmlPath.c_str());
     if (!animation.LoadFile()) return {};
     auto* root = animation.RootElement();
     if (!root) return {};
     for (auto* part = root->FirstChildElement(); part; part = part->NextSiblingElement()) {
         for (auto* sequence = part->FirstChildElement(); sequence; sequence = sequence->NextSiblingElement()) {
+            if (requestedSequence && std::string(sequence->Value()) != requestedSequence) continue;
             auto* frame = sequence->FirstChildElement("frame");
             if (frame && frame->Attribute("filename")) return NormalizeAsset(frame->Attribute("filename"));
         }
     }
     return {};
 }
+std::string FirstAnimationFrame(const std::string& path) { return AnimationFrame(path, nullptr); }
 }
 bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::string& error,
                       const std::string& fromLevel, const std::string& entryDoorId) {
@@ -57,7 +59,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     auto* level = document.RootElement();
     if (!level || std::string(level->Value()) != "level") { error = "Not a Death Leak level: " + path; return false; }
     playerVisualWidth_ = playerVisualHeight_ = 0;
-    sprites_.clear(); ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); doors_.clear(); boats_.clear(); keys_.clear(); papers_.clear(); healthDevils_.clear(); scrolls_.clear(); skipped_ = 0;
+    sprites_.clear(); ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); doors_.clear(); boats_.clear(); keys_.clear(); papers_.clear(); healthDevils_.clear(); smashables_.clear(); scrolls_.clear(); skipped_ = 0;
     if (auto* props = level->FirstChildElement("LevelProperties")) {
         auto* camera = props->FirstChildElement("camera_properties");
         cameraX_ = Attr(camera, "posx"); cameraY_ = Attr(camera, "posy");
@@ -142,6 +144,14 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
                                    x + Attr(points, x1.c_str()), y + Attr(points, y1.c_str())});
             }
         }
+        if (kind == "Smashable") {
+            auto* box = object->FirstChildElement("collisionboxdimensions");
+            if (box) {
+                const float cx = x + Attr(box, "offsetX"), cy = y + Attr(box, "offsetY");
+                const float halfX = Attr(box, "x") * 0.5f, halfY = Attr(box, "y") * 0.5f;
+                if (halfX > 0 && halfY > 0) smashables_.push_back({{cx-halfX,cx+halfX,cy-halfY,cy+halfY,0.f},false});
+            }
+        }
         if (kind == "SolidMovingSprite") {
             auto* box = object->FirstChildElement("collisionboxdimensions");
             if (box) {
@@ -154,9 +164,10 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         }
         if (!asset) continue;
         std::string filename = NormalizeAsset(asset->Attribute("filename"));
+        std::string animationPath;
         if (Flag(object->FirstChildElement("isanimated"), "value")) {
             auto* animation = object->FirstChildElement("animationfile");
-            std::string animationPath = NormalizeAsset(animation ? animation->Attribute("value") : nullptr);
+            animationPath = NormalizeAsset(animation ? animation->Attribute("value") : nullptr);
             if (!animationPath.empty()) filename = FirstAnimationFrame(animationPath);
         }
         if (filename.empty() || !std::filesystem::exists(filename)) { ++skipped_; continue; }
@@ -179,6 +190,18 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         sprite.keyPickup = kind == "KeyPickup";
         sprite.paperPickup = kind == "PaperPickup";
         sprite.healthDevil = kind == "HealthDevil";
+        sprite.smashable = kind == "Smashable";
+        if (sprite.smashable && !animationPath.empty()) {
+            const auto brokenFrame = AnimationFrame(animationPath, "Damage4");
+            if (!brokenFrame.empty() && std::filesystem::exists(brokenFrame)) {
+                auto foundBroken = textures.find(brokenFrame);
+                if (foundBroken == textures.end()) {
+                    std::string textureError;
+                    sprite.smashedTexture = renderer.LoadTexture(brokenFrame, textureError);
+                    textures.emplace(brokenFrame, sprite.smashedTexture);
+                } else sprite.smashedTexture = foundBroken->second;
+            }
+        }
         sprite.dojoScroll = kind == "DojoScrollPickup";
         if ((sprite.currencyOrb || sprite.dojoScroll) && object->Attribute("id"))
             sprite.persistentId = std::filesystem::path(path).lexically_normal().string() + "#" + object->Attribute("id");
@@ -223,6 +246,20 @@ void LevelScene::ApplyPapers(const std::unordered_set<std::string>& papers) {
 }
 void LevelScene::ApplyHealthDevil(bool rewarded) {
     for (auto& object : sprites_) if (object.healthDevil) object.collected = rewarded;
+}
+void LevelScene::ApplySmashable(bool smashed) {
+    for (auto& object : smashables_) object.smashed = smashed;
+    for (auto& sprite : sprites_) if (sprite.smashable && smashed && sprite.smashedTexture) sprite.texture = sprite.smashedTexture;
+}
+bool LevelScene::SmashAt(size_t index) {
+    if (index >= smashables_.size() || smashables_[index].smashed) return false;
+    smashables_[index].smashed = true;
+    // The shipped levels have one Smashable each; keep other objects independent.
+    const auto& box = smashables_[index].box;
+    for (auto& sprite : sprites_) if (sprite.smashable && sprite.smashedTexture &&
+        sprite.x >= box.left && sprite.x <= box.right && sprite.y >= box.bottom && sprite.y <= box.top)
+        sprite.texture = sprite.smashedTexture;
+    return true;
 }
 void LevelScene::ApplyDeflection(bool unlocked) {
     if (!unlocked) return;
