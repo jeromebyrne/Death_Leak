@@ -142,6 +142,26 @@ assert any('first_ninja_arena.xml#' in orb for orb in orb_ids)
 PYCOMBINED
 combined_overrun=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$combined_prefix,L:1826,Q:40,L:300" --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$combined_overrun" | grep -q 'Player died at frame 19109 in Game/XmlFiles/levels/first_ninja_arena.xml'
+# Normal left-fire intercepts the close arena shot; a held left+jump clears
+# its wall. Timed jumps in grass 1/2 then reach cliff and sea 1. This remains
+# one uninterrupted forest-spawn simulation with earned IDs only.
+combined_sea_save=port/build/combined-sea1-save.txt
+combined_sea=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$combined_prefix,L:1826,Q:40,L:245,Q:80,N:100,Q:80,N:960,Q:40,N:710,Q:40,N:50,Q:40,N:160,Q:40,N:2200" --fixed-dt 0.0166667 --simulate-only --save-file "$combined_sea_save")
+printf '%s\n' "$combined_sea" | grep -q 'Trigger at frame 19763 from .*first_ninja_arena.xml .*grass_exploration_1.xml'
+printf '%s\n' "$combined_sea" | grep -q 'Trigger at frame 20554 from .*grass_exploration_1.xml .*grass_exploration_2.xml'
+printf '%s\n' "$combined_sea" | grep -q 'Trigger at frame 21713 from .*grass_exploration_2.xml .*cliff.xml'
+printf '%s\n' "$combined_sea" | grep -q 'Trigger at frame 23326 from .*cliff.xml .*sea_1.xml'
+printf '%s\n' "$combined_sea" | grep -q 'sea_1.xml player=(-5761.85,-1266.6) orbs=290 .*health=1 .*balance=290'
+if printf '%s\n' "$combined_sea" | grep -q 'Player died'; then exit 1; fi
+python3 - <<'PYSEA'
+from pathlib import Path
+lines = Path('port/build/combined-sea1-save.txt').read_text().splitlines()
+orb_ids = [line for line in lines if line.startswith('Game/XmlFiles/levels/') and '#' in line]
+assert len(orb_ids) == len(set(orb_ids)) == 290, (len(orb_ids), len(set(orb_ids)))
+assert 'B:290' in lines
+for level in ('grass_exploration_1.xml', 'grass_exploration_2.xml', 'cliff.xml'):
+    assert any(level + '#' in orb for orb in orb_ids), level
+PYSEA
 # A held left+jump just before grass 1's lower dead-end trigger keeps the
 # player on the upper route to grass 2 and the authored cliff. Reversing on
 # the reachable lower cliff path collects more distinct authored orbs; its
