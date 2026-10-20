@@ -282,6 +282,25 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
                                      '--simulate-only'], capture_output=True, text=True, check=True)
     assert 'Collected key ' not in disabled_result.stdout, disabled_result.stdout
     assert 'Collected paper paper_pickup_gametip_projectile at frame 7' in disabled_result.stdout, disabled_result.stdout
+    # Game::Update calls Camera2D::FollowTargetObjectWithLag before manager
+    # visitation. A disabled axis stays at its authored initial position;
+    # an enabled axis advances by the authored per-update divisor (not dt).
+    camera_fixture = Path('port/tests/fixtures/camera_follow_update_zone.xml')
+    camera_xml = camera_fixture.read_text()
+    def camera_trace(xml):
+        variant = root / 'camera-follow-variant.xml'
+        variant.write_text(xml)
+        return subprocess.run(['port/build/deathleak-linux', '--play', str(variant),
+                               '--script', 'I:8', '--fixed-dt', '0.0166667',
+                               '--simulate-only'], capture_output=True, text=True, check=True).stdout
+    fixed_camera = camera_trace(camera_xml)
+    assert 'Collected key camera_follow_key' not in fixed_camera, fixed_camera
+    followed_camera = camera_trace(camera_xml.replace('followx="false"', 'followx="true"'))
+    assert 'Collected key camera_follow_key at frame 2' in followed_camera, followed_camera
+    slow_camera = camera_trace(camera_xml.replace('followx="false"', 'followx="true"').replace('xLag="2"', 'xLag="300"'))
+    assert 'Collected key camera_follow_key' not in slow_camera, slow_camera
+    offset_camera = camera_trace(camera_xml.replace('followx="false"', 'followx="true"').replace('xOffset="0"', 'xOffset="-2500"'))
+    assert 'Collected key camera_follow_key' not in offset_camera, offset_camera
     # GameObject::UpdateInteractable is not called when its manager zone culls
     # the object. Its static lock and two-tick partial countdown survive even
     # when I is released off-zone; another visited object cannot steal the lock.

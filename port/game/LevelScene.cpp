@@ -64,6 +64,11 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     if (auto* props = level->FirstChildElement("LevelProperties")) {
         auto* camera = props->FirstChildElement("camera_properties");
         cameraX_ = Attr(camera, "posx"); cameraY_ = Attr(camera, "posy");
+        cameraOffsetX_ = Attr(camera, "xOffset"); cameraOffsetY_ = Attr(camera, "yOffset");
+        cameraLagX_ = Attr(camera, "xLag", 7.5f); cameraLagY_ = Attr(camera, "yLag", 15.f);
+        cameraZoom_ = std::clamp(Attr(camera, "zoom_in_percent", 1.f), 0.2f, 1.f);
+        cameraFollowX_ = !camera || !camera->Attribute("followx") || Flag(camera, "followx");
+        cameraFollowY_ = !camera || !camera->Attribute("followy") || Flag(camera, "followy");
     }
     std::unordered_map<std::string, render::TextureId> textures;
     size_t objectOrder = 0;

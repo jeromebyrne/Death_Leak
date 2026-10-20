@@ -1,0 +1,16 @@
+<level>
+  <LevelProperties>
+    <camera_properties posx="0" posy="107.44937" zoom_in_percent="1" xOffset="0" yOffset="0" xLag="2" yLag="7" followx="false" followy="false"/>
+  </LevelProperties>
+  <Player id="1"><position x="2500" y="107.44937" depth_layer="kPlayer"/>
+    <dimensions width="181.393768" height="215.352036"/>
+    <texture filename="Media/UI/player_silhouette.png"/></Player>
+  <SolidLineStrip id="2"><position x="2500" y="0"/><dimensions width="1000" height="100"/>
+    <points num_points="2" x_0="-500" y_0="0" x_1="500" y_1="0"/></SolidLineStrip>
+  <KeyPickup id="3" updateable="true" always_update="false">
+    <position x="2500" y="107.44937" depth_layer="kGround"/>
+    <dimensions width="55" height="57"/>
+    <texture filename="Media/UI/player_silhouette.png"/>
+    <key_props id="camera_follow_key"/>
+  </KeyPickup>
+</level>

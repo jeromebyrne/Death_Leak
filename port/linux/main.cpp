@@ -637,8 +637,16 @@ int main(int argc, char** argv) {
             // checks; normal melee comes through Combat::Update above.
             if (simulateOnly && command == 'H') combat.DamageEnemy(0,1.5f);
             if (sound && combat.Fired() > firedBefore) sound->Play(deathleak::audio::Cue::KnifeThrow, firedBefore);
-            cameraX += (worldX - cameraX) * std::min(1.f, 8.f * dt);
-            cameraY += (worldY - cameraY) * std::min(1.f, 4.f * dt);
+            // Game::Update follows before GameObjectManager::Update. The Windows
+            // camera uses per-update lag divisors, authored offsets and axis flags.
+            if (scene.CameraFollowX()) {
+                const float lag = std::max(1.f, scene.CameraLagX() * scene.CameraZoom());
+                cameraX += (worldX + scene.CameraOffsetX() * scene.CameraZoom() - cameraX) / lag;
+            }
+            if (scene.CameraFollowY()) {
+                const float lag = std::max(1.f, scene.CameraLagY());
+                cameraY += (worldY + scene.CameraOffsetY() * scene.CameraZoom() - cameraY) / lag;
+            }
             if (auto it = scriptedCamera.find(frame); it != scriptedCamera.end()) {
                 cameraX = it->second.first; cameraY = it->second.second;
             }

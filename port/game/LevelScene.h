@@ -49,6 +49,13 @@ public:
     void ApplyCollected(const std::unordered_set<std::string>& collected);
     float CameraX() const { return cameraX_; }
     float CameraY() const { return cameraY_; }
+    float CameraOffsetX() const { return cameraOffsetX_; }
+    float CameraOffsetY() const { return cameraOffsetY_; }
+    float CameraLagX() const { return cameraLagX_; }
+    float CameraLagY() const { return cameraLagY_; }
+    float CameraZoom() const { return cameraZoom_; }
+    bool CameraFollowX() const { return cameraFollowX_; }
+    bool CameraFollowY() const { return cameraFollowY_; }
     size_t SpriteCount() const { return sprites_.size(); }
     size_t SkippedCount() const { return skipped_; }
     float PlayerX() const { return playerX_; }
@@ -96,6 +103,9 @@ private:
     float playerX_ = 0, playerY_ = 0;
     float playerVisualWidth_ = 0, playerVisualHeight_ = 0;
     float cameraX_ = 0, cameraY_ = 0;
+    float cameraOffsetX_ = 0, cameraOffsetY_ = 0;
+    float cameraLagX_ = 7.5f, cameraLagY_ = 15.f, cameraZoom_ = 1.f;
+    bool cameraFollowX_ = true, cameraFollowY_ = true;
     size_t skipped_ = 0;
 };
 }
