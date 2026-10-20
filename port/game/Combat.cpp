@@ -92,7 +92,8 @@ void Combat::SetArt(render::Renderer& renderer) {
     hostileArt_ = renderer.LoadTexture("Game/Media/puke_temp.png", error);
 }
 bool Combat::DamageEnemy(size_t index, float damage) {
-    if (index >= enemies_.size() || enemies_[index].health <= 0.f || damage <= 0.f) return false;
+    if (index >= enemies_.size() || enemies_[index].health <= 0.f ||
+        enemies_[index].teleportTime > 0.f || damage <= 0.f) return false;
     auto& enemy = enemies_[index];
     enemy.health -= damage;
     ++hits_;
@@ -153,6 +154,15 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
         const float dx=x-enemy.x, dy=y-enemy.y;
         enemy.fireCooldown = std::max(0.f, enemy.fireCooldown-dt);
         const bool ghost = enemy.type == "kGhost";
+        if (enemy.teleportTime > 0.f) {
+            enemy.teleportTime = std::max(0.f,enemy.teleportTime-dt);
+            if (enemy.teleportTime > 0.f) continue;
+            enemy.x=enemy.teleportX;
+            enemy.y=enemy.teleportY;
+            enemy.vy=0.f;
+            enemy.grounded=false;
+            ++enemy.teleports;
+        }
         if (enemy.stunTime > 0.f) {
             enemy.windup = 0.f;
             if (!ghost) MoveGroundEnemy(enemy,scene,enemy.x,dt);
@@ -167,6 +177,18 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
             else if (enemy.x > x+250.f) enemy.x -= std::min(enemy.x-x-250.f,720.f*dt);
             enemy.y += std::clamp(enemy.targetY-enemy.y,-210.f*dt,210.f*dt);
         } else {
+            // AIStateRangeAttack teleports a distant NPC after 8-12 s;
+            // SkeletonEnemy::CanTeleport is false. Fixed in-range values replace rand().
+            enemy.teleportCooldown=std::max(0.f,enemy.teleportCooldown-dt);
+            if (enemy.type != "kSkeleton" && std::abs(dx)>600.f && enemy.teleportCooldown<=0.f) {
+                enemy.teleportX=x-facing*550.f;
+                enemy.teleportY=y+250.f;
+                enemy.teleportTime=0.8f; // Character::kTeleportTime
+                enemy.teleportCooldown=8.f;
+                enemy.windup=0.f;
+                enemy.vy=0.f;
+                continue;
+            }
             // AIStateRangeAttack follows beyond 500, retreats inside 200, and holds the band.
             const float range = std::abs(dx);
             const float speed = enemy.type == "kSkeleton" ? 240.f : 480.f;
@@ -224,7 +246,7 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
             }
         } else for (size_t enemyIndex=0; enemyIndex<enemies_.size(); ++enemyIndex) {
             auto& enemy=enemies_[enemyIndex];
-            if (enemy.health<=0) continue;
+            if (enemy.health<=0 || enemy.teleportTime>0.f) continue;
             // Swept segment avoids tunneling at the knife's 1200 world-units/s speed.
             const float vx=shot.x-oldX, vy=shot.y-oldY;
             const float t=std::clamp(((enemy.x-oldX)*vx+(enemy.y-oldY)*vy)/(vx*vx+vy*vy+0.0001f),0.f,1.f);
@@ -255,7 +277,8 @@ void Combat::Draw(render::Renderer& renderer, float cameraX, float cameraY) cons
         if (!texture) return;
         renderer.DrawSprite({texture,{}, {640.f+(x-cameraX-w/2)*scale,360.f+(cameraY-y-h/2)*scale,w*scale,h*scale}});
     };
-    for (const auto& enemy:enemies_) draw(enemy.texture,enemy.x,enemy.y,enemy.type=="kGhost"?113.f:183.f,enemy.type=="kGhost"?208.f:231.f);
+    for (const auto& enemy:enemies_) if (enemy.teleportTime<=0.f)
+        draw(enemy.texture,enemy.x,enemy.y,enemy.type=="kGhost"?113.f:183.f,enemy.type=="kGhost"?208.f:231.f);
     for (const auto& shot:shots_) draw(shot.enemy?hostileArt_:knifeArt_,shot.x,shot.y,shot.enemy?20.f:84.5f,shot.enemy?20.f:25.f);
 }
 }

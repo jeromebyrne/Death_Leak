@@ -79,6 +79,21 @@ combo_expired=$($bin --play port/tests/fixtures/encounter_stun.xml --script .:90
 printf '%s\n' "$combo_expired" | grep -q 'grounded=1 combo=1 stun=0'
 airborne=$($bin --play port/tests/fixtures/encounter_stun.xml --script H:6 --fixed-dt 0.0166667 --simulate-only --combat-state)
 printf '%s\n' "$airborne" | grep -q 'grounded=0 combo=6 stun=0'
+# AIStateRangeAttack/Character: a distant ninja waits eight seconds, becomes
+# unhittable for the 0.8 s teleport, then reappears at the source-range
+# 500-599 X / 200-299 Y offset. SkeletonEnemy disables teleport entirely.
+teleport_early=$($bin --play port/tests/fixtures/encounter_teleport.xml --script L:140,.:330 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$teleport_early" | grep -q 'Enemy kNinja x=150 y=100 .*teleport=0 teleports=0'
+teleport_active=$($bin --play port/tests/fixtures/encounter_teleport.xml --script L:140,.:380 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$teleport_active" | grep -q 'Enemy kNinja x=150 y=100 .*teleport=0.1333.*teleports=0'
+teleport_hit=$($bin --play port/tests/fixtures/encounter_teleport.xml --script L:140,.:380,H:1 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$teleport_hit" | grep -q 'enemies=1 hits=0'
+teleport_done=$($bin --play port/tests/fixtures/encounter_teleport.xml --script L:140,.:440 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$teleport_done" | grep -q 'Enemy kNinja x=-623.54 y=100 .*teleport=0 teleports=1'
+no_skeleton_teleport=$($bin --play port/tests/fixtures/encounter_teleport_skeleton.xml --script L:140,.:440 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$no_skeleton_teleport" | grep -q 'Enemy kSkeleton x=150 y=100 .*teleport=0 teleports=0'
+no_near_teleport=$($bin --play port/tests/fixtures/encounter_open.xml --frames 580 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$no_near_teleport" | grep -q 'Enemy kNinja .*teleport=0 teleports=0'
 # AIStateFlying leaves an authored ghost elevated and outside its close fire range.
 ghost_state=$($bin --play Game/XmlFiles/levels/forest_exploration_2.xml --start-encounter 0 --frames 120 --fixed-dt 0.0166667 --simulate-only --combat-state)
 printf '%s\n' "$ghost_state" | grep -q 'Enemy kGhost x=1002.99 y=2977.91'
@@ -133,4 +148,4 @@ legacy=$($bin --load-save port/build/legacy-dl3-save.txt --frames 1 --fixed-dt 0
 printf '%s\n' "$legacy" | grep -q 'keys=1'
 
 if printf '%s\n' "$key_only_resume" | grep -q 'Collected key'; then exit 1; fi
-printf '%s\n' 'PASS: source-held-jump arena climb and exit, three-level route, burst/water fire, swim, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, solid box, wall jump, death/restart, key/door gate, ghost flight, ranged warmup/terrain shots and kill, grounded NPC fall/wall/box, NPC combo/stun/recovery, DL3 compatibility and DL4 encounter persistence'
+printf '%s\n' 'PASS: source-held-jump arena climb and exit, three-level route, burst/water fire, swim, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, solid box, wall jump, death/restart, key/door gate, ghost flight, ranged warmup/terrain shots and kill, grounded NPC fall/wall/box, NPC combo/stun/recovery, NPC teleport timing/exclusion, DL3 compatibility and DL4 encounter persistence'

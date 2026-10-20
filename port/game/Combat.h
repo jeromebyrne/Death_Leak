@@ -17,6 +17,9 @@ struct Enemy {
     bool grounded = false;
     float comboWindow = 0, stunTime = 0;
     int comboHits = 0;
+    float teleportCooldown = 8.f, teleportTime = 0.f;
+    float teleportX = 0.f, teleportY = 0.f;
+    int teleports = 0;
 };
 struct Shot {
     float x, y, vx, vy, life, damage;
