@@ -61,7 +61,13 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     playerVisualWidth_ = playerVisualHeight_ = 0;
     spawnedOrbTexture_ = render::InvalidTexture;
     sprites_.clear(); ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); ambience_.clear(); doors_.clear(); boats_.clear(); keys_.clear(); papers_.clear(); healthDevils_.clear(); smashables_.clear(); spawnedOrbs_.clear(); scrolls_.clear(); skipped_ = 0;
+    cameraBounds_ = false;
     if (auto* props = level->FirstChildElement("LevelProperties")) {
+        if (auto* bounds = props->FirstChildElement("level_bounds")) {
+            cameraBoundLeft_ = Attr(bounds, "left"); cameraBoundRight_ = Attr(bounds, "right");
+            cameraBoundTop_ = Attr(bounds, "top"); cameraBoundBottom_ = Attr(bounds, "bottom");
+            cameraBounds_ = true;
+        }
         auto* camera = props->FirstChildElement("camera_properties");
         cameraX_ = Attr(camera, "posx"); cameraY_ = Attr(camera, "posy");
         cameraOffsetX_ = Attr(camera, "xOffset"); cameraOffsetY_ = Attr(camera, "yOffset");

@@ -56,6 +56,11 @@ public:
     float CameraZoom() const { return cameraZoom_; }
     bool CameraFollowX() const { return cameraFollowX_; }
     bool CameraFollowY() const { return cameraFollowY_; }
+    bool HasCameraBounds() const { return cameraBounds_; }
+    float CameraBoundLeft() const { return cameraBoundLeft_; }
+    float CameraBoundRight() const { return cameraBoundRight_; }
+    float CameraBoundTop() const { return cameraBoundTop_; }
+    float CameraBoundBottom() const { return cameraBoundBottom_; }
     size_t SpriteCount() const { return sprites_.size(); }
     size_t SkippedCount() const { return skipped_; }
     float PlayerX() const { return playerX_; }
@@ -106,6 +111,8 @@ private:
     float cameraOffsetX_ = 0, cameraOffsetY_ = 0;
     float cameraLagX_ = 7.5f, cameraLagY_ = 15.f, cameraZoom_ = 1.f;
     bool cameraFollowX_ = true, cameraFollowY_ = true;
+    bool cameraBounds_ = false;
+    float cameraBoundLeft_ = 0, cameraBoundRight_ = 0, cameraBoundTop_ = 0, cameraBoundBottom_ = 0;
     size_t skipped_ = 0;
 };
 }

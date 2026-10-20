@@ -301,6 +301,19 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
     assert 'Collected key camera_follow_key' not in slow_camera, slow_camera
     offset_camera = camera_trace(camera_xml.replace('followx="false"', 'followx="true"').replace('xOffset="0"', 'xOffset="-2500"'))
     assert 'Collected key camera_follow_key' not in offset_camera, offset_camera
+    # Camera2D::CheckBoundaryCollisions runs before and after follow; its
+    # viewport dimensions are the unzoomed 1920x1080 backbuffer. A left
+    # boundary can make an otherwise culled key manager-visible before follow.
+    left_bounded = camera_xml.replace('followx="false"', 'followx="false"').replace(
+        '</LevelProperties>', '<level_bounds left="2000" right="8000" top="2000" bottom="-2000"/></LevelProperties>')
+    assert 'Collected key camera_follow_key at frame 2' in camera_trace(left_bounded)
+    # Conversely, post-follow right clamping prevents a key at x=6000 from
+    # entering the update zone even with instantaneous follow.
+    distant = camera_xml.replace('2500', '6000').replace('followx="false"', 'followx="true"').replace('xLag="2"', 'xLag="1"')
+    assert 'Collected key camera_follow_key at frame 2' in camera_trace(distant)
+    right_bounded = distant.replace('</LevelProperties>',
+        '<level_bounds left="-8000" right="3000" top="2000" bottom="-2000"/></LevelProperties>')
+    assert 'Collected key camera_follow_key' not in camera_trace(right_bounded)
     # Source Game::Update follows the player's position from the preceding
     # update, before the manager advances this frame's player. Frame 0 builds
     # real rightward momentum and the test-only camera trace fixes the prior

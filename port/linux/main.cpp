@@ -614,6 +614,24 @@ int main(int argc, char** argv) {
                 if (motion.TryRoll(combat.HasFocus(2.f))) combat.ConsumeFocus(2.f);
             }
             rollHeld = roll;
+            // Game::Update clamps the camera both before and after following.
+            // Camera2D's Left/Right/Top/Bottom use the unzoomed backbuffer
+            // dimensions; preserve its Y-then-X branch order even for levels
+            // narrower than the viewport.
+            auto clampCameraToLevel = [&] {
+                if (!scene.HasCameraBounds()) return;
+                constexpr float halfWidth = 1920.f * 0.5f;
+                constexpr float halfHeight = 1080.f * 0.5f;
+                if (cameraY - halfHeight <= scene.CameraBoundBottom())
+                    cameraY = scene.CameraBoundBottom() + halfHeight;
+                else if (cameraY + halfHeight >= scene.CameraBoundTop())
+                    cameraY = scene.CameraBoundTop() - halfHeight;
+                if (cameraX - halfWidth <= scene.CameraBoundLeft())
+                    cameraX = scene.CameraBoundLeft() + halfWidth;
+                else if (cameraX + halfWidth >= scene.CameraBoundRight())
+                    cameraX = scene.CameraBoundRight() - halfWidth;
+            };
+            clampCameraToLevel();
             // Windows Game::Update follows the previous frame's player position
             // before GameObjectManager visits and advances the player. Capture
             // this camera once for the whole update-zone pass.
@@ -627,6 +645,7 @@ int main(int argc, char** argv) {
                 const float lag = std::max(1.f, scene.CameraLagY());
                 cameraY += (worldY + scene.CameraOffsetY() * scene.CameraZoom() - cameraY) / lag;
             }
+            clampCameraToLevel();
             if (auto it = scriptedCamera.find(frame); it != scriptedCamera.end()) {
                 cameraX = it->second.first; cameraY = it->second.second;
             }
