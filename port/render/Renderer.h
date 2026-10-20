@@ -53,7 +53,7 @@ public:
 };
 
 // Key codes are intentionally backend-neutral.
-enum Key { Left = 1, Right, Up, Down, Escape, Restart, Interact, Melee, Purchase };
+enum Key { Left = 1, Right, Up, Down, Escape, Restart, Interact, Melee, Purchase, Roll };
 std::unique_ptr<Renderer> CreateRenderer();
 
 } // namespace deathleak::render

@@ -125,7 +125,7 @@ bool Combat::DamageEnemy(size_t index, float damage, float projectileDirectionX)
     if (enemy.health <= 0.f) ++kills_;
     return true;
 }
-void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fire, bool melee, bool grounded, int facing, render::Renderer& renderer) {
+void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fire, bool melee, bool grounded, bool rolling, int facing, render::Renderer& renderer) {
     fireCooldown_ = std::max(0.f, fireCooldown_-dt);
     burstCooldown_ = std::max(0.f, burstCooldown_-dt);
     hurtCooldown_ = std::max(0.f, hurtCooldown_-dt);
@@ -137,7 +137,7 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
     // at 60 FPS. Character::DoMeleeCollisions damages only in phase 3.
     const bool meleePressed = melee && !meleeHeld_;
     meleeHeld_ = melee;
-    if (meleePressed && meleeTime_ <= 0.f && grounded && !inWater && focus_ >= 4.f && health_ > 0.f) {
+    if (meleePressed && meleeTime_ <= 0.f && grounded && !rolling && !inWater && focus_ >= 4.f && health_ > 0.f) {
         meleeTime_ = 0.000001f;
         focus_ -= 4.f;
     }
@@ -165,7 +165,7 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
     }
     // Player::FireWeapon blocks shots in water and fires at most five knives
     // before its 0.5-second burst pause. The authored projectile lifetime is 0.25 s.
-    if (fire && meleeTime_ <= 0.f && fireCooldown_ <= 0 && burstCooldown_ <= 0 && !inWater && health_ > 0) {
+    if (fire && !rolling && meleeTime_ <= 0.f && fireCooldown_ <= 0 && burstCooldown_ <= 0 && !inWater && health_ > 0) {
         if (!knifeArt_) SetArt(renderer);
         shots_.push_back({x+facing*10.f,y+25.f,facing*1200.f,0.f,0.25f,projectileDamageUpgrade_ ? 4.f : 1.5f,false});
         fireCooldown_ = projectileSpeedUpgrade_ ? 0.220f*0.75f : 0.220f;

@@ -56,6 +56,7 @@ int main(int argc, char** argv) {
     bool restorePosition = false;
     std::unordered_set<std::string> collectedOrbs, ownedKeys, unlockedDoors;
     bool deflectionUnlocked = false, speedUnlocked = false;
+    bool downwardDashUnlocked = false, rollUnlocked = false;
     bool projectileDamageUnlocked = false, projectileSpeedUnlocked = false;
     float savedMaxHealth = 25;
     bool hasSavedMaxHealth = false;
@@ -143,6 +144,8 @@ int main(int argc, char** argv) {
             else if (line.rfind("D:", 0) == 0) unlockedDoors.insert(line.substr(2));
             else if (line == "U:kDeflection") deflectionUnlocked = true;
             else if (line == "U:kSpeedIncrease") speedUnlocked = true;
+            else if (line == "U:kDownwardDash") downwardDashUnlocked = true;
+            else if (line == "U:kRoll") rollUnlocked = true;
             else if (line == "U:kProjectileDamageIncrease") projectileDamageUnlocked = true;
             else if (line == "U:kProjectileSpeedIncrease") projectileSpeedUnlocked = true;
             else if (line.rfind("H:", 0) == 0) {
@@ -201,7 +204,7 @@ int main(int argc, char** argv) {
         std::istringstream parts(script); std::string token;
         while (std::getline(parts, token, ',')) {
             auto colon = token.find(':');
-            if (colon == std::string::npos || token.empty() || std::string("LRJ.FBNTQEIHMPXS").find(token[0]) == std::string::npos) { std::cerr << "Bad --script token\n"; return 2; }
+            if (colon == std::string::npos || token.empty() || std::string("LRJ.FBNTQEIHMPXSO").find(token[0]) == std::string::npos) { std::cerr << "Bad --script token\n"; return 2; }
             int count = std::atoi(token.c_str() + colon + 1);
             if (count < 1 || count > 100000 || scriptedInput.size() + count > 100000) { std::cerr << "Bad --script duration\n"; return 2; }
             scriptedInput.insert(scriptedInput.end(), count, token[0]);
@@ -259,6 +262,7 @@ int main(int argc, char** argv) {
     float playerX = 590, playerY = 430;
     deathleak::game::PlayerMotion motion;
     motion.SetSpeedUpgrade(speedUnlocked);
+    motion.SetMovementUnlocks(downwardDashUnlocked, rollUnlocked);
     motion.Reset(restorePosition ? savedX : scene.PlayerX(), restorePosition ? savedY : scene.PlayerY());
     float worldX = motion.X(), worldY = motion.Y();
     float cameraX = scene.CameraX(), cameraY = scene.CameraY();
@@ -284,6 +288,7 @@ int main(int argc, char** argv) {
     if (exhaustedFocus) combat.SetFocus(0);
     double updateSeconds = 0, drawSeconds = 0;
     bool wasDead = false, restartHeld = false;
+    bool dashHeld = false, rollHeld = false;
     // Player::Update freezes the final scene, reveals its title after 15 s,
     // and calls EndStory after 35 s (both thresholds are strict).
     float finalSceneTime = 0.f;
@@ -443,8 +448,8 @@ int main(int argc, char** argv) {
                     playLevel = levelPath = currentLevel = freshLevel;
                     collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear();
                     orbBalance = 0; combat = deathleak::game::Combat{};
-                    speedUnlocked = projectileDamageUnlocked = projectileSpeedUnlocked = false; savedMaxHealth = 25; hasSavedMaxHealth = false; windowsPermanentExtension.clear();
-                    motion.SetSpeedUpgrade(false);
+                    speedUnlocked = projectileDamageUnlocked = projectileSpeedUnlocked = false; downwardDashUnlocked = rollUnlocked = false; savedMaxHealth = 25; hasSavedMaxHealth = false; windowsPermanentExtension.clear();
+                    motion.SetSpeedUpgrade(false); motion.SetMovementUnlocks(false, false);
                     motion.Reset(scene.PlayerX(), scene.PlayerY());
                     worldX = motion.X(); worldY = motion.Y();
                     cameraX = scene.CameraX(); cameraY = scene.CameraY();
@@ -521,15 +526,29 @@ int main(int argc, char** argv) {
             } else {
             restartHeld = restart;
             const bool jump = !script.empty() ? (command == 'J' || command == 'Q' || command == 'E') : renderer->KeyDown(Up);
+            // Windows right shoulder attempts an airborne dash and a grounded melee.
+            // O/left shoulder is roll; the motion layer keeps the landing input window.
             const bool melee = !script.empty() ? command == 'M' : renderer->KeyDown(Melee);
-            motion.Update(scene, dt, combat.MeleeActive() ? 0 : static_cast<int>(direction), jump && !combat.MeleeActive());
+            const bool roll = !script.empty() ? command == 'O' : renderer->KeyDown(Roll);
+            if (melee && !dashHeld && combat.Health() > 0.f && !combat.MeleeActive() &&
+                motion.TryDownwardDash(combat.HasFocus(50.f))) combat.ConsumeFocus(50.f);
+            dashHeld = melee;
+            if (roll && !rollHeld && combat.Health() > 0.f && !combat.MeleeActive()) {
+                motion.BufferRoll();
+                if (motion.TryRoll(combat.HasFocus(2.f))) combat.ConsumeFocus(2.f);
+            }
+            rollHeld = roll;
+            motion.Update(scene, dt, (combat.MeleeActive() || motion.Rolling()) ? 0 : static_cast<int>(direction),
+                          jump && !combat.MeleeActive());
+            if (motion.Grounded() && combat.Health() > 0.f && motion.TryBufferedRoll(combat.HasFocus(2.f)))
+                combat.ConsumeFocus(2.f);
             worldX = motion.X(); worldY = motion.Y();
             const auto collectedNow = scene.CollectCurrencyOrbs(worldX, worldY, collectedOrbs);
             orbBalance += static_cast<int>(collectedNow);
             if (sound && collectedNow) sound->Play(deathleak::audio::Cue::OrbCollect);
             const bool fire = !script.empty() ? (command == 'F' || command == 'B' || command == 'N') : renderer->KeyDown(Down);
             const int firedBefore = combat.Fired();
-            combat.Update(scene, worldX, worldY, dt, fire, melee, motion.Grounded(), facing, *renderer);
+            combat.Update(scene, worldX, worldY, dt, fire, melee, motion.Grounded(), motion.Rolling(), facing, *renderer);
             // SolidMovingSprite::OnCollision applies authored damage per contact, not per second.
             combat.ApplySolidContactDamage(motion.SolidContactDamage());
             // H remains a simulation-only direct hit for isolated combo/stun
@@ -677,8 +696,8 @@ int main(int argc, char** argv) {
             collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear();
             orbBalance = 0; scene = deathleak::game::LevelScene{};
             combat = deathleak::game::Combat{};
-            speedUnlocked = projectileDamageUnlocked = projectileSpeedUnlocked = false; savedMaxHealth = 25; hasSavedMaxHealth = false; windowsPermanentExtension.clear();
-            motion.SetSpeedUpgrade(false);
+            speedUnlocked = projectileDamageUnlocked = projectileSpeedUnlocked = false; downwardDashUnlocked = rollUnlocked = false; savedMaxHealth = 25; hasSavedMaxHealth = false; windowsPermanentExtension.clear();
+            motion.SetSpeedUpgrade(false); motion.SetMovementUnlocks(false, false);
             finalSceneTime = 0; finalTitleShown = storyEnded = false;
             menuSelection = 0; menuOptions = menuLanguages = false;
         }
@@ -787,6 +806,8 @@ int main(int argc, char** argv) {
         for (const auto& door : unlockedDoors) saved << "D:" << door << '\n';
         if (combat.DeflectionUnlocked()) saved << "U:kDeflection\n";
         if (speedUnlocked) saved << "U:kSpeedIncrease\n";
+        if (downwardDashUnlocked) saved << "U:kDownwardDash\n";
+        if (rollUnlocked) saved << "U:kRoll\n";
         if (projectileDamageUnlocked) saved << "U:kProjectileDamageIncrease\n";
         if (projectileSpeedUnlocked) saved << "U:kProjectileSpeedIncrease\n";
         if (hasSavedMaxHealth) saved << "H:" << savedMaxHealth << '\n';
@@ -807,6 +828,7 @@ int main(int argc, char** argv) {
                   << " focus=" << combat.Focus() << " balance=" << orbBalance << " spawned=" << combat.Spawned() << " enemies=" << combat.EnemyCount()
                   << " hits=" << combat.Hits() << " kills=" << combat.Kills() << " fired=" << combat.Fired()
                   << " shots=" << combat.ShotCount() << " grounded=" << motion.Grounded() << " elapsed=" << elapsed << "s"
+                  << " downward_dash_upgrade=" << downwardDashUnlocked << " roll_upgrade=" << rollUnlocked << " dash_active=" << motion.DownwardDashing() << " roll_active=" << motion.Rolling() << " vx=" << motion.VelocityX() << " vy=" << motion.VelocityY()
                   << " max_health=" << combat.MaxHealth() << " speed_upgrade=" << speedUnlocked << " projectile_damage_upgrade=" << projectileDamageUnlocked << " projectile_speed_upgrade=" << projectileSpeedUnlocked << "\n";
         if (combatState) {
             std::cout << "Player/NPC contacts=" << combat.PlayerContacts() << " contact_frames=" << combat.ContactFrames() << "\n";

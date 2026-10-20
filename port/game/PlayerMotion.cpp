@@ -13,42 +13,68 @@ constexpr float kWallJumpSpeedX = 15.f * 60.f;
 constexpr float kWallJumpSpeedY = 20.f * 60.f;
 }
 void PlayerMotion::Reset(float x, float y, bool authoredEntry) {
-    x_ = x; y_ = y; vx_ = vy_ = 0; sinceGround_ = 1; jumpHeld_ = false; grounded_ = false; initialPlacement_ = authoredEntry;
+    x_ = x; y_ = y; vx_ = vy_ = 0; sinceGround_ = 1; airTime_ = 0; jumpHeld_ = false; grounded_ = false; initialPlacement_ = authoredEntry;
     wallSide_ = 0; wallJumpRemaining_ = 0; jumpPercent_ = 40.f; solidContactDamage_ = 0.f;
+    downwardDashing_ = inWater_ = false; rollTime_ = rollBuffer_ = 0.f; facing_ = 1;
+}
+bool PlayerMotion::TryDownwardDash(bool hasFocus) {
+    if (!dashUnlocked_ || !hasFocus || grounded_ || airTime_ < 0.25f || inWater_ || downwardDashing_) return false;
+    // Character::DoDownwardDash cancels vertical acceleration and sets -50 units/tick.
+    vy_ = -50.f * 60.f; jumpPercent_ = 100.f; downwardDashing_ = true;
+    return true;
+}
+bool PlayerMotion::TryRoll(bool hasFocus) {
+    if (!rollUnlocked_ || !hasFocus || !grounded_ || rollTime_ > 0.f) return false;
+    if (inWater_) return false;
+    rollTime_ = 0.5f; // animation-finish stand-in; source Roll sequence owns termination
+    if (std::abs(vx_) < 12.f*60.f) vx_ = facing_ * 12.f*60.f;
+    vy_ = 0.f; rollBuffer_ = 0.f;
+    return true;
+}
+bool PlayerMotion::TryBufferedRoll(bool hasFocus) {
+    if (rollBuffer_ <= 0.f) return false;
+    return TryRoll(hasFocus);
 }
 void PlayerMotion::Update(const LevelScene& scene, float dt, int direction, bool jump) {
     if (dt <= 0) return;
     const float ticks = dt * 60.f;
     solidContactDamage_ = 0.f;
+    if (rollBuffer_ > 0.f) rollBuffer_ = std::max(0.f, rollBuffer_ - dt);
+    if (rollTime_ > 0.f) rollTime_ = std::max(0.f, rollTime_ - dt);
+    if (direction) facing_ = direction < 0 ? -1 : 1;
     bool inWater = false;
     for (const auto& hazard : scene.Hazards())
         if (hazard.water && std::abs(x_-hazard.x) <= hazard.width*0.5f &&
             std::abs(y_-hazard.y) <= hazard.height*0.5f) inWater = true;
+    inWater_ = inWater;
     const float maxSpeed = speedUpgrade_ ? 11.f * 60.f : kBaseMaxSpeed;
     if (wallJumpRemaining_ > 0) wallJumpRemaining_ = std::max(0.f, wallJumpRemaining_ - dt);
-    if (wallJumpRemaining_ <= 0) {
+    if (rollTime_ > 0.f) {
+        vx_ += facing_ * 60.f * ticks;
+        vx_ *= std::pow(0.93f, ticks);
+    } else if (wallJumpRemaining_ <= 0) {
         if (direction) vx_ = std::clamp(vx_ + direction * 60.f * ticks, -maxSpeed*(inWater ? 0.4f : 1.f), maxSpeed*(inWater ? 0.4f : 1.f));
         else vx_ *= std::pow(0.80f, ticks); // Player::UpdateResistance without acceleration
     } else vx_ *= std::pow(0.99f, ticks);
     if (std::abs(vx_) < 6.f) vx_ = 0;
     // Character::CanJump permits a 0.3 s post-edge window.
-    if (inWater && jump) {
+    if (inWater && jump && !downwardDashing_ && rollTime_ <= 0.f) {
         // Gamepad swim applies AccelerateY(1, 0.3) each target update.
         // MovingSprite clamps submerged vertical speed to four units/tick.
         vy_ = std::min(4.f*60.f, vy_ + 0.3f*60.f*ticks);
-    } else if (jump && !jumpHeld_ && (grounded_ || sinceGround_ <= 0.3f || wallSide_)) {
+    } else if (jump && !jumpHeld_ && !downwardDashing_ && rollTime_ <= 0.f && (grounded_ || sinceGround_ <= 0.3f || wallSide_)) {
         if (!grounded_ && sinceGround_ > 0.3f && wallSide_) {
             vx_ = -wallSide_ * kWallJumpSpeedX;
             vy_ = kWallJumpSpeedY;
             wallJumpRemaining_ = 0.3f;
         } else { vy_ = kJumpSpeed * 0.4f; jumpPercent_ = 40.f; }
         y_ += 10.f; // Character::Jump releases the solid line before ascent.
-        grounded_ = false; sinceGround_ = 1.f;
+        grounded_ = false; sinceGround_ = 1.f; airTime_ = 0.f;
     }
     // InputManager::ProcessJump_* starts at 40% and increases by 6.5%
     // on each subsequent held update, up to the authored max jump speed.
     // Character::IncreaseJump only raises velocity, never lowers it.
-    if (jump && jumpHeld_ && !inWater && !grounded_ && sinceGround_ > 0.3f && wallJumpRemaining_ <= 0 && jumpPercent_ < 100.f) {
+    if (jump && jumpHeld_ && !downwardDashing_ && rollTime_ <= 0.f && !inWater && !grounded_ && sinceGround_ > 0.3f && wallJumpRemaining_ <= 0 && jumpPercent_ < 100.f) {
         jumpPercent_ = std::min(100.f, jumpPercent_ + 6.5f * ticks);
         vy_ = std::max(vy_, kJumpSpeed * jumpPercent_ / 100.f);
     }
@@ -112,8 +138,8 @@ void PlayerMotion::Update(const LevelScene& scene, float dt, int direction, bool
             vy_ = 0;
         }
     }
-    if (best > -1e8f) { y_ = best+kHalfHeight; vy_ = 0; grounded_ = true; sinceGround_ = 0; }
-    else sinceGround_ += dt;
+    if (best > -1e8f) { y_ = best+kHalfHeight; vy_ = 0; grounded_ = true; sinceGround_ = 0; airTime_ = 0; downwardDashing_ = false; }
+    else { sinceGround_ += dt; airTime_ += dt; }
     // Authored LevelEntry centers can begin a few units inside a solid line.
     // Allow a one-frame shallow floor depenetration; ordinary jumps still
     // require crossing the surface from above.

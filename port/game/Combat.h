@@ -38,7 +38,7 @@ class Combat {
 public:
     void ClearLevel() { enemies_.clear(); shots_.clear(); activeTriggers_.clear(); fireCooldown_ = burstCooldown_ = hurtCooldown_ = 0; burstCount_ = 0; playerContacts_ = contactFrames_ = 0; meleeTime_ = 0; meleeHeld_ = false; }
     void SetArt(render::Renderer& renderer);
-    void Update(const LevelScene& scene, float x, float y, float dt, bool fire, bool melee, bool grounded, int facing, render::Renderer& renderer);
+    void Update(const LevelScene& scene, float x, float y, float dt, bool fire, bool melee, bool grounded, bool rolling, int facing, render::Renderer& renderer);
     bool DamageEnemy(size_t index, float damage, float projectileDirectionX = 0.f); // shared projectile/melee hit path
     bool MeleeActive() const { return meleeTime_ > 0.f; }
     int MeleeStrikes() const { return meleeStrikes_; }
@@ -54,6 +54,8 @@ public:
     float MaxHealth() const { return maxHealth_; }
     void SetMaxHealth(float value) { maxHealth_ = std::clamp(value, 1.f, 1000000.f); health_ = std::min(health_, maxHealth_); }
     float Focus() const { return focus_; }
+    bool HasFocus(float amount) const { return focus_ >= amount; }
+    void ConsumeFocus(float amount) { focus_ = std::max(0.f, focus_ - amount); if (focus_ == 0.f) focusCooldown_ = 5.f; }
     void SetFocus(float focus) { focus_ = std::clamp(focus, 0.f, 100.f); }
     void SetVitals(float health, float focus) { health_ = std::clamp(health, 0.f, maxHealth_); SetFocus(focus); }
     int Hits() const { return hits_; }

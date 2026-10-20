@@ -8,6 +8,13 @@ class PlayerMotion {
 public:
     void Reset(float x, float y, bool authoredEntry = false);
     void SetSpeedUpgrade(bool unlocked) { speedUpgrade_ = unlocked; }
+    void SetMovementUnlocks(bool dash, bool roll) { dashUnlocked_ = dash; rollUnlocked_ = roll; }
+    bool TryDownwardDash(bool hasFocus);
+    bool TryRoll(bool hasFocus);
+    void BufferRoll() { rollBuffer_ = 0.25f; }
+    bool TryBufferedRoll(bool hasFocus);
+    bool DownwardDashing() const { return downwardDashing_; }
+    bool Rolling() const { return rollTime_ > 0.f; }
     void Update(const LevelScene& scene, float dt, int direction, bool jump);
     float X() const { return x_; }
     float Y() const { return y_; }
@@ -18,8 +25,11 @@ public:
     float SolidContactDamage() const { return solidContactDamage_; }
 private:
     float x_ = 0, y_ = 0, vx_ = 0, vy_ = 0;
-    bool speedUpgrade_ = false;
-    float sinceGround_ = 1;
+    bool speedUpgrade_ = false, dashUnlocked_ = false, rollUnlocked_ = false;
+    bool downwardDashing_ = false, inWater_ = false;
+    float rollTime_ = 0.f, rollBuffer_ = 0.f;
+    int facing_ = 1;
+    float sinceGround_ = 1, airTime_ = 0;
     bool jumpHeld_ = false;
     bool grounded_ = false;
     bool initialPlacement_ = false;

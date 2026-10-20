@@ -82,6 +82,8 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
     assert sum(line.startswith('W1:') for line in target.read_text().splitlines()) == 1
     assert 'H:65' in target.read_text().splitlines()
     assert 'U:kSpeedIncrease' in target.read_text().splitlines()
+    for movement_unlock in ('kDownwardDash', 'kRoll'):
+        assert 'U:' + movement_unlock in target.read_text().splitlines()
     resumed = root / 'resumed.dl5'
     loaded = subprocess.run(['port/build/deathleak-linux', '--load-save', str(target), '--save-file', str(resumed),
                     '--frames', '1', '--fixed-dt', '0.0166667', '--simulate-only'],
@@ -111,6 +113,8 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
     assert sum(line.startswith('W1:') for line in resumed.read_text().splitlines()) == 1
     assert 'H:65' in resumed.read_text().splitlines()
     assert 'U:kSpeedIncrease' in resumed.read_text().splitlines()
+    for movement_unlock in ('kDownwardDash', 'kRoll'):
+        assert 'U:' + movement_unlock in resumed.read_text().splitlines()
     for unlock in ('kProjectileDamageIncrease', 'kProjectileSpeedIncrease'):
         assert 'U:' + unlock in target.read_text().splitlines()
         assert 'U:' + unlock in resumed.read_text().splitlines()
@@ -138,6 +142,48 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
     upgraded_hit = simulate_projectiles(damage_only, 'F:110', encounter=True)
     ordinary_hit = simulate_projectiles(ordinary, 'F:110', encounter=True)
     assert 'hits=5 kills=1' in upgraded_hit and 'kills=0' in ordinary_hit, (upgraded_hit, ordinary_hit)
+    # Imported permanent unlocks must change real movement and focus, while
+    # their absent-mirror baseline keeps the old behavior. The open authored
+    # floor fixture exercises the existing swept floor collision on dash landing.
+    def movement_state(lines, position, script):
+        path = root / ('motion-' + str(len(list(root.glob('motion-*.dl5')))) + '.dl5')
+        data = lines.copy()
+        data[1] = 'port/tests/fixtures/encounter_open.xml'
+        data[2] = position
+        path.write_text('\n'.join(data) + '\n')
+        result = subprocess.run(['port/build/deathleak-linux', '--load-save', str(path),
+                                 '--script', script, '--fixed-dt', '0.0166667', '--simulate-only'],
+                                capture_output=True, text=True, check=True)
+        match = re.search(r'player=\(([-0-9.]+),([-0-9.]+)\).*focus=([-0-9.]+).*grounded=([01]).*dash_active=([01]) roll_active=([01])', result.stdout)
+        assert match, result.stdout
+        return tuple(float(match.group(i)) for i in range(1, 7))
+    no_motion = [line for line in upgraded if line not in ('U:kDownwardDash', 'U:kRoll')]
+    dash = movement_state(upgraded, '0 600 25 100', '.:15,M:1')
+    ordinary_dash = movement_state(no_motion, '0 600 25 100', '.:15,M:1')
+    assert dash[1] < ordinary_dash[1] - 15 and 50 < dash[2] < 51 and ordinary_dash[2] == 100, (dash, ordinary_dash)
+    early = movement_state(upgraded, '0 600 25 100', 'M:1')
+    assert early[2] == 100 and early[4] == 0, early
+    landing = movement_state(upgraded, '0 600 25 100', '.:15,M:45')
+    assert landing[3] == 1 and landing[4] == 0 and landing[2] > 50, landing
+    roll = movement_state(upgraded, '0 107.44937 25 100', '.:1,O:10')
+    ordinary_roll = movement_state(no_motion, '0 107.44937 25 100', '.:1,O:10')
+    assert roll[0] > ordinary_roll[0] + 50 and roll[2] > 98 and roll[2] < 100 and roll[5] == 1, (roll, ordinary_roll)
+    assert ordinary_roll[5] == 0 and ordinary_roll[2] == 100, ordinary_roll
+    buffered = movement_state(upgraded, '0 200 25 100', 'O:1,.:15')
+    assert buffered[0] > 50 and buffered[5] == 1, buffered
+    wall_path = root / 'roll-wall.dl5'
+    wall_lines = upgraded.copy()
+    wall_lines[1] = 'port/tests/fixtures/slope_wall.xml'
+    wall_lines[2] = '0 107.44937 25 100'
+    wall_path.write_text('\n'.join(wall_lines) + '\n')
+    wall_result = subprocess.run(['port/build/deathleak-linux', '--load-save', str(wall_path),
+                                  '--script', '.:1,O:30', '--fixed-dt', '0.0166667', '--simulate-only'],
+                                 capture_output=True, text=True, check=True)
+    assert 'player=(235.52,' in wall_result.stdout and 'vx=0 ' in wall_result.stdout, wall_result.stdout
+
+    # A low-focus attempt never starts either movement or spends focus.
+    assert movement_state(upgraded, '0 600 25 40', '.:15,M:1')[2] > 40
+    assert movement_state(upgraded, '0 107.44937 25 1', '.:1,O:1')[5] == 0
     restored = root / 'restored.xml'
     run('export', resumed, restored, '--discard-runtime')
     # Windows defaults absent completion count to zero; export writes it explicitly.
@@ -148,9 +194,23 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
     assert not (root / 'conflict.xml').exists()
     conflict.write_text(resumed.read_text().replace('U:kSpeedIncrease\n', ''))
     run('export', conflict, root / 'conflict.xml', '--discard-runtime', success=False)
-    for unlock in ('kProjectileDamageIncrease', 'kProjectileSpeedIncrease'):
+    for unlock in ('kProjectileDamageIncrease', 'kProjectileSpeedIncrease', 'kDownwardDash', 'kRoll'):
         conflict.write_text(resumed.read_text().replace('U:' + unlock + '\n', ''))
         run('export', conflict, root / 'conflict.xml', '--discard-runtime', success=False)
+    # An imported permanent record survives a Linux resave, but EndStory must
+    # wipe it before the same-process menu starts a genuinely fresh game.
+    ending = root / 'ending.dl5'
+    ending_lines = target.read_text().splitlines()
+    ending_lines[1] = 'Game/XmlFiles/levels/sea_2.xml'
+    ending_lines[2] = '0 0 25 100'
+    ending.write_text('\n'.join(ending_lines) + '\n')
+    ended = subprocess.run(['port/build/deathleak-linux', '--load-save', str(ending),
+                            '--menu-loop', '--script', '.:2101,S:1,.:1',
+                            '--fixed-dt', '0.0166667', '--simulate-only'],
+                           capture_output=True, text=True, check=True)
+    assert 'Menu New Game at frame 2101' in ended.stdout, ended.stdout
+    fresh_lines = ending.read_text().splitlines()
+    assert fresh_lines[0] == 'DL5' and not any(line.startswith(('U:', 'W1:', 'H:')) for line in fresh_lines), fresh_lines
     damaged = root / 'damaged.dl5'
     damaged.write_text(resumed.read_text().replace('W1:', 'W1:!'))
     run('export', damaged, root / 'damaged.xml', '--discard-runtime', success=False)

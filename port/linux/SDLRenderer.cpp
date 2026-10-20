@@ -137,6 +137,7 @@ public:
             case Restart: return keys[SDL_SCANCODE_R];
             case Interact: return keys[SDL_SCANCODE_E] || button(SDL_CONTROLLER_BUTTON_X);
             case Purchase: return keys[SDL_SCANCODE_Y] || button(SDL_CONTROLLER_BUTTON_Y);
+            case Roll: return keys[SDL_SCANCODE_LSHIFT] || button(SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
             case Melee: return keys[SDL_SCANCODE_C] || button(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
             case Escape: return keys[SDL_SCANCODE_ESCAPE] || button(SDL_CONTROLLER_BUTTON_START);
             default: return false;
