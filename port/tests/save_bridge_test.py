@@ -54,20 +54,45 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
                             capture_output=True, text=True, check=True)
     assert 'keys=4' in result.stdout and 'balance=0' in result.stdout, result.stdout
     assert 'Deflection unlocked=1' in result.stdout, result.stdout
-    # Unsupported permanent fields fail closed; no replacement or partial output.
+    # Truly unknown permanent fields fail closed; no replacement or partial output.
     unsupported = root / 'unsupported.xml'
     root_xml = ET.Element('save_data')
-    ET.SubElement(root_xml, 'player_max_health', {'type':'int', 'value':'65'})
+    ET.SubElement(root_xml, 'unknown_progress_flag', {'type':'int', 'value':'65'})
     import base64
     wrapper = ET.Element('a', {'z':bridge.cipher(base64.b64encode(ET.tostring(root_xml)).decode())})
     unsupported.write_bytes(ET.tostring(wrapper))
     target = root / 'bad.dl5'
     bad = run('import', unsupported, target, '--level', level, '--fresh-session', success=False)
-    assert 'player_max_health' in bad.stderr and not target.exists()
-    # Existing source sample contains several intentionally unsupported permanent fields.
-    sample = run('import', 'Game/bargon.xml', target, '--level', level, '--fresh-session', success=False)
-    assert 'unmapped feature' in sample.stderr or 'unmapped permanent' in sample.stderr
-    assert not target.exists()
+    assert 'unknown_progress_flag' in bad.stderr and not target.exists()
+    for field, kind, value in [('granary', 'bool', 'false'), ('gameplay_features_unlocked', 'vector', None)]:
+        bad_root = ET.Element('save_data')
+        node = ET.SubElement(bad_root, field, {'type': kind})
+        if value is None:
+            ET.SubElement(node, 'e_1', {'type': 'int', 'value': '99'})
+        else:
+            node.set('value', value)
+        bad_wrapper = ET.Element('a', {'z': bridge.cipher(base64.b64encode(ET.tostring(bad_root)).decode())})
+        unsupported.write_bytes(ET.tostring(bad_wrapper))
+        run('import', unsupported, target, '--level', level, '--fresh-session', success=False)
+        assert not target.exists()
+    # The shipped save now imports, survives an actual Linux load/resave, and exports
+    # every typed permanent value, including the source's ordered feature vector.
+    shipped = bridge.windows_fields('Game/bargon.xml')
+    run('import', 'Game/bargon.xml', target, '--level', level, '--fresh-session')
+    assert sum(line.startswith('W1:') for line in target.read_text().splitlines()) == 1
+    resumed = root / 'resumed.dl5'
+    subprocess.run(['port/build/deathleak-linux', '--load-save', str(target), '--save-file', str(resumed),
+                    '--frames', '1', '--fixed-dt', '0.0166667', '--simulate-only'],
+                   capture_output=True, text=True, check=True)
+    assert sum(line.startswith('W1:') for line in resumed.read_text().splitlines()) == 1
+    restored = root / 'restored.xml'
+    run('export', resumed, restored, '--discard-runtime')
+    # Windows defaults absent completion count to zero; export writes it explicitly.
+    assert bridge.windows_fields(restored) == (shipped | {'num_times_game_completed': ('int', '0')})
+    damaged = root / 'damaged.dl5'
+    damaged.write_text(resumed.read_text().replace('W1:', 'W1:!'))
+    run('export', damaged, root / 'damaged.xml', '--discard-runtime', success=False)
+    assert not (root / 'damaged.xml').exists()
     run('import', win, imported, '--level', level, '--fresh-session', success=False)  # no overwrite
     completed = root / 'completed.dl6'
     completed.write_text('DL6\nMENU\nC:3\nG:de\n')

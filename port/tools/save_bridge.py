@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Explicit, partial Windows bargon.xml and Linux DL5/DL6 permanent-save bridge."""
+"""Windows bargon.xml bridge with explicit preservation of unported permanent data."""
 import argparse
 import base64
 import binascii
@@ -14,6 +14,71 @@ KEY = 'babson'
 KEYS = {'granary', 'dojo', 'village_hut', 'has_repair_tools'}
 DOORS = {'barn_entrance', 'dojo', 'village_hut_entrance'}
 LOCALES = {'en-gb', 'pt-br', 'de'}
+# Source SaveManager stores these permanently. Linux does not yet implement their effects.
+OPAQUE_BOOL = {
+    'health_devil_reward_XmlFiles-levels-hot_springs.xml',
+    'health_devil_reward_XmlFiles-levels-waterfall_cave.xml',
+    'smashable_XmlFiles-levels-grass_exploration_1.xml',
+    'smashable_XmlFiles-levels-village_central.xml',
+}
+OPAQUE_INT = {'health_devil_reward_count', 'player_max_health'}
+PAPERS = {
+    'paper_pickup_gametip_death', 'paper_pickup_gametip_projectile',
+    'paper_pickup_strange_stones_desc', 'paper_pickup_desc_test',
+    'dojo_closed_desc', 'paper_pickup_cave_clue_desc', 'suicide_note_desc',
+    'save_shrine_hint_desc', 'paper_pickup_desc_granary_key_hint',
+}
+
+
+def validate_opaque(fields):
+    for name, (kind, value) in fields.items():
+        if name == 'gameplay_features_unlocked':
+            if kind != 'vector' or any(t != 'int' or not re.fullmatch('[1-8]', v) for t, v in value):
+                raise ValueError('unmapped feature in migration extension')
+        elif name == 'paper_pickups_collected':
+            if kind != 'vector' or any(t != 'string' or v not in PAPERS for t, v in value):
+                raise ValueError('unmapped paper pickup in migration extension')
+        elif name in OPAQUE_BOOL:
+            if kind != 'bool' or value not in ('true', 'false'):
+                raise ValueError('invalid migration boolean ' + name)
+        elif name in OPAQUE_INT:
+            if kind != 'int' or not re.fullmatch(r'\d+', value) or int(value) >= 1000000000 or (name == 'player_max_health' and int(value) < 1):
+                raise ValueError('invalid migration integer ' + name)
+        else:
+            raise ValueError('unmapped permanent Windows field: ' + name)
+
+
+def field_xml(fields):
+    root = ET.Element('save_data')
+    for name, (kind, value) in fields.items():
+        node = ET.SubElement(root, name, {'type': kind})
+        if kind == 'vector':
+            for i, (child_kind, child_value) in enumerate(value, 1):
+                ET.SubElement(node, f'e_{i}', {'type': child_kind, 'value': child_value})
+        else:
+            node.set('value', value)
+    return ET.tostring(root, encoding='utf-8')
+
+
+def extension_fields(encoded):
+    if len(encoded) > 65533:
+        raise ValueError('migration extension too long')
+    raw = base64.b64decode(encoded, validate=True)
+    if len(raw) > 49152:
+        raise ValueError('migration extension too large')
+    root = ET.fromstring(raw)
+    if root.tag != 'save_data':
+        raise ValueError('invalid migration extension root')
+    # Reuse the strict typed parser without trusting arbitrary XML payloads.
+    wrapper = ET.Element('a', {'z': cipher(base64.b64encode(raw).decode())})
+    fields = windows_fields_xml(ET.tostring(wrapper))
+    validate_opaque(fields)
+    return fields
+
+
+def windows_fields_xml(payload):
+    wrapper = ET.fromstring(payload)
+    return parse_windows_wrapper(wrapper)
 
 
 def cipher(value, decrypt=False):
@@ -23,7 +88,10 @@ def cipher(value, decrypt=False):
 
 
 def windows_fields(path):
-    wrapper = ET.parse(path).getroot()
+    return parse_windows_wrapper(ET.parse(path).getroot())
+
+
+def parse_windows_wrapper(wrapper):
     if wrapper.tag != 'a' or 'z' not in wrapper.attrib or set(wrapper.attrib) - {'z', 'content'} or list(wrapper):
         raise ValueError('expected encrypted bargon.xml wrapper')
     root = ET.fromstring(base64.b64decode(cipher(wrapper.get('z'), True), validate=True))
@@ -54,28 +122,30 @@ def windows_to_dl5(fields, level):
         if item and item[0] != kind:
             raise ValueError('wrong type for ' + name)
         return None if item is None else item[1]
-    count = take('num_times_game_completed', 'int') or '0'
+    count = take('num_times_game_completed', 'int')
+    if count is None: count = '0'
     if not re.fullmatch(r'\d+', count) or int(count) >= 1000000000:
         raise ValueError('invalid completion count')
     locale = take('language_locale_key', 'string')
-    if locale and locale not in LOCALES:
+    if locale is not None and locale not in LOCALES:
         raise ValueError('unmapped language')
-    features = take('gameplay_features_unlocked', 'vector') or []
-    if any(item != ('int', '4') for item in features):
-        raise ValueError('unmapped feature (only kDeflection=4 supported)')
+    features = take('gameplay_features_unlocked', 'vector')
+    if features is not None:
+        fields['gameplay_features_unlocked'] = ('vector', features)
     keys, doors = [], []
     for key in sorted(KEYS):
         value = take(key, 'bool')
         if value not in (None, 'true', 'false'):
             raise ValueError('invalid key boolean')
+        if value == 'false': raise ValueError('explicit false key cannot be represented: ' + key)
         if value == 'true': keys.append(key)
     for door in sorted(DOORS):
         value = take(door + '_unlocked', 'bool')
         if value not in (None, 'true', 'false'):
             raise ValueError('invalid door boolean')
+        if value == 'false': raise ValueError('explicit false door cannot be represented: ' + door)
         if value == 'true': doors.append(door)
-    if fields:
-        raise ValueError('unmapped permanent Windows fields: ' + ', '.join(sorted(fields)))
+    validate_opaque(fields)
     positions = ET.parse(level).getroot().findall('.//Player/position')
     if len(positions) != 1:
         raise ValueError('level needs exactly one authored Player spawn')
@@ -83,7 +153,8 @@ def windows_to_dl5(fields, level):
     lines = ['DL5', str(level), f'{x:.9g} {y:.9g} 25 100', 'B:0', 'C:' + count]
     if locale: lines.append('G:' + locale)
     lines += ['K:' + key for key in keys] + ['D:' + door for door in doors]
-    if features: lines.append('U:kDeflection')
+    if features is not None and ('int', '4') in features: lines.append('U:kDeflection')
+    if fields: lines.append('W1:' + base64.b64encode(field_xml(fields)).decode())
     return lines
 
 
@@ -98,6 +169,7 @@ def dl5_to_windows(path):
     elif lines[1] == 'MENU': data = lines[2:]
     else: raise ValueError('invalid DL6 MENU save')
     fields, keys, doors, runtime = {}, set(), set(), []
+    migration = None
     for line in data:
         if line.startswith('C:'):
             if 'C' in fields or not re.fullmatch(r'\d+', line[2:]) or int(line[2:]) >= 1000000000:
@@ -115,9 +187,12 @@ def dl5_to_windows(path):
         elif line == 'U:kDeflection':
             if fields.get('U'): raise ValueError('duplicate unlock')
             fields['U'] = True
+        elif line.startswith('W1:'):
+            if migration is not None or lines[0] != 'DL5': raise ValueError('duplicate/invalid migration extension')
+            migration = extension_fields(line[3:])
         elif line.startswith(('B:', 'N:')) or '#' in line: runtime.append(line)
         else: raise ValueError('unmapped Linux line: ' + line)
-    if lines[0] == 'DL6' and (keys or doors or runtime or fields.get('U')):
+    if lines[0] == 'DL6' and (keys or doors or runtime or fields.get('U') or migration):
         raise ValueError('DL6 MENU cannot carry progression')
     if lines[0] == 'DL5' and len([v for v in runtime if v.startswith('B:')]) != 1:
         raise ValueError('DL5 requires one balance')
@@ -129,8 +204,15 @@ def dl5_to_windows(path):
     for key in sorted(keys): scalar(key, 'bool', 'true')
     for door in sorted(doors): scalar(door + '_unlocked', 'bool', 'true')
     if fields.get('U'):
-        node = ET.SubElement(root, 'gameplay_features_unlocked', {'type': 'vector'})
-        ET.SubElement(node, 'e_1', {'type': 'int', 'value': '4'})
+        if migration is None: migration = {}
+        features = migration.get('gameplay_features_unlocked', ('vector', []))[1]
+        if ('int', '4') not in features:
+            migration['gameplay_features_unlocked'] = ('vector', features + [('int', '4')])
+    if migration:
+        if not fields.get('U') and ('int', '4') in migration.get('gameplay_features_unlocked', ('vector', []))[1]:
+            raise ValueError('deflection migration conflicts with Linux unlock')
+        for node in ET.fromstring(field_xml(migration)):
+            root.append(node)
     xml = ET.tostring(root, encoding='utf-8')
     wrapper = ET.Element('a', {'z': cipher(base64.b64encode(xml).decode())})
     return ET.tostring(wrapper, encoding='utf-8', xml_declaration=True) + b'\n', len(runtime)

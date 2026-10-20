@@ -60,6 +60,8 @@ int main(int argc, char** argv) {
     bool balanceLoaded = false;
     int completions = 0;
     std::string language;
+    // Validated by save_bridge.py; carried verbatim until Windows-only systems are ported.
+    std::string windowsPermanentExtension;
     std::string selectedLanguage;
     std::unordered_map<std::string, std::int64_t> triggerHistory;
     bool menuLoop = false;
@@ -146,6 +148,13 @@ int main(int argc, char** argv) {
                 } catch (const std::exception&) { std::cerr << "Invalid completion count in save\n"; return 2; }
             }
             else if (line.rfind("G:", 0) == 0) language = line.substr(2);
+            else if (version == "DL5" && line.rfind("W1:", 0) == 0) {
+                if (!windowsPermanentExtension.empty() || line.size() <= 3 || line.size() > 65536 ||
+                    line.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=", 3) != std::string::npos) {
+                    std::cerr << "Invalid Windows migration extension in save\n"; return 2;
+                }
+                windowsPermanentExtension = line;
+            }
             else if (version == "DL5" && line.rfind("B:", 0) == 0) {
                 try {
                     size_t end = 0;
@@ -755,6 +764,7 @@ int main(int argc, char** argv) {
         for (const auto& key : ownedKeys) saved << "K:" << key << '\n';
         for (const auto& door : unlockedDoors) saved << "D:" << door << '\n';
         if (combat.DeflectionUnlocked()) saved << "U:kDeflection\n";
+        if (!windowsPermanentExtension.empty()) saved << windowsPermanentExtension << '\n';
         for (const auto& [id, time] : combat.TriggerHistory()) saved << "N:" << id << '\t' << time << '\n';
         saved.close();
         if (!saved) { std::cerr << "Save write failed: " << temporary << '\n'; return 1; }
