@@ -1025,6 +1025,9 @@ int main(int argc, char** argv) {
         updateSeconds += std::chrono::duration<double>(afterUpdate-now).count();
         if (simulateOnly) continue;
         scene.UpdateVisuals(dt);
+        if (!playLevel.empty()) scene.UpdatePlayerVisual(dt, motion.VelocityX(), motion.VelocityY(),
+            motion.Grounded(), motion.WallSide(), motion.Rolling(), motion.DownwardDashing(),
+            combat.MeleeElapsed(), facing);
         renderer->BeginFrame({8, 12, 20, 255});
         if (levelPath.empty()) {
             renderer->DrawSprite({background, {}, {0, 0, 1280, 720}});

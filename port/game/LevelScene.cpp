@@ -79,6 +79,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     auto* level = document.RootElement();
     if (!level || std::string(level->Value()) != "level") { error = "Not a Death Leak level: " + path; return false; }
     playerVisualWidth_ = playerVisualHeight_ = 0;
+    playerSequences_.clear(); playerSequence_.clear(); playerFrame_ = 0; playerFrameElapsed_ = 0; playerFacing_ = 1;
     spawnedOrbTexture_ = render::InvalidTexture;
     sprites_.clear(); ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); ambience_.clear(); doors_.clear(); boats_.clear(); keys_.clear(); papers_.clear(); healthDevils_.clear(); smashables_.clear(); spawnedOrbs_.clear(); scrolls_.clear(); skipped_ = 0;
     cameraBounds_ = false;
@@ -232,6 +233,38 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         if (!texture) { ++skipped_; continue; }
         SceneSprite sprite;
         sprite.texture = texture;
+        sprite.player = kind == "Player";
+        if (sprite.player && !animationPath.empty()) {
+            TiXmlDocument animation(animationPath.c_str());
+            if (animation.LoadFile()) {
+                auto* body = animation.RootElement() ? animation.RootElement()->FirstChildElement("body") : nullptr;
+                // Character::UpdateAnimations selects these authored body sequences.
+                // The separate arm/skeleton composition is not represented by SDL yet.
+                for (const char* name : {"Still", "Running", "JumpingUp", "JumpingDown",
+                                         "SlidingDown", "Roll", "Melee", "Melee2", "Melee3", "MeleeFinish"}) {
+                    auto* sequence = body ? body->FirstChildElement(name) : nullptr;
+                    if (!sequence) continue;
+                    PlayerSequence visual;
+                    visual.rate = Attr(sequence, "FrameRate");
+                    visual.minRate = Attr(sequence, "MinFrameRate");
+                    visual.maxRate = Attr(sequence, "MaxFrameRate", 60.f);
+                    for (auto* frame = sequence->FirstChildElement("frame"); frame; frame = frame->NextSiblingElement("frame")) {
+                        auto path = NormalizeAsset(frame->Attribute("filename"));
+                        if (path.empty() || !std::filesystem::exists(path)) continue;
+                        auto foundFrame = textures.find(path);
+                        render::TextureId frameTexture = render::InvalidTexture;
+                        if (foundFrame == textures.end()) {
+                            std::string textureError;
+                            frameTexture = renderer.LoadTexture(path, textureError);
+                            textures.emplace(path, frameTexture);
+                        } else frameTexture = foundFrame->second;
+                        if (frameTexture) visual.frames.push_back(frameTexture);
+                    }
+                    if (!visual.frames.empty()) playerSequences_.emplace(name, std::move(visual));
+                }
+                if (playerSequences_.count("Still")) playerSequence_ = "Still";
+            }
+        }
         if (kind == "CurrencyOrb" && !animationPath.empty()) {
             const auto still = StillFrames(animationPath);
             if (still.rate > 0 && still.paths.size() > 1) {
@@ -252,7 +285,6 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         sprite.width = Attr(dimensions, "width"); sprite.height = Attr(dimensions, "height");
         sprite.rotation = Attr(position, "rotation");
         sprite.depth = Depth(position->Attribute("depth_layer"));
-        sprite.player = kind == "Player";
         sprite.currencyOrb = kind == "CurrencyOrb";
         sprite.keyPickup = kind == "KeyPickup";
         sprite.paperPickup = kind == "PaperPickup";
@@ -400,6 +432,41 @@ void LevelScene::UpdateVisuals(float dt) {
         }
     }
 }
+void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded, int wallSide,
+                                    bool rolling, bool dashing, float meleeElapsed, int facing) {
+    if (playerSequences_.empty()) return;
+    playerFacing_ = facing;
+    std::string target = "Still";
+    if (meleeElapsed > 0.f) {
+        // Combat's existing 38-tick phase model comes from the four source phases.
+        if (meleeElapsed < 7.f/60.f) target = "Melee";
+        else if (meleeElapsed < 22.f/60.f) target = "Melee2";
+        else if (meleeElapsed < 31.f/60.f) target = "Melee3";
+        else target = "MeleeFinish";
+    } else if (rolling) target = "Roll";
+    else if (dashing) target = "JumpingDown"; // no dedicated authored dash body sequence
+    else if (!grounded && wallSide != 0 && vy < 0.f) target = "SlidingDown";
+    else if (!grounded && vy > 0.f) target = "JumpingUp";
+    else if (!grounded) target = "JumpingDown";
+    else if (std::abs(vx) > 3.f) target = "Running";
+    auto it = playerSequences_.find(target);
+    if (it == playerSequences_.end()) return;
+    if (target != playerSequence_) {
+        playerSequence_ = target; playerFrame_ = 0; playerFrameElapsed_ = 0;
+    }
+    auto& sequence = it->second;
+    float rate = sequence.rate;
+    if (target == "Running")
+        rate = std::clamp(std::abs(vx / 60.f) * 1.8f * 2.65f, sequence.minRate, sequence.maxRate);
+    if (rate <= 0 || sequence.frames.size() < 2) return;
+    playerFrameElapsed_ += dt;
+    if (playerFrameElapsed_ >= 1.f / rate) {
+        playerFrameElapsed_ -= 1.f / rate; // AnimationPart advances at most one frame per update.
+        if (target == "Still" || target == "Running" || target == "SlidingDown")
+            playerFrame_ = (playerFrame_ + 1) % sequence.frames.size();
+        else if (playerFrame_ + 1 < sequence.frames.size()) ++playerFrame_;
+    }
+}
 void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY) const {
     constexpr float scale = 2.f / 3.f; // Original world is authored for 1920x1080.
     for (const auto& orb : spawnedOrbs_) if (spawnedOrbTexture_) {
@@ -417,10 +484,15 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         const float worldY = object.player ? playerY : object.y;
         render::Sprite draw;
         draw.texture = object.animationFrames.size() > 1 ? object.animationFrames[object.animationFrame] : object.texture;
+        if (object.player) {
+            auto it = playerSequences_.find(playerSequence_);
+            if (it != playerSequences_.end() && !it->second.frames.empty())
+                draw.texture = it->second.frames[std::min(playerFrame_, it->second.frames.size()-1)];
+        }
         draw.destination = {640.f + (worldX - cameraX - object.width / 2) * scale,
                             360.f + (cameraY - worldY - object.height / 2) * scale,
                             object.width * scale, object.height * scale};
-        draw.tint = object.tint; draw.flipX = object.flipX; draw.flipY = object.flipY;
+        draw.tint = object.tint; draw.flipX = object.player ? playerFacing_ < 0 : object.flipX; draw.flipY = object.player ? false : object.flipY;
         draw.rotationDegrees = -object.rotation;
         if (draw.destination.x + draw.destination.width < 0 || draw.destination.x > 1280 ||
             draw.destination.y + draw.destination.height < 0 || draw.destination.y > 720) continue;

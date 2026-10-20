@@ -2,6 +2,7 @@
 #include "../render/Renderer.h"
 #include "../audio/SoundPlayer.h"
 #include <cstddef>
+#include <unordered_map>
 #include <string>
 #include <unordered_set>
 #include <vector>
@@ -48,6 +49,8 @@ public:
     bool Load(const std::string& path, render::Renderer& renderer, std::string& error,
               const std::string& fromLevel = {}, const std::string& entryDoorId = {});
     void Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY) const;
+    void UpdatePlayerVisual(float dt, float vx, float vy, bool grounded, int wallSide,
+                            bool rolling, bool dashing, float meleeElapsed, int facing);
     void UpdateVisuals(float dt);
     size_t CollectCurrencyOrbs(float playerX, float playerY, std::unordered_set<std::string>& collected);
     void ApplyCollected(const std::unordered_set<std::string>& collected);
@@ -111,6 +114,12 @@ private:
     std::vector<DojoScroll> scrolls_;
     float playerX_ = 0, playerY_ = 0;
     float playerVisualWidth_ = 0, playerVisualHeight_ = 0;
+    struct PlayerSequence { std::vector<render::TextureId> frames; float rate = 0, minRate = 0, maxRate = 60; };
+    std::unordered_map<std::string, PlayerSequence> playerSequences_;
+    std::string playerSequence_;
+    size_t playerFrame_ = 0;
+    float playerFrameElapsed_ = 0;
+    int playerFacing_ = 1;
     float cameraX_ = 0, cameraY_ = 0;
     float cameraOffsetX_ = 0, cameraOffsetY_ = 0;
     float cameraLagX_ = 7.5f, cameraLagY_ = 15.f, cameraZoom_ = 1.f;

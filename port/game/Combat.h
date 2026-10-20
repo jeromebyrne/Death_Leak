@@ -41,6 +41,7 @@ public:
     void Update(const LevelScene& scene, float x, float y, float dt, bool fire, bool melee, bool grounded, bool rolling, int facing, render::Renderer& renderer);
     bool DamageEnemy(size_t index, float damage, float projectileDirectionX = 0.f); // shared projectile/melee hit path
     bool MeleeActive() const { return meleeTime_ > 0.f; }
+    float MeleeElapsed() const { return meleeTime_; }
     int MeleeStrikes() const { return meleeStrikes_; }
     int Deflections() const { return deflections_; }
     void SetDeflectionUnlocked(bool unlocked) { deflectionUnlocked_ = unlocked; }

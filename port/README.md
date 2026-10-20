@@ -41,7 +41,7 @@ The executable can now parse original XML level files through the repository's T
 ./port/build/deathleak-linux --level-preview Game/XmlFiles/levels/forest_exploration_1.xml
 ```
 
-WASD/arrow keys pan the preview camera. This **does not run game simulation**. Authored CurrencyOrb sprites in preview/gameplay cycle their `body/Still` frames at the XML frame rate; the player and other animated objects still use a static first frame. This preview mode does not simulate collision, movement, transitions, HUD or audio; `--play` contains partial implementations described below. The current preview also has known vertical-flip and repeat/parallax visual differences from the original. Do not package it as a playable game.
+WASD/arrow keys pan the preview camera. This **does not run game simulation**. Authored CurrencyOrb sprites in preview/gameplay cycle their `body/Still` frames at the XML frame rate; the preview player remains on a static first frame; gameplay now advances the authored player body sequences. Other animated objects still use a static first frame. This preview mode does not simulate collision, movement, transitions, HUD or audio; `--play` contains partial implementations described below. The current preview also has known vertical-flip and repeat/parallax visual differences from the original. Do not package it as a playable game.
 
 To build without modifying host development packages, use the reproducible Linux build image:
 
@@ -57,7 +57,7 @@ docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/src" -w /src -e SDL_VIDEODRIVER
 
 `--play Game/XmlFiles/levels/forest_exploration_1.xml` now enables a prototype player simulation: the player starts at the original XML position, moves with A/D or left/right, jumps with W/space/up, collides with `SolidLineStrip` segments, follows the camera, and enters `LevelTrigger` destinations. SDL game-controller left stick/D-pad and A button are also mapped. Escape or controller Start exits. The original level assets still render through `Renderer.h`.
 
-This is **not yet a complete or release-ready Death Leak port**. The current encounter slice parses authored `NPCTrigger` and `WaterBlock` objects, spawns simplified ninja/ghost/skeleton opponents, runs knife and enemy projectiles, applies damage, and models focus depletion before drowning. It also supports a bounded player melee hit against NPCs. It only approximates original Character/Player physics and does **not** reproduce full collision/AI and attack patterns, projectile deflection, most NPC interactions, complete UI/menus, audio, complete saves, shaders, particles, or animation; key/door interactions and entry placement are partial. Keyboard play is an added Linux convenience (the Windows release build's keyboard gameplay path is disabled). The default executable now presents a bounded main-menu implementation using original menu art and button order; it is not a full reproduction of the Windows UI.
+This is **not yet a complete or release-ready Death Leak port**. The current encounter slice parses authored `NPCTrigger` and `WaterBlock` objects, spawns simplified ninja/ghost/skeleton opponents, runs knife and enemy projectiles, applies damage, and models focus depletion before drowning. It also supports a bounded player melee hit against NPCs. It only approximates original Character/Player physics and does **not** reproduce full collision/AI and attack patterns, projectile deflection, most NPC interactions, complete UI/menus, audio, complete saves, shaders, particles, or complete animation; key/door interactions and entry placement are partial. Keyboard play is an added Linux convenience (the Windows release build's keyboard gameplay path is disabled). The default executable now presents a bounded main-menu implementation using original menu art and button order; it is not a full reproduction of the Windows UI.
 
 Headless integration smoke:
 
@@ -84,7 +84,7 @@ Experimental `--save-file <path>` writes the current level, position, and collec
 
 ## Encounter integration and renderer profiling
 
-Build with the Docker image above, then run `port/tests/integration.sh` from the repository root. The test drives an authored level transition, the first `NPCTrigger` in `first_ninja_arena.xml`, combat damage and save/resume, and focus-exhausted drowning in the authored `test.xml` water region. `--start-encounter N`, `--start-hazard N`, and `--exhaust-focus` are deterministic integration harness controls, not normal gameplay shortcuts. In interactive `--play`, Down/S fires the knife, C/controller right shoulder starts a grounded melee attack for 4 focus, and E/controller X holds interaction for pickups and doors; left/right and jump continue to work. Melee hits have no dedicated animation or sound yet.
+Build with the Docker image above, then run `port/tests/integration.sh` from the repository root. The test drives an authored level transition, the first `NPCTrigger` in `first_ninja_arena.xml`, combat damage and save/resume, and focus-exhausted drowning in the authored `test.xml` water region. `--start-encounter N`, `--start-hazard N`, and `--exhaust-focus` are deterministic integration harness controls, not normal gameplay shortcuts. In interactive `--play`, Down/S fires the knife, C/controller right shoulder starts a grounded melee attack for 4 focus, and E/controller X holds interaction for pickups and doors; left/right and jump continue to work. Melee now draws the four authored body phases, but has no dedicated sound yet; the source arm/skeleton composition is not ported.
 
 The Linux-only save format is now `DL4` (level, position, health, focus, collected orb IDs, owned keys, unlocked door IDs, and last-fired encounter timestamps); `DL1`, `DL2`, and `DL3` remain readable. It is not the original Windows save format. A trigger that fired less than 120 seconds ago is suppressed after level reload or save/resume; active enemy positions and health are not saved.
 
@@ -162,3 +162,17 @@ only. Real-display testing must prove an accelerated backend and GPU behavior.
 ## Real-display GPU smoke (2026-10-20)
 
 A host Xorg `:0` run via the build container selected SDL's strict accelerated OpenGL renderer (`accelerated=1 software=0`). `glxinfo -B` inside the same display/device configuration identified direct-rendered **nouveau NVE7**, not llvmpipe. A 600-frame active forest gameplay run with normal right/left input and five earned orbs completed in 10.0383 s (~59.77 FPS with vsync), with 0.146579 s in game update and 9.87605 s in draw/present. This is the first measured hardware-display sample; it does not verify full-game visual/control/audio parity or worst-case GPU performance. The port remains partial.
+
+## Player body animation slice (2026-10-20)
+
+Gameplay loads the original `player_anim_default.xml` body frames for Still, Running,
+JumpingUp, JumpingDown, SlidingDown, Roll, and all four Melee phases. The selected
+pose follows the native motion/combat states, and the running frame rate follows
+`Character::UpdateAnimations`' speed multiplier and authored min/max rate. Idle
+and running loop; one-shot sequences hold their last frame until state changes.
+SDL drawing corrects the player's authored vertical-flip flag for its top-down
+texture coordinates; facing follows the last movement input. This is a bounded
+visual port: separate arm/skeleton animation, source landing/crouch/swim/intro
+sequences, exact animation-controlled combat timing, and other character/NPC
+animation are still missing. Physical X11/OpenGL capture and deterministic
+integration prove execution, not human visual or full-game acceptance.
