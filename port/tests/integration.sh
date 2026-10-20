@@ -64,6 +64,21 @@ printf '%s\n' "$walled_shot" | grep -q 'spawned=1 enemies=1 .*shots=0'
 # Sustained knives can defeat the single source-health (20 HP) ranged enemy.
 range_kill=$($bin --play port/tests/fixtures/encounter_open.xml --script F:330 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$range_kill" | grep -q 'spawned=1 enemies=0 hits=14 kills=1'
+# Simulation-only H injects a direct hit through Combat::DamageEnemy, the same
+# path used by knives. The skeleton's large source health keeps it alive long
+# enough to inspect the NPC::OnDamage combo/stun rule and AI recovery.
+five_hits=$($bin --play port/tests/fixtures/encounter_stun.xml --script .:90,H:1,.:4,H:1,.:4,H:1,.:4,H:1,.:4,H:1 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$five_hits" | grep -q 'grounded=1 combo=5 stun=0'
+six_hits=$($bin --play port/tests/fixtures/encounter_stun.xml --script .:90,H:1,.:4,H:1,.:4,H:1,.:4,H:1,.:4,H:1,.:4,H:1 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$six_hits" | grep -q 'grounded=1 combo=6 stun=2'
+mid_stun=$($bin --play port/tests/fixtures/encounter_stun.xml --script .:90,H:1,.:4,H:1,.:4,H:1,.:4,H:1,.:4,H:1,.:4,H:1,.:60 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$mid_stun" | grep -q 'windup=0 .*grounded=1 combo=0 stun=1'
+recovered=$($bin --play port/tests/fixtures/encounter_stun.xml --script .:90,H:1,.:4,H:1,.:4,H:1,.:4,H:1,.:4,H:1,.:4,H:1,.:120 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$recovered" | grep -q 'windup=0.25 .*grounded=1 combo=0 stun=0'
+combo_expired=$($bin --play port/tests/fixtures/encounter_stun.xml --script .:90,H:1,.:35,H:1 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$combo_expired" | grep -q 'grounded=1 combo=1 stun=0'
+airborne=$($bin --play port/tests/fixtures/encounter_stun.xml --script H:6 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$airborne" | grep -q 'grounded=0 combo=6 stun=0'
 # AIStateFlying leaves an authored ghost elevated and outside its close fire range.
 ghost_state=$($bin --play Game/XmlFiles/levels/forest_exploration_2.xml --start-encounter 0 --frames 120 --fixed-dt 0.0166667 --simulate-only --combat-state)
 printf '%s\n' "$ghost_state" | grep -q 'Enemy kGhost x=1002.99 y=2977.91'
@@ -118,4 +133,4 @@ legacy=$($bin --load-save port/build/legacy-dl3-save.txt --frames 1 --fixed-dt 0
 printf '%s\n' "$legacy" | grep -q 'keys=1'
 
 if printf '%s\n' "$key_only_resume" | grep -q 'Collected key'; then exit 1; fi
-printf '%s\n' 'PASS: source-held-jump arena climb and exit, three-level route, burst/water fire, swim, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, solid box, wall jump, death/restart, key/door gate, ghost flight, ranged warmup/terrain shots and kill, grounded NPC fall/wall/box, DL3 compatibility and DL4 encounter persistence'
+printf '%s\n' 'PASS: source-held-jump arena climb and exit, three-level route, burst/water fire, swim, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, solid box, wall jump, death/restart, key/door gate, ghost flight, ranged warmup/terrain shots and kill, grounded NPC fall/wall/box, NPC combo/stun/recovery, DL3 compatibility and DL4 encounter persistence'

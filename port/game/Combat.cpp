@@ -91,6 +91,21 @@ void Combat::SetArt(render::Renderer& renderer) {
     knifeArt_ = renderer.LoadTexture("Game/Media/knife.png", error);
     hostileArt_ = renderer.LoadTexture("Game/Media/puke_temp.png", error);
 }
+bool Combat::DamageEnemy(size_t index, float damage) {
+    if (index >= enemies_.size() || enemies_[index].health <= 0.f || damage <= 0.f) return false;
+    auto& enemy = enemies_[index];
+    enemy.health -= damage;
+    ++hits_;
+    // NPC::OnDamage counts consecutive hits while the 0.5 s window is live.
+    enemy.comboWindow=0.5f;
+    ++enemy.comboHits;
+    if (enemy.stunTime <= 0.f && enemy.grounded && enemy.comboHits >= 6) {
+        enemy.stunTime=2.f;
+        enemy.windup=0.f;
+    }
+    if (enemy.health <= 0.f) ++kills_;
+    return true;
+}
 void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fire, int facing, render::Renderer& renderer) {
     fireCooldown_ = std::max(0.f, fireCooldown_-dt);
     burstCooldown_ = std::max(0.f, burstCooldown_-dt);
@@ -130,9 +145,19 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
     }
     for (auto& enemy : enemies_) {
         if (enemy.health <= 0) continue;
+        // NPC::Update expires the rolling damage combo after 0.5 s; Character
+        // counts down stun while the range-attack AI remains inactive.
+        enemy.comboWindow = std::max(0.f, enemy.comboWindow-dt);
+        if (enemy.comboWindow == 0.f) enemy.comboHits = 0;
+        enemy.stunTime = std::max(0.f, enemy.stunTime-dt);
         const float dx=x-enemy.x, dy=y-enemy.y;
         enemy.fireCooldown = std::max(0.f, enemy.fireCooldown-dt);
         const bool ghost = enemy.type == "kGhost";
+        if (enemy.stunTime > 0.f) {
+            enemy.windup = 0.f;
+            if (!ghost) MoveGroundEnemy(enemy,scene,enemy.x,dt);
+            continue;
+        }
         if (ghost) {
             // AIStateFlying: seek 250-400 above the player, holding a 150-400 X offset.
             const float side = enemy.targetX < x ? -1.f : 1.f;
@@ -197,14 +222,14 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
             if (Inside(oldX+t*vx,oldY+t*vy,x,y,70.f,180.f) && hurtCooldown_<=0) {
                 health_=std::max(0.f,health_-shot.damage); hurtCooldown_=0.5f; shot.life=0; ++hits_;
             }
-        } else for (auto& enemy : enemies_) {
+        } else for (size_t enemyIndex=0; enemyIndex<enemies_.size(); ++enemyIndex) {
+            auto& enemy=enemies_[enemyIndex];
             if (enemy.health<=0) continue;
             // Swept segment avoids tunneling at the knife's 1200 world-units/s speed.
             const float vx=shot.x-oldX, vy=shot.y-oldY;
             const float t=std::clamp(((enemy.x-oldX)*vx+(enemy.y-oldY)*vy)/(vx*vx+vy*vy+0.0001f),0.f,1.f);
             if (Inside(oldX+t*vx,oldY+t*vy,enemy.x,enemy.y,80.f,190.f)) {
-                enemy.health-=shot.damage; shot.life=0; ++hits_;
-                if (enemy.health<=0) ++kills_;
+                DamageEnemy(enemyIndex,shot.damage); shot.life=0;
                 break;
             }
         }

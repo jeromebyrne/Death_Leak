@@ -15,6 +15,8 @@ struct Enemy {
     float windup = 0, targetX = 0, targetY = 0;
     float vy = 0;
     bool grounded = false;
+    float comboWindow = 0, stunTime = 0;
+    int comboHits = 0;
 };
 struct Shot {
     float x, y, vx, vy, life, damage;
@@ -27,6 +29,7 @@ public:
     void ClearLevel() { enemies_.clear(); shots_.clear(); activeTriggers_.clear(); fireCooldown_ = burstCooldown_ = hurtCooldown_ = 0; burstCount_ = 0; }
     void SetArt(render::Renderer& renderer);
     void Update(const LevelScene& scene, float x, float y, float dt, bool fire, int facing, render::Renderer& renderer);
+    bool DamageEnemy(size_t index, float damage); // shared hit path for projectiles and future melee
     void Draw(render::Renderer& renderer, float cameraX, float cameraY) const;
     void SetTriggerHistory(std::unordered_map<std::string, std::int64_t> history) { triggerHistory_ = std::move(history); }
     const std::unordered_map<std::string, std::int64_t>& TriggerHistory() const { return triggerHistory_; }

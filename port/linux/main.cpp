@@ -97,7 +97,7 @@ int main(int argc, char** argv) {
         std::istringstream parts(script); std::string token;
         while (std::getline(parts, token, ',')) {
             auto colon = token.find(':');
-            if (colon == std::string::npos || token.empty() || std::string("LRJ.FBNTQEI").find(token[0]) == std::string::npos) { std::cerr << "Bad --script token\n"; return 2; }
+            if (colon == std::string::npos || token.empty() || std::string("LRJ.FBNTQEIH").find(token[0]) == std::string::npos) { std::cerr << "Bad --script token\n"; return 2; }
             int count = std::atoi(token.c_str() + colon + 1);
             if (count < 1 || count > 100000 || scriptedInput.size() + count > 100000) { std::cerr << "Bad --script duration\n"; return 2; }
             scriptedInput.insert(scriptedInput.end(), count, token[0]);
@@ -214,6 +214,9 @@ int main(int argc, char** argv) {
             const bool fire = !script.empty() ? (command == 'F' || command == 'B' || command == 'N') : renderer->KeyDown(Down);
             const int firedBefore = combat.Fired();
             combat.Update(scene, worldX, worldY, dt, fire, facing, *renderer);
+            // H is a simulation-only direct hit for deterministic combo/stun
+            // checks before source-equivalent melee is implemented.
+            if (simulateOnly && command == 'H') combat.DamageEnemy(0,1.5f);
             if (sound && combat.Fired() > firedBefore) sound->Play(deathleak::audio::Cue::KnifeThrow, firedBefore);
             cameraX += (worldX - cameraX) * std::min(1.f, 8.f * dt);
             cameraY += (worldY - cameraY) * std::min(1.f, 4.f * dt);
@@ -343,7 +346,7 @@ int main(int argc, char** argv) {
                   << " hits=" << combat.Hits() << " kills=" << combat.Kills() << " fired=" << combat.Fired()
                   << " shots=" << combat.ShotCount() << " grounded=" << motion.Grounded() << " elapsed=" << elapsed << "s\n";
         if (combatState) {
-            for (const auto& e : combat.Enemies()) std::cout << "Enemy " << e.type << " x=" << e.x << " y=" << e.y << " windup=" << e.windup << " vy=" << e.vy << " grounded=" << e.grounded << "\n";
+            for (const auto& e : combat.Enemies()) std::cout << "Enemy " << e.type << " x=" << e.x << " y=" << e.y << " windup=" << e.windup << " vy=" << e.vy << " grounded=" << e.grounded << " combo=" << e.comboHits << " stun=" << e.stunTime << "\n";
             for (const auto& s : combat.Shots()) std::cout << "Shot " << (s.enemy ? "enemy" : "player") << " x=" << s.x << " y=" << s.y << " vx=" << s.vx << " vy=" << s.vy << "\n";
         }
         if (profile) std::cout << "Profile update=" << updateSeconds << "s draw/present=" << drawSeconds << "s\n";
