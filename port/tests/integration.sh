@@ -181,6 +181,32 @@ assert len(set(earned) - prior) == 6
 assert all('cliff.xml#' in orb for orb in set(earned) - prior)
 assert 'B:296' in lines
 PYSEARETURN
+# The same forest-start run reverses on the upper cliff route, traverses
+# grass 2/1, wall-jumps over both authored arena solids, and returns to the
+# real forest-1 scroll. Its 306 unique earned orbs are insufficient for 375.
+upper_return_save=port/build/upper-return-save.txt
+upper_return_script="$combined_prefix,L:1826,Q:40,L:245,Q:80,N:100,Q:80,N:960,Q:40,N:710,Q:40,N:50,Q:40,N:160,Q:40,N:1550,B:2560,E:80,B:2500,E:20,B:1,E:80,B:2000,E:20,B:1,E:80,B:1250,J:25,I:31,P:1"
+upper_return=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$upper_return_script" --fixed-dt 0.0166667 --simulate-only --combat-state --save-file "$upper_return_save")
+printf '%s\n' "$upper_return" | grep -q 'Trigger at frame 24213 from .*cliff.xml .*grass_exploration_2.xml'
+printf '%s\n' "$upper_return" | grep -q 'Trigger at frame 25369 from .*grass_exploration_2.xml .*grass_exploration_1.xml'
+printf '%s\n' "$upper_return" | grep -q 'Trigger at frame 30321 from .*first_ninja_arena.xml .*grass_exploration_3.xml'
+printf '%s\n' "$upper_return" | grep -q 'Trigger at frame 31103 from .*grass_exploration_3.xml .*forest_exploration_1.xml'
+printf '%s\n' "$upper_return" | grep -q 'Opened kDeflection upgrade modal at frame 31587 cost=375 balance=306'
+printf '%s\n' "$upper_return" | grep -q 'Not enough orbs for kDeflection at frame 31589 balance=306'
+printf '%s\n' "$upper_return" | grep -q 'forest_exploration_1.xml player=(1176.53,3381.52) orbs=306 .*health=1 .*balance=306'
+printf '%s\n' "$upper_return" | grep -q 'Deflection unlocked=0 count=0'
+if printf '%s\n' "$upper_return" | grep -q 'Player died'; then exit 1; fi
+python3 - <<'PYTEST'
+from pathlib import Path
+lines = Path('port/build/upper-return-save.txt').read_text().splitlines()
+earned = [line for line in lines if line.startswith('Game/XmlFiles/levels/') and '#' in line]
+assert len(earned) == len(set(earned)) == 306
+assert 'B:306' in lines
+assert 'U:kDeflection' not in lines
+for level in ('cliff.xml', 'grass_exploration_2.xml', 'grass_exploration_1.xml', 'first_ninja_arena.xml'):
+    assert any(level + '#' in orb for orb in earned), level
+PYTEST
+
 # A held left+jump just before grass 1's lower dead-end trigger keeps the
 # player on the upper route to grass 2 and the authored cliff. Reversing on
 # the reachable lower cliff path collects more distinct authored orbs; its
