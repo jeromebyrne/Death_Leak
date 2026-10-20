@@ -24,10 +24,12 @@ public:
         desired.samples = 1024; desired.callback = Callback; desired.userdata = this;
         device_ = SDL_OpenAudioDevice(nullptr, 0, &desired, &spec_, 0);
         if (!device_) { error = SDL_GetError(); return false; }
-        constexpr std::array<const char*, 7> files = {
+        constexpr std::array<const char*, 9> files = {
             "Game/Media/Audio/knifeThrow.wav", "Game/Media/Audio/knifeThrow2.wav",
             "Game/Media/Audio/knifeThrow3.wav", "Game/Media/Audio/orb/collect_1.wav",
-            "Game/Media/Audio/boomy_intro.wav", "Game/Media/Audio/rock_smash.wav", "Game/Media/Audio/paper_pickup.wav"};
+            "Game/Media/Audio/boomy_intro.wav", "Game/Media/Audio/rock_smash.wav", "Game/Media/Audio/paper_pickup.wav",
+            "Game/Media/Audio/character/health_devil/vo/devil_1_fx.wav",
+            "Game/Media/Audio/character/health_devil/vo/devil_3_fx.wav"};
         for (size_t i = 0; i < files.size(); ++i) {
             SDL_AudioSpec source{}; Uint8* data = nullptr; Uint32 length = 0;
             if (!SDL_LoadWAV(files[i], &source, &data, &length)) { error = SDL_GetError(); return false; }
@@ -51,8 +53,24 @@ public:
         if (!device_ || !sfxEnabled_) return;
         const size_t index = cue == Cue::OrbCollect ? 3 : cue == Cue::FinalTitle ? 4 : cue == Cue::StoneSmash ? 5 : cue == Cue::PaperPickup ? 6 : static_cast<size_t>((variation % 3 + 3) % 3);
         SDL_LockAudioDevice(device_);
-        if (voices_.size() < 16) voices_.push_back({index, 0});
+        if (voices_.size() < 16) voices_.push_back({index, 0, 0});
         SDL_UnlockAudioDevice(device_);
+    }
+    unsigned PlayDevilVoice(bool third) override {
+        if (!device_ || !sfxEnabled_) return 0;
+        SDL_LockAudioDevice(device_);
+        const unsigned id = voices_.size() < 16 ? ++nextVoiceId_ : 0;
+        if (id) voices_.push_back({third ? 8u : 7u, 0, id});
+        SDL_UnlockAudioDevice(device_);
+        return id;
+    }
+    bool VoiceFinished(unsigned id) override {
+        if (!id || !device_) return true;
+        SDL_LockAudioDevice(device_);
+        const bool finished = !sfxEnabled_ || std::none_of(voices_.begin(), voices_.end(),
+            [id](const Voice& voice) { return voice.id == id; });
+        SDL_UnlockAudioDevice(device_);
+        return finished;
     }
     void SetSfxEnabled(bool enabled) override {
         if (!device_) { sfxEnabled_ = enabled; return; }
@@ -237,7 +255,8 @@ private:
     }
     std::vector<std::shared_ptr<AmbientVoice>> ambience_;
     bool sfxEnabled_ = true;
-    struct Voice { size_t sample, offset; };
+    struct Voice { size_t sample, offset; unsigned id; };
+    unsigned nextVoiceId_ = 0;
     static void Callback(void* userdata, Uint8* stream, int length) {
         auto& self = *static_cast<SDLSoundPlayer*>(userdata);
         std::memset(stream, 0, length);
@@ -263,7 +282,7 @@ private:
     bool audioInitialized_ = false;
     SDL_AudioDeviceID device_ = 0;
     SDL_AudioSpec spec_{};
-    std::array<std::vector<Uint8>, 7> samples_;
+    std::array<std::vector<Uint8>, 9> samples_;
     std::vector<Voice> voices_;
 };
 }

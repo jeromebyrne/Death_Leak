@@ -208,23 +208,57 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
                                     capture_output=True, text=True, check=True)
     assert 'Collected paper ' not in imported_paper.stdout, imported_paper.stdout
     # HealthDevil is level-keyed in Windows permanent data. A grounded held
-    # interaction grants one +20 health cap in this bounded Linux path; health
-    # itself is not healed, and save/revisit cannot grant it again.
+    # interaction starts authored VO; its completion spawns a separate pickup.
+    # Collection alone raises the cap; health is not healed or duplicated.
     hot = 'Game/XmlFiles/levels/hot_springs.xml'
     hot_start = root / 'devil-fresh.dl5'
     hot_start.write_text('DL5\n' + hot + '\n-1234.3479 450 25 100\nB:0\n')
+    before_voice = root / 'devil-dialog-pending.dl5'
+    pending = subprocess.run(['port/build/deathleak-linux', '--load-save', str(hot_start),
+                              '--save-file', str(before_voice), '--script', 'I:120',
+                              '--fixed-dt', '0.0166667', '--simulate-only'],
+                             capture_output=True, text=True, check=True)
+    assert 'Health devil dialog ' + hot in pending.stdout
+    assert 'Health devil reward spawned ' not in pending.stdout
+    assert 'max_health=25' in pending.stdout
+    assert not any(line.startswith(('V:', 'J:', 'H:')) for line in before_voice.read_text().splitlines())
+    # Connected play: leave the devil during VO, observe the spawned object
+    # without a cap increase, then return and physically collect it.
+    uncollected = root / 'devil-uncollected.dl5'
+    away = subprocess.run(['port/build/deathleak-linux', '--load-save', str(hot_start),
+                           '--save-file', str(uncollected),
+                           '--script', 'I:25,L:100,.:750', '--fixed-dt', '0.0166667', '--simulate-only'],
+                          capture_output=True, text=True, check=True)
+    assert 'Health devil reward spawned ' + hot + ' at frame 767 count=1' in away.stdout
+    assert 'Health upgrade collected ' not in away.stdout and 'max_health=25' in away.stdout
+    assert {'V:' + hot, 'J:1'} <= set(uncollected.read_text().splitlines())
+    assert 'H:45' not in uncollected.read_text().splitlines()
+    returned = subprocess.run(['port/build/deathleak-linux', '--load-save', str(hot_start),
+                               '--save-file', str(root / 'devil-returned.dl5'),
+                               '--script', 'I:25,L:100,.:750,R:100,.:100',
+                               '--fixed-dt', '0.0166667', '--simulate-only'],
+                              capture_output=True, text=True, check=True)
+    assert 'Health devil reward spawned ' + hot + ' at frame 767 count=1' in returned.stdout
+    assert 'Health upgrade collected ' + hot + ' at frame 925 max_health=45' in returned.stdout
+    uncollected_reload = subprocess.run(['port/build/deathleak-linux', '--load-save', str(uncollected),
+                                         '--script', 'I:800', '--fixed-dt', '0.0166667', '--simulate-only'],
+                                        capture_output=True, text=True, check=True)
+    assert 'Health devil dialog ' not in uncollected_reload.stdout
+    assert 'max_health=25' in uncollected_reload.stdout
     hot_earned = root / 'devil-earned.dl5'
     earned = subprocess.run(['port/build/deathleak-linux', '--load-save', str(hot_start),
-                             '--save-file', str(hot_earned), '--script', 'I:120',
+                             '--save-file', str(hot_earned), '--script', 'I:800',
                              '--fixed-dt', '0.0166667', '--simulate-only'],
                             capture_output=True, text=True, check=True)
-    assert 'Health devil reward ' + hot + ' at frame 20 count=1 max_health=45' in earned.stdout, earned.stdout
+    assert 'Health devil dialog ' + hot + ' at frame 20 voice=1' in earned.stdout, earned.stdout
+    assert 'Health devil reward spawned ' + hot + ' at frame 767 count=1' in earned.stdout, earned.stdout
+    assert 'Health upgrade collected ' + hot + ' at frame 768 max_health=45' in earned.stdout, earned.stdout
     assert 'health=25' in earned.stdout and 'max_health=45' in earned.stdout, earned.stdout
     assert {'V:' + hot, 'J:1', 'H:45'} <= set(hot_earned.read_text().splitlines())
     repeated = subprocess.run(['port/build/deathleak-linux', '--load-save', str(hot_earned),
                                '--script', 'I:120', '--fixed-dt', '0.0166667', '--simulate-only'],
                               capture_output=True, text=True, check=True)
-    assert 'Health devil reward ' not in repeated.stdout and 'max_health=45' in repeated.stdout, repeated.stdout
+    assert 'Health devil dialog ' not in repeated.stdout and 'max_health=45' in repeated.stdout, repeated.stdout
     hot_export = root / 'devil-export.xml'
     run('export', hot_earned, hot_export, '--discard-runtime')
     assert bridge.windows_fields(hot_export)['health_devil_reward_XmlFiles-levels-hot_springs.xml'] == ('bool', 'true')
@@ -241,17 +275,19 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
     already = subprocess.run(['port/build/deathleak-linux', '--load-save', str(imported_hot),
                               '--script', 'I:120', '--fixed-dt', '0.0166667', '--simulate-only'],
                              capture_output=True, text=True, check=True)
-    assert 'Health devil reward ' not in already.stdout and 'max_health=65' in already.stdout, already.stdout
+    assert 'Health devil dialog ' not in already.stdout and 'max_health=65' in already.stdout, already.stdout
     cliff = 'Game/XmlFiles/levels/cliff.xml'
     third_start = root / 'devil-third.dl5'
     third_lines = target_lines.copy(); third_lines[1] = cliff; third_lines[2] = '-2097.966797 -500 25 100'
     third_start.write_text('\n'.join(third_lines) + '\n')
     third_earned = root / 'devil-third-earned.dl5'
     third = subprocess.run(['port/build/deathleak-linux', '--load-save', str(third_start),
-                            '--save-file', str(third_earned), '--script', 'I:120',
+                            '--save-file', str(third_earned), '--script', 'I:800',
                             '--fixed-dt', '0.0166667', '--simulate-only'],
                            capture_output=True, text=True, check=True)
-    assert 'Health devil reward ' + cliff + ' at frame 21 count=3 max_health=85' in third.stdout, third.stdout
+    assert 'Health devil dialog ' + cliff + ' at frame 21 voice=3' in third.stdout, third.stdout
+    assert 'Health devil reward spawned ' + cliff + ' at frame 732 count=3' in third.stdout, third.stdout
+    assert 'Health upgrade collected ' + cliff + ' at frame 733 max_health=85' in third.stdout, third.stdout
     third_win = root / 'devil-third.xml'
     run('export', third_earned, third_win, '--discard-runtime')
     third_fields = bridge.windows_fields(third_win)

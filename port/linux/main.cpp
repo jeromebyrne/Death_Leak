@@ -23,6 +23,7 @@
 #include <filesystem>
 #include <iomanip>
 #include <sstream>
+#include <optional>
 
 using namespace deathleak::render;
 
@@ -334,6 +335,11 @@ int main(int argc, char** argv) {
     auto paperBackButton = (playLevel.empty() && !menuLoop) ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/gamepad_icons/key_esc.png", error);
     auto modalButton = (playLevel.empty() && !menuLoop) ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/gamepad_icons/y.png", error);
     std::string interactionTarget;
+    struct DevilDialog { std::string level; float x, y, elapsed, duration; unsigned voice; };
+    struct HealthPickup { std::string level; float x, y, vx, vy; };
+    std::optional<DevilDialog> devilDialog;
+    std::optional<HealthPickup> healthPickup;
+    const auto healthPickupArt = renderer->LoadTexture("Game/Media/objects/health_upgrade.png", error);
     int facing = 1;
     std::string currentLevel = playLevel;
     // Main-menu assets and ordering follow mainmenu.xml. Keyboard/controller
@@ -469,6 +475,7 @@ int main(int argc, char** argv) {
                     deathleak::game::LevelScene fresh;
                     if (!fresh.Load(freshLevel, *renderer, error)) { std::cerr << error << '\n'; return 1; }
                     scene = std::move(fresh);
+                    devilDialog.reset(); healthPickup.reset();
                     if (!simulateOnly && !sound) {
                         sound = deathleak::audio::CreateSoundPlayer();
                         std::string audioError;
@@ -556,6 +563,7 @@ int main(int argc, char** argv) {
                         nextScene.ApplySmashable(brokenSmashables.count(restartLevel) != 0);
                         nextScene.ApplyDeflection(combat.DeflectionUnlocked());
                         scene = std::move(nextScene);
+                        devilDialog.reset(); healthPickup.reset();
                         currentLevel = restartLevel;
                         motion.Reset(scene.PlayerX(), scene.PlayerY());
                         worldX = motion.X(); worldY = motion.Y();
@@ -607,6 +615,58 @@ int main(int argc, char** argv) {
             cameraX += (worldX - cameraX) * std::min(1.f, 8.f * dt);
             cameraY += (worldY - cameraY) * std::min(1.f, 4.f * dt);
             levelTime += dt;
+            bool spawnedHealthPickup = false;
+            if (devilDialog) {
+                if (devilDialog->level != currentLevel) devilDialog.reset();
+                else {
+                    devilDialog->elapsed += dt;
+                    // Fixed-step simulation uses authored PCM duration; live
+                    // playback waits for the actual SDL voice to finish.
+                    const bool finished = simulateOnly
+                        ? (!settings.sfx || devilDialog->elapsed >= devilDialog->duration)
+                        : (!sound || sound->VoiceFinished(devilDialog->voice));
+                    if (finished) {
+                        rewardedHealthDevils.insert(currentLevel);
+                        ++healthDevilRewardCount;
+                        scene.ApplyHealthDevil(true);
+                        healthPickup = HealthPickup{currentLevel, devilDialog->x,
+                            devilDialog->y + 20.f, 15.f, 10.f};
+                        spawnedHealthPickup = true;
+                        std::cout << "Health devil reward spawned " << currentLevel
+                                  << " at frame " << frame << " count=" << healthDevilRewardCount << '\n';
+                        devilDialog.reset();
+                    }
+                }
+            }
+            if (healthPickup && !spawnedHealthPickup) {
+                if (healthPickup->level != currentLevel) healthPickup.reset();
+                else {
+                    const float previousY = healthPickup->y;
+                    healthPickup->x += healthPickup->vx * dt * 60.f;
+                    healthPickup->y += healthPickup->vy * dt * 60.f;
+                    healthPickup->vx *= std::pow(0.95f, dt * 60.f);
+                    healthPickup->vy -= 0.8f * dt * 60.f;
+                    for (const auto& ground : scene.Ground()) {
+                        if (healthPickup->x < std::min(ground.x1, ground.x2) ||
+                            healthPickup->x > std::max(ground.x1, ground.x2) ||
+                            ground.x1 == ground.x2) continue;
+                        const float y = ground.y1 + (ground.y2-ground.y1) *
+                            (healthPickup->x-ground.x1)/(ground.x2-ground.x1);
+                        if (previousY - 35.f >= y && healthPickup->y - 35.f <= y) {
+                            healthPickup->y = y + 35.f; healthPickup->vy = 0.f;
+                        }
+                    }
+                    if (std::abs(worldX-healthPickup->x) <= (128.959793f+50.f)*0.5f &&
+                        std::abs(worldY-healthPickup->y) <= (214.898743f+70.f)*0.5f) {
+                        savedMaxHealth = combat.MaxHealth() + 20.f;
+                        hasSavedMaxHealth = true;
+                        combat.SetMaxHealth(savedMaxHealth);
+                        std::cout << "Health upgrade collected " << currentLevel
+                                  << " at frame " << frame << " max_health=" << savedMaxHealth << '\n';
+                        healthPickup.reset();
+                    }
+                }
+            }
             if (doorUnlockWait > 0) {
                 doorUnlockWait = std::max(0.f, doorUnlockWait-dt);
                 if (unlockingDoor) interactHeldTime = 0;
@@ -631,7 +691,7 @@ int main(int argc, char** argv) {
                 for (const auto& paper : scene.Papers()) if (!collectedPapers.count(paper.descriptionId) && overlap(paper.x,paper.y,paper.width,paper.height)) {
                     nearbyPaper = &paper; target = "P:" + paper.descriptionId; break;
                 }
-            if (!nearbyKey && !nearbyPaper && motion.Grounded() && !rewardedHealthDevils.count(currentLevel))
+            if (!nearbyKey && !nearbyPaper && !devilDialog && motion.Grounded() && !rewardedHealthDevils.count(currentLevel))
                 for (const auto& devil : scene.HealthDevils()) if (overlap(devil.x,devil.y,devil.width,devil.height)) {
                     nearbyDevil = &devil; target = "V:" + currentLevel; break;
                 }
@@ -669,16 +729,12 @@ int main(int argc, char** argv) {
                 std::cout << "Collected paper " << nearbyPaper->descriptionId << " at frame " << frame << '\n';
                 interactHeldTime = 0; interactionTarget.clear();
             } else if (interactHeldTime >= 0.05f && nearbyDevil) {
-                // Bounded reward path: original VO then spawns a separate +20 HP pickup.
-                // Apply the cap at interaction here; current HP is unchanged.
-                rewardedHealthDevils.insert(currentLevel);
-                ++healthDevilRewardCount;
-                savedMaxHealth = combat.MaxHealth() + 20.f;
-                hasSavedMaxHealth = true;
-                combat.SetMaxHealth(savedMaxHealth);
-                scene.ApplyHealthDevil(true);
-                std::cout << "Health devil reward " << currentLevel << " at frame " << frame
-                          << " count=" << healthDevilRewardCount << " max_health=" << savedMaxHealth << '\n';
+                const bool third = healthDevilRewardCount >= 2;
+                const unsigned voice = sound ? sound->PlayDevilVoice(third) : 0;
+                devilDialog = DevilDialog{currentLevel, nearbyDevil->x, nearbyDevil->y,
+                    0.f, third ? 11.842177f : 12.448481f, voice};
+                std::cout << "Health devil dialog " << currentLevel << " at frame " << frame
+                          << " voice=" << (third ? 3 : 1) << '\n';
                 interactHeldTime = 0; interactionTarget.clear();
             } else if (interactHeldTime >= 0.5f && nearbyScroll) {
                 upgradeModal = true; modalWarmup = 0; purchaseHeld = dismissHeld = false;
@@ -706,6 +762,7 @@ int main(int argc, char** argv) {
                         nextScene.ApplySmashable(brokenSmashables.count(door.destination) != 0);
                         nextScene.ApplyDeflection(combat.DeflectionUnlocked());
                         scene = std::move(nextScene);
+                        devilDialog.reset(); healthPickup.reset();
                         std::cout << "Door at frame " << frame << " from " << currentLevel << " to " << door.destination << '\n';
                         currentLevel = door.destination;
                         motion.Reset(scene.PlayerX(),scene.PlayerY(), true);
@@ -735,6 +792,7 @@ int main(int argc, char** argv) {
                         nextScene.ApplySmashable(brokenSmashables.count(destination) != 0);
                         nextScene.ApplyDeflection(combat.DeflectionUnlocked());
                         scene = std::move(nextScene);
+                        devilDialog.reset(); healthPickup.reset();
                         std::cout << "Boat at frame " << frame << " from " << currentLevel << " to " << destination << '\n';
                         currentLevel = destination;
                         loadFilmFrames();
@@ -766,6 +824,7 @@ int main(int argc, char** argv) {
                         nextScene.ApplySmashable(brokenSmashables.count(destination) != 0);
                         nextScene.ApplyDeflection(combat.DeflectionUnlocked());
                         scene = std::move(nextScene);
+                        devilDialog.reset(); healthPickup.reset();
                         currentLevel = destination;
                         worldX = scene.PlayerX(); worldY = scene.PlayerY();
                         cameraX = scene.CameraX(); cameraY = scene.CameraY();
@@ -787,6 +846,7 @@ int main(int argc, char** argv) {
             std::cout << "Main menu return after story completion count=" << completions << " language=" << language << '\n';
             playLevel.clear(); levelPath.clear(); currentLevel.clear();
             collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear(); collectedPapers.clear(); rewardedHealthDevils.clear(); brokenSmashables.clear(); healthDevilRewardCount = 0;
+            devilDialog.reset(); healthPickup.reset();
             orbBalance = 0; scene = deathleak::game::LevelScene{};
             combat = deathleak::game::Combat{};
             speedUnlocked = projectileDamageUnlocked = projectileSpeedUnlocked = false; downwardDashUnlocked = rollUnlocked = false; savedMaxHealth = 25; hasSavedMaxHealth = false; windowsPermanentExtension.clear();
@@ -843,6 +903,13 @@ int main(int argc, char** argv) {
                        scene.CameraY() + (430 - playerY) * 1.5f, scene.PlayerX(), scene.PlayerY());
         else {
             scene.Draw(*renderer, cameraX, cameraY, worldX, worldY);
+            if (healthPickup && healthPickupArt) {
+                constexpr float scale = 2.f / 3.f;
+                renderer->DrawSprite({healthPickupArt, {},
+                    {640.f + (healthPickup->x-cameraX-25.f)*scale,
+                     360.f + (cameraY-healthPickup->y-35.f)*scale,
+                     50.f*scale, 70.f*scale}});
+            }
             combat.Draw(*renderer, cameraX, cameraY);
             if (currentLevel == "Game/XmlFiles/levels/sea_2.xml") {
                 // final_scene_hud: four authored film frames at 11 FPS and

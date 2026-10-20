@@ -17,6 +17,9 @@ public:
     virtual ~SoundPlayer() = default;
     virtual bool Initialize(std::string& error) = 0;
     virtual void Play(Cue cue, int variation = 0) = 0;
+    // Zero means audio is unavailable or muted; the caller may complete dialog immediately.
+    virtual unsigned PlayDevilVoice(bool third) = 0;
+    virtual bool VoiceFinished(unsigned id) = 0;
     virtual void SetSfxEnabled(bool enabled) = 0;
     virtual void SetAmbience(const std::vector<AmbientSource>& sources) = 0;
     virtual void UpdateAmbience(float cameraX, float cameraY) = 0;
