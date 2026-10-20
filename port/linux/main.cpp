@@ -336,7 +336,7 @@ int main(int argc, char** argv) {
     auto paperBackButton = (playLevel.empty() && !menuLoop) ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/gamepad_icons/key_esc.png", error);
     auto modalButton = (playLevel.empty() && !menuLoop) ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/gamepad_icons/y.png", error);
     std::string interactionTarget;
-    struct DevilDialog { std::string level; float x, y, width, height, elapsed, duration; unsigned voice; int depth; };
+    struct DevilDialog { std::string level; float x, y, width, height, elapsed, duration; unsigned voice; int depth; bool updateable, alwaysUpdate; };
     struct HealthPickup { std::string level; float x, y, vx, vy, gravityAcceleration = 0.f; };
     std::optional<DevilDialog> devilDialog;
     std::optional<HealthPickup> healthPickup;
@@ -636,8 +636,9 @@ int main(int argc, char** argv) {
                         : (!sound || sound->VoiceFinished(devilDialog->voice));
                     // The voice continues while the devil is culled, but
                     // GiveReward runs only on a visited HealthDevil::Update.
-                    if (finished && inManagerZone(devilDialog->x, devilDialog->y,
-                                                  devilDialog->width, devilDialog->height)) {
+                    if (finished && devilDialog->updateable &&
+                        (devilDialog->alwaysUpdate || inManagerZone(devilDialog->x, devilDialog->y,
+                                                                     devilDialog->width, devilDialog->height))) {
                         rewardedHealthDevils.insert(currentLevel);
                         ++healthDevilRewardCount;
                         scene.ApplyHealthDevil(true);
@@ -712,6 +713,12 @@ int main(int argc, char** argv) {
             const bool nearbyHealthPickup = healthPickup && pickupUpdatedThisFrame &&
                 std::abs(worldX-pickupInteractionX) < (128.959793f+50.f)*0.5f &&
                 std::abs(worldY-pickupInteractionY) < (214.898743f+70.f)*0.5f;
+            // A culled authored object does not run UpdateInteractable: no
+            // prompt, lock acquisition, or held countdown on that frame.
+            auto visited = [&](const auto& object) {
+                return object.updateable && (object.alwaysUpdate ||
+                    inManagerZone(object.x, object.y, object.width, object.height));
+            };
             // The spawned kPlayer pickup sorts ahead of lower-depth authored
             // interactables, but after earlier-authored kPlayer peers.
             if (nearbyHealthPickup) select("H:" + currentLevel, 3000,
@@ -722,30 +729,30 @@ int main(int argc, char** argv) {
             const deathleak::game::DojoScroll* nearbyScroll = nullptr;
             const deathleak::game::Door* nearbyDoor = nullptr;
             const deathleak::game::Boat* nearbyBoat = nullptr;
-            for (const auto& key : scene.Keys()) if (!ownedKeys.count(key.keyId) && overlap(key.x,key.y,key.width,key.height)) {
+            for (const auto& key : scene.Keys()) if (!ownedKeys.count(key.keyId) && visited(key) && overlap(key.x,key.y,key.width,key.height)) {
                 select("K:" + key.keyId, key.depth, key.order);
                 if (target == "K:" + key.keyId) nearbyKey = &key;
             }
-            for (const auto& paper : scene.Papers()) if (!collectedPapers.count(paper.descriptionId) && overlap(paper.x,paper.y,paper.width,paper.height)) {
+            for (const auto& paper : scene.Papers()) if (!collectedPapers.count(paper.descriptionId) && visited(paper) && overlap(paper.x,paper.y,paper.width,paper.height)) {
                 select("P:" + paper.descriptionId, paper.depth, paper.order);
                 if (target == "P:" + paper.descriptionId) nearbyPaper = &paper;
             }
             if (!devilDialog && motion.Grounded() && !rewardedHealthDevils.count(currentLevel))
-                for (const auto& devil : scene.HealthDevils()) if (overlap(devil.x,devil.y,devil.width,devil.height)) {
+                for (const auto& devil : scene.HealthDevils()) if (visited(devil) && overlap(devil.x,devil.y,devil.width,devil.height)) {
                     select("V:" + currentLevel, devil.depth, devil.order);
                     if (target == "V:" + currentLevel) nearbyDevil = &devil;
                 }
             if (!combat.DeflectionUnlocked())
-                for (const auto& scroll : scene.Scrolls()) if (scroll.feature == "kDeflection" && overlap(scroll.x,scroll.y,scroll.width,scroll.height)) {
+                for (const auto& scroll : scene.Scrolls()) if (scroll.feature == "kDeflection" && visited(scroll) && overlap(scroll.x,scroll.y,scroll.width,scroll.height)) {
                     select("S:" + scroll.id, scroll.depth, scroll.order);
                     if (target == "S:" + scroll.id) nearbyScroll = &scroll;
                 }
             if (levelTime >= 0.75f && motion.Grounded()) {
-                for (const auto& door : scene.Doors()) if (overlap(door.x,door.y,door.width,door.height)) {
+                for (const auto& door : scene.Doors()) if (visited(door) && overlap(door.x,door.y,door.width,door.height)) {
                     select("D:" + door.id + door.destination, door.depth, door.order);
                     if (target == "D:" + door.id + door.destination) nearbyDoor = &door;
                 }
-                for (const auto& boat : scene.Boats()) if (overlap(boat.x,boat.y,boat.width,boat.height)) {
+                for (const auto& boat : scene.Boats()) if (visited(boat) && overlap(boat.x,boat.y,boat.width,boat.height)) {
                     select("B:" + boat.id, boat.depth, boat.order);
                     if (target == "B:" + boat.id) nearbyBoat = &boat;
                 }
@@ -793,7 +800,8 @@ int main(int argc, char** argv) {
                 const unsigned voice = sound ? sound->PlayDevilVoice(third) : 0;
                 devilDialog = DevilDialog{currentLevel, nearbyDevil->x, nearbyDevil->y,
                     nearbyDevil->width, nearbyDevil->height,
-                    0.f, third ? 11.842177f : 12.448481f, voice, nearbyDevil->depth};
+                    0.f, third ? 11.842177f : 12.448481f, voice, nearbyDevil->depth,
+                    nearbyDevil->updateable, nearbyDevil->alwaysUpdate};
                 std::cout << "Health devil dialog " << currentLevel << " at frame " << frame
                           << " voice=" << (third ? 3 : 1) << '\n';
                 interactHeldTime = 0; interactionTarget.clear();

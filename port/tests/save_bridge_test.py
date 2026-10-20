@@ -241,6 +241,47 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
     near_dialog = subprocess.run(zone_cmd + ['--script', 'I:4,.:800'],
                                  capture_output=True, text=True, check=True)
     assert f'Health devil reward spawned {zone_fixture} at frame 749 count=1' in near_dialog.stdout, near_dialog.stdout
+    # The shipped HealthDevils explicitly set always_update=true: unlike the
+    # non-always-update fixture above, their finished voice may reward off-zone.
+    always_devil = root / 'always-health-devil.xml'
+    always_devil.write_text(Path(zone_fixture).read_text().replace(
+        '<HealthDevil id="3">', '<HealthDevil id="3" updateable="true" always_update="true">'))
+    always_result = subprocess.run(['port/build/deathleak-linux', '--play', str(always_devil),
+                                    '--script', 'I:4,R:400,.:400', '--fixed-dt', '0.0166667',
+                                    '--simulate-only'], capture_output=True, text=True, check=True)
+    assert f'Health devil reward spawned {always_devil} at frame 749 count=1' in always_result.stdout, always_result.stdout
+    assert 'Health upgrade collected ' not in always_result.stdout, always_result.stdout
+    # A camera initially far from the authored spawn leaves two overlapping
+    # interactables outside the manager update zone. Held I cannot pre-charge
+    # either object; each starts its own 0.05-second hold when visited.
+    authored_zone = 'port/tests/fixtures/authored_interactable_update_zone.xml'
+    zone_args = ['port/build/deathleak-linux', '--play', authored_zone,
+                 '--fixed-dt', '0.0166667', '--simulate-only']
+    before_visit = subprocess.run(zone_args + ['--script', 'I:4'],
+                                  capture_output=True, text=True, check=True)
+    assert 'Collected key ' not in before_visit.stdout and 'Collected paper ' not in before_visit.stdout, before_visit.stdout
+    visited_pair = subprocess.run(zone_args + ['--script', 'I:15'],
+                                  capture_output=True, text=True, check=True)
+    assert 'Collected key zone_key at frame 7' in visited_pair.stdout, visited_pair.stdout
+    assert 'Collected paper paper_pickup_gametip_projectile at frame 10' in visited_pair.stdout, visited_pair.stdout
+    # always_update bypasses the rectangle, while updateable=false excludes
+    # the key entirely, matching GameObjectManager's two early branches.
+    zone_xml = Path(authored_zone).read_text()
+    always_key = root / 'always-key.xml'
+    always_key.write_text(zone_xml.replace('id="3" updateable="true" always_update="false"',
+                                           'id="3" updateable="true" always_update="true"'))
+    always_key_result = subprocess.run(['port/build/deathleak-linux', '--play', str(always_key),
+                                        '--script', 'I:4', '--fixed-dt', '0.0166667',
+                                        '--simulate-only'], capture_output=True, text=True, check=True)
+    assert 'Collected key zone_key at frame 2' in always_key_result.stdout, always_key_result.stdout
+    disabled_key = root / 'disabled-key.xml'
+    disabled_key.write_text(zone_xml.replace('id="3" updateable="true" always_update="false"',
+                                               'id="3" updateable="false" always_update="true"'))
+    disabled_result = subprocess.run(['port/build/deathleak-linux', '--play', str(disabled_key),
+                                     '--script', 'I:15', '--fixed-dt', '0.0166667',
+                                     '--simulate-only'], capture_output=True, text=True, check=True)
+    assert 'Collected key ' not in disabled_result.stdout, disabled_result.stdout
+    assert 'Collected paper paper_pickup_gametip_projectile at frame 7' in disabled_result.stdout, disabled_result.stdout
     # Connected play: leave the devil during VO, observe the spawned object
     # without a cap increase, then return and physically collect it.
     uncollected = root / 'devil-uncollected.dl5'

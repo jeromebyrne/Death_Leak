@@ -75,6 +75,8 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         const std::string kind = object->Value();
         const float x = Attr(position, "x"), y = Attr(position, "y");
         const int interactionDepth = Depth(position->Attribute("depth_layer"));
+        const bool updateable = !object->Attribute("updateable") || Flag(object, "updateable");
+        const bool alwaysUpdate = Flag(object, "always_update");
         if (kind == "AudioObject") {
             auto* file = object->FirstChildElement("audiofile");
             auto* fade = object->FirstChildElement("fadedimensions");
@@ -107,21 +109,21 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         if (kind == "DojoScrollPickup") {
             auto* feature = object->FirstChildElement("feature_unlock");
             if (feature && feature->Attribute("value") && object->Attribute("id"))
-                scrolls_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),feature->Attribute("value"),std::filesystem::path(path).lexically_normal().string() + "#" + object->Attribute("id"),interactionDepth,objectOrder});
+                scrolls_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),feature->Attribute("value"),std::filesystem::path(path).lexically_normal().string() + "#" + object->Attribute("id"),interactionDepth,objectOrder,updateable,alwaysUpdate});
         }
         if (kind == "KeyPickup") {
             auto* props = object->FirstChildElement("key_props");
             if (props && props->Attribute("id") && *props->Attribute("id"))
-                keys_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),props->Attribute("id"),interactionDepth,objectOrder});
+                keys_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),props->Attribute("id"),interactionDepth,objectOrder,updateable,alwaysUpdate});
         }
-        if (kind == "HealthDevil") healthDevils_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),interactionDepth,objectOrder});
+        if (kind == "HealthDevil") healthDevils_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),interactionDepth,objectOrder,updateable,alwaysUpdate});
         if (kind == "PaperPickup") {
             auto* loc = object->FirstChildElement("loc_id");
             if (loc && loc->Attribute("desc") && *loc->Attribute("desc"))
-                papers_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),loc->Attribute("desc"),loc->Attribute("title") ? loc->Attribute("title") : "",interactionDepth,objectOrder});
+                papers_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),loc->Attribute("desc"),loc->Attribute("title") ? loc->Attribute("title") : "",interactionDepth,objectOrder,updateable,alwaysUpdate});
         }
         if (kind == "Boat" && object->Attribute("id"))
-            boats_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),object->Attribute("id"),interactionDepth,objectOrder});
+            boats_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),object->Attribute("id"),interactionDepth,objectOrder,updateable,alwaysUpdate});
         if (kind == "Door") {
             auto* to = object->FirstChildElement("to_level_file");
             auto* key = object->FirstChildElement("required_key");
@@ -130,7 +132,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
             if (!destination.empty() && std::filesystem::exists(destination))
                 doors_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),destination,
                     key && key->Attribute("value") ? key->Attribute("value") : "",
-                    id && id->Attribute("value") ? id->Attribute("value") : "",interactionDepth,objectOrder});
+                    id && id->Attribute("value") ? id->Attribute("value") : "",interactionDepth,objectOrder,updateable,alwaysUpdate});
         }
         if (kind == "LevelTrigger") {
             auto* destination = object->FirstChildElement("level_to_load");
