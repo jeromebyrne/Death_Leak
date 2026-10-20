@@ -41,6 +41,7 @@ int main(int argc, char** argv) {
     std::string language;
     std::string selectedLanguage;
     std::unordered_map<std::string, std::int64_t> triggerHistory;
+    bool menuLoop = false;
     bool simulateOnly = false;
     bool profile = false;
     bool combatState = false;
@@ -60,6 +61,7 @@ int main(int argc, char** argv) {
         else if (arg == "--script" && i + 1 < argc) script = argv[++i];
         else if (arg == "--fixed-dt" && i + 1 < argc) fixedDt = std::atof(argv[++i]);
         else if (arg == "--simulate-only") simulateOnly = true;
+        else if (arg == "--menu-loop") menuLoop = true;
         else if (arg == "--profile") profile = true;
         else if (arg == "--combat-state") combatState = true;
         else if (arg == "--exhaust-focus") exhaustedFocus = true;
@@ -141,14 +143,16 @@ int main(int argc, char** argv) {
         if (saveFile.empty()) saveFile = loadSaveFile;
     }
     if (!selectedLanguage.empty()) language = selectedLanguage;
-    if ((simulateOnly || !script.empty()) && playLevel.empty()) { std::cerr << "Simulation options require --play\n"; return 2; }
+    // With no explicit level, launch into the authored main-menu slice.
+    if (playLevel.empty() && levelPreview.empty()) menuLoop = true;
+    if ((simulateOnly || !script.empty()) && playLevel.empty() && !menuLoop) { std::cerr << "Simulation options require --play\n"; return 2; }
     if (fixedDt < 0 || fixedDt > 0.05f) { std::cerr << "--fixed-dt must be between 0 and 0.05\n"; return 2; }
     std::vector<char> scriptedInput;
     if (!script.empty()) {
         std::istringstream parts(script); std::string token;
         while (std::getline(parts, token, ',')) {
             auto colon = token.find(':');
-            if (colon == std::string::npos || token.empty() || std::string("LRJ.FBNTQEIHMPX").find(token[0]) == std::string::npos) { std::cerr << "Bad --script token\n"; return 2; }
+            if (colon == std::string::npos || token.empty() || std::string("LRJ.FBNTQEIHMPXS").find(token[0]) == std::string::npos) { std::cerr << "Bad --script token\n"; return 2; }
             int count = std::atoi(token.c_str() + colon + 1);
             if (count < 1 || count > 100000 || scriptedInput.size() + count > 100000) { std::cerr << "Bad --script duration\n"; return 2; }
             scriptedInput.insert(scriptedInput.end(), count, token[0]);
@@ -170,7 +174,7 @@ int main(int argc, char** argv) {
         }
     }
     deathleak::game::LevelScene scene;
-    const std::string levelPath = !playLevel.empty() ? playLevel : levelPreview;
+    std::string levelPath = !playLevel.empty() ? playLevel : levelPreview;
     if (!levelPath.empty() && !scene.Load(levelPath, *renderer, error)) {
         std::cerr << error << '\n'; return 1;
     }
@@ -182,10 +186,10 @@ int main(int argc, char** argv) {
                   << scene.SkippedCount() << " missing or unsupported assets; "
                   << scene.Ground().size() << " ground segments; " << scene.Triggers().size() << " level triggers\n";
     }
-    auto background = levelPath.empty() ? renderer->LoadTexture("Game/Media/UI/main_menu_2.png", error) : InvalidTexture;
-    if (levelPath.empty() && !background) { std::cerr << "Background load failed: " << error << '\n'; return 1; }
-    auto player = levelPath.empty() ? renderer->LoadTexture("Game/Media/UI/player_silhouette.png", error) : InvalidTexture;
-    if (levelPath.empty() && !player) { std::cerr << "Player art load failed: " << error << '\n'; return 1; }
+    auto background = (levelPath.empty() || menuLoop) ? renderer->LoadTexture("Game/Media/UI/main_menu_2.png", error) : InvalidTexture;
+    if ((levelPath.empty() || menuLoop) && !background) { std::cerr << "Background load failed: " << error << '\n'; return 1; }
+    auto player = (levelPath.empty() && !menuLoop) ? renderer->LoadTexture("Game/Media/UI/player_silhouette.png", error) : InvalidTexture;
+    if (levelPath.empty() && !menuLoop && !player) { std::cerr << "Player art load failed: " << error << '\n'; return 1; }
     float playerX = 590, playerY = 430;
     deathleak::game::PlayerMotion motion;
     motion.Reset(restorePosition ? savedX : scene.PlayerX(), restorePosition ? savedY : scene.PlayerY());
@@ -201,9 +205,9 @@ int main(int argc, char** argv) {
         worldX = scene.Hazards()[startHazard].x; worldY = scene.Hazards()[startHazard].y;
         cameraX = worldX; cameraY = worldY; motion.Reset(worldX, worldY);
     }
-    auto deathArt = playLevel.empty() ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/you_died.png", error);
+    auto deathArt = (playLevel.empty() && !menuLoop) ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/you_died.png", error);
     deathleak::game::Hud hud;
-    if (!playLevel.empty()) hud.Load(*renderer);
+    if (!playLevel.empty() || menuLoop) hud.Load(*renderer);
     deathleak::game::Combat combat;
     combat.SetDeflectionUnlocked(deflectionUnlocked);
     combat.SetTriggerHistory(std::move(triggerHistory));
@@ -220,8 +224,8 @@ int main(int argc, char** argv) {
     bool upgradeModal = false;
     float modalWarmup = 0.f;
     bool purchaseHeld = false, dismissHeld = false;
-    auto modalBackground = playLevel.empty() ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/blank_dark.png", error);
-    auto finalFrame = playLevel.empty() ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/frame_top.png", error);
+    auto modalBackground = (playLevel.empty() && !menuLoop) ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/blank_dark.png", error);
+    auto finalFrame = (playLevel.empty() && !menuLoop) ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/frame_top.png", error);
     std::array<TextureId, 4> filmFrames{};
     auto loadFilmFrames = [&] {
         if (simulateOnly || filmFrames[0]) return;
@@ -231,11 +235,41 @@ int main(int argc, char** argv) {
         for (size_t i = 0; i < filmPaths.size(); ++i) filmFrames[i] = renderer->LoadTexture(filmPaths[i], error);
     };
     if (playLevel == "Game/XmlFiles/levels/sea_2.xml") loadFilmFrames();
-    auto modalOrb = playLevel.empty() ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/orb.png", error);
-    auto modalButton = playLevel.empty() ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/gamepad_icons/y.png", error);
+    auto modalOrb = (playLevel.empty() && !menuLoop) ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/orb.png", error);
+    auto modalButton = (playLevel.empty() && !menuLoop) ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/gamepad_icons/y.png", error);
     std::string interactionTarget;
     int facing = 1;
     std::string currentLevel = playLevel;
+    // Main-menu assets and ordering follow mainmenu.xml. Keyboard/controller
+    // navigation is a Linux accessibility fallback for the source mouse widgets.
+    auto menuTitle = menuLoop ? renderer->LoadTexture("Game/Media/UI/title.png", error) : InvalidTexture;
+    auto menuFrame = menuLoop ? renderer->LoadTexture("Game/Media/UI/frame.png", error) : InvalidTexture;
+    std::array<TextureId, 3> menuButtons{};
+    std::array<TextureId, 3> menuFocus{};
+    if (menuLoop) {
+        constexpr std::array<const char*, 3> normal = {"play1.png", "settings1.png", "back1.png"};
+        constexpr std::array<const char*, 3> focused = {"play2.png", "settings2.png", "back2.png"};
+        for (size_t i = 0; i < 3; ++i) {
+            menuButtons[i] = renderer->LoadTexture(std::string("Game/Media/UI/buttons/") + normal[i], error);
+            menuFocus[i] = renderer->LoadTexture(std::string("Game/Media/UI/buttons/") + focused[i], error);
+        }
+    }
+    int menuSelection = 0;
+    bool menuOptions = false, menuUpHeld = false, menuDownHeld = false, menuActivateHeld = false, menuBackHeld = false;
+    bool completionOccurred = false;
+    const auto persistMenuMetadata = [&]() -> bool {
+        if (saveFile.empty()) return true;
+        const std::string temporary = saveFile + ".tmp";
+        std::ofstream saved(temporary, std::ios::trunc);
+        saved << "DL6\nMENU\nC:" << completions << '\n';
+        if (!language.empty()) saved << "G:" << language << '\n';
+        saved.close();
+        if (!saved) { std::cerr << "Menu save write failed: " << temporary << '\n'; return false; }
+        std::error_code ec;
+        std::filesystem::rename(temporary, saveFile, ec);
+        if (ec) { std::cerr << "Menu save commit failed: " << ec.message() << '\n'; return false; }
+        return true;
+    };
     auto start = std::chrono::steady_clock::now();
     auto last = std::chrono::steady_clock::now();
     for (int frame = 0; !frameLimit || frame < frameLimit; ++frame) {
@@ -245,9 +279,54 @@ int main(int argc, char** argv) {
         last = now;
         if (fixedDt > 0) dt = fixedDt;
         if (dt > 0.05f) dt = 0.05f;
-        if (renderer->KeyDown(Escape) && !upgradeModal && !dismissHeld) break;
+        const char command = frame < static_cast<int>(scriptedInput.size()) ? scriptedInput[frame] : 0;
+        if (renderer->KeyDown(Escape) && !upgradeModal && !dismissHeld && (!menuLoop || !playLevel.empty())) break;
         if (!renderer->KeyDown(Escape) && !upgradeModal) dismissHeld = false;
-        if (playLevel.empty()) {
+        if (menuLoop && playLevel.empty()) {
+            const bool up = script.empty() ? renderer->KeyDown(Up) : command == 'J';
+            const bool down = script.empty() ? renderer->KeyDown(Down) : command == 'N';
+            const bool activate = script.empty() ? renderer->KeyDown(Interact) : command == 'S';
+            const bool back = script.empty() ? renderer->KeyDown(Escape) : command == 'X';
+            if (back && !menuBackHeld && menuOptions) { menuOptions = false; menuSelection = 0; }
+            else if (back && !menuBackHeld) break;
+            if (up && !menuUpHeld) menuSelection = (menuSelection + (menuOptions ? 3 : 2)) % (menuOptions ? 4 : 3);
+            if (down && !menuDownHeld) menuSelection = (menuSelection + 1) % (menuOptions ? 4 : 3);
+            if (activate && !menuActivateHeld) {
+                if (menuOptions) {
+                    if (menuSelection == 3) { menuOptions = false; menuSelection = 0; }
+                    else {
+                        constexpr std::array<const char*, 3> locales = {"en-gb", "pt-br", "de"};
+                        language = locales[menuSelection];
+                        std::cout << "Menu language selected " << language << " at frame " << frame << '\n';
+                        if (!persistMenuMetadata()) return 1;
+                    }
+                } else if (menuSelection == 2) break;
+                else if (menuSelection == 1) { menuOptions = true; menuSelection = 0; }
+                else {
+                    const std::string freshLevel = "Game/XmlFiles/levels/grass_exploration_3.xml";
+                    deathleak::game::LevelScene fresh;
+                    if (!fresh.Load(freshLevel, *renderer, error)) { std::cerr << error << '\n'; return 1; }
+                    scene = std::move(fresh);
+                    if (!simulateOnly && !sound) {
+                        sound = deathleak::audio::CreateSoundPlayer();
+                        std::string audioError;
+                        if (!sound->Initialize(audioError)) { std::cerr << "Audio unavailable: " << audioError << '\n'; sound.reset(); }
+                    }
+                    playLevel = levelPath = currentLevel = freshLevel;
+                    collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear();
+                    orbBalance = 0; combat = deathleak::game::Combat{};
+                    motion.Reset(scene.PlayerX(), scene.PlayerY());
+                    worldX = motion.X(); worldY = motion.Y();
+                    cameraX = scene.CameraX(); cameraY = scene.CameraY();
+                    finalSceneTime = levelTime = interactHeldTime = doorUnlockWait = 0;
+                    finalTitleShown = storyEnded = wasDead = unlockingDoor = upgradeModal = false;
+                    interactionTarget.clear(); menuSelection = 0;
+                    std::cout << "Menu New Game at frame " << frame << " entered " << currentLevel
+                              << " completion count=" << completions << " language=" << language << '\n';
+                }
+            }
+            menuUpHeld = up; menuDownHeld = down; menuActivateHeld = activate; menuBackHeld = back;
+        } else if (playLevel.empty()) {
             if (renderer->KeyDown(Left)) playerX -= 250 * dt;
             if (renderer->KeyDown(Right)) playerX += 250 * dt;
             if (renderer->KeyDown(Up)) playerY -= 250 * dt;
@@ -266,7 +345,6 @@ int main(int argc, char** argv) {
                     std::cout << "EndStory at frame " << frame << " time=" << finalSceneTime << "\n";
                 }
             } else {
-            const char command = frame < static_cast<int>(scriptedInput.size()) ? scriptedInput[frame] : 0;
             if (upgradeModal) {
                 modalWarmup += dt;
                 const bool purchase = !script.empty() ? command == 'P' : renderer->KeyDown(Purchase);
@@ -460,14 +538,44 @@ int main(int argc, char** argv) {
             }
             }
         }
-        if (storyEnded) break;
+        if (storyEnded) {
+            completionOccurred = true;
+            if (!menuLoop) break;
+            if (!persistMenuMetadata()) return 1;
+            std::cout << "Main menu return after story completion count=" << completions << " language=" << language << '\n';
+            playLevel.clear(); levelPath.clear(); currentLevel.clear();
+            collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear();
+            orbBalance = 0; scene = deathleak::game::LevelScene{};
+            combat = deathleak::game::Combat{};
+            finalSceneTime = 0; finalTitleShown = storyEnded = false;
+            menuSelection = 0; menuOptions = false;
+        }
         auto afterUpdate = std::chrono::steady_clock::now();
         updateSeconds += std::chrono::duration<double>(afterUpdate-now).count();
         if (simulateOnly) continue;
         renderer->BeginFrame({8, 12, 20, 255});
         if (levelPath.empty()) {
             renderer->DrawSprite({background, {}, {0, 0, 1280, 720}});
-            renderer->DrawSprite({player, {}, {playerX, playerY, 100, 170}});
+            if (menuLoop) {
+                if (menuTitle) renderer->DrawSprite({menuTitle, {}, {140, 92, 502, 129}});
+                if (menuFrame) renderer->DrawSprite({menuFrame, {}, {0, 0, 1280, 720}});
+                if (menuOptions) {
+                    constexpr std::array<const char*, 4> labels = {"ENGLISH", "PORTUGUESE", "DEUTSCH", "BACK"};
+                    for (int i = 0; i < 4; ++i)
+                        deathleak::game::DrawBitmapText(*renderer, labels[i], 400, 270 + i*65, 4,
+                            i == menuSelection ? Color{255,0,0,255} : Color{255,255,255,255});
+                } else {
+                    constexpr std::array<Rect, 3> bounds = {{{350,290,107,107}, {367,407,67,67}, {378,514,60,60}}};
+                    for (int i = 0; i < 3; ++i) {
+                        auto art = i == menuSelection ? menuFocus[i] : menuButtons[i];
+                        if (art) renderer->DrawSprite({art, {}, bounds[i]});
+                    }
+                    deathleak::game::DrawBitmapText(*renderer, "PLAY", 480, 325, 4);
+                    deathleak::game::DrawBitmapText(*renderer, "OPTIONS", 480, 428, 4);
+                    deathleak::game::DrawBitmapText(*renderer, "QUIT", 480, 535, 4);
+                    deathleak::game::DrawBitmapText(*renderer, "COMPLETED: " + std::to_string(completions), 750, 570, 3);
+                }
+            } else renderer->DrawSprite({player, {}, {playerX, playerY, 100, 170}});
         } else if (playLevel.empty())
             scene.Draw(*renderer, scene.CameraX() + (playerX - 590) * 1.5f,
                        scene.CameraY() + (430 - playerY) * 1.5f, scene.PlayerX(), scene.PlayerY());
@@ -505,7 +613,7 @@ int main(int argc, char** argv) {
         renderer->EndFrame();
         drawSeconds += std::chrono::duration<double>(std::chrono::steady_clock::now()-afterUpdate).count();
     }
-    if (storyEnded && !saveFile.empty()) {
+    if (!menuLoop && storyEnded && !saveFile.empty()) {
         const std::string temporary = saveFile + ".tmp";
         std::ofstream saved(temporary, std::ios::trunc);
         saved << "DL6\nMENU\nC:" << completions << '\n';
@@ -535,6 +643,7 @@ int main(int argc, char** argv) {
         std::filesystem::rename(temporary, saveFile, ec);
         if (ec) { std::cerr << "Save commit failed: " << ec.message() << '\n'; return 1; }
     }
+    if (menuLoop && playLevel.empty()) std::cout << "Menu idle completion count=" << completions << " language=" << language << " afterEndStory=" << completionOccurred << '\n';
     if (!playLevel.empty()) {
         const auto elapsed = std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();
         if (storyEnded) std::cout << "Main menu return event after story completion count=" << completions << " language=" << language << "\n";

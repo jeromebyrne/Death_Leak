@@ -392,6 +392,40 @@ python3 - <<'PYMETA'
 from pathlib import Path
 assert Path('port/build/integration-language-save.txt').read_text().splitlines() == ['DL6', 'MENU', 'C:1', 'G:de']
 PYMETA
+# mainmenu.xml New Game loads grass_exploration_3.xml. The Linux menu
+# provides keyboard/controller focus and a deterministic scripted equivalent.
+menu_save=port/build/integration-menu-save.txt
+printf 'DL6\nMENU\nC:2\nG:pt-br\nK:stale_key\n' > "$menu_save"
+menu_fresh=$($bin --menu-loop --script S:1,.:2 --fixed-dt 0.0166667 --simulate-only --save-file "$menu_save")
+printf '%s\n' "$menu_fresh" | grep -q 'Menu New Game at frame 0 entered Game/XmlFiles/levels/grass_exploration_3.xml completion count=2 language=pt-br'
+printf '%s\n' "$menu_fresh" | grep -q 'orbs=0 keys=0 health=25 .*balance=0'
+grep -q '^C:2$' "$menu_save"
+grep -q '^G:pt-br$' "$menu_save"
+if grep -q '^K:stale_key$' "$menu_save"; then exit 1; fi
+# Navigate from Play to Options, choose German, return to menu, then quit.
+printf 'DL6\nMENU\nC:2\nG:pt-br\n' > "$menu_save"
+menu_options=$($bin --menu-loop --script N:1,S:1,N:1,.:1,N:1,S:1,X:1,.:1,X:1 --fixed-dt 0.0166667 --simulate-only --save-file "$menu_save")
+printf '%s\n' "$menu_options" | grep -q 'Menu language selected de at frame 5'
+printf '%s\n' "$menu_options" | grep -q 'Menu idle completion count=2 language=de'
+python3 - <<'PYMENU'
+from pathlib import Path
+assert Path('port/build/integration-menu-save.txt').read_text().splitlines() == ['DL6','MENU','C:2','G:de']
+PYMENU
+# The ending returns to an actual menu in-process. A following normal menu
+# action starts a fresh authored spawn with completion metadata but no old keys.
+printf 'DL6\nMENU\nC:2\nG:de\nK:stale_key\n' > "$menu_save"
+menu_end=$($bin --play Game/XmlFiles/levels/sea_2.xml --menu-loop --script .:2101,S:1,.:1 --fixed-dt 0.0166667 --simulate-only --save-file "$menu_save")
+printf '%s\n' "$menu_end" | grep -q 'Main menu return after story completion count=3 language=de'
+printf '%s\n' "$menu_end" | grep -q 'Menu New Game at frame 2101 entered Game/XmlFiles/levels/grass_exploration_3.xml completion count=3 language=de'
+printf '%s\n' "$menu_end" | grep -q 'orbs=0 keys=0 health=25 .*balance=0'
+grep -q '^C:3$' "$menu_save"
+if grep -q '^K:stale_key$' "$menu_save"; then exit 1; fi
+menu_idle=$($bin --play Game/XmlFiles/levels/sea_2.xml --menu-loop --script .:2102 --fixed-dt 0.0166667 --simulate-only --save-file "$menu_save")
+printf '%s\n' "$menu_idle" | grep -q 'Menu idle completion count=4 language=de afterEndStory=1'
+python3 - <<'PYMENU'
+from pathlib import Path
+assert Path('port/build/integration-menu-save.txt').read_text().splitlines() == ['DL6','MENU','C:4','G:de']
+PYMENU
 # Full source-authored progression: one process, original forest spawn, only
 # ordinary controls, no save load/state injection. The pre-boat snapshot is
 # inspected separately because EndStory clears the selected progression save.
