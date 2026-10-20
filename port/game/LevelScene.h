@@ -42,6 +42,8 @@ public:
     size_t SkippedCount() const { return skipped_; }
     float PlayerX() const { return playerX_; }
     float PlayerY() const { return playerY_; }
+    float PlayerVisualWidth() const { return playerVisualWidth_; }
+    float PlayerVisualHeight() const { return playerVisualHeight_; }
     const std::vector<GroundSegment>& Ground() const { return ground_; }
     const std::vector<SolidBox>& SolidBoxes() const { return solidBoxes_; }
     const std::vector<LevelTrigger>& Triggers() const { return triggers_; }
@@ -63,6 +65,7 @@ private:
     std::vector<KeyPickup> keys_;
     std::vector<DojoScroll> scrolls_;
     float playerX_ = 0, playerY_ = 0;
+    float playerVisualWidth_ = 0, playerVisualHeight_ = 0;
     float cameraX_ = 0, cameraY_ = 0;
     size_t skipped_ = 0;
 };

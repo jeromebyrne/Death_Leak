@@ -56,6 +56,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     if (!document.LoadFile()) { error = "Cannot parse level: " + path + ": " + document.ErrorDesc(); return false; }
     auto* level = document.RootElement();
     if (!level || std::string(level->Value()) != "level") { error = "Not a Death Leak level: " + path; return false; }
+    playerVisualWidth_ = playerVisualHeight_ = 0;
     sprites_.clear(); ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); doors_.clear(); keys_.clear(); scrolls_.clear(); skipped_ = 0;
     if (auto* props = level->FirstChildElement("LevelProperties")) {
         auto* camera = props->FirstChildElement("camera_properties");
@@ -69,7 +70,11 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         if (!position || !dimensions) continue;
         const std::string kind = object->Value();
         const float x = Attr(position, "x"), y = Attr(position, "y");
-        if (kind == "Player") { playerX_ = x; playerY_ = y; }
+        if (kind == "Player") {
+            playerX_ = x; playerY_ = y;
+            playerVisualWidth_ = Attr(dimensions, "width");
+            playerVisualHeight_ = Attr(dimensions, "height");
+        }
         if (kind == "LevelEntry" && !fromLevel.empty()) {
             auto* cameFrom = object->FirstChildElement("level_came_from");
             auto* doorId = object->FirstChildElement("door_id");

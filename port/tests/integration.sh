@@ -8,11 +8,11 @@ printf '%s\n' "$transition" | grep -q 'Entered Game/XmlFiles/levels/grass_explor
 route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script L:1300 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$route" | grep -q 'Entered Game/XmlFiles/levels/grass_exploration_3.xml'
 printf '%s\n' "$route" | grep -q 'Entered Game/XmlFiles/levels/first_ninja_arena.xml'
-printf '%s\n' "$route" | grep -q 'orbs=26 keys=0 health=25.*spawned=1.*grounded=1'
+printf '%s\n' "$route" | grep -q 'orbs=27 keys=0 health=25.*spawned=1.*grounded=0'
 arena_climb=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script L:1500,Q:40,L:100 --fixed-dt 0.0166667 --simulate-only)
-printf '%s\n' "$arena_climb" | grep -q 'Simulation ended at Game/XmlFiles/levels/first_ninja_arena.xml player=(3756.65,-1271.93).*grounded=1'
+printf '%s\n' "$arena_climb" | grep -q 'Simulation ended at Game/XmlFiles/levels/first_ninja_arena.xml player=(3724.65,-1271.76).*grounded=1'
 arena_exit=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script L:1500,Q:40,L:700 --fixed-dt 0.0166667 --simulate-only)
-printf '%s\n' "$arena_exit" | grep -q 'Trigger at frame 2008 from Game/XmlFiles/levels/first_ninja_arena.xml'
+printf '%s\n' "$arena_exit" | grep -q 'Trigger at frame 1992 from Game/XmlFiles/levels/first_ninja_arena.xml'
 printf '%s\n' "$arena_exit" | grep -q 'Entered Game/XmlFiles/levels/grass_exploration_1.xml'
 burst=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script F:60 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$burst" | grep -q 'fired=5'
@@ -98,65 +98,89 @@ east_route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script 
 printf '%s\n' "$east_route" | grep -q 'Entered Game/XmlFiles/levels/waterfall_top.xml'
 printf '%s\n' "$east_route" | grep -q 'Entered Game/XmlFiles/levels/waterfall_bottom.xml'
 printf '%s\n' "$east_route" | grep -q 'Entered Game/XmlFiles/levels/underwater_cave.xml'
-printf '%s\n' "$east_route" | grep -q 'underwater_cave.xml player=.*orbs=14 .*balance=14'
+printf '%s\n' "$east_route" | grep -q 'underwater_cave.xml player=.*orbs=16 .*balance=16'
 # A rightward held jump at the authored waterfall-top gap (frame 710)
 # crosses its fall trigger and reaches forest 2 from the original forest-1
 # spawn. Normal knife fire then carries the same, unmodified run into village
 # central; no loaded balance, warp, or test-hit injection is used.
 continuous_save=port/build/continuous-village-save.txt
 continuous_route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script R:710,E:40,B:4500 --fixed-dt 0.0166667 --simulate-only --save-file "$continuous_save")
-printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 410 .*waterfall_top.xml'
-printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 1081 .*forest_exploration_2.xml'
-printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 1749 .*forest_exploration_barn.xml'
-printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 2760 .*village_forts.xml'
-printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 4095 .*village_central.xml'
-printf '%s\n' "$continuous_route" | grep -q 'village_central.xml player=(6823.18,-1464.18) orbs=96 .*health=1 .*balance=96'
+printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 398 .*waterfall_top.xml'
+printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 1058 .*forest_exploration_2.xml'
+printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 1714 .*forest_exploration_barn.xml'
+printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 2714 .*village_forts.xml'
+printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 4037 .*village_central.xml'
+printf '%s\n' "$continuous_route" | grep -q 'village_central.xml player=(7287.18,-1525.13) orbs=99 .*health=1 .*balance=99'
 python3 - <<'PYTEST'
 from pathlib import Path
 lines = Path('port/build/continuous-village-save.txt').read_text().splitlines()
 orb_ids = [line for line in lines if line.startswith('Game/XmlFiles/levels/') and '#' in line]
-assert len(orb_ids) == len(set(orb_ids)) == 96, (len(orb_ids), len(set(orb_ids)))
-assert 'B:96' in lines
+assert len(orb_ids) == len(set(orb_ids)) == 99, (len(orb_ids), len(set(orb_ids)))
+assert 'B:99' in lines
 PYTEST
-# The village-central eastward death at frame 5322 is avoidable by ordinary
+# The village-central eastward death with a constant run is avoidable by ordinary
 # right+jump timing: the first jump evades the ninja shot, the second clears
 # the authored village obstacle, and the third stays above the optional well
 # entrance. This same forest-spawn simulation reaches shrine and agriculture;
 # every orb is a distinct collected authored object, never injected currency.
 extended_save=port/build/extended-village-save.txt
-extended_route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script R:710,E:40,B:4520,E:40,B:50,E:40,B:80,E:40,B:3500 --fixed-dt 0.0166667 --simulate-only --save-file "$extended_save")
-printf '%s\n' "$extended_route" | grep -q 'Trigger at frame 5854 .*village_shrine.xml'
-printf '%s\n' "$extended_route" | grep -q 'Trigger at frame 8286 .*village_agri.xml'
-printf '%s\n' "$extended_route" | grep -q 'village_agri.xml player=(3431.18,-1288.29) orbs=190 .*health=1 .*balance=190'
+extended_route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script R:710,E:40,B:4480,E:40,B:50,E:40,B:50,E:40,B:3400 --fixed-dt 0.0166667 --simulate-only --save-file "$extended_save")
+printf '%s\n' "$extended_route" | grep -q 'Trigger at frame 5785 .*village_shrine.xml'
+printf '%s\n' "$extended_route" | grep -q 'Trigger at frame 8206 .*village_agri.xml'
+printf '%s\n' "$extended_route" | grep -q 'village_agri.xml player=(2711.18,-1286.6) orbs=187 .*health=1 .*balance=187'
 if printf '%s\n' "$extended_route" | grep -q 'Player died'; then exit 1; fi
 python3 - <<'PYTEST'
 from pathlib import Path
 lines = Path('port/build/extended-village-save.txt').read_text().splitlines()
 orb_ids = [line for line in lines if line.startswith('Game/XmlFiles/levels/') and '#' in line]
-assert len(orb_ids) == len(set(orb_ids)) == 190, (len(orb_ids), len(set(orb_ids)))
-assert 'B:190' in lines
+assert len(orb_ids) == len(set(orb_ids)) == 187, (len(orb_ids), len(set(orb_ids)))
+assert 'B:187' in lines
 PYTEST
 # Agriculture's east edge is an authored 4,000-unit-tall SolidMovingSprite
 # (id 14), not a missing LevelTrigger. Its left face stops this route at
-# x=3519.8 even with a normal held right+jump. Returning west with one timed
-# left+jump avoids the optional village well; two previously missed village
-# orbs are earned before the route reaches the authored forts west barrier.
-agri_wall=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script R:710,E:40,B:4520,E:40,B:50,E:40,B:80,E:40,B:3700,E:40,R:200 --fixed-dt 0.0166667 --simulate-only)
-printf '%s\n' "$agri_wall" | grep -q 'Player died at frame 9032 in Game/XmlFiles/levels/village_agri.xml'
-printf '%s\n' "$agri_wall" | grep -q 'village_agri.xml player=(3519.8,-1288.5) orbs=190 .*health=0 .*balance=190'
+# x=3519.8 even with a normal held right+jump. A retimed westbound jump
+# avoids the optional village well. The source Player sprite bounds overlap
+# the forts west trigger even though its narrower collision box is blocked.
+# A further held left+jump crosses waterfall top back to forest 1.
+agri_wall=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script R:710,E:40,B:4480,E:40,B:50,E:40,B:50,E:40,B:3600,E:40,R:200 --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$agri_wall" | grep -q 'Player died at frame 8952 in Game/XmlFiles/levels/village_agri.xml'
+printf '%s\n' "$agri_wall" | grep -q 'village_agri.xml player=(3519.8,-1288.5) orbs=191 .*health=0 .*balance=191'
 return_save=port/build/agri-return-save.txt
-return_route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script R:710,E:40,B:4520,E:40,B:50,E:40,B:80,E:40,B:3500,L:3535,Q:40,L:5000 --fixed-dt 0.0166667 --simulate-only --save-file "$return_save")
-printf '%s\n' "$return_route" | grep -q 'Trigger at frame 9798 from .*village_agri.xml .*village_shrine.xml'
-printf '%s\n' "$return_route" | grep -q 'Trigger at frame 12225 from .*village_shrine.xml .*village_central.xml'
-printf '%s\n' "$return_route" | grep -q 'Trigger at frame 13994 from .*village_central.xml .*village_forts.xml'
-printf '%s\n' "$return_route" | grep -q 'village_forts.xml player=(-2558.05,-1398.96) orbs=192 .*health=1 .*balance=192'
+return_route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script R:710,E:40,B:4480,E:40,B:50,E:40,B:50,E:40,B:3400,L:3410,Q:40,L:4640,Q:40,L:800 --fixed-dt 0.0166667 --simulate-only --save-file "$return_save")
+printf '%s\n' "$return_route" | grep -q 'Trigger at frame 9527 from .*village_agri.xml .*village_shrine.xml'
+printf '%s\n' "$return_route" | grep -q 'Trigger at frame 11943 from .*village_shrine.xml .*village_central.xml'
+printf '%s\n' "$return_route" | grep -q 'Trigger at frame 13701 from .*village_central.xml .*village_forts.xml'
+printf '%s\n' "$return_route" | grep -q 'Trigger at frame 15025 from .*village_forts.xml .*forest_exploration_barn.xml'
+printf '%s\n' "$return_route" | grep -q 'Trigger at frame 16010 from .*forest_exploration_barn.xml .*forest_exploration_2.xml'
+printf '%s\n' "$return_route" | grep -q 'Trigger at frame 16651 from .*forest_exploration_2.xml .*waterfall_top.xml'
+printf '%s\n' "$return_route" | grep -q 'Trigger at frame 17306 from .*waterfall_top.xml .*forest_exploration_1.xml'
+printf '%s\n' "$return_route" | grep -q 'forest_exploration_1.xml player=(-1078.02,3110.97) orbs=190 .*health=1 .*balance=190'
+# At the forts wall the player center is still outside trigger 13, but its
+# authored visual rectangle overlaps. Collision and trigger bounds differ.
+python3 - <<'PYGEOMETRY'
+import xml.etree.ElementTree as ET
+root = ET.parse('Game/XmlFiles/levels/village_forts.xml').getroot()
+objects = {o.get('id'): o for o in root if o.get('id')}
+wall, trigger, player = (objects[i] for i in ('11', '13', '3'))
+wx = float(wall.find('position').get('x'))
+wall_right = wx + float(wall.find('collisionboxdimensions').get('x')) / 2
+tx = float(trigger.find('position').get('x'))
+trigger_right = tx + float(trigger.find('dimensions').get('width')) / 2
+visual_half = float(player.find('dimensions').get('width')) / 2
+collision_half = float(player.find('collisionboxdimensions').get('x')) / 2
+stopped_center = wall_right + collision_half
+assert stopped_center > trigger_right  # center-only port check misses it
+assert stopped_center - visual_half < trigger_right  # original trigger fires
+assert wall.find('passive').get('value') == 'true'
+assert wall.find('applydamage').get('flag') == 'false'
+PYGEOMETRY
 if printf '%s\n' "$return_route" | grep -q 'Player died\|water_well_1.xml'; then exit 1; fi
 python3 - <<'PYTEST'
 from pathlib import Path
 lines = Path('port/build/agri-return-save.txt').read_text().splitlines()
 orb_ids = [line for line in lines if line.startswith('Game/XmlFiles/levels/') and '#' in line]
-assert len(orb_ids) == len(set(orb_ids)) == 192, (len(orb_ids), len(set(orb_ids)))
-assert 'B:192' in lines
+assert len(orb_ids) == len(set(orb_ids)) == 190, (len(orb_ids), len(set(orb_ids)))
+assert 'B:190' in lines
 PYTEST
 # Source SolidMovingSprite boundaries share geometry but not damage policy.
 # An attempted side overlap calls OnCollision once per simulated frame here;
@@ -169,12 +193,12 @@ solid_safe=$($bin --play port/tests/fixtures/solid_boundary_harmless.xml --scrip
 printf '%s\n' "$solid_safe" | grep -q 'player=(115.52,107.449) .*health=25 '
 # Forest 2's authored barn LevelEntry starts about 21 units embedded in its
 # ground strip. The one-frame shallow floor resolution preserves the route.
-# These are independent authored branches, not a connected 375-orb itinerary.
+# These independent branch checks supplement the connected 190-orb forest loop.
 village_route=$($bin --play Game/XmlFiles/levels/forest_exploration_2.xml --script R:3500 --fixed-dt 0.0166667 --simulate-only --save-file port/build/village-route-save.txt)
-printf '%s\n' "$village_route" | grep -q 'Trigger at frame 92 .*forest_exploration_barn.xml'
-printf '%s\n' "$village_route" | grep -q 'Trigger at frame 1103 .*village_forts.xml'
-printf '%s\n' "$village_route" | grep -q 'Trigger at frame 2438 .*village_central.xml'
-printf '%s\n' "$village_route" | grep -q 'village_central.xml player=(6079.18,-1407.35) orbs=60 .*health=10 .*balance=60'
+printf '%s\n' "$village_route" | grep -q 'Trigger at frame 81 .*forest_exploration_barn.xml'
+printf '%s\n' "$village_route" | grep -q 'Trigger at frame 1081 .*village_forts.xml'
+printf '%s\n' "$village_route" | grep -q 'Trigger at frame 2404 .*village_central.xml'
+printf '%s\n' "$village_route" | grep -q 'village_central.xml player=(6351.18,-1424.49) orbs=60 .*health=10 .*balance=60'
 python3 - <<'PYTEST'
 from pathlib import Path
 lines = Path('port/build/village-route-save.txt').read_text().splitlines()

@@ -335,8 +335,13 @@ int main(int argc, char** argv) {
                 }
             }
             for (const auto& trigger : scene.Triggers()) {
-                if (std::abs(worldX - trigger.x) < trigger.width * 0.5f &&
-                    std::abs(worldY - trigger.y) < trigger.height * 0.5f && trigger.destination != currentLevel) {
+                // Original LevelTrigger uses Utilities::IsObjectInRectangle, which
+                // tests the Player sprite dimensions, not its narrower solid
+                // collision box or just its origin. This matters at the forts
+                // west boundary, where the sprite overlaps the barn trigger.
+                if (std::abs(worldX - trigger.x) < (trigger.width + scene.PlayerVisualWidth()) * 0.5f &&
+                    std::abs(worldY - trigger.y) < (trigger.height + scene.PlayerVisualHeight()) * 0.5f &&
+                    trigger.destination != currentLevel) {
                     // Loading replaces scene.Triggers(); never retain a reference into it.
                     const std::string destination = trigger.destination;
                     std::cout << "Trigger at frame " << frame << " from " << currentLevel << " player=(" << worldX << "," << worldY << ") to " << destination << std::endl;
