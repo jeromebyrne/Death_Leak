@@ -260,8 +260,8 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
     box_state = re.search(r'Health upgrade pickup state x=([^\s]+) y=([^\s]+) vx=([^\s]+) vy=([^\s]+)', pass_through.stdout)
     assert box_state and 0 < float(box_state[1]) < 400 and float(box_state[2]) < -235, pass_through.stdout
     assert 'max_health=25' in pass_through.stdout and 'grounded=1' in pass_through.stdout
-    # Windows sorts load-time interactables by depth and appends the spawned
-    # pickup afterward. The overlapping authored key must win the first hold;
+    # AddGameObject re-sorts the live list. On a tie, XML objects keep their
+    # earlier order; the overlapping authored key wins the first hold.
     # its removal allows a fresh 0.05-second hold on the still-overlapping pickup.
     arbitration_cmd = ['port/build/deathleak-linux', '--play',
                        'port/tests/fixtures/health_pickup_arbitration.xml',
@@ -274,6 +274,23 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
                                  capture_output=True, text=True, check=True)
     assert 'Collected key pickup_overlap_key at frame 751' in then_pickup.stdout, then_pickup.stdout
     assert 'Health upgrade collected port/tests/fixtures/health_pickup_arbitration.xml at frame 754 max_health=45' in then_pickup.stdout, then_pickup.stdout
+    # HealthDevil inserts its pickup during GameObjectManager::Update. The
+    # std::list iterator stays at the devil through the live depth sort. A
+    # kPlayer pickup inserted after a kGround devil is visited this frame;
+    # one inserted before a kGroundFront devil is first visited next frame.
+    for suffix, expected_x, expected_y, collected_frame in (
+        ('later', 15, 30, 751), ('earlier', 0, 20, 752)):
+        fixture = f'port/tests/fixtures/health_pickup_spawn_{suffix}.xml'
+        args = ['port/build/deathleak-linux', '--play', fixture,
+                '--fixed-dt', '0.0166667', '--simulate-only']
+        spawn = subprocess.run(args + ['--script', 'I:4,.:746'],
+                               capture_output=True, text=True, check=True)
+        assert f'Health devil reward spawned {fixture} at frame 749' in spawn.stdout, spawn.stdout
+        state = re.search(r'Health upgrade pickup state x=([^\s]+) y=([^\s]+) vx=([^\s]+) vy=([^\s]+)', spawn.stdout)
+        assert state and abs(float(state[1]) - expected_x) < .01 and abs(float(state[2]) - expected_y) < .01, spawn.stdout
+        collected = subprocess.run(args + ['--script', 'I:755'],
+                                   capture_output=True, text=True, check=True)
+        assert f'Health upgrade collected {fixture} at frame {collected_frame} max_health=45' in collected.stdout, collected.stdout
     # AddGameObject re-sorts on insertion: its kPlayer pickup precedes a
     # kGroundFront key, even though the key is earlier in XML. Neither target
     # overlaps until the first post-spawn movement tick, so there is no prior
@@ -296,7 +313,7 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
                                '--fixed-dt', '0.0166667', '--simulate-only'],
                               capture_output=True, text=True, check=True)
     assert 'Health devil reward spawned ' + hot + ' at frame 767 count=1' in returned.stdout
-    assert 'Health upgrade collected ' + hot + ' at frame 769 max_health=45' in returned.stdout
+    assert 'Health upgrade collected ' + hot + ' at frame 770 max_health=45' in returned.stdout
     uncollected_reload = subprocess.run(['port/build/deathleak-linux', '--load-save', str(uncollected),
                                          '--script', 'I:800', '--fixed-dt', '0.0166667', '--simulate-only'],
                                         capture_output=True, text=True, check=True)
@@ -316,7 +333,7 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
                             capture_output=True, text=True, check=True)
     assert 'Health devil dialog ' + hot + ' at frame 20 voice=1' in earned.stdout, earned.stdout
     assert 'Health devil reward spawned ' + hot + ' at frame 767 count=1' in earned.stdout, earned.stdout
-    assert 'Health upgrade collected ' + hot + ' at frame 769 max_health=45' in earned.stdout, earned.stdout
+    assert 'Health upgrade collected ' + hot + ' at frame 770 max_health=45' in earned.stdout, earned.stdout
     assert 'health=25' in earned.stdout and 'max_health=45' in earned.stdout, earned.stdout
     assert {'V:' + hot, 'J:1', 'H:45'} <= set(hot_earned.read_text().splitlines())
     repeated = subprocess.run(['port/build/deathleak-linux', '--load-save', str(hot_earned),

@@ -336,10 +336,11 @@ int main(int argc, char** argv) {
     auto paperBackButton = (playLevel.empty() && !menuLoop) ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/gamepad_icons/key_esc.png", error);
     auto modalButton = (playLevel.empty() && !menuLoop) ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/gamepad_icons/y.png", error);
     std::string interactionTarget;
-    struct DevilDialog { std::string level; float x, y, elapsed, duration; unsigned voice; };
+    struct DevilDialog { std::string level; float x, y, elapsed, duration; unsigned voice; int depth; };
     struct HealthPickup { std::string level; float x, y, vx, vy, gravityAcceleration = 0.f; };
     std::optional<DevilDialog> devilDialog;
     std::optional<HealthPickup> healthPickup;
+    bool pickupUpdatedThisFrame = false;
     const auto healthPickupArt = renderer->LoadTexture("Game/Media/objects/health_upgrade.png", error);
     int facing = 1;
     std::string currentLevel = playLevel;
@@ -617,6 +618,7 @@ int main(int argc, char** argv) {
             cameraY += (worldY - cameraY) * std::min(1.f, 4.f * dt);
             levelTime += dt;
             bool spawnedHealthPickup = false;
+            pickupUpdatedThisFrame = bool(healthPickup);
             if (devilDialog) {
                 if (devilDialog->level != currentLevel) devilDialog.reset();
                 else {
@@ -633,13 +635,17 @@ int main(int argc, char** argv) {
                         healthPickup = HealthPickup{currentLevel, devilDialog->x,
                             devilDialog->y + 20.f, 15.f, 10.f};
                         spawnedHealthPickup = true;
+                        // std::list::sort keeps the current HealthDevil iterator
+                        // valid. A new kPlayer pickup is visited later in this
+                        // pass only if it sorts after the devil (including ties).
+                        pickupUpdatedThisFrame = devilDialog->depth >= 3000;
                         std::cout << "Health devil reward spawned " << currentLevel
                                   << " at frame " << frame << " count=" << healthDevilRewardCount << '\n';
                         devilDialog.reset();
                     }
                 }
             }
-            if (healthPickup && !spawnedHealthPickup) {
+            if (healthPickup && (!spawnedHealthPickup || pickupUpdatedThisFrame)) {
                 if (healthPickup->level != currentLevel) healthPickup.reset();
                 else {
                     // MovingSprite::Update adds last frame's acceleration before
@@ -682,7 +688,7 @@ int main(int argc, char** argv) {
                     (depth == selectedDepth && order >= selectedOrder))) return;
                 target = id; selectedDepth = depth; selectedOrder = order;
             };
-            const bool nearbyHealthPickup = healthPickup &&
+            const bool nearbyHealthPickup = healthPickup && pickupUpdatedThisFrame &&
                 std::abs(worldX-healthPickup->x) < (128.959793f+50.f)*0.5f &&
                 std::abs(worldY-healthPickup->y) < (214.898743f+70.f)*0.5f;
             // The spawned kPlayer pickup sorts ahead of lower-depth authored
@@ -765,7 +771,7 @@ int main(int argc, char** argv) {
                 const bool third = healthDevilRewardCount >= 2;
                 const unsigned voice = sound ? sound->PlayDevilVoice(third) : 0;
                 devilDialog = DevilDialog{currentLevel, nearbyDevil->x, nearbyDevil->y,
-                    0.f, third ? 11.842177f : 12.448481f, voice};
+                    0.f, third ? 11.842177f : 12.448481f, voice, nearbyDevil->depth};
                 std::cout << "Health devil dialog " << currentLevel << " at frame " << frame
                           << " voice=" << (third ? 3 : 1) << '\n';
                 interactHeldTime = 0; interactionTarget.clear();
