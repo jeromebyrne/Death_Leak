@@ -42,7 +42,7 @@ def validate_opaque(fields):
             if kind != 'bool' or value not in ('true', 'false'):
                 raise ValueError('invalid migration boolean ' + name)
         elif name in OPAQUE_INT:
-            if kind != 'int' or not re.fullmatch(r'\d+', value) or int(value) >= 1000000000 or (name == 'player_max_health' and int(value) < 1):
+            if kind != 'int' or not re.fullmatch(r'\d+', value) or int(value) >= (1000001 if name == 'player_max_health' else 1000000000) or (name == 'player_max_health' and int(value) < 1):
                 raise ValueError('invalid migration integer ' + name)
         else:
             raise ValueError('unmapped permanent Windows field: ' + name)
@@ -146,6 +146,8 @@ def windows_to_dl5(fields, level):
         if value == 'false': raise ValueError('explicit false door cannot be represented: ' + door)
         if value == 'true': doors.append(door)
     validate_opaque(fields)
+    max_health = fields.get('player_max_health', ('int', '25'))[1]
+    speed_unlocked = features is not None and ('int', '5') in features
     positions = ET.parse(level).getroot().findall('.//Player/position')
     if len(positions) != 1:
         raise ValueError('level needs exactly one authored Player spawn')
@@ -154,6 +156,8 @@ def windows_to_dl5(fields, level):
     if locale: lines.append('G:' + locale)
     lines += ['K:' + key for key in keys] + ['D:' + door for door in doors]
     if features is not None and ('int', '4') in features: lines.append('U:kDeflection')
+    if speed_unlocked: lines.append('U:kSpeedIncrease')
+    if 'player_max_health' in fields: lines.append('H:' + max_health)
     if fields: lines.append('W1:' + base64.b64encode(field_xml(fields)).decode())
     return lines
 
@@ -184,15 +188,20 @@ def dl5_to_windows(path):
         elif line.startswith('D:'):
             if line[2:] not in DOORS or line[2:] in doors: raise ValueError('unmapped/duplicate door')
             doors.add(line[2:])
-        elif line == 'U:kDeflection':
-            if fields.get('U'): raise ValueError('duplicate unlock')
-            fields['U'] = True
+        elif line in ('U:kDeflection', 'U:kSpeedIncrease'):
+            unlock = line[2:]
+            if unlock in fields: raise ValueError('duplicate unlock')
+            fields[unlock] = True
+        elif line.startswith('H:'):
+            if 'H' in fields or not re.fullmatch(r'[1-9]\d*', line[2:]) or int(line[2:]) > 1000000:
+                raise ValueError('invalid/duplicate max health')
+            fields['H'] = line[2:]
         elif line.startswith('W1:'):
             if migration is not None or lines[0] != 'DL5': raise ValueError('duplicate/invalid migration extension')
             migration = extension_fields(line[3:])
         elif line.startswith(('B:', 'N:')) or '#' in line: runtime.append(line)
         else: raise ValueError('unmapped Linux line: ' + line)
-    if lines[0] == 'DL6' and (keys or doors or runtime or fields.get('U') or migration):
+    if lines[0] == 'DL6' and (keys or doors or runtime or fields.get('kDeflection') or fields.get('kSpeedIncrease') or fields.get('H') or migration):
         raise ValueError('DL6 MENU cannot carry progression')
     if lines[0] == 'DL5' and len([v for v in runtime if v.startswith('B:')]) != 1:
         raise ValueError('DL5 requires one balance')
@@ -203,14 +212,24 @@ def dl5_to_windows(path):
     if 'G' in fields: scalar('language_locale_key', 'string', fields['G'])
     for key in sorted(keys): scalar(key, 'bool', 'true')
     for door in sorted(doors): scalar(door + '_unlocked', 'bool', 'true')
-    if fields.get('U'):
+    if fields.get('H'):
         if migration is None: migration = {}
-        features = migration.get('gameplay_features_unlocked', ('vector', []))[1]
-        if ('int', '4') not in features:
-            migration['gameplay_features_unlocked'] = ('vector', features + [('int', '4')])
+        previous = migration.get('player_max_health')
+        if previous and previous != ('int', fields['H']):
+            raise ValueError('max health migration conflicts with Linux value')
+        migration['player_max_health'] = ('int', fields['H'])
+    for name, feature_id in (('kDeflection', '4'), ('kSpeedIncrease', '5')):
+        if fields.get(name):
+            if migration is None: migration = {}
+            features = migration.get('gameplay_features_unlocked', ('vector', []))[1]
+            if ('int', feature_id) not in features:
+                migration['gameplay_features_unlocked'] = ('vector', features + [('int', feature_id)])
     if migration:
-        if not fields.get('U') and ('int', '4') in migration.get('gameplay_features_unlocked', ('vector', []))[1]:
-            raise ValueError('deflection migration conflicts with Linux unlock')
+        for name, feature_id in (('kDeflection', '4'), ('kSpeedIncrease', '5')):
+            if not fields.get(name) and ('int', feature_id) in migration.get('gameplay_features_unlocked', ('vector', []))[1]:
+                raise ValueError(name + ' migration conflicts with Linux unlock')
+        if not fields.get('H') and 'player_max_health' in migration:
+            raise ValueError('max health migration conflicts with Linux value')
         for node in ET.fromstring(field_xml(migration)):
             root.append(node)
     xml = ET.tostring(root, encoding='utf-8')

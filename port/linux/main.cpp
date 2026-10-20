@@ -55,7 +55,9 @@ int main(int argc, char** argv) {
     float savedX = 0, savedY = 0, savedHealth = 25, savedFocus = 100;
     bool restorePosition = false;
     std::unordered_set<std::string> collectedOrbs, ownedKeys, unlockedDoors;
-    bool deflectionUnlocked = false;
+    bool deflectionUnlocked = false, speedUnlocked = false;
+    float savedMaxHealth = 25;
+    bool hasSavedMaxHealth = false;
     int orbBalance = 0;
     bool balanceLoaded = false;
     int completions = 0;
@@ -139,6 +141,16 @@ int main(int argc, char** argv) {
             if (line.rfind("K:", 0) == 0) ownedKeys.insert(line.substr(2));
             else if (line.rfind("D:", 0) == 0) unlockedDoors.insert(line.substr(2));
             else if (line == "U:kDeflection") deflectionUnlocked = true;
+            else if (line == "U:kSpeedIncrease") speedUnlocked = true;
+            else if (line.rfind("H:", 0) == 0) {
+                try {
+                    size_t end = 0;
+                    const auto value = std::stoul(line.substr(2), &end);
+                    if (end != line.size()-2 || value < 1 || value > 1000000) throw std::invalid_argument("max health");
+                    savedMaxHealth = static_cast<float>(value);
+                    hasSavedMaxHealth = true;
+                } catch (const std::exception&) { std::cerr << "Invalid max health in save\n"; return 2; }
+            }
             else if (line.rfind("C:", 0) == 0) {
                 try {
                     size_t end = 0;
@@ -243,6 +255,7 @@ int main(int argc, char** argv) {
     if (levelPath.empty() && !menuLoop && !player) { std::cerr << "Player art load failed: " << error << '\n'; return 1; }
     float playerX = 590, playerY = 430;
     deathleak::game::PlayerMotion motion;
+    motion.SetSpeedUpgrade(speedUnlocked);
     motion.Reset(restorePosition ? savedX : scene.PlayerX(), restorePosition ? savedY : scene.PlayerY());
     float worldX = motion.X(), worldY = motion.Y();
     float cameraX = scene.CameraX(), cameraY = scene.CameraY();
@@ -261,6 +274,7 @@ int main(int argc, char** argv) {
     if (!playLevel.empty() || menuLoop) hud.Load(*renderer);
     deathleak::game::Combat combat;
     combat.SetDeflectionUnlocked(deflectionUnlocked);
+    combat.SetMaxHealth(savedMaxHealth);
     combat.SetTriggerHistory(std::move(triggerHistory));
     if (restorePosition) combat.SetVitals(savedHealth, savedFocus);
     if (exhaustedFocus) combat.SetFocus(0);
@@ -425,6 +439,8 @@ int main(int argc, char** argv) {
                     playLevel = levelPath = currentLevel = freshLevel;
                     collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear();
                     orbBalance = 0; combat = deathleak::game::Combat{};
+                    speedUnlocked = false; savedMaxHealth = 25; hasSavedMaxHealth = false; windowsPermanentExtension.clear();
+                    motion.SetSpeedUpgrade(false);
                     motion.Reset(scene.PlayerX(), scene.PlayerY());
                     worldX = motion.X(); worldY = motion.Y();
                     cameraX = scene.CameraX(); cameraY = scene.CameraY();
@@ -657,6 +673,8 @@ int main(int argc, char** argv) {
             collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear();
             orbBalance = 0; scene = deathleak::game::LevelScene{};
             combat = deathleak::game::Combat{};
+            speedUnlocked = false; savedMaxHealth = 25; hasSavedMaxHealth = false; windowsPermanentExtension.clear();
+            motion.SetSpeedUpgrade(false);
             finalSceneTime = 0; finalTitleShown = storyEnded = false;
             menuSelection = 0; menuOptions = menuLanguages = false;
         }
@@ -721,7 +739,7 @@ int main(int argc, char** argv) {
                     renderer->DrawSprite({finalFrame, {}, {0,620,1280,100}, {255,255,255,255}, 0, true});
                 }
                 if (finalTitleShown) deathleak::game::DrawBitmapText(*renderer, "DEATH LEAK", 200, 255, 16, {255,0,0,245});
-            } else hud.Draw(*renderer, combat.Health(), combat.Focus(), orbBalance);
+            } else hud.Draw(*renderer, combat.Health(), combat.MaxHealth(), combat.Focus(), orbBalance);
             if (upgradeModal) {
                 if (modalBackground) renderer->DrawSprite({modalBackground, {}, {0,0,1280,720}, {255,255,255,204}});
                 if (modalOrb) renderer->DrawSprite({modalOrb, {}, {520,460,56,85}});
@@ -764,6 +782,8 @@ int main(int argc, char** argv) {
         for (const auto& key : ownedKeys) saved << "K:" << key << '\n';
         for (const auto& door : unlockedDoors) saved << "D:" << door << '\n';
         if (combat.DeflectionUnlocked()) saved << "U:kDeflection\n";
+        if (speedUnlocked) saved << "U:kSpeedIncrease\n";
+        if (hasSavedMaxHealth) saved << "H:" << savedMaxHealth << '\n';
         if (!windowsPermanentExtension.empty()) saved << windowsPermanentExtension << '\n';
         for (const auto& [id, time] : combat.TriggerHistory()) saved << "N:" << id << '\t' << time << '\n';
         saved.close();
@@ -780,7 +800,8 @@ int main(int argc, char** argv) {
                   << ") orbs=" << collectedOrbs.size() << " keys=" << ownedKeys.size() << " health=" << combat.Health()
                   << " focus=" << combat.Focus() << " balance=" << orbBalance << " spawned=" << combat.Spawned() << " enemies=" << combat.EnemyCount()
                   << " hits=" << combat.Hits() << " kills=" << combat.Kills() << " fired=" << combat.Fired()
-                  << " shots=" << combat.ShotCount() << " grounded=" << motion.Grounded() << " elapsed=" << elapsed << "s\n";
+                  << " shots=" << combat.ShotCount() << " grounded=" << motion.Grounded() << " elapsed=" << elapsed << "s"
+                  << " max_health=" << combat.MaxHealth() << " speed_upgrade=" << speedUnlocked << "\n";
         if (combatState) {
             std::cout << "Player/NPC contacts=" << combat.PlayerContacts() << " contact_frames=" << combat.ContactFrames() << "\n";
             std::cout << "Melee active=" << combat.MeleeActive() << " strikes=" << combat.MeleeStrikes() << "\n";

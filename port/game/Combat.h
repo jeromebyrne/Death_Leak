@@ -50,9 +50,11 @@ public:
     const std::unordered_map<std::string, std::int64_t>& TriggerHistory() const { return triggerHistory_; }
     void ApplySolidContactDamage(float damage) { health_ = std::max(0.f, health_ - damage); }
     float Health() const { return health_; }
+    float MaxHealth() const { return maxHealth_; }
+    void SetMaxHealth(float value) { maxHealth_ = std::clamp(value, 1.f, 1000000.f); health_ = std::min(health_, maxHealth_); }
     float Focus() const { return focus_; }
     void SetFocus(float focus) { focus_ = std::clamp(focus, 0.f, 100.f); }
-    void SetVitals(float health, float focus) { health_ = std::clamp(health, 0.f, 25.f); SetFocus(focus); }
+    void SetVitals(float health, float focus) { health_ = std::clamp(health, 0.f, maxHealth_); SetFocus(focus); }
     int Hits() const { return hits_; }
     int Kills() const { return kills_; }
     int Spawned() const { return spawned_; }
@@ -69,7 +71,7 @@ private:
     std::unordered_set<std::string> activeTriggers_;
     std::unordered_map<std::string, std::int64_t> triggerHistory_;
     render::TextureId ninjaArt_ = 0, ghostArt_ = 0, skeletonArt_ = 0, knifeArt_ = 0, hostileArt_ = 0;
-    float health_ = 25.f, focus_ = 100.f, fireCooldown_ = 0.f, burstCooldown_ = 0.f;
+    float maxHealth_ = 25.f, health_ = 25.f, focus_ = 100.f, fireCooldown_ = 0.f, burstCooldown_ = 0.f;
     float focusCooldown_ = 0.f, hurtCooldown_ = 0.f;
     float meleeTime_ = 0.f;
     bool meleeHeld_ = false;

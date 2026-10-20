@@ -6,7 +6,7 @@ namespace deathleak::game {
 namespace {
 constexpr float kHalfWidth = 128.959793f / 2.f; // authored Player collision box
 constexpr float kHalfHeight = 214.898743f / 2.f;
-constexpr float kMaxSpeed = 8.f * 60.f;
+constexpr float kBaseMaxSpeed = 8.f * 60.f;
 constexpr float kJumpSpeed = 21.f * 60.f;
 constexpr float kGravity = (0.75f / 0.55f) * 60.f * 60.f;
 constexpr float kWallJumpSpeedX = 15.f * 60.f;
@@ -24,9 +24,10 @@ void PlayerMotion::Update(const LevelScene& scene, float dt, int direction, bool
     for (const auto& hazard : scene.Hazards())
         if (hazard.water && std::abs(x_-hazard.x) <= hazard.width*0.5f &&
             std::abs(y_-hazard.y) <= hazard.height*0.5f) inWater = true;
+    const float maxSpeed = speedUpgrade_ ? 11.f * 60.f : kBaseMaxSpeed;
     if (wallJumpRemaining_ > 0) wallJumpRemaining_ = std::max(0.f, wallJumpRemaining_ - dt);
     if (wallJumpRemaining_ <= 0) {
-        if (direction) vx_ = std::clamp(vx_ + direction * 60.f * ticks, -kMaxSpeed*(inWater ? 0.4f : 1.f), kMaxSpeed*(inWater ? 0.4f : 1.f));
+        if (direction) vx_ = std::clamp(vx_ + direction * 60.f * ticks, -maxSpeed*(inWater ? 0.4f : 1.f), maxSpeed*(inWater ? 0.4f : 1.f));
         else vx_ *= std::pow(0.80f, ticks); // Player::UpdateResistance without acceleration
     } else vx_ *= std::pow(0.99f, ticks);
     if (std::abs(vx_) < 6.f) vx_ = 0;

@@ -6,7 +6,7 @@ namespace deathleak::game {
 class Hud {
 public:
     void Load(render::Renderer& renderer);
-    void Draw(render::Renderer& renderer, float health, float focus, int orbBalance) const;
+    void Draw(render::Renderer& renderer, float health, float maxHealth, float focus, int orbBalance) const;
 private:
     render::TextureId edge_ = 0, bar_ = 0, focusBar_ = 0, overlay_ = 0, orb_ = 0;
 };

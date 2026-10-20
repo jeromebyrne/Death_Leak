@@ -80,15 +80,47 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
     shipped = bridge.windows_fields('Game/bargon.xml')
     run('import', 'Game/bargon.xml', target, '--level', level, '--fresh-session')
     assert sum(line.startswith('W1:') for line in target.read_text().splitlines()) == 1
+    assert 'H:65' in target.read_text().splitlines()
+    assert 'U:kSpeedIncrease' in target.read_text().splitlines()
     resumed = root / 'resumed.dl5'
-    subprocess.run(['port/build/deathleak-linux', '--load-save', str(target), '--save-file', str(resumed),
+    loaded = subprocess.run(['port/build/deathleak-linux', '--load-save', str(target), '--save-file', str(resumed),
                     '--frames', '1', '--fixed-dt', '0.0166667', '--simulate-only'],
                    capture_output=True, text=True, check=True)
+    assert 'max_health=65 speed_upgrade=1' in loaded.stdout, loaded.stdout
+    # The imported unlock changes actual traversal speed, not just a status flag.
+    import re
+    def movement(save):
+        result = subprocess.run(['port/build/deathleak-linux', '--load-save', str(save),
+                                 '--script', 'R:30', '--fixed-dt', '0.0166667', '--simulate-only'],
+                                capture_output=True, text=True, check=True)
+        return float(re.search(r'player=\(([-0-9.]+),', result.stdout).group(1))
+    no_speed = root / 'no-speed.dl5'
+    no_speed.write_text(target.read_text().replace('U:kSpeedIncrease\n', ''))
+    assert movement(target) > movement(no_speed) + 15
+    # Saved current HP above the old 25 cap must survive under a 65-HP cap.
+    high_hp = root / 'high-hp.dl5'
+    hp_lines = target.read_text().splitlines()
+    hp_position = hp_lines[2].split()
+    hp_position[2] = '50'
+    hp_lines[2] = ' '.join(hp_position)
+    high_hp.write_text('\n'.join(hp_lines) + '\n')
+    hp_result = subprocess.run(['port/build/deathleak-linux', '--load-save', str(high_hp),
+                                '--frames', '1', '--fixed-dt', '0.0166667', '--simulate-only'],
+                               capture_output=True, text=True, check=True)
+    assert 'health=50' in hp_result.stdout and 'max_health=65' in hp_result.stdout, hp_result.stdout
     assert sum(line.startswith('W1:') for line in resumed.read_text().splitlines()) == 1
+    assert 'H:65' in resumed.read_text().splitlines()
+    assert 'U:kSpeedIncrease' in resumed.read_text().splitlines()
     restored = root / 'restored.xml'
     run('export', resumed, restored, '--discard-runtime')
     # Windows defaults absent completion count to zero; export writes it explicitly.
     assert bridge.windows_fields(restored) == (shipped | {'num_times_game_completed': ('int', '0')})
+    conflict = root / 'conflict.dl5'
+    conflict.write_text(resumed.read_text().replace('H:65', 'H:25'))
+    run('export', conflict, root / 'conflict.xml', '--discard-runtime', success=False)
+    assert not (root / 'conflict.xml').exists()
+    conflict.write_text(resumed.read_text().replace('U:kSpeedIncrease\n', ''))
+    run('export', conflict, root / 'conflict.xml', '--discard-runtime', success=False)
     damaged = root / 'damaged.dl5'
     damaged.write_text(resumed.read_text().replace('W1:', 'W1:!'))
     run('export', damaged, root / 'damaged.xml', '--discard-runtime', success=False)
