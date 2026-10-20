@@ -25,7 +25,7 @@ printf '%s\n' "$focus_lock" | grep -q 'focus=0'
 focus_recover=$($bin --play Game/XmlFiles/levels/test.xml --start-hazard 1 --exhaust-focus --script L:240,.:360 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$focus_recover" | grep -q 'focus=19.3334'
 combat=$($bin --play Game/XmlFiles/levels/first_ninja_arena.xml --start-encounter 0 --script F:300 --fixed-dt 0.0166667 --simulate-only --save-file port/build/integration-save.txt)
-printf '%s\n' "$combat" | grep -q 'spawned=2 enemies=1 hits=14 kills=1'
+printf '%s\n' "$combat" | grep -q 'spawned=2 enemies=2 hits=6 kills=0'
 resume=$($bin --load-save port/build/integration-save.txt --frames 1 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$resume" | grep -q 'health=25 focus=100'
 # NPCTrigger removes a recently-fired trigger on level load (120000 ms).
@@ -61,9 +61,23 @@ printf '%s\n' "$open_shot" | grep -q 'Shot enemy x=83.0809 y=103.445 .*vy=12.299
 # Original projectile terrain handling: the same shot is stopped by an authored wall.
 walled_shot=$($bin --play port/tests/fixtures/encounter_wall.xml --frames 105 --fixed-dt 0.0166667 --simulate-only --combat-state)
 printf '%s\n' "$walled_shot" | grep -q 'spawned=1 enemies=1 .*shots=0'
-# Sustained knives can defeat the single source-health (20 HP) ranged enemy.
-range_kill=$($bin --play port/tests/fixtures/encounter_open.xml --script F:330 --fixed-dt 0.0166667 --simulate-only)
-printf '%s\n' "$range_kill" | grep -q 'spawned=1 enemies=0 hits=14 kills=1'
+# Original Character::OnDamage kicks a non-player target 30 X units on
+# projectile impact. A direct injected hit is not a projectile and stays put.
+kickback=$($bin --play port/tests/fixtures/encounter_open.xml --script F:30 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$kickback" | grep -q 'Enemy kNinja x=230 y=100 .*combo=1'
+direct_hit=$($bin --play port/tests/fixtures/encounter_open.xml --script .:90,H:1 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$direct_hit" | grep -q 'Enemy kNinja x=200 y=100 .*combo=1'
+# Chasing while firing can still defeat the kicked-back source-health ninja.
+range_kill=$($bin --play port/tests/fixtures/encounter_roll.xml --script B:330 --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$range_kill" | grep -q 'spawned=1 enemies=0 .*kills=1'
+# AIStateRangeAttack chooses the upward branch only above +50 Y; it chooses
+# the roll branch on the same positive-acceleration gate while grounded.
+jump_before=$($bin --play port/tests/fixtures/encounter_jump.xml --frames 119 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$jump_before" | grep -q 'Enemy kNinja x=175 y=100 .*jumps=0 rolls=0'
+jump_after=$($bin --play port/tests/fixtures/encounter_jump.xml --frames 125 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$jump_after" | grep -q 'Enemy kNinja x=175 y=195.143 .*grounded=0 .*jumps=1 rolls=0'
+roll_active=$($bin --play port/tests/fixtures/encounter_roll.xml --script R:125 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$roll_active" | grep -q 'Enemy kNinja .*jumps=0 rolls=1 roll=0.4166'
 # Simulation-only H injects a direct hit through Combat::DamageEnemy, the same
 # path used by knives. The skeleton's large source health keeps it alive long
 # enough to inspect the NPC::OnDamage combo/stun rule and AI recovery.
@@ -148,4 +162,4 @@ legacy=$($bin --load-save port/build/legacy-dl3-save.txt --frames 1 --fixed-dt 0
 printf '%s\n' "$legacy" | grep -q 'keys=1'
 
 if printf '%s\n' "$key_only_resume" | grep -q 'Collected key'; then exit 1; fi
-printf '%s\n' 'PASS: source-held-jump arena climb and exit, three-level route, burst/water fire, swim, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, solid box, wall jump, death/restart, key/door gate, ghost flight, ranged warmup/terrain shots and kill, grounded NPC fall/wall/box, NPC combo/stun/recovery, NPC teleport timing/exclusion, DL3 compatibility and DL4 encounter persistence'
+printf '%s\n' 'PASS: source-held-jump arena climb and exit, three-level route, burst/water fire, swim, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, solid box, wall jump, death/restart, key/door gate, ghost flight, ranged warmup/terrain shots and kill, grounded NPC fall/wall/box, NPC combo/stun/recovery, NPC teleport timing/exclusion, ranged NPC jump/roll and projectile kickback, DL3 compatibility and DL4 encounter persistence'

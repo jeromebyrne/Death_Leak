@@ -20,6 +20,8 @@ struct Enemy {
     float teleportCooldown = 8.f, teleportTime = 0.f;
     float teleportX = 0.f, teleportY = 0.f;
     int teleports = 0;
+    float jumpRollDelay = 2.f, rollTime = 0.f;
+    int jumps = 0, rolls = 0;
 };
 struct Shot {
     float x, y, vx, vy, life, damage;
@@ -32,7 +34,7 @@ public:
     void ClearLevel() { enemies_.clear(); shots_.clear(); activeTriggers_.clear(); fireCooldown_ = burstCooldown_ = hurtCooldown_ = 0; burstCount_ = 0; }
     void SetArt(render::Renderer& renderer);
     void Update(const LevelScene& scene, float x, float y, float dt, bool fire, int facing, render::Renderer& renderer);
-    bool DamageEnemy(size_t index, float damage); // shared hit path for projectiles and future melee
+    bool DamageEnemy(size_t index, float damage, float projectileDirectionX = 0.f); // shared hit path for projectiles and future melee
     void Draw(render::Renderer& renderer, float cameraX, float cameraY) const;
     void SetTriggerHistory(std::unordered_map<std::string, std::int64_t> history) { triggerHistory_ = std::move(history); }
     const std::unordered_map<std::string, std::int64_t>& TriggerHistory() const { return triggerHistory_; }

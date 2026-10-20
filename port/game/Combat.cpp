@@ -91,11 +91,14 @@ void Combat::SetArt(render::Renderer& renderer) {
     knifeArt_ = renderer.LoadTexture("Game/Media/knife.png", error);
     hostileArt_ = renderer.LoadTexture("Game/Media/puke_temp.png", error);
 }
-bool Combat::DamageEnemy(size_t index, float damage) {
+bool Combat::DamageEnemy(size_t index, float damage, float projectileDirectionX) {
     if (index >= enemies_.size() || enemies_[index].health <= 0.f ||
         enemies_[index].teleportTime > 0.f || damage <= 0.f) return false;
     auto& enemy = enemies_[index];
     enemy.health -= damage;
+    // Character::OnDamage applies 30 world units of X kickback only when a
+    // projectile damages a non-player character; direct/melee hits do not.
+    if (projectileDirectionX != 0.f) enemy.x += std::copysign(30.f,projectileDirectionX);
     ++hits_;
     // NPC::OnDamage counts consecutive hits while the 0.5 s window is live.
     enemy.comboWindow=0.5f;
@@ -163,6 +166,12 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
             enemy.grounded=false;
             ++enemy.teleports;
         }
+        if (enemy.rollTime > 0.f) {
+            enemy.rollTime = std::max(0.f, enemy.rollTime-dt);
+            // Character::Roll starts at 12 units/tick and suspends ranged AI.
+            MoveGroundEnemy(enemy,scene,enemy.x+std::copysign(720.f*dt,enemy.targetX-enemy.x),dt);
+            continue;
+        }
         if (enemy.stunTime > 0.f) {
             enemy.windup = 0.f;
             if (!ghost) MoveGroundEnemy(enemy,scene,enemy.x,dt);
@@ -195,7 +204,26 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
             float desiredX=enemy.x;
             if (range > 500.f) desiredX += std::copysign(std::min(range-500.f,speed*dt),dx);
             else if (range < 200.f && range > 0.01f) desiredX -= std::copysign(std::min(200.f-range,speed*dt),dx);
+            // AIStateRangeAttack chooses a jump if the player is >50 above,
+            // otherwise a roll, only while grounded and accelerating.
+            // Use the source delay's 2 s lower bound and a fixed 18-unit/tick
+            // ninja jump (NinjaSpawner randomizes 16..20) for repeatability.
+            enemy.jumpRollDelay = std::max(0.f,enemy.jumpRollDelay-dt);
+            if (enemy.type != "kSkeleton" && enemy.grounded &&
+                desiredX-enemy.x > 0.01f && enemy.jumpRollDelay <= 0.f) {
+                if (y > enemy.y+50.f) {
+                    enemy.vy=18.f*60.f;
+                    enemy.grounded=false;
+                    ++enemy.jumps;
+                } else {
+                    enemy.targetX=enemy.x+10000.f;
+                    enemy.rollTime=0.5f; // bounded stand-in for Roll animation duration
+                    ++enemy.rolls;
+                }
+                enemy.jumpRollDelay=2.f;
+            }
             MoveGroundEnemy(enemy,scene,desiredX,dt);
+            if (enemy.rollTime > 0.f) continue;
         }
         if (ghost) {
             // AIStateFlying fires only when the player is below and horizontally near.
@@ -251,7 +279,7 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
             const float vx=shot.x-oldX, vy=shot.y-oldY;
             const float t=std::clamp(((enemy.x-oldX)*vx+(enemy.y-oldY)*vy)/(vx*vx+vy*vy+0.0001f),0.f,1.f);
             if (Inside(oldX+t*vx,oldY+t*vy,enemy.x,enemy.y,80.f,190.f)) {
-                DamageEnemy(enemyIndex,shot.damage); shot.life=0;
+                DamageEnemy(enemyIndex,shot.damage,shot.vx); shot.life=0;
                 break;
             }
         }
