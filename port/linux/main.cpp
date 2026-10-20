@@ -638,7 +638,7 @@ int main(int argc, char** argv) {
             // Game::Update follows before GameObjectManager::Update. The Windows
             // camera uses per-update lag divisors, authored offsets and axis flags.
             if (scene.CameraFollowX()) {
-                const float lag = std::max(1.f, scene.CameraLagX() * scene.CameraZoom());
+                const float lag = std::max(1.f, (combat.EnemyCount() != 0 ? 40.f : scene.CameraLagX()) * scene.CameraZoom());
                 cameraX += (worldX + scene.CameraOffsetX() * scene.CameraZoom() - cameraX) / lag;
             }
             if (scene.CameraFollowY()) {

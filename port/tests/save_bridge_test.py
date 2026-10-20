@@ -301,6 +301,18 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
     assert 'Collected key camera_follow_key' not in slow_camera, slow_camera
     offset_camera = camera_trace(camera_xml.replace('followx="false"', 'followx="true"').replace('xOffset="0"', 'xOffset="-2500"'))
     assert 'Collected key camera_follow_key' not in offset_camera, offset_camera
+    # NPCManager::IsAnyEnemyNPCInWorld switches camera X lag to 40*zoom.
+    # The trigger spawns after the frame-0 camera update; from frame 1, the
+    # living enemy keeps the distant key outside manager visitation range.
+    far_camera = camera_xml.replace('2500', '5000').replace('followx="false"', 'followx="true"')
+    assert 'Collected key camera_follow_key at frame 3' in camera_trace(far_camera)
+    enemy_camera = far_camera.replace('</level>',
+        '<NPCTrigger id="4"><position x="5000" y="107.44937"/>'
+        '<dimensions width="100" height="200"/>'
+        '<num_enemies value="1" enemy_type="kNinja"/></NPCTrigger></level>')
+    enemy_result = camera_trace(enemy_camera)
+    assert 'spawned=1 enemies=1' in enemy_result, enemy_result
+    assert 'Collected key camera_follow_key' not in enemy_result, enemy_result
     # Camera2D::CheckBoundaryCollisions runs before and after follow; its
     # viewport dimensions are the unzoomed 1920x1080 backbuffer. A left
     # boundary can make an otherwise culled key manager-visible before follow.
