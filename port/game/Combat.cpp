@@ -1,4 +1,5 @@
 #include "Combat.h"
+#include "../../Game/tinyxml/tinyxml.h"
 #include <algorithm>
 #include <chrono>
 #include <cmath>
@@ -102,9 +103,43 @@ void Combat::SetArt(render::Renderer& renderer) {
     std::string error;
     ninjaArt_ = renderer.LoadTexture("Game/Media/characters/enemy_1/idle_default/idle_default_000.png", error);
     ghostArt_ = renderer.LoadTexture("Game/Media/characters/banshee.png", error);
-    skeletonArt_ = renderer.LoadTexture("Game/Media/characters/enemy_1/idle_default/idle_default_000.png", error); // placeholder; original skeleton animation pending
+    skeletonArt_ = renderer.LoadTexture("Game/Media/characters/skeleton/idle_default/idle_default_000.png", error);
+    if (!skeletonArt_) skeletonArt_ = ninjaArt_; // source skeleton PNGs are absent from this checkout
     knifeArt_ = renderer.LoadTexture("Game/Media/knife.png", error);
-    hostileArt_ = renderer.LoadTexture("Game/Media/puke_temp.png", error);
+    upgradedKnifeArt_ = renderer.LoadTexture("Game/Media/knife_2.png", error);
+    ninjaShotArt_ = renderer.LoadTexture("Game/Media/ninjastar.png", error);
+    ghostShotArt_ = renderer.LoadTexture("Game/Media/puke_temp.png", error);
+    skeletonShotArt_ = renderer.LoadTexture("Game/Media/fireball.png", error);
+    if (!skeletonShotArt_) skeletonShotArt_ = ghostShotArt_; // source fireball PNG is absent
+    auto load = [&](const char* xml, VisualSet& visual) {
+        TiXmlDocument document(xml);
+        if (!document.LoadFile()) return;
+        auto* body = document.RootElement() ? document.RootElement()->FirstChildElement("body") : nullptr;
+        for (auto* sequence = body ? body->FirstChildElement() : nullptr; sequence; sequence = sequence->NextSiblingElement()) {
+            const std::string name = sequence->Value();
+            if (name != "Still" && name != "Running" && name != "JumpingUp" &&
+                name != "JumpingDown" && name != "Roll" && name != "Crouch" &&
+                name != "ImpactLandSoft" && name != "ImpactLandHard") continue;
+            VisualSequence frames;
+            sequence->QueryFloatAttribute("FrameRate", &frames.rate);
+            frames.loop = name == "Still" || name == "Running";
+            for (auto* frame = sequence->FirstChildElement("frame"); frame; frame = frame->NextSiblingElement("frame")) {
+                const char* filename = frame->Attribute("filename");
+                if (!filename) continue;
+                std::string path(filename);
+                std::replace(path.begin(), path.end(), '\\', '/');
+                if (path.empty() || path.find("..") != std::string::npos || path.front() == '/') continue;
+                path = "Game/" + path;
+                if (!std::filesystem::exists(path)) continue;
+                const auto texture = renderer.LoadTexture(path, error);
+                if (texture) frames.frames.push_back(texture);
+            }
+            if (!frames.frames.empty()) visual.emplace(name, std::move(frames));
+        }
+    };
+    load("Game/XmlFiles/animation/ninjaAnimation.xml", ninjaVisuals_);
+    load("Game/XmlFiles/animation/ghost_enemy_anim.xml", ghostVisuals_);
+    load("Game/XmlFiles/animation/skeleton_animation.xml", skeletonVisuals_);
 }
 bool Combat::DamageEnemy(size_t index, float damage, float projectileDirectionX) {
     if (index >= enemies_.size() || enemies_[index].health <= 0.f ||
@@ -160,6 +195,7 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
             const float spawnY = y + 300.f + 60.f*(i%5);
             enemies_.push_back({x+offset, spawnY, trigger.type == "kGhost" ? 50.f : trigger.type == "kSkeleton" ? 500.f : 20.f,
                 1.3f+0.1f*i, trigger.type, art, 0.f, x + (offset < 0 ? -250.f : 250.f), y+300.f});
+            enemies_.back().lastVisualX = enemies_.back().x;
             ++spawned_;
         }
     }
@@ -168,6 +204,7 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
     if (fire && !rolling && meleeTime_ <= 0.f && fireCooldown_ <= 0 && burstCooldown_ <= 0 && !inWater && health_ > 0) {
         if (!knifeArt_) SetArt(renderer);
         shots_.push_back({x+facing*10.f,y+25.f,facing*1200.f,0.f,0.25f,projectileDamageUpgrade_ ? 4.f : 1.5f,false});
+        shots_.back().texture = projectileDamageUpgrade_ ? upgradedKnifeArt_ : knifeArt_;
         fireCooldown_ = projectileSpeedUpgrade_ ? 0.220f*0.75f : 0.220f;
         ++fired_;
         if (!projectileSpeedUpgrade_ && ++burstCount_ == 5) { burstCount_ = 0; burstCooldown_ = 0.5f; }
@@ -181,6 +218,7 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
         if (enemy.comboWindow == 0.f) enemy.comboHits = 0;
         enemy.stunTime = std::max(0.f, enemy.stunTime-dt);
         const float dx=x-enemy.x, dy=y-enemy.y;
+        if (std::abs(dx) > 1.f) enemy.facing = dx > 0.f ? 1 : -1;
         enemy.fireCooldown = std::max(0.f, enemy.fireCooldown-dt);
         const bool ghost = enemy.type == "kGhost";
         if (enemy.teleportTime > 0.f) {
@@ -273,6 +311,9 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
             ghost ? 0.9f : 1.f, !skeleton});
         shots_.back().deflectable=!ghost && !skeleton;
         shots_.back().baseSpeed=speed;
+        shots_.back().texture = skeleton ? skeletonShotArt_ : ghost ? ghostShotArt_ : ninjaShotArt_;
+        shots_.back().visualWidth = ghost ? 40.f : 25.f;
+        shots_.back().visualHeight = ghost ? 25.f : skeleton ? 8.f : 13.f;
         enemy.fireCooldown=1.3f; // fixed within NPC's original 1.0..1.6 s randomized reload
     }
     // CollisionManager dispatches each strict-AABB character contact in both
@@ -389,14 +430,53 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
         else focus_ = std::min(100.f,focus_+10.f*dt); // Player::kFocusRechargeRate
     }
 }
+void Combat::UpdateVisuals(float dt) {
+    for (auto& enemy : enemies_) {
+        const auto& visuals = enemy.type == "kGhost" ? ghostVisuals_ :
+            enemy.type == "kSkeleton" ? skeletonVisuals_ : ninjaVisuals_;
+        // AI's target and current vertical velocity drive the same broad body
+        // categories as Character::UpdateAnimations; exact source state ordering
+        // remains outside this bounded renderer slice.
+        std::string pose = "Still";
+        if (enemy.rollTime > 0.f) pose = "Roll";
+        else if (!enemy.grounded && enemy.type != "kGhost") pose = enemy.vy > 0.f ? "JumpingUp" : "JumpingDown";
+        else if (enemy.type == "kGhost") pose = "Running";
+        else if (enemy.windup > 0.f || enemy.stunTime > 0.f) pose = "Still";
+        else if (std::abs(enemy.x-enemy.lastVisualX) > 0.5f) pose = "Running";
+        enemy.lastVisualX = enemy.x;
+        if (!visuals.count(pose)) pose = "Still";
+        const auto found = visuals.find(pose);
+        if (found == visuals.end()) continue;
+        if (enemy.visualPose != pose) { enemy.visualPose = pose; enemy.visualFrame = 0; enemy.visualElapsed = 0.f; }
+        const auto& sequence = found->second;
+        if (sequence.rate <= 0.f || sequence.frames.size() < 2) continue;
+        enemy.visualElapsed += dt;
+        if (enemy.visualElapsed >= 1.f / sequence.rate) {
+            enemy.visualElapsed -= 1.f / sequence.rate;
+            if (sequence.loop) enemy.visualFrame = (enemy.visualFrame + 1) % sequence.frames.size();
+            else if (enemy.visualFrame + 1 < sequence.frames.size()) ++enemy.visualFrame;
+        }
+    }
+}
 void Combat::Draw(render::Renderer& renderer, float cameraX, float cameraY) const {
     constexpr float scale=2.f/3.f;
-    auto draw=[&](render::TextureId texture,float x,float y,float w,float h){
+    auto draw=[&](render::TextureId texture,float x,float y,float w,float h,bool flipX=false){
         if (!texture) return;
-        renderer.DrawSprite({texture,{}, {640.f+(x-cameraX-w/2)*scale,360.f+(cameraY-y-h/2)*scale,w*scale,h*scale}});
+        render::Sprite sprite{texture,{}, {640.f+(x-cameraX-w/2)*scale,360.f+(cameraY-y-h/2)*scale,w*scale,h*scale}};
+        sprite.flipX = flipX;
+        renderer.DrawSprite(sprite);
     };
-    for (const auto& enemy:enemies_) if (enemy.teleportTime<=0.f)
-        draw(enemy.texture,enemy.x,enemy.y,enemy.type=="kGhost"?113.f:183.f,enemy.type=="kGhost"?208.f:231.f);
-    for (const auto& shot:shots_) draw(shot.enemy?hostileArt_:knifeArt_,shot.x,shot.y,shot.enemy?20.f:84.5f,shot.enemy?20.f:25.f);
+    for (const auto& enemy:enemies_) if (enemy.teleportTime<=0.f) {
+        const auto& visuals = enemy.type == "kGhost" ? ghostVisuals_ :
+            enemy.type == "kSkeleton" ? skeletonVisuals_ : ninjaVisuals_;
+        auto selected = visuals.find(enemy.visualPose);
+        render::TextureId texture = enemy.texture;
+        if (selected != visuals.end() && !selected->second.frames.empty())
+            texture = selected->second.frames[std::min(enemy.visualFrame, selected->second.frames.size()-1)];
+        draw(texture,enemy.x,enemy.y,enemy.type=="kGhost"?113.f:183.f,
+             enemy.type=="kGhost"?208.f:231.f,enemy.facing<0);
+    }
+    for (const auto& shot:shots_) draw(shot.texture ? shot.texture : knifeArt_,shot.x,shot.y,
+        shot.visualWidth,shot.visualHeight,shot.vx<0.f);
 }
 }

@@ -1025,8 +1025,9 @@ int main(int argc, char** argv) {
         updateSeconds += std::chrono::duration<double>(afterUpdate-now).count();
         if (simulateOnly) continue;
         scene.UpdateVisuals(dt);
+        combat.UpdateVisuals(dt);
         if (!playLevel.empty()) scene.UpdatePlayerVisual(dt, motion.VelocityX(), motion.VelocityY(),
-            motion.Grounded(), motion.WallSide(), motion.Rolling(), motion.DownwardDashing(),
+            motion.Grounded(), motion.WallSide(), motion.Rolling(), motion.DownwardDashing(), motion.InWater(),
             combat.MeleeElapsed(), facing);
         renderer->BeginFrame({8, 12, 20, 255});
         if (levelPath.empty()) {

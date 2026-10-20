@@ -50,7 +50,7 @@ public:
               const std::string& fromLevel = {}, const std::string& entryDoorId = {});
     void Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY) const;
     void UpdatePlayerVisual(float dt, float vx, float vy, bool grounded, int wallSide,
-                            bool rolling, bool dashing, float meleeElapsed, int facing);
+                            bool rolling, bool dashing, bool inWater, float meleeElapsed, int facing);
     void UpdateVisuals(float dt);
     size_t CollectCurrencyOrbs(float playerX, float playerY, std::unordered_set<std::string>& collected);
     void ApplyCollected(const std::unordered_set<std::string>& collected);

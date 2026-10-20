@@ -22,6 +22,7 @@ public:
     float VelocityX() const { return vx_; }
     float VelocityY() const { return vy_; }
     bool Grounded() const { return grounded_; }
+    bool InWater() const { return inWater_; }
     int WallSide() const { return wallSide_; }
     float SolidContactDamage() const { return solidContactDamage_; }
 private:

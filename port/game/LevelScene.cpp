@@ -241,7 +241,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
                 // Character::UpdateAnimations selects these authored body sequences.
                 // The separate arm/skeleton composition is not represented by SDL yet.
                 for (const char* name : {"Still", "Running", "JumpingUp", "JumpingDown",
-                                         "SlidingDown", "Roll", "Melee", "Melee2", "Melee3", "MeleeFinish"}) {
+                                         "SlidingDown", "Roll", "SwimIdle", "SwimForward", "Melee", "Melee2", "Melee3", "MeleeFinish"}) {
                     auto* sequence = body ? body->FirstChildElement(name) : nullptr;
                     if (!sequence) continue;
                     PlayerSequence visual;
@@ -433,7 +433,7 @@ void LevelScene::UpdateVisuals(float dt) {
     }
 }
 void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded, int wallSide,
-                                    bool rolling, bool dashing, float meleeElapsed, int facing) {
+                                    bool rolling, bool dashing, bool inWater, float meleeElapsed, int facing) {
     if (playerSequences_.empty()) return;
     playerFacing_ = facing;
     std::string target = "Still";
@@ -444,6 +444,7 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
         else if (meleeElapsed < 31.f/60.f) target = "Melee3";
         else target = "MeleeFinish";
     } else if (rolling) target = "Roll";
+    else if (inWater) target = std::abs(vx) > 3.f ? "SwimForward" : "SwimIdle";
     else if (dashing) target = "JumpingDown"; // no dedicated authored dash body sequence
     else if (!grounded && wallSide != 0 && vy < 0.f) target = "SlidingDown";
     else if (!grounded && vy > 0.f) target = "JumpingUp";
@@ -462,7 +463,8 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
     playerFrameElapsed_ += dt;
     if (playerFrameElapsed_ >= 1.f / rate) {
         playerFrameElapsed_ -= 1.f / rate; // AnimationPart advances at most one frame per update.
-        if (target == "Still" || target == "Running" || target == "SlidingDown")
+        if (target == "Still" || target == "Running" || target == "SlidingDown" ||
+            target == "SwimIdle" || target == "SwimForward")
             playerFrame_ = (playerFrame_ + 1) % sequence.frames.size();
         else if (playerFrame_ + 1 < sequence.frames.size()) ++playerFrame_;
     }

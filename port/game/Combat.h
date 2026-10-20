@@ -23,6 +23,11 @@ struct Enemy {
     float jumpRollDelay = 2.f, rollTime = 0.f;
     int jumps = 0, rolls = 0;
     float meleeStrikeCooldown = 0.f;
+    std::string visualPose = "Still";
+    size_t visualFrame = 0;
+    float visualElapsed = 0.f;
+    int facing = 1;
+    float lastVisualX = 0.f;
 };
 struct Shot {
     float x, y, vx, vy, life, damage;
@@ -33,6 +38,8 @@ struct Shot {
     bool wasDeflected = false;
     float baseSpeed = 0.f;
     float meleeCooldown = 0.f;
+    render::TextureId texture = render::InvalidTexture;
+    float visualWidth = 84.5f, visualHeight = 25.f;
 };
 class Combat {
 public:
@@ -48,6 +55,7 @@ public:
     bool DeflectionUnlocked() const { return deflectionUnlocked_; }
     void SetProjectileUpgrades(bool damage, bool speed) { projectileDamageUpgrade_ = damage; projectileSpeedUpgrade_ = speed; }
     void Draw(render::Renderer& renderer, float cameraX, float cameraY) const;
+    void UpdateVisuals(float dt);
     void SetTriggerHistory(std::unordered_map<std::string, std::int64_t> history) { triggerHistory_ = std::move(history); }
     const std::unordered_map<std::string, std::int64_t>& TriggerHistory() const { return triggerHistory_; }
     void ApplySolidContactDamage(float damage) { health_ = std::max(0.f, health_ - damage); }
@@ -74,7 +82,11 @@ private:
     std::vector<Shot> shots_;
     std::unordered_set<std::string> activeTriggers_;
     std::unordered_map<std::string, std::int64_t> triggerHistory_;
-    render::TextureId ninjaArt_ = 0, ghostArt_ = 0, skeletonArt_ = 0, knifeArt_ = 0, hostileArt_ = 0;
+    struct VisualSequence { std::vector<render::TextureId> frames; float rate = 0; bool loop = false; };
+    using VisualSet = std::unordered_map<std::string, VisualSequence>;
+    VisualSet ninjaVisuals_, ghostVisuals_, skeletonVisuals_;
+    render::TextureId ninjaArt_ = 0, ghostArt_ = 0, skeletonArt_ = 0, knifeArt_ = 0;
+    render::TextureId ninjaShotArt_ = 0, ghostShotArt_ = 0, skeletonShotArt_ = 0, upgradedKnifeArt_ = 0;
     float maxHealth_ = 25.f, health_ = 25.f, focus_ = 100.f, fireCooldown_ = 0.f, burstCooldown_ = 0.f;
     float focusCooldown_ = 0.f, hurtCooldown_ = 0.f;
     float meleeTime_ = 0.f;
