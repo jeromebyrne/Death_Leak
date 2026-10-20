@@ -118,6 +118,32 @@ orb_ids = [line for line in lines if line.startswith('Game/XmlFiles/levels/') an
 assert len(orb_ids) == len(set(orb_ids)) == 99, (len(orb_ids), len(set(orb_ids)))
 assert 'B:99' in lines
 PYTEST
+# A held left+jump just before grass 1's lower dead-end trigger keeps the
+# player on the upper route to grass 2 and the authored cliff. Reversing on
+# the reachable lower cliff path collects more distinct authored orbs; its
+# invisible east solid (id 30) stops this route, so this is not a forest return.
+grass_cliff_save=port/build/grass-cliff-save.txt
+grass_cliff_route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script L:1500,Q:40,L:1000,Q:40,L:2800,R:3000 --fixed-dt 0.0166667 --simulate-only --save-file "$grass_cliff_save")
+printf '%s\n' "$grass_cliff_route" | grep -q 'Trigger at frame 2783 from .*grass_exploration_1.xml .*grass_exploration_2.xml'
+printf '%s\n' "$grass_cliff_route" | grep -q 'Trigger at frame 3942 from .*grass_exploration_2.xml .*cliff.xml'
+printf '%s\n' "$grass_cliff_route" | grep -q 'cliff.xml player=(-1500.15,-944.093) orbs=99 .*health=1 .*balance=99'
+if printf '%s\n' "$grass_cliff_route" | grep -q 'Player died'; then exit 1; fi
+python3 - <<'PYGRASS'
+from pathlib import Path
+import xml.etree.ElementTree as ET
+lines = Path('port/build/grass-cliff-save.txt').read_text().splitlines()
+orb_ids = [line for line in lines if line.startswith('Game/XmlFiles/levels/') and '#' in line]
+assert len(orb_ids) == len(set(orb_ids)) == 99, (len(orb_ids), len(set(orb_ids)))
+assert 'B:99' in lines
+root = ET.parse('Game/XmlFiles/levels/cliff.xml').getroot()
+wall = next(o for o in root if o.tag == 'SolidMovingSprite' and o.get('id') == '30')
+left = float(wall.find('position').get('x')) - float(wall.find('collisionboxdimensions').get('x')) / 2
+player = next(o for o in root if o.tag == 'Player')
+half = float(player.find('collisionboxdimensions').get('x')) / 2
+assert abs(left - half - (-1500.15)) < 0.02
+assert wall.find('passive').get('value') == 'true'
+assert wall.find('applydamage').get('flag') == 'false'
+PYGRASS
 # The village-central eastward death with a constant run is avoidable by ordinary
 # right+jump timing: the first jump evades the ninja shot, the second clears
 # the authored village obstacle, and the third stays above the optional well
