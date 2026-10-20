@@ -14,6 +14,7 @@ struct SceneSprite {
     bool flipX = false, flipY = false;
     bool player = false;
     bool currencyOrb = false;
+    bool keyPickup = false;
     bool collected = false;
     std::string persistentId;
 };
@@ -22,12 +23,14 @@ struct GroundSegment { float x1, y1, x2, y2; };
 struct SolidBox { float left, right, bottom, top; };
 struct LevelTrigger { float x, y, width, height; std::string destination; };
 struct EncounterTrigger { float x, y, width, height; int count; std::string type; std::string id; };
+struct Door { float x, y, width, height; std::string destination, requiredKey, id; };
+struct KeyPickup { float x, y, width, height; std::string keyId; };
 struct HazardRegion { float x, y, width, height; bool water; float damage; };
 
 class LevelScene {
 public:
     bool Load(const std::string& path, render::Renderer& renderer, std::string& error,
-              const std::string& fromLevel = {});
+              const std::string& fromLevel = {}, const std::string& entryDoorId = {});
     void Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY) const;
     size_t CollectCurrencyOrbs(float playerX, float playerY, std::unordered_set<std::string>& collected);
     void ApplyCollected(const std::unordered_set<std::string>& collected);
@@ -42,6 +45,9 @@ public:
     const std::vector<LevelTrigger>& Triggers() const { return triggers_; }
     const std::vector<EncounterTrigger>& Encounters() const { return encounters_; }
     const std::vector<HazardRegion>& Hazards() const { return hazards_; }
+    const std::vector<Door>& Doors() const { return doors_; }
+    const std::vector<KeyPickup>& Keys() const { return keys_; }
+    void ApplyKeys(const std::unordered_set<std::string>& keys);
 private:
     std::vector<SceneSprite> sprites_;
     std::vector<GroundSegment> ground_;
@@ -49,6 +55,8 @@ private:
     std::vector<LevelTrigger> triggers_;
     std::vector<EncounterTrigger> encounters_;
     std::vector<HazardRegion> hazards_;
+    std::vector<Door> doors_;
+    std::vector<KeyPickup> keys_;
     float playerX_ = 0, playerY_ = 0;
     float cameraX_ = 0, cameraY_ = 0;
     size_t skipped_ = 0;

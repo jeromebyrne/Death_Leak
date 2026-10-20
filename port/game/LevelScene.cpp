@@ -21,6 +21,7 @@ std::string NormalizeAsset(const char* legacy) {
     std::string path(legacy);
     std::replace(path.begin(), path.end(), '\\', '/');
     if (path.empty() || path[0] == '/' || path.find("..") != std::string::npos) return {};
+    if (path.rfind("port/tests/fixtures/", 0) == 0) return path;
     return (std::filesystem::path("Game") / path).lexically_normal().string();
 }
 int Depth(const char* name) {
@@ -50,12 +51,12 @@ std::string FirstAnimationFrame(const std::string& xmlPath) {
 }
 }
 bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::string& error,
-                      const std::string& fromLevel) {
+                      const std::string& fromLevel, const std::string& entryDoorId) {
     TiXmlDocument document(path.c_str());
     if (!document.LoadFile()) { error = "Cannot parse level: " + path + ": " + document.ErrorDesc(); return false; }
     auto* level = document.RootElement();
     if (!level || std::string(level->Value()) != "level") { error = "Not a Death Leak level: " + path; return false; }
-    sprites_.clear(); ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); skipped_ = 0;
+    sprites_.clear(); ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); doors_.clear(); keys_.clear(); skipped_ = 0;
     if (auto* props = level->FirstChildElement("LevelProperties")) {
         auto* camera = props->FirstChildElement("camera_properties");
         cameraX_ = Attr(camera, "posx"); cameraY_ = Attr(camera, "posy");
@@ -71,9 +72,27 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         if (kind == "Player") { playerX_ = x; playerY_ = y; }
         if (kind == "LevelEntry" && !fromLevel.empty()) {
             auto* cameFrom = object->FirstChildElement("level_came_from");
-            if (NormalizeAsset(cameFrom ? cameFrom->Attribute("value") : nullptr) == fromLevel) {
+            auto* doorId = object->FirstChildElement("door_id");
+            // An empty door ID means a LevelTrigger entry; a door must match both fields.
+            if (NormalizeAsset(cameFrom ? cameFrom->Attribute("value") : nullptr) == fromLevel &&
+                std::string(doorId && doorId->Attribute("value") ? doorId->Attribute("value") : "") == entryDoorId) {
                 playerX_ = x; playerY_ = y;
             }
+        }
+        if (kind == "KeyPickup") {
+            auto* props = object->FirstChildElement("key_props");
+            if (props && props->Attribute("id") && *props->Attribute("id"))
+                keys_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),props->Attribute("id")});
+        }
+        if (kind == "Door") {
+            auto* to = object->FirstChildElement("to_level_file");
+            auto* key = object->FirstChildElement("required_key");
+            auto* id = object->FirstChildElement("door_id");
+            auto destination = NormalizeAsset(to ? to->Attribute("value") : nullptr);
+            if (!destination.empty() && std::filesystem::exists(destination))
+                doors_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),destination,
+                    key && key->Attribute("value") ? key->Attribute("value") : "",
+                    id && id->Attribute("value") ? id->Attribute("value") : ""});
         }
         if (kind == "LevelTrigger") {
             auto* destination = object->FirstChildElement("level_to_load");
@@ -136,6 +155,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         sprite.depth = Depth(position->Attribute("depth_layer"));
         sprite.player = kind == "Player";
         sprite.currencyOrb = kind == "CurrencyOrb";
+        sprite.keyPickup = kind == "KeyPickup";
         if (sprite.currencyOrb && object->Attribute("id"))
             sprite.persistentId = std::filesystem::path(path).lexically_normal().string() + "#" + object->Attribute("id");
         sprite.flipX = Flag(object->FirstChildElement("horizontalflip"), "value");
@@ -164,6 +184,12 @@ size_t LevelScene::CollectCurrencyOrbs(float playerX, float playerY, std::unorde
 void LevelScene::ApplyCollected(const std::unordered_set<std::string>& collected) {
     for (auto& object : sprites_)
         if (object.currencyOrb && collected.count(object.persistentId)) object.collected = true;
+}
+void LevelScene::ApplyKeys(const std::unordered_set<std::string>& keys) {
+    for (auto& object : sprites_) if (object.keyPickup) {
+        for (const auto& key : keys_) if (key.x == object.x && key.y == object.y && keys.count(key.keyId))
+            object.collected = true;
+    }
 }
 void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY) const {
     constexpr float scale = 2.f / 3.f; // Original world is authored for 1920x1080.

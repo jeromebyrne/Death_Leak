@@ -29,7 +29,7 @@ int main(int argc, char** argv) {
     std::string saveFile, loadSaveFile;
     float savedX = 0, savedY = 0, savedHealth = 25, savedFocus = 100;
     bool restorePosition = false;
-    std::unordered_set<std::string> collectedOrbs;
+    std::unordered_set<std::string> collectedOrbs, ownedKeys, unlockedDoors;
     bool simulateOnly = false;
     bool profile = false;
     int startEncounter = -1;
@@ -58,20 +58,24 @@ int main(int argc, char** argv) {
         std::ifstream saved(loadSaveFile);
         std::string version;
         std::string positionLine;
-        if (!std::getline(saved, version) || (version != "DL1" && version != "DL2") ||
+        if (!std::getline(saved, version) || (version != "DL1" && version != "DL2" && version != "DL3") ||
             !std::getline(saved, playLevel) || !std::getline(saved, positionLine) ||
             !std::filesystem::exists(playLevel)) {
             std::cerr << "Invalid or missing save: " << loadSaveFile << '\n'; return 2;
         }
         std::istringstream position(positionLine);
         if (!(position >> savedX >> savedY) ||
-            (version == "DL2" && !(position >> savedHealth >> savedFocus)) ||
+            (version != "DL1" && !(position >> savedHealth >> savedFocus)) ||
             !std::isfinite(savedX) || !std::isfinite(savedY) ||
             !std::isfinite(savedHealth) || !std::isfinite(savedFocus)) {
             std::cerr << "Invalid save state: " << loadSaveFile << '\n'; return 2;
         }
         std::string line;
-        while (std::getline(saved, line)) if (!line.empty()) collectedOrbs.insert(line);
+        while (std::getline(saved, line)) {
+            if (line.rfind("K:", 0) == 0) ownedKeys.insert(line.substr(2));
+            else if (line.rfind("D:", 0) == 0) unlockedDoors.insert(line.substr(2));
+            else if (!line.empty()) collectedOrbs.insert(line);
+        }
         restorePosition = true;
         if (saveFile.empty()) saveFile = loadSaveFile;
     }
@@ -82,7 +86,7 @@ int main(int argc, char** argv) {
         std::istringstream parts(script); std::string token;
         while (std::getline(parts, token, ',')) {
             auto colon = token.find(':');
-            if (colon == std::string::npos || token.empty() || std::string("LRJ.FBNTQE").find(token[0]) == std::string::npos) { std::cerr << "Bad --script token\n"; return 2; }
+            if (colon == std::string::npos || token.empty() || std::string("LRJ.FBNTQEI").find(token[0]) == std::string::npos) { std::cerr << "Bad --script token\n"; return 2; }
             int count = std::atoi(token.c_str() + colon + 1);
             if (count < 1 || count > 100000 || scriptedInput.size() + count > 100000) { std::cerr << "Bad --script duration\n"; return 2; }
             scriptedInput.insert(scriptedInput.end(), count, token[0]);
@@ -109,6 +113,7 @@ int main(int argc, char** argv) {
         std::cerr << error << '\n'; return 1;
     }
     if (restorePosition) scene.ApplyCollected(collectedOrbs);
+    scene.ApplyKeys(ownedKeys);
     if (!levelPath.empty()) {
         std::cout << "Loaded " << scene.SpriteCount() << " original level sprites; "
                   << scene.SkippedCount() << " missing or unsupported assets; "
@@ -141,6 +146,9 @@ int main(int argc, char** argv) {
     if (exhaustedFocus) combat.SetFocus(0);
     double updateSeconds = 0, drawSeconds = 0;
     bool wasDead = false, restartHeld = false;
+    float levelTime = 0.f, interactHeldTime = 0.f, doorUnlockWait = 0.f;
+    bool unlockingDoor = false;
+    std::string interactionTarget;
     int facing = 1;
     std::string currentLevel = playLevel;
     auto start = std::chrono::steady_clock::now();
@@ -172,13 +180,14 @@ int main(int argc, char** argv) {
                     const std::string restartLevel = "Game/XmlFiles/levels/grass_exploration_3.xml";
                     if (nextScene.Load(restartLevel, *renderer, error)) {
                         nextScene.ApplyCollected(collectedOrbs);
+                        nextScene.ApplyKeys(ownedKeys);
                         scene = std::move(nextScene);
                         currentLevel = restartLevel;
                         motion.Reset(scene.PlayerX(), scene.PlayerY());
                         worldX = motion.X(); worldY = motion.Y();
                         cameraX = scene.CameraX(); cameraY = scene.CameraY();
                         combat.ClearLevel(); combat.SetVitals(25.f, 100.f);
-                        wasDead = false;
+                        wasDead = false; levelTime = interactHeldTime = doorUnlockWait = 0; unlockingDoor = false; interactionTarget.clear();
                         std::cout << "Restarted " << currentLevel << " at frame " << frame << '\n';
                     } else std::cerr << "Restart failed: " << error << '\n';
                 }
@@ -196,6 +205,63 @@ int main(int argc, char** argv) {
             if (sound && combat.Fired() > firedBefore) sound->Play(deathleak::audio::Cue::KnifeThrow, firedBefore);
             cameraX += (worldX - cameraX) * std::min(1.f, 8.f * dt);
             cameraY += (worldY - cameraY) * std::min(1.f, 4.f * dt);
+            levelTime += dt;
+            if (doorUnlockWait > 0) {
+                doorUnlockWait = std::max(0.f, doorUnlockWait-dt);
+                if (unlockingDoor) interactHeldTime = 0;
+            }
+            const bool interact = !script.empty() ? command == 'I' : renderer->KeyDown(Interact);
+            // GameObject::UpdateInteractable uses player-rectangle overlap and 0.05 s hold.
+            auto overlap = [&](float ox,float oy,float ow,float oh) {
+                return std::abs(worldX-ox) <= (128.959793f+ow)*0.5f &&
+                       std::abs(worldY-oy) <= (214.898743f+oh)*0.5f;
+            };
+            std::string target;
+            const deathleak::game::KeyPickup* nearbyKey = nullptr;
+            const deathleak::game::Door* nearbyDoor = nullptr;
+            for (const auto& key : scene.Keys()) if (!ownedKeys.count(key.keyId) && overlap(key.x,key.y,key.width,key.height)) {
+                nearbyKey = &key; target = "K:" + key.keyId; break;
+            }
+            if (!nearbyKey && levelTime >= 0.75f && motion.Grounded())
+                for (const auto& door : scene.Doors()) if (overlap(door.x,door.y,door.width,door.height)) {
+                    nearbyDoor = &door; target = "D:" + door.id + door.destination; break;
+                }
+            if (!interact || target != interactionTarget) interactHeldTime = 0;
+            interactionTarget = target;
+            if (interact && !target.empty()) interactHeldTime += dt;
+            if (interactHeldTime >= 0.05f && nearbyKey) {
+                ownedKeys.insert(nearbyKey->keyId);
+                scene.ApplyKeys(ownedKeys);
+                std::cout << "Collected key " << nearbyKey->keyId << " at frame " << frame << '\n';
+                interactHeldTime = 0; interactionTarget.clear();
+            } else if (interactHeldTime >= (unlockingDoor ? 0.4f : 0.05f) && nearbyDoor && doorUnlockWait <= 0) {
+                const auto door = *nearbyDoor;
+                interactHeldTime = 0;
+                if (!door.requiredKey.empty() && !ownedKeys.count(door.requiredKey)) {
+                    std::cout << "Door locked: requires " << door.requiredKey << " at frame " << frame << '\n';
+                    doorUnlockWait = 1.f; // Door::OnInteracted locked retry countdown
+                    unlockingDoor = false;
+                } else if (!door.requiredKey.empty() && !unlockedDoors.count(door.id)) {
+                    unlockedDoors.insert(door.id);
+                    doorUnlockWait = 1.f; // Door::OnInteracted's unlocking animation
+                    unlockingDoor = true;
+                    std::cout << "Unlocked door " << door.id << " at frame " << frame << '\n';
+                } else {
+                    deathleak::game::LevelScene nextScene;
+                    if (nextScene.Load(door.destination, *renderer, error, currentLevel, door.id)) {
+                        nextScene.ApplyCollected(collectedOrbs);
+                        nextScene.ApplyKeys(ownedKeys);
+                        scene = std::move(nextScene);
+                        std::cout << "Door at frame " << frame << " from " << currentLevel << " to " << door.destination << '\n';
+                        currentLevel = door.destination;
+                        motion.Reset(scene.PlayerX(),scene.PlayerY());
+                        worldX = motion.X(); worldY = motion.Y();
+                        cameraX = scene.CameraX(); cameraY = scene.CameraY();
+                        combat.ClearLevel(); levelTime = interactHeldTime = doorUnlockWait = 0; unlockingDoor = false; interactionTarget.clear();
+                    } else std::cerr << "Door transition failed: " << error << '\n';
+                    continue;
+                }
+            }
             for (const auto& trigger : scene.Triggers()) {
                 if (std::abs(worldX - trigger.x) < trigger.width * 0.5f &&
                     std::abs(worldY - trigger.y) < trigger.height * 0.5f && trigger.destination != currentLevel) {
@@ -205,11 +271,13 @@ int main(int argc, char** argv) {
                     deathleak::game::LevelScene nextScene;
                     if (nextScene.Load(destination, *renderer, error, currentLevel)) {
                         nextScene.ApplyCollected(collectedOrbs);
+                        nextScene.ApplyKeys(ownedKeys);
                         scene = std::move(nextScene);
                         currentLevel = destination;
                         worldX = scene.PlayerX(); worldY = scene.PlayerY();
                         cameraX = scene.CameraX(); cameraY = scene.CameraY();
                         motion.Reset(worldX, worldY); combat.ClearLevel();
+                        levelTime = interactHeldTime = doorUnlockWait = 0; unlockingDoor = false; interactionTarget.clear();
                         std::cout << "Entered " << currentLevel << '\n';
                     } else std::cerr << "Transition failed: " << error << '\n';
                     break;
@@ -243,9 +311,11 @@ int main(int argc, char** argv) {
     if (!playLevel.empty() && !saveFile.empty()) {
         const std::string temporary = saveFile + ".tmp";
         std::ofstream saved(temporary, std::ios::trunc);
-        saved << "DL2\n" << currentLevel << '\n' << std::setprecision(9) << worldX << ' ' << worldY
+        saved << "DL3\n" << currentLevel << '\n' << std::setprecision(9) << worldX << ' ' << worldY
               << ' ' << combat.Health() << ' ' << combat.Focus() << '\n';
         for (const auto& orb : collectedOrbs) saved << orb << '\n';
+        for (const auto& key : ownedKeys) saved << "K:" << key << '\n';
+        for (const auto& door : unlockedDoors) saved << "D:" << door << '\n';
         saved.close();
         if (!saved) { std::cerr << "Save write failed: " << temporary << '\n'; return 1; }
         std::error_code ec;
@@ -255,7 +325,7 @@ int main(int argc, char** argv) {
     if (!playLevel.empty()) {
         const auto elapsed = std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();
         std::cout << "Simulation ended at " << currentLevel << " player=(" << worldX << "," << worldY
-                  << ") orbs=" << collectedOrbs.size() << " health=" << combat.Health()
+                  << ") orbs=" << collectedOrbs.size() << " keys=" << ownedKeys.size() << " health=" << combat.Health()
                   << " focus=" << combat.Focus() << " spawned=" << combat.Spawned() << " enemies=" << combat.EnemyCount()
                   << " hits=" << combat.Hits() << " kills=" << combat.Kills() << " fired=" << combat.Fired()
                   << " shots=" << combat.ShotCount() << " grounded=" << motion.Grounded() << " elapsed=" << elapsed << "s\n";

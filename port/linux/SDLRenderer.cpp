@@ -130,6 +130,7 @@ public:
             case Up: return keys[SDL_SCANCODE_UP] || keys[SDL_SCANCODE_W] || keys[SDL_SCANCODE_SPACE] || button(SDL_CONTROLLER_BUTTON_DPAD_UP) || button(SDL_CONTROLLER_BUTTON_A);
             case Down: return keys[SDL_SCANCODE_DOWN] || keys[SDL_SCANCODE_S] || button(SDL_CONTROLLER_BUTTON_DPAD_DOWN);
             case Restart: return keys[SDL_SCANCODE_R];
+            case Interact: return keys[SDL_SCANCODE_E] || button(SDL_CONTROLLER_BUTTON_X);
             case Escape: return keys[SDL_SCANCODE_ESCAPE] || button(SDL_CONTROLLER_BUTTON_START);
             default: return false;
         }

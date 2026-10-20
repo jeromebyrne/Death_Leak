@@ -1,0 +1,6 @@
+<level>
+  <Player id="1"><position x="0" y="107.44937" depth_layer="kPlayer"/><dimensions width="181.393768" height="215.352036"/><texture filename="Media/UI/player_silhouette.png"/></Player>
+  <SolidLineStrip id="2"><position x="0" y="0"/><dimensions width="1000" height="100"/><points num_points="2" x_0="-500" y_0="0" x_1="800" y_1="0"/></SolidLineStrip>
+  <KeyPickup id="3"><position x="0" y="107.44937" depth_layer="kGroundFront"/><dimensions width="55" height="57"/><texture filename="Media/UI/player_silhouette.png"/><key_props id="granary"/></KeyPickup>
+  <Door id="4"><position x="300" y="107.44937" depth_layer="kGround"/><dimensions width="90" height="162"/><texture filename="Media/UI/player_silhouette.png"/><to_level_file value="port/tests/fixtures/door_destination.xml"/><required_key value="granary"/><door_id value="test_gate"/></Door>
+</level>

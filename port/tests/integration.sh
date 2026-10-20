@@ -8,7 +8,7 @@ printf '%s\n' "$transition" | grep -q 'Entered Game/XmlFiles/levels/grass_explor
 route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script L:1300 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$route" | grep -q 'Entered Game/XmlFiles/levels/grass_exploration_3.xml'
 printf '%s\n' "$route" | grep -q 'Entered Game/XmlFiles/levels/first_ninja_arena.xml'
-printf '%s\n' "$route" | grep -q 'orbs=26 health=25.*spawned=1.*grounded=1'
+printf '%s\n' "$route" | grep -q 'orbs=26 keys=0 health=25.*spawned=1.*grounded=1'
 arena_climb=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script L:1500,Q:40,L:100 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$arena_climb" | grep -q 'Simulation ended at Game/XmlFiles/levels/first_ninja_arena.xml player=(3756.65,-1271.93).*grounded=1'
 arena_exit=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script L:1500,Q:40,L:700 --fixed-dt 0.0166667 --simulate-only)
@@ -53,4 +53,18 @@ solid_top=$($bin --play port/tests/fixtures/solid_box.xml --script R:30,E:40 --f
 printf '%s\n' "$solid_top" | grep -q 'player=(235.52,407.449).*grounded=1'
 wall_jump=$($bin --play port/tests/fixtures/solid_box.xml --script R:30,J:1,R:19,E:1 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$wall_jump" | grep -q 'player=(80.5201,158.244).*grounded=0'
-printf '%s\n' 'PASS: source-held-jump arena climb and exit, three-level route, burst/water fire, swim, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, solid box, wall jump, death/restart'
+locked=$($bin --play port/tests/fixtures/key_door.xml --script R:43,I:90 --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$locked" | grep -q 'Door locked: requires granary'
+printf '%s\n' "$locked" | grep -q 'Simulation ended at port/tests/fixtures/key_door.xml.*keys=0'
+key_door=$($bin --play port/tests/fixtures/key_door.xml --script I:4,R:43,I:110 --fixed-dt 0.0166667 --simulate-only --save-file port/build/key-door-save.txt)
+printf '%s\n' "$key_door" | grep -q 'Collected key granary at frame 2'
+printf '%s\n' "$key_door" | grep -q 'Unlocked door test_gate at frame 49'
+printf '%s\n' "$key_door" | grep -q 'Door at frame 132 from port/tests/fixtures/key_door.xml to port/tests/fixtures/door_destination.xml'
+printf '%s\n' "$key_door" | grep -q 'player=(123,107.449).*keys=1'
+key_resume=$($bin --load-save port/build/key-door-save.txt --frames 1 --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$key_resume" | grep -q 'keys=1'
+key_only=$($bin --play port/tests/fixtures/key_door.xml --script I:4 --fixed-dt 0.0166667 --simulate-only --save-file port/build/key-only-save.txt)
+key_only_resume=$($bin --load-save port/build/key-only-save.txt --frames 1 --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$key_only_resume" | grep -q 'keys=1'
+if printf '%s\n' "$key_only_resume" | grep -q 'Collected key'; then exit 1; fi
+printf '%s\n' 'PASS: source-held-jump arena climb and exit, three-level route, burst/water fire, swim, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, solid box, wall jump, death/restart, key/door gate and DL3 persistence'
