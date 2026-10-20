@@ -9,8 +9,11 @@ route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script L:130
 printf '%s\n' "$route" | grep -q 'Entered Game/XmlFiles/levels/grass_exploration_3.xml'
 printf '%s\n' "$route" | grep -q 'Entered Game/XmlFiles/levels/first_ninja_arena.xml'
 printf '%s\n' "$route" | grep -q 'orbs=26 health=25.*spawned=1.*grounded=1'
-arena_wall=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script L:1490,Q:20,L:1,Q:1 --fixed-dt 0.0166667 --simulate-only)
-printf '%s\n' "$arena_wall" | grep -q 'Simulation ended at Game/XmlFiles/levels/first_ninja_arena.xml player=(4591.65,-1612.65).*orbs=36.*grounded=0'
+arena_climb=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script L:1500,Q:40,L:100 --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$arena_climb" | grep -q 'Simulation ended at Game/XmlFiles/levels/first_ninja_arena.xml player=(3756.65,-1271.93).*grounded=1'
+arena_exit=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script L:1500,Q:40,L:700 --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$arena_exit" | grep -q 'Trigger at frame 2008 from Game/XmlFiles/levels/first_ninja_arena.xml'
+printf '%s\n' "$arena_exit" | grep -q 'Entered Game/XmlFiles/levels/grass_exploration_1.xml'
 burst=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script F:60 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$burst" | grep -q 'fired=5'
 water_fire=$($bin --play Game/XmlFiles/levels/test.xml --start-hazard 1 --script F:30 --fixed-dt 0.0166667 --simulate-only)
@@ -30,7 +33,7 @@ printf '%s\n' "$water" | grep -q 'health=24.95 focus=0'
 landing=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script .:120 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$landing" | grep -q 'player=(-43.0146,3206.9).*grounded=1'
 jump=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script .:120,J:1 --fixed-dt 0.0166667 --simulate-only)
-printf '%s\n' "$jump" | grep -q 'player=(-43.0146,3237.22).*grounded=0'
+printf '%s\n' "$jump" | grep -q 'player=(-43.0146,3224.62).*grounded=0'
 printf 'DL2\nGame/XmlFiles/levels/forest_exploration_1.xml\n-43.014648 3385 0 100\n' > port/build/integration-dead-save.txt
 restart=$($bin --load-save port/build/integration-dead-save.txt --script .:1,T:1,.:1 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$restart" | grep -q 'Player died at frame 0'
@@ -39,11 +42,15 @@ printf '%s\n' "$restart" | grep -q 'health=25 focus=100'
 slope=$($bin --play port/tests/fixtures/slope_wall.xml --script R:90 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$slope" | grep -q 'player=(235.52,154.553).*grounded=1'
 combined_jump=$($bin --play port/tests/fixtures/slope_wall.xml --script .:60,Q:12 --fixed-dt 0.0166667 --simulate-only)
-printf '%s\n' "$combined_jump" | grep -q 'player=(-68.0002,271.268).*grounded=0'
+printf '%s\n' "$combined_jump" | grep -q 'player=(-68.0002,295.329).*grounded=0'
+tap_jump=$($bin --play port/tests/fixtures/slope_wall.xml --script .:60,J:1,.:39 --fixed-dt 0.0166667 --simulate-only)
+held_jump=$($bin --play port/tests/fixtures/slope_wall.xml --script .:60,J:40 --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$tap_jump" | grep -q 'player=(0,107.449).*grounded=1'
+printf '%s\n' "$held_jump" | grep -q 'player=(0,141.509).*grounded=0'
 solid_side=$($bin --play port/tests/fixtures/solid_box.xml --script R:30 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$solid_side" | grep -q 'player=(95.5201,107.449).*grounded=1'
-solid_top=$($bin --play port/tests/fixtures/solid_box.xml --script R:30,J:1,R:30 --fixed-dt 0.0166667 --simulate-only)
-printf '%s\n' "$solid_top" | grep -q 'player=(123.52,407.449).*grounded=1'
+solid_top=$($bin --play port/tests/fixtures/solid_box.xml --script R:30,E:40 --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$solid_top" | grep -q 'player=(235.52,407.449).*grounded=1'
 wall_jump=$($bin --play port/tests/fixtures/solid_box.xml --script R:30,J:1,R:19,E:1 --fixed-dt 0.0166667 --simulate-only)
-printf '%s\n' "$wall_jump" | grep -q 'player=(80.5201,417.109).*grounded=0'
-printf '%s\n' 'PASS: three-level route, burst/water fire, swim, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, solid box, wall jump, death/restart'
+printf '%s\n' "$wall_jump" | grep -q 'player=(80.5201,158.244).*grounded=0'
+printf '%s\n' 'PASS: source-held-jump arena climb and exit, three-level route, burst/water fire, swim, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, solid box, wall jump, death/restart'

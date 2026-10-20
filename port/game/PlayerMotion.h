@@ -21,5 +21,6 @@ private:
     bool grounded_ = false;
     int wallSide_ = 0; // -1: wall to left, +1: wall to right
     float wallJumpRemaining_ = 0;
+    float jumpPercent_ = 40.f; // InputManager initial 40%, +6.5% each held update
 };
 }

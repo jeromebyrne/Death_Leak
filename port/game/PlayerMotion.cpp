@@ -14,7 +14,7 @@ constexpr float kWallJumpSpeedY = 20.f * 60.f;
 }
 void PlayerMotion::Reset(float x, float y) {
     x_ = x; y_ = y; vx_ = vy_ = 0; sinceGround_ = 1; jumpHeld_ = false; grounded_ = false;
-    wallSide_ = 0; wallJumpRemaining_ = 0;
+    wallSide_ = 0; wallJumpRemaining_ = 0; jumpPercent_ = 40.f;
 }
 void PlayerMotion::Update(const LevelScene& scene, float dt, int direction, bool jump) {
     if (dt <= 0) return;
@@ -39,10 +39,18 @@ void PlayerMotion::Update(const LevelScene& scene, float dt, int direction, bool
             vx_ = -wallSide_ * kWallJumpSpeedX;
             vy_ = kWallJumpSpeedY;
             wallJumpRemaining_ = 0.3f;
-        } else vy_ = kJumpSpeed;
+        } else { vy_ = kJumpSpeed * 0.4f; jumpPercent_ = 40.f; }
         y_ += 10.f; // Character::Jump releases the solid line before ascent.
         grounded_ = false; sinceGround_ = 1.f;
     }
+    // InputManager::ProcessJump_* starts at 40% and increases by 6.5%
+    // on each subsequent held update, up to the authored max jump speed.
+    // Character::IncreaseJump only raises velocity, never lowers it.
+    if (jump && jumpHeld_ && !inWater && !grounded_ && sinceGround_ > 0.3f && wallJumpRemaining_ <= 0 && jumpPercent_ < 100.f) {
+        jumpPercent_ = std::min(100.f, jumpPercent_ + 6.5f * ticks);
+        vy_ = std::max(vy_, kJumpSpeed * jumpPercent_ / 100.f);
+    }
+    if (!jump) jumpPercent_ = 40.f;
     jumpHeld_ = jump;
     const float oldX = x_, oldY = y_;
     const float targetX = x_ + vx_ * dt;
