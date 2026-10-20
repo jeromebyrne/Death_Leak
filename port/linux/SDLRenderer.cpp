@@ -140,6 +140,7 @@ public:
             case Roll: return keys[SDL_SCANCODE_LSHIFT] || button(SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
             case Melee: return keys[SDL_SCANCODE_C] || button(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
             case Escape: return keys[SDL_SCANCODE_ESCAPE] || button(SDL_CONTROLLER_BUTTON_START);
+            case ModalBack: return button(SDL_CONTROLLER_BUTTON_B);
             default: return false;
         }
     }

@@ -501,7 +501,8 @@ int main(int argc, char** argv) {
             } else {
             if (paperModal) {
                 modalWarmup += dt;
-                const bool dismiss = !script.empty() ? command == 'X' : renderer->KeyDown(Escape);
+                const bool dismiss = !script.empty() ? command == 'X' :
+                    (renderer->KeyDown(Escape) || renderer->KeyDown(ModalBack));
                 if (dismiss && !dismissHeld && modalWarmup >= 1.f) {
                     paperModal = false;
                     std::cout << "Dismissed paper modal at frame " << frame << '\n';
@@ -510,7 +511,8 @@ int main(int argc, char** argv) {
             } else if (upgradeModal) {
                 modalWarmup += dt;
                 const bool purchase = !script.empty() ? command == 'P' : renderer->KeyDown(Purchase);
-                const bool dismiss = !script.empty() ? command == 'X' : renderer->KeyDown(Escape);
+                const bool dismiss = !script.empty() ? command == 'X' :
+                    (renderer->KeyDown(Escape) || renderer->KeyDown(ModalBack));
                 if (purchase && !purchaseHeld) {
                     if (orbBalance >= 375) {
                         orbBalance -= 375;
