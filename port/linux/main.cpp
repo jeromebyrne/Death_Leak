@@ -1,5 +1,6 @@
 #include "../render/Renderer.h"
 #include "../game/LevelScene.h"
+#include "../game/Combat.h"
 #include <chrono>
 #include <algorithm>
 #include <cmath>
@@ -23,10 +24,14 @@ int main(int argc, char** argv) {
     std::string playLevel;
     std::string script;
     std::string saveFile, loadSaveFile;
-    float savedX = 0, savedY = 0;
+    float savedX = 0, savedY = 0, savedHealth = 25, savedFocus = 100;
     bool restorePosition = false;
     std::unordered_set<std::string> collectedOrbs;
     bool simulateOnly = false;
+    bool profile = false;
+    int startEncounter = -1;
+    int startHazard = -1;
+    bool exhaustedFocus = false;
     float fixedDt = 0;
     for (int i = 1; i < argc; ++i) {
         std::string arg = argv[i];
@@ -39,17 +44,30 @@ int main(int argc, char** argv) {
         else if (arg == "--script" && i + 1 < argc) script = argv[++i];
         else if (arg == "--fixed-dt" && i + 1 < argc) fixedDt = std::atof(argv[++i]);
         else if (arg == "--simulate-only") simulateOnly = true;
+        else if (arg == "--profile") profile = true;
+        else if (arg == "--exhaust-focus") exhaustedFocus = true;
+        else if (arg == "--start-encounter" && i + 1 < argc) startEncounter = std::atoi(argv[++i]);
+        else if (arg == "--start-hazard" && i + 1 < argc) startHazard = std::atoi(argv[++i]);
         else { std::cerr << "Usage: deathleak-linux [--frames N] [--capture output.bmp] [--level-preview level.xml | --play level.xml]\n"; return 2; }
     }
     if (!playLevel.empty() && !levelPreview.empty()) { std::cerr << "Choose either --play or --level-preview\n"; return 2; }
     if (!loadSaveFile.empty()) {
         std::ifstream saved(loadSaveFile);
         std::string version;
-        if (!std::getline(saved, version) || version != "DL1" || !std::getline(saved, playLevel) ||
-            !(saved >> savedX >> savedY) || !std::filesystem::exists(playLevel)) {
+        std::string positionLine;
+        if (!std::getline(saved, version) || (version != "DL1" && version != "DL2") ||
+            !std::getline(saved, playLevel) || !std::getline(saved, positionLine) ||
+            !std::filesystem::exists(playLevel)) {
             std::cerr << "Invalid or missing save: " << loadSaveFile << '\n'; return 2;
         }
-        std::string line; std::getline(saved, line);
+        std::istringstream position(positionLine);
+        if (!(position >> savedX >> savedY) ||
+            (version == "DL2" && !(position >> savedHealth >> savedFocus)) ||
+            !std::isfinite(savedX) || !std::isfinite(savedY) ||
+            !std::isfinite(savedHealth) || !std::isfinite(savedFocus)) {
+            std::cerr << "Invalid save state: " << loadSaveFile << '\n'; return 2;
+        }
+        std::string line;
         while (std::getline(saved, line)) if (!line.empty()) collectedOrbs.insert(line);
         restorePosition = true;
         if (saveFile.empty()) saveFile = loadSaveFile;
@@ -61,7 +79,7 @@ int main(int argc, char** argv) {
         std::istringstream parts(script); std::string token;
         while (std::getline(parts, token, ',')) {
             auto colon = token.find(':');
-            if (colon == std::string::npos || token.empty() || std::string("LRJ.").find(token[0]) == std::string::npos) { std::cerr << "Bad --script token\n"; return 2; }
+            if (colon == std::string::npos || token.empty() || std::string("LRJ.FBN").find(token[0]) == std::string::npos) { std::cerr << "Bad --script token\n"; return 2; }
             int count = std::atoi(token.c_str() + colon + 1);
             if (count < 1 || count > 100000 || scriptedInput.size() + count > 100000) { std::cerr << "Bad --script duration\n"; return 2; }
             scriptedInput.insert(scriptedInput.end(), count, token[0]);
@@ -91,6 +109,20 @@ int main(int argc, char** argv) {
     float playerX = 590, playerY = 430;
     float worldX = restorePosition ? savedX : scene.PlayerX(), worldY = restorePosition ? savedY : scene.PlayerY(), velocityX = 0, velocityY = 0;
     float cameraX = scene.CameraX(), cameraY = scene.CameraY();
+    if (startEncounter >= 0) {
+        if (playLevel.empty() || startEncounter >= static_cast<int>(scene.Encounters().size())) { std::cerr << "Invalid --start-encounter index\n"; return 2; }
+        worldX = scene.Encounters()[startEncounter].x; worldY = scene.Encounters()[startEncounter].y;
+        cameraX = worldX; cameraY = worldY;
+    }
+    if (startHazard >= 0) {
+        if (playLevel.empty() || startHazard >= static_cast<int>(scene.Hazards().size())) { std::cerr << "Invalid --start-hazard index\n"; return 2; }
+        worldX = scene.Hazards()[startHazard].x; worldY = scene.Hazards()[startHazard].y;
+        cameraX = worldX; cameraY = worldY;
+    }
+    deathleak::game::Combat combat;
+    if (restorePosition) combat.SetVitals(savedHealth, savedFocus);
+    if (exhaustedFocus) combat.SetFocus(0);
+    double updateSeconds = 0, drawSeconds = 0;
     bool grounded = false, jumpHeld = false;
     std::string currentLevel = playLevel;
     auto start = std::chrono::steady_clock::now();
@@ -110,7 +142,7 @@ int main(int argc, char** argv) {
             if (renderer->KeyDown(Down)) playerY += 250 * dt;
         } else {
             const char command = frame < static_cast<int>(scriptedInput.size()) ? scriptedInput[frame] : 0;
-            const float direction = !script.empty() ? static_cast<float>(command == 'R') - static_cast<float>(command == 'L') :
+            const float direction = !script.empty() ? static_cast<float>(command == 'R' || command == 'B') - static_cast<float>(command == 'L' || command == 'N') :
                 static_cast<float>(renderer->KeyDown(Right)) - static_cast<float>(renderer->KeyDown(Left));
             velocityX = std::clamp(velocityX + direction * 1700.f * dt, -470.f, 470.f);
             if (direction == 0) velocityX *= std::max(0.f, 1.f - 9.f * dt);
@@ -134,6 +166,8 @@ int main(int argc, char** argv) {
             }
             if (bestGround > -1e8f) { worldY = bestGround + 107.f; velocityY = 0; grounded = true; }
             scene.CollectCurrencyOrbs(worldX, worldY, collectedOrbs);
+            const bool fire = !script.empty() ? (command == 'F' || command == 'B' || command == 'N') : renderer->KeyDown(Down);
+            combat.Update(scene, worldX, worldY, dt, fire, direction < 0 ? -1 : 1, *renderer);
             cameraX += (worldX - cameraX) * std::min(1.f, 8.f * dt);
             cameraY += (worldY - cameraY) * std::min(1.f, 4.f * dt);
             for (const auto& trigger : scene.Triggers()) {
@@ -149,13 +183,15 @@ int main(int argc, char** argv) {
                         currentLevel = destination;
                         worldX = scene.PlayerX(); worldY = scene.PlayerY();
                         cameraX = scene.CameraX(); cameraY = scene.CameraY();
-                        velocityX = velocityY = 0; grounded = false;
+                        velocityX = velocityY = 0; grounded = false; combat.ClearLevel();
                         std::cout << "Entered " << currentLevel << '\n';
                     } else std::cerr << "Transition failed: " << error << '\n';
                     break;
                 }
             }
         }
+        auto afterUpdate = std::chrono::steady_clock::now();
+        updateSeconds += std::chrono::duration<double>(afterUpdate-now).count();
         if (simulateOnly) continue;
         renderer->BeginFrame({8, 12, 20, 255});
         if (levelPath.empty()) {
@@ -164,16 +200,18 @@ int main(int argc, char** argv) {
         } else if (playLevel.empty())
             scene.Draw(*renderer, scene.CameraX() + (playerX - 590) * 1.5f,
                        scene.CameraY() + (430 - playerY) * 1.5f, scene.PlayerX(), scene.PlayerY());
-        else scene.Draw(*renderer, cameraX, cameraY, worldX, worldY);
+        else { scene.Draw(*renderer, cameraX, cameraY, worldX, worldY); combat.Draw(*renderer, cameraX, cameraY); }
         if (!capture.empty() && frame == frameLimit - 1 && !renderer->SaveFrame(capture, error)) {
             std::cerr << "Capture failed: " << error << '\n'; return 1;
         }
         renderer->EndFrame();
+        drawSeconds += std::chrono::duration<double>(std::chrono::steady_clock::now()-afterUpdate).count();
     }
     if (!playLevel.empty() && !saveFile.empty()) {
         const std::string temporary = saveFile + ".tmp";
         std::ofstream saved(temporary, std::ios::trunc);
-        saved << "DL1\n" << currentLevel << '\n' << std::setprecision(9) << worldX << ' ' << worldY << '\n';
+        saved << "DL2\n" << currentLevel << '\n' << std::setprecision(9) << worldX << ' ' << worldY
+              << ' ' << combat.Health() << ' ' << combat.Focus() << '\n';
         for (const auto& orb : collectedOrbs) saved << orb << '\n';
         saved.close();
         if (!saved) { std::cerr << "Save write failed: " << temporary << '\n'; return 1; }
@@ -184,7 +222,11 @@ int main(int argc, char** argv) {
     if (!playLevel.empty()) {
         const auto elapsed = std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();
         std::cout << "Simulation ended at " << currentLevel << " player=(" << worldX << "," << worldY
-                  << ") orbs=" << collectedOrbs.size() << " elapsed=" << elapsed << "s\n";
+                  << ") orbs=" << collectedOrbs.size() << " health=" << combat.Health()
+                  << " focus=" << combat.Focus() << " spawned=" << combat.Spawned() << " enemies=" << combat.EnemyCount()
+                  << " hits=" << combat.Hits() << " kills=" << combat.Kills()
+                  << " shots=" << combat.ShotCount() << " elapsed=" << elapsed << "s\n";
+        if (profile) std::cout << "Profile update=" << updateSeconds << "s draw/present=" << drawSeconds << "s\n";
     }
     return 0;
 }

@@ -55,7 +55,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     if (!document.LoadFile()) { error = "Cannot parse level: " + path + ": " + document.ErrorDesc(); return false; }
     auto* level = document.RootElement();
     if (!level || std::string(level->Value()) != "level") { error = "Not a Death Leak level: " + path; return false; }
-    sprites_.clear(); ground_.clear(); triggers_.clear(); skipped_ = 0;
+    sprites_.clear(); ground_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); skipped_ = 0;
     if (auto* props = level->FirstChildElement("LevelProperties")) {
         auto* camera = props->FirstChildElement("camera_properties");
         cameraX_ = Attr(camera, "posx"); cameraY_ = Attr(camera, "posy");
@@ -80,6 +80,18 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
             auto file = NormalizeAsset(destination ? destination->Attribute("value") : nullptr);
             if (!file.empty() && std::filesystem::exists(file))
                 triggers_.push_back({x, y, Attr(dimensions, "width"), Attr(dimensions, "height"), file});
+        }
+        if (kind == "NPCTrigger") {
+            auto* spec = object->FirstChildElement("num_enemies");
+            encounters_.push_back({x, y, Attr(dimensions, "width"), Attr(dimensions, "height"),
+                static_cast<int>(Attr(spec, "value")), spec && spec->Attribute("enemy_type") ? spec->Attribute("enemy_type") : "",
+                std::filesystem::path(path).lexically_normal().string() + "#" + (object->Attribute("id") ? object->Attribute("id") : "")});
+        }
+        if (kind == "WaterBlock" || object->FirstChildElement("applydamage")) {
+            auto* damage = object->FirstChildElement("applydamage");
+            float amount = Flag(damage, "flag") ? Attr(damage, "amount") : 0.f;
+            if (kind == "WaterBlock" || amount > 0)
+                hazards_.push_back({x, y, Attr(dimensions, "width"), Attr(dimensions, "height"), kind == "WaterBlock", amount});
         }
         if (kind == "SolidLineStrip") {
             auto* points = object->FirstChildElement("points");

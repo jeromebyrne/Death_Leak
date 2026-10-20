@@ -1,5 +1,8 @@
 #include "../render/Renderer.h"
 #include <SDL.h>
+#include <chrono>
+#include <cstdlib>
+#include <iostream>
 #include <png.h>
 #include <unordered_map>
 #include <vector>
@@ -9,6 +12,9 @@ namespace {
 class SDLRenderer final : public Renderer {
 public:
     ~SDLRenderer() override {
+        if (std::getenv("DEATHLEAK_RENDER_PROFILE"))
+            std::cerr << "SDL profile calls=" << drawCalls_ << " copy=" << copySeconds_
+                      << "s present=" << presentSeconds_ << "s\n";
         if (gamepad_) SDL_GameControllerClose(gamepad_);
         for (auto& texture : textures_) SDL_DestroyTexture(texture.second);
         if (renderer_) SDL_DestroyRenderer(renderer_);
@@ -65,6 +71,7 @@ public:
         SDL_RenderClear(renderer_);
     }
     void DrawSprite(const Sprite& sprite) override {
+        const auto began = std::chrono::steady_clock::now();
         auto it = textures_.find(sprite.texture);
         if (it == textures_.end()) return;
         SDL_Texture* texture = it->second;
@@ -86,8 +93,14 @@ public:
         else
             SDL_RenderCopyExF(renderer_, texture, sourcePtr, &destination,
                               sprite.rotationDegrees, nullptr, flip);
+        ++drawCalls_;
+        copySeconds_ += std::chrono::duration<double>(std::chrono::steady_clock::now()-began).count();
     }
-    void EndFrame() override { SDL_RenderPresent(renderer_); }
+    void EndFrame() override {
+        const auto began = std::chrono::steady_clock::now();
+        SDL_RenderPresent(renderer_);
+        presentSeconds_ += std::chrono::duration<double>(std::chrono::steady_clock::now()-began).count();
+    }
     bool PollQuit() override {
         SDL_Event event;
         bool quit = false;
@@ -128,6 +141,8 @@ public:
         return ok;
     }
 private:
+    size_t drawCalls_ = 0;
+    double copySeconds_ = 0, presentSeconds_ = 0;
     bool initialized_ = false;
     SDL_Window* window_ = nullptr;
     SDL_Renderer* renderer_ = nullptr;

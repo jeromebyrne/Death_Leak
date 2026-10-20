@@ -1,6 +1,6 @@
 # Linux renderer foundation
 
-This branch starts the native Linux port. It does **not** run Death Leak gameplay yet. The current Visual Studio game uses Direct3D 10/DXUT directly in 114 source files, plus Windows-specific audio, input, Steam and window code. This milestone makes a renderer boundary concrete and verifies a Linux backend against art from the repository.
+This branch starts the native Linux port. It now runs a limited original-level gameplay prototype, but it is **not** a complete playable port. The current Visual Studio game uses Direct3D 10/DXUT directly in 114 source files, plus Windows-specific audio, input, Steam and window code. This milestone makes a renderer boundary concrete and verifies a Linux backend against art from the repository.
 
 ## Build and run on Linux
 
@@ -57,7 +57,7 @@ docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/src" -w /src -e SDL_VIDEODRIVER
 
 `--play Game/XmlFiles/levels/forest_exploration_1.xml` now enables a prototype player simulation: the player starts at the original XML position, moves with A/D or left/right, jumps with W/space/up, collides with `SolidLineStrip` segments, follows the camera, and enters `LevelTrigger` destinations. SDL game-controller left stick/D-pad and A button are also mapped. Escape or controller Start exits. The original level assets still render through `Renderer.h`.
 
-This is **not yet a complete or release-ready Death Leak port**. It does not reproduce original Character/Player physics, combat, enemies, pickups, NPCs, UI/menus, audio, saves, shaders, particles, or animation; level entry placement and door semantics are incomplete. Keyboard play is an added Linux convenience (the Windows release build's keyboard gameplay path is disabled). The default executable screen remains a renderer demo, not the game's original menu.
+This is **not yet a complete or release-ready Death Leak port**. The current encounter slice parses authored `NPCTrigger` and `WaterBlock` objects, spawns simplified ninja/ghost/skeleton opponents, runs knife and enemy projectiles, applies damage, and models focus depletion before drowning. It does **not** reproduce original Character/Player physics, full AI and attack patterns, melee, most NPC interactions, UI/menus, audio, complete saves, shaders, particles, or animation; level entry placement and door semantics are incomplete. Keyboard play is an added Linux convenience (the Windows release build's keyboard gameplay path is disabled). The default executable screen remains a renderer demo, not the game's original menu.
 
 Headless integration smoke:
 
@@ -78,6 +78,14 @@ SDL_VIDEODRIVER=dummy port/build/deathleak-linux \
   --script L:340 --fixed-dt 0.0166667 --simulate-only
 ```
 
-This scripted left movement enters `grass_exploration_3.xml` through the authored trigger at frame 322 and places the player at that level's matching `LevelEntry`. `--script` supports `L`, `R`, `J` (jump), and `.` (idle), each followed by `:frame-count`, comma-separated. This harness validates simulation and transitions, **not** rendered frame rate or human playability.
+This scripted left movement enters `grass_exploration_3.xml` through the authored trigger at frame 322 and places the player at that level's matching `LevelEntry`. `--script` supports `L`, `R`, `J` (jump), `F` (fire), `B` (right+fire), `N` (left+fire), and `.` (idle), each followed by `:frame-count`, comma-separated. This harness validates simulation and transitions, **not** rendered frame rate or human playability.
 
 Experimental `--save-file <path>` writes the current level, position, and collected currency-orb IDs when the process exits. `--load-save <path>` resumes these values and updates the same file on exit. These are a limited Linux-port save format, not the original game's complete save/upgrade system. Currency orbs currently use the original 100-world-unit pickup radius and disappear on collection, but do not yet implement tracking animation, audio, upgrades, or the original UI.
+
+## Encounter integration and renderer profiling
+
+Build with the Docker image above, then run `port/tests/integration.sh` in that image from the repository root. The test drives an authored level transition, the first `NPCTrigger` in `first_ninja_arena.xml`, combat damage and save/resume, and focus-exhausted drowning in the authored `test.xml` water region. `--start-encounter N`, `--start-hazard N`, and `--exhaust-focus` are deterministic integration harness controls, not normal gameplay shortcuts. In interactive `--play`, Down/S fires the knife; left/right and jump continue to work.
+
+The Linux-only save format is now `DL2` (level, position, health, focus, collected orb IDs); `DL1` remains readable. It is not the original Windows save format, and encounter state is not persisted.
+
+For a measured headless render run, use `--profile` and `DEATHLEAK_RENDER_PROFILE=1`. On this Docker/dummy-video host, a five-frame forest sample reported 226 SDL draw calls, ~0.00008 s in `SDL_RenderCopy*`, and ~3.005 s in `SDL_RenderPresent`; update time was ~0.00002 s. This isolates the slow path to deferred software rasterization/presentation. It **does not** measure GPU performance, and there is no demonstrated optimization yet.
