@@ -426,6 +426,22 @@ assert Path('port/build/integration-menu-save.txt').read_text().splitlines() == 
 PYSETTINGS
 settings_reload=$($bin --menu-loop --script N:1,S:1,.:1,S:1 --fixed-dt 0.0166667 --simulate-only --settings-file "$settings_file")
 printf '%s\n' "$settings_reload" | grep -q 'Menu settings music=1 sfx=0 at frame 3'
+# Authored XML bounds in logical coordinates: a press on Play released over
+# Options must cancel. Options checkboxes toggle only on same-widget release;
+# the Back and Play art bounds then navigate to a fresh game.
+mouse_settings=port/build/mouse-settings.xml
+rm -f "$mouse_settings"
+mouse_menu=$($bin --menu-loop --mouse-script port/tests/fixtures/menu_mouse.csv --frames 15 --fixed-dt 0.0166667 --simulate-only --settings-file "$mouse_settings")
+printf '%s\n' "$mouse_menu" | grep -q 'widget=0 target=1 activated=0 at frame 2'
+printf '%s\n' "$mouse_menu" | grep -q 'Menu settings music=0 sfx=1 at frame 6'
+printf '%s\n' "$mouse_menu" | grep -q 'Menu settings music=0 sfx=0 at frame 8'
+printf '%s\n' "$mouse_menu" | grep -q 'Menu New Game at frame 12 entered Game/XmlFiles/levels/grass_exploration_3.xml'
+printf '%s\n' "$mouse_menu" | grep -q 'orbs=0 keys=0 health=25 .*balance=0'
+python3 - <<'PYTEST'
+import xml.etree.ElementTree as ET
+audio = ET.parse('port/build/mouse-settings.xml').getroot().find('audio')
+assert audio.attrib == {'music_enabled': '0', 'sfx_enabled': '0'}
+PYTEST
 python3 - <<'PYSETTINGS'
 import xml.etree.ElementTree as ET
 audio=ET.parse('port/build/integration-settings.xml').getroot().find('audio')

@@ -142,6 +142,13 @@ public:
             default: return false;
         }
     }
+    MouseState Mouse() const override {
+        int x = 0, y = 0;
+        const Uint32 buttons = SDL_GetMouseState(&x, &y);
+        float logicalX = -1, logicalY = -1;
+        SDL_RenderWindowToLogical(renderer_, x, y, &logicalX, &logicalY);
+        return {logicalX, logicalY, (buttons & SDL_BUTTON(SDL_BUTTON_LEFT)) != 0};
+    }
     bool SaveFrame(const std::string& path, std::string& error) override {
         int width = 0, height = 0;
         if (SDL_GetRendererOutputSize(renderer_, &width, &height) != 0) { error = SDL_GetError(); return false; }

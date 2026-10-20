@@ -16,6 +16,11 @@ struct Rect {
     float height = 0;
 };
 
+struct MouseState {
+    float x = -1, y = -1; // Logical 1280x720 coordinates.
+    bool leftDown = false;
+};
+
 struct Color {
     std::uint8_t r = 0, g = 0, b = 0, a = 255;
 };
@@ -43,6 +48,7 @@ public:
     virtual void EndFrame() = 0;
     virtual bool PollQuit() = 0;
     virtual bool KeyDown(int key) const = 0;
+    virtual MouseState Mouse() const = 0;
     virtual bool SaveFrame(const std::string& path, std::string& error) = 0;
 };
 

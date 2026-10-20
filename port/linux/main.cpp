@@ -25,12 +25,31 @@
 
 using namespace deathleak::render;
 
+namespace {
+// UI.xml uses a 1920x1080 centered coordinate system. Preserve the authored
+// widget rectangles while rendering in the port's 1280x720 logical viewport.
+constexpr Rect AuthoredUI(float x, float y, float width, float height) {
+    constexpr float scale = 2.f / 3.f;
+    return {(960.f + x) * scale, (540.f - y - height) * scale,
+            width * scale, height * scale};
+}
+bool Hit(Rect rect, MouseState mouse) {
+    return mouse.x >= rect.x && mouse.x < rect.x + rect.width &&
+           mouse.y >= rect.y && mouse.y < rect.y + rect.height;
+}
+constexpr std::array<Rect, 3> menuBounds = {{AuthoredUI(-435,-100,160,160),
+    AuthoredUI(-410,-275,100,100), AuthoredUI(-395,-435,90,90)}};
+constexpr std::array<Rect, 3> optionsBounds = {{AuthoredUI(-420,-60,132,132),
+    AuthoredUI(-420,-200,132,132), AuthoredUI(-390,-470,90,90)}};
+}
+
 int main(int argc, char** argv) {
     int frameLimit = 0;
     std::string capture;
     std::string levelPreview;
     std::string playLevel;
     std::string script;
+    std::string mouseScriptFile;
     std::string saveFile, loadSaveFile;
     std::string settingsFile = "deathleak-settings.xml";
     float savedX = 0, savedY = 0, savedHealth = 25, savedFocus = 100;
@@ -62,6 +81,7 @@ int main(int argc, char** argv) {
         else if (arg == "--language" && i + 1 < argc) selectedLanguage = argv[++i];
         else if (arg == "--load-save" && i + 1 < argc) loadSaveFile = argv[++i];
         else if (arg == "--script" && i + 1 < argc) script = argv[++i];
+        else if (arg == "--mouse-script" && i + 1 < argc) mouseScriptFile = argv[++i];
         else if (arg == "--fixed-dt" && i + 1 < argc) fixedDt = std::atof(argv[++i]);
         else if (arg == "--simulate-only") simulateOnly = true;
         else if (arg == "--menu-loop") menuLoop = true;
@@ -164,6 +184,23 @@ int main(int argc, char** argv) {
         }
         if (!frameLimit) frameLimit = scriptedInput.size();
     }
+    std::unordered_map<int, MouseState> scriptedMouse;
+    if (!mouseScriptFile.empty()) {
+        std::ifstream events(mouseScriptFile);
+        std::string line;
+        int lastFrame = -1;
+        while (std::getline(events, line)) {
+            std::istringstream row(line);
+            int at = -1, down = -1; float x = -1, y = -1; char comma1, comma2, comma3;
+            if (!(row >> at >> comma1 >> x >> comma2 >> y >> comma3 >> down) ||
+                comma1 != ',' || comma2 != ',' || comma3 != ',' || at <= lastFrame ||
+                at > 100000 || (down != 0 && down != 1) || !std::isfinite(x) || !std::isfinite(y) ||
+                (row >> std::ws && !row.eof())) { std::cerr << "Bad --mouse-script row\n"; return 2; }
+            scriptedMouse[at] = {x, y, down != 0}; lastFrame = at;
+        }
+        if (!events.eof() || lastFrame < 0) { std::cerr << "Bad --mouse-script file\n"; return 2; }
+        if (!frameLimit) frameLimit = lastFrame + 1;
+    }
     auto renderer = CreateRenderer();
     std::string error;
     if (!renderer->Initialize("Death Leak - Linux renderer slice", 1280, 720, error)) {
@@ -248,9 +285,18 @@ int main(int argc, char** argv) {
     // Main-menu assets and ordering follow mainmenu.xml. Keyboard/controller
     // navigation is a Linux accessibility fallback for the source mouse widgets.
     auto menuTitle = menuLoop ? renderer->LoadTexture("Game/Media/UI/title.png", error) : InvalidTexture;
+    auto menuBlur = menuLoop ? renderer->LoadTexture("Game/Media/UI/main_menu_blur.png", error) : InvalidTexture;
+    auto titleBlur = menuLoop ? renderer->LoadTexture("Game/Media/UI/title_blurred.png", error) : InvalidTexture;
     auto menuFrame = menuLoop ? renderer->LoadTexture("Game/Media/UI/frame.png", error) : InvalidTexture;
+    std::array<TextureId, 4> menuFilm{};
+    if (menuLoop) {
+        constexpr std::array<const char*, 4> names = {"film_frame.png", "film_frame_2.png", "film_frame_3.png", "film_frame_4.png"};
+        for (size_t i = 0; i < names.size(); ++i)
+            menuFilm[i] = renderer->LoadTexture(std::string("Game/Media/UI/") + names[i], error);
+    }
     std::array<TextureId, 3> menuButtons{};
     std::array<TextureId, 3> menuFocus{};
+    std::array<TextureId, 2> optionsOff{}, optionsOn{}, optionsOffFocus{}, optionsOnFocus{};
     if (menuLoop) {
         constexpr std::array<const char*, 3> normal = {"play1.png", "settings1.png", "back1.png"};
         constexpr std::array<const char*, 3> focused = {"play2.png", "settings2.png", "back2.png"};
@@ -258,8 +304,20 @@ int main(int argc, char** argv) {
             menuButtons[i] = renderer->LoadTexture(std::string("Game/Media/UI/buttons/") + normal[i], error);
             menuFocus[i] = renderer->LoadTexture(std::string("Game/Media/UI/buttons/") + focused[i], error);
         }
+        constexpr std::array<const char*, 2> prefixes = {"music", "sfx"};
+        for (size_t i = 0; i < prefixes.size(); ++i) {
+            const std::string base = std::string("Game/Media/UI/") + prefixes[i];
+            optionsOff[i] = renderer->LoadTexture(base + "_off.png", error);
+            optionsOn[i] = renderer->LoadTexture(base + "_on.png", error);
+            optionsOffFocus[i] = renderer->LoadTexture(base + "_off_focus.png", error);
+            optionsOnFocus[i] = renderer->LoadTexture(base + "_on_focus.png", error);
+        }
     }
     int menuSelection = 0;
+    float menuFilmTime = 0;
+    int mouseHover = -1, mousePressed = -1, mousePage = -1;
+    bool lastMouseDown = false;
+    MouseState scriptedMouseState;
     bool menuOptions = false, menuLanguages = false, menuUpHeld = false, menuDownHeld = false, menuActivateHeld = false, menuBackHeld = false;
     bool completionOccurred = false;
     const auto persistMenuMetadata = [&]() -> bool {
@@ -288,6 +346,30 @@ int main(int argc, char** argv) {
         if (renderer->KeyDown(Escape) && !upgradeModal && !dismissHeld && (!menuLoop || !playLevel.empty())) break;
         if (!renderer->KeyDown(Escape) && !upgradeModal) dismissHeld = false;
         if (menuLoop && playLevel.empty()) {
+            menuFilmTime += dt;
+            if (auto scripted = scriptedMouse.find(frame); scripted != scriptedMouse.end()) scriptedMouseState = scripted->second;
+            const MouseState mouse = mouseScriptFile.empty() ? renderer->Mouse() : scriptedMouseState;
+            const int page = menuLanguages ? 2 : menuOptions ? 1 : 0;
+            mouseHover = -1;
+            if (page == 0) {
+                for (int i = 0; i < 3; ++i) if (Hit(menuBounds[i], mouse)) mouseHover = i;
+            } else if (page == 1) {
+                for (int i = 0; i < 2; ++i) if (Hit(optionsBounds[i], mouse)) mouseHover = i;
+                if (Hit({500, 548, 250, 48}, mouse)) mouseHover = 2; // Linux language supplement.
+                if (Hit(optionsBounds[2], mouse)) mouseHover = 3;
+            }
+            if (mouse.leftDown && !lastMouseDown) {
+                mousePressed = mouseHover; mousePage = page;
+                if (mousePressed >= 0) std::cout << "Menu mouse press page=" << page << " widget=" << mousePressed << " at frame " << frame << '\n';
+            }
+            const bool mouseActivate = !mouse.leftDown && lastMouseDown &&
+                mousePressed >= 0 && mousePage == page && mousePressed == mouseHover;
+            if (!mouse.leftDown && lastMouseDown) {
+                std::cout << "Menu mouse release page=" << page << " widget=" << mousePressed
+                          << " target=" << mouseHover << " activated=" << mouseActivate << " at frame " << frame << '\n';
+                mousePressed = -1;
+            }
+            lastMouseDown = mouse.leftDown;
             const bool up = script.empty() ? renderer->KeyDown(Up) : command == 'J';
             const bool down = script.empty() ? renderer->KeyDown(Down) : command == 'N';
             const bool activate = script.empty() ? renderer->KeyDown(Interact) : command == 'S';
@@ -296,9 +378,10 @@ int main(int argc, char** argv) {
             else if (back && !menuBackHeld && menuOptions) { menuOptions = false; menuSelection = 0; }
             else if (back && !menuBackHeld) break;
             const int menuCount = menuLanguages || menuOptions ? 4 : 3;
-            if (up && !menuUpHeld) menuSelection = (menuSelection + menuCount - 1) % menuCount;
-            if (down && !menuDownHeld) menuSelection = (menuSelection + 1) % menuCount;
-            if (activate && !menuActivateHeld) {
+            if (up && !menuUpHeld) { menuSelection = (menuSelection + menuCount - 1) % menuCount; mouseHover = -1; }
+            if (down && !menuDownHeld) { menuSelection = (menuSelection + 1) % menuCount; mouseHover = -1; }
+            if (mouseActivate) menuSelection = mouseHover;
+            if ((activate && !menuActivateHeld) || mouseActivate) {
                 if (menuLanguages) {
                     if (menuSelection == 3) { menuLanguages = false; menuSelection = 2; }
                     else {
@@ -575,29 +658,40 @@ int main(int argc, char** argv) {
         if (levelPath.empty()) {
             renderer->DrawSprite({background, {}, {0, 0, 1280, 720}});
             if (menuLoop) {
-                if (menuTitle) renderer->DrawSprite({menuTitle, {}, {140, 92, 502, 129}});
+                if (menuBlur) renderer->DrawSprite({menuBlur, {}, AuthoredUI(-990,-540,1969.2f,1115.8f), {255,255,255,115}});
+                if (!menuOptions && !menuLanguages) {
+                    if (titleBlur) renderer->DrawSprite({titleBlur, {}, AuthoredUI(-750,300,753,194), {255,255,255,128}});
+                    if (menuTitle) renderer->DrawSprite({menuTitle, {}, AuthoredUI(-754,307,753,194)});
+                }
                 if (menuFrame) renderer->DrawSprite({menuFrame, {}, {0, 0, 1280, 720}});
+                const int filmIndex = static_cast<int>(menuFilmTime * 11.f) % 4;
+                if (menuFilm[filmIndex]) renderer->DrawSprite({menuFilm[filmIndex], {}, {0,0,1280,720}, {255,255,255,26}});
                 if (menuLanguages) {
                     constexpr std::array<const char*, 4> labels = {"ENGLISH", "PORTUGUESE", "DEUTSCH", "BACK"};
                     for (int i = 0; i < 4; ++i)
                         deathleak::game::DrawBitmapText(*renderer, labels[i], 400, 270 + i*65, 4,
                             i == menuSelection ? Color{255,0,0,255} : Color{255,255,255,255});
                 } else if (menuOptions) {
-                    const std::array<std::string, 4> labels = {
-                        std::string("MUSIC: ") + (settings.music ? "ON" : "OFF"),
-                        std::string("SFX: ") + (settings.sfx ? "ON" : "OFF"), "LANGUAGE", "BACK"};
-                    for (int i = 0; i < 4; ++i)
-                        deathleak::game::DrawBitmapText(*renderer, labels[i], 400, 270 + i*65, 4,
-                            i == menuSelection ? Color{255,0,0,255} : Color{255,255,255,255});
-                } else {
-                    constexpr std::array<Rect, 3> bounds = {{{350,290,107,107}, {367,407,67,67}, {378,514,60,60}}};
-                    for (int i = 0; i < 3; ++i) {
-                        auto art = i == menuSelection ? menuFocus[i] : menuButtons[i];
-                        if (art) renderer->DrawSprite({art, {}, bounds[i]});
+                    for (int i = 0; i < 2; ++i) {
+                        const bool checked = i == 0 ? settings.music : settings.sfx;
+                        const bool focused = (mouseHover >= 0 ? mouseHover : menuSelection) == i;
+                        auto art = checked ? (focused ? optionsOnFocus[i] : optionsOn[i]) :
+                            (focused ? optionsOffFocus[i] : optionsOff[i]);
+                        if (art) renderer->DrawSprite({art, {}, optionsBounds[i]});
                     }
-                    deathleak::game::DrawBitmapText(*renderer, "PLAY", 480, 325, 4);
-                    deathleak::game::DrawBitmapText(*renderer, "OPTIONS", 480, 428, 4);
-                    deathleak::game::DrawBitmapText(*renderer, "QUIT", 480, 535, 4);
+                    const bool backFocused = (mouseHover >= 0 ? mouseHover : menuSelection) == 3;
+                    auto backArt = backFocused ? menuFocus[2] : menuButtons[2];
+                    if (backArt) renderer->DrawSprite({backArt, {}, optionsBounds[2]});
+                    deathleak::game::DrawBitmapText(*renderer, "LANGUAGE", 500, 555, 3,
+                        (mouseHover >= 0 ? mouseHover : menuSelection) == 2 ? Color{255,0,0,255} : Color{255,255,255,255});
+                } else {
+                    for (int i = 0; i < 3; ++i) {
+                        auto art = i == (mouseHover >= 0 ? mouseHover : menuSelection) ? menuFocus[i] : menuButtons[i];
+                        if (art) renderer->DrawSprite({art, {}, menuBounds[i]});
+                    }
+                    deathleak::game::DrawBitmapText(*renderer, "PLAY", 480, 350, 4);
+                    deathleak::game::DrawBitmapText(*renderer, "OPTIONS", 480, 492, 4);
+                    deathleak::game::DrawBitmapText(*renderer, "QUIT", 480, 603, 4);
                     deathleak::game::DrawBitmapText(*renderer, "COMPLETED: " + std::to_string(completions), 750, 570, 3);
                 }
             } else renderer->DrawSprite({player, {}, {playerX, playerY, 100, 170}});

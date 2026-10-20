@@ -12,7 +12,7 @@ make -C port
 ./port/build/deathleak-linux
 ```
 
-Run from the repository root so `Game/Media` resolves. Fresh launch opens the Linux main-menu slice. Up/Down changes focus, E/controller X activates Play, Options, or Quit; Escape closes the menu. The authored Play action starts `grass_exploration_3.xml`. This remains a partial port. For an automated render check on a machine without a display:
+Run from the repository root so `Game/Media` resolves. Fresh launch opens the Linux main-menu slice. Up/Down changes focus, E/controller X activates Play, Options, or Quit; Escape closes the menu. Mouse hover and left-button press/release use the authored menu/options widget rectangles; releasing over a different widget cancels the action. Music and SFX checkboxes use their original on/off/focus art and persist to a separate settings XML. The authored Play action starts `grass_exploration_3.xml`. This remains a partial port. For an automated render check on a machine without a display:
 
 ```sh
 make -C port smoke
