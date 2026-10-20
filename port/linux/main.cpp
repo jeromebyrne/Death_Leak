@@ -35,6 +35,7 @@ int main(int argc, char** argv) {
     std::unordered_map<std::string, std::int64_t> triggerHistory;
     bool simulateOnly = false;
     bool profile = false;
+    bool combatState = false;
     int startEncounter = -1;
     int startHazard = -1;
     bool exhaustedFocus = false;
@@ -51,6 +52,7 @@ int main(int argc, char** argv) {
         else if (arg == "--fixed-dt" && i + 1 < argc) fixedDt = std::atof(argv[++i]);
         else if (arg == "--simulate-only") simulateOnly = true;
         else if (arg == "--profile") profile = true;
+        else if (arg == "--combat-state") combatState = true;
         else if (arg == "--exhaust-focus") exhaustedFocus = true;
         else if (arg == "--start-encounter" && i + 1 < argc) startEncounter = std::atoi(argv[++i]);
         else if (arg == "--start-hazard" && i + 1 < argc) startHazard = std::atoi(argv[++i]);
@@ -340,6 +342,10 @@ int main(int argc, char** argv) {
                   << " focus=" << combat.Focus() << " spawned=" << combat.Spawned() << " enemies=" << combat.EnemyCount()
                   << " hits=" << combat.Hits() << " kills=" << combat.Kills() << " fired=" << combat.Fired()
                   << " shots=" << combat.ShotCount() << " grounded=" << motion.Grounded() << " elapsed=" << elapsed << "s\n";
+        if (combatState) {
+            for (const auto& e : combat.Enemies()) std::cout << "Enemy " << e.type << " x=" << e.x << " y=" << e.y << " windup=" << e.windup << "\n";
+            for (const auto& s : combat.Shots()) std::cout << "Shot " << (s.enemy ? "enemy" : "player") << " x=" << s.x << " y=" << s.y << " vx=" << s.vx << " vy=" << s.vy << "\n";
+        }
         if (profile) std::cout << "Profile update=" << updateSeconds << "s draw/present=" << drawSeconds << "s\n";
     }
     return 0;

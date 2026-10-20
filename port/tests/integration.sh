@@ -25,9 +25,9 @@ printf '%s\n' "$focus_lock" | grep -q 'focus=0'
 focus_recover=$($bin --play Game/XmlFiles/levels/test.xml --start-hazard 1 --exhaust-focus --script L:240,.:360 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$focus_recover" | grep -q 'focus=19.3334'
 combat=$($bin --play Game/XmlFiles/levels/first_ninja_arena.xml --start-encounter 0 --script F:300 --fixed-dt 0.0166667 --simulate-only --save-file port/build/integration-save.txt)
-printf '%s\n' "$combat" | grep -q 'spawned=2 enemies=1 hits=17 kills=1'
+printf '%s\n' "$combat" | grep -q 'spawned=2 enemies=2 hits=12 kills=0'
 resume=$($bin --load-save port/build/integration-save.txt --frames 1 --fixed-dt 0.0166667 --simulate-only)
-printf '%s\n' "$resume" | grep -q 'health=16 focus=100'
+printf '%s\n' "$resume" | grep -q 'health=25 focus=100'
 # NPCTrigger removes a recently-fired trigger on level load (120000 ms).
 # Force overlap on resume so a missing cooldown would visibly respawn it.
 cooldown=$($bin --load-save port/build/integration-save.txt --start-encounter 0 --frames 1 --fixed-dt 0.0166667 --simulate-only)
@@ -45,6 +45,22 @@ printf '%s\n' "$expired" | grep -q 'spawned=2 enemies=2'
 ghost=$($bin --play Game/XmlFiles/levels/forest_exploration_2.xml --start-encounter 0 --script .:120 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$ghost" | grep -q 'spawned=1 enemies=1'
 
+
+# AIStateRangeAttack: hold a 200-unit standoff and wind up for 0.25 s.
+range_warmup=$($bin --play port/tests/fixtures/encounter_open.xml --frames 90 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$range_warmup" | grep -q 'Enemy kNinja x=200 .*windup=0.049'
+open_shot=$($bin --play port/tests/fixtures/encounter_open.xml --frames 105 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$open_shot" | grep -q 'Shot enemy x=98.3528 y=162.6 .*vy=-275.21'
+# Original projectile terrain handling: the same shot is stopped by an authored wall.
+walled_shot=$($bin --play port/tests/fixtures/encounter_wall.xml --frames 105 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$walled_shot" | grep -q 'spawned=1 enemies=1 .*shots=0'
+# Sustained knives can defeat the single source-health (20 HP) ranged enemy.
+range_kill=$($bin --play port/tests/fixtures/encounter_open.xml --script F:330 --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$range_kill" | grep -q 'spawned=1 enemies=0 hits=14 kills=1'
+# AIStateFlying leaves an authored ghost elevated and outside its close fire range.
+ghost_state=$($bin --play Game/XmlFiles/levels/forest_exploration_2.xml --start-encounter 0 --frames 120 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$ghost_state" | grep -q 'Enemy kGhost x=1002.99 y=2977.91'
+printf '%s\n' "$ghost_state" | grep -q 'health=25 .*shots=0'
 
 water=$($bin --play Game/XmlFiles/levels/test.xml --start-hazard 1 --exhaust-focus --script .:1 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$water" | grep -q 'health=24.95 focus=0'
@@ -95,4 +111,4 @@ legacy=$($bin --load-save port/build/legacy-dl3-save.txt --frames 1 --fixed-dt 0
 printf '%s\n' "$legacy" | grep -q 'keys=1'
 
 if printf '%s\n' "$key_only_resume" | grep -q 'Collected key'; then exit 1; fi
-printf '%s\n' 'PASS: source-held-jump arena climb and exit, three-level route, burst/water fire, swim, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, solid box, wall jump, death/restart, key/door gate, ghost encounter, DL3 compatibility and DL4 encounter persistence'
+printf '%s\n' 'PASS: source-held-jump arena climb and exit, three-level route, burst/water fire, swim, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, solid box, wall jump, death/restart, key/door gate, ghost flight, ranged warmup/terrain shots and kill, DL3 compatibility and DL4 encounter persistence'

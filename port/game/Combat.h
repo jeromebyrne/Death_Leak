@@ -12,10 +12,13 @@ struct Enemy {
     float x, y, health, fireCooldown;
     std::string type;
     render::TextureId texture;
+    float windup = 0, targetX = 0, targetY = 0;
 };
 struct Shot {
     float x, y, vx, vy, life, damage;
     bool enemy;
+    float resistance = 1.f;
+    bool gravity = true;
 };
 class Combat {
 public:
@@ -35,6 +38,8 @@ public:
     int Fired() const { return fired_; }
     size_t EnemyCount() const { return enemies_.size(); }
     size_t ShotCount() const { return shots_.size(); }
+    const std::vector<Enemy>& Enemies() const { return enemies_; }
+    const std::vector<Shot>& Shots() const { return shots_; }
 private:
     std::vector<Enemy> enemies_;
     std::vector<Shot> shots_;

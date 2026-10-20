@@ -9,6 +9,32 @@ namespace {
 bool Inside(float x, float y, float cx, float cy, float w, float h) {
     return std::abs(x-cx) <= w*0.5f && std::abs(y-cy) <= h*0.5f;
 }
+// First contact of a moving projectile center with an authored segment.
+bool SegmentContact(float ax, float ay, float bx, float by,
+                    float cx, float cy, float dx, float dy, float& contact) {
+    const float rx = bx-ax, ry = by-ay, sx = dx-cx, sy = dy-cy;
+    const float divisor = rx*sy-ry*sx;
+    if (std::abs(divisor) < 0.00001f) return false;
+    const float qx = cx-ax, qy = cy-ay;
+    const float t = (qx*sy-qy*sx)/divisor;
+    const float u = (qx*ry-qy*rx)/divisor;
+    if (t < 0.f || t > 1.f || u < 0.f || u > 1.f) return false;
+    contact = t;
+    return true;
+}
+bool BoxContact(float ax, float ay, float bx, float by, const SolidBox& box, float& contact) {
+    if (ax > box.left && ax < box.right && ay > box.bottom && ay < box.top) { contact = 0.f; return true; }
+    bool found = false;
+    auto edge = [&](float cx, float cy, float dx, float dy) {
+        float t;
+        if (SegmentContact(ax,ay,bx,by,cx,cy,dx,dy,t) && t < contact) { contact=t; found=true; }
+    };
+    edge(box.left,box.bottom,box.right,box.bottom);
+    edge(box.right,box.bottom,box.right,box.top);
+    edge(box.right,box.top,box.left,box.top);
+    edge(box.left,box.top,box.left,box.bottom);
+    return found;
+}
 }
 void Combat::SetArt(render::Renderer& renderer) {
     std::string error;
@@ -39,8 +65,10 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
             // Original spawners use a 1200x1200 box around the player. Fixed offsets make scripted runs reproducible.
             float offset = (i%2 ? -1.f : 1.f) * (150.f + 85.f*(i/2));
             auto art = trigger.type == "kGhost" ? ghostArt_ : trigger.type == "kSkeleton" ? skeletonArt_ : ninjaArt_;
-            enemies_.push_back({x+offset, y+170.f, trigger.type == "kGhost" ? 50.f : trigger.type == "kSkeleton" ? 500.f : 20.f,
-                0.8f+0.25f*i, trigger.type, art});
+            // Source SpawnMultiple uses x within +/-600, y between +300 and +600.
+            const float spawnY = y + 300.f + 60.f*(i%5);
+            enemies_.push_back({x+offset, spawnY, trigger.type == "kGhost" ? 50.f : trigger.type == "kSkeleton" ? 500.f : 20.f,
+                1.3f+0.1f*i, trigger.type, art, 0.f, x + (offset < 0 ? -250.f : 250.f), y+300.f});
             ++spawned_;
         }
     }
@@ -56,31 +84,66 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
     for (auto& enemy : enemies_) {
         if (enemy.health <= 0) continue;
         const float dx=x-enemy.x, dy=y-enemy.y;
-        enemy.fireCooldown -= dt;
-        if (enemy.type == "kGhost") {
-            enemy.x += std::clamp(dx, -720.f*dt, 720.f*dt);
-            enemy.y += std::clamp(dy, -210.f*dt, 210.f*dt);
+        enemy.fireCooldown = std::max(0.f, enemy.fireCooldown-dt);
+        const bool ghost = enemy.type == "kGhost";
+        if (ghost) {
+            // AIStateFlying: seek 250-400 above the player, holding a 150-400 X offset.
+            const float side = enemy.targetX < x ? -1.f : 1.f;
+            enemy.targetX = x + side*250.f;
+            enemy.targetY = y + 300.f;
+            if (enemy.x < x-250.f) enemy.x += std::min(x-250.f-enemy.x,720.f*dt);
+            else if (enemy.x > x+250.f) enemy.x -= std::min(enemy.x-x-250.f,720.f*dt);
+            enemy.y += std::clamp(enemy.targetY-enemy.y,-210.f*dt,210.f*dt);
         } else {
-            if (std::abs(dx)>130.f) enemy.x += std::copysign(220.f*dt,dx);
-            // Ground-following and jumping still differ from original NPC/AIState.
-            enemy.y += std::clamp(dy, -120.f*dt, 120.f*dt);
+            // AIStateRangeAttack follows beyond 500, retreats inside 200, and holds the band.
+            const float range = std::abs(dx);
+            const float speed = enemy.type == "kSkeleton" ? 240.f : 480.f;
+            if (range > 500.f) enemy.x += std::copysign(std::min(range-500.f,speed*dt),dx);
+            else if (range < 200.f && range > 0.01f) enemy.x -= std::copysign(std::min(200.f-range,speed*dt),dx);
+            // Character terrain and jumping are not yet ported for NPCs.
+            enemy.y += std::clamp(dy,-120.f*dt,120.f*dt);
         }
-        if (enemy.fireCooldown <= 0 && std::abs(dx)<700.f && std::abs(dy)<300.f) {
-            const float length=std::max(1.f,std::hypot(dx,dy));
-            // Source NPC: ninja star 9 units/tick, 3 damage, 0.25 s;
-            // GhostEnemy: 8.5-11.4 units/tick, 2 damage, 2 s;
-            // SkeletonEnemy: fireball 5 units/tick, 35 damage, 2 s.
-            const bool skeleton = enemy.type == "kSkeleton", ghost = enemy.type == "kGhost";
-            const float speed = skeleton ? 300.f : ghost ? 510.f : 540.f;
-            shots_.push_back({enemy.x,enemy.y+35.f,dx/length*speed,dy/length*speed,
-                ghost || skeleton ? 2.f : 0.25f, skeleton ? 35.f : ghost ? 2.f : 3.f,true});
-            enemy.fireCooldown=enemy.type == "kSkeleton" ? 2.2f : 1.5f;
+        if (ghost) {
+            // AIStateFlying fires only when the player is below and horizontally near.
+            if (enemy.fireCooldown > 0 || y >= enemy.y || std::abs(x-enemy.x) > 45.f) continue;
+        } else {
+            if (enemy.windup > 0) {
+                enemy.windup = std::max(0.f,enemy.windup-dt);
+                if (enemy.windup > 0) continue;
+            } else {
+                if (enemy.fireCooldown > 0 || std::abs(dx)>700.f || std::abs(dy)>500.f) continue;
+                enemy.windup=0.25f; // AIStateRangeAttack fire warmup
+                continue;
+            }
         }
+        const float aimX=x-enemy.x, aimY=y-enemy.y;
+        const float length=std::max(1.f,std::hypot(aimX,aimY));
+        const bool skeleton = enemy.type == "kSkeleton";
+        const float speed = skeleton ? 300.f : ghost ? 510.f : 540.f;
+        shots_.push_back({enemy.x,enemy.y+(skeleton?50.f:0.f),aimX/length*speed,aimY/length*speed,
+            ghost || skeleton ? 2.f : 0.25f, skeleton ? 35.f : ghost ? 2.f : 3.f,true,
+            ghost ? 0.9f : 1.f, !skeleton});
+        enemy.fireCooldown=1.3f; // fixed within NPC's original 1.0..1.6 s randomized reload
     }
     for (auto& shot : shots_) {
         if (shot.life<=0) continue;
         const float oldX=shot.x, oldY=shot.y;
-        shot.x+=shot.vx*dt; shot.y+=shot.vy*dt; shot.life-=dt;
+        // Projectile::Update uses 60-Hz-equivalent gravity and displacement resistance.
+        const float ticks=std::min(2.f,dt*60.f);
+        if (shot.gravity) shot.vy -= (shot.enemy ? (shot.resistance < 1.f ? 0.5f : 0.01f) : 0.25f)*60.f*ticks;
+        const float newX=shot.x+shot.vx*dt*shot.resistance;
+        const float newY=shot.y+shot.vy*dt*shot.resistance;
+        float terrainT=1.f;
+        // Original blades pass line strips while an enemy is alive, but still hit solid boxes.
+        if (shot.enemy || enemies_.empty()) for (const auto& line : scene.Ground()) {
+            float t;
+            if (SegmentContact(oldX,oldY,newX,newY,line.x1,line.y1,line.x2,line.y2,t)) terrainT=std::min(terrainT,t);
+        }
+        for (const auto& box : scene.SolidBoxes()) BoxContact(oldX,oldY,newX,newY,box,terrainT);
+        shot.x=oldX+(newX-oldX)*terrainT;
+        shot.y=oldY+(newY-oldY)*terrainT;
+        shot.life-=dt;
+        if (terrainT < 1.f) shot.life=0;
         if (shot.enemy) {
             const float vx=shot.x-oldX, vy=shot.y-oldY;
             const float t=std::clamp(((x-oldX)*vx+(y-oldY)*vy)/(vx*vx+vy*vy+0.0001f),0.f,1.f);
