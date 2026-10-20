@@ -260,6 +260,20 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
     box_state = re.search(r'Health upgrade pickup state x=([^\s]+) y=([^\s]+) vx=([^\s]+) vy=([^\s]+)', pass_through.stdout)
     assert box_state and 0 < float(box_state[1]) < 400 and float(box_state[2]) < -235, pass_through.stdout
     assert 'max_health=25' in pass_through.stdout and 'grounded=1' in pass_through.stdout
+    # Windows sorts load-time interactables by depth and appends the spawned
+    # pickup afterward. The overlapping authored key must win the first hold;
+    # its removal allows a fresh 0.05-second hold on the still-overlapping pickup.
+    arbitration_cmd = ['port/build/deathleak-linux', '--play',
+                       'port/tests/fixtures/health_pickup_arbitration.xml',
+                       '--fixed-dt', '0.0166667', '--simulate-only']
+    key_first = subprocess.run(arbitration_cmd + ['--script', 'I:4,R:10,.:735,I:3'],
+                               capture_output=True, text=True, check=True)
+    assert 'Collected key pickup_overlap_key at frame 751' in key_first.stdout, key_first.stdout
+    assert 'Health upgrade collected ' not in key_first.stdout and 'max_health=25' in key_first.stdout, key_first.stdout
+    then_pickup = subprocess.run(arbitration_cmd + ['--script', 'I:4,R:10,.:735,I:8'],
+                                 capture_output=True, text=True, check=True)
+    assert 'Collected key pickup_overlap_key at frame 751' in then_pickup.stdout, then_pickup.stdout
+    assert 'Health upgrade collected port/tests/fixtures/health_pickup_arbitration.xml at frame 754 max_health=45' in then_pickup.stdout, then_pickup.stdout
     assert {'V:' + hot, 'J:1'} <= set(uncollected.read_text().splitlines())
     assert 'H:45' not in uncollected.read_text().splitlines()
     returned = subprocess.run(['port/build/deathleak-linux', '--load-save', str(hot_start),

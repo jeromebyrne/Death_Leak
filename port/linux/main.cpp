@@ -668,46 +668,71 @@ int main(int argc, char** argv) {
                 return std::abs(worldX-ox) <= (128.959793f+ow)*0.5f &&
                        std::abs(worldY-oy) <= (214.898743f+oh)*0.5f;
             };
+            // GameObjectManager sorts authored objects by depth once (stable
+            // within a layer), then appends dynamically spawned pickups. Its
+            // sCurrentInteractable retains the selected object while overlapping.
             std::string target;
-            // Pickup::Initialise makes this an interactable (0.05 s), and
-            // GameObject::UpdateInteractable uses the player collision box.
+            int selectedDepth = -2;
+            size_t selectedOrder = 0;
+            auto select = [&](const std::string& id, int depth, size_t order) {
+                const bool held = !interactionTarget.empty() && id == interactionTarget;
+                const bool selectedHeld = !interactionTarget.empty() && target == interactionTarget;
+                if (!held && (selectedHeld || (depth < selectedDepth) ||
+                    (depth == selectedDepth && order >= selectedOrder))) return;
+                target = id; selectedDepth = depth; selectedOrder = order;
+            };
             const bool nearbyHealthPickup = healthPickup &&
                 std::abs(worldX-healthPickup->x) < (128.959793f+50.f)*0.5f &&
                 std::abs(worldY-healthPickup->y) < (214.898743f+70.f)*0.5f;
-            if (nearbyHealthPickup) target = "H:" + currentLevel;
+            // Spawned objects are appended to the live list after the load-time
+            // depth sort, regardless of their own depth layer.
+            if (nearbyHealthPickup) select("H:" + currentLevel, -1, 0);
             const deathleak::game::KeyPickup* nearbyKey = nullptr;
             const deathleak::game::PaperPickup* nearbyPaper = nullptr;
             const deathleak::game::HealthDevil* nearbyDevil = nullptr;
             const deathleak::game::DojoScroll* nearbyScroll = nullptr;
             const deathleak::game::Door* nearbyDoor = nullptr;
             const deathleak::game::Boat* nearbyBoat = nullptr;
-            for (const auto& key : scene.Keys()) if (!nearbyHealthPickup && !ownedKeys.count(key.keyId) && overlap(key.x,key.y,key.width,key.height)) {
-                nearbyKey = &key; target = "K:" + key.keyId; break;
+            for (const auto& key : scene.Keys()) if (!ownedKeys.count(key.keyId) && overlap(key.x,key.y,key.width,key.height)) {
+                select("K:" + key.keyId, key.depth, key.order);
+                if (target == "K:" + key.keyId) nearbyKey = &key;
             }
-            if (!nearbyHealthPickup && !nearbyKey)
-                for (const auto& paper : scene.Papers()) if (!collectedPapers.count(paper.descriptionId) && overlap(paper.x,paper.y,paper.width,paper.height)) {
-                    nearbyPaper = &paper; target = "P:" + paper.descriptionId; break;
-                }
-            if (!nearbyHealthPickup && !nearbyKey && !nearbyPaper && !devilDialog && motion.Grounded() && !rewardedHealthDevils.count(currentLevel))
+            for (const auto& paper : scene.Papers()) if (!collectedPapers.count(paper.descriptionId) && overlap(paper.x,paper.y,paper.width,paper.height)) {
+                select("P:" + paper.descriptionId, paper.depth, paper.order);
+                if (target == "P:" + paper.descriptionId) nearbyPaper = &paper;
+            }
+            if (!devilDialog && motion.Grounded() && !rewardedHealthDevils.count(currentLevel))
                 for (const auto& devil : scene.HealthDevils()) if (overlap(devil.x,devil.y,devil.width,devil.height)) {
-                    nearbyDevil = &devil; target = "V:" + currentLevel; break;
+                    select("V:" + currentLevel, devil.depth, devil.order);
+                    if (target == "V:" + currentLevel) nearbyDevil = &devil;
                 }
-            if (!nearbyHealthPickup && !nearbyKey && !nearbyPaper && !nearbyDevil && !combat.DeflectionUnlocked())
+            if (!combat.DeflectionUnlocked())
                 for (const auto& scroll : scene.Scrolls()) if (scroll.feature == "kDeflection" && overlap(scroll.x,scroll.y,scroll.width,scroll.height)) {
-                    nearbyScroll = &scroll; target = "S:" + scroll.id; break;
+                    select("S:" + scroll.id, scroll.depth, scroll.order);
+                    if (target == "S:" + scroll.id) nearbyScroll = &scroll;
                 }
-            if (!nearbyHealthPickup && !nearbyKey && !nearbyPaper && !nearbyDevil && !nearbyScroll && levelTime >= 0.75f && motion.Grounded())
+            if (levelTime >= 0.75f && motion.Grounded()) {
                 for (const auto& door : scene.Doors()) if (overlap(door.x,door.y,door.width,door.height)) {
-                    nearbyDoor = &door; target = "D:" + door.id + door.destination; break;
+                    select("D:" + door.id + door.destination, door.depth, door.order);
+                    if (target == "D:" + door.id + door.destination) nearbyDoor = &door;
                 }
-            if (!nearbyHealthPickup && !nearbyKey && !nearbyPaper && !nearbyDevil && !nearbyScroll && !nearbyDoor && levelTime >= 0.75f && motion.Grounded())
                 for (const auto& boat : scene.Boats()) if (overlap(boat.x,boat.y,boat.width,boat.height)) {
-                    nearbyBoat = &boat; target = "B:" + boat.id; break;
+                    select("B:" + boat.id, boat.depth, boat.order);
+                    if (target == "B:" + boat.id) nearbyBoat = &boat;
                 }
+            }
+            // Only the selected object receives this frame's interaction hold.
+            const bool selectedHealthPickup = nearbyHealthPickup && target == "H:" + currentLevel;
+            if (target.empty() || target[0] != 'K') nearbyKey = nullptr;
+            if (target.empty() || target[0] != 'P') nearbyPaper = nullptr;
+            if (target.empty() || target[0] != 'V') nearbyDevil = nullptr;
+            if (target.empty() || target[0] != 'S') nearbyScroll = nullptr;
+            if (target.empty() || target[0] != 'D') nearbyDoor = nullptr;
+            if (target.empty() || target[0] != 'B') nearbyBoat = nullptr;
             if (!interact || target != interactionTarget) interactHeldTime = 0;
             interactionTarget = target;
             if (interact && !target.empty()) interactHeldTime += dt;
-            if (interactHeldTime >= 0.05f && nearbyHealthPickup) {
+            if (interactHeldTime >= 0.05f && selectedHealthPickup) {
                 savedMaxHealth = combat.MaxHealth() + 20.f;
                 hasSavedMaxHealth = true;
                 combat.SetMaxHealth(savedMaxHealth);

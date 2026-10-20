@@ -1,6 +1,7 @@
 #pragma once
 #include "../render/Renderer.h"
 #include "../audio/SoundPlayer.h"
+#include <cstddef>
 #include <string>
 #include <unordered_set>
 #include <vector>
@@ -29,12 +30,12 @@ struct GroundSegment { float x1, y1, x2, y2; };
 struct SolidBox { float left, right, bottom, top; float damage = 0; };
 struct LevelTrigger { float x, y, width, height; std::string destination; };
 struct EncounterTrigger { float x, y, width, height; int count; std::string type; std::string id; };
-struct Door { float x, y, width, height; std::string destination, requiredKey, id; };
-struct Boat { float x, y, width, height; std::string id; };
-struct DojoScroll { float x, y, width, height; std::string feature; std::string id; };
-struct KeyPickup { float x, y, width, height; std::string keyId; };
-struct PaperPickup { float x, y, width, height; std::string descriptionId, titleId; };
-struct HealthDevil { float x, y, width, height; };
+struct Door { float x, y, width, height; std::string destination, requiredKey, id; int depth = 3000; size_t order = 0; };
+struct Boat { float x, y, width, height; std::string id; int depth = 3000; size_t order = 0; };
+struct DojoScroll { float x, y, width, height; std::string feature; std::string id; int depth = 3000; size_t order = 0; };
+struct KeyPickup { float x, y, width, height; std::string keyId; int depth = 3000; size_t order = 0; };
+struct PaperPickup { float x, y, width, height; std::string descriptionId, titleId; int depth = 3000; size_t order = 0; };
+struct HealthDevil { float x, y, width, height; int depth = 3000; size_t order = 0; };
 struct Smashable { SolidBox box; float x = 0, y = 0; bool smashed = false; };
 struct SpawnedOrb { float x, y, vx, vy, spawnDelay, trackingTime = 0; };
 struct HazardRegion { float x, y, width, height; bool water; float damage; };

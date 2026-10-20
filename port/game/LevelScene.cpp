@@ -66,13 +66,15 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         cameraX_ = Attr(camera, "posx"); cameraY_ = Attr(camera, "posy");
     }
     std::unordered_map<std::string, render::TextureId> textures;
-    for (auto* object = level->FirstChildElement(); object; object = object->NextSiblingElement()) {
+    size_t objectOrder = 0;
+    for (auto* object = level->FirstChildElement(); object; object = object->NextSiblingElement(), ++objectOrder) {
         auto* position = object->FirstChildElement("position");
         auto* dimensions = object->FirstChildElement("dimensions");
         auto* asset = object->FirstChildElement("texture");
         if (!position || !dimensions) continue;
         const std::string kind = object->Value();
         const float x = Attr(position, "x"), y = Attr(position, "y");
+        const int interactionDepth = Depth(position->Attribute("depth_layer"));
         if (kind == "AudioObject") {
             auto* file = object->FirstChildElement("audiofile");
             auto* fade = object->FirstChildElement("fadedimensions");
@@ -105,21 +107,21 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         if (kind == "DojoScrollPickup") {
             auto* feature = object->FirstChildElement("feature_unlock");
             if (feature && feature->Attribute("value") && object->Attribute("id"))
-                scrolls_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),feature->Attribute("value"),std::filesystem::path(path).lexically_normal().string() + "#" + object->Attribute("id")});
+                scrolls_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),feature->Attribute("value"),std::filesystem::path(path).lexically_normal().string() + "#" + object->Attribute("id"),interactionDepth,objectOrder});
         }
         if (kind == "KeyPickup") {
             auto* props = object->FirstChildElement("key_props");
             if (props && props->Attribute("id") && *props->Attribute("id"))
-                keys_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),props->Attribute("id")});
+                keys_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),props->Attribute("id"),interactionDepth,objectOrder});
         }
-        if (kind == "HealthDevil") healthDevils_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height")});
+        if (kind == "HealthDevil") healthDevils_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),interactionDepth,objectOrder});
         if (kind == "PaperPickup") {
             auto* loc = object->FirstChildElement("loc_id");
             if (loc && loc->Attribute("desc") && *loc->Attribute("desc"))
-                papers_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),loc->Attribute("desc"),loc->Attribute("title") ? loc->Attribute("title") : ""});
+                papers_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),loc->Attribute("desc"),loc->Attribute("title") ? loc->Attribute("title") : "",interactionDepth,objectOrder});
         }
         if (kind == "Boat" && object->Attribute("id"))
-            boats_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),object->Attribute("id")});
+            boats_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),object->Attribute("id"),interactionDepth,objectOrder});
         if (kind == "Door") {
             auto* to = object->FirstChildElement("to_level_file");
             auto* key = object->FirstChildElement("required_key");
@@ -128,7 +130,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
             if (!destination.empty() && std::filesystem::exists(destination))
                 doors_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),destination,
                     key && key->Attribute("value") ? key->Attribute("value") : "",
-                    id && id->Attribute("value") ? id->Attribute("value") : ""});
+                    id && id->Attribute("value") ? id->Attribute("value") : "",interactionDepth,objectOrder});
         }
         if (kind == "LevelTrigger") {
             auto* destination = object->FirstChildElement("level_to_load");
