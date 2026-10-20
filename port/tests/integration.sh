@@ -118,6 +118,30 @@ orb_ids = [line for line in lines if line.startswith('Game/XmlFiles/levels/') an
 assert len(orb_ids) == len(set(orb_ids)) == 99, (len(orb_ids), len(set(orb_ids)))
 assert 'B:99' in lines
 PYTEST
+# A single uninterrupted forest-spawn run combines the earned east itinerary
+# with a westward return through grass 3 into the arena. The east-side 190
+# includes its forest pickups; the 227 endpoint is 227 unique IDs, not 190+227.
+# At one health this route cannot yet reach the independent grass/cliff leg:
+# ordinary continued leftward movement dies to the next arena encounter.
+combined_save=port/build/combined-east-west-save.txt
+combined_prefix=R:710,E:40,B:4480,E:40,B:50,E:40,B:50,E:40,B:3400,L:3410,Q:40,L:4640,Q:40
+combined_route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$combined_prefix,L:1826,Q:40,L:260" --fixed-dt 0.0166667 --simulate-only --save-file "$combined_save")
+printf '%s\n' "$combined_route" | grep -q 'Trigger at frame 17306 from .*waterfall_top.xml .*forest_exploration_1.xml'
+printf '%s\n' "$combined_route" | grep -q 'Trigger at frame 17947 from .*forest_exploration_1.xml .*grass_exploration_3.xml'
+printf '%s\n' "$combined_route" | grep -q 'Trigger at frame 18740 from .*grass_exploration_3.xml .*first_ninja_arena.xml'
+printf '%s\n' "$combined_route" | grep -q 'first_ninja_arena.xml player=(4794.17,-1780.42) orbs=227 .*health=1 .*balance=227'
+if printf '%s\n' "$combined_route" | grep -q 'Player died'; then exit 1; fi
+python3 - <<'PYCOMBINED'
+from pathlib import Path
+lines = Path('port/build/combined-east-west-save.txt').read_text().splitlines()
+orb_ids = [line for line in lines if line.startswith('Game/XmlFiles/levels/') and '#' in line]
+assert len(orb_ids) == len(set(orb_ids)) == 227, (len(orb_ids), len(set(orb_ids)))
+assert 'B:227' in lines
+assert any('grass_exploration_3.xml#' in orb for orb in orb_ids)
+assert any('first_ninja_arena.xml#' in orb for orb in orb_ids)
+PYCOMBINED
+combined_overrun=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$combined_prefix,L:1826,Q:40,L:300" --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$combined_overrun" | grep -q 'Player died at frame 19109 in Game/XmlFiles/levels/first_ninja_arena.xml'
 # A held left+jump just before grass 1's lower dead-end trigger keeps the
 # player on the upper route to grass 2 and the authored cliff. Reversing on
 # the reachable lower cliff path collects more distinct authored orbs; its
