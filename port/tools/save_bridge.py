@@ -14,7 +14,7 @@ KEY = 'babson'
 KEYS = {'granary', 'dojo', 'village_hut', 'has_repair_tools'}
 DOORS = {'barn_entrance', 'dojo', 'village_hut_entrance'}
 LOCALES = {'en-gb', 'pt-br', 'de'}
-# Source SaveManager stores these permanently. Linux does not yet implement their effects.
+# Windows permanent fields without active Linux gameplay support.
 OPAQUE_BOOL = {
     'health_devil_reward_XmlFiles-levels-hot_springs.xml',
     'health_devil_reward_XmlFiles-levels-waterfall_cave.xml',
@@ -162,6 +162,8 @@ def windows_to_dl5(fields, level):
     for name, feature_id in (('kProjectileDamageIncrease', '6'), ('kProjectileSpeedIncrease', '7')):
         if features is not None and ('int', feature_id) in features: lines.append('U:' + name)
     if 'player_max_health' in fields: lines.append('H:' + max_health)
+    papers = fields.get('paper_pickups_collected', ('vector', []))[1]
+    lines += ['P:' + value for kind, value in papers]
     if fields: lines.append('W1:' + base64.b64encode(field_xml(fields)).decode())
     return lines
 
@@ -176,7 +178,7 @@ def dl5_to_windows(path):
         data = lines[3:]
     elif lines[1] == 'MENU': data = lines[2:]
     else: raise ValueError('invalid DL6 MENU save')
-    fields, keys, doors, runtime = {}, set(), set(), []
+    fields, keys, doors, papers, runtime = {}, set(), set(), set(), []
     migration = None
     for line in data:
         if line.startswith('C:'):
@@ -192,6 +194,9 @@ def dl5_to_windows(path):
         elif line.startswith('D:'):
             if line[2:] not in DOORS or line[2:] in doors: raise ValueError('unmapped/duplicate door')
             doors.add(line[2:])
+        elif line.startswith('P:'):
+            if line[2:] not in PAPERS or line[2:] in papers: raise ValueError('unmapped/duplicate paper')
+            papers.add(line[2:])
         elif line in ('U:kDeflection', 'U:kSpeedIncrease', 'U:kProjectileDamageIncrease', 'U:kProjectileSpeedIncrease', 'U:kDownwardDash', 'U:kRoll'):
             unlock = line[2:]
             if unlock in fields: raise ValueError('duplicate unlock')
@@ -205,7 +210,7 @@ def dl5_to_windows(path):
             migration = extension_fields(line[3:])
         elif line.startswith(('B:', 'N:')) or '#' in line: runtime.append(line)
         else: raise ValueError('unmapped Linux line: ' + line)
-    if lines[0] == 'DL6' and (keys or doors or runtime or fields.get('kDeflection') or fields.get('kSpeedIncrease') or fields.get('kProjectileDamageIncrease') or fields.get('kProjectileSpeedIncrease') or fields.get('kDownwardDash') or fields.get('kRoll') or fields.get('H') or migration):
+    if lines[0] == 'DL6' and (keys or doors or papers or runtime or fields.get('kDeflection') or fields.get('kSpeedIncrease') or fields.get('kProjectileDamageIncrease') or fields.get('kProjectileSpeedIncrease') or fields.get('kDownwardDash') or fields.get('kRoll') or fields.get('H') or migration):
         raise ValueError('DL6 MENU cannot carry progression')
     if lines[0] == 'DL5' and len([v for v in runtime if v.startswith('B:')]) != 1:
         raise ValueError('DL5 requires one balance')
@@ -228,6 +233,15 @@ def dl5_to_windows(path):
             features = migration.get('gameplay_features_unlocked', ('vector', []))[1]
             if ('int', feature_id) not in features:
                 migration['gameplay_features_unlocked'] = ('vector', features + [('int', feature_id)])
+    if migration and 'paper_pickups_collected' in migration:
+        old_papers = [value for kind, value in migration['paper_pickups_collected'][1]]
+        if not set(old_papers).issubset(papers):
+            raise ValueError('paper migration conflicts with Linux collection')
+        migration['paper_pickups_collected'] = ('vector', [('string', value) for value in old_papers] +
+                                                [('string', value) for value in sorted(papers - set(old_papers))])
+    elif papers:
+        if migration is None: migration = {}
+        migration['paper_pickups_collected'] = ('vector', [('string', value) for value in sorted(papers)])
     if migration:
         for name, feature_id in (('kDownwardDash', '1'), ('kRoll', '2'), ('kDeflection', '4'), ('kSpeedIncrease', '5'), ('kProjectileDamageIncrease', '6'), ('kProjectileSpeedIncrease', '7')):
             if not fields.get(name) and ('int', feature_id) in migration.get('gameplay_features_unlocked', ('vector', []))[1]:

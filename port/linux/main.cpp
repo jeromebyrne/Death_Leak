@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
     std::string settingsFile = "deathleak-settings.xml";
     float savedX = 0, savedY = 0, savedHealth = 25, savedFocus = 100;
     bool restorePosition = false;
-    std::unordered_set<std::string> collectedOrbs, ownedKeys, unlockedDoors;
+    std::unordered_set<std::string> collectedOrbs, ownedKeys, unlockedDoors, collectedPapers;
     bool deflectionUnlocked = false, speedUnlocked = false;
     bool downwardDashUnlocked = false, rollUnlocked = false;
     bool projectileDamageUnlocked = false, projectileSpeedUnlocked = false;
@@ -142,6 +142,7 @@ int main(int argc, char** argv) {
         while (std::getline(saved, line)) {
             if (line.rfind("K:", 0) == 0) ownedKeys.insert(line.substr(2));
             else if (line.rfind("D:", 0) == 0) unlockedDoors.insert(line.substr(2));
+            else if (line.rfind("P:", 0) == 0) collectedPapers.insert(line.substr(2));
             else if (line == "U:kDeflection") deflectionUnlocked = true;
             else if (line == "U:kSpeedIncrease") speedUnlocked = true;
             else if (line == "U:kDownwardDash") downwardDashUnlocked = true;
@@ -249,6 +250,7 @@ int main(int argc, char** argv) {
     }
     if (restorePosition) scene.ApplyCollected(collectedOrbs);
     scene.ApplyKeys(ownedKeys);
+    scene.ApplyPapers(collectedPapers);
     scene.ApplyDeflection(deflectionUnlocked);
     if (!levelPath.empty()) {
         std::cout << "Loaded " << scene.SpriteCount() << " original level sprites; "
@@ -446,7 +448,7 @@ int main(int argc, char** argv) {
                         else sound->SetSfxEnabled(settings.sfx);
                     }
                     playLevel = levelPath = currentLevel = freshLevel;
-                    collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear();
+                    collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear(); collectedPapers.clear();
                     orbBalance = 0; combat = deathleak::game::Combat{};
                     speedUnlocked = projectileDamageUnlocked = projectileSpeedUnlocked = false; downwardDashUnlocked = rollUnlocked = false; savedMaxHealth = 25; hasSavedMaxHealth = false; windowsPermanentExtension.clear();
                     motion.SetSpeedUpgrade(false); motion.SetMovementUnlocks(false, false);
@@ -511,6 +513,7 @@ int main(int argc, char** argv) {
                     if (nextScene.Load(restartLevel, *renderer, error)) {
                         nextScene.ApplyCollected(collectedOrbs);
                         nextScene.ApplyKeys(ownedKeys);
+                        nextScene.ApplyPapers(collectedPapers);
                         nextScene.ApplyDeflection(combat.DeflectionUnlocked());
                         scene = std::move(nextScene);
                         currentLevel = restartLevel;
@@ -570,21 +573,26 @@ int main(int argc, char** argv) {
             };
             std::string target;
             const deathleak::game::KeyPickup* nearbyKey = nullptr;
+            const deathleak::game::PaperPickup* nearbyPaper = nullptr;
             const deathleak::game::DojoScroll* nearbyScroll = nullptr;
             const deathleak::game::Door* nearbyDoor = nullptr;
             const deathleak::game::Boat* nearbyBoat = nullptr;
             for (const auto& key : scene.Keys()) if (!ownedKeys.count(key.keyId) && overlap(key.x,key.y,key.width,key.height)) {
                 nearbyKey = &key; target = "K:" + key.keyId; break;
             }
-            if (!nearbyKey && !combat.DeflectionUnlocked())
+            if (!nearbyKey)
+                for (const auto& paper : scene.Papers()) if (!collectedPapers.count(paper.descriptionId) && overlap(paper.x,paper.y,paper.width,paper.height)) {
+                    nearbyPaper = &paper; target = "P:" + paper.descriptionId; break;
+                }
+            if (!nearbyKey && !nearbyPaper && !combat.DeflectionUnlocked())
                 for (const auto& scroll : scene.Scrolls()) if (scroll.feature == "kDeflection" && overlap(scroll.x,scroll.y,scroll.width,scroll.height)) {
                     nearbyScroll = &scroll; target = "S:" + scroll.id; break;
                 }
-            if (!nearbyKey && !nearbyScroll && levelTime >= 0.75f && motion.Grounded())
+            if (!nearbyKey && !nearbyPaper && !nearbyScroll && levelTime >= 0.75f && motion.Grounded())
                 for (const auto& door : scene.Doors()) if (overlap(door.x,door.y,door.width,door.height)) {
                     nearbyDoor = &door; target = "D:" + door.id + door.destination; break;
                 }
-            if (!nearbyKey && !nearbyScroll && !nearbyDoor && levelTime >= 0.75f && motion.Grounded())
+            if (!nearbyKey && !nearbyPaper && !nearbyScroll && !nearbyDoor && levelTime >= 0.75f && motion.Grounded())
                 for (const auto& boat : scene.Boats()) if (overlap(boat.x,boat.y,boat.width,boat.height)) {
                     nearbyBoat = &boat; target = "B:" + boat.id; break;
                 }
@@ -595,6 +603,11 @@ int main(int argc, char** argv) {
                 ownedKeys.insert(nearbyKey->keyId);
                 scene.ApplyKeys(ownedKeys);
                 std::cout << "Collected key " << nearbyKey->keyId << " at frame " << frame << '\n';
+                interactHeldTime = 0; interactionTarget.clear();
+            } else if (interactHeldTime >= 0.05f && nearbyPaper) {
+                collectedPapers.insert(nearbyPaper->descriptionId);
+                scene.ApplyPapers(collectedPapers);
+                std::cout << "Collected paper " << nearbyPaper->descriptionId << " at frame " << frame << '\n';
                 interactHeldTime = 0; interactionTarget.clear();
             } else if (interactHeldTime >= 0.5f && nearbyScroll) {
                 upgradeModal = true; modalWarmup = 0; purchaseHeld = dismissHeld = false;
@@ -617,6 +630,7 @@ int main(int argc, char** argv) {
                     if (nextScene.Load(door.destination, *renderer, error, currentLevel, door.id)) {
                         nextScene.ApplyCollected(collectedOrbs);
                         nextScene.ApplyKeys(ownedKeys);
+                        nextScene.ApplyPapers(collectedPapers);
                         nextScene.ApplyDeflection(combat.DeflectionUnlocked());
                         scene = std::move(nextScene);
                         std::cout << "Door at frame " << frame << " from " << currentLevel << " to " << door.destination << '\n';
@@ -643,6 +657,7 @@ int main(int argc, char** argv) {
                     if (nextScene.Load(destination, *renderer, error, currentLevel)) {
                         nextScene.ApplyCollected(collectedOrbs);
                         nextScene.ApplyKeys(ownedKeys);
+                        nextScene.ApplyPapers(collectedPapers);
                         nextScene.ApplyDeflection(combat.DeflectionUnlocked());
                         scene = std::move(nextScene);
                         std::cout << "Boat at frame " << frame << " from " << currentLevel << " to " << destination << '\n';
@@ -671,6 +686,7 @@ int main(int argc, char** argv) {
                     if (nextScene.Load(destination, *renderer, error, currentLevel)) {
                         nextScene.ApplyCollected(collectedOrbs);
                         nextScene.ApplyKeys(ownedKeys);
+                        nextScene.ApplyPapers(collectedPapers);
                         nextScene.ApplyDeflection(combat.DeflectionUnlocked());
                         scene = std::move(nextScene);
                         currentLevel = destination;
@@ -693,7 +709,7 @@ int main(int argc, char** argv) {
             if (!persistMenuMetadata()) return 1;
             std::cout << "Main menu return after story completion count=" << completions << " language=" << language << '\n';
             playLevel.clear(); levelPath.clear(); currentLevel.clear();
-            collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear();
+            collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear(); collectedPapers.clear();
             orbBalance = 0; scene = deathleak::game::LevelScene{};
             combat = deathleak::game::Combat{};
             speedUnlocked = projectileDamageUnlocked = projectileSpeedUnlocked = false; downwardDashUnlocked = rollUnlocked = false; savedMaxHealth = 25; hasSavedMaxHealth = false; windowsPermanentExtension.clear();
@@ -803,6 +819,7 @@ int main(int argc, char** argv) {
         if (!language.empty()) saved << "G:" << language << '\n';
         for (const auto& orb : collectedOrbs) saved << orb << '\n';
         for (const auto& key : ownedKeys) saved << "K:" << key << '\n';
+        for (const auto& paper : collectedPapers) saved << "P:" << paper << '\n';
         for (const auto& door : unlockedDoors) saved << "D:" << door << '\n';
         if (combat.DeflectionUnlocked()) saved << "U:kDeflection\n";
         if (speedUnlocked) saved << "U:kSpeedIncrease\n";

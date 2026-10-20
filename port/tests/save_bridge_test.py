@@ -82,6 +82,37 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
     assert sum(line.startswith('W1:') for line in target.read_text().splitlines()) == 1
     assert 'H:65' in target.read_text().splitlines()
     assert 'U:kSpeedIncrease' in target.read_text().splitlines()
+    shipped_papers = [value for kind, value in shipped['paper_pickups_collected'][1]]
+    assert {'P:' + paper for paper in shipped_papers} <= set(target.read_text().splitlines())
+    # Original grass-3 PaperPickup #103 uses its description loc_id as the
+    # permanent key. Interaction should collect once, then hide on reload.
+    paper_spawn = '329.692871 -1335 25 100'
+    paper_fresh = root / 'paper-fresh.dl5'
+    paper_fresh.write_text('DL5\n' + level + '\n' + paper_spawn + '\nB:0\n')
+    paper_saved = root / 'paper-collected.dl5'
+    collected = subprocess.run(['port/build/deathleak-linux', '--load-save', str(paper_fresh),
+                                '--save-file', str(paper_saved), '--script', 'I:5',
+                                '--fixed-dt', '0.0166667', '--simulate-only'],
+                               capture_output=True, text=True, check=True)
+    paper_id = 'paper_pickup_gametip_projectile'
+    assert 'Collected paper ' + paper_id + ' at frame 2' in collected.stdout, collected.stdout
+    assert 'P:' + paper_id in paper_saved.read_text().splitlines()
+    paper_repeat = subprocess.run(['port/build/deathleak-linux', '--load-save', str(paper_saved),
+                                   '--script', 'I:5', '--fixed-dt', '0.0166667', '--simulate-only'],
+                                  capture_output=True, text=True, check=True)
+    assert 'Collected paper ' not in paper_repeat.stdout, paper_repeat.stdout
+    paper_windows = root / 'paper-export.xml'
+    run('export', paper_saved, paper_windows, '--discard-runtime')
+    assert bridge.windows_fields(paper_windows)['paper_pickups_collected'] == ('vector', [('string', paper_id)])
+    # An imported paper is active immediately; revisit cannot recollect it.
+    paper_import = root / 'paper-import-location.dl5'
+    paper_lines = target.read_text().splitlines()
+    paper_lines[2] = paper_spawn
+    paper_import.write_text('\n'.join(paper_lines) + '\n')
+    imported_paper = subprocess.run(['port/build/deathleak-linux', '--load-save', str(paper_import),
+                                     '--script', 'I:5', '--fixed-dt', '0.0166667', '--simulate-only'],
+                                    capture_output=True, text=True, check=True)
+    assert 'Collected paper ' not in imported_paper.stdout, imported_paper.stdout
     for movement_unlock in ('kDownwardDash', 'kRoll'):
         assert 'U:' + movement_unlock in target.read_text().splitlines()
     resumed = root / 'resumed.dl5'
@@ -111,6 +142,7 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
                                capture_output=True, text=True, check=True)
     assert 'health=50' in hp_result.stdout and 'max_health=65' in hp_result.stdout, hp_result.stdout
     assert sum(line.startswith('W1:') for line in resumed.read_text().splitlines()) == 1
+    assert {'P:' + paper for paper in shipped_papers} <= set(resumed.read_text().splitlines())
     assert 'H:65' in resumed.read_text().splitlines()
     assert 'U:kSpeedIncrease' in resumed.read_text().splitlines()
     for movement_unlock in ('kDownwardDash', 'kRoll'):
@@ -192,6 +224,8 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
     conflict.write_text(resumed.read_text().replace('H:65', 'H:25'))
     run('export', conflict, root / 'conflict.xml', '--discard-runtime', success=False)
     assert not (root / 'conflict.xml').exists()
+    conflict.write_text(resumed.read_text().replace('P:' + shipped_papers[0] + '\n', ''))
+    run('export', conflict, root / 'conflict.xml', '--discard-runtime', success=False)
     conflict.write_text(resumed.read_text().replace('U:kSpeedIncrease\n', ''))
     run('export', conflict, root / 'conflict.xml', '--discard-runtime', success=False)
     for unlock in ('kProjectileDamageIncrease', 'kProjectileSpeedIncrease', 'kDownwardDash', 'kRoll'):
@@ -210,7 +244,7 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
                            capture_output=True, text=True, check=True)
     assert 'Menu New Game at frame 2101' in ended.stdout, ended.stdout
     fresh_lines = ending.read_text().splitlines()
-    assert fresh_lines[0] == 'DL5' and not any(line.startswith(('U:', 'W1:', 'H:')) for line in fresh_lines), fresh_lines
+    assert fresh_lines[0] == 'DL5' and not any(line.startswith(('U:', 'W1:', 'H:', 'P:')) for line in fresh_lines), fresh_lines
     damaged = root / 'damaged.dl5'
     damaged.write_text(resumed.read_text().replace('W1:', 'W1:!'))
     run('export', damaged, root / 'damaged.xml', '--discard-runtime', success=False)
