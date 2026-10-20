@@ -236,7 +236,7 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
     assert 'max_health=25' in far_dialog.stdout, far_dialog.stdout
     return_dialog = subprocess.run(zone_cmd + ['--script', 'I:4,R:400,.:400,L:400,.:20'],
                                    capture_output=True, text=True, check=True)
-    assert f'Health devil reward spawned {zone_fixture} at frame 958 count=1' in return_dialog.stdout, return_dialog.stdout
+    assert f'Health devil reward spawned {zone_fixture} at frame 959 count=1' in return_dialog.stdout, return_dialog.stdout
     assert 'Health upgrade collected ' not in return_dialog.stdout and 'max_health=25' in return_dialog.stdout, return_dialog.stdout
     near_dialog = subprocess.run(zone_cmd + ['--script', 'I:4,.:800'],
                                  capture_output=True, text=True, check=True)
@@ -301,6 +301,20 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
     assert 'Collected key camera_follow_key' not in slow_camera, slow_camera
     offset_camera = camera_trace(camera_xml.replace('followx="false"', 'followx="true"').replace('xOffset="0"', 'xOffset="-2500"'))
     assert 'Collected key camera_follow_key' not in offset_camera, offset_camera
+    # Source Game::Update follows the player's position from the preceding
+    # update, before the manager advances this frame's player. Frame 0 builds
+    # real rightward momentum and the test-only camera trace fixes the prior
+    # camera at x=0. On frame 1 the key's drawable edge is just outside the
+    # zone with the previous position, but inside if follow uses new motion.
+    timing_camera = root / 'timing-camera.csv'
+    timing_camera.write_text('0,0,107.44937\n')
+    timing = subprocess.run(['port/build/deathleak-linux', '--play',
+                             'port/tests/fixtures/camera_follow_timing.xml',
+                             '--camera-script', str(timing_camera),
+                             '--script', 'R:1,I:6', '--fixed-dt', '0.0166667',
+                             '--simulate-only'], capture_output=True, text=True, check=True)
+    assert 'Collected key camera_timing_key at frame 4' in timing.stdout, timing.stdout
+    assert 'Collected key camera_timing_key at frame 3' not in timing.stdout, timing.stdout
     # GameObject::UpdateInteractable is not called when its manager zone culls
     # the object. Its static lock and two-tick partial countdown survive even
     # when I is released off-zone; another visited object cannot steal the lock.
