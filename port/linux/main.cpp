@@ -52,6 +52,7 @@ int main(int argc, char** argv) {
     std::string levelPreview;
     std::string playLevel;
     std::string script;
+    std::string cameraScriptFile;
     std::string mouseScriptFile;
     std::string saveFile, loadSaveFile;
     std::string settingsFile = "deathleak-settings.xml";
@@ -92,6 +93,7 @@ int main(int argc, char** argv) {
         else if (arg == "--load-save" && i + 1 < argc) loadSaveFile = argv[++i];
         else if (arg == "--script" && i + 1 < argc) script = argv[++i];
         else if (arg == "--mouse-script" && i + 1 < argc) mouseScriptFile = argv[++i];
+        else if (arg == "--camera-script" && i + 1 < argc) cameraScriptFile = argv[++i];
         else if (arg == "--fixed-dt" && i + 1 < argc) fixedDt = std::atof(argv[++i]);
         else if (arg == "--simulate-only") simulateOnly = true;
         else if (arg == "--menu-loop") menuLoop = true;
@@ -241,6 +243,27 @@ int main(int argc, char** argv) {
         }
         if (!events.eof() || lastFrame < 0) { std::cerr << "Bad --mouse-script file\n"; return 2; }
         if (!frameLimit) frameLimit = lastFrame + 1;
+    }
+    // Simulation-only manager-visitation trace. It never changes a live camera
+    // or save, and permits connected cull/revisit tests impossible with the
+    // short steady-state camera lag and ordinary player movement.
+    std::unordered_map<int, std::pair<float, float>> scriptedCamera;
+    if (!cameraScriptFile.empty()) {
+        if (!simulateOnly || playLevel.empty()) { std::cerr << "--camera-script requires --simulate-only --play\n"; return 2; }
+        std::ifstream events(cameraScriptFile);
+        int lastFrame = -1;
+        std::string line;
+        while (std::getline(events, line)) {
+            std::istringstream row(line);
+            int at = -1; float x = 0, y = 0; char comma1, comma2;
+            if (!(row >> at >> comma1 >> x >> comma2 >> y) ||
+                comma1 != ',' || comma2 != ',' || at <= lastFrame || at > 100000 ||
+                !std::isfinite(x) || !std::isfinite(y) || (row >> std::ws && !row.eof())) {
+                std::cerr << "Bad --camera-script row\n"; return 2;
+            }
+            scriptedCamera[at] = {x, y}; lastFrame = at;
+        }
+        if (!events.eof() || lastFrame < 0) { std::cerr << "Bad --camera-script file\n"; return 2; }
     }
     // Explicit opt-in for Docker/dummy-video functional tests only.
     const char* testSoftwareEnv = std::getenv("DEATHLEAK_TEST_ALLOW_SOFTWARE_RENDERER");
@@ -616,6 +639,9 @@ int main(int argc, char** argv) {
             if (sound && combat.Fired() > firedBefore) sound->Play(deathleak::audio::Cue::KnifeThrow, firedBefore);
             cameraX += (worldX - cameraX) * std::min(1.f, 8.f * dt);
             cameraY += (worldY - cameraY) * std::min(1.f, 4.f * dt);
+            if (auto it = scriptedCamera.find(frame); it != scriptedCamera.end()) {
+                cameraX = it->second.first; cameraY = it->second.second;
+            }
             levelTime += dt;
             // Utilities::IsObjectInRectangle culls by drawable extents, not
             // collision bounds. These interactables have zero parallax in the
@@ -697,13 +723,46 @@ int main(int argc, char** argv) {
                 return std::abs(worldX-ox) <= (128.959793f+ow)*0.5f &&
                        std::abs(worldY-oy) <= (214.898743f+oh)*0.5f;
             };
+            // A skipped GameObject::UpdateInteractable cannot clear the static
+            // sCurrentInteractable lock or reset its own countdown. Determine
+            // visitation independently of overlap/CanInteract before choosing
+            // this frame's candidate. The lock is released only when its object
+            // is actually visited and the player no longer overlaps it.
+            auto visited = [&](const auto& object) {
+                return object.updateable && (object.alwaysUpdate ||
+                    inManagerZone(object.x, object.y, object.width, object.height));
+            };
+            bool lockFound = false, lockVisited = false, lockOverlaps = false;
+            auto inspectLock = [&](const std::string& id, const auto& object) {
+                if (interactionTarget != id) return;
+                lockFound = true;
+                lockVisited = visited(object);
+                lockOverlaps = overlap(object.x, object.y, object.width, object.height);
+            };
+            for (const auto& key : scene.Keys()) inspectLock("K:" + key.keyId, key);
+            for (const auto& paper : scene.Papers()) inspectLock("P:" + paper.descriptionId, paper);
+            for (const auto& devil : scene.HealthDevils()) inspectLock("V:" + currentLevel, devil);
+            for (const auto& scroll : scene.Scrolls()) inspectLock("S:" + scroll.id, scroll);
+            for (const auto& door : scene.Doors()) inspectLock("D:" + door.id + door.destination, door);
+            for (const auto& boat : scene.Boats()) inspectLock("B:" + boat.id, boat);
+            if (interactionTarget == "H:" + currentLevel && healthPickup) {
+                lockFound = true;
+                lockVisited = pickupUpdatedThisFrame;
+                lockOverlaps = std::abs(worldX-pickupInteractionX) < (128.959793f+50.f)*0.5f &&
+                    std::abs(worldY-pickupInteractionY) < (214.898743f+70.f)*0.5f;
+            }
+            const bool frozenInteractable = !interactionTarget.empty() && lockFound && !lockVisited;
+            if (!interactionTarget.empty() && (!lockFound || (lockVisited && !lockOverlaps))) {
+                interactionTarget.clear(); interactHeldTime = 0.f;
+            }
             // AddGameObject re-sorts the live list by descending depth. A
             // spawned pickup defaults to kPlayer (3000) and follows authored
-            // objects on the same layer; sCurrentInteractable keeps its lock.
+            // objects on the same layer; a visited old target keeps its lock.
             std::string target;
             int selectedDepth = -2;
             size_t selectedOrder = 0;
             auto select = [&](const std::string& id, int depth, size_t order) {
+                if (frozenInteractable || (!interactionTarget.empty() && id != interactionTarget)) return;
                 const bool held = !interactionTarget.empty() && id == interactionTarget;
                 const bool selectedHeld = !interactionTarget.empty() && target == interactionTarget;
                 if (!held && (selectedHeld || (depth < selectedDepth) ||
@@ -715,10 +774,6 @@ int main(int argc, char** argv) {
                 std::abs(worldY-pickupInteractionY) < (214.898743f+70.f)*0.5f;
             // A culled authored object does not run UpdateInteractable: no
             // prompt, lock acquisition, or held countdown on that frame.
-            auto visited = [&](const auto& object) {
-                return object.updateable && (object.alwaysUpdate ||
-                    inManagerZone(object.x, object.y, object.width, object.height));
-            };
             // The spawned kPlayer pickup sorts ahead of lower-depth authored
             // interactables, but after earlier-authored kPlayer peers.
             if (nearbyHealthPickup) select("H:" + currentLevel, 3000,
@@ -765,9 +820,11 @@ int main(int argc, char** argv) {
             if (target.empty() || target[0] != 'S') nearbyScroll = nullptr;
             if (target.empty() || target[0] != 'D') nearbyDoor = nullptr;
             if (target.empty() || target[0] != 'B') nearbyBoat = nullptr;
-            if (!interact || target != interactionTarget) interactHeldTime = 0;
-            interactionTarget = target;
-            if (interact && !target.empty()) interactHeldTime += dt;
+            if (!frozenInteractable && (interactionTarget.empty() || !target.empty())) {
+                if (!interact || target != interactionTarget) interactHeldTime = 0;
+                interactionTarget = target;
+                if (interact && !target.empty()) interactHeldTime += dt;
+            }
             if (interactHeldTime >= 0.05f && selectedHealthPickup) {
                 savedMaxHealth = combat.MaxHealth() + 20.f;
                 hasSavedMaxHealth = true;

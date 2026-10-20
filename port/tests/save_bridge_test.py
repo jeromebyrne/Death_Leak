@@ -282,6 +282,36 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
                                      '--simulate-only'], capture_output=True, text=True, check=True)
     assert 'Collected key ' not in disabled_result.stdout, disabled_result.stdout
     assert 'Collected paper paper_pickup_gametip_projectile at frame 7' in disabled_result.stdout, disabled_result.stdout
+    # GameObject::UpdateInteractable is not called when its manager zone culls
+    # the object. Its static lock and two-tick partial countdown survive even
+    # when I is released off-zone; another visited object cannot steal the lock.
+    # The simulation-only camera trace forces the otherwise-unreachable cull
+    # while both key rectangles continue to overlap the stationary player.
+    lock_fixture = 'port/tests/fixtures/interactable_lock_zone.xml'
+    camera_trace = root / 'interaction-camera.csv'
+    camera_trace.write_text(''.join(f'{at},2200,107.44937\n' for at in range(2, 6)) +
+                            '6,100,107.44937\n')
+    lock_args = ['port/build/deathleak-linux', '--play', lock_fixture,
+                 '--fixed-dt', '0.0166667', '--simulate-only',
+                 '--camera-script', str(camera_trace)]
+    blocked = subprocess.run(lock_args + ['--script', 'I:6'],
+                             capture_output=True, text=True, check=True)
+    assert 'Collected key ' not in blocked.stdout, blocked.stdout
+    locked = subprocess.run(lock_args + ['--script', 'I:2,.:4'],
+                            capture_output=True, text=True, check=True)
+    assert 'Collected key ' not in locked.stdout, locked.stdout
+    resumed = subprocess.run(lock_args + ['--script', 'I:2,.:4,I:4'],
+                             capture_output=True, text=True, check=True)
+    assert 'Collected key lock_first at frame 6' in resumed.stdout, resumed.stdout
+    assert 'Collected key lock_second at frame 9' in resumed.stdout, resumed.stdout
+    reset_on_visit = subprocess.run(lock_args + ['--script', 'I:2,.:5,I:3'],
+                                    capture_output=True, text=True, check=True)
+    assert 'Collected key lock_first at frame 9' in reset_on_visit.stdout, reset_on_visit.stdout
+    assert 'Collected key lock_second' not in reset_on_visit.stdout, reset_on_visit.stdout
+    rejected_live_camera = subprocess.run(['port/build/deathleak-linux', '--play', lock_fixture,
+                                           '--camera-script', str(camera_trace)],
+                                          capture_output=True, text=True)
+    assert rejected_live_camera.returncode == 2 and '--camera-script requires' in rejected_live_camera.stderr
     # Connected play: leave the devil during VO, observe the spawned object
     # without a cap increase, then return and physically collect it.
     uncollected = root / 'devil-uncollected.dl5'
