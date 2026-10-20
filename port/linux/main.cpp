@@ -371,6 +371,7 @@ int main(int argc, char** argv) {
     MouseState scriptedMouseState;
     bool menuOptions = false, menuLanguages = false, menuUpHeld = false, menuDownHeld = false, menuActivateHeld = false, menuBackHeld = false;
     bool completionOccurred = false;
+    std::string audioLevel;
     const auto persistMenuMetadata = [&]() -> bool {
         if (saveFile.empty()) return true;
         const std::string temporary = saveFile + ".tmp";
@@ -394,6 +395,13 @@ int main(int argc, char** argv) {
         if (fixedDt > 0) dt = fixedDt;
         if (dt > 0.05f) dt = 0.05f;
         const char command = frame < static_cast<int>(scriptedInput.size()) ? scriptedInput[frame] : 0;
+        if (sound && currentLevel != audioLevel) {
+            sound->SetAmbience(scene.Ambience());
+            audioLevel = currentLevel;
+            std::cout << "Audio level " << audioLevel << " authored_ambience=" << scene.Ambience().size() << '\n';
+        }
+        if (sound) sound->UpdateAmbience(cameraX, cameraY);
+
         if (renderer->KeyDown(Escape) && !upgradeModal && !paperModal && !dismissHeld && (!menuLoop || !playLevel.empty())) break;
         if (!renderer->KeyDown(Escape) && !upgradeModal && !paperModal) dismissHeld = false;
         if (menuLoop && playLevel.empty()) {

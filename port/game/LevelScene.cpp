@@ -60,7 +60,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     if (!level || std::string(level->Value()) != "level") { error = "Not a Death Leak level: " + path; return false; }
     playerVisualWidth_ = playerVisualHeight_ = 0;
     spawnedOrbTexture_ = render::InvalidTexture;
-    sprites_.clear(); ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); doors_.clear(); boats_.clear(); keys_.clear(); papers_.clear(); healthDevils_.clear(); smashables_.clear(); spawnedOrbs_.clear(); scrolls_.clear(); skipped_ = 0;
+    sprites_.clear(); ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); ambience_.clear(); doors_.clear(); boats_.clear(); keys_.clear(); papers_.clear(); healthDevils_.clear(); smashables_.clear(); spawnedOrbs_.clear(); scrolls_.clear(); skipped_ = 0;
     if (auto* props = level->FirstChildElement("LevelProperties")) {
         auto* camera = props->FirstChildElement("camera_properties");
         cameraX_ = Attr(camera, "posx"); cameraY_ = Attr(camera, "posy");
@@ -73,6 +73,21 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         if (!position || !dimensions) continue;
         const std::string kind = object->Value();
         const float x = Attr(position, "x"), y = Attr(position, "y");
+        if (kind == "AudioObject") {
+            auto* file = object->FirstChildElement("audiofile");
+            auto* fade = object->FirstChildElement("fadedimensions");
+            auto* adjust = object->FirstChildElement("adjustvolumetocamera");
+            auto* repeat = object->FirstChildElement("repeat");
+            if (file && file->Attribute("value")) {
+                std::string name = file->Attribute("value");
+                std::replace(name.begin(), name.end(), '\\', '/');
+                // AudioObject paths are relative to Game/Media/Audio, unlike textures.
+                if (!name.empty() && name[0] != '/' && name.find("..") == std::string::npos)
+                    ambience_.push_back({"Game/Media/Audio/" + name, x, y,
+                        Attr(dimensions, "width"), Attr(dimensions, "height"),
+                        Attr(fade, "x"), Attr(fade, "y"), Flag(adjust, "value"), Flag(repeat, "value")});
+            }
+        }
         if (kind == "Player") {
             playerX_ = x; playerY_ = y;
             playerVisualWidth_ = Attr(dimensions, "width");

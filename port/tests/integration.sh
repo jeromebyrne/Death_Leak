@@ -800,4 +800,9 @@ printf '%s\n' "$legacy" | grep -q 'keys=1'
 
 if printf '%s\n' "$key_only_resume" | grep -q 'Collected key'; then exit 1; fi
 python3 port/tests/save_bridge_test.py
+# Original AudioObject forest loops load in SDL, then swap to grass ambience on transition.
+ambient=$(SDL_AUDIODRIVER=dummy $bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script L:340 --fixed-dt 0.0166667)
+printf '%s\n' "$ambient" | grep -q 'Audio ambient WAV voices=2 authored=2'
+printf '%s\n' "$ambient" | grep -q 'Entered Game/XmlFiles/levels/grass_exploration_3.xml'
+printf '%s\n' "$ambient" | grep -q 'Audio ambient WAV voices=1 authored=1'
 printf '%s\n' 'PASS: source-held-jump arena climb and exit, three-level route, burst/water fire, swim, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, solid box, wall jump, death/restart, key/door gate, ghost flight, ranged warmup/terrain shots and kill, grounded NPC fall/wall/box, NPC combo/stun/recovery, NPC teleport timing/exclusion, ranged NPC jump/roll and projectile kickback, source-faithful player/NPC contact pass-through, grounded phase-three melee and its negative gates, DL3/DL4 compatibility, DL5 orb-balance persistence, authentic 375-orb purchase/debit and same-run authored ninja deflection, continuous dojo/hut key-door route, repair-gated boat transition, and retained completion count/language after source-style progression wipe'

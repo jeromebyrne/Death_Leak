@@ -1,5 +1,6 @@
 #pragma once
 #include "../render/Renderer.h"
+#include "../audio/SoundPlayer.h"
 #include <string>
 #include <unordered_set>
 #include <vector>
@@ -58,6 +59,7 @@ public:
     const std::vector<LevelTrigger>& Triggers() const { return triggers_; }
     const std::vector<EncounterTrigger>& Encounters() const { return encounters_; }
     const std::vector<HazardRegion>& Hazards() const { return hazards_; }
+    const std::vector<audio::AmbientSource>& Ambience() const { return ambience_; }
     const std::vector<Door>& Doors() const { return doors_; }
     const std::vector<Boat>& Boats() const { return boats_; }
     const std::vector<KeyPickup>& Keys() const { return keys_; }
@@ -80,6 +82,7 @@ private:
     std::vector<LevelTrigger> triggers_;
     std::vector<EncounterTrigger> encounters_;
     std::vector<HazardRegion> hazards_;
+    std::vector<audio::AmbientSource> ambience_;
     std::vector<Door> doors_;
     std::vector<Boat> boats_;
     std::vector<KeyPickup> keys_;
