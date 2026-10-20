@@ -282,6 +282,7 @@ int main(int argc, char** argv) {
             const deathleak::game::KeyPickup* nearbyKey = nullptr;
             const deathleak::game::DojoScroll* nearbyScroll = nullptr;
             const deathleak::game::Door* nearbyDoor = nullptr;
+            const deathleak::game::Boat* nearbyBoat = nullptr;
             for (const auto& key : scene.Keys()) if (!ownedKeys.count(key.keyId) && overlap(key.x,key.y,key.width,key.height)) {
                 nearbyKey = &key; target = "K:" + key.keyId; break;
             }
@@ -292,6 +293,10 @@ int main(int argc, char** argv) {
             if (!nearbyKey && !nearbyScroll && levelTime >= 0.75f && motion.Grounded())
                 for (const auto& door : scene.Doors()) if (overlap(door.x,door.y,door.width,door.height)) {
                     nearbyDoor = &door; target = "D:" + door.id + door.destination; break;
+                }
+            if (!nearbyKey && !nearbyScroll && !nearbyDoor && levelTime >= 0.75f && motion.Grounded())
+                for (const auto& boat : scene.Boats()) if (overlap(boat.x,boat.y,boat.width,boat.height)) {
+                    nearbyBoat = &boat; target = "B:" + boat.id; break;
                 }
             if (!interact || target != interactionTarget) interactHeldTime = 0;
             interactionTarget = target;
@@ -331,6 +336,32 @@ int main(int argc, char** argv) {
                         cameraX = scene.CameraX(); cameraY = scene.CameraY();
                         combat.ClearLevel(); levelTime = interactHeldTime = doorUnlockWait = 0; unlockingDoor = false; interactionTarget.clear();
                     } else std::cerr << "Door transition failed: " << error << '\n';
+                    continue;
+                }
+            }
+            // Boat::CanInteract requires solid ground and a 0.75 s warmup.
+            // Its source gate is the permanent has_repair_tools key, not a door ID.
+            // With tools, Boat's hold duration is zero; without, it is 0.05 s.
+            if (nearbyBoat && interact &&
+                interactHeldTime >= (ownedKeys.count("has_repair_tools") ? 0.f : 0.05f)) {
+                if (!ownedKeys.count("has_repair_tools")) {
+                    std::cout << "Boat broken: requires has_repair_tools at frame " << frame << '\n';
+                    interactHeldTime = 0; interactionTarget.clear();
+                } else {
+                    const std::string destination = "Game/XmlFiles/levels/sea_2.xml";
+                    deathleak::game::LevelScene nextScene;
+                    if (nextScene.Load(destination, *renderer, error, currentLevel)) {
+                        nextScene.ApplyCollected(collectedOrbs);
+                        nextScene.ApplyKeys(ownedKeys);
+                        nextScene.ApplyDeflection(combat.DeflectionUnlocked());
+                        scene = std::move(nextScene);
+                        std::cout << "Boat at frame " << frame << " from " << currentLevel << " to " << destination << '\n';
+                        currentLevel = destination;
+                        motion.Reset(scene.PlayerX(),scene.PlayerY(), true);
+                        worldX = motion.X(); worldY = motion.Y();
+                        cameraX = scene.CameraX(); cameraY = scene.CameraY();
+                        combat.ClearLevel(); levelTime = interactHeldTime = doorUnlockWait = 0; unlockingDoor = false; interactionTarget.clear();
+                    } else std::cerr << "Boat transition failed: " << error << '\n';
                     continue;
                 }
             }

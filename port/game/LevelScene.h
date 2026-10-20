@@ -25,6 +25,7 @@ struct SolidBox { float left, right, bottom, top; float damage = 0; };
 struct LevelTrigger { float x, y, width, height; std::string destination; };
 struct EncounterTrigger { float x, y, width, height; int count; std::string type; std::string id; };
 struct Door { float x, y, width, height; std::string destination, requiredKey, id; };
+struct Boat { float x, y, width, height; std::string id; };
 struct DojoScroll { float x, y, width, height; std::string feature; std::string id; };
 struct KeyPickup { float x, y, width, height; std::string keyId; };
 struct HazardRegion { float x, y, width, height; bool water; float damage; };
@@ -50,6 +51,7 @@ public:
     const std::vector<EncounterTrigger>& Encounters() const { return encounters_; }
     const std::vector<HazardRegion>& Hazards() const { return hazards_; }
     const std::vector<Door>& Doors() const { return doors_; }
+    const std::vector<Boat>& Boats() const { return boats_; }
     const std::vector<KeyPickup>& Keys() const { return keys_; }
     const std::vector<DojoScroll>& Scrolls() const { return scrolls_; }
     void ApplyDeflection(bool unlocked);
@@ -62,6 +64,7 @@ private:
     std::vector<EncounterTrigger> encounters_;
     std::vector<HazardRegion> hazards_;
     std::vector<Door> doors_;
+    std::vector<Boat> boats_;
     std::vector<KeyPickup> keys_;
     std::vector<DojoScroll> scrolls_;
     float playerX_ = 0, playerY_ = 0;

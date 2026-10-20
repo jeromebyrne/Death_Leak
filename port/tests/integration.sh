@@ -297,6 +297,56 @@ assert 'U:kDeflection' in purchase and 'U:kDeflection' in deflected
 assert any(line.startswith('N:Game/XmlFiles/levels/village_shrine.xml#189\t') for line in deflected)
 PYEARNEDEDFLECT
 
+# Continue the same earned-deflection run through both authored key chains:
+# agriculture dojo key -> shrine/dojo doors -> hut key -> central hut door.
+earned_dojo_hut_suffix=$(cat port/tests/routes/earned_dojo_hut_suffix.script)
+earned_dojo_hut_save=port/build/earned-dojo-hut-save.txt
+earned_dojo_hut=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$earned_purchase_script,$earned_deflect_suffix,$earned_dojo_hut_suffix" --fixed-dt 0.0166667 --simulate-only --combat-state --save-file "$earned_dojo_hut_save")
+printf '%s\n' "$earned_dojo_hut" | grep -q 'Purchased kDeflection at frame 31621 balance=0'
+printf '%s\n' "$earned_dojo_hut" | grep -q 'Collected key dojo at frame 40444'
+printf '%s\n' "$earned_dojo_hut" | grep -q 'Door at frame 42198 from .*village_shrine.xml to .*dojo_front.xml'
+printf '%s\n' "$earned_dojo_hut" | grep -q 'Unlocked door dojo at frame 42428'
+printf '%s\n' "$earned_dojo_hut" | grep -q 'Door at frame 42511 from .*dojo_front.xml to .*dojo.xml'
+printf '%s\n' "$earned_dojo_hut" | grep -q 'Collected key village_hut at frame 42658'
+printf '%s\n' "$earned_dojo_hut" | grep -q 'Trigger at frame 44229 from .*village_shrine.xml .*village_central.xml'
+printf '%s\n' "$earned_dojo_hut" | grep -q 'Unlocked door village_hut_entrance at frame 44747'
+printf '%s\n' "$earned_dojo_hut" | grep -q 'Door at frame 44830 from .*village_central.xml to .*village_hut.xml'
+printf '%s\n' "$earned_dojo_hut" | grep -q 'village_hut.xml player=(-205,-21.5506) orbs=388 keys=2 health=1 .*balance=13'
+printf '%s\n' "$earned_dojo_hut" | grep -q 'Deflection unlocked=1 count=1'
+if printf '%s\n' "$earned_dojo_hut" | grep -q 'Player died'; then exit 1; fi
+python3 - <<'PYDOJO'
+from pathlib import Path
+lines = Path('port/build/earned-dojo-hut-save.txt').read_text().splitlines()
+ids = [x for x in lines if x.startswith('Game/XmlFiles/levels/') and '#' in x]
+assert len(ids) == len(set(ids)) == 388
+assert all(x in lines for x in ('B:13', 'K:dojo', 'K:village_hut', 'D:dojo', 'D:village_hut_entrance', 'U:kDeflection'))
+assert not any(x.startswith('K:has_repair_tools') for x in lines)
+PYDOJO
+
+# Guard the tested fixture against drifting away from the actual source graph.
+python3 - <<'PYBOATXML'
+from pathlib import Path
+from xml.etree import ElementTree as ET
+cliff = ET.parse('Game/XmlFiles/levels/cliff.xml').getroot()
+boat = next(x for x in cliff if x.tag == 'Boat' and x.attrib.get('id') == '209')
+assert abs(float(boat.find('position').attrib['x']) - (-3856.858398)) < 0.001
+assert any(x.tag == 'KeyPickup' and x.find('key_props').attrib.get('id') == 'has_repair_tools'
+           for x in ET.parse('Game/XmlFiles/levels/catacombs_entrance_1.xml').getroot())
+assert 'sea_2.xml' in Path('Game/src/GameObjects/Boat.cpp').read_text()
+PYBOATXML
+# Boat::EnterBoat is the only source path into sea_2. An authored repair-tools
+# key is required; neither a plain click nor a warmup-bypassing click sails.
+boat_early=$($bin --play port/tests/fixtures/boat_gate.xml --script I:4,R:38,I:2 --fixed-dt 0.0166667 --simulate-only)
+if printf '%s\n' "$boat_early" | grep -q 'Boat at frame'; then exit 1; fi
+boat_broken=$($bin --play port/tests/fixtures/boat_gate.xml --script R:43,I:4 --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$boat_broken" | grep -q 'Boat broken: requires has_repair_tools'
+printf '%s\n' "$boat_broken" | grep -q 'Simulation ended at port/tests/fixtures/boat_gate.xml'
+boat_repaired=$($bin --play port/tests/fixtures/boat_gate.xml --script I:4,R:43,I:4 --fixed-dt 0.0166667 --simulate-only --save-file port/build/boat-repaired-save.txt)
+printf '%s\n' "$boat_repaired" | grep -q 'Collected key has_repair_tools at frame 2'
+printf '%s\n' "$boat_repaired" | grep -q 'Boat at frame .* from port/tests/fixtures/boat_gate.xml to Game/XmlFiles/levels/sea_2.xml'
+printf '%s\n' "$boat_repaired" | grep -q 'Simulation ended at Game/XmlFiles/levels/sea_2.xml'
+grep -q '^K:has_repair_tools$' port/build/boat-repaired-save.txt
+
 # A held left+jump just before grass 1's lower dead-end trigger keeps the
 # player on the upper route to grass 2 and the authored cliff. Reversing on
 # the reachable lower cliff path collects more distinct authored orbs; its
@@ -598,4 +648,4 @@ legacy=$($bin --load-save port/build/legacy-dl3-save.txt --frames 1 --fixed-dt 0
 printf '%s\n' "$legacy" | grep -q 'keys=1'
 
 if printf '%s\n' "$key_only_resume" | grep -q 'Collected key'; then exit 1; fi
-printf '%s\n' 'PASS: source-held-jump arena climb and exit, three-level route, burst/water fire, swim, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, solid box, wall jump, death/restart, key/door gate, ghost flight, ranged warmup/terrain shots and kill, grounded NPC fall/wall/box, NPC combo/stun/recovery, NPC teleport timing/exclusion, ranged NPC jump/roll and projectile kickback, source-faithful player/NPC contact pass-through, grounded phase-three melee and its negative gates, DL3/DL4 compatibility, DL5 orb-balance persistence, authentic 375-orb purchase/debit and same-run authored ninja deflection'
+printf '%s\n' 'PASS: source-held-jump arena climb and exit, three-level route, burst/water fire, swim, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, solid box, wall jump, death/restart, key/door gate, ghost flight, ranged warmup/terrain shots and kill, grounded NPC fall/wall/box, NPC combo/stun/recovery, NPC teleport timing/exclusion, ranged NPC jump/roll and projectile kickback, source-faithful player/NPC contact pass-through, grounded phase-three melee and its negative gates, DL3/DL4 compatibility, DL5 orb-balance persistence, authentic 375-orb purchase/debit and same-run authored ninja deflection, continuous dojo/hut key-door route, and repair-gated boat transition'

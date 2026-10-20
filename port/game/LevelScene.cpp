@@ -57,7 +57,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     auto* level = document.RootElement();
     if (!level || std::string(level->Value()) != "level") { error = "Not a Death Leak level: " + path; return false; }
     playerVisualWidth_ = playerVisualHeight_ = 0;
-    sprites_.clear(); ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); doors_.clear(); keys_.clear(); scrolls_.clear(); skipped_ = 0;
+    sprites_.clear(); ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); doors_.clear(); boats_.clear(); keys_.clear(); scrolls_.clear(); skipped_ = 0;
     if (auto* props = level->FirstChildElement("LevelProperties")) {
         auto* camera = props->FirstChildElement("camera_properties");
         cameraX_ = Attr(camera, "posx"); cameraY_ = Attr(camera, "posy");
@@ -94,6 +94,8 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
             if (props && props->Attribute("id") && *props->Attribute("id"))
                 keys_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),props->Attribute("id")});
         }
+        if (kind == "Boat" && object->Attribute("id"))
+            boats_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),object->Attribute("id")});
         if (kind == "Door") {
             auto* to = object->FirstChildElement("to_level_file");
             auto* key = object->FirstChildElement("required_key");
