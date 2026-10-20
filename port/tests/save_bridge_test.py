@@ -260,6 +260,21 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
     box_state = re.search(r'Health upgrade pickup state x=([^\s]+) y=([^\s]+) vx=([^\s]+) vy=([^\s]+)', pass_through.stdout)
     assert box_state and 0 < float(box_state[1]) < 400 and float(box_state[2]) < -235, pass_through.stdout
     assert 'max_health=25' in pass_through.stdout and 'grounded=1' in pass_through.stdout
+    # GameObjectManager culls the spawned, updateable pickup against a
+    # camera-centered 4000-square zone. Its native 50x50 art extends the
+    # strict boundary by 25 units, so it receives the final downward step
+    # before freezing outside the zone; more idle frames cannot advance it.
+    frozen_states = []
+    for idle in (900, 1100):
+        far = subprocess.run(['port/build/deathleak-linux', '--play',
+                              'port/tests/fixtures/health_pickup_pass_through.xml',
+                              '--script', f'I:4,.:{idle}', '--fixed-dt', '0.0166667',
+                              '--simulate-only'], capture_output=True, text=True, check=True)
+        state = re.search(r'Health upgrade pickup state x=([^\s]+) y=([^\s]+) vx=([^\s]+) vy=([^\s]+)', far.stdout)
+        assert state and 'max_health=25' in far.stdout, far.stdout
+        frozen_states.append(tuple(map(float, state.groups())))
+    assert frozen_states[0] == frozen_states[1], frozen_states
+    assert abs(frozen_states[0][1] - (-1919.2)) < .02, frozen_states
     # AddGameObject re-sorts the live list. On a tie, XML objects keep their
     # earlier order; the overlapping authored key wins the first hold.
     # its removal allows a fresh 0.05-second hold on the still-overlapping pickup.

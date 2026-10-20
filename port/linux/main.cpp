@@ -617,7 +617,6 @@ int main(int argc, char** argv) {
             cameraX += (worldX - cameraX) * std::min(1.f, 8.f * dt);
             cameraY += (worldY - cameraY) * std::min(1.f, 4.f * dt);
             levelTime += dt;
-            bool spawnedHealthPickup = false;
             pickupUpdatedThisFrame = bool(healthPickup);
             if (devilDialog) {
                 if (devilDialog->level != currentLevel) devilDialog.reset();
@@ -634,7 +633,6 @@ int main(int argc, char** argv) {
                         scene.ApplyHealthDevil(true);
                         healthPickup = HealthPickup{currentLevel, devilDialog->x,
                             devilDialog->y + 20.f, 15.f, 10.f};
-                        spawnedHealthPickup = true;
                         // std::list::sort keeps the current HealthDevil iterator
                         // valid. A new kPlayer pickup is visited later in this
                         // pass only if it sorts after the devil (including ties).
@@ -645,12 +643,22 @@ int main(int argc, char** argv) {
                     }
                 }
             }
+            // GameObjectManager::Update visits a pickup only inside its
+            // camera-centered 4000x4000 zone (1920x1080 backbuffer). The
+            // native 50x50 art can still overlap the zone when its origin
+            // has crossed the edge; source Utilities uses strict bounds.
+            // This is evaluated before motion, as in the manager loop.
+            if (healthPickup && pickupUpdatedThisFrame) {
+                const float dx = std::abs(healthPickup->x - cameraX);
+                const float dy = std::abs(healthPickup->y - cameraY);
+                pickupUpdatedThisFrame = dx < 2025.f && dy < 2025.f;
+            }
             // GameObject::UpdateInteractable runs in Sprite::Update before
             // MovingSprite advances a visited pickup. Test this frame's
             // interaction against the position at the start of its update.
             const float pickupInteractionX = healthPickup ? healthPickup->x : 0.f;
             const float pickupInteractionY = healthPickup ? healthPickup->y : 0.f;
-            if (healthPickup && (!spawnedHealthPickup || pickupUpdatedThisFrame)) {
+            if (healthPickup && pickupUpdatedThisFrame) {
                 if (healthPickup->level != currentLevel) healthPickup.reset();
                 else {
                     // MovingSprite::Update adds last frame's acceleration before
