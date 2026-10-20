@@ -22,6 +22,7 @@ struct Enemy {
     int teleports = 0;
     float jumpRollDelay = 2.f, rollTime = 0.f;
     int jumps = 0, rolls = 0;
+    float meleeStrikeCooldown = 0.f;
 };
 struct Shot {
     float x, y, vx, vy, life, damage;
@@ -31,10 +32,12 @@ struct Shot {
 };
 class Combat {
 public:
-    void ClearLevel() { enemies_.clear(); shots_.clear(); activeTriggers_.clear(); fireCooldown_ = burstCooldown_ = hurtCooldown_ = 0; burstCount_ = 0; playerContacts_ = contactFrames_ = 0; }
+    void ClearLevel() { enemies_.clear(); shots_.clear(); activeTriggers_.clear(); fireCooldown_ = burstCooldown_ = hurtCooldown_ = 0; burstCount_ = 0; playerContacts_ = contactFrames_ = 0; meleeTime_ = 0; meleeHeld_ = false; }
     void SetArt(render::Renderer& renderer);
-    void Update(const LevelScene& scene, float x, float y, float dt, bool fire, int facing, render::Renderer& renderer);
-    bool DamageEnemy(size_t index, float damage, float projectileDirectionX = 0.f); // shared hit path for projectiles and future melee
+    void Update(const LevelScene& scene, float x, float y, float dt, bool fire, bool melee, bool grounded, int facing, render::Renderer& renderer);
+    bool DamageEnemy(size_t index, float damage, float projectileDirectionX = 0.f); // shared projectile/melee hit path
+    bool MeleeActive() const { return meleeTime_ > 0.f; }
+    int MeleeStrikes() const { return meleeStrikes_; }
     void Draw(render::Renderer& renderer, float cameraX, float cameraY) const;
     void SetTriggerHistory(std::unordered_map<std::string, std::int64_t> history) { triggerHistory_ = std::move(history); }
     const std::unordered_map<std::string, std::int64_t>& TriggerHistory() const { return triggerHistory_; }
@@ -60,6 +63,9 @@ private:
     render::TextureId ninjaArt_ = 0, ghostArt_ = 0, skeletonArt_ = 0, knifeArt_ = 0, hostileArt_ = 0;
     float health_ = 25.f, focus_ = 100.f, fireCooldown_ = 0.f, burstCooldown_ = 0.f;
     float focusCooldown_ = 0.f, hurtCooldown_ = 0.f;
+    float meleeTime_ = 0.f;
+    bool meleeHeld_ = false;
+    int meleeStrikes_ = 0;
     int burstCount_ = 0;
     int hits_ = 0, kills_ = 0, spawned_ = 0, fired_ = 0;
     int playerContacts_ = 0, contactFrames_ = 0;

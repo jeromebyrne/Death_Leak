@@ -110,13 +110,23 @@ bool Combat::DamageEnemy(size_t index, float damage, float projectileDirectionX)
     if (enemy.health <= 0.f) ++kills_;
     return true;
 }
-void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fire, int facing, render::Renderer& renderer) {
+void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fire, bool melee, bool grounded, int facing, render::Renderer& renderer) {
     fireCooldown_ = std::max(0.f, fireCooldown_-dt);
     burstCooldown_ = std::max(0.f, burstCooldown_-dt);
     hurtCooldown_ = std::max(0.f, hurtCooldown_-dt);
     bool inWater = false;
     for (const auto& hazard : scene.Hazards())
         if (hazard.water && Inside(x,y,hazard.x,hazard.y,hazard.width,hazard.height)) inWater = true;
+    // Player::DoMeleeAttack requires solid footing, 4 focus and dry ground.
+    // The four sequences in player_anim_default.xml contain 7/15/9/7 frames
+    // at 60 FPS. Character::DoMeleeCollisions damages only in phase 3.
+    const bool meleePressed = melee && !meleeHeld_;
+    meleeHeld_ = melee;
+    if (meleePressed && meleeTime_ <= 0.f && grounded && !inWater && focus_ >= 4.f && health_ > 0.f) {
+        meleeTime_ = 0.000001f;
+        focus_ -= 4.f;
+    }
+    const bool meleeStrikePhase = meleeTime_ >= 22.f/60.f && meleeTime_ < 31.f/60.f;
     for (const auto& trigger : scene.Encounters()) {
         if (!Inside(x,y,trigger.x,trigger.y,trigger.width,trigger.height) || !activeTriggers_.insert(trigger.id).second) continue;
         // NPCTrigger::Initialise removes a trigger if it last fired less than
@@ -140,7 +150,7 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
     }
     // Player::FireWeapon blocks shots in water and fires at most five knives
     // before its 0.5-second burst pause. The authored projectile lifetime is 0.25 s.
-    if (fire && fireCooldown_ <= 0 && burstCooldown_ <= 0 && !inWater && health_ > 0) {
+    if (fire && meleeTime_ <= 0.f && fireCooldown_ <= 0 && burstCooldown_ <= 0 && !inWater && health_ > 0) {
         if (!knifeArt_) SetArt(renderer);
         shots_.push_back({x+facing*10.f,y+25.f,facing*1200.f,0.f,0.25f,1.5f,false});
         fireCooldown_ = 0.220f;
@@ -149,6 +159,7 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
     }
     for (auto& enemy : enemies_) {
         if (enemy.health <= 0) continue;
+        enemy.meleeStrikeCooldown = std::max(0.f, enemy.meleeStrikeCooldown-dt);
         // NPC::Update expires the rolling damage combo after 0.5 s; Character
         // counts down stun while the range-attack AI remains inactive.
         enemy.comboWindow = std::max(0.f, enemy.comboWindow-dt);
@@ -251,14 +262,34 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
     // directions. Character::OnCollision deliberately skips SolidMovingSprite
     // displacement for another Character, so contact alone must not move,
     // ground, knock back, or damage either participant. Record the pair for
-    // deterministic diagnostics and future source-equivalent melee handling.
+    // deterministic diagnostics and the melee callback below.
     playerContacts_ = 0;
-    for (const auto& enemy : enemies_) {
+    for (size_t index = 0; index < enemies_.size(); ++index) {
+        auto& enemy = enemies_[index];
         if (enemy.health <= 0.f || enemy.teleportTime > 0.f) continue;
-        if (std::abs(x-enemy.x) < (128.959793f+100.f)*0.5f &&
-            std::abs(y-enemy.y) < (214.898743f+200.f)*0.5f) ++playerContacts_;
+        const float playerHalfW = (meleeStrikePhase ? 1.5f : 1.f)*128.959793f*0.5f;
+        const float playerHalfH = (meleeTime_ > 0.f ? 1.1201479f : 1.f)*214.898743f*0.5f;
+        const bool overlap = std::abs(x-enemy.x) < playerHalfW+50.f &&
+                             std::abs(y-enemy.y) < playerHalfH+100.f;
+        if (!overlap) continue;
+        ++playerContacts_;
+        // Character::OnCollision calls DoMeleeCollisions on each overlapping
+        // damageable NPC. Its edge check rejects targets behind the player;
+        // SolidMovingSprite allows one melee strike per target per 0.5 s.
+        if (meleeStrikePhase && enemy.meleeStrikeCooldown <= 0.f &&
+            ((facing > 0 && enemy.x-50.f > x-playerHalfW) ||
+             (facing < 0 && enemy.x+50.f < x+playerHalfW))) {
+            if (DamageEnemy(index,500.f)) {
+                enemy.meleeStrikeCooldown = 0.5f;
+                ++meleeStrikes_;
+            }
+        }
     }
     if (playerContacts_ > 0) ++contactFrames_;
+    if (meleeTime_ > 0.f) {
+        meleeTime_ += dt;
+        if (meleeTime_ >= 38.f/60.f) meleeTime_ = 0.f;
+    }
     for (auto& shot : shots_) {
         if (shot.life<=0) continue;
         const float oldX=shot.x, oldY=shot.y;

@@ -55,6 +55,29 @@ printf '%s\n' "$contact_side" | grep -q 'Player/NPC contacts=1 contact_frames=79
 contact_descend=$($bin --play port/tests/fixtures/encounter_npc_wall.xml --script R:30,J:15,.:23 --fixed-dt 0.0166667 --simulate-only --combat-state)
 printf '%s\n' "$contact_descend" | grep -q 'player=(160.52,200.419).*health=25 .*grounded=0'
 printf '%s\n' "$contact_descend" | grep -q 'Player/NPC contacts=1 contact_frames=36'
+# Player::DoMeleeAttack consumes 4 focus only from solid ground. The authored
+# player animation reaches its damaging third phase after 7+15 frames;
+# Character::OnCollision then hits only a front-side overlapping NPC.
+melee_start=$($bin --play port/tests/fixtures/encounter_npc_wall.xml --script R:90,M:1 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$melee_start" | grep -q 'focus=96.1667 .*fired=0'
+printf '%s\n' "$melee_start" | grep -q 'Melee active=1 strikes=0'
+melee_early=$($bin --play port/tests/fixtures/encounter_npc_wall.xml --script R:90,M:22 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$melee_early" | grep -q 'enemies=1 .*kills=0 fired=0'
+printf '%s\n' "$melee_early" | grep -q 'Melee active=1 strikes=0'
+melee_hit=$($bin --play port/tests/fixtures/encounter_npc_wall.xml --script R:90,M:23 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$melee_hit" | grep -q 'enemies=0 .*kills=1 fired=0'
+printf '%s\n' "$melee_hit" | grep -q 'Melee active=1 strikes=1'
+melee_behind=$($bin --play port/tests/fixtures/encounter_npc_wall.xml --script R:15,L:1,M:24 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$melee_behind" | grep -q 'enemies=1 .*kills=0 fired=0'
+printf '%s\n' "$melee_behind" | grep -q 'Player/NPC contacts=1'
+printf '%s\n' "$melee_behind" | grep -q 'Melee active=1 strikes=0'
+melee_air=$($bin --play port/tests/fixtures/encounter_npc_wall.xml --script R:30,J:15,M:25 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$melee_air" | grep -q 'enemies=1 .*kills=0 .*grounded=0'
+printf '%s\n' "$melee_air" | grep -q 'Melee active=0 strikes=0'
+melee_empty=$($bin --play port/tests/fixtures/encounter_npc_wall.xml --exhaust-focus --script R:1,M:1 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$melee_empty" | grep -q 'Melee active=0 strikes=0'
+melee_water=$($bin --play Game/XmlFiles/levels/test.xml --start-hazard 1 --script M:1 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$melee_water" | grep -q 'Melee active=0 strikes=0'
 # AIStateRangeAttack: hold a 200-unit standoff and wind up for 0.25 s.
 range_warmup=$($bin --play port/tests/fixtures/encounter_open.xml --frames 90 --fixed-dt 0.0166667 --simulate-only --combat-state)
 printf '%s\n' "$range_warmup" | grep -q 'Enemy kNinja x=200 .*windup=0.049'
@@ -171,4 +194,4 @@ legacy=$($bin --load-save port/build/legacy-dl3-save.txt --frames 1 --fixed-dt 0
 printf '%s\n' "$legacy" | grep -q 'keys=1'
 
 if printf '%s\n' "$key_only_resume" | grep -q 'Collected key'; then exit 1; fi
-printf '%s\n' 'PASS: source-held-jump arena climb and exit, three-level route, burst/water fire, swim, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, solid box, wall jump, death/restart, key/door gate, ghost flight, ranged warmup/terrain shots and kill, grounded NPC fall/wall/box, NPC combo/stun/recovery, NPC teleport timing/exclusion, ranged NPC jump/roll and projectile kickback, source-faithful player/NPC contact pass-through, DL3 compatibility and DL4 encounter persistence'
+printf '%s\n' 'PASS: source-held-jump arena climb and exit, three-level route, burst/water fire, swim, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, solid box, wall jump, death/restart, key/door gate, ghost flight, ranged warmup/terrain shots and kill, grounded NPC fall/wall/box, NPC combo/stun/recovery, NPC teleport timing/exclusion, ranged NPC jump/roll and projectile kickback, source-faithful player/NPC contact pass-through, grounded phase-three melee and its negative gates, DL3 compatibility and DL4 encounter persistence'

@@ -97,7 +97,7 @@ int main(int argc, char** argv) {
         std::istringstream parts(script); std::string token;
         while (std::getline(parts, token, ',')) {
             auto colon = token.find(':');
-            if (colon == std::string::npos || token.empty() || std::string("LRJ.FBNTQEIH").find(token[0]) == std::string::npos) { std::cerr << "Bad --script token\n"; return 2; }
+            if (colon == std::string::npos || token.empty() || std::string("LRJ.FBNTQEIHM").find(token[0]) == std::string::npos) { std::cerr << "Bad --script token\n"; return 2; }
             int count = std::atoi(token.c_str() + colon + 1);
             if (count < 1 || count > 100000 || scriptedInput.size() + count > 100000) { std::cerr << "Bad --script duration\n"; return 2; }
             scriptedInput.insert(scriptedInput.end(), count, token[0]);
@@ -207,15 +207,16 @@ int main(int argc, char** argv) {
             } else {
             restartHeld = restart;
             const bool jump = !script.empty() ? (command == 'J' || command == 'Q' || command == 'E') : renderer->KeyDown(Up);
-            motion.Update(scene, dt, static_cast<int>(direction), jump);
+            const bool melee = !script.empty() ? command == 'M' : renderer->KeyDown(Melee);
+            motion.Update(scene, dt, combat.MeleeActive() ? 0 : static_cast<int>(direction), jump && !combat.MeleeActive());
             worldX = motion.X(); worldY = motion.Y();
             const auto collectedNow = scene.CollectCurrencyOrbs(worldX, worldY, collectedOrbs);
             if (sound && collectedNow) sound->Play(deathleak::audio::Cue::OrbCollect);
             const bool fire = !script.empty() ? (command == 'F' || command == 'B' || command == 'N') : renderer->KeyDown(Down);
             const int firedBefore = combat.Fired();
-            combat.Update(scene, worldX, worldY, dt, fire, facing, *renderer);
-            // H is a simulation-only direct hit for deterministic combo/stun
-            // checks before source-equivalent melee is implemented.
+            combat.Update(scene, worldX, worldY, dt, fire, melee, motion.Grounded(), facing, *renderer);
+            // H remains a simulation-only direct hit for isolated combo/stun
+            // checks; normal melee comes through Combat::Update above.
             if (simulateOnly && command == 'H') combat.DamageEnemy(0,1.5f);
             if (sound && combat.Fired() > firedBefore) sound->Play(deathleak::audio::Cue::KnifeThrow, firedBefore);
             cameraX += (worldX - cameraX) * std::min(1.f, 8.f * dt);
@@ -347,6 +348,7 @@ int main(int argc, char** argv) {
                   << " shots=" << combat.ShotCount() << " grounded=" << motion.Grounded() << " elapsed=" << elapsed << "s\n";
         if (combatState) {
             std::cout << "Player/NPC contacts=" << combat.PlayerContacts() << " contact_frames=" << combat.ContactFrames() << "\n";
+            std::cout << "Melee active=" << combat.MeleeActive() << " strikes=" << combat.MeleeStrikes() << "\n";
             for (const auto& e : combat.Enemies()) std::cout << "Enemy " << e.type << " x=" << e.x << " y=" << e.y << " windup=" << e.windup << " vy=" << e.vy << " grounded=" << e.grounded << " combo=" << e.comboHits << " stun=" << e.stunTime << " teleport=" << e.teleportTime << " teleports=" << e.teleports << " jumps=" << e.jumps << " rolls=" << e.rolls << " roll=" << e.rollTime << "\n";
             for (const auto& s : combat.Shots()) std::cout << "Shot " << (s.enemy ? "enemy" : "player") << " x=" << s.x << " y=" << s.y << " vx=" << s.vx << " vy=" << s.vy << "\n";
         }
