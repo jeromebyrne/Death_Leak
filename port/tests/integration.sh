@@ -121,8 +121,8 @@ PYTEST
 # A single uninterrupted forest-spawn run combines the earned east itinerary
 # with a westward return through grass 3 into the arena. The east-side 190
 # includes its forest pickups; the 227 endpoint is 227 unique IDs, not 190+227.
-# At one health this route cannot yet reach the independent grass/cliff leg:
-# ordinary continued leftward movement dies to the next arena encounter.
+# This 227-orb intermediate stop dies under ordinary continued left movement;
+# the timed jump/fire itinerary below survives the arena and reaches sea 1.
 combined_save=port/build/combined-east-west-save.txt
 combined_prefix=R:710,E:40,B:4480,E:40,B:50,E:40,B:50,E:40,B:3400,L:3410,Q:40,L:4640,Q:40
 combined_route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$combined_prefix,L:1826,Q:40,L:260" --fixed-dt 0.0166667 --simulate-only --save-file "$combined_save")
@@ -146,7 +146,8 @@ printf '%s\n' "$combined_overrun" | grep -q 'Player died at frame 19109 in Game/
 # its wall. Timed jumps in grass 1/2 then reach cliff and sea 1. This remains
 # one uninterrupted forest-spawn simulation with earned IDs only.
 combined_sea_save=port/build/combined-sea1-save.txt
-combined_sea=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$combined_prefix,L:1826,Q:40,L:245,Q:80,N:100,Q:80,N:960,Q:40,N:710,Q:40,N:50,Q:40,N:160,Q:40,N:2200" --fixed-dt 0.0166667 --simulate-only --save-file "$combined_sea_save")
+combined_sea_script="$combined_prefix,L:1826,Q:40,L:245,Q:80,N:100,Q:80,N:960,Q:40,N:710,Q:40,N:50,Q:40,N:160,Q:40,N:2200"
+combined_sea=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$combined_sea_script" --fixed-dt 0.0166667 --simulate-only --save-file "$combined_sea_save")
 printf '%s\n' "$combined_sea" | grep -q 'Trigger at frame 19763 from .*first_ninja_arena.xml .*grass_exploration_1.xml'
 printf '%s\n' "$combined_sea" | grep -q 'Trigger at frame 20554 from .*grass_exploration_1.xml .*grass_exploration_2.xml'
 printf '%s\n' "$combined_sea" | grep -q 'Trigger at frame 21713 from .*grass_exploration_2.xml .*cliff.xml'
@@ -162,6 +163,24 @@ assert 'B:290' in lines
 for level in ('grass_exploration_1.xml', 'grass_exploration_2.xml', 'cliff.xml'):
     assert any(level + '#' in orb for orb in orb_ids), level
 PYSEA
+# Continuing the same uninterrupted route rightward from sea 1 re-enters
+# cliff and picks up six previously missed authored orbs. The lower return
+# corridor stops at the authored id-30 solid wall; this is not forest return.
+combined_sea_return_save=port/build/combined-sea-return-save.txt
+combined_sea_return=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$combined_sea_script,R:1300" --fixed-dt 0.0166667 --simulate-only --save-file "$combined_sea_return_save")
+printf '%s\n' "$combined_sea_return" | grep -q 'Trigger at frame 23880 from .*sea_1.xml .*cliff.xml'
+printf '%s\n' "$combined_sea_return" | grep -q 'cliff.xml player=(-1500.15,-944.093) orbs=296 .*health=1 .*balance=296'
+if printf '%s\n' "$combined_sea_return" | grep -q 'Player died'; then exit 1; fi
+python3 - <<'PYSEARETURN'
+from pathlib import Path
+prior = {line for line in Path('port/build/combined-sea1-save.txt').read_text().splitlines() if line.startswith('Game/XmlFiles/levels/') and '#' in line}
+lines = Path('port/build/combined-sea-return-save.txt').read_text().splitlines()
+earned = [line for line in lines if line.startswith('Game/XmlFiles/levels/') and '#' in line]
+assert len(earned) == len(set(earned)) == 296
+assert len(set(earned) - prior) == 6
+assert all('cliff.xml#' in orb for orb in set(earned) - prior)
+assert 'B:296' in lines
+PYSEARETURN
 # A held left+jump just before grass 1's lower dead-end trigger keeps the
 # player on the upper route to grass 2 and the authored cliff. Reversing on
 # the reachable lower cliff path collects more distinct authored orbs; its
