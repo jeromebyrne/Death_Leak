@@ -92,7 +92,7 @@ For a measured headless render run, use `--profile` and `DEATHLEAK_RENDER_PROFIL
 
 ## Player motion, death, and partial HUD continuation
 
-`PlayerMotion` now uses original player collision dimensions and source-scaled movement/jump/gravity/friction values at a 60 Hz target. Static `SolidLineStrip` slopes support landing and ground following; near-vertical segments block horizontal movement. This remains an approximation: moving solids, platform drop-through, wall-jump, water movement, other collision types, and per-level upgrade/state behavior are not implemented.
+`PlayerMotion` now uses original player collision dimensions and source-scaled movement/jump/gravity/friction values at a 60 Hz target. Static `SolidLineStrip` slopes support landing and ground following; near-vertical segments block horizontal movement. Authored `SolidMovingSprite` collision boxes are parsed for static side/top/underside contact, and pressing jump again at a wall applies the source `Character::WallJump` speeds and duration. This is an adaptation: the original method has no live caller, so the input mapping is not demonstrated Windows parity. Moving solids, platform drop-through, water movement, other collision types, and per-level upgrade/state behavior remain incomplete.
 
 At zero health the original `you_died.png` is shown. Press R to reload `grass_exploration_3.xml`, the destination hardcoded in the original death-screen UI action. The HUD currently shows original-art health and focus meters plus an orb icon; it does not yet show orb count, text, or menus. The original XP meter is repurposed as focus, as in `UIGameHudScreen`.
 

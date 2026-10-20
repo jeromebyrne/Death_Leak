@@ -9,19 +9,29 @@ constexpr float kHalfHeight = 214.898743f / 2.f;
 constexpr float kMaxSpeed = 8.f * 60.f;
 constexpr float kJumpSpeed = 21.f * 60.f;
 constexpr float kGravity = (0.75f / 0.55f) * 60.f * 60.f;
+constexpr float kWallJumpSpeedX = 15.f * 60.f;
+constexpr float kWallJumpSpeedY = 20.f * 60.f;
 }
 void PlayerMotion::Reset(float x, float y) {
     x_ = x; y_ = y; vx_ = vy_ = 0; sinceGround_ = 1; jumpHeld_ = false; grounded_ = false;
+    wallSide_ = 0; wallJumpRemaining_ = 0;
 }
 void PlayerMotion::Update(const LevelScene& scene, float dt, int direction, bool jump) {
     if (dt <= 0) return;
     const float ticks = dt * 60.f;
-    if (direction) vx_ = std::clamp(vx_ + direction * 60.f * ticks, -kMaxSpeed, kMaxSpeed);
-    else vx_ *= std::pow(0.80f, ticks); // Player::UpdateResistance without acceleration
+    if (wallJumpRemaining_ > 0) wallJumpRemaining_ = std::max(0.f, wallJumpRemaining_ - dt);
+    if (wallJumpRemaining_ <= 0) {
+        if (direction) vx_ = std::clamp(vx_ + direction * 60.f * ticks, -kMaxSpeed, kMaxSpeed);
+        else vx_ *= std::pow(0.80f, ticks); // Player::UpdateResistance without acceleration
+    } else vx_ *= std::pow(0.99f, ticks);
     if (std::abs(vx_) < 6.f) vx_ = 0;
     // Character::CanJump permits a 0.3 s post-edge window.
-    if (jump && !jumpHeld_ && (grounded_ || sinceGround_ <= 0.3f)) {
-        vy_ = kJumpSpeed;
+    if (jump && !jumpHeld_ && (grounded_ || sinceGround_ <= 0.3f || wallSide_)) {
+        if (!grounded_ && sinceGround_ > 0.3f && wallSide_) {
+            vx_ = -wallSide_ * kWallJumpSpeedX;
+            vy_ = kWallJumpSpeedY;
+            wallJumpRemaining_ = 0.3f;
+        } else vy_ = kJumpSpeed;
         y_ += 10.f; // Character::Jump releases the solid line before ascent.
         grounded_ = false; sinceGround_ = 1.f;
     }
@@ -29,6 +39,7 @@ void PlayerMotion::Update(const LevelScene& scene, float dt, int direction, bool
     const float oldX = x_, oldY = y_;
     const float targetX = x_ + vx_ * dt;
     x_ = targetX;
+    wallSide_ = 0;
     // Near-vertical authored line segments act as side walls. Sweep the player
     // collision box, so a high-speed frame cannot step through one.
     for (const auto& line : scene.Ground()) {
@@ -37,16 +48,25 @@ void PlayerMotion::Update(const LevelScene& scene, float dt, int direction, bool
         const float low = std::min(line.y1,line.y2), high = std::max(line.y1,line.y2);
         if (oldY+kHalfHeight < low || oldY-kHalfHeight > high) continue;
         if (vx_ > 0 && oldX+kHalfWidth <= wallX && x_+kHalfWidth > wallX)
-            { x_ = wallX-kHalfWidth; vx_ = 0; }
+            { x_ = wallX-kHalfWidth; vx_ = 0; wallSide_ = 1; }
         else if (vx_ < 0 && oldX-kHalfWidth >= wallX && x_-kHalfWidth < wallX)
-            { x_ = wallX+kHalfWidth; vx_ = 0; }
+            { x_ = wallX+kHalfWidth; vx_ = 0; wallSide_ = -1; }
+    }
+    for (const auto& box : scene.SolidBoxes()) {
+        if (oldY+kHalfHeight <= box.bottom || oldY-kHalfHeight >= box.top) continue;
+        if (vx_ > 0 && oldX+kHalfWidth <= box.left && x_+kHalfWidth > box.left)
+            { x_ = box.left-kHalfWidth; vx_ = 0; wallSide_ = 1; }
+        else if (vx_ < 0 && oldX-kHalfWidth >= box.right && x_-kHalfWidth < box.right)
+            { x_ = box.right+kHalfWidth; vx_ = 0; wallSide_ = -1; }
     }
     if (!grounded_) {
         // Original MovingSprite applies gravity after velocity integration;
         // this continuous equivalent preserves the source jump/gravity scale.
-        const float gravity = vy_ < 0 && vy_ > -15.f*60.f ? kGravity*3.f : kGravity;
+        const float wallGravity = wallSide_ ? kGravity * 0.5f : kGravity;
+        const float gravity = vy_ < 0 && vy_ > -15.f*60.f ? wallGravity*3.f : wallGravity;
         y_ += vy_*dt - 0.5f*gravity*dt*dt;
         vy_ = std::max(-34.f*60.f, vy_-gravity*dt);
+        if (wallSide_ && vy_ < 0) vy_ *= std::pow(0.7f, ticks);
     }
     const bool wasGrounded = grounded_;
     grounded_ = false;
@@ -60,6 +80,17 @@ void PlayerMotion::Update(const LevelScene& scene, float dt, int direction, bool
         if ((wasGrounded && std::abs(surface-(oldY-kHalfHeight)) <= 20.f) ||
             (vy_ <= 0 && oldY-kHalfHeight >= surface-4.f && y_-kHalfHeight <= surface))
             best = std::max(best,surface);
+    }
+    for (const auto& box : scene.SolidBoxes()) {
+        if (x_+kHalfWidth <= box.left || x_-kHalfWidth >= box.right) continue;
+        if ((wasGrounded && std::abs(box.top-(oldY-kHalfHeight)) <= 20.f) ||
+            (vy_ <= 0 && oldY-kHalfHeight >= box.top-4.f && y_-kHalfHeight <= box.top))
+            best = std::max(best, box.top);
+        // Reject upward penetration through the underside of a solid object.
+        if (vy_ > 0 && oldY+kHalfHeight <= box.bottom && y_+kHalfHeight > box.bottom) {
+            y_ = box.bottom-kHalfHeight;
+            vy_ = 0;
+        }
     }
     if (best > -1e8f) { y_ = best+kHalfHeight; vy_ = 0; grounded_ = true; sinceGround_ = 0; }
     else sinceGround_ += dt;

@@ -19,6 +19,7 @@ struct SceneSprite {
 };
 
 struct GroundSegment { float x1, y1, x2, y2; };
+struct SolidBox { float left, right, bottom, top; };
 struct LevelTrigger { float x, y, width, height; std::string destination; };
 struct EncounterTrigger { float x, y, width, height; int count; std::string type; std::string id; };
 struct HazardRegion { float x, y, width, height; bool water; float damage; };
@@ -37,12 +38,14 @@ public:
     float PlayerX() const { return playerX_; }
     float PlayerY() const { return playerY_; }
     const std::vector<GroundSegment>& Ground() const { return ground_; }
+    const std::vector<SolidBox>& SolidBoxes() const { return solidBoxes_; }
     const std::vector<LevelTrigger>& Triggers() const { return triggers_; }
     const std::vector<EncounterTrigger>& Encounters() const { return encounters_; }
     const std::vector<HazardRegion>& Hazards() const { return hazards_; }
 private:
     std::vector<SceneSprite> sprites_;
     std::vector<GroundSegment> ground_;
+    std::vector<SolidBox> solidBoxes_;
     std::vector<LevelTrigger> triggers_;
     std::vector<EncounterTrigger> encounters_;
     std::vector<HazardRegion> hazards_;

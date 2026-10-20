@@ -13,10 +13,13 @@ public:
     float VelocityX() const { return vx_; }
     float VelocityY() const { return vy_; }
     bool Grounded() const { return grounded_; }
+    int WallSide() const { return wallSide_; }
 private:
     float x_ = 0, y_ = 0, vx_ = 0, vy_ = 0;
     float sinceGround_ = 1;
     bool jumpHeld_ = false;
     bool grounded_ = false;
+    int wallSide_ = 0; // -1: wall to left, +1: wall to right
+    float wallJumpRemaining_ = 0;
 };
 }

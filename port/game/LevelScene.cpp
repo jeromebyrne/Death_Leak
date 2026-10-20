@@ -55,7 +55,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     if (!document.LoadFile()) { error = "Cannot parse level: " + path + ": " + document.ErrorDesc(); return false; }
     auto* level = document.RootElement();
     if (!level || std::string(level->Value()) != "level") { error = "Not a Death Leak level: " + path; return false; }
-    sprites_.clear(); ground_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); skipped_ = 0;
+    sprites_.clear(); ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); skipped_ = 0;
     if (auto* props = level->FirstChildElement("LevelProperties")) {
         auto* camera = props->FirstChildElement("camera_properties");
         cameraX_ = Attr(camera, "posx"); cameraY_ = Attr(camera, "posy");
@@ -101,6 +101,15 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
                 const std::string x1 = "x_" + std::to_string(i), y1 = "y_" + std::to_string(i);
                 ground_.push_back({x + Attr(points, x0.c_str()), y + Attr(points, y0.c_str()),
                                    x + Attr(points, x1.c_str()), y + Attr(points, y1.c_str())});
+            }
+        }
+        if (kind == "SolidMovingSprite") {
+            auto* box = object->FirstChildElement("collisionboxdimensions");
+            if (box) {
+                const float cx = x + Attr(box, "offsetX"), cy = y + Attr(box, "offsetY");
+                const float halfX = Attr(box, "x") * 0.5f, halfY = Attr(box, "y") * 0.5f;
+                if (halfX > 0 && halfY > 0)
+                    solidBoxes_.push_back({cx-halfX, cx+halfX, cy-halfY, cy+halfY});
             }
         }
         if (!asset) continue;

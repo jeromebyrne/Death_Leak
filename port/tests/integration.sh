@@ -9,6 +9,8 @@ route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script L:130
 printf '%s\n' "$route" | grep -q 'Entered Game/XmlFiles/levels/grass_exploration_3.xml'
 printf '%s\n' "$route" | grep -q 'Entered Game/XmlFiles/levels/first_ninja_arena.xml'
 printf '%s\n' "$route" | grep -q 'orbs=26 health=25.*spawned=1.*grounded=1'
+arena_wall=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script L:1490,Q:20,L:1,Q:1 --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$arena_wall" | grep -q 'Simulation ended at Game/XmlFiles/levels/first_ninja_arena.xml player=(4591.65,-1612.65).*orbs=36.*grounded=0'
 burst=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script F:60 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$burst" | grep -q 'fired=5'
 water_fire=$($bin --play Game/XmlFiles/levels/test.xml --start-hazard 1 --script F:30 --fixed-dt 0.0166667 --simulate-only)
@@ -36,4 +38,10 @@ slope=$($bin --play port/tests/fixtures/slope_wall.xml --script R:90 --fixed-dt 
 printf '%s\n' "$slope" | grep -q 'player=(235.52,154.553).*grounded=1'
 combined_jump=$($bin --play port/tests/fixtures/slope_wall.xml --script .:60,Q:12 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$combined_jump" | grep -q 'player=(-68.0002,271.268).*grounded=0'
-printf '%s\n' 'PASS: three-level route, burst/water fire, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, death/restart'
+solid_side=$($bin --play port/tests/fixtures/solid_box.xml --script R:30 --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$solid_side" | grep -q 'player=(95.5201,107.449).*grounded=1'
+solid_top=$($bin --play port/tests/fixtures/solid_box.xml --script R:30,J:1,R:30 --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$solid_top" | grep -q 'player=(123.52,407.449).*grounded=1'
+wall_jump=$($bin --play port/tests/fixtures/solid_box.xml --script R:30,J:1,R:19,E:1 --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$wall_jump" | grep -q 'player=(80.5201,417.109).*grounded=0'
+printf '%s\n' 'PASS: three-level route, burst/water fire, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, solid box, wall jump, death/restart'
