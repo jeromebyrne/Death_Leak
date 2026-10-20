@@ -3,6 +3,7 @@
 #include "../game/Combat.h"
 #include "../game/PlayerMotion.h"
 #include "../game/Hud.h"
+#include "../audio/SoundPlayer.h"
 #include <chrono>
 #include <algorithm>
 #include <cmath>
@@ -93,6 +94,15 @@ int main(int argc, char** argv) {
     if (!renderer->Initialize("Death Leak - Linux renderer slice", 1280, 720, error)) {
         std::cerr << "Renderer initialization failed: " << error << '\n'; return 1;
     }
+    std::unique_ptr<deathleak::audio::SoundPlayer> sound;
+    if (!simulateOnly && !playLevel.empty()) {
+        sound = deathleak::audio::CreateSoundPlayer();
+        std::string audioError;
+        if (!sound->Initialize(audioError)) {
+            std::cerr << "Audio unavailable: " << audioError << '\n';
+            sound.reset();
+        }
+    }
     deathleak::game::LevelScene scene;
     const std::string levelPath = !playLevel.empty() ? playLevel : levelPreview;
     if (!levelPath.empty() && !scene.Load(levelPath, *renderer, error)) {
@@ -131,6 +141,7 @@ int main(int argc, char** argv) {
     if (exhaustedFocus) combat.SetFocus(0);
     double updateSeconds = 0, drawSeconds = 0;
     bool wasDead = false, restartHeld = false;
+    int facing = 1;
     std::string currentLevel = playLevel;
     auto start = std::chrono::steady_clock::now();
     auto last = std::chrono::steady_clock::now();
@@ -151,6 +162,7 @@ int main(int argc, char** argv) {
             const char command = frame < static_cast<int>(scriptedInput.size()) ? scriptedInput[frame] : 0;
             const float direction = !script.empty() ? static_cast<float>(command == 'R' || command == 'B') - static_cast<float>(command == 'L' || command == 'N') :
                 static_cast<float>(renderer->KeyDown(Right)) - static_cast<float>(renderer->KeyDown(Left));
+            if (direction != 0) facing = direction < 0 ? -1 : 1;
             const bool restart = !script.empty() ? command == 'T' : renderer->KeyDown(Restart);
             if (combat.Health() <= 0) {
                 if (!wasDead) { std::cout << "Player died at frame " << frame << " in " << currentLevel << '\n'; wasDead = true; }
@@ -176,9 +188,12 @@ int main(int argc, char** argv) {
             const bool jump = !script.empty() ? command == 'J' : renderer->KeyDown(Up);
             motion.Update(scene, dt, static_cast<int>(direction), jump);
             worldX = motion.X(); worldY = motion.Y();
-            scene.CollectCurrencyOrbs(worldX, worldY, collectedOrbs);
+            const auto collectedNow = scene.CollectCurrencyOrbs(worldX, worldY, collectedOrbs);
+            if (sound && collectedNow) sound->Play(deathleak::audio::Cue::OrbCollect);
             const bool fire = !script.empty() ? (command == 'F' || command == 'B' || command == 'N') : renderer->KeyDown(Down);
-            combat.Update(scene, worldX, worldY, dt, fire, direction < 0 ? -1 : 1, *renderer);
+            const int firedBefore = combat.Fired();
+            combat.Update(scene, worldX, worldY, dt, fire, facing, *renderer);
+            if (sound && combat.Fired() > firedBefore) sound->Play(deathleak::audio::Cue::KnifeThrow, firedBefore);
             cameraX += (worldX - cameraX) * std::min(1.f, 8.f * dt);
             cameraY += (worldY - cameraY) * std::min(1.f, 4.f * dt);
             for (const auto& trigger : scene.Triggers()) {
@@ -242,7 +257,7 @@ int main(int argc, char** argv) {
         std::cout << "Simulation ended at " << currentLevel << " player=(" << worldX << "," << worldY
                   << ") orbs=" << collectedOrbs.size() << " health=" << combat.Health()
                   << " focus=" << combat.Focus() << " spawned=" << combat.Spawned() << " enemies=" << combat.EnemyCount()
-                  << " hits=" << combat.Hits() << " kills=" << combat.Kills()
+                  << " hits=" << combat.Hits() << " kills=" << combat.Kills() << " fired=" << combat.Fired()
                   << " shots=" << combat.ShotCount() << " grounded=" << motion.Grounded() << " elapsed=" << elapsed << "s\n";
         if (profile) std::cout << "Profile update=" << updateSeconds << "s draw/present=" << drawSeconds << "s\n";
     }

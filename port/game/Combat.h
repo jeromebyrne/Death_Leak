@@ -17,7 +17,7 @@ struct Shot {
 };
 class Combat {
 public:
-    void ClearLevel() { enemies_.clear(); shots_.clear(); activeTriggers_.clear(); fireCooldown_ = 0; hurtCooldown_ = 0; }
+    void ClearLevel() { enemies_.clear(); shots_.clear(); activeTriggers_.clear(); fireCooldown_ = burstCooldown_ = hurtCooldown_ = 0; burstCount_ = 0; }
     void SetArt(render::Renderer& renderer);
     void Update(const LevelScene& scene, float x, float y, float dt, bool fire, int facing, render::Renderer& renderer);
     void Draw(render::Renderer& renderer, float cameraX, float cameraY) const;
@@ -28,6 +28,7 @@ public:
     int Hits() const { return hits_; }
     int Kills() const { return kills_; }
     int Spawned() const { return spawned_; }
+    int Fired() const { return fired_; }
     size_t EnemyCount() const { return enemies_.size(); }
     size_t ShotCount() const { return shots_.size(); }
 private:
@@ -35,7 +36,9 @@ private:
     std::vector<Shot> shots_;
     std::unordered_set<std::string> activeTriggers_;
     render::TextureId ninjaArt_ = 0, ghostArt_ = 0, skeletonArt_ = 0, knifeArt_ = 0, hostileArt_ = 0;
-    float health_ = 25.f, focus_ = 100.f, fireCooldown_ = 0.f, hurtCooldown_ = 0.f;
-    int hits_ = 0, kills_ = 0, spawned_ = 0;
+    float health_ = 25.f, focus_ = 100.f, fireCooldown_ = 0.f, burstCooldown_ = 0.f;
+    float focusCooldown_ = 0.f, hurtCooldown_ = 0.f;
+    int burstCount_ = 0;
+    int hits_ = 0, kills_ = 0, spawned_ = 0, fired_ = 0;
 };
 }

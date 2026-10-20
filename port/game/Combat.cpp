@@ -19,7 +19,11 @@ void Combat::SetArt(render::Renderer& renderer) {
 }
 void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fire, int facing, render::Renderer& renderer) {
     fireCooldown_ = std::max(0.f, fireCooldown_-dt);
+    burstCooldown_ = std::max(0.f, burstCooldown_-dt);
     hurtCooldown_ = std::max(0.f, hurtCooldown_-dt);
+    bool inWater = false;
+    for (const auto& hazard : scene.Hazards())
+        if (hazard.water && Inside(x,y,hazard.x,hazard.y,hazard.width,hazard.height)) inWater = true;
     for (const auto& trigger : scene.Encounters()) {
         if (!Inside(x,y,trigger.x,trigger.y,trigger.width,trigger.height) || !activeTriggers_.insert(trigger.id).second) continue;
         if (!ninjaArt_) SetArt(renderer);
@@ -32,10 +36,14 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
             ++spawned_;
         }
     }
-    if (fire && fireCooldown_ <= 0 && health_ > 0) {
+    // Player::FireWeapon blocks shots in water and fires at most five knives
+    // before its 0.5-second burst pause. The authored projectile lifetime is 0.25 s.
+    if (fire && fireCooldown_ <= 0 && burstCooldown_ <= 0 && !inWater && health_ > 0) {
         if (!knifeArt_) SetArt(renderer);
-        shots_.push_back({x+facing*10.f,y+25.f,facing*1200.f,0.f,1.2f,1.5f,false});
-        fireCooldown_ = 0.220f; // Player::mProjectileFireDelay
+        shots_.push_back({x+facing*10.f,y+25.f,facing*1200.f,0.f,0.25f,1.5f,false});
+        fireCooldown_ = 0.220f;
+        ++fired_;
+        if (++burstCount_ == 5) { burstCount_ = 0; burstCooldown_ = 0.5f; }
     }
     for (auto& enemy : enemies_) {
         if (enemy.health <= 0) continue;
@@ -79,17 +87,17 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
     }
     shots_.erase(std::remove_if(shots_.begin(),shots_.end(),[](const auto& p){return p.life<=0;}),shots_.end());
     enemies_.erase(std::remove_if(enemies_.begin(),enemies_.end(),[](const auto& e){return e.health<=0;}),enemies_.end());
-    bool inWater = false;
     for (const auto& hazard : scene.Hazards()) {
         if (!Inside(x,y,hazard.x,hazard.y,hazard.width,hazard.height)) continue;
-        if (hazard.water) inWater = true;
-        else health_=std::max(0.f,health_-hazard.damage*dt);
+        if (!hazard.water) health_=std::max(0.f,health_-hazard.damage*dt);
     }
     if (inWater) {
         focus_ = std::max(0.f, focus_-0.5f*dt); // Player::kWaterFocusUseRate
+        if (focus_ <= 0) focusCooldown_ = 5.f;
         if (focus_ <= 0) health_=std::max(0.f,health_-3.f*dt); // drowning follows focus depletion
     } else {
-        focus_ = std::min(100.f,focus_+10.f*dt); // Player::kFocusRechargeRate
+        if (focusCooldown_ > 0) focusCooldown_ = std::max(0.f,focusCooldown_-dt);
+        else focus_ = std::min(100.f,focus_+10.f*dt); // Player::kFocusRechargeRate
     }
 }
 void Combat::Draw(render::Renderer& renderer, float cameraX, float cameraY) const {
