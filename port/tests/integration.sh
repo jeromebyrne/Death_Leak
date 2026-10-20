@@ -821,9 +821,18 @@ printf '%s\n' "$legacy" | grep -q 'keys=1'
 
 if printf '%s\n' "$key_only_resume" | grep -q 'Collected key'; then exit 1; fi
 python3 port/tests/save_bridge_test.py
-# Original AudioObject forest loops load in SDL, then swap to grass ambience on transition.
+# Large source WAVs stream through a bounded PCM buffer, including the authored 24-bit waterfall.
+# The forest-to-grass level change still atomically replaces ambient voices.
 ambient=$(SDL_AUDIODRIVER=dummy $bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script L:340 --fixed-dt 0.0166667)
-printf '%s\n' "$ambient" | grep -q 'Audio ambient WAV voices=2 authored=2'
+printf '%s\n' "$ambient" | grep -q 'Audio ambient streamed WAV voices=2 authored=2'
 printf '%s\n' "$ambient" | grep -q 'Entered Game/XmlFiles/levels/grass_exploration_3.xml'
-printf '%s\n' "$ambient" | grep -q 'Audio ambient WAV voices=1 authored=1'
+printf '%s\n' "$ambient" | grep -q 'Audio ambient streamed WAV voices=1 authored=1'
+waterfall_audio=$(SDL_AUDIODRIVER=dummy $bin --play Game/XmlFiles/levels/waterfall_top.xml --frames 2 --fixed-dt 0.0166667)
+printf '%s\n' "$waterfall_audio" | grep -q 'Audio ambient streamed WAV voices=3 authored=3'
+AMBIENT_LOG="$ambient" WATERFALL_LOG="$waterfall_audio" python3 - <<'PYTEST'
+import os, re
+for label in ('AMBIENT_LOG', 'WATERFALL_LOG'):
+    samples = [(int(voices), int(size)) for voices, size in re.findall(r'Audio ambient streamed WAV voices=(\d+) authored=\d+ buffered_bytes=(\d+)', os.environ[label])]
+    assert samples and all(0 < size <= voices * 131072 for voices, size in samples), (label, samples)
+PYTEST
 printf '%s\n' 'PASS: source-held-jump arena climb and exit, three-level route, burst/water fire, swim, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, solid box, wall jump, death/restart, key/door gate, ghost flight, ranged warmup/terrain shots and kill, grounded NPC fall/wall/box, NPC combo/stun/recovery, NPC teleport timing/exclusion, ranged NPC jump/roll and projectile kickback, source-faithful player/NPC contact pass-through, grounded phase-three melee and its negative gates, DL3/DL4 compatibility, DL5 orb-balance persistence, authentic 375-orb purchase/debit and same-run authored ninja deflection, continuous dojo/hut key-door route, repair-gated boat transition, and retained completion count/language after source-style progression wipe'

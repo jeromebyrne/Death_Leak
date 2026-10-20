@@ -6,7 +6,6 @@
 #include <cmath>
 #include <memory>
 #include <iostream>
-#include <unordered_map>
 #include <vector>
 
 namespace deathleak::audio {
@@ -63,58 +62,180 @@ public:
         SDL_UnlockAudioDevice(device_);
     }
     void SetAmbience(const std::vector<AmbientSource>& sources) override {
-        // Prepare outside the callback lock. MP3 and absent files remain unported.
-        std::unordered_map<std::string, std::shared_ptr<std::vector<Uint8>>> decoded;
-        std::vector<AmbientVoice> next;
+        // File decoding and priming happen outside the audio callback lock.
+        std::vector<std::shared_ptr<AmbientVoice>> next;
+        size_t buffered = 0;
         for (const auto& source : sources) {
             if (source.file.size() < 4 || source.file.substr(source.file.size() - 4) != ".wav") continue;
-            auto& sample = decoded[source.file];
-            if (!sample) {
-                SDL_AudioSpec input{}; Uint8* data = nullptr; Uint32 length = 0;
-                if (!SDL_LoadWAV(source.file.c_str(), &input, &data, &length)) continue;
-                SDL_AudioCVT cvt{};
-                if (SDL_BuildAudioCVT(&cvt, input.format, input.channels, input.freq,
-                                      spec_.format, spec_.channels, spec_.freq) < 0) { SDL_FreeWAV(data); continue; }
-                cvt.len = static_cast<int>(length);
-                cvt.buf = static_cast<Uint8*>(SDL_malloc(length * cvt.len_mult));
-                if (!cvt.buf) { SDL_FreeWAV(data); continue; }
-                std::memcpy(cvt.buf, data, length); SDL_FreeWAV(data);
-                if (SDL_ConvertAudio(&cvt) == 0 && cvt.len_cvt > 0)
-                    sample = std::make_shared<std::vector<Uint8>>(static_cast<Uint8*>(cvt.buf), static_cast<Uint8*>(cvt.buf) + cvt.len_cvt);
-                SDL_free(cvt.buf);
-            }
-            if (sample && !sample->empty()) next.push_back({source, sample, 0, source.adjustToCamera ? 0.f : 1.f});
+            auto voice = OpenAmbient(source);
+            if (!voice) continue;
+            Fill(*voice);
+            buffered += voice->buffer.size();
+            next.push_back(std::move(voice));
         }
         if (!device_) return;
         SDL_LockAudioDevice(device_);
         ambience_ = std::move(next); // Old level ends atomically at the audio boundary.
         SDL_UnlockAudioDevice(device_);
-        std::cout << "Audio ambient WAV voices=" << ambience_.size() << " authored=" << sources.size() << '\n';
+        std::cout << "Audio ambient streamed WAV voices=" << ambience_.size()
+                  << " authored=" << sources.size() << " buffered_bytes=" << buffered << '\n';
     }
     void UpdateAmbience(float cameraX, float cameraY) override {
         if (!device_) return;
+        std::vector<std::shared_ptr<AmbientVoice>> snapshot;
         SDL_LockAudioDevice(device_);
-        for (auto& voice : ambience_) {
-            const auto& a = voice.source;
-            if (!a.adjustToCamera) { voice.gain = 1.f; continue; }
+        snapshot = ambience_;
+        for (auto& voice : snapshot) {
+            const auto& a = voice->source;
+            if (!a.adjustToCamera) { voice->gain = 1.f; continue; }
             const float dx = std::max(0.f, std::abs(cameraX - a.x) - a.width * 0.5f);
             const float dy = std::max(0.f, std::abs(cameraY - a.y) - a.height * 0.5f);
             const float fx = (a.fadeWidth - a.width) * 0.5f;
             const float fy = (a.fadeHeight - a.height) * 0.5f;
             const float gx = dx == 0 ? 1.f : fx > 0 ? 1.f - dx / fx : 0.f;
             const float gy = dy == 0 ? 1.f : fy > 0 ? 1.f - dy / fy : 0.f;
-            voice.gain = std::clamp(std::min(gx, gy), 0.f, 1.f);
+            voice->gain = std::clamp(std::min(gx, gy), 0.f, 1.f);
         }
         SDL_UnlockAudioDevice(device_);
+        // Only the main thread touches file and converter; callback only consumes buffer.
+        for (auto& voice : snapshot) {
+            SDL_LockAudioDevice(device_);
+            const size_t available = voice->buffer.size() - voice->readPos;
+            SDL_UnlockAudioDevice(device_);
+            if (available < kTargetBytes && !voice->finished) Fill(*voice);
+        }
     }
 private:
+    static constexpr size_t kTargetBytes = 48000 * 2 * 2 / 2; // 0.5 second at output format.
     struct AmbientVoice {
         AmbientSource source;
-        std::shared_ptr<std::vector<Uint8>> sample;
-        size_t offset;
-        float gain;
+        SDL_RWops* file = nullptr;
+        SDL_AudioStream* converter = nullptr;
+        Sint64 dataStart = 0, dataSize = 0, dataRead = 0;
+        Uint16 channels = 0, bits = 0;
+        bool finished = false;
+        std::vector<Uint8> buffer;
+        size_t readPos = 0;
+        float gain = 0;
+        ~AmbientVoice() {
+            if (converter) SDL_FreeAudioStream(converter);
+            if (file) SDL_RWclose(file);
+        }
     };
-    std::vector<AmbientVoice> ambience_;
+    static bool ReadU16(SDL_RWops* f, Uint16& value) {
+        Uint8 b[2];
+        if (SDL_RWread(f, b, 1, 2) != 2) return false;
+        value = static_cast<Uint16>(b[0] | b[1] << 8); return true;
+    }
+    static bool ReadU32(SDL_RWops* f, Uint32& value) {
+        Uint8 b[4];
+        if (SDL_RWread(f, b, 1, 4) != 4) return false;
+        value = Uint32(b[0]) | Uint32(b[1]) << 8 | Uint32(b[2]) << 16 | Uint32(b[3]) << 24;
+        return true;
+    }
+    std::shared_ptr<AmbientVoice> OpenAmbient(const AmbientSource& source) {
+        auto voice = std::make_shared<AmbientVoice>();
+        voice->source = source;
+        voice->gain = source.adjustToCamera ? 0.f : 1.f;
+        voice->file = SDL_RWFromFile(source.file.c_str(), "rb");
+        if (!voice->file) return {};
+        Uint32 riffSize = 0;
+        char tag[4];
+        if (SDL_RWread(voice->file, tag, 1, 4) != 4 || std::memcmp(tag, "RIFF", 4) ||
+            !ReadU32(voice->file, riffSize) || SDL_RWread(voice->file, tag, 1, 4) != 4 ||
+            std::memcmp(tag, "WAVE", 4)) return {};
+        Uint16 format = 0;
+        Uint32 rate = 0;
+        bool foundFormat = false, foundData = false;
+        const Sint64 fileSize = SDL_RWsize(voice->file);
+        while (SDL_RWtell(voice->file) >= 0 && SDL_RWtell(voice->file) + 8 <= fileSize) {
+            Uint32 size = 0;
+            if (SDL_RWread(voice->file, tag, 1, 4) != 4 || !ReadU32(voice->file, size)) break;
+            const Sint64 start = SDL_RWtell(voice->file);
+            if (start < 0 || Sint64(size) > fileSize - start) return {};
+            if (!std::memcmp(tag, "fmt ", 4) && size >= 16) {
+                Uint32 byteRate = 0; Uint16 blockAlign = 0;
+                if (!ReadU16(voice->file, format) || !ReadU16(voice->file, voice->channels) ||
+                    !ReadU32(voice->file, rate) || !ReadU32(voice->file, byteRate) ||
+                    !ReadU16(voice->file, blockAlign) || !ReadU16(voice->file, voice->bits)) return {};
+                foundFormat = true;
+            } else if (!std::memcmp(tag, "data", 4) && !foundData) {
+                voice->dataStart = start;
+                voice->dataSize = size;
+                foundData = true;
+            }
+            if (SDL_RWseek(voice->file, start + size + (size & 1), RW_SEEK_SET) < 0) return {};
+        }
+        if (!foundFormat || !foundData || format != 1 || !rate || !voice->dataSize ||
+            (voice->channels != 1 && voice->channels != 2) ||
+            (voice->bits != 8 && voice->bits != 16 && voice->bits != 24 && voice->bits != 32)) return {};
+        const SDL_AudioFormat inputFormat = voice->bits == 8 ? AUDIO_U8 :
+            voice->bits == 16 ? AUDIO_S16LSB : AUDIO_S32LSB;
+        voice->converter = SDL_NewAudioStream(inputFormat, Uint8(voice->channels), int(rate),
+                                                spec_.format, spec_.channels, spec_.freq);
+        if (!voice->converter || SDL_RWseek(voice->file, voice->dataStart, RW_SEEK_SET) < 0) return {};
+        return voice;
+    }
+    bool Drain(AmbientVoice& voice) {
+        const int ready = SDL_AudioStreamAvailable(voice.converter);
+        if (ready < 0) return false;
+        if (!ready) return true;
+        std::vector<Uint8> converted(static_cast<size_t>(ready));
+        const int count = SDL_AudioStreamGet(voice.converter, converted.data(), ready);
+        if (count < 0) return false;
+        SDL_LockAudioDevice(device_);
+        if (voice.readPos) {
+            voice.buffer.erase(voice.buffer.begin(), voice.buffer.begin() + voice.readPos);
+            voice.readPos = 0;
+        }
+        voice.buffer.insert(voice.buffer.end(), converted.begin(), converted.begin() + count);
+        SDL_UnlockAudioDevice(device_);
+        return true;
+    }
+    void Fill(AmbientVoice& voice) {
+        constexpr size_t kSourceFrames = 4096;
+        const size_t frameBytes = voice.channels * (voice.bits / 8);
+        for (int chunks = 0; chunks < 32; ++chunks) {
+            SDL_LockAudioDevice(device_);
+            const size_t available = voice.buffer.size() - voice.readPos;
+            SDL_UnlockAudioDevice(device_);
+            if (available >= kTargetBytes || voice.finished) break;
+            if (voice.dataRead == voice.dataSize) {
+                if (SDL_AudioStreamFlush(voice.converter) < 0 || !Drain(voice)) {
+                    voice.finished = true; break;
+                }
+                if (voice.source.repeat) {
+                    if (SDL_RWseek(voice.file, voice.dataStart, RW_SEEK_SET) < 0) {
+                        voice.finished = true; break;
+                    }
+                    voice.dataRead = 0;
+                } else { voice.finished = true; break; }
+            }
+            const size_t toRead = static_cast<size_t>(std::min<Sint64>(
+                static_cast<Sint64>(kSourceFrames * frameBytes), voice.dataSize - voice.dataRead));
+            if (!toRead) break;
+            std::array<Uint8, kSourceFrames * 8> raw{};
+            const size_t got = SDL_RWread(voice.file, raw.data(), 1, toRead);
+            if (!got) { voice.finished = true; break; }
+            voice.dataRead += got;
+            if (voice.bits == 24) {
+                std::array<Uint8, kSourceFrames * 8> expanded{};
+                for (size_t i = 0; i < got / 3; ++i) {
+                    expanded[i * 4] = 0;
+                    expanded[i * 4 + 1] = raw[i * 3];
+                    expanded[i * 4 + 2] = raw[i * 3 + 1];
+                    expanded[i * 4 + 3] = raw[i * 3 + 2];
+                }
+                if (SDL_AudioStreamPut(voice.converter, expanded.data(), int(got / 3 * 4)) < 0) {
+                    voice.finished = true; break;
+                }
+            } else if (SDL_AudioStreamPut(voice.converter, raw.data(), int(got)) < 0) {
+                voice.finished = true; break;
+            }
+            if (!Drain(voice)) { voice.finished = true; break; }
+        }
+    }
+    std::vector<std::shared_ptr<AmbientVoice>> ambience_;
     bool sfxEnabled_ = true;
     struct Voice { size_t sample, offset; };
     static void Callback(void* userdata, Uint8* stream, int length) {
@@ -127,17 +248,14 @@ private:
                                static_cast<Uint32>(count), SDL_MIX_MAXVOLUME / 2);
             voice.offset += count;
         }
-        if (self.sfxEnabled_) for (auto& voice : self.ambience_) {
-            const auto& sample = *voice.sample;
-            if (!voice.gain || voice.offset >= sample.size()) continue;
-            size_t output = 0;
-            while (output < static_cast<size_t>(length) && voice.offset < sample.size()) {
-                const size_t count = std::min(static_cast<size_t>(length) - output, sample.size() - voice.offset);
-                SDL_MixAudioFormat(stream + output, sample.data() + voice.offset, self.spec_.format,
+        if (self.sfxEnabled_) for (auto& ptr : self.ambience_) {
+            auto& voice = *ptr;
+            const size_t available = voice.buffer.size() - voice.readPos;
+            const size_t count = std::min(static_cast<size_t>(length), available);
+            if (count && voice.gain > 0.f)
+                SDL_MixAudioFormat(stream, voice.buffer.data() + voice.readPos, self.spec_.format,
                     static_cast<Uint32>(count), static_cast<int>(std::lround(voice.gain * SDL_MIX_MAXVOLUME / 2)));
-                output += count; voice.offset += count;
-                if (voice.offset == sample.size() && voice.source.repeat) voice.offset = 0;
-            }
+            voice.readPos += count; // Keep time moving even when muted or outside fade bounds.
         }
         self.voices_.erase(std::remove_if(self.voices_.begin(), self.voices_.end(),
             [&](const Voice& voice) { return voice.offset == self.samples_[voice.sample].size(); }), self.voices_.end());
