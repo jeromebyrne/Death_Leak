@@ -34,4 +34,6 @@ printf '%s\n' "$restart" | grep -q 'Restarted Game/XmlFiles/levels/grass_explora
 printf '%s\n' "$restart" | grep -q 'health=25 focus=100'
 slope=$($bin --play port/tests/fixtures/slope_wall.xml --script R:90 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$slope" | grep -q 'player=(235.52,154.553).*grounded=1'
-printf '%s\n' 'PASS: three-level route, burst/water fire, focus cooldown, encounter, save/resume, drowning, landing/jump, slope/wall, death/restart'
+combined_jump=$($bin --play port/tests/fixtures/slope_wall.xml --script .:60,Q:12 --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$combined_jump" | grep -q 'player=(-68.0002,271.268).*grounded=0'
+printf '%s\n' 'PASS: three-level route, burst/water fire, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, death/restart'

@@ -82,7 +82,7 @@ int main(int argc, char** argv) {
         std::istringstream parts(script); std::string token;
         while (std::getline(parts, token, ',')) {
             auto colon = token.find(':');
-            if (colon == std::string::npos || token.empty() || std::string("LRJ.FBNT").find(token[0]) == std::string::npos) { std::cerr << "Bad --script token\n"; return 2; }
+            if (colon == std::string::npos || token.empty() || std::string("LRJ.FBNTQE").find(token[0]) == std::string::npos) { std::cerr << "Bad --script token\n"; return 2; }
             int count = std::atoi(token.c_str() + colon + 1);
             if (count < 1 || count > 100000 || scriptedInput.size() + count > 100000) { std::cerr << "Bad --script duration\n"; return 2; }
             scriptedInput.insert(scriptedInput.end(), count, token[0]);
@@ -160,7 +160,7 @@ int main(int argc, char** argv) {
             if (renderer->KeyDown(Down)) playerY += 250 * dt;
         } else {
             const char command = frame < static_cast<int>(scriptedInput.size()) ? scriptedInput[frame] : 0;
-            const float direction = !script.empty() ? static_cast<float>(command == 'R' || command == 'B') - static_cast<float>(command == 'L' || command == 'N') :
+            const float direction = !script.empty() ? static_cast<float>(command == 'R' || command == 'B' || command == 'E') - static_cast<float>(command == 'L' || command == 'N' || command == 'Q') :
                 static_cast<float>(renderer->KeyDown(Right)) - static_cast<float>(renderer->KeyDown(Left));
             if (direction != 0) facing = direction < 0 ? -1 : 1;
             const bool restart = !script.empty() ? command == 'T' : renderer->KeyDown(Restart);
@@ -185,7 +185,7 @@ int main(int argc, char** argv) {
                 restartHeld = restart;
             } else {
             restartHeld = restart;
-            const bool jump = !script.empty() ? command == 'J' : renderer->KeyDown(Up);
+            const bool jump = !script.empty() ? (command == 'J' || command == 'Q' || command == 'E') : renderer->KeyDown(Up);
             motion.Update(scene, dt, static_cast<int>(direction), jump);
             worldX = motion.X(); worldY = motion.Y();
             const auto collectedNow = scene.CollectCurrencyOrbs(worldX, worldY, collectedOrbs);
