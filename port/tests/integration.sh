@@ -25,7 +25,7 @@ printf '%s\n' "$focus_lock" | grep -q 'focus=0'
 focus_recover=$($bin --play Game/XmlFiles/levels/test.xml --start-hazard 1 --exhaust-focus --script L:240,.:360 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$focus_recover" | grep -q 'focus=19.3334'
 combat=$($bin --play Game/XmlFiles/levels/first_ninja_arena.xml --start-encounter 0 --script F:300 --fixed-dt 0.0166667 --simulate-only --save-file port/build/integration-save.txt)
-printf '%s\n' "$combat" | grep -q 'spawned=2 enemies=2 hits=12 kills=0'
+printf '%s\n' "$combat" | grep -q 'spawned=2 enemies=1 hits=14 kills=1'
 resume=$($bin --load-save port/build/integration-save.txt --frames 1 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$resume" | grep -q 'health=25 focus=100'
 # NPCTrigger removes a recently-fired trigger on level load (120000 ms).
@@ -49,8 +49,15 @@ printf '%s\n' "$ghost" | grep -q 'spawned=1 enemies=1'
 # AIStateRangeAttack: hold a 200-unit standoff and wind up for 0.25 s.
 range_warmup=$($bin --play port/tests/fixtures/encounter_open.xml --frames 90 --fixed-dt 0.0166667 --simulate-only --combat-state)
 printf '%s\n' "$range_warmup" | grep -q 'Enemy kNinja x=200 .*windup=0.049'
+printf '%s\n' "$range_warmup" | grep -q 'Enemy kNinja x=200 y=100 .*vy=0 grounded=1'
+falling=$($bin --play port/tests/fixtures/encounter_open.xml --frames 1 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$falling" | grep -q 'Enemy kNinja x=158 y=407.092 .*vy=-42.8572 grounded=0'
+wall_enemy=$($bin --play port/tests/fixtures/encounter_npc_wall.xml --frames 90 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$wall_enemy" | grep -q 'Enemy kNinja x=175 y=100 .*grounded=1'
+box_enemy=$($bin --play port/tests/fixtures/encounter_npc_box.xml --frames 90 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$box_enemy" | grep -q 'Enemy kNinja x=200 y=300 .*grounded=1'
 open_shot=$($bin --play port/tests/fixtures/encounter_open.xml --frames 105 --fixed-dt 0.0166667 --simulate-only --combat-state)
-printf '%s\n' "$open_shot" | grep -q 'Shot enemy x=98.3528 y=162.6 .*vy=-275.21'
+printf '%s\n' "$open_shot" | grep -q 'Shot enemy x=83.0809 y=103.445 .*vy=12.2994'
 # Original projectile terrain handling: the same shot is stopped by an authored wall.
 walled_shot=$($bin --play port/tests/fixtures/encounter_wall.xml --frames 105 --fixed-dt 0.0166667 --simulate-only --combat-state)
 printf '%s\n' "$walled_shot" | grep -q 'spawned=1 enemies=1 .*shots=0'
@@ -111,4 +118,4 @@ legacy=$($bin --load-save port/build/legacy-dl3-save.txt --frames 1 --fixed-dt 0
 printf '%s\n' "$legacy" | grep -q 'keys=1'
 
 if printf '%s\n' "$key_only_resume" | grep -q 'Collected key'; then exit 1; fi
-printf '%s\n' 'PASS: source-held-jump arena climb and exit, three-level route, burst/water fire, swim, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, solid box, wall jump, death/restart, key/door gate, ghost flight, ranged warmup/terrain shots and kill, DL3 compatibility and DL4 encounter persistence'
+printf '%s\n' 'PASS: source-held-jump arena climb and exit, three-level route, burst/water fire, swim, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, solid box, wall jump, death/restart, key/door gate, ghost flight, ranged warmup/terrain shots and kill, grounded NPC fall/wall/box, DL3 compatibility and DL4 encounter persistence'

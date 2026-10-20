@@ -13,6 +13,8 @@ struct Enemy {
     std::string type;
     render::TextureId texture;
     float windup = 0, targetX = 0, targetY = 0;
+    float vy = 0;
+    bool grounded = false;
 };
 struct Shot {
     float x, y, vx, vy, life, damage;

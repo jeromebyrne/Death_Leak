@@ -35,6 +35,53 @@ bool BoxContact(float ax, float ay, float bx, float by, const SolidBox& box, flo
     edge(box.left,box.top,box.left,box.bottom);
     return found;
 }
+// NinjaSpawner and SkeletonEnemySpawner both give NPCs a 100x200 collision box.
+// Grounded NPCs use MovingSprite's default gravity (1.0) and their spawner's
+// vertical resistance (1.4), scaled from the original 60 Hz target update.
+void MoveGroundEnemy(Enemy& enemy, const LevelScene& scene, float desiredX, float dt) {
+    constexpr float halfW = 50.f, halfH = 100.f;
+    const float oldX = enemy.x, oldY = enemy.y;
+    enemy.x = desiredX;
+    for (const auto& line : scene.Ground()) {
+        if (std::abs(line.x2-line.x1) > 1.f) continue;
+        const float wallX = (line.x1+line.x2)*0.5f;
+        if (oldY+halfH <= std::min(line.y1,line.y2) || oldY-halfH >= std::max(line.y1,line.y2)) continue;
+        if (desiredX > oldX && oldX+halfW <= wallX && enemy.x+halfW > wallX) enemy.x=std::min(enemy.x,wallX-halfW);
+        if (desiredX < oldX && oldX-halfW >= wallX && enemy.x-halfW < wallX) enemy.x=std::max(enemy.x,wallX+halfW);
+    }
+    for (const auto& box : scene.SolidBoxes()) {
+        if (oldY+halfH <= box.bottom || oldY-halfH >= box.top) continue;
+        if (desiredX > oldX && oldX+halfW <= box.left && enemy.x+halfW > box.left) enemy.x=std::min(enemy.x,box.left-halfW);
+        if (desiredX < oldX && oldX-halfW >= box.right && enemy.x-halfW < box.right) enemy.x=std::max(enemy.x,box.right+halfW);
+    }
+    constexpr float gravity = (1.f/1.4f)*60.f*60.f;
+    if (!enemy.grounded) {
+        const float acceleration = enemy.vy < 0 && enemy.vy > -15.f*60.f ? gravity*3.f : gravity;
+        enemy.y += enemy.vy*dt - 0.5f*acceleration*dt*dt;
+        enemy.vy = std::max(-34.f*60.f, enemy.vy-acceleration*dt);
+    }
+    const bool wasGrounded = enemy.grounded;
+    enemy.grounded = false;
+    float floor = -1e9f;
+    for (const auto& line : scene.Ground()) {
+        const float dx = line.x2-line.x1;
+        if (std::abs(dx) <= 1.f) continue;
+        const float t=(enemy.x-line.x1)/dx;
+        if (t < 0.f || t > 1.f) continue;
+        const float surface=line.y1+t*(line.y2-line.y1);
+        if ((wasGrounded && std::abs(surface-(oldY-halfH)) <= 20.f) ||
+            (enemy.vy <= 0.f && oldY-halfH >= surface-4.f && enemy.y-halfH <= surface)) floor=std::max(floor,surface);
+    }
+    for (const auto& box : scene.SolidBoxes()) {
+        if (enemy.x+halfW <= box.left || enemy.x-halfW >= box.right) continue;
+        if ((wasGrounded && std::abs(box.top-(oldY-halfH)) <= 20.f) ||
+            (enemy.vy <= 0.f && oldY-halfH >= box.top-4.f && enemy.y-halfH <= box.top)) floor=std::max(floor,box.top);
+        if (enemy.vy > 0.f && oldY+halfH <= box.bottom && enemy.y+halfH > box.bottom) {
+            enemy.y=box.bottom-halfH; enemy.vy=0.f;
+        }
+    }
+    if (floor > -1e8f) { enemy.y=floor+halfH; enemy.vy=0.f; enemy.grounded=true; }
+}
 }
 void Combat::SetArt(render::Renderer& renderer) {
     std::string error;
@@ -98,10 +145,10 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
             // AIStateRangeAttack follows beyond 500, retreats inside 200, and holds the band.
             const float range = std::abs(dx);
             const float speed = enemy.type == "kSkeleton" ? 240.f : 480.f;
-            if (range > 500.f) enemy.x += std::copysign(std::min(range-500.f,speed*dt),dx);
-            else if (range < 200.f && range > 0.01f) enemy.x -= std::copysign(std::min(200.f-range,speed*dt),dx);
-            // Character terrain and jumping are not yet ported for NPCs.
-            enemy.y += std::clamp(dy,-120.f*dt,120.f*dt);
+            float desiredX=enemy.x;
+            if (range > 500.f) desiredX += std::copysign(std::min(range-500.f,speed*dt),dx);
+            else if (range < 200.f && range > 0.01f) desiredX -= std::copysign(std::min(200.f-range,speed*dt),dx);
+            MoveGroundEnemy(enemy,scene,desiredX,dt);
         }
         if (ghost) {
             // AIStateFlying fires only when the player is below and horizontally near.
