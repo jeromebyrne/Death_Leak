@@ -1,6 +1,7 @@
 #pragma once
 #include "../render/Renderer.h"
 #include <string>
+#include <unordered_set>
 #include <vector>
 
 namespace deathleak::game {
@@ -12,6 +13,9 @@ struct SceneSprite {
     render::Color tint{255, 255, 255, 255};
     bool flipX = false, flipY = false;
     bool player = false;
+    bool currencyOrb = false;
+    bool collected = false;
+    std::string persistentId;
 };
 
 struct GroundSegment { float x1, y1, x2, y2; };
@@ -22,6 +26,8 @@ public:
     bool Load(const std::string& path, render::Renderer& renderer, std::string& error,
               const std::string& fromLevel = {});
     void Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY) const;
+    size_t CollectCurrencyOrbs(float playerX, float playerY, std::unordered_set<std::string>& collected);
+    void ApplyCollected(const std::unordered_set<std::string>& collected);
     float CameraX() const { return cameraX_; }
     float CameraY() const { return cameraY_; }
     size_t SpriteCount() const { return sprites_.size(); }

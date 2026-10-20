@@ -81,8 +81,11 @@ public:
         SDL_SetTextureAlphaMod(texture, sprite.tint.a);
         SDL_RendererFlip flip = static_cast<SDL_RendererFlip>(
             (sprite.flipX ? SDL_FLIP_HORIZONTAL : 0) | (sprite.flipY ? SDL_FLIP_VERTICAL : 0));
-        SDL_RenderCopyExF(renderer_, texture, sourcePtr, &destination,
-                          sprite.rotationDegrees, nullptr, flip);
+        if (sprite.rotationDegrees == 0 && flip == SDL_FLIP_NONE)
+            SDL_RenderCopyF(renderer_, texture, sourcePtr, &destination);
+        else
+            SDL_RenderCopyExF(renderer_, texture, sourcePtr, &destination,
+                              sprite.rotationDegrees, nullptr, flip);
     }
     void EndFrame() override { SDL_RenderPresent(renderer_); }
     bool PollQuit() override {

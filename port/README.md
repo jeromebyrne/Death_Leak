@@ -67,3 +67,17 @@ docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/src" -w /src -e SDL_VIDEODRIVER
 ```
 
 The dummy SDL software renderer is slow on large transparent source art; on this development host, 120 frames took 73.5 s (~1.6 fps), including a frame capture. That is not an acceptable performance result. A GPU-backed window needs a separate real-display benchmark, and texture/culling/render-path profiling remains necessary.
+
+## Deterministic integration and limited progress persistence
+
+For a fast headless **simulation** check (no rendering), run from the repository root:
+
+```sh
+SDL_VIDEODRIVER=dummy port/build/deathleak-linux \
+  --play Game/XmlFiles/levels/forest_exploration_1.xml \
+  --script L:340 --fixed-dt 0.0166667 --simulate-only
+```
+
+This scripted left movement enters `grass_exploration_3.xml` through the authored trigger at frame 322 and places the player at that level's matching `LevelEntry`. `--script` supports `L`, `R`, `J` (jump), and `.` (idle), each followed by `:frame-count`, comma-separated. This harness validates simulation and transitions, **not** rendered frame rate or human playability.
+
+Experimental `--save-file <path>` writes the current level, position, and collected currency-orb IDs when the process exits. `--load-save <path>` resumes these values and updates the same file on exit. These are a limited Linux-port save format, not the original game's complete save/upgrade system. Currency orbs currently use the original 100-world-unit pickup radius and disappear on collection, but do not yet implement tracking animation, audio, upgrades, or the original UI.

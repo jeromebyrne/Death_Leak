@@ -114,6 +114,9 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         sprite.rotation = Attr(position, "rotation");
         sprite.depth = Depth(position->Attribute("depth_layer"));
         sprite.player = kind == "Player";
+        sprite.currencyOrb = kind == "CurrencyOrb";
+        if (sprite.currencyOrb && object->Attribute("id"))
+            sprite.persistentId = std::filesystem::path(path).lexically_normal().string() + "#" + object->Attribute("id");
         sprite.flipX = Flag(object->FirstChildElement("horizontalflip"), "value");
         sprite.flipY = Flag(object->FirstChildElement("verticalflip"), "value");
         auto alpha = std::clamp(Attr(object->FirstChildElement("alpha"), "value", 1), 0.f, 1.f);
@@ -124,9 +127,27 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     if (sprites_.empty()) { error = "Level has no renderable assets: " + path; return false; }
     return true;
 }
+size_t LevelScene::CollectCurrencyOrbs(float playerX, float playerY, std::unordered_set<std::string>& collected) {
+    size_t count = 0;
+    for (auto& object : sprites_) {
+        if (!object.currencyOrb || object.collected) continue;
+        const float dx = object.x - playerX, dy = object.y - playerY;
+        // CurrencyOrb::OnCollision uses a 100-world-unit collection radius.
+        if (dx * dx + dy * dy > 100.f * 100.f) continue;
+        object.collected = true;
+        if (!object.persistentId.empty()) collected.insert(object.persistentId);
+        ++count;
+    }
+    return count;
+}
+void LevelScene::ApplyCollected(const std::unordered_set<std::string>& collected) {
+    for (auto& object : sprites_)
+        if (object.currencyOrb && collected.count(object.persistentId)) object.collected = true;
+}
 void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY) const {
     constexpr float scale = 2.f / 3.f; // Original world is authored for 1920x1080.
     for (const auto& object : sprites_) {
+        if (object.collected) continue;
         const float worldX = object.player ? playerX : object.x;
         const float worldY = object.player ? playerY : object.y;
         render::Sprite draw;
