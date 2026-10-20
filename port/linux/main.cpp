@@ -645,6 +645,11 @@ int main(int argc, char** argv) {
                     }
                 }
             }
+            // GameObject::UpdateInteractable runs in Sprite::Update before
+            // MovingSprite advances a visited pickup. Test this frame's
+            // interaction against the position at the start of its update.
+            const float pickupInteractionX = healthPickup ? healthPickup->x : 0.f;
+            const float pickupInteractionY = healthPickup ? healthPickup->y : 0.f;
             if (healthPickup && (!spawnedHealthPickup || pickupUpdatedThisFrame)) {
                 if (healthPickup->level != currentLevel) healthPickup.reset();
                 else {
@@ -689,8 +694,8 @@ int main(int argc, char** argv) {
                 target = id; selectedDepth = depth; selectedOrder = order;
             };
             const bool nearbyHealthPickup = healthPickup && pickupUpdatedThisFrame &&
-                std::abs(worldX-healthPickup->x) < (128.959793f+50.f)*0.5f &&
-                std::abs(worldY-healthPickup->y) < (214.898743f+70.f)*0.5f;
+                std::abs(worldX-pickupInteractionX) < (128.959793f+50.f)*0.5f &&
+                std::abs(worldY-pickupInteractionY) < (214.898743f+70.f)*0.5f;
             // The spawned kPlayer pickup sorts ahead of lower-depth authored
             // interactables, but after earlier-authored kPlayer peers.
             if (nearbyHealthPickup) select("H:" + currentLevel, 3000,

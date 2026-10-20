@@ -291,6 +291,29 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
         collected = subprocess.run(args + ['--script', 'I:755'],
                                    capture_output=True, text=True, check=True)
         assert f'Health upgrade collected {fixture} at frame {collected_frame} max_health=45' in collected.stdout, collected.stdout
+    # A visited pickup checks interaction in Sprite::Update before its
+    # MovingSprite motion. At x=90 the authored player box misses the pickup
+    # at its spawn x=0 by 0.52 units, but overlaps after the first x=15 move.
+    # That first moved frame must not count toward the 0.05-second hold.
+    edge = 'port/tests/fixtures/health_pickup_overlap_edge.xml'
+    edge_cmd = ['port/build/deathleak-linux', '--play', edge,
+                '--fixed-dt', '0.0166667', '--simulate-only']
+    edge_before = subprocess.run(edge_cmd + ['--script', 'I:752'],
+                                 capture_output=True, text=True, check=True)
+    assert f'Health devil reward spawned {edge} at frame 749' in edge_before.stdout, edge_before.stdout
+    assert 'Health upgrade collected ' not in edge_before.stdout and 'max_health=25' in edge_before.stdout, edge_before.stdout
+    edge_after = subprocess.run(edge_cmd + ['--script', 'I:753'],
+                                capture_output=True, text=True, check=True)
+    assert f'Health upgrade collected {edge} at frame 752 max_health=45' in edge_after.stdout, edge_after.stdout
+    # Conversely x=-85 overlaps before the spawn-frame move, then leaves the
+    # pickup behind. A 0.05-second fixed step completes exactly one hold on
+    # that visited spawn frame, proving pre-motion overlap is honored too.
+    exit_edge = 'port/tests/fixtures/health_pickup_overlap_exit.xml'
+    exit_run = subprocess.run(['port/build/deathleak-linux', '--play', exit_edge,
+                               '--script', 'I:250', '--fixed-dt', '0.05',
+                               '--simulate-only'], capture_output=True, text=True, check=True)
+    assert f'Health devil reward spawned {exit_edge} at frame 249' in exit_run.stdout, exit_run.stdout
+    assert f'Health upgrade collected {exit_edge} at frame 249 max_health=45' in exit_run.stdout, exit_run.stdout
     # AddGameObject re-sorts on insertion: its kPlayer pickup precedes a
     # kGroundFront key, even though the key is earlier in XML. Neither target
     # overlaps until the first post-spawn movement tick, so there is no prior

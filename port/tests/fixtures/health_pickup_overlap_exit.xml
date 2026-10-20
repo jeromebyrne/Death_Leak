@@ -1,0 +1,19 @@
+<level>
+  <Player id="1">
+    <position x="-85" y="107.44937" depth_layer="kPlayer"/>
+    <dimensions width="181.393768" height="215.352036"/>
+    <texture filename="Media/UI/player_silhouette.png"/>
+  </Player>
+  <SolidLineStrip id="2">
+    <position x="0" y="0"/><dimensions width="1000" height="100"/>
+    <points num_points="2" x_0="-500" y_0="0" x_1="500" y_1="0"/>
+  </SolidLineStrip>
+  <HealthDevil id="3">
+    <position x="0" y="0" depth_layer="kGround"/><dimensions width="800" height="800"/>
+  </HealthDevil>
+  <SolidMovingSprite id="4">
+    <position x="200" y="-100"/><dimensions width="1" height="1"/>
+    <collisionboxdimensions x="400" y="200" offsetX="0" offsetY="0"/>
+    <passive value="true"/>
+  </SolidMovingSprite>
+</level>
