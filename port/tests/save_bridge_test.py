@@ -223,6 +223,24 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
     assert 'Health devil reward spawned ' not in pending.stdout
     assert 'max_health=25' in pending.stdout
     assert not any(line.startswith(('V:', 'J:', 'H:')) for line in before_voice.read_text().splitlines())
+    # HealthDevil::Update is manager-culled by its drawable bounds. The voice
+    # can finish while the player/camera are far away, but GiveReward must wait
+    # until the devil is visited again; remaining nearby still rewards on time.
+    zone_fixture = 'port/tests/fixtures/health_devil_update_zone.xml'
+    zone_cmd = ['port/build/deathleak-linux', '--play', zone_fixture,
+                '--fixed-dt', '0.0166667', '--simulate-only']
+    far_dialog = subprocess.run(zone_cmd + ['--script', 'I:4,R:400,.:400'],
+                                capture_output=True, text=True, check=True)
+    assert f'Health devil dialog {zone_fixture} at frame 2' in far_dialog.stdout, far_dialog.stdout
+    assert 'Health devil reward spawned ' not in far_dialog.stdout, far_dialog.stdout
+    assert 'max_health=25' in far_dialog.stdout, far_dialog.stdout
+    return_dialog = subprocess.run(zone_cmd + ['--script', 'I:4,R:400,.:400,L:400,.:20'],
+                                   capture_output=True, text=True, check=True)
+    assert f'Health devil reward spawned {zone_fixture} at frame 958 count=1' in return_dialog.stdout, return_dialog.stdout
+    assert 'Health upgrade collected ' not in return_dialog.stdout and 'max_health=25' in return_dialog.stdout, return_dialog.stdout
+    near_dialog = subprocess.run(zone_cmd + ['--script', 'I:4,.:800'],
+                                 capture_output=True, text=True, check=True)
+    assert f'Health devil reward spawned {zone_fixture} at frame 749 count=1' in near_dialog.stdout, near_dialog.stdout
     # Connected play: leave the devil during VO, observe the spawned object
     # without a cap increase, then return and physically collect it.
     uncollected = root / 'devil-uncollected.dl5'

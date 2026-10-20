@@ -336,7 +336,7 @@ int main(int argc, char** argv) {
     auto paperBackButton = (playLevel.empty() && !menuLoop) ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/gamepad_icons/key_esc.png", error);
     auto modalButton = (playLevel.empty() && !menuLoop) ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/gamepad_icons/y.png", error);
     std::string interactionTarget;
-    struct DevilDialog { std::string level; float x, y, elapsed, duration; unsigned voice; int depth; };
+    struct DevilDialog { std::string level; float x, y, width, height, elapsed, duration; unsigned voice; int depth; };
     struct HealthPickup { std::string level; float x, y, vx, vy, gravityAcceleration = 0.f; };
     std::optional<DevilDialog> devilDialog;
     std::optional<HealthPickup> healthPickup;
@@ -617,6 +617,13 @@ int main(int argc, char** argv) {
             cameraX += (worldX - cameraX) * std::min(1.f, 8.f * dt);
             cameraY += (worldY - cameraY) * std::min(1.f, 4.f * dt);
             levelTime += dt;
+            // Utilities::IsObjectInRectangle culls by drawable extents, not
+            // collision bounds. These interactables have zero parallax in the
+            // supported scene model; the native manager zone is 4000 square.
+            auto inManagerZone = [&](float x, float y, float width, float height) {
+                return std::abs(x-cameraX) < 2000.f + width*0.5f &&
+                       std::abs(y-cameraY) < 2000.f + height*0.5f;
+            };
             pickupUpdatedThisFrame = bool(healthPickup);
             if (devilDialog) {
                 if (devilDialog->level != currentLevel) devilDialog.reset();
@@ -627,7 +634,10 @@ int main(int argc, char** argv) {
                     const bool finished = simulateOnly
                         ? (!settings.sfx || devilDialog->elapsed >= devilDialog->duration)
                         : (!sound || sound->VoiceFinished(devilDialog->voice));
-                    if (finished) {
+                    // The voice continues while the devil is culled, but
+                    // GiveReward runs only on a visited HealthDevil::Update.
+                    if (finished && inManagerZone(devilDialog->x, devilDialog->y,
+                                                  devilDialog->width, devilDialog->height)) {
                         rewardedHealthDevils.insert(currentLevel);
                         ++healthDevilRewardCount;
                         scene.ApplyHealthDevil(true);
@@ -649,9 +659,7 @@ int main(int argc, char** argv) {
             // has crossed the edge; source Utilities uses strict bounds.
             // This is evaluated before motion, as in the manager loop.
             if (healthPickup && pickupUpdatedThisFrame) {
-                const float dx = std::abs(healthPickup->x - cameraX);
-                const float dy = std::abs(healthPickup->y - cameraY);
-                pickupUpdatedThisFrame = dx < 2025.f && dy < 2025.f;
+                pickupUpdatedThisFrame = inManagerZone(healthPickup->x, healthPickup->y, 50.f, 50.f);
             }
             // GameObject::UpdateInteractable runs in Sprite::Update before
             // MovingSprite advances a visited pickup. Test this frame's
@@ -784,6 +792,7 @@ int main(int argc, char** argv) {
                 const bool third = healthDevilRewardCount >= 2;
                 const unsigned voice = sound ? sound->PlayDevilVoice(third) : 0;
                 devilDialog = DevilDialog{currentLevel, nearbyDevil->x, nearbyDevil->y,
+                    nearbyDevil->width, nearbyDevil->height,
                     0.f, third ? 11.842177f : 12.448481f, voice, nearbyDevil->depth};
                 std::cout << "Health devil dialog " << currentLevel << " at frame " << frame
                           << " voice=" << (third ? 3 : 1) << '\n';
