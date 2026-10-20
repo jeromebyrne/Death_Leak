@@ -22,6 +22,21 @@ bool SegmentContact(float ax, float ay, float bx, float by,
     contact = t;
     return true;
 }
+bool SweptBoxContact(float ax, float ay, float bx, float by,
+                     float left, float right, float bottom, float top, float& contact) {
+    const float dx=bx-ax, dy=by-ay;
+    float enter=0.f, leave=1.f;
+    auto slab=[&](float start,float travel,float low,float high) {
+        if (std::abs(travel)<0.00001f) return start>low && start<high;
+        float a=(low-start)/travel, b=(high-start)/travel;
+        if (a>b) std::swap(a,b);
+        enter=std::max(enter,a); leave=std::min(leave,b);
+        return enter<=leave;
+    };
+    if (!slab(ax,dx,left,right) || !slab(ay,dy,bottom,top)) return false;
+    contact=enter;
+    return true;
+}
 bool BoxContact(float ax, float ay, float bx, float by, const SolidBox& box, float& contact) {
     if (ax > box.left && ax < box.right && ay > box.bottom && ay < box.top) { contact = 0.f; return true; }
     bool found = false;
@@ -256,6 +271,8 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
         shots_.push_back({enemy.x,enemy.y+(skeleton?50.f:0.f),aimX/length*speed,aimY/length*speed,
             ghost || skeleton ? 2.f : 0.25f, skeleton ? 35.f : ghost ? 2.f : 3.f,true,
             ghost ? 0.9f : 1.f, !skeleton});
+        shots_.back().deflectable=!ghost && !skeleton;
+        shots_.back().baseSpeed=speed;
         enemy.fireCooldown=1.3f; // fixed within NPC's original 1.0..1.6 s randomized reload
     }
     // CollisionManager dispatches each strict-AABB character contact in both
@@ -292,6 +309,7 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
     }
     for (auto& shot : shots_) {
         if (shot.life<=0) continue;
+        shot.meleeCooldown=std::max(0.f,shot.meleeCooldown-dt);
         const float oldX=shot.x, oldY=shot.y;
         // Projectile::Update uses 60-Hz-equivalent gravity and displacement resistance.
         const float ticks=std::min(2.f,dt*60.f);
@@ -310,10 +328,39 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
         shot.life-=dt;
         if (terrainT < 1.f) shot.life=0;
         if (shot.enemy) {
-            const float vx=shot.x-oldX, vy=shot.y-oldY;
-            const float t=std::clamp(((x-oldX)*vx+(y-oldY)*vy)/(vx*vx+vy*vy+0.0001f),0.f,1.f);
-            if (Inside(oldX+t*vx,oldY+t*vy,x,y,70.f,180.f) && hurtCooldown_<=0) {
-                health_=std::max(0.f,health_-shot.damage); hurtCooldown_=0.5f; shot.life=0; ++hits_;
+            const float playerHalfW=(meleeStrikePhase?1.5f:1.f)*128.959793f*0.5f;
+            const float playerHalfH=(meleeTime_>0.f?1.1201479f:1.f)*214.898743f*0.5f;
+            const float shotHalfW=shot.resistance<1.f?20.f:12.5f;
+            const float shotHalfH=shot.resistance<1.f?12.5f:(shot.gravity?6.5f:4.f);
+            // Original ghost 40x25, ninja star 25x13, skeleton fireball 25x8.
+            float contact=0.f;
+            if (deflectionUnlocked_ && shot.deflectable && shot.life>0.f &&
+                shot.meleeCooldown<=0.f && meleeTime_>0.f &&
+                (meleeTime_<7.f/60.f || meleeStrikePhase) &&
+                SweptBoxContact(oldX,oldY,shot.x,shot.y,
+                                x-playerHalfW-shotHalfW,x+playerHalfW+shotHalfW,
+                                y-playerHalfH-shotHalfH,y+playerHalfH+shotHalfH,contact)) {
+                const float contactX=oldX+(shot.x-oldX)*contact;
+                const bool front=(facing>0 && shot.vx<0.f && contactX-shotHalfW>x-playerHalfW) ||
+                    (facing<0 && shot.vx>0.f && contactX+shotHalfW<x+playerHalfW);
+                if (front) {
+                    const float speed=shot.baseSpeed>0.f?shot.baseSpeed:std::hypot(shot.vx,shot.vy);
+                    shot.x=contactX; shot.y=oldY+(shot.y-oldY)*contact;
+                    shot.vx=(shot.vx<0.f?1.f:-1.f)*speed*2.5f;
+                    shot.vy=0.f; // deterministic representative of source random y offset
+                    shot.enemy=false; shot.damage=9999.f; shot.wasDeflected=true;
+                    shot.meleeCooldown=0.5f;
+                    ++deflections_;
+                }
+            }
+            // Retain the existing prototype hitbox outside successful melee
+            // deflection; upgrading all projectile collision is separate work.
+            if (shot.enemy && hurtCooldown_<=0.f) {
+                const float vx=shot.x-oldX, vy=shot.y-oldY;
+                const float t=std::clamp(((x-oldX)*vx+(y-oldY)*vy)/(vx*vx+vy*vy+0.0001f),0.f,1.f);
+                if (Inside(oldX+t*vx,oldY+t*vy,x,y,70.f,180.f)) {
+                    health_=std::max(0.f,health_-shot.damage); hurtCooldown_=0.5f; shot.life=0; ++hits_;
+                }
             }
         } else for (size_t enemyIndex=0; enemyIndex<enemies_.size(); ++enemyIndex) {
             auto& enemy=enemies_[enemyIndex];

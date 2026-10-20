@@ -32,6 +32,7 @@ int main(int argc, char** argv) {
     float savedX = 0, savedY = 0, savedHealth = 25, savedFocus = 100;
     bool restorePosition = false;
     std::unordered_set<std::string> collectedOrbs, ownedKeys, unlockedDoors;
+    bool deflectionUnlocked = false;
     std::unordered_map<std::string, std::int64_t> triggerHistory;
     bool simulateOnly = false;
     bool profile = false;
@@ -79,6 +80,7 @@ int main(int argc, char** argv) {
         while (std::getline(saved, line)) {
             if (line.rfind("K:", 0) == 0) ownedKeys.insert(line.substr(2));
             else if (line.rfind("D:", 0) == 0) unlockedDoors.insert(line.substr(2));
+            else if (line == "U:kDeflection") deflectionUnlocked = true;
             else if (version == "DL4" && line.rfind("N:", 0) == 0) {
                 const auto tab = line.rfind('\t');
                 if (tab != std::string::npos) {
@@ -153,6 +155,7 @@ int main(int argc, char** argv) {
     deathleak::game::Hud hud;
     if (!playLevel.empty()) hud.Load(*renderer);
     deathleak::game::Combat combat;
+    combat.SetDeflectionUnlocked(deflectionUnlocked);
     combat.SetTriggerHistory(std::move(triggerHistory));
     if (restorePosition) combat.SetVitals(savedHealth, savedFocus);
     if (exhaustedFocus) combat.SetFocus(0);
@@ -332,6 +335,7 @@ int main(int argc, char** argv) {
         for (const auto& orb : collectedOrbs) saved << orb << '\n';
         for (const auto& key : ownedKeys) saved << "K:" << key << '\n';
         for (const auto& door : unlockedDoors) saved << "D:" << door << '\n';
+        if (combat.DeflectionUnlocked()) saved << "U:kDeflection\n";
         for (const auto& [id, time] : combat.TriggerHistory()) saved << "N:" << id << '\t' << time << '\n';
         saved.close();
         if (!saved) { std::cerr << "Save write failed: " << temporary << '\n'; return 1; }
@@ -349,8 +353,9 @@ int main(int argc, char** argv) {
         if (combatState) {
             std::cout << "Player/NPC contacts=" << combat.PlayerContacts() << " contact_frames=" << combat.ContactFrames() << "\n";
             std::cout << "Melee active=" << combat.MeleeActive() << " strikes=" << combat.MeleeStrikes() << "\n";
+            std::cout << "Deflection unlocked=" << combat.DeflectionUnlocked() << " count=" << combat.Deflections() << "\n";
             for (const auto& e : combat.Enemies()) std::cout << "Enemy " << e.type << " x=" << e.x << " y=" << e.y << " windup=" << e.windup << " vy=" << e.vy << " grounded=" << e.grounded << " combo=" << e.comboHits << " stun=" << e.stunTime << " teleport=" << e.teleportTime << " teleports=" << e.teleports << " jumps=" << e.jumps << " rolls=" << e.rolls << " roll=" << e.rollTime << "\n";
-            for (const auto& s : combat.Shots()) std::cout << "Shot " << (s.enemy ? "enemy" : "player") << " x=" << s.x << " y=" << s.y << " vx=" << s.vx << " vy=" << s.vy << "\n";
+            for (const auto& s : combat.Shots()) std::cout << "Shot " << (s.enemy ? "enemy" : "player") << " x=" << s.x << " y=" << s.y << " vx=" << s.vx << " vy=" << s.vy << " deflected=" << s.wasDeflected << "\n";
         }
         if (profile) std::cout << "Profile update=" << updateSeconds << "s draw/present=" << drawSeconds << "s\n";
     }

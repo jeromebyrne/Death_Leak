@@ -29,6 +29,10 @@ struct Shot {
     bool enemy;
     float resistance = 1.f;
     bool gravity = true;
+    bool deflectable = true;
+    bool wasDeflected = false;
+    float baseSpeed = 0.f;
+    float meleeCooldown = 0.f;
 };
 class Combat {
 public:
@@ -38,6 +42,9 @@ public:
     bool DamageEnemy(size_t index, float damage, float projectileDirectionX = 0.f); // shared projectile/melee hit path
     bool MeleeActive() const { return meleeTime_ > 0.f; }
     int MeleeStrikes() const { return meleeStrikes_; }
+    int Deflections() const { return deflections_; }
+    void SetDeflectionUnlocked(bool unlocked) { deflectionUnlocked_ = unlocked; }
+    bool DeflectionUnlocked() const { return deflectionUnlocked_; }
     void Draw(render::Renderer& renderer, float cameraX, float cameraY) const;
     void SetTriggerHistory(std::unordered_map<std::string, std::int64_t> history) { triggerHistory_ = std::move(history); }
     const std::unordered_map<std::string, std::int64_t>& TriggerHistory() const { return triggerHistory_; }
@@ -66,6 +73,8 @@ private:
     float meleeTime_ = 0.f;
     bool meleeHeld_ = false;
     int meleeStrikes_ = 0;
+    int deflections_ = 0;
+    bool deflectionUnlocked_ = false;
     int burstCount_ = 0;
     int hits_ = 0, kills_ = 0, spawned_ = 0, fired_ = 0;
     int playerContacts_ = 0, contactFrames_ = 0;

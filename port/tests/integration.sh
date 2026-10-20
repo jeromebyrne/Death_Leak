@@ -78,6 +78,41 @@ melee_empty=$($bin --play port/tests/fixtures/encounter_npc_wall.xml --exhaust-f
 printf '%s\n' "$melee_empty" | grep -q 'Melee active=0 strikes=0'
 melee_water=$($bin --play Game/XmlFiles/levels/test.xml --start-hazard 1 --script M:1 --fixed-dt 0.0166667 --simulate-only --combat-state)
 printf '%s\n' "$melee_water" | grep -q 'Melee active=0 strikes=0'
+# Source Character::WillDeflectProjectile accepts only front-side, opposing
+# shots during melee phase 1 or 3. The feature flag represents an already
+# purchased upgrade in the Linux save; the interaction/modal is not ported.
+deflect_save=port/build/integration-deflection-save.txt
+make_deflect_save() {
+    printf 'DL4\n%s\n0 107.44937 25 100\nU:kDeflection\n' "$1" > "$deflect_save"
+}
+deflect_locked=$($bin --play port/tests/fixtures/encounter_open.xml --script .:100,M:6 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$deflect_locked" | grep -q 'health=25 .*shots=1'
+printf '%s\n' "$deflect_locked" | grep -q 'Deflection unlocked=0 count=0'
+printf '%s\n' "$deflect_locked" | grep -q 'Shot enemy .*deflected=0'
+make_deflect_save port/tests/fixtures/encounter_open.xml
+deflect_phase1=$($bin --load-save "$deflect_save" --script .:100,M:6 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$deflect_phase1" | grep -q 'health=25 .*shots=1'
+printf '%s\n' "$deflect_phase1" | grep -q 'Deflection unlocked=1 count=1'
+printf '%s\n' "$deflect_phase1" | grep -q 'Shot player .*vx=1350 .*deflected=1'
+grep -q '^U:kDeflection$' "$deflect_save"
+make_deflect_save port/tests/fixtures/encounter_open.xml
+deflect_phase2=$($bin --load-save "$deflect_save" --script .:88,M:18 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$deflect_phase2" | grep -q 'Deflection unlocked=1 count=0'
+printf '%s\n' "$deflect_phase2" | grep -q 'Shot enemy .*deflected=0'
+make_deflect_save port/tests/fixtures/encounter_open.xml
+deflect_phase3=$($bin --load-save "$deflect_save" --script .:80,M:40 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$deflect_phase3" | grep -q 'health=25 .*enemies=0 hits=1 kills=1'
+printf '%s\n' "$deflect_phase3" | grep -q 'Melee active=0 strikes=0'
+printf '%s\n' "$deflect_phase3" | grep -q 'Deflection unlocked=1 count=1'
+make_deflect_save port/tests/fixtures/encounter_open.xml
+deflect_behind=$($bin --load-save "$deflect_save" --script L:1,.:99,M:6 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$deflect_behind" | grep -q 'Deflection unlocked=1 count=0'
+printf '%s\n' "$deflect_behind" | grep -q 'Shot enemy .*deflected=0'
+make_deflect_save port/tests/fixtures/encounter_skeleton_open.xml
+deflect_skeleton=$($bin --load-save "$deflect_save" --script .:110,M:10 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$deflect_skeleton" | grep -q 'health=25 .*shots=1'
+printf '%s\n' "$deflect_skeleton" | grep -q 'Deflection unlocked=1 count=0'
+printf '%s\n' "$deflect_skeleton" | grep -q 'Shot enemy .*deflected=0'
 # AIStateRangeAttack: hold a 200-unit standoff and wind up for 0.25 s.
 range_warmup=$($bin --play port/tests/fixtures/encounter_open.xml --frames 90 --fixed-dt 0.0166667 --simulate-only --combat-state)
 printf '%s\n' "$range_warmup" | grep -q 'Enemy kNinja x=200 .*windup=0.049'
