@@ -1,8 +1,29 @@
 #!/bin/sh
 # Run from repository root after building port/build/deathleak-linux.
 set -eu
-export SDL_VIDEODRIVER=dummy
+export SDL_VIDEODRIVER=offscreen
+export SDL_RENDER_DRIVER=opengl
+export DEATHLEAK_TEST_ALLOW_SOFTWARE_RENDERER=1
 bin=port/build/deathleak-linux
+# Release/default mode must reject dummy/software even if SDL offers a fallback.
+strict_log=$(mktemp)
+if env -u DEATHLEAK_TEST_ALLOW_SOFTWARE_RENDERER SDL_VIDEODRIVER=dummy SDL_RENDER_DRIVER=software "$bin" --frames 1 >"$strict_log" 2>&1; then
+    echo "strict renderer unexpectedly accepted software" >&2; rm -f "$strict_log"; exit 1
+fi
+grep -q 'strict-accelerated' "$strict_log"
+grep -q 'accelerated SDL renderer required\|refusing software rendering' "$strict_log"
+rm -f "$strict_log"
+software_log=$(mktemp)
+SDL_VIDEODRIVER=dummy SDL_RENDER_DRIVER=software "$bin" --frames 1 >"$software_log" 2>&1
+grep -q 'mode=test-allow-software' "$software_log"
+grep -q 'accelerated=0 software=1' "$software_log"
+grep -q 'TEST-ONLY software renderer accepted' "$software_log"
+rm -f "$software_log"
+accelerated_log=$(mktemp)
+env -u DEATHLEAK_TEST_ALLOW_SOFTWARE_RENDERER "$bin" --frames 1 >"$accelerated_log" 2>&1
+grep -q 'video_driver=offscreen name=opengl' "$accelerated_log"
+grep -q 'accelerated=1 software=0.*mode=strict-accelerated' "$accelerated_log"
+rm -f "$accelerated_log"
 transition=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script L:340 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$transition" | grep -q 'Entered Game/XmlFiles/levels/grass_exploration_3.xml'
 route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script L:1300 --fixed-dt 0.0166667 --simulate-only)

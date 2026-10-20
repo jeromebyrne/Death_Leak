@@ -11,6 +11,7 @@ namespace deathleak::render {
 namespace {
 class SDLRenderer final : public Renderer {
 public:
+    explicit SDLRenderer(bool testAllowSoftware) : testAllowSoftware_(testAllowSoftware) {}
     ~SDLRenderer() override {
         if (std::getenv("DEATHLEAK_RENDER_PROFILE"))
             std::cerr << "SDL profile calls=" << drawCalls_ << " copy=" << copySeconds_
@@ -28,13 +29,43 @@ public:
         window_ = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                    width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
         if (!window_) { error = SDL_GetError(); return false; }
-        renderer_ = SDL_CreateRenderer(window_, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-        if (!renderer_) renderer_ = SDL_CreateRenderer(window_, -1, SDL_RENDERER_SOFTWARE);
-        if (!renderer_) { error = SDL_GetError(); return false; }
-        if (std::getenv("DEATHLEAK_RENDER_PROFILE")) {
-            SDL_RendererInfo info{};
-            if (SDL_GetRendererInfo(renderer_, &info) == 0)
-                std::cerr << "SDL renderer=" << info.name << " flags=" << info.flags << "\n";
+        constexpr Uint32 required = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
+        renderer_ = SDL_CreateRenderer(window_, -1, required);
+        std::string acceleratedError;
+        if (!renderer_) {
+            acceleratedError = SDL_GetError();
+            // Vsync is desirable but not necessary for the acceleration requirement.
+            renderer_ = SDL_CreateRenderer(window_, -1, SDL_RENDERER_ACCELERATED);
+            if (!renderer_) acceleratedError += "; without vsync: " + std::string(SDL_GetError());
+        }
+        if (!renderer_ && testAllowSoftware_) renderer_ = SDL_CreateRenderer(window_, -1, SDL_RENDERER_SOFTWARE);
+        if (!renderer_) {
+            error = "accelerated SDL renderer required; attempts failed: " + acceleratedError;
+            if (testAllowSoftware_) error += "; test-only software attempt: " + std::string(SDL_GetError());
+            std::cerr << "SDL renderer selection failed (mode="
+                      << (testAllowSoftware_ ? "test-allow-software" : "strict-accelerated")
+                      << "): " << error << "\n";
+            return false;
+        }
+        SDL_RendererInfo info{};
+        if (SDL_GetRendererInfo(renderer_, &info) != 0) {
+            error = "cannot inspect selected SDL renderer: " + std::string(SDL_GetError());
+            return false;
+        }
+        std::cerr << "SDL renderer selected video_driver="
+                  << (SDL_GetCurrentVideoDriver() ? SDL_GetCurrentVideoDriver() : "unknown")
+                  << " name=" << (info.name ? info.name : "unknown")
+                  << " flags=" << info.flags
+                  << " accelerated=" << ((info.flags & SDL_RENDERER_ACCELERATED) ? 1 : 0)
+                  << " software=" << ((info.flags & SDL_RENDERER_SOFTWARE) ? 1 : 0)
+                  << " vsync=" << ((info.flags & SDL_RENDERER_PRESENTVSYNC) ? 1 : 0)
+                  << " mode=" << (testAllowSoftware_ ? "test-allow-software" : "strict-accelerated") << "\n";
+        if (!(info.flags & SDL_RENDERER_ACCELERATED) || (info.flags & SDL_RENDERER_SOFTWARE)) {
+            if (!testAllowSoftware_) {
+                error = "selected SDL renderer is not accelerated; refusing software rendering";
+                return false;
+            }
+            std::cerr << "TEST-ONLY software renderer accepted; this is not release/GPU evidence\n";
         }
         if (SDL_RenderSetLogicalSize(renderer_, 1280, 720) != 0) { error = SDL_GetError(); return false; }
         SDL_SetRenderDrawBlendMode(renderer_, SDL_BLENDMODE_BLEND);
@@ -164,6 +195,7 @@ public:
         return ok;
     }
 private:
+    bool testAllowSoftware_ = false;
     size_t drawCalls_ = 0;
     double copySeconds_ = 0, presentSeconds_ = 0;
     bool initialized_ = false;
@@ -175,5 +207,5 @@ private:
     std::unordered_map<std::string, TextureId> paths_;
 };
 }
-std::unique_ptr<Renderer> CreateRenderer() { return std::make_unique<SDLRenderer>(); }
+std::unique_ptr<Renderer> CreateRenderer(bool testAllowSoftware) { return std::make_unique<SDLRenderer>(testAllowSoftware); }
 } // namespace deathleak::render

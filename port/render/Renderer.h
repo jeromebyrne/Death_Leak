@@ -54,6 +54,7 @@ public:
 
 // Key codes are intentionally backend-neutral.
 enum Key { Left = 1, Right, Up, Down, Escape, Restart, Interact, Melee, Purchase, Roll, ModalBack };
-std::unique_ptr<Renderer> CreateRenderer();
+// Software selection is an explicit headless-test escape hatch, never release acceptance.
+std::unique_ptr<Renderer> CreateRenderer(bool testAllowSoftware = false);
 
 } // namespace deathleak::render

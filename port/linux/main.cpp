@@ -240,7 +240,10 @@ int main(int argc, char** argv) {
         if (!events.eof() || lastFrame < 0) { std::cerr << "Bad --mouse-script file\n"; return 2; }
         if (!frameLimit) frameLimit = lastFrame + 1;
     }
-    auto renderer = CreateRenderer();
+    // Explicit opt-in for Docker/dummy-video functional tests only.
+    const char* testSoftwareEnv = std::getenv("DEATHLEAK_TEST_ALLOW_SOFTWARE_RENDERER");
+    const bool testAllowSoftware = testSoftwareEnv && std::string(testSoftwareEnv) == "1";
+    auto renderer = CreateRenderer(testAllowSoftware);
     std::string error;
     if (!renderer->Initialize("Death Leak - Linux renderer slice", 1280, 720, error)) {
         std::cerr << "Renderer initialization failed: " << error << '\n'; return 1;
