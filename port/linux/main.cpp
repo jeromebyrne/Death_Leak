@@ -336,7 +336,7 @@ int main(int argc, char** argv) {
     auto modalButton = (playLevel.empty() && !menuLoop) ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/gamepad_icons/y.png", error);
     std::string interactionTarget;
     struct DevilDialog { std::string level; float x, y, elapsed, duration; unsigned voice; };
-    struct HealthPickup { std::string level; float x, y, vx, vy, gravityAcceleration = 0.f; bool grounded = false; };
+    struct HealthPickup { std::string level; float x, y, vx, vy, gravityAcceleration = 0.f; };
     std::optional<DevilDialog> devilDialog;
     std::optional<HealthPickup> healthPickup;
     const auto healthPickupArt = renderer->LoadTexture("Game/Media/objects/health_upgrade.png", error);
@@ -646,30 +646,16 @@ int main(int argc, char** argv) {
                     // -15 downward speed it falls at 3x gravity; vertical speed
                     // is capped by the authored HealthDevil spawn parameters.
                     const float steps = dt * 60.f;
-                    const float previousY = healthPickup->y;
-                    if (!healthPickup->grounded) {
-                        healthPickup->vy = std::clamp(healthPickup->vy - healthPickup->gravityAcceleration * steps,
-                                                      -20.f, 20.f);
-                    }
+                    // Pickup::OnCollision returns false. CollisionManager does
+                    // not call a SolidLineStrip's opposite handler, and
+                    // SolidMovingSprite ignores pickups. The authored upgrade
+                    // therefore keeps falling through ground and solid boxes.
+                    healthPickup->vy = std::clamp(healthPickup->vy - healthPickup->gravityAcceleration * steps,
+                                                  -20.f, 20.f);
                     healthPickup->x += healthPickup->vx * steps;
                     healthPickup->y += healthPickup->vy * steps;
                     healthPickup->vx *= std::pow(0.95f, steps);
-                    if (!healthPickup->grounded)
-                        healthPickup->gravityAcceleration = healthPickup->vy > 0.f || healthPickup->vy < -15.f ? 0.8f : 2.4f;
-                    for (const auto& ground : scene.Ground()) {
-                        if (healthPickup->x < std::min(ground.x1, ground.x2) ||
-                            healthPickup->x > std::max(ground.x1, ground.x2) ||
-                            ground.x1 == ground.x2) continue;
-                        const float y = ground.y1 + (ground.y2-ground.y1) *
-                            (healthPickup->x-ground.x1)/(ground.x2-ground.x1);
-                        if (!healthPickup->grounded && previousY - 35.f >= y && healthPickup->y - 35.f <= y) {
-                            healthPickup->y = y + 35.f; healthPickup->vy = 0.f;
-                            healthPickup->gravityAcceleration = 0.f;
-                            healthPickup->grounded = true;
-                            if (simulateOnly) std::cout << "Health upgrade pickup landed " << currentLevel
-                                                        << " at frame " << frame << " x=" << healthPickup->x << '\n';
-                        }
-                    }
+                    healthPickup->gravityAcceleration = healthPickup->vy > 0.f || healthPickup->vy < -15.f ? 0.8f : 2.4f;
                 }
             }
             if (doorUnlockWait > 0) {
@@ -1010,8 +996,7 @@ int main(int argc, char** argv) {
     if (!playLevel.empty()) {
         if (simulateOnly && healthPickup)
             std::cout << "Health upgrade pickup state x=" << healthPickup->x << " y=" << healthPickup->y
-                      << " vx=" << healthPickup->vx << " vy=" << healthPickup->vy
-                      << " grounded=" << healthPickup->grounded << '\n';
+                      << " vx=" << healthPickup->vx << " vy=" << healthPickup->vy << '\n';
         const auto elapsed = std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();
         if (storyEnded) std::cout << "Main menu return event after story completion count=" << completions << " language=" << language << "\n";
         std::cout << "Simulation ended at " << currentLevel << " player=(" << worldX << "," << worldY

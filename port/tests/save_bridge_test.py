@@ -232,10 +232,11 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
                           capture_output=True, text=True, check=True)
     assert 'Health devil reward spawned ' + hot + ' at frame 767 count=1' in away.stdout
     assert 'Health upgrade collected ' not in away.stdout and 'max_health=25' in away.stdout
-    assert 'Health upgrade pickup landed ' + hot + ' at frame 796' in away.stdout
-    landed = re.search(r'Health upgrade pickup state x=([^ ]+) y=([^ ]+) vx=([^ ]+) vy=([^ ]+) grounded=(\d+)', away.stdout)
-    assert landed and abs(float(landed[1]) - (-935.589)) < .02 and abs(float(landed[2]) - (-97.3599)) < .02, away.stdout
-    assert landed[4] == '0' and landed[5] == '1', away.stdout
+    # Pickup::OnCollision never resolves solids: after crossing the authored
+    # ground it continues falling instead of settling at the old -97.3599 Y.
+    fallen = re.search(r'Health upgrade pickup state x=([^\s]+) y=([^\s]+) vx=([^\s]+) vy=([^\s]+)', away.stdout)
+    assert fallen and abs(float(fallen[1]) - (-935.589)) < .02 and float(fallen[2]) < -1000, away.stdout
+    assert float(fallen[4]) == -20, away.stdout
     # The authored pickup launches from the devil's (-1234.3479, 24) at
     # (15,10). MovingSprite integrates old acceleration, then applies .8
     # gravity on ascent and 2.4 while descending above -15 speed.
@@ -245,19 +246,29 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
                                  '--save-file', str(root / f'devil-flight-{idle}.dl5'),
                                  '--script', f'I:25,L:100,.:{idle}', '--fixed-dt', '0.0166667', '--simulate-only'],
                                 capture_output=True, text=True, check=True)
-        state = re.search(r'Health upgrade pickup state x=([^ ]+) y=([^ ]+) vx=([^ ]+) vy=([^ ]+) grounded=(\d+)', flight.stdout)
-        assert state and state[5] == '0', flight.stdout
+        state = re.search(r'Health upgrade pickup state x=([^\s]+) y=([^\s]+) vx=([^\s]+) vy=([^\s]+)', flight.stdout)
+        assert state, flight.stdout
         for actual, wanted in zip((float(state[1]), float(state[2]), float(state[4])), expected):
             assert abs(actual - wanted) < .02, flight.stdout
+    # A source-style spawned pickup also passes through a static solid box
+    # below the ground line, while the player remains on the line above it.
+    pass_through = subprocess.run(['port/build/deathleak-linux', '--play',
+                                   'port/tests/fixtures/health_pickup_pass_through.xml',
+                                   '--script', 'I:4,.:800', '--fixed-dt', '0.0166667',
+                                   '--simulate-only'], capture_output=True, text=True, check=True)
+    assert 'Health devil reward spawned port/tests/fixtures/health_pickup_pass_through.xml at frame 749' in pass_through.stdout
+    box_state = re.search(r'Health upgrade pickup state x=([^\s]+) y=([^\s]+) vx=([^\s]+) vy=([^\s]+)', pass_through.stdout)
+    assert box_state and 0 < float(box_state[1]) < 400 and float(box_state[2]) < -235, pass_through.stdout
+    assert 'max_health=25' in pass_through.stdout and 'grounded=1' in pass_through.stdout
     assert {'V:' + hot, 'J:1'} <= set(uncollected.read_text().splitlines())
     assert 'H:45' not in uncollected.read_text().splitlines()
     returned = subprocess.run(['port/build/deathleak-linux', '--load-save', str(hot_start),
                                '--save-file', str(root / 'devil-returned.dl5'),
-                               '--script', 'I:25,L:100,.:750,R:50,I:50',
+                               '--script', 'I:25,L:20,.:700,R:20,I:35',
                                '--fixed-dt', '0.0166667', '--simulate-only'],
                               capture_output=True, text=True, check=True)
     assert 'Health devil reward spawned ' + hot + ' at frame 767 count=1' in returned.stdout
-    assert 'Health upgrade collected ' + hot + ' at frame 927 max_health=45' in returned.stdout
+    assert 'Health upgrade collected ' + hot + ' at frame 769 max_health=45' in returned.stdout
     uncollected_reload = subprocess.run(['port/build/deathleak-linux', '--load-save', str(uncollected),
                                          '--script', 'I:800', '--fixed-dt', '0.0166667', '--simulate-only'],
                                         capture_output=True, text=True, check=True)
