@@ -21,6 +21,9 @@ struct SceneSprite {
     bool healthDevil = false;
     bool smashable = false;
     render::TextureId smashedTexture = render::InvalidTexture;
+    std::vector<render::TextureId> animationFrames;
+    float animationFrameRate = 0, animationElapsed = 0;
+    size_t animationFrame = 0;
     bool dojoScroll = false;
     bool collected = false;
     std::string persistentId;
@@ -45,6 +48,7 @@ public:
     bool Load(const std::string& path, render::Renderer& renderer, std::string& error,
               const std::string& fromLevel = {}, const std::string& entryDoorId = {});
     void Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY) const;
+    void UpdateVisuals(float dt);
     size_t CollectCurrencyOrbs(float playerX, float playerY, std::unordered_set<std::string>& collected);
     void ApplyCollected(const std::unordered_set<std::string>& collected);
     float CameraX() const { return cameraX_; }

@@ -51,6 +51,26 @@ std::string AnimationFrame(const std::string& xmlPath, const char* requestedSequ
     return {};
 }
 std::string FirstAnimationFrame(const std::string& path) { return AnimationFrame(path, nullptr); }
+struct LoopedFrames { std::vector<std::string> paths; float rate = 0; };
+LoopedFrames StillFrames(const std::string& xmlPath) {
+    LoopedFrames result;
+    TiXmlDocument animation(xmlPath.c_str());
+    if (!animation.LoadFile()) return result;
+    auto* root = animation.RootElement();
+    if (!root) return result;
+    for (auto* part = root->FirstChildElement(); part; part = part->NextSiblingElement()) {
+        auto* sequence = part->FirstChildElement("Still");
+        if (!sequence) continue;
+        result.rate = Attr(sequence, "FrameRate");
+        for (auto* frame = sequence->FirstChildElement("frame"); frame; frame = frame->NextSiblingElement("frame")) {
+            auto path = NormalizeAsset(frame->Attribute("filename"));
+            if (!path.empty()) result.paths.push_back(path);
+        }
+        break; // CurrencyOrb's source Sprite animation uses its body part.
+    }
+    return result;
+}
+
 }
 bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::string& error,
                       const std::string& fromLevel, const std::string& entryDoorId) {
@@ -193,7 +213,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
                         Flag(object->FirstChildElement("applydamage"), "flag") ? Attr(object->FirstChildElement("applydamage"), "amount") : 0.f});
             }
         }
-        if (!asset) continue;
+        if (!asset || !asset->Attribute("filename") || !*asset->Attribute("filename")) continue;
         std::string filename = NormalizeAsset(asset->Attribute("filename"));
         std::string animationPath;
         if (Flag(object->FirstChildElement("isanimated"), "value")) {
@@ -212,6 +232,22 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         if (!texture) { ++skipped_; continue; }
         SceneSprite sprite;
         sprite.texture = texture;
+        if (kind == "CurrencyOrb" && !animationPath.empty()) {
+            const auto still = StillFrames(animationPath);
+            if (still.rate > 0 && still.paths.size() > 1) {
+                for (const auto& frame : still.paths) {
+                    auto foundFrame = textures.find(frame);
+                    render::TextureId frameTexture = render::InvalidTexture;
+                    if (foundFrame == textures.end()) {
+                        std::string textureError;
+                        if (std::filesystem::exists(frame)) frameTexture = renderer.LoadTexture(frame, textureError);
+                        textures.emplace(frame, frameTexture);
+                    } else frameTexture = foundFrame->second;
+                    if (frameTexture) sprite.animationFrames.push_back(frameTexture);
+                }
+                if (sprite.animationFrames.size() > 1) sprite.animationFrameRate = still.rate;
+            }
+        }
         sprite.x = Attr(position, "x"); sprite.y = Attr(position, "y");
         sprite.width = Attr(dimensions, "width"); sprite.height = Attr(dimensions, "height");
         sprite.rotation = Attr(position, "rotation");
@@ -352,6 +388,18 @@ void LevelScene::ApplyDeflection(bool unlocked) {
             object.persistentId == scroll.id) object.collected = true;
     }
 }
+void LevelScene::UpdateVisuals(float dt) {
+    for (auto& sprite : sprites_) {
+        if (sprite.collected || sprite.animationFrames.size() < 2 || sprite.animationFrameRate <= 0) continue;
+        sprite.animationElapsed += dt;
+        const float frameDuration = 1.f / sprite.animationFrameRate;
+        // AnimationPart::AnimateLooped advances at most one frame per update.
+        if (sprite.animationElapsed >= frameDuration) {
+            sprite.animationElapsed -= frameDuration;
+            sprite.animationFrame = (sprite.animationFrame + 1) % sprite.animationFrames.size();
+        }
+    }
+}
 void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY) const {
     constexpr float scale = 2.f / 3.f; // Original world is authored for 1920x1080.
     for (const auto& orb : spawnedOrbs_) if (spawnedOrbTexture_) {
@@ -368,7 +416,7 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         const float worldX = object.player ? playerX : object.x;
         const float worldY = object.player ? playerY : object.y;
         render::Sprite draw;
-        draw.texture = object.texture;
+        draw.texture = object.animationFrames.size() > 1 ? object.animationFrames[object.animationFrame] : object.texture;
         draw.destination = {640.f + (worldX - cameraX - object.width / 2) * scale,
                             360.f + (cameraY - worldY - object.height / 2) * scale,
                             object.width * scale, object.height * scale};

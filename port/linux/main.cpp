@@ -1024,6 +1024,7 @@ int main(int argc, char** argv) {
         auto afterUpdate = std::chrono::steady_clock::now();
         updateSeconds += std::chrono::duration<double>(afterUpdate-now).count();
         if (simulateOnly) continue;
+        scene.UpdateVisuals(dt);
         renderer->BeginFrame({8, 12, 20, 255});
         if (levelPath.empty()) {
             renderer->DrawSprite({background, {}, {0, 0, 1280, 720}});

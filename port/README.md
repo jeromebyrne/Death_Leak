@@ -41,7 +41,7 @@ The executable can now parse original XML level files through the repository's T
 ./port/build/deathleak-linux --level-preview Game/XmlFiles/levels/forest_exploration_1.xml
 ```
 
-WASD/arrow keys pan the preview camera. This **does not run game simulation**. Animated objects use only the first animation frame. This preview mode does not simulate collision, movement, transitions, HUD or audio; `--play` contains partial implementations described below. The current preview also has known vertical-flip and repeat/parallax visual differences from the original. Do not package it as a playable game.
+WASD/arrow keys pan the preview camera. This **does not run game simulation**. Authored CurrencyOrb sprites in preview/gameplay cycle their `body/Still` frames at the XML frame rate; the player and other animated objects still use a static first frame. This preview mode does not simulate collision, movement, transitions, HUD or audio; `--play` contains partial implementations described below. The current preview also has known vertical-flip and repeat/parallax visual differences from the original. Do not package it as a playable game.
 
 To build without modifying host development packages, use the reproducible Linux build image:
 
@@ -80,7 +80,7 @@ SDL_VIDEODRIVER=dummy port/build/deathleak-linux \
 
 This scripted left movement enters `grass_exploration_3.xml` through an authored trigger and places the player at that level's matching `LevelEntry`. `--script` supports `L`, `R`, `J` (jump), `Q` (left+jump), `E` (right+jump), `F` (fire), `B` (right+fire), `N` (left+fire), `M` (melee), `T` (restart after death), `I` (interact), and `.` (idle), each followed by `:frame-count`, comma-separated. This harness validates simulation and transitions, **not** rendered frame rate or human playability.
 
-Experimental `--save-file <path>` writes the current level, position, and collected currency-orb IDs when the process exits. `--load-save <path>` resumes these values and updates the same file on exit. These are a limited Linux-port save format, not the original game's complete save/upgrade system. Currency orbs currently use the original 100-world-unit pickup radius and disappear on collection, but do not yet implement tracking animation, audio, upgrades, or the original UI.
+Experimental `--save-file <path>` writes the current level, position, and collected currency-orb IDs when the process exits. `--load-save <path>` resumes these values and updates the same file on exit. These are a limited Linux-port save format, not the original game's complete save/upgrade system. Currency orbs currently use the original 100-world-unit pickup radius, cycle the authored ten-frame 10 FPS idle visual, and disappear on collection, but do not yet implement authored hover/tracking motion, upgrades, or the original UI. Their collection sound is implemented separately below.
 
 ## Encounter integration and renderer profiling
 
