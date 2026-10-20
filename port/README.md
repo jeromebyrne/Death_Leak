@@ -32,3 +32,23 @@ This uses SDL's dummy video driver, renders two frames, and writes `port/build/s
 4. Build and playtest the actual levels on Linux; compare visual output and input behavior with Windows.
 
 The renderer API is deliberately small for this slice. Extend it alongside actual game migration; do not emulate Direct3D types in it.
+
+## Original-level rendering milestone (in progress)
+
+The executable can now parse original XML level files through the repository's TinyXML source, resolve mixed Windows/POSIX asset paths, cache PNG textures within a level, depth-sort objects, and render a static scene using the backend-neutral renderer. For example:
+
+```sh
+./port/build/deathleak-linux --level-preview Game/XmlFiles/levels/forest_exploration_1.xml
+```
+
+WASD/arrow keys pan the preview camera. This **does not run game simulation**. Animated objects use only the first animation frame. Collision, player movement, transitions, UI, audio, shaders, repeated textures and parallax behavior remain unported. The current preview also has known vertical-flip and repeat/parallax visual differences from the original. Do not package it as a playable game.
+
+To build without modifying host development packages, use the reproducible Linux build image:
+
+```sh
+docker build -t deathleak-linux-build:bookworm -f port/Dockerfile port
+docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/src" -w /src deathleak-linux-build:bookworm make -C port
+docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/src" -w /src -e SDL_VIDEODRIVER=dummy deathleak-linux-build:bookworm \
+  port/build/deathleak-linux --level-preview Game/XmlFiles/levels/forest_exploration_1.xml \
+  --frames 2 --capture port/build/forest-preview.bmp
+```

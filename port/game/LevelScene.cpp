@@ -1,0 +1,114 @@
+#include "LevelScene.h"
+#include "../../Game/tinyxml/tinyxml.h"
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <unordered_map>
+
+namespace deathleak::game {
+namespace {
+float Attr(const TiXmlElement* e, const char* name, float fallback = 0) {
+    if (!e) return fallback;
+    double value = fallback;
+    e->QueryDoubleAttribute(name, &value);
+    return static_cast<float>(value);
+}
+bool Flag(const TiXmlElement* e, const char* name) {
+    return e && e->Attribute(name) && std::string(e->Attribute(name)) == "true";
+}
+std::string NormalizeAsset(const char* legacy) {
+    if (!legacy) return {};
+    std::string path(legacy);
+    std::replace(path.begin(), path.end(), '\\', '/');
+    if (path.empty() || path[0] == '/' || path.find("..") != std::string::npos) return {};
+    return (std::filesystem::path("Game") / path).lexically_normal().string();
+}
+int Depth(const char* name) {
+    // Values mirror GameObject::DepthLayer. Keep original painter's ordering.
+    static const std::unordered_map<std::string, int> layers = {
+        {"kMoon",5999},{"kFarBackground",6000},{"kMiddleBackground",5500},
+        {"kNearBackground",5000},{"kGroundBack",4750},{"kGround",4500},
+        {"kGroundBlood",4000},{"kNpc",3500},{"kOrb",3250},{"kPlayer",3000},
+        {"kGroundFront",1750},{"kFarForeground",1500},{"kMiddleForeground",1000},
+        {"kNearForeground",500},{"kWeatherForeground",20}
+    };
+    auto it = layers.find(name ? name : "");
+    return it == layers.end() ? 3000 : it->second;
+}
+std::string FirstAnimationFrame(const std::string& xmlPath) {
+    TiXmlDocument animation(xmlPath.c_str());
+    if (!animation.LoadFile()) return {};
+    auto* root = animation.RootElement();
+    if (!root) return {};
+    for (auto* part = root->FirstChildElement(); part; part = part->NextSiblingElement()) {
+        for (auto* sequence = part->FirstChildElement(); sequence; sequence = sequence->NextSiblingElement()) {
+            auto* frame = sequence->FirstChildElement("frame");
+            if (frame && frame->Attribute("filename")) return NormalizeAsset(frame->Attribute("filename"));
+        }
+    }
+    return {};
+}
+}
+bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::string& error) {
+    TiXmlDocument document(path.c_str());
+    if (!document.LoadFile()) { error = "Cannot parse level: " + path + ": " + document.ErrorDesc(); return false; }
+    auto* level = document.RootElement();
+    if (!level || std::string(level->Value()) != "level") { error = "Not a Death Leak level: " + path; return false; }
+    sprites_.clear(); skipped_ = 0;
+    if (auto* props = level->FirstChildElement("LevelProperties")) {
+        auto* camera = props->FirstChildElement("camera_properties");
+        cameraX_ = Attr(camera, "posx"); cameraY_ = Attr(camera, "posy");
+    }
+    std::unordered_map<std::string, render::TextureId> textures;
+    for (auto* object = level->FirstChildElement(); object; object = object->NextSiblingElement()) {
+        auto* position = object->FirstChildElement("position");
+        auto* dimensions = object->FirstChildElement("dimensions");
+        auto* asset = object->FirstChildElement("texture");
+        if (!position || !dimensions || !asset) continue;
+        std::string filename = NormalizeAsset(asset->Attribute("filename"));
+        if (Flag(object->FirstChildElement("isanimated"), "value")) {
+            auto* animation = object->FirstChildElement("animationfile");
+            std::string animationPath = NormalizeAsset(animation ? animation->Attribute("value") : nullptr);
+            if (!animationPath.empty()) filename = FirstAnimationFrame(animationPath);
+        }
+        if (filename.empty() || !std::filesystem::exists(filename)) { ++skipped_; continue; }
+        auto found = textures.find(filename);
+        render::TextureId texture = render::InvalidTexture;
+        if (found == textures.end()) {
+            std::string textureError;
+            texture = renderer.LoadTexture(filename, textureError);
+            textures.emplace(filename, texture);
+        } else texture = found->second;
+        if (!texture) { ++skipped_; continue; }
+        SceneSprite sprite;
+        sprite.texture = texture;
+        sprite.x = Attr(position, "x"); sprite.y = Attr(position, "y");
+        sprite.width = Attr(dimensions, "width"); sprite.height = Attr(dimensions, "height");
+        sprite.rotation = Attr(position, "rotation");
+        sprite.depth = Depth(position->Attribute("depth_layer"));
+        sprite.flipX = Flag(object->FirstChildElement("horizontalflip"), "value");
+        sprite.flipY = Flag(object->FirstChildElement("verticalflip"), "value");
+        auto alpha = std::clamp(Attr(object->FirstChildElement("alpha"), "value", 1), 0.f, 1.f);
+        sprite.tint.a = static_cast<std::uint8_t>(std::lround(alpha * 255));
+        if (sprite.width > 0 && sprite.height > 0) sprites_.push_back(sprite);
+    }
+    std::stable_sort(sprites_.begin(), sprites_.end(), [](const auto& a, const auto& b) { return a.depth > b.depth; });
+    if (sprites_.empty()) { error = "Level has no renderable assets: " + path; return false; }
+    return true;
+}
+void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY) const {
+    constexpr float scale = 2.f / 3.f; // Original world is authored for 1920x1080.
+    for (const auto& object : sprites_) {
+        render::Sprite draw;
+        draw.texture = object.texture;
+        draw.destination = {640.f + (object.x - cameraX - object.width / 2) * scale,
+                            360.f + (cameraY - object.y - object.height / 2) * scale,
+                            object.width * scale, object.height * scale};
+        draw.tint = object.tint; draw.flipX = object.flipX; draw.flipY = object.flipY;
+        draw.rotationDegrees = -object.rotation;
+        if (draw.destination.x + draw.destination.width < 0 || draw.destination.x > 1280 ||
+            draw.destination.y + draw.destination.height < 0 || draw.destination.y > 720) continue;
+        renderer.DrawSprite(draw);
+    }
+}
+}
