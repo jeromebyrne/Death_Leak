@@ -207,6 +207,32 @@ for level in ('cliff.xml', 'grass_exploration_2.xml', 'grass_exploration_1.xml',
     assert any(level + '#' in orb for orb in earned), level
 PYTEST
 
+# Height-changing normal-control detours in barn, forts, shrine and
+# agriculture earn 21 additional authored IDs while preserving the same
+# uninterrupted forest-start scroll return. They do not reach the price.
+optimized_upper_save=port/build/optimized-upper-save.txt
+optimized_upper_script="R:710,E:40,B:1200,E:40,B:1060,E:40,B:2140,E:40,B:50,E:40,B:50,E:40,B:800,E:40,B:2160,E:40,B:360,Q:40,L:20,Q:40,L:250,Q:40,L:2000,Q:40,L:980,Q:40,L:4640,Q:40,L:1826,Q:40,L:245,Q:80,N:100,Q:80,N:960,Q:40,N:710,Q:40,N:50,Q:40,N:160,Q:40,N:1550,B:2560,E:80,B:2500,E:20,B:1,E:80,B:2000,E:20,B:1,E:80,B:1250,J:25,I:31,P:1"
+optimized_upper=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$optimized_upper_script" --fixed-dt 0.0166667 --simulate-only --combat-state --save-file "$optimized_upper_save")
+printf '%s\n' "$optimized_upper" | grep -q 'Trigger at frame 31103 from .*grass_exploration_3.xml .*forest_exploration_1.xml'
+printf '%s\n' "$optimized_upper" | grep -q 'Opened kDeflection upgrade modal at frame 31587 cost=375 balance=327'
+printf '%s\n' "$optimized_upper" | grep -q 'Not enough orbs for kDeflection at frame 31589 balance=327'
+printf '%s\n' "$optimized_upper" | grep -q 'forest_exploration_1.xml player=(1176.53,3381.52) orbs=327 .*health=1 .*balance=327'
+printf '%s\n' "$optimized_upper" | grep -q 'Deflection unlocked=0 count=0'
+if printf '%s\n' "$optimized_upper" | grep -q 'Player died'; then exit 1; fi
+python3 - <<'PYOPTIMIZED'
+from pathlib import Path
+old = Path('port/build/upper-return-save.txt').read_text().splitlines()
+new = Path('port/build/optimized-upper-save.txt').read_text().splitlines()
+ids = lambda lines: [line for line in lines if line.startswith('Game/XmlFiles/levels/') and '#' in line]
+prior, earned = set(ids(old)), ids(new)
+assert len(prior) == 306
+assert len(earned) == len(set(earned)) == 327
+assert prior <= set(earned) and len(set(earned) - prior) == 21
+assert 'B:327' in new and 'U:kDeflection' not in new
+for level in ('forest_exploration_barn.xml', 'village_forts.xml', 'village_shrine.xml', 'village_agri.xml'):
+    assert any(level + '#' in orb for orb in set(earned) - prior), level
+PYOPTIMIZED
+
 # A held left+jump just before grass 1's lower dead-end trigger keeps the
 # player on the upper route to grass 2 and the authored cliff. Reversing on
 # the reachable lower cliff path collects more distinct authored orbs; its
