@@ -323,6 +323,9 @@ int main(int argc, char** argv) {
     deathleak::game::Hud hud;
     if (!playLevel.empty() || menuLoop) hud.Load(*renderer);
     deathleak::game::Combat combat;
+    // Decode/upload combat art before the first active frame. Loading it on the
+    // first encounter can otherwise stall the physical display for hundreds of ms.
+    if (!simulateOnly && !playLevel.empty()) combat.SetArt(*renderer);
     combat.SetDeflectionUnlocked(deflectionUnlocked);
     combat.SetProjectileUpgrades(projectileDamageUnlocked, projectileSpeedUnlocked);
     combat.SetMaxHealth(savedMaxHealth);
@@ -330,6 +333,8 @@ int main(int argc, char** argv) {
     if (restorePosition) combat.SetVitals(savedHealth, savedFocus);
     if (exhaustedFocus) combat.SetFocus(0);
     double updateSeconds = 0, drawSeconds = 0;
+    std::vector<double> profiledFrameMs;
+    constexpr int kProfileWarmupFrames = 120;
     bool wasDead = false, restartHeld = false;
     bool dashHeld = false, rollHeld = false;
     // Player::Update freezes the final scene, reveals its title after 15 s,
@@ -510,6 +515,7 @@ int main(int argc, char** argv) {
                     playLevel = levelPath = currentLevel = freshLevel;
                     collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear(); collectedPapers.clear(); rewardedHealthDevils.clear(); brokenSmashables.clear(); healthDevilRewardCount = 0;
                     orbBalance = 0; combat = deathleak::game::Combat{};
+                    if (!simulateOnly) combat.SetArt(*renderer);
                     speedUnlocked = projectileDamageUnlocked = projectileSpeedUnlocked = false; downwardDashUnlocked = rollUnlocked = false; savedMaxHealth = 25; hasSavedMaxHealth = false; windowsPermanentExtension.clear();
                     motion.SetSpeedUpgrade(false); motion.SetMovementUnlocks(false, false);
                     motion.Reset(scene.PlayerX(), scene.PlayerY());
@@ -1115,7 +1121,10 @@ int main(int argc, char** argv) {
             std::cerr << "Capture failed: " << error << '\n'; return 1;
         }
         renderer->EndFrame();
-        drawSeconds += std::chrono::duration<double>(std::chrono::steady_clock::now()-afterUpdate).count();
+        const auto afterDraw = std::chrono::steady_clock::now();
+        drawSeconds += std::chrono::duration<double>(afterDraw-afterUpdate).count();
+        if (profile && frame >= kProfileWarmupFrames)
+            profiledFrameMs.push_back(std::chrono::duration<double, std::milli>(afterDraw-now).count());
     }
     if (!menuLoop && storyEnded && !saveFile.empty()) {
         const std::string temporary = saveFile + ".tmp";
@@ -1179,7 +1188,25 @@ int main(int argc, char** argv) {
             for (const auto& e : combat.Enemies()) std::cout << "Enemy " << e.type << " x=" << e.x << " y=" << e.y << " windup=" << e.windup << " vy=" << e.vy << " grounded=" << e.grounded << " combo=" << e.comboHits << " stun=" << e.stunTime << " teleport=" << e.teleportTime << " teleports=" << e.teleports << " jumps=" << e.jumps << " rolls=" << e.rolls << " roll=" << e.rollTime << "\n";
             for (const auto& s : combat.Shots()) std::cout << "Shot " << (s.enemy ? "enemy" : "player") << " x=" << s.x << " y=" << s.y << " vx=" << s.vx << " vy=" << s.vy << " deflected=" << s.wasDeflected << "\n";
         }
-        if (profile) std::cout << "Profile update=" << updateSeconds << "s draw/present=" << drawSeconds << "s\n";
+        if (profile) {
+            std::cout << "Profile update=" << updateSeconds << "s draw/present=" << drawSeconds << "s\n";
+            if (!profiledFrameMs.empty()) {
+                std::sort(profiledFrameMs.begin(), profiledFrameMs.end());
+                const auto percentile = [&](double fraction) {
+                    const auto rank = static_cast<std::size_t>(std::ceil(fraction * profiledFrameMs.size()));
+                    return profiledFrameMs[std::max<std::size_t>(1, rank) - 1];
+                };
+                const auto over25 = std::count_if(profiledFrameMs.begin(), profiledFrameMs.end(),
+                    [](double ms) { return ms > 25.0; });
+                const auto over33 = std::count_if(profiledFrameMs.begin(), profiledFrameMs.end(),
+                    [](double ms) { return ms > 33.333; });
+                std::cout << "Profile frame_ms warmup=" << kProfileWarmupFrames
+                          << " samples=" << profiledFrameMs.size()
+                          << " p50=" << percentile(0.50) << " p95=" << percentile(0.95)
+                          << " p99=" << percentile(0.99) << " max=" << profiledFrameMs.back()
+                          << " over25=" << over25 << " over33=" << over33 << '\n';
+            }
+        }
     }
     return 0;
 }

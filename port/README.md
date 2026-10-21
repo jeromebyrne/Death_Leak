@@ -176,3 +176,14 @@ visual port: separate arm/skeleton animation, source landing/crouch/swim/intro
 sequences, exact animation-controlled combat timing, and other character/NPC
 animation are still missing. Physical X11/OpenGL capture and deterministic
 integration prove execution, not human visual or full-game acceptance.
+
+## Physical-GPU frame profiling
+
+`--profile` now reports aggregate update and draw/present time plus frame-time
+p50/p95/p99, maximum, and counts above 25 and 33.333 ms. Frame-time samples
+exclude the first 120 frames to avoid startup warmup, but include gameplay
+updates and vsynced presentation; they are **not GPU-only timings**. Use the
+strict renderer on a physical display and confirm its reported OpenGL vendor
+and renderer. The test-only software override and headless runs do not satisfy
+GPU acceptance. The 2026-10-20 multiscene measurements and limitations are
+recorded in `CHECKPOINT_STATUS.md`.
