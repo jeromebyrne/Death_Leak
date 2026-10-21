@@ -495,6 +495,14 @@ PYMENU
 # ordinary controls, no save load/state injection. The pre-boat snapshot is
 # inspected separately because EndStory clears the selected progression save.
 earned_full_script=$(cat port/tests/routes/earned_full_ending.script)
+# The native 120-second NPCTrigger cooldown is wall-clock based. A fast
+# simulate-only route finishes before the village-central trigger can refire;
+# advancing only that trigger clock at fixed dt reproduces the physical-Xorg
+# return encounter and current one-health death without a four-minute GPU run.
+realtime_prefix=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$earned_full_script" --frames 13000 --fixed-dt 0.0166667 --simulate-only --simulate-wall-clock)
+printf '%s\n' "$realtime_prefix" | grep -q 'TEST-ONLY encounter clock follows fixed gameplay dt'
+printf '%s\n' "$realtime_prefix" | grep -q 'Player died at frame 12837 in Game/XmlFiles/levels/village_central.xml'
+printf '%s\n' "$realtime_prefix" | grep -q 'health=0 .*spawned=12 enemies=2'
 full_preboat=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$earned_full_script" --frames 57822 --fixed-dt 0.0166667 --simulate-only --save-file port/build/earned-full-preboat.txt)
 printf '%s\n' "$full_preboat" | grep -q 'Collected key granary at frame 25665'
 printf '%s\n' "$full_preboat" | grep -q 'Purchased kDeflection at frame 33211 balance=9'

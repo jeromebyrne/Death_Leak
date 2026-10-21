@@ -75,6 +75,7 @@ int main(int argc, char** argv) {
     std::unordered_map<std::string, std::int64_t> triggerHistory;
     bool menuLoop = false;
     bool simulateOnly = false;
+    bool simulateWallClock = false;
     bool profile = false;
     bool combatState = false;
     int startEncounter = -1;
@@ -96,6 +97,7 @@ int main(int argc, char** argv) {
         else if (arg == "--camera-script" && i + 1 < argc) cameraScriptFile = argv[++i];
         else if (arg == "--fixed-dt" && i + 1 < argc) fixedDt = std::atof(argv[++i]);
         else if (arg == "--simulate-only") simulateOnly = true;
+        else if (arg == "--simulate-wall-clock") simulateWallClock = true;
         else if (arg == "--menu-loop") menuLoop = true;
         else if (arg == "--profile") profile = true;
         else if (arg == "--combat-state") combatState = true;
@@ -214,6 +216,9 @@ int main(int argc, char** argv) {
     // With no explicit level, launch into the authored main-menu slice.
     if (playLevel.empty() && levelPreview.empty()) menuLoop = true;
     if ((simulateOnly || !script.empty()) && playLevel.empty() && !menuLoop) { std::cerr << "Simulation options require --play\n"; return 2; }
+    if (simulateWallClock && (!simulateOnly || fixedDt <= 0.f)) {
+        std::cerr << "--simulate-wall-clock requires --simulate-only and --fixed-dt\n"; return 2;
+    }
     if (fixedDt < 0 || fixedDt > 0.05f) { std::cerr << "--fixed-dt must be between 0 and 0.05\n"; return 2; }
     std::vector<char> scriptedInput;
     if (!script.empty()) {
@@ -330,6 +335,10 @@ int main(int argc, char** argv) {
     combat.SetProjectileUpgrades(projectileDamageUnlocked, projectileSpeedUnlocked);
     combat.SetMaxHealth(savedMaxHealth);
     combat.SetTriggerHistory(std::move(triggerHistory));
+    if (simulateWallClock) {
+        combat.EnableSimulatedWallClock();
+        std::cout << "TEST-ONLY encounter clock follows fixed gameplay dt; not physical real-time acceptance\n";
+    }
     if (restorePosition) combat.SetVitals(savedHealth, savedFocus);
     if (exhaustedFocus) combat.SetFocus(0);
     double updateSeconds = 0, drawSeconds = 0;

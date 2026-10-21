@@ -57,6 +57,7 @@ public:
     void Draw(render::Renderer& renderer, float cameraX, float cameraY) const;
     void UpdateVisuals(float dt);
     void SetTriggerHistory(std::unordered_map<std::string, std::int64_t> history) { triggerHistory_ = std::move(history); }
+    void EnableSimulatedWallClock(); // test-only: advance trigger clock by fixed gameplay dt
     const std::unordered_map<std::string, std::int64_t>& TriggerHistory() const { return triggerHistory_; }
     void ApplySolidContactDamage(float damage) { health_ = std::max(0.f, health_ - damage); }
     float Health() const { return health_; }
@@ -82,6 +83,9 @@ private:
     std::vector<Shot> shots_;
     std::unordered_set<std::string> activeTriggers_;
     std::unordered_map<std::string, std::int64_t> triggerHistory_;
+    bool simulatedWallClock_ = false;
+    std::int64_t simulatedClockOriginMs_ = 0;
+    double simulatedClockElapsedMs_ = 0;
     struct VisualSequence { std::vector<render::TextureId> frames; float rate = 0; bool loop = false; };
     using VisualSet = std::unordered_map<std::string, VisualSequence>;
     VisualSet ninjaVisuals_, ghostVisuals_, skeletonVisuals_;

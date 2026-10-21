@@ -80,6 +80,8 @@ SDL_VIDEODRIVER=dummy port/build/deathleak-linux \
 
 This scripted left movement enters `grass_exploration_3.xml` through an authored trigger and places the player at that level's matching `LevelEntry`. `--script` supports `L`, `R`, `J` (jump), `Q` (left+jump), `E` (right+jump), `F` (fire), `B` (right+fire), `N` (left+fire), `M` (melee), `T` (restart after death), `I` (interact), and `.` (idle), each followed by `:frame-count`, comma-separated. This harness validates simulation and transitions, **not** rendered frame rate or human playability.
 
+For route triage, `--simulate-wall-clock` requires `--simulate-only --fixed-dt` and advances only the NPC encounter cooldown clock by gameplay dt. This test-only clock reproduces the village-central trigger's 120-second respawn and the current earned-route death at frame 12837 in seconds. Ordinary fast simulation still completes the ending because its actual elapsed wall time is below the cooldown. Neither simulated clock mode nor a scripted physical-display run substitutes for human/controller/speaker acceptance.
+
 Experimental `--save-file <path>` writes the current level, position, and collected currency-orb IDs when the process exits. `--load-save <path>` resumes these values and updates the same file on exit. These are a limited Linux-port save format, not the original game's complete save/upgrade system. Currency orbs currently use the original 100-world-unit pickup radius, cycle the authored ten-frame 10 FPS idle visual, and disappear on collection, but do not yet implement authored hover/tracking motion, upgrades, or the original UI. Their collection sound is implemented separately below.
 
 ## Encounter integration and renderer profiling

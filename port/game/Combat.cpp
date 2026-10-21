@@ -162,7 +162,14 @@ bool Combat::DamageEnemy(size_t index, float damage, float projectileDirectionX)
     if (enemy.health <= 0.f) ++kills_;
     return true;
 }
+void Combat::EnableSimulatedWallClock() {
+    simulatedWallClock_ = true;
+    simulatedClockOriginMs_ = std::chrono::duration_cast<std::chrono::milliseconds>(
+        std::chrono::system_clock::now().time_since_epoch()).count();
+    simulatedClockElapsedMs_ = 0;
+}
 void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fire, bool melee, bool grounded, bool rolling, int facing, render::Renderer& renderer) {
+    if (simulatedWallClock_) simulatedClockElapsedMs_ += static_cast<double>(dt) * 1000.0;
     fireCooldown_ = std::max(0.f, fireCooldown_-dt);
     burstCooldown_ = std::max(0.f, burstCooldown_-dt);
     hurtCooldown_ = std::max(0.f, hurtCooldown_-dt);
@@ -183,8 +190,10 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
         if (!Inside(x,y,trigger.x,trigger.y,trigger.width,trigger.height) || !activeTriggers_.insert(trigger.id).second) continue;
         // NPCTrigger::Initialise removes a trigger if it last fired less than
         // 120000 ms ago. Keep wall-clock history across levels and saves.
-        const auto nowMs = std::chrono::duration_cast<std::chrono::milliseconds>(
-            std::chrono::system_clock::now().time_since_epoch()).count();
+        const auto nowMs = simulatedWallClock_ ?
+            simulatedClockOriginMs_ + static_cast<std::int64_t>(std::llround(simulatedClockElapsedMs_)) :
+            std::chrono::duration_cast<std::chrono::milliseconds>(
+                std::chrono::system_clock::now().time_since_epoch()).count();
         const auto previous = triggerHistory_.find(trigger.id);
         const auto elapsedMs = previous == triggerHistory_.end() ? -1 : nowMs - previous->second;
         const bool onCooldown = previous != triggerHistory_.end() && elapsedMs < 120000;
