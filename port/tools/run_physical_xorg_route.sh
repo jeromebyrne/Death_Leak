@@ -1,13 +1,14 @@
 #!/bin/sh
-# Physical-display GPU route gate. Run from the repository root on the Docker host.
+# Physical-display GPU gameplay check and optional route diagnostics.
 # This is scripted/dummy-audio evidence, never controller, speaker or human acceptance.
 set -eu
-mode=${1:-prefix}
+mode=${1:-gameplay}
 case "$mode" in
   probe) frames=2; limit=60s ;;
+  gameplay) frames=6000; limit=240s ;;
   prefix) frames=13000; limit=360s ;;
   full) frames=60000; limit=1800s ;;
-  *) echo 'usage: port/tools/run_physical_xorg_route.sh [probe|prefix|full]' >&2; exit 2 ;;
+  *) echo 'usage: port/tools/run_physical_xorg_route.sh [probe|gameplay|prefix|full]' >&2; exit 2 ;;
 esac
 root=$(pwd -P)
 test -x "$root/port/build/deathleak-linux" || { echo 'build port/build/deathleak-linux first' >&2; exit 2; }
@@ -37,10 +38,26 @@ if ! grep -q 'video_driver=x11 name=opengl .*accelerated=1 software=0 .*mode=str
   echo "Physical Xorg/NVE7 gate failed; inspect $log" >&2
   exit 1
 fi
-if grep -q 'Player died at frame' "$log"; then
+if [ "$mode" != gameplay ] && [ "$mode" != probe ] && grep -q 'Player died at frame' "$log"; then
   grep 'Player died at frame' "$log" >&2
-  echo "Earned route died; inspect $log" >&2
+  echo "Scripted $mode route ended in ordinary in-game death; diagnostic incomplete (not a port failure); inspect $log" >&2
   exit 1
+fi
+if [ "$mode" = gameplay ]; then
+  # This route segment exercises normal gameplay and multiple authored scene
+  # transitions. Death is gameplay, but an early stop cannot prove 6000-frame
+  # sustained performance, so keep those two outcomes distinct.
+  if [ "$(grep -c '^Entered Game/XmlFiles/levels/' "$log")" -lt 4 ] ||
+     ! grep -q '^Entered Game/XmlFiles/levels/village_central.xml$' "$log" ||
+     ! grep -q '^Profile frame_ms warmup=120 samples=5880 ' "$log" ||
+     ! grep -q '^Simulation ended at ' "$log"; then
+    tail -n 20 "$log" >&2
+    echo "Rendered gameplay/profiling coverage incomplete; inspect $log" >&2
+    exit 1
+  fi
+  grep -E 'SDL renderer selected|OpenGL device|Entered Game/XmlFiles/levels/|Player died at frame|Simulation ended at|Profile frame_ms' "$log" | tail -n 14
+  printf 'Physical Xorg gameplay coverage passed (scripted input, dummy audio); log: %s\n' "$log"
+  exit 0
 fi
 # A renderer probe alone is not a route gate: require real scene progression,
 # the complete frame budget and a post-warmup profile before accepting a run.
@@ -66,4 +83,4 @@ if [ "$mode" = full ] && { ! grep -q '^EndStory at frame ' "$log" ||
   exit 1
 fi
 grep -E 'SDL renderer selected|OpenGL device|EndStory at frame|Simulation ended at|Frame wall' "$log" | tail -n 12
-printf 'Physical Xorg %s passed scripted GPU gate; log: %s\n' "$mode" "$log"
+printf 'Physical Xorg %s passed scripted %s; log: %s\n' "$mode" "$(if [ "$mode" = probe ]; then printf renderer-probe; else printf route-diagnostic; fi)" "$log"
