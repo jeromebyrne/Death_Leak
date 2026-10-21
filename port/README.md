@@ -187,3 +187,12 @@ strict renderer on a physical display and confirm its reported OpenGL vendor
 and renderer. The test-only software override and headless runs do not satisfy
 GPU acceptance. The 2026-10-20 multiscene measurements and limitations are
 recorded in `CHECKPOINT_STATUS.md`.
+
+Profiled physical-display runs now print `Profile slow_frame` for post-warmup
+frames above 33.333 ms, including the frame index, active level, update time,
+and draw/present time. Capture frames include image-write overhead and should
+not be used to judge ordinary frame pacing. The first 1,500 frames of the
+unmodified earned ending route on physical Xorg/`nouveau NVE7` revealed
+transition/update stalls at frames 398 (131.5 ms update) and 1058 (38.4 ms
+update); this instrumentation does not eliminate them. See
+`CHECKPOINT_STATUS.md` for the measured route and release limitations.

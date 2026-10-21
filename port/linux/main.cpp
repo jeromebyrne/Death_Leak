@@ -1123,8 +1123,18 @@ int main(int argc, char** argv) {
         renderer->EndFrame();
         const auto afterDraw = std::chrono::steady_clock::now();
         drawSeconds += std::chrono::duration<double>(afterDraw-afterUpdate).count();
-        if (profile && frame >= kProfileWarmupFrames)
-            profiledFrameMs.push_back(std::chrono::duration<double, std::milli>(afterDraw-now).count());
+        if (profile && frame >= kProfileWarmupFrames) {
+            const double frameMs = std::chrono::duration<double, std::milli>(afterDraw-now).count();
+            profiledFrameMs.push_back(frameMs);
+            if (frameMs > 33.333) {
+                std::cout << "Profile slow_frame frame=" << frame
+                          << " level=" << currentLevel
+                          << " total_ms=" << frameMs
+                          << " update_ms=" << std::chrono::duration<double, std::milli>(afterUpdate-now).count()
+                          << " draw_present_ms=" << std::chrono::duration<double, std::milli>(afterDraw-afterUpdate).count()
+                          << '\n';
+            }
+        }
     }
     if (!menuLoop && storyEnded && !saveFile.empty()) {
         const std::string temporary = saveFile + ".tmp";
