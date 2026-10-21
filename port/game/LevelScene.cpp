@@ -2,6 +2,9 @@
 #include "../../Game/tinyxml/tinyxml.h"
 #include <algorithm>
 #include <cmath>
+#include <chrono>
+#include <cstdlib>
+#include <iostream>
 #include <filesystem>
 #include <unordered_map>
 
@@ -74,8 +77,19 @@ LoopedFrames StillFrames(const std::string& xmlPath) {
 }
 bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::string& error,
                       const std::string& fromLevel, const std::string& entryDoorId) {
+    // Opt-in transition trace for physical-display stalls; no gameplay path changes.
+    const bool traceLoad = std::getenv("DEATHLEAK_TRACE_SCENE_LOAD") != nullptr;
+    const auto loadStart = std::chrono::steady_clock::now();
+    auto trace = [&](const std::string& phase) {
+        if (!traceLoad) return;
+        const auto ms = std::chrono::duration<double, std::milli>(
+            std::chrono::steady_clock::now() - loadStart).count();
+        std::cerr << "Scene load " << path << " " << phase << " elapsed_ms=" << ms << std::endl;
+    };
+    trace("begin");
     TiXmlDocument document(path.c_str());
     if (!document.LoadFile()) { error = "Cannot parse level: " + path + ": " + document.ErrorDesc(); return false; }
+    trace("xml parsed");
     auto* level = document.RootElement();
     if (!level || std::string(level->Value()) != "level") { error = "Not a Death Leak level: " + path; return false; }
     playerVisualWidth_ = playerVisualHeight_ = 0;
@@ -104,6 +118,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         auto* dimensions = object->FirstChildElement("dimensions");
         auto* asset = object->FirstChildElement("texture");
         if (!position || !dimensions) continue;
+        if (traceLoad && objectOrder % 32 == 0) trace("object " + std::to_string(objectOrder));
         const std::string kind = object->Value();
         const float x = Attr(position, "x"), y = Attr(position, "y");
         const int interactionDepth = Depth(position->Attribute("depth_layer"));
@@ -227,7 +242,9 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         render::TextureId texture = render::InvalidTexture;
         if (found == textures.end()) {
             std::string textureError;
+            if (traceLoad) trace("texture begin " + filename);
             texture = renderer.LoadTexture(filename, textureError);
+            if (traceLoad) trace("texture end " + filename);
             textures.emplace(filename, texture);
         } else texture = found->second;
         if (!texture) { ++skipped_; continue; }
@@ -310,12 +327,14 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         sprite.tint.a = static_cast<std::uint8_t>(std::lround(alpha * 255));
         if (sprite.width > 0 && sprite.height > 0) sprites_.push_back(sprite);
     }
+    trace("objects parsed");
     if (!smashables_.empty()) {
         const auto frame = AnimationFrame("Game/XmlFiles/orb_anim.xml", "Still");
         if (!frame.empty()) spawnedOrbTexture_ = renderer.LoadTexture(frame, error);
     }
     std::stable_sort(sprites_.begin(), sprites_.end(), [](const auto& a, const auto& b) { return a.depth > b.depth; });
     if (sprites_.empty()) { error = "Level has no renderable assets: " + path; return false; }
+    trace("complete");
     return true;
 }
 size_t LevelScene::CollectCurrencyOrbs(float playerX, float playerY, std::unordered_set<std::string>& collected) {

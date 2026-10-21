@@ -581,7 +581,7 @@ int main(int argc, char** argv) {
             if (direction != 0) facing = direction < 0 ? -1 : 1;
             const bool restart = !script.empty() ? command == 'T' : renderer->KeyDown(Restart);
             if (combat.Health() <= 0) {
-                if (!wasDead) { std::cout << "Player died at frame " << frame << " in " << currentLevel << '\n'; wasDead = true; }
+                if (!wasDead) { std::cout << "Player died at frame " << frame << " in " << currentLevel << std::endl; wasDead = true; }
                 if (restart && !restartHeld) {
                     deathleak::game::LevelScene nextScene;
                     // Authored you_died.xml reloads grass_exploration_3.xml.
@@ -1003,7 +1003,7 @@ int main(int argc, char** argv) {
                         cameraX = scene.CameraX(); cameraY = scene.CameraY();
                         motion.Reset(worldX, worldY, true); combat.ClearLevel();
                         levelTime = interactHeldTime = doorUnlockWait = 0; unlockingDoor = false; interactionTarget.clear();
-                        std::cout << "Entered " << currentLevel << '\n';
+                        std::cout << "Entered " << currentLevel << std::endl;
                     } else std::cerr << "Transition failed: " << error << '\n';
                     break;
                 }
