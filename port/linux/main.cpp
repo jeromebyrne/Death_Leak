@@ -225,7 +225,7 @@ int main(int argc, char** argv) {
         std::istringstream parts(script); std::string token;
         while (std::getline(parts, token, ',')) {
             auto colon = token.find(':');
-            if (colon == std::string::npos || token.empty() || std::string("LRJ.FBNTQEIHMPXSO").find(token[0]) == std::string::npos) { std::cerr << "Bad --script token\n"; return 2; }
+            if (colon == std::string::npos || token.empty() || std::string("LRJ.FBNTQEIHMPXSOYZ").find(token[0]) == std::string::npos) { std::cerr << "Bad --script token\n"; return 2; }
             int count = std::atoi(token.c_str() + colon + 1);
             if (count < 1 || count > 100000 || scriptedInput.size() + count > 100000) { std::cerr << "Bad --script duration\n"; return 2; }
             scriptedInput.insert(scriptedInput.end(), count, token[0]);
@@ -585,7 +585,7 @@ int main(int argc, char** argv) {
                 }
                 purchaseHeld = purchase; dismissHeld = dismiss;
             } else {
-            const float direction = !script.empty() ? static_cast<float>(command == 'R' || command == 'B' || command == 'E') - static_cast<float>(command == 'L' || command == 'N' || command == 'Q') :
+            const float direction = !script.empty() ? static_cast<float>(command == 'R' || command == 'B' || command == 'E' || command == 'Y') - static_cast<float>(command == 'L' || command == 'N' || command == 'Q' || command == 'Z') :
                 static_cast<float>(renderer->KeyDown(Right)) - static_cast<float>(renderer->KeyDown(Left));
             if (direction != 0) facing = direction < 0 ? -1 : 1;
             const bool restart = !script.empty() ? command == 'T' : renderer->KeyDown(Restart);
@@ -616,7 +616,7 @@ int main(int argc, char** argv) {
                 restartHeld = restart;
             } else {
             restartHeld = restart;
-            const bool jump = !script.empty() ? (command == 'J' || command == 'Q' || command == 'E') : renderer->KeyDown(Up);
+            const bool jump = !script.empty() ? (command == 'J' || command == 'Q' || command == 'E' || command == 'Y' || command == 'Z') : renderer->KeyDown(Up);
             // Windows right shoulder attempts an airborne dash and a grounded melee.
             // O/left shoulder is roll; the motion layer keeps the landing input window.
             const bool melee = !script.empty() ? command == 'M' : renderer->KeyDown(Melee);
@@ -678,7 +678,7 @@ int main(int argc, char** argv) {
             const auto collectedSpawned = scene.UpdateSpawnedOrbs(worldX, worldY, dt);
             orbBalance += static_cast<int>(collectedNow + collectedSpawned);
             if (sound && (collectedNow || collectedSpawned)) sound->Play(deathleak::audio::Cue::OrbCollect);
-            const bool fire = !script.empty() ? (command == 'F' || command == 'B' || command == 'N') : renderer->KeyDown(Down);
+            const bool fire = !script.empty() ? (command == 'F' || command == 'B' || command == 'N' || command == 'Y' || command == 'Z') : renderer->KeyDown(Down);
             const int firedBefore = combat.Fired();
             const float healthBeforeCombat = combat.Health();
             const int spawnedBeforeCombat = combat.Spawned();

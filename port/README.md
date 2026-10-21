@@ -78,7 +78,7 @@ SDL_VIDEODRIVER=dummy port/build/deathleak-linux \
   --script L:340 --fixed-dt 0.0166667 --simulate-only
 ```
 
-This scripted left movement enters `grass_exploration_3.xml` through an authored trigger and places the player at that level's matching `LevelEntry`. `--script` supports `L`, `R`, `J` (jump), `Q` (left+jump), `E` (right+jump), `F` (fire), `B` (right+fire), `N` (left+fire), `M` (melee), `T` (restart after death), `I` (interact), and `.` (idle), each followed by `:frame-count`, comma-separated. This harness validates simulation and transitions, **not** rendered frame rate or human playability.
+This scripted left movement enters `grass_exploration_3.xml` through an authored trigger and places the player at that level's matching `LevelEntry`. `--script` supports `L`, `R`, `J` (jump), `Q` (left+jump), `E` (right+jump), `F` (fire), `B` (right+fire), `N` (left+fire), `Y` (right+jump+fire), `Z` (left+jump+fire), `M` (melee), `T` (restart after death), `I` (interact), and `.` (idle), each followed by `:frame-count`, comma-separated. This harness validates simulation and transitions, **not** rendered frame rate or human playability.
 
 For route triage, `--simulate-wall-clock` requires `--simulate-only --fixed-dt` and advances only the NPC encounter cooldown clock by gameplay dt. This test-only clock reproduces the village-central trigger's 120-second respawn and the current earned-route death at frame 12837 in seconds. Ordinary fast simulation still completes the ending because its actual elapsed wall time is below the cooldown. Neither simulated clock mode nor a scripted physical-display run substitutes for human/controller/speaker acceptance.
 

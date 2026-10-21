@@ -45,6 +45,19 @@ printf '%s\n' "$arena_exit" | grep -q 'Trigger at frame 1992 from Game/XmlFiles/
 printf '%s\n' "$arena_exit" | grep -q 'Entered Game/XmlFiles/levels/grass_exploration_1.xml'
 burst=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script F:60 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$burst" | grep -q 'fired=5'
+# Combined ordinary controls must retain the matching jump/movement trajectory
+# while also firing; route triage uses these inputs against live NPC respawns.
+right_jump=$($bin --play Game/XmlFiles/levels/test.xml --script E:30 --fixed-dt 0.0166667 --simulate-only)
+right_jump_fire=$($bin --play Game/XmlFiles/levels/test.xml --script Y:30 --fixed-dt 0.0166667 --simulate-only)
+left_jump=$($bin --play Game/XmlFiles/levels/test.xml --script Q:30 --fixed-dt 0.0166667 --simulate-only)
+left_jump_fire=$($bin --play Game/XmlFiles/levels/test.xml --script Z:30 --fixed-dt 0.0166667 --simulate-only)
+for pair in right left; do
+  eval 'plain=$'"${pair}"'_jump fired=$'"${pair}"'_jump_fire'
+  plain_position=$(printf '%s\n' "$plain" | sed -n 's/^Simulation ended at .* player=(\([^)]*\)).*/\1/p')
+  printf '%s\n' "$fired" | grep -Fq "player=($plain_position)"
+  printf '%s\n' "$plain" | grep -q 'fired=0'
+  printf '%s\n' "$fired" | grep -q 'fired=3 .*grounded=0'
+done
 water_fire=$($bin --play Game/XmlFiles/levels/test.xml --start-hazard 1 --script F:30 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$water_fire" | grep -q 'fired=0'
 swim=$($bin --play Game/XmlFiles/levels/test.xml --start-hazard 1 --script J:180 --fixed-dt 0.0166667 --simulate-only)
