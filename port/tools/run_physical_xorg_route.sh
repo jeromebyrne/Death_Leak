@@ -42,9 +42,27 @@ if grep -q 'Player died at frame' "$log"; then
   echo "Earned route died; inspect $log" >&2
   exit 1
 fi
-if [ "$mode" = full ] && ! grep -q 'EndStory at frame' "$log"; then
+# A renderer probe alone is not a route gate: require real scene progression,
+# the complete frame budget and a post-warmup profile before accepting a run.
+if [ "$mode" != probe ]; then
+  if [ "$(grep -c '^Entered Game/XmlFiles/levels/village_central.xml$' "$log")" -lt 2 ] ||
+     ! grep -q '^Entered Game/XmlFiles/levels/village_agri.xml$' "$log" ||
+     ! grep -q "^Profile frame_ms warmup=120 samples=$((frames - 120)) " "$log" ||
+     ! grep -q '^Simulation ended at ' "$log"; then
+    tail -n 20 "$log" >&2
+    echo "Earned route progress/profile incomplete; inspect $log" >&2
+    exit 1
+  fi
+fi
+if [ "$mode" = prefix ] && ! grep -q '^Simulation ended at Game/XmlFiles/levels/village_central.xml .*health=[1-9]' "$log"; then
   tail -n 20 "$log" >&2
-  echo "Earned full-route ending missing; inspect $log" >&2
+  echo "Physical prefix did not survive the central return; inspect $log" >&2
+  exit 1
+fi
+if [ "$mode" = full ] && { ! grep -q '^EndStory at frame ' "$log" ||
+   ! grep -q '^Simulation ended at .*orbs=[0-9][0-9][0-9] keys=4 health=[1-9]' "$log"; }; then
+  tail -n 20 "$log" >&2
+  echo "Earned full-route ending/progression missing; inspect $log" >&2
   exit 1
 fi
 grep -E 'SDL renderer selected|OpenGL device|EndStory at frame|Simulation ended at|Frame wall' "$log" | tail -n 12
