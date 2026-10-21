@@ -417,6 +417,12 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
                 const float vx=shot.x-oldX, vy=shot.y-oldY;
                 const float t=std::clamp(((x-oldX)*vx+(y-oldY)*vy)/(vx*vx+vy*vy+0.0001f),0.f,1.f);
                 if (Inside(oldX+t*vx,oldY+t*vy,x,y,70.f,180.f)) {
+                    if (std::getenv("DEATHLEAK_TRACE_ENCOUNTERS"))
+                        std::cout << "Encounter projectile hit player=(" << x << ',' << y
+                                  << ") shot_from=(" << oldX << ',' << oldY
+                                  << ") shot_to=(" << shot.x << ',' << shot.y
+                                  << ") damage=" << shot.damage << " health_before=" << health_
+                                  << " deflectable=" << shot.deflectable << std::endl;
                     health_=std::max(0.f,health_-shot.damage); hurtCooldown_=0.5f; shot.life=0; ++hits_;
                 }
             }
