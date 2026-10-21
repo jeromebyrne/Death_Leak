@@ -3,7 +3,9 @@
 #include <algorithm>
 #include <chrono>
 #include <cmath>
+#include <cstdlib>
 #include <filesystem>
+#include <iostream>
 
 namespace deathleak::game {
 namespace {
@@ -184,7 +186,13 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
         const auto nowMs = std::chrono::duration_cast<std::chrono::milliseconds>(
             std::chrono::system_clock::now().time_since_epoch()).count();
         const auto previous = triggerHistory_.find(trigger.id);
-        if (previous != triggerHistory_.end() && nowMs - previous->second < 120000) continue;
+        const auto elapsedMs = previous == triggerHistory_.end() ? -1 : nowMs - previous->second;
+        const bool onCooldown = previous != triggerHistory_.end() && elapsedMs < 120000;
+        const bool traceEncounter = std::getenv("DEATHLEAK_TRACE_ENCOUNTERS") != nullptr;
+        if (traceEncounter) std::cout << "Encounter trigger id=" << trigger.id << " elapsed_ms=" << elapsedMs
+            << " cooldown=" << onCooldown
+            << " count=" << trigger.count << " type=" << trigger.type << std::endl;
+        if (onCooldown) continue;
         triggerHistory_[trigger.id] = nowMs;
         if (!ninjaArt_) SetArt(renderer);
         for (int i=0; i<std::clamp(trigger.count,0,20); ++i) {

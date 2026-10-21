@@ -671,9 +671,18 @@ int main(int argc, char** argv) {
             if (sound && (collectedNow || collectedSpawned)) sound->Play(deathleak::audio::Cue::OrbCollect);
             const bool fire = !script.empty() ? (command == 'F' || command == 'B' || command == 'N') : renderer->KeyDown(Down);
             const int firedBefore = combat.Fired();
+            const float healthBeforeCombat = combat.Health();
+            const int spawnedBeforeCombat = combat.Spawned();
             combat.Update(scene, worldX, worldY, dt, fire, melee, motion.Grounded(), motion.Rolling(), facing, *renderer);
             // SolidMovingSprite::OnCollision applies authored damage per contact, not per second.
             combat.ApplySolidContactDamage(motion.SolidContactDamage());
+            if (std::getenv("DEATHLEAK_TRACE_ENCOUNTERS") &&
+                (combat.Spawned() != spawnedBeforeCombat || combat.Health() != healthBeforeCombat))
+                std::cout << "Encounter state frame=" << frame << " level=" << currentLevel
+                          << " spawned_delta=" << combat.Spawned() - spawnedBeforeCombat
+                          << " health_before=" << healthBeforeCombat << " health_after=" << combat.Health()
+                          << " solid_damage=" << motion.SolidContactDamage()
+                          << " enemies=" << combat.EnemyCount() << std::endl;
             // H remains a simulation-only direct hit for isolated combo/stun
             // checks; normal melee comes through Combat::Update above.
             if (simulateOnly && command == 'H') combat.DamageEnemy(0,1.5f);
