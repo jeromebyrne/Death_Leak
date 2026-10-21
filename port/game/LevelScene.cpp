@@ -112,6 +112,10 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         cameraFollowY_ = !camera || !camera->Attribute("followy") || Flag(camera, "followy");
     }
     std::unordered_map<std::string, render::TextureId> textures;
+    // Orb and other repeated sprites share animation XML. Keep these parsed
+    // paths only for this load so transitions still observe shipped assets.
+    std::unordered_map<std::string, std::string> firstAnimationFrames;
+    std::unordered_map<std::string, LoopedFrames> stillAnimationFrames;
     size_t objectOrder = 0;
     for (auto* object = level->FirstChildElement(); object; object = object->NextSiblingElement(), ++objectOrder) {
         auto* position = object->FirstChildElement("position");
@@ -235,7 +239,11 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         if (Flag(object->FirstChildElement("isanimated"), "value")) {
             auto* animation = object->FirstChildElement("animationfile");
             animationPath = NormalizeAsset(animation ? animation->Attribute("value") : nullptr);
-            if (!animationPath.empty()) filename = FirstAnimationFrame(animationPath);
+            if (!animationPath.empty()) {
+                auto [it, inserted] = firstAnimationFrames.try_emplace(animationPath);
+                if (inserted) it->second = FirstAnimationFrame(animationPath);
+                filename = it->second;
+            }
         }
         if (filename.empty() || !std::filesystem::exists(filename)) { ++skipped_; continue; }
         auto found = textures.find(filename);
@@ -283,7 +291,9 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
             }
         }
         if (kind == "CurrencyOrb" && !animationPath.empty()) {
-            const auto still = StillFrames(animationPath);
+            auto [stillIt, inserted] = stillAnimationFrames.try_emplace(animationPath);
+            if (inserted) stillIt->second = StillFrames(animationPath);
+            const auto& still = stillIt->second;
             if (still.rate > 0 && still.paths.size() > 1) {
                 for (const auto& frame : still.paths) {
                     auto foundFrame = textures.find(frame);
