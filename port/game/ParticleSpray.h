@@ -90,8 +90,9 @@ struct ParticleSpray {
             if (leaf.destination.x + leaf.destination.width < 0 || leaf.destination.x > 1280 ||
                 leaf.destination.y + leaf.destination.height < 0 || leaf.destination.y > 720) continue;
             const auto brightness = static_cast<std::uint8_t>(std::lround(std::clamp(p.brightness, 0.f, 1.f)*255));
+            // Particle.fx multiplies sampled RGBA by brightness, then alpha by fade.
             leaf.tint = {brightness, brightness, brightness,
-                         static_cast<std::uint8_t>(std::lround(std::clamp(p.alpha, 0.f, 1.f)*255))};
+                         static_cast<std::uint8_t>(std::lround(std::clamp(p.alpha * p.brightness, 0.f, 1.f)*255))};
             renderer.DrawSprite(leaf);
         }
     }
