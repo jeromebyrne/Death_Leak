@@ -709,8 +709,14 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
             draw.uvShiftX = cameraX * object.cameraParallaxX * (object.flipX ? 1.f : -1.f);
             draw.uvShiftY = -cameraY * object.cameraParallaxY;
         }
-        draw.repeatX = object.repeatX;
-        draw.tint = object.tint; draw.flipX = object.player ? playerFacing_ < 0 : object.flipX; draw.flipY = object.player ? false : object.flipY;
+        // ParallaxLayer::Draw replaces Sprite's repeat-X UVs with exactly one
+        // texture span whenever camera-X parallax is enabled. Keep its authored
+        // UV scroll on the whole quad (not SDL's ordinary repeated-tile path).
+        draw.repeatX = object.repeatX && !(object.parallaxLayer && object.cameraParallaxX > 0.f);
+        draw.tint = object.tint; draw.flipX = object.player ? playerFacing_ < 0 : object.flipX;
+        // Original ParallaxLayer vertices assign V=0 to the world-bottom
+        // edge (Sprite.cpp), while SDL's V=0 is the screen-top edge.
+        draw.flipY = object.player ? false : (object.parallaxLayer ? !object.flipY : object.flipY);
         draw.rotationDegrees = -object.rotation;
         draw.foliageSway = object.foliageSway;
         draw.foliageSway.time = visualTime_;
