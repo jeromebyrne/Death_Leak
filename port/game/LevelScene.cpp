@@ -124,7 +124,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     playerVisualWidth_ = playerVisualHeight_ = 0;
     playerSequences_.clear(); playerSequence_.clear(); playerFrame_ = 0; playerFrameElapsed_ = 0; playerFacing_ = 1;
     spawnedOrbTexture_ = render::InvalidTexture;
-    sprites_.clear(); ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); ambience_.clear(); doors_.clear(); boats_.clear(); keys_.clear(); papers_.clear(); healthDevils_.clear(); smashables_.clear(); spawnedOrbs_.clear(); scrolls_.clear(); skipped_ = 0;
+    sprites_.clear(); particleSprays_.clear(); ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); ambience_.clear(); doors_.clear(); boats_.clear(); keys_.clear(); papers_.clear(); healthDevils_.clear(); smashables_.clear(); spawnedOrbs_.clear(); scrolls_.clear(); skipped_ = 0;
     cameraBounds_ = false;
     if (auto* props = level->FirstChildElement("LevelProperties")) {
         if (auto* bounds = props->FirstChildElement("level_bounds")) {
@@ -262,10 +262,65 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
                         Flag(object->FirstChildElement("applydamage"), "flag") ? Attr(object->FirstChildElement("applydamage"), "amount") : 0.f});
             }
         }
-        // ParticleSpray dimensions describe an emitter, not a textured quad.
-        // Its source Draw method renders individual particles; that system is
-        // not ported yet, so drawing the emitter texture would be incorrect.
-        if (kind == "ParticleSpray") continue;
+        if (kind == "ParticleSpray") {
+            // Bounded slice: the forest's authored oak-leaf emitter only.
+            if (std::filesystem::path(path).filename() != "forest_exploration_1.xml" ||
+                !object->Attribute("id") || std::string(object->Attribute("id")) != "47") continue;
+            auto filename = NormalizeAsset(asset ? asset->Attribute("filename") : nullptr);
+            if (filename.empty() || !std::filesystem::exists(filename)) { ++skipped_; continue; }
+            ParticleSpray spray;
+            spray.xmlId = "47"; spray.order = objectOrder;
+            spray.x = x; spray.y = y;
+            spray.width = Attr(dimensions, "width"); spray.height = Attr(dimensions, "height");
+            spray.depth = interactionDepth;
+            spray.updateable = updateable; spray.alwaysUpdate = alwaysUpdate;
+            spray.looping = Flag(object->FirstChildElement("loop"), "value");
+            spray.loopTime = Attr(object->FirstChildElement("loop"), "looptime");
+            auto* fade = object->FirstChildElement("fade_time_percent");
+            spray.fadeIn = Attr(fade, "in", .1f); spray.fadeOut = Attr(fade, "out", .6f);
+            auto* size = object->FirstChildElement("size");
+            spray.scalesByLifetime = Flag(size, "scaleto"); spray.scaleTo = Attr(size, "scaletovalue", 1.f);
+            auto found = textures.find(filename);
+            if (found == textures.end()) {
+                std::string textureError;
+                spray.texture = renderer.LoadTexture(filename, textureError);
+                textures.emplace(filename, spray.texture);
+            } else spray.texture = found->second;
+            if (!spray.texture) { ++skipped_; continue; }
+            const int count = std::max(0, std::min(1024, static_cast<int>(Attr(object->FirstChildElement("numparticles"), "value"))));
+            auto* direction = object->FirstChildElement("direction");
+            auto* speed = object->FirstChildElement("speed");
+            auto* lifetime = object->FirstChildElement("livetime");
+            auto* brightness = object->FirstChildElement("brightness");
+            const float minSpeed = Attr(speed, "min"), maxSpeed = Attr(speed, "max");
+            const float minSize = Attr(size, "min"), maxSize = Attr(size, "max");
+            const float minLife = Attr(lifetime, "min"), maxLife = Attr(lifetime, "max");
+            const float minBright = Attr(brightness, "min"), maxBright = std::clamp(Attr(brightness, "max"), 0.f, 1.f);
+            for (int i = 0; i < count; ++i) {
+                ParticleSpray::Particle particle;
+                // Source computes randSpread but never assigns it to direction.
+                particle.directionX = Attr(direction, "x"); particle.directionY = Attr(direction, "y");
+                particle.lifetime = std::max(.1f, maxLife - ((maxLife == minLife ? .1f : maxLife-minLife) / count) * i);
+                auto spawn = [&](float spreadAmount) {
+                    if (spreadAmount == 0) return 0.f;
+                    const float magnitude = static_cast<float>(spray.Random(static_cast<unsigned>(spreadAmount*10.f) + 1));
+                    return spray.Random(2) ? -magnitude : magnitude;
+                };
+                particle.startX = particle.x = x + spawn(Attr(position, "spawn_spread_x"));
+                particle.startY = particle.y = y + spawn(Attr(position, "spawn_spread_y"));
+                particle.drawX = particle.x; particle.drawY = particle.y;
+                particle.size = particle.startSize = maxSize <= minSize ? maxSize :
+                    static_cast<float>(spray.Random(static_cast<unsigned>(maxSize-minSize)) + static_cast<unsigned>(minSize) + 1);
+                particle.speed = particle.startSpeed = maxSpeed <= minSpeed ? maxSpeed :
+                    minSpeed + .01f + spray.Random(static_cast<unsigned>((maxSpeed-minSpeed)*100.f))*.01f;
+                particle.gravity = Attr(object->FirstChildElement("gravity"), "value");
+                particle.brightness = maxBright <= minBright ? maxBright :
+                    minBright + .01f + spray.Random(static_cast<unsigned>((maxBright-minBright)*100.f))*.01f;
+                spray.particles.push_back(particle);
+            }
+            particleSprays_.push_back(std::move(spray));
+            continue;
+        }
         if (!asset || !asset->Attribute("filename") || !*asset->Attribute("filename")) continue;
         std::string filename = NormalizeAsset(asset->Attribute("filename"));
         std::string animationPath;
@@ -353,6 +408,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         sprite.width = Attr(dimensions, "width"); sprite.height = Attr(dimensions, "height");
         sprite.rotation = Attr(position, "rotation");
         sprite.depth = Depth(position->Attribute("depth_layer"));
+        sprite.order = objectOrder;
         sprite.currencyOrb = kind == "CurrencyOrb";
         sprite.keyPickup = kind == "KeyPickup";
         sprite.paperPickup = kind == "PaperPickup";
@@ -516,6 +572,12 @@ void LevelScene::ApplyDeflection(bool unlocked) {
 }
 void LevelScene::UpdateVisuals(float dt, float playerX, float playerY, float cameraX, float cameraY) {
     visualTime_ += dt;
+    for (auto& spray : particleSprays_) {
+        if (spray.alwaysUpdate || (spray.updateable &&
+            spray.x + spray.width*.5f > cameraX - 2000.f && spray.x - spray.width*.5f < cameraX + 2000.f &&
+            spray.y + spray.height*.5f > cameraY - 2000.f && spray.y - spray.height*.5f < cameraY + 2000.f))
+            spray.Update(dt);
+    }
     for (auto& sprite : sprites_) {
         if (sprite.collected) continue;
         if (sprite.fadeWhenPlayerOccluded && sprite.updateable) {
@@ -594,6 +656,15 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
 void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY) const {
     constexpr float scale = 2.f / 3.f; // Original world is authored for 1920x1080.
     const auto& filter = DiagnosticRenderFilter();
+    size_t nextSpray = 0;
+    auto drawSpraysBefore = [&](int depth, size_t order) {
+        while (nextSpray < particleSprays_.size()) {
+            const auto& spray = particleSprays_[nextSpray];
+            if (spray.depth < depth || (spray.depth == depth && spray.order >= order)) break;
+            if (filter.Draw(spray.xmlId)) spray.Draw(renderer, cameraX, cameraY);
+            ++nextSpray;
+        }
+    };
     for (const auto& orb : spawnedOrbs_) if (spawnedOrbTexture_ && filter.only.empty()) {
         render::Sprite draw;
         draw.texture = spawnedOrbTexture_;
@@ -604,6 +675,7 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         renderer.DrawSprite(draw);
     }
     for (const auto& object : sprites_) {
+        drawSpraysBefore(object.depth, object.order);
         if (object.collected || !filter.Draw(object.xmlId)) continue;
         // ParallaxLayer follows the camera before its authored UV scroll. Static
         // background/foreground sprites use GameObject depth parallax instead.
@@ -646,5 +718,6 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
             draw.destination.y + draw.destination.height < 0 || draw.destination.y > 720) continue;
         renderer.DrawSprite(draw);
     }
+    drawSpraysBefore(-1, 0);
 }
 }

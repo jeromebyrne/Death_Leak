@@ -1,6 +1,7 @@
 #pragma once
 #include "../render/Renderer.h"
 #include "../audio/SoundPlayer.h"
+#include "ParticleSpray.h"
 #include <cstddef>
 #include <unordered_map>
 #include <string>
@@ -11,6 +12,7 @@ namespace deathleak::game {
 struct SceneSprite {
     render::TextureId texture = render::InvalidTexture;
     std::string xmlId; // Source level ID, retained only for opt-in render diagnostics.
+    size_t order = 0;
     float x = 0, y = 0, width = 0, height = 0;
     float rotation = 0;
     int depth = 0;
@@ -103,6 +105,7 @@ public:
     void ApplyHealthDevil(bool rewarded);
 private:
     std::vector<SceneSprite> sprites_;
+    std::vector<ParticleSpray> particleSprays_;
     std::vector<GroundSegment> ground_;
     std::vector<SolidBox> solidBoxes_;
     std::vector<LevelTrigger> triggers_;
