@@ -129,7 +129,9 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     spawnedOrbTexture_ = render::InvalidTexture;
     sprites_.clear(); particleSprays_.clear(); ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); ambience_.clear(); doors_.clear(); boats_.clear(); keys_.clear(); papers_.clear(); healthDevils_.clear(); smashables_.clear(); spawnedOrbs_.clear(); scrolls_.clear(); skipped_ = 0;
     cameraBounds_ = false;
+    allowsWeather_ = false;
     if (auto* props = level->FirstChildElement("LevelProperties")) {
+        allowsWeather_ = Flag(props->FirstChildElement("weather_properties"), "allow_weather");
         if (auto* bounds = props->FirstChildElement("level_bounds")) {
             cameraBoundLeft_ = Attr(bounds, "left"); cameraBoundRight_ = Attr(bounds, "right");
             cameraBoundTop_ = Attr(bounds, "top"); cameraBoundBottom_ = Attr(bounds, "bottom");

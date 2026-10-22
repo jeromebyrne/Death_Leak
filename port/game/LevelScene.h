@@ -77,6 +77,7 @@ public:
     void UpdateVisuals(float dt, float playerX, float playerY, float cameraX, float cameraY);
     size_t CollectCurrencyOrbs(float playerX, float playerY, std::unordered_set<std::string>& collected);
     void ApplyCollected(const std::unordered_set<std::string>& collected);
+    bool AllowsWeather() const { return allowsWeather_; }
     float CameraX() const { return cameraX_; }
     float CameraY() const { return cameraY_; }
     float CameraOffsetX() const { return cameraOffsetX_; }
@@ -154,6 +155,7 @@ private:
     float cameraOffsetX_ = 0, cameraOffsetY_ = 0;
     float cameraLagX_ = 7.5f, cameraLagY_ = 15.f, cameraZoom_ = 1.f;
     bool cameraFollowX_ = true, cameraFollowY_ = true;
+    bool allowsWeather_ = false;
     bool cameraBounds_ = false;
     float cameraBoundLeft_ = 0, cameraBoundRight_ = 0, cameraBoundTop_ = 0, cameraBoundBottom_ = 0;
     float visualTime_ = 0;

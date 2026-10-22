@@ -1,5 +1,6 @@
 #include "../render/Renderer.h"
 #include "../game/LevelScene.h"
+#include "../game/WeatherLightning.h"
 #include "../game/Combat.h"
 #include "../game/PlayerMotion.h"
 #include "../game/Hud.h"
@@ -288,6 +289,8 @@ int main(int argc, char** argv) {
         } else sound->SetSfxEnabled(settings.sfx);
     }
     deathleak::game::LevelScene scene;
+    deathleak::game::WeatherLightning weather;
+    TextureId lightningTexture = InvalidTexture;
     std::string levelPath = !playLevel.empty() ? playLevel : levelPreview;
     if (!levelPath.empty() && !scene.Load(levelPath, *renderer, error)) {
         std::cerr << error << '\n'; return 1;
@@ -1044,6 +1047,7 @@ int main(int argc, char** argv) {
             collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear(); collectedPapers.clear(); rewardedHealthDevils.clear(); brokenSmashables.clear(); healthDevilRewardCount = 0;
             devilDialog.reset(); healthPickup.reset();
             orbBalance = 0; scene = deathleak::game::LevelScene{};
+            weather = deathleak::game::WeatherLightning{};
             combat = deathleak::game::Combat{};
             speedUnlocked = projectileDamageUnlocked = projectileSpeedUnlocked = false; downwardDashUnlocked = rollUnlocked = false; savedMaxHealth = 25; hasSavedMaxHealth = false; windowsPermanentExtension.clear();
             motion.SetSpeedUpgrade(false); motion.SetMovementUnlocks(false, false);
@@ -1052,6 +1056,10 @@ int main(int argc, char** argv) {
         }
         auto afterUpdate = std::chrono::steady_clock::now();
         updateSeconds += std::chrono::duration<double>(afterUpdate-now).count();
+        if (!playLevel.empty()) {
+            weather.SetAllowed(scene.AllowsWeather());
+            if (!paperModal && !upgradeModal) weather.Update(dt);
+        }
         if (simulateOnly) continue;
         scene.UpdateVisuals(dt, worldX, worldY, cameraX, cameraY);
         combat.UpdateVisuals(dt);
@@ -1113,6 +1121,17 @@ int main(int argc, char** argv) {
                      50.f*scale, 70.f*scale}};
                 // HealthUpgradePickup inherits SolidMovingSprite's kPlayer depth.
                 painterItems.push_back({3000, [&, sprite] { renderer->DrawSprite(sprite); }});
+            }
+            if (weather.Alpha() > 0.f) {
+                if (!lightningTexture) {
+                    std::string lightningError;
+                    lightningTexture = renderer->LoadTexture("Game/Media/lightning_layer.png", lightningError);
+                    if (!lightningTexture) std::cerr << "Lightning texture load failed: " << lightningError << '\n';
+                }
+                if (lightningTexture) {
+                    const Sprite flash = weather.SpriteForCamera(lightningTexture, cameraX, cameraY);
+                    painterItems.push_back({20, [&, flash] { renderer->DrawSprite(flash); }});
+                }
             }
             scene.Draw(*renderer, cameraX, cameraY, worldX, worldY, std::move(painterItems));
             renderer->ApplyScenePostprocess();
