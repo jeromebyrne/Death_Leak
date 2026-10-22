@@ -1,6 +1,7 @@
 #include "../render/Renderer.h"
 #include "RepeatX.h"
 #include "UVWrap.h"
+#include "WobbleUV.h"
 #include "FoliageSway.h"
 #include <SDL.h>
 #define GL_GLEXT_PROTOTYPES
@@ -353,19 +354,17 @@ public:
         const float cosine = std::cos(radians), sine = std::sin(radians);
         const float cx = destination.x + destination.w * .5f;
         const float cy = destination.y + destination.h * .5f;
-        const float uLeft = sprite.flipX ? 1.f : 0.f, uRight = 1.f-uLeft;
-        // Original vertices assign V=1 to world-top; GL's uploaded SDL texture
-        // has its first PNG row at T=0, hence the shader converts 1-V.
-        const float vTop = sprite.flipY ? 0.f : 1.f, vBottom = 1.f-vTop;
-        struct Corner { float x, y, u, v; };
+        struct Corner { float x, y; WobbleUV uv; };
         const Corner corners[4] = {
-            {-.5f,-.5f,uLeft,vTop}, {.5f,-.5f,uRight,vTop},
-            {.5f,.5f,uRight,vBottom}, {-.5f,.5f,uLeft,vBottom}
+            {-.5f,-.5f,PixelWobbleVertexUV(sprite.flipX, sprite.flipY, sprite.uvShiftX, sprite.uvShiftY, false, false)},
+            {.5f,-.5f,PixelWobbleVertexUV(sprite.flipX, sprite.flipY, sprite.uvShiftX, sprite.uvShiftY, true, false)},
+            {.5f,.5f,PixelWobbleVertexUV(sprite.flipX, sprite.flipY, sprite.uvShiftX, sprite.uvShiftY, true, true)},
+            {-.5f,.5f,PixelWobbleVertexUV(sprite.flipX, sprite.flipY, sprite.uvShiftX, sprite.uvShiftY, false, true)}
         };
         glBegin(GL_QUADS);
         for (const auto& corner : corners) {
             const float x = corner.x * destination.w, y = corner.y * destination.h;
-            glTexCoord2f(corner.u, corner.v);
+            glTexCoord2f(corner.uv.u, corner.uv.v);
             glVertex2f(cx + x*cosine-y*sine, cy + x*sine+y*cosine);
         }
         glEnd();
