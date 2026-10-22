@@ -125,6 +125,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     visualTime_ = pixelWobbleTime_ = 0.f;
     pixelWobbleReverse_ = false;
     playerSequences_.clear(); playerSequence_.clear(); playerFrame_ = 0; playerFrameElapsed_ = 0; playerFacing_ = 1; playerGrounded_ = false;
+    playerOffSolidTime_ = playerDescentTime_ = 0; playerDescending_ = false;
     playerArmSequences_.clear(); playerArmSequence_.clear(); playerArmFrame_ = 0; playerArmFrameElapsed_ = 0; aimLineHold_ = aimLineAlpha_ = 0.f;
     spawnedOrbTexture_ = render::InvalidTexture;
     sprites_.clear(); particleSprays_.clear(); ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); ambience_.clear(); doors_.clear(); boats_.clear(); keys_.clear(); papers_.clear(); healthDevils_.clear(); smashables_.clear(); spawnedOrbs_.clear(); scrolls_.clear(); skipped_ = 0;
@@ -741,6 +742,20 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
                                     bool rolling, bool dashing, bool inWater, float meleeElapsed, int facing,
                                     bool projectileFired, bool eligibleFireAttempt) {
     playerGrounded_ = grounded;
+    // Character::Update records the descent edge before UpdateAnimations. Its
+    // dry upward tolerance is -0.5 world units/tick (velocity here is /s).
+    const bool descending = !grounded && !inWater && wallSide == 0 && vy <= -0.5f * 60.f;
+    if (grounded) playerOffSolidTime_ = 0;
+    else playerOffSolidTime_ += dt;
+    if (!descending) {
+        playerDescending_ = false;
+        playerDescentTime_ = 0;
+    } else if (!playerDescending_) {
+        playerDescending_ = true;
+        playerDescentTime_ = 0;
+    } else {
+        playerDescentTime_ += dt;
+    }
     // Player::FireWeapon refreshes this before its reload/burst rejection.
     // Player::Update then holds full alpha for 0.05 s and fades at 10/s.
     if (eligibleFireAttempt) aimLineHold_ = .05f;
@@ -763,9 +778,17 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
     else if (inWater) target = std::abs(vx) > 3.f ? "SwimForward" : "SwimIdle";
     else if (dashing) target = "JumpingDown"; // no dedicated authored dash body sequence
     else if (!grounded && wallSide != 0 && vy < 0.f) target = "SlidingDown";
-    else if (!grounded && vy > 0.f) target = "JumpingUp";
+    else if (!grounded && vy > -0.5f * 60.f) target = "JumpingUp";
     else if (!grounded) target = "JumpingDown";
     else if (std::abs(vx) > 3.f) target = "Running";
+    // While a short dry descent is pending, Character keeps both the current
+    // body frame and its fractional animation clock unchanged. The long-airtime
+    // bypass and the strict 0.05 s comparison are source-authored.
+    const bool holdFallingBody = target == "JumpingDown" && descending &&
+        !dashing && !rolling && meleeElapsed <= 0.f && !inWater &&
+        playerDescentTime_ <= 0.05 && playerOffSolidTime_ <= 0.25 &&
+        !playerSequence_.empty();
+    if (holdFallingBody) target = playerSequence_;
     auto it = playerSequences_.find(target);
     if (it == playerSequences_.end()) return;
     if (target != playerSequence_) {
@@ -775,7 +798,7 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
     float rate = sequence.rate;
     if (target == "Running")
         rate = std::clamp(std::abs(vx / 60.f) * 1.8f * 2.65f, sequence.minRate, sequence.maxRate);
-    if (rate > 0 && sequence.frames.size() >= 2) {
+    if (!holdFallingBody && rate > 0 && sequence.frames.size() >= 2) {
         playerFrameElapsed_ += dt;
         if (playerFrameElapsed_ >= 1.f / rate) {
             playerFrameElapsed_ -= 1.f / rate; // AnimationPart advances at most one frame per update.

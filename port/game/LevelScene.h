@@ -147,6 +147,9 @@ private:
     size_t playerFrame_ = 0;
     size_t playerArmFrame_ = 0; // sequence length means finished, matching AnimationPart::IsFinished
     float playerFrameElapsed_ = 0;
+    // Character stamps the first dry descending update; off-solid time can bypass the hold.
+    double playerOffSolidTime_ = 0, playerDescentTime_ = 0;
+    bool playerDescending_ = false;
     float playerArmFrameElapsed_ = 0;
     int playerFacing_ = 1;
     bool playerGrounded_ = false;
