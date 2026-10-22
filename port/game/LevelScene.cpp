@@ -766,14 +766,17 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         // UV scroll on the whole quad (not SDL's ordinary repeated-tile path).
         draw.repeatX = object.repeatX && !(object.parallaxLayer && object.cameraParallaxX > 0.f);
         draw.tint = object.tint; draw.flipX = object.player ? playerFacing_ < 0 : object.flipX;
-        // Original ParallaxLayer vertices assign V=0 to the world-bottom
-        // edge (Sprite.cpp), while SDL's V=0 is the screen-top edge.
-        draw.flipY = object.player ? false : (object.parallaxLayer ? !object.flipY : object.flipY);
-        draw.rotationDegrees = -object.rotation;
+        // D3D Sprite vertices map V=0 to world-bottom (screen-bottom); SDL
+        // maps V=0 to screen-top. Plain texture copies need the inverse of
+        // the authored vertical-flip flag, not just ParallaxLayer copies.
+        // The custom foliage/pixel shader paths own their source UV mapping.
         draw.foliageSway = object.foliageSway;
         draw.foliageSway.time = visualTime_;
         draw.pixelWobble = object.pixelWobble;
         draw.pixelWobble.time = pixelWobbleTime_;
+        draw.flipY = (draw.foliageSway.enabled || draw.pixelWobble.enabled)
+            ? object.flipY : !object.flipY;
+        draw.rotationDegrees = -object.rotation;
         if (draw.destination.x + draw.destination.width < 0 || draw.destination.x > 1280 ||
             draw.destination.y + draw.destination.height < 0 || draw.destination.y > 720) continue;
         renderer.DrawSprite(draw);
