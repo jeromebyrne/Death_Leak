@@ -259,6 +259,11 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         SceneSprite sprite;
         sprite.texture = texture;
         sprite.player = kind == "Player";
+        sprite.parallaxLayer = kind == "ParallaxLayer";
+        if (sprite.parallaxLayer) {
+            sprite.followCameraX = Flag(object->FirstChildElement("followcamx"), "value");
+            sprite.followCameraY = Flag(object->FirstChildElement("followcamy"), "value");
+        }
         if (sprite.player && !animationPath.empty()) {
             TiXmlDocument animation(animationPath.c_str());
             if (animation.LoadFile()) {
@@ -511,8 +516,24 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
     }
     for (const auto& object : sprites_) {
         if (object.collected) continue;
-        const float worldX = object.player ? playerX : object.x;
-        const float worldY = object.player ? playerY : object.y;
+        // ParallaxLayer follows the camera before its authored UV scroll. Static
+        // background/foreground sprites use GameObject depth parallax instead.
+        const float worldX = object.player ? playerX :
+            object.parallaxLayer && object.followCameraX ? cameraX : object.x;
+        const float worldY = object.player ? playerY :
+            object.parallaxLayer && object.followCameraY ? cameraY : object.y;
+        float layerX = 1.f, layerY = 1.f;
+        if (!object.player && !object.parallaxLayer) {
+            switch (object.depth) {
+                case 5999: layerX = .03f; layerY = .90f; break;
+                case 6000: layerX = .25f; layerY = .95f; break;
+                case 5500: layerX = .50f; layerY = .97f; break;
+                case 5000: layerX = .75f; layerY = .99f; break;
+                case 1500: layerX = 1.10f; layerY = 1.05f; break;
+                case 1000: layerX = 1.30f; layerY = 1.08f; break;
+                case 500: case 20: layerX = 1.80f; layerY = 1.20f; break;
+            }
+        }
         render::Sprite draw;
         draw.texture = object.animationFrames.size() > 1 ? object.animationFrames[object.animationFrame] : object.texture;
         if (object.player) {
@@ -520,8 +541,8 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
             if (it != playerSequences_.end() && !it->second.frames.empty())
                 draw.texture = it->second.frames[std::min(playerFrame_, it->second.frames.size()-1)];
         }
-        draw.destination = {640.f + (worldX - cameraX - object.width / 2) * scale,
-                            360.f + (cameraY - worldY - object.height / 2) * scale,
+        draw.destination = {640.f + ((worldX-cameraX)*layerX - object.width / 2) * scale,
+                            360.f + ((cameraY-worldY)*layerY - object.height / 2) * scale,
                             object.width * scale, object.height * scale};
         draw.tint = object.tint; draw.flipX = object.player ? playerFacing_ < 0 : object.flipX; draw.flipY = object.player ? false : object.flipY;
         draw.rotationDegrees = -object.rotation;

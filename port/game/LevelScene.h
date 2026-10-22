@@ -16,6 +16,7 @@ struct SceneSprite {
     render::Color tint{255, 255, 255, 255};
     bool flipX = false, flipY = false;
     bool player = false;
+    bool parallaxLayer = false, followCameraX = false, followCameraY = false;
     bool currencyOrb = false;
     bool keyPickup = false;
     bool paperPickup = false;
