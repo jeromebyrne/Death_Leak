@@ -16,6 +16,7 @@ public:
     bool Raining() const { return raining_; }
     float Alpha() const { return raining_ ? alpha_ : 0.f; }
     float Elapsed() const { return elapsed_; }
+    float FoliageSwayMultiplier() const { return foliageSwayMultiplier_; }
     render::Sprite SpriteForCamera(render::TextureId texture, float cameraX, float cameraY) const {
         // Source ParallaxLayer sets world XY to camera XY on update. Both cancel
         // in the port's world-to-screen transform; retain arguments as evidence.
@@ -36,6 +37,7 @@ public:
             if (elapsed_ > rainStart_ + rainDuration_) {
                 if (elapsed_ > rainStart_ + rainDuration_ + 3.f) {
                     raining_ = false;
+                    foliageSwayMultiplier_ = 2.5f;
                     alpha_ = 0.f;
                     playingFlash_ = false;
                     nextWeather_ = elapsed_ + 160.f + Centiseconds(14000);
@@ -54,6 +56,7 @@ public:
         } else if ((!hadWeather_ && elapsed_ > 180.f) ||
                    (hadWeather_ && elapsed_ > nextWeather_)) {
             raining_ = hadWeather_ = true;
+            foliageSwayMultiplier_ = 2.625f;
             rainStart_ = elapsed_;
             rainDuration_ = 70.f + Centiseconds(5000);
             alpha_ = 0.f;
@@ -70,5 +73,6 @@ private:
     bool allowed_ = false, hadWeather_ = false, raining_ = false, playingFlash_ = false;
     float elapsed_ = 0.f, rainStart_ = 0.f, rainDuration_ = 0.f;
     float nextWeather_ = 0.f, flashStart_ = 0.f, nextFlash_ = 0.f, alpha_ = 0.f;
+    float foliageSwayMultiplier_ = 1.f;
 };
 }

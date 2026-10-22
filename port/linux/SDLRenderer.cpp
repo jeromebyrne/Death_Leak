@@ -386,7 +386,6 @@ public:
         if (textureWidth <= 0 || textureHeight <= 0) return;
         const auto& sway = sprite.foliageSway;
         const float scale = 2.f / 3.f;
-        // WeatherManager normal-weather multiplier; rain is not ported yet.
         const float radians = -sprite.rotationDegrees * 3.14159265358979323846f / 180.f;
         const float cosine = std::cos(radians), sine = std::sin(radians);
         const float cx = destination.x + destination.w * .5f;
@@ -407,7 +406,8 @@ public:
             SwayPoint world{sway.worldX + rotatedX / scale,
                             sway.worldY - rotatedY / scale};
             const auto moved = FoliageSwayWorldVertex(world,
-                {corners[i].amount.x, corners[i].amount.y}, sway.time, sway.timeMultiplier, 2.5f);
+                {corners[i].amount.x, corners[i].amount.y}, sway.time, sway.timeMultiplier,
+                sway.globalTimeMultiplier);
             point[i] = {cx + rotatedX + (moved.x - world.x) * scale,
                         cy + rotatedY - (moved.y - world.y) * scale};
         }

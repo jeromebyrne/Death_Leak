@@ -917,7 +917,7 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
         playerArmFrame_ = arm == playerArmSequences_.end() ? 0 : arm->second.frames.size();
     }
 }
-void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY, std::vector<PainterItem> dynamic, float playerDamageBurstGain) const {
+void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY, std::vector<PainterItem> dynamic, float playerDamageBurstGain, float foliageGlobalTimeMultiplier) const {
     constexpr float scale = 2.f / 3.f; // Original world is authored for 1920x1080.
     const auto& filter = DiagnosticRenderFilter();
     // Orbs are runtime GameObjects at kOrb, not an unconditional backdrop.
@@ -1007,6 +1007,7 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         // The custom foliage/pixel shader paths own their source UV mapping.
         draw.foliageSway = object.foliageSway;
         draw.foliageSway.time = visualTime_;
+        draw.foliageSway.globalTimeMultiplier = foliageGlobalTimeMultiplier;
         draw.pixelWobble = object.pixelWobble;
         draw.pixelWobble.time = pixelWobbleTime_;
         draw.flipY = (draw.foliageSway.enabled || draw.pixelWobble.enabled)

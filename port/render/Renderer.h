@@ -30,6 +30,7 @@ struct FoliageSway {
     bool enabled = false;
     SwayIntensity bottomLeft, bottomRight, topRight, topLeft;
     float worldX = 0, worldY = 0, time = 0, timeMultiplier = 1;
+    float globalTimeMultiplier = 1; // WeatherManager's phase factor, not sway amplitude.
 };
 
 struct PixelWobble {

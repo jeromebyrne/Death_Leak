@@ -77,7 +77,8 @@ public:
     bool Load(const std::string& path, render::Renderer& renderer, std::string& error,
               const std::string& fromLevel = {}, const std::string& entryDoorId = {});
     void Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY,
-              std::vector<PainterItem> dynamic = {}, float playerDamageBurstGain = 1.f) const;
+              std::vector<PainterItem> dynamic = {}, float playerDamageBurstGain = 1.f,
+              float foliageGlobalTimeMultiplier = 1.f) const;
     void UpdatePlayerVisual(float dt, float vx, float vy, bool grounded, int wallSide,
                             bool rolling, bool dashing, bool inWater, float meleeElapsed, int facing,
                             bool projectileFired, bool eligibleFireAttempt = false);
