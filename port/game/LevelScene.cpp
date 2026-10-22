@@ -776,7 +776,10 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         draw.pixelWobble.time = pixelWobbleTime_;
         draw.flipY = (draw.foliageSway.enabled || draw.pixelWobble.enabled)
             ? object.flipY : !object.flipY;
-        draw.rotationDegrees = -object.rotation;
+        // XML rotation is radians in D3D world coordinates (Y up). SDL's
+        // positive degrees rotate clockwise in screen coordinates (Y down),
+        // so the sign is preserved when converting radians to degrees.
+        draw.rotationDegrees = object.rotation * (180.f / 3.14159265358979323846f);
         if (draw.destination.x + draw.destination.width < 0 || draw.destination.x > 1280 ||
             draw.destination.y + draw.destination.height < 0 || draw.destination.y > 720) continue;
         renderer.DrawSprite(draw);
