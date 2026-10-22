@@ -217,11 +217,15 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
         }
     }
     // Player::FireWeapon blocks shots in water and fires at most five knives
-    // before its 0.5-second burst pause. The authored projectile lifetime is 0.25 s.
+    // before its 0.5-second burst pause. Source's 0.25 s is an inactive,
+    // post-contact retirement interval, not an active-flight lifetime.
     if (fire && !rolling && meleeTime_ <= 0.f && fireCooldown_ <= 0 && burstCooldown_ <= 0 && !inWater && health_ > 0) {
         if (!knifeArt_) SetArt(renderer);
-        shots_.push_back({x+facing*10.f,y+25.f,facing*1200.f,0.f,0.25f,projectileDamageUpgrade_ ? 4.f : 1.5f,false});
+        // The port removes on contact. Ten seconds only bounds an unimpeded
+        // offscreen knife in this simplified collection; it is not source TTL.
+        shots_.push_back({x+facing*10.f,y+25.f,facing*1200.f,0.f,10.f,projectileDamageUpgrade_ ? 4.f : 1.5f,false});
         shots_.back().texture = projectileDamageUpgrade_ ? upgradedKnifeArt_ : knifeArt_;
+        shots_.back().playerKnife = true;
         fireCooldown_ = projectileSpeedUpgrade_ ? 0.220f*0.75f : 0.220f;
         ++fired_;
         if (!projectileSpeedUpgrade_ && ++burstCount_ == 5) { burstCount_ = 0; burstCooldown_ = 0.5f; }
@@ -384,6 +388,7 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
         shot.x=oldX+(newX-oldX)*terrainT;
         shot.y=oldY+(newY-oldY)*terrainT;
         shot.life-=dt;
+        if (shot.playerKnife) shot.activeVisualAge += dt;
         if (terrainT < 1.f) shot.life=0;
         if (shot.enemy) {
             const float playerHalfW=(meleeStrikePhase?1.5f:1.f)*128.959793f*0.5f;
@@ -499,7 +504,17 @@ void Combat::Draw(render::Renderer& renderer, float cameraX, float cameraY) cons
         draw(texture,enemy.x,enemy.y,enemy.type=="kGhost"?113.f:183.f,
              enemy.type=="kGhost"?208.f:231.f,enemy.facing<0);
     }
-    for (const auto& shot:shots_) draw(shot.texture ? shot.texture : knifeArt_,shot.x,shot.y,
-        shot.visualWidth,shot.visualHeight,shot.vx<0.f);
+    for (const auto& shot:shots_) {
+        const float visualScale = shot.playerKnife ? std::clamp(shot.activeVisualAge / 0.3f, 0.f, 1.f) : 1.f;
+        if (visualScale <= 0.f) continue;
+        const auto texture = shot.texture ? shot.texture : knifeArt_;
+        if (!texture) continue;
+        const float w = shot.visualWidth * visualScale, h = shot.visualHeight * visualScale;
+        render::Sprite sprite{texture,{}, {640.f+(shot.x-cameraX-w/2)*scale,
+            360.f+(cameraY-shot.y-h/2)*scale,w*scale,h*scale}};
+        sprite.flipX = shot.vx < 0.f;
+        sprite.tint.a = static_cast<std::uint8_t>(std::lround(255.f * visualScale));
+        renderer.DrawSprite(sprite);
+    }
 }
 }

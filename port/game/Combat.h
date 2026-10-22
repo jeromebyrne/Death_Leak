@@ -40,6 +40,9 @@ struct Shot {
     float meleeCooldown = 0.f;
     render::TextureId texture = render::InvalidTexture;
     float visualWidth = 84.5f, visualHeight = 25.f;
+    // Only player-thrown knives use the source Projectile fade-in lifecycle.
+    bool playerKnife = false;
+    float activeVisualAge = 0.f;
 };
 class Combat {
 public:
