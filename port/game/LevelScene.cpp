@@ -721,6 +721,13 @@ void LevelScene::UpdateVisuals(float dt, float playerX, float playerY, float cam
             }
         }
         if (sprite.animationFrames.size() < 2 || sprite.animationFrameRate <= 0) continue;
+        // Sprite::UpdateAnimation runs only when GameObjectManager updates the orb.
+        // Keep both its frame and fractional frame clock frozen outside that zone.
+        if (!sprite.updateable || (!sprite.alwaysUpdate &&
+            !(sprite.x + sprite.width * .5f > cameraX - 2000.f &&
+              sprite.x - sprite.width * .5f < cameraX + 2000.f &&
+              sprite.y + sprite.height * .5f > cameraY - 2000.f &&
+              sprite.y - sprite.height * .5f < cameraY + 2000.f))) continue;
         sprite.animationElapsed += dt;
         const float frameDuration = 1.f / sprite.animationFrameRate;
         // AnimationPart::AnimateLooped advances at most one frame per update.
