@@ -30,6 +30,7 @@ struct SceneSprite {
     render::PixelWobble pixelWobble;
     bool player = false;
     bool playerShadow = false; // Runtime-created Character shadow at kGround.
+    bool playerAimLine = false; // Runtime-created Player child at kPlayer.
     bool parallaxLayer = false, followCameraX = false, followCameraY = false;
     float cameraParallaxX = 0, cameraParallaxY = 0;
     bool currencyOrb = false;
@@ -67,7 +68,7 @@ public:
     void Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY) const;
     void UpdatePlayerVisual(float dt, float vx, float vy, bool grounded, int wallSide,
                             bool rolling, bool dashing, bool inWater, float meleeElapsed, int facing,
-                            bool projectileFired);
+                            bool projectileFired, bool eligibleFireAttempt = false);
     void UpdateVisuals(float dt, float playerX, float playerY, float cameraX, float cameraY);
     size_t CollectCurrencyOrbs(float playerX, float playerY, std::unordered_set<std::string>& collected);
     void ApplyCollected(const std::unordered_set<std::string>& collected);
@@ -143,6 +144,7 @@ private:
     float playerArmFrameElapsed_ = 0;
     int playerFacing_ = 1;
     bool playerGrounded_ = false;
+    float aimLineHold_ = 0.f, aimLineAlpha_ = 0.f;
     float cameraX_ = 0, cameraY_ = 0;
     float cameraOffsetX_ = 0, cameraOffsetY_ = 0;
     float cameraLagX_ = 7.5f, cameraLagY_ = 15.f, cameraZoom_ = 1.f;

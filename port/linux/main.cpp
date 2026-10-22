@@ -444,6 +444,7 @@ int main(int argc, char** argv) {
         if (dt > 0.05f) dt = 0.05f;
         const char command = frame < static_cast<int>(scriptedInput.size()) ? scriptedInput[frame] : 0;
         bool playerProjectileFired = false;
+        bool playerEligibleFireAttempt = false;
         if (sound && currentLevel != audioLevel) {
             sound->SetAmbience(scene.Ambience());
             audioLevel = currentLevel;
@@ -680,6 +681,8 @@ int main(int argc, char** argv) {
             orbBalance += static_cast<int>(collectedNow + collectedSpawned);
             if (sound && (collectedNow || collectedSpawned)) sound->Play(deathleak::audio::Cue::OrbCollect);
             const bool fire = !script.empty() ? (command == 'F' || command == 'B' || command == 'N' || command == 'Y' || command == 'Z') : renderer->KeyDown(Down);
+            playerEligibleFireAttempt = fire && !motion.Rolling() && !motion.InWater() &&
+                !combat.MeleeActive() && combat.Health() > 0.f && motion.WallSide() == 0;
             const int firedBefore = combat.Fired();
             const float healthBeforeCombat = combat.Health();
             const int spawnedBeforeCombat = combat.Spawned();
@@ -1054,7 +1057,7 @@ int main(int argc, char** argv) {
         combat.UpdateVisuals(dt);
         if (!playLevel.empty()) scene.UpdatePlayerVisual(dt, motion.VelocityX(), motion.VelocityY(),
             motion.Grounded(), motion.WallSide(), motion.Rolling(), motion.DownwardDashing(), motion.InWater(),
-            combat.MeleeElapsed(), facing, playerProjectileFired);
+            combat.MeleeElapsed(), facing, playerProjectileFired, playerEligibleFireAttempt);
         renderer->BeginFrame({8, 12, 20, 255});
         if (levelPath.empty()) {
             renderer->DrawSprite({background, {}, {0, 0, 1280, 720}});

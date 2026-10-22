@@ -125,7 +125,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     visualTime_ = pixelWobbleTime_ = 0.f;
     pixelWobbleReverse_ = false;
     playerSequences_.clear(); playerSequence_.clear(); playerFrame_ = 0; playerFrameElapsed_ = 0; playerFacing_ = 1; playerGrounded_ = false;
-    playerArmSequences_.clear(); playerArmSequence_.clear(); playerArmFrame_ = 0; playerArmFrameElapsed_ = 0;
+    playerArmSequences_.clear(); playerArmSequence_.clear(); playerArmFrame_ = 0; playerArmFrameElapsed_ = 0; aimLineHold_ = aimLineAlpha_ = 0.f;
     spawnedOrbTexture_ = render::InvalidTexture;
     sprites_.clear(); particleSprays_.clear(); ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); ambience_.clear(); doors_.clear(); boats_.clear(); keys_.clear(); papers_.clear(); healthDevils_.clear(); smashables_.clear(); spawnedOrbs_.clear(); scrolls_.clear(); skipped_ = 0;
     cameraBounds_ = false;
@@ -516,6 +516,20 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     const auto playerSprite = std::find_if(sprites_.begin(), sprites_.end(),
         [](const SceneSprite& s) { return s.player; });
     if (playerSprite != sprites_.end()) {
+        // LoadLevel adds this non-XML child after the authored player. Stable
+        // depth sorting leaves it after the body among kPlayer objects.
+        const std::string aimPath = "Game/Media/aim_line.png";
+        std::string aimError;
+        const auto aimTexture = renderer.LoadTexture(aimPath, aimError);
+        if (!aimTexture) { error = "Cannot load player aim line: " + aimError; return false; }
+        SceneSprite aim;
+        aim.texture = aimTexture;
+        aim.xmlId = "__player_aim_line";
+        aim.playerAimLine = true;
+        aim.width = aim.height = 400.f;
+        aim.depth = Depth("kPlayer");
+        aim.order = objectOrder;
+        sprites_.push_back(aim);
         const std::string shadowPath = "Game/Media/characters/player/shadow.png";
         std::string textureError;
         const auto shadowTexture = renderer.LoadTexture(shadowPath, textureError);
@@ -716,8 +730,17 @@ void LevelScene::UpdateVisuals(float dt, float playerX, float playerY, float cam
 }
 void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded, int wallSide,
                                     bool rolling, bool dashing, bool inWater, float meleeElapsed, int facing,
-                                    bool projectileFired) {
+                                    bool projectileFired, bool eligibleFireAttempt) {
     playerGrounded_ = grounded;
+    // Player::FireWeapon refreshes this before its reload/burst rejection.
+    // Player::Update then holds full alpha for 0.05 s and fades at 10/s.
+    if (eligibleFireAttempt) aimLineHold_ = .05f;
+    if (aimLineHold_ > 0.f) {
+        aimLineHold_ -= dt;
+        aimLineAlpha_ = 1.f;
+    } else if (aimLineAlpha_ > 0.f) {
+        aimLineAlpha_ = std::max(0.f, aimLineAlpha_ - 10.f * dt);
+    }
     if (playerSequences_.empty()) return;
     playerFacing_ = facing;
     std::string target = "Still";
@@ -801,15 +824,18 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
     for (const auto& object : sprites_) {
         drawSpraysBefore(object.depth, object.order);
         if (object.collected || (object.playerShadow && !playerGrounded_) ||
+            (object.playerAimLine && aimLineAlpha_ <= 0.f) ||
             !filter.Draw(object.xmlId)) continue;
         // ParallaxLayer follows the camera before its authored UV scroll. Static
         // background/foreground sprites use GameObject depth parallax instead.
-        const float worldX = object.player || object.playerShadow ? playerX :
+        const float worldX = object.playerAimLine ? playerX + (playerFacing_ < 0 ? -5.f : 5.f) :
+            object.player || object.playerShadow ? playerX :
             object.parallaxLayer && object.followCameraX ? cameraX : object.x;
-        const float worldY = object.playerShadow ? playerY - 150.f : object.player ? playerY :
+        const float worldY = object.playerAimLine ? playerY + 25.f :
+            object.playerShadow ? playerY - 150.f : object.player ? playerY :
             object.parallaxLayer && object.followCameraY ? cameraY : object.y;
         float layerX = 1.f, layerY = 1.f;
-        if (!object.player && !object.playerShadow && !object.parallaxLayer) {
+        if (!object.player && !object.playerShadow && !object.playerAimLine && !object.parallaxLayer) {
             switch (object.depth) {
                 case 5999: layerX = .03f; layerY = .90f; break;
                 case 6000: layerX = .25f; layerY = .95f; break;
@@ -841,7 +867,9 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         // texture span whenever camera-X parallax is enabled. Keep its authored
         // UV scroll on the whole quad (not SDL's ordinary repeated-tile path).
         draw.repeatX = object.repeatX && !(object.parallaxLayer && object.cameraParallaxX > 0.f);
-        draw.tint = object.tint; draw.flipX = object.player ? playerFacing_ < 0 : object.flipX;
+        draw.tint = object.tint;
+        if (object.playerAimLine) draw.tint.a = static_cast<std::uint8_t>(std::lround(std::clamp(aimLineAlpha_, 0.f, 1.f) * 255.f));
+        draw.flipX = object.player ? playerFacing_ < 0 : object.flipX;
         // D3D Sprite vertices map V=0 to world-bottom (screen-bottom); SDL
         // maps V=0 to screen-top. Plain texture copies need the inverse of
         // the authored vertical-flip flag, not just ParallaxLayer copies.
@@ -851,7 +879,7 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         draw.pixelWobble = object.pixelWobble;
         draw.pixelWobble.time = pixelWobbleTime_;
         draw.flipY = (draw.foliageSway.enabled || draw.pixelWobble.enabled)
-            ? object.flipY : !object.flipY;
+            ? object.flipY : (object.playerAimLine ? playerFacing_ >= 0 : !object.flipY);
         // XML rotation is radians in D3D world coordinates (Y up). SDL's
         // positive degrees rotate clockwise in screen coordinates (Y down),
         // so the sign is preserved when converting radians to degrees.
