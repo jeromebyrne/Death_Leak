@@ -125,6 +125,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     visualTime_ = pixelWobbleTime_ = 0.f;
     pixelWobbleReverse_ = false;
     playerSequences_.clear(); playerSequence_.clear(); playerFrame_ = 0; playerFrameElapsed_ = 0; playerFacing_ = 1;
+    playerArmSequences_.clear(); playerArmSequence_.clear(); playerArmFrame_ = 0; playerArmFrameElapsed_ = 0;
     spawnedOrbTexture_ = render::InvalidTexture;
     sprites_.clear(); particleSprays_.clear(); ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); ambience_.clear(); doors_.clear(); boats_.clear(); keys_.clear(); papers_.clear(); healthDevils_.clear(); smashables_.clear(); spawnedOrbs_.clear(); scrolls_.clear(); skipped_ = 0;
     cameraBounds_ = false;
@@ -362,7 +363,6 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
             if (animation.LoadFile()) {
                 auto* body = animation.RootElement() ? animation.RootElement()->FirstChildElement("body") : nullptr;
                 // Character::UpdateAnimations selects these authored body sequences.
-                // The separate arm/skeleton composition is not represented by SDL yet.
                 for (const char* name : {"Still", "Running", "JumpingUp", "JumpingDown",
                                          "SlidingDown", "Roll", "SwimIdle", "SwimForward", "Melee", "Melee2", "Melee3", "MeleeFinish"}) {
                     auto* sequence = body ? body->FirstChildElement(name) : nullptr;
@@ -386,6 +386,33 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
                     if (!visual.frames.empty()) playerSequences_.emplace(name, std::move(visual));
                 }
                 if (playerSequences_.count("Still")) playerSequence_ = "Still";
+                // Forest Player ID2's transient back-arm is a separate part.
+                if (sprite.xmlId == "2") {
+                    auto* arm = animation.RootElement() ? animation.RootElement()->FirstChildElement("arm") : nullptr;
+                    for (const char* name : {"Still", "Running"}) {
+                        auto* sequence = arm ? arm->FirstChildElement(name) : nullptr;
+                        if (!sequence) continue;
+                        PlayerSequence visual;
+                        visual.rate = Attr(sequence, "FrameRate");
+                        for (auto* frame = sequence->FirstChildElement("frame"); frame; frame = frame->NextSiblingElement("frame")) {
+                            auto path = NormalizeAsset(frame->Attribute("filename"));
+                            if (path.empty() || !std::filesystem::exists(path)) continue;
+                            auto foundFrame = textures.find(path);
+                            render::TextureId frameTexture = render::InvalidTexture;
+                            if (foundFrame == textures.end()) {
+                                std::string textureError;
+                                frameTexture = renderer.LoadTexture(path, textureError);
+                                textures.emplace(path, frameTexture);
+                            } else frameTexture = foundFrame->second;
+                            if (frameTexture) visual.frames.push_back(frameTexture);
+                        }
+                        if (!visual.frames.empty()) playerArmSequences_.emplace(name, std::move(visual));
+                    }
+                    if (auto it = playerArmSequences_.find("Still"); it != playerArmSequences_.end()) {
+                        playerArmSequence_ = "Still";
+                        playerArmFrame_ = 0; // Character::Initialise selects Still and Restart begins at frame zero.
+                    }
+                }
             }
         }
         if (kind == "CurrencyOrb" && !animationPath.empty()) {
@@ -669,7 +696,8 @@ void LevelScene::UpdateVisuals(float dt, float playerX, float playerY, float cam
     }
 }
 void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded, int wallSide,
-                                    bool rolling, bool dashing, bool inWater, float meleeElapsed, int facing) {
+                                    bool rolling, bool dashing, bool inWater, float meleeElapsed, int facing,
+                                    bool projectileFired) {
     if (playerSequences_.empty()) return;
     playerFacing_ = facing;
     std::string target = "Still";
@@ -695,14 +723,38 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
     float rate = sequence.rate;
     if (target == "Running")
         rate = std::clamp(std::abs(vx / 60.f) * 1.8f * 2.65f, sequence.minRate, sequence.maxRate);
-    if (rate <= 0 || sequence.frames.size() < 2) return;
-    playerFrameElapsed_ += dt;
-    if (playerFrameElapsed_ >= 1.f / rate) {
-        playerFrameElapsed_ -= 1.f / rate; // AnimationPart advances at most one frame per update.
-        if (target == "Still" || target == "Running" || target == "SlidingDown" ||
-            target == "SwimIdle" || target == "SwimForward")
-            playerFrame_ = (playerFrame_ + 1) % sequence.frames.size();
-        else if (playerFrame_ + 1 < sequence.frames.size()) ++playerFrame_;
+    if (rate > 0 && sequence.frames.size() >= 2) {
+        playerFrameElapsed_ += dt;
+        if (playerFrameElapsed_ >= 1.f / rate) {
+            playerFrameElapsed_ -= 1.f / rate; // AnimationPart advances at most one frame per update.
+            if (target == "Still" || target == "Running" || target == "SlidingDown" ||
+                target == "SwimIdle" || target == "SwimForward")
+                playerFrame_ = (playerFrame_ + 1) % sequence.frames.size();
+            else if (playerFrame_ + 1 < sequence.frames.size()) ++playerFrame_;
+        }
+    }
+    // Player::Fire restarts/advances once; Character::UpdateAnimations advances
+    // again before switching/finishing when the body sequence changes.
+    auto advanceArm = [&]() {
+        auto arm = playerArmSequences_.find(playerArmSequence_);
+        if (arm == playerArmSequences_.end() || playerArmFrame_ >= arm->second.frames.size() || arm->second.rate <= 0) return;
+        playerArmFrameElapsed_ += dt;
+        if (playerArmFrameElapsed_ >= 1.f / arm->second.rate) {
+            playerArmFrameElapsed_ -= 1.f / arm->second.rate;
+            ++playerArmFrame_;
+        }
+    };
+    if (projectileFired && !playerArmSequence_.empty()) {
+        playerArmFrame_ = 0;
+        playerArmFrameElapsed_ = 0;
+        advanceArm();
+    }
+    advanceArm();
+    if (playerArmSequence_ != target) {
+        playerArmSequence_ = target;
+        playerArmFrameElapsed_ = 0;
+        auto arm = playerArmSequences_.find(target);
+        playerArmFrame_ = arm == playerArmSequences_.end() ? 0 : arm->second.frames.size();
     }
 }
 void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY) const {
@@ -782,6 +834,14 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         draw.rotationDegrees = object.rotation * (180.f / 3.14159265358979323846f);
         if (draw.destination.x + draw.destination.width < 0 || draw.destination.x > 1280 ||
             draw.destination.y + draw.destination.height < 0 || draw.destination.y > 720) continue;
+        if (object.player && object.xmlId == "2") {
+            auto arm = playerArmSequences_.find(playerArmSequence_);
+            if (arm != playerArmSequences_.end() && playerArmFrame_ < arm->second.frames.size()) {
+                auto armDraw = draw;
+                armDraw.texture = arm->second.frames[playerArmFrame_];
+                renderer.DrawSprite(armDraw);
+            }
+        }
         renderer.DrawSprite(draw);
     }
     drawSpraysBefore(-1, 0);

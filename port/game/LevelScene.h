@@ -65,7 +65,8 @@ public:
               const std::string& fromLevel = {}, const std::string& entryDoorId = {});
     void Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY) const;
     void UpdatePlayerVisual(float dt, float vx, float vy, bool grounded, int wallSide,
-                            bool rolling, bool dashing, bool inWater, float meleeElapsed, int facing);
+                            bool rolling, bool dashing, bool inWater, float meleeElapsed, int facing,
+                            bool projectileFired);
     void UpdateVisuals(float dt, float playerX, float playerY, float cameraX, float cameraY);
     size_t CollectCurrencyOrbs(float playerX, float playerY, std::unordered_set<std::string>& collected);
     void ApplyCollected(const std::unordered_set<std::string>& collected);
@@ -132,9 +133,13 @@ private:
     float playerVisualWidth_ = 0, playerVisualHeight_ = 0;
     struct PlayerSequence { std::vector<render::TextureId> frames; float rate = 0, minRate = 0, maxRate = 60; };
     std::unordered_map<std::string, PlayerSequence> playerSequences_;
+    std::unordered_map<std::string, PlayerSequence> playerArmSequences_;
     std::string playerSequence_;
+    std::string playerArmSequence_;
     size_t playerFrame_ = 0;
+    size_t playerArmFrame_ = 0; // sequence length means finished, matching AnimationPart::IsFinished
     float playerFrameElapsed_ = 0;
+    float playerArmFrameElapsed_ = 0;
     int playerFacing_ = 1;
     float cameraX_ = 0, cameraY_ = 0;
     float cameraOffsetX_ = 0, cameraOffsetY_ = 0;

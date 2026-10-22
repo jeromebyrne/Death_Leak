@@ -443,6 +443,7 @@ int main(int argc, char** argv) {
         if (fixedDt > 0) dt = fixedDt;
         if (dt > 0.05f) dt = 0.05f;
         const char command = frame < static_cast<int>(scriptedInput.size()) ? scriptedInput[frame] : 0;
+        bool playerProjectileFired = false;
         if (sound && currentLevel != audioLevel) {
             sound->SetAmbience(scene.Ambience());
             audioLevel = currentLevel;
@@ -683,6 +684,7 @@ int main(int argc, char** argv) {
             const float healthBeforeCombat = combat.Health();
             const int spawnedBeforeCombat = combat.Spawned();
             combat.Update(scene, worldX, worldY, dt, fire, melee, motion.Grounded(), motion.Rolling(), facing, *renderer);
+            playerProjectileFired = combat.Fired() > firedBefore;
             // SolidMovingSprite::OnCollision applies authored damage per contact, not per second.
             combat.ApplySolidContactDamage(motion.SolidContactDamage());
             if (std::getenv("DEATHLEAK_TRACE_ENCOUNTERS") &&
@@ -695,7 +697,7 @@ int main(int argc, char** argv) {
             // H remains a simulation-only direct hit for isolated combo/stun
             // checks; normal melee comes through Combat::Update above.
             if (simulateOnly && command == 'H') combat.DamageEnemy(0,1.5f);
-            if (sound && combat.Fired() > firedBefore) sound->Play(deathleak::audio::Cue::KnifeThrow, firedBefore);
+            if (sound && playerProjectileFired) sound->Play(deathleak::audio::Cue::KnifeThrow, firedBefore);
             levelTime += dt;
             // Utilities::IsObjectInRectangle culls by drawable extents, not
             // collision bounds. These interactables have zero parallax in the
@@ -1052,7 +1054,7 @@ int main(int argc, char** argv) {
         combat.UpdateVisuals(dt);
         if (!playLevel.empty()) scene.UpdatePlayerVisual(dt, motion.VelocityX(), motion.VelocityY(),
             motion.Grounded(), motion.WallSide(), motion.Rolling(), motion.DownwardDashing(), motion.InWater(),
-            combat.MeleeElapsed(), facing);
+            combat.MeleeElapsed(), facing, playerProjectileFired);
         renderer->BeginFrame({8, 12, 20, 255});
         if (levelPath.empty()) {
             renderer->DrawSprite({background, {}, {0, 0, 1280, 720}});
