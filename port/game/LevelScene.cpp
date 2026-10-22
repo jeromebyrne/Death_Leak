@@ -810,7 +810,10 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
                             360.f + ((cameraY-worldY)*layerY - object.height / 2) * scale,
                             object.width * scale, object.height * scale};
         if (object.parallaxLayer) {
-            draw.uvShiftX = cameraX * object.cameraParallaxX * (object.flipX ? 1.f : -1.f);
+            // D3D ParallaxLayer writes left UV = shift + 1, right UV = shift.
+            // SDL samples left-to-right, so its equivalent phase has the opposite
+            // sign. A positive camera move then moves texture features left.
+            draw.uvShiftX = cameraX * object.cameraParallaxX * (object.flipX ? -1.f : 1.f);
             draw.uvShiftY = -cameraY * object.cameraParallaxY;
         }
         // ParallaxLayer::Draw replaces Sprite's repeat-X UVs with exactly one
