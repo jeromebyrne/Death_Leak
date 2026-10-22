@@ -1,5 +1,6 @@
 #include "LevelScene.h"
 #include "../render/ViewportCull.h"
+#include "../render/OrdinarySpriteRotation.h"
 #include "../../Game/tinyxml/tinyxml.h"
 #include <algorithm>
 #include <cmath>
@@ -1005,10 +1006,10 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         draw.pixelWobble.time = shaderClock.pixelWobbleTime;
         draw.flipY = (draw.foliageSway.enabled || draw.pixelWobble.enabled)
             ? object.flipY : (object.playerAimLine ? playerFacing_ >= 0 : !object.flipY);
-        // XML rotation is radians in D3D world coordinates (Y up). SDL's
-        // positive degrees rotate clockwise in screen coordinates (Y down),
-        // so the sign is preserved when converting radians to degrees.
-        draw.rotationDegrees = object.rotation * (180.f / 3.14159265358979323846f);
+        // Windows row-vector R*S*T reflects X after rotation; SDL flips
+        // source coordinates before its clockwise screen rotation. The X flip
+        // conjugates rotation, so unflipped sprites alone reverse the sign.
+        draw.rotationDegrees = render::OrdinarySpriteRotationDegrees(object.rotation, draw.flipX);
         // Cull using the rendered rotated quad, not its unrotated destination.
         if (!render::SpriteMayIntersectViewport(draw)) continue;
         if (object.player && object.xmlId == "2") {

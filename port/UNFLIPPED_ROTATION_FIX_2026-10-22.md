@@ -1,0 +1,15 @@
+# Unflipped ordinary-sprite rotation correction — 2026-10-22
+
+## Result
+
+The four-UV-corner CPU contract confirms the source-audit prediction: authored X-flipped rotated IDs 32/33 (`waterfall_top`) and 14 (`forest_exploration_1`) already coincide with Windows row-vector `R*S*T`, while unflipped rotated forest-1 ID15's legacy same-signed SDL angle does not. The isolated ordinary-sprite mapping now negates the SDL angle **only when `flipX` is false**. Authored XML, centers, UV flags, and flipped IDs are unchanged. This is source-transform parity, not a claim of matched original-Windows visual parity.
+
+## Reproduction and evidence
+
+- `port/tests/ordinary_sprite_rotation_contract_test.cpp` uses the four XML-authored positions, dimensions, radians, and X-flip flags, and checks all four source UV-labeled corners for each ID. It computes Windows row-vector rotation, then X scale, translation, and screen-Y projection independently of the SDL source flip, centered screen rotation, and production angle helper. Every corrected corner is within 0.001 world units. The legacy mapping differs by over 1 world unit for all four ID15 corners and none of the flipped controls. This explicitly guards the unflipped-versus-X-flipped nonzero-angle distinction.
+- Docker `deathleak-linux-build:bookworm`: contract test passed for IDs 32/33/14/15; `port/tests/forest_flip_test.sh` passed after expected angles for unflipped IDs 58/15 changed sign; `make -C port -j2` passed. Only pre-existing TinyXML compile warnings appeared.
+- Physical direct Xorg `:0`, `SDL_VIDEODRIVER=x11`, strict accelerated SDL OpenGL, `nouveau/NVE7`, dummy audio: built an exact HEAD `LevelScene.cpp` baseline and compared against the corrected binary, each with `DEATHLEAK_RENDER_ONLY_XML_IDS=15`, `--play Game/XmlFiles/levels/forest_exploration_1.xml --script R:300 --frames 300 --fixed-dt 0.0166667`. Both remained in active forest-1 gameplay at player `(2328.99,3114.51)`, health 25, with 71 loaded sprites, no missing/unsupported assets. Captures are `port/build/unflipped-rotation-ab-2026-10-22/{baseline,fixed}.bmp`; logs and PNG conversions are alongside. Both are 1280×720. The two frames differ in `(969,316)–(1279,652)`, 94,762 RGB pixels, localized to the right-hand shaft region; unchanged outside this region. BMP SHA-256: baseline `8d4558e715eeaf1f50b0b4e6e8b077a1e385f80d5e290df3dce3db1a04fff011`, fixed `d8821a4d57cc434c4f1ad1af88911b52f9dcf453eb498c2d66a2cef5061ac1ec`.
+
+## Limits and next step
+
+This controlled Linux GPU A/B verifies the renderer's observable ID15 change and that the active gameplay/GPU path still works. No matched original-Windows camera/state/frame exists, so the captures **cannot** establish image parity or artistic preference. Next: obtain a controlled original-Windows forest-1 frame with camera, state, and shaft ID15 visible, then compare the same UV landmark orientation to this capture. The source math and CPU contract independently support the code correction pending that visual validation.
