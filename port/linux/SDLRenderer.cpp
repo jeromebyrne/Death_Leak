@@ -172,7 +172,25 @@ public:
         SDL_SetTextureAlphaMod(texture, sprite.tint.a);
         SDL_RendererFlip flip = static_cast<SDL_RendererFlip>(
             (sprite.flipX ? SDL_FLIP_HORIZONTAL : 0) | (sprite.flipY ? SDL_FLIP_VERTICAL : 0));
-        if ((sprite.uvShiftX != 0 || sprite.uvShiftY != 0) && sprite.rotationDegrees == 0 && !sourcePtr) {
+        if (sprite.repeatX && sprite.rotationDegrees == 0 && !sourcePtr) {
+            int width = 0, height = 0;
+            SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
+            // The scene is authored in 1920x1080 world units and displayed at 2/3.
+            const float tileWidth = width * (2.f / 3.f);
+            if (tileWidth > 0) {
+                const int first = std::max(0, static_cast<int>(std::floor(-destination.x / tileWidth)));
+                const int last = std::min(static_cast<int>(std::ceil(destination.w / tileWidth)),
+                                          static_cast<int>(std::ceil((1280.f - destination.x) / tileWidth)));
+                for (int i = first; i < last; ++i) {
+                    const float offset = i * tileWidth;
+                    const float visibleWidth = std::min(tileWidth, destination.w - offset);
+                    if (visibleWidth <= 0) continue;
+                    SDL_Rect part{0, 0, std::max(1, static_cast<int>(std::lround(width * visibleWidth / tileWidth))), height};
+                    SDL_FRect target{destination.x + offset, destination.y, visibleWidth, destination.h};
+                    SDL_RenderCopyExF(renderer_, texture, &part, &target, 0, nullptr, flip);
+                }
+            }
+        } else if ((sprite.uvShiftX != 0 || sprite.uvShiftY != 0) && sprite.rotationDegrees == 0 && !sourcePtr) {
             // D3D's ParallaxLayer scrolls one full texture UV over its authored quad.
             // SDL_RenderCopy cannot wrap UVs, so split at wrap seams while retaining
             // GPU texture copies, per-sprite alpha and the existing destination.

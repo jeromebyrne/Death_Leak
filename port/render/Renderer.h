@@ -33,6 +33,7 @@ struct Sprite {
     float rotationDegrees = 0;
     bool flipX = false;
     bool flipY = false;
+    bool repeatX = false; // Original Sprite repeatX: one source-width per world source-width.
     float uvShiftX = 0, uvShiftY = 0; // Normalized wrap offset for authored parallax layers.
 };
 

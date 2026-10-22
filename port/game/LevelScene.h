@@ -14,7 +14,7 @@ struct SceneSprite {
     float rotation = 0;
     int depth = 0;
     render::Color tint{255, 255, 255, 255};
-    bool flipX = false, flipY = false;
+    bool flipX = false, flipY = false, repeatX = false;
     bool player = false;
     bool parallaxLayer = false, followCameraX = false, followCameraY = false;
     float cameraParallaxX = 0, cameraParallaxY = 0;

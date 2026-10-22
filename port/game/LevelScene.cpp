@@ -340,6 +340,9 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
             sprite.persistentId = std::filesystem::path(path).lexically_normal().string() + "#" + object->Attribute("id");
         sprite.flipX = Flag(object->FirstChildElement("horizontalflip"), "value");
         sprite.flipY = Flag(object->FirstChildElement("verticalflip"), "value");
+        // Windows Sprite::SetupVertices repeats non-native X at source-pixel scale.
+        // ParallaxLayer overrides that UV span to one in its Draw method.
+        sprite.repeatX = !sprite.parallaxLayer && !Flag(dimensions, "native") && Flag(dimensions, "repeatX");
         auto alpha = std::clamp(Attr(object->FirstChildElement("alpha"), "value", 1), 0.f, 1.f);
         sprite.tint.a = static_cast<std::uint8_t>(std::lround(alpha * 255));
         if (sprite.width > 0 && sprite.height > 0) sprites_.push_back(sprite);
@@ -550,6 +553,7 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
             draw.uvShiftX = cameraX * object.cameraParallaxX * (object.flipX ? 1.f : -1.f);
             draw.uvShiftY = -cameraY * object.cameraParallaxY;
         }
+        draw.repeatX = object.repeatX;
         draw.tint = object.tint; draw.flipX = object.player ? playerFacing_ < 0 : object.flipX; draw.flipY = object.player ? false : object.flipY;
         draw.rotationDegrees = -object.rotation;
         if (draw.destination.x + draw.destination.width < 0 || draw.destination.x > 1280 ||
