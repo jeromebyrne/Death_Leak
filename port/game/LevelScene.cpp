@@ -262,6 +262,10 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
                         Flag(object->FirstChildElement("applydamage"), "flag") ? Attr(object->FirstChildElement("applydamage"), "amount") : 0.f});
             }
         }
+        // ParticleSpray dimensions describe an emitter, not a textured quad.
+        // Its source Draw method renders individual particles; that system is
+        // not ported yet, so drawing the emitter texture would be incorrect.
+        if (kind == "ParticleSpray") continue;
         if (!asset || !asset->Attribute("filename") || !*asset->Attribute("filename")) continue;
         std::string filename = NormalizeAsset(asset->Attribute("filename"));
         std::string animationPath;
