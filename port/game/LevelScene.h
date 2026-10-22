@@ -15,6 +15,8 @@ struct SceneSprite {
     float rotation = 0;
     int depth = 0;
     render::Color tint{255, 255, 255, 255};
+    float alpha = 1.f, alphaWhenOccluding = .5f, alphaWhenNotOccluding = 1.f;
+    bool fadeWhenPlayerOccluded = false, updateable = true, alwaysUpdate = false;
     bool flipX = false, flipY = false, repeatX = false;
     bool player = false;
     bool parallaxLayer = false, followCameraX = false, followCameraY = false;
@@ -54,7 +56,7 @@ public:
     void Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY) const;
     void UpdatePlayerVisual(float dt, float vx, float vy, bool grounded, int wallSide,
                             bool rolling, bool dashing, bool inWater, float meleeElapsed, int facing);
-    void UpdateVisuals(float dt);
+    void UpdateVisuals(float dt, float playerX, float playerY, float cameraX, float cameraY);
     size_t CollectCurrencyOrbs(float playerX, float playerY, std::unordered_set<std::string>& collected);
     void ApplyCollected(const std::unordered_set<std::string>& collected);
     float CameraX() const { return cameraX_; }

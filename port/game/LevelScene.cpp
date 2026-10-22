@@ -378,7 +378,14 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         // ParallaxLayer overrides that UV span to one in its Draw method.
         sprite.repeatX = !sprite.parallaxLayer && !Flag(dimensions, "native") && Flag(dimensions, "repeatX");
         auto alpha = std::clamp(Attr(object->FirstChildElement("alpha"), "value", 1), 0.f, 1.f);
+        sprite.alpha = alpha;
         sprite.tint.a = static_cast<std::uint8_t>(std::lround(alpha * 255));
+        auto* fade = object->FirstChildElement("fade_when_player_occluded");
+        sprite.fadeWhenPlayerOccluded = Flag(fade, "value");
+        sprite.alphaWhenOccluding = Attr(fade, "alphawhenoccluding", .5f);
+        sprite.alphaWhenNotOccluding = Attr(fade, "alphawhennotoccluding", 1.f);
+        sprite.updateable = updateable;
+        sprite.alwaysUpdate = alwaysUpdate;
         if (sprite.width > 0 && sprite.height > 0) sprites_.push_back(sprite);
     }
     trace("objects parsed");
@@ -493,9 +500,36 @@ void LevelScene::ApplyDeflection(bool unlocked) {
             object.persistentId == scroll.id) object.collected = true;
     }
 }
-void LevelScene::UpdateVisuals(float dt) {
+void LevelScene::UpdateVisuals(float dt, float playerX, float playerY, float cameraX, float cameraY) {
     for (auto& sprite : sprites_) {
-        if (sprite.collected || sprite.animationFrames.size() < 2 || sprite.animationFrameRate <= 0) continue;
+        if (sprite.collected) continue;
+        if (sprite.fadeWhenPlayerOccluded && sprite.updateable) {
+            // GameObjectManager updates objects whose authored rectangle intersects
+            // its 4000x4000 world-space zone (or those marked always_update).
+            const bool inUpdateZone = sprite.alwaysUpdate ||
+                (sprite.x + sprite.width * .5f > cameraX - 2000.f &&
+                 sprite.x - sprite.width * .5f < cameraX + 2000.f &&
+                 sprite.y + sprite.height * .5f > cameraY - 2000.f &&
+                 sprite.y - sprite.height * .5f < cameraY + 2000.f);
+            if (inUpdateZone) {
+                const bool occluding = playerX > sprite.x - sprite.width * .5f &&
+                    playerX < sprite.x + sprite.width * .5f &&
+                    playerY > sprite.y - sprite.height * .5f &&
+                    playerY < sprite.y + sprite.height * .5f;
+                const float target = occluding ? sprite.alphaWhenOccluding : sprite.alphaWhenNotOccluding;
+                const bool decreasing = sprite.alphaWhenOccluding < sprite.alphaWhenNotOccluding;
+                // Match DrawableObject::Update: step first, clamp on the next update.
+                if (decreasing == occluding) {
+                    if (sprite.alpha > target) sprite.alpha -= 1.5f * dt;
+                    else sprite.alpha = target;
+                } else {
+                    if (sprite.alpha < target) sprite.alpha += 1.5f * dt;
+                    else sprite.alpha = target;
+                }
+                sprite.tint.a = static_cast<std::uint8_t>(std::lround(std::clamp(sprite.alpha, 0.f, 1.f) * 255.f));
+            }
+        }
+        if (sprite.animationFrames.size() < 2 || sprite.animationFrameRate <= 0) continue;
         sprite.animationElapsed += dt;
         const float frameDuration = 1.f / sprite.animationFrameRate;
         // AnimationPart::AnimateLooped advances at most one frame per update.

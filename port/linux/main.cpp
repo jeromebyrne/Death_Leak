@@ -1048,7 +1048,7 @@ int main(int argc, char** argv) {
         auto afterUpdate = std::chrono::steady_clock::now();
         updateSeconds += std::chrono::duration<double>(afterUpdate-now).count();
         if (simulateOnly) continue;
-        scene.UpdateVisuals(dt);
+        scene.UpdateVisuals(dt, worldX, worldY, cameraX, cameraY);
         combat.UpdateVisuals(dt);
         if (!playLevel.empty()) scene.UpdatePlayerVisual(dt, motion.VelocityX(), motion.VelocityY(),
             motion.Grounded(), motion.WallSide(), motion.Rolling(), motion.DownwardDashing(), motion.InWater(),
