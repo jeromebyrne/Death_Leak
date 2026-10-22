@@ -42,6 +42,7 @@ struct Sprite {
     Rect source;       // Zero width/height means the complete texture.
     Rect destination;  // Logical 1280x720 coordinates.
     Color tint{255, 255, 255, 255};
+    float opacity = 1.f; // Float-of-record for custom per-sprite shader alpha.
     float rotationDegrees = 0;
     bool flipX = false;
     bool flipY = false;

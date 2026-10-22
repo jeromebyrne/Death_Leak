@@ -267,7 +267,7 @@ public:
         glUniform1f(glGetUniformLocation(pixelWobbleProgram_, "effectTime"), sprite.pixelWobble.time);
         glUniform1f(glGetUniformLocation(pixelWobbleProgram_, "speedMod"), sprite.pixelWobble.speedMod);
         glUniform1f(glGetUniformLocation(pixelWobbleProgram_, "intensity"), sprite.pixelWobble.intensity);
-        glUniform1f(glGetUniformLocation(pixelWobbleProgram_, "spriteAlpha"), sprite.tint.a / 255.f);
+        glUniform1f(glGetUniformLocation(pixelWobbleProgram_, "spriteAlpha"), sprite.opacity);
         glUniform2f(glGetUniformLocation(pixelWobbleProgram_, "textureSpan"), textureWidth, textureHeight);
         const float radians = sprite.rotationDegrees * 3.14159265358979323846f / 180.f;
         const float cosine = std::cos(radians), sine = std::sin(radians);

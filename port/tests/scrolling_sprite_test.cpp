@@ -37,6 +37,8 @@ int main() {
     auto near = [](float a, float b) { assert(std::abs(a-b) < .02f); };
     const auto initial = frame();
     assert(initial[0].tint.a == 128 && initial[1].tint.a == 153);
+    assert(initial[0].opacity == .5f && initial[1].opacity == .6f);
+    assert(initial[0].opacity != initial[0].tint.a / 255.f);
     for (const auto& fog : initial) {
         assert(fog.pixelWobble.enabled);
         near(fog.pixelWobble.intensity, .07f);
@@ -53,6 +55,9 @@ int main() {
     near(one[0].pixelWobble.time, 1.f);
     near(one[1].pixelWobble.time, 1.f);
     assert(one[0].tint.a == 21 && one[1].tint.a == 26);
+    assert(std::abs(one[0].opacity - .5f / 6.f) < 1e-6f);
+    assert(std::abs(one[1].opacity - .6f / 6.f) < 1e-6f);
+    assert(one[0].opacity != one[0].tint.a / 255.f);
     near(one[0].destination.x, xFor(789.985352f + 1000.f/45.f));
     near(one[1].destination.x, xFor(-125.014648f - 750.f/70.f));
     for (int i = 0; i < 4; ++i) scene.UpdateVisuals(1.f, 0.f, 3400.f, 0.f, 3400.f);
