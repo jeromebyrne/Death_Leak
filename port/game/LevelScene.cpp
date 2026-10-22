@@ -360,6 +360,8 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
             sprite.followCameraY = Flag(object->FirstChildElement("followcamy"), "value");
             sprite.cameraParallaxX = Attr(object->FirstChildElement("cameraparallaxmultiplierx"), "value");
             sprite.cameraParallaxY = Attr(object->FirstChildElement("cameraparallaxmultipliery"), "value");
+            sprite.autoScrollY = Flag(object->FirstChildElement("autoscrolly"), "value");
+            sprite.autoScrollYSpeed = Attr(object->FirstChildElement("autoscrollyspeed"), "value");
         }
         if (sprite.player && !animationPath.empty()) {
             TiXmlDocument animation(animationPath.c_str());
@@ -667,6 +669,15 @@ void LevelScene::UpdateVisuals(float dt, float playerX, float playerY, float cam
             spray.Update(dt);
     }
     for (auto& sprite : sprites_) {
+        if (sprite.autoScrollY) {
+            // Legacy ParallaxLayer::Draw adds scaled speed * .001 per 1/60 update.
+            // Its Draw reads the previous update delta; UpdateVisuals advances once
+            // before the port draw, keeping diagnostic redraws state-free.
+            constexpr float worldToBackbufferY = 720.f / 1080.f;
+            sprite.autoScrollYPhase += sprite.autoScrollYSpeed * worldToBackbufferY *
+                .001f * (dt * 60.f);
+            sprite.autoScrollYPhase -= std::floor(sprite.autoScrollYPhase);
+        }
         if (sprite.collected) continue;
         if (sprite.scrolling && sprite.updateable && sprite.scrollTime > 0.f) {
             // Match GameObjectManager's world-space update zone. Use the current
@@ -904,7 +915,8 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
             // SDL samples left-to-right, so its equivalent phase has the opposite
             // sign. A positive camera move then moves texture features left.
             draw.uvShiftX = cameraX * object.cameraParallaxX * (object.flipX ? -1.f : 1.f);
-            draw.uvShiftY = -cameraY * object.cameraParallaxY;
+            draw.uvShiftY = object.autoScrollY ? object.autoScrollYPhase
+                                                 : -cameraY * object.cameraParallaxY;
         }
         // ParallaxLayer::Draw replaces Sprite's repeat-X UVs with exactly one
         // texture span whenever camera-X parallax is enabled. Keep its authored

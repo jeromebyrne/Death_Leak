@@ -1,5 +1,6 @@
 #include "../render/Renderer.h"
 #include "RepeatX.h"
+#include "UVWrap.h"
 #include "FoliageSway.h"
 #include <SDL.h>
 #define GL_GLEXT_PROTOTYPES
@@ -216,20 +217,16 @@ public:
             // GPU texture copies, per-sprite alpha and the existing destination.
             int width = 0, height = 0;
             SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
-            const float shiftX = sprite.uvShiftX - std::floor(sprite.uvShiftX);
-            const float shiftY = sprite.uvShiftY - std::floor(sprite.uvShiftY);
-            const int seamX = shiftX > 0 ? width - std::min(width - 1, static_cast<int>(shiftX * width)) : width;
-            const int seamY = shiftY > 0 ? height - std::min(height - 1, static_cast<int>(shiftY * height)) : height;
-            const int startX = width - seamX, startY = height - seamY;
-            const int cols = seamX == width ? 1 : 2, rows = seamY == height ? 1 : 2;
-            for (int row = 0; row < rows; ++row) for (int col = 0; col < cols; ++col) {
-                SDL_Rect part{col ? 0 : startX, row ? 0 : startY,
-                              col ? startX : seamX, row ? startY : seamY};
-                SDL_FRect target{destination.x + destination.w * (col ? static_cast<float>(seamX) / width : 0.f),
-                                 destination.y + destination.h * (row ? static_cast<float>(seamY) / height : 0.f),
-                                 destination.w * part.w / width, destination.h * part.h / height};
-                SDL_RenderCopyExF(renderer_, texture, &part, &target, 0, nullptr, flip);
-            }
+            ForEachUVWrapSegment(height, sprite.uvShiftY, sprite.flipY, [&](UVWrapSegment y) {
+                ForEachUVWrapSegment(width, sprite.uvShiftX, sprite.flipX, [&](UVWrapSegment x) {
+                    SDL_Rect part{x.source, y.source, x.length, y.length};
+                    SDL_FRect target{destination.x + destination.w * x.offset,
+                                     destination.y + destination.h * y.offset,
+                                     destination.w * x.length / width,
+                                     destination.h * y.length / height};
+                    SDL_RenderCopyExF(renderer_, texture, &part, &target, 0, nullptr, flip);
+                });
+            });
         } else if (sprite.rotationDegrees == 0 && flip == SDL_FLIP_NONE)
             SDL_RenderCopyF(renderer_, texture, sourcePtr, &destination);
         else

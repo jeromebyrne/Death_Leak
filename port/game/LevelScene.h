@@ -34,6 +34,8 @@ struct SceneSprite {
     bool playerAimLine = false; // Runtime-created Player child at kPlayer.
     bool parallaxLayer = false, followCameraX = false, followCameraY = false;
     float cameraParallaxX = 0, cameraParallaxY = 0;
+    bool autoScrollY = false;
+    float autoScrollYSpeed = 0, autoScrollYPhase = 0;
     bool currencyOrb = false;
     bool keyPickup = false;
     bool paperPickup = false;
