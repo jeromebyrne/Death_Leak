@@ -343,8 +343,8 @@ public:
             const auto lerp = [](SDL_FPoint a, SDL_FPoint b, float t) {
                 return SDL_FPoint{a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t};
             };
-            const float vTop = sprite.flipY ? 1.f : 0.f;
-            const float vBottom = sprite.flipY ? 0.f : 1.f;
+            const float vTop = FoliageScreenV(sprite.flipY, true);
+            const float vBottom = FoliageScreenV(sprite.flipY, false);
             SDL_Vertex vertices[4] = {
                 {lerp(tl, tr, fractionLeft), white, {uLeft, vTop}},
                 {lerp(tl, tr, fractionRight), white, {uRight, vTop}},

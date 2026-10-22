@@ -12,5 +12,11 @@ int main() {
     assert(std::abs(p.x - x) < .0001f && std::abs(p.y - y) < .0001f);
     const auto fixed = FoliageSwayWorldVertex({100.f, 30.f}, {0.f, 0.f}, time, local, normalWeather);
     assert(fixed.x == 100.f && fixed.y == 30.f);
+    // D3D source vertex V=1 is world-top; SDL geometry V=0 is PNG-top.
+    // The authored flip swaps which source vertex reaches each screen edge.
+    assert(deathleak::render::FoliageScreenV(false, true) == 1.f);
+    assert(deathleak::render::FoliageScreenV(false, false) == 0.f);
+    assert(deathleak::render::FoliageScreenV(true, true) == 0.f);
+    assert(deathleak::render::FoliageScreenV(true, false) == 1.f);
     std::cout << "PASS: FoliageSway.fx world-space vertex displacement\n";
 }
