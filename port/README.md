@@ -204,3 +204,16 @@ unmodified earned ending route on physical Xorg/`nouveau NVE7` revealed
 transition/update stalls at frames 398 (131.5 ms update) and 1058 (38.4 ms
 update); this instrumentation does not eliminate them. See
 `CHECKPOINT_STATUS.md` for the measured route and release limitations.
+
+### Scene-entry texture timing
+
+Set `DEATHLEAK_TRACE_SCENE_LOAD=1` to time level parsing and object loading, and
+`DEATHLEAK_TRACE_TEXTURE_LOAD=1` to log each first-use PNG's header read,
+RGBA decode, and SDL texture creation/upload phases in milliseconds. Texture
+tracing is diagnostic and does not alter rendering or cache behavior. Use a
+physical Xorg/accelerated-OpenGL run for GPU timing; offscreen/software timings
+are not representative of hardware upload cost. The first waterfall-top entry
+on 2026-10-21 measured approximately 32 ms decode / 11 ms upload for
+`underwater_cave/cave_background.png`, and 13 ms / 2 ms for `waterfall_4.png`
+on direct nouveau/NVE7. These are single-run measurements, not performance
+budgets or a fixed transition-stall mitigation.

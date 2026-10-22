@@ -114,24 +114,34 @@ public:
     TextureId LoadTexture(const std::string& path, std::string& error) override {
         auto cached = paths_.find(path);
         if (cached != paths_.end()) return cached->second;
+        const bool traceTexture = std::getenv("DEATHLEAK_TRACE_TEXTURE_LOAD") != nullptr;
+        const auto textureStart = std::chrono::steady_clock::now();
+        auto phaseMs = [&] { return std::chrono::duration<double, std::milli>(
+            std::chrono::steady_clock::now() - textureStart).count(); };
         png_image image{};
         image.version = PNG_IMAGE_VERSION;
         if (!png_image_begin_read_from_file(&image, path.c_str())) {
             error = image.message; return InvalidTexture;
         }
+        const double headerMs = traceTexture ? phaseMs() : 0;
         image.format = PNG_FORMAT_RGBA;
         std::vector<png_byte> pixels(PNG_IMAGE_SIZE(image));
         if (!png_image_finish_read(&image, nullptr, pixels.data(), 0, nullptr)) {
             error = image.message; png_image_free(&image); return InvalidTexture;
         }
+        const double decodeMs = traceTexture ? phaseMs() : 0;
         SDL_Surface* surface = SDL_CreateRGBSurfaceWithFormatFrom(pixels.data(),
             static_cast<int>(image.width), static_cast<int>(image.height), 32,
             static_cast<int>(image.width * 4), SDL_PIXELFORMAT_RGBA32);
         if (!surface) { error = SDL_GetError(); png_image_free(&image); return InvalidTexture; }
         SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer_, surface);
         SDL_FreeSurface(surface);
+        if (!texture) { error = SDL_GetError(); png_image_free(&image); return InvalidTexture; }
+        if (traceTexture)
+            std::cerr << "Texture load " << path << " size=" << image.width << "x" << image.height
+                      << " header_ms=" << headerMs << " decode_ms=" << decodeMs - headerMs
+                      << " upload_ms=" << phaseMs() - decodeMs << "\n";
         png_image_free(&image);
-        if (!texture) { error = SDL_GetError(); return InvalidTexture; }
         SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
         TextureId id = nextId_++;
         textures_.emplace(id, texture);
