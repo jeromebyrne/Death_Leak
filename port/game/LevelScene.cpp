@@ -269,19 +269,21 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
             }
         }
         if (kind == "ParticleSpray") {
-            // Admit only the source-audited forest leaf and waterfall-top splash.
+            // Admit only the source-audited forest leaf and three waterfall-top splashes.
             const std::string levelName = std::filesystem::path(path).filename().string();
             const std::string sprayId = object->Attribute("id") ? object->Attribute("id") : "";
             const bool forestLeaf = levelName == "forest_exploration_1.xml" && sprayId == "47";
-            const bool waterfallSplash = levelName == "waterfall_top.xml" && sprayId == "49";
+            const bool waterfallSplash = levelName == "waterfall_top.xml" &&
+                (sprayId == "49" || sprayId == "50" || sprayId == "51");
             if (!forestLeaf && !waterfallSplash) continue;
             auto filename = NormalizeAsset(asset ? asset->Attribute("filename") : nullptr);
             if (filename.empty() || !std::filesystem::exists(filename)) { ++skipped_; continue; }
             ParticleSpray spray;
             spray.xmlId = sprayId; spray.order = objectOrder;
-            // Keep the forest stream unchanged; the splash has a separate stable
-            // capture stream (neither reproduces the original global rand()).
-            if (waterfallSplash) spray.randomState = 0x53504c48u;
+            // Keep the forest stream unchanged. Each splash has a stable private
+            // capture stream; none reproduces the original global rand().
+            if (waterfallSplash) spray.randomState = 0x53504c48u +
+                static_cast<std::uint32_t>(std::stoi(sprayId) - 49);
             spray.x = x; spray.y = y;
             spray.width = Attr(dimensions, "width"); spray.height = Attr(dimensions, "height");
             spray.depth = interactionDepth;
