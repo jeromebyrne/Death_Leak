@@ -1,5 +1,7 @@
 #include "../render/Renderer.h"
 #include <SDL.h>
+#define GL_GLEXT_PROTOTYPES
+#include <SDL_opengl.h>
 #include <algorithm>
 #include <chrono>
 #include <cmath>
@@ -20,6 +22,8 @@ public:
             std::cerr << "SDL profile calls=" << drawCalls_ << " copy=" << copySeconds_
                       << "s present=" << presentSeconds_ << "s\n";
         if (gamepad_) SDL_GameControllerClose(gamepad_);
+        if (sepiaTexture_) glDeleteTextures(1, &sepiaTexture_);
+        if (sepiaProgram_) glDeleteProgram(sepiaProgram_);
         for (auto& texture : textures_) SDL_DestroyTexture(texture.second);
         if (renderer_) SDL_DestroyRenderer(renderer_);
         if (window_) SDL_DestroyWindow(window_);
@@ -106,6 +110,14 @@ public:
             }
         }
         if (SDL_RenderSetLogicalSize(renderer_, 1280, 720) != 0) { error = SDL_GetError(); return false; }
+        if (driver == "opengl") {
+            if (!InitializeSepia(error)) return false;
+        } else if (!testAllowSoftware_) {
+            error = "Sepia.fx requires the SDL OpenGL renderer; selected " + driver;
+            return false;
+        } else {
+            std::cerr << "TEST-ONLY renderer: Sepia.fx GPU pass unavailable\n";
+        }
         SDL_SetRenderDrawBlendMode(renderer_, SDL_BLENDMODE_BLEND);
         for (int i = 0; i < SDL_NumJoysticks(); ++i)
             if (SDL_IsGameController(i)) { gamepad_ = SDL_GameControllerOpen(i); break; }
@@ -223,6 +235,56 @@ public:
         SDL_FRect box{rect.x, rect.y, rect.width, rect.height};
         SDL_RenderFillRectF(renderer_, &box);
     }
+    void ApplyScenePostprocess() override {
+        if (!sepiaProgram_) return; // Only the explicit test-only software path.
+        SDL_RenderFlush(renderer_);
+        int width = 0, height = 0;
+        SDL_GetRendererOutputSize(renderer_, &width, &height);
+        if (width <= 0 || height <= 0) return;
+
+        GLint oldProgram = 0, oldMatrixMode = 0, oldActiveTexture = 0;
+        glGetIntegerv(GL_CURRENT_PROGRAM, &oldProgram);
+        glGetIntegerv(GL_MATRIX_MODE, &oldMatrixMode);
+        glGetIntegerv(GL_ACTIVE_TEXTURE, &oldActiveTexture);
+        glPushAttrib(GL_ALL_ATTRIB_BITS);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, sepiaTexture_);
+        // Copy the already-composited scene on the GPU. No CPU readback or
+        // per-sprite shader approximation; HUD is drawn after this pass.
+        if (width != sepiaWidth_ || height != sepiaHeight_) {
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0,
+                         GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+            sepiaWidth_ = width;
+            sepiaHeight_ = height;
+        }
+        glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, width, height);
+        glViewport(0, 0, width, height);
+        glDisable(GL_BLEND);
+        glDisable(GL_DEPTH_TEST);
+        glDisable(GL_SCISSOR_TEST);
+        glEnable(GL_TEXTURE_2D);
+        glMatrixMode(GL_PROJECTION);
+        glPushMatrix();
+        glLoadIdentity();
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glLoadIdentity();
+        glUseProgram(sepiaProgram_);
+        glBegin(GL_TRIANGLE_STRIP);
+        glTexCoord2f(0, 0); glVertex2f(-1, -1);
+        glTexCoord2f(1, 0); glVertex2f( 1, -1);
+        glTexCoord2f(0, 1); glVertex2f(-1,  1);
+        glTexCoord2f(1, 1); glVertex2f( 1,  1);
+        glEnd();
+        glUseProgram(static_cast<GLuint>(oldProgram));
+        glMatrixMode(GL_MODELVIEW);
+        glPopMatrix();
+        glMatrixMode(GL_PROJECTION);
+        glPopMatrix();
+        glMatrixMode(oldMatrixMode);
+        glPopAttrib();
+        glActiveTexture(oldActiveTexture);
+    }
     void EndFrame() override {
         const auto began = std::chrono::steady_clock::now();
         SDL_RenderPresent(renderer_);
@@ -281,12 +343,71 @@ public:
         return ok;
     }
 private:
+    bool InitializeSepia(std::string& error) {
+        // Direct translation of Game/ShaderFiles/Sepia.fx::PS. step(edge,x)
+        // returns one at equality; the source's two gates both select there.
+        constexpr const char* source = R"(
+            #version 120
+            uniform sampler2D scene;
+            void main() {
+                vec4 color = texture2D(scene, gl_TexCoord[0].xy);
+                vec3 sepia = vec3(
+                    dot(color.rgb, vec3(0.293, 0.669, 0.089)),
+                    dot(color.rgb, vec3(0.249, 0.586, 0.068)),
+                    dot(color.rgb, vec3(0.172, 0.434, 0.031))) * 0.75;
+                float redExcess = color.r - (color.g + color.b);
+                float sepiaTrue = step(redExcess, 0.5);
+                float redTrue = step(0.5, redExcess);
+                gl_FragColor = vec4(sepiaTrue * sepia +
+                    redTrue * color.rgb * vec3(0.6, 1.0, 1.0), 1.0);
+            }
+        )";
+        GLuint shader = glCreateShader(GL_FRAGMENT_SHADER);
+        glShaderSource(shader, 1, &source, nullptr);
+        glCompileShader(shader);
+        GLint compiled = GL_FALSE;
+        glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
+        if (!compiled) {
+            char log[1024]{};
+            glGetShaderInfoLog(shader, sizeof(log), nullptr, log);
+            error = "Sepia.fx GPU shader compile failed: " + std::string(log);
+            glDeleteShader(shader);
+            return false;
+        }
+        sepiaProgram_ = glCreateProgram();
+        glAttachShader(sepiaProgram_, shader);
+        glLinkProgram(sepiaProgram_);
+        glDeleteShader(shader);
+        GLint linked = GL_FALSE;
+        glGetProgramiv(sepiaProgram_, GL_LINK_STATUS, &linked);
+        if (!linked) {
+            char log[1024]{};
+            glGetProgramInfoLog(sepiaProgram_, sizeof(log), nullptr, log);
+            error = "Sepia.fx GPU shader link failed: " + std::string(log);
+            return false;
+        }
+        glGenTextures(1, &sepiaTexture_);
+        glBindTexture(GL_TEXTURE_2D, sepiaTexture_);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        GLint oldProgram = 0;
+        glGetIntegerv(GL_CURRENT_PROGRAM, &oldProgram);
+        glUseProgram(sepiaProgram_);
+        glUniform1i(glGetUniformLocation(sepiaProgram_, "scene"), 0);
+        glUseProgram(static_cast<GLuint>(oldProgram));
+        std::cerr << "Sepia.fx GPU postprocess initialized (scene before HUD)\n";
+        return true;
+    }
     bool testAllowSoftware_ = false;
     size_t drawCalls_ = 0;
     double copySeconds_ = 0, presentSeconds_ = 0;
     bool initialized_ = false;
     SDL_Window* window_ = nullptr;
     SDL_Renderer* renderer_ = nullptr;
+    GLuint sepiaProgram_ = 0, sepiaTexture_ = 0;
+    int sepiaWidth_ = 0, sepiaHeight_ = 0;
     SDL_GameController* gamepad_ = nullptr;
     TextureId nextId_ = 1;
     std::unordered_map<TextureId, SDL_Texture*> textures_;

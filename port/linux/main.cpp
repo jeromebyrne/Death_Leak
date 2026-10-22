@@ -1107,6 +1107,7 @@ int main(int argc, char** argv) {
                      50.f*scale, 70.f*scale}});
             }
             combat.Draw(*renderer, cameraX, cameraY);
+            renderer->ApplyScenePostprocess();
             if (currentLevel == "Game/XmlFiles/levels/sea_2.xml") {
                 // final_scene_hud: four authored film frames at 11 FPS and
                 // quarter opacity, plus the original frame_top art. Bitmap

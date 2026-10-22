@@ -47,6 +47,8 @@ public:
     virtual void BeginFrame(Color clear) = 0;
     virtual void DrawSprite(const Sprite& sprite) = 0;
     virtual void FillRect(Rect rect, Color color) = 0;
+    // Apply the original Sepia.fx to the scene before UI is drawn.
+    virtual void ApplyScenePostprocess() = 0;
     virtual void EndFrame() = 0;
     virtual bool PollQuit() = 0;
     virtual bool KeyDown(int key) const = 0;
