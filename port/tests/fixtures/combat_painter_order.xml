@@ -1,0 +1,8 @@
+<level>
+  <Sprite id="ground"><position x="0" y="0" depth_layer="kGround"/><dimensions width="120" height="120"/><texture filename="Media/UI/player_silhouette.png"/></Sprite>
+  <Sprite id="player"><position x="0" y="0" depth_layer="kPlayer"/><dimensions width="110" height="110"/><texture filename="Media/UI/player_silhouette.png"/></Sprite>
+  <Sprite id="ground-front"><position x="0" y="0" depth_layer="kGroundFront"/><dimensions width="100" height="100"/><texture filename="Media/UI/player_silhouette.png"/></Sprite>
+  <Sprite id="far-front"><position x="0" y="0" depth_layer="kFarForeground"/><dimensions width="90" height="90"/><texture filename="Media/UI/player_silhouette.png"/></Sprite>
+  <Sprite id="middle-front"><position x="0" y="0" depth_layer="kMiddleForeground"/><dimensions width="80" height="80"/><texture filename="Media/UI/player_silhouette.png"/></Sprite>
+  <Sprite id="near-front"><position x="0" y="0" depth_layer="kNearForeground"/><dimensions width="70" height="70"/><texture filename="Media/UI/player_silhouette.png"/></Sprite>
+</level>

@@ -800,29 +800,40 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
         playerArmFrame_ = arm == playerArmSequences_.end() ? 0 : arm->second.frames.size();
     }
 }
-void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY) const {
+void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY, std::vector<PainterItem> dynamic) const {
     constexpr float scale = 2.f / 3.f; // Original world is authored for 1920x1080.
     const auto& filter = DiagnosticRenderFilter();
-    size_t nextSpray = 0;
+    // Orbs are runtime GameObjects at kOrb, not an unconditional backdrop.
+    if (spawnedOrbTexture_ && filter.only.empty()) for (const auto& orb : spawnedOrbs_) {
+        dynamic.push_back({3250, [&, orb] {
+            render::Sprite draw;
+            draw.texture = spawnedOrbTexture_;
+            draw.destination = {640.f + (orb.x-cameraX-23.84865f)*scale,
+                                360.f + (cameraY-orb.y-36.415604f)*scale,
+                                47.6973f*scale, 72.831207f*scale};
+            draw.tint = {255,255,255,204};
+            renderer.DrawSprite(draw);
+        }});
+    }
+    std::stable_sort(dynamic.begin(), dynamic.end(),
+                     [](const PainterItem& a, const PainterItem& b) { return a.depth > b.depth; });
+    size_t nextDynamic = 0, nextSpray = 0;
+    auto drawDynamicBefore = [&](int depth) {
+        while (nextDynamic < dynamic.size() && dynamic[nextDynamic].depth > depth)
+            dynamic[nextDynamic++].draw();
+    };
     auto drawSpraysBefore = [&](int depth, size_t order) {
         while (nextSpray < particleSprays_.size()) {
             const auto& spray = particleSprays_[nextSpray];
             if (spray.depth < depth || (spray.depth == depth && spray.order >= order)) break;
+            drawDynamicBefore(spray.depth);
             if (filter.Draw(spray.xmlId)) spray.Draw(renderer, cameraX, cameraY);
             ++nextSpray;
         }
     };
-    for (const auto& orb : spawnedOrbs_) if (spawnedOrbTexture_ && filter.only.empty()) {
-        render::Sprite draw;
-        draw.texture = spawnedOrbTexture_;
-        draw.destination = {640.f + (orb.x-cameraX-23.84865f)*scale,
-                            360.f + (cameraY-orb.y-36.415604f)*scale,
-                            47.6973f*scale, 72.831207f*scale};
-        draw.tint = {255,255,255,204};
-        renderer.DrawSprite(draw);
-    }
     for (const auto& object : sprites_) {
         drawSpraysBefore(object.depth, object.order);
+        drawDynamicBefore(object.depth);
         if (object.collected || (object.playerShadow && !playerGrounded_) ||
             (object.playerAimLine && aimLineAlpha_ <= 0.f) ||
             !filter.Draw(object.xmlId)) continue;
@@ -897,5 +908,6 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         renderer.DrawSprite(draw);
     }
     drawSpraysBefore(-1, 0);
+    drawDynamicBefore(-2147483647);
 }
 }

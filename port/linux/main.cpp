@@ -1103,15 +1103,18 @@ int main(int argc, char** argv) {
             scene.Draw(*renderer, scene.CameraX() + (playerX - 590) * 1.5f,
                        scene.CameraY() + (430 - playerY) * 1.5f, scene.PlayerX(), scene.PlayerY());
         else {
-            scene.Draw(*renderer, cameraX, cameraY, worldX, worldY);
+            std::vector<deathleak::game::PainterItem> painterItems;
+            combat.AppendPainterItems(painterItems, *renderer, cameraX, cameraY);
             if (healthPickup && healthPickupArt) {
                 constexpr float scale = 2.f / 3.f;
-                renderer->DrawSprite({healthPickupArt, {},
+                const auto sprite = deathleak::render::Sprite{healthPickupArt, {},
                     {640.f + (healthPickup->x-cameraX-25.f)*scale,
                      360.f + (cameraY-healthPickup->y-35.f)*scale,
-                     50.f*scale, 70.f*scale}});
+                     50.f*scale, 70.f*scale}};
+                // HealthUpgradePickup inherits SolidMovingSprite's kPlayer depth.
+                painterItems.push_back({3000, [&, sprite] { renderer->DrawSprite(sprite); }});
             }
-            combat.Draw(*renderer, cameraX, cameraY);
+            scene.Draw(*renderer, cameraX, cameraY, worldX, worldY, std::move(painterItems));
             renderer->ApplyScenePostprocess();
             if (currentLevel == "Game/XmlFiles/levels/sea_2.xml") {
                 // final_scene_hud: four authored film frames at 11 FPS and

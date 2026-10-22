@@ -330,6 +330,7 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
         shots_.push_back({enemy.x,enemy.y+(skeleton?50.f:0.f),aimX/length*speed,aimY/length*speed,
             ghost || skeleton ? 2.f : 0.25f, skeleton ? 35.f : ghost ? 2.f : 3.f,true,
             ghost ? 0.9f : 1.f, !skeleton});
+        shots_.back().depth = ghost || skeleton ? 2530 : 2510;
         shots_.back().deflectable=!ghost && !skeleton;
         shots_.back().baseSpeed=speed;
         shots_.back().texture = skeleton ? skeletonShotArt_ : ghost ? ghostShotArt_ : ninjaShotArt_;
@@ -486,14 +487,8 @@ void Combat::UpdateVisuals(float dt) {
         }
     }
 }
-void Combat::Draw(render::Renderer& renderer, float cameraX, float cameraY) const {
+void Combat::AppendPainterItems(std::vector<PainterItem>& items, render::Renderer& renderer, float cameraX, float cameraY) const {
     constexpr float scale=2.f/3.f;
-    auto draw=[&](render::TextureId texture,float x,float y,float w,float h,bool flipX=false){
-        if (!texture) return;
-        render::Sprite sprite{texture,{}, {640.f+(x-cameraX-w/2)*scale,360.f+(cameraY-y-h/2)*scale,w*scale,h*scale}};
-        sprite.flipX = flipX;
-        renderer.DrawSprite(sprite);
-    };
     for (const auto& enemy:enemies_) if (enemy.teleportTime<=0.f) {
         const auto& visuals = enemy.type == "kGhost" ? ghostVisuals_ :
             enemy.type == "kSkeleton" ? skeletonVisuals_ : ninjaVisuals_;
@@ -501,8 +496,13 @@ void Combat::Draw(render::Renderer& renderer, float cameraX, float cameraY) cons
         render::TextureId texture = enemy.texture;
         if (selected != visuals.end() && !selected->second.frames.empty())
             texture = selected->second.frames[std::min(enemy.visualFrame, selected->second.frames.size()-1)];
-        draw(texture,enemy.x,enemy.y,enemy.type=="kGhost"?113.f:183.f,
-             enemy.type=="kGhost"?208.f:231.f,enemy.facing<0);
+        if (!texture) continue;
+        const float width = enemy.type == "kGhost" ? 113.f : 183.f;
+        const float height = enemy.type == "kGhost" ? 208.f : 231.f;
+        render::Sprite sprite{texture, {}, {640.f+(enemy.x-cameraX-width/2)*scale,
+            360.f+(cameraY-enemy.y-height/2)*scale,width*scale,height*scale}};
+        sprite.flipX = enemy.facing < 0;
+        items.push_back({3500, [&, sprite] { renderer.DrawSprite(sprite); }});
     }
     for (const auto& shot:shots_) {
         const float visualScale = shot.playerKnife ? std::clamp(shot.activeVisualAge / 0.3f, 0.f, 1.f) : 1.f;
@@ -514,7 +514,14 @@ void Combat::Draw(render::Renderer& renderer, float cameraX, float cameraY) cons
             360.f+(cameraY-shot.y-h/2)*scale,w*scale,h*scale}};
         sprite.flipX = shot.vx < 0.f;
         sprite.tint.a = static_cast<std::uint8_t>(std::lround(255.f * visualScale));
-        renderer.DrawSprite(sprite);
+        items.push_back({shot.depth, [&, sprite] { renderer.DrawSprite(sprite); }});
     }
+}
+void Combat::Draw(render::Renderer& renderer, float cameraX, float cameraY) const {
+    std::vector<PainterItem> items;
+    AppendPainterItems(items, renderer, cameraX, cameraY);
+    std::stable_sort(items.begin(), items.end(),
+                     [](const PainterItem& a, const PainterItem& b) { return a.depth > b.depth; });
+    for (const auto& item : items) item.draw();
 }
 }

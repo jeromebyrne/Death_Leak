@@ -3,6 +3,7 @@
 #include "../audio/SoundPlayer.h"
 #include "ParticleSpray.h"
 #include <cstddef>
+#include <functional>
 #include <unordered_map>
 #include <string>
 #include <unordered_set>
@@ -47,6 +48,9 @@ struct SceneSprite {
     std::string persistentId;
 };
 
+// Runtime GameObjects use the same descending depth stream as authored sprites.
+struct PainterItem { int depth; std::function<void()> draw; };
+
 struct GroundSegment { float x1, y1, x2, y2; };
 struct SolidBox { float left, right, bottom, top; float damage = 0; };
 struct LevelTrigger { float x, y, width, height; std::string destination; };
@@ -65,7 +69,8 @@ class LevelScene {
 public:
     bool Load(const std::string& path, render::Renderer& renderer, std::string& error,
               const std::string& fromLevel = {}, const std::string& entryDoorId = {});
-    void Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY) const;
+    void Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY,
+              std::vector<PainterItem> dynamic = {}) const;
     void UpdatePlayerVisual(float dt, float vx, float vy, bool grounded, int wallSide,
                             bool rolling, bool dashing, bool inWater, float meleeElapsed, int facing,
                             bool projectileFired, bool eligibleFireAttempt = false);

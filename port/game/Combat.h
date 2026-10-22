@@ -41,6 +41,7 @@ struct Shot {
     render::TextureId texture = render::InvalidTexture;
     float visualWidth = 84.5f, visualHeight = 25.f;
     // Only player-thrown knives use the source Projectile fade-in lifecycle.
+    int depth = 2500; // GameObject depth remains fixed after a projectile is deflected.
     bool playerKnife = false;
     float activeVisualAge = 0.f;
 };
@@ -58,6 +59,8 @@ public:
     bool DeflectionUnlocked() const { return deflectionUnlocked_; }
     void SetProjectileUpgrades(bool damage, bool speed) { projectileDamageUpgrade_ = damage; projectileSpeedUpgrade_ = speed; }
     void Draw(render::Renderer& renderer, float cameraX, float cameraY) const;
+    void AppendPainterItems(std::vector<PainterItem>& items, render::Renderer& renderer,
+                            float cameraX, float cameraY) const;
     void UpdateVisuals(float dt);
     void SetTriggerHistory(std::unordered_map<std::string, std::int64_t> history) { triggerHistory_ = std::move(history); }
     void EnableSimulatedWallClock(); // test-only: advance trigger clock by fixed gameplay dt
