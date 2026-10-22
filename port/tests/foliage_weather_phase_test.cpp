@@ -39,7 +39,7 @@ int main() {
         const float cameraY = rope ? 2575.f : 3571.f;
         auto draw = [&](float global) {
             renderer.drawn.clear();
-            scene.Draw(renderer, cameraX, cameraY, cameraX, cameraY, {}, 1.f, global);
+            scene.Draw(renderer, cameraX, cameraY, cameraX, cameraY, {}, 1.f, global, {.75f, 0.f});
             assert(renderer.drawn.size() == 1);
             return renderer.drawn.front();
         };

@@ -1,5 +1,6 @@
 #include "../render/Renderer.h"
 #include "../game/LevelScene.h"
+#include "../game/ShaderClock.h"
 #include "../game/WeatherLightning.h"
 #include "../game/WeatherRain.h"
 #include "../game/Combat.h"
@@ -439,6 +440,7 @@ int main(int argc, char** argv) {
         if (ec) { std::cerr << "Menu save commit failed: " << ec.message() << '\n'; return false; }
         return true;
     };
+    deathleak::game::ShaderClock shaderClock;
     auto start = std::chrono::steady_clock::now();
     auto last = std::chrono::steady_clock::now();
     for (int frame = 0; !frameLimit || frame < frameLimit; ++frame) {
@@ -448,6 +450,9 @@ int main(int argc, char** argv) {
         last = now;
         if (fixedDt > 0) dt = fixedDt;
         if (dt > 0.05f) dt = 0.05f;
+        // This is the port's update delta; feed the modified delta here when
+        // Windows-style damage slowdown is implemented.
+        shaderClock.Update(dt);
         const char command = frame < static_cast<int>(scriptedInput.size()) ? scriptedInput[frame] : 0;
         bool playerProjectileFired = false;
         bool playerEligibleFireAttempt = false;
@@ -1074,6 +1079,7 @@ int main(int argc, char** argv) {
         if (!playLevel.empty()) scene.UpdatePlayerVisual(dt, motion.VelocityX(), motion.VelocityY(),
             motion.Grounded(), motion.WallSide(), motion.Rolling(), motion.DownwardDashing(), motion.InWater(),
             combat.MeleeElapsed(), facing, playerProjectileFired, playerEligibleFireAttempt);
+        const auto shaderFrame = shaderClock.Draw();
         renderer->BeginFrame({8, 12, 20, 255});
         if (levelPath.empty()) {
             renderer->DrawSprite({background, {}, {0, 0, 1280, 720}});
@@ -1117,7 +1123,7 @@ int main(int argc, char** argv) {
             } else renderer->DrawSprite({player, {}, {playerX, playerY, 100, 170}});
         } else if (playLevel.empty())
             scene.Draw(*renderer, scene.CameraX() + (playerX - 590) * 1.5f,
-                       scene.CameraY() + (430 - playerY) * 1.5f, scene.PlayerX(), scene.PlayerY());
+                       scene.CameraY() + (430 - playerY) * 1.5f, scene.PlayerX(), scene.PlayerY(), {}, 1.f, 1.f, shaderFrame);
         else {
             std::vector<deathleak::game::PainterItem> painterItems;
             combat.AppendPainterItems(painterItems, *renderer, cameraX, cameraY);
@@ -1151,7 +1157,7 @@ int main(int argc, char** argv) {
                 painterItems.push_back({20, [&] { rain.Draw(*renderer, cameraX, cameraY); }});
             }
             scene.Draw(*renderer, cameraX, cameraY, worldX, worldY, std::move(painterItems),
-                       combat.PlayerDamageBurstGain(), weather.FoliageSwayMultiplier());
+                       combat.PlayerDamageBurstGain(), weather.FoliageSwayMultiplier(), shaderFrame);
             renderer->ApplyScenePostprocess();
             if (currentLevel == "Game/XmlFiles/levels/sea_2.xml") {
                 // final_scene_hud: four authored film frames at 11 FPS and
@@ -1185,6 +1191,7 @@ int main(int argc, char** argv) {
             std::cerr << "Capture failed: " << error << '\n'; return 1;
         }
         renderer->EndFrame();
+        shaderClock.RenderCompleted(dt);
         const auto afterDraw = std::chrono::steady_clock::now();
         drawSeconds += std::chrono::duration<double>(afterDraw-afterUpdate).count();
         if (profile && frame >= kProfileWarmupFrames) {

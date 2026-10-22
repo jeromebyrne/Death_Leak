@@ -122,8 +122,6 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     auto* level = document.RootElement();
     if (!level || std::string(level->Value()) != "level") { error = "Not a Death Leak level: " + path; return false; }
     playerVisualWidth_ = playerVisualHeight_ = 0;
-    visualTime_ = pixelWobbleTime_ = 0.f;
-    pixelWobbleReverse_ = false;
     playerSequences_.clear(); playerSequence_.clear(); playerFrame_ = 0; playerFrameElapsed_ = 0; playerFacing_ = 1; playerGrounded_ = false;
     playerOffSolidTime_ = playerDescentTime_ = 0; playerDescending_ = false;
     playerArmSequences_.clear(); playerArmSequence_.clear(); playerArmFrame_ = 0; playerArmFrameElapsed_ = 0; aimLineHold_ = aimLineAlpha_ = 0.f;
@@ -730,12 +728,6 @@ void LevelScene::UpdateAuthoredOrbs(float dt, float playerX, float playerY, floa
     }
 }
 void LevelScene::UpdateVisuals(float dt, float playerX, float playerY, float cameraX, float cameraY) {
-    visualTime_ += dt;
-    // Game::Draw shuttles this effect clock at strict 10/5 s thresholds;
-    // the XML parameters are reapplied on each sprite draw.
-    pixelWobbleTime_ += pixelWobbleReverse_ ? -dt : dt;
-    if (!pixelWobbleReverse_ && pixelWobbleTime_ > 10.f) pixelWobbleReverse_ = true;
-    else if (pixelWobbleReverse_ && pixelWobbleTime_ < 5.f) pixelWobbleReverse_ = false;
     for (auto& spray : particleSprays_) {
         if (spray.alwaysUpdate || (spray.updateable &&
             spray.x + spray.width*.5f > cameraX - 2000.f && spray.x - spray.width*.5f < cameraX + 2000.f &&
@@ -917,7 +909,7 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
         playerArmFrame_ = arm == playerArmSequences_.end() ? 0 : arm->second.frames.size();
     }
 }
-void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY, std::vector<PainterItem> dynamic, float playerDamageBurstGain, float foliageGlobalTimeMultiplier) const {
+void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY, std::vector<PainterItem> dynamic, float playerDamageBurstGain, float foliageGlobalTimeMultiplier, ShaderClockSnapshot shaderClock) const {
     constexpr float scale = 2.f / 3.f; // Original world is authored for 1920x1080.
     const auto& filter = DiagnosticRenderFilter();
     // Orbs are runtime GameObjects at kOrb, not an unconditional backdrop.
@@ -1006,10 +998,10 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         // the authored vertical-flip flag, not just ParallaxLayer copies.
         // The custom foliage/pixel shader paths own their source UV mapping.
         draw.foliageSway = object.foliageSway;
-        draw.foliageSway.time = visualTime_;
+        draw.foliageSway.time = shaderClock.totalTime;
         draw.foliageSway.globalTimeMultiplier = foliageGlobalTimeMultiplier;
         draw.pixelWobble = object.pixelWobble;
-        draw.pixelWobble.time = pixelWobbleTime_;
+        draw.pixelWobble.time = shaderClock.pixelWobbleTime;
         draw.flipY = (draw.foliageSway.enabled || draw.pixelWobble.enabled)
             ? object.flipY : (object.playerAimLine ? playerFacing_ >= 0 : !object.flipY);
         // XML rotation is radians in D3D world coordinates (Y up). SDL's

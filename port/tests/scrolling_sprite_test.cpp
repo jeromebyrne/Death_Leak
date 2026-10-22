@@ -43,7 +43,6 @@ int main() {
         assert(fog.pixelWobble.enabled);
         near(fog.pixelWobble.intensity, .07f);
         near(fog.pixelWobble.speedMod, .3f);
-        near(fog.pixelWobble.time, 0.f);
     }
     assert(!initial[0].flipY && initial[1].flipY);
     near(initial[0].destination.x, xFor(789.985352f));
@@ -52,8 +51,6 @@ int main() {
     // Both XML IDs fade independently; the movement starts from StartLerpX.
     scene.UpdateVisuals(1.f, 0.f, 3400.f, 0.f, 3400.f);
     const auto one = frame();
-    near(one[0].pixelWobble.time, 1.f);
-    near(one[1].pixelWobble.time, 1.f);
     assert(one[0].tint.a == 21 && one[1].tint.a == 26);
     assert(std::abs(one[0].opacity - .5f / 6.f) < 1e-6f);
     assert(std::abs(one[1].opacity - .6f / 6.f) < 1e-6f);
@@ -65,13 +62,11 @@ int main() {
     assert(five[0].tint.a == 106 && five[1].tint.a == 128);
     scene.UpdateVisuals(1.f, 0.f, 3400.f, 0.f, 3400.f);
     const auto six = frame();
-    near(six[0].pixelWobble.time, 6.f);
     assert(six[0].tint.a == 128 && six[1].tint.a == 153);
 
     // Off-zone objects keep elapsed, position, and alpha unchanged.
     scene.UpdateVisuals(1.f, 9000.f, 9000.f, 9000.f, 9000.f);
     const auto paused = frame();
-    near(paused[0].pixelWobble.time, 7.f); // independent of update zone
     near(paused[0].destination.x, six[0].destination.x);
     assert(paused[0].tint.a == six[0].tint.a);
 
@@ -86,19 +81,5 @@ int main() {
     const auto restarted = frame();
     near(restarted[0].destination.x, one[0].destination.x);
     assert(restarted[0].tint.a == one[0].tint.a);
-    // Strict source thresholds: 10 remains forward, 11 reverses, then 4
-    // reverses back. Reload also resets the scene-local clock.
-    assert(scene.Load("Game/XmlFiles/levels/forest_exploration_1.xml", renderer, error));
-    near(frame()[0].pixelWobble.time, 0.f);
-    for (int i = 0; i < 10; ++i) scene.UpdateVisuals(1.f, 0.f, 3400.f, 0.f, 3400.f);
-    near(frame()[0].pixelWobble.time, 10.f);
-    scene.UpdateVisuals(1.f, 0.f, 3400.f, 0.f, 3400.f);
-    near(frame()[0].pixelWobble.time, 11.f);
-    scene.UpdateVisuals(1.f, 0.f, 3400.f, 0.f, 3400.f);
-    near(frame()[0].pixelWobble.time, 10.f);
-    for (int i = 0; i < 6; ++i) scene.UpdateVisuals(1.f, 0.f, 3400.f, 0.f, 3400.f);
-    near(frame()[0].pixelWobble.time, 4.f);
-    scene.UpdateVisuals(1.f, 0.f, 3400.f, 0.f, 3400.f);
-    near(frame()[0].pixelWobble.time, 5.f);
     std::cout << "PASS: forest ScrollingSprite 119/122 movement, fade, zone, endpoint\n";
 }

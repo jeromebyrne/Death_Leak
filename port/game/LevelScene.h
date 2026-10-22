@@ -2,6 +2,7 @@
 #include "../render/Renderer.h"
 #include "../audio/SoundPlayer.h"
 #include "ParticleSpray.h"
+#include "ShaderClock.h"
 #include <cstddef>
 #include <functional>
 #include <unordered_map>
@@ -78,7 +79,7 @@ public:
               const std::string& fromLevel = {}, const std::string& entryDoorId = {});
     void Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY,
               std::vector<PainterItem> dynamic = {}, float playerDamageBurstGain = 1.f,
-              float foliageGlobalTimeMultiplier = 1.f) const;
+              float foliageGlobalTimeMultiplier = 1.f, ShaderClockSnapshot shaderClock = {}) const;
     void UpdatePlayerVisual(float dt, float vx, float vy, bool grounded, int wallSide,
                             bool rolling, bool dashing, bool inWater, float meleeElapsed, int facing,
                             bool projectileFired, bool eligibleFireAttempt = false);
@@ -170,9 +171,6 @@ private:
     bool allowsWeather_ = false;
     bool cameraBounds_ = false;
     float cameraBoundLeft_ = 0, cameraBoundRight_ = 0, cameraBoundTop_ = 0, cameraBoundBottom_ = 0;
-    float visualTime_ = 0;
-    float pixelWobbleTime_ = 0;
-    bool pixelWobbleReverse_ = false;
     size_t skipped_ = 0;
     size_t originalSpriteCount_ = 0; // Excludes runtime-created player shadow.
 };
