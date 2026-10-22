@@ -29,6 +29,7 @@ struct SceneSprite {
     render::FoliageSway foliageSway;
     render::PixelWobble pixelWobble;
     bool player = false;
+    bool playerShadow = false; // Runtime-created Character shadow at kGround.
     bool parallaxLayer = false, followCameraX = false, followCameraY = false;
     float cameraParallaxX = 0, cameraParallaxY = 0;
     bool currencyOrb = false;
@@ -84,7 +85,7 @@ public:
     float CameraBoundRight() const { return cameraBoundRight_; }
     float CameraBoundTop() const { return cameraBoundTop_; }
     float CameraBoundBottom() const { return cameraBoundBottom_; }
-    size_t SpriteCount() const { return sprites_.size(); }
+    size_t SpriteCount() const { return originalSpriteCount_; }
     size_t SkippedCount() const { return skipped_; }
     float PlayerX() const { return playerX_; }
     float PlayerY() const { return playerY_; }
@@ -141,6 +142,7 @@ private:
     float playerFrameElapsed_ = 0;
     float playerArmFrameElapsed_ = 0;
     int playerFacing_ = 1;
+    bool playerGrounded_ = false;
     float cameraX_ = 0, cameraY_ = 0;
     float cameraOffsetX_ = 0, cameraOffsetY_ = 0;
     float cameraLagX_ = 7.5f, cameraLagY_ = 15.f, cameraZoom_ = 1.f;
@@ -151,5 +153,6 @@ private:
     float pixelWobbleTime_ = 0;
     bool pixelWobbleReverse_ = false;
     size_t skipped_ = 0;
+    size_t originalSpriteCount_ = 0; // Excludes runtime-created player shadow.
 };
 }

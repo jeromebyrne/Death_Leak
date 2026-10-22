@@ -124,7 +124,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     playerVisualWidth_ = playerVisualHeight_ = 0;
     visualTime_ = pixelWobbleTime_ = 0.f;
     pixelWobbleReverse_ = false;
-    playerSequences_.clear(); playerSequence_.clear(); playerFrame_ = 0; playerFrameElapsed_ = 0; playerFacing_ = 1;
+    playerSequences_.clear(); playerSequence_.clear(); playerFrame_ = 0; playerFrameElapsed_ = 0; playerFacing_ = 1; playerGrounded_ = false;
     playerArmSequences_.clear(); playerArmSequence_.clear(); playerArmFrame_ = 0; playerArmFrameElapsed_ = 0;
     spawnedOrbTexture_ = render::InvalidTexture;
     sprites_.clear(); particleSprays_.clear(); ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); ambience_.clear(); doors_.clear(); boats_.clear(); keys_.clear(); papers_.clear(); healthDevils_.clear(); smashables_.clear(); spawnedOrbs_.clear(); scrolls_.clear(); skipped_ = 0;
@@ -510,6 +510,25 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         const auto frame = AnimationFrame("Game/XmlFiles/orb_anim.xml", "Still");
         if (!frame.empty()) spawnedOrbTexture_ = renderer.LoadTexture(frame, error);
     }
+    originalSpriteCount_ = sprites_.size();
+    // GameObjectManager adds Character's shadow after all XML objects, then
+    // orders by depth. Stable sorting keeps it after authored kGround peers.
+    const auto playerSprite = std::find_if(sprites_.begin(), sprites_.end(),
+        [](const SceneSprite& s) { return s.player; });
+    if (playerSprite != sprites_.end()) {
+        const std::string shadowPath = "Game/Media/characters/player/shadow.png";
+        std::string textureError;
+        const auto shadowTexture = renderer.LoadTexture(shadowPath, textureError);
+        if (!shadowTexture) { error = "Cannot load player shadow: " + textureError; return false; }
+        SceneSprite shadow;
+        shadow.texture = shadowTexture;
+        shadow.xmlId = "__player_shadow"; // Diagnostic ID for this non-XML child.
+        shadow.playerShadow = true;
+        shadow.width = 200.f; shadow.height = 128.f;
+        shadow.depth = Depth("kGround");
+        shadow.order = objectOrder;
+        sprites_.push_back(shadow);
+    }
     std::stable_sort(sprites_.begin(), sprites_.end(), [](const auto& a, const auto& b) { return a.depth > b.depth; });
     if (sprites_.empty()) { error = "Level has no renderable assets: " + path; return false; }
     trace("complete");
@@ -698,6 +717,7 @@ void LevelScene::UpdateVisuals(float dt, float playerX, float playerY, float cam
 void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded, int wallSide,
                                     bool rolling, bool dashing, bool inWater, float meleeElapsed, int facing,
                                     bool projectileFired) {
+    playerGrounded_ = grounded;
     if (playerSequences_.empty()) return;
     playerFacing_ = facing;
     std::string target = "Still";
@@ -780,15 +800,16 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
     }
     for (const auto& object : sprites_) {
         drawSpraysBefore(object.depth, object.order);
-        if (object.collected || !filter.Draw(object.xmlId)) continue;
+        if (object.collected || (object.playerShadow && !playerGrounded_) ||
+            !filter.Draw(object.xmlId)) continue;
         // ParallaxLayer follows the camera before its authored UV scroll. Static
         // background/foreground sprites use GameObject depth parallax instead.
-        const float worldX = object.player ? playerX :
+        const float worldX = object.player || object.playerShadow ? playerX :
             object.parallaxLayer && object.followCameraX ? cameraX : object.x;
-        const float worldY = object.player ? playerY :
+        const float worldY = object.playerShadow ? playerY - 150.f : object.player ? playerY :
             object.parallaxLayer && object.followCameraY ? cameraY : object.y;
         float layerX = 1.f, layerY = 1.f;
-        if (!object.player && !object.parallaxLayer) {
+        if (!object.player && !object.playerShadow && !object.parallaxLayer) {
             switch (object.depth) {
                 case 5999: layerX = .03f; layerY = .90f; break;
                 case 6000: layerX = .25f; layerY = .95f; break;
