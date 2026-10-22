@@ -1,4 +1,5 @@
 #include "LevelScene.h"
+#include "../render/ViewportCull.h"
 #include "../../Game/tinyxml/tinyxml.h"
 #include <algorithm>
 #include <cmath>
@@ -1008,8 +1009,8 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         // positive degrees rotate clockwise in screen coordinates (Y down),
         // so the sign is preserved when converting radians to degrees.
         draw.rotationDegrees = object.rotation * (180.f / 3.14159265358979323846f);
-        if (draw.destination.x + draw.destination.width < 0 || draw.destination.x > 1280 ||
-            draw.destination.y + draw.destination.height < 0 || draw.destination.y > 720) continue;
+        // Cull using the rendered rotated quad, not its unrotated destination.
+        if (!render::SpriteMayIntersectViewport(draw)) continue;
         if (object.player && object.xmlId == "2") {
             auto arm = playerArmSequences_.find(playerArmSequence_);
             if (arm != playerArmSequences_.end() && playerArmFrame_ < arm->second.frames.size()) {
