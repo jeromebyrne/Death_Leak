@@ -27,6 +27,7 @@ struct SceneSprite {
     bool fadeWhenPlayerOccluded = false, updateable = true, alwaysUpdate = false;
     bool flipX = false, flipY = false, repeatX = false;
     render::FoliageSway foliageSway;
+    render::PixelWobble pixelWobble;
     bool player = false;
     bool parallaxLayer = false, followCameraX = false, followCameraY = false;
     float cameraParallaxX = 0, cameraParallaxY = 0;
@@ -142,6 +143,8 @@ private:
     bool cameraBounds_ = false;
     float cameraBoundLeft_ = 0, cameraBoundRight_ = 0, cameraBoundTop_ = 0, cameraBoundBottom_ = 0;
     float visualTime_ = 0;
+    float pixelWobbleTime_ = 0;
+    bool pixelWobbleReverse_ = false;
     size_t skipped_ = 0;
 };
 }

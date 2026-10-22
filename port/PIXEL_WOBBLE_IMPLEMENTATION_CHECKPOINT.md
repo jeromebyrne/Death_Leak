@@ -1,0 +1,15 @@
+# Forest fog pixel-wobble implementation checkpoint — 2026-10-22
+
+Scope: XML `effectpixelwobble` parsed per sprite; authored forest-1 IDs 119/122 carry 0.07 intensity, 0.3 speed modifier, authored flips, rotation, and their existing scrolling/fade alpha. A separate scene effect clock uses the original strict >10/<5 shuttle. SDL OpenGL now flushes pending sprites and samples each effected quad with the ordered PixelWobble.fx UV equations, wrap sampling, and current sprite alpha; it restores GL/texture state before SDL resumes. Sepia remains after scene composition. The focused scrolling sprite test has new effect state and clock-boundary assertions.
+
+Not yet verified: GPU worker lane must be confirmed free before any make, Docker build, or physical-GPU capture. No build or visual parity claim as of this checkpoint. The original Windows frame is not available as a matched capture; visual review by Jerome is still required.
+
+## Verification after GPU lane release
+
+The exclusive scrolling-fog GPU worker's `port/FOG_GPU_REVIEW.md` was complete (12:55 PDT), with no game/ffmpeg/Docker capture processes live, before this lane built or captured. Focused Docker test passed (including XML parameters/flips, alpha, independent clock and 10/5 s strict reversal); Docker `make -C port -j2` exited 0 with only pre-existing TinyXML warnings. Both ran after the previous worker finished.
+
+Physical Xorg `:0` / nouveau NVE7 / accelerated SDL OpenGL and GPU sepia rendered fresh-start deterministic frame 60 (1 s), 300 (5 s), 420 (7 s), and 660 (11 s), with `--script R:180 --fixed-dt 0.0166667`. For every frame, baseline, hide-119/122, and only-119/122 were run sequentially as separate processes. All twelve logs report 71 loaded sprites, no missing assets, the same final player position at each frame, and a strict physical-GPU renderer. Evidence: ignored `port/build/pixel-wobble-gpu-2026-10-22/` (BMPs, logs, comparison montage). The first two timestamps' hide-fog BMPs are byte-for-byte pixel-identical to the preceding no-wobble GPU worker's corresponding hide-fog frames (zero pixel difference), isolating this code change to the fog effect.
+
+Current baseline vs hide differs in 279,101 / 180,516 / 178,809 / 186,195 RGB pixels at frames 60/300/420/660. Current vs pre-wobble only-fog differs in 201,753 pixels at 60 and 231,137 at 300. No claim that all whole-scene differences at different times are caused by wobble: scrolling, fades, particles and camera continue. The effect makes the isolated fog's edges/interior alpha visibly move at a matched time, and baseline scene remains intact; the authored middle/background rectangles remain visible. This is source-contract implementation and bounded GPU evidence, not exact Windows pixel parity or Jerome visual acceptance.
+
+After the final source review removed a duplicate (semantically inert) scene-clock reset, the Docker build was rerun and passed; see ignored `final-build.log`. The capture binary was from the immediately preceding build and differs only by that duplicate reset removal.

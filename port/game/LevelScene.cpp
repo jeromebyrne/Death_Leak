@@ -122,6 +122,8 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     auto* level = document.RootElement();
     if (!level || std::string(level->Value()) != "level") { error = "Not a Death Leak level: " + path; return false; }
     playerVisualWidth_ = playerVisualHeight_ = 0;
+    visualTime_ = pixelWobbleTime_ = 0.f;
+    pixelWobbleReverse_ = false;
     playerSequences_.clear(); playerSequence_.clear(); playerFrame_ = 0; playerFrameElapsed_ = 0; playerFacing_ = 1;
     spawnedOrbTexture_ = render::InvalidTexture;
     sprites_.clear(); particleSprays_.clear(); ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); ambience_.clear(); doors_.clear(); boats_.clear(); keys_.clear(); papers_.clear(); healthDevils_.clear(); smashables_.clear(); spawnedOrbs_.clear(); scrolls_.clear(); skipped_ = 0;
@@ -442,6 +444,12 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
                 sway.worldX = sprite.x; sway.worldY = sprite.y;
             }
         }
+        if (auto* effect = object->FirstChildElement("effect"); effect &&
+            effect->Attribute("name") && std::string(effect->Attribute("name")) == "effectpixelwobble") {
+            sprite.pixelWobble.enabled = true;
+            sprite.pixelWobble.intensity = Attr(effect, "pixelwobbleintensity");
+            sprite.pixelWobble.speedMod = Attr(effect, "pixelwobblespeedmod");
+        }
         sprite.flipX = Flag(object->FirstChildElement("horizontalflip"), "value");
         sprite.flipY = Flag(object->FirstChildElement("verticalflip"), "value");
         // Windows Sprite::SetupVertices repeats non-native X at source-pixel scale.
@@ -584,6 +592,11 @@ void LevelScene::ApplyDeflection(bool unlocked) {
 }
 void LevelScene::UpdateVisuals(float dt, float playerX, float playerY, float cameraX, float cameraY) {
     visualTime_ += dt;
+    // Game::Draw shuttles this effect clock at strict 10/5 s thresholds;
+    // the XML parameters are reapplied on each sprite draw.
+    pixelWobbleTime_ += pixelWobbleReverse_ ? -dt : dt;
+    if (!pixelWobbleReverse_ && pixelWobbleTime_ > 10.f) pixelWobbleReverse_ = true;
+    else if (pixelWobbleReverse_ && pixelWobbleTime_ < 5.f) pixelWobbleReverse_ = false;
     for (auto& spray : particleSprays_) {
         if (spray.alwaysUpdate || (spray.updateable &&
             spray.x + spray.width*.5f > cameraX - 2000.f && spray.x - spray.width*.5f < cameraX + 2000.f &&
@@ -759,6 +772,8 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         draw.rotationDegrees = -object.rotation;
         draw.foliageSway = object.foliageSway;
         draw.foliageSway.time = visualTime_;
+        draw.pixelWobble = object.pixelWobble;
+        draw.pixelWobble.time = pixelWobbleTime_;
         if (draw.destination.x + draw.destination.width < 0 || draw.destination.x > 1280 ||
             draw.destination.y + draw.destination.height < 0 || draw.destination.y > 720) continue;
         renderer.DrawSprite(draw);

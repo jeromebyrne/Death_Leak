@@ -32,6 +32,11 @@ struct FoliageSway {
     float worldX = 0, worldY = 0, time = 0, timeMultiplier = 1;
 };
 
+struct PixelWobble {
+    bool enabled = false;
+    float intensity = 0, speedMod = 0, time = 0;
+};
+
 struct Sprite {
     TextureId texture = InvalidTexture;
     Rect source;       // Zero width/height means the complete texture.
@@ -43,6 +48,7 @@ struct Sprite {
     bool repeatX = false; // Original Sprite repeatX: one source-width per world source-width.
     float uvShiftX = 0, uvShiftY = 0; // Normalized wrap offset for authored parallax layers.
     FoliageSway foliageSway{}; // Authored FoliageSway.fx vertex intensities.
+    PixelWobble pixelWobble{}; // Per-sprite PixelWobble.fx sampling state.
 };
 
 // No SDL, Direct3D, Metal, or native-window types cross this boundary.
