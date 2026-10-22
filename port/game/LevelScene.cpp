@@ -263,6 +263,8 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         if (sprite.parallaxLayer) {
             sprite.followCameraX = Flag(object->FirstChildElement("followcamx"), "value");
             sprite.followCameraY = Flag(object->FirstChildElement("followcamy"), "value");
+            sprite.cameraParallaxX = Attr(object->FirstChildElement("cameraparallaxmultiplierx"), "value");
+            sprite.cameraParallaxY = Attr(object->FirstChildElement("cameraparallaxmultipliery"), "value");
         }
         if (sprite.player && !animationPath.empty()) {
             TiXmlDocument animation(animationPath.c_str());
@@ -544,6 +546,10 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         draw.destination = {640.f + ((worldX-cameraX)*layerX - object.width / 2) * scale,
                             360.f + ((cameraY-worldY)*layerY - object.height / 2) * scale,
                             object.width * scale, object.height * scale};
+        if (object.parallaxLayer) {
+            draw.uvShiftX = cameraX * object.cameraParallaxX * (object.flipX ? 1.f : -1.f);
+            draw.uvShiftY = -cameraY * object.cameraParallaxY;
+        }
         draw.tint = object.tint; draw.flipX = object.player ? playerFacing_ < 0 : object.flipX; draw.flipY = object.player ? false : object.flipY;
         draw.rotationDegrees = -object.rotation;
         if (draw.destination.x + draw.destination.width < 0 || draw.destination.x > 1280 ||

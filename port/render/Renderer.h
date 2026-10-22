@@ -33,6 +33,7 @@ struct Sprite {
     float rotationDegrees = 0;
     bool flipX = false;
     bool flipY = false;
+    float uvShiftX = 0, uvShiftY = 0; // Normalized wrap offset for authored parallax layers.
 };
 
 // No SDL, Direct3D, Metal, or native-window types cross this boundary.

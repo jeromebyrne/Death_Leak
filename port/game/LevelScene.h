@@ -17,6 +17,7 @@ struct SceneSprite {
     bool flipX = false, flipY = false;
     bool player = false;
     bool parallaxLayer = false, followCameraX = false, followCameraY = false;
+    float cameraParallaxX = 0, cameraParallaxY = 0;
     bool currencyOrb = false;
     bool keyPickup = false;
     bool paperPickup = false;
