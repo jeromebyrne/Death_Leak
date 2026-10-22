@@ -1,5 +1,6 @@
 #include "../render/Renderer.h"
 #include "RepeatX.h"
+#include "FoliageSway.h"
 #include <SDL.h>
 #define GL_GLEXT_PROTOTYPES
 #include <SDL_opengl.h>
@@ -185,7 +186,9 @@ public:
         SDL_SetTextureAlphaMod(texture, sprite.tint.a);
         SDL_RendererFlip flip = static_cast<SDL_RendererFlip>(
             (sprite.flipX ? SDL_FLIP_HORIZONTAL : 0) | (sprite.flipY ? SDL_FLIP_VERTICAL : 0));
-        if (sprite.repeatX && sprite.rotationDegrees == 0 && !sourcePtr) {
+        if (sprite.foliageSway.enabled && !sourcePtr) {
+            DrawFoliageSway(sprite, texture, destination);
+        } else if (sprite.repeatX && sprite.rotationDegrees == 0 && !sourcePtr) {
             int width = 0, height = 0;
             SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
             // The scene is authored in 1920x1080 world units and displayed at 2/3.
@@ -226,6 +229,74 @@ public:
                               sprite.rotationDegrees, nullptr, flip);
         ++drawCalls_;
         copySeconds_ += std::chrono::duration<double>(std::chrono::steady_clock::now()-began).count();
+    }
+    void DrawFoliageSway(const Sprite& sprite, SDL_Texture* texture, const SDL_FRect& destination) {
+        int textureWidth = 0, textureHeight = 0;
+        SDL_QueryTexture(texture, nullptr, nullptr, &textureWidth, &textureHeight);
+        if (textureWidth <= 0 || textureHeight <= 0) return;
+        const auto& sway = sprite.foliageSway;
+        const float scale = 2.f / 3.f;
+        // WeatherManager normal-weather multiplier; rain is not ported yet.
+        const float radians = -sprite.rotationDegrees * 3.14159265358979323846f / 180.f;
+        const float cosine = std::cos(radians), sine = std::sin(radians);
+        const float cx = destination.x + destination.w * .5f;
+        const float cy = destination.y + destination.h * .5f;
+        // Source vertices are BL, BR, TR, TL. Flip/rotation are in its World
+        // transform, before FoliageSway.fx applies sine to world-space XY.
+        struct Corner { float x, y; SwayIntensity amount; };
+        const Corner corners[4] = {
+            {-1.f, -1.f, sway.bottomLeft}, {1.f, -1.f, sway.bottomRight},
+            {1.f, 1.f, sway.topRight}, {-1.f, 1.f, sway.topLeft}
+        };
+        SDL_FPoint point[4];
+        for (int i = 0; i < 4; ++i) {
+            const float localX = corners[i].x * destination.w * .5f * (sprite.flipX ? -1.f : 1.f);
+            const float localY = -corners[i].y * destination.h * .5f * (sprite.flipY ? -1.f : 1.f);
+            const float rotatedX = localX * cosine - localY * sine;
+            const float rotatedY = localX * sine + localY * cosine;
+            SwayPoint world{sway.worldX + rotatedX / scale,
+                            sway.worldY - rotatedY / scale};
+            const auto moved = FoliageSwayWorldVertex(world,
+                {corners[i].amount.x, corners[i].amount.y}, sway.time, sway.timeMultiplier, 2.5f);
+            point[i] = {cx + rotatedX + (moved.x - world.x) * scale,
+                        cy + rotatedY - (moved.y - world.y) * scale};
+        }
+        const int topLeft = sprite.flipY ? 0 : 3, topRight = sprite.flipY ? 1 : 2;
+        const int bottomLeft = sprite.flipY ? 3 : 0, bottomRight = sprite.flipY ? 2 : 1;
+        const SDL_FPoint tl = point[sprite.flipX ? topRight : topLeft];
+        const SDL_FPoint tr = point[sprite.flipX ? topLeft : topRight];
+        const SDL_FPoint bl = point[sprite.flipX ? bottomRight : bottomLeft];
+        const SDL_FPoint br = point[sprite.flipX ? bottomLeft : bottomRight];
+        const SDL_Color white{255, 255, 255, 255};
+        auto drawTile = [&](float fractionLeft, float fractionRight, float uLeft, float uRight) {
+            const auto lerp = [](SDL_FPoint a, SDL_FPoint b, float t) {
+                return SDL_FPoint{a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t};
+            };
+            const float vTop = sprite.flipY ? 1.f : 0.f;
+            const float vBottom = sprite.flipY ? 0.f : 1.f;
+            SDL_Vertex vertices[4] = {
+                {lerp(tl, tr, fractionLeft), white, {uLeft, vTop}},
+                {lerp(tl, tr, fractionRight), white, {uRight, vTop}},
+                {lerp(bl, br, fractionRight), white, {uRight, vBottom}},
+                {lerp(bl, br, fractionLeft), white, {uLeft, vBottom}}
+            };
+            const int indices[6] = {0, 1, 3, 1, 2, 3};
+            SDL_RenderGeometry(renderer_, texture, vertices, 4, indices, 6);
+        };
+        if (sprite.repeatX && sprite.rotationDegrees == 0) {
+            const float tileWidth = textureWidth * scale;
+            ForEachRepeatXTile(destination.x, destination.w, tileWidth, textureWidth,
+                               1280.f, sprite.flipX, [&](RepeatXTile tile) {
+                const float from = tile.offset / destination.w;
+                const float to = (tile.offset + tile.width) / destination.w;
+                const float fraction = static_cast<float>(tile.sourceWidth) / textureWidth;
+                drawTile(from, to, sprite.flipX ? fraction : 0.f,
+                         sprite.flipX ? 0.f : fraction);
+            });
+        } else {
+            drawTile(0.f, 1.f, sprite.flipX ? 1.f : 0.f,
+                     sprite.flipX ? 0.f : 1.f);
+        }
     }
     void FillRect(Rect rect, Color color) override {
         SDL_SetRenderDrawColor(renderer_, color.r, color.g, color.b, color.a);

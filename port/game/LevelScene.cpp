@@ -372,6 +372,20 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         sprite.dojoScroll = kind == "DojoScrollPickup";
         if ((sprite.currencyOrb || sprite.dojoScroll) && object->Attribute("id"))
             sprite.persistentId = std::filesystem::path(path).lexically_normal().string() + "#" + object->Attribute("id");
+        if (auto* effect = object->FirstChildElement("effect"); effect &&
+            effect->Attribute("name") && std::string(effect->Attribute("name")) == "effectfoliagesway") {
+            auto* props = object->FirstChildElement("foliage_sway_props");
+            if (props) {
+                auto& sway = sprite.foliageSway;
+                sway.enabled = true;
+                sway.bottomLeft = {Attr(props, "bottom_left_intensity_x"), Attr(props, "bottom_left_intensity_y")};
+                sway.bottomRight = {Attr(props, "bottom_right_intensity_x"), Attr(props, "bottom_right_intensity_y")};
+                sway.topRight = {Attr(props, "top_right_intensity_x"), Attr(props, "top_right_intensity_y")};
+                sway.topLeft = {Attr(props, "top_left_intensity_x"), Attr(props, "top_left_intensity_y")};
+                sway.timeMultiplier = Attr(props, "time_multiplier", 1.f);
+                sway.worldX = sprite.x; sway.worldY = sprite.y;
+            }
+        }
         sprite.flipX = Flag(object->FirstChildElement("horizontalflip"), "value");
         sprite.flipY = Flag(object->FirstChildElement("verticalflip"), "value");
         // Windows Sprite::SetupVertices repeats non-native X at source-pixel scale.
@@ -501,6 +515,7 @@ void LevelScene::ApplyDeflection(bool unlocked) {
     }
 }
 void LevelScene::UpdateVisuals(float dt, float playerX, float playerY, float cameraX, float cameraY) {
+    visualTime_ += dt;
     for (auto& sprite : sprites_) {
         if (sprite.collected) continue;
         if (sprite.fadeWhenPlayerOccluded && sprite.updateable) {
@@ -625,6 +640,8 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         draw.repeatX = object.repeatX;
         draw.tint = object.tint; draw.flipX = object.player ? playerFacing_ < 0 : object.flipX; draw.flipY = object.player ? false : object.flipY;
         draw.rotationDegrees = -object.rotation;
+        draw.foliageSway = object.foliageSway;
+        draw.foliageSway.time = visualTime_;
         if (draw.destination.x + draw.destination.width < 0 || draw.destination.x > 1280 ||
             draw.destination.y + draw.destination.height < 0 || draw.destination.y > 720) continue;
         renderer.DrawSprite(draw);

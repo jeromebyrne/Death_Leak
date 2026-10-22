@@ -18,6 +18,7 @@ struct SceneSprite {
     float alpha = 1.f, alphaWhenOccluding = .5f, alphaWhenNotOccluding = 1.f;
     bool fadeWhenPlayerOccluded = false, updateable = true, alwaysUpdate = false;
     bool flipX = false, flipY = false, repeatX = false;
+    render::FoliageSway foliageSway;
     bool player = false;
     bool parallaxLayer = false, followCameraX = false, followCameraY = false;
     float cameraParallaxX = 0, cameraParallaxY = 0;
@@ -131,6 +132,7 @@ private:
     bool cameraFollowX_ = true, cameraFollowY_ = true;
     bool cameraBounds_ = false;
     float cameraBoundLeft_ = 0, cameraBoundRight_ = 0, cameraBoundTop_ = 0, cameraBoundBottom_ = 0;
+    float visualTime_ = 0;
     size_t skipped_ = 0;
 };
 }
