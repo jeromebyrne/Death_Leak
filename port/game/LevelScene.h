@@ -18,6 +18,12 @@ struct SceneSprite {
     int depth = 0;
     render::Color tint{255, 255, 255, 255};
     float alpha = 1.f, alphaWhenOccluding = .5f, alphaWhenNotOccluding = 1.f;
+    // ScrollingSprite::Update uses a per-object cycle and the XML alpha captured
+    // by DrawableObject::Initialise; the endpoint tick retains its last draw.
+    bool scrolling = false;
+    float scrollStartX = 0, scrollStartY = 0, scrollDistanceX = 0, scrollDistanceY = 0;
+    float scrollTime = 0, scrollElapsed = 0, scrollFadeIn = 0, scrollFadeOut = 0;
+    float scrollOriginalAlpha = 1.f;
     bool fadeWhenPlayerOccluded = false, updateable = true, alwaysUpdate = false;
     bool flipX = false, flipY = false, repeatX = false;
     render::FoliageSway foliageSway;

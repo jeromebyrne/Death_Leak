@@ -450,6 +450,18 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         auto alpha = std::clamp(Attr(object->FirstChildElement("alpha"), "value", 1), 0.f, 1.f);
         sprite.alpha = alpha;
         sprite.tint.a = static_cast<std::uint8_t>(std::lround(alpha * 255));
+        if (kind == "ScrollingSprite") {
+            auto* scroll = object->FirstChildElement("scroll_properties");
+            sprite.scrolling = scroll != nullptr;
+            sprite.scrollStartX = Attr(scroll, "StartLerpX");
+            sprite.scrollStartY = Attr(scroll, "StartLerpY");
+            sprite.scrollDistanceX = Attr(scroll, "LerpDistanceX");
+            sprite.scrollDistanceY = Attr(scroll, "LerpDistanceY");
+            sprite.scrollTime = Attr(scroll, "LerpTime");
+            sprite.scrollFadeIn = Attr(scroll, "FadeInTime");
+            sprite.scrollFadeOut = Attr(scroll, "FadeOutTime");
+            sprite.scrollOriginalAlpha = alpha;
+        }
         auto* fade = object->FirstChildElement("fade_when_player_occluded");
         sprite.fadeWhenPlayerOccluded = Flag(fade, "value");
         sprite.alphaWhenOccluding = Attr(fade, "alphawhenoccluding", .5f);
@@ -580,6 +592,33 @@ void LevelScene::UpdateVisuals(float dt, float playerX, float playerY, float cam
     }
     for (auto& sprite : sprites_) {
         if (sprite.collected) continue;
+        if (sprite.scrolling && sprite.updateable && sprite.scrollTime > 0.f) {
+            // Match GameObjectManager's world-space update zone. Use the current
+            // position: a scrolling sprite can enter or leave it mid-cycle.
+            const bool inUpdateZone = sprite.alwaysUpdate ||
+                (sprite.x + sprite.width * .5f > cameraX - 2000.f &&
+                 sprite.x - sprite.width * .5f < cameraX + 2000.f &&
+                 sprite.y + sprite.height * .5f > cameraY - 2000.f &&
+                 sprite.y - sprite.height * .5f < cameraY + 2000.f);
+            if (inUpdateZone) {
+                sprite.scrollElapsed += dt;
+                if (sprite.scrollElapsed >= sprite.scrollTime) {
+                    sprite.scrollElapsed = 0.f;
+                    // ScrollingSprite returns here: retain the previous XY/alpha
+                    // for this frame; the next update begins the new fade-in.
+                } else {
+                    const float percent = sprite.scrollElapsed / sprite.scrollTime;
+                    sprite.x = sprite.scrollStartX + sprite.scrollDistanceX * percent;
+                    sprite.y = sprite.scrollStartY + sprite.scrollDistanceY * percent;
+                    if (sprite.scrollElapsed < sprite.scrollFadeIn)
+                        sprite.alpha = sprite.scrollOriginalAlpha * (sprite.scrollElapsed / sprite.scrollFadeIn);
+                    else if (sprite.scrollElapsed > sprite.scrollTime - sprite.scrollFadeOut)
+                        sprite.alpha = sprite.scrollOriginalAlpha * ((sprite.scrollTime - sprite.scrollElapsed) / sprite.scrollFadeOut);
+                    else sprite.alpha = sprite.scrollOriginalAlpha;
+                    sprite.tint.a = static_cast<std::uint8_t>(std::lround(std::clamp(sprite.alpha, 0.f, 1.f) * 255.f));
+                }
+            }
+        }
         if (sprite.fadeWhenPlayerOccluded && sprite.updateable) {
             // GameObjectManager updates objects whose authored rectangle intersects
             // its 4000x4000 world-space zone (or those marked always_update).
