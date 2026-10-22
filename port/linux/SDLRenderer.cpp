@@ -1,4 +1,5 @@
 #include "../render/Renderer.h"
+#include "RepeatX.h"
 #include <SDL.h>
 #define GL_GLEXT_PROTOTYPES
 #include <SDL_opengl.h>
@@ -190,17 +191,13 @@ public:
             // The scene is authored in 1920x1080 world units and displayed at 2/3.
             const float tileWidth = width * (2.f / 3.f);
             if (tileWidth > 0) {
-                const int first = std::max(0, static_cast<int>(std::floor(-destination.x / tileWidth)));
-                const int last = std::min(static_cast<int>(std::ceil(destination.w / tileWidth)),
-                                          static_cast<int>(std::ceil((1280.f - destination.x) / tileWidth)));
-                for (int i = first; i < last; ++i) {
-                    const float offset = i * tileWidth;
-                    const float visibleWidth = std::min(tileWidth, destination.w - offset);
-                    if (visibleWidth <= 0) continue;
-                    SDL_Rect part{0, 0, std::max(1, static_cast<int>(std::lround(width * visibleWidth / tileWidth))), height};
-                    SDL_FRect target{destination.x + offset, destination.y, visibleWidth, destination.h};
+                ForEachRepeatXTile(destination.x, destination.w, tileWidth, width,
+                                   1280.f, sprite.flipX, [&](RepeatXTile tile) {
+                    SDL_Rect part{0, 0, tile.sourceWidth, height};
+                    SDL_FRect target{destination.x + tile.offset, destination.y,
+                                     tile.width, destination.h};
                     SDL_RenderCopyExF(renderer_, texture, &part, &target, 0, nullptr, flip);
-                }
+                });
             }
         } else if ((sprite.uvShiftX != 0 || sprite.uvShiftY != 0) && sprite.rotationDegrees == 0 && !sourcePtr) {
             // D3D's ParallaxLayer scrolls one full texture UV over its authored quad.
