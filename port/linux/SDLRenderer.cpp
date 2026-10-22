@@ -170,6 +170,7 @@ public:
     }
 
     void BeginFrame(Color clear) override {
+        sceneSamplingPhase_ = true;
         SDL_SetRenderDrawColor(renderer_, clear.r, clear.g, clear.b, clear.a);
         SDL_RenderClear(renderer_);
     }
@@ -189,6 +190,19 @@ public:
                               sprite.destination.width, sprite.destination.height};
         SDL_SetTextureColorMod(texture, sprite.tint.r, sprite.tint.g, sprite.tint.b);
         SDL_SetTextureAlphaMod(texture, sprite.tint.a);
+        // BasicLightTexture.fx and the other ordinary scene shaders use
+        // MIN_LINEAR_MAG_POINT. SDL exposes one scale mode for both directions,
+        // so select linear only while this scene copy is minified; later HUD
+        // copies retain nearest sampling, including when reusing a texture.
+        int textureWidth = 0, textureHeight = 0;
+        SDL_QueryTexture(texture, nullptr, nullptr, &textureWidth, &textureHeight);
+        const int sampledWidth = sourcePtr ? source.w : textureWidth;
+        const int sampledHeight = sourcePtr ? source.h : textureHeight;
+        const bool minified = sprite.repeatX ||
+            (sampledWidth > 0 && destination.w < sampledWidth) ||
+            (sampledHeight > 0 && destination.h < sampledHeight);
+        SDL_SetTextureScaleMode(texture, sceneSamplingPhase_ && minified
+            ? SDL_ScaleModeLinear : SDL_ScaleModeNearest);
         SDL_RendererFlip flip = static_cast<SDL_RendererFlip>(
             (sprite.flipX ? SDL_FLIP_HORIZONTAL : 0) | (sprite.flipY ? SDL_FLIP_VERTICAL : 0));
         if (sprite.rgbGain > 1.f && damageBurstProgram_) {
@@ -441,6 +455,7 @@ public:
         SDL_RenderFillRectF(renderer_, &box);
     }
     void ApplyScenePostprocess() override {
+        sceneSamplingPhase_ = false;
         if (!sepiaProgram_) return; // Only the explicit test-only software path.
         SDL_RenderFlush(renderer_);
         int width = 0, height = 0;
@@ -694,6 +709,7 @@ private:
         return true;
     }
     bool testAllowSoftware_ = false;
+    bool sceneSamplingPhase_ = false;
     size_t drawCalls_ = 0;
     double copySeconds_ = 0, presentSeconds_ = 0;
     bool initialized_ = false;
