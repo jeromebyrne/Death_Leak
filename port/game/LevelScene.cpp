@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cmath>
 #include <chrono>
+#include <cctype>
 #include <cstdlib>
 #include <iostream>
 #include <filesystem>
@@ -54,6 +55,34 @@ std::string AnimationFrame(const std::string& xmlPath, const char* requestedSequ
     return {};
 }
 std::string FirstAnimationFrame(const std::string& path) { return AnimationFrame(path, nullptr); }
+std::unordered_set<std::string> DiagnosticIds(const char* environmentName) {
+    std::unordered_set<std::string> ids;
+    const char* value = std::getenv(environmentName);
+    if (!value) return ids;
+    std::string token;
+    for (const char* cursor = value;; ++cursor) {
+        if (*cursor == ',' || *cursor == '\0') {
+            if (!token.empty()) ids.insert(token);
+            token.clear();
+            if (*cursor == '\0') break;
+        } else if (!std::isspace(static_cast<unsigned char>(*cursor))) {
+            token += *cursor;
+        }
+    }
+    return ids;
+}
+struct SpriteRenderFilter {
+    // Both are off by default; when both are set, both conditions apply.
+    std::unordered_set<std::string> only = DiagnosticIds("DEATHLEAK_RENDER_ONLY_XML_IDS");
+    std::unordered_set<std::string> hide = DiagnosticIds("DEATHLEAK_RENDER_HIDE_XML_IDS");
+    bool Draw(const std::string& id) const {
+        return (only.empty() || only.count(id)) && !hide.count(id);
+    }
+};
+const SpriteRenderFilter& DiagnosticRenderFilter() {
+    static const SpriteRenderFilter filter;
+    return filter;
+}
 struct LoopedFrames { std::vector<std::string> paths; float rate = 0; };
 LoopedFrames StillFrames(const std::string& xmlPath) {
     LoopedFrames result;
@@ -258,6 +287,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         if (!texture) { ++skipped_; continue; }
         SceneSprite sprite;
         sprite.texture = texture;
+        if (const char* id = object->Attribute("id")) sprite.xmlId = id;
         sprite.player = kind == "Player";
         sprite.parallaxLayer = kind == "ParallaxLayer";
         if (sprite.parallaxLayer) {
@@ -510,7 +540,8 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
 }
 void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY) const {
     constexpr float scale = 2.f / 3.f; // Original world is authored for 1920x1080.
-    for (const auto& orb : spawnedOrbs_) if (spawnedOrbTexture_) {
+    const auto& filter = DiagnosticRenderFilter();
+    for (const auto& orb : spawnedOrbs_) if (spawnedOrbTexture_ && filter.only.empty()) {
         render::Sprite draw;
         draw.texture = spawnedOrbTexture_;
         draw.destination = {640.f + (orb.x-cameraX-23.84865f)*scale,
@@ -520,7 +551,7 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         renderer.DrawSprite(draw);
     }
     for (const auto& object : sprites_) {
-        if (object.collected) continue;
+        if (object.collected || !filter.Draw(object.xmlId)) continue;
         // ParallaxLayer follows the camera before its authored UV scroll. Static
         // background/foreground sprites use GameObject depth parallax instead.
         const float worldX = object.player ? playerX :

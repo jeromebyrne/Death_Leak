@@ -10,6 +10,7 @@
 namespace deathleak::game {
 struct SceneSprite {
     render::TextureId texture = render::InvalidTexture;
+    std::string xmlId; // Source level ID, retained only for opt-in render diagnostics.
     float x = 0, y = 0, width = 0, height = 0;
     float rotation = 0;
     int depth = 0;
