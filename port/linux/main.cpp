@@ -682,6 +682,7 @@ int main(int argc, char** argv) {
             if (motion.Grounded() && combat.Health() > 0.f && motion.TryBufferedRoll(combat.HasFocus(2.f)))
                 combat.ConsumeFocus(2.f);
             worldX = motion.X(); worldY = motion.Y();
+            scene.UpdateAuthoredOrbs(dt, worldX, worldY, cameraX, cameraY);
             const auto collectedNow = scene.CollectCurrencyOrbs(worldX, worldY, collectedOrbs);
             const auto collectedSpawned = scene.UpdateSpawnedOrbs(worldX, worldY, dt);
             orbBalance += static_cast<int>(collectedNow + collectedSpawned);

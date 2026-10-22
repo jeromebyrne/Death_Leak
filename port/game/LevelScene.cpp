@@ -452,6 +452,23 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         sprite.depth = Depth(position->Attribute("depth_layer"));
         sprite.order = objectOrder;
         sprite.currencyOrb = kind == "CurrencyOrb";
+        // The waterfall-top authored small orbs share CurrencyOrb's sine and
+        // sticky proximity-tracking path; large/native orbs are a different path.
+        sprite.authoredSmallOrb = sprite.currencyOrb &&
+            std::filesystem::path(path).filename() == "waterfall_top.xml" &&
+            !Flag(dimensions, "native");
+        if (sprite.authoredSmallOrb) {
+            sprite.orbOriginY = sprite.y;
+            auto* sine = object->FirstChildElement("sine_wave_props");
+            sprite.orbHoverOffsetY = Attr(sine, "y_offset", 20.f);
+            sprite.orbHoverSpeed = Attr(sine, "amplitude", 2.f);
+            // Deterministic phase for reproducible Linux captures, not Windows
+            // rand() parity. Hash the normalized level path and authored ID.
+            const auto key = std::filesystem::path(path).lexically_normal().string() + "#" + sprite.xmlId;
+            std::uint32_t hash = 2166136261u;
+            for (unsigned char c : key) hash = (hash ^ c) * 16777619u;
+            sprite.orbPhase = (hash / 4294967296.f) * 6.283185307179586f;
+        }
         sprite.keyPickup = kind == "KeyPickup";
         sprite.paperPickup = kind == "PaperPickup";
         sprite.healthDevil = kind == "HealthDevil";
@@ -567,7 +584,7 @@ size_t LevelScene::CollectCurrencyOrbs(float playerX, float playerY, std::unorde
         if (!object.currencyOrb || object.collected) continue;
         const float dx = object.x - playerX, dy = object.y - playerY;
         // CurrencyOrb::OnCollision uses a 100-world-unit collection radius.
-        if (dx * dx + dy * dy > 100.f * 100.f) continue;
+        if (dx * dx + dy * dy >= 100.f * 100.f) continue;
         object.collected = true;
         if (!object.persistentId.empty()) collected.insert(object.persistentId);
         ++count;
@@ -661,6 +678,55 @@ void LevelScene::ApplyDeflection(bool unlocked) {
     for (auto& object : sprites_) if (object.dojoScroll) {
         for (const auto& scroll : scrolls_) if (scroll.feature == "kDeflection" &&
             object.persistentId == scroll.id) object.collected = true;
+    }
+}
+void LevelScene::UpdateAuthoredOrbs(float dt, float playerX, float playerY, float cameraX, float cameraY) {
+    for (auto& orb : sprites_) {
+        if (!orb.authoredSmallOrb || orb.collected || !orb.updateable) continue;
+        // GameObjectManager tests current bounds before GameObject::Update.
+        if (!orb.alwaysUpdate && !(orb.x + orb.width*.5f > cameraX - 2000.f &&
+            orb.x - orb.width*.5f < cameraX + 2000.f &&
+            orb.y + orb.height*.5f > cameraY - 2000.f &&
+            orb.y - orb.height*.5f < cameraY + 2000.f)) continue;
+        if (orb.orbHoverEnabled) {
+            orb.orbPhase += orb.orbHoverSpeed * dt;
+            orb.y = orb.orbOriginY + orb.orbHoverOffsetY * std::sin(orb.orbPhase);
+        }
+        if (!orb.orbTracking) {
+            const float dx = playerX - orb.x, dy = playerY - orb.y;
+            if (dx*dx + dy*dy < 130.f*130.f) orb.orbTracking = true;
+            continue; // Source arms tracking after the base/sine update.
+        }
+        // MovingSprite integrates the previous steering command before
+        // CurrencyOrb::DoTrackPlayer sets the next command.
+        const float tickScale = dt * 60.f;
+        orb.orbVx = std::clamp(orb.orbVx + orb.orbAx * orb.orbDirectionX, -20.f, 20.f);
+        orb.orbVy += orb.orbAy * orb.orbDirectionY;
+        orb.x += orb.orbVx * tickScale;
+        orb.y += orb.orbVy * tickScale;
+        orb.orbHoverEnabled = false; // First tracking tick had its last sine step.
+        orb.orbTrackingTime += dt;
+        // Player collision-centre offset is not yet available in this scene API.
+        const float dx = playerX - orb.x, dy = playerY - orb.y;
+        const float length = std::hypot(dx, dy);
+        if (length == 0.f) continue;
+        const float directionX = dx / length, directionY = dy / length;
+        // CurrencyOrb assigns the full normalized direction before choosing an
+        // acceleration axis; the other axis's acceleration may persist.
+        orb.orbDirectionX = directionX;
+        orb.orbDirectionY = directionY;
+        const float multiplier = orb.orbTrackingTime > 2.f ? 3.f : 1.f;
+        if (std::abs(directionX) > std::abs(directionY)) {
+            orb.orbAx = ((directionX < 0 && orb.orbVx > 0) ||
+                         (directionX > 0 && orb.orbVx < 0) ? 4.8f : 2.5f) * multiplier;
+            orb.orbDirectionX = directionX < 0 ? -1.f : 1.f;
+        } else {
+            orb.orbAy = ((directionY < 0 && orb.orbVy > 0) ||
+                         (directionY > 0 && orb.orbVy < 0) ? 4.8f : 2.5f) * multiplier;
+            orb.orbDirectionY = directionY < 0 ? -1.f : 1.f;
+        }
+        if (orb.orbVx != 0.f || orb.orbVy != 0.f)
+            orb.rotation = std::atan2(orb.orbVx, -orb.orbVy);
     }
 }
 void LevelScene::UpdateVisuals(float dt, float playerX, float playerY, float cameraX, float cameraY) {

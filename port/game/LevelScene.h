@@ -37,6 +37,11 @@ struct SceneSprite {
     bool autoScrollY = false;
     float autoScrollYSpeed = 0, autoScrollYPhase = 0;
     bool currencyOrb = false;
+    bool authoredSmallOrb = false;
+    float orbOriginY = 0, orbPhase = 0, orbHoverSpeed = 2, orbHoverOffsetY = 20;
+    bool orbTracking = false, orbHoverEnabled = true;
+    float orbTrackingTime = 0, orbVx = 0, orbVy = 0, orbAx = 0, orbAy = 0;
+    float orbDirectionX = 0, orbDirectionY = 0;
     bool keyPickup = false;
     bool paperPickup = false;
     bool healthDevil = false;
@@ -77,6 +82,7 @@ public:
                             bool rolling, bool dashing, bool inWater, float meleeElapsed, int facing,
                             bool projectileFired, bool eligibleFireAttempt = false);
     void UpdateVisuals(float dt, float playerX, float playerY, float cameraX, float cameraY);
+    void UpdateAuthoredOrbs(float dt, float playerX, float playerY, float cameraX, float cameraY);
     size_t CollectCurrencyOrbs(float playerX, float playerY, std::unordered_set<std::string>& collected);
     void ApplyCollected(const std::unordered_set<std::string>& collected);
     bool AllowsWeather() const { return allowsWeather_; }
