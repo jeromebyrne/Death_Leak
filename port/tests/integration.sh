@@ -441,6 +441,10 @@ printf 'DL6\nMENU\nC:2\nG:pt-br\nK:stale_key\n' > "$menu_save"
 menu_fresh=$($bin --menu-loop --script S:1,.:2 --fixed-dt 0.0166667 --simulate-only --save-file "$menu_save")
 printf '%s\n' "$menu_fresh" | grep -q 'Menu New Game at frame 0 entered Game/XmlFiles/levels/grass_exploration_3.xml completion count=2 language=pt-br'
 printf '%s\n' "$menu_fresh" | grep -q 'orbs=0 keys=0 health=25 .*balance=0'
+# The authored grass-3 Player starts a few units inside a sloping solid line.
+# Fresh menu play must use the same shallow placement depenetration as level entries.
+menu_ground=$($bin --menu-loop --script S:1,.:2,F:240 --fixed-dt 0.0166667 --simulate-only --save-file "$menu_save")
+printf '%s\n' "$menu_ground" | grep -q 'player=(577.693,-1237.46).*health=25 .*fired=15 .*grounded=1'
 grep -q '^C:2$' "$menu_save"
 grep -q '^G:pt-br$' "$menu_save"
 if grep -q '^K:stale_key$' "$menu_save"; then exit 1; fi

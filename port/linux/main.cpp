@@ -311,7 +311,7 @@ int main(int argc, char** argv) {
     deathleak::game::PlayerMotion motion;
     motion.SetSpeedUpgrade(speedUnlocked);
     motion.SetMovementUnlocks(downwardDashUnlocked, rollUnlocked);
-    motion.Reset(restorePosition ? savedX : scene.PlayerX(), restorePosition ? savedY : scene.PlayerY());
+    motion.Reset(restorePosition ? savedX : scene.PlayerX(), restorePosition ? savedY : scene.PlayerY(), !restorePosition);
     float worldX = motion.X(), worldY = motion.Y();
     float cameraX = scene.CameraX(), cameraY = scene.CameraY();
     if (startEncounter >= 0) {
@@ -527,7 +527,7 @@ int main(int argc, char** argv) {
                     if (!simulateOnly) combat.SetArt(*renderer);
                     speedUnlocked = projectileDamageUnlocked = projectileSpeedUnlocked = false; downwardDashUnlocked = rollUnlocked = false; savedMaxHealth = 25; hasSavedMaxHealth = false; windowsPermanentExtension.clear();
                     motion.SetSpeedUpgrade(false); motion.SetMovementUnlocks(false, false);
-                    motion.Reset(scene.PlayerX(), scene.PlayerY());
+                    motion.Reset(scene.PlayerX(), scene.PlayerY(), true);
                     worldX = motion.X(); worldY = motion.Y();
                     cameraX = scene.CameraX(); cameraY = scene.CameraY();
                     finalSceneTime = levelTime = interactHeldTime = doorUnlockWait = 0;
@@ -605,7 +605,7 @@ int main(int argc, char** argv) {
                         scene = std::move(nextScene);
                         devilDialog.reset(); healthPickup.reset();
                         currentLevel = restartLevel;
-                        motion.Reset(scene.PlayerX(), scene.PlayerY());
+                        motion.Reset(scene.PlayerX(), scene.PlayerY(), true);
                         worldX = motion.X(); worldY = motion.Y();
                         cameraX = scene.CameraX(); cameraY = scene.CameraY();
                         combat.ClearLevel(); combat.SetVitals(25.f, 100.f);
