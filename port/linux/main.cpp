@@ -1,6 +1,7 @@
 #include "../render/Renderer.h"
 #include "../game/LevelScene.h"
 #include "../game/WeatherLightning.h"
+#include "../game/WeatherRain.h"
 #include "../game/Combat.h"
 #include "../game/PlayerMotion.h"
 #include "../game/Hud.h"
@@ -290,6 +291,8 @@ int main(int argc, char** argv) {
     }
     deathleak::game::LevelScene scene;
     deathleak::game::WeatherLightning weather;
+    deathleak::game::WeatherRain rain;
+    TextureId rainTexture = InvalidTexture;
     TextureId lightningTexture = InvalidTexture;
     std::string levelPath = !playLevel.empty() ? playLevel : levelPreview;
     if (!levelPath.empty() && !scene.Load(levelPath, *renderer, error)) {
@@ -1048,6 +1051,7 @@ int main(int argc, char** argv) {
             devilDialog.reset(); healthPickup.reset();
             orbBalance = 0; scene = deathleak::game::LevelScene{};
             weather = deathleak::game::WeatherLightning{};
+            rain = deathleak::game::WeatherRain{};
             combat = deathleak::game::Combat{};
             speedUnlocked = projectileDamageUnlocked = projectileSpeedUnlocked = false; downwardDashUnlocked = rollUnlocked = false; savedMaxHealth = 25; hasSavedMaxHealth = false; windowsPermanentExtension.clear();
             motion.SetSpeedUpgrade(false); motion.SetMovementUnlocks(false, false);
@@ -1058,7 +1062,10 @@ int main(int argc, char** argv) {
         updateSeconds += std::chrono::duration<double>(afterUpdate-now).count();
         if (!playLevel.empty()) {
             weather.SetAllowed(scene.AllowsWeather());
-            if (!paperModal && !upgradeModal) weather.Update(dt);
+            if (!paperModal && !upgradeModal) {
+                weather.Update(dt);
+                rain.Update(dt, weather.Raining(), cameraX, cameraY);
+            }
         }
         if (simulateOnly) continue;
         scene.UpdateVisuals(dt, worldX, worldY, cameraX, cameraY);
@@ -1132,6 +1139,15 @@ int main(int argc, char** argv) {
                     const Sprite flash = weather.SpriteForCamera(lightningTexture, cameraX, cameraY);
                     painterItems.push_back({20, [&, flash] { renderer->DrawSprite(flash); }});
                 }
+            }
+            if (rain.VisibleParticles()) {
+                if (!rainTexture) {
+                    std::string rainError;
+                    rainTexture = renderer->LoadTexture("Game/Media/rain_drop.png", rainError);
+                    if (!rainTexture) std::cerr << "Rain texture load failed: " << rainError << '\n';
+                    rain.SetTexture(rainTexture);
+                }
+                painterItems.push_back({20, [&] { rain.Draw(*renderer, cameraX, cameraY); }});
             }
             scene.Draw(*renderer, cameraX, cameraY, worldX, worldY, std::move(painterItems));
             renderer->ApplyScenePostprocess();
