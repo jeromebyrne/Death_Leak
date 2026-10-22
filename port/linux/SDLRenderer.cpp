@@ -27,6 +27,7 @@ public:
         if (sepiaTexture_) glDeleteTextures(1, &sepiaTexture_);
         if (sepiaProgram_) glDeleteProgram(sepiaProgram_);
         if (pixelWobbleProgram_) glDeleteProgram(pixelWobbleProgram_);
+        if (damageBurstProgram_) glDeleteProgram(damageBurstProgram_);
         for (auto& texture : textures_) SDL_DestroyTexture(texture.second);
         if (renderer_) SDL_DestroyRenderer(renderer_);
         if (window_) SDL_DestroyWindow(window_);
@@ -116,6 +117,7 @@ public:
         if (driver == "opengl") {
             if (!InitializeSepia(error)) return false;
             if (!InitializePixelWobble(error)) return false;
+            if (!InitializeDamageBurst(error)) return false;
         } else if (!testAllowSoftware_) {
             error = "Sepia.fx requires the SDL OpenGL renderer; selected " + driver;
             return false;
@@ -188,7 +190,9 @@ public:
         SDL_SetTextureAlphaMod(texture, sprite.tint.a);
         SDL_RendererFlip flip = static_cast<SDL_RendererFlip>(
             (sprite.flipX ? SDL_FLIP_HORIZONTAL : 0) | (sprite.flipY ? SDL_FLIP_VERTICAL : 0));
-        if (sprite.pixelWobble.enabled && pixelWobbleProgram_ && !sourcePtr) {
+        if (sprite.rgbGain > 1.f && damageBurstProgram_) {
+            DrawDamageBurst(sprite, texture, destination);
+        } else if (sprite.pixelWobble.enabled && pixelWobbleProgram_ && !sourcePtr) {
             DrawPixelWobble(sprite, texture, destination);
         } else if (sprite.foliageSway.enabled && !sourcePtr) {
             DrawFoliageSway(sprite, texture, destination);
@@ -233,6 +237,71 @@ public:
                               sprite.rotationDegrees, nullptr, flip);
         ++drawCalls_;
         copySeconds_ += std::chrono::duration<double>(std::chrono::steady_clock::now()-began).count();
+    }
+    void DrawDamageBurst(const Sprite& sprite, SDL_Texture* texture, const SDL_FRect& destination) {
+        SDL_RenderFlush(renderer_);
+        GLint oldProgram = 0, oldMatrixMode = 0, oldActiveTexture = 0;
+        glGetIntegerv(GL_CURRENT_PROGRAM, &oldProgram);
+        glGetIntegerv(GL_MATRIX_MODE, &oldMatrixMode);
+        glGetIntegerv(GL_ACTIVE_TEXTURE, &oldActiveTexture);
+        glPushAttrib(GL_ALL_ATTRIB_BITS);
+        glActiveTexture(GL_TEXTURE0);
+        float textureSpanX = 1.f, textureSpanY = 1.f;
+        if (SDL_GL_BindTexture(texture, &textureSpanX, &textureSpanY) != 0) {
+            glPopAttrib(); glActiveTexture(oldActiveTexture); return;
+        }
+        int textureWidth = 0, textureHeight = 0;
+        SDL_QueryTexture(texture, nullptr, nullptr, &textureWidth, &textureHeight);
+        const float left = sprite.source.width > 0.f ? sprite.source.x / textureWidth : 0.f;
+        const float right = sprite.source.width > 0.f ? (sprite.source.x + sprite.source.width) / textureWidth : 1.f;
+        const float top = sprite.source.height > 0.f ? sprite.source.y / textureHeight : 0.f;
+        const float bottom = sprite.source.height > 0.f ? (sprite.source.y + sprite.source.height) / textureHeight : 1.f;
+        GLint oldMin = 0, oldMag = 0;
+        glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, &oldMin);
+        glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, &oldMag);
+        glEnable(GL_TEXTURE_2D);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glDisable(GL_DEPTH_TEST);
+        glMatrixMode(GL_PROJECTION); glPushMatrix(); glLoadIdentity();
+        glOrtho(0, 1280, 720, 0, -1, 1);
+        glMatrixMode(GL_MODELVIEW); glPushMatrix(); glLoadIdentity();
+        glUseProgram(damageBurstProgram_);
+        glUniform1f(glGetUniformLocation(damageBurstProgram_, "rgbGain"), sprite.rgbGain);
+        glUniform3f(glGetUniformLocation(damageBurstProgram_, "tintRgb"),
+                    sprite.tint.r / 255.f, sprite.tint.g / 255.f, sprite.tint.b / 255.f);
+        glUniform1f(glGetUniformLocation(damageBurstProgram_, "spriteAlpha"),
+                    sprite.tint.a / 255.f * sprite.opacity);
+        glUniform2f(glGetUniformLocation(damageBurstProgram_, "textureSpan"), textureSpanX, textureSpanY);
+        const float radians = sprite.rotationDegrees * 3.14159265358979323846f / 180.f;
+        const float cosine = std::cos(radians), sine = std::sin(radians);
+        const float cx = destination.x + destination.w * .5f, cy = destination.y + destination.h * .5f;
+        const float uLeft = sprite.flipX ? right : left, uRight = sprite.flipX ? left : right;
+        // Match the existing custom shader's SDL-owned texture orientation.
+        const float vTop = sprite.flipY ? bottom : top, vBottom = sprite.flipY ? top : bottom;
+        struct Corner { float x, y, u, v; };
+        const Corner corners[4] = {
+            {-.5f,-.5f,uLeft,vTop}, {.5f,-.5f,uRight,vTop},
+            {.5f,.5f,uRight,vBottom}, {-.5f,.5f,uLeft,vBottom}
+        };
+        glBegin(GL_QUADS);
+        for (const auto& corner : corners) {
+            const float x = corner.x * destination.w, y = corner.y * destination.h;
+            glTexCoord2f(corner.u, corner.v);
+            glVertex2f(cx + x*cosine-y*sine, cy + x*sine+y*cosine);
+        }
+        glEnd();
+        glUseProgram(static_cast<GLuint>(oldProgram));
+        glMatrixMode(GL_MODELVIEW); glPopMatrix();
+        glMatrixMode(GL_PROJECTION); glPopMatrix();
+        glMatrixMode(oldMatrixMode);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, oldMin);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, oldMag);
+        SDL_GL_UnbindTexture(texture);
+        glPopAttrib();
+        glActiveTexture(oldActiveTexture);
     }
     void DrawPixelWobble(const Sprite& sprite, SDL_Texture* texture, const SDL_FRect& destination) {
         // SDL owns this GL texture and may have queued earlier sprites.
@@ -482,6 +551,49 @@ public:
         return ok;
     }
 private:
+    bool InitializeDamageBurst(std::string& error) {
+        constexpr const char* source = R"(
+            #version 120
+            uniform sampler2D diffuse;
+            uniform float rgbGain, spriteAlpha;
+            uniform vec3 tintRgb;
+            uniform vec2 textureSpan;
+            void main() {
+                vec4 sampled = texture2D(diffuse, gl_TexCoord[0].xy * textureSpan);
+                gl_FragColor = vec4(sampled.rgb * tintRgb * rgbGain, sampled.a * spriteAlpha);
+            }
+        )";
+        GLuint shader = glCreateShader(GL_FRAGMENT_SHADER);
+        glShaderSource(shader, 1, &source, nullptr);
+        glCompileShader(shader);
+        GLint compiled = GL_FALSE;
+        glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
+        if (!compiled) {
+            char log[1024]{};
+            glGetShaderInfoLog(shader, sizeof(log), nullptr, log);
+            error = "damage burst shader compile failed: " + std::string(log);
+            glDeleteShader(shader);
+            return false;
+        }
+        damageBurstProgram_ = glCreateProgram();
+        glAttachShader(damageBurstProgram_, shader);
+        glLinkProgram(damageBurstProgram_);
+        glDeleteShader(shader);
+        GLint linked = GL_FALSE;
+        glGetProgramiv(damageBurstProgram_, GL_LINK_STATUS, &linked);
+        if (!linked) {
+            char log[1024]{};
+            glGetProgramInfoLog(damageBurstProgram_, sizeof(log), nullptr, log);
+            error = "damage burst shader link failed: " + std::string(log);
+            return false;
+        }
+        GLint oldProgram = 0;
+        glGetIntegerv(GL_CURRENT_PROGRAM, &oldProgram);
+        glUseProgram(damageBurstProgram_);
+        glUniform1i(glGetUniformLocation(damageBurstProgram_, "diffuse"), 0);
+        glUseProgram(static_cast<GLuint>(oldProgram));
+        return true;
+    }
     bool InitializePixelWobble(std::string& error) {
         constexpr const char* source = R"(
             #version 120
@@ -592,6 +704,7 @@ private:
     SDL_Renderer* renderer_ = nullptr;
     GLuint sepiaProgram_ = 0, sepiaTexture_ = 0;
     GLuint pixelWobbleProgram_ = 0;
+    GLuint damageBurstProgram_ = 0;
     int sepiaWidth_ = 0, sepiaHeight_ = 0;
     SDL_GameController* gamepad_ = nullptr;
     TextureId nextId_ = 1;

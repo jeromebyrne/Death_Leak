@@ -148,6 +148,7 @@ bool Combat::DamageEnemy(size_t index, float damage, float projectileDirectionX)
         enemies_[index].teleportTime > 0.f || damage <= 0.f) return false;
     auto& enemy = enemies_[index];
     enemy.health -= damage;
+    enemy.damageBurstAge = 0.f;
     // Character::OnDamage applies 30 world units of X kickback only when a
     // projectile damages a non-player character; direct/melee hits do not.
     if (projectileDirectionX != 0.f) enemy.x += std::copysign(30.f,projectileDirectionX);
@@ -162,6 +163,11 @@ bool Combat::DamageEnemy(size_t index, float damage, float projectileDirectionX)
     if (enemy.health <= 0.f) ++kills_;
     return true;
 }
+void Combat::ApplyPlayerDamage(float damage) {
+    if (damage <= 0.f || health_ <= 0.f) return;
+    health_ = std::max(0.f, health_ - damage);
+    playerDamageBurstAge_ = 0.f;
+}
 void Combat::EnableSimulatedWallClock() {
     simulatedWallClock_ = true;
     simulatedClockOriginMs_ = std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -169,6 +175,9 @@ void Combat::EnableSimulatedWallClock() {
     simulatedClockElapsedMs_ = 0;
 }
 void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fire, bool melee, bool grounded, bool rolling, int facing, render::Renderer& renderer) {
+    playerDamageBurstAge_ = std::min(0.25f, playerDamageBurstAge_ + std::max(0.f, dt));
+    for (auto& enemy : enemies_)
+        enemy.damageBurstAge = std::min(0.25f, enemy.damageBurstAge + std::max(0.f, dt));
     if (simulatedWallClock_) simulatedClockElapsedMs_ += static_cast<double>(dt) * 1000.0;
     fireCooldown_ = std::max(0.f, fireCooldown_-dt);
     burstCooldown_ = std::max(0.f, burstCooldown_-dt);
@@ -429,7 +438,7 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
                                   << ") shot_to=(" << shot.x << ',' << shot.y
                                   << ") damage=" << shot.damage << " health_before=" << health_
                                   << " deflectable=" << shot.deflectable << std::endl;
-                    health_=std::max(0.f,health_-shot.damage); hurtCooldown_=0.5f; shot.life=0; ++hits_;
+                    ApplyPlayerDamage(shot.damage); hurtCooldown_=0.5f; shot.life=0; ++hits_;
                 }
             }
         } else for (size_t enemyIndex=0; enemyIndex<enemies_.size(); ++enemyIndex) {
@@ -448,12 +457,12 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
     enemies_.erase(std::remove_if(enemies_.begin(),enemies_.end(),[](const auto& e){return e.health<=0;}),enemies_.end());
     for (const auto& hazard : scene.Hazards()) {
         if (!Inside(x,y,hazard.x,hazard.y,hazard.width,hazard.height)) continue;
-        if (!hazard.water) health_=std::max(0.f,health_-hazard.damage*dt);
+        if (!hazard.water) ApplyPlayerDamage(hazard.damage*dt);
     }
     if (inWater) {
         focus_ = std::max(0.f, focus_-0.5f*dt); // Player::kWaterFocusUseRate
         if (focus_ <= 0) focusCooldown_ = 5.f;
-        if (focus_ <= 0) health_=std::max(0.f,health_-3.f*dt); // drowning follows focus depletion
+        if (focus_ <= 0) ApplyPlayerDamage(3.f*dt); // drowning follows focus depletion
     } else {
         if (focusCooldown_ > 0) focusCooldown_ = std::max(0.f,focusCooldown_-dt);
         else focus_ = std::min(100.f,focus_+10.f*dt); // Player::kFocusRechargeRate
@@ -502,6 +511,7 @@ void Combat::AppendPainterItems(std::vector<PainterItem>& items, render::Rendere
         render::Sprite sprite{texture, {}, {640.f+(enemy.x-cameraX-width/2)*scale,
             360.f+(cameraY-enemy.y-height/2)*scale,width*scale,height*scale}};
         sprite.flipX = enemy.facing < 0;
+        sprite.rgbGain = DamageBurstGain(enemy.damageBurstAge);
         items.push_back({3500, [&, sprite] { renderer.DrawSprite(sprite); }});
     }
     for (const auto& shot:shots_) {

@@ -1,0 +1,11 @@
+# Per-actor damage-burst RGB gain — implementation (2026-10-22)
+
+Implemented the source `SolidMovingSprite`/`BasicLightTexture.fx` pre-blend burst: accepted positive damage resets only that actor's age; RGB gain is `5 - 16 * age` for `0 <= age < 0.25 s`, then 1. Alpha remains the sampled texture alpha times the sprite's existing alpha/opacity. The player body and copied arm receive the same gain; aim line, shadow, other scene sprites, other enemies, and shots do not.
+
+The neutral `render::Sprite` now carries `rgbGain` (default 1). The SDL OpenGL backend flushes SDL's sprite queue and uses a dedicated fragment shader for gain >1, preserving source UV, flip, rotation, tint, and alpha. Normal sprites retain their existing SDL path. The burst shader restores GL program, active texture, blend/attribute, matrix, and texture filtering state. OpenGL initialization fails explicitly if the burst shader cannot compile/link; software-test rendering remains an explicit non-acceptance fallback.
+
+Gameplay ages advance once per `Combat::Update` using gameplay `dt`, before any new hits; accepted enemy hits reset the relevant `Enemy`, and projectile, solid-contact, hazard and drowning damage reset the player's timer. Level clear resets the player timer. This avoids advancing a newly accepted hit before its first draw.
+
+Deterministic mock-renderer test: `port/tests/damage_burst_test.cpp` with `port/tests/fixtures/damage_burst.xml`. It checks player and enemy gains at 0, 0.125 and 0.25 seconds, second-hit restart, level clear, no-damage rejection, unchanged neighboring sprite gain, and unchanged actor alpha. Command: `docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/src" -w /src deathleak-linux-build:bookworm sh -c 'g++ -O1 -std=c++17 -Iport/compat port/tests/damage_burst_test.cpp port/game/LevelScene.cpp port/game/Combat.cpp Game/tinyxml/tinyxml.cpp Game/tinyxml/tinyxmlerror.cpp Game/tinyxml/tinyxmlparser.cpp Game/tinyxml/tinystr.cpp -o port/build/damage_burst_test && ./port/build/damage_burst_test'` — PASS.
+
+Docker `make -C port` — PASS (existing TinyXML warnings only). No physical GPU/display was used. Thus software behavior/build is verified, **not** visual parity; matched player/enemy hit-age crops on a physical OpenGL GPU and Windows reference remain the acceptance step before gameplay clip/Jerome review.

@@ -50,6 +50,7 @@ struct Sprite {
     float uvShiftX = 0, uvShiftY = 0; // Normalized wrap offset for authored parallax layers.
     FoliageSway foliageSway{}; // Authored FoliageSway.fx vertex intensities.
     PixelWobble pixelWobble{}; // Per-sprite PixelWobble.fx sampling state.
+    float rgbGain = 1.f; // Actor damage burst: RGB only; never increases alpha.
 };
 
 // No SDL, Direct3D, Metal, or native-window types cross this boundary.

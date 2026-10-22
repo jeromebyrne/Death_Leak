@@ -1149,7 +1149,8 @@ int main(int argc, char** argv) {
                 }
                 painterItems.push_back({20, [&] { rain.Draw(*renderer, cameraX, cameraY); }});
             }
-            scene.Draw(*renderer, cameraX, cameraY, worldX, worldY, std::move(painterItems));
+            scene.Draw(*renderer, cameraX, cameraY, worldX, worldY, std::move(painterItems),
+                       combat.PlayerDamageBurstGain());
             renderer->ApplyScenePostprocess();
             if (currentLevel == "Game/XmlFiles/levels/sea_2.xml") {
                 // final_scene_hud: four authored film frames at 11 FPS and

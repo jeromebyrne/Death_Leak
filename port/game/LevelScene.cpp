@@ -832,7 +832,7 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
         playerArmFrame_ = arm == playerArmSequences_.end() ? 0 : arm->second.frames.size();
     }
 }
-void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY, std::vector<PainterItem> dynamic) const {
+void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY, std::vector<PainterItem> dynamic, float playerDamageBurstGain) const {
     constexpr float scale = 2.f / 3.f; // Original world is authored for 1920x1080.
     const auto& filter = DiagnosticRenderFilter();
     // Orbs are runtime GameObjects at kOrb, not an unconditional backdrop.
@@ -912,6 +912,7 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         draw.repeatX = object.repeatX && !(object.parallaxLayer && object.cameraParallaxX > 0.f);
         draw.tint = object.tint;
         draw.opacity = object.alpha;
+        if (object.player) draw.rgbGain = playerDamageBurstGain;
         if (object.playerAimLine) draw.tint.a = static_cast<std::uint8_t>(std::lround(std::clamp(aimLineAlpha_, 0.f, 1.f) * 255.f));
         draw.flipX = object.player ? playerFacing_ < 0 : object.flipX;
         // D3D Sprite vertices map V=0 to world-bottom (screen-bottom); SDL

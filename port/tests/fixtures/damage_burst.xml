@@ -1,0 +1,4 @@
+<level>
+  <Sprite id="neighbor"><position x="0" y="0" depth_layer="kGround"/><dimensions width="120" height="120"/><texture filename="Media/UI/player_silhouette.png"/></Sprite>
+  <Player id="2"><position x="0" y="0" depth_layer="kPlayer"/><dimensions width="110" height="110"/><texture filename="Media/UI/player_silhouette.png"/></Player>
+</level>

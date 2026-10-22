@@ -28,6 +28,7 @@ struct Enemy {
     float visualElapsed = 0.f;
     int facing = 1;
     float lastVisualX = 0.f;
+    float damageBurstAge = 0.25f;
 };
 struct Shot {
     float x, y, vx, vy, life, damage;
@@ -47,7 +48,7 @@ struct Shot {
 };
 class Combat {
 public:
-    void ClearLevel() { enemies_.clear(); shots_.clear(); activeTriggers_.clear(); fireCooldown_ = burstCooldown_ = hurtCooldown_ = 0; burstCount_ = 0; playerContacts_ = contactFrames_ = 0; meleeTime_ = 0; meleeHeld_ = false; }
+    void ClearLevel() { enemies_.clear(); shots_.clear(); activeTriggers_.clear(); fireCooldown_ = burstCooldown_ = hurtCooldown_ = 0; burstCount_ = 0; playerContacts_ = contactFrames_ = 0; meleeTime_ = 0; meleeHeld_ = false; playerDamageBurstAge_ = 0.25f; }
     void SetArt(render::Renderer& renderer);
     void Update(const LevelScene& scene, float x, float y, float dt, bool fire, bool melee, bool grounded, bool rolling, int facing, render::Renderer& renderer);
     bool DamageEnemy(size_t index, float damage, float projectileDirectionX = 0.f); // shared projectile/melee hit path
@@ -65,7 +66,9 @@ public:
     void SetTriggerHistory(std::unordered_map<std::string, std::int64_t> history) { triggerHistory_ = std::move(history); }
     void EnableSimulatedWallClock(); // test-only: advance trigger clock by fixed gameplay dt
     const std::unordered_map<std::string, std::int64_t>& TriggerHistory() const { return triggerHistory_; }
-    void ApplySolidContactDamage(float damage) { health_ = std::max(0.f, health_ - damage); }
+    void ApplySolidContactDamage(float damage) { ApplyPlayerDamage(damage); }
+    static float DamageBurstGain(float age) { return age >= 0.f && age < 0.25f ? 5.f - 16.f * age : 1.f; }
+    float PlayerDamageBurstGain() const { return DamageBurstGain(playerDamageBurstAge_); }
     float Health() const { return health_; }
     float MaxHealth() const { return maxHealth_; }
     void SetMaxHealth(float value) { maxHealth_ = std::clamp(value, 1.f, 1000000.f); health_ = std::min(health_, maxHealth_); }
@@ -108,5 +111,7 @@ private:
     int burstCount_ = 0;
     int hits_ = 0, kills_ = 0, spawned_ = 0, fired_ = 0;
     int playerContacts_ = 0, contactFrames_ = 0;
+    float playerDamageBurstAge_ = 0.25f;
+    void ApplyPlayerDamage(float damage);
 };
 }
