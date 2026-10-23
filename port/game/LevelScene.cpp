@@ -827,7 +827,7 @@ void LevelScene::UpdateAuthoredOrbs(float dt, float playerX, float playerY, floa
     }
 }
 void LevelScene::UpdateVisuals(float dt, float playerX, float playerY, float cameraX, float cameraY,
-                               bool objectsPaused) {
+                               bool objectsPaused, float precedingRenderedModifiedDelta) {
     // The game loop's current modified update delta is not visible to
     // ParallaxLayer::Draw until after this render has completed. Keep the most
     // recent update when several updates occur without a scene draw.
@@ -933,7 +933,7 @@ void LevelScene::UpdateVisuals(float dt, float playerX, float playerY, float cam
               sprite.x - sprite.width * .5f < cameraX + 2000.f &&
               sprite.y + sprite.height * .5f > cameraY - 2000.f &&
               sprite.y - sprite.height * .5f < cameraY + 2000.f))) continue;
-        sprite.animationElapsed += dt;
+        sprite.animationElapsed += precedingRenderedModifiedDelta >= 0.f ? precedingRenderedModifiedDelta : dt;
         const float frameDuration = 1.f / sprite.animationFrameRate;
         // AnimationPart::AnimateLooped advances at most one frame per update.
         if (sprite.animationElapsed >= frameDuration) {
@@ -1056,7 +1056,7 @@ void LevelScene::EmitRunningFootstep(const PlayerSequence& sequence, int movemen
 void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded, int wallSide,
                                     bool rolling, bool dashing, bool inWater, float meleeElapsed, int facing,
                                     bool projectileFired, bool eligibleFireAttempt, PlayerStrafeVisual strafe,
-                                    bool rightStickAim, float aimX, float aimY) {
+                                    bool rightStickAim, float aimX, float aimY, float precedingRenderedModifiedDelta) {
     playerGrounded_ = grounded;
     // Character::Update records the descent edge before UpdateAnimations. Its
     // dry upward tolerance is -0.5 world units/tick (velocity here is /s).
@@ -1134,7 +1134,7 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
     const bool strafing = target == "StrafeForward" || target == "StrafeBack";
     const float advanceRate = strafing ? sequence.currentRate : rate;
     if (!holdFallingBody && advanceRate > 0 && sequence.frames.size() >= 2) {
-        playerFrameElapsed_ += dt;
+        playerFrameElapsed_ += precedingRenderedModifiedDelta >= 0.f ? precedingRenderedModifiedDelta : dt;
         if (playerFrameElapsed_ >= 1.f / advanceRate) {
             playerFrameElapsed_ -= 1.f / advanceRate; // AnimationPart advances at most one frame per update.
             if (target == "Still" || target == "Running" || target == "SlidingDown" ||
@@ -1163,7 +1163,7 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
     auto advanceArm = [&]() {
         auto arm = playerArmSequences_.find(playerArmSequence_);
         if (arm == playerArmSequences_.end() || playerArmFrame_ >= arm->second.frames.size() || arm->second.rate <= 0) return;
-        playerArmFrameElapsed_ += dt;
+        playerArmFrameElapsed_ += precedingRenderedModifiedDelta >= 0.f ? precedingRenderedModifiedDelta : dt;
         if (playerArmFrameElapsed_ >= 1.f / arm->second.rate) {
             playerArmFrameElapsed_ -= 1.f / arm->second.rate;
             ++playerArmFrame_;

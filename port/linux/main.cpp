@@ -448,6 +448,7 @@ int main(int argc, char** argv) {
         return true;
     };
     deathleak::game::ShaderClock shaderClock;
+    float precedingRenderedModifiedDelta = 0.f;
     auto start = std::chrono::steady_clock::now();
     auto last = std::chrono::steady_clock::now();
     for (int frame = 0; !frameLimit || frame < frameLimit; ++frame) {
@@ -1102,11 +1103,11 @@ int main(int argc, char** argv) {
         }
         if (simulateOnly) continue;
         const bool objectsPaused = paperModal || upgradeModal;
-        scene.UpdateVisuals(dt, worldX, worldY, cameraX, cameraY, objectsPaused);
+        scene.UpdateVisuals(dt, worldX, worldY, cameraX, cameraY, objectsPaused, precedingRenderedModifiedDelta);
         if (!objectsPaused) combat.UpdateVisuals(dt);
         if (!playLevel.empty() && !objectsPaused) scene.UpdatePlayerVisual(dt, motion.VelocityX(), motion.VelocityY(),
             motion.Grounded(), motion.WallSide(), motion.Rolling(), motion.DownwardDashing(), motion.InWater(),
-            combat.MeleeElapsed(), facing, playerProjectileFired, playerEligibleFireAttempt, strafeVisual, stickAim, aimX, aimY);
+            combat.MeleeElapsed(), facing, playerProjectileFired, playerEligibleFireAttempt, strafeVisual, stickAim, aimX, aimY, precedingRenderedModifiedDelta);
         const auto shaderFrame = shaderClock.Draw();
         renderer->BeginFrame({8, 12, 20, 255});
         if (levelPath.empty()) {
@@ -1219,6 +1220,7 @@ int main(int argc, char** argv) {
             std::cerr << "Capture failed: " << error << '\n'; return 1;
         }
         renderer->EndFrame();
+        precedingRenderedModifiedDelta = dt;
         shaderClock.RenderCompleted(dt);
         const auto afterDraw = std::chrono::steady_clock::now();
         drawSeconds += std::chrono::duration<double>(afterDraw-afterUpdate).count();
