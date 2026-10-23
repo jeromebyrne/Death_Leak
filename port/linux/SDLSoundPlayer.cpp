@@ -63,8 +63,18 @@ public:
     unsigned PlayDevilVoice(bool third) override {
         if (!device_ || !sfxEnabled_) return 0;
         SDL_LockAudioDevice(device_);
-        const unsigned id = voices_.size() < 16 ? ++nextVoiceId_ : 0;
-        if (id) voices_.push_back({third ? 8u : 7u, 0, id});
+        // Story dialog controls reward timing: never reject it because ordinary
+        // one-shots filled the shared pool. Evict the oldest ordinary cue first;
+        // if every slot is already dialog, allow another tracked dialog voice.
+        if (voices_.size() >= 16) {
+            const auto ordinary = std::find_if(voices_.begin(), voices_.end(),
+                [](const Voice& voice) { return voice.id == 0; });
+            if (ordinary != voices_.end()) voices_.erase(ordinary);
+        }
+        // Handle zero is reserved for unavailable/muted audio. Skip it on wrap.
+        if (++nextVoiceId_ == 0) ++nextVoiceId_;
+        const unsigned id = nextVoiceId_;
+        voices_.push_back({third ? 8u : 7u, 0, id});
         SDL_UnlockAudioDevice(device_);
         return id;
     }
@@ -76,6 +86,14 @@ public:
         SDL_UnlockAudioDevice(device_);
         return finished;
     }
+#ifdef DEATHLEAK_AUDIO_TESTING
+    void PauseForTest() { SDL_PauseAudioDevice(device_, 1); }
+    size_t ActiveVoicesForTest() const { return voices_.size(); } // Device paused.
+    void AdvanceForTest(int bytes) { // Device paused: drive the real mixer callback deterministically.
+        std::vector<Uint8> output(static_cast<size_t>(bytes));
+        Callback(this, output.data(), bytes);
+    }
+#endif
     void SetSfxEnabled(bool enabled) override {
         if (!device_) { sfxEnabled_ = enabled; return; }
         SDL_LockAudioDevice(device_);
