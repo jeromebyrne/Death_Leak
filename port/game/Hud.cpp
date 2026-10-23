@@ -71,8 +71,16 @@ void Hud::Draw(render::Renderer& renderer, float health, float maxHealth, float 
     constexpr float healthTop = (540.f - 460.f - 19.f) * (2.f / 3.f);
     constexpr float focusTop = (540.f - 440.f - 19.f) * (2.f / 3.f);
     const float healthWidth = healthMeterLength_ * (2.f / 3.f);
-    // Original UIMeter bar: (length - 0.8 * 4px edge) * progress.
-    const float healthBarWidth = (healthMeterLength_ - 3.2f) * (2.f / 3.f);
+    // UIMeter offsets bars by 0.9 edge and middle by 1.0 edge.
+    constexpr float meterX = 40.f;
+    constexpr float edgeWidth = 4.f;
+    constexpr float uiScale = 2.f / 3.f;
+    const float barX = meterX + edgeWidth * 0.9f * uiScale;
+    const float overlayX = meterX + edgeWidth * uiScale;
+    const float healthBarWidth = (healthMeterLength_ - edgeWidth * 0.8f) * uiScale;
+    const float healthOverlayWidth = (healthMeterLength_ - edgeWidth * 0.95f) * uiScale;
+    const float focusBarWidth = (200.f - edgeWidth * 0.8f) * uiScale;
+    const float focusOverlayWidth = (200.f - edgeWidth * 0.95f) * uiScale;
     // XML orb bottom-left (-900, 360), 101x64 in Y-up 1920x1080 UI.
     // Project its top-left and size into the Y-down 1280x720 viewport.
     if (orb_) renderer.DrawSprite({orb_, {}, {40.f, (540.f - (360.f + 64.f)) * (2.f / 3.f),
@@ -86,8 +94,8 @@ void Hud::Draw(render::Renderer& renderer, float health, float maxHealth, float 
     focusProgress_.SetProgress(std::clamp(focus / 100.f, 0.f, 1.f), preRegistrationProcessTotal);
     if (backing_ && healthProgress_.previousFill > healthProgress_.displayed &&
         healthBarWidth * healthProgress_.previousFill > 0.f)
-        renderer.DrawSprite({backing_, {}, {43, healthTop, healthBarWidth * healthProgress_.previousFill, meterHeight}, {255,255,255,220}});
-    if (bar_) renderer.DrawSprite({bar_, {}, {43, healthTop, healthBarWidth * healthProgress_.displayed, meterHeight}, {255,255,255,220}});
+        renderer.DrawSprite({backing_, {}, {barX, healthTop, healthBarWidth * healthProgress_.previousFill, meterHeight}, {255,255,255,220}});
+    if (bar_) renderer.DrawSprite({bar_, {}, {barX, healthTop, healthBarWidth * healthProgress_.displayed, meterHeight}, {255,255,255,220}});
     // meter_edge_2.png is 4x19 native pixels; UIMeter draws both caps at
     // that native size. Project their geometry from 1920x1080 to 1280x720.
     constexpr float capWidth = 4.f * (2.f / 3.f);
@@ -96,14 +104,14 @@ void Hud::Draw(render::Renderer& renderer, float health, float maxHealth, float 
         renderer.DrawSprite({edge_, {}, {40.f, healthTop, capWidth, capHeight}, {255,255,255,220}});
         renderer.DrawSprite({edge_, {}, {40.f + healthWidth, healthTop, capWidth, capHeight}, {255,255,255,220}, 1.f, 0, true});
     }
-    if (overlay_) renderer.DrawSprite({overlay_, {}, {40, healthTop, healthWidth, meterHeight}, {255,255,255,178}});
+    if (overlay_) renderer.DrawSprite({overlay_, {}, {overlayX, healthTop, healthOverlayWidth, meterHeight}, {255,255,255,178}});
     // The original 91_xp_meter is the focus meter (200 units wide at
     // x=-900,y=440 in the 1920x1080 UI), directly below health.
-    if (focusBar_) renderer.DrawSprite({focusBar_, {}, {43, focusTop, 127.f * focusProgress_.displayed, meterHeight}, {255,255,255,220}, 1.f, 0, false, true});
+    if (focusBar_) renderer.DrawSprite({focusBar_, {}, {barX, focusTop, focusBarWidth * focusProgress_.displayed, meterHeight}, {255,255,255,220}, 1.f, 0, false, true});
     if (edge_) {
         renderer.DrawSprite({edge_, {}, {40.f, focusTop, capWidth, capHeight}, {255,255,255,220}});
         renderer.DrawSprite({edge_, {}, {40.f + 200.f * (2.f / 3.f), focusTop, capWidth, capHeight}, {255,255,255,220}, 1.f, 0, true, true});
     }
-    if (overlay_) renderer.DrawSprite({overlay_, {}, {40, focusTop, 133, meterHeight}, {255,255,255,178}});
+    if (overlay_) renderer.DrawSprite({overlay_, {}, {overlayX, focusTop, focusOverlayWidth, meterHeight}, {255,255,255,178}});
 }
 }
