@@ -80,7 +80,8 @@ void PlayerMotion::Update(LevelScene& scene, float dt, int direction, bool jump)
         // MovingSprite clamps submerged vertical speed to four units/tick.
         vy_ = std::min(4.f*60.f, vy_ + 0.3f*60.f*ticks);
     } else if (jump && !jumpHeld_ && !downwardDashing_ && rollTime_ <= 0.f && (grounded_ || sinceGround_ <= 0.3f || wallSide_)) {
-        if (!grounded_ && sinceGround_ > 0.3f && wallSide_) {
+        const bool wallJump = !grounded_ && sinceGround_ > 0.3f && wallSide_;
+        if (wallJump) {
             vx_ = -wallSide_ * kWallJumpSpeedX;
             vy_ = kWallJumpSpeedY;
             wallJumpRemaining_ = 0.3f;
@@ -91,7 +92,8 @@ void PlayerMotion::Update(LevelScene& scene, float dt, int direction, bool jump)
         grounded_ = false; sinceGround_ = 1.f; airTime_ = 0.f;
         landingApexValid_ = true; landingApexY_ = y_;
         groundedSegment_ = static_cast<size_t>(-1);
-        ++vocalActions_;
+        // Character::WallJump uses its separate jump.wav, not PlayJumpSFX.
+        if (!wallJump) ++vocalActions_;
     }
     // InputManager::ProcessJump_* starts at 40% and increases by 6.5%
     // on each subsequent held update, up to the authored max jump speed.

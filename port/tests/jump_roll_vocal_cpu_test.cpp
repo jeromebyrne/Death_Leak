@@ -57,6 +57,19 @@ int main() {
     motion.Update(scene,std::sqrt(2.f*101.f/((0.75f/0.55f)*3600.f)),0,false);
     assert(motion.Grounded()); assert(motion.TryBufferedRoll(true));
     assert(motion.ConsumeJumpRollVocalActions()==1); assert(motion.ConsumeJumpRollVocalActions()==0);
+    // A wall jump is the original's separate jump.wav action, not PlayJumpSFX.
+    game::LevelScene wallScene;
+    constexpr float wallX = 100080.f, wallY = 100000.f;
+    auto& wallGround = const_cast<std::vector<game::GroundSegment>&>(wallScene.Ground());
+    wallGround.push_back({wallX, wallY-2000.f, wallX, wallY+2000.f, "stone"});
+    motion.Reset(100000.f, wallY);
+    for (int i=0; i<25 && motion.X()<wallX-64.48f; ++i)
+        motion.Update(wallScene,1.f/60.f,1,false);
+    assert(std::abs(motion.X()-(wallX-128.959793f/2.f))<0.1f);
+    assert(motion.ConsumeJumpRollVocalActions()==0);
+    motion.Update(wallScene,1.f/60.f,0,true);
+    assert(motion.X()<wallX-128.959793f/2.f); // wall-jump impulse really fired
+    assert(motion.ConsumeJumpRollVocalActions()==0);
     // Every authored branch, and both boundaries of the silent region.
     for (int draw=0;draw<20;++draw) audio::DispatchJumpRollVocal(sound,draw);
     assert((sound.played==std::vector<int>{0,1,2,3,4}));
