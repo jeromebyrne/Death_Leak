@@ -127,7 +127,8 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     playerSequences_.clear(); playerSequence_.clear(); playerFrame_ = 0; playerFrameElapsed_ = 0; playerFacing_ = 1; playerGrounded_ = false;
     playerOffSolidTime_ = playerDescentTime_ = 0; playerDescending_ = false;
     playerArmSequences_.clear(); playerArmSequence_.clear(); playerArmFrame_ = 0; playerArmFrameElapsed_ = 0; aimLineHold_ = aimLineAlpha_ = 0.f;
-    spawnedOrbTexture_ = render::InvalidTexture;
+    spawnedOrbTexture_ = orbShatterTexture_ = render::InvalidTexture;
+    orbTrails_.clear();
     sprites_.clear(); particleSprays_.clear(); ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); ambience_.clear(); doors_.clear(); boats_.clear(); keys_.clear(); papers_.clear(); healthDevils_.clear(); smashables_.clear(); spawnedOrbs_.clear(); scrolls_.clear(); skipped_ = 0;
     cameraBounds_ = false;
     allowsWeather_ = false;
@@ -325,6 +326,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
                 particle.drawX = particle.x; particle.drawY = particle.y;
                 particle.size = particle.startSize = maxSize <= minSize ? maxSize :
                     static_cast<float>(spray.Random(static_cast<unsigned>(maxSize-minSize)) + static_cast<unsigned>(minSize) + 1);
+                particle.drawSize = particle.size;
                 particle.speed = particle.startSpeed = maxSpeed <= minSpeed ? maxSpeed :
                     minSpeed + .01f + spray.Random(static_cast<unsigned>((maxSpeed-minSpeed)*100.f))*.01f;
                 particle.gravity = Attr(object->FirstChildElement("gravity"), "value");
@@ -452,10 +454,10 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         sprite.depth = Depth(position->Attribute("depth_layer"));
         sprite.order = objectOrder;
         sprite.currencyOrb = kind == "CurrencyOrb";
-        // The waterfall-top authored small orbs share CurrencyOrb's sine and
-        // sticky proximity-tracking path; large/native orbs are a different path.
+        // Only authored forest-1 and waterfall-top small orbs use this path.
         sprite.authoredSmallOrb = sprite.currencyOrb &&
-            std::filesystem::path(path).filename() == "waterfall_top.xml" &&
+            (std::filesystem::path(path).filename() == "waterfall_top.xml" ||
+             std::filesystem::path(path).filename() == "forest_exploration_1.xml") &&
             !Flag(dimensions, "native");
         if (sprite.authoredSmallOrb) {
             sprite.orbOriginY = sprite.y;
@@ -536,6 +538,13 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         if (sprite.width > 0 && sprite.height > 0) sprites_.push_back(sprite);
     }
     trace("objects parsed");
+    if (std::any_of(sprites_.begin(), sprites_.end(), [](const SceneSprite& s) { return s.authoredSmallOrb; })) {
+        const std::string shatterPath = "Game/Media/orb_shatter.png";
+        if (!std::filesystem::exists(shatterPath)) { error = "Missing orb trail texture: " + shatterPath; return false; }
+        std::string textureError;
+        orbShatterTexture_ = renderer.LoadTexture(shatterPath, textureError);
+        if (!orbShatterTexture_) { error = "Cannot load orb trail texture: " + textureError; return false; }
+    }
     if (!smashables_.empty()) {
         const auto frame = AnimationFrame("Game/XmlFiles/orb_anim.xml", "Still");
         if (!frame.empty()) spawnedOrbTexture_ = renderer.LoadTexture(frame, error);
@@ -586,6 +595,7 @@ size_t LevelScene::CollectCurrencyOrbs(float playerX, float playerY, std::unorde
         // CurrencyOrb::OnCollision uses a 100-world-unit collection radius.
         if (dx * dx + dy * dy >= 100.f * 100.f) continue;
         object.collected = true;
+        DetachOrbTrail(object.persistentId);
         if (!object.persistentId.empty()) collected.insert(object.persistentId);
         ++count;
     }
@@ -593,7 +603,10 @@ size_t LevelScene::CollectCurrencyOrbs(float playerX, float playerY, std::unorde
 }
 void LevelScene::ApplyCollected(const std::unordered_set<std::string>& collected) {
     for (auto& object : sprites_)
-        if (object.currencyOrb && collected.count(object.persistentId)) object.collected = true;
+        if (object.currencyOrb && collected.count(object.persistentId)) {
+            object.collected = true;
+            DetachOrbTrail(object.persistentId);
+        }
 }
 void LevelScene::ApplyKeys(const std::unordered_set<std::string>& keys) {
     for (auto& object : sprites_) if (object.keyPickup) {
@@ -680,6 +693,52 @@ void LevelScene::ApplyDeflection(bool unlocked) {
             object.persistentId == scroll.id) object.collected = true;
     }
 }
+std::vector<LevelScene::OrbTrailView> LevelScene::OrbTrails() const {
+    std::vector<OrbTrailView> result;
+    for (const auto& trail : orbTrails_) result.push_back({trail.owner, trail.attached, &trail.spray});
+    return result;
+}
+void LevelScene::DetachOrbTrail(const std::string& owner) {
+    for (auto& trail : orbTrails_) if (trail.owner == owner) {
+        trail.attached = false;
+        trail.spray.looping = false;
+    }
+}
+void LevelScene::AddOrbTrail(const SceneSprite& orb) {
+    if (!orbShatterTexture_ || orb.persistentId.empty() ||
+        std::any_of(orbTrails_.begin(), orbTrails_.end(), [&](const OrbTrail& t) { return t.owner == orb.persistentId; })) return;
+    OrbTrail trail;
+    trail.owner = orb.persistentId;
+    auto& spray = trail.spray;
+    spray.texture = orbShatterTexture_;
+    spray.x = orb.x; spray.y = orb.y;
+    spray.width = 3200.f; spray.height = 1200.f;
+    spray.depth = Depth("kOrb");
+    spray.looping = true; spray.loopTime = -1.f;
+    spray.scalesByLifetime = true; spray.scaleTo = .1f;
+    spray.fadeIn = .15f; spray.fadeOut = .8f;
+    spray.warmed = true; // Runtime radial factory does not request XML Warm(true).
+    std::uint32_t hash = 2166136261u;
+    for (unsigned char c : orb.persistentId) hash = (hash ^ c) * 16777619u;
+    spray.randomState = hash;
+    for (int i = 0; i < 15; ++i) {
+        ParticleSpray::Particle p;
+        p.directionX = (spray.Random(100)+1)*.01f * (spray.Random(2) ? 1.f : -1.f);
+        p.directionY = (spray.Random(100)+1)*.01f * (spray.Random(2) ? -1.f : 1.f);
+        p.lifetime = .35f - (.25f/15.f)*i;
+        auto spread = [&]() { const float n = static_cast<float>(spray.Random(31)); return spray.Random(2) ? -n : n; };
+        p.startX = p.x = orb.x + spread();
+        p.startY = p.y = orb.y + spread();
+        p.drawX = p.x; p.drawY = p.y;
+        p.size = p.startSize = static_cast<float>(spray.Random(40)+41);
+        p.drawSize = p.size;
+        p.speed = p.startSpeed = 1.51f + spray.Random(190)*.01f;
+        p.gravity = .5f;
+        p.brightness = .81f + spray.Random(20)*.01f;
+        spray.particles.push_back(p);
+    }
+    orbTrails_.push_back(std::move(trail));
+}
 void LevelScene::UpdateAuthoredOrbs(float dt, float playerX, float playerY, float cameraX, float cameraY) {
     for (auto& orb : sprites_) {
         if (!orb.authoredSmallOrb || orb.collected || !orb.updateable) continue;
@@ -694,7 +753,10 @@ void LevelScene::UpdateAuthoredOrbs(float dt, float playerX, float playerY, floa
         }
         if (!orb.orbTracking) {
             const float dx = playerX - orb.x, dy = playerY - orb.y;
-            if (dx*dx + dy*dy < 130.f*130.f) orb.orbTracking = true;
+            if (dx*dx + dy*dy < 130.f*130.f) {
+                orb.orbTracking = true;
+                AddOrbTrail(orb);
+            }
             continue; // Source arms tracking after the base/sine update.
         }
         // MovingSprite integrates the previous steering command before
@@ -736,6 +798,25 @@ void LevelScene::UpdateVisuals(float dt, float playerX, float playerY, float cam
             spray.y + spray.height*.5f > cameraY - 2000.f && spray.y - spray.height*.5f < cameraY + 2000.f))
             spray.Update(dt);
     }
+    for (auto& trail : orbTrails_) {
+        float parent[2] = {0, 0};
+        if (trail.attached) {
+            auto found = std::find_if(sprites_.begin(), sprites_.end(), [&](const SceneSprite& s) {
+                return s.persistentId == trail.owner && !s.collected;
+            });
+            if (found == sprites_.end()) { trail.attached = false; trail.spray.looping = false; }
+            else { parent[0] = found->x; parent[1] = found->y; trail.spray.x = parent[0]; trail.spray.y = parent[1]; }
+        }
+        // Detached particles drain even outside the former parent's update zone.
+        if (!trail.attached || (trail.spray.x + 1600.f > cameraX - 2000.f &&
+            trail.spray.x - 1600.f < cameraX + 2000.f && trail.spray.y + 600.f > cameraY - 2000.f &&
+            trail.spray.y - 600.f < cameraY + 2000.f))
+            trail.spray.Update(dt, trail.attached ? parent : nullptr);
+    }
+    orbTrails_.erase(std::remove_if(orbTrails_.begin(), orbTrails_.end(), [](const OrbTrail& t) {
+        return !t.attached && std::all_of(t.spray.particles.begin(), t.spray.particles.end(),
+            [](const ParticleSpray::Particle& p) { return p.dead; });
+    }), orbTrails_.end());
     for (auto& sprite : sprites_) {
         if (sprite.autoScrollY) {
             // Legacy ParallaxLayer::Draw adds scaled speed * .001 per 1/60 update.
@@ -929,6 +1010,7 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
     std::stable_sort(dynamic.begin(), dynamic.end(),
                      [](const PainterItem& a, const PainterItem& b) { return a.depth > b.depth; });
     size_t nextDynamic = 0, nextSpray = 0;
+    bool drewOrbTrails = false;
     auto drawDynamicBefore = [&](int depth) {
         while (nextDynamic < dynamic.size() && dynamic[nextDynamic].depth > depth)
             dynamic[nextDynamic++].draw();
@@ -942,7 +1024,16 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
             ++nextSpray;
         }
     };
+    auto drawOrbTrails = [&]() {
+        if (drewOrbTrails) return;
+        drewOrbTrails = true;
+        // Runtime trails were inserted after authored kOrb GameObjects. Dynamic
+        // same-depth items follow them; this is a deterministic port tie rule.
+        if (filter.only.empty()) for (const auto& trail : orbTrails_)
+            trail.spray.Draw(renderer, cameraX, cameraY);
+    };
     for (const auto& object : sprites_) {
+        if (object.depth < Depth("kOrb")) drawOrbTrails();
         drawSpraysBefore(object.depth, object.order);
         drawDynamicBefore(object.depth);
         if (object.collected || (object.playerShadow && !playerGrounded_) ||
@@ -1022,6 +1113,7 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         }
         renderer.DrawSprite(draw);
     }
+    drawOrbTrails();
     drawSpraysBefore(-1, 0);
     drawDynamicBefore(-2147483647);
 }

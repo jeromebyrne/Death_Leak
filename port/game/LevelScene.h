@@ -120,6 +120,8 @@ public:
     const std::vector<PaperPickup>& Papers() const { return papers_; }
     const std::vector<HealthDevil>& HealthDevils() const { return healthDevils_; }
     const std::vector<Smashable>& Smashables() const { return smashables_; }
+    struct OrbTrailView { std::string owner; bool attached; const ParticleSpray* spray; };
+    std::vector<OrbTrailView> OrbTrails() const;
     bool SmashAt(size_t index);
     size_t UpdateSpawnedOrbs(float playerX, float playerY, float dt);
     size_t PendingSpawnedOrbs() const { return spawnedOrbs_.size(); }
@@ -132,6 +134,11 @@ public:
 private:
     std::vector<SceneSprite> sprites_;
     std::vector<ParticleSpray> particleSprays_;
+    struct OrbTrail { std::string owner; ParticleSpray spray; bool attached = true; };
+    std::vector<OrbTrail> orbTrails_;
+    render::TextureId orbShatterTexture_ = render::InvalidTexture;
+    void DetachOrbTrail(const std::string& owner);
+    void AddOrbTrail(const SceneSprite& orb);
     std::vector<GroundSegment> ground_;
     std::vector<SolidBox> solidBoxes_;
     std::vector<LevelTrigger> triggers_;

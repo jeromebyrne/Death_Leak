@@ -14,7 +14,7 @@ namespace deathleak::game {
 struct ParticleSpray {
     struct Particle {
         float x = 0, y = 0, startX = 0, startY = 0;
-        float drawX = 0, drawY = 0;
+        float drawX = 0, drawY = 0, drawSize = 0;
         float directionX = 0, directionY = 0;
         float speed = 0, startSpeed = 0, size = 0, startSize = 0;
         float lifetime = 1, elapsed = 0, gravity = 0, brightness = 1, alpha = 1;
@@ -37,13 +37,13 @@ struct ParticleSpray {
         randomState = randomState * 1103515245u + 12345u;
         return limit ? (randomState >> 16) % limit : 0;
     }
-    void Update(float dt) {
+    void Update(float dt, const float* parentXY = nullptr) {
         if (!updateable || dt <= 0) return;
         elapsed += dt;
         for (auto& p : particles) {
             if (p.dead) continue;
             // Source Update builds vertices before advancing particle position.
-            p.drawX = p.x; p.drawY = p.y;
+            p.drawX = p.x; p.drawY = p.y; p.drawSize = p.size;
             if (p.gravity > 0) p.speed *= .99f;
             const float ticks = dt * 60.f; // source target delta is 1/60 s
             p.x += p.directionX * p.speed * ticks;
@@ -60,7 +60,9 @@ struct ParticleSpray {
                 p.size = p.startSize * (1 + (scaleTo - 1) * p.elapsed / p.lifetime);
             if (left <= 0) {
                 if (looping) {
-                    p.x = p.startX; p.y = p.startY;
+                    p.x = parentXY ? parentXY[0] : p.startX;
+                    p.y = parentXY ? parentXY[1] : p.startY;
+                    if (parentXY) { p.startX = p.x; p.startY = p.y; }
                     p.speed = p.startSpeed; p.size = p.startSize; p.elapsed = 0;
                 } else p.dead = true;
             }
@@ -84,9 +86,9 @@ struct ParticleSpray {
             if (p.dead) continue;
             render::Sprite leaf;
             leaf.texture = texture;
-            leaf.destination = {640.f + (p.drawX-cameraX-p.size*.5f)*scale,
-                                360.f + (cameraY-p.drawY-p.size*.5f)*scale,
-                                p.size*scale, p.size*scale};
+            leaf.destination = {640.f + (p.drawX-cameraX-p.drawSize*.5f)*scale,
+                                360.f + (cameraY-p.drawY-p.drawSize*.5f)*scale,
+                                p.drawSize*scale, p.drawSize*scale};
             if (leaf.destination.x + leaf.destination.width < 0 || leaf.destination.x > 1280 ||
                 leaf.destination.y + leaf.destination.height < 0 || leaf.destination.y > 720) continue;
             const auto brightness = static_cast<std::uint8_t>(std::lround(std::clamp(p.brightness, 0.f, 1.f)*255));
