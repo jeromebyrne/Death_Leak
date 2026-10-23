@@ -62,6 +62,8 @@ class Combat {
 public:
     void ClearLevel() { enemies_.clear(); shots_.clear(); deathEffects_.clear(); bloodFlights_.clear(); materialSprays_.clear(); activeTriggers_.clear(); fireCooldown_ = burstCooldown_ = hurtCooldown_ = 0; burstCount_ = 0; playerContacts_ = contactFrames_ = 0; meleeTime_ = 0; meleeHeld_ = false; playerDamageBurstAge_ = 0.25f; }
     void SetArt(render::Renderer& renderer);
+    void SpawnIntroBloodFlight(float x, float y);
+    void UpdateBloodFlights(const LevelScene& scene, float dt);
     void Update(const LevelScene& scene, float x, float y, float dt, bool fire, bool melee, bool grounded, bool rolling, int facing, render::Renderer& renderer, float aimX = 0.f, float aimY = 0.f, PlayerShotLaunchState launchState = {});
     bool DamageEnemy(size_t index, float damage, float projectileDirectionX = 0.f); // shared projectile/melee hit path
     bool MeleeActive() const { return meleeTime_ > 0.f; }
@@ -118,6 +120,7 @@ private:
     struct BloodFlight {
         float x = 0.f, y = 0.f, vy = 0.f, size = 0.f, age = 0.f;
         float vx = 0.f, rotation = 0.f;
+        float launchDirectionX = 0.f, launchDirectionY = 0.f;
         bool impacted = false, blocked = false;
         float inactiveAge = 0.f;
         unsigned variant = 0;
@@ -157,5 +160,6 @@ private:
     void SpawnKnifeLineSpray(const LevelScene& scene, size_t segment, const Shot& shot, float rayEndX, float rayEndY);
     void ApplyPlayerDamage(float damage);
     void SpawnPlayerBloodFlight(float x, float y);
+    void SpawnBloodFlight(float x, float y, float directionX, float directionY);
 };
 }

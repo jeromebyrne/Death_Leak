@@ -647,6 +647,7 @@ int main(int argc, char** argv) {
                 introHeldTime = 0.f;
                 introEffectiveZoom = introLoadZoom;
                 std::cout << "Fresh-save intro completed at frame " << frame << '\n';
+                combat.UpdateBloodFlights(scene, dt);
             } else {
                 if (scene.GetIntroBodyPhase() == deathleak::game::LevelScene::IntroBodyPhase::Looped) {
                     const bool held = !script.empty() ? command == 'I' : renderer->KeyDown(Interact);
@@ -656,6 +657,7 @@ int main(int argc, char** argv) {
                             introHeldTime = 0.f;
                             introEffectiveZoom = introLoadZoom;
                             scene.EmitIntroSwordPullBurst(*renderer, worldX, worldY);
+                            combat.SpawnIntroBloodFlight(worldX, worldY + 5.f);
                             scene.SetIntroBodyPhase(deathleak::game::LevelScene::IntroBodyPhase::Pull);
                             std::cout << "Fresh-save intro pull at frame " << frame << '\n';
                         } else introEffectiveZoom = std::max(introLoadZoom * 0.75f, introEffectiveZoom - dt * 0.05f);
@@ -675,6 +677,7 @@ int main(int argc, char** argv) {
                     cameraX = it->second.first; cameraY = it->second.second;
                 }
                 if (!simulateOnly && script.empty()) cameraTarget.Update(controllerSticks, false, false, false, false);
+                combat.UpdateBloodFlights(scene, dt);
                 levelTime += dt;
             }
             } else {

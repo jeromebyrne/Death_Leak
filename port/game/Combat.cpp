@@ -344,13 +344,23 @@ void Combat::ApplyPlayerDamage(float damage) {
     playerDamageBurstAge_ = 0.f;
 }
 void Combat::SpawnPlayerBloodFlight(float x, float y) {
-    // Character::FireBloodSpatter uses one 256*(.5 + rand()%50*.01)
-    // blood projectile. Keep this Linux-only RNG separate from other effects.
+    SpawnBloodFlight(x, y, 0.f, 0.f);
+}
+void Combat::SpawnIntroBloodFlight(float x, float y) {
+    SpawnBloodFlight(x, y, -1.6f, 1.4f);
+}
+void Combat::SpawnBloodFlight(float x, float y, float directionX, float directionY) {
+    // Character::FireBloodSpatter: one blood projectile. Linux keeps a
+    // private deterministic RNG; Windows uses the process-global rand().
     bloodRandomState_ = bloodRandomState_ * 1664525u + 1013904223u;
     const float size = 256.f * (.5f + static_cast<float>(bloodRandomState_ % 50u) * .01f);
     bloodRandomState_ = bloodRandomState_ * 1664525u + 1013904223u;
     const unsigned variant = bloodRandomState_ % 2u;
-    bloodFlights_.push_back({x, y, 0.f, size, 0.f, 0.f, 0.f, false, false, 0.f, variant});
+    BloodFlight blood{};
+    blood.x=x; blood.y=y; blood.vx=directionX*3.5f; blood.vy=directionY*3.5f;
+    blood.launchDirectionX=directionX; blood.launchDirectionY=directionY;
+    blood.size=size; blood.variant=variant;
+    bloodFlights_.push_back(blood);
 }
 void Combat::EnableSimulatedWallClock() {
     simulatedWallClock_ = true;
@@ -358,7 +368,7 @@ void Combat::EnableSimulatedWallClock() {
         std::chrono::system_clock::now().time_since_epoch()).count();
     simulatedClockElapsedMs_ = 0;
 }
-void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fire, bool melee, bool grounded, bool rolling, int facing, render::Renderer& renderer, float aimX, float aimY, PlayerShotLaunchState launchState) {
+void Combat::UpdateBloodFlights(const LevelScene& scene, float dt) {
     // Blood collision is independent of knife's enemy-dependent line skip.
     for (auto& blood : bloodFlights_) {
         if (blood.impacted || blood.blocked) {
@@ -374,20 +384,27 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
             continue;
         }
         const float ticks = std::min(2.f, std::max(0.f, dt) * 60.f);
-        const float oldY = blood.y;
+        const float oldX = blood.x, oldY = blood.y;
         blood.vy -= .5f * ticks;
+        const float nextX = blood.x + blood.vx * ticks;
         const float nextY = blood.y + blood.vy * ticks;
+        const bool directed = blood.launchDirectionX != 0.f || blood.launchDirectionY != 0.f;
+        // The source ray extends from the previous center to the new center
+        // plus half the 64-unit collision width along immutable direction.
+        const float rayEndX = nextX + (directed ? blood.launchDirectionX * 32.f : 0.f);
+        const float rayEndY = nextY + (directed ? blood.launchDirectionY * 32.f : 0.f);
         float first = 2.f;
         size_t winner = scene.Ground().size();
         for (size_t i = 0; i < scene.Ground().size(); ++i) {
             const auto& line = scene.Ground()[i];
             float t;
-            if (BloodSegmentContact(blood.x, oldY, blood.x, nextY,
+            if (BloodSegmentContact(oldX, oldY, rayEndX, rayEndY,
                                     line.x1, line.y1, line.x2, line.y2, t) && t < first) {
                 first = t; winner = i;
             }
         }
         if (winner < scene.Ground().size()) {
+            blood.x = oldX + (nextX-oldX)*first;
             blood.y = oldY + (nextY-oldY)*first;
             blood.vy = 0.f;
             blood.inactiveAge = 0.f;
@@ -421,9 +438,10 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
                     // pierceability branch; its origin is the source ray end.
                     Shot emitter{};
                     emitter.depth = 3000;
-                    // Source blood launch direction is zero at spray emission;
-                    // rebound assigns a new direction only afterward.
-                    SpawnKnifeLineSpray(scene, winner, emitter, blood.x, nextY-32.f);
+                    emitter.launchDirectionX = blood.launchDirectionX;
+                    emitter.launchDirectionY = blood.launchDirectionY;
+                    SpawnKnifeLineSpray(scene, winner, emitter, directed ? rayEndX : blood.x,
+                                        directed ? rayEndY : nextY-32.f);
                     blood.blocked = true;
                     blood.age += std::max(0.f, dt);
                     continue;
@@ -437,14 +455,26 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
             if (!scene.Ground()[winner].material.empty()) {
                 Shot emitter{};
                 emitter.depth = 3000; // material spray precedes ground-blood depth
-                SpawnKnifeLineSpray(scene, winner, emitter, blood.x, nextY);
+                emitter.launchDirectionX = blood.launchDirectionX;
+                emitter.launchDirectionY = blood.launchDirectionY;
+                SpawnKnifeLineSpray(scene, winner, emitter, directed ? rayEndX : blood.x,
+                                    directed ? rayEndY : nextY);
             }
-        } else blood.y = nextY;
+        } else { blood.x = nextX; blood.y = nextY; }
         blood.age += std::max(0.f, dt);
     }
     // Port-only orphan bound; source has no active-flight TTL.
     bloodFlights_.erase(std::remove_if(bloodFlights_.begin(), bloodFlights_.end(),
         [](const BloodFlight& blood) { return blood.blocked ? blood.inactiveAge > .25f : blood.impacted ? blood.inactiveAge > 5.5f : blood.age >= 10.f; }), bloodFlights_.end());
+    for (auto& spray : materialSprays_) spray.Update(dt);
+    materialSprays_.erase(std::remove_if(materialSprays_.begin(), materialSprays_.end(),
+        [](const ParticleSpray& spray) {
+            return std::all_of(spray.particles.begin(), spray.particles.end(),
+                               [](const ParticleSpray::Particle& p) { return p.dead; });
+        }), materialSprays_.end());
+}
+void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fire, bool melee, bool grounded, bool rolling, int facing, render::Renderer& renderer, float aimX, float aimY, PlayerShotLaunchState launchState) {
+    UpdateBloodFlights(scene, dt);
     for (auto& effect : deathEffects_) {
         effect.age += std::max(0.f, dt);
         effect.x += effect.vx*dt;
@@ -458,12 +488,6 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
     }
     deathEffects_.erase(std::remove_if(deathEffects_.begin(), deathEffects_.end(),
         [](const auto& effect) { return effect.age >= effect.lifetime; }), deathEffects_.end());
-    for (auto& spray : materialSprays_) spray.Update(dt);
-    materialSprays_.erase(std::remove_if(materialSprays_.begin(), materialSprays_.end(),
-        [](const ParticleSpray& spray) {
-            return std::all_of(spray.particles.begin(), spray.particles.end(),
-                               [](const ParticleSpray::Particle& p) { return p.dead; });
-        }), materialSprays_.end());
     playerDamageBurstAge_ = std::min(0.25f, playerDamageBurstAge_ + std::max(0.f, dt));
     for (auto& enemy : enemies_)
         enemy.damageBurstAge = std::min(0.25f, enemy.damageBurstAge + std::max(0.f, dt));
