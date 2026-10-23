@@ -1756,11 +1756,11 @@ int main(int argc, char** argv) {
                    << ", \"pixelFormat\": \"BMP BGRA32\", \"colorSpace\": \"sRGB-assumed\""
                    << ", \"viewport\": [0,0,1280,720], \"captureStage\": \"post_overlay_pre_endframe\""
                    << ", \"scenePostprocessSubmitted\": true},\n"
-                   << "  \"preHudImage\": " << (postfadePacket ?
+                   << (postfadePacket ? "  \"preHudImage\": " : "") << (postfadePacket ?
                        "{\"file\":" + JsonString(preHudPath) + ",\"sha256\":" + JsonString(preHudHash) +
                        ",\"bytes\":" + std::to_string(preHudBytes) +
                        ",\"width\":1280,\"height\":720,\"pixelFormat\":\"BMP BGRA32\",\"captureStage\":\"post_scene_sepia_pre_hud\"}" :
-                       "null") << ",\n"
+                       "") << (postfadePacket ? ",\n" : "")
                    << "  \"transition\": {\"activeLevel\": " << JsonString(currentLevel)
                    << ", \"firstPostfadeOrdinal\": " << packetFirstPostfadeOrdinal
                    << ", \"loadingSplashSubmitted\": " << (loadingPhase != LoadingPhase::None)
@@ -1813,7 +1813,8 @@ int main(int argc, char** argv) {
                 }
                 packet << "]";
             } else packet << "{\"value\": null, \"reason\": \"per-object draw submission not instrumented\"}";
-            packet << ", \"sceneDrawIdentifierScope\": \"renderer-level sprite submissions; XML IDs and backend internal repeat/particle subdraws not mapped\""
+            if (postfadePacket) packet << ", \"sceneDrawIdentifierScope\": \"renderer-level sprite submissions; XML IDs and backend internal repeat/particle subdraws not mapped\"";
+            packet
                    << ", \"rngHistory\": {\"value\": null, \"reason\": \"nondeterministic effect history not instrumented\"}},\n"
                    << "  \"uiOrder\": [\"film\",\"bars\",\"hud\",\"optional_fps\",\"modals\",\"loading_splash\"],\n"
                    << "  \"pixels\": {\"health\": " << combat.Health() << ", \"maxHealth\": " << combat.MaxHealth()
