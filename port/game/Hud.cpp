@@ -109,9 +109,9 @@ void Hud::Draw(render::Renderer& renderer, float health, float maxHealth, float 
     // x=-900,y=440 in the 1920x1080 UI), directly below health.
     if (focusBar_) renderer.DrawSprite({focusBar_, {}, {barX, focusTop, focusBarWidth * focusProgress_.displayed, meterHeight}, {255,255,255,220}, 1.f, 0, false, true});
     if (edge_) {
-        renderer.DrawSprite({edge_, {}, {40.f, focusTop, capWidth, capHeight}, {255,255,255,220}});
+        renderer.DrawSprite({edge_, {}, {40.f, focusTop, capWidth, capHeight}, {255,255,255,220}, 1.f, 0, false, true});
         renderer.DrawSprite({edge_, {}, {40.f + 200.f * (2.f / 3.f), focusTop, capWidth, capHeight}, {255,255,255,220}, 1.f, 0, true, true});
     }
-    if (overlay_) renderer.DrawSprite({overlay_, {}, {overlayX, focusTop, focusOverlayWidth, meterHeight}, {255,255,255,178}});
+    if (overlay_) renderer.DrawSprite({overlay_, {}, {overlayX, focusTop, focusOverlayWidth, meterHeight}, {255,255,255,178}, 1.f, 0, false, true});
 }
 }
