@@ -1239,6 +1239,8 @@ int main(int argc, char** argv) {
             scene.Draw(*renderer, scene.CameraX() + (playerX - 590) * 1.5f,
                        scene.CameraY() + (430 - playerY) * 1.5f, scene.PlayerX(), scene.PlayerY(), {}, 1.f, 1.f, shaderFrame);
         else {
+            // Only a genuinely fresh forest-1 intro changes the world projection.
+            renderer->SetWorldZoom(!hasPulledSword ? introEffectiveZoom : 1.f);
             std::vector<deathleak::game::PainterItem> painterItems;
             combat.AppendPainterItems(painterItems, *renderer, drawCameraX, drawCameraY);
             if (healthPickup && healthPickupArt) {

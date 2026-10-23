@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <cmath>
 #include <memory>
 #include <string>
 
@@ -15,6 +16,15 @@ struct Rect {
     float width = 0;
     float height = 0;
 };
+
+// Camera2D's orthographic extents contract with zoom; project authored
+// logical world destinations about the 1280x720 viewport center.
+inline Rect ProjectWorldRect(Rect rect, float zoom) {
+    if (!std::isfinite(zoom) || zoom <= 0.f || zoom == 1.f) return rect;
+    return {640.f + (rect.x - 640.f) / zoom,
+            360.f + (rect.y - 360.f) / zoom,
+            rect.width / zoom, rect.height / zoom};
+}
 
 struct MouseState {
     float x = -1, y = -1; // Logical 1280x720 coordinates.
@@ -67,6 +77,8 @@ public:
     virtual bool Initialize(const char* title, int width, int height, std::string& error) = 0;
     virtual TextureId LoadTexture(const std::string& path, std::string& error) = 0;
     virtual void BeginFrame(Color clear) = 0;
+    // Scene-only projection; BeginFrame and ApplyScenePostprocess reset it.
+    virtual void SetWorldZoom(float zoom) { (void)zoom; }
     virtual void DrawSprite(const Sprite& sprite) = 0;
     virtual void FillRect(Rect rect, Color color) = 0;
     // Apply the original Sepia.fx to the scene before UI is drawn.

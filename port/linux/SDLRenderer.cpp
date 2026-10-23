@@ -191,8 +191,16 @@ public:
 
     void BeginFrame(Color clear) override {
         sceneSamplingPhase_ = true;
+        worldZoom_ = 1.f;
         SDL_SetRenderDrawColor(renderer_, clear.r, clear.g, clear.b, clear.a);
         SDL_RenderClear(renderer_);
+    }
+    void SetWorldZoom(float zoom) override {
+        worldZoom_ = sceneSamplingPhase_ && std::isfinite(zoom) && zoom > 0.f ? zoom : 1.f;
+    }
+    SDL_FRect ProjectWorld(SDL_FRect rect) const {
+        const Rect projected = ProjectWorldRect({rect.x, rect.y, rect.w, rect.h}, worldZoom_);
+        return {projected.x, projected.y, projected.width, projected.height};
     }
     void DrawSprite(const Sprite& sprite) override {
         const auto began = std::chrono::steady_clock::now();
@@ -206,8 +214,9 @@ public:
                       static_cast<int>(sprite.source.width), static_cast<int>(sprite.source.height)};
             sourcePtr = &source;
         }
-        SDL_FRect destination{sprite.destination.x, sprite.destination.y,
-                              sprite.destination.width, sprite.destination.height};
+        SDL_FRect authoredDestination{sprite.destination.x, sprite.destination.y,
+                                      sprite.destination.width, sprite.destination.height};
+        SDL_FRect destination = ProjectWorld(authoredDestination);
         SDL_SetTextureColorMod(texture, sprite.tint.r, sprite.tint.g, sprite.tint.b);
         SDL_SetTextureAlphaMod(texture, sprite.tint.a);
         // BasicLightTexture.fx and the other ordinary scene shaders use
@@ -230,18 +239,19 @@ public:
         } else if (sprite.pixelWobble.enabled && pixelWobbleProgram_ && !sourcePtr) {
             DrawPixelWobble(sprite, texture, destination);
         } else if (sprite.foliageSway.enabled && !sourcePtr) {
-            DrawFoliageSway(sprite, texture, destination);
+            DrawFoliageSway(sprite, texture, authoredDestination);
         } else if (sprite.repeatX && sprite.rotationDegrees == 0 && !sourcePtr) {
             int width = 0, height = 0;
             SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
             // The scene is authored in 1920x1080 world units and displayed at 2/3.
             const float tileWidth = width * (2.f / 3.f);
             if (tileWidth > 0) {
-                ForEachRepeatXTile(destination.x, destination.w, tileWidth, width,
+                ForEachRepeatXTile(authoredDestination.x, authoredDestination.w, tileWidth, width,
                                    1280.f, sprite.flipX, [&](RepeatXTile tile) {
                     SDL_Rect part{0, 0, tile.sourceWidth, height};
-                    SDL_FRect target{destination.x + tile.offset, destination.y,
-                                     tile.width, destination.h};
+                    SDL_FRect target{authoredDestination.x + tile.offset, authoredDestination.y,
+                                     tile.width, authoredDestination.h};
+                    target = ProjectWorld(target);
                     SDL_RenderCopyExF(renderer_, texture, &part, &target, 0, nullptr, flip);
                 });
             }
@@ -573,6 +583,10 @@ public:
                 {lerp(bl, br, fractionRight), white, {uRight, vBottom}},
                 {lerp(bl, br, fractionLeft), white, {uLeft, vBottom}}
             };
+            if (worldZoom_ != 1.f) for (auto& vertex : vertices) {
+                vertex.position.x = 640.f + (vertex.position.x - 640.f) / worldZoom_;
+                vertex.position.y = 360.f + (vertex.position.y - 360.f) / worldZoom_;
+            }
             const int indices[6] = {0, 1, 3, 1, 2, 3};
             SDL_RenderGeometry(renderer_, texture, vertices, 4, indices, 6);
         };
@@ -593,11 +607,12 @@ public:
     }
     void FillRect(Rect rect, Color color) override {
         SDL_SetRenderDrawColor(renderer_, color.r, color.g, color.b, color.a);
-        SDL_FRect box{rect.x, rect.y, rect.width, rect.height};
+        SDL_FRect box = ProjectWorld({rect.x, rect.y, rect.width, rect.height});
         SDL_RenderFillRectF(renderer_, &box);
     }
     void ApplyScenePostprocess() override {
         sceneSamplingPhase_ = false;
+        worldZoom_ = 1.f;
         if (!sepiaProgram_) return; // Only the explicit test-only software path.
         SDL_RenderFlush(renderer_);
         int width = 0, height = 0;
@@ -973,6 +988,7 @@ private:
     }
     bool testAllowSoftware_ = false;
     bool sceneSamplingPhase_ = false;
+    float worldZoom_ = 1.f;
     size_t drawCalls_ = 0;
     double copySeconds_ = 0, presentSeconds_ = 0;
     bool initialized_ = false;
