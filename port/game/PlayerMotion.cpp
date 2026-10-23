@@ -16,7 +16,7 @@ constexpr float kWallJumpSpeedX = 15.f * 60.f;
 constexpr float kWallJumpSpeedY = 20.f * 60.f;
 }
 void PlayerMotion::Reset(float x, float y, bool authoredEntry) {
-    x_ = x; y_ = y; vx_ = vy_ = 0; sinceGround_ = 1; airTime_ = 0; jumpHeld_ = false; grounded_ = false; initialPlacement_ = authoredEntry;
+    x_ = x; y_ = y; vx_ = vy_ = 0; sinceGround_ = 1; airTime_ = 0; jumpHeld_ = false; vocalActions_ = 0; grounded_ = false; initialPlacement_ = authoredEntry;
     wallSide_ = 0; wallJumpRemaining_ = 0; jumpPercent_ = 40.f; solidContactDamage_ = 0.f;
     groundedSegment_ = static_cast<size_t>(-1);
     landingApexValid_ = false; landingApexY_ = y;
@@ -39,6 +39,7 @@ bool PlayerMotion::TryRoll(bool hasFocus) {
     impactRecovery_ = ImpactRecovery::None; impactRecoveryTime_ = 0.f;
     if (std::abs(vx_) < 12.f*60.f) vx_ = facing_ * 12.f*60.f;
     vy_ = 0.f; rollBuffer_ = 0.f;
+    ++vocalActions_;
     return true;
 }
 bool PlayerMotion::TryBufferedRoll(bool hasFocus) {
@@ -90,6 +91,7 @@ void PlayerMotion::Update(LevelScene& scene, float dt, int direction, bool jump)
         grounded_ = false; sinceGround_ = 1.f; airTime_ = 0.f;
         landingApexValid_ = true; landingApexY_ = y_;
         groundedSegment_ = static_cast<size_t>(-1);
+        ++vocalActions_;
     }
     // InputManager::ProcessJump_* starts at 40% and increases by 6.5%
     // on each subsequent held update, up to the authored max jump speed.

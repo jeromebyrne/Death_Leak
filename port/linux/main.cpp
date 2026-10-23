@@ -834,6 +834,10 @@ int main(int argc, char** argv) {
             }
             if (motion.Grounded() && combat.Health() > 0.f && motion.TryBufferedRoll(combat.HasFocus(2.f)))
                 combat.ConsumeFocus(2.f);
+            for (unsigned n = motion.ConsumeJumpRollVocalActions(); n > 0; --n) {
+                const int draw = std::rand() % 20;
+                if (sound) deathleak::audio::DispatchJumpRollVocal(*sound, draw);
+            }
             if (const auto impact = motion.ConsumeHardLandingEvent();
                 impact != deathleak::game::PlayerMotion::HardLandingEvent::None) {
                 cameraShake.StartMedium(cameraShakeTime - dt);

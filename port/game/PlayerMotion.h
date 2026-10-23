@@ -23,6 +23,7 @@ public:
     void CompleteImpactRecovery() { impactRecovery_ = ImpactRecovery::None; impactRecoveryTime_ = 0.f; }
     HardLandingEvent ConsumeHardLandingEvent() { const auto event = hardLandingEvent_; hardLandingEvent_ = HardLandingEvent::None; return event; }
     void Update(LevelScene& scene, float dt, int direction, bool jump);
+    unsigned ConsumeJumpRollVocalActions() { const auto count = vocalActions_; vocalActions_ = 0; return count; }
     bool SmashedSomething() const { return smashedSomething_; }
     float X() const { return x_; }
     float Y() const { return y_; }
@@ -41,6 +42,7 @@ private:
     int facing_ = 1;
     float sinceGround_ = 1, airTime_ = 0;
     bool jumpHeld_ = false;
+    unsigned vocalActions_ = 0;
     bool grounded_ = false;
     size_t groundedSegment_ = static_cast<size_t>(-1);
     bool initialPlacement_ = false;
