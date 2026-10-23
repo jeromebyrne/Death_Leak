@@ -12,6 +12,8 @@
 #include <cmath>
 #include <cctype>
 #include <cstdlib>
+#include <cstdio>
+#include <cstring>
 #include <iostream>
 #include <png.h>
 #include <unordered_map>
@@ -19,6 +21,17 @@
 
 namespace deathleak::render {
 namespace {
+// PNG rows are top-first; GL level-0 rows are bottom-first. The wobble
+// shader's 1-V therefore continues to address the authored top at V=0.
+std::vector<png_byte> FlipPngRows(const png_byte* pixels, size_t width, size_t height) {
+    const size_t stride = width * 4;
+    std::vector<png_byte> bottomFirst(stride * height);
+    for (size_t y = 0; y < height; ++y)
+        std::memcpy(bottomFirst.data() + y * stride,
+                    pixels + (height - 1 - y) * stride, stride);
+    return bottomFirst;
+}
+
 class SDLRenderer final : public Renderer {
 public:
     explicit SDLRenderer(bool testAllowSoftware) : testAllowSoftware_(testAllowSoftware) {}
@@ -27,6 +40,8 @@ public:
             std::cerr << "SDL profile calls=" << drawCalls_ << " copy=" << copySeconds_
                       << "s present=" << presentSeconds_ << "s\n";
         if (gamepad_) SDL_GameControllerClose(gamepad_);
+        for (const auto& entry : wobbleMipTextures_)
+            if (entry.second.name) glDeleteTextures(1, &entry.second.name);
         if (sepiaTexture_) glDeleteTextures(1, &sepiaTexture_);
         if (sepiaProgram_) glDeleteProgram(sepiaProgram_);
         if (pixelWobbleProgram_) glDeleteProgram(pixelWobbleProgram_);
@@ -168,6 +183,7 @@ public:
         TextureId id = nextId_++;
         textures_.emplace(id, texture);
         paths_.emplace(path, id);
+        texturePaths_.emplace(id, path);
         return id;
     }
 
@@ -317,28 +333,38 @@ public:
         glActiveTexture(oldActiveTexture);
     }
     void DrawPixelWobble(const Sprite& sprite, SDL_Texture* texture, const SDL_FRect& destination) {
-        // SDL owns this GL texture and may have queued earlier sprites.
+        // SDL owns the ordinary texture; the complete mip chain is private.
         SDL_RenderFlush(renderer_);
-        GLint oldProgram = 0, oldMatrixMode = 0, oldActiveTexture = 0;
+        GLint oldProgram = 0, oldMatrixMode = 0, oldActiveTexture = 0, oldBinding = 0;
         glGetIntegerv(GL_CURRENT_PROGRAM, &oldProgram);
         glGetIntegerv(GL_MATRIX_MODE, &oldMatrixMode);
         glGetIntegerv(GL_ACTIVE_TEXTURE, &oldActiveTexture);
         glPushAttrib(GL_ALL_ATTRIB_BITS);
         glActiveTexture(GL_TEXTURE0);
+        glGetIntegerv(GL_TEXTURE_BINDING_2D, &oldBinding);
         float textureWidth = 1.f, textureHeight = 1.f;
-        if (SDL_GL_BindTexture(texture, &textureWidth, &textureHeight) != 0) {
-            glPopAttrib(); glActiveTexture(oldActiveTexture); return;
-        }
+        const GLuint privateTexture = WobbleMipTexture(sprite.texture);
+        const bool usePrivate = privateTexture != 0;
+        bool sdlBound = false;
         GLint oldWrapS = 0, oldWrapT = 0, oldMin = 0, oldMag = 0;
-        glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, &oldWrapS);
-        glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, &oldWrapT);
-        glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, &oldMin);
-        glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, &oldMag);
+        if (usePrivate) {
+            glBindTexture(GL_TEXTURE_2D, privateTexture);
+        } else {
+            if (SDL_GL_BindTexture(texture, &textureWidth, &textureHeight) != 0) {
+                glBindTexture(GL_TEXTURE_2D, static_cast<GLuint>(oldBinding));
+                glPopAttrib(); glActiveTexture(oldActiveTexture); return;
+            }
+            sdlBound = true;
+            glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, &oldWrapS);
+            glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, &oldWrapT);
+            glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, &oldMin);
+            glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, &oldMag);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        }
         glEnable(GL_TEXTURE_2D);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glDisable(GL_DEPTH_TEST);
@@ -367,11 +393,14 @@ public:
         glMatrixMode(GL_MODELVIEW); glPopMatrix();
         glMatrixMode(GL_PROJECTION); glPopMatrix();
         glMatrixMode(oldMatrixMode);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, oldWrapS);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, oldWrapT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, oldMin);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, oldMag);
-        SDL_GL_UnbindTexture(texture);
+        if (sdlBound) {
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, oldWrapS);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, oldWrapT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, oldMin);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, oldMag);
+            SDL_GL_UnbindTexture(texture);
+        }
+        glBindTexture(GL_TEXTURE_2D, static_cast<GLuint>(oldBinding));
         glPopAttrib();
         glActiveTexture(oldActiveTexture);
     }
@@ -551,6 +580,106 @@ public:
         return ok;
     }
 private:
+    struct WobbleMip {
+        GLuint name = 0;
+        bool attempted = false;
+    };
+    GLuint WobbleMipTexture(TextureId id) {
+        auto& entry = wobbleMipTextures_[id];
+        if (entry.attempted) return entry.name;
+        entry.attempted = true; // Cache failures too; do not decode every frame.
+        std::string failure;
+        auto path = texturePaths_.find(id);
+        if (path == texturePaths_.end()) failure = "no source path";
+
+        // Full NPOT repeat+mipmap support is core in desktop GL 2.0. Mipmap
+        // generation itself needs core 3.0 or EXT_framebuffer_object.
+        int major = 0, minor = 0;
+        const char* version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
+        if (failure.empty() && (!version || std::sscanf(version, "%d.%d", &major, &minor) != 2 ||
+            major < 2)) failure = "desktop GL 2.0 NPOT support unavailable";
+        const bool coreGenerator = major >= 3;
+        const char* extensions = coreGenerator ? nullptr :
+            reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS));
+        const bool extGenerator = extensions &&
+            std::strstr(extensions, "GL_EXT_framebuffer_object") != nullptr;
+        using GenerateMipmap = void (APIENTRY *)(GLenum);
+        auto generate = reinterpret_cast<GenerateMipmap>(SDL_GL_GetProcAddress(
+            coreGenerator ? "glGenerateMipmap" : "glGenerateMipmapEXT"));
+        if (failure.empty() && (!generate || (!coreGenerator && !extGenerator)))
+            failure = "mipmap generation entry point unavailable";
+
+        png_image image{};
+        image.version = PNG_IMAGE_VERSION;
+        std::vector<png_byte> pixels;
+        if (failure.empty()) {
+            if (!png_image_begin_read_from_file(&image, path->second.c_str()))
+                failure = image.message;
+            else {
+                image.format = PNG_FORMAT_RGBA;
+                pixels.resize(PNG_IMAGE_SIZE(image));
+                if (!png_image_finish_read(&image, nullptr, pixels.data(), 0, nullptr))
+                    failure = image.message;
+            }
+        }
+        GLuint name = 0;
+        if (failure.empty()) {
+            GLint oldBinding = 0, oldUnpack = 0;
+            glGetIntegerv(GL_TEXTURE_BINDING_2D, &oldBinding);
+            glGetIntegerv(GL_UNPACK_ALIGNMENT, &oldUnpack);
+            // This isolated upload must not inherit stale errors from SDL.
+            while (glGetError() != GL_NO_ERROR) {}
+            bool uploaded = false;
+            glGenTextures(1, &name);
+            if (name) {
+                glBindTexture(GL_TEXTURE_2D, name);
+                glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+                const auto bottomFirst = FlipPngRows(pixels.data(), image.width, image.height);
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
+                    static_cast<GLsizei>(image.width), static_cast<GLsizei>(image.height),
+                    0, GL_RGBA, GL_UNSIGNED_BYTE, bottomFirst.data());
+                if (glGetError() == GL_NO_ERROR) {
+                    generate(GL_TEXTURE_2D);
+                    if (glGetError() == GL_NO_ERROR) {
+                        const int largest = std::max(image.width, image.height);
+                        int maxLevel = 0;
+                        for (int size = largest; size > 1; size >>= 1) ++maxLevel;
+                        int expectedWidth = static_cast<int>(image.width);
+                        int expectedHeight = static_cast<int>(image.height);
+                        bool complete = true;
+                        for (int level = 0; level <= maxLevel; ++level) {
+                            GLint width = 0, height = 0;
+                            glGetTexLevelParameteriv(GL_TEXTURE_2D, level, GL_TEXTURE_WIDTH, &width);
+                            glGetTexLevelParameteriv(GL_TEXTURE_2D, level, GL_TEXTURE_HEIGHT, &height);
+                            complete &= width == expectedWidth && height == expectedHeight;
+                            expectedWidth = std::max(1, expectedWidth / 2);
+                            expectedHeight = std::max(1, expectedHeight / 2);
+                        }
+                        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+                        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+                        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+                        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+                        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+                        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, maxLevel);
+                        uploaded = complete && glGetError() == GL_NO_ERROR;
+                    }
+                }
+            }
+            if (!name || !uploaded)
+                failure = "GL allocation, mip generation, or sampler setup failed";
+            glPixelStorei(GL_UNPACK_ALIGNMENT, oldUnpack);
+            glBindTexture(GL_TEXTURE_2D, static_cast<GLuint>(oldBinding));
+        }
+        png_image_free(&image);
+        if (!failure.empty()) {
+            if (name) glDeleteTextures(1, &name);
+            std::cerr << "PixelWobble mip fallback for texture " << id << ": "
+                      << failure << "; using SDL linear minification\n";
+            return 0;
+        }
+        entry.name = name;
+        return name;
+    }
     bool InitializeDamageBurst(std::string& error) {
         constexpr const char* source = R"(
             #version 120
@@ -711,6 +840,8 @@ private:
     TextureId nextId_ = 1;
     std::unordered_map<TextureId, SDL_Texture*> textures_;
     std::unordered_map<std::string, TextureId> paths_;
+    std::unordered_map<TextureId, std::string> texturePaths_;
+    std::unordered_map<TextureId, WobbleMip> wobbleMipTextures_;
 };
 }
 std::unique_ptr<Renderer> CreateRenderer(bool testAllowSoftware) { return std::make_unique<SDLRenderer>(testAllowSoftware); }

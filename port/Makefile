@@ -16,3 +16,9 @@ smoke: $(TARGET)
 	cd .. && SDL_VIDEODRIVER=dummy port/$(TARGET) --frames 2 --capture port/build/smoke.bmp
 clean:
 	rm -rf build
+
+.PHONY: fog-mip-cpu-test
+fog-mip-cpu-test:
+	@mkdir -p build
+	$(CXX) $(CXXFLAGS) $(SDL_CFLAGS) $(PNG_CFLAGS) -Icompat tests/fog_mip_filter_cpu_test.cpp -o build/fog_mip_filter_cpu_test $(SDL_LIBS) $(PNG_LIBS) $(GL_LIBS)
+	./build/fog_mip_filter_cpu_test
