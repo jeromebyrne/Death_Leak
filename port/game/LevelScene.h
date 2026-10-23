@@ -79,7 +79,8 @@ public:
               const std::string& fromLevel = {}, const std::string& entryDoorId = {});
     void Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY,
               std::vector<PainterItem> dynamic = {}, float playerDamageBurstGain = 1.f,
-              float foliageGlobalTimeMultiplier = 1.f, ShaderClockSnapshot shaderClock = {}) const;
+              float foliageGlobalTimeMultiplier = 1.f, ShaderClockSnapshot shaderClock = {},
+              bool suppressLandingSprayDraw = false) const;
     void UpdatePlayerVisual(float dt, float vx, float vy, bool grounded, int wallSide,
                             bool rolling, bool dashing, bool inWater, float meleeElapsed, int facing,
                             bool projectileFired, bool eligibleFireAttempt = false);

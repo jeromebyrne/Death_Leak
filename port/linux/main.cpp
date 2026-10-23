@@ -84,6 +84,7 @@ int main(int argc, char** argv) {
     int startEncounter = -1;
     int startHazard = -1;
     bool exhaustedFocus = false;
+    bool suppressLandingSprayDraw = false;
     float fixedDt = 0;
     for (int i = 1; i < argc; ++i) {
         std::string arg = argv[i];
@@ -105,9 +106,13 @@ int main(int argc, char** argv) {
         else if (arg == "--profile") profile = true;
         else if (arg == "--combat-state") combatState = true;
         else if (arg == "--exhaust-focus") exhaustedFocus = true;
+        else if (arg == "--capture-suppress-landing-draw") suppressLandingSprayDraw = true;
         else if (arg == "--start-encounter" && i + 1 < argc) startEncounter = std::atoi(argv[++i]);
         else if (arg == "--start-hazard" && i + 1 < argc) startHazard = std::atoi(argv[++i]);
         else { std::cerr << "Usage: deathleak-linux [--frames N] [--capture output.bmp] [--level-preview level.xml | --play level.xml]\n"; return 2; }
+    }
+    if (suppressLandingSprayDraw && capture.empty()) {
+        std::cerr << "--capture-suppress-landing-draw requires --capture\n"; return 2;
     }
     if (!selectedLanguage.empty() && selectedLanguage != "en-gb" && selectedLanguage != "pt-br" && selectedLanguage != "de") {
         std::cerr << "Unsupported language locale\n"; return 2;
@@ -1158,7 +1163,7 @@ int main(int argc, char** argv) {
                 painterItems.push_back({20, [&] { rain.Draw(*renderer, cameraX, cameraY); }});
             }
             scene.Draw(*renderer, cameraX, cameraY, worldX, worldY, std::move(painterItems),
-                       combat.PlayerDamageBurstGain(), weather.FoliageSwayMultiplier(), shaderFrame);
+                       combat.PlayerDamageBurstGain(), weather.FoliageSwayMultiplier(), shaderFrame, suppressLandingSprayDraw);
             renderer->ApplyScenePostprocess();
             if (currentLevel == "Game/XmlFiles/levels/sea_2.xml") {
                 // final_scene_hud: four authored film frames at 11 FPS and

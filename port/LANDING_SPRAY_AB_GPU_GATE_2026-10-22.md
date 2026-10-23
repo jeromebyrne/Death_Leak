@@ -1,0 +1,24 @@
+# Landing spray same-frame A/B physical-GPU gate (2026-10-22)
+
+## Verdict
+
+**The landing emitter contributes pixels on the actual contact frame, but is effectively illegible in this authored view.** On strict physical `nouveau/NVE7` OpenGL, normal versus landing-draw-suppressed frame 28 differs at only 101 of 921,600 pixels (0.0110%), in a 49×7-pixel region at x=567–615, y=623–629. The largest per-channel 8-bit difference is (2,2,1). A separate normal repeat is byte-identical to the first normal capture. This isolates a real rendered contribution without establishing a recognizable plume, original-Windows parity, or visual acceptance. No authored art/XML, emission, particle update, or effect parameters were changed.
+
+## Instrument and reproduction
+
+`port/game/LevelScene.cpp` gates **only** the `landingSprays_` draw loop at player depth. Footstep/takeoff sprays, other scene/dynamic draws, collision, emission, particle update, camera, and postprocess remain on the same paths. `port/linux/main.cpp` adds off-by-default `--capture-suppress-landing-draw`; it rejects use without `--capture`. The flag is passed to `LevelScene::Draw` only in core play rendering. Normal production behavior is unchanged unless explicitly selected for a capture. This is a diagnostic, not a proposed production visual correction.
+
+The ignored evidence folder is `port/build/landing-spray-ab-gpu-gate-2026-10-22/`. Three separately copied, byte-identical initial DL5 fixtures contain forest-1, x=-500, y=3811, health 25, focus 100, balance 0. Separate files are necessary because the runtime rewrites loaded saves. All runs used the freshly Docker-built `port/build/deathleak-linux` (SHA-256 `40c3499564d0bbc3ccef71bf07cd0f8528a125e4ed08bd9eea740d8726998d5f`), script `.:100`, fixed dt `0.0166667`, 28 frames, capture of the last drawn frame, and identical environment. The only A/B difference was the suppression flag. A fourth normal run at 27 frames verified the preceding airborne state.
+
+Container invocation: `deathleak-linux-build:bookworm`, repository mounted at `/src`, `--network host --hostname jerome-Linux-MacBookPro --device /dev/dri`, host `/tmp/.X11-unix` socket, read-only `/var/run/lightdm/root/:0` mounted as `/tmp/deathleak.Xauthority`, `DISPLAY=:0`, `XAUTHORITY=/tmp/deathleak.Xauthority`, `SDL_VIDEODRIVER=x11`, `SDL_RENDER_DRIVER=opengl`, `SDL_AUDIODRIVER=dummy`; executable `port/build/deathleak-linux --load-save <variant-fixture.txt> --script '.:100' --frames 28 --fixed-dt 0.0166667 --capture <variant-28.bmp>` plus the suppression flag only for `suppressed`. Runs were serial with no competing game/FFmpeg capture on the GPU lane.
+
+## Evidence and interpretation
+
+- `precontact-27.log`: forest-1, player (-500,3114.41), `grounded=0`, `vy=-2040`. Each frame-28 log: same level, player (-500,3108.38), `grounded=1`, `vy=0`, all listed gameplay counters/upgrade flags identical. The logs' `elapsed` values (~0.64 s) are wall clock, not simulation-time mismatch.
+- All four logs identify SDL `video_driver=x11 name=opengl`, `accelerated=1 software=0 mode=strict-accelerated`, OpenGL `vendor=nouveau renderer=NVE7`, GPU `Sepia.fx`, and 71 original forest sprites/zero missing assets. No software or dummy-video frame was used.
+- `normal-28.bmp` and `repeat-28.bmp` have identical SHA-256 `e2a6e78a5198212c9f2202f7297cf0b8fb0c4ce633464f7266b079786a07283f`. `suppressed-28.bmp` SHA-256 is `792106c01244723024a70d63924ff741e40f015dc86d18003e2145755b02e4d3`. The full-frame RGB difference is confined to x=567–615, y=623–629, 101 pixels, max per-channel absolute delta (2,2,1); 921,499 pixels match exactly. `delta-28.png` (SHA-256 `fe54c8ea28b02f884737739cbd1ba7e4bcf92065bb7c6553e58775d1e656d496`) and 3× nearest-neighbor `*-contact-3x.png` are diagnostic derivatives; `delta-28-contrast5.png` is contrast-enhanced **only** to locate the faint contribution, not a faithful appearance image.
+- This A/B resolves the preceding report's attribution blocker: with deterministic normal-repeat pixels and only one draw loop toggled, the nonzero same-frame pixels are attributable to landing-spray drawing. It does **not** prove that a human can distinguish spray from the dark trunk/foreground in a normal still. The tiny amplitudes counsel against tuning without a matched original Windows contact frame and a separate visual-quality decision.
+
+## Software verification and scope
+
+Docker `make -j2` completed (only existing TinyXML compiler warnings). A freshly compiled `port/tests/landing_material_spray_test.cpp` in the same image passed: `PASS: landing thresholds, variants, authored entry, roll buffer, absent texture`. The source change is limited to the draw seam and minimal CLI plumbing; ignored BMP/PNG/log/fixture artifacts are not committed. `CHECKPOINT_STATUS.md` was already concurrently modified, so this worker did not edit it; `PORT_WORK_STATUS.md` was untouched.

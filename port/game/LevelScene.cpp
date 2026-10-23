@@ -1154,7 +1154,7 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
         playerArmFrame_ = arm == playerArmSequences_.end() ? 0 : arm->second.frames.size();
     }
 }
-void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY, std::vector<PainterItem> dynamic, float playerDamageBurstGain, float foliageGlobalTimeMultiplier, ShaderClockSnapshot shaderClock) const {
+void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY, std::vector<PainterItem> dynamic, float playerDamageBurstGain, float foliageGlobalTimeMultiplier, ShaderClockSnapshot shaderClock, bool suppressLandingSprayDraw) const {
     constexpr float scale = 2.f / 3.f; // Original world is authored for 1920x1080.
     const auto& filter = DiagnosticRenderFilter();
     // Orbs are runtime GameObjects at kOrb, not an unconditional backdrop.
@@ -1278,7 +1278,7 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
             spray.Draw(renderer, cameraX, cameraY);
         if (object.player && filter.only.empty()) for (const auto& spray : jumpTakeoffSprays_)
             spray.Draw(renderer, cameraX, cameraY);
-        if (object.player && filter.only.empty()) for (const auto& spray : landingSprays_)
+        if (object.player && filter.only.empty() && !suppressLandingSprayDraw) for (const auto& spray : landingSprays_)
             spray.Draw(renderer, cameraX, cameraY);
     }
     drawOrbTrails();
