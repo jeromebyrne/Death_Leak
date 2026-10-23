@@ -86,6 +86,8 @@ struct ParticleSpray {
             if (p.dead) continue;
             render::Sprite leaf;
             leaf.texture = texture;
+            // Source ParticleSpray binds U=1 at world-left and U=0 at world-right.
+            leaf.flipX = true;
             const float drawSize = p.drawSize > 0 ? p.drawSize : p.size;
             leaf.destination = {640.f + (p.drawX-cameraX-drawSize*.5f)*scale,
                                 360.f + (cameraY-p.drawY-drawSize*.5f)*scale,
