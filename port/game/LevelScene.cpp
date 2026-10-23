@@ -1250,11 +1250,10 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
         playerSequence_ = target; playerFrame_ = 0; playerFrameElapsed_ = 0;
     }
     auto& sequence = it->second;
-    float rate = sequence.rate;
-    if (target == "Running")
-        rate = std::clamp(std::abs(vx / 60.f) * 1.8f * 2.65f, sequence.minRate, sequence.maxRate);
     const bool strafing = target == "StrafeForward" || target == "StrafeBack";
-    const float advanceRate = strafing ? sequence.currentRate : rate;
+    // Character advances horizontal movement with the sequence's stored rate,
+    // then derives the rate for its next update from the current velocity.
+    const float advanceRate = (target == "Running" || strafing) ? sequence.currentRate : sequence.rate;
     if (!holdFallingBody && advanceRate > 0 && sequence.frames.size() >= 2) {
         playerFrameElapsed_ += precedingRenderedModifiedDelta >= 0.f ? precedingRenderedModifiedDelta : dt;
         if (playerFrameElapsed_ >= 1.f / advanceRate) {
@@ -1272,7 +1271,7 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
         // Retain the last valid texture for the completion draw, then release motion.
         impactVisualFinished_ = playerFrame_ >= sequence.frames.size();
     }
-    if (strafing) sequence.currentRate = std::clamp(std::abs(vx / 60.f) * 1.8f * 2.65f,
+    if (target == "Running" || strafing) sequence.currentRate = std::clamp(std::abs(vx / 60.f) * 1.8f * 2.65f,
                                                       sequence.minRate, sequence.maxRate);
     // Character uses one numeric frame guard for every horizontal movement
     // sequence, stamping even unmarked frames after the effect check. Strafe

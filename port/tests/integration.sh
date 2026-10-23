@@ -15,6 +15,16 @@ g++ -O2 -g -std=c++17 -Wall -Wextra -Wpedantic -UNDEBUG -Iport/compat \
   Game/tinyxml/tinyxmlparser.cpp Game/tinyxml/tinystr.cpp \
   -o "$strafe_cpu_dir/strafe_body_cpu_test"
 env -u DEATHLEAK_RENDER_HIDE_XML_IDS "$strafe_cpu_dir/strafe_body_cpu_test"
+# Forest-1 ID2 Running advances at the previously stored rate before storing
+# the current-velocity rate. Keep assertions enabled: the fixture's tick calls
+# are inside assert expressions.
+g++ -O2 -g -std=c++17 -Wall -Wextra -Wpedantic -UNDEBUG -Iport/compat \
+  port/tests/running_rate_order_cpu_test_RUNNING_RATE_ORDER_20261023T2136Z.cpp \
+  port/game/LevelScene.cpp port/game/PlayerMotion.cpp \
+  Game/tinyxml/tinyxml.cpp Game/tinyxml/tinyxmlerror.cpp \
+  Game/tinyxml/tinyxmlparser.cpp Game/tinyxml/tinystr.cpp \
+  -o "$strafe_cpu_dir/running_rate_order_cpu_test"
+env -u DEATHLEAK_RENDER_HIDE_XML_IDS "$strafe_cpu_dir/running_rate_order_cpu_test"
 # Release/default mode must reject dummy/software even if SDL offers a fallback.
 strict_log=$(mktemp)
 if env -u DEATHLEAK_TEST_ALLOW_SOFTWARE_RENDERER SDL_VIDEODRIVER=dummy SDL_RENDER_DRIVER=software "$bin" --frames 1 >"$strict_log" 2>&1; then
