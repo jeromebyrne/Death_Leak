@@ -1274,7 +1274,7 @@ int main(int argc, char** argv) {
             shakeSignX, shakeSignY, cameraX, cameraY);
         const float drawCameraX = shakeView.viewX, drawCameraY = shakeView.viewY;
         const auto shaderFrame = shaderClock.Draw();
-        renderer->BeginFrame({8, 12, 20, 255});
+        renderer->BeginFrame({0, 0, 0, 255});
         if (levelPath.empty()) {
             renderer->DrawSprite({background, {}, {0, 0, 1280, 720}});
             if (menuLoop) {
