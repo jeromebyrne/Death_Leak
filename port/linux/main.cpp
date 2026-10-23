@@ -114,6 +114,58 @@ std::string JsonString(const std::string& value) {
     out << '"';
     return out.str();
 }
+// Diagnostic decorator records renderer-level scene submissions in call order.
+// It is installed only for the explicit post-fade packet; normal play uses the
+// original renderer directly. Paths are captured at LoadTexture, including
+// animation frames and runtime effects loaded by LevelScene.
+class PacketTraceRenderer final : public Renderer {
+public:
+    explicit PacketTraceRenderer(std::unique_ptr<Renderer> inner) : inner_(std::move(inner)) {}
+    bool Initialize(const char* title, int width, int height, std::string& error) override {
+        return inner_->Initialize(title, width, height, error);
+    }
+    TextureId LoadTexture(const std::string& path, std::string& error) override {
+        auto id = inner_->LoadTexture(path, error);
+        if (id != InvalidTexture) paths_[id] = path;
+        return id;
+    }
+    void BeginFrame(Color color) override { inner_->BeginFrame(color); }
+    void SetWorldZoom(float zoom) override { inner_->SetWorldZoom(zoom); }
+    void DrawSprite(const Sprite& sprite) override {
+        if (sceneTrace_) {
+            const auto it = paths_.find(sprite.texture);
+            draws_.push_back({sprite.texture, it == paths_.end() ? std::string{} : it->second,
+                              sprite.source, sprite.destination, sprite.tint, sprite.opacity,
+                              sprite.rotationDegrees, sprite.flipX, sprite.flipY,
+                              sprite.repeatX, sprite.uvShiftX, sprite.uvShiftY,
+                              sprite.foliageSway.enabled, sprite.pixelWobble.enabled});
+        }
+        inner_->DrawSprite(sprite);
+    }
+    void FillRect(Rect rect, Color color) override { inner_->FillRect(rect, color); }
+    void ApplyScenePostprocess() override { inner_->ApplyScenePostprocess(); }
+    void EndFrame() override { inner_->EndFrame(); }
+    bool PollQuit() override { return inner_->PollQuit(); }
+    bool KeyDown(int key) const override { return inner_->KeyDown(key); }
+    ControllerSticks ControllerAxes() const override { return inner_->ControllerAxes(); }
+    MouseState Mouse() const override { return inner_->Mouse(); }
+    bool SaveFrame(const std::string& path, std::string& error) override {
+        return inner_->SaveFrame(path, error);
+    }
+    void StartScene() { draws_.clear(); sceneTrace_ = true; }
+    void StopScene() { sceneTrace_ = false; }
+    struct Draw {
+        TextureId texture; std::string path; Rect source, destination; Color tint;
+        float opacity, rotation; bool flipX, flipY, repeatX; float uvShiftX, uvShiftY;
+        bool foliageSway, pixelWobble;
+    };
+    const std::vector<Draw>& Draws() const { return draws_; }
+private:
+    std::unique_ptr<Renderer> inner_;
+    std::unordered_map<TextureId, std::string> paths_;
+    std::vector<Draw> draws_;
+    bool sceneTrace_ = false;
+};
 }
 
 int main(int argc, char** argv) {
@@ -378,6 +430,12 @@ int main(int argc, char** argv) {
     const char* testSoftwareEnv = std::getenv("DEATHLEAK_TEST_ALLOW_SOFTWARE_RENDERER");
     const bool testAllowSoftware = testSoftwareEnv && std::string(testSoftwareEnv) == "1";
     auto renderer = CreateRenderer(testAllowSoftware);
+    PacketTraceRenderer* packetTrace = nullptr;
+    if (!atomicPostfadePacket.empty()) {
+        auto traced = std::make_unique<PacketTraceRenderer>(std::move(renderer));
+        packetTrace = traced.get();
+        renderer = std::move(traced);
+    }
 #ifdef DEATHLEAK_TEST_BODY_SLOW_FRAME_COMMAND
     auto observer = std::make_unique<BodySlowFrameObserver>(std::move(renderer));
     auto* bodySlowFrameObserver = observer.get();
@@ -1539,10 +1597,18 @@ int main(int argc, char** argv) {
                 }
                 painterItems.push_back({20, [&] { rain.Draw(*renderer, drawCameraX, drawCameraY); }});
             }
+            const bool packetTargetDraw = packetTrace && frame == frameLimit - 1;
+            if (packetTargetDraw) packetTrace->StartScene();
             scene.Draw(*renderer, drawCameraX, drawCameraY, worldX, worldY, std::move(painterItems),
                        combat.PlayerDamageBurstGain(), weather.FoliageSwayMultiplier(), shaderFrame, suppressLandingSprayDraw,
                        std::move(afterPlayerDraw));
+            if (packetTargetDraw) packetTrace->StopScene();
             renderer->ApplyScenePostprocess();
+            // Windows Game::PostDraw completes before UIManager::Draw. Read back
+            // this exact post-sepia/pre-HUD surface on the packet target draw.
+            if (packetTargetDraw && !renderer->SaveFrame(capture + ".prehud.bmp", error)) {
+                std::cerr << "Pre-HUD capture failed: " << error << '\n'; return 1;
+            }
             // ShaderClock advanced at loop start; the original meter samples total
             // before this frame's modified delta is committed.
             if (currentLevel == "Game/XmlFiles/levels/sea_2.xml") {
@@ -1659,12 +1725,16 @@ int main(int argc, char** argv) {
                 std::cerr << "Atomic packet image header/dimensions invalid\n"; return 1;
             }
             const auto imageHash = Sha256File(capture);
+            const std::string preHudPath = capture + ".prehud.bmp";
+            const auto preHudHash = postfadePacket ? Sha256File(preHudPath) : std::string{};
             // Hash the game process, not sha256sum's own /proc/self/exe after fork/exec.
             const auto exeHash = Sha256File("/proc/" + std::to_string(getpid()) + "/exe");
             const auto levelHash = Sha256File(currentLevel);
             std::error_code fileError;
             const auto imageBytes = std::filesystem::file_size(capture, fileError);
-            if (imageHash.empty() || exeHash.empty() || levelHash.empty() || fileError) {
+            const auto preHudBytes = postfadePacket ? std::filesystem::file_size(preHudPath, fileError) : 0;
+            if (imageHash.empty() || (postfadePacket && preHudHash.empty()) ||
+                exeHash.empty() || levelHash.empty() || fileError) {
                 std::cerr << "Atomic packet image/identity hash failed\n"; return 1;
             }
             const std::string temporary = packetPath + ".tmp";
@@ -1686,6 +1756,11 @@ int main(int argc, char** argv) {
                    << ", \"pixelFormat\": \"BMP BGRA32\", \"colorSpace\": \"sRGB-assumed\""
                    << ", \"viewport\": [0,0,1280,720], \"captureStage\": \"post_overlay_pre_endframe\""
                    << ", \"scenePostprocessSubmitted\": true},\n"
+                   << "  \"preHudImage\": " << (postfadePacket ?
+                       "{\"file\":" + JsonString(preHudPath) + ",\"sha256\":" + JsonString(preHudHash) +
+                       ",\"bytes\":" + std::to_string(preHudBytes) +
+                       ",\"width\":1280,\"height\":720,\"pixelFormat\":\"BMP BGRA32\",\"captureStage\":\"post_scene_sepia_pre_hud\"}" :
+                       "null") << ",\n"
                    << "  \"transition\": {\"activeLevel\": " << JsonString(currentLevel)
                    << ", \"firstPostfadeOrdinal\": " << packetFirstPostfadeOrdinal
                    << ", \"loadingSplashSubmitted\": " << (loadingPhase != LoadingPhase::None)
@@ -1719,7 +1794,26 @@ int main(int argc, char** argv) {
                    << ", \"foliageGlobalMultiplier\": " << weather.FoliageSwayMultiplier()
                    << ", \"lightningAlpha\": " << weather.Alpha()
                    << ", \"rainVisible\": " << rain.VisibleParticles()
-                   << ", \"orderedSceneDraws\": {\"value\": null, \"reason\": \"per-object draw submission not instrumented\"}"
+                   << ", \"orderedSceneDraws\": ";
+            if (postfadePacket) {
+                packet << "[";
+                const auto& draws = packetTrace->Draws();
+                for (size_t i = 0; i < draws.size(); ++i) {
+                    const auto& d = draws[i];
+                    if (i) packet << ",";
+                    packet << "{\"ordinal\":" << i << ",\"textureId\":" << d.texture
+                           << ",\"texturePath\":" << JsonString(d.path)
+                           << ",\"source\":[" << d.source.x << "," << d.source.y << "," << d.source.width << "," << d.source.height << "]"
+                           << ",\"destination\":[" << d.destination.x << "," << d.destination.y << "," << d.destination.width << "," << d.destination.height << "]"
+                           << ",\"tint\":[" << static_cast<int>(d.tint.r) << "," << static_cast<int>(d.tint.g) << "," << static_cast<int>(d.tint.b) << "," << static_cast<int>(d.tint.a) << "]"
+                           << ",\"opacity\":" << d.opacity << ",\"rotationDegrees\":" << d.rotation
+                           << ",\"flipX\":" << d.flipX << ",\"flipY\":" << d.flipY
+                           << ",\"repeatX\":" << d.repeatX << ",\"uvShift\":[" << d.uvShiftX << "," << d.uvShiftY << "]"
+                           << ",\"foliageSway\":" << d.foliageSway << ",\"pixelWobble\":" << d.pixelWobble << "}";
+                }
+                packet << "]";
+            } else packet << "{\"value\": null, \"reason\": \"per-object draw submission not instrumented\"}";
+            packet << ", \"sceneDrawIdentifierScope\": \"renderer-level sprite submissions; XML IDs and backend internal repeat/particle subdraws not mapped\""
                    << ", \"rngHistory\": {\"value\": null, \"reason\": \"nondeterministic effect history not instrumented\"}},\n"
                    << "  \"uiOrder\": [\"film\",\"bars\",\"hud\",\"optional_fps\",\"modals\",\"loading_splash\"],\n"
                    << "  \"pixels\": {\"health\": " << combat.Health() << ", \"maxHealth\": " << combat.MaxHealth()
