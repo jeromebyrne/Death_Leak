@@ -823,7 +823,12 @@ int main(int argc, char** argv) {
                     devilDialog.reset(); healthPickup.reset();
                     currentLevel = loadingDestination; introPromptClock.Reset();
                     worldX = scene.PlayerX(); worldY = scene.PlayerY();
-                    cameraX = scene.CameraX(); cameraY = scene.CameraY(); cameraShake.Reset();
+                    // Original GameObjectManager calls FollowObjectsOrigin(player) after
+                    // LevelEntry places the player. Snap only authored follow axes;
+                    // ordinary follow lag and bounds still apply on subsequent ticks.
+                    cameraX = scene.CameraFollowX() ? worldX : scene.CameraX();
+                    cameraY = scene.CameraFollowY() ? worldY : scene.CameraY();
+                    cameraShake.Reset();
                     motion.Reset(worldX, worldY, true); combat.ClearLevel();
                     levelTime = interactHeldTime = doorUnlockWait = 0;
                     unlockingDoor = false; interactionTarget.clear();
