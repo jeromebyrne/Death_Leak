@@ -790,9 +790,11 @@ int main(int argc, char** argv) {
                 restartHeld = restart;
             } else {
             restartHeld = restart;
-            const bool crouchHeld = !script.empty() ? command == 'C' : renderer->KeyDown(Down);
-            crouchInput = crouchHeld && motion.Grounded() && motion.WallSide() == 0 &&
-                !motion.Rolling() && !combat.MeleeActive();
+            // Resolve crouch before movement; fire is resolved after the stick
+            // deadzone below so the two controls remain independent on ground.
+            crouchInput = ResolveGameplayAttackInput(!script.empty(), command, *renderer,
+                motion.Grounded(), motion.WallSide() != 0, motion.Rolling(),
+                combat.MeleeActive(), false).crouch;
             const bool jump = !script.empty() ? (command == 'J' || command == 'Q' || command == 'E' || command == 'Y' || command == 'Z') : renderer->KeyDown(Up);
             // Windows right shoulder attempts an airborne dash and a grounded melee.
             // O/left shoulder is roll; the motion layer keeps the landing input window.
@@ -854,7 +856,9 @@ int main(int argc, char** argv) {
             const int rightY = deathleak::game::RightStickCameraTarget::WorldRightY(controllerSticks.rightY);
             stickAim = script.empty() && !simulateOnly && controllerSticks.connected &&
                 (std::abs(controllerSticks.rightX) > rightDeadzone || std::abs(rightY) > rightDeadzone);
-            const bool fire = (!script.empty() ? (command == 'F' || command == 'B' || command == 'N' || command == 'Y' || command == 'Z') : (renderer->KeyDown(Down) && !crouchInput)) || stickAim;
+            const bool fire = ResolveGameplayAttackInput(!script.empty(), command, *renderer,
+                wasGrounded, motion.WallSide() != 0, motion.Rolling(),
+                combat.MeleeActive(), stickAim).fire;
             aimX = stickAim ? static_cast<float>(controllerSticks.rightX) : 0.f;
             aimY = stickAim ? static_cast<float>(rightY) : 0.f;
             playerEligibleFireAttempt = fire && !motion.Rolling() && !motion.InWater() &&
@@ -870,9 +874,8 @@ int main(int argc, char** argv) {
             const bool shotAirborne = !motion.Grounded() && motion.WallSide() == 0 &&
                 !motion.InWater() && verticalSpeed != 0.f;
             const deathleak::game::PlayerShotLaunchState launchState{
-                script.empty() && renderer->KeyDown(Down) && !crouchInput &&
-                    motion.Grounded() && motion.WallSide() == 0 && !motion.Rolling() &&
-                    !combat.MeleeActive(),
+                fire && crouchInput && motion.Grounded() && motion.WallSide() == 0 &&
+                    !motion.Rolling() && !combat.MeleeActive(),
                 shotAirborne && verticalSpeed > -30.f,
                 shotAirborne && verticalSpeed <= -30.f
             };

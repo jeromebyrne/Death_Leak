@@ -92,7 +92,23 @@ public:
 };
 
 // Key codes are intentionally backend-neutral.
-enum Key { Left = 1, Right, Up, Down, Escape, Restart, Interact, Melee, Purchase, Roll, ModalBack };
+enum Key { Left = 1, Right, Up, Down, Escape, Restart, Interact, Melee, Purchase, Roll, ModalBack, Fire };
+
+// Linux keyboard adaptation: crouch and fire are independent grounded actions.
+// Down remains the legacy airborne shot; scripted commands and stick aim keep
+// their existing paths. Kept backend-neutral for a no-display input fixture.
+struct GameplayAttackInput { bool crouch; bool fire; };
+inline GameplayAttackInput ResolveGameplayAttackInput(
+    bool scripted, char command, const Renderer& renderer, bool grounded,
+    bool atWall, bool rolling, bool meleeActive, bool stickAim) {
+    const bool down = scripted ? command == 'C' : renderer.KeyDown(Down);
+    const bool crouch = down && grounded && !atWall && !rolling && !meleeActive;
+    const bool scriptedFire = command == 'F' || command == 'B' || command == 'N' ||
+                              command == 'Y' || command == 'Z';
+    const bool fire = (scripted ? scriptedFire :
+        (renderer.KeyDown(Fire) || (down && !crouch))) || stickAim;
+    return {crouch, fire};
+}
 // Software selection is an explicit headless-test escape hatch, never release acceptance.
 std::unique_ptr<Renderer> CreateRenderer(bool testAllowSoftware = false);
 
