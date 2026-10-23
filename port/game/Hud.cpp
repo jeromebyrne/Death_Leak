@@ -86,7 +86,7 @@ void Hud::Draw(render::Renderer& renderer, float health, float maxHealth, float 
     }
     // The original 91_xp_meter is the focus meter (200 units wide at
     // x=-900,y=440 in the 1920x1080 UI), directly below health.
-    if (focusBar_) renderer.DrawSprite({focusBar_, {}, {43, 66, 127.f * focusProgress_.displayed, 9}, {255,255,255,220}});
+    if (focusBar_) renderer.DrawSprite({focusBar_, {}, {43, 66, 127.f * focusProgress_.displayed, 9}, {255,255,255,220}, 1.f, 0, false, true});
     if (overlay_) renderer.DrawSprite({overlay_, {}, {40, 64, 133, 13}, {255,255,255,178}});
     if (edge_) {
         renderer.DrawSprite({edge_, {}, {39, 63, 4, 15}, {255,255,255,220}});

@@ -33,6 +33,19 @@
 using namespace deathleak::render;
 
 namespace {
+// BEGIN_GAMEPLAY_FILM_FRAME_SELECTOR
+// The original widget starts with last switch 0 and updates against system
+// uptime. steady_clock's epoch supplies the port's monotonic uptime analogue.
+// Keep the strict 1000/11-ms gate and advance only once per active update.
+void AdvanceGameplayFilmFrame(std::uint64_t nowMilliseconds,
+                              std::uint64_t& lastSwitchMilliseconds,
+                              size_t& frameIndex, size_t frameCount) {
+    if (lastSwitchMilliseconds + 1000 / 11 < nowMilliseconds) {
+        frameIndex = (frameIndex + 1) % frameCount;
+        lastSwitchMilliseconds = nowMilliseconds;
+    }
+}
+// END_GAMEPLAY_FILM_FRAME_SELECTOR
 // UI.xml uses a 1920x1080 centered coordinate system. Preserve the authored
 // widget rectangles while rendering in the port's 1280x720 logical viewport.
 constexpr Rect AuthoredUI(float x, float y, float width, float height) {
@@ -400,10 +413,13 @@ int main(int argc, char** argv) {
     if (!finalFrame && !(playLevel.empty() && !menuLoop))
         std::cerr << "HUD frame_top.png load failed: " << error << '\n';
     std::array<TextureId, 4> filmFrames{};
-    // game_hud's scratch widget uses its own wall-clock 11 FPS cadence, not
-    // the capped gameplay/shader delta. Start at frame one on its first draw.
+    // game_hud's scratch widget uses monotonic uptime at 11 FPS, not the
+    // capped gameplay/shader delta. Original last-switch state starts at zero.
     size_t gameplayFilmIndex = 0;
-    std::optional<std::chrono::steady_clock::time_point> gameplayFilmLastSwitch;
+    std::uint64_t gameplayFilmLastSwitchMilliseconds = 0;
+    // final_scene_hud is a distinct retained animated widget.
+    size_t finalFilmIndex = 0;
+    std::uint64_t finalFilmLastSwitchMilliseconds = 0;
     auto loadFilmFrames = [&] {
         if (simulateOnly || filmFrames[0]) return;
         constexpr std::array<const char*, 4> filmPaths = {
@@ -1340,8 +1356,12 @@ int main(int argc, char** argv) {
                 // final_scene_hud: four authored film frames at 11 FPS and
                 // quarter opacity, plus the original frame_top art. Bitmap
                 // lettering remains a typography fallback for Impact.
-                const int filmIndex = static_cast<int>(finalSceneTime * 11.f) % 4;
-                if (filmFrames[filmIndex]) renderer->DrawSprite({filmFrames[filmIndex], {}, {0,0,1280,720}, {255,255,255,64}});
+                const auto finalFilmNowMilliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(
+                    std::chrono::steady_clock::now().time_since_epoch()).count();
+                AdvanceGameplayFilmFrame(static_cast<std::uint64_t>(finalFilmNowMilliseconds),
+                                         finalFilmLastSwitchMilliseconds,
+                                         finalFilmIndex, filmFrames.size());
+                if (filmFrames[finalFilmIndex]) renderer->DrawSprite({filmFrames[finalFilmIndex], {}, {0,0,1280,720}, {255,255,255,64}});
                 if (finalFrame) {
                     renderer->DrawSprite({finalFrame, {}, {0,0,1280,100}});
                     Sprite bottomBar{finalFrame, {}, {0,620,1280,100}};
@@ -1351,14 +1371,11 @@ int main(int argc, char** argv) {
                 if (finalTitleShown) deathleak::game::DrawBitmapText(*renderer, "DEATH LEAK", 200, 255, 16, {255,0,0,245});
             } else {
                 loadFilmFrames();
-                const auto filmNow = std::chrono::steady_clock::now();
-                if (!gameplayFilmLastSwitch) gameplayFilmLastSwitch = filmNow;
-                // UIAnimatedSprite::Update uses a strict, integer-millisecond
-                // threshold and advances at most one frame per UI update.
-                else if (filmNow - *gameplayFilmLastSwitch > std::chrono::milliseconds(1000 / 11)) {
-                    gameplayFilmIndex = (gameplayFilmIndex + 1) % filmFrames.size();
-                    gameplayFilmLastSwitch = filmNow;
-                }
+                const auto filmNowMilliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(
+                    std::chrono::steady_clock::now().time_since_epoch()).count();
+                AdvanceGameplayFilmFrame(static_cast<std::uint64_t>(filmNowMilliseconds),
+                                         gameplayFilmLastSwitchMilliseconds,
+                                         gameplayFilmIndex, filmFrames.size());
                 if (filmFrames[gameplayFilmIndex])
                     renderer->DrawSprite({filmFrames[gameplayFilmIndex], {}, {0,0,1280,720}, {255,255,255,51}});
                 // game_hud.xml: opaque 50-unit bands follow the film and precede HUD widgets.
