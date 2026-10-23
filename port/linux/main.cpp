@@ -1074,9 +1074,10 @@ int main(int argc, char** argv) {
             }
         }
         if (simulateOnly) continue;
-        scene.UpdateVisuals(dt, worldX, worldY, cameraX, cameraY);
-        combat.UpdateVisuals(dt);
-        if (!playLevel.empty()) scene.UpdatePlayerVisual(dt, motion.VelocityX(), motion.VelocityY(),
+        const bool objectsPaused = paperModal || upgradeModal;
+        scene.UpdateVisuals(dt, worldX, worldY, cameraX, cameraY, objectsPaused);
+        if (!objectsPaused) combat.UpdateVisuals(dt);
+        if (!playLevel.empty() && !objectsPaused) scene.UpdatePlayerVisual(dt, motion.VelocityX(), motion.VelocityY(),
             motion.Grounded(), motion.WallSide(), motion.Rolling(), motion.DownwardDashing(), motion.InWater(),
             combat.MeleeElapsed(), facing, playerProjectileFired, playerEligibleFireAttempt);
         const auto shaderFrame = shaderClock.Draw();

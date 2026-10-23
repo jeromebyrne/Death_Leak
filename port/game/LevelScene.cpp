@@ -791,7 +791,18 @@ void LevelScene::UpdateAuthoredOrbs(float dt, float playerX, float playerY, floa
             orb.rotation = std::atan2(orb.orbVx, -orb.orbVy);
     }
 }
-void LevelScene::UpdateVisuals(float dt, float playerX, float playerY, float cameraX, float cameraY) {
+void LevelScene::UpdateVisuals(float dt, float playerX, float playerY, float cameraX, float cameraY,
+                               bool objectsPaused) {
+    // ParallaxLayer mutates auto-scroll UVs in Draw, even when Windows game
+    // objects are paused. Keep that clock independent of object updates.
+    for (auto& sprite : sprites_) {
+        if (!sprite.autoScrollY) continue;
+        constexpr float worldToBackbufferY = 720.f / 1080.f;
+        sprite.autoScrollYPhase += sprite.autoScrollYSpeed * worldToBackbufferY *
+            .001f * (dt * 60.f);
+        sprite.autoScrollYPhase -= std::floor(sprite.autoScrollYPhase);
+    }
+    if (objectsPaused) return;
     for (auto& spray : particleSprays_) {
         if (spray.alwaysUpdate || (spray.updateable &&
             spray.x + spray.width*.5f > cameraX - 2000.f && spray.x - spray.width*.5f < cameraX + 2000.f &&
@@ -818,15 +829,6 @@ void LevelScene::UpdateVisuals(float dt, float playerX, float playerY, float cam
             [](const ParticleSpray::Particle& p) { return p.dead; });
     }), orbTrails_.end());
     for (auto& sprite : sprites_) {
-        if (sprite.autoScrollY) {
-            // Legacy ParallaxLayer::Draw adds scaled speed * .001 per 1/60 update.
-            // Its Draw reads the previous update delta; UpdateVisuals advances once
-            // before the port draw, keeping diagnostic redraws state-free.
-            constexpr float worldToBackbufferY = 720.f / 1080.f;
-            sprite.autoScrollYPhase += sprite.autoScrollYSpeed * worldToBackbufferY *
-                .001f * (dt * 60.f);
-            sprite.autoScrollYPhase -= std::floor(sprite.autoScrollYPhase);
-        }
         if (sprite.collected) continue;
         if (sprite.scrolling && sprite.updateable && sprite.scrollTime > 0.f) {
             // Match GameObjectManager's world-space update zone. Use the current

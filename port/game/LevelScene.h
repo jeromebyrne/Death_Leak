@@ -83,7 +83,8 @@ public:
     void UpdatePlayerVisual(float dt, float vx, float vy, bool grounded, int wallSide,
                             bool rolling, bool dashing, bool inWater, float meleeElapsed, int facing,
                             bool projectileFired, bool eligibleFireAttempt = false);
-    void UpdateVisuals(float dt, float playerX, float playerY, float cameraX, float cameraY);
+    void UpdateVisuals(float dt, float playerX, float playerY, float cameraX, float cameraY,
+                       bool objectsPaused = false);
     void UpdateAuthoredOrbs(float dt, float playerX, float playerY, float cameraX, float cameraY);
     size_t CollectCurrencyOrbs(float playerX, float playerY, std::unordered_set<std::string>& collected);
     void ApplyCollected(const std::unordered_set<std::string>& collected);
