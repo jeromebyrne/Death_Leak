@@ -404,8 +404,11 @@ void Combat::UpdateBloodFlights(const LevelScene& scene, float dt) {
             }
         }
         if (winner < scene.Ground().size()) {
-            blood.x = oldX + (nextX-oldX)*first;
-            blood.y = oldY + (nextY-oldY)*first;
+            // The directed source projectile has already advanced to its full
+            // next center before line collision. Preserve the ordinary
+            // zero-direction center-sweep behavior separately.
+            blood.x = directed ? nextX : oldX + (nextX-oldX)*first;
+            blood.y = directed ? nextY : oldY + (nextY-oldY)*first;
             blood.vy = 0.f;
             blood.inactiveAge = 0.f;
             const auto& line = scene.Ground()[winner];

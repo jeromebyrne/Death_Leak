@@ -1125,6 +1125,12 @@ void LevelScene::SetIntroBodyPhase(IntroBodyPhase phase) {
     playerSequence_ = name;
     playerFrame_ = 0;
     playerFrameElapsed_ = 0.f;
+    // Both authored intro arm sequences have zero frames. Retain their finished
+    // state through phase exit; the first ordinary update then syncs to its
+    // body sequence and Finish()es it, as Character::UpdateAnimations does.
+    playerArmSequence_ = name;
+    playerArmFrame_ = 0;
+    playerArmFrameElapsed_ = 0.f;
 }
 
 size_t LevelScene::IntroBodyFrameCount() const {
@@ -1172,7 +1178,8 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
             playerSequence_ = name; playerFrame_ = 0; playerFrameElapsed_ = 0.f;
         }
         const auto& sequence = it->second;
-        const float rate = std::clamp(sequence.rate, sequence.minRate, sequence.maxRate);
+        // XML ReadXml stores the authored initial rate directly; no SetFrameRate clamp occurs here.
+        const float rate = sequence.rate;
         if (!introBodyFinished_ && rate > 0.f) {
             playerFrameElapsed_ += precedingRenderedModifiedDelta >= 0.f ? precedingRenderedModifiedDelta : dt;
             if (playerFrameElapsed_ >= 1.f / rate) {
@@ -1413,7 +1420,7 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         }
         // Cull using the rendered rotated quad, not its unrotated destination.
         if (!render::SpriteMayIntersectViewport(draw)) continue;
-        if (object.player && object.xmlId == "2") {
+        if (object.player && object.xmlId == "2" && introBodyPhase_ == IntroBodyPhase::None) {
             auto arm = playerArmSequences_.find(playerArmSequence_);
             if (arm != playerArmSequences_.end() && playerArmFrame_ < arm->second.frames.size()) {
                 auto armDraw = draw;

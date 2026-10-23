@@ -638,6 +638,10 @@ int main(int argc, char** argv) {
                 }
                 purchaseHeld = purchase; dismissHeld = dismiss;
             } else if (!hasPulledSword) {
+            // Player::Update runs Character physics before its unpulled-sword
+            // early return. Keep that step on the completion tick as well.
+            motion.Update(scene, dt, 0, false);
+            worldX = motion.X(); worldY = motion.Y();
             // Raw Interact is held independently of world-object activation.
             // Normal motion, combat, roll, jump, interaction, and right-stick
             // target updates remain suppressed through the one-shot pull.
@@ -660,7 +664,12 @@ int main(int argc, char** argv) {
                             combat.SpawnIntroBloodFlight(worldX, worldY + 5.f);
                             scene.SetIntroBodyPhase(deathleak::game::LevelScene::IntroBodyPhase::Pull);
                             std::cout << "Fresh-save intro pull at frame " << frame << '\n';
-                        } else introEffectiveZoom = std::max(introLoadZoom * 0.75f, introEffectiveZoom - dt * 0.05f);
+                        } else {
+                            // Source requests a 0.1s shake on each sub-threshold held
+                            // update; active windows refuse restarts until they expire.
+                            cameraShake.Start((introHeldTime / 2.75f) * 5.f, 0.1f, cameraShakeTime - dt);
+                            introEffectiveZoom = std::max(introLoadZoom * 0.75f, introEffectiveZoom - dt * 0.05f);
+                        }
                     } else {
                         introHeldTime = 0.f;
                         introEffectiveZoom = std::min(introLoadZoom, introEffectiveZoom + dt * 0.10f);
