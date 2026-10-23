@@ -668,6 +668,9 @@ int main(int argc, char** argv) {
             const bool wasGrounded = motion.Grounded();
             motion.Update(scene, dt, (combat.MeleeActive() || motion.Rolling()) ? 0 : static_cast<int>(direction),
                           jump && !combat.MeleeActive());
+            // Scripted input has no controller strafe resolution, but Roll footstep
+            // spray still follows the last horizontal movement direction.
+            strafeVisual.movementDirection = movementDirection;
             if (script.empty()) strafeVisual = deathleak::game::ResolvePlayerStrafeVisual(
                 controllerSticks, movementDirection, motion.Rolling(), combat.MeleeActive(),
                 !wasGrounded && motion.Grounded());
