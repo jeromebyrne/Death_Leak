@@ -565,6 +565,17 @@ int main(int argc, char** argv) {
         shaderClock.Update(dt);
         cameraShakeTime += dt;
         const char command = frame < static_cast<int>(scriptedInput.size()) ? scriptedInput[frame] : 0;
+        // Game objects update before UIGameLoading changes the pause state.
+        // The hold-exit frame is still paused; FadeOut-entry resumes gameplay.
+        const bool loadingPausedThisFrame = loadingPhase == LoadingPhase::FadeIn ||
+            loadingPhase == LoadingPhase::OpaqueHold;
+        bool loadingHoldExitedThisFrame = false;
+#ifdef DEATHLEAK_TEST_LOADING_FADE_OBSERVER
+        const auto loadingPhaseOnEntry = loadingPhase;
+        bool loadingGameplayRan = false, loadingWeatherRan = false;
+        bool loadingSceneVisualsRan = false, loadingPlayerVisualRan = false;
+        int loadingDrawAlpha = -1;
+#endif
         bool crouchInput = false;
         bool playerProjectileFired = false;
         bool playerEligibleFireAttempt = false;
@@ -672,7 +683,7 @@ int main(int argc, char** argv) {
             if (renderer->KeyDown(Right)) playerX += 250 * dt;
             if (renderer->KeyDown(Up)) playerY -= 250 * dt;
             if (renderer->KeyDown(Down)) playerY += 250 * dt;
-        } else if (loadingPhase != LoadingPhase::None) {
+        } else if (loadingPausedThisFrame) {
             // UIGameLoading updates while gameplay is paused. The destination
             // is not installed until the outgoing scene is fully obscured.
             loadingPhaseTime += dt;
@@ -703,12 +714,20 @@ int main(int argc, char** argv) {
                 // branch masks fade-out updates for at least 0.05 s. Preserve
                 // elapsed time, including the first alpha step after the hold.
                 loadingPhase = LoadingPhase::FadeOut;
-            } else if (loadingPhase == LoadingPhase::FadeOut && loadingPhaseTime > kLoadingFadeSeconds) {
+                loadingHoldExitedThisFrame = true;
+            }
+        } else {
+#ifdef DEATHLEAK_TEST_LOADING_FADE_OBSERVER
+            loadingGameplayRan = true;
+#endif
+            // FadeOut no longer pauses gameplay, but its UI clock still ticks
+            // once per frame until the splash has fully disappeared.
+            if (loadingPhase == LoadingPhase::FadeOut) loadingPhaseTime += dt;
+            if (loadingPhase == LoadingPhase::FadeOut && loadingPhaseTime > kLoadingFadeSeconds) {
                 loadingPhase = LoadingPhase::None;
                 loadingPhaseTime = 0.f;
                 loadingDestination.clear();
             }
-        } else {
             if (currentLevel == "Game/XmlFiles/levels/sea_2.xml") {
                 finalSceneTime += dt;
                 if (!finalTitleShown && finalSceneTime > 15.f) {
@@ -1312,7 +1331,10 @@ int main(int argc, char** argv) {
         updateSeconds += std::chrono::duration<double>(afterUpdate-now).count();
         if (!playLevel.empty()) {
             weather.SetAllowed(scene.AllowsWeather());
-            if (!paperModal && !upgradeModal && loadingPhase == LoadingPhase::None) {
+            if (!paperModal && !upgradeModal && !loadingPausedThisFrame) {
+#ifdef DEATHLEAK_TEST_LOADING_FADE_OBSERVER
+                loadingWeatherRan = true;
+#endif
                 weather.Update(dt);
                 rain.Update(dt, weather.Raining(), cameraX, cameraY);
             }
@@ -1326,16 +1348,25 @@ int main(int argc, char** argv) {
             precedingRenderedModifiedDelta = dt;
             continue;
         }
-        const bool objectsPaused = paperModal || upgradeModal || loadingPhase != LoadingPhase::None;
-        if (loadingPhase == LoadingPhase::None)
+        const bool objectsPaused = paperModal || upgradeModal || loadingPausedThisFrame;
+        if (!loadingPausedThisFrame) {
+#ifdef DEATHLEAK_TEST_LOADING_FADE_OBSERVER
+            loadingSceneVisualsRan = true;
+#endif
             scene.UpdateVisuals(dt, worldX, worldY, cameraX, cameraY, objectsPaused, precedingRenderedModifiedDelta);
+        }
         if (!objectsPaused) combat.UpdateVisuals(dt);
 #ifdef DEATHLEAK_TEST_BODY_SLOW_FRAME_COMMAND
         if (!playLevel.empty() && !objectsPaused) bodySlowFrameObserver->BodyUpdate(motion.Grounded());
 #endif
-        if (!playLevel.empty() && !objectsPaused) scene.UpdatePlayerVisual(dt, motion.VelocityX(), motion.VelocityY(),
+        if (!playLevel.empty() && !objectsPaused) {
+#ifdef DEATHLEAK_TEST_LOADING_FADE_OBSERVER
+            loadingPlayerVisualRan = true;
+#endif
+            scene.UpdatePlayerVisual(dt, motion.VelocityX(), motion.VelocityY(),
             motion.Grounded(), motion.WallSide(), motion.Rolling(), motion.DownwardDashing(), motion.InWater(),
             combat.MeleeElapsed(), facing, playerProjectileFired, playerEligibleFireAttempt, strafeVisual, stickAim, aimX, aimY, precedingRenderedModifiedDelta, crouchInput, motion.Recovery());
+        }
         if (!playLevel.empty() && !objectsPaused && scene.ImpactVisualFinished()) motion.CompleteImpactRecovery();
         // Camera2D draws X's random sign before Y's, only while shaking.
         const bool jitter = cameraShake.WillJitter(cameraShakeTime - dt);
@@ -1503,11 +1534,14 @@ int main(int argc, char** argv) {
                 renderer->DrawSprite({deathArt, {}, {0, 0, 1280, 720}});
             // UIManager draws gameloading after scene postprocess and all HUD.
             if (loadingPhase != LoadingPhase::None) {
-                const float alpha = loadingPhase == LoadingPhase::FadeIn
+                const float alpha = loadingHoldExitedThisFrame ? 1.f : loadingPhase == LoadingPhase::FadeIn
                     ? std::min(1.f, loadingPhaseTime / kLoadingFadeSeconds)
                     : loadingPhase == LoadingPhase::FadeOut
                         ? std::max(0.f, 1.f - loadingPhaseTime / kLoadingFadeSeconds) : 1.f;
                 const Color tint{255, 255, 255, static_cast<std::uint8_t>(std::lround(alpha * 255.f))};
+#ifdef DEATHLEAK_TEST_LOADING_FADE_OBSERVER
+                loadingDrawAlpha = tint.a;
+#endif
                 if (modalBackground) renderer->DrawSprite({modalBackground, {}, {0, 0, 1280, 720}, tint});
                 else renderer->FillRect({0, 0, 1280, 720}, {0, 0, 0, tint.a});
             }
@@ -1516,6 +1550,20 @@ int main(int argc, char** argv) {
             std::cerr << "Capture failed: " << error << '\n'; return 1;
         }
         renderer->EndFrame();
+#ifdef DEATHLEAK_TEST_LOADING_FADE_OBSERVER
+        if (loadingPhaseOnEntry != LoadingPhase::None || loadingPhase != LoadingPhase::None) {
+            std::cout << "FADE_OBSERVER frame=" << frame
+                      << " entry=" << static_cast<int>(loadingPhaseOnEntry)
+                      << " exit=" << static_cast<int>(loadingPhase)
+                      << " gameplay=" << loadingGameplayRan
+                      << " weather=" << loadingWeatherRan
+                      << " scene=" << loadingSceneVisualsRan
+                      << " player=" << loadingPlayerVisualRan
+                      << " alpha=" << loadingDrawAlpha
+                      << " hold_exit=" << loadingHoldExitedThisFrame
+                      << " time=" << loadingPhaseTime << '\n';
+        }
+#endif
         ++presentedFramesInSample;
         precedingRenderedModifiedDelta = dt;
         shaderClock.RenderCompleted(dt);
