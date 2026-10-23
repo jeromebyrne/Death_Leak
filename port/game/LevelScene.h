@@ -17,6 +17,7 @@ struct SceneSprite {
     std::string xmlId; // Source level ID, retained only for opt-in render diagnostics.
     size_t order = 0;
     float x = 0, y = 0, width = 0, height = 0;
+    float followWorldX = 0; // ID59 world-matrix X from the preceding eligible update.
     float rotation = 0;
     int depth = 0;
     render::Color tint{255, 255, 255, 255};

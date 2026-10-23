@@ -484,6 +484,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
             }
         }
         sprite.x = Attr(position, "x"); sprite.y = Attr(position, "y");
+        sprite.followWorldX = sprite.x;
         sprite.width = Attr(dimensions, "width"); sprite.height = Attr(dimensions, "height");
         sprite.rotation = Attr(position, "rotation");
         sprite.depth = Depth(position->Attribute("depth_layer"));
@@ -872,6 +873,14 @@ void LevelScene::UpdateVisuals(float dt, float playerX, float playerY, float cam
     }), orbTrails_.end());
     for (auto& sprite : sprites_) {
         if (sprite.collected) continue;
+        // GameObject builds the world matrix before ParallaxLayer follows camera X.
+        // ID59 always updates; retain its previous position per eligible update,
+        // including schedules with multiple updates or draws per frame.
+        if (sprite.xmlId == "59" && sprite.parallaxLayer && sprite.followCameraX &&
+            sprite.updateable && sprite.alwaysUpdate) {
+            sprite.followWorldX = sprite.x;
+            sprite.x = cameraX;
+        }
         if (sprite.scrolling && sprite.updateable && sprite.scrollTime > 0.f) {
             // Match GameObjectManager's world-space update zone. Use the current
             // position: a scrolling sprite can enter or leave it mid-cycle.
@@ -1233,7 +1242,8 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         // background/foreground sprites use GameObject depth parallax instead.
         const float worldX = object.playerAimLine ? playerX + (playerAimLineFacing_ < 0 ? -5.f : 5.f) :
             object.player || object.playerShadow ? playerX :
-            object.parallaxLayer && object.followCameraX ? cameraX : object.x;
+            object.parallaxLayer && object.followCameraX ?
+                (object.xmlId == "59" ? object.followWorldX : cameraX) : object.x;
         const float worldY = object.playerAimLine ? playerY + 25.f :
             object.playerShadow ? playerY - 150.f : object.player ? playerY :
             object.parallaxLayer && object.followCameraY ? cameraY : object.y;
