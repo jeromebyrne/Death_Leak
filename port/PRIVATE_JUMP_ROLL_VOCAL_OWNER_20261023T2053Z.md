@@ -1,0 +1,7 @@
+# Private jump/roll vocal owner handoff — 2026-10-23
+
+**Closed bounded source-parity gap.** Commit `26a2029` queues one vocal picker draw (`std::rand() % 20`) for each actual successful player jump, immediate roll, or buffered landing roll. Only draws 0–4 dispatch `character/jump_1.wav` through `jump_5.wav`; 5–19 stay silent. The event originates inside `PlayerMotion`'s successful transitions and is consumed once in `main.cpp`, so held/failed jump, failed roll, and swimming do not call the picker. SDL retains its existing SFX mute gate. The separate wall-jump `jump.wav` is out of scope.
+
+**Checks:** Docker-built focused CPU fixture passed (jump, held/failed jump, immediate/failed/buffered roll, authored underwater hazard, all five selected branches plus silence). Docker-built SDL disk callback fixture passed: 48 kHz stereo PCM idle 86,016 bytes/all zero; jump_1 selected 90,112 bytes/27,580 nonzero samples/peak 601; muted selected 86,016 bytes/all zero. PCM/logs are ignored under `port/build/jump-roll-vocal-20261023/`. Docker `make -C port` passed, with only existing tinyxml warnings. `git diff --check` passed. No GPU/Xorg capture or physical-speaker claim.
+
+**Commit/push:** software commit `26a2029`; this handoff is committed separately. Push verification in final owner reply. Pre-existing unrelated dirty files were preserved; no checkpoint/status file was edited. **File and build lane released.** No implementation blocker; speaker/input acceptance remains a separate device gate.
