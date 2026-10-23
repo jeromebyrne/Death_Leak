@@ -459,7 +459,10 @@ int main(int argc, char** argv) {
         float dt = std::chrono::duration<float>(now - last).count();
         last = now;
         if (fixedDt > 0) dt = fixedDt;
-        if (dt > 0.05f) dt = 0.05f;
+        // Original program.cpp caps the modified update delta to its 60 Hz target
+        // before Update/Render; the completed frame commits that same delta.
+        constexpr float kTargetDelta = 1.f / 60.f;
+        if (dt > kTargetDelta) dt = kTargetDelta;
         // This is the port's update delta; feed the modified delta here when
         // Windows-style damage slowdown is implemented.
         shaderClock.Update(dt);
