@@ -1,5 +1,6 @@
 #pragma once
 #include "LevelScene.h"
+#include "ParticleSpray.h"
 #include <string>
 #include <algorithm>
 #include <cstdint>
@@ -48,7 +49,7 @@ struct Shot {
 };
 class Combat {
 public:
-    void ClearLevel() { enemies_.clear(); shots_.clear(); deathEffects_.clear(); activeTriggers_.clear(); fireCooldown_ = burstCooldown_ = hurtCooldown_ = 0; burstCount_ = 0; playerContacts_ = contactFrames_ = 0; meleeTime_ = 0; meleeHeld_ = false; playerDamageBurstAge_ = 0.25f; }
+    void ClearLevel() { enemies_.clear(); shots_.clear(); deathEffects_.clear(); materialSprays_.clear(); activeTriggers_.clear(); fireCooldown_ = burstCooldown_ = hurtCooldown_ = 0; burstCount_ = 0; playerContacts_ = contactFrames_ = 0; meleeTime_ = 0; meleeHeld_ = false; playerDamageBurstAge_ = 0.25f; }
     void SetArt(render::Renderer& renderer);
     void Update(const LevelScene& scene, float x, float y, float dt, bool fire, bool melee, bool grounded, bool rolling, int facing, render::Renderer& renderer);
     bool DamageEnemy(size_t index, float damage, float projectileDirectionX = 0.f); // shared projectile/melee hit path
@@ -87,6 +88,8 @@ public:
     size_t ShotCount() const { return shots_.size(); }
     size_t DeathDebrisCount() const;
     size_t DeathSprayCount() const;
+    size_t MaterialSprayCount() const { return materialSprays_.size(); }
+    const ParticleSpray* MaterialSpray(size_t index) const { return index < materialSprays_.size() ? &materialSprays_[index] : nullptr; }
     const std::vector<Enemy>& Enemies() const { return enemies_; }
     const std::vector<Shot>& Shots() const { return shots_; }
 private:
@@ -100,6 +103,7 @@ private:
         bool spray = false;
     };
     std::vector<DeathEffect> deathEffects_;
+    std::vector<ParticleSpray> materialSprays_;
     std::unordered_set<std::string> activeTriggers_;
     std::unordered_map<std::string, std::int64_t> triggerHistory_;
     bool simulatedWallClock_ = false;
@@ -111,6 +115,7 @@ private:
     render::TextureId ninjaArt_ = 0, ghostArt_ = 0, skeletonArt_ = 0, knifeArt_ = 0;
     render::TextureId ninjaDeathArt_[7]{};
     render::TextureId explosionLinesArt_ = 0;
+    render::TextureId bloodParticleArt_ = 0;
     render::TextureId ninjaShotArt_ = 0, ghostShotArt_ = 0, skeletonShotArt_ = 0, upgradedKnifeArt_ = 0;
     float maxHealth_ = 25.f, health_ = 25.f, focus_ = 100.f, fireCooldown_ = 0.f, burstCooldown_ = 0.f;
     float focusCooldown_ = 0.f, hurtCooldown_ = 0.f;
@@ -125,6 +130,7 @@ private:
     int playerContacts_ = 0, contactFrames_ = 0;
     float playerDamageBurstAge_ = 0.25f;
     void SpawnNinjaDeath(float x, float y);
+    void SpawnNinjaMaterialSpray(float x, float y);
     void ApplyPlayerDamage(float damage);
 };
 }

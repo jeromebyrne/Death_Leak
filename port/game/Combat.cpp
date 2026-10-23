@@ -121,6 +121,7 @@ void Combat::SetArt(render::Renderer& renderer) {
         "Game/Media/orb.png", "Game/Media/orb2.png", "Game/Media/orb3.png"};
     for (size_t i = 0; i < 7; ++i) ninjaDeathArt_[i] = renderer.LoadTexture(deathPaths[i], error);
     explosionLinesArt_ = renderer.LoadTexture("Game/Media/explosion_lines.png", error);
+    bloodParticleArt_ = renderer.LoadTexture("Game/Media/bloodparticle.png", error);
     auto load = [&](const char* xml, VisualSet& visual) {
         TiXmlDocument document(xml);
         if (!document.LoadFile()) return;
@@ -181,6 +182,47 @@ void Combat::SpawnNinjaDeath(float x, float y) {
                                  -spread*60.f*4.f, size, size, 0.f, .3f+.1f*i, 0.f, true});
     }
 }
+void Combat::SpawnNinjaMaterialSpray(float x, float y) {
+    // Character's common gruesome branch runs before NPC::DoNinjaExplosion.
+    // Bottom() uses the NinjaSpawner visual height, not its collision box.
+    ParticleSpray spray;
+    spray.texture = bloodParticleArt_;
+    spray.x = x;
+    spray.y = y - 231.714279f * .5f + 30.f;
+    spray.width = 3200.f;
+    spray.height = 2000.f;
+    spray.depth = 3000; // GameObject::kPlayer
+    spray.looping = false;
+    spray.warmed = true; // Runtime emission does not take authored-load Warm().
+    spray.fadeIn = .15f;
+    spray.fadeOut = .8f;
+    spray.scalesByLifetime = true;
+    spray.scaleTo = 8.f;
+    spray.randomState = 0x4e494e4au ^ static_cast<std::uint32_t>(kills_);
+    spray.particles.reserve(20);
+    for (int i = 0; i < 20; ++i) {
+        ParticleSpray::Particle particle;
+        const float spread = static_cast<float>(spray.Random(30)) * .01f;
+        particle.directionX = .2f + spread;
+        particle.directionY = .8f - spread;
+        const int offsetX = static_cast<int>(spray.Random(51));
+        const int signX = spray.Random(2) ? -1 : 1;
+        const int offsetY = static_cast<int>(spray.Random(101));
+        const int signY = spray.Random(2) ? -1 : 1;
+        particle.x = particle.startX = spray.x + signX * offsetX;
+        particle.y = particle.startY = spray.y + signY * offsetY;
+        particle.drawX = particle.x;
+        particle.drawY = particle.y;
+        particle.size = particle.startSize = 11.f + static_cast<float>(spray.Random(30));
+        particle.drawSize = particle.size;
+        particle.speed = particle.startSpeed = 7.01f + static_cast<float>(spray.Random(500)) * .01f;
+        particle.gravity = 1.4f;
+        particle.brightness = .76f + static_cast<float>(spray.Random(25)) * .01f;
+        particle.lifetime = 1.5f - .035f * static_cast<float>(i);
+        spray.particles.push_back(particle);
+    }
+    materialSprays_.push_back(std::move(spray));
+}
 bool Combat::DamageEnemy(size_t index, float damage, float projectileDirectionX) {
     if (index >= enemies_.size() || enemies_[index].health <= 0.f ||
         enemies_[index].teleportTime > 0.f || damage <= 0.f) return false;
@@ -200,7 +242,10 @@ bool Combat::DamageEnemy(size_t index, float damage, float projectileDirectionX)
     }
     if (enemy.health <= 0.f) {
         ++kills_;
-        if (enemy.type == "kNinja") SpawnNinjaDeath(enemy.x, enemy.y);
+        if (enemy.type == "kNinja") {
+            SpawnNinjaMaterialSpray(enemy.x, enemy.y);
+            SpawnNinjaDeath(enemy.x, enemy.y);
+        }
     }
     return true;
 }
@@ -229,6 +274,12 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
     }
     deathEffects_.erase(std::remove_if(deathEffects_.begin(), deathEffects_.end(),
         [](const auto& effect) { return effect.age >= effect.lifetime; }), deathEffects_.end());
+    for (auto& spray : materialSprays_) spray.Update(dt);
+    materialSprays_.erase(std::remove_if(materialSprays_.begin(), materialSprays_.end(),
+        [](const ParticleSpray& spray) {
+            return std::all_of(spray.particles.begin(), spray.particles.end(),
+                               [](const ParticleSpray::Particle& p) { return p.dead; });
+        }), materialSprays_.end());
     playerDamageBurstAge_ = std::min(0.25f, playerDamageBurstAge_ + std::max(0.f, dt));
     for (auto& enemy : enemies_)
         enemy.damageBurstAge = std::min(0.25f, enemy.damageBurstAge + std::max(0.f, dt));
@@ -552,6 +603,13 @@ void Combat::UpdateVisuals(float dt) {
 }
 void Combat::AppendPainterItems(std::vector<PainterItem>& items, render::Renderer& renderer, float cameraX, float cameraY) const {
     constexpr float scale=2.f/3.f;
+    for (const auto& spray : materialSprays_) {
+        if (!spray.texture) continue;
+        const auto* stableSpray = &spray; // Valid until the next Combat mutation.
+        items.push_back({spray.depth, [stableSpray, &renderer, cameraX, cameraY] {
+            stableSpray->Draw(renderer, cameraX, cameraY);
+        }});
+    }
     for (const auto& enemy:enemies_) if (enemy.teleportTime<=0.f) {
         const auto& visuals = enemy.type == "kGhost" ? ghostVisuals_ :
             enemy.type == "kSkeleton" ? skeletonVisuals_ : ninjaVisuals_;
