@@ -1,12 +1,11 @@
 #pragma once
 
 namespace deathleak::render {
-// Windows uses row-vector R*S*T: its X scale reflects after Z rotation.
-// SDL reflects texture coordinates before its screen-space clockwise rotation.
-// X reflection conjugates the rotation, so only unflipped ordinary sprites
-// need the sign reversed to preserve UV-labeled corner positions.
-inline float OrdinarySpriteRotationDegrees(float radians, bool flipX) {
+// Windows applies authored X/Y scale after rotation. SDL/custom quads reflect
+// the UV-labeled source before clockwise screen rotation. Each authored axis
+// reflection reverses the angle sign. flipY is authored, not SDL inverse-V.
+inline float OrdinarySpriteRotationDegrees(float radians, bool flipX, bool flipY) {
     constexpr float kRadiansToDegrees = 180.f / 3.14159265358979323846f;
-    return radians * kRadiansToDegrees * (flipX ? 1.f : -1.f);
+    return radians * kRadiansToDegrees * (flipX == flipY ? -1.f : 1.f);
 }
 }

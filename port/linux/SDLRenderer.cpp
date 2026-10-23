@@ -3,6 +3,7 @@
 #include "UVWrap.h"
 #include "WobbleUV.h"
 #include "FoliageSway.h"
+#include "EffectQuadGeometry.h"
 #include <SDL.h>
 #define GL_GLEXT_PROTOTYPES
 #include <SDL_opengl.h>
@@ -350,22 +351,16 @@ public:
         glUniform1f(glGetUniformLocation(pixelWobbleProgram_, "intensity"), sprite.pixelWobble.intensity);
         glUniform1f(glGetUniformLocation(pixelWobbleProgram_, "spriteAlpha"), sprite.opacity);
         glUniform2f(glGetUniformLocation(pixelWobbleProgram_, "textureSpan"), textureWidth, textureHeight);
-        const float radians = sprite.rotationDegrees * 3.14159265358979323846f / 180.f;
-        const float cosine = std::cos(radians), sine = std::sin(radians);
         const float cx = destination.x + destination.w * .5f;
         const float cy = destination.y + destination.h * .5f;
-        struct Corner { float x, y; WobbleUV uv; };
-        const Corner corners[4] = {
-            {-.5f,-.5f,PixelWobbleVertexUV(sprite.flipX, sprite.flipY, sprite.uvShiftX, sprite.uvShiftY, false, false)},
-            {.5f,-.5f,PixelWobbleVertexUV(sprite.flipX, sprite.flipY, sprite.uvShiftX, sprite.uvShiftY, true, false)},
-            {.5f,.5f,PixelWobbleVertexUV(sprite.flipX, sprite.flipY, sprite.uvShiftX, sprite.uvShiftY, true, true)},
-            {-.5f,.5f,PixelWobbleVertexUV(sprite.flipX, sprite.flipY, sprite.uvShiftX, sprite.uvShiftY, false, true)}
-        };
         glBegin(GL_QUADS);
-        for (const auto& corner : corners) {
-            const float x = corner.x * destination.w, y = corner.y * destination.h;
-            glTexCoord2f(corner.uv.u, corner.uv.v);
-            glVertex2f(cx + x*cosine-y*sine, cy + x*sine+y*cosine);
+        for (const auto& corner : {std::pair<bool, bool>{false, false}, {true, false},
+                                  {true, true}, {false, true}}) {
+            const auto vertex = PixelWobbleQuadVertex(cx, cy, destination.w, destination.h,
+                sprite.rotationDegrees, sprite.flipX, sprite.flipY,
+                sprite.uvShiftX, sprite.uvShiftY, corner.first, corner.second);
+            glTexCoord2f(vertex.u, vertex.v);
+            glVertex2f(vertex.x, vertex.y);
         }
         glEnd();
         glUseProgram(static_cast<GLuint>(oldProgram));
@@ -386,12 +381,10 @@ public:
         if (textureWidth <= 0 || textureHeight <= 0) return;
         const auto& sway = sprite.foliageSway;
         const float scale = 2.f / 3.f;
-        const float radians = -sprite.rotationDegrees * 3.14159265358979323846f / 180.f;
-        const float cosine = std::cos(radians), sine = std::sin(radians);
         const float cx = destination.x + destination.w * .5f;
         const float cy = destination.y + destination.h * .5f;
-        // Source vertices are BL, BR, TR, TL. Flip/rotation are in its World
-        // transform, before FoliageSway.fx applies sine to world-space XY.
+        // Preserve BL/BR/TR/TL source-vertex intensity identity before the
+        // flip, world rotation and X-before-Y sway.
         struct Corner { float x, y; SwayIntensity amount; };
         const Corner corners[4] = {
             {-1.f, -1.f, sway.bottomLeft}, {1.f, -1.f, sway.bottomRight},
@@ -399,17 +392,13 @@ public:
         };
         SDL_FPoint point[4];
         for (int i = 0; i < 4; ++i) {
-            const float localX = corners[i].x * destination.w * .5f * (sprite.flipX ? -1.f : 1.f);
-            const float localY = -corners[i].y * destination.h * .5f * (sprite.flipY ? -1.f : 1.f);
-            const float rotatedX = localX * cosine - localY * sine;
-            const float rotatedY = localX * sine + localY * cosine;
-            SwayPoint world{sway.worldX + rotatedX / scale,
-                            sway.worldY - rotatedY / scale};
-            const auto moved = FoliageSwayWorldVertex(world,
-                {corners[i].amount.x, corners[i].amount.y}, sway.time, sway.timeMultiplier,
+            const auto p = FoliageQuadVertex(cx, cy, destination.w, destination.h,
+                sprite.rotationDegrees, sprite.flipX, sprite.flipY,
+                corners[i].x, corners[i].y,
+                {corners[i].amount.x, corners[i].amount.y},
+                {sway.worldX, sway.worldY}, sway.time, sway.timeMultiplier,
                 sway.globalTimeMultiplier);
-            point[i] = {cx + rotatedX + (moved.x - world.x) * scale,
-                        cy + rotatedY - (moved.y - world.y) * scale};
+            point[i] = {p.x, p.y};
         }
         const int topLeft = sprite.flipY ? 0 : 3, topRight = sprite.flipY ? 1 : 2;
         const int bottomLeft = sprite.flipY ? 3 : 0, bottomRight = sprite.flipY ? 2 : 1;

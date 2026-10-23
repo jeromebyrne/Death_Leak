@@ -1006,10 +1006,10 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         draw.pixelWobble.time = shaderClock.pixelWobbleTime;
         draw.flipY = (draw.foliageSway.enabled || draw.pixelWobble.enabled)
             ? object.flipY : (object.playerAimLine ? playerFacing_ >= 0 : !object.flipY);
-        // Windows row-vector R*S*T reflects X after rotation; SDL flips
-        // source coordinates before its clockwise screen rotation. The X flip
-        // conjugates rotation, so unflipped sprites alone reverse the sign.
-        draw.rotationDegrees = render::OrdinarySpriteRotationDegrees(object.rotation, draw.flipX);
+        // Authored X/Y reflections follow rotation in Windows, while SDL and
+        // custom effect quads reflect source labels before clockwise rotation.
+        draw.rotationDegrees = render::OrdinarySpriteRotationDegrees(
+            object.rotation, draw.flipX, object.flipY);
         // Cull using the rendered rotated quad, not its unrotated destination.
         if (!render::SpriteMayIntersectViewport(draw)) continue;
         if (object.player && object.xmlId == "2") {

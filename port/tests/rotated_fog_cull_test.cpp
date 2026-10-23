@@ -41,7 +41,7 @@ int main() {
     assert(visible.size() == 1);
     const auto& fog = visible.front();
     assert(fog.destination.y > 720.f);
-    assert(std::abs(fog.rotationDegrees - .11f * 180.f / 3.14159265358979323846f) < .001f);
+    assert(std::abs(fog.rotationDegrees + .11f * 180.f / 3.14159265358979323846f) < .001f);
     assert(fog.pixelWobble.enabled && fog.opacity > 0.f);
     assert(SpriteMayIntersectViewport(fog));
     assert(at(4185.f).empty()); // rotated quad fully beyond bottom edge.
