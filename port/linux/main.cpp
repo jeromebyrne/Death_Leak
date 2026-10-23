@@ -1222,7 +1222,9 @@ int main(int argc, char** argv) {
                 if (filmFrames[filmIndex]) renderer->DrawSprite({filmFrames[filmIndex], {}, {0,0,1280,720}, {255,255,255,64}});
                 if (finalFrame) {
                     renderer->DrawSprite({finalFrame, {}, {0,0,1280,100}});
-                    renderer->DrawSprite({finalFrame, {}, {0,620,1280,100}, {255,255,255,255}, 0, true});
+                    Sprite bottomBar{finalFrame, {}, {0,620,1280,100}};
+                    bottomBar.flipY = true;
+                    renderer->DrawSprite(bottomBar);
                 }
                 if (finalTitleShown) deathleak::game::DrawBitmapText(*renderer, "DEATH LEAK", 200, 255, 16, {255,0,0,245});
             } else {
