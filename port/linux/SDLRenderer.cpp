@@ -352,7 +352,7 @@ public:
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             glDisable(GL_DEPTH_TEST);
             glColor4f(sprite.tint.r / 255.f, sprite.tint.g / 255.f,
-                      sprite.tint.b / 255.f, sprite.tint.a / 255.f * sprite.opacity);
+                      sprite.tint.b / 255.f, sprite.tint.a / 255.f);
             glMatrixMode(GL_PROJECTION); glPushMatrix(); projectionPushed = true; glLoadIdentity();
             glOrtho(0, 1280, 720, 0, -1, 1);
             glMatrixMode(GL_MODELVIEW); glPushMatrix(); modelviewPushed = true; glLoadIdentity();
