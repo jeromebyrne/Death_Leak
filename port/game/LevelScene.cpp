@@ -124,7 +124,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     auto* level = document.RootElement();
     if (!level || std::string(level->Value()) != "level") { error = "Not a Death Leak level: " + path; return false; }
     playerVisualWidth_ = playerVisualHeight_ = 0;
-    playerSequences_.clear(); playerSequence_.clear(); playerFrame_ = 0; playerFrameElapsed_ = 0; playerFacing_ = 1; playerGrounded_ = false;
+    playerSequences_.clear(); playerSequence_.clear(); playerFrame_ = 0; playerFrameElapsed_ = 0; playerFacing_ = playerAimLineFacing_ = 1; playerGrounded_ = false;
     playerOffSolidTime_ = playerDescentTime_ = 0; playerDescending_ = false;
     playerArmSequences_.clear(); playerArmSequence_.clear(); playerArmFrame_ = 0; playerArmFrameElapsed_ = 0; aimLineHold_ = aimLineAlpha_ = 0.f;
     spawnedOrbTexture_ = orbShatterTexture_ = render::InvalidTexture;
@@ -404,12 +404,13 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
             if (animation.LoadFile()) {
                 auto* body = animation.RootElement() ? animation.RootElement()->FirstChildElement("body") : nullptr;
                 // Character::UpdateAnimations selects these authored body sequences.
-                for (const char* name : {"Still", "Running", "JumpingUp", "JumpingDown",
+                for (const char* name : {"Still", "Running", "StrafeForward", "StrafeBack", "JumpingUp", "JumpingDown",
                                          "SlidingDown", "Roll", "SwimIdle", "SwimForward", "Melee", "Melee2", "Melee3", "MeleeFinish"}) {
                     auto* sequence = body ? body->FirstChildElement(name) : nullptr;
                     if (!sequence) continue;
                     PlayerSequence visual;
                     visual.rate = Attr(sequence, "FrameRate");
+                    visual.currentRate = visual.rate;
                     visual.minRate = Attr(sequence, "MinFrameRate");
                     visual.maxRate = Attr(sequence, "MaxFrameRate", 60.f);
                     for (auto* frame = sequence->FirstChildElement("frame"); frame; frame = frame->NextSiblingElement("frame")) {
@@ -1055,7 +1056,7 @@ void LevelScene::EmitRunningFootstep(const PlayerSequence& sequence) {
 }
 void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded, int wallSide,
                                     bool rolling, bool dashing, bool inWater, float meleeElapsed, int facing,
-                                    bool projectileFired, bool eligibleFireAttempt) {
+                                    bool projectileFired, bool eligibleFireAttempt, PlayerStrafeVisual strafe) {
     playerGrounded_ = grounded;
     // Character::Update records the descent edge before UpdateAnimations. Its
     // dry upward tolerance is -0.5 world units/tick (velocity here is /s).
@@ -1081,6 +1082,7 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
         aimLineAlpha_ = std::max(0.f, aimLineAlpha_ - 10.f * dt);
     }
     if (playerSequences_.empty()) return;
+    playerAimLineFacing_ = facing;
     playerFacing_ = facing;
     std::string target = "Still";
     if (meleeElapsed > 0.f) {
@@ -1095,7 +1097,12 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
     else if (!grounded && wallSide != 0 && vy < 0.f) target = "SlidingDown";
     else if (!grounded && vy > -0.5f * 60.f) target = "JumpingUp";
     else if (!grounded) target = "JumpingDown";
-    else if (std::abs(vx) > 3.f) target = "Running";
+    else if (std::abs(vx) > 3.f) {
+        if (wallSide == 0 && strafe.active) {
+            target = strafe.aimFacing != strafe.movementDirection ? "StrafeBack" : "StrafeForward";
+            playerFacing_ = strafe.aimFacing;
+        } else target = "Running";
+    }
     // While a short dry descent is pending, Character keeps both the current
     // body frame and its fractional animation clock unchanged. The long-airtime
     // bypass and the strict 0.05 s comparison are source-authored.
@@ -1114,16 +1121,20 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
     float rate = sequence.rate;
     if (target == "Running")
         rate = std::clamp(std::abs(vx / 60.f) * 1.8f * 2.65f, sequence.minRate, sequence.maxRate);
-    if (!holdFallingBody && rate > 0 && sequence.frames.size() >= 2) {
+    const bool strafing = target == "StrafeForward" || target == "StrafeBack";
+    const float advanceRate = strafing ? sequence.currentRate : rate;
+    if (!holdFallingBody && advanceRate > 0 && sequence.frames.size() >= 2) {
         playerFrameElapsed_ += dt;
-        if (playerFrameElapsed_ >= 1.f / rate) {
-            playerFrameElapsed_ -= 1.f / rate; // AnimationPart advances at most one frame per update.
+        if (playerFrameElapsed_ >= 1.f / advanceRate) {
+            playerFrameElapsed_ -= 1.f / advanceRate; // AnimationPart advances at most one frame per update.
             if (target == "Still" || target == "Running" || target == "SlidingDown" ||
-                target == "SwimIdle" || target == "SwimForward")
+                target == "SwimIdle" || target == "SwimForward" || strafing)
                 playerFrame_ = (playerFrame_ + 1) % sequence.frames.size();
             else if (playerFrame_ + 1 < sequence.frames.size()) ++playerFrame_;
         }
     }
+    if (strafing) sequence.currentRate = std::clamp(std::abs(vx / 60.f) * 1.8f * 2.65f,
+                                                      sequence.minRate, sequence.maxRate);
     // Character compares the current Running frame against the last Running frame,
     // including across Still/other sequence entries, then stamps every Running tick.
     if (target == "Running") {
@@ -1203,7 +1214,7 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
             !filter.Draw(object.xmlId)) continue;
         // ParallaxLayer follows the camera before its authored UV scroll. Static
         // background/foreground sprites use GameObject depth parallax instead.
-        const float worldX = object.playerAimLine ? playerX + (playerFacing_ < 0 ? -5.f : 5.f) :
+        const float worldX = object.playerAimLine ? playerX + (playerAimLineFacing_ < 0 ? -5.f : 5.f) :
             object.player || object.playerShadow ? playerX :
             object.parallaxLayer && object.followCameraX ? cameraX : object.x;
         const float worldY = object.playerAimLine ? playerY + 25.f :
@@ -1258,7 +1269,7 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         draw.pixelWobble = object.pixelWobble;
         draw.pixelWobble.time = shaderClock.pixelWobbleTime;
         draw.flipY = (draw.foliageSway.enabled || draw.pixelWobble.enabled)
-            ? object.flipY : (object.playerAimLine ? playerFacing_ >= 0 : !object.flipY);
+            ? object.flipY : (object.playerAimLine ? playerAimLineFacing_ >= 0 : !object.flipY);
         // Authored X/Y reflections follow rotation in Windows, while SDL and
         // custom effect quads reflect source labels before clockwise rotation.
         draw.rotationDegrees = render::OrdinarySpriteRotationDegrees(

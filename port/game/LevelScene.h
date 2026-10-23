@@ -4,6 +4,7 @@
 #include "ParticleSpray.h"
 #include "ShaderClock.h"
 #include <cstddef>
+#include <cmath>
 #include <functional>
 #include <unordered_map>
 #include <string>
@@ -73,6 +74,23 @@ struct Smashable { SolidBox box; float x = 0, y = 0; bool smashed = false; };
 struct SpawnedOrb { float x, y, vx, vy, spawnDelay, trackingTime = 0; };
 struct HazardRegion { float x, y, width, height; bool water; float damage; };
 
+struct PlayerStrafeVisual { bool active = false; int aimFacing = 1, movementDirection = 1; };
+
+// InputManager's raw XInput stick test; eligibility is recalculated each tick.
+inline PlayerStrafeVisual ResolvePlayerStrafeVisual(render::ControllerSticks sticks,
+        int movementDirection, bool rolling, bool melee, bool justLanded) {
+    PlayerStrafeVisual visual{false, 1, movementDirection};
+    constexpr int deadzone = 8689;
+    if (!sticks.connected || (std::abs(sticks.rightX) <= deadzone && std::abs(sticks.rightY) <= deadzone) ||
+        rolling || melee || justLanded) return visual;
+    if (sticks.rightX <= 0 && sticks.leftX > deadzone) {
+        visual.active = true; visual.aimFacing = -1;
+    } else if (sticks.rightX > 0 && sticks.leftX < -deadzone) {
+        visual.active = true; visual.aimFacing = 1;
+    }
+    return visual;
+}
+
 class LevelScene {
 public:
     bool Load(const std::string& path, render::Renderer& renderer, std::string& error,
@@ -83,7 +101,8 @@ public:
               bool suppressLandingSprayDraw = false) const;
     void UpdatePlayerVisual(float dt, float vx, float vy, bool grounded, int wallSide,
                             bool rolling, bool dashing, bool inWater, float meleeElapsed, int facing,
-                            bool projectileFired, bool eligibleFireAttempt = false);
+                            bool projectileFired, bool eligibleFireAttempt = false,
+                            PlayerStrafeVisual strafe = {});
     void UpdateVisuals(float dt, float playerX, float playerY, float cameraX, float cameraY,
                        bool objectsPaused = false);
     void UpdateAuthoredOrbs(float dt, float playerX, float playerY, float cameraX, float cameraY);
@@ -173,7 +192,7 @@ private:
     std::vector<DojoScroll> scrolls_;
     float playerX_ = 0, playerY_ = 0;
     float playerVisualWidth_ = 0, playerVisualHeight_ = 0;
-    struct PlayerSequence { std::vector<render::TextureId> frames; std::vector<bool> footstepFrames; float rate = 0, minRate = 0, maxRate = 60; };
+    struct PlayerSequence { std::vector<render::TextureId> frames; std::vector<bool> footstepFrames; float rate = 0, minRate = 0, maxRate = 60, currentRate = 0; };
     void EmitRunningFootstep(const PlayerSequence& sequence);
     std::unordered_map<std::string, PlayerSequence> playerSequences_;
     std::unordered_map<std::string, PlayerSequence> playerArmSequences_;
@@ -188,6 +207,7 @@ private:
     bool playerDescending_ = false;
     float playerArmFrameElapsed_ = 0;
     int playerFacing_ = 1;
+    int playerAimLineFacing_ = 1;
     bool playerGrounded_ = false;
     float aimLineHold_ = 0.f, aimLineAlpha_ = 0.f;
     float cameraX_ = 0, cameraY_ = 0;

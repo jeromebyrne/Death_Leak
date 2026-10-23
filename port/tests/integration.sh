@@ -5,6 +5,16 @@ export SDL_VIDEODRIVER=offscreen
 export SDL_RENDER_DRIVER=opengl
 export DEATHLEAK_TEST_ALLOW_SOFTWARE_RENDERER=1
 bin=port/build/deathleak-linux
+# Keep the body/strafe timing and spray discriminator in the integration gate.
+# This fixture is CPU-only and does not need the game binary or renderer.
+strafe_cpu_dir=$(mktemp -d /tmp/strafe-body-cpu-XXXXXX)
+trap 'rm -rf "$strafe_cpu_dir"' EXIT
+g++ -O2 -g -std=c++17 -Wall -Wextra -Wpedantic -UNDEBUG -Iport/compat \
+  port/tests/strafe_body_cpu_test.cpp port/game/LevelScene.cpp port/game/PlayerMotion.cpp \
+  Game/tinyxml/tinyxml.cpp Game/tinyxml/tinyxmlerror.cpp \
+  Game/tinyxml/tinyxmlparser.cpp Game/tinyxml/tinystr.cpp \
+  -o "$strafe_cpu_dir/strafe_body_cpu_test"
+env -u DEATHLEAK_RENDER_HIDE_XML_IDS "$strafe_cpu_dir/strafe_body_cpu_test"
 # Release/default mode must reject dummy/software even if SDL offers a fallback.
 strict_log=$(mktemp)
 if env -u DEATHLEAK_TEST_ALLOW_SOFTWARE_RENDERER SDL_VIDEODRIVER=dummy SDL_RENDER_DRIVER=software "$bin" --frames 1 >"$strict_log" 2>&1; then
