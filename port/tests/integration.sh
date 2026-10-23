@@ -770,8 +770,10 @@ kickback=$($bin --play port/tests/fixtures/encounter_open.xml --script F:30 --fi
 printf '%s\n' "$kickback" | grep -q 'Enemy kNinja x=230 y=100 .*combo=1'
 direct_hit=$($bin --play port/tests/fixtures/encounter_open.xml --script .:90,H:1 --fixed-dt 0.0166667 --simulate-only --combat-state)
 printf '%s\n' "$direct_hit" | grep -q 'Enemy kNinja x=200 y=100 .*combo=1'
-# Chasing while firing can still defeat the kicked-back source-health ninja.
-range_kill=$($bin --play port/tests/fixtures/encounter_roll.xml --script B:330 --fixed-dt 0.0166667 --simulate-only)
+# Chase into range, then stop to finish the stunned source-health ninja.
+# Holding right through frame 330 outruns the target after 14 combined hits
+# (including an enemy projectile on the player), leaving it alive off-screen.
+range_kill=$($bin --play port/tests/fixtures/encounter_roll.xml --script B:220,F:120 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$range_kill" | grep -q 'spawned=1 enemies=0 .*kills=1'
 # AIStateRangeAttack chooses the upward branch only above +50 Y; it chooses
 # the roll branch on the same positive-acceleration gate while grounded.
