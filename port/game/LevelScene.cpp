@@ -124,6 +124,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     auto* level = document.RootElement();
     if (!level || std::string(level->Value()) != "level") { error = "Not a Death Leak level: " + path; return false; }
     playerVisualWidth_ = playerVisualHeight_ = 0;
+    introBodyPhase_ = IntroBodyPhase::None; introBodyFinished_ = false;
     playerSequences_.clear(); playerSequence_.clear(); playerFrame_ = 0; playerFrameElapsed_ = 0; playerFacing_ = playerAimLineFacing_ = 1; playerAimLineRotation_ = 0.f;
     playerAimLineFlipY_ = playerAimLineDirected_ = false; playerGrounded_ = false;
     playerOffSolidTime_ = playerDescentTime_ = 0; playerDescending_ = false;
@@ -409,7 +410,8 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
                 auto* body = animation.RootElement() ? animation.RootElement()->FirstChildElement("body") : nullptr;
                 // Character::UpdateAnimations selects these authored body sequences.
                 for (const char* name : {"Still", "Running", "StrafeForward", "StrafeBack", "JumpingUp", "JumpingDown",
-                                         "SlidingDown", "Roll", "SwimIdle", "SwimForward", "Melee", "Melee2", "Melee3", "MeleeFinish"}) {
+                                         "SlidingDown", "Roll", "SwimIdle", "SwimForward", "Melee", "Melee2", "Melee3", "MeleeFinish",
+                                         "IntroCutscene1", "IntroCutscene2"}) {
                     auto* sequence = body ? body->FirstChildElement(name) : nullptr;
                     if (!sequence) continue;
                     PlayerSequence visual;
@@ -1062,6 +1064,26 @@ void LevelScene::EmitRunningFootstep(const PlayerSequence& sequence, int movemen
     footstepRandomState_ = spray.randomState;
     footstepSprays_.push_back(std::move(spray));
 }
+void LevelScene::SetIntroBodyPhase(IntroBodyPhase phase) {
+    if (phase == introBodyPhase_) return;
+    introBodyPhase_ = phase;
+    introBodyFinished_ = false;
+    if (phase == IntroBodyPhase::None) return;
+    const char* name = phase == IntroBodyPhase::Looped ? "IntroCutscene1" : "IntroCutscene2";
+    if (playerSequences_.find(name) == playerSequences_.end()) return;
+    playerSequence_ = name;
+    playerFrame_ = 0;
+    playerFrameElapsed_ = 0.f;
+}
+
+size_t LevelScene::IntroBodyFrameCount() const {
+    const char* name = introBodyPhase_ == IntroBodyPhase::Looped ? "IntroCutscene1" :
+                       introBodyPhase_ == IntroBodyPhase::Pull ? "IntroCutscene2" : nullptr;
+    if (!name) return 0;
+    const auto it = playerSequences_.find(name);
+    return it == playerSequences_.end() ? 0 : it->second.frames.size();
+}
+
 void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded, int wallSide,
                                     bool rolling, bool dashing, bool inWater, float meleeElapsed, int facing,
                                     bool projectileFired, bool eligibleFireAttempt, PlayerStrafeVisual strafe,
@@ -1091,6 +1113,28 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
         aimLineAlpha_ = std::max(0.f, aimLineAlpha_ - 10.f * dt);
     }
     if (playerSequences_.empty()) return;
+    if (introBodyPhase_ != IntroBodyPhase::None) {
+        const char* name = introBodyPhase_ == IntroBodyPhase::Looped ? "IntroCutscene1" : "IntroCutscene2";
+        const auto it = playerSequences_.find(name);
+        if (it == playerSequences_.end() || it->second.frames.empty()) return;
+        if (playerSequence_ != name) {
+            playerSequence_ = name; playerFrame_ = 0; playerFrameElapsed_ = 0.f;
+        }
+        const auto& sequence = it->second;
+        const float rate = std::clamp(sequence.rate, sequence.minRate, sequence.maxRate);
+        if (!introBodyFinished_ && rate > 0.f) {
+            playerFrameElapsed_ += precedingRenderedModifiedDelta >= 0.f ? precedingRenderedModifiedDelta : dt;
+            if (playerFrameElapsed_ >= 1.f / rate) {
+                playerFrameElapsed_ -= 1.f / rate; // Source advances at most one frame per update.
+                if (introBodyPhase_ == IntroBodyPhase::Looped)
+                    playerFrame_ = (playerFrame_ + 1) % sequence.frames.size();
+                else if (++playerFrame_ >= sequence.frames.size())
+                    introBodyFinished_ = true; // IsFinished is true one tick after the final visible frame.
+            }
+        }
+        playerFacing_ = facing;
+        return; // Intro body bypasses ordinary movement/combat selection.
+    }
     // InputManager calls SetAimLineDirection only for an active right stick.
     // Its four branches choose the X attachment/vertical reflection from X,
     // and the authored angle sign from Y. Neutral retains the last transform.

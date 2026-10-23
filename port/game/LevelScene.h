@@ -155,6 +155,14 @@ inline PlayerStrafeVisual ResolvePlayerStrafeVisual(render::ControllerSticks sti
 
 class LevelScene {
 public:
+    enum class IntroBodyPhase { None, Looped, Pull };
+    // Caller owns fresh-save eligibility and held-Interact threshold. The scene
+    // owns only the selected body sequence and its animation terminal signal.
+    void SetIntroBodyPhase(IntroBodyPhase phase);
+    IntroBodyPhase GetIntroBodyPhase() const { return introBodyPhase_; }
+    bool IntroBodyFinished() const { return introBodyPhase_ == IntroBodyPhase::Pull && introBodyFinished_; }
+    size_t IntroBodyFrame() const { return playerFrame_; }
+    size_t IntroBodyFrameCount() const;
     bool Load(const std::string& path, render::Renderer& renderer, std::string& error,
               const std::string& fromLevel = {}, const std::string& entryDoorId = {});
     void Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY,
@@ -268,6 +276,8 @@ private:
     std::unordered_map<std::string, PlayerSequence> playerSequences_;
     std::unordered_map<std::string, PlayerSequence> playerArmSequences_;
     std::string playerSequence_;
+    IntroBodyPhase introBodyPhase_ = IntroBodyPhase::None;
+    bool introBodyFinished_ = false;
     std::string playerArmSequence_;
     size_t playerFrame_ = 0;
     size_t lastRunningFrame_ = static_cast<size_t>(-1); // Shared numeric guard for horizontal Running and strafe frames.
