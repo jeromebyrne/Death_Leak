@@ -375,6 +375,8 @@ int main(int argc, char** argv) {
     bool purchaseHeld = false, dismissHeld = false;
     auto modalBackground = (playLevel.empty() && !menuLoop) ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/blank_dark.png", error);
     auto finalFrame = (playLevel.empty() && !menuLoop) ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/frame_top.png", error);
+    if (!finalFrame && !(playLevel.empty() && !menuLoop))
+        std::cerr << "HUD frame_top.png load failed: " << error << '\n';
     std::array<TextureId, 4> filmFrames{};
     // game_hud's scratch widget uses its own wall-clock 11 FPS cadence, not
     // the capped gameplay/shader delta. Start at frame one on its first draw.
@@ -1235,6 +1237,13 @@ int main(int argc, char** argv) {
                 }
                 if (filmFrames[gameplayFilmIndex])
                     renderer->DrawSprite({filmFrames[gameplayFilmIndex], {}, {0,0,1280,720}, {255,255,255,51}});
+                // game_hud.xml: opaque 50-unit bands follow the film and precede HUD widgets.
+                if (finalFrame) {
+                    renderer->DrawSprite({finalFrame, {}, AuthoredUI(-960, 490, 1920, 50), {255,255,255,255}});
+                    Sprite bottomBar{finalFrame, {}, AuthoredUI(-960, -540, 1920, 50), {255,255,255,255}};
+                    bottomBar.flipY = true;
+                    renderer->DrawSprite(bottomBar);
+                }
                 hud.Draw(*renderer, combat.Health(), combat.MaxHealth(), combat.Focus(), orbBalance, shaderFrame.totalTime - dt);
             }
             if (paperModal)
