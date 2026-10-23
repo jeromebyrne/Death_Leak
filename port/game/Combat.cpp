@@ -113,6 +113,14 @@ void Combat::SetArt(render::Renderer& renderer) {
     ghostShotArt_ = renderer.LoadTexture("Game/Media/puke_temp.png", error);
     skeletonShotArt_ = renderer.LoadTexture("Game/Media/fireball.png", error);
     if (!skeletonShotArt_) skeletonShotArt_ = ghostShotArt_; // source fireball PNG is absent
+    constexpr const char* deathPaths[] = {
+        "Game/Media/characters/enemy_1/exploded/ricehat.png",
+        "Game/Media/characters/enemy_1/exploded/head.png",
+        "Game/Media/characters/enemy_1/exploded/forearm_back.png",
+        "Game/Media/characters/enemy_1/exploded/hand_front.png",
+        "Game/Media/orb.png", "Game/Media/orb2.png", "Game/Media/orb3.png"};
+    for (size_t i = 0; i < 7; ++i) ninjaDeathArt_[i] = renderer.LoadTexture(deathPaths[i], error);
+    explosionLinesArt_ = renderer.LoadTexture("Game/Media/explosion_lines.png", error);
     auto load = [&](const char* xml, VisualSet& visual) {
         TiXmlDocument document(xml);
         if (!document.LoadFile()) return;
@@ -143,6 +151,36 @@ void Combat::SetArt(render::Renderer& renderer) {
     load("Game/XmlFiles/animation/ghost_enemy_anim.xml", ghostVisuals_);
     load("Game/XmlFiles/animation/skeleton_animation.xml", skeletonVisuals_);
 }
+size_t Combat::DeathDebrisCount() const {
+    return std::count_if(deathEffects_.begin(), deathEffects_.end(),
+                         [](const auto& effect) { return !effect.spray; });
+}
+size_t Combat::DeathSprayCount() const {
+    return std::count_if(deathEffects_.begin(), deathEffects_.end(),
+                         [](const auto& effect) { return effect.spray; });
+}
+void Combat::SpawnNinjaDeath(float x, float y) {
+    // NPC::DoNinjaExplosion supplies this exact texture/multiplier sequence.
+    // Debris random speeds are 5..24 source units/tick, direction (±1,.5).
+    constexpr int art[] = {0,1,2,2,3,4,5,5,5,6};
+    constexpr float multiplier[] = {1.3f,.8f,.95f,1.1f,.65f,1.25f,1.2f,.94f,.79f,1.12f};
+    constexpr float width[] = {74,58,59,59,32,64,32,32,32,64};
+    constexpr float height[] = {35,75,30,30,32,64,32,32,32,64};
+    for (int i = 0; i < 10; ++i) {
+        const float speed = (5.f + static_cast<float>((i*13+7)%20))*multiplier[i]*60.f;
+        const float sign = i%2 ? -1.f : 1.f;
+        deathEffects_.push_back({ninjaDeathArt_[art[i]], x, y+50.f, sign*speed,
+                                 .5f*speed, width[i], height[i], 0.f, 4.2f, 0.f, false});
+    }
+    // Five source explosion_lines particles; deterministic samples within the
+    // authored .3-.7 s lifetime and 32..128 size envelope.
+    for (int i = 0; i < 5; ++i) {
+        const float size = 40.f+20.f*i;
+        const float spread = static_cast<float>(i-2)*.025f;
+        deathEffects_.push_back({explosionLinesArt_, x, y, (spread+.04f)*60.f*4.f,
+                                 -spread*60.f*4.f, size, size, 0.f, .3f+.1f*i, 0.f, true});
+    }
+}
 bool Combat::DamageEnemy(size_t index, float damage, float projectileDirectionX) {
     if (index >= enemies_.size() || enemies_[index].health <= 0.f ||
         enemies_[index].teleportTime > 0.f || damage <= 0.f) return false;
@@ -160,7 +198,10 @@ bool Combat::DamageEnemy(size_t index, float damage, float projectileDirectionX)
         enemy.stunTime=2.f;
         enemy.windup=0.f;
     }
-    if (enemy.health <= 0.f) ++kills_;
+    if (enemy.health <= 0.f) {
+        ++kills_;
+        if (enemy.type == "kNinja") SpawnNinjaDeath(enemy.x, enemy.y);
+    }
     return true;
 }
 void Combat::ApplyPlayerDamage(float damage) {
@@ -175,6 +216,19 @@ void Combat::EnableSimulatedWallClock() {
     simulatedClockElapsedMs_ = 0;
 }
 void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fire, bool melee, bool grounded, bool rolling, int facing, render::Renderer& renderer) {
+    for (auto& effect : deathEffects_) {
+        effect.age += std::max(0.f, dt);
+        effect.x += effect.vx*dt;
+        effect.y += effect.vy*dt;
+        if (!effect.spray) {
+            effect.vy -= .25f*60.f*60.f*dt;
+            effect.vx *= std::pow(.99f, dt*60.f);
+            effect.vy *= std::pow(.95f, dt*60.f);
+            effect.rotation -= effect.vx*.02f*dt;
+        }
+    }
+    deathEffects_.erase(std::remove_if(deathEffects_.begin(), deathEffects_.end(),
+        [](const auto& effect) { return effect.age >= effect.lifetime; }), deathEffects_.end());
     playerDamageBurstAge_ = std::min(0.25f, playerDamageBurstAge_ + std::max(0.f, dt));
     for (auto& enemy : enemies_)
         enemy.damageBurstAge = std::min(0.25f, enemy.damageBurstAge + std::max(0.f, dt));
@@ -513,6 +567,18 @@ void Combat::AppendPainterItems(std::vector<PainterItem>& items, render::Rendere
         sprite.flipX = enemy.facing < 0;
         sprite.rgbGain = DamageBurstGain(enemy.damageBurstAge);
         items.push_back({3500, [&, sprite] { renderer.DrawSprite(sprite); }});
+    }
+    for (const auto& effect : deathEffects_) {
+        if (!effect.texture) continue;
+        const float remaining = effect.lifetime-effect.age;
+        const float fade = effect.spray ? std::clamp(remaining/.1f, 0.f, 1.f) :
+                           std::clamp(remaining/.2f, 0.f, 1.f);
+        const float w = effect.width*fade, h = effect.height*fade;
+        render::Sprite sprite{effect.texture, {}, {640.f+(effect.x-cameraX-w/2.f)*scale,
+            360.f+(cameraY-effect.y-h/2.f)*scale,w*scale,h*scale}};
+        sprite.rotationDegrees = effect.rotation;
+        sprite.tint.a = static_cast<std::uint8_t>(std::lround(255.f*fade));
+        items.push_back({effect.spray ? 1750 : 3500, [&, sprite] { renderer.DrawSprite(sprite); }});
     }
     for (const auto& shot:shots_) {
         const float visualScale = shot.playerKnife ? std::clamp(shot.activeVisualAge / 0.3f, 0.f, 1.f) : 1.f;
