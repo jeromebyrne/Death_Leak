@@ -19,3 +19,7 @@ Separately, a fresh `g++ -O2 -g -std=c++17 -Wall -Wextra -Wpedantic` app build w
 ## Scope/limitation
 
 The deterministic saturated gate mirrors the exact `main.cpp` live reward predicate and updateability/zone conditions in a small test state object; it does not inject SFX saturation into a live rendered gameplay process. The two gates together cover the production mixer boundary and the authored app reward path, but are not physical-speaker audibility or a single-process saturated gameplay proof. No GPU/Xorg lane used. No renderer, `integration.sh`, strafe test, or shared checkpoint touched. Unrelated dirty files were preserved.
+
+## Commit/push
+
+Scoped gate and first handoff committed as `774e7e4` (`Gate Health Devil reward against saturated SFX lifecycle`) and pushed to `origin/feature/linux-renderer-foundation` successfully (`a4a09b4..774e7e4`). This receipt addendum is a separate documentation-only follow-up commit. No blocker remains for this bounded gate.
