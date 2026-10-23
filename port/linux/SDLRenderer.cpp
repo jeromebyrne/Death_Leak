@@ -624,9 +624,20 @@ private:
         }
         GLuint name = 0;
         if (failure.empty()) {
-            GLint oldBinding = 0, oldUnpack = 0;
+            GLint oldBinding = 0, oldUnpack = 0, oldRowLength = 0;
+            GLint oldSkipRows = 0, oldSkipPixels = 0, oldUnpackBuffer = 0;
             glGetIntegerv(GL_TEXTURE_BINDING_2D, &oldBinding);
             glGetIntegerv(GL_UNPACK_ALIGNMENT, &oldUnpack);
+            glGetIntegerv(GL_UNPACK_ROW_LENGTH, &oldRowLength);
+            glGetIntegerv(GL_UNPACK_SKIP_ROWS, &oldSkipRows);
+            glGetIntegerv(GL_UNPACK_SKIP_PIXELS, &oldSkipPixels);
+            glGetIntegerv(GL_PIXEL_UNPACK_BUFFER_BINDING, &oldUnpackBuffer);
+            // SDL leaves its atlas row length active. A standalone PNG upload
+            // must use its own tightly packed rows, then restore SDL's state.
+            glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+            glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
+            glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
+            glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
             // This isolated upload must not inherit stale errors from SDL.
             while (glGetError() != GL_NO_ERROR) {}
             bool uploaded = false;
@@ -668,6 +679,10 @@ private:
             if (!name || !uploaded)
                 failure = "GL allocation, mip generation, or sampler setup failed";
             glPixelStorei(GL_UNPACK_ALIGNMENT, oldUnpack);
+            glPixelStorei(GL_UNPACK_ROW_LENGTH, oldRowLength);
+            glPixelStorei(GL_UNPACK_SKIP_ROWS, oldSkipRows);
+            glPixelStorei(GL_UNPACK_SKIP_PIXELS, oldSkipPixels);
+            glBindBuffer(GL_PIXEL_UNPACK_BUFFER, static_cast<GLuint>(oldUnpackBuffer));
             glBindTexture(GL_TEXTURE_2D, static_cast<GLuint>(oldBinding));
         }
         png_image_free(&image);
