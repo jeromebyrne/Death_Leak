@@ -46,6 +46,16 @@ bool Hit(Rect rect, MouseState mouse) {
 }
 constexpr std::array<Rect, 3> menuBounds = {{AuthoredUI(-435,-100,160,160),
     AuthoredUI(-410,-275,100,100), AuthoredUI(-395,-435,90,90)}};
+// First intro phase has its own cumulative clock; the held pull-progress clock
+// below is intentionally independent and resets on release.
+struct IntroPromptClock {
+    float phaseTotal = 0.f;
+    void Advance(float dt) { phaseTotal += dt; }
+    void Reset() { phaseTotal = 0.f; }
+    bool Visible(bool looped, bool rawInteractHeld) const {
+        return looped && phaseTotal > 8.f && !rawInteractHeld;
+    }
+};
 constexpr std::array<Rect, 3> optionsBounds = {{AuthoredUI(-420,-60,132,132),
     AuthoredUI(-420,-200,132,132), AuthoredUI(-390,-470,90,90)}};
 }
@@ -83,10 +93,12 @@ int main(int argc, char** argv) {
     bool profile = false;
     bool combatState = false;
     bool freshSaveIntro = false;
+    bool steamDeck = false;
     int startEncounter = -1;
     int startHazard = -1;
     bool exhaustedFocus = false;
     bool suppressLandingSprayDraw = false;
+    bool suppressIntroPromptDraw = false;
     float fixedDt = 0;
     for (int i = 1; i < argc; ++i) {
         std::string arg = argv[i];
@@ -108,11 +120,16 @@ int main(int argc, char** argv) {
         else if (arg == "--profile") profile = true;
         else if (arg == "--combat-state") combatState = true;
         else if (arg == "--fresh-save-intro") freshSaveIntro = true;
+        else if (arg == "--steam-deck") steamDeck = true;
         else if (arg == "--exhaust-focus") exhaustedFocus = true;
         else if (arg == "--capture-suppress-landing-draw") suppressLandingSprayDraw = true;
+        else if (arg == "--capture-suppress-intro-prompt") suppressIntroPromptDraw = true;
         else if (arg == "--start-encounter" && i + 1 < argc) startEncounter = std::atoi(argv[++i]);
         else if (arg == "--start-hazard" && i + 1 < argc) startHazard = std::atoi(argv[++i]);
         else { std::cerr << "Usage: deathleak-linux [--frames N] [--capture output.bmp] [--level-preview level.xml | --play level.xml]\n"; return 2; }
+    }
+    if (suppressIntroPromptDraw && capture.empty()) {
+        std::cerr << "--capture-suppress-intro-prompt requires --capture\n"; return 2;
     }
     if (suppressLandingSprayDraw && capture.empty()) {
         std::cerr << "--capture-suppress-landing-draw requires --capture\n"; return 2;
@@ -413,6 +430,13 @@ int main(int argc, char** argv) {
     // ordinary --play remain controllable, even if they use the same level.
     bool hasPulledSword = !freshSaveIntro;
     float introHeldTime = 0.f;
+    IntroPromptClock introPromptClock;
+    // Steamworks IsSteamRunningOnSteamDeck is unavailable in this port. Select
+    // Deck art explicitly, never from mere controller connection.
+    const auto introPromptArt = freshSaveIntro && !simulateOnly ? renderer->LoadTexture(
+        steamDeck ? "Game/Media/UI/gamepad_icons/x_deck.png" : "Game/Media/UI/gamepad_icons/x.png", error) : InvalidTexture;
+    if (freshSaveIntro && !simulateOnly && !introPromptArt)
+        std::cerr << "Fresh-save X prompt texture load failed: " << error << '\n';
     const float introLoadZoom = scene.CameraZoom();
     float introEffectiveZoom = introLoadZoom;
     if (!hasPulledSword) scene.SetIntroBodyPhase(deathleak::game::LevelScene::IntroBodyPhase::Looped);
@@ -574,7 +598,7 @@ int main(int argc, char** argv) {
                         else sound->SetSfxEnabled(settings.sfx);
                     }
                     playLevel = levelPath = currentLevel = freshLevel;
-                    hasPulledSword = true; introHeldTime = 0.f; introEffectiveZoom = scene.CameraZoom();
+                    hasPulledSword = true; introHeldTime = 0.f; introPromptClock.Reset(); introEffectiveZoom = scene.CameraZoom();
                     collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear(); collectedPapers.clear(); rewardedHealthDevils.clear(); brokenSmashables.clear(); healthDevilRewardCount = 0;
                     orbBalance = 0; combat = deathleak::game::Combat{};
                     if (!simulateOnly) combat.SetArt(*renderer);
@@ -649,16 +673,19 @@ int main(int argc, char** argv) {
                 hasPulledSword = true;
                 scene.SetIntroBodyPhase(deathleak::game::LevelScene::IntroBodyPhase::None);
                 introHeldTime = 0.f;
+                introPromptClock.Reset();
                 introEffectiveZoom = introLoadZoom;
                 std::cout << "Fresh-save intro completed at frame " << frame << '\n';
                 combat.UpdateBloodFlights(scene, dt);
             } else {
                 if (scene.GetIntroBodyPhase() == deathleak::game::LevelScene::IntroBodyPhase::Looped) {
                     const bool held = !script.empty() ? command == 'I' : renderer->KeyDown(Interact);
+                    introPromptClock.Advance(dt);
                     if (held) {
                         introHeldTime += dt;
                         if (introHeldTime > 2.75f) {
                             introHeldTime = 0.f;
+                            introPromptClock.Reset();
                             introEffectiveZoom = introLoadZoom;
                             scene.EmitIntroSwordPullBurst(*renderer, worldX, worldY);
                             combat.SpawnIntroBloodFlight(worldX, worldY + 5.f);
@@ -710,7 +737,7 @@ int main(int argc, char** argv) {
                         scene = std::move(nextScene);
                         cameraTarget = {scene.CameraOffsetX(), scene.CameraOffsetY()};
                         devilDialog.reset(); healthPickup.reset();
-                        currentLevel = restartLevel;
+                        currentLevel = restartLevel; introPromptClock.Reset();
                         motion.Reset(scene.PlayerX(), scene.PlayerY(), true);
                         worldX = motion.X(); worldY = motion.Y();
                         cameraX = scene.CameraX(); cameraY = scene.CameraY(); cameraShake.Reset();
@@ -1080,7 +1107,7 @@ int main(int argc, char** argv) {
                         cameraTarget = {scene.CameraOffsetX(), scene.CameraOffsetY()};
                         devilDialog.reset(); healthPickup.reset();
                         std::cout << "Door at frame " << frame << " from " << currentLevel << " to " << door.destination << '\n';
-                        currentLevel = door.destination;
+                        currentLevel = door.destination; introPromptClock.Reset();
                         motion.Reset(scene.PlayerX(),scene.PlayerY(), true);
                         worldX = motion.X(); worldY = motion.Y();
                         cameraX = scene.CameraX(); cameraY = scene.CameraY(); cameraShake.Reset();
@@ -1111,7 +1138,7 @@ int main(int argc, char** argv) {
                         cameraTarget = {scene.CameraOffsetX(), scene.CameraOffsetY()};
                         devilDialog.reset(); healthPickup.reset();
                         std::cout << "Boat at frame " << frame << " from " << currentLevel << " to " << destination << '\n';
-                        currentLevel = destination;
+                        currentLevel = destination; introPromptClock.Reset();
                         loadFilmFrames();
                         motion.Reset(scene.PlayerX(),scene.PlayerY(), true);
                         worldX = motion.X(); worldY = motion.Y();
@@ -1143,7 +1170,7 @@ int main(int argc, char** argv) {
                         scene = std::move(nextScene);
                         cameraTarget = {scene.CameraOffsetX(), scene.CameraOffsetY()};
                         devilDialog.reset(); healthPickup.reset();
-                        currentLevel = destination;
+                        currentLevel = destination; introPromptClock.Reset();
                         worldX = scene.PlayerX(); worldY = scene.PlayerY();
                         cameraX = scene.CameraX(); cameraY = scene.CameraY(); cameraShake.Reset();
                         motion.Reset(worldX, worldY, true); combat.ClearLevel();
@@ -1173,6 +1200,7 @@ int main(int argc, char** argv) {
             speedUnlocked = projectileDamageUnlocked = projectileSpeedUnlocked = false; downwardDashUnlocked = rollUnlocked = false; savedMaxHealth = 25; hasSavedMaxHealth = false; windowsPermanentExtension.clear();
             motion.SetSpeedUpgrade(false); motion.SetMovementUnlocks(false, false);
             finalSceneTime = 0; finalTitleShown = storyEnded = false;
+            introPromptClock.Reset();
             menuSelection = 0; menuOptions = menuLanguages = false;
         }
         auto afterUpdate = std::chrono::steady_clock::now();
@@ -1256,6 +1284,23 @@ int main(int argc, char** argv) {
             renderer->SetWorldZoom(!hasPulledSword ? introEffectiveZoom : 1.f);
             std::vector<deathleak::game::PainterItem> painterItems;
             combat.AppendPainterItems(painterItems, *renderer, drawCameraX, drawCameraY);
+            // Source Player::Draw places the X immediately after the player body.
+            // A player-adjacent slot preserves same-depth object visitation order.
+            const bool rawInteractHeld = !script.empty() ? command == 'I' : renderer->KeyDown(Interact);
+            const bool introLooped = !hasPulledSword &&
+                currentLevel == "Game/XmlFiles/levels/forest_exploration_1.xml" &&
+                scene.GetIntroBodyPhase() == deathleak::game::LevelScene::IntroBodyPhase::Looped;
+            std::function<void()> afterPlayerDraw;
+            if (!suppressIntroPromptDraw && introPromptArt && introPromptClock.Visible(introLooped, rawInteractHeld)) {
+                constexpr float scale = 2.f / 3.f;
+                const float width = steamDeck ? 60.f : 150.f;
+                const float height = steamDeck ? 60.f : 90.f;
+                const Sprite prompt{introPromptArt, {},
+                    {640.f + (worldX - 35.f - drawCameraX - width / 2.f) * scale,
+                     360.f + (drawCameraY - worldY - 50.f - height / 2.f) * scale,
+                     width * scale, height * scale}};
+                afterPlayerDraw = [&, prompt] { renderer->DrawSprite(prompt); };
+            }
             if (healthPickup && healthPickupArt) {
                 constexpr float scale = 2.f / 3.f;
                 const auto sprite = deathleak::render::Sprite{healthPickupArt, {},
@@ -1286,7 +1331,8 @@ int main(int argc, char** argv) {
                 painterItems.push_back({20, [&] { rain.Draw(*renderer, drawCameraX, drawCameraY); }});
             }
             scene.Draw(*renderer, drawCameraX, drawCameraY, worldX, worldY, std::move(painterItems),
-                       combat.PlayerDamageBurstGain(), weather.FoliageSwayMultiplier(), shaderFrame, suppressLandingSprayDraw);
+                       combat.PlayerDamageBurstGain(), weather.FoliageSwayMultiplier(), shaderFrame, suppressLandingSprayDraw,
+                       std::move(afterPlayerDraw));
             renderer->ApplyScenePostprocess();
             // ShaderClock advanced at loop start; the original meter samples total
             // before this frame's modified delta is committed.

@@ -1293,7 +1293,7 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
         playerArmFrame_ = arm == playerArmSequences_.end() ? 0 : arm->second.frames.size();
     }
 }
-void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY, std::vector<PainterItem> dynamic, float playerDamageBurstGain, float foliageGlobalTimeMultiplier, ShaderClockSnapshot shaderClock, bool suppressLandingSprayDraw) const {
+void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY, std::vector<PainterItem> dynamic, float playerDamageBurstGain, float foliageGlobalTimeMultiplier, ShaderClockSnapshot shaderClock, bool suppressLandingSprayDraw, std::function<void()> afterPlayerDraw) const {
     constexpr float scale = 2.f / 3.f; // Original world is authored for 1920x1080.
     const auto& filter = DiagnosticRenderFilter();
     // Orbs are runtime GameObjects at kOrb, not an unconditional backdrop.
@@ -1437,6 +1437,9 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
             spray.Draw(renderer, cameraX, cameraY);
         if (object.player && filter.only.empty()) for (const auto& spray : introSwordPullSprays_)
             spray.Draw(renderer, cameraX, cameraY);
+        // Player::Draw emits its child prompt after Character::Draw as one
+        // GameObject draw, before a subsequent same-depth object is visited.
+        if (object.player && afterPlayerDraw) afterPlayerDraw();
     }
     drawOrbTrails();
     drawSpraysBefore(-1, 0);
