@@ -117,7 +117,9 @@ void PlayerMotion::Update(LevelScene& scene, float dt, int direction, bool jump)
     const bool wasGrounded = grounded_;
     grounded_ = false;
     float best = -1e9f;
-    for (const auto& line : scene.Ground()) {
+    size_t footstepSegment = static_cast<size_t>(-1);
+    for (size_t segment = 0; segment < scene.Ground().size(); ++segment) {
+        const auto& line = scene.Ground()[segment];
         const float dx = line.x2-line.x1;
         if (std::abs(dx) <= 1.f) continue;
         const float t = (x_-line.x1)/dx;
@@ -125,13 +127,13 @@ void PlayerMotion::Update(LevelScene& scene, float dt, int direction, bool jump)
         const float surface = line.y1+t*(line.y2-line.y1);
         if ((wasGrounded && std::abs(surface-(oldY-kHalfHeight)) <= 20.f) ||
             (vy_ <= 0 && (oldY-kHalfHeight >= surface-4.f || (initialPlacement_ && oldY-kHalfHeight >= surface-32.f)) && y_-kHalfHeight <= surface))
-            best = std::max(best,surface);
+            if (surface >= best) { best = surface; footstepSegment = segment; }
     }
     for (const auto& box : scene.SolidBoxes()) {
         if (x_+kHalfWidth <= box.left || x_-kHalfWidth >= box.right) continue;
         if ((wasGrounded && std::abs(box.top-(oldY-kHalfHeight)) <= 20.f) ||
             (vy_ <= 0 && (oldY-kHalfHeight >= box.top-4.f || (initialPlacement_ && oldY-kHalfHeight >= box.top-32.f)) && y_-kHalfHeight <= box.top))
-            best = std::max(best, box.top);
+            if (box.top >= best) { best = box.top; footstepSegment = static_cast<size_t>(-1); }
         // Reject upward penetration through the underside of a solid object.
         if (vy_ > 0 && oldY+kHalfHeight <= box.bottom && y_+kHalfHeight > box.bottom) {
             solidContactDamage_ = std::max(solidContactDamage_, box.damage);
@@ -156,13 +158,14 @@ void PlayerMotion::Update(LevelScene& scene, float dt, int direction, bool jump)
         }
         if ((wasGrounded && std::abs(box.top-previousBottom) <= 20.f) ||
             (vy_ <= 0 && previousBottom >= box.top-4.f && bottom <= box.top))
-            best = std::max(best, box.top);
+            if (box.top >= best) { best = box.top; footstepSegment = static_cast<size_t>(-1); }
         if (vy_ > 0 && oldY+kHalfHeight <= box.bottom && y_+kHalfHeight > box.bottom) {
             y_ = box.bottom-kHalfHeight; vy_ = 0;
         }
     }
     if (best > -1e8f) { y_ = best+kHalfHeight; vy_ = 0; grounded_ = true; sinceGround_ = 0; airTime_ = 0; downwardDashing_ = false; }
     else { sinceGround_ += dt; airTime_ += dt; }
+    scene.SetPlayerFootstepContact(grounded_ ? footstepSegment : static_cast<size_t>(-1), x_, y_);
     // Authored LevelEntry centers can begin a few units inside a solid line.
     // Allow a one-frame shallow floor depenetration; ordinary jumps still
     // require crossing the surface from above.

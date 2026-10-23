@@ -129,7 +129,8 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     playerArmSequences_.clear(); playerArmSequence_.clear(); playerArmFrame_ = 0; playerArmFrameElapsed_ = 0; aimLineHold_ = aimLineAlpha_ = 0.f;
     spawnedOrbTexture_ = orbShatterTexture_ = render::InvalidTexture;
     orbTrails_.clear();
-    sprites_.clear(); particleSprays_.clear(); ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); ambience_.clear(); doors_.clear(); boats_.clear(); keys_.clear(); papers_.clear(); healthDevils_.clear(); smashables_.clear(); spawnedOrbs_.clear(); scrolls_.clear(); skipped_ = 0;
+    sprites_.clear(); particleSprays_.clear(); footstepSprays_.clear(); groundParticleTextures_.clear();
+    playerFootstepSegment_ = static_cast<size_t>(-1); lastRunningFrame_ = static_cast<size_t>(-1); footstepRandomState_ = 0x464f4f54u; ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); ambience_.clear(); doors_.clear(); boats_.clear(); keys_.clear(); papers_.clear(); healthDevils_.clear(); smashables_.clear(); spawnedOrbs_.clear(); scrolls_.clear(); skipped_ = 0;
     cameraBounds_ = false;
     allowsWeather_ = false;
     if (auto* props = level->FirstChildElement("LevelProperties")) {
@@ -148,6 +149,20 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         cameraFollowY_ = !camera || !camera->Attribute("followy") || Flag(camera, "followy");
     }
     std::unordered_map<std::string, render::TextureId> textures;
+    // Resolve only authored material particle assets used by solid-line contacts.
+    std::unordered_map<std::string, std::vector<std::string>> materialParticles;
+    TiXmlDocument materials("Game/XmlFiles/materials.xml");
+    if (materials.LoadFile() && materials.RootElement())
+        for (auto* material = materials.RootElement()->FirstChildElement("material"); material;
+             material = material->NextSiblingElement("material")) {
+            if (!material->Attribute("name")) continue;
+            auto* particles = material->FirstChildElement("particletextures");
+            for (auto* texture = particles ? particles->FirstChildElement("texture") : nullptr; texture;
+                 texture = texture->NextSiblingElement("texture")) {
+                auto filename = NormalizeAsset(texture->Attribute("file"));
+                if (!filename.empty()) materialParticles[material->Attribute("name")].push_back(filename);
+            }
+        }
     // Orb and other repeated sprites share animation XML. Keep these parsed
     // paths only for this load so transitions still observe shipped assets.
     std::unordered_map<std::string, std::string> firstAnimationFrames;
@@ -242,13 +257,24 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
                 hazards_.push_back({x, y, Attr(dimensions, "width"), Attr(dimensions, "height"), kind == "WaterBlock", amount});
         }
         if (kind == "SolidLineStrip") {
+            const auto* materialAttribute = object->FirstChildElement("material");
+            const std::string material = materialAttribute && materialAttribute->Attribute("value") ?
+                materialAttribute->Attribute("value") : "";
+            if (material != "water" && !materialParticles[material].empty() &&
+                !groundParticleTextures_.count(material)) {
+                const auto& filename = materialParticles[material].front();
+                if (std::filesystem::exists(filename)) {
+                    std::string textureError;
+                    groundParticleTextures_[material] = renderer.LoadTexture(filename, textureError);
+                }
+            }
             auto* points = object->FirstChildElement("points");
             int count = static_cast<int>(Attr(points, "num_points"));
             for (int i = 1; i < count; ++i) {
                 const std::string x0 = "x_" + std::to_string(i - 1), y0 = "y_" + std::to_string(i - 1);
                 const std::string x1 = "x_" + std::to_string(i), y1 = "y_" + std::to_string(i);
                 ground_.push_back({x + Attr(points, x0.c_str()), y + Attr(points, y0.c_str()),
-                                   x + Attr(points, x1.c_str()), y + Attr(points, y1.c_str())});
+                                   x + Attr(points, x1.c_str()), y + Attr(points, y1.c_str()), material});
             }
         }
         if (kind == "Smashable") {
@@ -396,7 +422,11 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
                             frameTexture = renderer.LoadTexture(path, textureError);
                             textures.emplace(path, frameTexture);
                         } else frameTexture = foundFrame->second;
-                        if (frameTexture) visual.frames.push_back(frameTexture);
+                        if (frameTexture) {
+                            visual.frames.push_back(frameTexture);
+                            visual.footstepFrames.push_back(frame->Attribute("sfx_type") &&
+                                std::string(frame->Attribute("sfx_type")) == "footstep");
+                        }
                     }
                     if (!visual.frames.empty()) playerSequences_.emplace(name, std::move(visual));
                 }
@@ -803,6 +833,10 @@ void LevelScene::UpdateVisuals(float dt, float playerX, float playerY, float cam
         sprite.autoScrollYPhase -= std::floor(sprite.autoScrollYPhase);
     }
     if (objectsPaused) return;
+    for (auto& spray : footstepSprays_) spray.Update(dt);
+    footstepSprays_.erase(std::remove_if(footstepSprays_.begin(), footstepSprays_.end(),
+        [](const ParticleSpray& spray) { return std::all_of(spray.particles.begin(), spray.particles.end(),
+            [](const ParticleSpray::Particle& particle) { return particle.dead; }); }), footstepSprays_.end());
     for (auto& spray : particleSprays_) {
         if (spray.alwaysUpdate || (spray.updateable &&
             spray.x + spray.width*.5f > cameraX - 2000.f && spray.x - spray.width*.5f < cameraX + 2000.f &&
@@ -900,6 +934,44 @@ void LevelScene::UpdateVisuals(float dt, float playerX, float playerY, float cam
         }
     }
 }
+void LevelScene::SetPlayerFootstepContact(size_t segment, float x, float y) {
+    playerFootstepSegment_ = segment;
+    playerFootstepX_ = x; playerFootstepY_ = y;
+}
+void LevelScene::EmitRunningFootstep(const PlayerSequence& sequence) {
+    if (playerFrame_ >= sequence.footstepFrames.size() || !sequence.footstepFrames[playerFrame_] ||
+        playerFootstepSegment_ >= ground_.size()) return;
+    const auto& material = ground_[playerFootstepSegment_].material;
+    if (material == "water") return;
+    auto texture = groundParticleTextures_.find(material);
+    if (texture == groundParticleTextures_.end() || !texture->second) return;
+    ParticleSpray spray;
+    spray.texture = texture->second;
+    spray.x = playerFootstepX_ + (playerFacing_ < 0 ? -12.f : 12.f);
+    spray.y = playerFootstepY_ - 214.898743f * .5f + 17.f;
+    spray.width = 1200.f; spray.height = 720.f;
+    spray.depth = Depth("kPlayer"); spray.looping = false; spray.warmed = true;
+    spray.fadeIn = .15f; spray.fadeOut = .7f;
+    spray.scalesByLifetime = true; spray.scaleTo = 2.5f;
+    spray.randomState = footstepRandomState_;
+    for (int i = 0; i < 3; ++i) {
+        ParticleSpray::Particle particle;
+        const float spread = spray.Random(10) * .01f;
+        particle.directionX = (playerFacing_ > 0 ? -.5f : .5f) + spread;
+        particle.directionY = .5f - spread;
+        particle.lifetime = .7f - (.4f / 3.f) * i;
+        // Runtime directed spray uses zero X/Y spawn spread for this call.
+        particle.x = particle.startX = particle.drawX = spray.x;
+        particle.y = particle.startY = particle.drawY = spray.y;
+        particle.size = particle.startSize = particle.drawSize = float(41 + spray.Random(10));
+        particle.speed = particle.startSpeed = 2.01f + spray.Random(200) * .01f;
+        particle.gravity = .5f;
+        particle.brightness = .81f + spray.Random(20) * .01f;
+        spray.particles.push_back(particle);
+    }
+    footstepRandomState_ = spray.randomState;
+    footstepSprays_.push_back(std::move(spray));
+}
 void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded, int wallSide,
                                     bool rolling, bool dashing, bool inWater, float meleeElapsed, int facing,
                                     bool projectileFired, bool eligibleFireAttempt) {
@@ -953,7 +1025,8 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
     if (holdFallingBody) target = playerSequence_;
     auto it = playerSequences_.find(target);
     if (it == playerSequences_.end()) return;
-    if (target != playerSequence_) {
+    const bool enteredSequence = target != playerSequence_;
+    if (enteredSequence) {
         playerSequence_ = target; playerFrame_ = 0; playerFrameElapsed_ = 0;
     }
     auto& sequence = it->second;
@@ -969,6 +1042,12 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
                 playerFrame_ = (playerFrame_ + 1) % sequence.frames.size();
             else if (playerFrame_ + 1 < sequence.frames.size()) ++playerFrame_;
         }
+    }
+    // Character compares the current Running frame against the last Running frame,
+    // including across Still/other sequence entries, then stamps every Running tick.
+    if (target == "Running") {
+        if (playerFrame_ != lastRunningFrame_ && grounded) EmitRunningFootstep(sequence);
+        lastRunningFrame_ = playerFrame_;
     }
     // Player::Fire restarts/advances once; Character::UpdateAnimations advances
     // again before switching/finishing when the body sequence changes.
@@ -1114,6 +1193,8 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
             }
         }
         renderer.DrawSprite(draw);
+        if (object.player && filter.only.empty()) for (const auto& spray : footstepSprays_)
+            spray.Draw(renderer, cameraX, cameraY);
     }
     drawOrbTrails();
     drawSpraysBefore(-1, 0);

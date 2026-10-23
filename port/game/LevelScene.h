@@ -59,7 +59,7 @@ struct SceneSprite {
 // Runtime GameObjects use the same descending depth stream as authored sprites.
 struct PainterItem { int depth; std::function<void()> draw; };
 
-struct GroundSegment { float x1, y1, x2, y2; };
+struct GroundSegment { float x1, y1, x2, y2; std::string material; };
 struct SolidBox { float left, right, bottom, top; float damage = 0; };
 struct LevelTrigger { float x, y, width, height; std::string destination; };
 struct EncounterTrigger { float x, y, width, height; int count; std::string type; std::string id; };
@@ -110,6 +110,8 @@ public:
     float PlayerVisualWidth() const { return playerVisualWidth_; }
     float PlayerVisualHeight() const { return playerVisualHeight_; }
     const std::vector<GroundSegment>& Ground() const { return ground_; }
+    void SetPlayerFootstepContact(size_t segment, float x, float y);
+    const std::vector<ParticleSpray>& FootstepSprays() const { return footstepSprays_; }
     const std::vector<SolidBox>& SolidBoxes() const { return solidBoxes_; }
     const std::vector<LevelTrigger>& Triggers() const { return triggers_; }
     const std::vector<EncounterTrigger>& Encounters() const { return encounters_; }
@@ -135,6 +137,11 @@ public:
 private:
     std::vector<SceneSprite> sprites_;
     std::vector<ParticleSpray> particleSprays_;
+    std::vector<ParticleSpray> footstepSprays_;
+    std::unordered_map<std::string, render::TextureId> groundParticleTextures_;
+    size_t playerFootstepSegment_ = static_cast<size_t>(-1);
+    float playerFootstepX_ = 0, playerFootstepY_ = 0;
+    std::uint32_t footstepRandomState_ = 0x464f4f54u;
     struct OrbTrail { std::string owner; ParticleSpray spray; bool attached = true; };
     std::vector<OrbTrail> orbTrails_;
     render::TextureId orbShatterTexture_ = render::InvalidTexture;
@@ -157,12 +164,14 @@ private:
     std::vector<DojoScroll> scrolls_;
     float playerX_ = 0, playerY_ = 0;
     float playerVisualWidth_ = 0, playerVisualHeight_ = 0;
-    struct PlayerSequence { std::vector<render::TextureId> frames; float rate = 0, minRate = 0, maxRate = 60; };
+    struct PlayerSequence { std::vector<render::TextureId> frames; std::vector<bool> footstepFrames; float rate = 0, minRate = 0, maxRate = 60; };
+    void EmitRunningFootstep(const PlayerSequence& sequence);
     std::unordered_map<std::string, PlayerSequence> playerSequences_;
     std::unordered_map<std::string, PlayerSequence> playerArmSequences_;
     std::string playerSequence_;
     std::string playerArmSequence_;
     size_t playerFrame_ = 0;
+    size_t lastRunningFrame_ = static_cast<size_t>(-1);
     size_t playerArmFrame_ = 0; // sequence length means finished, matching AnimationPart::IsFinished
     float playerFrameElapsed_ = 0;
     // Character stamps the first dry descending update; off-solid time can bypass the hold.
