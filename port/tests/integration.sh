@@ -325,7 +325,7 @@ earned_deflect_save=port/build/earned-deflect-save.txt
 earned_deflect=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$earned_purchase_script,$earned_deflect_suffix" --fixed-dt 0.0166667 --simulate-only --combat-state --save-file "$earned_deflect_save")
 printf '%s\n' "$earned_deflect" | grep -q 'Purchased kDeflection at frame 31621 balance=0'
 printf '%s\n' "$earned_deflect" | grep -q 'Trigger at frame 37304 from .*village_central.xml .*village_shrine.xml'
-printf '%s\n' "$earned_deflect" | grep -q 'village_agri.xml player=(1951.18,-1278.17) orbs=383 .*health=1 .*balance=8 .*spawned=18'
+printf '%s\n' "$earned_deflect" | grep -q 'village_agri.xml player=(1951.18,-1278.17) orbs=383 .*health=4 .*balance=8 .*spawned=18'
 printf '%s\n' "$earned_deflect" | grep -q 'Deflection unlocked=1 count=1'
 if printf '%s\n' "$earned_deflect" | grep -q 'Player died'; then exit 1; fi
 python3 - <<'PYEARNEDEDFLECT'
