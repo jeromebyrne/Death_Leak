@@ -67,7 +67,8 @@ printf '%s\n' "$focus_lock" | grep -q 'focus=0'
 focus_recover=$($bin --play Game/XmlFiles/levels/test.xml --start-hazard 1 --exhaust-focus --script L:240,.:360 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$focus_recover" | grep -q 'focus=19.3334'
 combat=$($bin --play Game/XmlFiles/levels/first_ninja_arena.xml --start-encounter 0 --script F:300 --fixed-dt 0.0166667 --simulate-only --save-file port/build/integration-save.txt)
-printf '%s\n' "$combat" | grep -q 'spawned=2 enemies=2 hits=6 kills=0'
+# Source-correct active knife flight now reaches the arena NPC and kills it.
+printf '%s\n' "$combat" | grep -q 'spawned=2 enemies=1 hits=14 kills=1'
 resume=$($bin --load-save port/build/integration-save.txt --frames 1 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$resume" | grep -q 'health=25 focus=100'
 # NPCTrigger removes a recently-fired trigger on level load (120000 ms).
@@ -140,7 +141,8 @@ east_route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script 
 printf '%s\n' "$east_route" | grep -q 'Entered Game/XmlFiles/levels/waterfall_top.xml'
 printf '%s\n' "$east_route" | grep -q 'Entered Game/XmlFiles/levels/waterfall_bottom.xml'
 printf '%s\n' "$east_route" | grep -q 'Entered Game/XmlFiles/levels/underwater_cave.xml'
-printf '%s\n' "$east_route" | grep -q 'underwater_cave.xml player=.*orbs=16 .*balance=16'
+# Waterfall-top authored orb tracking adds one collected orb on this route.
+printf '%s\n' "$east_route" | grep -q 'underwater_cave.xml player=.*orbs=17 .*balance=17'
 # A rightward held jump at the authored waterfall-top gap (frame 710)
 # crosses its fall trigger and reaches forest 2 from the original forest-1
 # spawn. Normal knife fire then carries the same, unmodified run into village
