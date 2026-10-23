@@ -1,4 +1,7 @@
 #include "../render/Renderer.h"
+#ifdef DEATHLEAK_TEST_BODY_SLOW_FRAME_COMMAND
+#include "../tests/private_body_slow_frame_command_observer_20261023.h"
+#endif
 #include "../game/LevelScene.h"
 #include "../game/ShaderClock.h"
 #include "../game/WeatherLightning.h"
@@ -318,6 +321,11 @@ int main(int argc, char** argv) {
     const char* testSoftwareEnv = std::getenv("DEATHLEAK_TEST_ALLOW_SOFTWARE_RENDERER");
     const bool testAllowSoftware = testSoftwareEnv && std::string(testSoftwareEnv) == "1";
     auto renderer = CreateRenderer(testAllowSoftware);
+#ifdef DEATHLEAK_TEST_BODY_SLOW_FRAME_COMMAND
+    auto observer = std::make_unique<BodySlowFrameObserver>(std::move(renderer));
+    auto* bodySlowFrameObserver = observer.get();
+    renderer = std::move(observer);
+#endif
     std::string error;
     if (!renderer->Initialize("Death Leak - Linux renderer slice", 1280, 720, error)) {
         std::cerr << "Renderer initialization failed: " << error << '\n'; return 1;
@@ -522,12 +530,18 @@ int main(int argc, char** argv) {
         float dt = std::chrono::duration<float>(now - last).count();
         last = now;
         if (fixedDt > 0) dt = fixedDt;
+#ifdef DEATHLEAK_TEST_BODY_SLOW_FRAME_COMMAND
+        const float requestedDt = dt;
+#endif
         // Original program.cpp caps the modified update delta to its 60 Hz target
         // before Update/Render; the completed frame commits that same delta.
         constexpr float kTargetDelta = 1.f / 60.f;
         if (dt > kTargetDelta) dt = kTargetDelta;
         // This is the port's update delta; feed the modified delta here when
         // Windows-style damage slowdown is implemented.
+#ifdef DEATHLEAK_TEST_BODY_SLOW_FRAME_COMMAND
+        bodySlowFrameObserver->Start(frame, requestedDt, dt, precedingRenderedModifiedDelta);
+#endif
         shaderClock.Update(dt);
         cameraShakeTime += dt;
         const char command = frame < static_cast<int>(scriptedInput.size()) ? scriptedInput[frame] : 0;
@@ -1245,6 +1259,9 @@ int main(int argc, char** argv) {
         const bool objectsPaused = paperModal || upgradeModal;
         scene.UpdateVisuals(dt, worldX, worldY, cameraX, cameraY, objectsPaused, precedingRenderedModifiedDelta);
         if (!objectsPaused) combat.UpdateVisuals(dt);
+#ifdef DEATHLEAK_TEST_BODY_SLOW_FRAME_COMMAND
+        if (!playLevel.empty() && !objectsPaused) bodySlowFrameObserver->BodyUpdate(motion.Grounded());
+#endif
         if (!playLevel.empty() && !objectsPaused) scene.UpdatePlayerVisual(dt, motion.VelocityX(), motion.VelocityY(),
             motion.Grounded(), motion.WallSide(), motion.Rolling(), motion.DownwardDashing(), motion.InWater(),
             combat.MeleeElapsed(), facing, playerProjectileFired, playerEligibleFireAttempt, strafeVisual, stickAim, aimX, aimY, precedingRenderedModifiedDelta, crouchInput, motion.Recovery());
