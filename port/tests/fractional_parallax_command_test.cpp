@@ -7,6 +7,7 @@
 #include <cassert>
 #include <cmath>
 #include <iostream>
+#include <limits>
 #include <vector>
 using namespace deathleak::render;
 namespace {
@@ -14,6 +15,20 @@ void near(float a, double e, double tol=2e-6) {
     assert(std::fabs(static_cast<double>(a)-e)<=tol);
 }
 int oldCut(float s) { return static_cast<int>((s-std::floor(s))*2048); }
+bool sameFloat(float actual, float expected) {
+    return std::isnan(expected) ? std::isnan(actual) : actual == expected;
+}
+void preservedLegacy(const ParallaxUVScrollInput& in,
+                     const ParallaxUVBinding& binding) {
+    const auto c=PrepareParallaxUVCommand(in,binding);
+    assert(c.kind==ParallaxUVCommandKind::LegacyInteger);
+    assert(sameFloat(c.destination.x,in.destination.x));
+    assert(sameFloat(c.destination.y,in.destination.y));
+    assert(sameFloat(c.destination.width,in.destination.width));
+    assert(sameFloat(c.destination.height,in.destination.height));
+    assert(sameFloat(c.shiftX,in.shiftX) && sameFloat(c.shiftY,in.shiftY));
+    assert(c.flipX==in.flipX && c.flipY==in.flipY);
+}
 struct Sink {
     std::vector<ParallaxUVCommand> quads;
     std::vector<UVWrapSegment> segments;
@@ -91,9 +106,41 @@ void fallback() {
     excluded=in; excluded.shiftX=excluded.shiftY=0.f;
     assert(PrepareParallaxUVCommand(excluded,eligible).kind==ParallaxUVCommandKind::NotApplicable);
 }
+void edgeGate() {
+    const float inf=std::numeric_limits<float>::infinity();
+    const float nan=std::numeric_limits<float>::quiet_NaN();
+    const ParallaxUVScrollInput in{{-17.25f,39.5f,1365.3333f,341.3333f},
+                                    .690345f,.125f,true,true,true,true};
+    const ParallaxUVBinding eligible{true,true,1.f,1.f,false,false};
+    // A finite shift stays on the unchanged integer-copy route for every
+    // rejected binding, including bad signs, missing spans and backend failure.
+    for(const auto b : {ParallaxUVBinding{false,true,1.f,1.f,false,false},
+                        ParallaxUVBinding{true,false,1.f,1.f,false,false},
+                        ParallaxUVBinding{true,true,0.f,1.f,false,false},
+                        ParallaxUVBinding{true,true,1.f,0.f,false,false},
+                        ParallaxUVBinding{true,true,-1.f,1.f,false,false},
+                        ParallaxUVBinding{true,true,1.f,-1.f,false,false},
+                        ParallaxUVBinding{true,true,.75f,1.f,false,false},
+                        ParallaxUVBinding{true,true,1.f,1.00001f,false,false},
+                        ParallaxUVBinding{true,true,inf,1.f,false,false},
+                        ParallaxUVBinding{true,true,1.f,nan,false,false}}) {
+        preservedLegacy(in,b);
+        Sink sink; sink.submit(PrepareParallaxUVCommand(in,b),2048,512);
+        assert(sink.quads.empty() && sink.copies==4 && sink.segments.size()==8);
+    }
+    // UVWrap's integer conversion is undefined for nonfinite shifts; this
+    // preparation test verifies only the fallback command's preserved inputs.
+    for(const float bad : {inf,-inf,nan}) {
+        auto shifted=in; shifted.shiftX=bad;
+        preservedLegacy(shifted,eligible);
+        shifted=in; shifted.shiftY=bad;
+        preservedLegacy(shifted,eligible);
+    }
+}
 }
 int main() {
     forest(false,512); forest(false,677); forest(true,512); forest(true,677);
     fallback();
+    edgeGate();
     std::cout<<"PASS: fractional parallax command CPU seam\n";
 }
