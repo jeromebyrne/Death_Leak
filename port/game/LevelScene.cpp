@@ -127,6 +127,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     introBodyPhase_ = IntroBodyPhase::None; introBodyFinished_ = false;
     playerSequences_.clear(); playerSequence_.clear(); playerFrame_ = 0; playerFrameElapsed_ = 0; playerFacing_ = playerAimLineFacing_ = 1; playerAimLineRotation_ = 0.f;
     playerAimLineFlipY_ = playerAimLineDirected_ = false; playerGrounded_ = false;
+    playerCrouching_ = playerWasCrouching_ = false;
     playerOffSolidTime_ = playerDescentTime_ = 0; playerDescending_ = false;
     playerArmSequences_.clear(); playerArmSequence_.clear(); playerArmFrame_ = 0; playerArmFrameElapsed_ = 0; aimLineHold_ = aimLineAlpha_ = 0.f;
     spawnedOrbTexture_ = orbShatterTexture_ = render::InvalidTexture;
@@ -411,7 +412,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
                 auto* body = animation.RootElement() ? animation.RootElement()->FirstChildElement("body") : nullptr;
                 // Character::UpdateAnimations selects these authored body sequences.
                 for (const char* name : {"Still", "Running", "StrafeForward", "StrafeBack", "JumpingUp", "JumpingDown",
-                                         "SlidingDown", "Roll", "SwimIdle", "SwimForward", "Melee", "Melee2", "Melee3", "MeleeFinish",
+                                         "SlidingDown", "Roll", "Crouch", "CrouchUp", "SwimIdle", "SwimForward", "Melee", "Melee2", "Melee3", "MeleeFinish",
                                          "IntroCutscene1", "IntroCutscene2"}) {
                     auto* sequence = body ? body->FirstChildElement(name) : nullptr;
                     if (!sequence) continue;
@@ -1144,7 +1145,10 @@ size_t LevelScene::IntroBodyFrameCount() const {
 void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded, int wallSide,
                                     bool rolling, bool dashing, bool inWater, float meleeElapsed, int facing,
                                     bool projectileFired, bool eligibleFireAttempt, PlayerStrafeVisual strafe,
-                                    bool rightStickAim, float aimX, float aimY, float precedingRenderedModifiedDelta) {
+                                    bool rightStickAim, float aimX, float aimY, float precedingRenderedModifiedDelta, bool crouch) {
+    // SetCrouching marks the release edge; movement/air branches can cancel it.
+    if (playerCrouching_ && !crouch) playerWasCrouching_ = true;
+    playerCrouching_ = crouch;
     playerGrounded_ = grounded;
     // Character::Update records the descent edge before UpdateAnimations. Its
     // dry upward tolerance is -0.5 world units/tick (velocity here is /s).
@@ -1213,6 +1217,7 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
         else if (meleeElapsed < 31.f/60.f) target = "Melee3";
         else target = "MeleeFinish";
     } else if (rolling) target = "Roll";
+    else if (playerCrouching_) target = "Crouch";
     else if (inWater) target = std::abs(vx) > 3.f ? "SwimForward" : "SwimIdle";
     else if (dashing) target = "JumpingDown"; // no dedicated authored dash body sequence
     else if (!grounded && wallSide != 0 && vy < 0.f) target = "SlidingDown";
@@ -1224,6 +1229,8 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
             playerFacing_ = strafe.aimFacing;
         } else target = "Running";
     }
+    if (target == "Still" && playerWasCrouching_) target = "CrouchUp";
+    else if (target != "CrouchUp" && target != "Crouch") playerWasCrouching_ = false;
     // While a short dry descent is pending, Character keeps both the current
     // body frame and its fractional animation clock unchanged. The long-airtime
     // bypass and the strict 0.05 s comparison are source-authored.
@@ -1251,9 +1258,11 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
             if (target == "Still" || target == "Running" || target == "SlidingDown" ||
                 target == "SwimIdle" || target == "SwimForward" || strafing)
                 playerFrame_ = (playerFrame_ + 1) % sequence.frames.size();
+            else if ((target == "Crouch" || target == "CrouchUp") && playerFrame_ < sequence.frames.size()) ++playerFrame_;
             else if (playerFrame_ + 1 < sequence.frames.size()) ++playerFrame_;
         }
     }
+    if (target == "CrouchUp" && playerFrame_ >= sequence.frames.size()) playerWasCrouching_ = false;
     if (strafing) sequence.currentRate = std::clamp(std::abs(vx / 60.f) * 1.8f * 2.65f,
                                                       sequence.minRate, sequence.maxRate);
     // Character uses one numeric frame guard for every horizontal movement

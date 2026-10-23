@@ -269,7 +269,7 @@ int main(int argc, char** argv) {
         std::istringstream parts(script); std::string token;
         while (std::getline(parts, token, ',')) {
             auto colon = token.find(':');
-            if (colon == std::string::npos || token.empty() || std::string("LRJ.FBNTQEIHMPXSOYZ").find(token[0]) == std::string::npos) { std::cerr << "Bad --script token\n"; return 2; }
+            if (colon == std::string::npos || token.empty() || std::string("LRJ.FBNTQEIHMPXSOYZC").find(token[0]) == std::string::npos) { std::cerr << "Bad --script token\n"; return 2; }
             int count = std::atoi(token.c_str() + colon + 1);
             if (count < 1 || count > 100000 || scriptedInput.size() + count > 100000) { std::cerr << "Bad --script duration\n"; return 2; }
             scriptedInput.insert(scriptedInput.end(), count, token[0]);
@@ -530,6 +530,7 @@ int main(int argc, char** argv) {
         shaderClock.Update(dt);
         cameraShakeTime += dt;
         const char command = frame < static_cast<int>(scriptedInput.size()) ? scriptedInput[frame] : 0;
+        bool crouchInput = false;
         bool playerProjectileFired = false;
         bool playerEligibleFireAttempt = false;
         bool stickAim = false;
@@ -765,6 +766,9 @@ int main(int argc, char** argv) {
                 restartHeld = restart;
             } else {
             restartHeld = restart;
+            const bool crouchHeld = !script.empty() ? command == 'C' : renderer->KeyDown(Down);
+            crouchInput = crouchHeld && motion.Grounded() && motion.WallSide() == 0 &&
+                !motion.Rolling() && !combat.MeleeActive();
             const bool jump = !script.empty() ? (command == 'J' || command == 'Q' || command == 'E' || command == 'Y' || command == 'Z') : renderer->KeyDown(Up);
             // Windows right shoulder attempts an airborne dash and a grounded melee.
             // O/left shoulder is roll; the motion layer keeps the landing input window.
@@ -791,7 +795,7 @@ int main(int argc, char** argv) {
                 cameraX = it->second.first; cameraY = it->second.second;
             }
             const bool wasGrounded = motion.Grounded();
-            motion.Update(scene, dt, (combat.MeleeActive() || motion.Rolling()) ? 0 : static_cast<int>(direction),
+            motion.Update(scene, dt, (combat.MeleeActive() || motion.Rolling() || crouchInput) ? 0 : static_cast<int>(direction),
                           jump && !combat.MeleeActive());
             // Scripted input has no controller strafe resolution, but Roll footstep
             // spray still follows the last horizontal movement direction.
@@ -822,7 +826,7 @@ int main(int argc, char** argv) {
             const int rightY = deathleak::game::RightStickCameraTarget::WorldRightY(controllerSticks.rightY);
             stickAim = script.empty() && !simulateOnly && controllerSticks.connected &&
                 (std::abs(controllerSticks.rightX) > rightDeadzone || std::abs(rightY) > rightDeadzone);
-            const bool fire = (!script.empty() ? (command == 'F' || command == 'B' || command == 'N' || command == 'Y' || command == 'Z') : renderer->KeyDown(Down)) || stickAim;
+            const bool fire = (!script.empty() ? (command == 'F' || command == 'B' || command == 'N' || command == 'Y' || command == 'Z') : (renderer->KeyDown(Down) && !crouchInput)) || stickAim;
             aimX = stickAim ? static_cast<float>(controllerSticks.rightX) : 0.f;
             aimY = stickAim ? static_cast<float>(rightY) : 0.f;
             playerEligibleFireAttempt = fire && !motion.Rolling() && !motion.InWater() &&
@@ -838,7 +842,7 @@ int main(int argc, char** argv) {
             const bool shotAirborne = !motion.Grounded() && motion.WallSide() == 0 &&
                 !motion.InWater() && verticalSpeed != 0.f;
             const deathleak::game::PlayerShotLaunchState launchState{
-                script.empty() && renderer->KeyDown(Down) &&
+                script.empty() && renderer->KeyDown(Down) && !crouchInput &&
                     motion.Grounded() && motion.WallSide() == 0 && !motion.Rolling() &&
                     !combat.MeleeActive(),
                 shotAirborne && verticalSpeed > -30.f,
@@ -1242,7 +1246,7 @@ int main(int argc, char** argv) {
         if (!objectsPaused) combat.UpdateVisuals(dt);
         if (!playLevel.empty() && !objectsPaused) scene.UpdatePlayerVisual(dt, motion.VelocityX(), motion.VelocityY(),
             motion.Grounded(), motion.WallSide(), motion.Rolling(), motion.DownwardDashing(), motion.InWater(),
-            combat.MeleeElapsed(), facing, playerProjectileFired, playerEligibleFireAttempt, strafeVisual, stickAim, aimX, aimY, precedingRenderedModifiedDelta);
+            combat.MeleeElapsed(), facing, playerProjectileFired, playerEligibleFireAttempt, strafeVisual, stickAim, aimX, aimY, precedingRenderedModifiedDelta, crouchInput);
         // Camera2D draws X's random sign before Y's, only while shaking.
         const bool jitter = cameraShake.WillJitter(cameraShakeTime - dt);
         const int shakeSignX = jitter && scene.CameraFollowX() ? ((std::rand() & 1) ? 1 : -1) : 1;
