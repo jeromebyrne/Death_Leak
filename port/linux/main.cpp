@@ -107,6 +107,7 @@ int main(int argc, char** argv) {
     bool simulateOnly = false;
     bool simulateWallClock = false;
     bool profile = false;
+    bool showFps = false;
     bool combatState = false;
     bool freshSaveIntro = false;
     bool steamDeck = false;
@@ -134,6 +135,7 @@ int main(int argc, char** argv) {
         else if (arg == "--simulate-wall-clock") simulateWallClock = true;
         else if (arg == "--menu-loop") menuLoop = true;
         else if (arg == "--profile") profile = true;
+        else if (arg == "--show-fps") showFps = true;
         else if (arg == "--combat-state") combatState = true;
         else if (arg == "--fresh-save-intro") freshSaveIntro = true;
         else if (arg == "--steam-deck") steamDeck = true;
@@ -142,7 +144,7 @@ int main(int argc, char** argv) {
         else if (arg == "--capture-suppress-intro-prompt") suppressIntroPromptDraw = true;
         else if (arg == "--start-encounter" && i + 1 < argc) startEncounter = std::atoi(argv[++i]);
         else if (arg == "--start-hazard" && i + 1 < argc) startHazard = std::atoi(argv[++i]);
-        else { std::cerr << "Usage: deathleak-linux [--frames N] [--capture output.bmp] [--level-preview level.xml | --play level.xml]\n"; return 2; }
+        else { std::cerr << "Usage: deathleak-linux [--frames N] [--capture output.bmp] [--level-preview level.xml | --play level.xml] [--show-fps]\n"; return 2; }
     }
     if (suppressIntroPromptDraw && capture.empty()) {
         std::cerr << "--capture-suppress-intro-prompt requires --capture\n"; return 2;
@@ -542,7 +544,7 @@ int main(int argc, char** argv) {
         deathleak::game::PlayerStrafeVisual strafeVisual{};
         auto now = std::chrono::steady_clock::now();
         const auto fpsSampleSeconds = std::chrono::duration<double>(now - fpsSampleStart).count();
-        if (fpsSampleSeconds >= 0.5) {
+        if (showFps && fpsSampleSeconds >= 0.5) {
             displayedFps = static_cast<int>(std::lround(presentedFramesInSample / fpsSampleSeconds));
             presentedFramesInSample = 0;
             fpsSampleStart = now;
@@ -1512,9 +1514,9 @@ int main(int argc, char** argv) {
                 }
                 hud.Draw(*renderer, combat.Health(), combat.MaxHealth(), combat.Focus(), orbBalance, shaderFrame.totalTime - dt);
             }
-            // Wall-clock presented frames, independent of the capped/fixed game dt.
-            // The bottom HUD band keeps the small readout legible over the scene.
-            deathleak::game::DrawBitmapText(*renderer,
+            // Port-only diagnostic, hidden from ordinary gameplay and review captures.
+            // It samples wall-clock presented frames, not the capped/fixed game dt.
+            if (showFps) deathleak::game::DrawBitmapText(*renderer,
                 displayedFps >= 0 ? "FPS " + std::to_string(displayedFps) : "FPS --",
                 10.f, 693.f, 2.f, {255,255,255,230});
             if (paperModal)
@@ -1564,7 +1566,7 @@ int main(int argc, char** argv) {
                       << " time=" << loadingPhaseTime << '\n';
         }
 #endif
-        ++presentedFramesInSample;
+        if (showFps) ++presentedFramesInSample;
         precedingRenderedModifiedDelta = dt;
         shaderClock.RenderCompleted(dt);
         const auto afterDraw = std::chrono::steady_clock::now();
