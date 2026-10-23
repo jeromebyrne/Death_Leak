@@ -1,6 +1,7 @@
 #include "../render/Renderer.h"
 #include "RepeatX.h"
 #include "UVWrap.h"
+#include "ParallaxUVCommand.h"
 #include "WobbleUV.h"
 #include "FoliageSway.h"
 #include "EffectQuadGeometry.h"
@@ -16,6 +17,7 @@
 #include <cstring>
 #include <iostream>
 #include <png.h>
+#include <unordered_set>
 #include <unordered_map>
 #include <vector>
 
@@ -245,20 +247,19 @@ public:
             }
         } else if ((sprite.uvShiftX != 0 || sprite.uvShiftY != 0) && sprite.rotationDegrees == 0 && !sourcePtr) {
             // D3D's ParallaxLayer scrolls one full texture UV over its authored quad.
-            // SDL_RenderCopy cannot wrap UVs, so split at wrap seams while retaining
-            // GPU texture copies, per-sprite alpha and the existing destination.
-            int width = 0, height = 0;
-            SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
-            ForEachUVWrapSegment(height, sprite.uvShiftY, sprite.flipY, [&](UVWrapSegment y) {
-                ForEachUVWrapSegment(width, sprite.uvShiftX, sprite.flipX, [&](UVWrapSegment x) {
-                    SDL_Rect part{x.source, y.source, x.length, y.length};
-                    SDL_FRect target{destination.x + destination.w * x.offset,
-                                     destination.y + destination.h * y.offset,
-                                     destination.w * x.length / width,
-                                     destination.h * y.length / height};
-                    SDL_RenderCopyExF(renderer_, texture, &part, &target, 0, nullptr, flip);
+            if (!DrawFractionalParallax(sprite, texture, destination, textureWidth, textureHeight)) {
+                // Preserve the original integer-copy fallback.
+                ForEachUVWrapSegment(textureHeight, sprite.uvShiftY, sprite.flipY, [&](UVWrapSegment y) {
+                    ForEachUVWrapSegment(textureWidth, sprite.uvShiftX, sprite.flipX, [&](UVWrapSegment x) {
+                        SDL_Rect part{x.source, y.source, x.length, y.length};
+                        SDL_FRect target{destination.x + destination.w * x.offset,
+                                         destination.y + destination.h * y.offset,
+                                         destination.w * x.length / textureWidth,
+                                         destination.h * y.length / textureHeight};
+                        SDL_RenderCopyExF(renderer_, texture, &part, &target, 0, nullptr, flip);
+                    });
                 });
-            });
+            }
         } else if (sprite.rotationDegrees == 0 && flip == SDL_FLIP_NONE)
             SDL_RenderCopyF(renderer_, texture, sourcePtr, &destination);
         else
@@ -266,6 +267,130 @@ public:
                               sprite.rotationDegrees, nullptr, flip);
         ++drawCalls_;
         copySeconds_ += std::chrono::duration<double>(std::chrono::steady_clock::now()-began).count();
+    }
+    bool DrawFractionalParallax(const Sprite& sprite, SDL_Texture* texture,
+                                const SDL_FRect& destination, int logicalWidth, int logicalHeight) {
+        const ParallaxUVScrollInput input{{destination.x, destination.y, destination.w, destination.h},
+            sprite.uvShiftX, sprite.uvShiftY, sprite.flipX, sprite.flipY, true, true};
+        ParallaxUVBinding binding{};
+        auto command = PrepareParallaxUVCommand(input, binding);
+        if (command.kind == ParallaxUVCommandKind::NotApplicable ||
+            !std::isfinite(input.shiftX) || !std::isfinite(input.shiftY) ||
+            !std::isfinite(destination.x) || !std::isfinite(destination.y) ||
+            !std::isfinite(destination.w) || !std::isfinite(destination.h) ||
+            destination.w <= 0.f || destination.h <= 0.f ||
+            logicalWidth <= 0 || logicalHeight <= 0 || !SDL_GL_GetCurrentContext())
+            return false;
+        SDL_RendererInfo info{};
+        if (SDL_GetRendererInfo(renderer_, &info) != 0 || !info.name ||
+            std::strcmp(info.name, "opengl") != 0) return false;
+        binding.glRenderer = true;
+        if (SDL_RenderFlush(renderer_) != 0) return false;
+        GLint oldProgram = 0, oldMatrixMode = 0, oldActiveTexture = 0, oldBinding = 0;
+        glGetIntegerv(GL_CURRENT_PROGRAM, &oldProgram);
+        glGetIntegerv(GL_MATRIX_MODE, &oldMatrixMode);
+        glGetIntegerv(GL_ACTIVE_TEXTURE, &oldActiveTexture);
+        glPushAttrib(GL_ALL_ATTRIB_BITS);
+        glActiveTexture(GL_TEXTURE0);
+        glGetIntegerv(GL_TEXTURE_BINDING_2D, &oldBinding);
+        bool bound = false, samplerChanged = false, projectionPushed = false, modelviewPushed = false;
+        bool drawn = false;
+        GLint oldWrapS = 0, oldWrapT = 0, oldMin = 0, oldMag = 0;
+        GLint allocationWidth = 0, allocationHeight = 0, object = 0;
+        float spanX = 0.f, spanY = 0.f;
+        bool npotSupported = false;
+        do {
+            if (SDL_GL_BindTexture(texture, &spanX, &spanY) != 0) break;
+            bound = true;
+            glGetIntegerv(GL_TEXTURE_BINDING_2D, &object);
+            if (object == 0) break;
+            while (glGetError() != GL_NO_ERROR) {}
+            glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &allocationWidth);
+            glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &allocationHeight);
+            if (glGetError() != GL_NO_ERROR || allocationWidth <= 0 || allocationHeight <= 0) break;
+            auto powerOfTwo = [](int n) { return n > 0 && (n & (n - 1)) == 0; };
+            binding.npotTexture = !powerOfTwo(allocationWidth) || !powerOfTwo(allocationHeight);
+            const char* version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
+            if (version && version[0] >= '0' && version[0] <= '9') {
+                char* end = nullptr;
+                const long major = std::strtol(version, &end, 10);
+                if (end && *end == '.' && end[1] >= '0' && end[1] <= '9') {
+                    const long minor = std::strtol(end + 1, &end, 10);
+                    npotSupported = (*end == '\0' || *end == ' ') &&
+                        (major > 2 || (major == 2 && minor >= 0));
+                    if (!npotSupported) {
+                        const char* extensions = reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS));
+                        const char* name = "GL_ARB_texture_non_power_of_two";
+                        const size_t length = std::strlen(name);
+                        for (const char* p = extensions; p && (p = std::strstr(p, name)); p += length)
+                            if ((p == extensions || p[-1] == ' ') &&
+                                (p[length] == ' ' || p[length] == '\0')) { npotSupported = true; break; }
+                    }
+                }
+            }
+            binding.bindSucceeded = true;
+            binding.spanX = spanX; binding.spanY = spanY;
+            binding.npotRepeatSupported = npotSupported;
+            command = PrepareParallaxUVCommand(input, binding);
+            if (command.kind != ParallaxUVCommandKind::FloatQuad) break;
+            while (glGetError() != GL_NO_ERROR) {}
+            glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, &oldWrapS);
+            glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, &oldWrapT);
+            glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, &oldMin);
+            glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, &oldMag);
+            if (glGetError() != GL_NO_ERROR) break;
+            samplerChanged = true;
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            if (glGetError() != GL_NO_ERROR) break;
+            glUseProgram(0);
+            glEnable(GL_TEXTURE_2D);
+            glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glDisable(GL_DEPTH_TEST);
+            glColor4f(sprite.tint.r / 255.f, sprite.tint.g / 255.f,
+                      sprite.tint.b / 255.f, sprite.tint.a / 255.f * sprite.opacity);
+            glMatrixMode(GL_PROJECTION); glPushMatrix(); projectionPushed = true; glLoadIdentity();
+            glOrtho(0, 1280, 720, 0, -1, 1);
+            glMatrixMode(GL_MODELVIEW); glPushMatrix(); modelviewPushed = true; glLoadIdentity();
+            if (glGetError() != GL_NO_ERROR) break;
+            const float x[4] = {destination.x, destination.x + destination.w,
+                                destination.x + destination.w, destination.x};
+            const float y[4] = {destination.y, destination.y,
+                                destination.y + destination.h, destination.y + destination.h};
+            glBegin(GL_QUADS);
+            for (int i = 0; i < 4; ++i) {
+                glTexCoord2f(command.uv[i].u, command.uv[i].v);
+                glVertex2f(x[i], y[i]);
+            }
+            glEnd();
+            drawn = true;
+        } while (false);
+        if (samplerChanged) {
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, oldWrapS);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, oldWrapT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, oldMin);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, oldMag);
+        }
+        if (modelviewPushed) { glMatrixMode(GL_MODELVIEW); glPopMatrix(); }
+        if (projectionPushed) { glMatrixMode(GL_PROJECTION); glPopMatrix(); }
+        glUseProgram(static_cast<GLuint>(oldProgram));
+        glMatrixMode(oldMatrixMode);
+        if (bound) SDL_GL_UnbindTexture(texture);
+        glBindTexture(GL_TEXTURE_2D, static_cast<GLuint>(oldBinding));
+        glPopAttrib();
+        glActiveTexture(oldActiveTexture);
+        if (parallaxLogged_.insert(sprite.texture).second)
+            std::cerr << "Parallax UV texture=" << sprite.texture
+                      << " logical=" << logicalWidth << "x" << logicalHeight
+                      << " allocated=" << allocationWidth << "x" << allocationHeight
+                      << " span=" << spanX << "," << spanY
+                      << " npot_repeat=" << npotSupported
+                      << " path=" << (drawn ? "float" : "legacy") << "\n";
+        return drawn;
     }
     void DrawDamageBurst(const Sprite& sprite, SDL_Texture* texture, const SDL_FRect& destination) {
         SDL_RenderFlush(renderer_);
@@ -854,6 +979,7 @@ private:
     SDL_GameController* gamepad_ = nullptr;
     TextureId nextId_ = 1;
     std::unordered_map<TextureId, SDL_Texture*> textures_;
+    std::unordered_set<TextureId> parallaxLogged_;
     std::unordered_map<std::string, TextureId> paths_;
     std::unordered_map<TextureId, std::string> texturePaths_;
     std::unordered_map<TextureId, WobbleMip> wobbleMipTextures_;
