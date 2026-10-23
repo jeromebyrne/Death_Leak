@@ -76,5 +76,41 @@ int main() {
     combat.Update(scene, 100000, 100000, 5.f, false, false, true, false, 1, renderer);
     assert(combat.DeathDebrisCount() == 0 && combat.DeathSprayCount() == 0 && combat.MaterialSprayCount() == 0);
     combat.ClearLevel();
-    std::cout << "PASS: ninja kill spawns once, no-kill stays empty, effects draw/move/expire\n";
+
+    // Reproduce the ordinary ordering: Combat::Update advances old emitters,
+    // then the projectile kills a ninja later in that same call. Inspect the
+    // renderer output immediately, before a second emitter update can hide a
+    // bad spawn-time alpha default.
+    Combat updateKill;
+    updateKill.Update(scene, 0, 107.44937f, 0, false, false, true, false, 1, renderer);
+    updateKill.SetArt(renderer);
+    assert(updateKill.EnemyCount() == 1);
+    assert(updateKill.DamageEnemy(0, 19.f));
+    const float targetX = updateKill.Enemies()[0].x;
+    const float targetY = updateKill.Enemies()[0].y;
+    updateKill.Update(scene, targetX - 40.f, targetY - 25.f, 1.f/60.f,
+                      true, false, true, false, 1, renderer);
+    assert(updateKill.Kills() == 1 && updateKill.MaterialSprayCount() == 1);
+    const auto bloodTexture = updateKill.MaterialSpray(0)->texture;
+    renderer.sprites.clear();
+    updateKill.Draw(renderer, targetX, targetY);
+    size_t bloodSprites = 0;
+    for (const auto& sprite : renderer.sprites) {
+        if (sprite.texture != bloodTexture) continue;
+        ++bloodSprites;
+        assert(sprite.tint.a == 0); // new spray did not receive Update yet
+    }
+    assert(bloodSprites == 20);
+    updateKill.Update(scene, 100000.f, 100000.f, 1.f/60.f,
+                      false, false, true, false, 1, renderer);
+    renderer.sprites.clear();
+    updateKill.Draw(renderer, targetX, targetY);
+    bloodSprites = 0;
+    for (const auto& sprite : renderer.sprites) {
+        if (sprite.texture != bloodTexture) continue;
+        ++bloodSprites;
+        assert(sprite.tint.a > 0 && sprite.tint.a < 255);
+    }
+    assert(bloodSprites == 20);
+    std::cout << "PASS: ninja kill effects and Update-spawned first-frame fade alpha\n";
 }

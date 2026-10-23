@@ -218,6 +218,9 @@ void Combat::SpawnNinjaMaterialSpray(float x, float y) {
         particle.speed = particle.startSpeed = 7.01f + static_cast<float>(spray.Random(500)) * .01f;
         particle.gravity = 1.4f;
         particle.brightness = .76f + static_cast<float>(spray.Random(25)) * .01f;
+        // Update may spawn this spray after the emitter-update pass. Start at
+        // fade-in time zero so that frame cannot render fully opaque.
+        particle.alpha = 0.f;
         particle.lifetime = 1.5f - .035f * static_cast<float>(i);
         spray.particles.push_back(particle);
     }
