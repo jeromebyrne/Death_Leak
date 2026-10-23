@@ -465,6 +465,8 @@ int main(int argc, char** argv) {
         const char command = frame < static_cast<int>(scriptedInput.size()) ? scriptedInput[frame] : 0;
         bool playerProjectileFired = false;
         bool playerEligibleFireAttempt = false;
+        bool stickAim = false;
+        float aimX = 0.f, aimY = 0.f;
         if (sound && currentLevel != audioLevel) {
             sound->SetAmbience(scene.Ambience());
             audioLevel = currentLevel;
@@ -691,11 +693,11 @@ int main(int argc, char** argv) {
             // strict deadzone. SDL Y is screen-down, so convert to world-up.
             constexpr int rightDeadzone = 8689;
             const int rightY = deathleak::game::RightStickCameraTarget::WorldRightY(controllerSticks.rightY);
-            const bool stickAim = script.empty() && !simulateOnly && controllerSticks.connected &&
+            stickAim = script.empty() && !simulateOnly && controllerSticks.connected &&
                 (std::abs(controllerSticks.rightX) > rightDeadzone || std::abs(rightY) > rightDeadzone);
             const bool fire = (!script.empty() ? (command == 'F' || command == 'B' || command == 'N' || command == 'Y' || command == 'Z') : renderer->KeyDown(Down)) || stickAim;
-            const float aimX = stickAim ? static_cast<float>(controllerSticks.rightX) : 0.f;
-            const float aimY = stickAim ? static_cast<float>(rightY) : 0.f;
+            aimX = stickAim ? static_cast<float>(controllerSticks.rightX) : 0.f;
+            aimY = stickAim ? static_cast<float>(rightY) : 0.f;
             playerEligibleFireAttempt = fire && !motion.Rolling() && !motion.InWater() &&
                 !combat.MeleeActive() && combat.Health() > 0.f && motion.WallSide() == 0;
             const int firedBefore = combat.Fired();
@@ -1104,7 +1106,7 @@ int main(int argc, char** argv) {
         if (!objectsPaused) combat.UpdateVisuals(dt);
         if (!playLevel.empty() && !objectsPaused) scene.UpdatePlayerVisual(dt, motion.VelocityX(), motion.VelocityY(),
             motion.Grounded(), motion.WallSide(), motion.Rolling(), motion.DownwardDashing(), motion.InWater(),
-            combat.MeleeElapsed(), facing, playerProjectileFired, playerEligibleFireAttempt, strafeVisual);
+            combat.MeleeElapsed(), facing, playerProjectileFired, playerEligibleFireAttempt, strafeVisual, stickAim, aimX, aimY);
         const auto shaderFrame = shaderClock.Draw();
         renderer->BeginFrame({8, 12, 20, 255});
         if (levelPath.empty()) {

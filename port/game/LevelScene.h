@@ -163,7 +163,8 @@ public:
     void UpdatePlayerVisual(float dt, float vx, float vy, bool grounded, int wallSide,
                             bool rolling, bool dashing, bool inWater, float meleeElapsed, int facing,
                             bool projectileFired, bool eligibleFireAttempt = false,
-                            PlayerStrafeVisual strafe = {});
+                            PlayerStrafeVisual strafe = {}, bool rightStickAim = false,
+                            float aimX = 0.f, float aimY = 0.f);
     void UpdateVisuals(float dt, float playerX, float playerY, float cameraX, float cameraY,
                        bool objectsPaused = false);
     void UpdateAuthoredOrbs(float dt, float playerX, float playerY, float cameraX, float cameraY);
@@ -277,6 +278,8 @@ private:
     float playerArmFrameElapsed_ = 0;
     int playerFacing_ = 1;
     int playerAimLineFacing_ = 1;
+    float playerAimLineRotation_ = 0.f; // Authored radians, before SDL reflection conversion.
+    bool playerAimLineFlipY_ = false, playerAimLineDirected_ = false;
     bool playerGrounded_ = false;
     float aimLineHold_ = 0.f, aimLineAlpha_ = 0.f;
     float cameraX_ = 0, cameraY_ = 0;

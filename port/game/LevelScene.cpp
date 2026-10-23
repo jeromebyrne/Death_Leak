@@ -124,7 +124,8 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     auto* level = document.RootElement();
     if (!level || std::string(level->Value()) != "level") { error = "Not a Death Leak level: " + path; return false; }
     playerVisualWidth_ = playerVisualHeight_ = 0;
-    playerSequences_.clear(); playerSequence_.clear(); playerFrame_ = 0; playerFrameElapsed_ = 0; playerFacing_ = playerAimLineFacing_ = 1; playerGrounded_ = false;
+    playerSequences_.clear(); playerSequence_.clear(); playerFrame_ = 0; playerFrameElapsed_ = 0; playerFacing_ = playerAimLineFacing_ = 1; playerAimLineRotation_ = 0.f;
+    playerAimLineFlipY_ = playerAimLineDirected_ = false; playerGrounded_ = false;
     playerOffSolidTime_ = playerDescentTime_ = 0; playerDescending_ = false;
     playerArmSequences_.clear(); playerArmSequence_.clear(); playerArmFrame_ = 0; playerArmFrameElapsed_ = 0; aimLineHold_ = aimLineAlpha_ = 0.f;
     spawnedOrbTexture_ = orbShatterTexture_ = render::InvalidTexture;
@@ -1054,7 +1055,8 @@ void LevelScene::EmitRunningFootstep(const PlayerSequence& sequence, int movemen
 }
 void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded, int wallSide,
                                     bool rolling, bool dashing, bool inWater, float meleeElapsed, int facing,
-                                    bool projectileFired, bool eligibleFireAttempt, PlayerStrafeVisual strafe) {
+                                    bool projectileFired, bool eligibleFireAttempt, PlayerStrafeVisual strafe,
+                                    bool rightStickAim, float aimX, float aimY) {
     playerGrounded_ = grounded;
     // Character::Update records the descent edge before UpdateAnimations. Its
     // dry upward tolerance is -0.5 world units/tick (velocity here is /s).
@@ -1072,7 +1074,7 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
     }
     // Player::FireWeapon refreshes this before its reload/burst rejection.
     // Player::Update then holds full alpha for 0.05 s and fades at 10/s.
-    if (eligibleFireAttempt) aimLineHold_ = .05f;
+    if (eligibleFireAttempt || strafe.active) aimLineHold_ = .05f;
     if (aimLineHold_ > 0.f) {
         aimLineHold_ -= dt;
         aimLineAlpha_ = 1.f;
@@ -1080,7 +1082,17 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
         aimLineAlpha_ = std::max(0.f, aimLineAlpha_ - 10.f * dt);
     }
     if (playerSequences_.empty()) return;
-    playerAimLineFacing_ = facing;
+    // InputManager calls SetAimLineDirection only for an active right stick.
+    // Its four branches choose the X attachment/vertical reflection from X,
+    // and the authored angle sign from Y. Neutral retains the last transform.
+    if (rightStickAim && std::hypot(aimX, aimY) > 0.f) {
+        const float length = std::hypot(aimX, aimY);
+        const float angle = std::acos(std::clamp(aimX / length, -1.f, 1.f));
+        playerAimLineFacing_ = aimX > 0.f ? 1 : -1;
+        playerAimLineFlipY_ = aimX <= 0.f;
+        playerAimLineRotation_ = ((aimY < 0.f) == (aimX > 0.f)) ? -angle : angle;
+        playerAimLineDirected_ = true;
+    }
     playerFacing_ = facing;
     std::string target = "Still";
     if (meleeElapsed > 0.f) {
@@ -1269,16 +1281,22 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         // the authored vertical-flip flag, not just ParallaxLayer copies.
         // The custom foliage/pixel shader paths own their source UV mapping.
         draw.foliageSway = object.foliageSway;
+        if (draw.foliageSway.enabled && !object.player && !object.playerShadow &&
+            !object.playerAimLine && !object.parallaxLayer) {
+            draw.foliageSway.worldX = worldX - (cameraX - worldX) * (layerX - 1.f);
+            draw.foliageSway.worldY = worldY - (cameraY - worldY) * (layerY - 1.f);
+        }
         draw.foliageSway.time = shaderClock.totalTime;
         draw.foliageSway.globalTimeMultiplier = foliageGlobalTimeMultiplier;
         draw.pixelWobble = object.pixelWobble;
         draw.pixelWobble.time = shaderClock.pixelWobbleTime;
         draw.flipY = (draw.foliageSway.enabled || draw.pixelWobble.enabled)
-            ? object.flipY : (object.playerAimLine ? playerAimLineFacing_ >= 0 : !object.flipY);
+            ? object.flipY : (object.playerAimLine ? !playerAimLineFlipY_ : !object.flipY);
         // Authored X/Y reflections follow rotation in Windows, while SDL and
         // custom effect quads reflect source labels before clockwise rotation.
         draw.rotationDegrees = render::OrdinarySpriteRotationDegrees(
-            object.rotation, draw.flipX, object.flipY);
+            object.playerAimLine ? playerAimLineRotation_ : object.rotation,
+            draw.flipX, object.playerAimLine ? playerAimLineFlipY_ : object.flipY);
         if (object.parallaxLayer && object.autoScrollY) {
             // Windows advances stored vertex V in ParallaxLayer::Draw before
             // Sprite::Draw. This also runs for a layer the port later culls.
