@@ -374,6 +374,10 @@ int main(int argc, char** argv) {
     auto modalBackground = (playLevel.empty() && !menuLoop) ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/blank_dark.png", error);
     auto finalFrame = (playLevel.empty() && !menuLoop) ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/frame_top.png", error);
     std::array<TextureId, 4> filmFrames{};
+    // game_hud's scratch widget uses its own wall-clock 11 FPS cadence, not
+    // the capped gameplay/shader delta. Start at frame one on its first draw.
+    size_t gameplayFilmIndex = 0;
+    std::optional<std::chrono::steady_clock::time_point> gameplayFilmLastSwitch;
     auto loadFilmFrames = [&] {
         if (simulateOnly || filmFrames[0]) return;
         constexpr std::array<const char*, 4> filmPaths = {
@@ -1204,7 +1208,20 @@ int main(int argc, char** argv) {
                     renderer->DrawSprite({finalFrame, {}, {0,620,1280,100}, {255,255,255,255}, 0, true});
                 }
                 if (finalTitleShown) deathleak::game::DrawBitmapText(*renderer, "DEATH LEAK", 200, 255, 16, {255,0,0,245});
-            } else hud.Draw(*renderer, combat.Health(), combat.MaxHealth(), combat.Focus(), orbBalance, shaderFrame.totalTime - dt);
+            } else {
+                loadFilmFrames();
+                const auto filmNow = std::chrono::steady_clock::now();
+                if (!gameplayFilmLastSwitch) gameplayFilmLastSwitch = filmNow;
+                // UIAnimatedSprite::Update uses a strict, integer-millisecond
+                // threshold and advances at most one frame per UI update.
+                else if (filmNow - *gameplayFilmLastSwitch > std::chrono::milliseconds(1000 / 11)) {
+                    gameplayFilmIndex = (gameplayFilmIndex + 1) % filmFrames.size();
+                    gameplayFilmLastSwitch = filmNow;
+                }
+                if (filmFrames[gameplayFilmIndex])
+                    renderer->DrawSprite({filmFrames[gameplayFilmIndex], {}, {0,0,1280,720}, {255,255,255,51}});
+                hud.Draw(*renderer, combat.Health(), combat.MaxHealth(), combat.Focus(), orbBalance, shaderFrame.totalTime - dt);
+            }
             if (paperModal)
                 deathleak::game::DrawPaperModal(*renderer, paperTitle, paperDescription,
                     modalBackground, paperBackButton, modalWarmup >= 1.f);

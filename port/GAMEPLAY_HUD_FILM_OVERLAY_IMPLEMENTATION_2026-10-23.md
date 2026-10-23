@@ -1,0 +1,9 @@
+# Ordinary gameplay HUD film overlay — implementation (2026-10-23)
+
+Source contract: `Game/XmlFiles/UI/game_hud.xml` authors the full-screen `26_scratch_anim` at alpha 0.2, with four `film_frame` textures and 11 FPS. `Game/src/UI/UIAnimatedSprite.cpp` advances one frame per update only when the wall-clock gap exceeds integer `1000 / 11` milliseconds. The source UI draws its HUD widgets after scene postprocess, with scratch before later HUD widgets. The omission and source reachability were audited in `NEXT_UNOWNED_VISUAL_AUDIT_1613_2026-10-23.md`.
+
+`port/linux/main.cpp` now lazily loads the existing four film textures on ordinary active-play draw, emits one 1280×720 white quad at byte alpha 51 after `ApplyScenePostprocess()` and before `Hud::Draw()`, and advances/wraps the selected frame by `steady_clock` with a strict >90 ms threshold, at most one step per rendered HUD frame. The first ordinary-play HUD draw explicitly uses frame 0 and starts the cadence then; this is a deliberate deterministic startup choice, not an assertion of the original process-global `timeGetTime()` phase. The menu still uses its separate film path and timing/alpha; `sea_2` still uses its existing final-scene path and alpha. No scene renderer or gameplay-delta behavior was changed.
+
+Verification: scoped `git diff --check` and a production-toolchain `-fsyntax-only` of `main.cpp` passed. An isolated full binary build passed: `port/build/deathleak-film-overlay-2026-10-23`, compiled with the project C++17 sources in `deathleak-linux-build:bookworm` without a display/GPU. Only pre-existing TinyXML compiler warnings were emitted.
+
+No physical GPU, lossless Windows-matched frame, or visual acceptance was used or claimed. Exact texture compositing/pixel parity and phase against the original Windows runtime remain open.
