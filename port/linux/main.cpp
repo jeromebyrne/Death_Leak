@@ -522,11 +522,20 @@ int main(int argc, char** argv) {
     float cameraShakeTime = 0.f;
     auto start = std::chrono::steady_clock::now();
     auto last = std::chrono::steady_clock::now();
+    auto fpsSampleStart = last;
+    int presentedFramesInSample = 0;
+    int displayedFps = -1;
     for (int frame = 0; !frameLimit || frame < frameLimit; ++frame) {
         if (renderer->PollQuit()) break;
         const ControllerSticks controllerSticks = renderer->ControllerAxes();
         deathleak::game::PlayerStrafeVisual strafeVisual{};
         auto now = std::chrono::steady_clock::now();
+        const auto fpsSampleSeconds = std::chrono::duration<double>(now - fpsSampleStart).count();
+        if (fpsSampleSeconds >= 0.5) {
+            displayedFps = static_cast<int>(std::lround(presentedFramesInSample / fpsSampleSeconds));
+            presentedFramesInSample = 0;
+            fpsSampleStart = now;
+        }
         float dt = std::chrono::duration<float>(now - last).count();
         last = now;
         if (fixedDt > 0) dt = fixedDt;
@@ -1410,6 +1419,11 @@ int main(int argc, char** argv) {
                 }
                 hud.Draw(*renderer, combat.Health(), combat.MaxHealth(), combat.Focus(), orbBalance, shaderFrame.totalTime - dt);
             }
+            // Wall-clock presented frames, independent of the capped/fixed game dt.
+            // The bottom HUD band keeps the small readout legible over the scene.
+            deathleak::game::DrawBitmapText(*renderer,
+                displayedFps >= 0 ? "FPS " + std::to_string(displayedFps) : "FPS --",
+                10.f, 693.f, 2.f, {255,255,255,230});
             if (paperModal)
                 deathleak::game::DrawPaperModal(*renderer, paperTitle, paperDescription,
                     modalBackground, paperBackButton, modalWarmup >= 1.f);
@@ -1430,6 +1444,7 @@ int main(int argc, char** argv) {
             std::cerr << "Capture failed: " << error << '\n'; return 1;
         }
         renderer->EndFrame();
+        ++presentedFramesInSample;
         precedingRenderedModifiedDelta = dt;
         shaderClock.RenderCompleted(dt);
         const auto afterDraw = std::chrono::steady_clock::now();

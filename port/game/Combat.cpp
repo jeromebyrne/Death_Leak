@@ -1,4 +1,5 @@
 #include "Combat.h"
+#include "../render/OrdinarySpriteRotation.h"
 #include "../../Game/tinyxml/tinyxml.h"
 #include <algorithm>
 #include <chrono>
@@ -736,7 +737,10 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
         shot.x=oldX+(newX-oldX)*terrainT;
         shot.y=oldY+(newY-oldY)*terrainT;
         shot.life-=dt;
-        if (shot.playerKnife) shot.activeVisualAge += dt;
+        if (shot.playerKnife) {
+            shot.activeVisualAge += dt;
+            shot.knifeRotationRadians -= 20.f * dt;
+        }
         if (terrainT < 1.f) shot.life=0;
         if (shot.enemy) {
             const float playerHalfW=(meleeStrikePhase?1.5f:1.f)*128.959793f*0.5f;
@@ -901,6 +905,12 @@ void Combat::AppendPainterItems(std::vector<PainterItem>& items, render::Rendere
         render::Sprite sprite{texture,{}, {640.f+(shot.x-cameraX-w/2)*scale,
             360.f+(cameraY-shot.y-h/2)*scale,w*scale,h*scale}};
         sprite.flipX = shot.vx < 0.f;
+        // Deliberate tumbling animation requested for the player knife.
+        // The Windows player knife only pitches with velocity; ninja stars
+        // supply this 20-rad/s spin rate. Keep the existing launch flip.
+        if (shot.playerKnife)
+            sprite.rotationDegrees = render::OrdinarySpriteRotationDegrees(
+                shot.knifeRotationRadians, sprite.flipX, false);
         sprite.tint.a = static_cast<std::uint8_t>(std::lround(255.f * visualScale));
         items.push_back({shot.depth, [&, sprite] { renderer.DrawSprite(sprite); }});
     }
