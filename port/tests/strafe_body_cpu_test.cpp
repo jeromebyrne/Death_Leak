@@ -152,14 +152,28 @@ int main() {
     update(.001f, 3.f, rightBack, -1);
     assert(spy.paths.at(body().texture).find("/idle_") != std::string::npos);
 
-    // Strafe footstep-marked frames never dispatch Running's material spray.
+    // StrafeBack has 20 frames with authored footstep marks at indices 9/19.
+    // The first .05s tick enters at index 0 then advances to 1; 50 ticks
+    // therefore cross five marks, with no emission on intervening frames.
     scene.SetPlayerFootstepContact(0, x, y);
     const size_t sprays = scene.FootstepSprays().size();
-    for (int i = 0; i < 50; ++i) update(.05f, -600.f, rightBack, -1);
-    assert(scene.FootstepSprays().size() == sprays);
+    const auto rock = spy.textures.at("Game/Media/rock_particle.png");
+    for (int i = 0; i < 50; ++i) {
+        update(.05f, -600.f, rightBack, -1);
+        const size_t expected = sprays + static_cast<size_t>((i + 2) / 10);
+        assert(scene.FootstepSprays().size() == expected);
+        if ((i + 1) % 10 == 9) {
+            const auto& spray = scene.FootstepSprays().back();
+            assert(spray.texture == rock && spray.particles.size() == 3);
+            assert(std::abs(spray.x - (x - 12.f)) < .01f);
+            for (const auto& particle : spray.particles)
+                assert(particle.directionX > 0.f); // Leftward movement, rightward aim.
+        }
+    }
+    assert(scene.FootstepSprays().size() == sprays + 5);
 
     // Positive control on a fresh scene: the same grass contact must produce
-    // Running's authored frame-0 footstep. This makes the strafe zero meaningful.
+    // Running's authored frame-0 footstep and preserve its own spray payload.
     StrafeSpy spraySpy;
     game::LevelScene sprayScene;
     assert(sprayScene.Load("Game/XmlFiles/levels/forest_exploration_1.xml", spraySpy, error));
@@ -173,10 +187,20 @@ int main() {
     assert(runningSpray.texture == spraySpy.textures.at("Game/Media/rock_particle.png"));
     assert(runningSpray.particles.size() == 3);
     const size_t positiveCount = sprayScene.FootstepSprays().size();
-    for (int i = 0; i < 50; ++i)
+    for (int i = 0; i < 50; ++i) {
         sprayScene.UpdatePlayerVisual(.05f, -600.f, 0.f, true, 0, false, false,
                                       false, 0.f, -1, false, false, rightBack);
-    assert(sprayScene.FootstepSprays().size() == positiveCount);
+        assert(sprayScene.FootstepSprays().size() ==
+               positiveCount + static_cast<size_t>((i + 2) / 10));
+        if ((i + 1) % 10 == 9) {
+            const auto& spray = sprayScene.FootstepSprays().back();
+            assert(spray.texture == rock && spray.particles.size() == 3);
+            assert(std::abs(spray.x - (sprayScene.PlayerX() - 12.f)) < .01f);
+            for (const auto& particle : spray.particles)
+                assert(particle.directionX > 0.f);
+        }
+    }
+    assert(sprayScene.FootstepSprays().size() == positiveCount + 5);
 
     update(.001f, 0.f, {}, -1, true, 0, false, false, 0.f, false, 0.f, true);
     draw();

@@ -1020,7 +1020,7 @@ void LevelScene::EmitLandingMaterialSpray(size_t segment, float x, float y, int 
     landingRandomState_ = spray.randomState;
     landingSprays_.push_back(std::move(spray));
 }
-void LevelScene::EmitRunningFootstep(const PlayerSequence& sequence) {
+void LevelScene::EmitRunningFootstep(const PlayerSequence& sequence, int movementDirection) {
     if (playerFrame_ >= sequence.footstepFrames.size() || !sequence.footstepFrames[playerFrame_] ||
         playerFootstepSegment_ >= ground_.size()) return;
     const auto& material = ground_[playerFootstepSegment_].material;
@@ -1029,7 +1029,7 @@ void LevelScene::EmitRunningFootstep(const PlayerSequence& sequence) {
     if (texture == groundParticleTextures_.end() || !texture->second) return;
     ParticleSpray spray;
     spray.texture = texture->second;
-    spray.x = playerFootstepX_ + (playerFacing_ < 0 ? -12.f : 12.f);
+    spray.x = playerFootstepX_ + (movementDirection < 0 ? -12.f : 12.f);
     spray.y = playerFootstepY_ - 214.898743f * .5f + 17.f;
     spray.width = 1200.f; spray.height = 720.f;
     spray.depth = Depth("kPlayer"); spray.looping = false; spray.warmed = true;
@@ -1039,7 +1039,7 @@ void LevelScene::EmitRunningFootstep(const PlayerSequence& sequence) {
     for (int i = 0; i < 3; ++i) {
         ParticleSpray::Particle particle;
         const float spread = spray.Random(10) * .01f;
-        particle.directionX = (playerFacing_ > 0 ? -.5f : .5f) + spread;
+        particle.directionX = (movementDirection > 0 ? -.5f : .5f) + spread;
         particle.directionY = .5f - spread;
         particle.lifetime = .7f - (.4f / 3.f) * i;
         // Runtime directed spray uses zero X/Y spawn spread for this call.
@@ -1135,10 +1135,12 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
     }
     if (strafing) sequence.currentRate = std::clamp(std::abs(vx / 60.f) * 1.8f * 2.65f,
                                                       sequence.minRate, sequence.maxRate);
-    // Character compares the current Running frame against the last Running frame,
-    // including across Still/other sequence entries, then stamps every Running tick.
-    if (target == "Running") {
-        if (playerFrame_ != lastRunningFrame_ && grounded) EmitRunningFootstep(sequence);
+    // Character uses one numeric frame guard for every horizontal movement
+    // sequence, stamping even unmarked frames after the effect check. Strafe
+    // body facing follows aim, but the directed spray follows movement.
+    if (target == "Running" || strafing) {
+        if (playerFrame_ != lastRunningFrame_ && grounded)
+            EmitRunningFootstep(sequence, strafing ? strafe.movementDirection : playerFacing_);
         lastRunningFrame_ = playerFrame_;
     }
     // Player::Fire restarts/advances once; Character::UpdateAnimations advances

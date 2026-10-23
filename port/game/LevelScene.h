@@ -257,13 +257,13 @@ private:
     float playerX_ = 0, playerY_ = 0;
     float playerVisualWidth_ = 0, playerVisualHeight_ = 0;
     struct PlayerSequence { std::vector<render::TextureId> frames; std::vector<bool> footstepFrames; float rate = 0, minRate = 0, maxRate = 60, currentRate = 0; };
-    void EmitRunningFootstep(const PlayerSequence& sequence);
+    void EmitRunningFootstep(const PlayerSequence& sequence, int movementDirection);
     std::unordered_map<std::string, PlayerSequence> playerSequences_;
     std::unordered_map<std::string, PlayerSequence> playerArmSequences_;
     std::string playerSequence_;
     std::string playerArmSequence_;
     size_t playerFrame_ = 0;
-    size_t lastRunningFrame_ = static_cast<size_t>(-1);
+    size_t lastRunningFrame_ = static_cast<size_t>(-1); // Shared numeric guard for horizontal Running and strafe frames.
     size_t playerArmFrame_ = 0; // sequence length means finished, matching AnimationPart::IsFinished
     float playerFrameElapsed_ = 0;
     // Character stamps the first dry descending update; off-solid time can bypass the hold.
