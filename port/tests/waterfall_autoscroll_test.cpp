@@ -3,67 +3,69 @@
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
-#include <map>
+#include <vector>
 
-class CaptureRenderer final : public deathleak::render::Renderer {
+using namespace deathleak;
+class CaptureRenderer final : public render::Renderer {
 public:
-    std::vector<deathleak::render::Sprite> drawn;
+    std::vector<render::Sprite> drawn;
     bool Initialize(const char*, int, int, std::string&) override { return true; }
-    deathleak::render::TextureId LoadTexture(const std::string&, std::string&) override { return 1; }
-    void BeginFrame(deathleak::render::Color) override {}
-    void DrawSprite(const deathleak::render::Sprite& s) override { drawn.push_back(s); }
-    void FillRect(deathleak::render::Rect, deathleak::render::Color) override {}
+    render::TextureId LoadTexture(const std::string&, std::string&) override { return 1; }
+    void BeginFrame(render::Color) override {}
+    void DrawSprite(const render::Sprite& s) override { drawn.push_back(s); }
+    void FillRect(render::Rect, render::Color) override {}
     void ApplyScenePostprocess() override {}
     void EndFrame() override {}
     bool PollQuit() override { return false; }
     bool KeyDown(int) const override { return false; }
-    deathleak::render::MouseState Mouse() const override { return {}; }
+    render::MouseState Mouse() const override { return {}; }
     bool SaveFrame(const std::string&, std::string&) override { return false; }
 };
+static void near(float actual, float expected) { assert(std::fabs(actual - expected) < 1e-6f); }
 int main() {
-    setenv("DEATHLEAK_RENDER_ONLY_XML_IDS", "6,7,10,13,14,15,16,31", 1);
+    setenv("DEATHLEAK_RENDER_ONLY_XML_IDS", "6,13", 1);
     CaptureRenderer renderer;
-    deathleak::game::LevelScene scene;
+    game::LevelScene scene;
     std::string error;
     assert(scene.Load("Game/XmlFiles/levels/waterfall_top.xml", renderer, error));
-    auto draw = [&](float cameraY) {
+    auto update = [&](float dt, bool paused = false) {
+        scene.UpdateVisuals(dt, scene.PlayerX(), scene.PlayerY(), scene.CameraX(), scene.CameraY(), paused);
+    };
+    auto draw = [&](float cameraY = 3000.f) {
         renderer.drawn.clear();
-        scene.Draw(renderer, 300.f, cameraY, 300.f, 2600.f);
-        assert(renderer.drawn.size() == 8);
+        scene.Draw(renderer, scene.CameraX(), cameraY, scene.PlayerX(), scene.PlayerY());
+        assert(renderer.drawn.size() == 2);
         return renderer.drawn;
     };
-    // Depth-descending painter sequence for these authored sheets. Distinct XY
-    // and alpha values also catch omitted/duplicated sheets at the fixed camera.
-    const int speeds[] = {7,11,11,11,11,9,9,7};
-    const auto initial = draw(2600.f);
-    for (const auto& s : initial) assert(std::abs(s.uvShiftY) < 1e-6f);
-    const auto redraw = draw(2600.f);
-    for (size_t i=0;i<8;++i) assert(std::abs(redraw[i].uvShiftY-initial[i].uvShiftY)<1e-6f);
-    scene.UpdateVisuals(1.f/60.f, 300.f, 2600.f, 300.f, 2600.f);
-    const auto first = draw(2600.f);
-    for (size_t i=0;i<8;++i) {
-        assert(std::abs(first[i].uvShiftY-speeds[i]*(2.f/3.f)*.001f)<1e-5f);
-        assert(first[i].destination.x == initial[i].destination.x);
-        assert(first[i].destination.y == initial[i].destination.y);
-        assert(first[i].destination.width == initial[i].destination.width);
-        assert(first[i].destination.height == initial[i].destination.height);
-        assert(first[i].opacity == initial[i].opacity);
-        assert(first[i].tint.a == initial[i].tint.a);
-        assert(first[i].flipY == initial[i].flipY);
+    constexpr float step6 = 7.f * (720.f / 1080.f) * .001f;
+    constexpr float step13 = 11.f * (720.f / 1080.f) * .001f;
+    // Draw 1 sees Timing::LastUpdateDelta's initial zero, despite an update.
+    update(1.f / 60.f);
+    auto first = draw(); near(first[0].uvShiftY, 0.f); near(first[1].uvShiftY, 0.f);
+    update(1.f / 60.f);
+    auto second = draw(); near(second[0].uvShiftY, step6); near(second[1].uvShiftY, step13);
+    // Modal object pause does not pause the ParallaxLayer draw clock.
+    update(1.f / 120.f, true);
+    auto third = draw(); near(third[0].uvShiftY, 2 * step6); near(third[1].uvShiftY, 2 * step13);
+    update(1.f / 60.f);
+    auto fourth = draw(); near(fourth[0].uvShiftY, 2.5f * step6); near(fourth[1].uvShiftY, 2.5f * step13);
+    // No scene draw between updates: no hidden UV advances, and the most
+    // recent modified update delta is stored only after the next actual draw.
+    update(1.f / 120.f); update(1.f / 60.f);
+    auto fifth = draw(); near(fifth[0].uvShiftY, 3.5f * step6); near(fifth[1].uvShiftY, 3.5f * step13);
+    // Two scene draws without an intervening update still each run Draw; the
+    // second uses the preceding draw's stored modified delta.
+    auto sixth = draw(); near(sixth[0].uvShiftY, 4.5f * step6); near(sixth[1].uvShiftY, 4.5f * step13);
+    for (size_t i = 0; i < 2; ++i) {
+        const auto& a = first[i]; const auto& b = sixth[i];
+        assert(a.destination.x == b.destination.x && a.destination.y == b.destination.y);
+        assert(a.opacity == b.opacity && a.flipX == b.flipX && a.flipY == b.flipY);
+        assert(a.pixelWobble.enabled == b.pixelWobble.enabled);
     }
-    for (int tick=1;tick<60;++tick) scene.UpdateVisuals(1.f/60.f, 300.f, 2600.f, 300.f, 2600.f);
-    const auto sixty = draw(2600.f);
-    for (size_t i=0;i<8;++i)
-        assert(std::abs(sixty[i].uvShiftY-speeds[i]*(2.f/3.f)*.06f)<1e-4f);
-    const auto cameraMoved = draw(2700.f);
-    for (size_t i=0;i<8;++i) assert(std::abs(cameraMoved[i].uvShiftY-sixty[i].uvShiftY)<1e-6f);
-    // Phase belongs to update, not draw/camera, and wraps without accumulating
-    // unbounded values over long sessions.
-    for (int tick=60;tick<600;++tick) scene.UpdateVisuals(1.f/60.f, 300.f, 2600.f, 300.f, 2600.f);
-    const auto later = draw(2600.f);
-    for (size_t i=0;i<8;++i) {
-        float expected = std::fmod(speeds[i]*(2.f/3.f)*.001f*600.f, 1.f);
-        assert(std::abs(later[i].uvShiftY-expected)<1e-3f);
-    }
-    std::cout << "PASS: eight authored waterfall layers retain painter/destination/alpha, scaled 7:9:11 V rate, redraw and camera independence, wrap\n";
+    // Loading another authored scene resets per-object V but preserves the
+    // process-owned previous render delta on this scene instance.
+    assert(scene.Load("Game/XmlFiles/levels/waterfall_top.xml", renderer, error));
+    update(1.f / 60.f);
+    auto reset = draw(); near(reset[0].uvShiftY, step6); near(reset[1].uvShiftY, step13);
+    std::cout << "PASS: waterfall IDs 6/13 prior-render modified-delta cadence, modal, no/multiple draws, reset\n";
 }

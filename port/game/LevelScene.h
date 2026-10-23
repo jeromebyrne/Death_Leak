@@ -37,7 +37,8 @@ struct SceneSprite {
     bool parallaxLayer = false, followCameraX = false, followCameraY = false;
     float cameraParallaxX = 0, cameraParallaxY = 0;
     bool autoScrollY = false;
-    float autoScrollYSpeed = 0, autoScrollYPhase = 0;
+    float autoScrollYSpeed = 0;
+    mutable float autoScrollYPhase = 0; // ParallaxLayer advances its UV in Draw.
     bool currencyOrb = false;
     bool authoredSmallOrb = false;
     float orbOriginY = 0, orbPhase = 0, orbHoverSpeed = 2, orbHoverOffsetY = 20;
@@ -224,6 +225,10 @@ public:
     void ApplyHealthDevil(bool rewarded);
 private:
     std::vector<SceneSprite> sprites_;
+    // program.cpp stores this render's modified delta after Render. A scene
+    // draw consumes the preceding rendered delta, even during modal pauses.
+    float pendingModifiedDelta_ = 0.f;
+    mutable float previousRenderedModifiedDelta_ = 0.f;
     std::vector<ParticleSpray> particleSprays_;
     std::vector<ParticleSpray> footstepSprays_;
     std::vector<ParticleSpray> jumpTakeoffSprays_;

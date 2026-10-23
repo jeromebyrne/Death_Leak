@@ -129,6 +129,9 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     playerArmSequences_.clear(); playerArmSequence_.clear(); playerArmFrame_ = 0; playerArmFrameElapsed_ = 0; aimLineHold_ = aimLineAlpha_ = 0.f;
     spawnedOrbTexture_ = orbShatterTexture_ = render::InvalidTexture;
     orbTrails_.clear();
+    // New ParallaxLayer vertices start at V=0; Timing::LastUpdateDelta is
+    // process-owned and survives a level load on this scene instance.
+    pendingModifiedDelta_ = 0.f;
     sprites_.clear(); particleSprays_.clear(); footstepSprays_.clear(); jumpTakeoffSprays_.clear(); landingSprays_.clear(); groundParticleTextures_.clear();
     playerFootstepSegment_ = static_cast<size_t>(-1); lastRunningFrame_ = static_cast<size_t>(-1); footstepRandomState_ = 0x464f4f54u; jumpRandomState_ = 0x4a554d50u; landingRandomState_ = 0x4c414e44u; ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); ambience_.clear(); doors_.clear(); boats_.clear(); keys_.clear(); papers_.clear(); healthDevils_.clear(); smashables_.clear(); spawnedOrbs_.clear(); scrolls_.clear(); skipped_ = 0;
     cameraBounds_ = false;
@@ -824,15 +827,10 @@ void LevelScene::UpdateAuthoredOrbs(float dt, float playerX, float playerY, floa
 }
 void LevelScene::UpdateVisuals(float dt, float playerX, float playerY, float cameraX, float cameraY,
                                bool objectsPaused) {
-    // ParallaxLayer mutates auto-scroll UVs in Draw, even when Windows game
-    // objects are paused. Keep that clock independent of object updates.
-    for (auto& sprite : sprites_) {
-        if (!sprite.autoScrollY) continue;
-        constexpr float worldToBackbufferY = 720.f / 1080.f;
-        sprite.autoScrollYPhase += sprite.autoScrollYSpeed * worldToBackbufferY *
-            .001f * (dt * 60.f);
-        sprite.autoScrollYPhase -= std::floor(sprite.autoScrollYPhase);
-    }
+    // The game loop's current modified update delta is not visible to
+    // ParallaxLayer::Draw until after this render has completed. Keep the most
+    // recent update when several updates occur without a scene draw.
+    pendingModifiedDelta_ = dt;
     if (objectsPaused) return;
     for (auto& spray : footstepSprays_) spray.Update(dt);
     footstepSprays_.erase(std::remove_if(footstepSprays_.begin(), footstepSprays_.end(),
@@ -1281,6 +1279,15 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         // custom effect quads reflect source labels before clockwise rotation.
         draw.rotationDegrees = render::OrdinarySpriteRotationDegrees(
             object.rotation, draw.flipX, object.flipY);
+        if (object.parallaxLayer && object.autoScrollY) {
+            // Windows advances stored vertex V in ParallaxLayer::Draw before
+            // Sprite::Draw. This also runs for a layer the port later culls.
+            constexpr float worldToBackbufferY = 720.f / 1080.f;
+            object.autoScrollYPhase += object.autoScrollYSpeed * worldToBackbufferY *
+                .001f * (previousRenderedModifiedDelta_ * 60.f);
+            object.autoScrollYPhase -= std::floor(object.autoScrollYPhase);
+            draw.uvShiftY = object.autoScrollYPhase;
+        }
         // Cull using the rendered rotated quad, not its unrotated destination.
         if (!render::SpriteMayIntersectViewport(draw)) continue;
         if (object.player && object.xmlId == "2") {
@@ -1302,5 +1309,6 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
     drawOrbTrails();
     drawSpraysBefore(-1, 0);
     drawDynamicBefore(-2147483647);
+    previousRenderedModifiedDelta_ = pendingModifiedDelta_;
 }
 }
