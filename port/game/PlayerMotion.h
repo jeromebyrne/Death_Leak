@@ -35,6 +35,7 @@ private:
     float sinceGround_ = 1, airTime_ = 0;
     bool jumpHeld_ = false;
     bool grounded_ = false;
+    size_t groundedSegment_ = static_cast<size_t>(-1);
     bool initialPlacement_ = false;
     int wallSide_ = 0; // -1: wall to left, +1: wall to right
     float wallJumpRemaining_ = 0;

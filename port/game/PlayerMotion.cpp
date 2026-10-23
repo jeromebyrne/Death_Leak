@@ -15,6 +15,7 @@ constexpr float kWallJumpSpeedY = 20.f * 60.f;
 void PlayerMotion::Reset(float x, float y, bool authoredEntry) {
     x_ = x; y_ = y; vx_ = vy_ = 0; sinceGround_ = 1; airTime_ = 0; jumpHeld_ = false; grounded_ = false; initialPlacement_ = authoredEntry;
     wallSide_ = 0; wallJumpRemaining_ = 0; jumpPercent_ = 40.f; solidContactDamage_ = 0.f;
+    groundedSegment_ = static_cast<size_t>(-1);
     downwardDashing_ = inWater_ = smashedSomething_ = false; rollTime_ = rollBuffer_ = 0.f; facing_ = 1;
 }
 bool PlayerMotion::TryDownwardDash(bool hasFocus) {
@@ -69,8 +70,11 @@ void PlayerMotion::Update(LevelScene& scene, float dt, int direction, bool jump)
             vy_ = kWallJumpSpeedY;
             wallJumpRemaining_ = 0.3f;
         } else { vy_ = kJumpSpeed * 0.4f; jumpPercent_ = 40.f; }
-        y_ += 10.f; // Character::Jump releases the solid line before ascent.
+        y_ += 10.f; // Character::Jump bumps Y before DoJumpParticles checks retained contact.
+        if (grounded_ && groundedSegment_ < scene.Ground().size())
+            scene.EmitJumpTakeoff(groundedSegment_, x_, y_, facing_);
         grounded_ = false; sinceGround_ = 1.f; airTime_ = 0.f;
+        groundedSegment_ = static_cast<size_t>(-1);
     }
     // InputManager::ProcessJump_* starts at 40% and increases by 6.5%
     // on each subsequent held update, up to the authored max jump speed.
@@ -163,8 +167,8 @@ void PlayerMotion::Update(LevelScene& scene, float dt, int direction, bool jump)
             y_ = box.bottom-kHalfHeight; vy_ = 0;
         }
     }
-    if (best > -1e8f) { y_ = best+kHalfHeight; vy_ = 0; grounded_ = true; sinceGround_ = 0; airTime_ = 0; downwardDashing_ = false; }
-    else { sinceGround_ += dt; airTime_ += dt; }
+    if (best > -1e8f) { y_ = best+kHalfHeight; vy_ = 0; grounded_ = true; groundedSegment_ = footstepSegment; sinceGround_ = 0; airTime_ = 0; downwardDashing_ = false; }
+    else { groundedSegment_ = static_cast<size_t>(-1); sinceGround_ += dt; airTime_ += dt; }
     scene.SetPlayerFootstepContact(grounded_ ? footstepSegment : static_cast<size_t>(-1), x_, y_);
     // Authored LevelEntry centers can begin a few units inside a solid line.
     // Allow a one-frame shallow floor depenetration; ordinary jumps still
