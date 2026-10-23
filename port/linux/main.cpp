@@ -1766,10 +1766,12 @@ int main(int argc, char** argv) {
                        ",\"bytes\":" + std::to_string(preHudBytes) +
                        ",\"width\":1280,\"height\":720,\"pixelFormat\":\"BMP BGRA32\",\"captureStage\":\"post_scene_sepia_pre_hud\"}" :
                        "") << (postfadePacket ? ",\n" : "")
-                   << "  \"transition\": {\"activeLevel\": " << JsonString(currentLevel)
-                   << ", \"firstPostfadeOrdinal\": " << packetFirstPostfadeOrdinal
-                   << ", \"loadingSplashSubmitted\": " << (loadingPhase != LoadingPhase::None)
-                   << ", \"loadingPhaseOnEntry\": " << static_cast<int>(packetLoadingPhaseOnEntry)
+                   << "  \"transition\": {\"activeLevel\": " << JsonString(currentLevel);
+            // Preserve the published frame-415 v1 shape; these fields belong to postfade packets only.
+            if (postfadePacket)
+                packet << ", \"firstPostfadeOrdinal\": " << packetFirstPostfadeOrdinal
+                       << ", \"loadingSplashSubmitted\": " << (loadingPhase != LoadingPhase::None);
+            packet << ", \"loadingPhaseOnEntry\": " << static_cast<int>(packetLoadingPhaseOnEntry)
                    << ", \"loadingPhaseAtDraw\": " << static_cast<int>(loadingPhase)
                    << ", \"loadingPhaseTime\": " << loadingPhaseTime
                    << ", \"pausedAtUpdateEntry\": " << loadingPausedThisFrame
