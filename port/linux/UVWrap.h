@@ -14,7 +14,7 @@ struct UVWrapSegment {
 template <class Visit>
 void ForEachUVWrapSegment(int pixels, float shift, bool flipped, Visit visit) {
     if (pixels <= 0) return;
-    const float phase = shift - std::floor(shift);
+    const float phase = std::isfinite(shift) ? shift - std::floor(shift) : 0.f;
     const int cut = std::clamp(static_cast<int>(phase * pixels), 0, pixels - 1);
     if (cut == 0) { visit(UVWrapSegment{0, pixels, 0.f}); return; }
     if (flipped) {
