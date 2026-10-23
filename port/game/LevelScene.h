@@ -159,6 +159,8 @@ public:
     // Caller owns fresh-save eligibility and held-Interact threshold. The scene
     // owns only the selected body sequence and its animation terminal signal.
     void SetIntroBodyPhase(IntroBodyPhase phase);
+    void EmitIntroSwordPullBurst(render::Renderer& renderer, float playerX, float playerY);
+    const std::vector<ParticleSpray>& IntroSwordPullSprays() const { return introSwordPullSprays_; }
     IntroBodyPhase GetIntroBodyPhase() const { return introBodyPhase_; }
     bool IntroBodyFinished() const { return introBodyPhase_ == IntroBodyPhase::Pull && introBodyFinished_; }
     size_t IntroBodyFrame() const { return playerFrame_; }
@@ -243,6 +245,9 @@ private:
     std::vector<ParticleSpray> footstepSprays_;
     std::vector<ParticleSpray> jumpTakeoffSprays_;
     std::vector<ParticleSpray> landingSprays_;
+    std::vector<ParticleSpray> introSwordPullSprays_;
+    render::TextureId introBloodTextures_[2] = {render::InvalidTexture, render::InvalidTexture};
+    std::uint32_t introBloodRandomState_ = 0x424c4f44u;
     std::unordered_map<std::string, render::TextureId> groundParticleTextures_;
     size_t playerFootstepSegment_ = static_cast<size_t>(-1);
     float playerFootstepX_ = 0, playerFootstepY_ = 0;

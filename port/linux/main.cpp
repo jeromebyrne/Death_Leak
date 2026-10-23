@@ -655,6 +655,7 @@ int main(int argc, char** argv) {
                         if (introHeldTime > 2.75f) {
                             introHeldTime = 0.f;
                             introEffectiveZoom = introLoadZoom;
+                            scene.EmitIntroSwordPullBurst(*renderer, worldX, worldY);
                             scene.SetIntroBodyPhase(deathleak::game::LevelScene::IntroBodyPhase::Pull);
                             std::cout << "Fresh-save intro pull at frame " << frame << '\n';
                         } else introEffectiveZoom = std::max(introLoadZoom * 0.75f, introEffectiveZoom - dt * 0.05f);

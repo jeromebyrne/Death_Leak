@@ -134,7 +134,8 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     // New ParallaxLayer vertices start at V=0; Timing::LastUpdateDelta is
     // process-owned and survives a level load on this scene instance.
     pendingModifiedDelta_ = 0.f;
-    sprites_.clear(); particleSprays_.clear(); footstepSprays_.clear(); jumpTakeoffSprays_.clear(); landingSprays_.clear(); groundParticleTextures_.clear();
+    sprites_.clear(); particleSprays_.clear(); footstepSprays_.clear(); jumpTakeoffSprays_.clear(); landingSprays_.clear(); introSwordPullSprays_.clear(); groundParticleTextures_.clear();
+    introBloodTextures_[0] = introBloodTextures_[1] = render::InvalidTexture; introBloodRandomState_ = 0x424c4f44u;
     playerFootstepSegment_ = static_cast<size_t>(-1); lastRunningFrame_ = static_cast<size_t>(-1); footstepRandomState_ = 0x464f4f54u; jumpRandomState_ = 0x4a554d50u; landingRandomState_ = 0x4c414e44u; ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); ambience_.clear(); doors_.clear(); boats_.clear(); keys_.clear(); papers_.clear(); healthDevils_.clear(); smashables_.clear(); spawnedOrbs_.clear(); scrolls_.clear(); skipped_ = 0;
     cameraBounds_ = false;
     allowsWeather_ = false;
@@ -844,6 +845,10 @@ void LevelScene::UpdateVisuals(float dt, float playerX, float playerY, float cam
     jumpTakeoffSprays_.erase(std::remove_if(jumpTakeoffSprays_.begin(), jumpTakeoffSprays_.end(),
         [](const ParticleSpray& spray) { return std::all_of(spray.particles.begin(), spray.particles.end(),
             [](const ParticleSpray::Particle& particle) { return particle.dead; }); }), jumpTakeoffSprays_.end());
+    for (auto& spray : introSwordPullSprays_) spray.Update(dt);
+    introSwordPullSprays_.erase(std::remove_if(introSwordPullSprays_.begin(), introSwordPullSprays_.end(),
+        [](const ParticleSpray& spray) { return std::all_of(spray.particles.begin(), spray.particles.end(),
+            [](const ParticleSpray::Particle& particle) { return particle.dead; }); }), introSwordPullSprays_.end());
     for (auto& spray : landingSprays_) spray.Update(dt);
     landingSprays_.erase(std::remove_if(landingSprays_.begin(), landingSprays_.end(),
         [](const ParticleSpray& spray) { return std::all_of(spray.particles.begin(), spray.particles.end(),
@@ -1063,6 +1068,52 @@ void LevelScene::EmitRunningFootstep(const PlayerSequence& sequence, int movemen
     }
     footstepRandomState_ = spray.randomState;
     footstepSprays_.push_back(std::move(spray));
+}
+void LevelScene::EmitIntroSwordPullBurst(render::Renderer& renderer, float playerX, float playerY) {
+    // The caller emits once on the held-Interact Looped -> Pull transition.
+    // Keep this finite emitter distinct from movement and XML particle state.
+    if (introBodyPhase_ != IntroBodyPhase::Looped) return;
+    for (int i = 0; i < 2; ++i) {
+        if (introBloodTextures_[i]) continue;
+        std::string textureError;
+        introBloodTextures_[i] = renderer.LoadTexture("Game/Media/bloodparticle" + std::to_string(i + 2) + ".png", textureError);
+        if (!introBloodTextures_[i]) { std::cerr << "Intro blood texture unavailable: " << textureError << '\n'; return; }
+    }
+    struct Recipe { int count; float dx, dy, directionX, directionY, spread, minSpeed, maxSpeed, minLife, maxLife, minSize, maxSize, scaleTo; };
+    constexpr Recipe recipes[] = {
+        {20, -35.f, -15.f, -.75f, -.25f, .2f, 1.f, 4.f, .25f, .75f, 20.f, 50.f, 3.f},
+        {50,   0.f, -20.f, -.5f,   .5f, .45f, 8.f, 18.f, .45f, .75f, 50.f, 75.f, 1.75f}
+    };
+    for (int n = 0; n < 2; ++n) {
+        const auto& r = recipes[n];
+        ParticleSpray spray;
+        spray.texture = introBloodTextures_[n];
+        spray.x = playerX + r.dx; spray.y = playerY + r.dy;
+        spray.width = spray.height = 4000.f;
+        spray.depth = Depth("kPlayer"); spray.looping = false; spray.warmed = true;
+        spray.fadeIn = 5.f; spray.fadeOut = 1.f;
+        spray.scalesByLifetime = true; spray.scaleTo = r.scaleTo;
+        spray.randomState = introBloodRandomState_;
+        for (int i = 0; i < r.count; ++i) {
+            ParticleSpray::Particle p;
+            const float spread = spray.Random(static_cast<unsigned>(r.spread * 100.f)) * .01f;
+            p.directionX = r.directionX + spread; p.directionY = r.directionY - spread;
+            p.lifetime = r.maxLife - ((r.maxLife - r.minLife) / r.count) * i;
+            const float offsetX = static_cast<float>(spray.Random(2)) * .1f;
+            const int signX = spray.Random(2) ? -1 : 1;
+            const float offsetY = static_cast<float>(spray.Random(9)) * .1f;
+            const int signY = spray.Random(2) ? -1 : 1;
+            p.x = p.startX = p.drawX = spray.x + offsetX * signX;
+            p.y = p.startY = p.drawY = spray.y + offsetY * signY;
+            p.size = p.startSize = p.drawSize = r.minSize + 1.f + spray.Random(static_cast<unsigned>(r.maxSize-r.minSize));
+            p.speed = p.startSpeed = r.minSpeed + .01f + spray.Random(static_cast<unsigned>((r.maxSpeed-r.minSpeed)*100.f)) * .01f;
+            p.gravity = 1.5f;
+            p.brightness = .51f + spray.Random(50) * .01f;
+            spray.particles.push_back(p);
+        }
+        introBloodRandomState_ = spray.randomState;
+        introSwordPullSprays_.push_back(std::move(spray));
+    }
 }
 void LevelScene::SetIntroBodyPhase(IntroBodyPhase phase) {
     if (phase == introBodyPhase_) return;
@@ -1376,6 +1427,8 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         if (object.player && filter.only.empty()) for (const auto& spray : jumpTakeoffSprays_)
             spray.Draw(renderer, cameraX, cameraY);
         if (object.player && filter.only.empty() && !suppressLandingSprayDraw) for (const auto& spray : landingSprays_)
+            spray.Draw(renderer, cameraX, cameraY);
+        if (object.player && filter.only.empty()) for (const auto& spray : introSwordPullSprays_)
             spray.Draw(renderer, cameraX, cameraY);
     }
     drawOrbTrails();
