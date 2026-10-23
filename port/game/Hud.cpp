@@ -85,7 +85,7 @@ void Hud::Draw(render::Renderer& renderer, float health, float maxHealth, float 
     if (bar_) renderer.DrawSprite({bar_, {}, {43, 45, healthBarWidth * healthProgress_.displayed, 9}, {255,255,255,220}});
     if (edge_) {
         renderer.DrawSprite({edge_, {}, {39, 42, 4, 15}, {255,255,255,220}});
-        renderer.DrawSprite({edge_, {}, {37 + healthWidth, 42, 4, 15}, {255,255,255,220}, 1.f, 0, true});
+        renderer.DrawSprite({edge_, {}, {40 + healthWidth, 42, 4, 15}, {255,255,255,220}, 1.f, 0, true});
     }
     if (overlay_) renderer.DrawSprite({overlay_, {}, {40, 43, healthWidth, 13}, {255,255,255,178}});
     // The original 91_xp_meter is the focus meter (200 units wide at
@@ -93,7 +93,7 @@ void Hud::Draw(render::Renderer& renderer, float health, float maxHealth, float 
     if (focusBar_) renderer.DrawSprite({focusBar_, {}, {43, 66, 127.f * focusProgress_.displayed, 9}, {255,255,255,220}, 1.f, 0, false, true});
     if (edge_) {
         renderer.DrawSprite({edge_, {}, {39, 63, 4, 15}, {255,255,255,220}});
-        renderer.DrawSprite({edge_, {}, {170, 63, 4, 15}, {255,255,255,220}, 0, true});
+        renderer.DrawSprite({edge_, {}, {40.f + 200.f * (2.f / 3.f), 63, 4, 15}, {255,255,255,220}, 1.f, 0, true, true});
     }
     if (overlay_) renderer.DrawSprite({overlay_, {}, {40, 64, 133, 13}, {255,255,255,178}});
 }
