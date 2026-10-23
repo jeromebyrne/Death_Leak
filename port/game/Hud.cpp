@@ -68,7 +68,11 @@ void Hud::Draw(render::Renderer& renderer, float health, float maxHealth, float 
     const float healthWidth = healthMeterLength_ * (2.f / 3.f);
     // Original UIMeter bar: (length - 0.8 * 4px edge) * progress.
     const float healthBarWidth = (healthMeterLength_ - 3.2f) * (2.f / 3.f);
-    if (orb_) renderer.DrawSprite({orb_, {}, {40, 80, 67.3f, 42.7f}, {255,255,255,191}});
+    // XML orb bottom-left (-900, 360), 101x64 in Y-up 1920x1080 UI.
+    // Project its top-left and size into the Y-down 1280x720 viewport.
+    if (orb_) renderer.DrawSprite({orb_, {}, {40.f, (540.f - (360.f + 64.f)) * (2.f / 3.f),
+                                                101.f * (2.f / 3.f), 64.f * (2.f / 3.f)},
+                                   {255,255,255,191}});
     // UIGameHudScreen draws the spendable SaveManager count at (105,135)
     // in 1920x1080 coordinates; scale to this 1280x720 viewport.
     DrawBitmapText(renderer, std::to_string(orbBalance), 70, 90, 3, {179,179,179,204});
