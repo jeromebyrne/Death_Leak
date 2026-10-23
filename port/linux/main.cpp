@@ -418,6 +418,17 @@ int main(int argc, char** argv) {
     float modalWarmup = 0.f;
     bool purchaseHeld = false, dismissHeld = false;
     auto modalBackground = (playLevel.empty() && !menuLoop) ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/blank_dark.png", error);
+    // gameloading.xml's sole active sprite is blank_dark.png. Its authored
+    // 2048-square rectangle covers the entire 1920x1080 UI viewport; the
+    // texture itself is uniformly black, so a viewport-sized quad is exact.
+    if (!playLevel.empty() && !modalBackground)
+        std::cerr << "Loading splash texture load failed: " << error << '\n';
+    enum class LoadingPhase { None, FadeIn, OpaqueHold, FadeOut };
+    LoadingPhase loadingPhase = LoadingPhase::None;
+    float loadingPhaseTime = 0.f;
+    std::string loadingDestination;
+    constexpr float kLoadingFadeSeconds = 0.20f;
+    constexpr float kLoadingMinimumSeconds = 0.05f;
     auto finalFrame = (playLevel.empty() && !menuLoop) ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/frame_top.png", error);
     if (!finalFrame && !(playLevel.empty() && !menuLoop))
         std::cerr << "HUD frame_top.png load failed: " << error << '\n';
@@ -661,6 +672,42 @@ int main(int argc, char** argv) {
             if (renderer->KeyDown(Right)) playerX += 250 * dt;
             if (renderer->KeyDown(Up)) playerY -= 250 * dt;
             if (renderer->KeyDown(Down)) playerY += 250 * dt;
+        } else if (loadingPhase != LoadingPhase::None) {
+            // UIGameLoading updates while gameplay is paused. The destination
+            // is not installed until the outgoing scene is fully obscured.
+            loadingPhaseTime += dt;
+            if (loadingPhase == LoadingPhase::FadeIn && loadingPhaseTime > kLoadingFadeSeconds) {
+                deathleak::game::LevelScene nextScene;
+                if (nextScene.Load(loadingDestination, *renderer, error, currentLevel)) {
+                    nextScene.ApplyCollected(collectedOrbs);
+                    nextScene.ApplyKeys(ownedKeys);
+                    nextScene.ApplyPapers(collectedPapers);
+                    nextScene.ApplyHealthDevil(rewardedHealthDevils.count(loadingDestination) != 0);
+                    nextScene.ApplySmashable(brokenSmashables.count(loadingDestination) != 0);
+                    nextScene.ApplyDeflection(combat.DeflectionUnlocked());
+                    scene = std::move(nextScene);
+                    cameraTarget = {scene.CameraOffsetX(), scene.CameraOffsetY()};
+                    devilDialog.reset(); healthPickup.reset();
+                    currentLevel = loadingDestination; introPromptClock.Reset();
+                    worldX = scene.PlayerX(); worldY = scene.PlayerY();
+                    cameraX = scene.CameraX(); cameraY = scene.CameraY(); cameraShake.Reset();
+                    motion.Reset(worldX, worldY, true); combat.ClearLevel();
+                    levelTime = interactHeldTime = doorUnlockWait = 0;
+                    unlockingDoor = false; interactionTarget.clear();
+                    std::cout << "Entered " << currentLevel << std::endl;
+                } else std::cerr << "Transition failed: " << error << '\n';
+                loadingPhase = LoadingPhase::OpaqueHold;
+                loadingPhaseTime = 0.f;
+            } else if (loadingPhase == LoadingPhase::OpaqueHold && loadingPhaseTime > kLoadingMinimumSeconds) {
+                // Source starts the fade-out clock at Load(), but its loading
+                // branch masks fade-out updates for at least 0.05 s. Preserve
+                // elapsed time, including the first alpha step after the hold.
+                loadingPhase = LoadingPhase::FadeOut;
+            } else if (loadingPhase == LoadingPhase::FadeOut && loadingPhaseTime > kLoadingFadeSeconds) {
+                loadingPhase = LoadingPhase::None;
+                loadingPhaseTime = 0.f;
+                loadingDestination.clear();
+            }
         } else {
             if (currentLevel == "Game/XmlFiles/levels/sea_2.xml") {
                 finalSceneTime += dt;
@@ -1210,24 +1257,31 @@ int main(int argc, char** argv) {
                     // Loading replaces scene.Triggers(); never retain a reference into it.
                     const std::string destination = trigger.destination;
                     std::cout << "Trigger at frame " << frame << " from " << currentLevel << " player=(" << worldX << "," << worldY << ") to " << destination << std::endl;
-                    deathleak::game::LevelScene nextScene;
-                    if (nextScene.Load(destination, *renderer, error, currentLevel)) {
-                        nextScene.ApplyCollected(collectedOrbs);
-                        nextScene.ApplyKeys(ownedKeys);
-                        nextScene.ApplyPapers(collectedPapers);
-                        nextScene.ApplyHealthDevil(rewardedHealthDevils.count(destination) != 0);
-                        nextScene.ApplySmashable(brokenSmashables.count(destination) != 0);
-                        nextScene.ApplyDeflection(combat.DeflectionUnlocked());
-                        scene = std::move(nextScene);
-                        cameraTarget = {scene.CameraOffsetX(), scene.CameraOffsetY()};
-                        devilDialog.reset(); healthPickup.reset();
-                        currentLevel = destination; introPromptClock.Reset();
-                        worldX = scene.PlayerX(); worldY = scene.PlayerY();
-                        cameraX = scene.CameraX(); cameraY = scene.CameraY(); cameraShake.Reset();
-                        motion.Reset(worldX, worldY, true); combat.ClearLevel();
-                        levelTime = interactHeldTime = doorUnlockWait = 0; unlockingDoor = false; interactionTarget.clear();
-                        std::cout << "Entered " << currentLevel << std::endl;
-                    } else std::cerr << "Transition failed: " << error << '\n';
+                    if (currentLevel == "Game/XmlFiles/levels/forest_exploration_1.xml" &&
+                        destination == "Game/XmlFiles/levels/waterfall_top.xml") {
+                        loadingDestination = destination;
+                        loadingPhase = LoadingPhase::FadeIn;
+                        loadingPhaseTime = 0.f;
+                    } else {
+                        deathleak::game::LevelScene nextScene;
+                        if (nextScene.Load(destination, *renderer, error, currentLevel)) {
+                            nextScene.ApplyCollected(collectedOrbs);
+                            nextScene.ApplyKeys(ownedKeys);
+                            nextScene.ApplyPapers(collectedPapers);
+                            nextScene.ApplyHealthDevil(rewardedHealthDevils.count(destination) != 0);
+                            nextScene.ApplySmashable(brokenSmashables.count(destination) != 0);
+                            nextScene.ApplyDeflection(combat.DeflectionUnlocked());
+                            scene = std::move(nextScene);
+                            cameraTarget = {scene.CameraOffsetX(), scene.CameraOffsetY()};
+                            devilDialog.reset(); healthPickup.reset();
+                            currentLevel = destination; introPromptClock.Reset();
+                            worldX = scene.PlayerX(); worldY = scene.PlayerY();
+                            cameraX = scene.CameraX(); cameraY = scene.CameraY(); cameraShake.Reset();
+                            motion.Reset(worldX, worldY, true); combat.ClearLevel();
+                            levelTime = interactHeldTime = doorUnlockWait = 0; unlockingDoor = false; interactionTarget.clear();
+                            std::cout << "Entered " << currentLevel << std::endl;
+                        } else std::cerr << "Transition failed: " << error << '\n';
+                    }
                     break;
                 }
             }
@@ -1258,7 +1312,7 @@ int main(int argc, char** argv) {
         updateSeconds += std::chrono::duration<double>(afterUpdate-now).count();
         if (!playLevel.empty()) {
             weather.SetAllowed(scene.AllowsWeather());
-            if (!paperModal && !upgradeModal) {
+            if (!paperModal && !upgradeModal && loadingPhase == LoadingPhase::None) {
                 weather.Update(dt);
                 rain.Update(dt, weather.Raining(), cameraX, cameraY);
             }
@@ -1272,8 +1326,9 @@ int main(int argc, char** argv) {
             precedingRenderedModifiedDelta = dt;
             continue;
         }
-        const bool objectsPaused = paperModal || upgradeModal;
-        scene.UpdateVisuals(dt, worldX, worldY, cameraX, cameraY, objectsPaused, precedingRenderedModifiedDelta);
+        const bool objectsPaused = paperModal || upgradeModal || loadingPhase != LoadingPhase::None;
+        if (loadingPhase == LoadingPhase::None)
+            scene.UpdateVisuals(dt, worldX, worldY, cameraX, cameraY, objectsPaused, precedingRenderedModifiedDelta);
         if (!objectsPaused) combat.UpdateVisuals(dt);
 #ifdef DEATHLEAK_TEST_BODY_SLOW_FRAME_COMMAND
         if (!playLevel.empty() && !objectsPaused) bodySlowFrameObserver->BodyUpdate(motion.Grounded());
@@ -1446,6 +1501,16 @@ int main(int argc, char** argv) {
             }
             if (combat.Health() <= 0 && deathArt)
                 renderer->DrawSprite({deathArt, {}, {0, 0, 1280, 720}});
+            // UIManager draws gameloading after scene postprocess and all HUD.
+            if (loadingPhase != LoadingPhase::None) {
+                const float alpha = loadingPhase == LoadingPhase::FadeIn
+                    ? std::min(1.f, loadingPhaseTime / kLoadingFadeSeconds)
+                    : loadingPhase == LoadingPhase::FadeOut
+                        ? std::max(0.f, 1.f - loadingPhaseTime / kLoadingFadeSeconds) : 1.f;
+                const Color tint{255, 255, 255, static_cast<std::uint8_t>(std::lround(alpha * 255.f))};
+                if (modalBackground) renderer->DrawSprite({modalBackground, {}, {0, 0, 1280, 720}, tint});
+                else renderer->FillRect({0, 0, 1280, 720}, {0, 0, 0, tint.a});
+            }
         }
         if (!capture.empty() && frame == frameLimit - 1 && !renderer->SaveFrame(capture, error)) {
             std::cerr << "Capture failed: " << error << '\n'; return 1;
