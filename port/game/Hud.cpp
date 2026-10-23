@@ -12,18 +12,35 @@ void Hud::Load(render::Renderer& renderer) {
     overlay_ = renderer.LoadTexture("Game/Media/UI/meter_overlay.png", error);
     orb_ = renderer.LoadTexture("Game/Media/UI/orb_count.png", error);
 }
-void Hud::Draw(render::Renderer& renderer, float health, float maxHealth, float focus, int orbBalance) const {
+void Hud::Draw(render::Renderer& renderer, float health, float maxHealth, float focus, int orbBalance) {
     // Source UI: health meter x=-900,y=460,w=300; orb x=-900,y=360.
     // Translate from 1920x1080 centered UI to the 1280x720 logical viewport.
+    if (healthMeterUpgrade_) {
+        const float targetLength = maxHealth * 3.f;
+        if (healthMeterLength_ < targetLength) {
+            healthMeterLength_ += 0.20f;
+        } else {
+            healthMeterLength_ = targetLength;
+            healthMeterUpgrade_ = false;
+        }
+    }
+    if (maxHealth != lastMaxHealth_) {
+        lastMaxHealth_ = maxHealth;
+        healthMeterUpgrade_ = true;
+    }
+    const float healthWidth = healthMeterLength_ * (2.f / 3.f);
+    // Original UIMeter bar: (length - 0.8 * 4px edge) * progress.
+    const float healthBarWidth = (healthMeterLength_ - 3.2f) * (2.f / 3.f);
     if (orb_) renderer.DrawSprite({orb_, {}, {40, 80, 67.3f, 42.7f}, {255,255,255,191}});
     // UIGameHudScreen draws the spendable SaveManager count at (105,135)
     // in 1920x1080 coordinates; scale to this 1280x720 viewport.
     DrawBitmapText(renderer, std::to_string(orbBalance), 70, 90, 3, {179,179,179,204});
-    if (bar_) renderer.DrawSprite({bar_, {}, {43, 45, 194 * std::clamp(health / maxHealth, 0.f, 1.f), 9}, {255,255,255,220}});
-    if (overlay_) renderer.DrawSprite({overlay_, {}, {40, 43, 200, 13}, {255,255,255,178}});
+    const float healthProgress = maxHealth > 0.f ? std::clamp(health / maxHealth, 0.f, 1.f) : 0.f;
+    if (bar_) renderer.DrawSprite({bar_, {}, {43, 45, healthBarWidth * healthProgress, 9}, {255,255,255,220}});
+    if (overlay_) renderer.DrawSprite({overlay_, {}, {40, 43, healthWidth, 13}, {255,255,255,178}});
     if (edge_) {
         renderer.DrawSprite({edge_, {}, {39, 42, 4, 15}, {255,255,255,220}});
-        renderer.DrawSprite({edge_, {}, {237, 42, 4, 15}, {255,255,255,220}, 0, true});
+        renderer.DrawSprite({edge_, {}, {37 + healthWidth, 42, 4, 15}, {255,255,255,220}, 1.f, 0, true});
     }
     // The original 91_xp_meter is the focus meter (200 units wide at
     // x=-900,y=440 in the 1920x1080 UI), directly below health.
