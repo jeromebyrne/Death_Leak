@@ -16,4 +16,4 @@ Implemented the bounded handoff in `PRIVATE_FOREST_NEXT_NONHUD_VISUAL_SOURCE_AUD
 
 ## Owner release
 
-All scoped source/test/report changes are ready for a scoped software commit and push. After push, this owner releases only the files listed above. Hud.cpp, SDLRenderer.cpp, shared build outputs and physical GPU remain with their separate owners.
+Scoped software commit `2903a62b4502d5d96c47be3036665e5034287931` was pushed to `origin/feature/linux-renderer-foundation`; `git ls-remote` returned the same hash. This owner now releases only the files listed above. Hud.cpp, SDLRenderer.cpp, shared build outputs and physical GPU remain with their separate owners.
