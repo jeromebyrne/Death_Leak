@@ -86,9 +86,10 @@ struct ParticleSpray {
             if (p.dead) continue;
             render::Sprite leaf;
             leaf.texture = texture;
-            leaf.destination = {640.f + (p.drawX-cameraX-p.drawSize*.5f)*scale,
-                                360.f + (cameraY-p.drawY-p.drawSize*.5f)*scale,
-                                p.drawSize*scale, p.drawSize*scale};
+            const float drawSize = p.drawSize > 0 ? p.drawSize : p.size;
+            leaf.destination = {640.f + (p.drawX-cameraX-drawSize*.5f)*scale,
+                                360.f + (cameraY-p.drawY-drawSize*.5f)*scale,
+                                drawSize*scale, drawSize*scale};
             if (leaf.destination.x + leaf.destination.width < 0 || leaf.destination.x > 1280 ||
                 leaf.destination.y + leaf.destination.height < 0 || leaf.destination.y > 720) continue;
             const auto brightness = static_cast<std::uint8_t>(std::lround(std::clamp(p.brightness, 0.f, 1.f)*255));
