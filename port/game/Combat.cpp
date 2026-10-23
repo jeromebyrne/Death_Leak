@@ -737,10 +737,7 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
         shot.x=oldX+(newX-oldX)*terrainT;
         shot.y=oldY+(newY-oldY)*terrainT;
         shot.life-=dt;
-        if (shot.playerKnife) {
-            shot.activeVisualAge += dt;
-            shot.knifeRotationRadians -= 20.f * dt;
-        }
+        if (shot.playerKnife) shot.activeVisualAge += dt;
         if (terrainT < 1.f) shot.life=0;
         if (shot.enemy) {
             const float playerHalfW=(meleeStrikePhase?1.5f:1.f)*128.959793f*0.5f;
@@ -905,12 +902,18 @@ void Combat::AppendPainterItems(std::vector<PainterItem>& items, render::Rendere
         render::Sprite sprite{texture,{}, {640.f+(shot.x-cameraX-w/2)*scale,
             360.f+(cameraY-shot.y-h/2)*scale,w*scale,h*scale}};
         sprite.flipX = shot.vx < 0.f;
-        // Deliberate tumbling animation requested for the player knife.
-        // The Windows player knife only pitches with velocity; ninja stars
-        // supply this 20-rad/s spin rate. Keep the existing launch flip.
-        if (shot.playerKnife)
+        // Projectile::DoRotateToDirection follows the gravity-adjusted velocity.
+        // Left-facing blades carry the source's horizontal launch flip and
+        // vertical flip; only ninja stars use continuous angular spin.
+        if (shot.playerKnife && std::hypot(shot.vx, shot.vy) > 0.00001f) {
+            sprite.flipY = shot.vx < 0.f;
+            const float sourceAngle = shot.vx < 0.f
+                ? (shot.vy < 0.f ? std::acos(std::clamp(shot.vx / std::hypot(shot.vx, shot.vy), -1.f, 1.f))
+                                  : -std::acos(std::clamp(shot.vx / std::hypot(shot.vx, shot.vy), -1.f, 1.f)))
+                : std::atan2(shot.vy, shot.vx);
             sprite.rotationDegrees = render::OrdinarySpriteRotationDegrees(
-                shot.knifeRotationRadians, sprite.flipX, false);
+                sourceAngle, sprite.flipX, sprite.flipY);
+        }
         sprite.tint.a = static_cast<std::uint8_t>(std::lround(255.f * visualScale));
         items.push_back({shot.depth, [&, sprite] { renderer.DrawSprite(sprite); }});
     }

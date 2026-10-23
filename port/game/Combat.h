@@ -46,7 +46,6 @@ struct Shot {
     int depth = 2500; // GameObject depth remains fixed after a projectile is deflected.
     bool playerKnife = false;
     float activeVisualAge = 0.f;
-    float knifeRotationRadians = 0.f;
     float launchDirectionX = 0.f, launchDirectionY = 0.f;
 };
 // Character's mutually selected air flags, plus the independently set crouch flag.

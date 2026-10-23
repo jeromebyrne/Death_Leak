@@ -59,5 +59,32 @@ int main() {
     assert(contact.ShotCount() == 1);
     contact.Update(solid, 0.f, 200.f, .15f, false, false, true, false, 1, renderer);
     assert(contact.ShotCount() == 0); // Existing solid contact still retires immediately.
-    std::cout << "PASS: player knife fade-in, active-flight bound and solid contact\n";
+    // Original Projectile::DoRotateToDirection pitches with current velocity:
+    // gravity turns a horizontal throw downward, while a left throw preserves
+    // both authored reflection flags. It must not complete repeated spins.
+    for (int facing : {1, -1}) {
+        Combat trajectory;
+        auto step = [&](float dt, bool fire) {
+            trajectory.Update(empty, 100000.f, 100000.f, dt, fire, false,
+                              true, false, facing, renderer);
+        };
+        step(0.f, true);
+        auto drawKnife = [&]() {
+            renderer.sprites.clear();
+            const auto& shot = trajectory.Shots().front();
+            trajectory.Draw(renderer, shot.x, shot.y);
+            assert(renderer.sprites.size() == 1);
+            return renderer.sprites.front();
+        };
+        step(.15f, false);
+        const auto early = drawKnife();
+        step(.15f, false);
+        const auto late = drawKnife();
+        assert(early.flipX == (facing < 0) && early.flipY == (facing < 0));
+        assert(late.flipX == early.flipX && late.flipY == early.flipY);
+        assert(std::abs(late.rotationDegrees - early.rotationDegrees) > .1f);
+        assert(std::abs(late.rotationDegrees) <= 180.f);
+        assert(std::abs(early.rotationDegrees) <= 180.f);
+    }
+    std::cout << "PASS: player knife fade-in, trajectory pitch, active-flight bound and solid contact\n";
 }
