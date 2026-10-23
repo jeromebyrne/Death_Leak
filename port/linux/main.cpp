@@ -32,6 +32,8 @@
 #include <sstream>
 #include <optional>
 #include <limits>
+#include <sys/wait.h>
+#include <unistd.h>
 
 using namespace deathleak::render;
 
@@ -74,11 +76,50 @@ struct IntroPromptClock {
 };
 constexpr std::array<Rect, 3> optionsBounds = {{AuthoredUI(-420,-60,132,132),
     AuthoredUI(-420,-200,132,132), AuthoredUI(-390,-470,90,90)}};
+std::string Sha256File(const std::string& path) {
+    int pipefd[2];
+    if (pipe(pipefd) != 0) return {};
+    const pid_t child = fork();
+    if (child == 0) {
+        dup2(pipefd[1], STDOUT_FILENO);
+        close(pipefd[0]); close(pipefd[1]);
+        execlp("sha256sum", "sha256sum", "--", path.c_str(), static_cast<char*>(nullptr));
+        _exit(127);
+    }
+    close(pipefd[1]);
+    if (child < 0) { close(pipefd[0]); return {}; }
+    std::string output;
+    char buffer[128];
+    ssize_t count;
+    while ((count = read(pipefd[0], buffer, sizeof(buffer))) > 0) output.append(buffer, count);
+    close(pipefd[0]);
+    int status = 0;
+    if (waitpid(child, &status, 0) != child || !WIFEXITED(status) || WEXITSTATUS(status) != 0 ||
+        output.size() < 65 || output[64] != ' ') return {};
+    const auto hash = output.substr(0, 64);
+    if (!std::all_of(hash.begin(), hash.end(), [](char c) {
+            return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f');
+        })) return {};
+    return hash;
+}
+std::string JsonString(const std::string& value) {
+    std::ostringstream out;
+    out << '"';
+    for (unsigned char c : value) {
+        if (c == '"' || c == '\\') out << '\\' << c;
+        else if (c < 0x20) out << "\\u00" << "0123456789abcdef"[c >> 4]
+                              << "0123456789abcdef"[c & 15];
+        else out << c;
+    }
+    out << '"';
+    return out.str();
+}
 }
 
 int main(int argc, char** argv) {
     int frameLimit = 0;
     std::string capture;
+    std::string atomicFrame415Packet;
     std::string levelPreview;
     std::string playLevel;
     std::string script;
@@ -121,6 +162,7 @@ int main(int argc, char** argv) {
         std::string arg = argv[i];
         if (arg == "--frames" && i + 1 < argc) frameLimit = std::atoi(argv[++i]);
         else if (arg == "--capture" && i + 1 < argc) capture = argv[++i];
+        else if (arg == "--atomic-frame415-packet" && i + 1 < argc) atomicFrame415Packet = argv[++i];
         else if (arg == "--level-preview" && i + 1 < argc) levelPreview = argv[++i];
         else if (arg == "--play" && i + 1 < argc) playLevel = argv[++i];
         else if (arg == "--save-file" && i + 1 < argc) saveFile = argv[++i];
@@ -145,6 +187,11 @@ int main(int argc, char** argv) {
         else if (arg == "--start-encounter" && i + 1 < argc) startEncounter = std::atoi(argv[++i]);
         else if (arg == "--start-hazard" && i + 1 < argc) startHazard = std::atoi(argv[++i]);
         else { std::cerr << "Usage: deathleak-linux [--frames N] [--capture output.bmp] [--level-preview level.xml | --play level.xml] [--show-fps]\n"; return 2; }
+    }
+    if (!atomicFrame415Packet.empty() && (capture.empty() || frameLimit != 416 ||
+        atomicFrame415Packet == capture || fixedDt <= 0.f || script.empty() || playLevel.empty())) {
+        std::cerr << "--atomic-frame415-packet requires --capture, --frames 416, --fixed-dt, --script, --play and a distinct JSON path\n";
+        return 2;
     }
     if (suppressIntroPromptDraw && capture.empty()) {
         std::cerr << "--capture-suppress-intro-prompt requires --capture\n"; return 2;
@@ -572,6 +619,11 @@ int main(int argc, char** argv) {
         const bool loadingPausedThisFrame = loadingPhase == LoadingPhase::FadeIn ||
             loadingPhase == LoadingPhase::OpaqueHold;
         bool loadingHoldExitedThisFrame = false;
+        const auto packetLoadingPhaseOnEntry = loadingPhase;
+        bool packetGameplayRan = false, packetWeatherRan = false;
+        bool packetSceneRan = false, packetPlayerRan = false;
+        float packetDrawAlpha = -1.f;
+        int packetDrawTintAlpha = -1;
 #ifdef DEATHLEAK_TEST_LOADING_FADE_OBSERVER
         const auto loadingPhaseOnEntry = loadingPhase;
         bool loadingGameplayRan = false, loadingWeatherRan = false;
@@ -719,6 +771,7 @@ int main(int argc, char** argv) {
                 loadingHoldExitedThisFrame = true;
             }
         } else {
+            packetGameplayRan = true;
 #ifdef DEATHLEAK_TEST_LOADING_FADE_OBSERVER
             loadingGameplayRan = true;
 #endif
@@ -1334,6 +1387,7 @@ int main(int argc, char** argv) {
         if (!playLevel.empty()) {
             weather.SetAllowed(scene.AllowsWeather());
             if (!paperModal && !upgradeModal && !loadingPausedThisFrame) {
+                packetWeatherRan = true;
 #ifdef DEATHLEAK_TEST_LOADING_FADE_OBSERVER
                 loadingWeatherRan = true;
 #endif
@@ -1352,6 +1406,7 @@ int main(int argc, char** argv) {
         }
         const bool objectsPaused = paperModal || upgradeModal || loadingPausedThisFrame;
         if (!loadingPausedThisFrame) {
+            packetSceneRan = true;
 #ifdef DEATHLEAK_TEST_LOADING_FADE_OBSERVER
             loadingSceneVisualsRan = true;
 #endif
@@ -1362,6 +1417,7 @@ int main(int argc, char** argv) {
         if (!playLevel.empty() && !objectsPaused) bodySlowFrameObserver->BodyUpdate(motion.Grounded());
 #endif
         if (!playLevel.empty() && !objectsPaused) {
+            packetPlayerRan = true;
 #ifdef DEATHLEAK_TEST_LOADING_FADE_OBSERVER
             loadingPlayerVisualRan = true;
 #endif
@@ -1541,6 +1597,8 @@ int main(int argc, char** argv) {
                     : loadingPhase == LoadingPhase::FadeOut
                         ? std::max(0.f, 1.f - loadingPhaseTime / kLoadingFadeSeconds) : 1.f;
                 const Color tint{255, 255, 255, static_cast<std::uint8_t>(std::lround(alpha * 255.f))};
+                packetDrawAlpha = alpha;
+                packetDrawTintAlpha = tint.a;
 #ifdef DEATHLEAK_TEST_LOADING_FADE_OBSERVER
                 loadingDrawAlpha = tint.a;
 #endif
@@ -1550,6 +1608,101 @@ int main(int argc, char** argv) {
         }
         if (!capture.empty() && frame == frameLimit - 1 && !renderer->SaveFrame(capture, error)) {
             std::cerr << "Capture failed: " << error << '\n'; return 1;
+        }
+        if (!atomicFrame415Packet.empty() && frame == 415) {
+            // SaveFrame above is post-overlay/pre-EndFrame for this exact draw.
+            // The JSON is committed only after the image and byte hashes exist.
+            if (currentLevel != "Game/XmlFiles/levels/waterfall_top.xml" ||
+                loadingPhase != LoadingPhase::FadeOut || !packetGameplayRan ||
+                packetDrawAlpha <= 0.f || packetDrawAlpha >= 1.f) {
+                std::cerr << "Atomic packet target is not first-reveal Waterfall gameplay\n"; return 1;
+            }
+            std::array<unsigned char, 54> bmpHeader{};
+            std::ifstream bmp(capture, std::ios::binary);
+            bmp.read(reinterpret_cast<char*>(bmpHeader.data()), bmpHeader.size());
+            auto bmp32 = [&](size_t offset) {
+                return static_cast<std::uint32_t>(bmpHeader[offset]) |
+                    (static_cast<std::uint32_t>(bmpHeader[offset+1]) << 8) |
+                    (static_cast<std::uint32_t>(bmpHeader[offset+2]) << 16) |
+                    (static_cast<std::uint32_t>(bmpHeader[offset+3]) << 24);
+            };
+            if (!bmp || bmpHeader[0] != 'B' || bmpHeader[1] != 'M' ||
+                bmp32(18) != 1280 || bmp32(22) != 720 ||
+                bmpHeader[26] != 1 || bmpHeader[27] != 0 ||
+                bmpHeader[28] != 32 || bmpHeader[29] != 0) {
+                std::cerr << "Atomic packet image header/dimensions invalid\n"; return 1;
+            }
+            const auto imageHash = Sha256File(capture);
+            const auto exeHash = Sha256File("/proc/self/exe");
+            const auto levelHash = Sha256File(currentLevel);
+            std::error_code fileError;
+            const auto imageBytes = std::filesystem::file_size(capture, fileError);
+            if (imageHash.empty() || exeHash.empty() || levelHash.empty() || fileError) {
+                std::cerr << "Atomic packet image/identity hash failed\n"; return 1;
+            }
+            const std::string temporary = atomicFrame415Packet + ".tmp";
+            std::ofstream packet(temporary, std::ios::trunc);
+            if (!packet) { std::cerr << "Atomic packet JSON open failed\n"; return 1; }
+            packet << std::setprecision(9) << std::boolalpha;
+            packet << "{\n  \"schema\": \"deathleak-linux-frame415-v1\",\n"
+                   << "  \"matchedStateEligible\": false,\n"
+                   << "  \"identity\": {\"engine\": \"linux_port\", \"executableSha256\": " << JsonString(exeHash)
+                   << ", \"revision\": {\"value\": null, \"reason\": \"working-tree build; git revision not embedded\"}"
+                   << ", \"levelXmlSha256\": " << JsonString(levelHash)
+                   << ", \"contentManifestSha256\": {\"value\": null, \"reason\": \"manifest not instrumented\"}"
+                   << ", \"inputRecipe\": {\"play\": " << JsonString(playLevel)
+                   << ", \"script\": " << JsonString(script) << ", \"fixedDt\": " << fixedDt
+                   << ", \"loadSave\": " << JsonString(loadSaveFile) << "}, \"renderOrdinal\": " << frame
+                   << ", \"updateOrdinal\": " << frame << "},\n"
+                   << "  \"image\": {\"file\": " << JsonString(capture) << ", \"sha256\": " << JsonString(imageHash)
+                   << ", \"bytes\": " << imageBytes << ", \"width\": 1280, \"height\": 720"
+                   << ", \"pixelFormat\": \"BMP BGRA32\", \"colorSpace\": \"sRGB-assumed\""
+                   << ", \"viewport\": [0,0,1280,720], \"captureStage\": \"post_overlay_pre_endframe\""
+                   << ", \"scenePostprocessSubmitted\": true},\n"
+                   << "  \"transition\": {\"activeLevel\": " << JsonString(currentLevel)
+                   << ", \"loadingPhaseOnEntry\": " << static_cast<int>(packetLoadingPhaseOnEntry)
+                   << ", \"loadingPhaseAtDraw\": " << static_cast<int>(loadingPhase)
+                   << ", \"loadingPhaseTime\": " << loadingPhaseTime
+                   << ", \"pausedAtUpdateEntry\": " << loadingPausedThisFrame
+                   << ", \"pausedAtDraw\": " << (loadingPhase == LoadingPhase::FadeIn || loadingPhase == LoadingPhase::OpaqueHold)
+                   << ", \"loadingAlphaAtDraw\": " << packetDrawAlpha
+                   << ", \"loadingTintAlphaAtDraw\": " << packetDrawTintAlpha
+                   << ", \"holdExitedThisFrame\": " << loadingHoldExitedThisFrame
+                   << ", \"gameplayUpdated\": " << packetGameplayRan
+                   << ", \"weatherUpdated\": " << packetWeatherRan
+                   << ", \"sceneVisualsUpdated\": " << packetSceneRan
+                   << ", \"playerVisualUpdated\": " << packetPlayerRan << "},\n"
+                   << "  \"timingCameraPlayer\": {\"effectiveDt\": " << dt
+                   << ", \"totalSimulationTime\": " << shaderFrame.totalTime
+                   << ", \"precedingRenderedUpdateDt\": " << precedingRenderedModifiedDelta
+                   << ", \"camera\": {\"storedX\": " << cameraX << ", \"storedY\": " << cameraY
+                   << ", \"drawX\": " << drawCameraX << ", \"drawY\": " << drawCameraY
+                   << ", \"zoom\": " << (!hasPulledSword ? introEffectiveZoom : 1.f)
+                   << ", \"shakeActive\": " << shakeView.active << ", \"shakeRemaining\": " << shakeView.remaining
+                   << "}, \"submittedMatrices\": {\"value\": null, \"reason\": \"renderer matrix submission not instrumented\"}"
+                   << ", \"player\": {\"x\": " << worldX << ", \"y\": " << worldY
+                   << ", \"velocityX\": " << motion.VelocityX() << ", \"velocityY\": " << motion.VelocityY()
+                   << ", \"facing\": " << facing
+                   << ", \"bodyArmClipFrame\": {\"value\": null, \"reason\": \"LevelScene animation submission not instrumented\"}}},\n"
+                   << "  \"dynamicDraw\": {\"vertexNoiseTime\": " << shaderFrame.totalTime
+                   << ", \"pixelWobbleTime\": " << shaderFrame.pixelWobbleTime
+                   << ", \"pixelWobbleReversing\": " << shaderClock.Reversing()
+                   << ", \"foliageGlobalMultiplier\": " << weather.FoliageSwayMultiplier()
+                   << ", \"lightningAlpha\": " << weather.Alpha()
+                   << ", \"rainVisible\": " << rain.VisibleParticles()
+                   << ", \"orderedSceneDraws\": {\"value\": null, \"reason\": \"per-object draw submission not instrumented\"}"
+                   << ", \"rngHistory\": {\"value\": null, \"reason\": \"nondeterministic effect history not instrumented\"}},\n"
+                   << "  \"uiOrder\": [\"film\",\"bars\",\"hud\",\"optional_fps\",\"modals\",\"loading_splash\"],\n"
+                   << "  \"pixels\": {\"health\": " << combat.Health() << ", \"maxHealth\": " << combat.MaxHealth()
+                   << ", \"focus\": " << combat.Focus() << ", \"orbs\": " << orbBalance
+                   << ", \"fpsTextEnabled\": " << showFps
+                   << ", \"displayedMeterFill\": {\"value\": null, \"reason\": \"HUD meter submission not instrumented\"}}\n}\n";
+            packet.close();
+            if (!packet) { std::cerr << "Atomic packet JSON write failed\n"; return 1; }
+            std::filesystem::rename(temporary, atomicFrame415Packet, fileError);
+            if (fileError) { std::cerr << "Atomic packet JSON commit failed: " << fileError.message() << '\n'; return 1; }
+            std::cout << "ATOMIC_FRAME415_PACKET image=" << capture << " json=" << atomicFrame415Packet
+                      << " sha256=" << imageHash << "\n";
         }
         renderer->EndFrame();
 #ifdef DEATHLEAK_TEST_LOADING_FADE_OBSERVER
