@@ -125,7 +125,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     if (!level || std::string(level->Value()) != "level") { error = "Not a Death Leak level: " + path; return false; }
     playerVisualWidth_ = playerVisualHeight_ = 0;
     introBodyPhase_ = IntroBodyPhase::None; introBodyFinished_ = false;
-    playerSequences_.clear(); playerSequence_.clear(); playerFrame_ = 0; playerFrameElapsed_ = 0; playerFacing_ = playerAimLineFacing_ = 1; playerAimLineRotation_ = 0.f;
+    playerSequences_.clear(); playerSequence_.clear(); playerFrame_ = 0; playerFrameElapsed_ = 0; impactVisualFinished_ = false; playerFacing_= playerAimLineFacing_ = 1; playerAimLineRotation_ = 0.f;
     playerAimLineFlipY_ = playerAimLineDirected_ = false; playerGrounded_ = false;
     playerCrouching_ = playerWasCrouching_ = false;
     playerOffSolidTime_ = playerDescentTime_ = 0; playerDescending_ = false;
@@ -412,7 +412,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
                 auto* body = animation.RootElement() ? animation.RootElement()->FirstChildElement("body") : nullptr;
                 // Character::UpdateAnimations selects these authored body sequences.
                 for (const char* name : {"Still", "Running", "StrafeForward", "StrafeBack", "JumpingUp", "JumpingDown",
-                                         "SlidingDown", "Roll", "Crouch", "CrouchUp", "SwimIdle", "SwimForward", "Melee", "Melee2", "Melee3", "MeleeFinish",
+                                         "SlidingDown", "Roll", "Crouch", "CrouchUp", "ImpactLandSoft", "ImpactLandHard", "SwimIdle", "SwimForward", "Melee", "Melee2", "Melee3", "MeleeFinish",
                                          "IntroCutscene1", "IntroCutscene2"}) {
                     auto* sequence = body ? body->FirstChildElement(name) : nullptr;
                     if (!sequence) continue;
@@ -1145,7 +1145,9 @@ size_t LevelScene::IntroBodyFrameCount() const {
 void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded, int wallSide,
                                     bool rolling, bool dashing, bool inWater, float meleeElapsed, int facing,
                                     bool projectileFired, bool eligibleFireAttempt, PlayerStrafeVisual strafe,
-                                    bool rightStickAim, float aimX, float aimY, float precedingRenderedModifiedDelta, bool crouch) {
+                                    bool rightStickAim, float aimX, float aimY, float precedingRenderedModifiedDelta, bool crouch,
+                                    PlayerImpactRecovery impactRecovery) {
+    impactVisualFinished_ = false;
     // SetCrouching marks the release edge; movement/air branches can cancel it.
     if (playerCrouching_ && !crouch) playerWasCrouching_ = true;
     playerCrouching_ = crouch;
@@ -1210,7 +1212,9 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
     }
     playerFacing_ = facing;
     std::string target = "Still";
-    if (meleeElapsed > 0.f) {
+    if (impactRecovery == PlayerImpactRecovery::Hard) target = "ImpactLandHard";
+    else if (impactRecovery == PlayerImpactRecovery::Soft) target = "ImpactLandSoft";
+    else if (meleeElapsed > 0.f) {
         // Combat's existing 38-tick phase model comes from the four source phases.
         if (meleeElapsed < 7.f/60.f) target = "Melee";
         else if (meleeElapsed < 22.f/60.f) target = "Melee2";
@@ -1258,11 +1262,16 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
             if (target == "Still" || target == "Running" || target == "SlidingDown" ||
                 target == "SwimIdle" || target == "SwimForward" || strafing)
                 playerFrame_ = (playerFrame_ + 1) % sequence.frames.size();
-            else if ((target == "Crouch" || target == "CrouchUp") && playerFrame_ < sequence.frames.size()) ++playerFrame_;
+            else if ((target == "Crouch" || target == "CrouchUp" || target == "ImpactLandSoft" || target == "ImpactLandHard") && playerFrame_ < sequence.frames.size()) ++playerFrame_;
             else if (playerFrame_ + 1 < sequence.frames.size()) ++playerFrame_;
         }
     }
     if (target == "CrouchUp" && playerFrame_ >= sequence.frames.size()) playerWasCrouching_ = false;
+    if (target == "ImpactLandSoft" || target == "ImpactLandHard") {
+        // AnimationPart::IsFinished becomes true only after advancing past the last frame.
+        // Retain the last valid texture for the completion draw, then release motion.
+        impactVisualFinished_ = playerFrame_ >= sequence.frames.size();
+    }
     if (strafing) sequence.currentRate = std::clamp(std::abs(vx / 60.f) * 1.8f * 2.65f,
                                                       sequence.minRate, sequence.maxRate);
     // Character uses one numeric frame guard for every horizontal movement

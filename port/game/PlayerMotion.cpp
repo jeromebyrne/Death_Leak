@@ -9,8 +9,7 @@ constexpr float kHalfHeight = 214.898743f / 2.f;
 constexpr float kBaseMaxSpeed = 8.f * 60.f;
 constexpr float kJumpSpeed = 21.f * 60.f;
 constexpr float kGravity = (0.75f / 0.55f) * 60.f * 60.f;
-// Approximate authored sequence completion: 6 frames at 30 fps (soft),
-// 11 frames at 15 fps (hard). No animation-finished signal exists here yet.
+// Fallback duration for motion-only callers; live gameplay clears on visual finish.
 constexpr float kSoftImpactSeconds = 6.f / 30.f;
 constexpr float kHardImpactSeconds = 11.f / 15.f;
 constexpr float kWallJumpSpeedX = 15.f * 60.f;
@@ -50,7 +49,7 @@ void PlayerMotion::Update(LevelScene& scene, float dt, int direction, bool jump)
     if (dt <= 0) return;
     const float ticks = dt * 60.f;
     landedLargeDropThisUpdate_ = false;
-    if (impactRecovery_ != ImpactRecovery::None) {
+    if (impactRecovery_ != ImpactRecovery::None && !impactVisualDriven_) {
         impactRecoveryTime_ = std::max(0.f, impactRecoveryTime_ - dt);
         if (impactRecoveryTime_ == 0.f) impactRecovery_ = ImpactRecovery::None;
     }

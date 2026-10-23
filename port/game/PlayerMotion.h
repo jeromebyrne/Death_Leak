@@ -6,7 +6,7 @@ namespace deathleak::game {
 // original MovingSprite values are per 60 Hz target update.
 class PlayerMotion {
 public:
-    enum class ImpactRecovery { None, Soft, Hard };
+    using ImpactRecovery = PlayerImpactRecovery;
     enum class HardLandingEvent { None, DownwardDash, LargeDrop, LargeDropRoll };
     void Reset(float x, float y, bool authoredEntry = false);
     void SetSpeedUpgrade(bool unlocked) { speedUpgrade_ = unlocked; }
@@ -19,6 +19,8 @@ public:
     bool Rolling() const { return rollTime_ > 0.f; }
     ImpactRecovery Recovery() const { return impactRecovery_; }
     bool ImpactRecovering() const { return impactRecovery_ != ImpactRecovery::None; }
+    void SetImpactVisualDriven(bool enabled) { impactVisualDriven_ = enabled; }
+    void CompleteImpactRecovery() { impactRecovery_ = ImpactRecovery::None; impactRecoveryTime_ = 0.f; }
     HardLandingEvent ConsumeHardLandingEvent() { const auto event = hardLandingEvent_; hardLandingEvent_ = HardLandingEvent::None; return event; }
     void Update(LevelScene& scene, float dt, int direction, bool jump);
     bool SmashedSomething() const { return smashedSomething_; }
@@ -48,6 +50,7 @@ private:
     HardLandingEvent hardLandingEvent_ = HardLandingEvent::None;
     bool landedLargeDropThisUpdate_ = false;
     float impactRecoveryTime_ = 0.f;
+    bool impactVisualDriven_ = false;
     int wallSide_ = 0; // -1: wall to left, +1: wall to right
     float wallJumpRemaining_ = 0;
     float jumpPercent_ = 40.f;

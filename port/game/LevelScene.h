@@ -12,6 +12,7 @@
 #include <vector>
 
 namespace deathleak::game {
+enum class PlayerImpactRecovery { None, Soft, Hard };
 struct SceneSprite {
     render::TextureId texture = render::InvalidTexture;
     std::string xmlId; // Source level ID, retained only for opt-in render diagnostics.
@@ -177,7 +178,8 @@ public:
                             bool projectileFired, bool eligibleFireAttempt = false,
                             PlayerStrafeVisual strafe = {}, bool rightStickAim = false,
                             float aimX = 0.f, float aimY = 0.f, float precedingRenderedModifiedDelta = -1.f,
-                            bool crouch = false);
+                            bool crouch = false, PlayerImpactRecovery impactRecovery = PlayerImpactRecovery::None);
+    bool ImpactVisualFinished() const { return impactVisualFinished_; }
     void UpdateVisuals(float dt, float playerX, float playerY, float cameraX, float cameraY,
                        bool objectsPaused = false, float precedingRenderedModifiedDelta = -1.f);
     void UpdateAuthoredOrbs(float dt, float playerX, float playerY, float cameraX, float cameraY);
@@ -290,6 +292,7 @@ private:
     size_t lastRunningFrame_ = static_cast<size_t>(-1); // Shared numeric guard for horizontal Running and strafe frames.
     size_t playerArmFrame_ = 0; // sequence length means finished, matching AnimationPart::IsFinished
     float playerFrameElapsed_ = 0;
+    bool impactVisualFinished_ = false;
     // Character stamps the first dry descending update; off-solid time can bypass the hold.
     double playerOffSolidTime_ = 0, playerDescentTime_ = 0;
     bool playerDescending_ = false;

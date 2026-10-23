@@ -357,6 +357,7 @@ int main(int argc, char** argv) {
     if (levelPath.empty() && !menuLoop && !player) { std::cerr << "Player art load failed: " << error << '\n'; return 1; }
     float playerX = 590, playerY = 430;
     deathleak::game::PlayerMotion motion;
+    motion.SetImpactVisualDriven(!simulateOnly);
     deathleak::game::CameraShake cameraShake;
     motion.SetSpeedUpgrade(speedUnlocked);
     motion.SetMovementUnlocks(downwardDashUnlocked, rollUnlocked);
@@ -1246,7 +1247,8 @@ int main(int argc, char** argv) {
         if (!objectsPaused) combat.UpdateVisuals(dt);
         if (!playLevel.empty() && !objectsPaused) scene.UpdatePlayerVisual(dt, motion.VelocityX(), motion.VelocityY(),
             motion.Grounded(), motion.WallSide(), motion.Rolling(), motion.DownwardDashing(), motion.InWater(),
-            combat.MeleeElapsed(), facing, playerProjectileFired, playerEligibleFireAttempt, strafeVisual, stickAim, aimX, aimY, precedingRenderedModifiedDelta, crouchInput);
+            combat.MeleeElapsed(), facing, playerProjectileFired, playerEligibleFireAttempt, strafeVisual, stickAim, aimX, aimY, precedingRenderedModifiedDelta, crouchInput, motion.Recovery());
+        if (!playLevel.empty() && !objectsPaused && scene.ImpactVisualFinished()) motion.CompleteImpactRecovery();
         // Camera2D draws X's random sign before Y's, only while shaking.
         const bool jitter = cameraShake.WillJitter(cameraShakeTime - dt);
         const int shakeSignX = jitter && scene.CameraFollowX() ? ((std::rand() & 1) ? 1 : -1) : 1;
