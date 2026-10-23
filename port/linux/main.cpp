@@ -173,6 +173,8 @@ int main(int argc, char** argv) {
     std::string capture;
     std::string atomicFrame415Packet;
     std::string atomicPostfadePacket;
+    std::string sameRunFrame415Capture;
+    bool sameRunWaterfallPackets = false;
     std::string levelPreview;
     std::string playLevel;
     std::string script;
@@ -217,6 +219,13 @@ int main(int argc, char** argv) {
         else if (arg == "--capture" && i + 1 < argc) capture = argv[++i];
         else if (arg == "--atomic-frame415-packet" && i + 1 < argc) atomicFrame415Packet = argv[++i];
         else if (arg == "--atomic-postfade-waterfall-packet" && i + 1 < argc) atomicPostfadePacket = argv[++i];
+        else if (arg == "--atomic-same-run-waterfall-packets" && i + 4 < argc) {
+            sameRunWaterfallPackets = true;
+            sameRunFrame415Capture = argv[++i];
+            atomicFrame415Packet = argv[++i];
+            capture = argv[++i];
+            atomicPostfadePacket = argv[++i];
+        }
         else if (arg == "--level-preview" && i + 1 < argc) levelPreview = argv[++i];
         else if (arg == "--play" && i + 1 < argc) playLevel = argv[++i];
         else if (arg == "--save-file" && i + 1 < argc) saveFile = argv[++i];
@@ -242,15 +251,23 @@ int main(int argc, char** argv) {
         else if (arg == "--start-hazard" && i + 1 < argc) startHazard = std::atoi(argv[++i]);
         else { std::cerr << "Usage: deathleak-linux [--frames N] [--capture output.bmp] [--level-preview level.xml | --play level.xml] [--show-fps]\n"; return 2; }
     }
-    if (!atomicFrame415Packet.empty() && (capture.empty() || frameLimit != 416 ||
+    if (!atomicFrame415Packet.empty() && !sameRunWaterfallPackets && (capture.empty() || frameLimit != 416 ||
         atomicFrame415Packet == capture || fixedDt <= 0.f || script.empty() || playLevel.empty())) {
         std::cerr << "--atomic-frame415-packet requires --capture, --frames 416, --fixed-dt, --script, --play and a distinct JSON path\n";
         return 2;
     }
-    if (!atomicPostfadePacket.empty() && (capture.empty() || frameLimit <= 0 ||
+    if (!atomicPostfadePacket.empty() && !sameRunWaterfallPackets && (capture.empty() || frameLimit <= 0 ||
         atomicPostfadePacket == capture || !atomicFrame415Packet.empty() ||
         fixedDt <= 0.f || script.empty() || playLevel.empty())) {
         std::cerr << "--atomic-postfade-waterfall-packet requires --capture, --frames, --fixed-dt, --script, --play and a distinct JSON path\n";
+        return 2;
+    }
+    if (sameRunWaterfallPackets && (frameLimit != 425 || fixedDt <= 0.f || script.empty() || playLevel.empty() ||
+        sameRunFrame415Capture.empty() || atomicFrame415Packet.empty() || capture.empty() || atomicPostfadePacket.empty() ||
+        sameRunFrame415Capture == atomicFrame415Packet || sameRunFrame415Capture == capture ||
+        sameRunFrame415Capture == atomicPostfadePacket || atomicFrame415Packet == capture ||
+        atomicFrame415Packet == atomicPostfadePacket || capture == atomicPostfadePacket)) {
+        std::cerr << "--atomic-same-run-waterfall-packets requires --frames 425, --fixed-dt, --script, --play and four distinct nonempty paths: frame415.bmp frame415.json frame424.bmp frame424.json\n";
         return 2;
     }
     if (suppressIntroPromptDraw && capture.empty()) {
@@ -1694,12 +1711,15 @@ int main(int argc, char** argv) {
                 loadingPhase == LoadingPhase::None && packetGameplayRan && packetWeatherRan &&
                 packetSceneRan && packetPlayerRan) packetFirstPostfadeOrdinal = frame;
         }
-        if (!capture.empty() && frame == frameLimit - 1 && !renderer->SaveFrame(capture, error)) {
+        const bool packetFrame415 = !atomicFrame415Packet.empty() && frame == 415;
+        const bool packetPostfade = !atomicPostfadePacket.empty() && frame == frameLimit - 1;
+        const std::string& frameCapture = (sameRunWaterfallPackets && packetFrame415) ? sameRunFrame415Capture : capture;
+        if ((!capture.empty() && frame == frameLimit - 1 || sameRunWaterfallPackets && packetFrame415) &&
+            !renderer->SaveFrame(frameCapture, error)) {
             std::cerr << "Capture failed: " << error << '\n'; return 1;
         }
-        if ((!atomicFrame415Packet.empty() && frame == 415) ||
-            (!atomicPostfadePacket.empty() && frame == frameLimit - 1)) {
-            const bool postfadePacket = !atomicPostfadePacket.empty();
+        if (packetFrame415 || packetPostfade) {
+            const bool postfadePacket = packetPostfade;
             const std::string& packetPath = postfadePacket ? atomicPostfadePacket : atomicFrame415Packet;
             // SaveFrame above is post-overlay/pre-EndFrame for this exact draw.
             // The JSON is committed only after the image and byte hashes exist.
@@ -1715,7 +1735,7 @@ int main(int argc, char** argv) {
                           << packetFirstPostfadeOrdinal << '\n'; return 1;
             }
             std::array<unsigned char, 54> bmpHeader{};
-            std::ifstream bmp(capture, std::ios::binary);
+            std::ifstream bmp(frameCapture, std::ios::binary);
             bmp.read(reinterpret_cast<char*>(bmpHeader.data()), bmpHeader.size());
             auto bmp32 = [&](size_t offset) {
                 return static_cast<std::uint32_t>(bmpHeader[offset]) |
@@ -1729,14 +1749,14 @@ int main(int argc, char** argv) {
                 bmpHeader[28] != 32 || bmpHeader[29] != 0) {
                 std::cerr << "Atomic packet image header/dimensions invalid\n"; return 1;
             }
-            const auto imageHash = Sha256File(capture);
-            const std::string preHudPath = capture + ".prehud.bmp";
+            const auto imageHash = Sha256File(frameCapture);
+            const std::string preHudPath = frameCapture + ".prehud.bmp";
             const auto preHudHash = postfadePacket ? Sha256File(preHudPath) : std::string{};
             // Hash the game process, not sha256sum's own /proc/self/exe after fork/exec.
             const auto exeHash = Sha256File("/proc/" + std::to_string(getpid()) + "/exe");
             const auto levelHash = Sha256File(currentLevel);
             std::error_code fileError;
-            const auto imageBytes = std::filesystem::file_size(capture, fileError);
+            const auto imageBytes = std::filesystem::file_size(frameCapture, fileError);
             const auto preHudBytes = postfadePacket ? std::filesystem::file_size(preHudPath, fileError) : 0;
             if (imageHash.empty() || (postfadePacket && preHudHash.empty()) ||
                 exeHash.empty() || levelHash.empty() || fileError) {
@@ -1756,7 +1776,7 @@ int main(int argc, char** argv) {
                    << ", \"script\": " << JsonString(script) << ", \"fixedDt\": " << fixedDt
                    << ", \"loadSave\": " << JsonString(loadSaveFile) << "}, \"renderOrdinal\": " << frame
                    << ", \"updateOrdinal\": " << frame << "},\n"
-                   << "  \"image\": {\"file\": " << JsonString(capture) << ", \"sha256\": " << JsonString(imageHash)
+                   << "  \"image\": {\"file\": " << JsonString(frameCapture) << ", \"sha256\": " << JsonString(imageHash)
                    << ", \"bytes\": " << imageBytes << ", \"width\": 1280, \"height\": 720"
                    << ", \"pixelFormat\": \"BMP BGRA32\", \"colorSpace\": \"sRGB-assumed\""
                    << ", \"viewport\": [0,0,1280,720], \"captureStage\": \"post_overlay_pre_endframe\""
@@ -1832,7 +1852,7 @@ int main(int argc, char** argv) {
             if (!packet) { std::cerr << "Atomic packet JSON write failed\n"; return 1; }
             std::filesystem::rename(temporary, packetPath, fileError);
             if (fileError) { std::cerr << "Atomic packet JSON commit failed: " << fileError.message() << '\n'; return 1; }
-            std::cout << (postfadePacket ? "ATOMIC_POSTFADE_PACKET image=" : "ATOMIC_FRAME415_PACKET image=") << capture << " json=" << packetPath
+            std::cout << (postfadePacket ? "ATOMIC_POSTFADE_PACKET image=" : "ATOMIC_FRAME415_PACKET image=") << frameCapture << " json=" << packetPath
                       << " sha256=" << imageHash << "\n";
         }
         renderer->EndFrame();
