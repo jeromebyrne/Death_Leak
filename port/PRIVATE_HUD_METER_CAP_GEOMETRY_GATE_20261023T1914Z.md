@@ -15,3 +15,7 @@ Docker image `deathleak-linux-build:bookworm` built the current working tree wit
 No competing game/x11grab/capture process or Docker GPU job appeared at GPU preflight. A 180-frame active Forest-1 capture of that exact binary on physical Xorg `:0` exited 0 using live LightDM authority, `/dev/dri`, SDL X11/OpenGL strict acceleration. Log reports `accelerated=1 software=0`, nouveau/NVE7, GPU Sepia, 71 original level sprites, 0 missing/unsupported, and a live player at `(1368.99,3107.3)` with health 25/focus 100. Lossless 1280×720 frame `port/build/private-hud-meter-cap-geometry-20261023t1914z/forest-active-hud-meter-cap.bmp`, SHA-256 `04d6997fb583ab93bc6346f9c0f01299e2256d2732a10419104d14a10fd4a04a`; capture log alongside. This is a hardware/runtime smoke gate, not a matched Windows image or Jerome acceptance. Container/game exited and physical Xorg/GPU lane is released.
 
 Only `port/game/Hud.cpp`, the uniquely named CPU test, and this report were written. `CHECKPOINT_STATUS.md` and `PORT_WORK_STATUS.md` were not touched.
+
+## Scoped delivery
+
+Implementation/test/report commit `18fab7f08cf5c060f99050baca2d5ca9c717bb4a` was pushed to `origin/feature/linux-renderer-foundation`; `git ls-remote` returned the identical remote SHA. The subsequent report-only update records that verified delivery. HUD source, focused test, and GPU lane ownership are released.
