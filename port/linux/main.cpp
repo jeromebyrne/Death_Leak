@@ -326,6 +326,7 @@ int main(int argc, char** argv) {
     motion.Reset(restorePosition ? savedX : scene.PlayerX(), restorePosition ? savedY : scene.PlayerY(), !restorePosition);
     float worldX = motion.X(), worldY = motion.Y();
     float cameraX = scene.CameraX(), cameraY = scene.CameraY();
+    deathleak::game::RightStickCameraTarget cameraTarget(scene.CameraOffsetX(), scene.CameraOffsetY());
     if (startEncounter >= 0) {
         if (playLevel.empty() || startEncounter >= static_cast<int>(scene.Encounters().size())) { std::cerr << "Invalid --start-encounter index\n"; return 2; }
         worldX = scene.Encounters()[startEncounter].x; worldY = scene.Encounters()[startEncounter].y;
@@ -392,6 +393,7 @@ int main(int argc, char** argv) {
     bool pickupUpdatedThisFrame = false;
     const auto healthPickupArt = renderer->LoadTexture("Game/Media/objects/health_upgrade.png", error);
     int facing = 1;
+    int movementDirection = 1;
     std::string currentLevel = playLevel;
     // Main-menu assets and ordering follow mainmenu.xml. Keyboard/controller
     // navigation is a Linux accessibility fallback for the source mouse widgets.
@@ -450,6 +452,8 @@ int main(int argc, char** argv) {
     auto last = std::chrono::steady_clock::now();
     for (int frame = 0; !frameLimit || frame < frameLimit; ++frame) {
         if (renderer->PollQuit()) break;
+        const ControllerSticks controllerSticks = renderer->ControllerAxes();
+        deathleak::game::PlayerStrafeVisual strafeVisual{};
         auto now = std::chrono::steady_clock::now();
         float dt = std::chrono::duration<float>(now - last).count();
         last = now;
@@ -532,6 +536,7 @@ int main(int argc, char** argv) {
                     deathleak::game::LevelScene fresh;
                     if (!fresh.Load(freshLevel, *renderer, error)) { std::cerr << error << '\n'; return 1; }
                     scene = std::move(fresh);
+                    cameraTarget = {scene.CameraOffsetX(), scene.CameraOffsetY()};
                     devilDialog.reset(); healthPickup.reset();
                     if (!simulateOnly && !sound) {
                         sound = deathleak::audio::CreateSoundPlayer();
@@ -605,7 +610,7 @@ int main(int argc, char** argv) {
             } else {
             const float direction = !script.empty() ? static_cast<float>(command == 'R' || command == 'B' || command == 'E' || command == 'Y') - static_cast<float>(command == 'L' || command == 'N' || command == 'Q' || command == 'Z') :
                 static_cast<float>(renderer->KeyDown(Right)) - static_cast<float>(renderer->KeyDown(Left));
-            if (direction != 0) facing = direction < 0 ? -1 : 1;
+            if (direction != 0) facing = movementDirection = direction < 0 ? -1 : 1;
             const bool restart = !script.empty() ? command == 'T' : renderer->KeyDown(Restart);
             if (combat.Health() <= 0) {
                 if (!wasDead) { std::cout << "Player died at frame " << frame << " in " << currentLevel << std::endl; wasDead = true; }
@@ -621,6 +626,7 @@ int main(int argc, char** argv) {
                         nextScene.ApplySmashable(brokenSmashables.count(restartLevel) != 0);
                         nextScene.ApplyDeflection(combat.DeflectionUnlocked());
                         scene = std::move(nextScene);
+                        cameraTarget = {scene.CameraOffsetX(), scene.CameraOffsetY()};
                         devilDialog.reset(); healthPickup.reset();
                         currentLevel = restartLevel;
                         motion.Reset(scene.PlayerX(), scene.PlayerY(), true);
@@ -647,43 +653,24 @@ int main(int argc, char** argv) {
                 if (motion.TryRoll(combat.HasFocus(2.f))) combat.ConsumeFocus(2.f);
             }
             rollHeld = roll;
-            // Game::Update clamps the camera both before and after following.
-            // Camera2D's Left/Right/Top/Bottom use the unzoomed backbuffer
-            // dimensions; preserve its Y-then-X branch order even for levels
-            // narrower than the viewport.
-            auto clampCameraToLevel = [&] {
-                if (!scene.HasCameraBounds()) return;
-                constexpr float halfWidth = 1920.f * 0.5f;
-                constexpr float halfHeight = 1080.f * 0.5f;
-                if (cameraY - halfHeight <= scene.CameraBoundBottom())
-                    cameraY = scene.CameraBoundBottom() + halfHeight;
-                else if (cameraY + halfHeight >= scene.CameraBoundTop())
-                    cameraY = scene.CameraBoundTop() - halfHeight;
-                if (cameraX - halfWidth <= scene.CameraBoundLeft())
-                    cameraX = scene.CameraBoundLeft() + halfWidth;
-                else if (cameraX + halfWidth >= scene.CameraBoundRight())
-                    cameraX = scene.CameraBoundRight() - halfWidth;
-            };
-            clampCameraToLevel();
-            // Windows Game::Update follows the previous frame's player position
-            // before GameObjectManager visits and advances the player. Capture
-            // this camera once for the whole update-zone pass.
-            // Game::Update follows before GameObjectManager::Update. The Windows
-            // camera uses per-update lag divisors, authored offsets and axis flags.
-            if (scene.CameraFollowX()) {
-                const float lag = std::max(1.f, (combat.EnemyCount() != 0 ? 40.f : scene.CameraLagX()) * scene.CameraZoom());
-                cameraX += (worldX + scene.CameraOffsetX() * scene.CameraZoom() - cameraX) / lag;
-            }
-            if (scene.CameraFollowY()) {
-                const float lag = std::max(1.f, scene.CameraLagY());
-                cameraY += (worldY + scene.CameraOffsetY() * scene.CameraZoom() - cameraY) / lag;
-            }
-            clampCameraToLevel();
+            // Follow the previous input tick's target before advancing the player.
+            // The helper retains the authored unzoomed Y/X clamp order and X lag.
+            deathleak::game::FollowCameraWithTarget({
+                cameraX, cameraY, worldX, worldY,
+                scene.CameraZoom(), scene.CameraLagX(), scene.CameraLagY(),
+                scene.CameraFollowX(), scene.CameraFollowY(), combat.EnemyCount() != 0,
+                scene.HasCameraBounds(), scene.CameraBoundLeft(), scene.CameraBoundRight(),
+                scene.CameraBoundTop(), scene.CameraBoundBottom()
+            }, cameraTarget, cameraX, cameraY);
             if (auto it = scriptedCamera.find(frame); it != scriptedCamera.end()) {
                 cameraX = it->second.first; cameraY = it->second.second;
             }
+            const bool wasGrounded = motion.Grounded();
             motion.Update(scene, dt, (combat.MeleeActive() || motion.Rolling()) ? 0 : static_cast<int>(direction),
                           jump && !combat.MeleeActive());
+            if (script.empty()) strafeVisual = deathleak::game::ResolvePlayerStrafeVisual(
+                controllerSticks, movementDirection, motion.Rolling(), combat.MeleeActive(),
+                !wasGrounded && motion.Grounded());
             if (motion.SmashedSomething()) {
                 brokenSmashables.insert(currentLevel);
                 if (sound) sound->Play(deathleak::audio::Cue::StoneSmash);
@@ -697,16 +684,42 @@ int main(int argc, char** argv) {
             const auto collectedSpawned = scene.UpdateSpawnedOrbs(worldX, worldY, dt);
             orbBalance += static_cast<int>(collectedNow + collectedSpawned);
             if (sound && (collectedNow || collectedSpawned)) sound->Play(deathleak::audio::Cue::OrbCollect);
-            const bool fire = !script.empty() ? (command == 'F' || command == 'B' || command == 'N' || command == 'Y' || command == 'Z') : renderer->KeyDown(Down);
+            // XInput activates aim/fire when either right axis exceeds its
+            // strict deadzone. SDL Y is screen-down, so convert to world-up.
+            constexpr int rightDeadzone = 8689;
+            const int rightY = deathleak::game::RightStickCameraTarget::WorldRightY(controllerSticks.rightY);
+            const bool stickAim = script.empty() && !simulateOnly && controllerSticks.connected &&
+                (std::abs(controllerSticks.rightX) > rightDeadzone || std::abs(rightY) > rightDeadzone);
+            const bool fire = (!script.empty() ? (command == 'F' || command == 'B' || command == 'N' || command == 'Y' || command == 'Z') : renderer->KeyDown(Down)) || stickAim;
+            const float aimX = stickAim ? static_cast<float>(controllerSticks.rightX) : 0.f;
+            const float aimY = stickAim ? static_cast<float>(rightY) : 0.f;
             playerEligibleFireAttempt = fire && !motion.Rolling() && !motion.InWater() &&
                 !combat.MeleeActive() && combat.Health() > 0.f && motion.WallSide() == 0;
             const int firedBefore = combat.Fired();
             const float healthBeforeCombat = combat.Health();
             const int spawnedBeforeCombat = combat.Spawned();
-            combat.Update(scene, worldX, worldY, dt, fire, melee, motion.Grounded(), motion.Rolling(), facing, *renderer);
+            // Character::Update clears its air flags on solid ground or at a
+            // wall, and changes from up to down only below -0.5 unit/tick.
+            // PlayerMotion stores units/second. An authored-entry zero velocity
+            // is not an airborne launch state; source also cancels crouch in air.
+            const float verticalSpeed = motion.VelocityY();
+            const bool shotAirborne = !motion.Grounded() && motion.WallSide() == 0 &&
+                !motion.InWater() && verticalSpeed != 0.f;
+            const deathleak::game::PlayerShotLaunchState launchState{
+                script.empty() && renderer->KeyDown(Down) &&
+                    motion.Grounded() && motion.WallSide() == 0 && !motion.Rolling() &&
+                    !combat.MeleeActive(),
+                shotAirborne && verticalSpeed > -30.f,
+                shotAirborne && verticalSpeed <= -30.f
+            };
+            combat.Update(scene, worldX, worldY, dt, fire, melee, motion.Grounded(), motion.Rolling(), facing, *renderer, aimX, aimY, launchState);
             playerProjectileFired = combat.Fired() > firedBefore;
             // SolidMovingSprite::OnCollision applies authored damage per contact, not per second.
             combat.ApplySolidContactDamage(motion.SolidContactDamage());
+            // Windows input writes the next follow target after movement/combat.
+            // A buffered roll may clear impact recovery on this same update.
+            if (!simulateOnly && script.empty()) cameraTarget.Update(controllerSticks, combat.Health() > 0.f,
+                motion.Rolling(), motion.ImpactRecovering(), combat.MeleeActive());
             if (std::getenv("DEATHLEAK_TRACE_ENCOUNTERS") &&
                 (combat.Spawned() != spawnedBeforeCombat || combat.Health() != healthBeforeCombat))
                 std::cout << "Encounter state frame=" << frame << " level=" << currentLevel
@@ -975,6 +988,7 @@ int main(int argc, char** argv) {
                         nextScene.ApplySmashable(brokenSmashables.count(door.destination) != 0);
                         nextScene.ApplyDeflection(combat.DeflectionUnlocked());
                         scene = std::move(nextScene);
+                        cameraTarget = {scene.CameraOffsetX(), scene.CameraOffsetY()};
                         devilDialog.reset(); healthPickup.reset();
                         std::cout << "Door at frame " << frame << " from " << currentLevel << " to " << door.destination << '\n';
                         currentLevel = door.destination;
@@ -1005,6 +1019,7 @@ int main(int argc, char** argv) {
                         nextScene.ApplySmashable(brokenSmashables.count(destination) != 0);
                         nextScene.ApplyDeflection(combat.DeflectionUnlocked());
                         scene = std::move(nextScene);
+                        cameraTarget = {scene.CameraOffsetX(), scene.CameraOffsetY()};
                         devilDialog.reset(); healthPickup.reset();
                         std::cout << "Boat at frame " << frame << " from " << currentLevel << " to " << destination << '\n';
                         currentLevel = destination;
@@ -1037,6 +1052,7 @@ int main(int argc, char** argv) {
                         nextScene.ApplySmashable(brokenSmashables.count(destination) != 0);
                         nextScene.ApplyDeflection(combat.DeflectionUnlocked());
                         scene = std::move(nextScene);
+                        cameraTarget = {scene.CameraOffsetX(), scene.CameraOffsetY()};
                         devilDialog.reset(); healthPickup.reset();
                         currentLevel = destination;
                         worldX = scene.PlayerX(); worldY = scene.PlayerY();
@@ -1061,6 +1077,7 @@ int main(int argc, char** argv) {
             collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear(); collectedPapers.clear(); rewardedHealthDevils.clear(); brokenSmashables.clear(); healthDevilRewardCount = 0;
             devilDialog.reset(); healthPickup.reset();
             orbBalance = 0; scene = deathleak::game::LevelScene{};
+            cameraTarget = {scene.CameraOffsetX(), scene.CameraOffsetY()};
             weather = deathleak::game::WeatherLightning{};
             rain = deathleak::game::WeatherRain{};
             combat = deathleak::game::Combat{};
@@ -1084,7 +1101,7 @@ int main(int argc, char** argv) {
         if (!objectsPaused) combat.UpdateVisuals(dt);
         if (!playLevel.empty() && !objectsPaused) scene.UpdatePlayerVisual(dt, motion.VelocityX(), motion.VelocityY(),
             motion.Grounded(), motion.WallSide(), motion.Rolling(), motion.DownwardDashing(), motion.InWater(),
-            combat.MeleeElapsed(), facing, playerProjectileFired, playerEligibleFireAttempt);
+            combat.MeleeElapsed(), facing, playerProjectileFired, playerEligibleFireAttempt, strafeVisual);
         const auto shaderFrame = shaderClock.Draw();
         renderer->BeginFrame({8, 12, 20, 255});
         if (levelPath.empty()) {

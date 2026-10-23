@@ -76,6 +76,66 @@ struct HazardRegion { float x, y, width, height; bool water; float damage; };
 
 struct PlayerStrafeVisual { bool active = false; int aimFacing = 1, movementDirection = 1; };
 
+// InputManager writes Camera2D's target after the camera has followed for this
+// update. Keep authored offsets separate from the mutable, next-follow target.
+struct RightStickCameraTarget {
+    float authoredX, authoredY, x, y;
+    RightStickCameraTarget(float originalX, float originalY)
+        : authoredX(originalX), authoredY(originalY), x(originalX), y(originalY) {}
+
+    // SDL RIGHTY is screen-down positive; XInput RY is world-up positive.
+    // SDL -32768 becomes +32767 (the largest representable XInput short).
+    static int WorldRightY(int sdlRightY) {
+        return sdlRightY == -32768 ? 32767 : -sdlRightY;
+    }
+
+    void Update(render::ControllerSticks sticks, bool gameplayEligible,
+                bool rolling, bool falling, bool melee) {
+        // Windows skips disconnected/uncontrollable input: keep the last target.
+        if (!gameplayEligible || !sticks.connected) return;
+        constexpr int deadzone = 8689;
+        const int ry = WorldRightY(sticks.rightY);
+        if (std::abs(sticks.rightX) <= deadzone && std::abs(ry) <= deadzone) {
+            x = authoredX; y = authoredY;
+            return;
+        }
+        // Aim/Y precedes strafe/X, including during a roll/fall/melee.
+        y = authoredY + 300.f * static_cast<float>(ry) / 32767.f;
+        if (!rolling && !falling && !melee)
+            x = authoredX + 450.f * static_cast<float>(sticks.rightX) / 32767.f;
+    }
+};
+
+struct CameraFollowInput {
+    float cameraX, cameraY, playerX, playerY, zoom, lagX, lagY;
+    bool followX, followY, enemies, bounded = false;
+    float left = 0, right = 0, top = 0, bottom = 0;
+};
+
+// Follow with the stored target first, then Update it from this frame's input.
+inline void FollowCameraWithTarget(CameraFollowInput input,
+                                   const RightStickCameraTarget& target,
+                                   float& cameraX, float& cameraY) {
+    cameraX = input.cameraX; cameraY = input.cameraY;
+    const auto clamp = [&] {
+        if (!input.bounded) return;
+        if (cameraY - 540.f <= input.bottom) cameraY = input.bottom + 540.f;
+        else if (cameraY + 540.f >= input.top) cameraY = input.top - 540.f;
+        if (cameraX - 960.f <= input.left) cameraX = input.left + 960.f;
+        else if (cameraX + 960.f >= input.right) cameraX = input.right - 960.f;
+    };
+    clamp();
+    if (input.followX) {
+        const float lag = std::max(1.f, (input.enemies ? 40.f : input.lagX) * input.zoom);
+        cameraX += (input.playerX + target.x * input.zoom - cameraX) / lag;
+    }
+    if (input.followY) {
+        const float lag = std::max(1.f, input.lagY);
+        cameraY += (input.playerY + target.y * input.zoom - cameraY) / lag;
+    }
+    clamp();
+}
+
 // InputManager's raw XInput stick test; eligibility is recalculated each tick.
 inline PlayerStrafeVisual ResolvePlayerStrafeVisual(render::ControllerSticks sticks,
         int movementDirection, bool rolling, bool melee, bool justLanded) {

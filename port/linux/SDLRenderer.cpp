@@ -685,6 +685,12 @@ public:
             default: return false;
         }
     }
+    ControllerSticks ControllerAxes() const override {
+        if (!gamepad_ || !SDL_GameControllerGetAttached(gamepad_)) return {};
+        return {SDL_GameControllerGetAxis(gamepad_, SDL_CONTROLLER_AXIS_LEFTX),
+                SDL_GameControllerGetAxis(gamepad_, SDL_CONTROLLER_AXIS_RIGHTX),
+                SDL_GameControllerGetAxis(gamepad_, SDL_CONTROLLER_AXIS_RIGHTY), true};
+    }
     MouseState Mouse() const override {
         int x = 0, y = 0;
         const Uint32 buttons = SDL_GetMouseState(&x, &y);

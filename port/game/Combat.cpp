@@ -25,6 +25,26 @@ bool SegmentContact(float ax, float ay, float bx, float by,
     contact = t;
     return true;
 }
+// Deterministic center sweep, including collinear overlap and endpoints.
+bool BloodSegmentContact(float ax, float ay, float bx, float by,
+                         float cx, float cy, float dx, float dy, float& contact) {
+    if (SegmentContact(ax, ay, bx, by, cx, cy, dx, dy, contact)) return true;
+    const float rx=bx-ax, ry=by-ay, sx=dx-cx, sy=dy-cy;
+    if (std::abs(rx*sy-ry*sx)>0.00001f || std::abs((cx-ax)*ry-(cy-ay)*rx)>0.00001f) return false;
+    const float travel=rx*rx+ry*ry;
+    if (travel<0.0000001f) {
+        const float length=sx*sx+sy*sy;
+        if (length<0.0000001f) return false;
+        const float u=((ax-cx)*sx+(ay-cy)*sy)/length;
+        if (u<0.f || u>1.f) return false;
+        contact=0.f; return true;
+    }
+    const float a=((cx-ax)*rx+(cy-ay)*ry)/travel;
+    const float b=((dx-ax)*rx+(dy-ay)*ry)/travel;
+    if (std::max(a,b)<0.f || std::min(a,b)>1.f) return false;
+    contact=std::clamp(std::min(a,b),0.f,1.f);
+    return true;
+}
 bool SweptBoxContact(float ax, float ay, float bx, float by,
                      float left, float right, float bottom, float top, float& contact) {
     const float dx=bx-ax, dy=by-ay;
@@ -122,6 +142,19 @@ void Combat::SetArt(render::Renderer& renderer) {
     for (size_t i = 0; i < 7; ++i) ninjaDeathArt_[i] = renderer.LoadTexture(deathPaths[i], error);
     explosionLinesArt_ = renderer.LoadTexture("Game/Media/explosion_lines.png", error);
     bloodParticleArt_ = renderer.LoadTexture("Game/Media/bloodparticle.png", error);
+    bloodProjectileArt_ = renderer.LoadTexture("Game/Media/blood_projectile.png", error);
+    bloodImpactArt_[0] = renderer.LoadTexture("Game/Media/blood_impact.png", error);
+    bloodImpactArt_[1] = renderer.LoadTexture("Game/Media/blood_impact_2.png", error);
+    bloodMaterialPierceable_.clear();
+    TiXmlDocument materials("Game/XmlFiles/materials.xml");
+    if (materials.LoadFile() && materials.RootElement())
+        for (auto* material = materials.RootElement()->FirstChildElement("material"); material;
+             material = material->NextSiblingElement("material")) {
+            const char* name = material->Attribute("name");
+            auto* flag = material->FirstChildElement("is_pierceable");
+            const char* value = flag ? flag->Attribute("value") : nullptr;
+            if (name && value) bloodMaterialPierceable_[name] = std::string(value) == "true";
+        }
     auto load = [&](const char* xml, VisualSet& visual) {
         TiXmlDocument document(xml);
         if (!document.LoadFile()) return;
@@ -252,9 +285,9 @@ void Combat::SpawnKnifeLineSpray(const LevelScene& scene, size_t segment, const 
     spray.scaleTo = 3.5f;
     spray.randomState = 0x4b4e4946u ^ static_cast<std::uint32_t>(fired_);
     // Source m_direction is launch direction; gravity changes velocity, not
-    // direction. Linux player knives launch horizontally in this slice.
-    const float directionX = shot.vx < 0.f ? 1.f : -1.f;
-    const float directionY = 0.f;
+    // direction. Reverse that launch direction for the contact spray.
+    const float directionX = -shot.launchDirectionX;
+    const float directionY = -shot.launchDirectionY;
     spray.particles.reserve(10);
     for (int i = 0; i < 10; ++i) {
         ParticleSpray::Particle particle;
@@ -310,13 +343,108 @@ void Combat::ApplyPlayerDamage(float damage) {
     health_ = std::max(0.f, health_ - damage);
     playerDamageBurstAge_ = 0.f;
 }
+void Combat::SpawnPlayerBloodFlight(float x, float y) {
+    // Character::FireBloodSpatter uses one 256*(.5 + rand()%50*.01)
+    // blood projectile. Keep this Linux-only RNG separate from other effects.
+    bloodRandomState_ = bloodRandomState_ * 1664525u + 1013904223u;
+    const float size = 256.f * (.5f + static_cast<float>(bloodRandomState_ % 50u) * .01f);
+    bloodRandomState_ = bloodRandomState_ * 1664525u + 1013904223u;
+    const unsigned variant = bloodRandomState_ % 2u;
+    bloodFlights_.push_back({x, y, 0.f, size, 0.f, 0.f, 0.f, false, false, 0.f, variant});
+}
 void Combat::EnableSimulatedWallClock() {
     simulatedWallClock_ = true;
     simulatedClockOriginMs_ = std::chrono::duration_cast<std::chrono::milliseconds>(
         std::chrono::system_clock::now().time_since_epoch()).count();
     simulatedClockElapsedMs_ = 0;
 }
-void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fire, bool melee, bool grounded, bool rolling, int facing, render::Renderer& renderer) {
+void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fire, bool melee, bool grounded, bool rolling, int facing, render::Renderer& renderer, float aimX, float aimY, PlayerShotLaunchState launchState) {
+    // Blood collision is independent of knife's enemy-dependent line skip.
+    for (auto& blood : bloodFlights_) {
+        if (blood.impacted || blood.blocked) {
+            blood.inactiveAge += std::max(0.f, dt);
+            if (blood.blocked) {
+                // Projectile::Update's inactive branch keeps moving and adds a
+                // fixed 0.09-degree spin and -1.15 Y per update, not per tick.
+                const float ticks = std::min(2.f, std::max(0.f, dt) * 60.f);
+                blood.x += blood.vx * ticks;
+                blood.y += (blood.vy - 1.15f) * ticks;
+                blood.rotation += .09f;
+            }
+            continue;
+        }
+        const float ticks = std::min(2.f, std::max(0.f, dt) * 60.f);
+        const float oldY = blood.y;
+        blood.vy -= .5f * ticks;
+        const float nextY = blood.y + blood.vy * ticks;
+        float first = 2.f;
+        size_t winner = scene.Ground().size();
+        for (size_t i = 0; i < scene.Ground().size(); ++i) {
+            const auto& line = scene.Ground()[i];
+            float t;
+            if (BloodSegmentContact(blood.x, oldY, blood.x, nextY,
+                                    line.x1, line.y1, line.x2, line.y2, t) && t < first) {
+                first = t; winner = i;
+            }
+        }
+        if (winner < scene.Ground().size()) {
+            blood.y = oldY + (nextY-oldY)*first;
+            blood.vy = 0.f;
+            blood.inactiveAge = 0.f;
+            const auto& line = scene.Ground()[winner];
+            if (!line.material.empty()) {
+                const auto material = bloodMaterialPierceable_.find(line.material);
+                if (material == bloodMaterialPierceable_.end() || !material->second) {
+                    // SolidLineStrip builds the normal from authored point order.
+                    // GroundSegment preserves that order, so recover it here.
+                    const float dx = line.x2-line.x1, dy = line.y2-line.y1;
+                    const float length = std::hypot(dx, dy);
+                    if (length > 0.f) {
+                        float directionX = -dy/length, directionY = dx/length;
+                        // Source adds separate integer X/Y offsets before
+                        // normalizing, then scales X by 2 and Y by 6.
+                        bloodRandomState_ = bloodRandomState_ * 1664525u + 1013904223u;
+                        const int offsetY = static_cast<int>(bloodRandomState_ % 20u);
+                        bloodRandomState_ = bloodRandomState_ * 1664525u + 1013904223u;
+                        int offsetX = static_cast<int>(bloodRandomState_ % 20u);
+                        bloodRandomState_ = bloodRandomState_ * 1664525u + 1013904223u;
+                        if (bloodRandomState_ % 2u == 0) offsetX = -offsetX;
+                        directionX += static_cast<float>(offsetX);
+                        directionY += static_cast<float>(offsetY);
+                        const float magnitude = std::hypot(directionX, directionY);
+                        if (magnitude > 0.f) {
+                            blood.vx = directionX/magnitude * 2.f;
+                            blood.vy = directionY/magnitude * 6.f;
+                        }
+                    }
+                    // The same material-directed spray is emitted for either
+                    // pierceability branch; its origin is the source ray end.
+                    Shot emitter{};
+                    emitter.depth = 3000;
+                    // Source blood launch direction is zero at spray emission;
+                    // rebound assigns a new direction only afterward.
+                    SpawnKnifeLineSpray(scene, winner, emitter, blood.x, nextY-32.f);
+                    blood.blocked = true;
+                    blood.age += std::max(0.f, dt);
+                    continue;
+                }
+            }
+            blood.impacted = true;
+            bloodRandomState_ = bloodRandomState_ * 1664525u + 1013904223u;
+            const float jitter = static_cast<float>(bloodRandomState_ % 100u) * .2f;
+            bloodRandomState_ = bloodRandomState_ * 1664525u + 1013904223u;
+            blood.y += (bloodRandomState_ & 1u ? -jitter : jitter) - 20.f;
+            if (!scene.Ground()[winner].material.empty()) {
+                Shot emitter{};
+                emitter.depth = 3000; // material spray precedes ground-blood depth
+                SpawnKnifeLineSpray(scene, winner, emitter, blood.x, nextY);
+            }
+        } else blood.y = nextY;
+        blood.age += std::max(0.f, dt);
+    }
+    // Port-only orphan bound; source has no active-flight TTL.
+    bloodFlights_.erase(std::remove_if(bloodFlights_.begin(), bloodFlights_.end(),
+        [](const BloodFlight& blood) { return blood.blocked ? blood.inactiveAge > .25f : blood.impacted ? blood.inactiveAge > 5.5f : blood.age >= 10.f; }), bloodFlights_.end());
     for (auto& effect : deathEffects_) {
         effect.age += std::max(0.f, dt);
         effect.x += effect.vx*dt;
@@ -393,9 +521,20 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
         if (!knifeArt_) SetArt(renderer);
         // The port removes on contact. Ten seconds only bounds an unimpeded
         // offscreen knife in this simplified collection; it is not source TTL.
-        shots_.push_back({x+facing*10.f,y+25.f,facing*1200.f,0.f,10.f,projectileDamageUpgrade_ ? 4.f : 1.5f,false});
+        // The active stick supplies a unit aim vector; legacy callers and
+        // keyboard-only input retain the horizontal facing fallback.
+        const float aimLength = std::hypot(aimX, aimY);
+        const float knifeX = aimLength > 0.f ? aimX / aimLength : static_cast<float>(facing);
+        const float knifeY = aimLength > 0.f ? aimY / aimLength : 0.f;
+        // Player::FireWeapon starts at +25, removes 25 when crouched, then
+        // applies the Character air flag (up takes precedence over down).
+        const float launchY = y + (launchState.crouching ? 0.f : 25.f) +
+            (launchState.ascending ? 65.f : launchState.descending ? 40.f : 0.f);
+        shots_.push_back({x+(knifeX > 0.f ? 10.f : -10.f),launchY,knifeX*1200.f,knifeY*1200.f,10.f,projectileDamageUpgrade_ ? 4.f : 1.5f,false});
         shots_.back().texture = projectileDamageUpgrade_ ? upgradedKnifeArt_ : knifeArt_;
         shots_.back().playerKnife = true;
+        shots_.back().launchDirectionX = knifeX;
+        shots_.back().launchDirectionY = knifeY;
         fireCooldown_ = projectileSpeedUpgrade_ ? 0.220f*0.75f : 0.220f;
         ++fired_;
         if (!projectileSpeedUpgrade_ && ++burstCount_ == 5) { burstCount_ = 0; burstCooldown_ = 0.5f; }
@@ -610,7 +749,13 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
                                   << ") shot_to=(" << shot.x << ',' << shot.y
                                   << ") damage=" << shot.damage << " health_before=" << health_
                                   << " deflectable=" << shot.deflectable << std::endl;
-                    ApplyPlayerDamage(shot.damage); hurtCooldown_=0.5f; shot.life=0; ++hits_;
+                    const float healthBefore = health_;
+                    ApplyPlayerDamage(shot.damage);
+                    if (health_ < healthBefore) {
+                        if (!bloodProjectileArt_) SetArt(renderer);
+                        SpawnPlayerBloodFlight(x, y);
+                    }
+                    hurtCooldown_=0.5f; shot.life=0; ++hits_;
                 }
             }
         } else for (size_t enemyIndex=0; enemyIndex<enemies_.size(); ++enemyIndex) {
@@ -704,6 +849,21 @@ void Combat::AppendPainterItems(std::vector<PainterItem>& items, render::Rendere
         sprite.rotationDegrees = effect.rotation;
         sprite.tint.a = static_cast<std::uint8_t>(std::lround(255.f*fade));
         items.push_back({effect.spray ? 1750 : 3500, [&, sprite] { renderer.DrawSprite(sprite); }});
+    }
+    for (const auto& blood : bloodFlights_) {
+        const auto texture = blood.impacted && !blood.blocked ? bloodImpactArt_[blood.variant] : bloodProjectileArt_;
+        if (!texture) continue;
+        const float fade = blood.impacted && !blood.blocked ? std::clamp(blood.inactiveAge / (.05f * 5.5f), 0.f, 1.f)
+                                                             : std::clamp(blood.age / .3f, 0.f, 1.f);
+        const float alpha = blood.impacted && !blood.blocked ? std::clamp((5.5f-blood.inactiveAge)/(5.5f*.2f), 0.f, 1.f)
+                                                              : fade;
+        const float size = blood.size * fade;
+        render::Sprite sprite{texture, {},
+            {640.f+(blood.x-cameraX-size/2.f)*scale,
+             360.f+(cameraY-blood.y-size/2.f)*scale, size*scale, size*scale}};
+        sprite.tint.a = static_cast<std::uint8_t>(std::lround(255.f*alpha));
+        sprite.rotationDegrees = blood.rotation;
+        items.push_back({blood.impacted && !blood.blocked ? 4000 : 3000, [&, sprite] { renderer.DrawSprite(sprite); }});
     }
     for (const auto& shot:shots_) {
         const float visualScale = shot.playerKnife ? std::clamp(shot.activeVisualAge / 0.3f, 0.f, 1.f) : 1.f;

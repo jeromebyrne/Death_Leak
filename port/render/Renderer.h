@@ -21,6 +21,11 @@ struct MouseState {
     bool leftDown = false;
 };
 
+struct ControllerSticks {
+    int leftX = 0, rightX = 0, rightY = 0;
+    bool connected = false;
+};
+
 struct Color {
     std::uint8_t r = 0, g = 0, b = 0, a = 255;
 };
@@ -69,6 +74,7 @@ public:
     virtual void EndFrame() = 0;
     virtual bool PollQuit() = 0;
     virtual bool KeyDown(int key) const = 0;
+    virtual ControllerSticks ControllerAxes() const { return {}; }
     virtual MouseState Mouse() const = 0;
     virtual bool SaveFrame(const std::string& path, std::string& error) = 0;
 };

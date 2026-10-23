@@ -9,6 +9,10 @@ constexpr float kHalfHeight = 214.898743f / 2.f;
 constexpr float kBaseMaxSpeed = 8.f * 60.f;
 constexpr float kJumpSpeed = 21.f * 60.f;
 constexpr float kGravity = (0.75f / 0.55f) * 60.f * 60.f;
+// Approximate authored sequence completion: 6 frames at 30 fps (soft),
+// 11 frames at 15 fps (hard). No animation-finished signal exists here yet.
+constexpr float kSoftImpactSeconds = 6.f / 30.f;
+constexpr float kHardImpactSeconds = 11.f / 15.f;
 constexpr float kWallJumpSpeedX = 15.f * 60.f;
 constexpr float kWallJumpSpeedY = 20.f * 60.f;
 }
@@ -17,6 +21,7 @@ void PlayerMotion::Reset(float x, float y, bool authoredEntry) {
     wallSide_ = 0; wallJumpRemaining_ = 0; jumpPercent_ = 40.f; solidContactDamage_ = 0.f;
     groundedSegment_ = static_cast<size_t>(-1);
     landingApexValid_ = false; landingApexY_ = y;
+    impactRecovery_ = ImpactRecovery::None; impactRecoveryTime_ = 0.f;
     downwardDashing_ = inWater_ = smashedSomething_ = false; rollTime_ = rollBuffer_ = 0.f; facing_ = 1;
 }
 bool PlayerMotion::TryDownwardDash(bool hasFocus) {
@@ -29,6 +34,8 @@ bool PlayerMotion::TryRoll(bool hasFocus) {
     if (!rollUnlocked_ || !hasFocus || !grounded_ || rollTime_ > 0.f) return false;
     if (inWater_) return false;
     rollTime_ = 0.5f; // animation-finish stand-in; source Roll sequence owns termination
+    // A successful landing roll cancels both Windows impact-recovery flags.
+    impactRecovery_ = ImpactRecovery::None; impactRecoveryTime_ = 0.f;
     if (std::abs(vx_) < 12.f*60.f) vx_ = facing_ * 12.f*60.f;
     vy_ = 0.f; rollBuffer_ = 0.f;
     return true;
@@ -40,6 +47,10 @@ bool PlayerMotion::TryBufferedRoll(bool hasFocus) {
 void PlayerMotion::Update(LevelScene& scene, float dt, int direction, bool jump) {
     if (dt <= 0) return;
     const float ticks = dt * 60.f;
+    if (impactRecovery_ != ImpactRecovery::None) {
+        impactRecoveryTime_ = std::max(0.f, impactRecoveryTime_ - dt);
+        if (impactRecoveryTime_ == 0.f) impactRecovery_ = ImpactRecovery::None;
+    }
     solidContactDamage_ = 0.f;
     smashedSomething_ = false;
     if (rollBuffer_ > 0.f) rollBuffer_ = std::max(0.f, rollBuffer_ - dt);
@@ -116,6 +127,9 @@ void PlayerMotion::Update(LevelScene& scene, float dt, int direction, bool jump)
         else if (vx_ < 0 && oldX-kHalfWidth >= box.right && x_-kHalfWidth < box.right)
             { x_ = box.right+kHalfWidth; vx_ = 0; wallSide_ = -1; solidContactDamage_ = std::max(solidContactDamage_, box.damage); }
     }
+    if (wallSide_ && impactRecovery_ == ImpactRecovery::Hard) {
+        impactRecovery_ = ImpactRecovery::None; impactRecoveryTime_ = 0.f;
+    }
     if (!grounded_) {
         // Original MovingSprite applies gravity after velocity integration;
         // this continuous equivalent preserves the source jump/gravity scale.
@@ -175,11 +189,29 @@ void PlayerMotion::Update(LevelScene& scene, float dt, int direction, bool jump)
             y_ = box.bottom-kHalfHeight; vy_ = 0;
         }
     }
+    const bool dashAtContact = downwardDashing_;
     if (best > -1e8f) { y_ = best+kHalfHeight; vy_ = 0; grounded_ = true; groundedSegment_ = footstepSegment; sinceGround_ = 0; airTime_ = 0; downwardDashing_ = false; }
     else { groundedSegment_ = static_cast<size_t>(-1); sinceGround_ += dt; airTime_ += dt; }
     if (grounded_) {
-        if (!wasGrounded && landingApexValid_ && !initialPlacement_)
-            scene.EmitLandingMaterialSpray(groundedSegment_, x_, y_, facing_, landingApexY_ - y_);
+        if (!wasGrounded && !initialPlacement_) {
+            // Downward-dash contact is a hard impact even for a short descent.
+            // Ordinary distance impact excludes water and an existing roll.
+            if (dashAtContact) {
+                impactRecovery_ = ImpactRecovery::Hard;
+                impactRecoveryTime_ = kHardImpactSeconds;
+            } else if (landingApexValid_ && !inWater_ && !Rolling()) {
+                const float drop = landingApexY_ - y_;
+                if (drop >= 700.f) {
+                    impactRecovery_ = ImpactRecovery::Hard;
+                    impactRecoveryTime_ = kHardImpactSeconds;
+                } else if (drop > 300.f) {
+                    impactRecovery_ = ImpactRecovery::Soft;
+                    impactRecoveryTime_ = kSoftImpactSeconds;
+                }
+            }
+            if (landingApexValid_)
+                scene.EmitLandingMaterialSpray(groundedSegment_, x_, y_, facing_, landingApexY_ - y_);
+        }
         landingApexValid_ = false;
     } else if (!initialPlacement_) {
         if (!landingApexValid_) landingApexY_ = oldY;
