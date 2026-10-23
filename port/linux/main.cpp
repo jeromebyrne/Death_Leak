@@ -82,6 +82,7 @@ int main(int argc, char** argv) {
     bool simulateWallClock = false;
     bool profile = false;
     bool combatState = false;
+    bool freshSaveIntro = false;
     int startEncounter = -1;
     int startHazard = -1;
     bool exhaustedFocus = false;
@@ -106,6 +107,7 @@ int main(int argc, char** argv) {
         else if (arg == "--menu-loop") menuLoop = true;
         else if (arg == "--profile") profile = true;
         else if (arg == "--combat-state") combatState = true;
+        else if (arg == "--fresh-save-intro") freshSaveIntro = true;
         else if (arg == "--exhaust-focus") exhaustedFocus = true;
         else if (arg == "--capture-suppress-landing-draw") suppressLandingSprayDraw = true;
         else if (arg == "--start-encounter" && i + 1 < argc) startEncounter = std::atoi(argv[++i]);
@@ -139,6 +141,9 @@ int main(int argc, char** argv) {
         }
     }
     if (!playLevel.empty() && !levelPreview.empty()) { std::cerr << "Choose either --play or --level-preview\n"; return 2; }
+    if (freshSaveIntro && (!loadSaveFile.empty() || playLevel != "Game/XmlFiles/levels/forest_exploration_1.xml")) {
+        std::cerr << "--fresh-save-intro requires a new --play forest_exploration_1.xml session without --load-save\n"; return 2;
+    }
     if (!loadSaveFile.empty()) {
         std::ifstream saved(loadSaveFile);
         std::string version;
@@ -403,6 +408,14 @@ int main(int argc, char** argv) {
     int facing = 1;
     int movementDirection = 1;
     std::string currentLevel = playLevel;
+    // has_ungutted is a temporary session flag in the original, not a DL5 field.
+    // Only the explicit new forest-1 entry requests the intro; loaded saves and
+    // ordinary --play remain controllable, even if they use the same level.
+    bool hasPulledSword = !freshSaveIntro;
+    float introHeldTime = 0.f;
+    const float introLoadZoom = scene.CameraZoom();
+    float introEffectiveZoom = introLoadZoom;
+    if (!hasPulledSword) scene.SetIntroBodyPhase(deathleak::game::LevelScene::IntroBodyPhase::Looped);
     // Main-menu assets and ordering follow mainmenu.xml. Keyboard/controller
     // navigation is a Linux accessibility fallback for the source mouse widgets.
     auto menuTitle = menuLoop ? renderer->LoadTexture("Game/Media/UI/title.png", error) : InvalidTexture;
@@ -561,6 +574,7 @@ int main(int argc, char** argv) {
                         else sound->SetSfxEnabled(settings.sfx);
                     }
                     playLevel = levelPath = currentLevel = freshLevel;
+                    hasPulledSword = true; introHeldTime = 0.f; introEffectiveZoom = scene.CameraZoom();
                     collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear(); collectedPapers.clear(); rewardedHealthDevils.clear(); brokenSmashables.clear(); healthDevilRewardCount = 0;
                     orbBalance = 0; combat = deathleak::game::Combat{};
                     if (!simulateOnly) combat.SetArt(*renderer);
@@ -623,6 +637,45 @@ int main(int argc, char** argv) {
                     std::cout << "Dismissed kDeflection modal at frame " << frame << '\n';
                 }
                 purchaseHeld = purchase; dismissHeld = dismiss;
+            } else if (!hasPulledSword) {
+            // Raw Interact is held independently of world-object activation.
+            // Normal motion, combat, roll, jump, interaction, and right-stick
+            // target updates remain suppressed through the one-shot pull.
+            if (scene.IntroBodyFinished()) {
+                hasPulledSword = true;
+                scene.SetIntroBodyPhase(deathleak::game::LevelScene::IntroBodyPhase::None);
+                introHeldTime = 0.f;
+                introEffectiveZoom = introLoadZoom;
+                std::cout << "Fresh-save intro completed at frame " << frame << '\n';
+            } else {
+                if (scene.GetIntroBodyPhase() == deathleak::game::LevelScene::IntroBodyPhase::Looped) {
+                    const bool held = !script.empty() ? command == 'I' : renderer->KeyDown(Interact);
+                    if (held) {
+                        introHeldTime += dt;
+                        if (introHeldTime > 2.75f) {
+                            introHeldTime = 0.f;
+                            introEffectiveZoom = introLoadZoom;
+                            scene.SetIntroBodyPhase(deathleak::game::LevelScene::IntroBodyPhase::Pull);
+                            std::cout << "Fresh-save intro pull at frame " << frame << '\n';
+                        } else introEffectiveZoom = std::max(introLoadZoom * 0.75f, introEffectiveZoom - dt * 0.05f);
+                    } else {
+                        introHeldTime = 0.f;
+                        introEffectiveZoom = std::min(introLoadZoom, introEffectiveZoom + dt * 0.10f);
+                    }
+                }
+                deathleak::game::FollowCameraWithTarget({
+                    cameraX, cameraY, worldX, worldY,
+                    introEffectiveZoom, scene.CameraLagX(), scene.CameraLagY(),
+                    scene.CameraFollowX(), scene.CameraFollowY(), combat.EnemyCount() != 0,
+                    scene.HasCameraBounds(), scene.CameraBoundLeft(), scene.CameraBoundRight(),
+                    scene.CameraBoundTop(), scene.CameraBoundBottom()
+                }, cameraTarget, cameraX, cameraY);
+                if (auto it = scriptedCamera.find(frame); it != scriptedCamera.end()) {
+                    cameraX = it->second.first; cameraY = it->second.second;
+                }
+                if (!simulateOnly && script.empty()) cameraTarget.Update(controllerSticks, false, false, false, false);
+                levelTime += dt;
+            }
             } else {
             const float direction = !script.empty() ? static_cast<float>(command == 'R' || command == 'B' || command == 'E' || command == 'Y') - static_cast<float>(command == 'L' || command == 'N' || command == 'Q' || command == 'Z') :
                 static_cast<float>(renderer->KeyDown(Right)) - static_cast<float>(renderer->KeyDown(Left));
@@ -1118,7 +1171,15 @@ int main(int argc, char** argv) {
                 rain.Update(dt, weather.Raining(), cameraX, cameraY);
             }
         }
-        if (simulateOnly) continue;
+        if (simulateOnly) {
+            // Keep the intro terminal signal advancing in deterministic CPU-only
+            // simulations; ordinary gameplay visuals remain skipped.
+            if (!hasPulledSword) scene.UpdatePlayerVisual(dt, 0.f, 0.f, motion.Grounded(),
+                motion.WallSide(), false, false, motion.InWater(), 0.f, facing,
+                false, false, {}, false, 0.f, 0.f, precedingRenderedModifiedDelta);
+            precedingRenderedModifiedDelta = dt;
+            continue;
+        }
         const bool objectsPaused = paperModal || upgradeModal;
         scene.UpdateVisuals(dt, worldX, worldY, cameraX, cameraY, objectsPaused, precedingRenderedModifiedDelta);
         if (!objectsPaused) combat.UpdateVisuals(dt);
