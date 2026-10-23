@@ -129,8 +129,8 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     playerArmSequences_.clear(); playerArmSequence_.clear(); playerArmFrame_ = 0; playerArmFrameElapsed_ = 0; aimLineHold_ = aimLineAlpha_ = 0.f;
     spawnedOrbTexture_ = orbShatterTexture_ = render::InvalidTexture;
     orbTrails_.clear();
-    sprites_.clear(); particleSprays_.clear(); footstepSprays_.clear(); jumpTakeoffSprays_.clear(); groundParticleTextures_.clear();
-    playerFootstepSegment_ = static_cast<size_t>(-1); lastRunningFrame_ = static_cast<size_t>(-1); footstepRandomState_ = 0x464f4f54u; jumpRandomState_ = 0x4a554d50u; ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); ambience_.clear(); doors_.clear(); boats_.clear(); keys_.clear(); papers_.clear(); healthDevils_.clear(); smashables_.clear(); spawnedOrbs_.clear(); scrolls_.clear(); skipped_ = 0;
+    sprites_.clear(); particleSprays_.clear(); footstepSprays_.clear(); jumpTakeoffSprays_.clear(); landingSprays_.clear(); groundParticleTextures_.clear();
+    playerFootstepSegment_ = static_cast<size_t>(-1); lastRunningFrame_ = static_cast<size_t>(-1); footstepRandomState_ = 0x464f4f54u; jumpRandomState_ = 0x4a554d50u; landingRandomState_ = 0x4c414e44u; ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); ambience_.clear(); doors_.clear(); boats_.clear(); keys_.clear(); papers_.clear(); healthDevils_.clear(); smashables_.clear(); spawnedOrbs_.clear(); scrolls_.clear(); skipped_ = 0;
     cameraBounds_ = false;
     allowsWeather_ = false;
     if (auto* props = level->FirstChildElement("LevelProperties")) {
@@ -841,6 +841,10 @@ void LevelScene::UpdateVisuals(float dt, float playerX, float playerY, float cam
     jumpTakeoffSprays_.erase(std::remove_if(jumpTakeoffSprays_.begin(), jumpTakeoffSprays_.end(),
         [](const ParticleSpray& spray) { return std::all_of(spray.particles.begin(), spray.particles.end(),
             [](const ParticleSpray::Particle& particle) { return particle.dead; }); }), jumpTakeoffSprays_.end());
+    for (auto& spray : landingSprays_) spray.Update(dt);
+    landingSprays_.erase(std::remove_if(landingSprays_.begin(), landingSprays_.end(),
+        [](const ParticleSpray& spray) { return std::all_of(spray.particles.begin(), spray.particles.end(),
+            [](const ParticleSpray::Particle& particle) { return particle.dead; }); }), landingSprays_.end());
     for (auto& spray : particleSprays_) {
         if (spray.alwaysUpdate || (spray.updateable &&
             spray.x + spray.width*.5f > cameraX - 2000.f && spray.x - spray.width*.5f < cameraX + 2000.f &&
@@ -975,6 +979,45 @@ void LevelScene::EmitJumpTakeoff(size_t segment, float x, float postBumpY, int f
     }
     jumpRandomState_ = spray.randomState;
     jumpTakeoffSprays_.push_back(std::move(spray));
+}
+void LevelScene::EmitLandingMaterialSpray(size_t segment, float x, float y, int facing, float drop) {
+    if (drop < 300.f || segment >= ground_.size()) return;
+    const auto& line = ground_[segment];
+    if (std::abs(line.x2 - line.x1) <= 1.f) return;
+    const auto texture = groundParticleTextures_.find(line.material);
+    if (texture == groundParticleTextures_.end() || !texture->second) return;
+    const bool large = drop >= 700.f;
+    const int count = large ? 10 : 5;
+    ParticleSpray spray;
+    spray.texture = texture->second;
+    spray.x = x + (facing < 0 ? -10.f : 10.f);
+    spray.y = y - 214.898743f * .5f + (large ? 0.f : 35.f);
+    spray.width = 1200.f; spray.height = 720.f;
+    spray.depth = Depth("kPlayer"); spray.looping = false; spray.warmed = true;
+    spray.fadeIn = .15f; spray.fadeOut = .9f;
+    spray.scalesByLifetime = true; spray.scaleTo = large ? 15.f : 5.f;
+    spray.loopTime = 1.f; spray.randomState = landingRandomState_;
+    for (int i = 0; i < count; ++i) {
+        ParticleSpray::Particle particle;
+        const float spread = spray.Random(large ? 40 : 80) * .01f;
+        particle.directionX = spread;
+        particle.directionY = 1.f - spread;
+        particle.lifetime = large ? 1.f - (.6f / count) * i : 1.2f - (.4f / count) * i;
+        const int offsetX = static_cast<int>(spray.Random(51));
+        const int signX = spray.Random(2) ? -1 : 1;
+        const int offsetY = static_cast<int>(spray.Random(3));
+        const int signY = spray.Random(2) ? -1 : 1;
+        particle.x = particle.startX = particle.drawX = spray.x + offsetX * signX;
+        particle.y = particle.startY = particle.drawY = spray.y + offsetY * signY;
+        particle.size = particle.startSize = particle.drawSize = large ? float(5 + spray.Random(6)) : 32.f;
+        particle.speed = particle.startSpeed = large ? 3.01f + spray.Random(200) * .01f
+                                                   : 1.01f + spray.Random(50) * .01f;
+        particle.gravity = .8f;
+        particle.brightness = .81f + spray.Random(20) * .01f;
+        spray.particles.push_back(particle);
+    }
+    landingRandomState_ = spray.randomState;
+    landingSprays_.push_back(std::move(spray));
 }
 void LevelScene::EmitRunningFootstep(const PlayerSequence& sequence) {
     if (playerFrame_ >= sequence.footstepFrames.size() || !sequence.footstepFrames[playerFrame_] ||
@@ -1234,6 +1277,8 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         if (object.player && filter.only.empty()) for (const auto& spray : footstepSprays_)
             spray.Draw(renderer, cameraX, cameraY);
         if (object.player && filter.only.empty()) for (const auto& spray : jumpTakeoffSprays_)
+            spray.Draw(renderer, cameraX, cameraY);
+        if (object.player && filter.only.empty()) for (const auto& spray : landingSprays_)
             spray.Draw(renderer, cameraX, cameraY);
     }
     drawOrbTrails();

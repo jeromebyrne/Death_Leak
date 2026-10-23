@@ -112,6 +112,8 @@ public:
     const std::vector<GroundSegment>& Ground() const { return ground_; }
     void SetPlayerFootstepContact(size_t segment, float x, float y);
     void EmitJumpTakeoff(size_t segment, float x, float postBumpY, int facing);
+    void EmitLandingMaterialSpray(size_t segment, float x, float y, int facing, float drop);
+    const std::vector<ParticleSpray>& LandingSprays() const { return landingSprays_; }
     const std::vector<ParticleSpray>& JumpTakeoffSprays() const { return jumpTakeoffSprays_; }
     const std::vector<ParticleSpray>& FootstepSprays() const { return footstepSprays_; }
     const std::vector<SolidBox>& SolidBoxes() const { return solidBoxes_; }
@@ -141,11 +143,13 @@ private:
     std::vector<ParticleSpray> particleSprays_;
     std::vector<ParticleSpray> footstepSprays_;
     std::vector<ParticleSpray> jumpTakeoffSprays_;
+    std::vector<ParticleSpray> landingSprays_;
     std::unordered_map<std::string, render::TextureId> groundParticleTextures_;
     size_t playerFootstepSegment_ = static_cast<size_t>(-1);
     float playerFootstepX_ = 0, playerFootstepY_ = 0;
     std::uint32_t footstepRandomState_ = 0x464f4f54u;
     std::uint32_t jumpRandomState_ = 0x4a554d50u;
+    std::uint32_t landingRandomState_ = 0x4c414e44u;
     struct OrbTrail { std::string owner; ParticleSpray spray; bool attached = true; };
     std::vector<OrbTrail> orbTrails_;
     render::TextureId orbShatterTexture_ = render::InvalidTexture;

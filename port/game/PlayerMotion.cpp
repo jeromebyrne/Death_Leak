@@ -16,6 +16,7 @@ void PlayerMotion::Reset(float x, float y, bool authoredEntry) {
     x_ = x; y_ = y; vx_ = vy_ = 0; sinceGround_ = 1; airTime_ = 0; jumpHeld_ = false; grounded_ = false; initialPlacement_ = authoredEntry;
     wallSide_ = 0; wallJumpRemaining_ = 0; jumpPercent_ = 40.f; solidContactDamage_ = 0.f;
     groundedSegment_ = static_cast<size_t>(-1);
+    landingApexValid_ = false; landingApexY_ = y;
     downwardDashing_ = inWater_ = smashedSomething_ = false; rollTime_ = rollBuffer_ = 0.f; facing_ = 1;
 }
 bool PlayerMotion::TryDownwardDash(bool hasFocus) {
@@ -74,6 +75,7 @@ void PlayerMotion::Update(LevelScene& scene, float dt, int direction, bool jump)
         if (grounded_ && groundedSegment_ < scene.Ground().size())
             scene.EmitJumpTakeoff(groundedSegment_, x_, y_, facing_);
         grounded_ = false; sinceGround_ = 1.f; airTime_ = 0.f;
+        landingApexValid_ = true; landingApexY_ = y_;
         groundedSegment_ = static_cast<size_t>(-1);
     }
     // InputManager::ProcessJump_* starts at 40% and increases by 6.5%
@@ -85,6 +87,12 @@ void PlayerMotion::Update(LevelScene& scene, float dt, int direction, bool jump)
     }
     if (!jump) jumpPercent_ = 40.f;
     jumpHeld_ = jump;
+    // Track the center high point of this actual airborne episode. The
+    // authored first-frame placement is not an airborne descent.
+    if (!grounded_ && !landingApexValid_ && !initialPlacement_) {
+        landingApexValid_ = true; landingApexY_ = y_;
+    }
+    if (landingApexValid_) landingApexY_ = std::max(landingApexY_, y_);
     const float oldX = x_, oldY = y_;
     const float targetX = x_ + vx_ * dt;
     x_ = targetX;
@@ -169,6 +177,15 @@ void PlayerMotion::Update(LevelScene& scene, float dt, int direction, bool jump)
     }
     if (best > -1e8f) { y_ = best+kHalfHeight; vy_ = 0; grounded_ = true; groundedSegment_ = footstepSegment; sinceGround_ = 0; airTime_ = 0; downwardDashing_ = false; }
     else { groundedSegment_ = static_cast<size_t>(-1); sinceGround_ += dt; airTime_ += dt; }
+    if (grounded_) {
+        if (!wasGrounded && landingApexValid_ && !initialPlacement_)
+            scene.EmitLandingMaterialSpray(groundedSegment_, x_, y_, facing_, landingApexY_ - y_);
+        landingApexValid_ = false;
+    } else if (!initialPlacement_) {
+        if (!landingApexValid_) landingApexY_ = oldY;
+        landingApexValid_ = true;
+        landingApexY_ = std::max(landingApexY_, y_);
+    }
     scene.SetPlayerFootstepContact(grounded_ ? footstepSegment : static_cast<size_t>(-1), x_, y_);
     // Authored LevelEntry centers can begin a few units inside a solid line.
     // Allow a one-frame shallow floor depenetration; ordinary jumps still
