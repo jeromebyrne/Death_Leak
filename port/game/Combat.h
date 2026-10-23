@@ -131,6 +131,7 @@ private:
     float playerDamageBurstAge_ = 0.25f;
     void SpawnNinjaDeath(float x, float y);
     void SpawnNinjaMaterialSpray(float x, float y);
+    void SpawnKnifeLineSpray(const LevelScene& scene, size_t segment, const Shot& shot, float rayEndX, float rayEndY);
     void ApplyPlayerDamage(float damage);
 };
 }

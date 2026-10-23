@@ -226,6 +226,59 @@ void Combat::SpawnNinjaMaterialSpray(float x, float y) {
     }
     materialSprays_.push_back(std::move(spray));
 }
+void Combat::SpawnKnifeLineSpray(const LevelScene& scene, size_t segment, const Shot& shot,
+                                float rayEndX, float rayEndY) {
+    const auto texture = scene.GroundParticleTexture(scene.Ground()[segment].material);
+    if (!texture) return;
+    ParticleSpray spray;
+    spray.texture = texture;
+    // SolidLineStrip::GetProjectileCollisionData returns line.Position() -
+    // projectile.GetCollisionRayEnd(); Projectile subtracts that result from
+    // line.Position(), so its emitter origin is the *ray end*, not intersection.
+    // The port retains only segment endpoints and center-sweep contact. Map the
+    // source ray end to the untruncated new center + half blade width along
+    // travel; contact timing/geometry is therefore not exact Windows parity.
+    spray.x = rayEndX;
+    spray.y = rayEndY;
+    spray.width = 3200.f;
+    spray.height = 1200.f;
+    spray.depth = shot.depth;
+    spray.looping = false;
+    spray.loopTime = 10.f;
+    spray.warmed = true;
+    spray.fadeIn = .15f;
+    spray.fadeOut = .6f;
+    spray.scalesByLifetime = true;
+    spray.scaleTo = 3.5f;
+    spray.randomState = 0x4b4e4946u ^ static_cast<std::uint32_t>(fired_);
+    // Source m_direction is launch direction; gravity changes velocity, not
+    // direction. Linux player knives launch horizontally in this slice.
+    const float directionX = shot.vx < 0.f ? 1.f : -1.f;
+    const float directionY = 0.f;
+    spray.particles.reserve(10);
+    for (int i = 0; i < 10; ++i) {
+        ParticleSpray::Particle particle;
+        const float spread = static_cast<float>(spray.Random(40)) * .01f;
+        particle.directionX = directionX + spread;
+        particle.directionY = directionY - spread;
+        const int offsetX = static_cast<int>(spray.Random(16));
+        const int signX = spray.Random(2) ? -1 : 1;
+        const int offsetY = static_cast<int>(spray.Random(31));
+        const int signY = spray.Random(2) ? -1 : 1;
+        particle.x = particle.startX = spray.x + signX * offsetX;
+        particle.y = particle.startY = spray.y + signY * offsetY;
+        particle.drawX = particle.x; particle.drawY = particle.y;
+        particle.lifetime = .75f - .04f * static_cast<float>(i);
+        particle.size = particle.startSize = 11.f + static_cast<float>(spray.Random(20));
+        particle.drawSize = particle.size;
+        particle.speed = particle.startSpeed = 1.01f + static_cast<float>(spray.Random(300)) * .01f;
+        particle.gravity = .7f;
+        particle.brightness = .71f + static_cast<float>(spray.Random(30)) * .01f;
+        particle.alpha = 0.f;
+        spray.particles.push_back(particle);
+    }
+    materialSprays_.push_back(std::move(spray));
+}
 bool Combat::DamageEnemy(size_t index, float damage, float projectileDirectionX) {
     if (index >= enemies_.size() || enemies_[index].health <= 0.f ||
         enemies_[index].teleportTime > 0.f || damage <= 0.f) return false;
@@ -497,12 +550,23 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
         const float newX=shot.x+shot.vx*dt*shot.resistance;
         const float newY=shot.y+shot.vy*dt*shot.resistance;
         float terrainT=1.f;
+        size_t winningLine = scene.Ground().size();
         // Original blades pass line strips while an enemy is alive, but still hit solid boxes.
-        if (shot.enemy || enemies_.empty()) for (const auto& line : scene.Ground()) {
+        if (shot.enemy || enemies_.empty()) for (size_t index = 0; index < scene.Ground().size(); ++index) {
+            const auto& line = scene.Ground()[index];
             float t;
-            if (SegmentContact(oldX,oldY,newX,newY,line.x1,line.y1,line.x2,line.y2,t)) terrainT=std::min(terrainT,t);
+            if (SegmentContact(oldX,oldY,newX,newY,line.x1,line.y1,line.x2,line.y2,t) && t < terrainT) {
+                terrainT=t;
+                winningLine=index;
+            }
         }
-        for (const auto& box : scene.SolidBoxes()) BoxContact(oldX,oldY,newX,newY,box,terrainT);
+        for (const auto& box : scene.SolidBoxes())
+            if (BoxContact(oldX,oldY,newX,newY,box,terrainT)) winningLine=scene.Ground().size();
+        if (shot.playerKnife && !shot.enemy && winningLine < scene.Ground().size() && terrainT < 1.f) {
+            const float halfBlade = shot.visualWidth * .5f;
+            SpawnKnifeLineSpray(scene, winningLine, shot,
+                               newX + (shot.vx < 0.f ? -halfBlade : halfBlade), newY);
+        }
         shot.x=oldX+(newX-oldX)*terrainT;
         shot.y=oldY+(newY-oldY)*terrainT;
         shot.life-=dt;

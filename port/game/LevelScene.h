@@ -130,6 +130,10 @@ public:
     float PlayerVisualWidth() const { return playerVisualWidth_; }
     float PlayerVisualHeight() const { return playerVisualHeight_; }
     const std::vector<GroundSegment>& Ground() const { return ground_; }
+    render::TextureId GroundParticleTexture(const std::string& material) const {
+        const auto found = groundParticleTextures_.find(material);
+        return found == groundParticleTextures_.end() ? render::InvalidTexture : found->second;
+    }
     void SetPlayerFootstepContact(size_t segment, float x, float y);
     void EmitJumpTakeoff(size_t segment, float x, float postBumpY, int facing);
     void EmitLandingMaterialSpray(size_t segment, float x, float y, int facing, float drop);
