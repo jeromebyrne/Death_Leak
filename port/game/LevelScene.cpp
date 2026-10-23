@@ -1142,6 +1142,11 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
         if (playerFrame_ != lastRunningFrame_ && grounded)
             EmitRunningFootstep(sequence, strafing ? strafe.movementDirection : playerFacing_);
         lastRunningFrame_ = playerFrame_;
+    } else if (target == "Roll" && playerFrame_ != lastRunningFrame_ && grounded) {
+        // Character checks marked Roll frames against the last *running* frame
+        // on every update, but never stamps that index during Roll. Retaining
+        // it allows repeated sprays while an authored frame is held.
+        EmitRunningFootstep(sequence, strafe.movementDirection);
     }
     // Player::Fire restarts/advances once; Character::UpdateAnimations advances
     // again before switching/finishing when the body sequence changes.
