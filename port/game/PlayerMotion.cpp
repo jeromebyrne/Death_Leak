@@ -21,7 +21,7 @@ void PlayerMotion::Reset(float x, float y, bool authoredEntry) {
     wallSide_ = 0; wallJumpRemaining_ = 0; jumpPercent_ = 40.f; solidContactDamage_ = 0.f;
     groundedSegment_ = static_cast<size_t>(-1);
     landingApexValid_ = false; landingApexY_ = y;
-    impactRecovery_ = ImpactRecovery::None; impactRecoveryTime_ = 0.f;
+    impactRecovery_ = ImpactRecovery::None; impactRecoveryTime_ = 0.f; hardLandingEvent_ = HardLandingEvent::None; landedLargeDropThisUpdate_ = false;
     downwardDashing_ = inWater_ = smashedSomething_ = false; rollTime_ = rollBuffer_ = 0.f; facing_ = 1;
 }
 bool PlayerMotion::TryDownwardDash(bool hasFocus) {
@@ -34,6 +34,8 @@ bool PlayerMotion::TryRoll(bool hasFocus) {
     if (!rollUnlocked_ || !hasFocus || !grounded_ || rollTime_ > 0.f) return false;
     if (inWater_) return false;
     rollTime_ = 0.5f; // animation-finish stand-in; source Roll sequence owns termination
+    if (landedLargeDropThisUpdate_ && hardLandingEvent_ == HardLandingEvent::LargeDrop)
+        hardLandingEvent_ = HardLandingEvent::LargeDropRoll;
     // A successful landing roll cancels both Windows impact-recovery flags.
     impactRecovery_ = ImpactRecovery::None; impactRecoveryTime_ = 0.f;
     if (std::abs(vx_) < 12.f*60.f) vx_ = facing_ * 12.f*60.f;
@@ -47,6 +49,7 @@ bool PlayerMotion::TryBufferedRoll(bool hasFocus) {
 void PlayerMotion::Update(LevelScene& scene, float dt, int direction, bool jump) {
     if (dt <= 0) return;
     const float ticks = dt * 60.f;
+    landedLargeDropThisUpdate_ = false;
     if (impactRecovery_ != ImpactRecovery::None) {
         impactRecoveryTime_ = std::max(0.f, impactRecoveryTime_ - dt);
         if (impactRecoveryTime_ == 0.f) impactRecovery_ = ImpactRecovery::None;
@@ -199,12 +202,17 @@ void PlayerMotion::Update(LevelScene& scene, float dt, int direction, bool jump)
             if (dashAtContact) {
                 impactRecovery_ = ImpactRecovery::Hard;
                 impactRecoveryTime_ = kHardImpactSeconds;
-            } else if (landingApexValid_ && !inWater_ && !Rolling()) {
+                hardLandingEvent_ = HardLandingEvent::DownwardDash;
+            } else if (landingApexValid_ && !inWater_) {
                 const float drop = landingApexY_ - y_;
                 if (drop >= 700.f) {
-                    impactRecovery_ = ImpactRecovery::Hard;
-                    impactRecoveryTime_ = kHardImpactSeconds;
-                } else if (drop > 300.f) {
+                    if (!Rolling()) {
+                        hardLandingEvent_ = HardLandingEvent::LargeDrop;
+                        landedLargeDropThisUpdate_ = true;
+                        impactRecovery_ = ImpactRecovery::Hard;
+                        impactRecoveryTime_ = kHardImpactSeconds;
+                    }
+                } else if (drop > 300.f && !Rolling()) {
                     impactRecovery_ = ImpactRecovery::Soft;
                     impactRecoveryTime_ = kSoftImpactSeconds;
                 }

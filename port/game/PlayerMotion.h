@@ -7,6 +7,7 @@ namespace deathleak::game {
 class PlayerMotion {
 public:
     enum class ImpactRecovery { None, Soft, Hard };
+    enum class HardLandingEvent { None, DownwardDash, LargeDrop, LargeDropRoll };
     void Reset(float x, float y, bool authoredEntry = false);
     void SetSpeedUpgrade(bool unlocked) { speedUpgrade_ = unlocked; }
     void SetMovementUnlocks(bool dash, bool roll) { dashUnlocked_ = dash; rollUnlocked_ = roll; }
@@ -18,6 +19,7 @@ public:
     bool Rolling() const { return rollTime_ > 0.f; }
     ImpactRecovery Recovery() const { return impactRecovery_; }
     bool ImpactRecovering() const { return impactRecovery_ != ImpactRecovery::None; }
+    HardLandingEvent ConsumeHardLandingEvent() { const auto event = hardLandingEvent_; hardLandingEvent_ = HardLandingEvent::None; return event; }
     void Update(LevelScene& scene, float dt, int direction, bool jump);
     bool SmashedSomething() const { return smashedSomething_; }
     float X() const { return x_; }
@@ -43,6 +45,8 @@ private:
     bool landingApexValid_ = false;
     float landingApexY_ = 0.f;
     ImpactRecovery impactRecovery_ = ImpactRecovery::None;
+    HardLandingEvent hardLandingEvent_ = HardLandingEvent::None;
+    bool landedLargeDropThisUpdate_ = false;
     float impactRecoveryTime_ = 0.f;
     int wallSide_ = 0; // -1: wall to left, +1: wall to right
     float wallJumpRemaining_ = 0;

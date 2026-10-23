@@ -5,6 +5,7 @@
 #include "../game/WeatherRain.h"
 #include "../game/Combat.h"
 #include "../game/PlayerMotion.h"
+#include "../game/CameraShake.h"
 #include "../game/Hud.h"
 #include "../game/BitmapText.h"
 #include "../game/PaperText.h"
@@ -321,6 +322,7 @@ int main(int argc, char** argv) {
     if (levelPath.empty() && !menuLoop && !player) { std::cerr << "Player art load failed: " << error << '\n'; return 1; }
     float playerX = 590, playerY = 430;
     deathleak::game::PlayerMotion motion;
+    deathleak::game::CameraShake cameraShake;
     motion.SetSpeedUpgrade(speedUnlocked);
     motion.SetMovementUnlocks(downwardDashUnlocked, rollUnlocked);
     motion.Reset(restorePosition ? savedX : scene.PlayerX(), restorePosition ? savedY : scene.PlayerY(), !restorePosition);
@@ -453,6 +455,7 @@ int main(int argc, char** argv) {
     };
     deathleak::game::ShaderClock shaderClock;
     float precedingRenderedModifiedDelta = 0.f;
+    float cameraShakeTime = 0.f;
     auto start = std::chrono::steady_clock::now();
     auto last = std::chrono::steady_clock::now();
     for (int frame = 0; !frameLimit || frame < frameLimit; ++frame) {
@@ -470,6 +473,7 @@ int main(int argc, char** argv) {
         // This is the port's update delta; feed the modified delta here when
         // Windows-style damage slowdown is implemented.
         shaderClock.Update(dt);
+        cameraShakeTime += dt;
         const char command = frame < static_cast<int>(scriptedInput.size()) ? scriptedInput[frame] : 0;
         bool playerProjectileFired = false;
         bool playerEligibleFireAttempt = false;
@@ -562,7 +566,7 @@ int main(int argc, char** argv) {
                     motion.SetSpeedUpgrade(false); motion.SetMovementUnlocks(false, false);
                     motion.Reset(scene.PlayerX(), scene.PlayerY(), true);
                     worldX = motion.X(); worldY = motion.Y();
-                    cameraX = scene.CameraX(); cameraY = scene.CameraY();
+                    cameraX = scene.CameraX(); cameraY = scene.CameraY(); cameraShake.Reset();
                     finalSceneTime = levelTime = interactHeldTime = doorUnlockWait = 0;
                     finalTitleShown = storyEnded = wasDead = unlockingDoor = upgradeModal = paperModal = false;
                     interactionTarget.clear(); menuSelection = 0;
@@ -641,7 +645,7 @@ int main(int argc, char** argv) {
                         currentLevel = restartLevel;
                         motion.Reset(scene.PlayerX(), scene.PlayerY(), true);
                         worldX = motion.X(); worldY = motion.Y();
-                        cameraX = scene.CameraX(); cameraY = scene.CameraY();
+                        cameraX = scene.CameraX(); cameraY = scene.CameraY(); cameraShake.Reset();
                         combat.ClearLevel(); combat.SetVitals(25.f, 100.f);
                         wasDead = false; levelTime = interactHeldTime = doorUnlockWait = 0; unlockingDoor = false; interactionTarget.clear();
                         std::cout << "Restarted " << currentLevel << " at frame " << frame << '\n';
@@ -691,6 +695,10 @@ int main(int argc, char** argv) {
             }
             if (motion.Grounded() && combat.Health() > 0.f && motion.TryBufferedRoll(combat.HasFocus(2.f)))
                 combat.ConsumeFocus(2.f);
+            if (const auto impact = motion.ConsumeHardLandingEvent();
+                impact != deathleak::game::PlayerMotion::HardLandingEvent::None) {
+                cameraShake.StartMedium(cameraShakeTime - dt);
+            }
             worldX = motion.X(); worldY = motion.Y();
             scene.UpdateAuthoredOrbs(dt, worldX, worldY, cameraX, cameraY);
             const auto collectedNow = scene.CollectCurrencyOrbs(worldX, worldY, collectedOrbs);
@@ -1007,7 +1015,7 @@ int main(int argc, char** argv) {
                         currentLevel = door.destination;
                         motion.Reset(scene.PlayerX(),scene.PlayerY(), true);
                         worldX = motion.X(); worldY = motion.Y();
-                        cameraX = scene.CameraX(); cameraY = scene.CameraY();
+                        cameraX = scene.CameraX(); cameraY = scene.CameraY(); cameraShake.Reset();
                         combat.ClearLevel(); levelTime = interactHeldTime = doorUnlockWait = 0; unlockingDoor = false; interactionTarget.clear();
                     } else std::cerr << "Door transition failed: " << error << '\n';
                     continue;
@@ -1039,7 +1047,7 @@ int main(int argc, char** argv) {
                         loadFilmFrames();
                         motion.Reset(scene.PlayerX(),scene.PlayerY(), true);
                         worldX = motion.X(); worldY = motion.Y();
-                        cameraX = scene.CameraX(); cameraY = scene.CameraY();
+                        cameraX = scene.CameraX(); cameraY = scene.CameraY(); cameraShake.Reset();
                         combat.ClearLevel(); levelTime = interactHeldTime = doorUnlockWait = 0; unlockingDoor = false; interactionTarget.clear();
                     } else std::cerr << "Boat transition failed: " << error << '\n';
                     continue;
@@ -1069,7 +1077,7 @@ int main(int argc, char** argv) {
                         devilDialog.reset(); healthPickup.reset();
                         currentLevel = destination;
                         worldX = scene.PlayerX(); worldY = scene.PlayerY();
-                        cameraX = scene.CameraX(); cameraY = scene.CameraY();
+                        cameraX = scene.CameraX(); cameraY = scene.CameraY(); cameraShake.Reset();
                         motion.Reset(worldX, worldY, true); combat.ClearLevel();
                         levelTime = interactHeldTime = doorUnlockWait = 0; unlockingDoor = false; interactionTarget.clear();
                         std::cout << "Entered " << currentLevel << std::endl;
@@ -1115,6 +1123,13 @@ int main(int argc, char** argv) {
         if (!playLevel.empty() && !objectsPaused) scene.UpdatePlayerVisual(dt, motion.VelocityX(), motion.VelocityY(),
             motion.Grounded(), motion.WallSide(), motion.Rolling(), motion.DownwardDashing(), motion.InWater(),
             combat.MeleeElapsed(), facing, playerProjectileFired, playerEligibleFireAttempt, strafeVisual, stickAim, aimX, aimY, precedingRenderedModifiedDelta);
+        // Camera2D draws X's random sign before Y's, only while shaking.
+        const bool jitter = cameraShake.WillJitter(cameraShakeTime - dt);
+        const int shakeSignX = jitter && scene.CameraFollowX() ? ((std::rand() & 1) ? 1 : -1) : 1;
+        const int shakeSignY = jitter && scene.CameraFollowY() ? ((std::rand() & 1) ? 1 : -1) : 1;
+        const auto shakeView = cameraShake.Update(cameraShakeTime - dt, 1.f, scene.CameraFollowX(), scene.CameraFollowY(),
+            shakeSignX, shakeSignY, cameraX, cameraY);
+        const float drawCameraX = shakeView.viewX, drawCameraY = shakeView.viewY;
         const auto shaderFrame = shaderClock.Draw();
         renderer->BeginFrame({8, 12, 20, 255});
         if (levelPath.empty()) {
@@ -1162,12 +1177,12 @@ int main(int argc, char** argv) {
                        scene.CameraY() + (430 - playerY) * 1.5f, scene.PlayerX(), scene.PlayerY(), {}, 1.f, 1.f, shaderFrame);
         else {
             std::vector<deathleak::game::PainterItem> painterItems;
-            combat.AppendPainterItems(painterItems, *renderer, cameraX, cameraY);
+            combat.AppendPainterItems(painterItems, *renderer, drawCameraX, drawCameraY);
             if (healthPickup && healthPickupArt) {
                 constexpr float scale = 2.f / 3.f;
                 const auto sprite = deathleak::render::Sprite{healthPickupArt, {},
-                    {640.f + (healthPickup->x-cameraX-25.f)*scale,
-                     360.f + (cameraY-healthPickup->y-35.f)*scale,
+                    {640.f + (healthPickup->x-drawCameraX-25.f)*scale,
+                     360.f + (drawCameraY-healthPickup->y-35.f)*scale,
                      50.f*scale, 70.f*scale}};
                 // HealthUpgradePickup inherits SolidMovingSprite's kPlayer depth.
                 painterItems.push_back({3000, [&, sprite] { renderer->DrawSprite(sprite); }});
@@ -1179,7 +1194,7 @@ int main(int argc, char** argv) {
                     if (!lightningTexture) std::cerr << "Lightning texture load failed: " << lightningError << '\n';
                 }
                 if (lightningTexture) {
-                    const Sprite flash = weather.SpriteForCamera(lightningTexture, cameraX, cameraY);
+                    const Sprite flash = weather.SpriteForCamera(lightningTexture, drawCameraX, drawCameraY);
                     painterItems.push_back({20, [&, flash] { renderer->DrawSprite(flash); }});
                 }
             }
@@ -1190,9 +1205,9 @@ int main(int argc, char** argv) {
                     if (!rainTexture) std::cerr << "Rain texture load failed: " << rainError << '\n';
                     rain.SetTexture(rainTexture);
                 }
-                painterItems.push_back({20, [&] { rain.Draw(*renderer, cameraX, cameraY); }});
+                painterItems.push_back({20, [&] { rain.Draw(*renderer, drawCameraX, drawCameraY); }});
             }
-            scene.Draw(*renderer, cameraX, cameraY, worldX, worldY, std::move(painterItems),
+            scene.Draw(*renderer, drawCameraX, drawCameraY, worldX, worldY, std::move(painterItems),
                        combat.PlayerDamageBurstGain(), weather.FoliageSwayMultiplier(), shaderFrame, suppressLandingSprayDraw);
             renderer->ApplyScenePostprocess();
             // ShaderClock advanced at loop start; the original meter samples total
