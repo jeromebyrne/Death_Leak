@@ -9,13 +9,21 @@ TARGET := build/deathleak-linux
 
 .PHONY: all clean smoke
 all: $(TARGET)
-$(TARGET): linux/main.cpp linux/SDLRenderer.cpp linux/RepeatX.h linux/UVWrap.h linux/WobbleUV.h linux/FoliageSway.h linux/EffectQuadGeometry.h render/OrdinarySpriteRotation.h linux/SDLSoundPlayer.cpp audio/SoundPlayer.h game/Settings.h game/LevelScene.cpp game/LevelScene.h render/ViewportCull.h game/ShaderClock.h game/WeatherLightning.h game/WeatherRain.h game/ParticleSpray.h game/Combat.cpp game/Combat.h game/PlayerMotion.cpp game/PlayerMotion.h game/Hud.cpp game/Hud.h game/BitmapText.h game/PaperText.h render/Renderer.h $(wildcard ../Game/tinyxml/*.cpp)
+$(TARGET): linux/main.cpp linux/SDLRenderer.cpp linux/RepeatX.h linux/UVWrap.h linux/ParallaxUV.h linux/WobbleUV.h linux/FoliageSway.h linux/EffectQuadGeometry.h render/OrdinarySpriteRotation.h linux/SDLSoundPlayer.cpp audio/SoundPlayer.h game/Settings.h game/LevelScene.cpp game/LevelScene.h render/ViewportCull.h game/ShaderClock.h game/WeatherLightning.h game/WeatherRain.h game/ParticleSpray.h game/Combat.cpp game/Combat.h game/PlayerMotion.cpp game/PlayerMotion.h game/Hud.cpp game/Hud.h game/BitmapText.h game/PaperText.h render/Renderer.h $(wildcard ../Game/tinyxml/*.cpp)
 	@mkdir -p build
 	$(CXX) $(CXXFLAGS) $(SDL_CFLAGS) $(PNG_CFLAGS) -Icompat linux/main.cpp linux/SDLRenderer.cpp linux/SDLSoundPlayer.cpp game/LevelScene.cpp game/Combat.cpp game/PlayerMotion.cpp game/Hud.cpp ../Game/tinyxml/tinyxml.cpp ../Game/tinyxml/tinyxmlerror.cpp ../Game/tinyxml/tinyxmlparser.cpp ../Game/tinyxml/tinystr.cpp -o $@ $(SDL_LIBS) $(PNG_LIBS) $(GL_LIBS)
 smoke: $(TARGET)
 	cd .. && SDL_VIDEODRIVER=dummy port/$(TARGET) --frames 2 --capture port/build/smoke.bmp
 clean:
 	rm -rf build
+
+.PHONY: fractional_parallax_uv_test
+fractional_parallax_uv_test: build/fractional_parallax_uv_test
+	./build/fractional_parallax_uv_test
+
+build/fractional_parallax_uv_test: tests/fractional_parallax_uv_test.cpp linux/ParallaxUV.h linux/UVWrap.h
+	@mkdir -p build
+	$(CXX) $(CXXFLAGS) -UNDEBUG tests/fractional_parallax_uv_test.cpp -o $@
 
 .PHONY: fog-mip-cpu-test
 fog-mip-cpu-test:
