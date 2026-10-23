@@ -120,6 +120,7 @@ int main(int argc, char** argv) {
     int frameLimit = 0;
     std::string capture;
     std::string atomicFrame415Packet;
+    std::string atomicPostfadePacket;
     std::string levelPreview;
     std::string playLevel;
     std::string script;
@@ -163,6 +164,7 @@ int main(int argc, char** argv) {
         if (arg == "--frames" && i + 1 < argc) frameLimit = std::atoi(argv[++i]);
         else if (arg == "--capture" && i + 1 < argc) capture = argv[++i];
         else if (arg == "--atomic-frame415-packet" && i + 1 < argc) atomicFrame415Packet = argv[++i];
+        else if (arg == "--atomic-postfade-waterfall-packet" && i + 1 < argc) atomicPostfadePacket = argv[++i];
         else if (arg == "--level-preview" && i + 1 < argc) levelPreview = argv[++i];
         else if (arg == "--play" && i + 1 < argc) playLevel = argv[++i];
         else if (arg == "--save-file" && i + 1 < argc) saveFile = argv[++i];
@@ -191,6 +193,12 @@ int main(int argc, char** argv) {
     if (!atomicFrame415Packet.empty() && (capture.empty() || frameLimit != 416 ||
         atomicFrame415Packet == capture || fixedDt <= 0.f || script.empty() || playLevel.empty())) {
         std::cerr << "--atomic-frame415-packet requires --capture, --frames 416, --fixed-dt, --script, --play and a distinct JSON path\n";
+        return 2;
+    }
+    if (!atomicPostfadePacket.empty() && (capture.empty() || frameLimit <= 0 ||
+        atomicPostfadePacket == capture || !atomicFrame415Packet.empty() ||
+        fixedDt <= 0.f || script.empty() || playLevel.empty())) {
+        std::cerr << "--atomic-postfade-waterfall-packet requires --capture, --frames, --fixed-dt, --script, --play and a distinct JSON path\n";
         return 2;
     }
     if (suppressIntroPromptDraw && capture.empty()) {
@@ -478,6 +486,8 @@ int main(int argc, char** argv) {
     std::string loadingDestination;
     constexpr float kLoadingFadeSeconds = 0.20f;
     constexpr float kLoadingMinimumSeconds = 0.05f;
+    bool packetSawWaterfallLoading = false;
+    int packetFirstPostfadeOrdinal = -1;
     auto finalFrame = (playLevel.empty() && !menuLoop) ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/frame_top.png", error);
     if (!finalFrame && !(playLevel.empty() && !menuLoop))
         std::cerr << "HUD frame_top.png load failed: " << error << '\n';
@@ -1606,16 +1616,32 @@ int main(int argc, char** argv) {
                 else renderer->FillRect({0, 0, 1280, 720}, {0, 0, 0, tint.a});
             }
         }
+        // State-derived target: the first Waterfall draw after its loading UI retires.
+        if (!atomicPostfadePacket.empty() && currentLevel == "Game/XmlFiles/levels/waterfall_top.xml") {
+            if (loadingPhase != LoadingPhase::None) packetSawWaterfallLoading = true;
+            if (packetSawWaterfallLoading && packetFirstPostfadeOrdinal < 0 &&
+                loadingPhase == LoadingPhase::None && packetGameplayRan && packetWeatherRan &&
+                packetSceneRan && packetPlayerRan) packetFirstPostfadeOrdinal = frame;
+        }
         if (!capture.empty() && frame == frameLimit - 1 && !renderer->SaveFrame(capture, error)) {
             std::cerr << "Capture failed: " << error << '\n'; return 1;
         }
-        if (!atomicFrame415Packet.empty() && frame == 415) {
+        if ((!atomicFrame415Packet.empty() && frame == 415) ||
+            (!atomicPostfadePacket.empty() && frame == frameLimit - 1)) {
+            const bool postfadePacket = !atomicPostfadePacket.empty();
+            const std::string& packetPath = postfadePacket ? atomicPostfadePacket : atomicFrame415Packet;
             // SaveFrame above is post-overlay/pre-EndFrame for this exact draw.
             // The JSON is committed only after the image and byte hashes exist.
+            const bool firstReveal = loadingPhase == LoadingPhase::FadeOut && packetGameplayRan &&
+                packetDrawAlpha > 0.f && packetDrawAlpha < 1.f;
+            const bool firstPostfade = packetFirstPostfadeOrdinal == frame && packetSawWaterfallLoading &&
+                loadingPhase == LoadingPhase::None && packetDrawAlpha < 0.f &&
+                packetDrawTintAlpha < 0 && packetGameplayRan && packetWeatherRan &&
+                packetSceneRan && packetPlayerRan && !loadingPausedThisFrame;
             if (currentLevel != "Game/XmlFiles/levels/waterfall_top.xml" ||
-                loadingPhase != LoadingPhase::FadeOut || !packetGameplayRan ||
-                packetDrawAlpha <= 0.f || packetDrawAlpha >= 1.f) {
-                std::cerr << "Atomic packet target is not first-reveal Waterfall gameplay\n"; return 1;
+                !(postfadePacket ? firstPostfade : firstReveal)) {
+                std::cerr << "Atomic packet target is not requested Waterfall gameplay state; first postfade ordinal="
+                          << packetFirstPostfadeOrdinal << '\n'; return 1;
             }
             std::array<unsigned char, 54> bmpHeader{};
             std::ifstream bmp(capture, std::ios::binary);
@@ -1633,18 +1659,19 @@ int main(int argc, char** argv) {
                 std::cerr << "Atomic packet image header/dimensions invalid\n"; return 1;
             }
             const auto imageHash = Sha256File(capture);
-            const auto exeHash = Sha256File("/proc/self/exe");
+            // Hash the game process, not sha256sum's own /proc/self/exe after fork/exec.
+            const auto exeHash = Sha256File("/proc/" + std::to_string(getpid()) + "/exe");
             const auto levelHash = Sha256File(currentLevel);
             std::error_code fileError;
             const auto imageBytes = std::filesystem::file_size(capture, fileError);
             if (imageHash.empty() || exeHash.empty() || levelHash.empty() || fileError) {
                 std::cerr << "Atomic packet image/identity hash failed\n"; return 1;
             }
-            const std::string temporary = atomicFrame415Packet + ".tmp";
+            const std::string temporary = packetPath + ".tmp";
             std::ofstream packet(temporary, std::ios::trunc);
             if (!packet) { std::cerr << "Atomic packet JSON open failed\n"; return 1; }
             packet << std::setprecision(9) << std::boolalpha;
-            packet << "{\n  \"schema\": \"deathleak-linux-frame415-v1\",\n"
+            packet << "{\n  \"schema\": " << JsonString(postfadePacket ? "deathleak-linux-postfade-waterfall-v1" : "deathleak-linux-frame415-v1") << ",\n"
                    << "  \"matchedStateEligible\": false,\n"
                    << "  \"identity\": {\"engine\": \"linux_port\", \"executableSha256\": " << JsonString(exeHash)
                    << ", \"revision\": {\"value\": null, \"reason\": \"working-tree build; git revision not embedded\"}"
@@ -1660,6 +1687,8 @@ int main(int argc, char** argv) {
                    << ", \"viewport\": [0,0,1280,720], \"captureStage\": \"post_overlay_pre_endframe\""
                    << ", \"scenePostprocessSubmitted\": true},\n"
                    << "  \"transition\": {\"activeLevel\": " << JsonString(currentLevel)
+                   << ", \"firstPostfadeOrdinal\": " << packetFirstPostfadeOrdinal
+                   << ", \"loadingSplashSubmitted\": " << (loadingPhase != LoadingPhase::None)
                    << ", \"loadingPhaseOnEntry\": " << static_cast<int>(packetLoadingPhaseOnEntry)
                    << ", \"loadingPhaseAtDraw\": " << static_cast<int>(loadingPhase)
                    << ", \"loadingPhaseTime\": " << loadingPhaseTime
@@ -1699,9 +1728,9 @@ int main(int argc, char** argv) {
                    << ", \"displayedMeterFill\": {\"value\": null, \"reason\": \"HUD meter submission not instrumented\"}}\n}\n";
             packet.close();
             if (!packet) { std::cerr << "Atomic packet JSON write failed\n"; return 1; }
-            std::filesystem::rename(temporary, atomicFrame415Packet, fileError);
+            std::filesystem::rename(temporary, packetPath, fileError);
             if (fileError) { std::cerr << "Atomic packet JSON commit failed: " << fileError.message() << '\n'; return 1; }
-            std::cout << "ATOMIC_FRAME415_PACKET image=" << capture << " json=" << atomicFrame415Packet
+            std::cout << (postfadePacket ? "ATOMIC_POSTFADE_PACKET image=" : "ATOMIC_FRAME415_PACKET image=") << capture << " json=" << packetPath
                       << " sha256=" << imageHash << "\n";
         }
         renderer->EndFrame();
