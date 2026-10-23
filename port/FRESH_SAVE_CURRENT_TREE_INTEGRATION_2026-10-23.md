@@ -25,6 +25,10 @@ Nine new-session captures at frames 1, 8, 12, 160, 166, 180, 195, 196 and 200 us
 
 The source contracts behind the changed code are: original `Player::Update` executes base `Character::Update` before the unpulled early return; intro arm sequences are empty and Pull body rate is authored 40 fps; original directed projectile advances its center before collision and does not rewind to ray contact. The port's physics/collision and private RNG remain approximations. Previous reports provide Linux causal A/B for individual effects, but their binaries predate this combined tree; the new captures should not be treated as a pixel-for-pixel prior comparison.
 
+## Commit-time concurrent hunk caveat
+
+Scoped commit `33e5017d1a48fe04cf144f3b06187746e565a66f` was pushed and remote SHA verified. Immediately after push, `git show` revealed that `port/linux/main.cpp` had gained an additional pre-threshold `cameraShake.Start(...)` hunk **between the initial diff review and staging**. That hunk was not in the reviewed 4-line main diff; it was inadvertently included in this commit and should be attributed to its separate owner, not this integration repair. The recorded binary hash and GPU captures cannot be asserted to correspond to the pushed commit, because the concurrent edit may have landed after the build. The four focused CPU fixtures do not cover camera shake. This report records the provenance error explicitly; it does not undo another owner's change or claim that the pushed tree passed a post-commit GPU gate. A fresh post-commit build/capture and the shake owner's sign-off are still needed for a release-grade claim.
+
 ## Boundaries and release
 
 No matched Windows/Jerome acceptance, human controls, audio quality, exact original camera timing, or exact impact pixel parity is claimed. `PORT_WORK_STATUS.md` and `CHECKPOINT_STATUS.md` were not edited. All captured Docker processes exited. **Exclusive source ownership of `port/game/Combat.cpp`, `port/linux/main.cpp`, `port/game/LevelScene.cpp` and the relevant fixtures, shared `port/build`, and physical Xorg `:0` GPU lane are explicitly released.**
