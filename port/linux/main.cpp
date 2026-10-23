@@ -1191,6 +1191,8 @@ int main(int argc, char** argv) {
             scene.Draw(*renderer, cameraX, cameraY, worldX, worldY, std::move(painterItems),
                        combat.PlayerDamageBurstGain(), weather.FoliageSwayMultiplier(), shaderFrame, suppressLandingSprayDraw);
             renderer->ApplyScenePostprocess();
+            // ShaderClock advanced at loop start; the original meter samples total
+            // before this frame's modified delta is committed.
             if (currentLevel == "Game/XmlFiles/levels/sea_2.xml") {
                 // final_scene_hud: four authored film frames at 11 FPS and
                 // quarter opacity, plus the original frame_top art. Bitmap
@@ -1202,7 +1204,7 @@ int main(int argc, char** argv) {
                     renderer->DrawSprite({finalFrame, {}, {0,620,1280,100}, {255,255,255,255}, 0, true});
                 }
                 if (finalTitleShown) deathleak::game::DrawBitmapText(*renderer, "DEATH LEAK", 200, 255, 16, {255,0,0,245});
-            } else hud.Draw(*renderer, combat.Health(), combat.MaxHealth(), combat.Focus(), orbBalance);
+            } else hud.Draw(*renderer, combat.Health(), combat.MaxHealth(), combat.Focus(), orbBalance, shaderFrame.totalTime - dt);
             if (paperModal)
                 deathleak::game::DrawPaperModal(*renderer, paperTitle, paperDescription,
                     modalBackground, paperBackButton, modalWarmup >= 1.f);

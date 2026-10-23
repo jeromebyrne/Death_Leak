@@ -15,6 +15,7 @@ struct Spy final : render::Renderer {
     render::TextureId LoadTexture(const std::string& path, std::string&) override {
         if (path.find("meter_edge_2") != std::string::npos) return 1;
         if (path.find("xp_meter_bar_middle") != std::string::npos) return 3;
+        if (path.find("meter_bar_middle_back") != std::string::npos) return 6;
         if (path.find("meter_bar_middle") != std::string::npos) return 2;
         if (path.find("meter_overlay") != std::string::npos) return 4;
         if (path.find("orb_count") != std::string::npos) return 5;
@@ -65,38 +66,36 @@ int main() {
     Spy spy;
     game::Hud hud;
     hud.Load(spy);
-    hud.Draw(spy, 25, 25, 50, 12);
+    hud.Draw(spy, 25, 25, 100, 12, 0.f);
     checkHealth(spy, 300, 1); // XML width on first cap-observation update
     const auto reference = spy.sprites;
     const auto referenceGlyphs = spy.glyphs;
     spy.clear();
-    hud.Draw(spy, 25, 25, 50, 12);
+    hud.Draw(spy, 25, 25, 100, 12, 1.f / 60.f);
     checkHealth(spy, 75, 1); // next update immediately shrinks
     checkUnchanged(spy, reference, referenceGlyphs);
     spy.clear();
-    hud.Draw(spy, 12.5f, 25, 50, 12);
-    checkHealth(spy, 75, .5f); // progress affects fill only
-    checkUnchanged(spy, reference, referenceGlyphs);
+    hud.Draw(spy, 12.5f, 25, 100, 12, 2.f / 60.f);
+    checkHealth(spy, 75, 1.f); // target registration follows meter update
 
     game::Hud imported;
     imported.Load(spy);
     spy.clear();
-    imported.Draw(spy, 65, 65, 50, 12);
+    imported.Draw(spy, 65, 65, 100, 12, 0.f);
     checkHealth(spy, 300, 1);
     spy.clear();
-    imported.Draw(spy, 65, 65, 50, 12);
+    imported.Draw(spy, 65, 65, 100, 12, 1.f / 60.f);
     checkHealth(spy, 195, 1);
     checkUnchanged(spy, reference, referenceGlyphs);
     spy.clear();
-    imported.Draw(spy, 32.5f, 65, 50, 12);
-    checkHealth(spy, 195, .5f);
+    imported.Draw(spy, 32.5f, 65, 100, 12, 2.f / 60.f);
+    checkHealth(spy, 195, 1.f); // registration tick
 
     spy.clear();
-    hud.Draw(spy, 25, 65, 50, 12);
-    checkHealth(spy, 75, 25.f/65.f); // changed cap schedules growth
+    hud.Draw(spy, 25, 65, 100, 12, 3.f / 60.f);
+    checkHealth(spy, 75, 1.f + (.5f-1.f)*(1.f/60.f)/.25f); // cap change preserves in-flight fill
     spy.clear();
-    hud.Draw(spy, 25, 65, 50, 12);
-    checkHealth(spy, 75.2f, 25.f/65.f);
-    checkUnchanged(spy, reference, referenceGlyphs);
+    hud.Draw(spy, 25, 65, 100, 12, 4.f / 60.f);
+    checkHealth(spy, 75.2f, 1.f + (25.f/65.f-1.f)*(2.f/60.f)/.25f);
     std::cout << "HUD health length/cap/fill cadence and focus/orb spy PASS\n";
 }
