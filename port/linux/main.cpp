@@ -1467,7 +1467,11 @@ int main(int argc, char** argv) {
                             devilDialog.reset(); healthPickup.reset();
                             currentLevel = destination; introPromptClock.Reset();
                             worldX = scene.PlayerX(); worldY = scene.PlayerY();
-                            cameraX = scene.CameraX(); cameraY = scene.CameraY(); cameraShake.Reset();
+                            // Original GameObjectManager::Initialise snaps followed axes
+                            // to the LevelEntry-positioned player before the first draw.
+                            cameraX = scene.CameraFollowX() ? worldX : scene.CameraX();
+                            cameraY = scene.CameraFollowY() ? worldY : scene.CameraY();
+                            cameraShake.Reset();
                             motion.Reset(worldX, worldY, true); combat.ClearLevel();
                             levelTime = interactHeldTime = doorUnlockWait = 0; unlockingDoor = false; interactionTarget.clear();
                             std::cout << "Entered " << currentLevel << std::endl;
