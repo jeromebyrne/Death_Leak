@@ -1,0 +1,19 @@
+# Forest-2 authored small-orb motion — active gameplay gate, 2026-10-24 02:00Z
+
+## Source contract and scoped delta
+
+`forest_exploration_2.xml` authors 26 non-native `CurrencyOrb` objects with active sine-wave hover (e.g. ID46 at lines 733–756, X=-1865.014648/Y=3096). Original `CurrencyOrb::Initialise` (`Game/src/GameObjects/CurrencyOrb.cpp:36–76`) unconditionally enables and initializes the sine wave for these orbs, sets alpha .75, and classifies only *native-dimension* orbs as large. Its update/acquisition path moves small orbs toward the player and attaches an orb-shatter trail. The current port already supports that behavior through `LevelScene::UpdateAuthoredOrbs` and `AddOrbTrail`, but `LevelScene.cpp:499–503` admitted only Forest-1 and Waterfall; Forest-2 non-native orbs remained fixed until static pickup. This is distinct from Forest-2 ID37 leaves, ParallaxLayer lag, ScrollingSprite fog placement, and ID5 tree occlusion.
+
+The fix adds `forest_exploration_2.xml` to the existing non-native `CurrencyOrb` admission condition only. It does not alter shared motion, texture, RNG, physics, renderer, XML, or Sea-2. The focused `orb_trail_test.cpp` now runs the same source-contract fixture for Forest-2 ID46, including hover, strict 130-unit acquisition, trail spawn and drain, movement, and pickup. It also still passes for Forest-1 and Waterfall.
+
+## Verification / physical active-play consequence
+
+Docker `deathleak-linux-build:bookworm` rebuilt the focused CPU test and `make -C port -j2`; all three orb variants passed and the port built (existing TinyXML warnings only). `git diff --check` passed. Old binary SHA-256 `016ec7231b33828f02fa2a0b60e6ecfb2e50c1c0c28ee2aac36778021d6a6a84`; new `b709f6fb0ac5b45be063349b05fc7bca9326b7ebd6a7e5058352dd7c905401e7`. They differ only by this source edit against the same dirty-but-preserved renderer/build tree.
+
+Serial lossless BMP A/B used physical Xorg `:0`, strict accelerated OpenGL (`software=0`), nouveau/NVE7, GPU Sepia, same original assets and `forest_exploration_2.xml`, `--script L:450` or `L:500`, matching fixed dt .0166667. Evidence: `port/build/private-forest2-orb-hover-20261024t0200z/` (ignored). At frame 450, old/new final RGB differs at **6,246/921,600 pixels**, bbox `[70,99,1103,601)`; at frame 500, **5,879 pixels**, bbox `[88,90,1280,607)`. Both are active Forest-2 gameplay, not menu/setup. The A/B *gameplay state itself* diverges: at frame 450 the fixed-orb arm has 8 collected orbs and corrected arm 9; at frame 500, 10 versus 11. Player position, health, enemy/hit counters and movement match, but orb count/balance do not. Therefore those full-frame pixel counts are evidence of reachable behavioral/rendered impact, **not** a same-state isolated orb-only pixel attribution. The intended source behavior can change acquisition timing and HUD; a matched original-Windows render packet is still absent. No Windows pixel-parity or visual acceptance claim is made.
+
+## Remaining discriminating parity gate
+
+For Forest-2 ID46 (or another naturally approached small orb), record the original D3D10 source-built eligible-update ordinal, global `rand()`-seeded sine phase, orb XY before/after hover and steering, trail admission, collection ordinal, camera/film/HUD state, and lossless pre/post-orb pixels. Pair with Linux at the same state and compare first divergent command field, then registered pixels. The Linux deterministic phase is intentionally not claimed to reproduce the unobserved Windows global-rand history; changing its seed now would be speculative. Review of the prior gameplay clip cannot certify this later correction.
+
+Scope: `port/game/LevelScene.cpp`, `port/tests/orb_trail_test.cpp`, this report, and one checkpoint append. Unrelated dirty files and reserved Sea-2 files untouched. Physical GPU/build lane released after serial captures.

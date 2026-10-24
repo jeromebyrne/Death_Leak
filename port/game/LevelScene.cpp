@@ -495,10 +495,11 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         sprite.depth = Depth(position->Attribute("depth_layer"));
         sprite.order = objectOrder;
         sprite.currencyOrb = kind == "CurrencyOrb";
-        // Only authored forest-1 and waterfall-top small orbs use this path.
+        // Authored non-native Forest/Waterfall orbs use the small-orb hover/tracking path.
         sprite.authoredSmallOrb = sprite.currencyOrb &&
             (std::filesystem::path(path).filename() == "waterfall_top.xml" ||
-             std::filesystem::path(path).filename() == "forest_exploration_1.xml") &&
+             std::filesystem::path(path).filename() == "forest_exploration_1.xml" ||
+             std::filesystem::path(path).filename() == "forest_exploration_2.xml") &&
             !Flag(dimensions, "native");
         if (sprite.authoredSmallOrb) {
             sprite.orbOriginY = sprite.y;

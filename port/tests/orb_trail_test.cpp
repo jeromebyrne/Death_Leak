@@ -28,12 +28,13 @@ public:
 int main(int argc, char** argv) {
     assert(argc==2);
     const bool forest = std::string(argv[1]) == "forest";
-    const std::string id = forest ? "70" : "75";
+    const bool forest2 = std::string(argv[1]) == "forest2";
+    const std::string id = forest2 ? "46" : forest ? "70" : "75";
     setenv("DEATHLEAK_RENDER_ONLY_XML_IDS", id.c_str(), 1);
     const std::string level = std::string("Game/XmlFiles/levels/") +
-        (forest ? "forest_exploration_1.xml" : "waterfall_top.xml");
-    const float ox = forest ? 335.985352f : -1335.014648f;
-    const float oy = forest ? 3213.f : 2995.f;
+        (forest2 ? "forest_exploration_2.xml" : forest ? "forest_exploration_1.xml" : "waterfall_top.xml");
+    const float ox = forest2 ? -1865.014648f : forest ? 335.985352f : -1335.014648f;
+    const float oy = forest2 ? 3096.f : forest ? 3213.f : 2995.f;
     CaptureRenderer r;
     game::LevelScene s;
     std::string error;
