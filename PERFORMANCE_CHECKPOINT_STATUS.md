@@ -1,8 +1,8 @@
 # Death Leak FPS and performance work — 2026-10-23
 
-Status: started. Scope: debug-mode FPS counter and measured active-gameplay performance improvement.
+Status: implemented, measured on physical NVE7 GPU, and pushed; no release-complete claim. Scope: debug-mode FPS counter and active-gameplay renderer optimization.
 
-Next: inspect existing debug/render loop and worktree ownership; establish physical-GPU baseline, implement/debug FPS display, isolate bottleneck, optimize, verify against baseline. Preserve all unrelated dirty changes. No release acceptance claimed.
+Outcome: exact-staged-source GPU run improved active Forest frame p50 21.9874 -> 20.9234 ms and p95 23.7888 -> 22.7963 ms at 1280x720 with FPS visible. Unrelated worktree changes preserved. No release acceptance claimed.
 
 ## Baseline preflight — 2026-10-23
 - Branch `feature/linux-renderer-foundation`; `main.cpp` clean at HEAD, existing opt-in `--show-fps` is visible in the gameplay HUD but no explicit debug-mode switch exists. `--profile` only writes terminal timing; likely interpretation is make debug/profile mode imply the on-screen FPS counter.
@@ -30,3 +30,6 @@ Next: inspect existing debug/render loop and worktree ownership; establish physi
 
 ## Exact-staged-source verification
 - Built the staged index version of `SDLRenderer.cpp` mounted over working-tree renderer, excluding the unrelated unstaged raft experiment, then ran the same 360-frame physical-GPU route. `port/build/performance-staged/staged.log`: p50 20.9234 ms / p95 22.7963 ms, 31,461 sprite calls, copy 0.959246 s, identical endpoint. This confirms the scoped commit builds and retains the measured ~4.8% p50 / ~4.2% p95 improvement relative to matched FPS-on baseline.
+
+## Commit and push gate
+- Scoped commits `a7f836d` (debug FPS and measured checkpoint) and `2970985` (GPU scene render target) were pushed to `origin/feature/linux-renderer-foundation` without force. Only staged owned renderer hunks were committed; preexisting raft-mip renderer diff and all other dirty work remain unstaged. This status closure is a separate documentation commit.
