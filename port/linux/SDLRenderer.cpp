@@ -674,8 +674,19 @@ public:
                          sprite.flipX ? 0.f : fraction);
             });
         } else {
-            drawTile(0.f, 1.f, sprite.flipX ? 1.f : 0.f,
-                     sprite.flipX ? 0.f : 1.f);
+            // D3D Sprite::Draw sets repeat-X U from the authored quad width
+            // before the whole-quad flip. A rotated, partial-width foliage
+            // quad still uses that partial texture span (ID67: 2000/2048),
+            // even though the zero-rotation tile path is bypassed.
+            float uSpan = 1.f;
+            if (sprite.repeatX && sprite.rotationDegrees != 0.f) {
+                const float authoredWidth = destination.w / scale;
+                if (std::isfinite(authoredWidth) && authoredWidth > 0.f &&
+                    authoredWidth <= textureWidth)
+                    uSpan = authoredWidth / textureWidth;
+            }
+            drawTile(0.f, 1.f, sprite.flipX ? uSpan : 0.f,
+                     sprite.flipX ? 0.f : uSpan);
         }
     }
     void FillRect(Rect rect, Color color) override {
