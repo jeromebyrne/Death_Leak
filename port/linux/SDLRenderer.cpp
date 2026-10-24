@@ -43,6 +43,7 @@ public:
             std::cerr << "SDL profile calls=" << drawCalls_ << " copy=" << copySeconds_
                       << "s present=" << presentSeconds_ << "s\n";
         if (gamepad_) SDL_GameControllerClose(gamepad_);
+        if (sceneTarget_) SDL_DestroyTexture(sceneTarget_);
         for (const auto& entry : wobbleMipTextures_)
             if (entry.second.name) glDeleteTextures(1, &entry.second.name);
         if (sepiaTexture_) glDeleteTextures(1, &sepiaTexture_);
@@ -136,6 +137,10 @@ public:
         }
         if (SDL_RenderSetLogicalSize(renderer_, 1280, 720) != 0) { error = SDL_GetError(); return false; }
         if (driver == "opengl") {
+            sceneTarget_ = SDL_CreateTexture(renderer_, SDL_PIXELFORMAT_RGBA8888,
+                                             SDL_TEXTUREACCESS_TARGET, 1280, 720);
+            if (!sceneTarget_) { error = "scene render target: " + std::string(SDL_GetError()); return false; }
+            SDL_SetTextureBlendMode(sceneTarget_, SDL_BLENDMODE_NONE);
             if (!InitializeSepia(error)) return false;
             if (!InitializePixelWobble(error)) return false;
             if (!InitializeDamageBurst(error)) return false;
@@ -193,6 +198,7 @@ public:
     void BeginFrame(Color clear) override {
         sceneSamplingPhase_ = true;
         worldZoom_ = 1.f;
+        if (sceneTarget_) SDL_SetRenderTarget(renderer_, sceneTarget_);
         SDL_SetRenderDrawColor(renderer_, clear.r, clear.g, clear.b, clear.a);
         SDL_RenderClear(renderer_);
     }
@@ -387,47 +393,70 @@ public:
             bound = true;
             glGetIntegerv(GL_TEXTURE_BINDING_2D, &object);
             if (object == 0) break;
-            while (glGetError() != GL_NO_ERROR) {}
-            glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &allocationWidth);
-            glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &allocationHeight);
-            if (glGetError() != GL_NO_ERROR || allocationWidth <= 0 || allocationHeight <= 0) break;
-            auto powerOfTwo = [](int n) { return n > 0 && (n & (n - 1)) == 0; };
-            binding.npotTexture = !powerOfTwo(allocationWidth) || !powerOfTwo(allocationHeight);
-            const char* version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
-            if (version && version[0] >= '0' && version[0] <= '9') {
-                char* end = nullptr;
-                const long major = std::strtol(version, &end, 10);
-                if (end && *end == '.' && end[1] >= '0' && end[1] <= '9') {
-                    const long minor = std::strtol(end + 1, &end, 10);
-                    npotSupported = (*end == '\0' || *end == ' ') &&
-                        (major > 2 || (major == 2 && minor >= 0));
-                    if (!npotSupported) {
-                        const char* extensions = reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS));
-                        const char* name = "GL_ARB_texture_non_power_of_two";
-                        const size_t length = std::strlen(name);
-                        for (const char* p = extensions; p && (p = std::strstr(p, name)); p += length)
-                            if ((p == extensions || p[-1] == ' ') &&
-                                (p[length] == ' ' || p[length] == '\0')) { npotSupported = true; break; }
+            // Allocation and GL capability do not change while this SDL texture lives.
+            // Querying texture level and extension state every parallax draw forced
+            // synchronous driver round trips on the physical nouveau renderer.
+            auto cached = parallaxMetadata_.find(sprite.texture);
+            if (cached != parallaxMetadata_.end() && cached->second.object == object) {
+                allocationWidth = cached->second.width;
+                allocationHeight = cached->second.height;
+                npotSupported = cached->second.npotSupported;
+                binding.npotTexture = cached->second.npotTexture;
+            } else {
+                while (glGetError() != GL_NO_ERROR) {}
+                glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &allocationWidth);
+                glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &allocationHeight);
+                if (glGetError() != GL_NO_ERROR || allocationWidth <= 0 || allocationHeight <= 0) break;
+                auto powerOfTwo = [](int n) { return n > 0 && (n & (n - 1)) == 0; };
+                binding.npotTexture = !powerOfTwo(allocationWidth) || !powerOfTwo(allocationHeight);
+                const char* version = reinterpret_cast<const char*>(glGetString(GL_VERSION));
+                if (version && version[0] >= '0' && version[0] <= '9') {
+                    char* end = nullptr;
+                    const long major = std::strtol(version, &end, 10);
+                    if (end && *end == '.' && end[1] >= '0' && end[1] <= '9') {
+                        const long minor = std::strtol(end + 1, &end, 10);
+                        npotSupported = (*end == '\0' || *end == ' ') &&
+                            (major > 2 || (major == 2 && minor >= 0));
+                        if (!npotSupported) {
+                            const char* extensions = reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS));
+                            const char* name = "GL_ARB_texture_non_power_of_two";
+                            const size_t length = std::strlen(name);
+                            for (const char* p = extensions; p && (p = std::strstr(p, name)); p += length)
+                                if ((p == extensions || p[-1] == ' ') &&
+                                    (p[length] == ' ' || p[length] == '\0')) { npotSupported = true; break; }
+                        }
                     }
                 }
+                parallaxMetadata_[sprite.texture] = {object, allocationWidth, allocationHeight,
+                                                       binding.npotTexture, npotSupported};
             }
             binding.bindSucceeded = true;
             binding.spanX = spanX; binding.spanY = spanY;
             binding.npotRepeatSupported = npotSupported;
             command = PrepareParallaxUVCommand(input, binding);
             if (command.kind != ParallaxUVCommandKind::FloatQuad) break;
-            while (glGetError() != GL_NO_ERROR) {}
-            glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, &oldWrapS);
-            glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, &oldWrapT);
-            glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, &oldMin);
-            glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, &oldMag);
-            if (glGetError() != GL_NO_ERROR) break;
+            // The SDL texture's scale mode was selected in DrawSprite above.
+            // The first draw records its wrap mode; our private quad restores it,
+            // and SDL changes only min/mag filtering between scene/HUD copies.
+            auto sampler = parallaxSampler_.find(sprite.texture);
+            if (sampler == parallaxSampler_.end() || sampler->second.object != object) {
+                while (glGetError() != GL_NO_ERROR) {}
+                glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, &oldWrapS);
+                glGetTexParameteriv(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, &oldWrapT);
+                if (glGetError() != GL_NO_ERROR) break;
+                parallaxSampler_[sprite.texture] = {object, oldWrapS, oldWrapT};
+            } else {
+                oldWrapS = sampler->second.wrapS;
+                oldWrapT = sampler->second.wrapT;
+            }
+            SDL_ScaleMode scaleMode = SDL_ScaleModeNearest;
+            if (SDL_GetTextureScaleMode(texture, &scaleMode) != 0) break;
+            oldMin = oldMag = scaleMode == SDL_ScaleModeLinear ? GL_LINEAR : GL_NEAREST;
             samplerChanged = true;
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-            if (glGetError() != GL_NO_ERROR) break;
             glUseProgram(0);
             glEnable(GL_TEXTURE_2D);
             glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
@@ -439,7 +468,6 @@ public:
             glMatrixMode(GL_PROJECTION); glPushMatrix(); projectionPushed = true; glLoadIdentity();
             glOrtho(0, 1280, 720, 0, -1, 1);
             glMatrixMode(GL_MODELVIEW); glPushMatrix(); modelviewPushed = true; glLoadIdentity();
-            if (glGetError() != GL_NO_ERROR) break;
             const float x[4] = {destination.x, destination.x + destination.w,
                                 destination.x + destination.w, destination.x};
             const float y[4] = {destination.y, destination.y,
@@ -699,6 +727,7 @@ public:
         worldZoom_ = 1.f;
         if (!sepiaProgram_) return; // Only the explicit test-only software path.
         SDL_RenderFlush(renderer_);
+        if (sceneTarget_ && SDL_SetRenderTarget(renderer_, nullptr) != 0) return;
         int width = 0, height = 0;
         SDL_GetRendererOutputSize(renderer_, &width, &height);
         if (width <= 0 || height <= 0) return;
@@ -707,18 +736,21 @@ public:
         glGetIntegerv(GL_CURRENT_PROGRAM, &oldProgram);
         glGetIntegerv(GL_MATRIX_MODE, &oldMatrixMode);
         glGetIntegerv(GL_ACTIVE_TEXTURE, &oldActiveTexture);
-        glPushAttrib(GL_ALL_ATTRIB_BITS);
+        glPushAttrib(GL_ENABLE_BIT | GL_COLOR_BUFFER_BIT | GL_TEXTURE_BIT | GL_VIEWPORT_BIT);
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, sepiaTexture_);
-        // Copy the already-composited scene on the GPU. No CPU readback or
-        // per-sprite shader approximation; HUD is drawn after this pass.
-        if (width != sepiaWidth_ || height != sepiaHeight_) {
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0,
-                         GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-            sepiaWidth_ = width;
-            sepiaHeight_ = height;
+        float sceneU = 1.f, sceneV = 1.f;
+        if (sceneTarget_ && SDL_GL_BindTexture(sceneTarget_, &sceneU, &sceneV) != 0) {
+            glPopAttrib(); glActiveTexture(oldActiveTexture); return;
         }
-        glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, width, height);
+        if (!sceneTarget_) {
+            glBindTexture(GL_TEXTURE_2D, sepiaTexture_);
+            if (width != sepiaWidth_ || height != sepiaHeight_) {
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0,
+                             GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+                sepiaWidth_ = width; sepiaHeight_ = height;
+            }
+            glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, width, height);
+        }
         glViewport(0, 0, width, height);
         glDisable(GL_BLEND);
         glDisable(GL_DEPTH_TEST);
@@ -731,13 +763,17 @@ public:
         glPushMatrix();
         glLoadIdentity();
         glUseProgram(sepiaProgram_);
+        // SDL target textures are inverted relative to framebuffer copies.
+        const float bottomV = sceneTarget_ ? sceneV : 0.f;
+        const float topV = sceneTarget_ ? 0.f : 1.f;
         glBegin(GL_TRIANGLE_STRIP);
-        glTexCoord2f(0, 0); glVertex2f(-1, -1);
-        glTexCoord2f(1, 0); glVertex2f( 1, -1);
-        glTexCoord2f(0, 1); glVertex2f(-1,  1);
-        glTexCoord2f(1, 1); glVertex2f( 1,  1);
+        glTexCoord2f(0, bottomV); glVertex2f(-1, -1);
+        glTexCoord2f(sceneU, bottomV); glVertex2f( 1, -1);
+        glTexCoord2f(0, topV); glVertex2f(-1,  1);
+        glTexCoord2f(sceneU, topV); glVertex2f( 1,  1);
         glEnd();
         glUseProgram(static_cast<GLuint>(oldProgram));
+        if (sceneTarget_) SDL_GL_UnbindTexture(sceneTarget_);
         glMatrixMode(GL_MODELVIEW);
         glPopMatrix();
         glMatrixMode(GL_PROJECTION);
@@ -1071,6 +1107,13 @@ private:
         std::cerr << "Sepia.fx GPU postprocess initialized (scene before HUD)\n";
         return true;
     }
+    struct ParallaxMetadata {
+        GLint object, width, height;
+        bool npotTexture, npotSupported;
+    };
+    std::unordered_map<TextureId, ParallaxMetadata> parallaxMetadata_;
+    struct ParallaxSampler { GLint object, wrapS, wrapT; };
+    std::unordered_map<TextureId, ParallaxSampler> parallaxSampler_;
     bool testAllowSoftware_ = false;
     bool sceneSamplingPhase_ = false;
     float worldZoom_ = 1.f;
@@ -1080,6 +1123,7 @@ private:
     SDL_Window* window_ = nullptr;
     SDL_Renderer* renderer_ = nullptr;
     GLuint sepiaProgram_ = 0, sepiaTexture_ = 0;
+    SDL_Texture* sceneTarget_ = nullptr;
     GLuint pixelWobbleProgram_ = 0;
     GLuint damageBurstProgram_ = 0;
     int sepiaWidth_ = 0, sepiaHeight_ = 0;
