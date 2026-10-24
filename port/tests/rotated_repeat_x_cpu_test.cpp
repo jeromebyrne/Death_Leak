@@ -69,9 +69,16 @@ int main() {
                 assert(near(ru,su) && near(rv,sv));
                 const int ci=int(std::floor(frac(ru)*7))%7;
                 const int ri=int(std::floor(frac(rv)*5))%5;
+                const int submittedCol=int(std::floor(frac(su)*7))%7;
+                const int submittedRow=int(std::floor(frac(sv)*5))%5;
                 const Pixel prior{3,5,7,255};
-                const Pixel base=over(pattern(ci,ri),prior,.5f);
-                const Pixel later=over({200,10,20,128},base);
+                const Pixel expected=over(pattern(ci,ri),prior,.5f);
+                const Pixel actual=over(pattern(submittedCol,submittedRow),prior,.5f);
+                assert(expected.r==actual.r && expected.g==actual.g &&
+                       expected.b==actual.b);
+                const Pixel later=over({200,10,20,128},actual);
+                const Pixel expectedLater=over({200,10,20,128},expected);
+                assert(later.r==expectedLater.r && later.g==expectedLater.g);
                 assert(later.r!=prior.r || later.g!=prior.g);
             }
         }
