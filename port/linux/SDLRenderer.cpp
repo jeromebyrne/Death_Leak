@@ -1,5 +1,6 @@
 #include "../render/Renderer.h"
 #include "RepeatX.h"
+#include "RotatedRepeatX.h"
 #include "UVWrap.h"
 #include "ParallaxUVCommand.h"
 #include "WobbleUV.h"
@@ -240,6 +241,15 @@ public:
             DrawPixelWobble(sprite, texture, destination);
         } else if (sprite.foliageSway.enabled && !sourcePtr) {
             DrawFoliageSway(sprite, texture, authoredDestination);
+        } else if (sceneSamplingPhase_ && sprite.repeatX &&
+                   sprite.rotationDegrees != 0 && !sourcePtr &&
+                   sprite.rgbGain <= 1.f && !sprite.pixelWobble.enabled &&
+                   !sprite.foliageSway.enabled && sprite.uvShiftX == 0 &&
+                   sprite.uvShiftY == 0 &&
+                   std::getenv("DEATHLEAK_TEST_DISABLE_ROTATED_REPEATX") == nullptr &&
+                   DrawRotatedRepeatX(sprite, destination, authoredDestination.w,
+                                      textureWidth, textureHeight)) {
+            // One wrapped private-GL quad at the ordinary painter slot.
         } else if (sprite.repeatX && sprite.rotationDegrees == 0 && !sourcePtr) {
             int width = 0, height = 0;
             SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
@@ -277,6 +287,69 @@ public:
                               sprite.rotationDegrees, nullptr, flip);
         ++drawCalls_;
         copySeconds_ += std::chrono::duration<double>(std::chrono::steady_clock::now()-began).count();
+    }
+    bool DrawRotatedRepeatX(const Sprite& sprite, const SDL_FRect& destination,
+                            float authoredWidth, int textureWidth, int textureHeight) {
+        RotatedRepeatXQuad quad{};
+        if (textureHeight <= 0 || !MakeRotatedRepeatXQuad(
+                destination.x, destination.y, destination.w, destination.h,
+                authoredWidth, textureWidth, sprite.rotationDegrees,
+                sprite.flipX, sprite.flipY, quad) ||
+            !std::isfinite(sprite.opacity) || sprite.opacity < 0.f ||
+            !SDL_GL_GetCurrentContext()) return false;
+        SDL_RendererInfo info{};
+        if (SDL_GetRendererInfo(renderer_, &info) != 0 || !info.name ||
+            std::strcmp(info.name, "opengl") != 0) return false;
+        if (SDL_RenderFlush(renderer_) != 0) return false;
+        const GLuint name = WobbleMipTexture(sprite.texture);
+        if (!name) return false; // Explicit legacy stretched-copy fallback.
+        GLint oldProgram = 0, oldMatrixMode = 0, oldActiveTexture = 0, oldBinding = 0;
+        glGetIntegerv(GL_CURRENT_PROGRAM, &oldProgram);
+        glGetIntegerv(GL_MATRIX_MODE, &oldMatrixMode);
+        glGetIntegerv(GL_ACTIVE_TEXTURE, &oldActiveTexture);
+        glPushAttrib(GL_ALL_ATTRIB_BITS);
+        glActiveTexture(GL_TEXTURE0);
+        glGetIntegerv(GL_TEXTURE_BINDING_2D, &oldBinding);
+        glBindTexture(GL_TEXTURE_2D, name);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glUseProgram(0);
+        glEnable(GL_TEXTURE_2D);
+        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glDisable(GL_DEPTH_TEST);
+        glDisable(GL_CULL_FACE);
+        glDisable(GL_ALPHA_TEST);
+        glColor4f(sprite.tint.r / 255.f, sprite.tint.g / 255.f,
+                  sprite.tint.b / 255.f, sprite.tint.a / 255.f * sprite.opacity);
+        glMatrixMode(GL_PROJECTION); glPushMatrix(); glLoadIdentity();
+        glOrtho(0, 1280, 720, 0, -1, 1);
+        glMatrixMode(GL_MODELVIEW); glPushMatrix(); glLoadIdentity();
+        glBegin(GL_QUADS);
+        for (const auto& vertex : quad.vertices) {
+            glTexCoord2f(vertex.u, vertex.v);
+            glVertex2f(vertex.x, vertex.y);
+        }
+        glEnd();
+        const GLenum drawError = glGetError();
+        glMatrixMode(GL_MODELVIEW); glPopMatrix();
+        glMatrixMode(GL_PROJECTION); glPopMatrix();
+        glUseProgram(static_cast<GLuint>(oldProgram));
+        glMatrixMode(oldMatrixMode);
+        glBindTexture(GL_TEXTURE_2D, static_cast<GLuint>(oldBinding));
+        glPopAttrib();
+        glActiveTexture(oldActiveTexture);
+        if (std::getenv("DEATHLEAK_TRACE_ROTATED_REPEATX") &&
+            rotatedRepeatLogged_.insert(sprite.texture).second)
+            std::cerr << "Rotated repeatX texture=" << sprite.texture
+                      << " source=" << textureWidth << "x" << textureHeight
+                      << " u=" << quad.vertices[0].u << "->" << quad.vertices[1].u
+                      << " angle=" << sprite.rotationDegrees
+                      << " backend=private-gl drawError=" << drawError << "\n";
+        return drawError == GL_NO_ERROR;
     }
     bool DrawFractionalParallax(const Sprite& sprite, SDL_Texture* texture,
                                 const SDL_FRect& destination, int logicalWidth, int logicalHeight) {
@@ -1003,6 +1076,7 @@ private:
     TextureId nextId_ = 1;
     std::unordered_map<TextureId, SDL_Texture*> textures_;
     std::unordered_set<TextureId> parallaxLogged_;
+    std::unordered_set<TextureId> rotatedRepeatLogged_;
     std::unordered_map<std::string, TextureId> paths_;
     std::unordered_map<TextureId, std::string> texturePaths_;
     std::unordered_map<TextureId, WobbleMip> wobbleMipTextures_;
