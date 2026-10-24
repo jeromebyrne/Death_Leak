@@ -33,6 +33,19 @@ struct ParticleSpray {
     // A private stream keeps captures reproducible; the Windows global rand()
     // stream also includes earlier level objects and cannot be aligned here.
     std::uint32_t randomState = 0x4c454146u;
+    // Camera2D::IsObjectInView in the original 1280x720 render space.
+    // ID47 has zero rotation/parallax; its XML coordinates and dimensions are
+    // scaled with every GameObject before the camera tests origin then bounds.
+    bool Forest47EmitterInView(float cameraX, float cameraY) const {
+        constexpr float scale = 2.f / 3.f;
+        const float cx = cameraX * scale, cy = cameraY * scale;
+        const float ex = x * scale, ey = y * scale;
+        const float halfW = width * scale * .5f, halfH = height * scale * .5f;
+        if (ex > cx - 640.f && ex < cx + 640.f &&
+            ey > cy - 360.f && ey < cy + 360.f) return true;
+        return ex + halfW > cx - 640.f && ex - halfW < cx + 640.f &&
+               ey + halfH > cy - 360.f && ey - halfH < cy + 360.f;
+    }
     unsigned Random(unsigned limit) {
         randomState = randomState * 1103515245u + 12345u;
         return limit ? (randomState >> 16) % limit : 0;

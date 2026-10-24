@@ -1338,7 +1338,9 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
             const auto& spray = particleSprays_[nextSpray];
             if (spray.depth < depth || (spray.depth == depth && spray.order >= order)) break;
             drawDynamicBefore(spray.depth);
-            if (filter.Draw(spray.xmlId)) spray.Draw(renderer, cameraX, cameraY);
+            if (filter.Draw(spray.xmlId) &&
+                (spray.xmlId != "47" || spray.Forest47EmitterInView(cameraX, cameraY)))
+                spray.Draw(renderer, cameraX, cameraY);
             ++nextSpray;
         }
     };
