@@ -260,7 +260,8 @@ int main(int argc, char** argv) {
         else if (arg == "--simulate-only") simulateOnly = true;
         else if (arg == "--simulate-wall-clock") simulateWallClock = true;
         else if (arg == "--menu-loop") menuLoop = true;
-        else if (arg == "--profile") profile = true;
+        else if (arg == "--profile") { profile = true; showFps = true; }
+        else if (arg == "--debug") showFps = true;
         else if (arg == "--show-fps") showFps = true;
         else if (arg == "--combat-state") combatState = true;
         else if (arg == "--fresh-save-intro") freshSaveIntro = true;
@@ -270,7 +271,7 @@ int main(int argc, char** argv) {
         else if (arg == "--capture-suppress-intro-prompt") suppressIntroPromptDraw = true;
         else if (arg == "--start-encounter" && i + 1 < argc) startEncounter = std::atoi(argv[++i]);
         else if (arg == "--start-hazard" && i + 1 < argc) startHazard = std::atoi(argv[++i]);
-        else { std::cerr << "Usage: deathleak-linux [--frames N] [--capture output.bmp] [--level-preview level.xml | --play level.xml] [--show-fps]\n"; return 2; }
+        else { std::cerr << "Usage: deathleak-linux [--frames N] [--capture output.bmp] [--level-preview level.xml | --play level.xml] [--debug | --show-fps] [--profile]\n"; return 2; }
     }
     if (!atomicFrame415Packet.empty() && !sameRunWaterfallPackets && (capture.empty() || frameLimit != 416 ||
         atomicFrame415Packet == capture || fixedDt <= 0.f || script.empty() || playLevel.empty())) {
@@ -1702,11 +1703,6 @@ int main(int argc, char** argv) {
                 }
                 hud.Draw(*renderer, combat.Health(), combat.MaxHealth(), combat.Focus(), orbBalance, shaderFrame.totalTime - dt);
             }
-            // Port-only diagnostic, hidden from ordinary gameplay and review captures.
-            // It samples wall-clock presented frames, not the capped/fixed game dt.
-            if (showFps) deathleak::game::DrawBitmapText(*renderer,
-                displayedFps >= 0 ? "FPS " + std::to_string(displayedFps) : "FPS --",
-                10.f, 693.f, 2.f, {255,255,255,230});
             if (paperModal)
                 deathleak::game::DrawPaperModal(*renderer, paperTitle, paperDescription,
                     modalBackground, paperBackButton, modalWarmup >= 1.f);
@@ -1738,6 +1734,11 @@ int main(int argc, char** argv) {
                 else renderer->FillRect({0, 0, 1280, 720}, {0, 0, 0, tint.a});
             }
         }
+        // Debug overlay is the final UI layer, including during gameplay modals and fades.
+        // It samples presented wall-clock frames, never the capped/fixed simulation delta.
+        if (showFps) deathleak::game::DrawBitmapText(*renderer,
+            displayedFps >= 0 ? "FPS " + std::to_string(displayedFps) : "FPS --",
+            10.f, 693.f, 2.f, {255,255,255,230});
         // State-derived target: the first Waterfall draw after its loading UI retires.
         if (!atomicPostfadePacket.empty() && currentLevel == "Game/XmlFiles/levels/waterfall_top.xml") {
             if (loadingPhase != LoadingPhase::None) packetSawWaterfallLoading = true;
