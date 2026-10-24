@@ -303,10 +303,11 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
             }
         }
         if (kind == "ParticleSpray") {
-            // Admit only the source-audited forest leaf and three waterfall-top splashes.
+            // Admit only the source-audited forest leaves and three waterfall-top splashes.
             const std::string levelName = std::filesystem::path(path).filename().string();
             const std::string sprayId = object->Attribute("id") ? object->Attribute("id") : "";
-            const bool forestLeaf = levelName == "forest_exploration_1.xml" && sprayId == "47";
+            const bool forestLeaf = (levelName == "forest_exploration_1.xml" && sprayId == "47") ||
+                (levelName == "forest_exploration_2.xml" && sprayId == "37");
             const bool waterfallSplash = levelName == "waterfall_top.xml" &&
                 (sprayId == "49" || sprayId == "50" || sprayId == "51");
             if (!forestLeaf && !waterfallSplash) continue;
@@ -1339,7 +1340,8 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
             if (spray.depth < depth || (spray.depth == depth && spray.order >= order)) break;
             drawDynamicBefore(spray.depth);
             if (filter.Draw(spray.xmlId) &&
-                (spray.xmlId != "47" || spray.Forest47EmitterInView(cameraX, cameraY)))
+                ((spray.xmlId != "47" && spray.xmlId != "37") ||
+                 spray.Forest47EmitterInView(cameraX, cameraY)))
                 spray.Draw(renderer, cameraX, cameraY);
             ++nextSpray;
         }
