@@ -883,9 +883,9 @@ void LevelScene::UpdateVisuals(float dt, float playerX, float playerY, float cam
     for (auto& sprite : sprites_) {
         if (sprite.collected) continue;
         // GameObject builds the world matrix before ParallaxLayer follows camera X.
-        // ID59 always updates; retain its previous position per eligible update,
-        // including schedules with multiple updates or draws per frame.
-        if (sprite.xmlId == "59" && sprite.parallaxLayer && sprite.followCameraX &&
+        // Retain GameObject world-matrix X before ParallaxLayer follows camera,
+        // including schedules with multiple eligible updates per draw.
+        if (sprite.parallaxLayer && sprite.followCameraX &&
             sprite.updateable && sprite.alwaysUpdate) {
             sprite.followWorldX = sprite.x;
             sprite.x = cameraX;
@@ -1361,12 +1361,11 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         if (object.collected || (object.playerShadow && !playerGrounded_) ||
             (object.playerAimLine && aimLineAlpha_ <= 0.f) ||
             !filter.Draw(object.xmlId)) continue;
-        // ParallaxLayer follows the camera before its authored UV scroll. Static
-        // background/foreground sprites use GameObject depth parallax instead.
+        // ParallaxLayer world matrix precedes camera-follow; current camera
+        // coordinates still drive authored UV scroll.
         const float worldX = object.playerAimLine ? playerX + (playerAimLineFacing_ < 0 ? -5.f : 5.f) :
             object.player || object.playerShadow ? playerX :
-            object.parallaxLayer && object.followCameraX ?
-                (object.xmlId == "59" ? object.followWorldX : cameraX) : object.x;
+            object.parallaxLayer && object.followCameraX ? object.followWorldX : object.x;
         const float worldY = object.playerAimLine ? playerY + 25.f :
             object.playerShadow ? playerY - 150.f : object.player ? playerY :
             object.parallaxLayer && object.followCameraY ? cameraY : object.y;

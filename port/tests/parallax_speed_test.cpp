@@ -29,6 +29,10 @@ int main() {
     std::string error;
     assert(scene.Load("Game/XmlFiles/levels/forest_exploration_1.xml", renderer, error));
     auto at = [&](float cameraX) {
+        // Compare settled cameras: each eligible update first builds the world
+        // matrix from the preceding followed X, then stores this camera X.
+        scene.UpdateVisuals(1.f/60.f, scene.PlayerX(), scene.PlayerY(), cameraX, 3400.f);
+        scene.UpdateVisuals(1.f/60.f, scene.PlayerX(), scene.PlayerY(), cameraX, 3400.f);
         renderer.drawn.clear();
         scene.Draw(renderer, cameraX, 3400.f, 0.f, 3400.f);
         assert(renderer.drawn.size() == 3);
