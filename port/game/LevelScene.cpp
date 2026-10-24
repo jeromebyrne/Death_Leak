@@ -1447,7 +1447,11 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
             constexpr float worldToBackbufferY = 720.f / 1080.f;
             object.autoScrollYPhase += object.autoScrollYSpeed * worldToBackbufferY *
                 .001f * (previousRenderedModifiedDelta_ * 60.f);
-            object.autoScrollYPhase -= std::floor(object.autoScrollYPhase);
+            // Pixel wobble uses V in a second sine before texture wrap, so
+            // preserve the source's accumulating V for that nonlinear input.
+            // Ordinary sheets remain wrap-equivalent with a bounded phase.
+            if (!object.pixelWobble.enabled)
+                object.autoScrollYPhase -= std::floor(object.autoScrollYPhase);
             draw.uvShiftY = object.autoScrollYPhase;
         }
         // Cull using the rendered rotated quad, not its unrotated destination.
