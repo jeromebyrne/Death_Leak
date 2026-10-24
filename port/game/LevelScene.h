@@ -29,6 +29,7 @@ struct SceneSprite {
     float scrollStartX = 0, scrollStartY = 0, scrollDistanceX = 0, scrollDistanceY = 0;
     float scrollTime = 0, scrollElapsed = 0, scrollFadeIn = 0, scrollFadeOut = 0;
     float scrollOriginalAlpha = 1.f;
+    float scrollWorldX = 0, scrollWorldY = 0; // ScrollingSprite world matrix precedes its XY lerp.
     bool fadeWhenPlayerOccluded = false, updateable = true, alwaysUpdate = false;
     bool flipX = false, flipY = false, repeatX = false;
     render::FoliageSway foliageSway;

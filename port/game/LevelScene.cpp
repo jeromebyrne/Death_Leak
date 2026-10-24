@@ -569,6 +569,8 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
             sprite.scrollFadeIn = Attr(scroll, "FadeInTime");
             sprite.scrollFadeOut = Attr(scroll, "FadeOutTime");
             sprite.scrollOriginalAlpha = alpha;
+            sprite.scrollWorldX = sprite.x;
+            sprite.scrollWorldY = sprite.y;
         }
         auto* fade = object->FirstChildElement("fade_when_player_occluded");
         sprite.fadeWhenPlayerOccluded = Flag(fade, "value");
@@ -899,6 +901,9 @@ void LevelScene::UpdateVisuals(float dt, float playerX, float playerY, float cam
                  sprite.y + sprite.height * .5f > cameraY - 2000.f &&
                  sprite.y - sprite.height * .5f < cameraY + 2000.f);
             if (inUpdateZone) {
+                // Sprite::Update builds m_world before ScrollingSprite changes XY.
+                sprite.scrollWorldX = sprite.x;
+                sprite.scrollWorldY = sprite.y;
                 sprite.scrollElapsed += dt;
                 if (sprite.scrollElapsed >= sprite.scrollTime) {
                     sprite.scrollElapsed = 0.f;
@@ -1365,10 +1370,12 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         // coordinates still drive authored UV scroll.
         const float worldX = object.playerAimLine ? playerX + (playerAimLineFacing_ < 0 ? -5.f : 5.f) :
             object.player || object.playerShadow ? playerX :
-            object.parallaxLayer && object.followCameraX ? object.followWorldX : object.x;
+            object.parallaxLayer && object.followCameraX ? object.followWorldX :
+            object.scrolling ? object.scrollWorldX : object.x;
         const float worldY = object.playerAimLine ? playerY + 25.f :
             object.playerShadow ? playerY - 150.f : object.player ? playerY :
-            object.parallaxLayer && object.followCameraY ? cameraY : object.y;
+            object.parallaxLayer && object.followCameraY ? cameraY :
+            object.scrolling ? object.scrollWorldY : object.y;
         float layerX = 1.f, layerY = 1.f;
         if (!object.player && !object.playerShadow && !object.playerAimLine && !object.parallaxLayer) {
             switch (object.depth) {

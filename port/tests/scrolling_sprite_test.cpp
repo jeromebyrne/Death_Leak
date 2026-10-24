@@ -55,9 +55,13 @@ int main() {
     assert(std::abs(one[0].opacity - .5f / 6.f) < 1e-6f);
     assert(std::abs(one[1].opacity - .6f / 6.f) < 1e-6f);
     assert(one[0].opacity != one[0].tint.a / 255.f);
-    near(one[0].destination.x, xFor(789.985352f + 1000.f/45.f));
-    near(one[1].destination.x, xFor(-125.014648f - 750.f/70.f));
-    for (int i = 0; i < 4; ++i) scene.UpdateVisuals(1.f, 0.f, 3400.f, 0.f, 3400.f);
+    near(one[0].destination.x, xFor(789.985352f));
+    near(one[1].destination.x, xFor(-125.014648f));
+    scene.UpdateVisuals(1.f, 0.f, 3400.f, 0.f, 3400.f);
+    const auto two = frame();
+    near(two[0].destination.x, xFor(789.985352f + 1000.f/45.f));
+    near(two[1].destination.x, xFor(-125.014648f - 750.f/70.f));
+    for (int i = 0; i < 3; ++i) scene.UpdateVisuals(1.f, 0.f, 3400.f, 0.f, 3400.f);
     const auto five = frame();
     assert(five[0].tint.a == 106 && five[1].tint.a == 128);
     scene.UpdateVisuals(1.f, 0.f, 3400.f, 0.f, 3400.f);
@@ -75,11 +79,11 @@ int main() {
     assert(beforeReset[0].tint.a == 21);
     scene.UpdateVisuals(1.f, 0.f, 3400.f, 0.f, 3400.f);
     const auto skippedEndpoint = frame(); // elapsed 45 resets, but skips drawing update.
-    near(skippedEndpoint[0].destination.x, beforeReset[0].destination.x);
+    near(skippedEndpoint[0].destination.x, xFor(789.985352f + 1000.f*44.f/45.f));
     assert(skippedEndpoint[0].tint.a == beforeReset[0].tint.a);
     scene.UpdateVisuals(1.f, 0.f, 3400.f, 0.f, 3400.f);
     const auto restarted = frame();
-    near(restarted[0].destination.x, one[0].destination.x);
+    near(restarted[0].destination.x, skippedEndpoint[0].destination.x);
     assert(restarted[0].tint.a == one[0].tint.a);
-    std::cout << "PASS: forest ScrollingSprite 119/122 movement, fade, zone, endpoint\n";
+    std::cout << "PASS: forest ScrollingSprite 119/122 prior-world movement, fade, zone, endpoint\n";
 }
