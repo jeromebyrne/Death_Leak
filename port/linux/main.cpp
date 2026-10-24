@@ -120,7 +120,8 @@ std::string JsonString(const std::string& value) {
 // animation frames and runtime effects loaded by LevelScene.
 class PacketTraceRenderer final : public Renderer {
 public:
-    explicit PacketTraceRenderer(std::unique_ptr<Renderer> inner) : inner_(std::move(inner)) {}
+    explicit PacketTraceRenderer(std::unique_ptr<Renderer> inner, std::string id22Prefix = {})
+        : inner_(std::move(inner)), id22Prefix_(std::move(id22Prefix)) {}
     bool Initialize(const char* title, int width, int height, std::string& error) override {
         return inner_->Initialize(title, width, height, error);
     }
@@ -140,6 +141,18 @@ public:
                               sprite.repeatX, sprite.uvShiftX, sprite.uvShiftY,
                               sprite.foliageSway.enabled, sprite.pixelWobble.enabled});
         }
+        if (sceneTrace_ && !id22Prefix_.empty() && draws_.back().path ==
+            "Game/Media/levels/waterfall_top/ground_blur.png") {
+            std::string error;
+            id22Ordinal_ = static_cast<int>(draws_.size() - 1);
+            preOk_ = inner_->SaveFrame(id22Prefix_ + ".pre.bmp", error);
+            if (!preOk_) id22Error_ = "pre: " + error;
+            inner_->DrawSprite(sprite);
+            error.clear();
+            postOk_ = inner_->SaveFrame(id22Prefix_ + ".post.bmp", error);
+            if (!postOk_) id22Error_ += " post: " + error;
+            return;
+        }
         inner_->DrawSprite(sprite);
     }
     void FillRect(Rect rect, Color color) override { inner_->FillRect(rect, color); }
@@ -153,6 +166,9 @@ public:
         return inner_->SaveFrame(path, error);
     }
     void StartScene() { draws_.clear(); sceneTrace_ = true; }
+    int Id22Ordinal() const { return id22Ordinal_; }
+    bool Id22Captured() const { return preOk_ && postOk_ && id22Ordinal_ >= 0; }
+    const std::string& Id22Error() const { return id22Error_; }
     void StopScene() { sceneTrace_ = false; }
     struct Draw {
         TextureId texture; std::string path; Rect source, destination; Color tint;
@@ -165,6 +181,9 @@ private:
     std::unordered_map<TextureId, std::string> paths_;
     std::vector<Draw> draws_;
     bool sceneTrace_ = false;
+    std::string id22Prefix_, id22Error_;
+    int id22Ordinal_ = -1;
+    bool preOk_ = false, postOk_ = false;
 };
 }
 
@@ -173,6 +192,7 @@ int main(int argc, char** argv) {
     std::string capture;
     std::string atomicFrame415Packet;
     std::string atomicPostfadePacket;
+    std::string atomicId22Prefix;
     std::string sameRunFrame415Capture;
     bool sameRunWaterfallPackets = false;
     std::string levelPreview;
@@ -219,6 +239,7 @@ int main(int argc, char** argv) {
         else if (arg == "--capture" && i + 1 < argc) capture = argv[++i];
         else if (arg == "--atomic-frame415-packet" && i + 1 < argc) atomicFrame415Packet = argv[++i];
         else if (arg == "--atomic-postfade-waterfall-packet" && i + 1 < argc) atomicPostfadePacket = argv[++i];
+        else if (arg == "--atomic-waterfall-id22-prefix" && i + 1 < argc) atomicId22Prefix = argv[++i];
         else if (arg == "--atomic-same-run-waterfall-packets" && i + 4 < argc) {
             sameRunWaterfallPackets = true;
             sameRunFrame415Capture = argv[++i];
@@ -268,6 +289,12 @@ int main(int argc, char** argv) {
         sameRunFrame415Capture == atomicPostfadePacket || atomicFrame415Packet == capture ||
         atomicFrame415Packet == atomicPostfadePacket || capture == atomicPostfadePacket)) {
         std::cerr << "--atomic-same-run-waterfall-packets requires --frames 425, --fixed-dt, --script, --play and four distinct nonempty paths: frame415.bmp frame415.json frame424.bmp frame424.json\n";
+        return 2;
+    }
+    if (!atomicId22Prefix.empty() && (frameLimit != 639 || fixedDt <= 0.f ||
+        script.empty() || playLevel.empty() || capture.empty() ||
+        !atomicPostfadePacket.empty() || !atomicFrame415Packet.empty())) {
+        std::cerr << "--atomic-waterfall-id22-prefix requires --frames 639, --capture, --fixed-dt, --script, --play and no other atomic packet\n";
         return 2;
     }
     if (suppressIntroPromptDraw && capture.empty()) {
@@ -448,8 +475,8 @@ int main(int argc, char** argv) {
     const bool testAllowSoftware = testSoftwareEnv && std::string(testSoftwareEnv) == "1";
     auto renderer = CreateRenderer(testAllowSoftware);
     PacketTraceRenderer* packetTrace = nullptr;
-    if (!atomicPostfadePacket.empty()) {
-        auto traced = std::make_unique<PacketTraceRenderer>(std::move(renderer));
+    if (!atomicPostfadePacket.empty() || !atomicId22Prefix.empty()) {
+        auto traced = std::make_unique<PacketTraceRenderer>(std::move(renderer), atomicId22Prefix);
         packetTrace = traced.get();
         renderer = std::move(traced);
     }
@@ -1628,6 +1655,9 @@ int main(int argc, char** argv) {
             renderer->ApplyScenePostprocess();
             // Windows Game::PostDraw completes before UIManager::Draw. Read back
             // this exact post-sepia/pre-HUD surface on the packet target draw.
+            if (packetTargetDraw && !atomicId22Prefix.empty() && !packetTrace->Id22Captured()) {
+                std::cerr << "ID22 atomic capture failed: " << packetTrace->Id22Error() << " ordinal=" << packetTrace->Id22Ordinal() << '\n'; return 1;
+            }
             if (packetTargetDraw && !renderer->SaveFrame(capture + ".prehud.bmp", error)) {
                 std::cerr << "Pre-HUD capture failed: " << error << '\n'; return 1;
             }
@@ -1854,6 +1884,45 @@ int main(int argc, char** argv) {
             if (fileError) { std::cerr << "Atomic packet JSON commit failed: " << fileError.message() << '\n'; return 1; }
             std::cout << (postfadePacket ? "ATOMIC_POSTFADE_PACKET image=" : "ATOMIC_FRAME415_PACKET image=") << frameCapture << " json=" << packetPath
                       << " sha256=" << imageHash << "\n";
+        }
+        if (!atomicId22Prefix.empty() && frame == frameLimit - 1) {
+            const auto& draws = packetTrace->Draws();
+            const int ordinal = packetTrace->Id22Ordinal();
+            if (currentLevel != "Game/XmlFiles/levels/waterfall_top.xml" ||
+                loadingPhase != LoadingPhase::None || ordinal < 0 ||
+                static_cast<size_t>(ordinal) >= draws.size()) {
+                std::cerr << "ID22 atomic target state invalid\n"; return 1;
+            }
+            const auto& d = draws[ordinal];
+            const std::string pre = atomicId22Prefix + ".pre.bmp";
+            const std::string post = atomicId22Prefix + ".post.bmp";
+            const auto preHash = Sha256File(pre), postHash = Sha256File(post);
+            if (preHash.empty() || postHash.empty()) { std::cerr << "ID22 atomic hashes failed\n"; return 1; }
+            std::ofstream packet(atomicId22Prefix + ".json.tmp", std::ios::trunc);
+            if (!packet) { std::cerr << "ID22 atomic JSON open failed\n"; return 1; }
+            packet << std::setprecision(9) << std::boolalpha
+                   << "{\n  \"schema\": \"linux-waterfall-id22-same-render-v1\",\n"
+                   << "  \"renderOrdinal\": " << frame << ", \"level\": " << JsonString(currentLevel)
+                   << ", \"camera\": [" << drawCameraX << "," << drawCameraY
+                   << "], \"player\": [" << worldX << "," << worldY << "],\n"
+                   << "  \"sceneDrawOrdinal\": " << ordinal
+                   << ", \"texturePath\": " << JsonString(d.path)
+                   << ", \"textureSha256\": " << JsonString(Sha256File(d.path))
+                   << ", \"source\": [" << d.source.x << "," << d.source.y << "," << d.source.width << "," << d.source.height
+                   << "], \"destination\": [" << d.destination.x << "," << d.destination.y << "," << d.destination.width << "," << d.destination.height
+                   << "], \"tint\": [" << int(d.tint.r) << "," << int(d.tint.g) << "," << int(d.tint.b) << "," << int(d.tint.a)
+                   << "], \"opacity\": " << d.opacity << ", \"rotationDegrees\": " << d.rotation
+                   << ", \"flipX\": " << d.flipX << ", \"flipY\": " << d.flipY
+                   << ", \"repeatX\": " << d.repeatX << ", \"uvShift\": [" << d.uvShiftX << "," << d.uvShiftY
+                   << "], \"foliageSway\": " << d.foliageSway << ", \"pixelWobble\": " << d.pixelWobble
+                   << ",\n  \"pre\": {\"file\": " << JsonString(pre) << ", \"sha256\": " << JsonString(preHash)
+                   << "}, \"post\": {\"file\": " << JsonString(post) << ", \"sha256\": " << JsonString(postHash)
+                   << "}, \"final\": {\"file\": " << JsonString(capture) << ", \"sha256\": " << JsonString(Sha256File(capture))
+                   << "}, \"captureStage\": \"scene_pre_and_post_draw_before_sepia\", \"width\": 1280, \"height\": 720}\n";
+            packet.close();
+            if (!packet) { std::cerr << "ID22 atomic JSON write failed\n"; return 1; }
+            std::filesystem::rename(atomicId22Prefix + ".json.tmp", atomicId22Prefix + ".json");
+            std::cout << "ATOMIC_ID22_PACKET ordinal=" << ordinal << " pre=" << preHash << " post=" << postHash << '\n';
         }
         renderer->EndFrame();
 #ifdef DEATHLEAK_TEST_LOADING_FADE_OBSERVER
