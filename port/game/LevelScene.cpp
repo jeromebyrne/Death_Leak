@@ -77,8 +77,11 @@ struct SpriteRenderFilter {
     // Both are off by default; when both are set, both conditions apply.
     std::unordered_set<std::string> only = DiagnosticIds("DEATHLEAK_RENDER_ONLY_XML_IDS");
     std::unordered_set<std::string> hide = DiagnosticIds("DEATHLEAK_RENDER_HIDE_XML_IDS");
-    bool Draw(const std::string& id) const {
-        return (only.empty() || only.count(id)) && !hide.count(id);
+    std::string hideLevel = std::getenv("DEATHLEAK_RENDER_HIDE_XML_IDS_LEVEL") ?
+        std::getenv("DEATHLEAK_RENDER_HIDE_XML_IDS_LEVEL") : "";
+    bool Draw(const std::string& id, const std::string& level) const {
+        return (only.empty() || only.count(id)) &&
+            ((hideLevel.empty() || hideLevel == level) ? !hide.count(id) : true);
     }
 };
 const SpriteRenderFilter& DiagnosticRenderFilter() {
@@ -123,6 +126,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     trace("xml parsed");
     auto* level = document.RootElement();
     if (!level || std::string(level->Value()) != "level") { error = "Not a Death Leak level: " + path; return false; }
+    levelPath_ = path;
     playerVisualWidth_ = playerVisualHeight_ = 0;
     introBodyPhase_ = IntroBodyPhase::None; introBodyFinished_ = false;
     playerSequences_.clear(); playerSequence_.clear(); playerFrame_ = 0; playerFrameElapsed_ = 0; impactVisualFinished_ = false; playerFacing_= playerAimLineFacing_ = 1; playerAimLineRotation_ = 0.f;
@@ -1345,7 +1349,7 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
             const auto& spray = particleSprays_[nextSpray];
             if (spray.depth < depth || (spray.depth == depth && spray.order >= order)) break;
             drawDynamicBefore(spray.depth);
-            if (filter.Draw(spray.xmlId) &&
+            if (filter.Draw(spray.xmlId, levelPath_) &&
                 ((spray.xmlId != "47" && spray.xmlId != "37") ||
                  spray.Forest47EmitterInView(cameraX, cameraY)))
                 spray.Draw(renderer, cameraX, cameraY);
@@ -1366,7 +1370,7 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         drawDynamicBefore(object.depth);
         if (object.collected || (object.playerShadow && !playerGrounded_) ||
             (object.playerAimLine && aimLineAlpha_ <= 0.f) ||
-            !filter.Draw(object.xmlId)) continue;
+            !filter.Draw(object.xmlId, levelPath_)) continue;
         // ParallaxLayer world matrix precedes camera-follow; current camera
         // coordinates still drive authored UV scroll.
         const float worldX = object.playerAimLine ? playerX + (playerAimLineFacing_ < 0 ? -5.f : 5.f) :

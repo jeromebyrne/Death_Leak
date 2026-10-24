@@ -305,6 +305,7 @@ private:
     bool playerGrounded_ = false;
     bool playerCrouching_ = false, playerWasCrouching_ = false;
     float aimLineHold_ = 0.f, aimLineAlpha_ = 0.f;
+    std::string levelPath_;
     float cameraX_ = 0, cameraY_ = 0;
     float cameraOffsetX_ = 0, cameraOffsetY_ = 0;
     float cameraLagX_ = 7.5f, cameraLagY_ = 15.f, cameraZoom_ = 1.f;
