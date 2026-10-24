@@ -2,6 +2,7 @@
 #include "../render/Renderer.h"
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 namespace deathleak::game {
 // Small renderer-neutral five-by-seven UI font; no backend font dependency.
@@ -55,14 +56,17 @@ inline void DrawBitmapText(render::Renderer& renderer, const std::string& label,
         {':',"00000001000010000000001000010000000"},
         {'/',"00001000010001000100010001000000000"}
     };
+    std::vector<render::Rect> pixels;
+    pixels.reserve(label.size() * 20);
     for (char c : label) {
         auto found = glyphs.find(c);
         if (found != glyphs.end())
             for (int row = 0; row < 7; ++row)
                 for (int col = 0; col < 5; ++col)
                     if (found->second[row*5+col] == '1')
-                        renderer.FillRect({x+col*scale,y+row*scale,scale,scale}, color);
+                        pixels.push_back({x+col*scale,y+row*scale,scale,scale});
         x += 6*scale;
     }
+    if (!pixels.empty()) renderer.FillRects(pixels.data(), pixels.size(), color);
 }
 }

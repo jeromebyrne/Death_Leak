@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <cstddef>
 #include <cmath>
 #include <memory>
 #include <string>
@@ -81,6 +82,9 @@ public:
     virtual void SetWorldZoom(float zoom) { (void)zoom; }
     virtual void DrawSprite(const Sprite& sprite) = 0;
     virtual void FillRect(Rect rect, Color color) = 0;
+    virtual void FillRects(const Rect* rects, std::size_t count, Color color) {
+        for (std::size_t i = 0; i < count; ++i) FillRect(rects[i], color);
+    }
     // Apply the original Sepia.fx to the scene before UI is drawn.
     virtual void ApplyScenePostprocess() = 0;
     virtual void EndFrame() = 0;

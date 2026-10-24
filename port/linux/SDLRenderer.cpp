@@ -722,6 +722,17 @@ public:
         SDL_FRect box = ProjectWorld({rect.x, rect.y, rect.width, rect.height});
         SDL_RenderFillRectF(renderer_, &box);
     }
+    void FillRects(const Rect* rects, std::size_t count, Color color) override {
+        if (!count) return;
+        std::vector<SDL_FRect> boxes;
+        boxes.reserve(count);
+        for (std::size_t i = 0; i < count; ++i) {
+            SDL_FRect rect{rects[i].x, rects[i].y, rects[i].width, rects[i].height};
+            boxes.push_back(ProjectWorld(rect));
+        }
+        SDL_SetRenderDrawColor(renderer_, color.r, color.g, color.b, color.a);
+        SDL_RenderFillRectsF(renderer_, boxes.data(), static_cast<int>(boxes.size()));
+    }
     void ApplyScenePostprocess() override {
         sceneSamplingPhase_ = false;
         worldZoom_ = 1.f;
