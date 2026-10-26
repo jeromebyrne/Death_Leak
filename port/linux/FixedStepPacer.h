@@ -25,6 +25,11 @@ public:
     bool Due() const { return pending_ > 0; }
     void Consume() { --pending_; }
     bool PresentNow() const { return pending_ == 0; }
+    // Fraction of the next fixed step elapsed after all due updates are consumed.
+    // Read-only: display-only slots must not advance gameplay or shader clocks.
+    double PresentationAlpha() const {
+        return pending_ ? 0.0 : std::clamp(remainder_ / StepSeconds, 0.0, 1.0);
+    }
     double UntilNextSeconds() const { return std::max(0.0, StepSeconds - remainder_); }
     unsigned long long DroppedSteps() const { return dropped_; }
 private:

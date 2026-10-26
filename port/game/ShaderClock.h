@@ -18,6 +18,9 @@ public:
         else if (reversing_ && pixelWobbleTime_ < 5.f) reversing_ = false;
         return {totalTime_, pixelWobbleTime_};
     }
+    // A repeated/interpolated presentation may inspect these clocks, but must not
+    // call Draw() again: that would advance authored pixel-wobble phase.
+    ShaderClockSnapshot PresentationSnapshot() const { return {totalTime_, pixelWobbleTime_}; }
     void RenderCompleted(float modifiedDelta) { previousRenderDelta_ = modifiedDelta; }
     bool Reversing() const { return reversing_; }
 private:
