@@ -1,5 +1,6 @@
 #include "../game/CameraShake.h"
 #include <cassert>
+#include <cstdlib>
 #include <cmath>
 #include <iostream>
 using deathleak::game::CameraShake;
@@ -9,7 +10,11 @@ int main() {
     float x=100, y=200;
     auto log = [&](const char* event, int frame, float clock, int sign) {
         const float baseX=x, baseY=y;
-        const auto sample=shake.Update(clock,1.f,true,false,sign,1,x,y);
+        shake.Prepare(clock,1.f,true,false,sign,1,x,y);
+        const auto sample=shake.PresentationSample();
+        const auto repeated=shake.PresentationSample();
+        assert(near(sample.viewX,repeated.viewX) && near(sample.storedX,repeated.storedX));
+        assert(near(x,sample.storedX) && near(y,sample.storedY));
         std::cout << event << " frame=" << frame << " base=(" << baseX << ',' << baseY
                   << ") active=" << sample.active << " remaining=" << sample.remaining
                   << " stored=(" << sample.storedX << ',' << sample.storedY
@@ -30,7 +35,28 @@ int main() {
     auto final=log("expiry",78,1.3f,1); assert(!final.active && near(final.storedX,final.viewX));
     assert(shake.StartMedium(1.4f));
     x=100; y=200;
-    auto noFollow=shake.Update(1.4f,1.f,false,false,1,-1,x,y);
+    shake.Prepare(1.4f,1.f,false,false,1,-1,x,y);
+    auto noFollow=shake.PresentationSample();
     assert(near(noFollow.storedX,100) && near(noFollow.storedY,200));
     shake.Reset(); assert(!shake.Active());
+    // A presentation-only read must neither perturb camera coordinates nor
+    // consume the process RNG used by subsequent simulation effects.
+    shake.StartMedium(2.f);
+    std::srand(7331);
+    const int signX = (std::rand() & 1) ? 1 : -1;
+    const int signY = (std::rand() & 1) ? 1 : -1;
+    x = 100; y = 200;
+    shake.Prepare(2.f, 1.f, true, true, signX, signY, x, y);
+    const auto prepared = shake.PresentationSample();
+    const int expectedNext = std::rand();
+    std::srand(7331);
+    (void)std::rand(); (void)std::rand();
+    for (int i = 0; i < 1000; ++i) {
+        const auto present = shake.PresentationSample();
+        assert(near(present.viewX, prepared.viewX) && near(present.viewY, prepared.viewY));
+        assert(near(present.storedX, prepared.storedX) && near(present.storedY, prepared.storedY));
+        assert(near(x, prepared.storedX) && near(y, prepared.storedY));
+    }
+    assert(std::rand() == expectedNext);
+
 }

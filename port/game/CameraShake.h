@@ -20,7 +20,7 @@ public:
         return true;
     }
     bool StartMedium(float totalTime) { return Start(15.f, 0.30f, totalTime); }
-    Sample Update(float totalTime, float timeModifier, bool followX, bool followY,
+    void Prepare(float totalTime, float timeModifier, bool followX, bool followY,
                   int signX, int signY, float& cameraX, float& cameraY) {
         const float viewX = cameraX, viewY = cameraY;
         float remaining = 0.f;
@@ -33,11 +33,13 @@ public:
                 if (followY) cameraY += (signY < 0 ? -amount : amount);
             }
         }
-        return {viewX, viewY, cameraX, cameraY, remaining, active_};
+        prepared_ = {viewX, viewY, cameraX, cameraY, remaining, active_};
     }
+    Sample PresentationSample() const { return prepared_; }
     bool Active() const { return active_; }
     bool WillJitter(float totalTime) const { return active_ && totalTime < start_ + duration_; }
 private:
+    Sample prepared_{};
     bool active_ = false;
     float start_ = 0.f;
     float intensity_ = 15.f;

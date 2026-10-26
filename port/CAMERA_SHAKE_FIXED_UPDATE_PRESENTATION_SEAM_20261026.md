@@ -1,0 +1,11 @@
+# Fixed-update camera-shake presentation seam — 2026-10-26
+
+Base: `35b2780754d2aeab77b9ed787b65f562e214083d`; isolated clean detached source and baseline worktrees. Primary seven unrelated dirty tracked paths were not used as build input or staged.
+
+`CameraShake::Prepare` now owns camera mutation and records a view sample once per fixed update before the live catch-up/present decision. The painter calls only `PresentationSample() const`. Original view-before-perturb ordering, X-then-Y conditional `rand()` signs, start/expiry rule, follow flags and `cameraShakeTime - dt` input are unchanged on the fixed-60 one-update/one-present route. On live multi-update catch-up, the prior code skipped shake/RNG on intermediate updates; this change intentionally prepares each fixed update, so catch-up RNG/camera history can differ. This is the necessary semantic tradeoff for update-free presentation purity and is not a blanket deterministic replay claim for overloaded live pacing.
+
+The C++17 focused camera-shake CPU test checks initial/active/expiry/follow behavior and 1,000 repeated presentation reads: camera coordinates and the next global RNG value remain unchanged. Isolated Docker production build and `git diff --check` passed. No extra display-frame loop was added.
+
+Physical pixel gate: identical **test-only** `frame*1000/60` film-clock substitutions in clean baseline and candidate (not committed), separately Docker-built. Serial `DISPLAY=:0` Xorg/OpenGL Mesa nouveau NVE7 (`accelerated=1 software=0 vsync=1`) at 1280×720, fixed-dt 60-Hz fresh-save forest-1 held-Interact `I:100`, post-HUD frame 100 A/B/A BMPs had identical SHA-256 `e717d9c2358438b4001ddec1e8a3732fc0bf169d00976bdd1d23df03902b48eb` and 0 changed pixels. Player/vitals/balance summaries match. This route is before authored held-pull transition at frame 165 and exercises intro camera-shake preparation. The test-only film-clock substitution was removed before final native-clock production build. BMP/log evidence is in ignored primary `port/build/camera-shake-20261026/`.
+
+Exact synced fixed-60 parity does not prove arbitrary native film wall-clock pixel equality, new >60-Hz output, 8K, sustained FPS or release acceptance. Shader-clock Draw, resource residency, and render packet/capture side effects remain separate presentation impurities.

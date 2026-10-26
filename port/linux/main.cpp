@@ -1612,6 +1612,13 @@ int main(int argc, char** argv) {
             auto& selectedFilm = currentLevel == "Game/XmlFiles/levels/sea_2.xml" ? finalFilm : gameplayFilm;
             selectedFilm.Prepare(static_cast<std::uint64_t>(filmNowMilliseconds), filmFrames.size());
         }
+        // Prepare camera shake on each fixed update. X then Y consume the original
+        // conditional rand() signs; presentation only reads the prepared view.
+        const bool jitter = cameraShake.WillJitter(cameraShakeTime - dt);
+        const int shakeSignX = jitter && scene.CameraFollowX() ? ((std::rand() & 1) ? 1 : -1) : 1;
+        const int shakeSignY = jitter && scene.CameraFollowY() ? ((std::rand() & 1) ? 1 : -1) : 1;
+        cameraShake.Prepare(cameraShakeTime - dt, 1.f, scene.CameraFollowX(), scene.CameraFollowY(),
+            shakeSignX, shakeSignY, cameraX, cameraY);
         // Advance the visual/shader clocks for every simulation step, including
         // intermediate catch-up steps. The display retains its last image until
         // the final state in this batch is ready to present.
@@ -1621,12 +1628,7 @@ int main(int argc, char** argv) {
             shaderClock.RenderCompleted(dt);
             continue;
         }
-        // Camera2D draws X's random sign before Y's, only while shaking.
-        const bool jitter = cameraShake.WillJitter(cameraShakeTime - dt);
-        const int shakeSignX = jitter && scene.CameraFollowX() ? ((std::rand() & 1) ? 1 : -1) : 1;
-        const int shakeSignY = jitter && scene.CameraFollowY() ? ((std::rand() & 1) ? 1 : -1) : 1;
-        const auto shakeView = cameraShake.Update(cameraShakeTime - dt, 1.f, scene.CameraFollowX(), scene.CameraFollowY(),
-            shakeSignX, shakeSignY, cameraX, cameraY);
+        const auto shakeView = cameraShake.PresentationSample();
         const float drawCameraX = shakeView.viewX, drawCameraY = shakeView.viewY;
         const auto shaderFrame = shaderClock.Draw();
         renderer->BeginFrame({0, 0, 0, 255});
