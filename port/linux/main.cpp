@@ -8,6 +8,7 @@
 #include "PresentationCommandPacket.h"
 #include "RefreshPresentationService.h"
 #include "FullFrameInterpolationGate.h"
+#include "FreshPresentationPacket.h"
 #include "MixedCommandInterpolationGate.h"
 #include "RealSceneTopologyCapture.h"
 #include "RefreshSlotScheduler.h"
@@ -564,6 +565,7 @@ int main(int argc, char** argv) {
     auto renderer = CreateRenderer(testAllowSoftware);
     deathleak::linux_port::PresentationRecordingRenderer* repeatRecorder = nullptr;
     deathleak::linux_port::FullFrameSnapshot priorFullFrame;
+    deathleak::linux_port::FreshPresentationPacket freshPresentation;
     bool hasPriorFullFrame = false;
     PacketTraceRenderer* packetTrace = nullptr;
     if (!atomicPostfadePacket.empty() || !atomicId22Prefix.empty()) {
@@ -2210,14 +2212,24 @@ int main(int argc, char** argv) {
                 std::cout << "FULL_FRAME_TOPOLOGY frame=" << frame << " commands=" << frameSnapshot.packet.Size()
                           << " sprites=" << tagged << '/' << total << " decision=" << int(decision) << '\n';
             }
+            freshPresentation.Seal(frameSnapshot, {worldX, worldY, drawCameraX, drawCameraY, presentationSceneGeneration});
             if (!mixedReplayPrefix.empty() && frame == mixedReplayFrame && hasPriorFullFrame) {
                 // Diagnostic-only: replay complete sealed packets into the same SDL scene
                 // target and unswapped output backbuffer. Begin/Zoom/postprocess, blend,
                 // shaders and painter order are executed afresh for each arm. No arm is
                 // presented; the next ordinary BeginFrame replaces the backbuffer.
                 const auto current = frameSnapshot.packet;
-                const auto alphaOne = deathleak::linux_port::SampleMixedCommands(priorFullFrame,frameSnapshot,1.f);
-                const auto half = deathleak::linux_port::SampleMixedCommands(priorFullFrame,frameSnapshot,.5f);
+                const auto alphaOne = freshPresentation.Sample(1.0);
+                const auto half = freshPresentation.Sample(0.5);
+                const auto halfAgain = freshPresentation.Sample(0.5);
+                if (half.packet.Commands().size() != halfAgain.packet.Commands().size() ||
+                    half.sampledCommands != halfAgain.sampledCommands) {
+                    std::cerr << "Fresh presentation repeat changed packet topology\n"; return 1;
+                }
+                std::cout << "FRESH_PRESENTATION frame=" << frame
+                          << " sampled=" << half.sampledCommands
+                          << " poseX=" << half.pose.playerX
+                          << " cameraX=" << half.pose.cameraX << '\n';
                 const auto captureReplay = [&](const auto& packet, const char* label) {
                     repeatRecorder->ReplayPacket(packet);
                     const std::string path = mixedReplayPrefix + "." + label + ".bmp";
@@ -2229,8 +2241,9 @@ int main(int argc, char** argv) {
                               << " commands=" << packet.Size() << " sha256=" << Sha256File(path) << '\n';
                     return true;
                 };
-                if (!captureReplay(current,"current") || !captureReplay(alphaOne,"alpha1") ||
-                    !captureReplay(half,"alpha05")) return 1;
+                if (!captureReplay(current,"current") || !captureReplay(alphaOne.packet,"alpha1") ||
+                    !captureReplay(half.packet,"alpha05") ||
+                    !captureReplay(halfAgain.packet,"alpha05again")) return 1;
             }
             priorFullFrame=std::move(frameSnapshot); hasPriorFullFrame=true;
         }
