@@ -101,10 +101,10 @@ def pack(paths, output, full_rgba=False):
             with Image.open(path) as source:
                 image = source.convert('RGBA').crop((left, top, left + width, top + height))
                 image_page.paste(image, (x + PAD, y + PAD))
-                image_page.paste(image.crop((0, 0, 1, height)).resize((PAD, height)), (x, y + PAD))
-                image_page.paste(image.crop((width - 1, 0, width, height)).resize((PAD, height)), (x + PAD + width, y + PAD))
-                image_page.paste(image.crop((0, 0, width, 1)).resize((width, PAD)), (x + PAD, y))
-                image_page.paste(image.crop((0, height - 1, width, height)).resize((width, PAD)), (x + PAD, y + PAD + height))
+                image_page.paste(image.crop((0, 0, 1, height)).resize((PAD, height), resample=Image.Resampling.NEAREST), (x, y + PAD))
+                image_page.paste(image.crop((width - 1, 0, width, height)).resize((PAD, height), resample=Image.Resampling.NEAREST), (x + PAD + width, y + PAD))
+                image_page.paste(image.crop((0, 0, width, 1)).resize((width, PAD), resample=Image.Resampling.NEAREST), (x + PAD, y))
+                image_page.paste(image.crop((0, height - 1, width, height)).resize((width, PAD), resample=Image.Resampling.NEAREST), (x + PAD, y + PAD + height))
                 for cx, cy, sx, sy in ((x, y, 0, 0), (x + PAD + width, y, width - 1, 0),
                                        (x, y + PAD + height, 0, height - 1),
                                        (x + PAD + width, y + PAD + height, width - 1, height - 1)):
@@ -144,6 +144,21 @@ def verify(manifest, output):
                 left, top = texture['trim_offset']
                 if original.size != (ow, oh):
                     raise ValueError(f"source dimensions changed: {source}")
+                # The bilinear footprint can touch the two-pixel padding.
+                # Verify actual edge texels, not just the source rectangle.
+                page = pages[texture['page']]
+                if x < PAD or y < PAD or x + width + PAD > page.width or y + height + PAD > page.height:
+                    raise ValueError(f"missing atlas padding: {source}")
+                top_edge = page.crop((x, y, x + width, y + 1))
+                bottom_edge = page.crop((x, y + height - 1, x + width, y + height))
+                left_edge = page.crop((x, y, x + 1, y + height))
+                right_edge = page.crop((x + width - 1, y, x + width, y + height))
+                for pad in range(1, PAD + 1):
+                    if page.crop((x, y - pad, x + width, y - pad + 1)).tobytes() != top_edge.tobytes() or \
+                       page.crop((x, y + height - 1 + pad, x + width, y + height + pad)).tobytes() != bottom_edge.tobytes() or \
+                       page.crop((x - pad, y, x - pad + 1, y + height)).tobytes() != left_edge.tobytes() or \
+                       page.crop((x + width - 1 + pad, y, x + width + pad, y + height)).tobytes() != right_edge.tobytes():
+                        raise ValueError(f"non-exact atlas edge extrusion: {source}")
                 reconstructed = Image.new('RGBA', (ow, oh))
                 reconstructed.paste(pages[texture['page']].crop((x, y, x + width, y + height)), (left, top))
                 # Hidden RGB in transparent source pixels may be nonzero; only
