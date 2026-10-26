@@ -1,0 +1,21 @@
+# Tree2 blur runtime atlas gate — rejected (2026-10-25)
+
+## Scope and source
+
+Started at HEAD `ba74628`. Sole source/build/physical-NVE7 owner; seven unrelated tracked dirty paths, notably `port/linux/SDLRenderer.cpp`'s raft-mip experiment, were not modified or staged. Control and opt-in candidate were built from clean HEAD renderer in ignored `port/build/atlas-tree-runtime-20261025/`. The candidate added a virtual-ID mapping only for `Game/Media/objects/tree2_blur.png`, reusing the existing atlas-region lookup, source-rectangle integration and shader/wrap dedicated-texture fallback. It did not change painter order or tree2.png, which can minify. The standalone packer was temporarily extended in the ignored experiment to preserve full RGBA rectangles and emitted verified 2-pixel-extruded pages. No packer or runtime edit was retained in production.
+
+The 2-source full-RGBA page was 2015×3304 and reconstructed both PNGs exactly; it is ~26.63 MB uncompressed RGBA versus ~22.08 MB for both dedicated textures. `tree2_blur.png` has a 669×1650 full source rectangle, 98..555 × 67..1650 nonzero alpha bbox, and 12 authored references across Forest/Waterfall. A blur-only full-RGBA page is 673×1654 (~4.45 MB versus ~4.42 MB dedicated). PNG crops were byte-identical; full rectangle avoids geometry changes from alpha trim. The page directory and generated manifest/TSV remain in ignored build output only.
+
+## Physical serial gates
+
+Same binary, `DEATHLEAK_ATLAS_TREE_BLUR=on` only in B, serial A/B/A2 on Xorg `:0`, SDL x11/OpenGL accelerated=1/software=0, nouveau NVE7, 180 fixed-dt frames of `forest_exploration_1.xml`, same script and endpoint `(1368.99,3107.3)`. Decoded 1280×720 RGBA captured at frame 179; the readback itself caused a ~52–58-ms last frame and is excluded as a representative latency sample.
+
+- Combined tree2+blur page: A and A2 identical, B differed by **3 RGB channel bytes at 2 pixels** `(1257,606)` and `(1258,606)` (each ±1). Source bytes were equal, so this fails exact runtime parity; page-position/normalized sampler precision is a plausible mechanism, not isolated proof.
+- Blur-only page with the sprite at (2,2): A/B/A2 decoded RGBA **byte-identical**. Physical uninstrumented 60-frame warmup-120 profile p50 A/B/A2 **22.345/22.230/22.280 ms**, p95 **23.088/22.607/23.935 ms**; controls bracket candidate and show no credible sustained improvement. The frame-179 capture/readback dominated p99/max and is not a gameplay tail comparison.
+- Serial physical apitrace A/B/A2 over the same route: `glDrawArrays` **17,474/17,474/17,474**, `glBegin` **1,080/1,080/1,080**, `glBindTexture` **27,080/27,080/27,080**, `glTexImage2D` **395/395/395**. These are full-trace counts, including startup; identical calls imply no submission or bind reduction from this opt-in mapping. Apitrace timings are not FPS evidence.
+
+**Disposition: reject production tree-blur atlas mapping.** The small blur-only page clears exact pixels but increases allocation proxy and leaves GL draw/bind calls unchanged; observed latency overlaps control. The larger combined family page fails exact pixels and increases allocation proxy further. No accepted performance benefit exists. Existing opt-in families remain unchanged. This does not disprove atlas value when paired with compatible consecutive-draw batching, but an atlas-only repeat of this family is not the next task.
+
+## Remaining atlas work and next distinct task
+
+Tree2/tree2_blur remain dedicated (combined-page precision/VRAM; blur-only zero submissions/binds gain). Rock4/rock5 remain dedicated (prior exact minified/rotated RGB failure). Repeat/wrap ground/raft, shifted-UV backgrounds, private fog/water/foliage shaders, render targets, and untested source-rect/animation paths remain exceptions requiring path-specific proof. The broader 896-PNG inventory is not fully classified. Next bounded task: identify a measured run of **compatible consecutive scene draws** and implement a lossless SDL/GL batch for that exact run, retaining blend/tint/sampler/order boundaries; quantify real draw/bind reduction and serial exact pixels before considering broader atlas mapping. Do not repeat the rock or tree page-only tests. No 60-FPS, >60-Hz, 8K, VRAM or release-readiness claim.
