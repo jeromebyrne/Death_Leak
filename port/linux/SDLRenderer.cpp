@@ -209,6 +209,9 @@ public:
         if (const TextureId id = virtualRegion("DEATHLEAK_ATLAS_SCENE_BRANCHES", "Game/Media/objects/branch_",
                                                "port/assets/scene_branches", sceneBranchRegionsLoaded_, sceneBranchRegions_))
             return id;
+        if (const TextureId id = virtualRegion("DEATHLEAK_ATLAS_CART_PROPS", "Game/Media/",
+                                               "port/assets/cart_props", cartPropRegionsLoaded_, cartPropRegions_))
+            return id;
         return LoadDedicatedTexture(path, error, false);
     }
 
@@ -1249,6 +1252,8 @@ private:
     std::unordered_map<std::string, AtlasRegion> hudRegions_;
     bool sceneBranchRegionsLoaded_ = false;
     std::unordered_map<std::string, AtlasRegion> sceneBranchRegions_;
+    bool cartPropRegionsLoaded_ = false;
+    std::unordered_map<std::string, AtlasRegion> cartPropRegions_;
     std::unordered_map<std::string, TextureId> dedicatedPaths_;
     std::unordered_map<TextureId, AtlasRegion> atlasRegions_;
     std::unordered_map<TextureId, SDL_Texture*> textures_;

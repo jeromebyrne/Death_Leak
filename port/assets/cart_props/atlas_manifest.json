@@ -1,0 +1,74 @@
+{
+  "format": "deathleak-atlas-v3",
+  "max_page_size": 4096,
+  "padding": 2,
+  "transparent_guard": 0,
+  "pages": [
+    "atlas_000.png"
+  ],
+  "page_dimensions": [
+    [
+      1032,
+      581
+    ]
+  ],
+  "textures": [
+    {
+      "source": "Game/Media/cart_tracks.png",
+      "sha256": "9260867645ad75cf9513257d6729f7f8ebb005ceffc5adc39d1efe9b7a085ae1",
+      "page": 0,
+      "rect": [
+        2,
+        518,
+        492,
+        61
+      ],
+      "original_size": [
+        492,
+        61
+      ],
+      "trim_offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "source": "Game/Media/objects/cart.png",
+      "sha256": "78cb65a0683cf3dd9350eacae54bfdd05471cae27eb2d91ec21effa3c3d22cf5",
+      "page": 0,
+      "rect": [
+        2,
+        2,
+        512,
+        512
+      ],
+      "original_size": [
+        512,
+        512
+      ],
+      "trim_offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "source": "Game/Media/objects/cart_dark.png",
+      "sha256": "3c9089cb5916f427e97f37b80ad72bad4c0ba797cefedede855120429765459a",
+      "page": 0,
+      "rect": [
+        518,
+        2,
+        512,
+        512
+      ],
+      "original_size": [
+        512,
+        512
+      ],
+      "trim_offset": [
+        0,
+        0
+      ]
+    }
+  ]
+}
