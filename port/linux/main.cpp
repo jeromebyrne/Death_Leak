@@ -4,6 +4,7 @@
 #endif
 #include "../game/LevelScene.h"
 #include "../game/ShaderClock.h"
+#include "FixedStepPacer.h"
 #include "../game/WeatherLightning.h"
 #include "../game/WeatherRain.h"
 #include "../game/Combat.h"
@@ -15,6 +16,7 @@
 #include "../game/Settings.h"
 #include "../audio/SoundPlayer.h"
 #include <chrono>
+#include <thread>
 #include <cstdint>
 #include <unordered_map>
 #include <algorithm>
@@ -235,6 +237,7 @@ int main(int argc, char** argv) {
     bool suppressLandingSprayDraw = false;
     bool suppressIntroPromptDraw = false;
     float fixedDt = 0;
+    int testRefreshHz = 0;
     int windowWidth = 1280, windowHeight = 720;
     for (int i = 1; i < argc; ++i) {
         std::string arg = argv[i];
@@ -278,6 +281,7 @@ int main(int argc, char** argv) {
         else if (arg == "--mouse-script" && i + 1 < argc) mouseScriptFile = argv[++i];
         else if (arg == "--camera-script" && i + 1 < argc) cameraScriptFile = argv[++i];
         else if (arg == "--fixed-dt" && i + 1 < argc) fixedDt = std::atof(argv[++i]);
+        else if (arg == "--test-refresh-hz" && i + 1 < argc) testRefreshHz = std::atoi(argv[++i]);
         else if (arg == "--simulate-only") simulateOnly = true;
         else if (arg == "--simulate-wall-clock") simulateWallClock = true;
         else if (arg == "--menu-loop") menuLoop = true;
@@ -440,6 +444,11 @@ int main(int argc, char** argv) {
     if ((simulateOnly || !script.empty()) && playLevel.empty() && !menuLoop) { std::cerr << "Simulation options require --play\n"; return 2; }
     if (simulateWallClock && (!simulateOnly || fixedDt <= 0.f)) {
         std::cerr << "--simulate-wall-clock requires --simulate-only and --fixed-dt\n"; return 2;
+    }
+    if (testRefreshHz && (!simulateOnly || fixedDt > 0.f || script.empty() || frameLimit <= 0 ||
+                          testRefreshHz < 30 || testRefreshHz > 240)) {
+        std::cerr << "--test-refresh-hz requires --simulate-only, --play, --script, --frames, no --fixed-dt, and 30..240 Hz\n";
+        return 2;
     }
     if (fixedDt < 0 || fixedDt > 0.05f) { std::cerr << "--fixed-dt must be between 0 and 0.05\n"; return 2; }
     std::vector<char> scriptedInput;
@@ -717,13 +726,33 @@ int main(int argc, char** argv) {
     float cameraShakeTime = 0.f;
     auto start = std::chrono::steady_clock::now();
     auto last = std::chrono::steady_clock::now();
+    deathleak::linux_port::FixedStepPacer livePacer(last);
+    const auto testClockStart = last;
+    int testDisplaySlots = 0;
     auto fpsSampleStart = last;
     int presentedFramesInSample = 0;
     int displayedFps = -1;
     for (int frame = 0; !frameLimit || frame < frameLimit; ++frame) {
+        if (renderer->PollQuit()) break;
+        // Scripted/fixed-dt routes retain their historical one-update/one-render
+        // behavior. Live play instead consumes fixed 60-Hz simulation quanta.
+        if (fixedDt <= 0.f) {
+            if (testRefreshHz && !livePacer.Due()) ++testDisplaySlots;
+            const auto tickTime = testRefreshHz ? testClockStart +
+                std::chrono::duration_cast<std::chrono::steady_clock::duration>(
+                    std::chrono::duration<double>(double(testDisplaySlots) / testRefreshHz)) :
+                std::chrono::steady_clock::now();
+            livePacer.Accumulate(tickTime);
+            if (!livePacer.Due()) {
+                if (!testRefreshHz) std::this_thread::sleep_for(std::chrono::duration<double>(
+                    std::min(livePacer.UntilNextSeconds(), 0.002)));
+                --frame;
+                continue;
+            }
+            livePacer.Consume();
+        }
         // Decode the first visible cave layer during Forest traversal; keep GPU allocation on its normal load path.
         if (frame == 120 && currentLevel == "Game/XmlFiles/levels/forest_exploration_1.xml") StartCaveDecodeWorker();
-        if (renderer->PollQuit()) break;
         const ControllerSticks controllerSticks = renderer->ControllerAxes();
         deathleak::game::PlayerStrafeVisual strafeVisual{};
         auto now = std::chrono::steady_clock::now();
@@ -733,9 +762,8 @@ int main(int argc, char** argv) {
             presentedFramesInSample = 0;
             fpsSampleStart = now;
         }
-        float dt = std::chrono::duration<float>(now - last).count();
+        float dt = fixedDt > 0.f ? fixedDt : 1.f / 60.f;
         last = now;
-        if (fixedDt > 0) dt = fixedDt;
 #ifdef DEATHLEAK_TEST_BODY_SLOW_FRAME_COMMAND
         const float requestedDt = dt;
 #endif
@@ -1572,6 +1600,15 @@ int main(int argc, char** argv) {
             combat.MeleeElapsed(), facing, playerProjectileFired, playerEligibleFireAttempt, strafeVisual, stickAim, aimX, aimY, precedingRenderedModifiedDelta, crouchInput, motion.Recovery());
         }
         if (!playLevel.empty() && !objectsPaused && scene.ImpactVisualFinished()) motion.CompleteImpactRecovery();
+        // Advance the visual/shader clocks for every simulation step, including
+        // intermediate catch-up steps. The display retains its last image until
+        // the final state in this batch is ready to present.
+        if (fixedDt <= 0.f && !livePacer.PresentNow()) {
+            precedingRenderedModifiedDelta = dt;
+            shaderClock.Draw(); // Pixel-wobble phase is defined per update, not per present.
+            shaderClock.RenderCompleted(dt);
+            continue;
+        }
         // Camera2D draws X's random sign before Y's, only while shaking.
         const bool jitter = cameraShake.WillJitter(cameraShakeTime - dt);
         const int shakeSignX = jitter && scene.CameraFollowX() ? ((std::rand() & 1) ? 1 : -1) : 1;
@@ -2084,6 +2121,10 @@ int main(int argc, char** argv) {
             }
         }
     }
+    if (testRefreshHz) std::cout << "TEST_REFRESH_HZ=" << testRefreshHz
+                                 << " display_slots=" << testDisplaySlots << '\n';
+    if (fixedDt <= 0.f && livePacer.DroppedSteps())
+        std::cerr << "Fixed-step overload dropped " << livePacer.DroppedSteps() << " update quanta\n";
     StopCaveDecodeWorker();
     return 0;
 }
