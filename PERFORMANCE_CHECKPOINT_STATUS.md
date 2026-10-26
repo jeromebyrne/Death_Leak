@@ -264,3 +264,6 @@ Outcome: exact-staged-source GPU run improved active Forest frame p50 21.9874 ->
 
 ### 2026-10-26 — read-only presentation pose seam; no performance claim
 - Isolated clean-ref player/camera two-tick snapshot and pure midpoint sampler added. Ordinary alpha-1 full post-HUD arena parity held against baseline; offscreen software only. The live refresh service remains last-packet replay, not fresh high-Hz whole-frame motion. Physical `:0` MIT-MAGIC-COOKIE-1 authorization failed; selected >60-Hz, GPU frame-time, sustained FPS, thermal/VRAM and release gates remain open. Atlas/bind microgates paused.
+
+### 2026-10-26 — arena onward combat/transition gate; no performance acceptance
+- Clean-ref scripted normal-control arena enemy-damage→two authored exits test passed at synthetic 60/120/144-Hz slots with identical transition/endpoint state (wall elapsed excluded). Eight player-to-enemy damage events are source/trace-attributed; no kill. This is offscreen functional evidence only, not fresh display-slot pixels, physical >60-Hz selection, GPU frame-time/FPS or release proof. Atlas/bind microgates remain paused.
