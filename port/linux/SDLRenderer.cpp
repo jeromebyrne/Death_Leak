@@ -163,14 +163,16 @@ public:
     TextureId LoadTexture(const std::string& path, std::string& error) override {
         auto cached = paths_.find(path);
         if (cached != paths_.end()) return cached->second;
-        // First atlas family is opt-in until same-present GPU pixel and A/B gates pass.
-        // Each virtual ID retains its authored dimensions and source-rectangle space.
-        const char* atlasFlag = std::getenv("DEATHLEAK_ATLAS_ICONS");
-        if (atlasFlag && std::strcmp(atlasFlag, "on") == 0 &&
-            path.rfind("Game/Media/UI/gamepad_icons/", 0) == 0) {
-            if (!iconRegionsLoaded_) {
-                iconRegionsLoaded_ = true;
-                std::ifstream map("port/assets/gamepad_icons/atlas_regions.tsv");
+        // Opt-in only: each page is shared by virtual IDs but retains its own
+        // authored rectangle. Shader/wrap draws use a dedicated source texture.
+        auto virtualRegion = [&](const char* flag, const char* prefix, const char* directory,
+                                 bool& loaded, std::unordered_map<std::string, AtlasRegion>& regions) -> TextureId {
+            const char* enabled = std::getenv(flag);
+            if (!enabled || std::strcmp(enabled, "on") != 0 || path.rfind(prefix, 0) != 0)
+                return InvalidTexture;
+            if (!loaded) {
+                loaded = true;
+                std::ifstream map(std::string(directory) + "/atlas_regions.tsv");
                 std::string line;
                 while (std::getline(map, line)) {
                     std::istringstream row(line);
@@ -179,23 +181,32 @@ public:
                     if (std::getline(row, name, '\t') &&
                         row >> region.x >> region.y >> region.w >> region.h &&
                         region.w > 0 && region.h > 0)
-                        iconRegions_.emplace(name, region);
+                        regions.emplace(name, region);
                 }
             }
-            const auto region = iconRegions_.find(path);
-            if (region != iconRegions_.end()) {
-                const TextureId page = LoadTexture("port/assets/gamepad_icons/atlas_000.png", error);
-                if (page != InvalidTexture) {
-                    const TextureId id = nextId_++;
-                    textures_.emplace(id, textures_.at(page));
-                    atlasRegions_.emplace(id, region->second);
-                    paths_.emplace(path, id);
-                    texturePaths_.emplace(id, path);
-                    return id;
-                }
-                error.clear(); // Preserve individual-file fallback if atlas is unavailable.
-            }
-        }
+            const auto region = regions.find(path);
+            if (region == regions.end()) return InvalidTexture;
+            const TextureId page = LoadTexture(std::string(directory) + "/atlas_000.png", error);
+            if (page == InvalidTexture) { error.clear(); return InvalidTexture; }
+            const TextureId id = nextId_++;
+            textures_.emplace(id, textures_.at(page));
+            atlasRegions_.emplace(id, region->second);
+            paths_.emplace(path, id);
+            texturePaths_.emplace(id, path);
+            return id;
+        };
+        if (const TextureId id = virtualRegion("DEATHLEAK_ATLAS_ICONS", "Game/Media/UI/gamepad_icons/",
+                                               "port/assets/gamepad_icons", iconRegionsLoaded_, iconRegions_))
+            return id;
+        if (const TextureId id = virtualRegion("DEATHLEAK_ATLAS_HUD", "Game/Media/UI/",
+                                               "port/assets/gameplay_hud", hudRegionsLoaded_, hudRegions_))
+            return id;
+        return LoadDedicatedTexture(path, error, false);
+    }
+
+    TextureId LoadDedicatedTexture(const std::string& path, std::string& error, bool exception) {
+        auto& cache = exception ? dedicatedPaths_ : paths_;
+        if (auto found = cache.find(path); found != cache.end()) return found->second;
         const bool traceTexture = std::getenv("DEATHLEAK_TRACE_TEXTURE_LOAD") != nullptr;
         const auto textureStart = std::chrono::steady_clock::now();
         auto phaseMs = [&] { return std::chrono::duration<double, std::milli>(
@@ -227,7 +238,7 @@ public:
         SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
         TextureId id = nextId_++;
         textures_.emplace(id, texture);
-        paths_.emplace(path, id);
+        cache.emplace(path, id);
         texturePaths_.emplace(id, path);
         return id;
     }
@@ -251,6 +262,25 @@ public:
         auto it = textures_.find(sprite.texture);
         if (it == textures_.end()) return;
         SDL_Texture* texture = it->second;
+        // Repeat/shift and private-GL shaders sample outside the ordinary
+        // source rectangle. Keep their original texture and sampler contract.
+        if (atlasRegions_.count(sprite.texture) &&
+            (sprite.repeatX || sprite.uvShiftX != 0 || sprite.uvShiftY != 0 ||
+             sprite.pixelWobble.enabled || sprite.foliageSway.enabled || sprite.rgbGain > 1.f)) {
+            const auto path = texturePaths_.find(sprite.texture);
+            if (path != texturePaths_.end()) {
+                std::string error;
+                const TextureId original = LoadDedicatedTexture(path->second, error, true);
+                if (original != InvalidTexture) {
+                    Sprite dedicated = sprite;
+                    dedicated.texture = original;
+                    DrawSprite(dedicated);
+                    return;
+                }
+                std::cerr << "Atlas shader/wrap fallback failed: " << error << "\n";
+            }
+            return;
+        }
         SDL_Rect source;
         SDL_Rect* sourcePtr = nullptr;
         const auto atlas = atlasRegions_.find(sprite.texture);
@@ -1191,6 +1221,9 @@ private:
     struct AtlasRegion { int x = 0, y = 0, w = 0, h = 0; };
     bool iconRegionsLoaded_ = false;
     std::unordered_map<std::string, AtlasRegion> iconRegions_;
+    bool hudRegionsLoaded_ = false;
+    std::unordered_map<std::string, AtlasRegion> hudRegions_;
+    std::unordered_map<std::string, TextureId> dedicatedPaths_;
     std::unordered_map<TextureId, AtlasRegion> atlasRegions_;
     std::unordered_map<TextureId, SDL_Texture*> textures_;
     std::unordered_set<TextureId> parallaxLogged_;
