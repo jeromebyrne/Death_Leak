@@ -258,3 +258,6 @@ Outcome: exact-staged-source GPU run improved active Forest frame p50 21.9874 ->
 
 ### 2026-10-26 — clean-current-ref route acceptance; no performance claim
 - Isolated live-ref production build and uninterrupted normal-control forward/door plus arena actual-hit/authored-exit CPU gates passed. Physical Xorg `:0` rejected the available cookie, so no NVE7, selected >60-Hz, frame-time, hardware-input or release result was obtained. Atlas/bind microgates remain off the acceptance path. Sole source/build/GPU lane **released**.
+
+### DONE — arena post-HUD combat-hit functional gate; no performance acceptance — 2026-10-26
+- Two full-frame 1280×720 post-HUD ordinary/repeat/replay byte-exact cases passed at first arena enemy-damage hit and later firing followthrough on clean live-ref production Docker binary. Fixed-60-Hz gameplay and synchronized test film clock only. Physical Xorg authority rejected the available cookie, so no selected >60-Hz, NVE7, frame-time, FPS or release proof. Atlas/bind microgates untouched; sole lane released. See `port/ARENA_COMBAT_POSTHUD_REPLAY_GATE_20261026.md`.
