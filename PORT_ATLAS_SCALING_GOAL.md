@@ -23,6 +23,12 @@ Requested by Jerome on 2026-10-25. Status: implementation work authorized and ac
 3. Isolate and optimize measured shader/pass costs, preserving pixels. Treat a rewrite with no demonstrated gain as rejected.
 4. Add explicit window/fullscreen resolution mode and verify logical scaling/input/capture at multiple sizes; then rework the simulation/render clocks and test high-refresh behavior on a real display/GPU.
 
+## Queued optimization: XML-to-JSON migration (requested 2026-10-25)
+
+- Replace the game's XML data files and XML parsing paths with JSON, including levels, animations, materials, strings, settings and save data where applicable. Inventory all 95 XML assets and every runtime reader/writer before changing formats; keep authored data and gameplay behavior equivalent.
+- Define and validate a stable JSON schema/converter, migrate references and generated assets, and provide a compatibility path for existing XML settings/saves so user progress is not lost. Remove TinyXML only after no required parser remains.
+- Benchmark representative load/parse time and memory before and after; this is a queued optimization, **not** a demonstrated performance gain or a mandate to rewrite during the current atlas/GPU slice. Verify level transitions, combat, UI text, settings and save/load on the hardware-accelerated Linux build before accepting it.
+
 ## Current checkpoint
 
 2026-10-25 19:15 PDT: Scope and live source inventory recorded. No 4K atlas has yet been integrated, no new shader gain measured, and 8K/high-refresh acceptance has not been claimed. Next scheduled performance run owns the first atlas/usage vertical slice and must leave real code or an evidence-backed blocker, not a no-work report.
