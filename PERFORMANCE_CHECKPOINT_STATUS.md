@@ -252,3 +252,6 @@ Outcome: exact-staged-source GPU run improved active Forest frame p50 21.9874 ->
 
 ### DONE — later-scene post-HUD functional parity; owner release — 2026-10-26
 - Four exact 1280×720 post-HUD ordinary/replay cases after uninterrupted Forest route passed at cave 6, Hot Springs and underwater caves 4/3; final Docker-built binary SHA-256 `2c620d4c186917eea4f6a924c8635c2477097f9d42c510871b0c3336d1a33b54`. Fixed-update test film clock synchronized. This is offscreen llvmpipe functional pixel/endpoint evidence only. Physical Xorg `:0` cookie rejected, so no high-Hz/NVE7/FPS/release claim; atlas/bind microgates remain paused. Source/build/GPU lane **released**.
+
+### 2026-10-26 — current-ref forward/combat route gate, no performance acceptance
+- `port/tests/uninterrupted_forward_combat_routes.sh` passed on released current-ref Docker-built binary: cave-6→Hot Springs→cave-5 door return and one actual arena hit followed by authored exit. Offscreen llvmpipe functional-only; no physical GPU/input, selected >60-Hz, frame-time or release claim. Primary high-Hz Xorg cookie blocker unchanged; atlas/bind microgates paused. Source/build/GPU lane released.
