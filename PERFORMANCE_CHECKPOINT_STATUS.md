@@ -246,3 +246,6 @@ Outcome: exact-staged-source GPU run improved active Forest frame p50 21.9874 ->
 
 ### 2026-10-26 — cave-5 Forest door acceptance only
 - Uninterrupted fixed-60-Hz CPU normal-control route now covers the authored cave-5→Forest door interaction; no performance, physical GPU, selected >60-Hz or release claim. Atlas micro-gates remain paused.
+
+### 2026-10-26 — combined route regression; no FPS claim
+- Added and passed a current-build ordinary-control firing/nine-transition CPU route gate. It ended alive with 65 shots fired, 0 hits, 33 earned orbs; this is transition/firing regression coverage only. No physical selected high-Hz mode, hardware GPU, sustained FPS or release result. Offscreen llvmpipe is functional-only; atlas/bind micro-gates remain paused.
