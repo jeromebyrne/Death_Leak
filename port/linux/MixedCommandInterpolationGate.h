@@ -75,6 +75,27 @@ inline bool ProjectilePhaseAdmitted(const PresentationCommandPacket::Command& x,
         (a.tint.a==b.tint.a ||
          std::fabs(widthRatio-float(b.tint.a)/float(a.tint.a))<0.015f);
 }
+// Source-stamped continuous draw state. Frame images, flip, blend, shader
+// shape and RGB remain discrete. Actor aim is the only authored rotating
+// scene sprite; fade sources are explicit rather than inferred from pixels.
+inline bool SceneContinuousPhaseAdmitted(const PresentationCommandPacket::Command& x,
+                                         const PresentationCommandPacket::Command& y) {
+    if (x.continuousAlpha != y.continuousAlpha ||
+        x.continuousRotation != y.continuousRotation) return false;
+    auto a=x.sprite, b=y.sprite;
+    if (x.continuousAlpha) {
+        if (std::abs(int(b.tint.a)-int(a.tint.a))>16 ||
+            !std::isfinite(a.opacity) || !std::isfinite(b.opacity) ||
+            std::fabs(b.opacity-a.opacity)>.07f) return false;
+        a.tint.a=b.tint.a; a.opacity=b.opacity;
+    }
+    if (x.continuousRotation) {
+        if (!std::isfinite(a.rotationDegrees) || !std::isfinite(b.rotationDegrees) ||
+            std::fabs(ShortAngleDelta(a.rotationDegrees,b.rotationDegrees))>45.f) return false;
+        a.rotationDegrees=b.rotationDegrees;
+    }
+    return SameSpriteExceptPosition(a,b);
+}
 struct MixedCommandDecision {
     bool valid = false;
     std::vector<bool> interpolate;
@@ -115,6 +136,19 @@ inline MixedCommandDecision AdmitMixedCommands(const FullFrameSnapshot& a,
                 (ac[i].kind==Kind::Zoom && ac[i].zoom!=bc[i].zoom)) return out;
         }
     }
+    // A semantic reorder changes occlusion and cannot be mixed with the old
+    // packet even when individual sprite IDs survive.
+    for (std::size_t i=0;i<std::min(ac.size(),bc.size());++i)
+        if ((ac[i].kind==Kind::Sprite || bc[i].kind==Kind::Sprite) &&
+            (ac[i].kind!=bc[i].kind || !(ac[i].key==bc[i].key))) return out;
+    // A new discrete image is selected only at a fixed simulation boundary.
+    // Never combine previous-step spatial phases with current-step actor,
+    // scene-animation or film imagery across that boundary.
+    for (std::size_t i=0;i<std::min(ac.size(),bc.size());++i)
+        if (ac[i].kind==Kind::Sprite && bc[i].kind==Kind::Sprite &&
+            ac[i].key==bc[i].key && ac[i].key.object &&
+            (ac[i].sprite.texture!=bc[i].sprite.texture ||
+             (!ac[i].continuousAlpha && ac[i].sprite.opacity!=bc[i].sprite.opacity))) return out;
     // Projectile motion is never sampled through a birth/death, painter reorder,
     // or batch-cardinality change elsewhere in the emitted active frame.
     bool stableEffectTopology=ac.size()==bc.size();
@@ -136,7 +170,7 @@ inline MixedCommandDecision AdmitMixedCommands(const FullFrameSnapshot& a,
             !std::isfinite(x.cameraFactorX) || !std::isfinite(x.cameraFactorY) ||
             !(IsProjectileCommand(x) ? (stableEffectTopology && ProjectilePhaseAdmitted(x,y)) :
               IsParticleCommand(x) ? (stableEffectTopology && ParticlePhaseAdmitted(x,y)) :
-              SameSpriteExceptPosition(x.sprite,y.sprite)) ||
+              SceneContinuousPhaseAdmitted(x,y)) ||
             !PhaseAdmitted(x,y,a,b)) continue;
         // Duplicate identities are ambiguous; never interpolate either copy.
         const auto countKey=[&](const auto& list) { return std::count_if(list.begin(),list.end(),[&](const auto& c) { return c.kind==Kind::Sprite && c.key==x.key; }); };
@@ -175,6 +209,12 @@ inline PresentationCommandPacket SampleMixedCommands(const FullFrameSnapshot& a,
                 c.sprite.rotationDegrees=p.rotationDegrees + alpha*ShortAngleDelta(p.rotationDegrees,c.sprite.rotationDegrees);
                 c.sprite.tint.a=static_cast<std::uint8_t>(std::lround(lerp(float(p.tint.a),float(c.sprite.tint.a))));
             }
+            if (c.continuousAlpha && !IsParticleCommand(c) && !IsProjectileCommand(c)) {
+                c.sprite.tint.a=static_cast<std::uint8_t>(std::lround(lerp(float(p.tint.a),float(c.sprite.tint.a))));
+                c.sprite.opacity=lerp(p.opacity,c.sprite.opacity);
+            }
+            if (c.continuousRotation && !IsProjectileCommand(c))
+                c.sprite.rotationDegrees=p.rotationDegrees+alpha*ShortAngleDelta(p.rotationDegrees,c.sprite.rotationDegrees);
             c.sprite.uvShiftX=lerp(p.uvShiftX,c.sprite.uvShiftX);
             c.sprite.uvShiftY=lerp(p.uvShiftY,c.sprite.uvShiftY);
             if (c.phase==PresentationCommandPacket::PhasePolicy::ShaderClock) {

@@ -1824,7 +1824,9 @@ int main(int argc, char** argv) {
                                repeatRecorder->TagLastSprite({(source.stableIdentity << 1) | unsigned(arm),0},
                                    source.parallaxLayer ? 0.f : deathleak::linux_port::OrdinaryCameraFactorX(source.depth),
                                    source.parallaxLayer ? 0.f : deathleak::linux_port::OrdinaryCameraFactorY(source.depth),
-                                   phase, source.cameraParallaxX * (source.flipX ? -1.f : 1.f),source.cameraParallaxY,source.autoScrollYStep);
+                                   phase, source.cameraParallaxX * (source.flipX ? -1.f : 1.f),source.cameraParallaxY,source.autoScrollYStep,
+                                   source.scrolling || source.fadeWhenPlayerOccluded || source.playerAimLine,
+                                   source.playerAimLine);
                            }) : std::function<void(const deathleak::game::SceneSprite&, const Sprite&, bool)>(),
                        fullFrameTopologyCheck ? std::function<void(const deathleak::game::ParticleSpray&, const deathleak::game::ParticleSpray::Particle&, const Sprite&)>(
                            [&](const deathleak::game::ParticleSpray& spray,const deathleak::game::ParticleSpray::Particle& particle,const Sprite&) {

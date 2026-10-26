@@ -16,19 +16,28 @@ static FullFrameSnapshot frame(float x,int film,int actor, bool extra=false) {
  f.packet.Seal(); return f;
 }
 int main() {
- auto a=frame(0,393,223), b=frame(10,394,224,true);
- auto d=AdmitMixedCommands(a,b,.5f); assert(d.valid && d.moving==1 && d.interpolate[1]);
+ auto a=frame(0,393,223), b=frame(10,393,223,true);
+ auto d=AdmitMixedCommands(a,b,.5f); assert(d.valid && d.moving==3 && d.interpolate[1]);
  auto sample=SampleMixedCommands(a,b,.5f); assert(sample.Sealed() && sample.Size()==b.packet.Size());
  assert(sample.Commands()[1].sprite.destination.x==5);
- assert(sample.Commands()[2].sprite.texture==224 && sample.Commands()[3].sprite.texture==394);
+ assert(sample.Commands()[2].sprite.texture==223 && sample.Commands()[3].sprite.texture==393);
  assert(sample.Commands()[4].key.object==4);
  auto exact=SampleMixedCommands(a,b,1.f); assert(exact.Commands()[1].sprite.destination.x==10 && exact.Commands()[4].key.object==4);
+ auto actorFrame=b; actorFrame.packet.Clear(); for(auto c:b.packet.Commands()) {
+  if(c.key.object==2) c.sprite.texture=224;
+  actorFrame.packet.Add(c); } actorFrame.packet.Seal();
+ assert(AdmitMixedCommands(a,actorFrame,.5f).moving==0);
+ assert(SampleMixedCommands(a,actorFrame,.5f).Commands()[1].sprite.destination.x==10);
+ auto filmFrame=b; filmFrame.packet.Clear(); for(auto c:b.packet.Commands()) {
+  if(c.key.object==3) c.sprite.texture=394;
+  filmFrame.packet.Add(c); } filmFrame.packet.Seal();
+ assert(AdmitMixedCommands(a,filmFrame,.5f).moving==0);
  auto cut=b; cut.discontinuity=true; assert(AdmitMixedCommands(a,cut,.5f).moving==0);
  auto epoch=b; epoch.sceneEpoch=2; assert(AdmitMixedCommands(a,epoch,.5f).moving==0);
  auto invalid=AdmitMixedCommands(a,b,-1.f); assert(!invalid.valid);
  auto reorder=b; reorder.packet.Clear(); for(auto c:b.packet.Commands()) { if(c.key.object==1) c.key={2,1}; else if(c.key.object==2) c.key={1,1}; reorder.packet.Add(c); } reorder.packet.Seal(); assert(AdmitMixedCommands(a,reorder,.5f).moving==0);
  auto blend=b; blend.packet.Clear(); for(auto c:b.packet.Commands()) { if(c.key.object==1) c.sprite.opacity=.5f; blend.packet.Add(c); } blend.packet.Seal(); assert(AdmitMixedCommands(a,blend,.5f).moving==0);
- auto death=a; death.packet.Clear(); for(auto c:a.packet.Commands()) { if(c.key.object!=2) death.packet.Add(c); } death.packet.Seal(); assert(AdmitMixedCommands(a,death,.5f).moving==1);
+ auto death=a; death.packet.Clear(); for(auto c:a.packet.Commands()) { if(c.key.object!=2) death.packet.Add(c); } death.packet.Seal(); assert(AdmitMixedCommands(a,death,.5f).moving==0);
  auto unowned=b; unowned.packet.Clear(); for(auto c:b.packet.Commands()) { if(c.kind==Kind::Sprite && c.key.object==4) c.key={}; unowned.packet.Add(c); } unowned.packet.Seal();
  assert(AdmitMixedCommands(a,unowned,.5f).moving==0);
  assert(SampleMixedCommands(a,unowned,.5f).Commands()[1].sprite.destination.x==10);
@@ -92,5 +101,20 @@ int main() {
    jump.packet.Add(c); } jump.packet.Seal();
   assert(!AdmitMixedCommands(particleA,jump,.5f).interpolate[1]);
  }
+ // A source-stamped fade/aim may sample alpha, opacity and shortest rotation;
+ // an untagged tint/rotation change remains discrete current state.
+ auto phaseA=frame(0,393,223), phaseB=frame(10,393,223);
+ auto stamp=[](FullFrameSnapshot& f,int tint,float opacity,float angle,bool allow) {
+  auto commands=f.packet.Commands(); f.packet.Clear(); for(auto c:commands) {
+   if(c.key.object==1) { c.continuousAlpha=allow; c.continuousRotation=allow;
+    c.sprite.tint.a=static_cast<std::uint8_t>(tint); c.sprite.opacity=opacity;
+    c.sprite.rotationDegrees=angle; } f.packet.Add(c); } f.packet.Seal(); };
+ stamp(phaseA,180,.7f,350,true); stamp(phaseB,170,.68f,10,true);
+ assert(AdmitMixedCommands(phaseA,phaseB,.5f).interpolate[1]);
+ auto phaseHalf=SampleMixedCommands(phaseA,phaseB,.5f);
+ assert(phaseHalf.Commands()[1].sprite.tint.a==175 &&
+        phaseHalf.Commands()[1].sprite.rotationDegrees==360);
+ stamp(phaseB,170,.68f,10,false);
+ assert(!AdmitMixedCommands(phaseA,phaseB,.5f).interpolate[1]);
  std::cout<<"mixed ordered packet: stable sampled; film/animation/birth held; cuts held; alpha=1 current\n";
 }

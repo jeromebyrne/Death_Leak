@@ -1,0 +1,19 @@
+# Actor/animation and film frame-boundary interpolation gate — 2026-10-26
+
+Base: exact pushed `32418fbafa5aacac1db949be770c239450998c38`; clean isolated detached checkout `/tmp/deathleak-actor-phase-20261026`. Primary dirty checkout untouched except append-only performance checkpoint entries. This is diagnostic packet policy only; no visible interpolation switch.
+
+## Source-backed policy
+
+A paired change of stable sprite texture now holds the complete fractional packet at the current fixed-update state. This covers player body and authored scene animation image changes, and the 11-FPS gameplay film image change. Painter reorder and discrete opacity changes likewise hold rather than composing previous-position world sprites around a current-step silhouette/film image. `alpha=1` still returns the exact current sealed packet. Scene epoch and camera discontinuity guards remain. The hold is intentionally conservative; it does not blend unrelated animation images.
+
+The recorder additionally stamps only source-backed continuous draw channels: `ScrollingSprite` / fade-when-player-occluded alpha, player aim-line alpha and shortest-path aim rotation. A bounded paired stable-ID sprite with unchanged texture/source/flip/blend/RGB/shader shape may sample alpha (<=16/255 and <=.07 opacity) and rotation (<=45 degrees), otherwise it remains current. Existing shader-clock admission still requires the draw's foliage/pixel clock to match both sealed snapshot clocks, and samples those clock/world coordinates only on an admitted sprite. No generic animation-frame texture blending or shader effect inventing was added.
+
+## Verification
+
+Focused C++17 mixed-command fixture passed actor and film swap whole-packet holds, painter reorder, alpha=1 exact packet, bounded fade/aim midpoint, untagged state rejection, existing projectile/particle phase and scene-cut cases. Presentation command packet 100,000-repeat fixture passed. Isolated Docker production `make all` passed; final binary SHA-256 `ebd7a3aa0991b78bacf64447ef646d9444101888fc23fa1734b8ba7272ae488d`.
+
+Authenticated physical Xorg `:0` using live LightDM Xauthority read-only bind and matching hostname; SDL x11/OpenGL strict accelerated=1 software=0 vsync=1; nouveau/NVE7, 1280x720, fixed 1/60. Forest `B:125` frame 120 had 93 commands, **0 sampled** because eight scene images `277→268`, player body `236→237`, and film `393→394` crossed frame boundaries. Current/alpha=1/alpha=.5 replay BMPs were byte-identical SHA-256 `e309144c232d44de3ea89cc7e30fe7959203b908a94bac675857ff95d866950c`. All logged frame 90–124 packets were likewise 0 sampled; this gate intentionally removes the prior unsafe 75/93 partial mixing at those boundaries. Forest→Waterfall-top frame 415 (epoch 2) had 40 commands, 0 sampled; all three replay BMPs byte-identical SHA-256 `5369f94fb1facd4c89b2e0a9d96009effccc72e0735db13d0d63cf47e3299e3d`. Logs/BMPs are under `/srv/openclaw/workspace/death_leak_analysis/actor-phase-evidence/`. These are same-renderer diagnostic replays, not presented B frames.
+
+## Decision
+
+**Visible B and serial A/B/A rejected.** A continuous actor/scene/film packet does not exist on the sampled active Forest route: discrete animation/film image changes recur while scenery/projectiles/particles move. Source-stamped continuous channels are available only between image boundaries and did not admit this physical packet. Next distinct gate is a measured full-packet animation-cadence policy (e.g. paired simulation snapshots with explicit discrete-frame selection at a justified presentation boundary) that yields at least one coherent moving active packet, exact same-alpha physical parity and scene-cut safety before an opt-in presented B and serial A/B/A. No 8K, high-Hz, 60-FPS, sustained, thermal, VRAM or release acceptance is claimed.
