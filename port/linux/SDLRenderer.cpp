@@ -31,6 +31,7 @@
 namespace deathleak::render {
 namespace {
 constexpr const char* cavePath = "Game/Media/levels/underwater_cave/cave_background.png";
+constexpr const char* waterfall4Path = "Game/Media/waterfall_4.png";
 std::thread caveDecodeThread;
 struct CaveWorkerJoinOnExit { ~CaveWorkerJoinOnExit() { if (caveDecodeThread.joinable()) caveDecodeThread.join(); } };
 CaveWorkerJoinOnExit caveWorkerJoinOnExit;
@@ -38,6 +39,8 @@ std::atomic<bool> caveDecodeDone{false};
 std::atomic<bool> caveDecodeStarted{false};
 std::vector<png_byte> caveDecodedPixels;
 unsigned caveDecodedWidth = 0, caveDecodedHeight = 0;
+std::atomic<bool> waterfall4DecodeDone{false};
+std::vector<png_byte> waterfall4DecodedPixels;
 }
 void StartCaveDecodeWorker() {
     if (caveDecodeStarted.exchange(true)) return;
@@ -58,6 +61,27 @@ void StartCaveDecodeWorker() {
         std::cerr << "CAVE_HANDOFF worker_ok=" << ok << " bytes=" << caveDecodedPixels.size()
                   << " ms=" << std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-start).count() << "\n";
         caveDecodeDone.store(true, std::memory_order_release);
+        // Decode-only handoff: leave SDL texture creation/upload and identity on
+        // the original main-thread load path. One bounded 512x1024 RGBA buffer.
+        const char* flag = std::getenv("DEATHLEAK_WATERFALL4_DECODE");
+        if (flag && std::strcmp(flag, "off") == 0) return;
+        auto waterfallStart = std::chrono::steady_clock::now();
+        png_image waterfall{}; waterfall.version = PNG_IMAGE_VERSION;
+        bool waterfallOk = png_image_begin_read_from_file(&waterfall, waterfall4Path);
+        if (waterfallOk) {
+            waterfall.format = PNG_FORMAT_RGBA;
+            if (waterfall.width == 512 && waterfall.height == 1024 && PNG_IMAGE_SIZE(waterfall) == 2097152) {
+                waterfall4DecodedPixels.resize(PNG_IMAGE_SIZE(waterfall));
+                waterfallOk = png_image_finish_read(&waterfall, nullptr, waterfall4DecodedPixels.data(), 0, nullptr);
+            } else waterfallOk = false;
+        }
+        if (!waterfallOk) waterfall4DecodedPixels.clear();
+        png_image_free(&waterfall);
+        std::cerr << "WATERFALL4_HANDOFF worker_ok=" << waterfallOk
+                  << " bytes=" << waterfall4DecodedPixels.size()
+                  << " ms=" << std::chrono::duration<double,std::milli>(
+                      std::chrono::steady_clock::now()-waterfallStart).count() << "\n";
+        waterfall4DecodeDone.store(true, std::memory_order_release);
     });
 }
 void StopCaveDecodeWorker() { if (caveDecodeThread.joinable()) caveDecodeThread.join(); }
@@ -360,7 +384,13 @@ public:
         std::vector<png_byte> pixels;
         bool handedOff = false;
         double headerMs = 0, decodeMs = 0;
-        if (path == cavePath && caveDecodeDone.load(std::memory_order_acquire) &&
+        if (path == waterfall4Path && waterfall4DecodeDone.load(std::memory_order_acquire) &&
+            waterfall4DecodedPixels.size() == 2097152) {
+            pixels = std::move(waterfall4DecodedPixels);
+            image.width = 512; image.height = 1024;
+            handedOff = true;
+            std::cerr << "WATERFALL4_HANDOFF consumed bytes=" << pixels.size() << "\n";
+        } else if (path == cavePath && caveDecodeDone.load(std::memory_order_acquire) &&
             caveDecodedPixels.size() == 9191000 && caveDecodedWidth == 1750 && caveDecodedHeight == 1313) {
             pixels = std::move(caveDecodedPixels);
             image.width = caveDecodedWidth; image.height = caveDecodedHeight;
@@ -368,6 +398,10 @@ public:
             std::cerr << "CAVE_HANDOFF consumed bytes=" << pixels.size() << "\n";
         } else {
             if (path == cavePath && caveDecodeStarted.load()) std::cerr << "CAVE_HANDOFF fallback\n";
+            if (path == waterfall4Path && caveDecodeStarted.load() &&
+                !(std::getenv("DEATHLEAK_WATERFALL4_DECODE") &&
+                  std::strcmp(std::getenv("DEATHLEAK_WATERFALL4_DECODE"), "off") == 0))
+                std::cerr << "WATERFALL4_HANDOFF fallback\n";
             if (!png_image_begin_read_from_file(&image, path.c_str())) {
                 error = image.message; return InvalidTexture;
             }
