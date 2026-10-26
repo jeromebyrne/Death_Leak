@@ -8,6 +8,7 @@
 #include "../game/WeatherLightning.h"
 #include "../game/WeatherRain.h"
 #include "../game/WeatherTextureResidency.h"
+#include "../game/FilmFrameResidency.h"
 #include "../game/LoadingOverlayPacket.h"
 #include "../game/Combat.h"
 #include "../game/PlayerMotion.h"
@@ -632,20 +633,14 @@ int main(int argc, char** argv) {
     auto finalFrame = (playLevel.empty() && !menuLoop) ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/frame_top.png", error);
     if (!finalFrame && !(playLevel.empty() && !menuLoop))
         std::cerr << "HUD frame_top.png load failed: " << error << '\n';
-    std::array<TextureId, 4> filmFrames{};
+    deathleak::game::FilmFrameResidency filmFrames;
     // game_hud's scratch widget uses monotonic uptime at 11 FPS, not the
     // capped gameplay/shader delta. Original last-switch state starts at zero.
     deathleak::linux_port::FilmFrameSelector gameplayFilm;
     // final_scene_hud is a distinct retained animated widget.
     deathleak::linux_port::FilmFrameSelector finalFilm;
-    auto loadFilmFrames = [&] {
-        if (simulateOnly || filmFrames[0]) return;
-        constexpr std::array<const char*, 4> filmPaths = {
-            "Game/Media/UI/film_frame.png", "Game/Media/UI/film_frame_2.png",
-            "Game/Media/UI/film_frame_3.png", "Game/Media/UI/film_frame_4.png"};
-        for (size_t i = 0; i < filmPaths.size(); ++i) filmFrames[i] = renderer->LoadTexture(filmPaths[i], error);
-    };
-    if (playLevel == "Game/XmlFiles/levels/sea_2.xml") loadFilmFrames();
+    if (!simulateOnly && playLevel == "Game/XmlFiles/levels/sea_2.xml")
+        filmFrames.Prepare(*renderer, error);
     auto modalOrb = (playLevel.empty() && !menuLoop) ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/orb.png", error);
     auto paperBackButton = (playLevel.empty() && !menuLoop) ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/gamepad_icons/key_esc.png", error);
     auto modalButton = (playLevel.empty() && !menuLoop) ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/gamepad_icons/y.png", error);
@@ -1484,7 +1479,7 @@ int main(int argc, char** argv) {
                         devilDialog.reset(); healthPickup.reset();
                         std::cout << "Boat at frame " << frame << " from " << currentLevel << " to " << destination << '\n';
                         currentLevel = destination; introPromptClock.Reset();
-                        loadFilmFrames();
+                        if (!simulateOnly) filmFrames.Prepare(*renderer, error);
                         motion.Reset(scene.PlayerX(),scene.PlayerY(), true);
                         worldX = motion.X(); worldY = motion.Y();
                         cameraX = scene.CameraX(); cameraY = scene.CameraY(); cameraShake.Reset();
@@ -1605,13 +1600,16 @@ int main(int argc, char** argv) {
             combat.MeleeElapsed(), facing, playerProjectileFired, playerEligibleFireAttempt, strafeVisual, stickAim, aimX, aimY, precedingRenderedModifiedDelta, crouchInput, motion.Recovery());
         }
         if (!playLevel.empty() && !objectsPaused && scene.ImpactVisualFinished()) motion.CompleteImpactRecovery();
+        // Ensure film art is resident before the update/presentation split;
+        // the ordinary gameplay draw below only submits already prepared IDs.
+        if (!simulateOnly && !levelPath.empty()) filmFrames.Prepare(*renderer, error);
         // Prepare the authored 11-FPS film once per fixed update. Draw below
         // only reads the prepared index, including on a future update-free present.
         if (!levelPath.empty()) {
             const auto filmNowMilliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(
                 std::chrono::steady_clock::now().time_since_epoch()).count();
             auto& selectedFilm = currentLevel == "Game/XmlFiles/levels/sea_2.xml" ? finalFilm : gameplayFilm;
-            selectedFilm.Prepare(static_cast<std::uint64_t>(filmNowMilliseconds), filmFrames.size());
+            selectedFilm.Prepare(static_cast<std::uint64_t>(filmNowMilliseconds), filmFrames.Size());
         }
         // Prepare camera shake on each fixed update. X then Y consume the original
         // conditional rand() signs; presentation only reads the prepared view.
@@ -1738,7 +1736,7 @@ int main(int argc, char** argv) {
                 // final_scene_hud: four authored film frames at 11 FPS and
                 // quarter opacity, plus the original frame_top art. Bitmap
                 // lettering remains a typography fallback for Impact.
-                if (filmFrames[finalFilm.Index()]) renderer->DrawSprite({filmFrames[finalFilm.Index()], {}, {0,0,1280,720}, {255,255,255,64}});
+                if (filmFrames.Frame(finalFilm.Index())) renderer->DrawSprite({filmFrames.Frame(finalFilm.Index()), {}, {0,0,1280,720}, {255,255,255,64}});
                 if (finalFrame) {
                     renderer->DrawSprite({finalFrame, {}, {0,0,1280,100}});
                     Sprite bottomBar{finalFrame, {}, {0,620,1280,100}};
@@ -1747,9 +1745,8 @@ int main(int argc, char** argv) {
                 }
                 if (finalTitleShown) deathleak::game::DrawBitmapText(*renderer, "DEATH LEAK", 200, 255, 16, {255,0,0,245});
             } else {
-                loadFilmFrames();
-                if (filmFrames[gameplayFilm.Index()])
-                    renderer->DrawSprite({filmFrames[gameplayFilm.Index()], {}, {0,0,1280,720}, {255,255,255,51}});
+                if (filmFrames.Frame(gameplayFilm.Index()))
+                    renderer->DrawSprite({filmFrames.Frame(gameplayFilm.Index()), {}, {0,0,1280,720}, {255,255,255,51}});
                 // game_hud.xml: opaque 50-unit bands follow the film and precede HUD widgets.
                 if (finalFrame) {
                     renderer->DrawSprite({finalFrame, {}, AuthoredUI(-960, 490, 1920, 50), {255,255,255,255}});
