@@ -12,6 +12,7 @@ namespace deathleak::linux_port {
 class PresentationCommandPacket {
 public:
     enum class Kind { Begin, Zoom, Sprite, SpriteBatch, Fill, FillBatch, Postprocess, Resolve };
+    enum class PhasePolicy { Static, CameraParallax, AutoScrollY, ShaderClock };
     struct Command {
         explicit Command(Kind value) : kind(value) {}
         Kind kind;
@@ -23,6 +24,8 @@ public:
         float zoom = 1.f;
         TopologyKey key{}; // Diagnostic semantic identity; zero means unowned.
         float cameraFactorX = 1.f, cameraFactorY = 1.f;
+        PhasePolicy phase = PhasePolicy::Static;
+        float parallaxX = 0.f, parallaxY = 0.f;
     };
     void Clear() { commands_.clear(); sealed_ = false; }
     void Add(Command command) { commands_.push_back(command); }
@@ -30,9 +33,11 @@ public:
     bool Sealed() const { return sealed_; }
     std::size_t Size() const { return commands_.size(); }
     const std::vector<Command>& Commands() const { return commands_; }
-    bool TagLastSprite(TopologyKey key, float fx, float fy) {
+    bool TagLastSprite(TopologyKey key, float fx, float fy,
+                       PhasePolicy phase = PhasePolicy::Static, float px = 0.f, float py = 0.f) {
         if (sealed_ || commands_.empty() || commands_.back().kind != Kind::Sprite || !key.object) return false;
         commands_.back().key = key; commands_.back().cameraFactorX = fx; commands_.back().cameraFactorY = fy;
+        commands_.back().phase = phase; commands_.back().parallaxX = px; commands_.back().parallaxY = py;
         return true;
     }
     void Replay(render::Renderer& renderer) const {
@@ -68,6 +73,7 @@ public:
         return inner_->LoadTexture(path, error);
     }
     void BeginFrame(render::Color color) override {
+        if (packet_.Sealed()) { previous_ = packet_; hasPrevious_ = true; }
         packet_.Clear(); PresentationCommandPacket::Command command{PresentationCommandPacket::Kind::Begin}; command.color = color; packet_.Add(command); inner_->BeginFrame(color);
     }
     void SetWorldZoom(float zoom) override {
@@ -106,11 +112,16 @@ public:
     render::MouseState Mouse() const override { return inner_->Mouse(); }
     bool SaveFrame(const std::string& path, std::string& error) override { return inner_->SaveFrame(path, error); }
     const PresentationCommandPacket& Packet() const { return packet_; }
-    bool TagLastSprite(TopologyKey key, float fx = 1.f, float fy = 1.f) { return packet_.TagLastSprite(key, fx, fy); }
+    bool TagLastSprite(TopologyKey key, float fx = 1.f, float fy = 1.f,
+                       PresentationCommandPacket::PhasePolicy phase = PresentationCommandPacket::PhasePolicy::Static,
+                       float px = 0.f, float py = 0.f) { return packet_.TagLastSprite(key, fx, fy, phase, px, py); }
+    bool HasPreviousPacket() const { return hasPrevious_; }
+    const PresentationCommandPacket& PreviousPacket() const { return previous_; }
     void Replay() const { packet_.Replay(*inner_); }
     void PresentReplay() { inner_->EndFrame(); }
 private:
     std::unique_ptr<render::Renderer> inner_;
-    PresentationCommandPacket packet_;
+    PresentationCommandPacket packet_, previous_;
+    bool hasPrevious_ = false;
 };
 } // namespace deathleak::linux_port

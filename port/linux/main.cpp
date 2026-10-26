@@ -6,6 +6,8 @@
 #include "../game/ShaderClock.h"
 #include "FixedStepPacer.h"
 #include "PresentationCommandPacket.h"
+#include "FullFrameInterpolationGate.h"
+#include "RealSceneTopologyCapture.h"
 #include "RefreshSlotScheduler.h"
 #include "../game/WeatherLightning.h"
 #include "../game/WeatherRain.h"
@@ -235,6 +237,7 @@ int main(int argc, char** argv) {
     bool profile = false;
     bool showFps = false;
     bool repeatPresentationCheck = false;
+    bool fullFrameTopologyCheck = false;
     bool refreshSlots = false;
     bool combatState = false;
     bool freshSaveIntro = false;
@@ -306,6 +309,7 @@ int main(int argc, char** argv) {
         else if (arg == "--simulate-wall-clock") simulateWallClock = true;
         else if (arg == "--menu-loop") menuLoop = true;
         else if (arg == "--repeat-presentation-check") repeatPresentationCheck = true;
+        else if (arg == "--full-frame-topology-check") fullFrameTopologyCheck = true;
         else if (arg == "--refresh-slots") refreshSlots = true;
         else if (arg == "--profile") { profile = true; showFps = true; }
         else if (arg == "--debug") showFps = true;
@@ -537,6 +541,8 @@ int main(int argc, char** argv) {
     const bool testAllowSoftware = testSoftwareEnv && std::string(testSoftwareEnv) == "1";
     auto renderer = CreateRenderer(testAllowSoftware);
     deathleak::linux_port::PresentationRecordingRenderer* repeatRecorder = nullptr;
+    deathleak::linux_port::FullFrameSnapshot priorFullFrame;
+    bool hasPriorFullFrame = false;
     PacketTraceRenderer* packetTrace = nullptr;
     if (!atomicPostfadePacket.empty() || !atomicId22Prefix.empty()) {
         auto traced = std::make_unique<PacketTraceRenderer>(std::move(renderer), atomicId22Prefix);
@@ -548,7 +554,7 @@ int main(int argc, char** argv) {
     auto* bodySlowFrameObserver = observer.get();
     renderer = std::move(observer);
 #endif
-    if (repeatPresentationCheck || refreshSlots) {
+    if (repeatPresentationCheck || refreshSlots || fullFrameTopologyCheck) {
         auto recording = std::make_unique<deathleak::linux_port::PresentationRecordingRenderer>(std::move(renderer));
         repeatRecorder = recording.get();
         renderer = std::move(recording);
@@ -1787,7 +1793,25 @@ int main(int argc, char** argv) {
             if (packetTargetDraw) packetTrace->StartScene();
             scene.Draw(*renderer, drawCameraX, drawCameraY, worldX, worldY, std::move(painterItems),
                        combat.PlayerDamageBurstGain(), weather.FoliageSwayMultiplier(), shaderFrame, suppressLandingSprayDraw,
-                       std::move(afterPlayerDraw));
+                       std::move(afterPlayerDraw), {},
+                       fullFrameTopologyCheck ? std::function<void(const deathleak::game::SceneSprite&, const Sprite&, bool)>(
+                           [&](const deathleak::game::SceneSprite& source, const Sprite&, bool arm) {
+                               using Packet = deathleak::linux_port::PresentationCommandPacket;
+                               const auto phase = source.parallaxLayer ?
+                                   (source.autoScrollY ? Packet::PhasePolicy::AutoScrollY : Packet::PhasePolicy::CameraParallax) :
+                                   (source.foliageSway.enabled || source.pixelWobble.enabled) ? Packet::PhasePolicy::ShaderClock :
+                                   Packet::PhasePolicy::Static;
+                               repeatRecorder->TagLastSprite({(source.stableIdentity << 1) | unsigned(arm),0},
+                                   source.parallaxLayer ? 0.f : deathleak::linux_port::OrdinaryCameraFactorX(source.depth),
+                                   source.parallaxLayer ? 0.f : deathleak::linux_port::OrdinaryCameraFactorY(source.depth),
+                                   phase, source.cameraParallaxX * (source.flipX ? -1.f : 1.f),source.cameraParallaxY);
+                           }) : std::function<void(const deathleak::game::SceneSprite&, const Sprite&, bool)>(),
+                       fullFrameTopologyCheck ? std::function<void(const deathleak::game::ParticleSpray&, const deathleak::game::ParticleSpray::Particle&, const Sprite&)>(
+                           [&](const deathleak::game::ParticleSpray& spray,const deathleak::game::ParticleSpray::Particle& particle,const Sprite&) {
+                               auto key=deathleak::linux_port::EmittedParticleKey(spray,particle);
+                               key.object |= (std::uint64_t{1}<<62);
+                               repeatRecorder->TagLastSprite(key);
+                           }) : std::function<void(const deathleak::game::ParticleSpray&, const deathleak::game::ParticleSpray::Particle&, const Sprite&)>());
             if (packetTargetDraw) packetTrace->StopScene();
             renderer->ApplyScenePostprocess();
             // Windows Game::PostDraw completes before UIManager::Draw. Read back
@@ -2060,6 +2084,22 @@ int main(int argc, char** argv) {
             std::cerr << "Refresh surface unstable before ordinary present\n"; return 1;
         }
         renderer->EndFrame();
+        if (fullFrameTopologyCheck && repeatRecorder) {
+            deathleak::linux_port::FullFrameSnapshot frameSnapshot{
+                repeatRecorder->Packet(),scene.SceneEpoch(),drawCameraX*(2.f/3.f),
+                -drawCameraY*(2.f/3.f),false,shaderFrame.totalTime,shaderFrame.pixelWobbleTime};
+            if (hasPriorFullFrame) {
+                const auto decision=deathleak::linux_port::AdmitFullFrame(priorFullFrame,frameSnapshot,.5f);
+                std::size_t total=0,tagged=0;
+                for (const auto& command:frameSnapshot.packet.Commands())
+                    if (command.kind==deathleak::linux_port::PresentationCommandPacket::Kind::Sprite) {
+                        ++total; tagged += command.key.object != 0;
+                    }
+                std::cout << "FULL_FRAME_TOPOLOGY frame=" << frame << " commands=" << frameSnapshot.packet.Size()
+                          << " sprites=" << tagged << '/' << total << " decision=" << int(decision) << '\n';
+            }
+            priorFullFrame=std::move(frameSnapshot); hasPriorFullFrame=true;
+        }
         if (fixedDt <= 0.f && !liveClockAnchored) {
             livePacer.RebaseAfterFirstPresent(std::chrono::steady_clock::now());
             liveClockAnchored = true;

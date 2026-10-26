@@ -24,7 +24,12 @@ static linux_port::FullFrameSnapshot Capture(game::LevelScene& scene,
      // Distinct body/arm subparts; scene epoch is tracked outside this key.
      assert(recorder.TagLastSprite({(o.stableIdentity<<1) | unsigned(arm),0},
        o.parallaxLayer ? 0.f : linux_port::OrdinaryCameraFactorX(o.depth),
-       o.parallaxLayer ? 0.f : linux_port::OrdinaryCameraFactorY(o.depth)));
+       o.parallaxLayer ? 0.f : linux_port::OrdinaryCameraFactorY(o.depth),
+       o.parallaxLayer && !o.autoScrollY ? linux_port::PresentationCommandPacket::PhasePolicy::CameraParallax :
+       o.parallaxLayer ? linux_port::PresentationCommandPacket::PhasePolicy::AutoScrollY :
+       (o.foliageSway.enabled || o.pixelWobble.enabled) ? linux_port::PresentationCommandPacket::PhasePolicy::ShaderClock :
+       linux_port::PresentationCommandPacket::PhasePolicy::Static,
+       o.cameraParallaxX * (o.flipX ? -1.f : 1.f),o.cameraParallaxY));
    },
    [&](const game::ParticleSpray& spray,const game::ParticleSpray::Particle& p,const render::Sprite&) {
      auto key=linux_port::EmittedParticleKey(spray,p);
@@ -42,6 +47,9 @@ int main() {
  linux_port::FullFrameSnapshot a{r.Packet(),1,0,0,false};
  r.BeginFrame({}); s.destination.x=20; r.DrawSprite(s); assert(r.TagLastSprite({7,1})); r.EndFrame();
  linux_port::FullFrameSnapshot b{r.Packet(),1,0,0,false};
+ assert(r.HasPreviousPacket() && r.PreviousPacket().Commands()[1].sprite.destination.x==10);
+ assert(linux_port::SampleFullFrame(a,b,.5f).Commands()[1].sprite.destination.x==15);
+ assert(linux_port::SampleFullFrame(a,b,1.f).Commands()[1].sprite.destination.x==20);
  assert(linux_port::AdmitFullFrame(a,b,.5f)==linux_port::FullFrameDecision::Interpolate);
  assert(linux_port::AdmitFullFrame(a,b,.5f)==linux_port::AdmitFullFrame(a,b,.5f));
  assert(a.packet.Commands()[1].sprite.destination.x==10);
@@ -61,6 +69,22 @@ int main() {
  linux_port::PresentationCommandPacket::Command raw{linux_port::PresentationCommandPacket::Kind::Sprite}; raw.sprite=s;
  untagged.packet.Add(raw); untagged.packet.Seal();
  assert(linux_port::AdmitFullFrame(a,untagged,.5f)==linux_port::FullFrameDecision::HoldCurrent);
+ // Repeat sprite and shader-clock phases use the same alpha without update.
+ r.BeginFrame({}); s.repeatX=true; s.uvShiftX=0.f; s.foliageSway.enabled=true;
+ s.foliageSway.time=1.f; s.pixelWobble.time=2.f;
+ r.DrawSprite(s); assert(r.TagLastSprite({44,0},1.f,1.f,
+     linux_port::PresentationCommandPacket::PhasePolicy::ShaderClock)); r.EndFrame();
+ linux_port::FullFrameSnapshot shaderA{r.Packet(),3,0,0,false,1.f,2.f};
+ r.BeginFrame({}); s.destination.x=24; s.foliageSway.time=1.016f; s.pixelWobble.time=2.016f;
+ r.DrawSprite(s); assert(r.TagLastSprite({44,0},1.f,1.f,
+     linux_port::PresentationCommandPacket::PhasePolicy::ShaderClock)); r.EndFrame();
+ linux_port::FullFrameSnapshot shaderB{r.Packet(),3,0,0,false,1.016f,2.016f};
+ assert(linux_port::AdmitFullFrame(shaderA,shaderB,.5f)==linux_port::FullFrameDecision::Interpolate);
+ auto shaderMid=linux_port::SampleFullFrame(shaderA,shaderB,.5f);
+ assert(shaderMid.Commands()[1].sprite.destination.x==22.f);
+ assert(std::fabs(shaderMid.Commands()[1].sprite.foliageSway.time-1.008f)<.00001f);
+ auto badClock=shaderB; badClock.shaderTime=9.f;
+ assert(linux_port::AdmitFullFrame(shaderA,badClock,.5f)==linux_port::FullFrameDecision::HoldCurrent);
  setenv("DEATHLEAK_RENDER_ONLY_XML_IDS","1,2,17,19,37,47",1);
  auto spy=std::make_unique<Spy>(); linux_port::PresentationRecordingRenderer recorder(std::move(spy));
  game::LevelScene scene; std::string error;
@@ -80,7 +104,28 @@ int main() {
       std::cout<<"nonpositional sprite change at painter command "<<i<<" key="<<x.key.object
                <<" uv="<<x.sprite.uvShiftX<<"->"<<y.sprite.uvShiftX<<"\n";
  }
- assert(result==linux_port::FullFrameDecision::HoldCurrent);
+ // The emitted Forest parallax phases are camera-derived; admit this bounded
+ // scene packet, while complete game packets with unowned HUD/combat still hold.
+ assert(result==linux_port::FullFrameDecision::Interpolate);
+ auto sampled=linux_port::SampleFullFrame(first,second,.5f);
+ assert(sampled.Sealed() && sampled.Size()==second.packet.Size());
+ auto phaseBad=second;
+ phaseBad.packet.Clear();
+ for (const auto& c:second.packet.Commands()) {
+   auto changed=c;
+   if (changed.kind==linux_port::PresentationCommandPacket::Kind::Sprite &&
+       changed.phase==linux_port::PresentationCommandPacket::PhasePolicy::CameraParallax)
+      changed.sprite.uvShiftX += .01f;
+   phaseBad.packet.Add(changed);
+ }
+ phaseBad.packet.Seal();
+ assert(linux_port::AdmitFullFrame(first,phaseBad,.5f)==linux_port::FullFrameDecision::HoldCurrent);
+ auto full=second;
+ full.packet.Clear();
+ for(const auto& c:second.packet.Commands()) full.packet.Add(c);
+ linux_port::PresentationCommandPacket::Command hud{linux_port::PresentationCommandPacket::Kind::Sprite};
+ hud.sprite.texture=17; full.packet.Add(hud); full.packet.Seal();
+ assert(linux_port::AdmitFullFrame(first,full,.5f)==linux_port::FullFrameDecision::HoldCurrent);
  using Clock=linux_port::FixedStepPacer::Clock;
  for(int hz:{30,60,75,120,144,165,240}) {
    linux_port::FixedStepPacer p(Clock::time_point{}); int updates=0;
@@ -90,5 +135,5 @@ int main() {
    }
    assert(updates==601 && p.DroppedSteps()==0);
  }
- std::cout<<"full-frame real Forest packet: "<<tagged<<"/"<<sprites<<" sprites tagged; moving-camera admission=hold; 30/60/75/120/144/165/240 cadence passed\n";
+ std::cout<<"full-frame real Forest packet: "<<tagged<<"/"<<sprites<<" sprites tagged; moving-camera scene admission=interpolate; full-game unowned=hold; 30/60/75/120/144/165/240 cadence passed\n";
 }
