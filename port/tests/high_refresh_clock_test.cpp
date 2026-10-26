@@ -48,4 +48,29 @@ int main() {
         std::cout << hz << "Hz slots=" << hz * 10 + 1 << " updates=" << updates
                   << " display-only=" << repeatedSlots << '\n';
     }
+    FixedStepPacer startup(Clock::time_point{});
+    startup.Consume();
+    startup.RebaseAfterFirstPresent(Clock::time_point{} + std::chrono::seconds(3));
+    assert(startup.DroppedSteps() == 0);
+    assert(!startup.Due());
+    startup.Accumulate(Clock::time_point{} + std::chrono::seconds(3) + std::chrono::milliseconds(17));
+    assert(startup.Due());
+    assert(startup.DroppedSteps() == 0);
+    // A later suspended window cannot request an unbounded catch-up.
+    const auto start = Clock::time_point{};
+    FixedStepPacer overloaded(start);
+    overloaded.Accumulate(start + std::chrono::seconds(3));
+    int catchUp = 0;
+    while (overloaded.Due()) { overloaded.Consume(); ++catchUp; }
+    assert(catchUp == FixedStepPacer::MaxCatchUpSteps);
+    assert(overloaded.DroppedSteps() == 61); // 180 elapsed + bootstrap - 120
+    assert(overloaded.PresentationAlpha() >= 0.0);
+    assert(overloaded.PresentationAlpha() <= 1.0);
+    overloaded.Accumulate(start + std::chrono::seconds(2)); // reversed sample ignored
+    assert(overloaded.DroppedSteps() == 61);
+    overloaded.Accumulate(start + std::chrono::seconds(3) + std::chrono::milliseconds(17));
+    assert(overloaded.Due());
+    assert(overloaded.DroppedSteps() == 61);
+    std::cout << "overload catch-up=" << catchUp << " dropped=" << overloaded.DroppedSteps() << '\n';
+
 }

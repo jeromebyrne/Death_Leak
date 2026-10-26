@@ -757,6 +757,7 @@ int main(int argc, char** argv) {
     auto start = std::chrono::steady_clock::now();
     auto last = std::chrono::steady_clock::now();
     deathleak::linux_port::FixedStepPacer livePacer(last);
+    bool liveClockAnchored = false;
     deathleak::linux_port::RefreshSlotScheduler refreshClock(last, requestedRefreshHz ? requestedRefreshHz : 60);
     unsigned long long refreshOnlyPresents = 0;
     unsigned long long refreshSurfaceFailures = 0;
@@ -2059,6 +2060,10 @@ int main(int argc, char** argv) {
             std::cerr << "Refresh surface unstable before ordinary present\n"; return 1;
         }
         renderer->EndFrame();
+        if (fixedDt <= 0.f && !liveClockAnchored) {
+            livePacer.RebaseAfterFirstPresent(std::chrono::steady_clock::now());
+            liveClockAnchored = true;
+        }
         if (refreshSlots && !renderer->PresentationSurfaceStable()) {
             std::cerr << "Refresh surface changed during ordinary present\n"; return 1;
         }

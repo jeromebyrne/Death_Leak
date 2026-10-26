@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <chrono>
 #include <cmath>
+#include <limits>
 
 namespace deathleak::linux_port {
 // One authoritative 60-Hz simulation clock. Presentation may omit intermediate
@@ -10,17 +11,39 @@ class FixedStepPacer {
 public:
     using Clock = std::chrono::steady_clock;
     static constexpr double StepSeconds = 1.0 / 60.0;
+    static constexpr int MaxCatchUpSteps = 120;
     explicit FixedStepPacer(Clock::time_point start) : last_(start), pending_(1) {}
     void Accumulate(Clock::time_point now) {
+        // Ignore a reversed clock sample. A large suspension must neither
+        // overflow the integer step count nor create an unbounded update queue.
+        // Dropped quanta remain observable through DroppedSteps().
+        if (now <= last_) return;
         const double elapsed = std::chrono::duration<double>(now - last_).count();
         last_ = now;
-        if (elapsed > 0.0) remainder_ += elapsed;
-        const int due = static_cast<int>(std::floor((remainder_ + 1e-7) / StepSeconds));
-        remainder_ -= due * StepSeconds;
-        pending_ += due;
-        // An overloaded machine cannot recover an unbounded queue. Reported
-        // debt is intentionally retained up to two seconds of fixed updates.
-        if (pending_ > 120) { dropped_ += pending_ - 120; pending_ = 120; }
+        const double total = remainder_ + elapsed;
+        const double steps = std::floor((total + 1e-7) / StepSeconds);
+        remainder_ = std::clamp(total - steps * StepSeconds, 0.0, StepSeconds);
+        const double room = static_cast<double>(MaxCatchUpSteps - pending_);
+        const int admitted = static_cast<int>(std::min(steps, room));
+        pending_ += admitted;
+        // Extremely long suspensions are reported, not cast to int. Normal
+        // 30..240-Hz cadence never reaches this path.
+        const double excess = steps - admitted;
+        if (excess > 0) {
+            const auto capacity = std::numeric_limits<unsigned long long>::max() - dropped_;
+            if (excess >= static_cast<double>(capacity))
+                dropped_ = std::numeric_limits<unsigned long long>::max();
+            else
+                dropped_ += static_cast<unsigned long long>(excess);
+        }
+    }
+    // Live startup can spend a long time compiling shaders/uploading assets
+    // after its first update. Start elapsed gameplay time at the first present
+    // so that one-time loading cannot create simulation debt or dropped steps.
+    void RebaseAfterFirstPresent(Clock::time_point now) {
+        last_ = now;
+        remainder_ = 0.0;
+        pending_ = 0;
     }
     bool Due() const { return pending_ > 0; }
     void Consume() { --pending_; }
