@@ -230,6 +230,7 @@ public:
                 error = "fullscreen refresh does not match requested rate"; return false;
             }
         }
+        presentationWidth_ = width; presentationHeight_ = height; presentationFullscreen_ = fullscreen;
         std::cerr << "Output actual=" << outputWidth << "x" << outputHeight
                   << " logical=1280x720 fullscreen=" << fullscreen << "\n";
         if (fullscreen && (outputWidth != width || outputHeight != height)) {
@@ -1116,6 +1117,22 @@ public:
         SDL_RenderPresent(renderer_);
         presentSeconds_ += std::chrono::duration<double>(std::chrono::steady_clock::now()-began).count();
     }
+    bool PresentationSurfaceStable() const override {
+        if (!window_ || !renderer_ || !presentationFullscreen_) return false;
+        const Uint32 flags = SDL_GetWindowFlags(window_);
+        if (!(flags & SDL_WINDOW_FULLSCREEN) || !(flags & SDL_WINDOW_SHOWN) ||
+            !(flags & SDL_WINDOW_INPUT_FOCUS) || (flags & SDL_WINDOW_MINIMIZED)) return false;
+        int width = 0, height = 0, windowWidth = 0, windowHeight = 0;
+        if (SDL_GetRendererOutputSize(renderer_, &width, &height) != 0) return false;
+        SDL_GetWindowSize(window_, &windowWidth, &windowHeight);
+        if (width != presentationWidth_ || height != presentationHeight_ ||
+            windowWidth != presentationWidth_ || windowHeight != presentationHeight_) return false;
+        const int display = SDL_GetWindowDisplayIndex(window_);
+        SDL_DisplayMode active{};
+        return display >= 0 && SDL_GetCurrentDisplayMode(display, &active) == 0 &&
+            active.w == presentationWidth_ && active.h == presentationHeight_ &&
+            (!requestedRefreshHz_ || active.refresh_rate == requestedRefreshHz_);
+    }
     bool PollQuit() override {
         SDL_Event event;
         bool quit = false;
@@ -1468,6 +1485,8 @@ private:
     std::unordered_map<TextureId, ParallaxMetadata> parallaxMetadata_;
     struct ParallaxSampler { GLint object, wrapS, wrapT; };
     std::unordered_map<TextureId, ParallaxSampler> parallaxSampler_;
+    int presentationWidth_ = 0, presentationHeight_ = 0;
+    bool presentationFullscreen_ = false;
     int requestedRefreshHz_ = 0;
     bool testAllowSoftware_ = false;
     bool sceneSamplingPhase_ = false;

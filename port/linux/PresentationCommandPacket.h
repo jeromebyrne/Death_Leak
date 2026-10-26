@@ -91,6 +91,7 @@ public:
     }
     void EndFrame() override { packet_.Seal(); inner_->EndFrame(); }
     bool PollQuit() override { return inner_->PollQuit(); }
+    bool PresentationSurfaceStable() const override { return inner_->PresentationSurfaceStable(); }
     bool KeyDown(int key) const override { return inner_->KeyDown(key); }
     render::ControllerSticks ControllerAxes() const override { return inner_->ControllerAxes(); }
     render::MouseState Mouse() const override { return inner_->Mouse(); }

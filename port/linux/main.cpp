@@ -6,6 +6,7 @@
 #include "../game/ShaderClock.h"
 #include "FixedStepPacer.h"
 #include "PresentationCommandPacket.h"
+#include "RefreshSlotScheduler.h"
 #include "../game/WeatherLightning.h"
 #include "../game/WeatherRain.h"
 #include "../game/WeatherTextureResidency.h"
@@ -234,6 +235,7 @@ int main(int argc, char** argv) {
     bool profile = false;
     bool showFps = false;
     bool repeatPresentationCheck = false;
+    bool refreshSlots = false;
     bool combatState = false;
     bool freshSaveIntro = false;
     bool steamDeck = false;
@@ -304,6 +306,7 @@ int main(int argc, char** argv) {
         else if (arg == "--simulate-wall-clock") simulateWallClock = true;
         else if (arg == "--menu-loop") menuLoop = true;
         else if (arg == "--repeat-presentation-check") repeatPresentationCheck = true;
+        else if (arg == "--refresh-slots") refreshSlots = true;
         else if (arg == "--profile") { profile = true; showFps = true; }
         else if (arg == "--debug") showFps = true;
         else if (arg == "--show-fps") showFps = true;
@@ -472,6 +475,9 @@ int main(int argc, char** argv) {
         std::cerr << "--test-refresh-hz requires --simulate-only, --play, --script, --frames, no --fixed-dt, and 30..240 Hz\n";
         return 2;
     }
+    if (refreshSlots && (fixedDt > 0.f || simulateOnly || repeatPresentationCheck || !fullscreen || !requestedRefreshHz)) {
+        std::cerr << "--refresh-slots requires live fullscreen GPU play, --refresh-hz, and no fixed-dt/repeat diagnostic\n"; return 2;
+    }
     if (repeatPresentationCheck && (capture.empty() || frameLimit <= 0 || simulateOnly)) {
         std::cerr << "--repeat-presentation-check requires --capture, --frames and GPU rendering\n"; return 2;
     }
@@ -542,7 +548,7 @@ int main(int argc, char** argv) {
     auto* bodySlowFrameObserver = observer.get();
     renderer = std::move(observer);
 #endif
-    if (repeatPresentationCheck) {
+    if (repeatPresentationCheck || refreshSlots) {
         auto recording = std::make_unique<deathleak::linux_port::PresentationRecordingRenderer>(std::move(renderer));
         repeatRecorder = recording.get();
         renderer = std::move(recording);
@@ -751,6 +757,17 @@ int main(int argc, char** argv) {
     auto start = std::chrono::steady_clock::now();
     auto last = std::chrono::steady_clock::now();
     deathleak::linux_port::FixedStepPacer livePacer(last);
+    deathleak::linux_port::RefreshSlotScheduler refreshClock(last, requestedRefreshHz ? requestedRefreshHz : 60);
+    unsigned long long refreshOnlyPresents = 0;
+    unsigned long long refreshSurfaceFailures = 0;
+    std::vector<double> presentationIntervalsMs;
+    auto previousPresentation = std::chrono::steady_clock::time_point{};
+    const auto notePresentation = [&] {
+        const auto presented = std::chrono::steady_clock::now();
+        if (previousPresentation != std::chrono::steady_clock::time_point{})
+            presentationIntervalsMs.push_back(std::chrono::duration<double, std::milli>(presented - previousPresentation).count());
+        previousPresentation = presented;
+    };
     const auto testClockStart = last;
     int testDisplaySlots = 0;
     auto fpsSampleStart = last;
@@ -768,6 +785,19 @@ int main(int argc, char** argv) {
                 std::chrono::steady_clock::now();
             livePacer.Accumulate(tickTime);
             if (!livePacer.Due()) {
+                if (refreshSlots && repeatRecorder && repeatRecorder->Packet().Sealed() &&
+                    refreshClock.Due(tickTime)) {
+                    if (renderer->PresentationSurfaceStable()) {
+                        repeatRecorder->Replay();
+                        if (renderer->PresentationSurfaceStable()) {
+                            repeatRecorder->PresentReplay();
+                            notePresentation();
+                            ++refreshOnlyPresents;
+                            ++presentedFramesInSample;
+                            refreshClock.Presented(std::chrono::steady_clock::now());
+                        } else { ++refreshSurfaceFailures; std::cerr << "Refresh surface changed during replay\n"; return 1; }
+                    } else { ++refreshSurfaceFailures; std::cerr << "Refresh surface unstable before replay\n"; return 1; }
+                }
                 if (!testRefreshHz) std::this_thread::sleep_for(std::chrono::duration<double>(
                     std::min(livePacer.UntilNextSeconds(), 0.002)));
                 --frame;
@@ -2025,8 +2055,16 @@ int main(int argc, char** argv) {
             std::filesystem::rename(atomicId22Prefix + ".json.tmp", atomicId22Prefix + ".json");
             std::cout << "ATOMIC_ID22_PACKET ordinal=" << ordinal << " pre=" << preHash << " post=" << postHash << '\n';
         }
+        if (refreshSlots && !renderer->PresentationSurfaceStable()) {
+            std::cerr << "Refresh surface unstable before ordinary present\n"; return 1;
+        }
         renderer->EndFrame();
-        if (repeatRecorder && frame == frameLimit - 1) {
+        if (refreshSlots && !renderer->PresentationSurfaceStable()) {
+            std::cerr << "Refresh surface changed during ordinary present\n"; return 1;
+        }
+        if (profile || refreshSlots) notePresentation();
+        if (refreshSlots) refreshClock.Presented(std::chrono::steady_clock::now());
+        if (repeatPresentationCheck && repeatRecorder && frame == frameLimit - 1) {
             const auto repeatStart = std::chrono::steady_clock::now();
             repeatRecorder->Replay();
             const auto repeatDrawEnd = std::chrono::steady_clock::now();
@@ -2159,6 +2197,18 @@ int main(int argc, char** argv) {
     }
     if (testRefreshHz) std::cout << "TEST_REFRESH_HZ=" << testRefreshHz
                                  << " display_slots=" << testDisplaySlots << '\n';
+    if (refreshSlots) std::cerr << "Refresh-only presents=" << refreshOnlyPresents
+                                << " surface_failures=" << refreshSurfaceFailures << "\n";
+    if ((profile || refreshSlots) && !presentationIntervalsMs.empty()) {
+        std::sort(presentationIntervalsMs.begin(), presentationIntervalsMs.end());
+        const auto percentile = [&](double fraction) {
+            const auto rank = static_cast<std::size_t>(std::ceil(fraction * presentationIntervalsMs.size()));
+            return presentationIntervalsMs[std::max<std::size_t>(1, rank) - 1];
+        };
+        std::cout << "Present interval_ms samples=" << presentationIntervalsMs.size()
+                  << " p50=" << percentile(0.50) << " p95=" << percentile(0.95)
+                  << " p99=" << percentile(0.99) << " max=" << presentationIntervalsMs.back() << '\n';
+    }
     if (fixedDt <= 0.f && livePacer.DroppedSteps())
         std::cerr << "Fixed-step overload dropped " << livePacer.DroppedSteps() << " update quanta\n";
     StopCaveDecodeWorker();

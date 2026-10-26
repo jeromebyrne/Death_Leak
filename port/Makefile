@@ -9,7 +9,7 @@ TARGET := build/deathleak-linux
 
 .PHONY: all clean smoke
 all: $(TARGET)
-$(TARGET): linux/main.cpp linux/FilmFrameSelector.h linux/FixedStepPacer.h linux/PresentationCommandPacket.h linux/SDLRenderer.cpp linux/LogicalViewport.h linux/RepeatX.h linux/RotatedRepeatX.h linux/UVWrap.h linux/ParallaxUV.h linux/ParallaxUVCommand.h linux/WobbleUV.h linux/FoliageSway.h linux/EffectQuadGeometry.h render/OrdinarySpriteRotation.h linux/SDLSoundPlayer.cpp audio/SoundPlayer.h game/Settings.h game/LevelScene.cpp game/LevelScene.h game/CameraShake.h render/ViewportCull.h game/ShaderClock.h game/WeatherLightning.h game/WeatherRain.h game/WeatherTextureResidency.h game/FilmFrameResidency.h game/LoadingOverlayPacket.h game/ParticleSpray.h game/Combat.cpp game/Combat.h game/PlayerMotion.cpp game/PlayerMotion.h game/Hud.cpp game/Hud.h game/HudPresentationPacket.h game/BitmapText.h game/PaperText.h render/Renderer.h $(wildcard ../Game/tinyxml/*.cpp)
+$(TARGET): linux/main.cpp linux/FilmFrameSelector.h linux/FixedStepPacer.h linux/RefreshSlotScheduler.h linux/PresentationCommandPacket.h linux/SDLRenderer.cpp linux/LogicalViewport.h linux/RepeatX.h linux/RotatedRepeatX.h linux/UVWrap.h linux/ParallaxUV.h linux/ParallaxUVCommand.h linux/WobbleUV.h linux/FoliageSway.h linux/EffectQuadGeometry.h render/OrdinarySpriteRotation.h linux/SDLSoundPlayer.cpp audio/SoundPlayer.h game/Settings.h game/LevelScene.cpp game/LevelScene.h game/CameraShake.h render/ViewportCull.h game/ShaderClock.h game/WeatherLightning.h game/WeatherRain.h game/WeatherTextureResidency.h game/FilmFrameResidency.h game/LoadingOverlayPacket.h game/ParticleSpray.h game/Combat.cpp game/Combat.h game/PlayerMotion.cpp game/PlayerMotion.h game/Hud.cpp game/Hud.h game/HudPresentationPacket.h game/BitmapText.h game/PaperText.h render/Renderer.h $(wildcard ../Game/tinyxml/*.cpp)
 	@mkdir -p build
 	$(CXX) $(CXXFLAGS) $(SDL_CFLAGS) $(PNG_CFLAGS) -Icompat linux/main.cpp linux/SDLRenderer.cpp linux/SDLSoundPlayer.cpp game/LevelScene.cpp game/Combat.cpp game/PlayerMotion.cpp game/Hud.cpp ../Game/tinyxml/tinyxml.cpp ../Game/tinyxml/tinyxmlerror.cpp ../Game/tinyxml/tinyxmlparser.cpp ../Game/tinyxml/tinystr.cpp -o $@ $(SDL_LIBS) $(PNG_LIBS) $(GL_LIBS)
 smoke: $(TARGET)
@@ -60,3 +60,10 @@ presentation-command-packet-test: build/presentation_command_packet_test
 build/presentation_command_packet_test: tests/presentation_command_packet_test.cpp linux/PresentationCommandPacket.h render/Renderer.h
 	@mkdir -p build
 	$(CXX) $(CXXFLAGS) -UNDEBUG tests/presentation_command_packet_test.cpp -o $@
+
+.PHONY: refresh-slot-scheduler-test
+refresh-slot-scheduler-test: build/refresh_slot_scheduler_test
+	./build/refresh_slot_scheduler_test
+build/refresh_slot_scheduler_test: tests/refresh_slot_scheduler_test.cpp linux/RefreshSlotScheduler.h linux/FixedStepPacer.h
+	@mkdir -p build
+	$(CXX) $(CXXFLAGS) -UNDEBUG tests/refresh_slot_scheduler_test.cpp -o $@

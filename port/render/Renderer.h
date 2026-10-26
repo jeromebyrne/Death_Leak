@@ -93,6 +93,8 @@ public:
     virtual void ApplyScenePostprocess() = 0;
     virtual void ResolveUnprocessedFrame() {}
     virtual void EndFrame() = 0;
+    // Display-only replay requires a stable physical presentation surface.
+    virtual bool PresentationSurfaceStable() const { return false; }
     virtual bool PollQuit() = 0;
     virtual bool KeyDown(int key) const = 0;
     virtual ControllerSticks ControllerAxes() const { return {}; }
