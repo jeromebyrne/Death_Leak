@@ -249,3 +249,6 @@ Outcome: exact-staged-source GPU run improved active Forest frame p50 21.9874 ->
 
 ### 2026-10-26 — combined route regression; no FPS claim
 - Added and passed a current-build ordinary-control firing/nine-transition CPU route gate. It ended alive with 65 shots fired, 0 hits, 33 earned orbs; this is transition/firing regression coverage only. No physical selected high-Hz mode, hardware GPU, sustained FPS or release result. Offscreen llvmpipe is functional-only; atlas/bind micro-gates remain paused.
+
+### DONE — later-scene post-HUD functional parity; owner release — 2026-10-26
+- Four exact 1280×720 post-HUD ordinary/replay cases after uninterrupted Forest route passed at cave 6, Hot Springs and underwater caves 4/3; final Docker-built binary SHA-256 `2c620d4c186917eea4f6a924c8635c2477097f9d42c510871b0c3336d1a33b54`. Fixed-update test film clock synchronized. This is offscreen llvmpipe functional pixel/endpoint evidence only. Physical Xorg `:0` cookie rejected, so no high-Hz/NVE7/FPS/release claim; atlas/bind microgates remain paused. Source/build/GPU lane **released**.
