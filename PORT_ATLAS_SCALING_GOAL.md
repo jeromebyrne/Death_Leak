@@ -4,7 +4,7 @@ Requested by Jerome on 2026-10-25. Status: implementation work authorized and ac
 
 ## Required outcome
 
-- Build 4096×4096 atlas pages and map every technically eligible texture into them. Keep an auditable manifest of packed assets and exceptions. Preserve authored filtering, alpha, mipmaps, wrap/repeat, source rectangles, tint, rotation, shader sampling and painter order; use virtual subtextures or dedicated textures where wrapping/filtering makes a shared page unsafe. Do not claim that an atlas alone reduces draw calls.
+- Pack every technically eligible texture into densely filled atlas pages, with 4096×4096 as the maximum dimensions, not a required page size. Fill existing compatible pages before creating another and trim each emitted page to its occupied bounds. Keep an auditable manifest of packed assets and exceptions. Preserve authored filtering, alpha, mipmaps, wrap/repeat, source rectangles, tint, rotation, shader sampling and painter order; use virtual subtextures or dedicated textures where wrapping/filtering makes a shared page unsafe. Do not claim that an atlas alone reduces draw calls.
 - Batch compatible consecutive draws as aggressively as exact output permits; track real submissions, texture binds, flushes, CPU and GPU times. Batch boundaries must preserve blend modes, opacity, shader uniforms, render target, scissor and painter order. Optimize the measured shader/pass bottlenecks, especially Waterfall-top fog/ground-front, rather than merely rewriting shader text.
 - Accept output window/display resolutions through 8K (up to 7680×4320) while retaining the existing 1280×720 authored coordinate space unless content adaptation is explicitly proven. Map input, HUD and captures correctly; validate actual monitor modes and GPU target-size limits rather than promising any device supports 8K.
 - Decouple gameplay speed from presentation refresh. Support the rates a device can actually present, including >60 Hz, without frame-count-based gameplay, animation, shader or audio drift. Preserve deterministic fixed-dt route for regression tests and use real-time/fixed-step simulation with appropriate rendering interpolation or an equivalent proven design. Verify 30/60/75/120/144/240-Hz timing behavior where hardware/software permits.
@@ -18,7 +18,7 @@ Requested by Jerome on 2026-10-25. Status: implementation work authorized and ac
 
 ## First vertical slices
 
-1. Inventory all PNG usage, GL_MAX_TEXTURE_SIZE and GPU memory; classify each asset by ordinary atlas-safe draw versus repeat/wrap, private-GL shader, render target, or source-rect variant. Build deterministic 4K packer and manifest with padding/extrusion plus verification that reconstructed sprites equal originals. Audit page occupancy/VRAM and choose scene-aware page groups.
+1. Inventory all PNG usage, GL_MAX_TEXTURE_SIZE and GPU memory; classify each asset by ordinary atlas-safe draw versus repeat/wrap, private-GL shader, render target, or source-rect variant. Build deterministic density-first packer with a 4K ceiling and manifest with padding/extrusion plus verification that reconstructed sprites equal originals. Audit page occupancy/VRAM and choose scene-aware page groups.
 2. Integrate a small ordinary-sprite family through atlas references; exact-pixel compare and physical-NVE7 serial A/B. Then expand until all eligible families are mapped; record each exception and reason. Implement compatible consecutive-draw batching on top of atlas texture identity and measure true submission reduction.
 3. Isolate and optimize measured shader/pass costs, preserving pixels. Treat a rewrite with no demonstrated gain as rejected.
 4. Add explicit window/fullscreen resolution mode and verify logical scaling/input/capture at multiple sizes; then rework the simulation/render clocks and test high-refresh behavior on a real display/GPU.
@@ -28,6 +28,11 @@ Requested by Jerome on 2026-10-25. Status: implementation work authorized and ac
 2026-10-25 19:15 PDT: Scope and live source inventory recorded. No 4K atlas has yet been integrated, no new shader gain measured, and 8K/high-refresh acceptance has not been claimed. Next scheduled performance run owns the first atlas/usage vertical slice and must leave real code or an evidence-backed blocker, not a no-work report.
 
 ### First implementation checkpoint — 2026-10-25 19:17 PDT
-- Added `port/tools/atlas_pack.py`: deterministic 4096×4096 RGBA page generation for explicit PNG selections, 2-pixel extruded edges, source SHA-256 and per-image manifest rectangles, and exact RGBA reconstruction verification. This is a build pipeline only; the runtime does **not** yet sample atlas pages.
+- Added `port/tools/atlas_pack.py`: deterministic RGBA page generation with a 4096×4096 ceiling for explicit PNG selections, 2-pixel extruded edges, source SHA-256 and per-image manifest rectangles, and exact RGBA reconstruction verification. This is a build pipeline only; the runtime does **not** yet sample atlas pages.
 - Built and verified a first page containing 9 gamepad-icon PNGs. Each manifest crop byte-matched its source converted to RGBA. The output is under ignored `port/build/atlas-first-pipeline/`.
 - No FPS, draw-call or memory improvement is claimed from this pipeline test. Next: integrate atlas references for that ordinary sprite family, check filtering/source-rectangle behavior and exact physical-GPU pixels, then expand coverage by usage class.
+
+### Atlas-sizing correction — 2026-10-25
+- Jerome clarified that 4K is a ceiling, not a target. Pack as many compatible assets as feasible into each page before spilling; do not allocate 4096² for sparse pages.
+- The packer now uses deterministic free-rectangle placement and emits pages cropped to occupied dimensions. The nine-icon test is one 2156×320 page, versus the prior 4096×4096 allocation; exact source-pixel reconstruction still passes. This is a pipeline/memory-layout result, not runtime integration or FPS improvement.
+- Before runtime use, evaluate actual page occupancy, sampling constraints and VRAM; maintain scene/usage groupings where they avoid unnecessary residency.
