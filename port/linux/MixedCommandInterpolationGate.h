@@ -11,6 +11,36 @@ inline bool IsProjectileCommand(const PresentationCommandPacket::Command& c) {
     return c.kind == PresentationCommandPacket::Kind::Sprite &&
            (c.key.object >> 59) == 1 && (c.key.object & ((std::uint64_t{1} << 59)-1)) != 0;
 }
+inline bool IsParticleCommand(const PresentationCommandPacket::Command& c) {
+    if (c.kind != PresentationCommandPacket::Kind::Sprite) return false;
+    const auto object = c.key.object;
+    // Scene spray and runtime material spray occupy disjoint tagged namespaces.
+    return (object >> 62) == 1 || (object >> 60) == 1;
+}
+// ParticleSpray emits the previous update's position/size and this update's
+// lifetime fade. Both size and alpha are continuous within a stable slot life;
+// texture, flip, shader, blend and RGB remain discrete authored draw state.
+inline bool ParticlePhaseAdmitted(const PresentationCommandPacket::Command& x,
+                                  const PresentationCommandPacket::Command& y) {
+    if (!IsParticleCommand(x) || !IsParticleCommand(y) || !(x.key==y.key)) return false;
+    const auto& a=x.sprite; const auto& b=y.sprite;
+    if (a.texture!=b.texture || !SameRect(a.source,b.source) ||
+        a.flipX!=b.flipX || a.flipY!=b.flipY || a.repeatX!=b.repeatX ||
+        a.tint.r!=b.tint.r || a.tint.g!=b.tint.g || a.tint.b!=b.tint.b ||
+        a.opacity!=b.opacity || a.rgbGain!=b.rgbGain ||
+        a.rotationDegrees!=b.rotationDegrees ||
+        a.foliageSway.enabled || b.foliageSway.enabled ||
+        a.pixelWobble.enabled || b.pixelWobble.enabled ||
+        a.uvShiftX!=b.uvShiftX || a.uvShiftY!=b.uvShiftY ||
+        !std::isfinite(a.destination.width) || !std::isfinite(b.destination.width) ||
+        !std::isfinite(a.destination.height) || !std::isfinite(b.destination.height) ||
+        a.destination.width<=0.f || b.destination.width<=0.f ||
+        std::fabs(a.destination.width-a.destination.height)>0.01f ||
+        std::fabs(b.destination.width-b.destination.height)>0.01f ||
+        std::fabs(b.destination.width-a.destination.width)>32.f ||
+        std::abs(int(b.tint.a)-int(a.tint.a))>64) return false;
+    return true;
+}
 inline float ShortAngleDelta(float from, float to) {
     return std::remainder(to-from, 360.f);
 }
@@ -105,6 +135,7 @@ inline MixedCommandDecision AdmitMixedCommands(const FullFrameSnapshot& a,
             x.cameraFactorX!=y.cameraFactorX || x.cameraFactorY!=y.cameraFactorY ||
             !std::isfinite(x.cameraFactorX) || !std::isfinite(x.cameraFactorY) ||
             !(IsProjectileCommand(x) ? (stableEffectTopology && ProjectilePhaseAdmitted(x,y)) :
+              IsParticleCommand(x) ? (stableEffectTopology && ParticlePhaseAdmitted(x,y)) :
               SameSpriteExceptPosition(x.sprite,y.sprite)) ||
             !PhaseAdmitted(x,y,a,b)) continue;
         // Duplicate identities are ambiguous; never interpolate either copy.
@@ -133,6 +164,11 @@ inline PresentationCommandPacket SampleMixedCommands(const FullFrameSnapshot& a,
             const auto& p=a.packet.Commands()[i].sprite;
             c.sprite.destination.x=lerp(p.destination.x,c.sprite.destination.x);
             c.sprite.destination.y=lerp(p.destination.y,c.sprite.destination.y);
+            if (IsParticleCommand(c)) {
+                c.sprite.destination.width=lerp(p.destination.width,c.sprite.destination.width);
+                c.sprite.destination.height=lerp(p.destination.height,c.sprite.destination.height);
+                c.sprite.tint.a=static_cast<std::uint8_t>(std::lround(lerp(float(p.tint.a),float(c.sprite.tint.a))));
+            }
             if (IsProjectileCommand(c)) {
                 c.sprite.destination.width=lerp(p.destination.width,c.sprite.destination.width);
                 c.sprite.destination.height=lerp(p.destination.height,c.sprite.destination.height);

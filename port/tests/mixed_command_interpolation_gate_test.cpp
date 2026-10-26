@@ -62,5 +62,35 @@ int main() {
  for(auto c:projectileB.packet.Commands()) bornEffect.packet.Add(c);
  PresentationCommandPacket::Command effect{Kind::Sprite}; effect.key={12345,1}; bornEffect.packet.Add(effect); bornEffect.packet.Seal();
  assert(!AdmitMixedCommands(projectileA,bornEffect,.5f).interpolate[1]);
+ // Stable particle lifetime: interpolate square size and fade, but not a
+ // recycled generation, painter topology, flip or any discrete GPU state.
+ auto particleRetag=[](FullFrameSnapshot& f, std::uint64_t ns, float px,float size,int alpha) {
+  auto commands=f.packet.Commands(); f.packet.Clear();
+  for(auto c:commands) { if(c.key.object==1) { c.key={ns|7,3};
+   c.sprite.destination={px,20,size,size}; c.sprite.tint.a=static_cast<std::uint8_t>(alpha); }
+   f.packet.Add(c); } f.packet.Seal();
+ };
+ for(const auto ns:{std::uint64_t{1}<<60,std::uint64_t{1}<<62}) {
+  auto particleA=frame(0,393,223), particleB=frame(0,393,223);
+  particleRetag(particleA,ns,0,30,180); particleRetag(particleB,ns,12,26,164);
+  assert(AdmitMixedCommands(particleA,particleB,.5f).interpolate[1]);
+  const auto half=SampleMixedCommands(particleA,particleB,.5f);
+  assert(half.Commands()[1].sprite.destination.x==6 &&
+         half.Commands()[1].sprite.destination.width==28 &&
+         half.Commands()[1].sprite.tint.a==172);
+  assert(SampleMixedCommands(particleA,particleB,1.f).Commands()[1].sprite.tint.a==164);
+  auto recycled=particleB; recycled.packet.Clear(); for(auto c:particleB.packet.Commands()) {
+   if(c.key.object==(ns|7)) ++c.key.generation;
+   recycled.packet.Add(c); } recycled.packet.Seal();
+  assert(!AdmitMixedCommands(particleA,recycled,.5f).interpolate[1]);
+  auto state=particleB; state.packet.Clear(); for(auto c:particleB.packet.Commands()) {
+   if(c.key.object==(ns|7)) c.sprite.flipX=!c.sprite.flipX;
+   state.packet.Add(c); } state.packet.Seal();
+  assert(!AdmitMixedCommands(particleA,state,.5f).interpolate[1]);
+  auto jump=particleB; jump.packet.Clear(); for(auto c:particleB.packet.Commands()) {
+   if(c.key.object==(ns|7)) c.sprite.tint.a=20;
+   jump.packet.Add(c); } jump.packet.Seal();
+  assert(!AdmitMixedCommands(particleA,jump,.5f).interpolate[1]);
+ }
  std::cout<<"mixed ordered packet: stable sampled; film/animation/birth held; cuts held; alpha=1 current\n";
 }

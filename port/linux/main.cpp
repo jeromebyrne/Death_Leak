@@ -205,6 +205,7 @@ int main(int argc, char** argv) {
     std::string capture;
     std::string mixedReplayPrefix;
     int mixedReplayFrame = -1;
+    int mixedHoldAuditFrame = -1;
     std::string atomicFrame415Packet;
     std::string atomicPostfadePacket;
     std::string atomicId22Prefix;
@@ -315,6 +316,7 @@ int main(int argc, char** argv) {
         else if (arg == "--full-frame-topology-check") fullFrameTopologyCheck = true;
         else if (arg == "--mixed-replay-prefix" && i + 1 < argc) { mixedReplayPrefix = argv[++i]; fullFrameTopologyCheck = true; }
         else if (arg == "--mixed-replay-frame" && i + 1 < argc) mixedReplayFrame = std::atoi(argv[++i]);
+        else if (arg == "--mixed-hold-audit-frame" && i + 1 < argc) { mixedHoldAuditFrame = std::atoi(argv[++i]); fullFrameTopologyCheck = true; }
         else if (arg == "--refresh-slots") refreshSlots = true;
         else if (arg == "--profile") { profile = true; showFps = true; }
         else if (arg == "--debug") showFps = true;
@@ -2124,6 +2126,30 @@ int main(int argc, char** argv) {
                     }
                 }
                 std::cout << "MIXED_COMMAND_TOPOLOGY frame=" << frame << " sampled=" << mixed.moving << " current=" << frameSnapshot.packet.Size()-mixed.moving << " projectileSampled=" << projectileSampled << " projectileHeld=" << projectileHeld << " valid=" << mixed.valid << '\n';
+                if (frame == mixedHoldAuditFrame) {
+                    const auto& aa=priorFullFrame.packet.Commands(); const auto& bb=frameSnapshot.packet.Commands();
+                    for (std::size_t i=0;i<bb.size();++i) {
+                        const auto& y=bb[i]; const auto* x=i<aa.size()?&aa[i]:nullptr;
+                        if (i<mixed.interpolate.size() && mixed.interpolate[i]) continue;
+                        std::cout << "HOLD_AUDIT ordinal=" << i << " kind=" << int(y.kind)
+                                  << " key=" << y.key.object << ":" << y.key.generation
+                                  << " texture=" << y.sprite.texture
+                                  << " phase=" << int(y.phase)
+                                  << " priorKind=" << (x?int(x->kind):-1)
+                                  << " priorKey=" << (x?x->key.object:0) << ":" << (x?x->key.generation:0)
+                                  << " priorTexture=" << (x?x->sprite.texture:0)
+                                  << " priorWH=" << (x?x->sprite.destination.width:0) << "," << (x?x->sprite.destination.height:0)
+                                  << " priorAlpha=" << (x?int(x->sprite.tint.a):0)
+                                  << " particlePhase=" << (x?deathleak::linux_port::ParticlePhaseAdmitted(*x,y):false)
+                                  << " sameSprite=" << (x&&x->kind==y.kind&&y.kind==deathleak::linux_port::PresentationCommandPacket::Kind::Sprite?deathleak::linux_port::SameSpriteExceptPosition(x->sprite,y.sprite):false)
+                                  << " phaseAdmitted=" << (x&&x->kind==y.kind&&y.kind==deathleak::linux_port::PresentationCommandPacket::Kind::Sprite?deathleak::linux_port::PhaseAdmitted(*x,y,priorFullFrame,frameSnapshot):false)
+                                  << " xy=" << y.sprite.destination.x << "," << y.sprite.destination.y
+                                  << " wh=" << y.sprite.destination.width << "," << y.sprite.destination.height
+                                  << " alpha=" << int(y.sprite.tint.a)
+                                  << " rot=" << y.sprite.rotationDegrees << '\n';
+                    }
+                }
+
                 const auto& before=priorFullFrame.packet.Commands();
                 const auto& after=frameSnapshot.packet.Commands();
                 for (std::size_t ci=0;ci<before.size() && ci<after.size();++ci) {
