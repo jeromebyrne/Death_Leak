@@ -7,6 +7,7 @@
 #include "FoliageSway.h"
 #include "EffectQuadGeometry.h"
 #include "LogicalViewport.h"
+#include "DisplaySurfaceGeometry.h"
 #include <SDL.h>
 #define GL_GLEXT_PROTOTYPES
 #include <SDL_opengl.h>
@@ -1119,20 +1120,10 @@ public:
         presentSeconds_ += std::chrono::duration<double>(std::chrono::steady_clock::now()-began).count();
     }
     bool PresentationSurfaceStable() const override {
-        if (!window_ || !renderer_ || !presentationFullscreen_) return false;
+        if (!FullscreenGeometryStable()) return false;
         const Uint32 flags = SDL_GetWindowFlags(window_);
-        if (!(flags & SDL_WINDOW_FULLSCREEN) || !(flags & SDL_WINDOW_SHOWN) ||
-            !(flags & SDL_WINDOW_INPUT_FOCUS) || (flags & SDL_WINDOW_MINIMIZED)) return false;
-        int width = 0, height = 0, windowWidth = 0, windowHeight = 0;
-        if (SDL_GetRendererOutputSize(renderer_, &width, &height) != 0) return false;
-        SDL_GetWindowSize(window_, &windowWidth, &windowHeight);
-        if (width != presentationWidth_ || height != presentationHeight_ ||
-            windowWidth != presentationWidth_ || windowHeight != presentationHeight_) return false;
-        const int display = SDL_GetWindowDisplayIndex(window_);
-        SDL_DisplayMode active{};
-        return display >= 0 && SDL_GetCurrentDisplayMode(display, &active) == 0 &&
-            active.w == presentationWidth_ && active.h == presentationHeight_ &&
-            (!requestedRefreshHz_ || active.refresh_rate == requestedRefreshHz_);
+        return (flags & SDL_WINDOW_SHOWN) && (flags & SDL_WINDOW_INPUT_FOCUS) &&
+               !(flags & SDL_WINDOW_MINIMIZED);
     }
     bool PollQuit() override {
         SDL_Event event;
@@ -1189,6 +1180,10 @@ public:
     bool SaveFrame(const std::string& path, std::string& error) override {
         int width = 0, height = 0;
         SDL_Texture* target = SDL_GetRenderTarget(renderer_);
+        if (!target && presentationFullscreen_ && !FullscreenGeometryStable()) {
+            error = "fullscreen capture surface/mode changed from requested resolution";
+            return false;
+        }
         if (target) {
             if (SDL_QueryTexture(target, nullptr, nullptr, &width, &height) != 0) {
                 error = SDL_GetError(); return false;
@@ -1221,12 +1216,33 @@ public:
             pixelsOk = SDL_RenderReadPixels(renderer_, nullptr, surface->format->format,
                                             surface->pixels, surface->pitch) == 0;
         }
+        if (!target && presentationFullscreen_ && !FullscreenGeometryStable()) {
+            SDL_FreeSurface(surface);
+            error = "fullscreen capture surface/mode changed while reading pixels";
+            return false;
+        }
         bool ok = pixelsOk && SDL_SaveBMP(surface, path.c_str()) == 0;
         if (!ok) error = SDL_GetError();
         SDL_FreeSurface(surface);
         return ok;
     }
 private:
+    bool FullscreenGeometryStable() const {
+        if (!window_ || !renderer_ || !presentationFullscreen_) return false;
+        const Uint32 flags = SDL_GetWindowFlags(window_);
+        int width = 0, height = 0, windowWidth = 0, windowHeight = 0;
+        if (SDL_GetRendererOutputSize(renderer_, &width, &height) != 0) return false;
+        SDL_GetWindowSize(window_, &windowWidth, &windowHeight);
+        const int display = SDL_GetWindowDisplayIndex(window_);
+        SDL_DisplayMode active{};
+        if (display < 0 || SDL_GetCurrentDisplayMode(display, &active) != 0) return false;
+        return deathleak::linux_port::DisplaySurfaceGeometry{
+            presentationWidth_, presentationHeight_, requestedRefreshHz_,
+            width, height, windowWidth, windowHeight,
+            active.w, active.h, active.refresh_rate,
+            (flags & SDL_WINDOW_FULLSCREEN) != 0, (flags & SDL_WINDOW_MINIMIZED) != 0
+        }.Matches();
+    }
     struct WobbleMip {
         GLuint name = 0;
         bool attempted = false;
