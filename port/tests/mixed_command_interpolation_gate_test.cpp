@@ -37,5 +37,30 @@ int main() {
  auto batch=b; batch.packet.Clear(); for(auto c:b.packet.Commands()) batch.packet.Add(c);
  PresentationCommandPacket::Command unownedBatch{Kind::SpriteBatch}; unownedBatch.sprites.push_back(b.packet.Commands()[1].sprite); batch.packet.Add(unownedBatch); batch.packet.Seal();
  assert(AdmitMixedCommands(a,batch,.5f).moving==0);
+ // Authored projectile fade-in and heading are sampled only for one stable birth.
+ auto projectileA=frame(0,393,223), projectileB=frame(0,393,223);
+ auto retag=[](FullFrameSnapshot& f, float px,float width,float degrees,int alpha) {
+  auto commands=f.packet.Commands(); f.packet.Clear();
+  for(auto c:commands) { if(c.key.object==1) { c.key={(std::uint64_t{1}<<59)|7,0};
+   c.sprite.destination.x=px; c.sprite.destination.width=width;
+   c.sprite.destination.height=width/2; c.sprite.rotationDegrees=degrees;
+   c.sprite.tint.a=static_cast<std::uint8_t>(alpha); } f.packet.Add(c); }
+  f.packet.Seal();
+ };
+ retag(projectileA,0,40,350,120); retag(projectileB,20,44,10,132);
+ auto pd=AdmitMixedCommands(projectileA,projectileB,.5f); assert(pd.moving>=1 && pd.interpolate[1]);
+ auto ps=SampleMixedCommands(projectileA,projectileB,.5f);
+ assert(ps.Commands()[1].sprite.destination.x==10 && ps.Commands()[1].sprite.destination.width==42);
+ assert(ps.Commands()[1].sprite.rotationDegrees==360 && ps.Commands()[1].sprite.tint.a==126);
+ auto pExact=SampleMixedCommands(projectileA,projectileB,1.f);
+ assert(pExact.Commands()[1].sprite.rotationDegrees==10 && pExact.Commands()[1].sprite.tint.a==132);
+ auto flipped=projectileB; flipped.packet.Clear(); for(auto c:projectileB.packet.Commands()) { if(c.key.object>>59==1) c.sprite.flipX=true; flipped.packet.Add(c); } flipped.packet.Seal();
+ assert(!AdmitMixedCommands(projectileA,flipped,.5f).interpolate[1]);
+ auto cutProjectile=projectileB; cutProjectile.sceneEpoch=2;
+ assert(AdmitMixedCommands(projectileA,cutProjectile,.5f).moving==0);
+ auto bornEffect=projectileB; bornEffect.packet.Clear();
+ for(auto c:projectileB.packet.Commands()) bornEffect.packet.Add(c);
+ PresentationCommandPacket::Command effect{Kind::Sprite}; effect.key={12345,1}; bornEffect.packet.Add(effect); bornEffect.packet.Seal();
+ assert(!AdmitMixedCommands(projectileA,bornEffect,.5f).interpolate[1]);
  std::cout<<"mixed ordered packet: stable sampled; film/animation/birth held; cuts held; alpha=1 current\n";
 }

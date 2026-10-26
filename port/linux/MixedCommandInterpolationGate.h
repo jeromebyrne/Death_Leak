@@ -7,6 +7,44 @@ namespace deathleak::linux_port {
 // Preserve the current packet's painter stream. A command is sampled only at
 // the same ordinal with unique stable identity and unchanged GPU draw state.
 // Births, deaths, animation/film texture swaps and batch topology hold current.
+inline bool IsProjectileCommand(const PresentationCommandPacket::Command& c) {
+    return c.kind == PresentationCommandPacket::Kind::Sprite &&
+           (c.key.object >> 59) == 1 && (c.key.object & ((std::uint64_t{1} << 59)-1)) != 0;
+}
+inline float ShortAngleDelta(float from, float to) {
+    return std::remainder(to-from, 360.f);
+}
+// Projectile phase is attached to one birth ID. Texture/flip/blend/UV and
+// shader state remain discrete; only motion, authored knife fade-in scale,
+// opacity and a bounded continuous heading may be sampled.
+inline bool ProjectilePhaseAdmitted(const PresentationCommandPacket::Command& x,
+                                    const PresentationCommandPacket::Command& y) {
+    if (!IsProjectileCommand(x) || !IsProjectileCommand(y) || !(x.key==y.key)) return false;
+    const auto& a=x.sprite; const auto& b=y.sprite;
+    if (a.texture!=b.texture || !SameRect(a.source,b.source) ||
+        a.flipX!=b.flipX || a.flipY!=b.flipY || a.repeatX!=b.repeatX ||
+        a.tint.r!=b.tint.r || a.tint.g!=b.tint.g || a.tint.b!=b.tint.b ||
+        a.opacity!=b.opacity || a.rgbGain!=b.rgbGain ||
+        !SameSwayShape(a.foliageSway,b.foliageSway) ||
+        a.pixelWobble.enabled!=b.pixelWobble.enabled ||
+        a.uvShiftX!=b.uvShiftX || a.uvShiftY!=b.uvShiftY ||
+        !std::isfinite(a.rotationDegrees) || !std::isfinite(b.rotationDegrees) ||
+        std::fabs(ShortAngleDelta(a.rotationDegrees,b.rotationDegrees))>45.f ||
+        !std::isfinite(a.destination.width) || !std::isfinite(b.destination.width) ||
+        !std::isfinite(a.destination.height) || !std::isfinite(b.destination.height) ||
+        a.destination.width<=0.f || b.destination.width<=0.f ||
+        a.destination.height<=0.f || b.destination.height<=0.f ||
+        std::fabs(b.destination.width-a.destination.width)>25.f ||
+        std::fabs(b.destination.height-a.destination.height)>25.f ||
+        std::abs(int(b.tint.a)-int(a.tint.a))>32) return false;
+    // A fade scales both axes and alpha together; inconsistent independent
+    // shape/opacity changes are not an interpolatable projectile phase.
+    const float widthRatio=b.destination.width/a.destination.width;
+    const float heightRatio=b.destination.height/a.destination.height;
+    return std::fabs(widthRatio-heightRatio)<0.005f &&
+        (a.tint.a==b.tint.a ||
+         std::fabs(widthRatio-float(b.tint.a)/float(a.tint.a))<0.015f);
+}
 struct MixedCommandDecision {
     bool valid = false;
     std::vector<bool> interpolate;
@@ -47,6 +85,16 @@ inline MixedCommandDecision AdmitMixedCommands(const FullFrameSnapshot& a,
                 (ac[i].kind==Kind::Zoom && ac[i].zoom!=bc[i].zoom)) return out;
         }
     }
+    // Projectile motion is never sampled through a birth/death, painter reorder,
+    // or batch-cardinality change elsewhere in the emitted active frame.
+    bool stableEffectTopology=ac.size()==bc.size();
+    if (stableEffectTopology) for (std::size_t i=0;i<ac.size();++i) {
+        if (ac[i].kind!=bc[i].kind ||
+            ((ac[i].kind==Kind::Sprite || ac[i].kind==Kind::SpriteBatch) && !(ac[i].key==bc[i].key)) ||
+            (ac[i].kind==Kind::SpriteBatch && ac[i].sprites.size()!=bc[i].sprites.size())) {
+            stableEffectTopology=false; break;
+        }
+    }
     std::set<TopologyKey> seenA,seenB;
     for (const auto& c:ac) if (c.kind==Kind::Sprite && c.key.object) seenA.insert(c.key);
     for (const auto& c:bc) if (c.kind==Kind::Sprite && c.key.object) seenB.insert(c.key);
@@ -56,7 +104,9 @@ inline MixedCommandDecision AdmitMixedCommands(const FullFrameSnapshot& a,
             !seenA.count(x.key) || !seenB.count(y.key) ||
             x.cameraFactorX!=y.cameraFactorX || x.cameraFactorY!=y.cameraFactorY ||
             !std::isfinite(x.cameraFactorX) || !std::isfinite(x.cameraFactorY) ||
-            !SameSpriteExceptPosition(x.sprite,y.sprite) || !PhaseAdmitted(x,y,a,b)) continue;
+            !(IsProjectileCommand(x) ? (stableEffectTopology && ProjectilePhaseAdmitted(x,y)) :
+              SameSpriteExceptPosition(x.sprite,y.sprite)) ||
+            !PhaseAdmitted(x,y,a,b)) continue;
         // Duplicate identities are ambiguous; never interpolate either copy.
         const auto countKey=[&](const auto& list) { return std::count_if(list.begin(),list.end(),[&](const auto& c) { return c.kind==Kind::Sprite && c.key==x.key; }); };
         if (countKey(ac)!=1 || countKey(bc)!=1) continue;
@@ -83,6 +133,12 @@ inline PresentationCommandPacket SampleMixedCommands(const FullFrameSnapshot& a,
             const auto& p=a.packet.Commands()[i].sprite;
             c.sprite.destination.x=lerp(p.destination.x,c.sprite.destination.x);
             c.sprite.destination.y=lerp(p.destination.y,c.sprite.destination.y);
+            if (IsProjectileCommand(c)) {
+                c.sprite.destination.width=lerp(p.destination.width,c.sprite.destination.width);
+                c.sprite.destination.height=lerp(p.destination.height,c.sprite.destination.height);
+                c.sprite.rotationDegrees=p.rotationDegrees + alpha*ShortAngleDelta(p.rotationDegrees,c.sprite.rotationDegrees);
+                c.sprite.tint.a=static_cast<std::uint8_t>(std::lround(lerp(float(p.tint.a),float(c.sprite.tint.a))));
+            }
             c.sprite.uvShiftX=lerp(p.uvShiftX,c.sprite.uvShiftX);
             c.sprite.uvShiftY=lerp(p.uvShiftY,c.sprite.uvShiftY);
             if (c.phase==PresentationCommandPacket::PhasePolicy::ShaderClock) {
