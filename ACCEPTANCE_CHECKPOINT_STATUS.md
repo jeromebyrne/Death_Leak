@@ -27,3 +27,7 @@ Completion requires a real-display/GPU playtest and sustained performance eviden
 ### 2026-10-26 — update-free replay surface/side-effect guard
 - In isolated clean remote-ref presentation worktree, expanded the refresh service fixture to reject an unstable display surface without an extra present, then resume at the next stable slot. Across 100,000 packet replays and the positive next-update replacement, fake-renderer texture loads and input reads remain zero; ordered postprocess/HUD-like final commands and no repeat capture remain covered. Presentation packet, refresh-slot, and HUD const-packet CPU fixtures pass. This is a bounded safety gate, **not** full post-HUD pixel parity or sustained high-Hz physical acceptance.
 - Direct sandbox `DISPLAY=:0` and existing `/home/openclaw/.Xauthority` both failed X11 authorization, so no physical mode/GPU claim was made. The independent CPU gate proceeded; no physical owner or game/build process was started.
+
+## 2026-10-26 — cave-6 authored return regression gate
+
+- Extended `port/tests/waterfall_cave_route.sh` with a second uninterrupted normal-control Forest→Waterfall→cave-6→underwater-cave route (`R:1100,Q:40,R:900,L:500`, fixed 1/60 s). Fresh isolated Docker production build and gate passed: cave-6 entry frame 1780, authored return frame 2396, alive with health 25 and earned orb/balance 15. No warp, save load, collision bypass, or XML edit. This proves a return transition, not forward Hot Springs progression, real input, physical GPU, or high-Hz acceptance.

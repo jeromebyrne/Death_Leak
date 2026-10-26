@@ -231,3 +231,6 @@ Outcome: exact-staged-source GPU run improved active Forest frame p50 21.9874 ->
 
 ### 2026-10-26 — presentation replay guard
 - CPU fixture now verifies unstable-surface rejection/no present, zero renderer resource/input reads over 100,000 repeat replays, and stable-slot resumption; packet/scheduler/HUD fixtures pass. No new measured GPU frame-time, >60-Hz mode, or FPS gain. Atlas micro-gates remain paused.
+
+### 2026-10-26 — route acceptance extension
+- Fresh isolated production build and simulate-only cave-6 authored return gate passed. This CPU transition regression adds no GPU frame-time, >60-Hz, or release-performance evidence; atlas micro-gates remain paused.
