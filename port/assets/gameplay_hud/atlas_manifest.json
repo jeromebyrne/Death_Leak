@@ -9,18 +9,37 @@
   ],
   "page_dimensions": [
     [
-      234,
-      132
+      1084,
+      137
     ]
   ],
   "textures": [
+    {
+      "source": "Game/Media/UI/frame_top.png",
+      "sha256": "ff66b65ecc01708f3f5c75726ea1d81b94cd0b817222a5aa8aed9f533502e65a",
+      "page": 0,
+      "rect": [
+        2,
+        134,
+        1080,
+        1
+      ],
+      "original_size": [
+        1080,
+        1
+      ],
+      "trim_offset": [
+        0,
+        0
+      ]
+    },
     {
       "source": "Game/Media/UI/meter_bar_middle.png",
       "sha256": "a5eac3357f75694de2c02d954853ae935ae5decef15b85d291a130fe984bd4ab",
       "page": 0,
       "rect": [
-        216,
-        2,
+        208,
+        25,
         1,
         19
       ],
@@ -38,8 +57,8 @@
       "sha256": "a3aabc61cae641984d1c8c5d012fd2e20f53ea75787af118ac2baa726da061cd",
       "page": 0,
       "rect": [
-        221,
-        2,
+        208,
+        48,
         1,
         19
       ],
@@ -76,8 +95,8 @@
       "sha256": "76561a33afec5f8b5fe2717c8462a8a502685e2e71da42d589e3497278607019",
       "page": 0,
       "rect": [
-        226,
-        2,
+        208,
+        71,
         1,
         19
       ],
@@ -114,8 +133,8 @@
       "sha256": "0d7f7638ee4895d33cb1e1c3e24f40550b9b8117fb6ab51c8a060299ccb1de76",
       "page": 0,
       "rect": [
-        231,
-        2,
+        208,
+        94,
         1,
         19
       ],

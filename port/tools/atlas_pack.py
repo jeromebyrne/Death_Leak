@@ -76,7 +76,8 @@ def pack(paths, output, full_rgba=False):
         for index, page in enumerate(pages):
             for x, y, w, h in page['free']:
                 if outer_w <= w and outer_h <= h:
-                    score = (index, min(w - outer_w, h - outer_h), w * h - outer_w * outer_h, y, x)
+                    score = (index, max(page["width"], x + outer_w) * max(page["height"], y + outer_h),
+                             min(w - outer_w, h - outer_h), w * h - outer_w * outer_h, y, x)
                     if selected is None or score < selected[0]:
                         selected = (score, index, x, y)
         if selected is None:
