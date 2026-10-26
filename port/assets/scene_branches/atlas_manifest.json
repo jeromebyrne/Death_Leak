@@ -1,0 +1,82 @@
+{
+  "format": "deathleak-atlas-v2",
+  "max_page_size": 4096,
+  "padding": 2,
+  "pages": [
+    "atlas_000.png"
+  ],
+  "page_dimensions": [
+    [
+      1746,
+      607
+    ]
+  ],
+  "textures": [
+    {
+      "source": "Game/Media/objects/branch_1.png",
+      "sha256": "afa70e0c8054c5722db13688301a8b0362ee9168f7d62fd285a3f57703eb9ea0",
+      "page": 0,
+      "rect": [
+        2,
+        2,
+        835,
+        304
+      ]
+    },
+    {
+      "source": "Game/Media/objects/branch_2.png",
+      "sha256": "b9e5d4b6c181ea0834d86430ae08077e58285cf0ce6df1368b3a6495c7c02db8",
+      "page": 0,
+      "rect": [
+        841,
+        2,
+        531,
+        264
+      ]
+    },
+    {
+      "source": "Game/Media/objects/branch_3.png",
+      "sha256": "1cf861be9ee46aba1c07b68c014d1114ad666a5ec5f6bd7bdaf58b958b702fa7",
+      "page": 0,
+      "rect": [
+        2,
+        438,
+        395,
+        167
+      ]
+    },
+    {
+      "source": "Game/Media/objects/branch_4.png",
+      "sha256": "5354603a0a22762b929ecf1a03c05d818b404102e71eb52f44603df89d6b998b",
+      "page": 0,
+      "rect": [
+        2,
+        310,
+        688,
+        124
+      ]
+    },
+    {
+      "source": "Game/Media/objects/branch_5.png",
+      "sha256": "a0181b1c27db96a49a8a7a00bff682791761d259d6805c66fb1b6f771de5d3b1",
+      "page": 0,
+      "rect": [
+        1376,
+        2,
+        368,
+        317
+      ]
+    },
+    {
+      "source": "Game/Media/objects/branch_6.png",
+      "sha256": "1b9fb1f478f9dc15191fda18901b7b9a5469d73b073deda245f3140aab50c36d",
+      "page": 0,
+      "rect": [
+        841,
+        270,
+        441,
+        174
+      ]
+    }
+  ]
+}
