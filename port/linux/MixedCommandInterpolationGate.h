@@ -24,6 +24,15 @@ inline MixedCommandDecision AdmitMixedCommands(const FullFrameSnapshot& a,
         std::fabs(b.cameraX-a.cameraX)>250.f || std::fabs(b.cameraY-a.cameraY)>250.f) return out;
     const auto& ac=a.packet.Commands(); const auto& bc=b.packet.Commands();
     using Kind=PresentationCommandPacket::Kind;
+    // Unowned sprites can be player, projectile, or attached effect draws.
+    // Scenery sampled around their current-step silhouette is incoherent.
+    // Conservatively hold the complete packet until those phases are owned.
+    const auto hasUnownedSprite=[](const auto& commands) {
+        return std::any_of(commands.begin(),commands.end(),[](const auto& c) {
+            return (c.kind==Kind::Sprite || c.kind==Kind::SpriteBatch) && !c.key.object;
+        });
+    };
+    if (hasUnownedSprite(ac) || hasUnownedSprite(bc)) return out;
     // Global render-pass state cannot be mixed. A changed pass topology or zoom
     // could make a previously sampled draw use the wrong target/shader/blend.
     for (std::size_t i=0;i<std::max(ac.size(),bc.size());++i) {

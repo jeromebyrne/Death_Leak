@@ -29,5 +29,13 @@ int main() {
  auto reorder=b; reorder.packet.Clear(); for(auto c:b.packet.Commands()) { if(c.key.object==1) c.key={2,1}; else if(c.key.object==2) c.key={1,1}; reorder.packet.Add(c); } reorder.packet.Seal(); assert(AdmitMixedCommands(a,reorder,.5f).moving==0);
  auto blend=b; blend.packet.Clear(); for(auto c:b.packet.Commands()) { if(c.key.object==1) c.sprite.opacity=.5f; blend.packet.Add(c); } blend.packet.Seal(); assert(AdmitMixedCommands(a,blend,.5f).moving==0);
  auto death=a; death.packet.Clear(); for(auto c:a.packet.Commands()) { if(c.key.object!=2) death.packet.Add(c); } death.packet.Seal(); assert(AdmitMixedCommands(a,death,.5f).moving==1);
+ auto unowned=b; unowned.packet.Clear(); for(auto c:b.packet.Commands()) { if(c.kind==Kind::Sprite && c.key.object==4) c.key={}; unowned.packet.Add(c); } unowned.packet.Seal();
+ assert(AdmitMixedCommands(a,unowned,.5f).moving==0);
+ assert(SampleMixedCommands(a,unowned,.5f).Commands()[1].sprite.destination.x==10);
+ auto previouslyUnowned=a; previouslyUnowned.packet.Clear(); for(auto c:a.packet.Commands()) { if(c.kind==Kind::Sprite && c.key.object==2) c.key={}; previouslyUnowned.packet.Add(c); } previouslyUnowned.packet.Seal();
+ assert(AdmitMixedCommands(previouslyUnowned,b,.5f).moving==0);
+ auto batch=b; batch.packet.Clear(); for(auto c:b.packet.Commands()) batch.packet.Add(c);
+ PresentationCommandPacket::Command unownedBatch{Kind::SpriteBatch}; unownedBatch.sprites.push_back(b.packet.Commands()[1].sprite); batch.packet.Add(unownedBatch); batch.packet.Seal();
+ assert(AdmitMixedCommands(a,batch,.5f).moving==0);
  std::cout<<"mixed ordered packet: stable sampled; film/animation/birth held; cuts held; alpha=1 current\n";
 }
