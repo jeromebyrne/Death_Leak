@@ -388,6 +388,21 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
             }
         }
         if (filename.empty() || !std::filesystem::exists(filename)) { ++skipped_; continue; }
+        // Bottom ID4 is a static sea sheet authored far outside the playable
+        // camera range. Loading it eagerly used ~12 MiB of GPU residency and
+        // dominated the top-to-bottom transition despite never reaching a draw.
+        // Keep this narrow and data-guarded: edited geometry falls back to the
+        // normal texture path. A 2048-world-unit margin exceeds the viewport
+        // half-width (960) and routine camera shake at 1280x720.
+        const bool unreachableBottomSea =
+            path == "Game/XmlFiles/levels/waterfall_bottom.xml" && kind == "Sprite" &&
+            object->Attribute("id") && std::string(object->Attribute("id")) == "4" &&
+            filename == "Game/Media/levels/cliff/sea_water.png" && cameraBounds_ &&
+            interactionDepth == Depth("kGroundFront") &&
+            Flag(dimensions, "native") && !Flag(object->FirstChildElement("isanimated"), "value") &&
+            Attr(position, "rotation") == 0.f &&
+            x + Attr(dimensions, "width") * .5f < cameraBoundLeft_ - 2048.f;
+        if (unreachableBottomSea) { ++skipped_; continue; }
         auto found = textures.find(filename);
         render::TextureId texture = render::InvalidTexture;
         if (found == textures.end()) {
