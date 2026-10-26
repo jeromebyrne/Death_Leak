@@ -8,6 +8,7 @@
 #include "../game/WeatherLightning.h"
 #include "../game/WeatherRain.h"
 #include "../game/WeatherTextureResidency.h"
+#include "../game/LoadingOverlayPacket.h"
 #include "../game/Combat.h"
 #include "../game/PlayerMotion.h"
 #include "../game/CameraShake.h"
@@ -791,8 +792,6 @@ int main(int argc, char** argv) {
         const auto packetLoadingPhaseOnEntry = loadingPhase;
         bool packetGameplayRan = false, packetWeatherRan = false;
         bool packetSceneRan = false, packetPlayerRan = false;
-        float packetDrawAlpha = -1.f;
-        int packetDrawTintAlpha = -1;
 #ifdef DEATHLEAK_TEST_LOADING_FADE_OBSERVER
         const auto loadingPhaseOnEntry = loadingPhase;
         bool loadingGameplayRan = false, loadingWeatherRan = false;
@@ -1625,6 +1624,10 @@ int main(int argc, char** argv) {
         // intermediate catch-up steps. The display retains its last image until
         // the final state in this batch is ready to present.
         shaderClock.Prepare(); // One wobble step per update, including catch-up steps.
+        const auto loadingPacket = deathleak::game::LoadingOverlayPacket::Prepare(
+            loadingPhase != LoadingPhase::None, loadingHoldExitedThisFrame,
+            loadingPhase == LoadingPhase::FadeIn, loadingPhase == LoadingPhase::FadeOut,
+            loadingPhaseTime, kLoadingFadeSeconds);
         if (fixedDt <= 0.f && !livePacer.PresentNow()) {
             precedingRenderedModifiedDelta = dt;
             shaderClock.RenderCompleted(dt);
@@ -1773,20 +1776,10 @@ int main(int argc, char** argv) {
             if (combat.Health() <= 0 && deathArt)
                 renderer->DrawSprite({deathArt, {}, {0, 0, 1280, 720}});
             // UIManager draws gameloading after scene postprocess and all HUD.
-            if (loadingPhase != LoadingPhase::None) {
-                const float alpha = loadingHoldExitedThisFrame ? 1.f : loadingPhase == LoadingPhase::FadeIn
-                    ? std::min(1.f, loadingPhaseTime / kLoadingFadeSeconds)
-                    : loadingPhase == LoadingPhase::FadeOut
-                        ? std::max(0.f, 1.f - loadingPhaseTime / kLoadingFadeSeconds) : 1.f;
-                const Color tint{255, 255, 255, static_cast<std::uint8_t>(std::lround(alpha * 255.f))};
-                packetDrawAlpha = alpha;
-                packetDrawTintAlpha = tint.a;
+            loadingPacket.Draw(*renderer, modalBackground);
 #ifdef DEATHLEAK_TEST_LOADING_FADE_OBSERVER
-                loadingDrawAlpha = tint.a;
+            if (loadingPacket.visible) loadingDrawAlpha = loadingPacket.tintAlpha;
 #endif
-                if (modalBackground) renderer->DrawSprite({modalBackground, {}, {0, 0, 1280, 720}, tint});
-                else renderer->FillRect({0, 0, 1280, 720}, {0, 0, 0, tint.a});
-            }
         }
         // Debug overlay is the final UI layer, including during gameplay modals and fades.
         // It samples presented wall-clock frames, never the capped/fixed simulation delta.
@@ -1814,10 +1807,10 @@ int main(int argc, char** argv) {
             // SaveFrame above is post-overlay/pre-EndFrame for this exact draw.
             // The JSON is committed only after the image and byte hashes exist.
             const bool firstReveal = loadingPhase == LoadingPhase::FadeOut && packetGameplayRan &&
-                packetDrawAlpha > 0.f && packetDrawAlpha < 1.f;
+                loadingPacket.alpha > 0.f && loadingPacket.alpha < 1.f;
             const bool firstPostfade = packetFirstPostfadeOrdinal == frame && packetSawWaterfallLoading &&
-                loadingPhase == LoadingPhase::None && packetDrawAlpha < 0.f &&
-                packetDrawTintAlpha < 0 && packetGameplayRan && packetWeatherRan &&
+                loadingPhase == LoadingPhase::None && loadingPacket.alpha < 0.f &&
+                loadingPacket.tintAlpha < 0 && packetGameplayRan && packetWeatherRan &&
                 packetSceneRan && packetPlayerRan && !loadingPausedThisFrame;
             if (currentLevel != "Game/XmlFiles/levels/waterfall_top.xml" ||
                 !(postfadePacket ? firstPostfade : firstReveal)) {
@@ -1887,8 +1880,8 @@ int main(int argc, char** argv) {
                    << ", \"loadingPhaseTime\": " << loadingPhaseTime
                    << ", \"pausedAtUpdateEntry\": " << loadingPausedThisFrame
                    << ", \"pausedAtDraw\": " << (loadingPhase == LoadingPhase::FadeIn || loadingPhase == LoadingPhase::OpaqueHold)
-                   << ", \"loadingAlphaAtDraw\": " << packetDrawAlpha
-                   << ", \"loadingTintAlphaAtDraw\": " << packetDrawTintAlpha
+                   << ", \"loadingAlphaAtDraw\": " << loadingPacket.alpha
+                   << ", \"loadingTintAlphaAtDraw\": " << loadingPacket.tintAlpha
                    << ", \"holdExitedThisFrame\": " << loadingHoldExitedThisFrame
                    << ", \"gameplayUpdated\": " << packetGameplayRan
                    << ", \"weatherUpdated\": " << packetWeatherRan
