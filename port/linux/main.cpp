@@ -1659,6 +1659,7 @@ int main(int argc, char** argv) {
             shaderClock.RenderCompleted(dt);
             continue;
         }
+        if (!levelPath.empty()) scene.PreparePresentation();
         const auto shakeView = cameraShake.PresentationSample();
         const float drawCameraX = shakeView.viewX, drawCameraY = shakeView.viewY;
         const auto shaderFrame = shaderClock.Draw();

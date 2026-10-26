@@ -41,7 +41,7 @@ struct SceneSprite {
     float cameraParallaxX = 0, cameraParallaxY = 0;
     bool autoScrollY = false;
     float autoScrollYSpeed = 0;
-    mutable float autoScrollYPhase = 0; // ParallaxLayer advances its UV in Draw.
+    float autoScrollYPhase = 0; // Committed once per selected presentation.
     bool currencyOrb = false;
     bool authoredSmallOrb = false;
     float orbOriginY = 0, orbPhase = 0, orbHoverSpeed = 2, orbHoverOffsetY = 20;
@@ -169,6 +169,7 @@ public:
     size_t IntroBodyFrameCount() const;
     bool Load(const std::string& path, render::Renderer& renderer, std::string& error,
               const std::string& fromLevel = {}, const std::string& entryDoorId = {});
+    void PreparePresentation(); // Commit former draw-time parallax/prior-render state once.
     void Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY,
               std::vector<PainterItem> dynamic = {}, float playerDamageBurstGain = 1.f,
               float foliageGlobalTimeMultiplier = 1.f, ShaderClockSnapshot shaderClock = {},
@@ -245,7 +246,7 @@ private:
     // program.cpp stores this render's modified delta after Render. A scene
     // draw consumes the preceding rendered delta, even during modal pauses.
     float pendingModifiedDelta_ = 0.f;
-    mutable float previousRenderedModifiedDelta_ = 0.f;
+    float previousRenderedModifiedDelta_ = 0.f;
     std::vector<ParticleSpray> particleSprays_;
     std::vector<ParticleSpray> footstepSprays_;
     std::vector<ParticleSpray> jumpTakeoffSprays_;

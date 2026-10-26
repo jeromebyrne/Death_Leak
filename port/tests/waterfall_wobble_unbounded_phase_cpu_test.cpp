@@ -10,7 +10,7 @@ using namespace deathleak;
 class CaptureRenderer final : public render::Renderer {
 public:
     std::vector<render::Sprite> drawn;
-    bool Initialize(const char*, int, int, std::string&) override { return true; }
+    bool Initialize(const char*, int, int, bool, std::string&) override { return true; }
     render::TextureId LoadTexture(const std::string&, std::string&) override { return 1; }
     void BeginFrame(render::Color) override {}
     void DrawSprite(const render::Sprite& s) override { drawn.push_back(s); }
@@ -40,6 +40,7 @@ int main() {
         scene.UpdateVisuals(1.f / 60.f, scene.PlayerX(), scene.PlayerY(),
                             scene.CameraX(), scene.CameraY());
         for (float cameraY : {2600.f, 3000.f}) {
+            scene.PreparePresentation();
             renderer.drawn.clear();
             scene.Draw(renderer, 300.f, cameraY, 300.f, cameraY);
             const float expected13 = drawIndex * wobbleStep;

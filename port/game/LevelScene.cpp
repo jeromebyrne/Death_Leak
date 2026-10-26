@@ -1336,6 +1336,23 @@ void LevelScene::UpdatePlayerVisual(float dt, float vx, float vy, bool grounded,
         playerArmFrame_ = arm == playerArmSequences_.end() ? 0 : arm->second.frames.size();
     }
 }
+void LevelScene::PreparePresentation() {
+    // Former Draw mutation occurred before viewport culling. Retain the same
+    // eligibility predicate, then commit only for a newly presented update.
+    const auto& filter = DiagnosticRenderFilter();
+    for (auto& object : sprites_) {
+        if (object.collected || (object.playerShadow && !playerGrounded_) ||
+            (object.playerAimLine && aimLineAlpha_ <= 0.f) ||
+            !filter.Draw(object.xmlId, levelPath_)) continue;
+        if (!object.parallaxLayer || !object.autoScrollY) continue;
+        constexpr float worldToBackbufferY = 720.f / 1080.f;
+        object.autoScrollYPhase += object.autoScrollYSpeed * worldToBackbufferY *
+            .001f * (previousRenderedModifiedDelta_ * 60.f);
+        if (!object.pixelWobble.enabled)
+            object.autoScrollYPhase -= std::floor(object.autoScrollYPhase);
+    }
+    previousRenderedModifiedDelta_ = pendingModifiedDelta_;
+}
 void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY, std::vector<PainterItem> dynamic, float playerDamageBurstGain, float foliageGlobalTimeMultiplier, ShaderClockSnapshot shaderClock, bool suppressLandingSprayDraw, std::function<void()> afterPlayerDraw) const {
     constexpr float scale = 2.f / 3.f; // Original world is authored for 1920x1080.
     const auto& filter = DiagnosticRenderFilter();
@@ -1456,19 +1473,8 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         draw.rotationDegrees = render::OrdinarySpriteRotationDegrees(
             object.playerAimLine ? playerAimLineRotation_ : object.rotation,
             draw.flipX, object.playerAimLine ? playerAimLineFlipY_ : object.flipY);
-        if (object.parallaxLayer && object.autoScrollY) {
-            // Windows advances stored vertex V in ParallaxLayer::Draw before
-            // Sprite::Draw. This also runs for a layer the port later culls.
-            constexpr float worldToBackbufferY = 720.f / 1080.f;
-            object.autoScrollYPhase += object.autoScrollYSpeed * worldToBackbufferY *
-                .001f * (previousRenderedModifiedDelta_ * 60.f);
-            // Pixel wobble uses V in a second sine before texture wrap, so
-            // preserve the source's accumulating V for that nonlinear input.
-            // Ordinary sheets remain wrap-equivalent with a bounded phase.
-            if (!object.pixelWobble.enabled)
-                object.autoScrollYPhase -= std::floor(object.autoScrollYPhase);
+        if (object.parallaxLayer && object.autoScrollY)
             draw.uvShiftY = object.autoScrollYPhase;
-        }
         // Cull using the rendered rotated quad, not its unrotated destination.
         if (!render::SpriteMayIntersectViewport(draw)) continue;
         if (object.player && object.xmlId == "2" && introBodyPhase_ == IntroBodyPhase::None) {
@@ -1507,6 +1513,5 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
     drawOrbTrails();
     drawSpraysBefore(-1, 0);
     drawDynamicBefore(-2147483647);
-    previousRenderedModifiedDelta_ = pendingModifiedDelta_;
 }
 }
