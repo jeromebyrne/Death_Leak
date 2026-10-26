@@ -52,3 +52,21 @@ if printf '%s\n' "$hot_springs_route" | grep -q 'Player died'; then
   exit 1
 fi
 printf '%s\n' "$hot_springs_route" | grep -E '^(Trigger at frame|Simulation ended)'
+
+# Continue from cave 3 with ordinary held right+jump/swim. The authored
+# cave-3 return to cave 4 then cave-4 exit to cave 5 must both occur.
+cave5_route=$(port/build/deathleak-linux \
+  --play Game/XmlFiles/levels/forest_exploration_1.xml \
+  --script R:1100,Q:40,R:640,E:1500,R:1300,E:2000 \
+  --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$cave5_route" | grep -q 'Trigger at frame 3037 from .*underwater_cave_6.xml .*hot_springs.xml'
+printf '%s\n' "$cave5_route" | grep -q 'Trigger at frame 3190 from .*hot_springs.xml .*underwater_cave_4.xml'
+printf '%s\n' "$cave5_route" | grep -q 'Trigger at frame 3415 from .*underwater_cave_4.xml .*underwater_cave_3.xml'
+printf '%s\n' "$cave5_route" | grep -q 'Trigger at frame 4770 from .*underwater_cave_3.xml .*underwater_cave_4.xml'
+printf '%s\n' "$cave5_route" | grep -q 'Trigger at frame 5001 from .*underwater_cave_4.xml .*underwater_cave_5.xml'
+printf '%s\n' "$cave5_route" | grep -q 'Simulation ended at Game/XmlFiles/levels/underwater_cave_5.xml .*orbs=38 keys=0 health=25 .*balance=38'
+if printf '%s\n' "$cave5_route" | grep -q 'Player died'; then
+  echo 'Unexpected death on cave-3 to cave-5 route' >&2
+  exit 1
+fi
+printf '%s\n' "$cave5_route" | grep -E '^(Trigger at frame|Simulation ended)'

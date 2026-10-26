@@ -240,3 +240,6 @@ Outcome: exact-staged-source GPU run improved active Forest frame p50 21.9874 ->
 
 ### 2026-10-26 — Hot Springs route extension (acceptance only)
 - Fixed-60-Hz CPU normal-control route now reaches authored Hot Springs and underwater caves 4/3; no frame-time, physical GPU, high-Hz, or release claim. High-Hz presentation integration remains the sole source/build/GPU owner; atlas micro-gates stay paused.
+
+### 2026-10-26 — cave-5 route-only checkpoint
+- Clean current-ref Docker production build and uninterrupted Forest→Hot Springs→underwater cave 5 ordinary-control CPU gate passed. No physical GPU timing or high-Hz performance claim; atlas micro-gates remain paused.
