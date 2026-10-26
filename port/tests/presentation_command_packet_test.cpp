@@ -11,6 +11,7 @@ using namespace deathleak::linux_port;
 
 struct Spy final : Renderer {
     std::vector<std::string> calls;
+    std::vector<float> spriteXs;
     bool surfaceStable = true;
     mutable int inputReads = 0;
     int eventPolls = 0;
@@ -19,7 +20,7 @@ struct Spy final : Renderer {
     TextureId LoadTexture(const std::string&, std::string&) override { ++textureLoads; return 7; }
     void BeginFrame(Color c) override { calls.push_back("begin:" + std::to_string(c.r)); }
     void SetWorldZoom(float z) override { calls.push_back("zoom:" + std::to_string(z)); }
-    void DrawSprite(const Sprite& s) override { calls.push_back("sprite:" + std::to_string(s.texture)); }
+    void DrawSprite(const Sprite& s) override { calls.push_back("sprite:" + std::to_string(s.texture)); spriteXs.push_back(s.destination.x); }
     void DrawSpriteBatch(const Sprite* s, std::size_t n) override {
         calls.push_back("batch:" + std::to_string(n));
         for (std::size_t i=0; i<n; ++i) calls.push_back("item:" + std::to_string(s[i].texture));
@@ -91,6 +92,45 @@ int main() {
     assert(refresh.TryPresent(origin + std::chrono::seconds(1)) == RefreshPresentationService::Result::Presented);
     assert(raw->calls == std::vector<std::string>({"begin:4", "sprite:10", "present"}));
     assert(refresh.RepeatPresents() == 2 && simulationUpdates == 2);
+    // Production fresh path: seal N without an accidental alpha-1 swap, present
+    // N-1 at the boundary, then a distinct read-only midpoint display slot.
+    FreshPresentationPacket fresh;
+    const auto makeFrame = [](float x) {
+        FullFrameSnapshot f; f.sceneEpoch = 7;
+        f.packet.Add(PresentationCommandPacket::Command{PresentationCommandPacket::Kind::Begin});
+        PresentationCommandPacket::Command sprite{PresentationCommandPacket::Kind::Sprite};
+        sprite.key={10,0}; sprite.sprite.texture=7;
+        sprite.sprite.destination={x,20,20,30}; f.packet.Add(sprite);
+        f.packet.Add(PresentationCommandPacket::Command{PresentationCommandPacket::Kind::Postprocess});
+        PresentationCommandPacket::Command hud{PresentationCommandPacket::Kind::Sprite};
+        hud.key={20,0}; hud.sprite.texture=9;
+        hud.sprite.destination={50,50,100,20}; f.packet.Add(hud);
+        f.packet.Seal(); return f;
+    };
+    fresh.Seal(makeFrame(0),{0,20,0,0,7});
+    fresh.Seal(makeFrame(10),{10,20,0,0,7});
+    const auto freshOrigin = RefreshPresentationService::Clock::now();
+    RefreshPresentationService freshService(freshOrigin, 120, recorder);
+    raw->calls.clear();
+    recorder.BeginFrame({1,0,0,255}); recorder.DrawSprite(single);
+    recorder.SealWithoutPresent();
+    assert(raw->calls.back() != "present");
+    raw->calls.clear();
+    assert(freshService.PresentFreshBoundary(fresh,freshOrigin)==RefreshPresentationService::Result::Presented);
+    assert(raw->calls == std::vector<std::string>({"begin:0","sprite:7","post","sprite:9","present"}));
+    assert(raw->spriteXs[raw->spriteXs.size()-2]==0.f);
+    raw->calls.clear();
+    assert(freshService.TryPresent(freshOrigin+std::chrono::milliseconds(9))==RefreshPresentationService::Result::Presented);
+    assert(freshService.FreshPresents()==1);
+    assert(raw->calls == std::vector<std::string>({"begin:0","sprite:7","post","sprite:9","present"}));
+    assert(raw->spriteXs[raw->spriteXs.size()-2]>0.f && raw->spriteXs[raw->spriteXs.size()-2]<10.f);
+    const float lastPresentedX=raw->spriteXs[raw->spriteXs.size()-2];
+    fresh.Seal(makeFrame(20),{20,20,0,0,7});
+    assert(freshService.PresentFreshBoundary(fresh,freshOrigin+std::chrono::milliseconds(17))==RefreshPresentationService::Result::Presented);
+    assert(raw->spriteXs[raw->spriteXs.size()-2]==10.f && raw->spriteXs[raw->spriteXs.size()-2]>=lastPresentedX);
+    raw->surfaceStable=false; raw->calls.clear();
+    assert(freshService.TryPresent(freshOrigin+std::chrono::milliseconds(26))==RefreshPresentationService::Result::SurfaceChanged);
+    assert(raw->calls.empty()); raw->surfaceStable=true;
     assert(raw->textureLoads == 0 && raw->inputReads == 0 && raw->eventPolls == 0);
     assert(!raw->PollQuit() && raw->eventPolls == 1); // positive fixed-update event pump
     std::cout << "ordered packet 100000 repeat replays and positive next update passed\n";

@@ -494,12 +494,16 @@ int main(int argc, char** argv) {
     if (simulateWallClock && (!simulateOnly || fixedDt <= 0.f)) {
         std::cerr << "--simulate-wall-clock requires --simulate-only and --fixed-dt\n"; return 2;
     }
-    if (testRefreshHz && (!simulateOnly || fixedDt > 0.f || script.empty() || frameLimit <= 0 ||
+    const char* testSoftwareEnv = std::getenv("DEATHLEAK_TEST_ALLOW_SOFTWARE_RENDERER");
+    const bool testAllowSoftware = testSoftwareEnv && std::string(testSoftwareEnv) == "1";
+    const bool testFreshSlots = refreshSlots && testAllowSoftware && testRefreshHz > 0;
+    if (testRefreshHz && (!(simulateOnly || testFreshSlots) || fixedDt > 0.f || script.empty() || frameLimit <= 0 ||
                           testRefreshHz < 30 || testRefreshHz > 240)) {
         std::cerr << "--test-refresh-hz requires --simulate-only, --play, --script, --frames, no --fixed-dt, and 30..240 Hz\n";
         return 2;
     }
-    if (refreshSlots && (fixedDt > 0.f || simulateOnly || repeatPresentationCheck || !fullscreen || !requestedRefreshHz)) {
+    if (refreshSlots && (fixedDt > 0.f || simulateOnly || repeatPresentationCheck ||
+                         (!testFreshSlots && (!fullscreen || !requestedRefreshHz)))) {
         std::cerr << "--refresh-slots requires live fullscreen GPU play, --refresh-hz, and no fixed-dt/repeat diagnostic\n"; return 2;
     }
     if (!mixedReplayPrefix.empty() && (mixedReplayFrame <= 0 || mixedReplayFrame >= frameLimit || simulateOnly)) {
@@ -560,8 +564,6 @@ int main(int argc, char** argv) {
         if (!events.eof() || lastFrame < 0) { std::cerr << "Bad --camera-script file\n"; return 2; }
     }
     // Explicit opt-in for Docker/dummy-video functional tests only.
-    const char* testSoftwareEnv = std::getenv("DEATHLEAK_TEST_ALLOW_SOFTWARE_RENDERER");
-    const bool testAllowSoftware = testSoftwareEnv && std::string(testSoftwareEnv) == "1";
     auto renderer = CreateRenderer(testAllowSoftware);
     deathleak::linux_port::PresentationRecordingRenderer* repeatRecorder = nullptr;
     deathleak::linux_port::FullFrameSnapshot priorFullFrame;
@@ -578,6 +580,7 @@ int main(int argc, char** argv) {
     auto* bodySlowFrameObserver = observer.get();
     renderer = std::move(observer);
 #endif
+    const bool recordFreshTopology = fullFrameTopologyCheck || refreshSlots;
     if (repeatPresentationCheck || refreshSlots || fullFrameTopologyCheck) {
         auto recording = std::make_unique<deathleak::linux_port::PresentationRecordingRenderer>(std::move(renderer));
         repeatRecorder = recording.get();
@@ -793,7 +796,7 @@ int main(int argc, char** argv) {
     bool liveClockAnchored = false;
     std::unique_ptr<deathleak::linux_port::RefreshPresentationService> refreshPresentation;
     if (refreshSlots) refreshPresentation = std::make_unique<deathleak::linux_port::RefreshPresentationService>(
-        last, requestedRefreshHz, *repeatRecorder);
+        last, testFreshSlots ? testRefreshHz : requestedRefreshHz, *repeatRecorder, testFreshSlots);
     unsigned long long refreshSurfaceFailures = 0;
     std::vector<double> presentationIntervalsMs;
     auto previousPresentation = std::chrono::steady_clock::time_point{};
@@ -809,6 +812,7 @@ int main(int argc, char** argv) {
     int presentedFramesInSample = 0;
     int displayedFps = -1;
     for (int frame = 0; !frameLimit || frame < frameLimit; ++frame) {
+        auto presentationTickTime = std::chrono::steady_clock::now();
         // Scripted/fixed-dt routes retain their historical one-update/one-render
         // behavior. Live play instead consumes fixed 60-Hz simulation quanta.
         if (fixedDt <= 0.f) {
@@ -817,6 +821,7 @@ int main(int argc, char** argv) {
                 std::chrono::duration_cast<std::chrono::steady_clock::duration>(
                     std::chrono::duration<double>(double(testDisplaySlots) / testRefreshHz)) :
                 std::chrono::steady_clock::now();
+            presentationTickTime = tickTime;
             livePacer.Accumulate(tickTime);
             if (!livePacer.Due()) {
                 if (refreshPresentation) {
@@ -1800,13 +1805,13 @@ int main(int argc, char** argv) {
             renderer->SetWorldZoom(!hasPulledSword ? introEffectiveZoom : 1.f);
             std::vector<deathleak::game::PainterItem> painterItems;
             combat.AppendPainterItems(painterItems, *renderer, drawCameraX, drawCameraY,
-                fullFrameTopologyCheck ? std::function<void(const deathleak::game::ParticleSpray&, const deathleak::game::ParticleSpray::Particle&, const Sprite&)>(
+                recordFreshTopology ? std::function<void(const deathleak::game::ParticleSpray&, const deathleak::game::ParticleSpray::Particle&, const Sprite&)>(
                     [&](const auto& spray, const auto& particle, const Sprite&) {
                         auto key=deathleak::linux_port::EmittedParticleKey(spray,particle);
                         key.object |= (std::uint64_t{1}<<60); // Runtime material-spray namespace.
                         repeatRecorder->TagLastSprite(key);
                     }) : std::function<void(const deathleak::game::ParticleSpray&, const deathleak::game::ParticleSpray::Particle&, const Sprite&)>(),
-                fullFrameTopologyCheck ? std::function<void(const deathleak::game::Shot&, const Sprite&)>(
+                recordFreshTopology ? std::function<void(const deathleak::game::Shot&, const Sprite&)>(
                     [&](const auto& shot, const Sprite&) {
                         repeatRecorder->TagLastSprite({(std::uint64_t{1}<<59) | shot.stableIdentity,0});
                     }) : std::function<void(const deathleak::game::Shot&, const Sprite&)>());
@@ -1843,7 +1848,7 @@ int main(int argc, char** argv) {
             scene.Draw(*renderer, drawCameraX, drawCameraY, presentPose.playerX, presentPose.playerY, std::move(painterItems),
                        combat.PlayerDamageBurstGain(), weather.FoliageSwayMultiplier(), shaderFrame, suppressLandingSprayDraw,
                        std::move(afterPlayerDraw), {},
-                       fullFrameTopologyCheck ? std::function<void(const deathleak::game::SceneSprite&, const Sprite&, bool)>(
+                       recordFreshTopology ? std::function<void(const deathleak::game::SceneSprite&, const Sprite&, bool)>(
                            [&](const deathleak::game::SceneSprite& source, const Sprite&, bool arm) {
                                using Packet = deathleak::linux_port::PresentationCommandPacket;
                                const auto phase = source.parallaxLayer ?
@@ -1857,7 +1862,7 @@ int main(int argc, char** argv) {
                                    source.scrolling || source.fadeWhenPlayerOccluded || source.playerAimLine,
                                    source.playerAimLine);
                            }) : std::function<void(const deathleak::game::SceneSprite&, const Sprite&, bool)>(),
-                       fullFrameTopologyCheck ? std::function<void(const deathleak::game::ParticleSpray&, const deathleak::game::ParticleSpray::Particle&, const Sprite&)>(
+                       recordFreshTopology ? std::function<void(const deathleak::game::ParticleSpray&, const deathleak::game::ParticleSpray::Particle&, const Sprite&)>(
                            [&](const deathleak::game::ParticleSpray& spray,const deathleak::game::ParticleSpray::Particle& particle,const Sprite&) {
                                auto key=deathleak::linux_port::EmittedParticleKey(spray,particle);
                                key.object |= (std::uint64_t{1}<<62);
@@ -1890,19 +1895,19 @@ int main(int argc, char** argv) {
             } else {
                 if (filmFrames.Frame(gameplayFilm.Index()))
                     { renderer->DrawSprite({filmFrames.Frame(gameplayFilm.Index()), {}, {0,0,1280,720}, {255,255,255,51}});
-                    if (fullFrameTopologyCheck) repeatRecorder->TagLastSprite({(std::uint64_t{1}<<61)|1,0},0.f,0.f); }
+                    if (recordFreshTopology) repeatRecorder->TagLastSprite({(std::uint64_t{1}<<61)|1,0},0.f,0.f); }
                 // game_hud.xml: opaque 50-unit bands follow the film and precede HUD widgets.
                 if (finalFrame) {
                     renderer->DrawSprite({finalFrame, {}, AuthoredUI(-960, 490, 1920, 50), {255,255,255,255}});
-                    if (fullFrameTopologyCheck) repeatRecorder->TagLastSprite({(std::uint64_t{1}<<61)|2,0},0.f,0.f);
+                    if (recordFreshTopology) repeatRecorder->TagLastSprite({(std::uint64_t{1}<<61)|2,0},0.f,0.f);
                     Sprite bottomBar{finalFrame, {}, AuthoredUI(-960, -540, 1920, 50), {255,255,255,255}};
                     bottomBar.flipY = true;
                     renderer->DrawSprite(bottomBar);
-                    if (fullFrameTopologyCheck) repeatRecorder->TagLastSprite({(std::uint64_t{1}<<61)|3,0},0.f,0.f);
+                    if (recordFreshTopology) repeatRecorder->TagLastSprite({(std::uint64_t{1}<<61)|3,0},0.f,0.f);
                 }
-                const auto hudStart = fullFrameTopologyCheck ? repeatRecorder->Packet().Size() : 0;
+                const auto hudStart = recordFreshTopology ? repeatRecorder->Packet().Size() : 0;
                 hudPacket->Draw(*renderer);
-                if (fullFrameTopologyCheck) repeatRecorder->TagStaticRange(hudStart, (std::uint64_t{1}<<61)|0x1000);
+                if (recordFreshTopology) repeatRecorder->TagStaticRange(hudStart, (std::uint64_t{1}<<61)|0x1000);
             }
             if (paperModal)
                 deathleak::game::DrawPaperModal(*renderer, paperTitle, paperDescription,
@@ -2139,11 +2144,13 @@ int main(int argc, char** argv) {
         if (refreshSlots && !renderer->PresentationSurfaceStable()) {
             std::cerr << "Refresh surface unstable before ordinary present\n"; return 1;
         }
-        renderer->EndFrame();
-        if (fullFrameTopologyCheck && repeatRecorder) {
+        if (refreshSlots) repeatRecorder->SealWithoutPresent();
+        else renderer->EndFrame();
+        if (recordFreshTopology && repeatRecorder) {
             deathleak::linux_port::FullFrameSnapshot frameSnapshot{
                 repeatRecorder->Packet(),scene.SceneEpoch(),drawCameraX*(2.f/3.f),
                 -drawCameraY*(2.f/3.f),false,shaderFrame.totalTime,shaderFrame.pixelWobbleTime};
+            if (fullFrameTopologyCheck) {
             if (hasPriorFullFrame) {
                 const auto decision=deathleak::linux_port::AdmitFullFrame(priorFullFrame,frameSnapshot,.5f);
                 const auto mixed=deathleak::linux_port::AdmitMixedCommands(priorFullFrame,frameSnapshot,.5f);
@@ -2212,6 +2219,7 @@ int main(int argc, char** argv) {
                 std::cout << "FULL_FRAME_TOPOLOGY frame=" << frame << " commands=" << frameSnapshot.packet.Size()
                           << " sprites=" << tagged << '/' << total << " decision=" << int(decision) << '\n';
             }
+            }
             freshPresentation.Seal(frameSnapshot, {worldX, worldY, drawCameraX, drawCameraY, presentationSceneGeneration});
             if (!mixedReplayPrefix.empty() && frame == mixedReplayFrame && hasPriorFullFrame) {
                 // Diagnostic-only: replay complete sealed packets into the same SDL scene
@@ -2247,6 +2255,12 @@ int main(int argc, char** argv) {
             }
             priorFullFrame=std::move(frameSnapshot); hasPriorFullFrame=true;
         }
+        if (refreshPresentation) {
+            const auto result = refreshPresentation->PresentFreshBoundary(freshPresentation, presentationTickTime);
+            if (result != deathleak::linux_port::RefreshPresentationService::Result::Presented) {
+                std::cerr << "Refresh surface changed during fresh boundary\n"; return 1;
+            }
+        }
         if (fixedDt <= 0.f && !liveClockAnchored) {
             livePacer.RebaseAfterFirstPresent(std::chrono::steady_clock::now());
             liveClockAnchored = true;
@@ -2255,7 +2269,7 @@ int main(int argc, char** argv) {
             std::cerr << "Refresh surface changed during ordinary present\n"; return 1;
         }
         if (profile || refreshSlots) notePresentation();
-        if (refreshPresentation) refreshPresentation->OrdinaryPresented(std::chrono::steady_clock::now());
+
         if (repeatPresentationCheck && repeatRecorder && frame == frameLimit - 1) {
             const auto repeatStart = std::chrono::steady_clock::now();
             repeatRecorder->Replay();
@@ -2390,6 +2404,7 @@ int main(int argc, char** argv) {
     if (testRefreshHz) std::cout << "TEST_REFRESH_HZ=" << testRefreshHz
                                  << " display_slots=" << testDisplaySlots << '\n';
     if (refreshSlots) std::cerr << "Refresh-only presents=" << refreshPresentation->RepeatPresents()
+                                << " fresh_presents=" << refreshPresentation->FreshPresents()
                                 << " surface_failures=" << refreshSurfaceFailures << "\n";
     if ((profile || refreshSlots) && !presentationIntervalsMs.empty()) {
         std::sort(presentationIntervalsMs.begin(), presentationIntervalsMs.end());

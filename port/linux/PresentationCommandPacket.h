@@ -117,6 +117,9 @@ public:
         packet_.Add(PresentationCommandPacket::Command{PresentationCommandPacket::Kind::Resolve}); inner_->ResolveUnprocessedFrame();
     }
     void EndFrame() override { packet_.Seal(); inner_->EndFrame(); }
+    // Seal the renderer-owned post-HUD stream without exposing its unsampled
+    // backbuffer. The fresh service replays and presents a temporal sample.
+    void SealWithoutPresent() { packet_.Seal(); }
     bool PollQuit() override { return inner_->PollQuit(); }
     bool PresentationSurfaceStable() const override { return inner_->PresentationSurfaceStable(); }
     bool KeyDown(int key) const override { return inner_->KeyDown(key); }

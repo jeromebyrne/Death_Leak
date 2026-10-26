@@ -2,14 +2,14 @@
 #include <cassert>
 #include <iostream>
 using namespace deathleak::linux_port;
-static FullFrameSnapshot frame(float x) {
+static FullFrameSnapshot frame(float x, int filmTexture=2) {
     FullFrameSnapshot f; f.sceneEpoch = 7;
     f.packet.Add(PresentationCommandPacket::Command{PresentationCommandPacket::Kind::Begin});
     PresentationCommandPacket::Command player{PresentationCommandPacket::Kind::Sprite};
     player.key={10,0}; player.sprite.texture=1; player.sprite.destination={x,20,20,30}; f.packet.Add(player);
     f.packet.Add(PresentationCommandPacket::Command{PresentationCommandPacket::Kind::Postprocess});
     PresentationCommandPacket::Command film{PresentationCommandPacket::Kind::Sprite};
-    film.key={20,0}; film.sprite.texture=2; film.sprite.destination={0,0,1280,720}; f.packet.Add(film);
+    film.key={(std::uint64_t{1}<<61)|1,0}; film.sprite.texture=filmTexture; film.sprite.destination={0,0,1280,720}; f.packet.Add(film);
     PresentationCommandPacket::Command hud{PresentationCommandPacket::Kind::Sprite};
     hud.key={30,0}; hud.sprite.texture=3; hud.sprite.destination={50,50,100,20}; f.packet.Add(hud);
     f.packet.Seal(); return f;
@@ -26,6 +26,14 @@ int main() {
     assert(again.packet.Commands()[1].sprite.destination.x==5 && again.pose.playerX==5);
     assert(half.packet.Commands()[2].kind==PresentationCommandPacket::Kind::Postprocess);
     assert(half.packet.Commands()[3].sprite.texture==2 && half.packet.Commands()[4].sprite.texture==3);
+    FreshPresentationPacket filmSwap;
+    filmSwap.Seal(frame(0,2),{0,20,0,0,7});
+    filmSwap.Seal(frame(10,4),{10,20,0,0,7});
+    const auto midpointFilm=filmSwap.Sample(.5);
+    assert(midpointFilm.sampledCommands>0);
+    assert(midpointFilm.packet.Commands()[1].sprite.destination.x==5);
+    assert(midpointFilm.packet.Commands()[3].sprite.texture==2);
+    assert(filmSwap.Sample(1).packet.Commands()[3].sprite.texture==4);
     auto cut=frame(20); cut.sceneEpoch=8; p.Seal(std::move(cut),{20,20,0,0,8});
     assert(p.Sample(.5).packet.Commands()[1].sprite.destination.x==20);
     assert(p.Sample(0).packet.Commands()[1].sprite.destination.x==20);

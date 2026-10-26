@@ -267,3 +267,7 @@ Outcome: exact-staged-source GPU run improved active Forest frame p50 21.9874 ->
 
 ### 2026-10-26 — arena onward combat/transition gate; no performance acceptance
 - Clean-ref scripted normal-control arena enemy-damage→two authored exits test passed at synthetic 60/120/144-Hz slots with identical transition/endpoint state (wall elapsed excluded). Eight player-to-enemy damage events are source/trace-attributed; no kill. This is offscreen functional evidence only, not fresh display-slot pixels, physical >60-Hz selection, GPU frame-time/FPS or release proof. Atlas/bind microgates remain paused.
+
+### 2026-10-26 — fresh refresh service functional gate (no FPS claim)
+- Opt-in production refresh service now replays sampled full post-HUD packets on extra display slots with one-fixed-step admitted-motion latency and no fixed-update side effects. The synthetic 120-Hz offscreen gate observed positive fresh slots and a 60-Hz-matched fixed gameplay/combat endpoint; the diagnostic full post-HUD alpha-1/alpha-.5 pixels remain exact/stable/distinct. See `port/FRESH_REFRESH_PRESENTATION_GATE_20261026.md`.
+- This is llvmpipe functional evidence only; offscreen draw cost exceeds synthetic slot periods. No physical selected >60-Hz mode, NVE7 sustained frame time, VRAM/thermal, 8K or release acceptance. LVDS ~59.901 Hz and physical Xorg authority unavailable; atlas/bind microgates remain off the critical path.

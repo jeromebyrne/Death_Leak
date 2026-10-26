@@ -1170,6 +1170,15 @@ public:
         presentSeconds_ += std::chrono::duration<double>(std::chrono::steady_clock::now()-began).count();
     }
     bool PresentationSurfaceStable() const override {
+        // Explicit software-only synthetic-slot tests have no authenticated
+        // fullscreen/focus authority; still reject output resize/lost surface.
+        if (testAllowSoftware_ && !presentationFullscreen_) {
+            int width=0, height=0;
+            const Uint32 flags=SDL_GetWindowFlags(window_);
+            return renderer_ && SDL_GetRendererOutputSize(renderer_,&width,&height)==0 &&
+                   width==presentationWidth_ && height==presentationHeight_ &&
+                   (flags & SDL_WINDOW_SHOWN) && !(flags & SDL_WINDOW_MINIMIZED);
+        }
         if (!FullscreenGeometryStable()) return false;
         const Uint32 flags = SDL_GetWindowFlags(window_);
         return (flags & SDL_WINDOW_SHOWN) && (flags & SDL_WINDOW_INPUT_FOCUS) &&

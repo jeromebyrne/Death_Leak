@@ -6,7 +6,13 @@
 namespace deathleak::linux_port {
 // Preserve the current packet's painter stream. A command is sampled only at
 // the same ordinal with unique stable identity and unchanged GPU draw state.
-// Births, deaths, animation/film texture swaps and batch topology hold current.
+// Births, deaths, actor animation swaps and batch topology hold current.
+// The four persistent HUD-film textures alone may remain on the prior frame
+// until the next fixed boundary while sampled spatial phases advance.
+inline bool IsPersistentHudFilm(const PresentationCommandPacket::Command& c) {
+    return c.kind == PresentationCommandPacket::Kind::Sprite &&
+           c.key.object == ((std::uint64_t{1} << 61) | 1) && c.key.generation == 0;
+}
 inline bool IsProjectileCommand(const PresentationCommandPacket::Command& c) {
     return c.kind == PresentationCommandPacket::Kind::Sprite &&
            (c.key.object >> 59) == 1 && (c.key.object & ((std::uint64_t{1} << 59)-1)) != 0;
@@ -142,12 +148,13 @@ inline MixedCommandDecision AdmitMixedCommands(const FullFrameSnapshot& a,
         if ((ac[i].kind==Kind::Sprite || bc[i].kind==Kind::Sprite) &&
             (ac[i].kind!=bc[i].kind || !(ac[i].key==bc[i].key))) return out;
     // A new discrete image is selected only at a fixed simulation boundary.
-    // Never combine previous-step spatial phases with current-step actor,
-    // scene-animation or film imagery across that boundary.
+    // Never combine previous-step spatial phases with current-step actor or
+    // scene-animation imagery. Persistent HUD film stays on its prior texture
+    // until alpha=1, preserving its discrete fixed-step clock.
     for (std::size_t i=0;i<std::min(ac.size(),bc.size());++i)
         if (ac[i].kind==Kind::Sprite && bc[i].kind==Kind::Sprite &&
             ac[i].key==bc[i].key && ac[i].key.object &&
-            (ac[i].sprite.texture!=bc[i].sprite.texture ||
+            ((ac[i].sprite.texture!=bc[i].sprite.texture && !IsPersistentHudFilm(ac[i])) ||
              (!ac[i].continuousAlpha && ac[i].sprite.opacity!=bc[i].sprite.opacity))) return out;
     // Projectile motion is never sampled through a birth/death, painter reorder,
     // or batch-cardinality change elsewhere in the emitted active frame.
@@ -194,6 +201,10 @@ inline PresentationCommandPacket SampleMixedCommands(const FullFrameSnapshot& a,
     auto lerp=[alpha](float x,float y) { return x+(y-x)*alpha; };
     for (std::size_t i=0;i<b.packet.Size();++i) {
         auto c=b.packet.Commands()[i];
+        if (i<a.packet.Size() && IsPersistentHudFilm(c) &&
+            a.packet.Commands()[i].key==c.key &&
+            a.packet.Commands()[i].sprite.texture!=c.sprite.texture)
+            c=a.packet.Commands()[i];
         if (decision.interpolate[i]) {
             const auto& p=a.packet.Commands()[i].sprite;
             c.sprite.destination.x=lerp(p.destination.x,c.sprite.destination.x);
