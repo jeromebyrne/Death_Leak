@@ -243,3 +243,6 @@ Outcome: exact-staged-source GPU run improved active Forest frame p50 21.9874 ->
 
 ### 2026-10-26 — cave-5 route-only checkpoint
 - Clean current-ref Docker production build and uninterrupted Forest→Hot Springs→underwater cave 5 ordinary-control CPU gate passed. No physical GPU timing or high-Hz performance claim; atlas micro-gates remain paused.
+
+### 2026-10-26 — cave-5 Forest door acceptance only
+- Uninterrupted fixed-60-Hz CPU normal-control route now covers the authored cave-5→Forest door interaction; no performance, physical GPU, selected >60-Hz or release claim. Atlas micro-gates remain paused.

@@ -70,3 +70,19 @@ if printf '%s\n' "$cave5_route" | grep -q 'Player died'; then
   exit 1
 fi
 printf '%s\n' "$cave5_route" | grep -E '^(Trigger at frame|Simulation ended)'
+
+# Cave 5 has an authored, key-free Door id 16 back to Forest-1. Approach it
+# with ordinary right movement after the cave-4 entry, then hold interact.
+# This is a real door transition, not a warp or injected progression state.
+cave5_door_route=$(port/build/deathleak-linux \
+  --play Game/XmlFiles/levels/forest_exploration_1.xml \
+  --script R:1100,Q:40,R:640,E:1500,R:1300,E:421,R:200,I:30 \
+  --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$cave5_door_route" | grep -q 'Trigger at frame 5001 from .*underwater_cave_4.xml .*underwater_cave_5.xml'
+printf '%s\n' "$cave5_door_route" | grep -q 'Door at frame 5203 from .*underwater_cave_5.xml to .*forest_exploration_1.xml'
+printf '%s\n' "$cave5_door_route" | grep -q 'Simulation ended at Game/XmlFiles/levels/forest_exploration_1.xml .*orbs=37 keys=0 health=25 .*balance=37'
+if printf '%s\n' "$cave5_door_route" | grep -q 'Player died'; then
+  echo 'Unexpected death on cave-5 authored Forest door route' >&2
+  exit 1
+fi
+printf '%s\n' "$cave5_door_route" | grep -E '^(Trigger at frame|Door at frame|Simulation ended)'
