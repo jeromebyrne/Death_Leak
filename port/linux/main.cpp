@@ -69,6 +69,16 @@ struct IntroPromptClock {
         return looped && phaseTotal > 8.f && !rawInteractHeld;
     }
 };
+// Fixed-update snapshot of the intro X prompt admission. Draw may read it
+// repeatedly without sampling live input or mutable scene/clock state.
+struct IntroPromptPresentation {
+    bool visible = false;
+    void Prepare(bool looped, bool rawInteractHeld, bool suppressed,
+                 bool artResident, const IntroPromptClock& clock) {
+        visible = !suppressed && artResident && clock.Visible(looped, rawInteractHeld);
+    }
+    bool Visible() const { return visible; }
+};
 constexpr std::array<Rect, 3> optionsBounds = {{AuthoredUI(-420,-60,132,132),
     AuthoredUI(-420,-200,132,132), AuthoredUI(-390,-470,90,90)}};
 std::string Sha256File(const std::string& path) {
@@ -660,6 +670,7 @@ int main(int argc, char** argv) {
     bool hasPulledSword = !freshSaveIntro;
     float introHeldTime = 0.f;
     IntroPromptClock introPromptClock;
+    IntroPromptPresentation introPromptPresentation;
     // Steamworks IsSteamRunningOnSteamDeck is unavailable in this port. Select
     // Deck art explicitly, never from mere controller connection.
     const auto introPromptArt = freshSaveIntro && !simulateOnly ? renderer->LoadTexture(
@@ -1622,6 +1633,14 @@ int main(int argc, char** argv) {
         // intermediate catch-up steps. The display retains its last image until
         // the final state in this batch is ready to present.
         shaderClock.Prepare(); // One wobble step per update, including catch-up steps.
+        if (!playLevel.empty()) {
+            const bool rawInteractHeld = !script.empty() ? command == 'I' : renderer->KeyDown(Interact);
+            const bool introLooped = !hasPulledSword &&
+                currentLevel == "Game/XmlFiles/levels/forest_exploration_1.xml" &&
+                scene.GetIntroBodyPhase() == deathleak::game::LevelScene::IntroBodyPhase::Looped;
+            introPromptPresentation.Prepare(introLooped, rawInteractHeld,
+                suppressIntroPromptDraw, introPromptArt != 0, introPromptClock);
+        }
         const auto loadingPacket = deathleak::game::LoadingOverlayPacket::Prepare(
             loadingPhase != LoadingPhase::None, loadingHoldExitedThisFrame,
             loadingPhase == LoadingPhase::FadeIn, loadingPhase == LoadingPhase::FadeOut,
@@ -1685,12 +1704,8 @@ int main(int argc, char** argv) {
             combat.AppendPainterItems(painterItems, *renderer, drawCameraX, drawCameraY);
             // Source Player::Draw places the X immediately after the player body.
             // A player-adjacent slot preserves same-depth object visitation order.
-            const bool rawInteractHeld = !script.empty() ? command == 'I' : renderer->KeyDown(Interact);
-            const bool introLooped = !hasPulledSword &&
-                currentLevel == "Game/XmlFiles/levels/forest_exploration_1.xml" &&
-                scene.GetIntroBodyPhase() == deathleak::game::LevelScene::IntroBodyPhase::Looped;
             std::function<void()> afterPlayerDraw;
-            if (!suppressIntroPromptDraw && introPromptArt && introPromptClock.Visible(introLooped, rawInteractHeld)) {
+            if (introPromptPresentation.Visible()) {
                 constexpr float scale = 2.f / 3.f;
                 const float width = steamDeck ? 60.f : 150.f;
                 const float height = steamDeck ? 60.f : 90.f;

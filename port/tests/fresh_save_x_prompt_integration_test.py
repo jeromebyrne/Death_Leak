@@ -10,8 +10,9 @@ main = (root / 'port/linux/main.cpp').read_text()
 scene = (root / 'port/game/LevelScene.cpp').read_text()
 header = (root / 'port/game/LevelScene.h').read_text()
 clock = re.search(r'struct IntroPromptClock \{.*?\n\};', main, re.S)
-assert clock
-source = '#include <cassert>\n' + clock.group() + '''
+presentation = re.search(r'struct IntroPromptPresentation \{.*?\n\};', main, re.S)
+assert clock and presentation
+source = '#include <cassert>\n' + clock.group() + '\n' + presentation.group() + '''
 int main() {
     IntroPromptClock p;
     assert(!p.Visible(true, false));
@@ -22,6 +23,18 @@ int main() {
     p.Reset(); p.Advance(4.f); p.Advance(4.001f);
     assert(p.Visible(true, false));
     p.Reset(); assert(!p.Visible(true, false));
+    IntroPromptPresentation packet;
+    packet.Prepare(true, false, false, true, p); assert(!packet.Visible());
+    p.Advance(8.001f);
+    packet.Prepare(true, false, false, true, p); assert(packet.Visible());
+    // Draw-side repeated reads cannot consume input/clock or mutate the packet.
+    const IntroPromptPresentation& draw = packet;
+    for (int i = 0; i < 100000; ++i) assert(draw.Visible());
+    assert(p.Visible(true, false));
+    packet.Prepare(true, true, false, true, p); assert(!packet.Visible());
+    packet.Prepare(true, false, true, true, p); assert(!packet.Visible());
+    packet.Prepare(true, false, false, false, p); assert(!packet.Visible());
+    packet.Prepare(false, false, false, true, p); assert(!packet.Visible());
 }
 '''
 with tempfile.TemporaryDirectory() as temp:
@@ -31,6 +44,8 @@ with tempfile.TemporaryDirectory() as temp:
     subprocess.run([str(path / 'test')], check=True)
 
 assert main.count('introPromptClock.Advance(dt);') == 1
+assert main.index('introPromptPresentation.Prepare(') < main.index('if (fixedDt <= 0.f && !livePacer.PresentNow())')
+assert 'if (introPromptPresentation.Visible())' in main
 assert 'steamDeck ? "Game/Media/UI/gamepad_icons/x_deck.png" : "Game/Media/UI/gamepad_icons/x.png"' in main
 assert 'const float width = steamDeck ? 60.f : 150.f;' in main
 assert 'const float height = steamDeck ? 60.f : 90.f;' in main
