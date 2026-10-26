@@ -1028,8 +1028,12 @@ public:
         const int viewX = (width - viewWidth) / 2;
         const int viewY = (height - viewHeight) / 2;
         glDisable(GL_SCISSOR_TEST);
-        glClearColor(0.f, 0.f, 0.f, 1.f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        // The opaque Sepia quad covers every output pixel at matching aspect ratio.
+        // Keep the black clear where letterbox bars would otherwise retain stale pixels.
+        if (viewX != 0 || viewY != 0 || viewWidth != width || viewHeight != height) {
+            glClearColor(0.f, 0.f, 0.f, 1.f);
+            glClear(GL_COLOR_BUFFER_BIT);
+        }
         glViewport(viewX, viewY, viewWidth, viewHeight);
         glDisable(GL_BLEND);
         glDisable(GL_DEPTH_TEST);
