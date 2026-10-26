@@ -102,7 +102,10 @@ inline bool SceneContinuousPhaseAdmitted(const PresentationCommandPacket::Comman
     }
     return SameSpriteExceptPosition(a,b);
 }
+// Diagnostic first-blocker classification only; it never changes the sampled packet.
+enum class MixedHoldReason { Invalid, SceneCut, UnownedSprite, StructuralPass, OrdinalReorder, DiscreteImage, NoEligibleMotion, Admitted };
 struct MixedCommandDecision {
+    MixedHoldReason holdReason = MixedHoldReason::Invalid;
     bool valid = false;
     std::vector<bool> interpolate;
     std::size_t moving = 0;
@@ -114,9 +117,10 @@ inline MixedCommandDecision AdmitMixedCommands(const FullFrameSnapshot& a,
         !std::isfinite(a.cameraX) || !std::isfinite(a.cameraY) ||
         !std::isfinite(b.cameraX) || !std::isfinite(b.cameraY)) return out;
     out.valid=true;
+    out.holdReason=MixedHoldReason::NoEligibleMotion;
     out.interpolate.resize(b.packet.Size(),false);
     if (a.sceneEpoch!=b.sceneEpoch || a.discontinuity || b.discontinuity ||
-        std::fabs(b.cameraX-a.cameraX)>250.f || std::fabs(b.cameraY-a.cameraY)>250.f) return out;
+        std::fabs(b.cameraX-a.cameraX)>250.f || std::fabs(b.cameraY-a.cameraY)>250.f) { out.holdReason=MixedHoldReason::SceneCut; return out; }
     const auto& ac=a.packet.Commands(); const auto& bc=b.packet.Commands();
     using Kind=PresentationCommandPacket::Kind;
     // Unowned sprites can be player, projectile, or attached effect draws.
@@ -127,26 +131,26 @@ inline MixedCommandDecision AdmitMixedCommands(const FullFrameSnapshot& a,
             return (c.kind==Kind::Sprite || c.kind==Kind::SpriteBatch) && !c.key.object;
         });
     };
-    if (hasUnownedSprite(ac) || hasUnownedSprite(bc)) return out;
+    if (hasUnownedSprite(ac) || hasUnownedSprite(bc)) { out.holdReason=MixedHoldReason::UnownedSprite; return out; }
     // Global render-pass state cannot be mixed. A changed pass topology or zoom
     // could make a previously sampled draw use the wrong target/shader/blend.
     for (std::size_t i=0;i<std::max(ac.size(),bc.size());++i) {
         const auto structural=[](Kind k) { return k==Kind::Begin || k==Kind::Zoom || k==Kind::Postprocess || k==Kind::Resolve; };
         if (i>=ac.size() || i>=bc.size()) {
-            if ((i<ac.size() && structural(ac[i].kind)) || (i<bc.size() && structural(bc[i].kind))) return out;
+            if ((i<ac.size() && structural(ac[i].kind)) || (i<bc.size() && structural(bc[i].kind))) { out.holdReason=MixedHoldReason::StructuralPass; return out; }
             continue;
         }
         if (structural(ac[i].kind) || structural(bc[i].kind)) {
             if (ac[i].kind!=bc[i].kind ||
                 (ac[i].kind==Kind::Begin && !SameColor(ac[i].color,bc[i].color)) ||
-                (ac[i].kind==Kind::Zoom && ac[i].zoom!=bc[i].zoom)) return out;
+                (ac[i].kind==Kind::Zoom && ac[i].zoom!=bc[i].zoom)) { out.holdReason=MixedHoldReason::StructuralPass; return out; }
         }
     }
     // A semantic reorder changes occlusion and cannot be mixed with the old
     // packet even when individual sprite IDs survive.
     for (std::size_t i=0;i<std::min(ac.size(),bc.size());++i)
         if ((ac[i].kind==Kind::Sprite || bc[i].kind==Kind::Sprite) &&
-            (ac[i].kind!=bc[i].kind || !(ac[i].key==bc[i].key))) return out;
+            (ac[i].kind!=bc[i].kind || !(ac[i].key==bc[i].key))) { out.holdReason=MixedHoldReason::OrdinalReorder; return out; }
     // A new discrete image is selected only at a fixed simulation boundary.
     // Never combine previous-step spatial phases with current-step actor or
     // scene-animation imagery. Persistent HUD film stays on its prior texture
@@ -155,7 +159,7 @@ inline MixedCommandDecision AdmitMixedCommands(const FullFrameSnapshot& a,
         if (ac[i].kind==Kind::Sprite && bc[i].kind==Kind::Sprite &&
             ac[i].key==bc[i].key && ac[i].key.object &&
             ((ac[i].sprite.texture!=bc[i].sprite.texture && !IsPersistentHudFilm(ac[i])) ||
-             (!ac[i].continuousAlpha && ac[i].sprite.opacity!=bc[i].sprite.opacity))) return out;
+             (!ac[i].continuousAlpha && ac[i].sprite.opacity!=bc[i].sprite.opacity))) { out.holdReason=MixedHoldReason::DiscreteImage; return out; }
     // Projectile motion is never sampled through a birth/death, painter reorder,
     // or batch-cardinality change elsewhere in the emitted active frame.
     bool stableEffectTopology=ac.size()==bc.size();
@@ -190,6 +194,7 @@ inline MixedCommandDecision AdmitMixedCommands(const FullFrameSnapshot& a,
             std::fabs(bx-ax)>250.f || std::fabs(by-ay)>250.f) continue;
         out.interpolate[i]=true; ++out.moving;
     }
+    if (out.moving) out.holdReason=MixedHoldReason::Admitted;
     return out;
 }
 inline PresentationCommandPacket SampleMixedCommands(const FullFrameSnapshot& a,

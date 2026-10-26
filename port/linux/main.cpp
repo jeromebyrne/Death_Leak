@@ -2198,7 +2198,7 @@ int main(int argc, char** argv) {
                         else ++projectileHeld;
                     }
                 }
-                std::cout << "MIXED_COMMAND_TOPOLOGY frame=" << frame << " sampled=" << mixed.moving << " current=" << frameSnapshot.packet.Size()-mixed.moving << " projectileSampled=" << projectileSampled << " projectileHeld=" << projectileHeld << " valid=" << mixed.valid << '\n';
+                std::cout << "MIXED_COMMAND_TOPOLOGY frame=" << frame << " sampled=" << mixed.moving << " current=" << frameSnapshot.packet.Size()-mixed.moving << " projectileSampled=" << projectileSampled << " projectileHeld=" << projectileHeld << " valid=" << mixed.valid << " hold_reason=" << int(mixed.holdReason) << '\n';
                 if (frame == mixedHoldAuditFrame) {
                     const auto& aa=priorFullFrame.packet.Commands(); const auto& bb=frameSnapshot.packet.Commands();
                     for (std::size_t i=0;i<bb.size();++i) {
