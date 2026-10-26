@@ -1,3 +1,4 @@
+#include <vector>
 #include "Hud.h"
 #include "BitmapText.h"
 #include <algorithm>
@@ -92,26 +93,31 @@ void Hud::Draw(render::Renderer& renderer, float health, float maxHealth, float 
     const float healthProgress = maxHealth > 0.f ? std::clamp(health / maxHealth, 0.f, 1.f) : 0.f;
     healthProgress_.SetProgress(healthProgress, preRegistrationProcessTotal);
     focusProgress_.SetProgress(std::clamp(focus / 100.f, 0.f, 1.f), preRegistrationProcessTotal);
+    std::vector<deathleak::render::Sprite> hudBatch;
+    auto emit = [&](const deathleak::render::Sprite& sprite) { hudBatch.push_back(sprite); };
     if (backing_ && healthProgress_.previousFill > healthProgress_.displayed &&
         healthBarWidth * healthProgress_.previousFill > 0.f)
-        renderer.DrawSprite({backing_, {}, {barX, healthTop, healthBarWidth * healthProgress_.previousFill, meterHeight}, {255,255,255,220}});
-    if (bar_) renderer.DrawSprite({bar_, {}, {barX, healthTop, healthBarWidth * healthProgress_.displayed, meterHeight}, {255,255,255,220}});
+        emit({backing_, {}, {barX, healthTop, healthBarWidth * healthProgress_.previousFill, meterHeight}, {255,255,255,220}});
+    if (bar_) emit({bar_, {}, {barX, healthTop, healthBarWidth * healthProgress_.displayed, meterHeight}, {255,255,255,220}});
     // meter_edge_2.png is 4x19 native pixels; UIMeter draws both caps at
     // that native size. Project their geometry from 1920x1080 to 1280x720.
     constexpr float capWidth = 4.f * (2.f / 3.f);
     constexpr float capHeight = meterHeight;
     if (edge_) {
-        renderer.DrawSprite({edge_, {}, {40.f, healthTop, capWidth, capHeight}, {255,255,255,220}});
-        renderer.DrawSprite({edge_, {}, {40.f + healthWidth, healthTop, capWidth, capHeight}, {255,255,255,220}, 1.f, 0, true});
+        emit({edge_, {}, {40.f, healthTop, capWidth, capHeight}, {255,255,255,220}});
+        emit({edge_, {}, {40.f + healthWidth, healthTop, capWidth, capHeight}, {255,255,255,220}, 1.f, 0, true});
     }
-    if (overlay_) renderer.DrawSprite({overlay_, {}, {overlayX, healthTop, healthOverlayWidth, meterHeight}, {255,255,255,178}});
+    if (overlay_) emit({overlay_, {}, {overlayX, healthTop, healthOverlayWidth, meterHeight}, {255,255,255,178}});
     // The original 91_xp_meter is the focus meter (200 units wide at
     // x=-900,y=440 in the 1920x1080 UI), directly below health.
-    if (focusBar_) renderer.DrawSprite({focusBar_, {}, {barX, focusTop, focusBarWidth * focusProgress_.displayed, meterHeight}, {255,255,255,220}, 1.f, 0, false, true});
+    if (focusBar_) emit({focusBar_, {}, {barX, focusTop, focusBarWidth * focusProgress_.displayed, meterHeight}, {255,255,255,220}, 1.f, 0, false, true});
     if (edge_) {
-        renderer.DrawSprite({edge_, {}, {40.f, focusTop, capWidth, capHeight}, {255,255,255,220}, 1.f, 0, false, true});
-        renderer.DrawSprite({edge_, {}, {40.f + 200.f * (2.f / 3.f), focusTop, capWidth, capHeight}, {255,255,255,220}, 1.f, 0, true, true});
+        emit({edge_, {}, {40.f, focusTop, capWidth, capHeight}, {255,255,255,220}, 1.f, 0, false, true});
+        emit({edge_, {}, {40.f + 200.f * (2.f / 3.f), focusTop, capWidth, capHeight}, {255,255,255,220}, 1.f, 0, true, true});
     }
-    if (overlay_) renderer.DrawSprite({overlay_, {}, {overlayX, focusTop, focusOverlayWidth, meterHeight}, {255,255,255,178}, 1.f, 0, false, true});
+    if (overlay_) emit({overlay_, {}, {overlayX, focusTop, focusOverlayWidth, meterHeight}, {255,255,255,178}, 1.f, 0, false, true});
+    renderer.DrawSpriteBatch(hudBatch.data(), hudBatch.size());
 }
+
+
 }

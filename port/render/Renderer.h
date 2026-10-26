@@ -81,6 +81,9 @@ public:
     // Scene-only projection; BeginFrame and ApplyScenePostprocess reset it.
     virtual void SetWorldZoom(float zoom) { (void)zoom; }
     virtual void DrawSprite(const Sprite& sprite) = 0;
+    virtual void DrawSpriteBatch(const Sprite* sprites, std::size_t count) {
+        for (std::size_t i = 0; i < count; ++i) DrawSprite(sprites[i]);
+    }
     virtual void FillRect(Rect rect, Color color) = 0;
     virtual void FillRects(const Rect* rects, std::size_t count, Color color) {
         for (std::size_t i = 0; i < count; ++i) FillRect(rects[i], color);

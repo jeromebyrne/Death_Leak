@@ -444,6 +444,54 @@ public:
         ++drawCalls_;
         copySeconds_ += std::chrono::duration<double>(std::chrono::steady_clock::now()-began).count();
     }
+    void DrawSpriteBatch(const Sprite* sprites, std::size_t count) override {
+        const char* opt = std::getenv("DEATHLEAK_BATCH_HUD");
+        if (!opt || std::strcmp(opt, "on") != 0 || sceneSamplingPhase_ || !count) {
+            for (size_t i = 0; i < count; ++i) DrawSprite(sprites[i]);
+            return;
+        }
+        SDL_Texture* page = nullptr;
+        std::vector<SDL_Vertex> vertices;
+        std::vector<int> indices;
+        vertices.reserve(count * 4); indices.reserve(count * 6);
+        for (size_t i = 0; i < count; ++i) {
+            const Sprite& sprite = sprites[i];
+            auto tex = textures_.find(sprite.texture);
+            auto region = atlasRegions_.find(sprite.texture);
+            if (tex == textures_.end() || region == atlasRegions_.end() ||
+                (page && page != tex->second) || sprite.rotationDegrees != 0 ||
+                sprite.repeatX || sprite.uvShiftX != 0 || sprite.uvShiftY != 0 ||
+                sprite.pixelWobble.enabled || sprite.foliageSway.enabled ||
+                sprite.rgbGain > 1.f || sprite.source.width > 0 || sprite.source.height > 0) {
+                for (size_t j = 0; j < count; ++j) DrawSprite(sprites[j]);
+                return;
+            }
+            page = tex->second;
+            const AtlasRegion& r = region->second;
+            int tw = 0, th = 0; SDL_QueryTexture(page, nullptr, nullptr, &tw, &th);
+            if (tw <= 0 || th <= 0) { for (size_t j=0;j<count;++j) DrawSprite(sprites[j]); return; }
+            SDL_FRect d = ProjectWorld({sprite.destination.x + sprite.destination.width * (sprite.flipX ? 1.f-float(r.offsetX+r.w)/r.originalW : float(r.offsetX)/r.originalW),
+                sprite.destination.y + sprite.destination.height * (sprite.flipY ? 1.f-float(r.offsetY+r.h)/r.originalH : float(r.offsetY)/r.originalH),
+                sprite.destination.width * float(r.w)/r.originalW,
+                sprite.destination.height * float(r.h)/r.originalH});
+            const float u0=float(r.x)/tw, u1=float(r.x+r.w)/tw;
+            const float v0=float(r.y)/th, v1=float(r.y+r.h)/th;
+            const float ul=sprite.flipX?u1:u0, ur=sprite.flipX?u0:u1;
+            const float vt=sprite.flipY?v1:v0, vb=sprite.flipY?v0:v1;
+            const SDL_Color color{sprite.tint.r,sprite.tint.g,sprite.tint.b,sprite.tint.a};
+            int base=static_cast<int>(vertices.size());
+            vertices.push_back({{d.x,d.y},color,{ul,vt}});
+            vertices.push_back({{d.x+d.w,d.y},color,{ur,vt}});
+            vertices.push_back({{d.x+d.w,d.y+d.h},color,{ur,vb}});
+            vertices.push_back({{d.x,d.y+d.h},color,{ul,vb}});
+            for (int index : {0,1,3,1,2,3}) indices.push_back(base+index);
+        }
+        SDL_SetTextureColorMod(page, 255,255,255);
+        SDL_SetTextureAlphaMod(page, 255);
+        SDL_SetTextureScaleMode(page, SDL_ScaleModeNearest);
+        SDL_RenderGeometry(renderer_, page, vertices.data(), static_cast<int>(vertices.size()), indices.data(), static_cast<int>(indices.size()));
+        drawCalls_ += count;
+    }
     bool DrawRotatedRepeatX(const Sprite& sprite, const SDL_FRect& destination,
                             float authoredWidth, int textureWidth, int textureHeight) {
         RotatedRepeatXQuad quad{};
