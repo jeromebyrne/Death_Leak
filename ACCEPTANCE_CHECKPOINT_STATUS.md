@@ -17,3 +17,9 @@ Status: **in progress; release acceptance not met**. The software remains a part
 4. Keep atlas micro-gates off the FPS-critical path unless a candidate demonstrates a plausible millisecond-scale win on the actual GPU without image mismatch.
 
 Completion requires a real-display/GPU playtest and sustained performance evidence. Neither is claimed here.
+
+## 2026-10-26 — update-free presentation service extraction (bounded slice)
+
+- From clean isolated live remote `131fa3fa53c07f03c2948033f54529270c3e4ac8`, extracted the existing opt-in fullscreen refresh-only replay branch into `RefreshPresentationService`. It owns the display-slot scheduler and only consumes a sealed renderer command snapshot; its API has no LevelScene, input, audio, capture, film, shader or fixed-step clock dependency. Both surface-stability checks still fail closed. The ordinary fixed-60-Hz update/draw and capture order are unchanged. This is separation of the display-only consumer, **not** a full independent present loop or motion interpolation.
+- Focused 100,000-repeat ordered-packet fixture passed, now including service no-snapshot, sealed replay/present, no extra capture/update, and positive next-update replacement. Refresh-slot scheduler fixture passed 60/75/120/144/240-Hz synthetic slots with 601 fixed updates. Established Docker production build passed. Uninterrupted Forest→Waterfall-top→bottom→underwater cave→cave 6 route passed with 15 earned orbs and 25 health. Offscreen llvmpipe route is functional only, not physical GPU acceptance.
+- Next gate: move the ordinary presentation invocation behind the same independent service boundary, then prove synchronized full post-HUD Forest/Waterfall/combat/transition pixels and sustained selected >60-Hz mode on strict physical GPU. The existing `--refresh-slots` service remains opt-in, and no FPS, 8K, hardware-input or release claim follows from this refactor.

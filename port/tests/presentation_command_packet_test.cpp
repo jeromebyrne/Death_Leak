@@ -1,4 +1,5 @@
 #include "../linux/PresentationCommandPacket.h"
+#include "../linux/RefreshPresentationService.h"
 #include <cassert>
 #include <iostream>
 #include <string>
@@ -25,6 +26,7 @@ struct Spy final : Renderer {
     void ResolveUnprocessedFrame() override { calls.push_back("resolve"); }
     void EndFrame() override { calls.push_back("present"); }
     bool PollQuit() override { return false; }
+    bool PresentationSurfaceStable() const override { return true; }
     bool KeyDown(int) const override { return false; }
     MouseState Mouse() const override { return {}; }
     bool SaveFrame(const std::string&, std::string&) override { calls.push_back("capture"); return true; }
@@ -34,6 +36,9 @@ int main() {
     Spy* raw = spy.get();
     PresentationRecordingRenderer recorder(std::move(spy));
     int simulationUpdates = 1;
+    const auto origin = RefreshPresentationService::Clock::now();
+    RefreshPresentationService refresh(origin, 120, recorder);
+    assert(refresh.TryPresent(origin) == RefreshPresentationService::Result::NoSnapshot);
     recorder.BeginFrame({3,0,0,255});
     recorder.SetWorldZoom(1.25f);
     Sprite single{}; single.texture = 7; recorder.DrawSprite(single);
@@ -52,6 +57,13 @@ int main() {
     assert(first.back() == "present");
     assert(recorder.Packet().Size() == 8);
     batch[0].texture = 99; // Packet owns its command inputs.
+    raw->calls.clear();
+    assert(refresh.TryPresent(origin) == RefreshPresentationService::Result::Presented);
+    auto replayAndPresent = std::vector<std::string>(first.begin(), first.end()-2);
+    replayAndPresent.push_back("present");
+    assert(raw->calls == replayAndPresent);
+    assert(simulationUpdates == 1);
+    assert(refresh.RepeatPresents() == 1);
     for (int repeat=0; repeat<100000; ++repeat) {
         raw->calls.clear();
         recorder.Replay();
@@ -65,5 +77,9 @@ int main() {
     recorder.EndFrame();
     raw->calls.clear(); recorder.Replay();
     assert(raw->calls == std::vector<std::string>({"begin:4", "sprite:10"}));
+    raw->calls.clear();
+    assert(refresh.TryPresent(origin + std::chrono::seconds(1)) == RefreshPresentationService::Result::Presented);
+    assert(raw->calls == std::vector<std::string>({"begin:4", "sprite:10", "present"}));
+    assert(refresh.RepeatPresents() == 2 && simulationUpdates == 2);
     std::cout << "ordered packet 100000 repeat replays and positive next update passed\n";
 }

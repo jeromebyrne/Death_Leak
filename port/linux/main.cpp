@@ -6,6 +6,7 @@
 #include "../game/ShaderClock.h"
 #include "FixedStepPacer.h"
 #include "PresentationCommandPacket.h"
+#include "RefreshPresentationService.h"
 #include "FullFrameInterpolationGate.h"
 #include "MixedCommandInterpolationGate.h"
 #include "RealSceneTopologyCapture.h"
@@ -784,8 +785,9 @@ int main(int argc, char** argv) {
     auto last = std::chrono::steady_clock::now();
     deathleak::linux_port::FixedStepPacer livePacer(last);
     bool liveClockAnchored = false;
-    deathleak::linux_port::RefreshSlotScheduler refreshClock(last, requestedRefreshHz ? requestedRefreshHz : 60);
-    unsigned long long refreshOnlyPresents = 0;
+    std::unique_ptr<deathleak::linux_port::RefreshPresentationService> refreshPresentation;
+    if (refreshSlots) refreshPresentation = std::make_unique<deathleak::linux_port::RefreshPresentationService>(
+        last, requestedRefreshHz, *repeatRecorder);
     unsigned long long refreshSurfaceFailures = 0;
     std::vector<double> presentationIntervalsMs;
     auto previousPresentation = std::chrono::steady_clock::time_point{};
@@ -812,18 +814,16 @@ int main(int argc, char** argv) {
                 std::chrono::steady_clock::now();
             livePacer.Accumulate(tickTime);
             if (!livePacer.Due()) {
-                if (refreshSlots && repeatRecorder && repeatRecorder->Packet().Sealed() &&
-                    refreshClock.Due(tickTime)) {
-                    if (renderer->PresentationSurfaceStable()) {
-                        repeatRecorder->Replay();
-                        if (renderer->PresentationSurfaceStable()) {
-                            repeatRecorder->PresentReplay();
-                            notePresentation();
-                            ++refreshOnlyPresents;
-                            ++presentedFramesInSample;
-                            refreshClock.Presented(std::chrono::steady_clock::now());
-                        } else { ++refreshSurfaceFailures; std::cerr << "Refresh surface changed during replay\n"; return 1; }
-                    } else { ++refreshSurfaceFailures; std::cerr << "Refresh surface unstable before replay\n"; return 1; }
+                if (refreshPresentation) {
+                    const auto result = refreshPresentation->TryPresent(tickTime);
+                    if (result == deathleak::linux_port::RefreshPresentationService::Result::Presented) {
+                        notePresentation();
+                        ++presentedFramesInSample;
+                    } else if (result == deathleak::linux_port::RefreshPresentationService::Result::SurfaceChanged) {
+                        ++refreshSurfaceFailures;
+                        std::cerr << "Refresh surface changed during replay\n";
+                        return 1;
+                    }
                 }
                 if (!testRefreshHz) std::this_thread::sleep_for(std::chrono::duration<double>(
                     std::min(livePacer.UntilNextSeconds(), 0.002)));
@@ -2227,7 +2227,7 @@ int main(int argc, char** argv) {
             std::cerr << "Refresh surface changed during ordinary present\n"; return 1;
         }
         if (profile || refreshSlots) notePresentation();
-        if (refreshSlots) refreshClock.Presented(std::chrono::steady_clock::now());
+        if (refreshPresentation) refreshPresentation->OrdinaryPresented(std::chrono::steady_clock::now());
         if (repeatPresentationCheck && repeatRecorder && frame == frameLimit - 1) {
             const auto repeatStart = std::chrono::steady_clock::now();
             repeatRecorder->Replay();
@@ -2361,7 +2361,7 @@ int main(int argc, char** argv) {
     }
     if (testRefreshHz) std::cout << "TEST_REFRESH_HZ=" << testRefreshHz
                                  << " display_slots=" << testDisplaySlots << '\n';
-    if (refreshSlots) std::cerr << "Refresh-only presents=" << refreshOnlyPresents
+    if (refreshSlots) std::cerr << "Refresh-only presents=" << refreshPresentation->RepeatPresents()
                                 << " surface_failures=" << refreshSurfaceFailures << "\n";
     if ((profile || refreshSlots) && !presentationIntervalsMs.empty()) {
         std::sort(presentationIntervalsMs.begin(), presentationIntervalsMs.end());
