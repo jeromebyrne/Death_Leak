@@ -125,6 +125,7 @@ class PacketTraceRenderer final : public Renderer {
 public:
     explicit PacketTraceRenderer(std::unique_ptr<Renderer> inner, std::string id22Prefix = {})
         : inner_(std::move(inner)), id22Prefix_(std::move(id22Prefix)) {}
+    void SetRequestedRefreshHz(int hz) override { inner_->SetRequestedRefreshHz(hz); }
     bool Initialize(const char* title, int width, int height, bool fullscreen, std::string& error) override {
         return inner_->Initialize(title, width, height, fullscreen, error);
     }
@@ -238,6 +239,7 @@ int main(int argc, char** argv) {
     bool suppressIntroPromptDraw = false;
     float fixedDt = 0;
     int testRefreshHz = 0;
+    int requestedRefreshHz = 0;
     int windowWidth = 1280, windowHeight = 720;
     bool fullscreen = false;
     for (int i = 1; i < argc; ++i) {
@@ -245,6 +247,15 @@ int main(int argc, char** argv) {
         if (arg == "--frames" && i + 1 < argc) frameLimit = std::atoi(argv[++i]);
         else if (arg == "--capture" && i + 1 < argc) capture = argv[++i];
         else if (arg == "--fullscreen") fullscreen = true;
+        else if (arg == "--refresh-hz" && i + 1 < argc) {
+            const std::string rate = argv[++i];
+            if (rate.empty() || rate.find_first_not_of("0123456789") != std::string::npos ||
+                rate.size() > 3) { std::cerr << "--refresh-hz expects an integer within 24..360\n"; return 2; }
+            requestedRefreshHz = std::stoi(rate);
+            if (requestedRefreshHz < 24 || requestedRefreshHz > 360) {
+                std::cerr << "--refresh-hz expects an integer within 24..360\n"; return 2;
+            }
+        }
         else if (arg == "--window-size" && i + 1 < argc) {
             const std::string size = argv[++i];
             const auto separator = size.find('x');
@@ -298,7 +309,10 @@ int main(int argc, char** argv) {
         else if (arg == "--capture-suppress-intro-prompt") suppressIntroPromptDraw = true;
         else if (arg == "--start-encounter" && i + 1 < argc) startEncounter = std::atoi(argv[++i]);
         else if (arg == "--start-hazard" && i + 1 < argc) startHazard = std::atoi(argv[++i]);
-        else { std::cerr << "Usage: deathleak-linux [--frames N] [--capture output.bmp] [--window-size WIDTHxHEIGHT] [--fullscreen] [--level-preview level.xml | --play level.xml] [--debug | --show-fps] [--profile]\n"; return 2; }
+        else { std::cerr << "Usage: deathleak-linux [--frames N] [--capture output.bmp] [--window-size WIDTHxHEIGHT] [--fullscreen [--refresh-hz HZ]] [--level-preview level.xml | --play level.xml] [--debug | --show-fps] [--profile]\n"; return 2; }
+    }
+    if (requestedRefreshHz && !fullscreen) {
+        std::cerr << "--refresh-hz requires --fullscreen\n"; return 2;
     }
     if (!atomicFrame415Packet.empty() && !sameRunWaterfallPackets && (capture.empty() || frameLimit != 416 ||
         atomicFrame415Packet == capture || fixedDt <= 0.f || script.empty() || playLevel.empty())) {
@@ -519,6 +533,7 @@ int main(int argc, char** argv) {
     renderer = std::move(observer);
 #endif
     std::string error;
+    renderer->SetRequestedRefreshHz(requestedRefreshHz);
     if (!renderer->Initialize("Death Leak - Linux renderer slice", windowWidth, windowHeight, fullscreen, error)) {
         std::cerr << "Renderer initialization failed: " << error << '\n'; return 1;
     }

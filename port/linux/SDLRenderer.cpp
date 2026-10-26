@@ -94,6 +94,7 @@ public:
         if (initialized_) SDL_Quit();
     }
 
+    void SetRequestedRefreshHz(int hz) override { requestedRefreshHz_ = hz; }
     bool Initialize(const char* title, int width, int height, bool fullscreen, std::string& error) override {
         if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER) != 0) { error = SDL_GetError(); return false; }
         initialized_ = true;
@@ -111,13 +112,16 @@ public:
             for (int i = 0; i < modes; ++i) {
                 SDL_DisplayMode mode{};
                 if (SDL_GetDisplayMode(display, i, &mode) != 0 || mode.w != width || mode.h != height) continue;
-                if (!found || std::abs(mode.refresh_rate - current.refresh_rate) <
-                              std::abs(selected.refresh_rate - current.refresh_rate)) {
+                if (requestedRefreshHz_ && mode.refresh_rate != requestedRefreshHz_) continue;
+                if (!found || (!requestedRefreshHz_ &&
+                    std::abs(mode.refresh_rate - current.refresh_rate) <
+                    std::abs(selected.refresh_rate - current.refresh_rate))) {
                     selected = mode; found = true;
                 }
             }
             if (!found) {
                 error = "fullscreen mode " + std::to_string(width) + "x" + std::to_string(height) +
+                        (requestedRefreshHz_ ? " at " + std::to_string(requestedRefreshHz_) + " Hz" : "") +
                         " is not advertised by display " + std::to_string(display);
                 return false;
             }
@@ -213,6 +217,16 @@ public:
                 if (SDL_GetRendererOutputSize(renderer_, &outputWidth, &outputHeight) != 0) {
                     error = SDL_GetError(); return false;
                 }
+            }
+        }
+        if (fullscreen) {
+            const int display = SDL_GetWindowDisplayIndex(window_);
+            SDL_DisplayMode active{};
+            if (display < 0 || SDL_GetCurrentDisplayMode(display, &active) != 0) { error = SDL_GetError(); return false; }
+            std::cerr << "Fullscreen active=" << active.w << "x" << active.h
+                      << " refresh=" << active.refresh_rate << "Hz\n";
+            if (requestedRefreshHz_ && active.refresh_rate != requestedRefreshHz_) {
+                error = "fullscreen refresh does not match requested rate"; return false;
             }
         }
         std::cerr << "Output actual=" << outputWidth << "x" << outputHeight
@@ -1451,6 +1465,7 @@ private:
     std::unordered_map<TextureId, ParallaxMetadata> parallaxMetadata_;
     struct ParallaxSampler { GLint object, wrapS, wrapT; };
     std::unordered_map<TextureId, ParallaxSampler> parallaxSampler_;
+    int requestedRefreshHz_ = 0;
     bool testAllowSoftware_ = false;
     bool sceneSamplingPhase_ = false;
     float worldZoom_ = 1.f;

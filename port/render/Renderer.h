@@ -75,6 +75,7 @@ struct Sprite {
 class Renderer {
 public:
     virtual ~Renderer() = default;
+    virtual void SetRequestedRefreshHz(int) {} // 0 chooses the closest advertised current rate.
     virtual bool Initialize(const char* title, int width, int height, bool fullscreen, std::string& error) = 0;
     virtual TextureId LoadTexture(const std::string& path, std::string& error) = 0;
     virtual void BeginFrame(Color clear) = 0;
