@@ -314,7 +314,7 @@ public:
                                                "port/assets/gamepad_icons", true, iconRegionsLoaded_, iconRegions_))
             return id;
         if (const TextureId id = virtualRegion("DEATHLEAK_ATLAS_HUD", "Game/Media/UI/",
-                                               "port/assets/gameplay_hud", false, hudRegionsLoaded_, hudRegions_))
+                                               "port/assets/gameplay_hud", true, hudRegionsLoaded_, hudRegions_))
             return id;
         if (const TextureId id = virtualRegion("DEATHLEAK_ATLAS_SCENE_BRANCHES", "Game/Media/objects/branch_",
                                                "port/assets/scene_branches", false, sceneBranchRegionsLoaded_, sceneBranchRegions_))
