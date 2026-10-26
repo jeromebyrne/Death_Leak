@@ -1464,7 +1464,19 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
                 renderer.DrawSprite(armDraw);
             }
         }
-        renderer.DrawSprite(draw);
+        // Waterfall-top ID58 is a 2x2 fully opaque white texture repeated over a
+        // 20,000x10,000 world quad at alpha 51. When it covers the viewport,
+        // one solid blend has the same pixels as thousands of identical tiles.
+        if (levelPath_.find("waterfall_top.xml") != std::string::npos && object.xmlId == "58" &&
+            draw.destination.x <= 0.f && draw.destination.y <= 0.f &&
+            draw.destination.x + draw.destination.width >= 1280.f &&
+            draw.destination.y + draw.destination.height >= 720.f &&
+            draw.rotationDegrees == 0.f && draw.repeatX &&
+            draw.tint.r == 255 && draw.tint.g == 255 && draw.tint.b == 255) {
+            renderer.FillRect({0.f, 0.f, 1280.f, 720.f}, draw.tint);
+        } else {
+            renderer.DrawSprite(draw);
+        }
         if (object.player && filter.only.empty()) for (const auto& spray : footstepSprays_)
             spray.Draw(renderer, cameraX, cameraY);
         if (object.player && filter.only.empty()) for (const auto& spray : jumpTakeoffSprays_)
