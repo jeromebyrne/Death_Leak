@@ -271,12 +271,14 @@ public:
     TextureId LoadTexture(const std::string& path, std::string& error) override {
         auto cached = paths_.find(path);
         if (cached != paths_.end()) return cached->second;
-        // Opt-in only: each page is shared by virtual IDs but retains its own
-        // authored rectangle. Shader/wrap draws use a dedicated source texture.
-        auto virtualRegion = [&](const char* flag, const char* prefix, const char* directory,
+        // The verified gamepad-icon family uses its packed page by default. Other
+        // experimental families remain opt-in. Virtual IDs retain authored
+        // rectangles; shader/wrap draws use their dedicated source texture.
+        auto virtualRegion = [&](const char* flag, const char* prefix, const char* directory, bool defaultEnabled,
                                  bool& loaded, std::unordered_map<std::string, AtlasRegion>& regions) -> TextureId {
             const char* enabled = std::getenv(flag);
-            if (!enabled || std::strcmp(enabled, "on") != 0 || path.rfind(prefix, 0) != 0)
+            if ((enabled ? std::strcmp(enabled, "on") != 0 : !defaultEnabled) ||
+                path.rfind(prefix, 0) != 0)
                 return InvalidTexture;
             if (!loaded) {
                 loaded = true;
@@ -309,19 +311,19 @@ public:
             return id;
         };
         if (const TextureId id = virtualRegion("DEATHLEAK_ATLAS_ICONS", "Game/Media/UI/gamepad_icons/",
-                                               "port/assets/gamepad_icons", iconRegionsLoaded_, iconRegions_))
+                                               "port/assets/gamepad_icons", true, iconRegionsLoaded_, iconRegions_))
             return id;
         if (const TextureId id = virtualRegion("DEATHLEAK_ATLAS_HUD", "Game/Media/UI/",
-                                               "port/assets/gameplay_hud", hudRegionsLoaded_, hudRegions_))
+                                               "port/assets/gameplay_hud", false, hudRegionsLoaded_, hudRegions_))
             return id;
         if (const TextureId id = virtualRegion("DEATHLEAK_ATLAS_SCENE_BRANCHES", "Game/Media/objects/branch_",
-                                               "port/assets/scene_branches", sceneBranchRegionsLoaded_, sceneBranchRegions_))
+                                               "port/assets/scene_branches", false, sceneBranchRegionsLoaded_, sceneBranchRegions_))
             return id;
         if (const TextureId id = virtualRegion("DEATHLEAK_ATLAS_CART_PROPS", "Game/Media/",
-                                               "port/assets/cart_props", cartPropRegionsLoaded_, cartPropRegions_))
+                                               "port/assets/cart_props", false, cartPropRegionsLoaded_, cartPropRegions_))
             return id;
         if (const TextureId id = virtualRegion("DEATHLEAK_ATLAS_ORANGE_LIGHT", "Game/Media/objects/orange_light.png",
-                                               "port/assets/orange_light", orangeLightRegionsLoaded_, orangeLightRegions_))
+                                               "port/assets/orange_light", false, orangeLightRegionsLoaded_, orangeLightRegions_))
             return id;
         return LoadDedicatedTexture(path, error, false);
     }
