@@ -255,3 +255,6 @@ Outcome: exact-staged-source GPU run improved active Forest frame p50 21.9874 ->
 
 ### 2026-10-26 — current-ref forward/combat route gate, no performance acceptance
 - `port/tests/uninterrupted_forward_combat_routes.sh` passed on released current-ref Docker-built binary: cave-6→Hot Springs→cave-5 door return and one actual arena hit followed by authored exit. Offscreen llvmpipe functional-only; no physical GPU/input, selected >60-Hz, frame-time or release claim. Primary high-Hz Xorg cookie blocker unchanged; atlas/bind microgates paused. Source/build/GPU lane released.
+
+### 2026-10-26 — clean-current-ref route acceptance; no performance claim
+- Isolated live-ref production build and uninterrupted normal-control forward/door plus arena actual-hit/authored-exit CPU gates passed. Physical Xorg `:0` rejected the available cookie, so no NVE7, selected >60-Hz, frame-time, hardware-input or release result was obtained. Atlas/bind microgates remain off the acceptance path. Sole source/build/GPU lane **released**.
