@@ -563,6 +563,7 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
         const float launchY = y + (launchState.crouching ? 0.f : 25.f) +
             (launchState.ascending ? 65.f : launchState.descending ? 40.f : 0.f);
         shots_.push_back({x+(knifeX > 0.f ? 10.f : -10.f),launchY,knifeX*1200.f,knifeY*1200.f,10.f,projectileDamageUpgrade_ ? 4.f : 1.5f,false});
+        shots_.back().stableIdentity = nextShotIdentity_++;
         shots_.back().texture = projectileDamageUpgrade_ ? upgradedKnifeArt_ : knifeArt_;
         shots_.back().playerKnife = true;
         shots_.back().launchDirectionX = knifeX;
@@ -671,6 +672,7 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
         shots_.push_back({enemy.x,enemy.y+(skeleton?50.f:0.f),aimX/length*speed,aimY/length*speed,
             ghost || skeleton ? 2.f : 0.25f, skeleton ? 35.f : ghost ? 2.f : 3.f,true,
             ghost ? 0.9f : 1.f, !skeleton});
+        shots_.back().stableIdentity = nextShotIdentity_++;
         shots_.back().depth = ghost || skeleton ? 2530 : 2510;
         shots_.back().deflectable=!ghost && !skeleton;
         shots_.back().baseSpeed=speed;
@@ -846,7 +848,8 @@ void Combat::UpdateVisuals(float dt) {
     }
 }
 void Combat::AppendPainterItems(std::vector<PainterItem>& items, render::Renderer& renderer, float cameraX, float cameraY,
-    const std::function<void(const ParticleSpray&, const ParticleSpray::Particle&, const render::Sprite&)>& emittedMaterialParticle) const {
+    const std::function<void(const ParticleSpray&, const ParticleSpray::Particle&, const render::Sprite&)>& emittedMaterialParticle,
+    const std::function<void(const Shot&, const render::Sprite&)>& emittedShot) const {
     constexpr float scale=2.f/3.f;
     for (const auto& spray : materialSprays_) {
         if (!spray.texture) continue;
@@ -924,7 +927,11 @@ void Combat::AppendPainterItems(std::vector<PainterItem>& items, render::Rendere
                 sourceAngle, sprite.flipX, sprite.flipY);
         }
         sprite.tint.a = static_cast<std::uint8_t>(std::lround(255.f * visualScale));
-        items.push_back({shot.depth, [&, sprite] { renderer.DrawSprite(sprite); }});
+        const auto* stableShot = &shot; // Valid until the next Combat mutation.
+        items.push_back({shot.depth, [&, sprite, stableShot, emittedShot] {
+            renderer.DrawSprite(sprite);
+            if (emittedShot) emittedShot(*stableShot, sprite);
+        }});
     }
 }
 void Combat::Draw(render::Renderer& renderer, float cameraX, float cameraY) const {

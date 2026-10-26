@@ -48,6 +48,7 @@ struct Shot {
     bool playerKnife = false;
     float activeVisualAge = 0.f;
     float launchDirectionX = 0.f, launchDirectionY = 0.f;
+    std::uint64_t stableIdentity = 0; // Monotonic projectile birth, never a vector index.
 };
 // Character's mutually selected air flags, plus the independently set crouch flag.
 // Keep both air fields so Player::FireWeapon's up-before-down branch is explicit.
@@ -78,7 +79,8 @@ public:
     void Draw(render::Renderer& renderer, float cameraX, float cameraY) const;
     void AppendPainterItems(std::vector<PainterItem>& items, render::Renderer& renderer,
                             float cameraX, float cameraY,
-                            const std::function<void(const ParticleSpray&, const ParticleSpray::Particle&, const render::Sprite&)>& emittedMaterialParticle = {}) const;
+                            const std::function<void(const ParticleSpray&, const ParticleSpray::Particle&, const render::Sprite&)>& emittedMaterialParticle = {},
+                            const std::function<void(const Shot&, const render::Sprite&)>& emittedShot = {}) const;
     void UpdateVisuals(float dt);
     void SetTriggerHistory(std::unordered_map<std::string, std::int64_t> history) { triggerHistory_ = std::move(history); }
     void EnableSimulatedWallClock(); // test-only: advance trigger clock by fixed gameplay dt
@@ -112,6 +114,7 @@ public:
 private:
     std::vector<Enemy> enemies_;
     std::vector<Shot> shots_;
+    std::uint64_t nextShotIdentity_ = 1; // Never recycle across ClearLevel/scene epochs.
     struct DeathEffect {
         render::TextureId texture = render::InvalidTexture;
         float x = 0, y = 0, vx = 0, vy = 0;

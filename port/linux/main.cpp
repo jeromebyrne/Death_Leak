@@ -1774,7 +1774,11 @@ int main(int argc, char** argv) {
                         auto key=deathleak::linux_port::EmittedParticleKey(spray,particle);
                         key.object |= (std::uint64_t{1}<<60); // Runtime material-spray namespace.
                         repeatRecorder->TagLastSprite(key);
-                    }) : std::function<void(const deathleak::game::ParticleSpray&, const deathleak::game::ParticleSpray::Particle&, const Sprite&)>());
+                    }) : std::function<void(const deathleak::game::ParticleSpray&, const deathleak::game::ParticleSpray::Particle&, const Sprite&)>(),
+                fullFrameTopologyCheck ? std::function<void(const deathleak::game::Shot&, const Sprite&)>(
+                    [&](const auto& shot, const Sprite&) {
+                        repeatRecorder->TagLastSprite({(std::uint64_t{1}<<59) | shot.stableIdentity,0});
+                    }) : std::function<void(const deathleak::game::Shot&, const Sprite&)>());
             // Source Player::Draw places the X immediately after the player body.
             // A player-adjacent slot preserves same-depth object visitation order.
             std::function<void()> afterPlayerDraw;
@@ -2110,7 +2114,16 @@ int main(int argc, char** argv) {
             if (hasPriorFullFrame) {
                 const auto decision=deathleak::linux_port::AdmitFullFrame(priorFullFrame,frameSnapshot,.5f);
                 const auto mixed=deathleak::linux_port::AdmitMixedCommands(priorFullFrame,frameSnapshot,.5f);
-                std::cout << "MIXED_COMMAND_TOPOLOGY frame=" << frame << " sampled=" << mixed.moving << " current=" << frameSnapshot.packet.Size()-mixed.moving << " valid=" << mixed.valid << '\n';
+                std::size_t projectileSampled=0,projectileHeld=0;
+                for (std::size_t ci=0;ci<frameSnapshot.packet.Size();++ci) {
+                    const auto& c=frameSnapshot.packet.Commands()[ci];
+                    if (c.kind==deathleak::linux_port::PresentationCommandPacket::Kind::Sprite &&
+                        (c.key.object >> 59)==1) {
+                        if (ci<mixed.interpolate.size() && mixed.interpolate[ci]) ++projectileSampled;
+                        else ++projectileHeld;
+                    }
+                }
+                std::cout << "MIXED_COMMAND_TOPOLOGY frame=" << frame << " sampled=" << mixed.moving << " current=" << frameSnapshot.packet.Size()-mixed.moving << " projectileSampled=" << projectileSampled << " projectileHeld=" << projectileHeld << " valid=" << mixed.valid << '\n';
                 const auto& before=priorFullFrame.packet.Commands();
                 const auto& after=frameSnapshot.packet.Commands();
                 for (std::size_t ci=0;ci<before.size() && ci<after.size();++ci) {

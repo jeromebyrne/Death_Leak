@@ -48,6 +48,29 @@ struct CombatMaterialIdentityProbe {
         assert(keys.size()==40);
         for (const auto& key:keys) if (key.object>>16==combat.materialSprays_.back().stableIdentity)
             assert(!old.count(key));
+        // Projectile emissions use birth IDs, not mutable vector positions.
+        combat.shots_.clear();
+        game::Shot first{0,0,100,0,1,1,false};
+        first.texture=7; first.stableIdentity=combat.nextShotIdentity_++;
+        game::Shot second=first; second.x=20; second.stableIdentity=combat.nextShotIdentity_++;
+        combat.shots_={first,second};
+        std::set<std::uint64_t> shotKeys;
+        auto collectShots=[&] {
+            items.clear(); renderer.drawn.clear(); shotKeys.clear();
+            combat.AppendPainterItems(items,renderer,0,0,{},[&](const auto& shot,const auto& sprite) {
+                assert(renderer.drawn.back().texture==sprite.texture);
+                assert(shotKeys.insert(shot.stableIdentity).second);
+            });
+            for (const auto& item:items) item.draw();
+        };
+        collectShots();
+        assert(shotKeys.size()==2 && shotKeys.count(first.stableIdentity) && shotKeys.count(second.stableIdentity));
+        combat.shots_.erase(combat.shots_.begin());
+        game::Shot third=first; third.stableIdentity=combat.nextShotIdentity_++;
+        combat.shots_.push_back(third);
+        collectShots();
+        assert(shotKeys.size()==2 && shotKeys.count(second.stableIdentity) && shotKeys.count(third.stableIdentity));
+        assert(!shotKeys.count(first.stableIdentity));
         // A recycled looping slot must not pair with its previous generation.
         auto p=combat.materialSprays_.back().particles[0];
         const auto before=linux_port::EmittedParticleKey(combat.materialSprays_.back(),p);

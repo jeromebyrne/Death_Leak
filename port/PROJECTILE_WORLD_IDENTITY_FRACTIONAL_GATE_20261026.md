@@ -1,0 +1,19 @@
+# Projectile active-world identity and fractional gate — 2026-10-26
+
+Base: exact pushed `741e391bb4a07c91bf440dae029546920b59013c`, clean detached checkout `/tmp/deathleak-projectile-world-20261026`. The primary checkout's unrelated dirty work was not built or edited, except an append-only performance checkpoint.
+
+## Executable change
+
+Player knives and enemy shots receive a monotonic per-Combat projectile birth ID at their two creation sites. The ID survives shot-vector erase/reallocation and deflection; `ClearLevel` does not recycle it. The actual projectile painter callback tags the just-emitted sprite with a separate diagnostic namespace. No default renderer path, game physics, or visible interpolation switch changes. The focused fixture verifies emitted sprite association, two unique keys, erase/reallocation, and new-birth non-aliasing. The mixed-command fixture enforces unchanged draw state, painter ordinal, phase, and alpha=1 current-state behavior.
+
+## Actual packet and replay evidence
+
+The fixed-1/60, `B:125` Forest route at frame 120 emits 93 commands and 88 sprites. All 88 sprites are now owned, including the 15 material-spray sprites and three texture-293 projectiles that previously blocked the packet. Final-binary same-route software-only diagnostic counts: frame 120 42 sampled/51 held, frame 121 51/42, frames 122–124 0 sampled despite 87/86/83 tagged sprites, respectively. All three projectile sprites were held on every frame 120–124, although keyed; changed rotation/appearance and ordinal topology remain outside the admitted positional phase. The earlier offscreen Intel replay selected 43/50 at frame 120; that one-command variance reflects non-fixed wall-clock film selection, so its image comparison is same-captured-state only, not a cross-run route comparison. This is an actual emitted paired packet, not a synthetic topology fixture.
+
+The first offscreen accelerated GL replay used Mesa Intel HD Graphics 4000 (not physical NVE7), 1280×720, frame 120, with the identical sealed current packet for each arm. Current and mixed alpha=1 are BMP-byte-identical (SHA-256 `95cb653278e1f7086cbf41052fbee4a1481a90565076af5cf0a8d5af1e8c3f35`); alpha=.5 differs in 531,341/921,600 RGB pixels (SHA-256 `e3fa3ed9bd567b11d670e0c23994d5ff9f2dd54751604247951923b09ea2529c`). This proves the diagnostic path moves some image content, not coherent active actor/projectile/effect motion or NVE7 parity. Final production Docker binary SHA-256 `d1c6beeab0ddee49b8b7af9586b2ba5e46545e9db2d5775163ca67f70700982c`; focused identity and mixed-command fixtures passed. Final-binary projectile sampled/held counts and actual route evidence are in `port/build/projectile-evidence/forest125-final.log` (ignored build output).
+
+## Decision
+
+Visible runtime interpolation B is **not enabled**. Though the frame-120 packet is completely keyed and alpha=1 is exact on the offscreen Intel GL lane, the mixed policy still holds changing appearance/rotation/size and packet birth/death. This slice does not prove coherent moving active-world composition across the 120–124 route. Physical NVE7 Xorg `:0` access also failed at preflight (`Authorization required, but no authorization protocol specified`); the accessible `/home/openclaw/.Xauthority` cookie is rejected by live Xorg. An offscreen Intel GL initialization is not a substitute for NVE7 exact-pixel and serial A/B/A proof. Therefore no physical NVE7, FPS, 8K, high-Hz, sustained, thermal, VRAM, or release claim follows.
+
+Next distinct gate: state-tag and fractionally sample the authored player/projectile rotation/fade/effect phases with explicit appearance transition policy, then capture active route and scene cut on the authenticated NVE7 Xorg display. Only a coherent moving active packet and exact physical alpha=1 justify opt-in visible B and serial A/B/A. Atlas runtime coverage remains 15/896; no atlas family was changed in this slice.
