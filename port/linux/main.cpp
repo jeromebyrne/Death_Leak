@@ -14,6 +14,7 @@
 #include "../game/PlayerMotion.h"
 #include "../game/CameraShake.h"
 #include "../game/Hud.h"
+#include "../game/HudPresentationPacket.h"
 #include "../game/BitmapText.h"
 #include "../game/PaperText.h"
 #include "../game/Settings.h"
@@ -1641,6 +1642,14 @@ int main(int argc, char** argv) {
             introPromptPresentation.Prepare(introLooped, rawInteractHeld,
                 suppressIntroPromptDraw, introPromptArt != 0, introPromptClock);
         }
+        // Snapshot only the HUD branch after the fixed update. The scene painter,
+        // shader, film, and capture stages retain their existing order.
+        std::optional<deathleak::game::HudPresentationPacket> hudPacket;
+        if (!playLevel.empty() && currentLevel != "Game/XmlFiles/levels/sea_2.xml") {
+            hud.Prepare(combat.Health(), combat.MaxHealth(), combat.Focus(),
+                        shaderClock.Draw().totalTime - dt);
+            hudPacket.emplace(hud, orbBalance);
+        }
         const auto loadingPacket = deathleak::game::LoadingOverlayPacket::Prepare(
             loadingPhase != LoadingPhase::None, loadingHoldExitedThisFrame,
             loadingPhase == LoadingPhase::FadeIn, loadingPhase == LoadingPhase::FadeOut,
@@ -1769,8 +1778,7 @@ int main(int argc, char** argv) {
                     bottomBar.flipY = true;
                     renderer->DrawSprite(bottomBar);
                 }
-                hud.Prepare(combat.Health(), combat.MaxHealth(), combat.Focus(), shaderFrame.totalTime - dt);
-                hud.Draw(*renderer, orbBalance);
+                hudPacket->Draw(*renderer);
             }
             if (paperModal)
                 deathleak::game::DrawPaperModal(*renderer, paperTitle, paperDescription,

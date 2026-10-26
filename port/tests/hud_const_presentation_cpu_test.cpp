@@ -1,4 +1,5 @@
 #include "../game/Hud.h"
+#include "../game/HudPresentationPacket.h"
 #include <cassert>
 #include <cmath>
 #include <string>
@@ -59,9 +60,14 @@ int main() {
     hud.Prepare(25, 25, 100, 1.f/60);
     hud.Prepare(20, 25, 50, 1);
     hud.Prepare(20, 25, 50, 1.25f);
-    hud.Draw(first, 12);
+    const game::HudPresentationPacket packet{hud, 12};
+    packet.Draw(first);
+    for (int i = 0; i < 100000; ++i) {
+        repeated.clear();
+        packet.Draw(repeated);
+        assert(same(first, repeated));
+    }
     const game::Hud& readOnlyHud = hud;
-    readOnlyHud.Draw(repeated, 12);
     assert(same(first, repeated));
     assert(width(first, 6) > width(first, 2));
     const float previousBackingWidth = width(first, 6);
@@ -69,4 +75,7 @@ int main() {
     readOnlyHud.Draw(afterUpdate, 12);
     assert(std::fabs(previousBackingWidth - width(afterUpdate, 6) - (75.f - 3.2f)*2.f/3.f*.005f) < .001f);
     assert(!same(first, afterUpdate));
+    repeated.clear();
+    packet.Draw(repeated);
+    assert(same(first, repeated));
 }
