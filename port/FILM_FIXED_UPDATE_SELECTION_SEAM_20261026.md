@@ -1,0 +1,14 @@
+# Fixed-update 11-FPS film selection seam — 2026-10-26
+
+Base: `eb7b47010fffcc26ac77566c95e4f8b9e1870be5`. Clean detached source worktree `/tmp/deathleak-film-fixed-20261026`; separate clean baseline worktree; primary seven unrelated dirty tracked paths and untracked files were not used as build input.
+
+The gameplay and final-scene overlays keep independent selector state. `FilmFrameSelector::Prepare` runs once per active fixed update, before the existing catch-up/presentation decision, and `Index() const` is the only film selector operation at draw. The original initial index/last-switch zero, strict integer `1000/11`-ms comparison, one-frame-only advance, reset-to-current-monotonic-time behavior, four-frame wrapping, and authored draw opacity/order are unchanged. No extra display-frame loop was added. Film texture lazy loading remains an independent draw-side impurity.
+
+Focused C++17 test compares a reference implementation at the exact 90/91-ms boundary, long stalls, 600 synthetic 60-Hz samples and independent final selector; repeated `Index()` reads cannot mutate state. The unchanged source clock uses `steady_clock` in production. The new clock sample occurs at fixed-update preparation before scene rendering, not at the old film draw call. Thus arbitrary native-clock frame-boundary pixel equality is not mathematically guaranteed if the 91-ms gate is crossed between those points; the authored cadence rule is preserved, not identical wall-time phase at every possible frame. Catch-up fixed updates now each prepare once rather than only rendered updates, as intended for a fixed-update seam. This is not a complete read-only presentation path: camera/shader/resource/packet effects remain separate.
+
+A deterministic physical pixel gate used an **identical test-only** `frame*1000/60`-ms film clock substitution in baseline and candidate, compiled separately with the production Docker toolchain. Serial physical `DISPLAY=:0`, SDL x11/OpenGL, Mesa nouveau NVE7 (`accelerated=1 software=0 vsync=1`) at 1280×720, fixed-dt 60-Hz A/B/A:
+
+- Forest-1 active gameplay frame 424: baseline/candidate/baseline full post-HUD BMP SHA-256 all `aadfcf0d333d4abdf71979b15b8c64352d480ff4c44dcdc31f1144cd80876f4b`; same player/vitals/balance; zero changed pixels.
+- `sea_2` final-scene route frame 119: all three full-frame BMP SHA-256 `7bd95fb2ec5289837c91a05c0858d549bfdd12ccf2393d0dd1759dd60373927e`; same player/vitals/balance; zero changed pixels.
+
+Test-only clock substitution was removed from candidate source before final production build and commit. Diagnostic build logs, six BMPs and physical logs remain under ignored `port/build/film-fixed-20261026/` in the isolated worktree. Synchronized parity does not prove arbitrary unsynchronized native-clock identity, update-free frame emission, high-Hz display support, 8K, sustained FPS or release readiness.
