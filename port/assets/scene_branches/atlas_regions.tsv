@@ -1,6 +1,6 @@
-Game/Media/objects/branch_1.png	2	2	835	304
-Game/Media/objects/branch_2.png	841	2	531	264
-Game/Media/objects/branch_3.png	2	438	395	167
-Game/Media/objects/branch_4.png	2	310	688	124
-Game/Media/objects/branch_5.png	1376	2	368	317
-Game/Media/objects/branch_6.png	841	270	441	174
+Game/Media/objects/branch_1.png	2	2	818	288	835	304	7	6
+Game/Media/objects/branch_2.png	824	2	527	247	531	264	3	8
+Game/Media/objects/branch_3.png	2	422	389	152	395	167	1	4
+Game/Media/objects/branch_4.png	2	294	681	124	688	124	3	0
+Game/Media/objects/branch_5.png	1355	2	353	312	368	317	9	5
+Game/Media/objects/branch_6.png	824	253	437	172	441	174	2	1

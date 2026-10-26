@@ -1,14 +1,15 @@
 {
-  "format": "deathleak-atlas-v2",
+  "format": "deathleak-atlas-v3",
   "max_page_size": 4096,
   "padding": 2,
+  "transparent_guard": 2,
   "pages": [
     "atlas_000.png"
   ],
   "page_dimensions": [
     [
-      2156,
-      320
+      2146,
+      315
     ]
   ],
   "textures": [
@@ -17,10 +18,18 @@
       "sha256": "c06791697d05486a87b663886b74b9812226bdf13d8d4ecc687c36badd13576b",
       "page": 0,
       "rect": [
-        1110,
+        1103,
         2,
         300,
+        162
+      ],
+      "original_size": [
+        300,
         180
+      ],
+      "trim_offset": [
+        0,
+        10
       ]
     },
     {
@@ -28,10 +37,18 @@
       "sha256": "c9632e91c9519e66d08b32f81253c43760e9252b4dced9bf54590e688f7bc86c",
       "page": 0,
       "rect": [
-        330,
+        849,
         2,
+        250,
+        249
+      ],
+      "original_size": [
         256,
         256
+      ],
+      "trim_offset": [
+        3,
+        4
       ]
     },
     {
@@ -39,10 +56,18 @@
       "sha256": "4b9651072320c35d72d379325e2b8b209cff7a2acc81dfb1d6e60137ad279998",
       "page": 0,
       "rect": [
-        2022,
+        2012,
         2,
         64,
         63
+      ],
+      "original_size": [
+        64,
+        63
+      ],
+      "trim_offset": [
+        0,
+        0
       ]
     },
     {
@@ -53,7 +78,15 @@
         2,
         2,
         324,
+        311
+      ],
+      "original_size": [
+        324,
         316
+      ],
+      "trim_offset": [
+        0,
+        2
       ]
     },
     {
@@ -61,10 +94,18 @@
       "sha256": "2ee19111e336ac732373aa703d7c7cfc6c3e4e847adc87f66f3078c900352f5b",
       "page": 0,
       "rect": [
-        2090,
+        2080,
         2,
         64,
         62
+      ],
+      "original_size": [
+        64,
+        62
+      ],
+      "trim_offset": [
+        0,
+        0
       ]
     },
     {
@@ -72,10 +113,18 @@
       "sha256": "caf4e35294f715d27d3a059ef9d3baece377dc2ab396ca5f3304810de3c340c1",
       "page": 0,
       "rect": [
-        1414,
+        1711,
         2,
+        297,
+        162
+      ],
+      "original_size": [
         300,
         180
+      ],
+      "trim_offset": [
+        0,
+        10
       ]
     },
     {
@@ -83,10 +132,18 @@
       "sha256": "16a4e332146a6a00f2d9cf55c4de21b7c1f64db4d2a7c7b524998317ebe031ed",
       "page": 0,
       "rect": [
-        590,
+        330,
         2,
         256,
         256
+      ],
+      "original_size": [
+        256,
+        256
+      ],
+      "trim_offset": [
+        0,
+        0
       ]
     },
     {
@@ -94,10 +151,18 @@
       "sha256": "765594042fc7b63a83bb345478488ccfc6f058511e49fd04f9053dc9ba0b9337",
       "page": 0,
       "rect": [
-        1718,
+        1407,
         2,
         300,
+        162
+      ],
+      "original_size": [
+        300,
         180
+      ],
+      "trim_offset": [
+        0,
+        10
       ]
     },
     {
@@ -105,10 +170,18 @@
       "sha256": "beff900ae6aadad85c1d7d6edb3a52d474c87a8cb0d039457361ef92c7a62e1c",
       "page": 0,
       "rect": [
-        850,
+        590,
         2,
+        255,
+        254
+      ],
+      "original_size": [
         256,
         256
+      ],
+      "trim_offset": [
+        0,
+        1
       ]
     }
   ]

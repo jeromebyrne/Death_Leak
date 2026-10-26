@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Deterministic, densely packed RGBA atlases with a 4096px page ceiling.
+"""Deterministic RGBA atlases with per-sprite transparent-margin trimming.
 
-The manifest's rect is the unpadded source content; two extruded edge pixels
-on every side protect linear filtering. Selection is explicit because repeating
-textures and shader paths need virtual-UV handling before runtime integration.
+A two-pixel transparent guard is retained where available for filtering, then
+two edge pixels are extruded. Original size and trim offset restore placement.
+Repeating textures and shader paths require virtual-UV handling before use.
 """
 import argparse
 import hashlib
@@ -14,6 +14,7 @@ from PIL import Image
 
 PAGE = 4096
 PAD = 2
+GUARD = 2
 
 
 def digest(path):
@@ -52,15 +53,24 @@ def pack(paths, output):
     entries = []
     for path in sorted(set(paths), key=lambda p: p.as_posix()):
         with Image.open(path) as source:
-            width, height = source.size
-        if width + 2 * PAD > PAGE or height + 2 * PAD > PAGE:
-            raise ValueError(f"too large for padded atlas: {path} ({width}x{height})")
-        entries.append((path, width, height))
-    entries.sort(key=lambda item: (-(item[1] + 2 * PAD) * (item[2] + 2 * PAD),
-                                   -max(item[1], item[2]), item[0].as_posix()))
+            image = source.convert('RGBA')
+            width, height = image.size
+            # Invisible RGB bytes are not sampled by the alpha-blended sprite.
+            bounds = image.getchannel('A').getbbox() or (0, 0, 1, 1)
+            left = max(0, bounds[0] - GUARD)
+            top = max(0, bounds[1] - GUARD)
+            right = min(width, bounds[2] + GUARD)
+            bottom = min(height, bounds[3] + GUARD)
+            trim = (left, top, right - left, bottom - top)
+        if trim[2] + 2 * PAD > PAGE or trim[3] + 2 * PAD > PAGE:
+            raise ValueError(f"too large for padded atlas: {path} ({trim[2]}x{trim[3]})")
+        entries.append((path, width, height, trim))
+    entries.sort(key=lambda item: (-(item[3][2] + 2 * PAD) * (item[3][3] + 2 * PAD),
+                                   -max(item[3][2], item[3][3]), item[0].as_posix()))
     pages = []
     placements = []
-    for path, width, height in entries:
+    for path, original_w, original_h, trim in entries:
+        left, top, width, height = trim
         outer_w, outer_h = width + 2 * PAD, height + 2 * PAD
         selected = None
         for index, page in enumerate(pages):
@@ -77,17 +87,19 @@ def pack(paths, output):
         page['free'] = place(page['free'], (x, y, outer_w, outer_h))
         page['width'] = max(page['width'], x + outer_w)
         page['height'] = max(page['height'], y + outer_h)
-        page['items'].append((path, x, y, width, height))
+        page['items'].append((path, x, y, trim))
         placements.append({'source': path.as_posix(), 'sha256': digest(path),
-                           'page': index, 'rect': [x + PAD, y + PAD, width, height]})
+                           'page': index, 'rect': [x + PAD, y + PAD, width, height],
+                           'original_size': [original_w, original_h], 'trim_offset': [left, top]})
     output.mkdir(parents=True, exist_ok=True)
     page_names = []
     page_dimensions = []
     for index, page in enumerate(pages):
         image_page = Image.new('RGBA', (page['width'], page['height']))
-        for path, x, y, width, height in page['items']:
+        for path, x, y, trim in page['items']:
+            left, top, width, height = trim
             with Image.open(path) as source:
-                image = source.convert('RGBA')
+                image = source.convert('RGBA').crop((left, top, left + width, top + height))
                 image_page.paste(image, (x + PAD, y + PAD))
                 image_page.paste(image.crop((0, 0, 1, height)).resize((PAD, height)), (x, y + PAD))
                 image_page.paste(image.crop((width - 1, 0, width, height)).resize((PAD, height)), (x + PAD + width, y + PAD))
@@ -101,7 +113,8 @@ def pack(paths, output):
         image_page.save(output / name, optimize=True)
         page_names.append(name)
         page_dimensions.append([page['width'], page['height']])
-    manifest = {'format': 'deathleak-atlas-v2', 'max_page_size': PAGE, 'padding': PAD,
+    manifest = {'format': 'deathleak-atlas-v3', 'max_page_size': PAGE, 'padding': PAD,
+                'transparent_guard': GUARD,
                 'pages': page_names, 'page_dimensions': page_dimensions,
                 'textures': sorted(placements, key=lambda p: p['source'])}
     (output / 'atlas_manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
@@ -109,7 +122,7 @@ def pack(paths, output):
     # its lightweight lookup file generated from the same verified placements.
     if len(page_names) == 1:
         (output / 'atlas_regions.tsv').write_text(''.join(
-            f"{entry['source']}\t" + '\t'.join(map(str, entry['rect'])) + '\n'
+            f"{entry['source']}\t" + '\t'.join(map(str, entry['rect'] + entry['original_size'] + entry['trim_offset'])) + '\n'
             for entry in manifest['textures']))
     return manifest
 
@@ -126,8 +139,23 @@ def verify(manifest, output):
                 raise ValueError(f"source changed: {source}")
             x, y, width, height = texture['rect']
             with Image.open(source) as image:
-                if pages[texture['page']].crop((x, y, x + width, y + height)).tobytes() != image.convert('RGBA').tobytes():
-                    raise ValueError(f"pixel mismatch: {source}")
+                original = image.convert('RGBA')
+                ow, oh = texture['original_size']
+                left, top = texture['trim_offset']
+                if original.size != (ow, oh):
+                    raise ValueError(f"source dimensions changed: {source}")
+                reconstructed = Image.new('RGBA', (ow, oh))
+                reconstructed.paste(pages[texture['page']].crop((x, y, x + width, y + height)), (left, top))
+                # Hidden RGB in transparent source pixels may be nonzero; only
+                # alpha and RGB of visible pixels are a rendering contract.
+                original_bytes = original.tobytes()
+                restored_bytes = reconstructed.tobytes()
+                for offset in range(0, len(original_bytes), 4):
+                    if original_bytes[offset + 3] != restored_bytes[offset + 3] or (
+                        original_bytes[offset + 3] and
+                        original_bytes[offset:offset + 3] != restored_bytes[offset:offset + 3]
+                    ):
+                        raise ValueError(f"visible-pixel mismatch: {source}")
     finally:
         for page in pages:
             page.close()

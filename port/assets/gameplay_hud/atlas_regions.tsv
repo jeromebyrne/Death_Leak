@@ -1,6 +1,6 @@
-Game/Media/UI/meter_bar_middle.png	216	2	1	19
-Game/Media/UI/meter_bar_middle_back.png	221	2	1	19
-Game/Media/UI/meter_edge_2.png	208	2	4	19
-Game/Media/UI/meter_overlay.png	226	2	1	19
-Game/Media/UI/orb_count.png	2	2	202	128
-Game/Media/UI/xp_meter_bar_middle.png	231	2	1	19
+Game/Media/UI/meter_bar_middle.png	199	2	1	15	1	19	0	1
+Game/Media/UI/meter_bar_middle_back.png	204	2	1	15	1	19	0	1
+Game/Media/UI/meter_edge_2.png	186	2	4	19	4	19	0	0
+Game/Media/UI/meter_overlay.png	194	2	1	19	1	19	0	0
+Game/Media/UI/orb_count.png	2	2	180	120	202	128	0	0
+Game/Media/UI/xp_meter_bar_middle.png	209	2	1	15	1	19	0	1

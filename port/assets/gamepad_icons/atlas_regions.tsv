@@ -1,9 +1,9 @@
-Game/Media/UI/gamepad_icons/b.png	1110	2	300	180
-Game/Media/UI/gamepad_icons/b_deck.png	330	2	256	256
-Game/Media/UI/gamepad_icons/key_e.png	2022	2	64	63
-Game/Media/UI/gamepad_icons/key_empty.png	2	2	324	316
-Game/Media/UI/gamepad_icons/key_esc.png	2090	2	64	62
-Game/Media/UI/gamepad_icons/x.png	1414	2	300	180
-Game/Media/UI/gamepad_icons/x_deck.png	590	2	256	256
-Game/Media/UI/gamepad_icons/y.png	1718	2	300	180
-Game/Media/UI/gamepad_icons/y_deck.png	850	2	256	256
+Game/Media/UI/gamepad_icons/b.png	1103	2	300	162	300	180	0	10
+Game/Media/UI/gamepad_icons/b_deck.png	849	2	250	249	256	256	3	4
+Game/Media/UI/gamepad_icons/key_e.png	2012	2	64	63	64	63	0	0
+Game/Media/UI/gamepad_icons/key_empty.png	2	2	324	311	324	316	0	2
+Game/Media/UI/gamepad_icons/key_esc.png	2080	2	64	62	64	62	0	0
+Game/Media/UI/gamepad_icons/x.png	1711	2	297	162	300	180	0	10
+Game/Media/UI/gamepad_icons/x_deck.png	330	2	256	256	256	256	0	0
+Game/Media/UI/gamepad_icons/y.png	1407	2	300	162	300	180	0	10
+Game/Media/UI/gamepad_icons/y_deck.png	590	2	255	254	256	256	0	1
