@@ -36,6 +36,7 @@
 #include <unistd.h>
 
 using namespace deathleak::render;
+namespace deathleak::render { void StartCaveDecodeWorker(); void StopCaveDecodeWorker(); }
 
 namespace {
 // BEGIN_GAMEPLAY_FILM_FRAME_SELECTOR
@@ -699,6 +700,8 @@ int main(int argc, char** argv) {
     int presentedFramesInSample = 0;
     int displayedFps = -1;
     for (int frame = 0; !frameLimit || frame < frameLimit; ++frame) {
+        // Decode the first visible cave layer during Forest traversal; keep GPU allocation on its normal load path.
+        if (frame == 120 && currentLevel == "Game/XmlFiles/levels/forest_exploration_1.xml") StartCaveDecodeWorker();
         if (renderer->PollQuit()) break;
         const ControllerSticks controllerSticks = renderer->ControllerAxes();
         deathleak::game::PlayerStrafeVisual strafeVisual{};
@@ -2044,5 +2047,6 @@ int main(int argc, char** argv) {
             }
         }
     }
+    StopCaveDecodeWorker();
     return 0;
 }

@@ -23,8 +23,42 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <vector>
+#include <thread>
+#include <atomic>
 
 namespace deathleak::render {
+namespace {
+constexpr const char* cavePath = "Game/Media/levels/underwater_cave/cave_background.png";
+std::thread caveDecodeThread;
+struct CaveWorkerJoinOnExit { ~CaveWorkerJoinOnExit() { if (caveDecodeThread.joinable()) caveDecodeThread.join(); } };
+CaveWorkerJoinOnExit caveWorkerJoinOnExit;
+std::atomic<bool> caveDecodeDone{false};
+std::atomic<bool> caveDecodeStarted{false};
+std::vector<png_byte> caveDecodedPixels;
+unsigned caveDecodedWidth = 0, caveDecodedHeight = 0;
+}
+void StartCaveDecodeWorker() {
+    if (caveDecodeStarted.exchange(true)) return;
+    caveDecodeThread = std::thread([] {
+        auto start = std::chrono::steady_clock::now();
+        png_image image{}; image.version = PNG_IMAGE_VERSION;
+        bool ok = png_image_begin_read_from_file(&image, cavePath);
+        if (ok) {
+            image.format = PNG_FORMAT_RGBA;
+            if (image.width == 1750 && image.height == 1313 && PNG_IMAGE_SIZE(image) == 9191000) {
+                caveDecodedPixels.resize(PNG_IMAGE_SIZE(image));
+                ok = png_image_finish_read(&image, nullptr, caveDecodedPixels.data(), 0, nullptr);
+                if (ok) { caveDecodedWidth = image.width; caveDecodedHeight = image.height; }
+            } else ok = false;
+        }
+        if (!ok) caveDecodedPixels.clear();
+        png_image_free(&image);
+        std::cerr << "CAVE_HANDOFF worker_ok=" << ok << " bytes=" << caveDecodedPixels.size()
+                  << " ms=" << std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-start).count() << "\n";
+        caveDecodeDone.store(true, std::memory_order_release);
+    });
+}
+void StopCaveDecodeWorker() { if (caveDecodeThread.joinable()) caveDecodeThread.join(); }
 namespace {
 // PNG rows are top-first; GL level-0 rows are bottom-first. The wobble
 // shader's 1-V therefore continues to address the authored top at V=0.
@@ -224,16 +258,28 @@ public:
             std::chrono::steady_clock::now() - textureStart).count(); };
         png_image image{};
         image.version = PNG_IMAGE_VERSION;
-        if (!png_image_begin_read_from_file(&image, path.c_str())) {
-            error = image.message; return InvalidTexture;
+        std::vector<png_byte> pixels;
+        bool handedOff = false;
+        double headerMs = 0, decodeMs = 0;
+        if (path == cavePath && caveDecodeDone.load(std::memory_order_acquire) &&
+            caveDecodedPixels.size() == 9191000 && caveDecodedWidth == 1750 && caveDecodedHeight == 1313) {
+            pixels = std::move(caveDecodedPixels);
+            image.width = caveDecodedWidth; image.height = caveDecodedHeight;
+            handedOff = true;
+            std::cerr << "CAVE_HANDOFF consumed bytes=" << pixels.size() << "\n";
+        } else {
+            if (path == cavePath && caveDecodeStarted.load()) std::cerr << "CAVE_HANDOFF fallback\n";
+            if (!png_image_begin_read_from_file(&image, path.c_str())) {
+                error = image.message; return InvalidTexture;
+            }
+            headerMs = traceTexture ? phaseMs() : 0;
+            image.format = PNG_FORMAT_RGBA;
+            pixels.resize(PNG_IMAGE_SIZE(image));
+            if (!png_image_finish_read(&image, nullptr, pixels.data(), 0, nullptr)) {
+                error = image.message; png_image_free(&image); return InvalidTexture;
+            }
+            decodeMs = traceTexture ? phaseMs() : 0;
         }
-        const double headerMs = traceTexture ? phaseMs() : 0;
-        image.format = PNG_FORMAT_RGBA;
-        std::vector<png_byte> pixels(PNG_IMAGE_SIZE(image));
-        if (!png_image_finish_read(&image, nullptr, pixels.data(), 0, nullptr)) {
-            error = image.message; png_image_free(&image); return InvalidTexture;
-        }
-        const double decodeMs = traceTexture ? phaseMs() : 0;
         SDL_Surface* surface = SDL_CreateRGBSurfaceWithFormatFrom(pixels.data(),
             static_cast<int>(image.width), static_cast<int>(image.height), 32,
             static_cast<int>(image.width * 4), SDL_PIXELFORMAT_RGBA32);
@@ -243,7 +289,7 @@ public:
         if (!texture) { error = SDL_GetError(); png_image_free(&image); return InvalidTexture; }
         if (traceTexture)
             std::cerr << "Texture load " << path << " size=" << image.width << "x" << image.height
-                      << " header_ms=" << headerMs << " decode_ms=" << decodeMs - headerMs
+                      << " handoff=" << handedOff << " header_ms=" << headerMs << " decode_ms=" << decodeMs - headerMs
                       << " upload_ms=" << phaseMs() - decodeMs << "\n";
         png_image_free(&image);
         SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
