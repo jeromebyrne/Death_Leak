@@ -1,0 +1,115 @@
+{
+  "format": "deathleak-atlas-v2",
+  "max_page_size": 4096,
+  "padding": 2,
+  "pages": [
+    "atlas_000.png"
+  ],
+  "page_dimensions": [
+    [
+      2156,
+      320
+    ]
+  ],
+  "textures": [
+    {
+      "source": "Game/Media/UI/gamepad_icons/b.png",
+      "sha256": "c06791697d05486a87b663886b74b9812226bdf13d8d4ecc687c36badd13576b",
+      "page": 0,
+      "rect": [
+        1110,
+        2,
+        300,
+        180
+      ]
+    },
+    {
+      "source": "Game/Media/UI/gamepad_icons/b_deck.png",
+      "sha256": "c9632e91c9519e66d08b32f81253c43760e9252b4dced9bf54590e688f7bc86c",
+      "page": 0,
+      "rect": [
+        330,
+        2,
+        256,
+        256
+      ]
+    },
+    {
+      "source": "Game/Media/UI/gamepad_icons/key_e.png",
+      "sha256": "4b9651072320c35d72d379325e2b8b209cff7a2acc81dfb1d6e60137ad279998",
+      "page": 0,
+      "rect": [
+        2022,
+        2,
+        64,
+        63
+      ]
+    },
+    {
+      "source": "Game/Media/UI/gamepad_icons/key_empty.png",
+      "sha256": "9bf0560f6e222492a3f26c0b36735b1308d082ec0c447300ed0f71033fd1f0bc",
+      "page": 0,
+      "rect": [
+        2,
+        2,
+        324,
+        316
+      ]
+    },
+    {
+      "source": "Game/Media/UI/gamepad_icons/key_esc.png",
+      "sha256": "2ee19111e336ac732373aa703d7c7cfc6c3e4e847adc87f66f3078c900352f5b",
+      "page": 0,
+      "rect": [
+        2090,
+        2,
+        64,
+        62
+      ]
+    },
+    {
+      "source": "Game/Media/UI/gamepad_icons/x.png",
+      "sha256": "caf4e35294f715d27d3a059ef9d3baece377dc2ab396ca5f3304810de3c340c1",
+      "page": 0,
+      "rect": [
+        1414,
+        2,
+        300,
+        180
+      ]
+    },
+    {
+      "source": "Game/Media/UI/gamepad_icons/x_deck.png",
+      "sha256": "16a4e332146a6a00f2d9cf55c4de21b7c1f64db4d2a7c7b524998317ebe031ed",
+      "page": 0,
+      "rect": [
+        590,
+        2,
+        256,
+        256
+      ]
+    },
+    {
+      "source": "Game/Media/UI/gamepad_icons/y.png",
+      "sha256": "765594042fc7b63a83bb345478488ccfc6f058511e49fd04f9053dc9ba0b9337",
+      "page": 0,
+      "rect": [
+        1718,
+        2,
+        300,
+        180
+      ]
+    },
+    {
+      "source": "Game/Media/UI/gamepad_icons/y_deck.png",
+      "sha256": "beff900ae6aadad85c1d7d6edb3a52d474c87a8cb0d039457361ef92c7a62e1c",
+      "page": 0,
+      "rect": [
+        850,
+        2,
+        256,
+        256
+      ]
+    }
+  ]
+}

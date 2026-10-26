@@ -17,6 +17,8 @@
 #include <cstdio>
 #include <cstring>
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <png.h>
 #include <unordered_set>
 #include <unordered_map>
@@ -50,7 +52,9 @@ public:
         if (sepiaProgram_) glDeleteProgram(sepiaProgram_);
         if (pixelWobbleProgram_) glDeleteProgram(pixelWobbleProgram_);
         if (damageBurstProgram_) glDeleteProgram(damageBurstProgram_);
-        for (auto& texture : textures_) SDL_DestroyTexture(texture.second);
+        std::unordered_set<SDL_Texture*> destroyed;
+        for (auto& texture : textures_)
+            if (destroyed.insert(texture.second).second) SDL_DestroyTexture(texture.second);
         if (renderer_) SDL_DestroyRenderer(renderer_);
         if (window_) SDL_DestroyWindow(window_);
         if (initialized_) SDL_Quit();
@@ -159,6 +163,39 @@ public:
     TextureId LoadTexture(const std::string& path, std::string& error) override {
         auto cached = paths_.find(path);
         if (cached != paths_.end()) return cached->second;
+        // First atlas family is opt-in until same-present GPU pixel and A/B gates pass.
+        // Each virtual ID retains its authored dimensions and source-rectangle space.
+        const char* atlasFlag = std::getenv("DEATHLEAK_ATLAS_ICONS");
+        if (atlasFlag && std::strcmp(atlasFlag, "on") == 0 &&
+            path.rfind("Game/Media/UI/gamepad_icons/", 0) == 0) {
+            if (!iconRegionsLoaded_) {
+                iconRegionsLoaded_ = true;
+                std::ifstream map("port/assets/gamepad_icons/atlas_regions.tsv");
+                std::string line;
+                while (std::getline(map, line)) {
+                    std::istringstream row(line);
+                    std::string name;
+                    AtlasRegion region{};
+                    if (std::getline(row, name, '\t') &&
+                        row >> region.x >> region.y >> region.w >> region.h &&
+                        region.w > 0 && region.h > 0)
+                        iconRegions_.emplace(name, region);
+                }
+            }
+            const auto region = iconRegions_.find(path);
+            if (region != iconRegions_.end()) {
+                const TextureId page = LoadTexture("port/assets/gamepad_icons/atlas_000.png", error);
+                if (page != InvalidTexture) {
+                    const TextureId id = nextId_++;
+                    textures_.emplace(id, textures_.at(page));
+                    atlasRegions_.emplace(id, region->second);
+                    paths_.emplace(path, id);
+                    texturePaths_.emplace(id, path);
+                    return id;
+                }
+                error.clear(); // Preserve individual-file fallback if atlas is unavailable.
+            }
+        }
         const bool traceTexture = std::getenv("DEATHLEAK_TRACE_TEXTURE_LOAD") != nullptr;
         const auto textureStart = std::chrono::steady_clock::now();
         auto phaseMs = [&] { return std::chrono::duration<double, std::milli>(
@@ -216,10 +253,21 @@ public:
         SDL_Texture* texture = it->second;
         SDL_Rect source;
         SDL_Rect* sourcePtr = nullptr;
+        const auto atlas = atlasRegions_.find(sprite.texture);
         if (sprite.source.width > 0 && sprite.source.height > 0) {
             source = {static_cast<int>(sprite.source.x), static_cast<int>(sprite.source.y),
                       static_cast<int>(sprite.source.width), static_cast<int>(sprite.source.height)};
             sourcePtr = &source;
+        }
+        if (atlas != atlasRegions_.end()) {
+            const AtlasRegion& region = atlas->second;
+            if (sourcePtr) {
+                source.x += region.x;
+                source.y += region.y;
+            } else {
+                source = {region.x, region.y, region.w, region.h};
+                sourcePtr = &source;
+            }
         }
         SDL_FRect authoredDestination{sprite.destination.x, sprite.destination.y,
                                       sprite.destination.width, sprite.destination.height};
@@ -1140,6 +1188,10 @@ private:
     int sepiaWidth_ = 0, sepiaHeight_ = 0;
     SDL_GameController* gamepad_ = nullptr;
     TextureId nextId_ = 1;
+    struct AtlasRegion { int x = 0, y = 0, w = 0, h = 0; };
+    bool iconRegionsLoaded_ = false;
+    std::unordered_map<std::string, AtlasRegion> iconRegions_;
+    std::unordered_map<TextureId, AtlasRegion> atlasRegions_;
     std::unordered_map<TextureId, SDL_Texture*> textures_;
     std::unordered_set<TextureId> parallaxLogged_;
     std::unordered_set<TextureId> rotatedRepeatLogged_;
