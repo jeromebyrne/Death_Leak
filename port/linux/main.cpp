@@ -1804,7 +1804,7 @@ int main(int argc, char** argv) {
                                repeatRecorder->TagLastSprite({(source.stableIdentity << 1) | unsigned(arm),0},
                                    source.parallaxLayer ? 0.f : deathleak::linux_port::OrdinaryCameraFactorX(source.depth),
                                    source.parallaxLayer ? 0.f : deathleak::linux_port::OrdinaryCameraFactorY(source.depth),
-                                   phase, source.cameraParallaxX * (source.flipX ? -1.f : 1.f),source.cameraParallaxY);
+                                   phase, source.cameraParallaxX * (source.flipX ? -1.f : 1.f),source.cameraParallaxY,source.autoScrollYStep);
                            }) : std::function<void(const deathleak::game::SceneSprite&, const Sprite&, bool)>(),
                        fullFrameTopologyCheck ? std::function<void(const deathleak::game::ParticleSpray&, const deathleak::game::ParticleSpray::Particle&, const Sprite&)>(
                            [&](const deathleak::game::ParticleSpray& spray,const deathleak::game::ParticleSpray::Particle& particle,const Sprite&) {
@@ -1838,15 +1838,20 @@ int main(int argc, char** argv) {
                 if (finalTitleShown) deathleak::game::DrawBitmapText(*renderer, "DEATH LEAK", 200, 255, 16, {255,0,0,245});
             } else {
                 if (filmFrames.Frame(gameplayFilm.Index()))
-                    renderer->DrawSprite({filmFrames.Frame(gameplayFilm.Index()), {}, {0,0,1280,720}, {255,255,255,51}});
+                    { renderer->DrawSprite({filmFrames.Frame(gameplayFilm.Index()), {}, {0,0,1280,720}, {255,255,255,51}});
+                    if (fullFrameTopologyCheck) repeatRecorder->TagLastSprite({(std::uint64_t{1}<<61)|1,0},0.f,0.f); }
                 // game_hud.xml: opaque 50-unit bands follow the film and precede HUD widgets.
                 if (finalFrame) {
                     renderer->DrawSprite({finalFrame, {}, AuthoredUI(-960, 490, 1920, 50), {255,255,255,255}});
+                    if (fullFrameTopologyCheck) repeatRecorder->TagLastSprite({(std::uint64_t{1}<<61)|2,0},0.f,0.f);
                     Sprite bottomBar{finalFrame, {}, AuthoredUI(-960, -540, 1920, 50), {255,255,255,255}};
                     bottomBar.flipY = true;
                     renderer->DrawSprite(bottomBar);
+                    if (fullFrameTopologyCheck) repeatRecorder->TagLastSprite({(std::uint64_t{1}<<61)|3,0},0.f,0.f);
                 }
+                const auto hudStart = fullFrameTopologyCheck ? repeatRecorder->Packet().Size() : 0;
                 hudPacket->Draw(*renderer);
+                if (fullFrameTopologyCheck) repeatRecorder->TagStaticRange(hudStart, (std::uint64_t{1}<<61)|0x1000);
             }
             if (paperModal)
                 deathleak::game::DrawPaperModal(*renderer, paperTitle, paperDescription,
@@ -2090,11 +2095,34 @@ int main(int argc, char** argv) {
                 -drawCameraY*(2.f/3.f),false,shaderFrame.totalTime,shaderFrame.pixelWobbleTime};
             if (hasPriorFullFrame) {
                 const auto decision=deathleak::linux_port::AdmitFullFrame(priorFullFrame,frameSnapshot,.5f);
+                const auto& before=priorFullFrame.packet.Commands();
+                const auto& after=frameSnapshot.packet.Commands();
+                for (std::size_t ci=0;ci<before.size() && ci<after.size();++ci) {
+                    if (before[ci].kind==deathleak::linux_port::PresentationCommandPacket::Kind::Sprite &&
+                        after[ci].kind==before[ci].kind && before[ci].key==after[ci].key &&
+                        before[ci].sprite.texture!=after[ci].sprite.texture)
+                        std::cout << "FULL_FRAME_TEXTURE_CHANGE frame=" << frame << " ordinal=" << ci
+                                  << " key=" << before[ci].key.object << " texture="
+                                  << before[ci].sprite.texture << "->" << after[ci].sprite.texture << '\n';
+                }
+
                 std::size_t total=0,tagged=0;
                 for (const auto& command:frameSnapshot.packet.Commands())
                     if (command.kind==deathleak::linux_port::PresentationCommandPacket::Kind::Sprite) {
                         ++total; tagged += command.key.object != 0;
                     }
+                for (std::size_t ci=0;ci<frameSnapshot.packet.Commands().size();++ci) {
+                    const auto& c=frameSnapshot.packet.Commands()[ci];
+                    if (c.kind==deathleak::linux_port::PresentationCommandPacket::Kind::Sprite && !c.key.object)
+                        std::cout << "FULL_FRAME_UNOWNED frame=" << frame << " ordinal=" << ci
+                                  << " texture=" << c.sprite.texture << " dst=" << c.sprite.destination.x
+                                  << "," << c.sprite.destination.y << "," << c.sprite.destination.width
+                                  << "," << c.sprite.destination.height << '\n';
+                    if (c.kind==deathleak::linux_port::PresentationCommandPacket::Kind::SpriteBatch ||
+                        c.kind==deathleak::linux_port::PresentationCommandPacket::Kind::FillBatch)
+                        std::cout << "FULL_FRAME_BATCH frame=" << frame << " ordinal=" << ci
+                                  << " kind=" << int(c.kind) << " count=" << c.sprites.size()+c.rects.size() << '\n';
+                }
                 std::cout << "FULL_FRAME_TOPOLOGY frame=" << frame << " commands=" << frameSnapshot.packet.Size()
                           << " sprites=" << tagged << '/' << total << " decision=" << int(decision) << '\n';
             }

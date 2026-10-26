@@ -58,8 +58,15 @@ inline bool PhaseAdmitted(const PresentationCommandPacket::Command& x,
                NearPhase(v.uvShiftY-u.uvShiftY,rawDy*x.parallaxY) &&
                !u.foliageSway.enabled && !u.pixelWobble.enabled;
     }
+    if (x.phase == Phase::AutoScrollY) {
+        const float rawDx=(b.cameraX-a.cameraX)*1.5f;
+        // Reject wrap seams; lerping 0.99 to 0.01 would reverse the authored phase.
+        return NearPhase(v.uvShiftX-u.uvShiftX,rawDx*x.parallaxX) &&
+            std::isfinite(y.phaseStepY) && y.phaseStepY >= 0.f && y.phaseStepY < 1.f &&
+            NearPhase(v.uvShiftY-u.uvShiftY,y.phaseStepY) &&
+            !u.foliageSway.enabled && !u.pixelWobble.enabled;
+    }
     if (u.uvShiftX != v.uvShiftX || u.uvShiftY != v.uvShiftY) return false;
-    if (x.phase == Phase::AutoScrollY) return false; // needs an explicit once-per-update phase clock
     if (x.phase == Phase::ShaderClock) {
         return (!u.foliageSway.enabled ||
                 (NearPhase(u.foliageSway.time,a.shaderTime) && NearPhase(v.foliageSway.time,b.shaderTime))) &&
@@ -109,9 +116,23 @@ inline FullFrameDecision AdmitFullFrame(const FullFrameSnapshot& a, const FullFr
             break;
         }
         case PresentationCommandPacket::Kind::SpriteBatch:
+            if (!x.key.object || !(x.key == y.key) || !keys.insert(x.key).second ||
+                x.sprites.size()!=y.sprites.size()) return FullFrameDecision::HoldCurrent;
+            for (std::size_t j=0;j<x.sprites.size();++j) {
+                const auto& u=x.sprites[j]; const auto& v=y.sprites[j];
+                if (!SameSpriteExceptPosition(u,v) || !SameRect(u.destination,v.destination) ||
+                    u.uvShiftX!=v.uvShiftX || u.uvShiftY!=v.uvShiftY ||
+                    u.foliageSway.time!=v.foliageSway.time || u.pixelWobble.time!=v.pixelWobble.time ||
+                    u.foliageSway.worldX!=v.foliageSway.worldX || u.foliageSway.worldY!=v.foliageSway.worldY)
+                    return FullFrameDecision::HoldCurrent;
+            }
+            break;
         case PresentationCommandPacket::Kind::FillBatch:
-            // No per-element semantic identity yet; preserve painter boundary.
-            return FullFrameDecision::HoldCurrent;
+            if (!x.key.object || !(x.key == y.key) || !keys.insert(x.key).second ||
+                !SameColor(x.color,y.color) || x.rects.size()!=y.rects.size()) return FullFrameDecision::HoldCurrent;
+            for (std::size_t j=0;j<x.rects.size();++j)
+                if (!SameRect(x.rects[j],y.rects[j])) return FullFrameDecision::HoldCurrent;
+            break;
         case PresentationCommandPacket::Kind::Postprocess:
         case PresentationCommandPacket::Kind::Resolve:
             break;

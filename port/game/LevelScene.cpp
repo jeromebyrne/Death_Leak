@@ -1366,8 +1366,9 @@ void LevelScene::PreparePresentation() {
             !filter.Draw(object.xmlId, levelPath_)) continue;
         if (!object.parallaxLayer || !object.autoScrollY) continue;
         constexpr float worldToBackbufferY = 720.f / 1080.f;
-        object.autoScrollYPhase += object.autoScrollYSpeed * worldToBackbufferY *
+        object.autoScrollYStep = object.autoScrollYSpeed * worldToBackbufferY *
             .001f * (previousRenderedModifiedDelta_ * 60.f);
+        object.autoScrollYPhase += object.autoScrollYStep;
         if (!object.pixelWobble.enabled)
             object.autoScrollYPhase -= std::floor(object.autoScrollYPhase);
     }

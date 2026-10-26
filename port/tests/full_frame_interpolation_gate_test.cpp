@@ -85,6 +85,35 @@ int main() {
  assert(std::fabs(shaderMid.Commands()[1].sprite.foliageSway.time-1.008f)<.00001f);
  auto badClock=shaderB; badClock.shaderTime=9.f;
  assert(linux_port::AdmitFullFrame(shaderA,badClock,.5f)==linux_port::FullFrameDecision::HoldCurrent);
+ // Stable authored HUD command slots admit only byte-equivalent batches.
+ r.BeginFrame({}); render::Rect boxes[2]={{1,2,3,4},{5,6,7,8}};
+ r.FillRects(boxes,2,{10,20,30,40}); r.TagStaticRange(1,(std::uint64_t{1}<<61)|0x1000);
+ r.EndFrame(); linux_port::FullFrameSnapshot hudA{r.Packet(),5,0,0,false};
+ r.BeginFrame({}); r.FillRects(boxes,2,{10,20,30,40}); r.TagStaticRange(1,(std::uint64_t{1}<<61)|0x1000);
+ r.EndFrame(); linux_port::FullFrameSnapshot hudB{r.Packet(),5,0,0,false};
+ assert(linux_port::AdmitFullFrame(hudA,hudB,.5f)==linux_port::FullFrameDecision::Interpolate);
+ assert(linux_port::SampleFullFrame(hudA,hudB,1.f).Commands()[1].rects[1].x==5);
+ boxes[1].x=6; r.BeginFrame({}); r.FillRects(boxes,2,{10,20,30,40});
+ r.TagStaticRange(1,(std::uint64_t{1}<<61)|0x1000); r.EndFrame();
+ linux_port::FullFrameSnapshot hudChanged{r.Packet(),5,0,0,false};
+ assert(linux_port::AdmitFullFrame(hudA,hudChanged,.5f)==linux_port::FullFrameDecision::HoldCurrent);
+ // Source-stamped auto-scroll admits non-wrapping steps, rejects wrong stamps/seams.
+ r.BeginFrame({}); s.uvShiftX=0.f; s.uvShiftY=.2f; s.foliageSway.enabled=false;
+ s.pixelWobble.enabled=false; r.DrawSprite(s);
+ assert(r.TagLastSprite({91,0},0.f,0.f,linux_port::PresentationCommandPacket::PhasePolicy::AutoScrollY,0.f,0.f,.1f));
+ r.EndFrame(); linux_port::FullFrameSnapshot scrollA{r.Packet(),7,0,0,false};
+ r.BeginFrame({}); s.uvShiftY=.3f; r.DrawSprite(s);
+ assert(r.TagLastSprite({91,0},0.f,0.f,linux_port::PresentationCommandPacket::PhasePolicy::AutoScrollY,0.f,0.f,.1f));
+ r.EndFrame(); linux_port::FullFrameSnapshot scrollB{r.Packet(),7,0,0,false};
+ assert(linux_port::AdmitFullFrame(scrollA,scrollB,.5f)==linux_port::FullFrameDecision::Interpolate);
+ assert(std::fabs(linux_port::SampleFullFrame(scrollA,scrollB,.5f).Commands()[1].sprite.uvShiftY-.25f)<.00001f);
+ auto badStep=scrollB; badStep.packet.Clear();
+ for(auto c:scrollB.packet.Commands()) { if(c.kind==linux_port::PresentationCommandPacket::Kind::Sprite) c.phaseStepY=.2f; badStep.packet.Add(c); }
+ badStep.packet.Seal(); assert(linux_port::AdmitFullFrame(scrollA,badStep,.5f)==linux_port::FullFrameDecision::HoldCurrent);
+ r.BeginFrame({}); s.uvShiftY=.01f; r.DrawSprite(s);
+ assert(r.TagLastSprite({91,0},0.f,0.f,linux_port::PresentationCommandPacket::PhasePolicy::AutoScrollY,0.f,0.f,.81f));
+ r.EndFrame(); linux_port::FullFrameSnapshot wrapped{r.Packet(),7,0,0,false};
+ assert(linux_port::AdmitFullFrame(scrollB,wrapped,.5f)==linux_port::FullFrameDecision::HoldCurrent);
  setenv("DEATHLEAK_RENDER_ONLY_XML_IDS","1,2,17,19,37,47",1);
  auto spy=std::make_unique<Spy>(); linux_port::PresentationRecordingRenderer recorder(std::move(spy));
  game::LevelScene scene; std::string error;

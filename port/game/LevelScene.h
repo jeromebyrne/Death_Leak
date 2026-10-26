@@ -44,6 +44,7 @@ struct SceneSprite {
     bool autoScrollY = false;
     float autoScrollYSpeed = 0;
     float autoScrollYPhase = 0; // Committed once per selected presentation.
+    float autoScrollYStep = 0; // Unwrapped delta committed by that presentation.
     bool currencyOrb = false;
     bool authoredSmallOrb = false;
     float orbOriginY = 0, orbPhase = 0, orbHoverSpeed = 2, orbHoverOffsetY = 20;

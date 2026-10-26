@@ -26,6 +26,7 @@ public:
         float cameraFactorX = 1.f, cameraFactorY = 1.f;
         PhasePolicy phase = PhasePolicy::Static;
         float parallaxX = 0.f, parallaxY = 0.f;
+        float phaseStepY = 0.f; // Source-stamped unwrapped auto-scroll commit.
     };
     void Clear() { commands_.clear(); sealed_ = false; }
     void Add(Command command) { commands_.push_back(command); }
@@ -34,11 +35,19 @@ public:
     std::size_t Size() const { return commands_.size(); }
     const std::vector<Command>& Commands() const { return commands_; }
     bool TagLastSprite(TopologyKey key, float fx, float fy,
-                       PhasePolicy phase = PhasePolicy::Static, float px = 0.f, float py = 0.f) {
+                       PhasePolicy phase = PhasePolicy::Static, float px = 0.f, float py = 0.f, float stepY = 0.f) {
         if (sealed_ || commands_.empty() || commands_.back().kind != Kind::Sprite || !key.object) return false;
         commands_.back().key = key; commands_.back().cameraFactorX = fx; commands_.back().cameraFactorY = fy;
         commands_.back().phase = phase; commands_.back().parallaxX = px; commands_.back().parallaxY = py;
+        commands_.back().phaseStepY = stepY;
         return true;
+    }
+    void TagStaticRange(std::size_t first, std::uint64_t namespaceKey) {
+        if (sealed_) return;
+        for (std::size_t i=first;i<commands_.size();++i)
+            if (commands_[i].kind == Kind::Sprite || commands_[i].kind == Kind::SpriteBatch ||
+                commands_[i].kind == Kind::FillBatch)
+                commands_[i].key = {namespaceKey + i - first + 1,0};
     }
     void Replay(render::Renderer& renderer) const {
         if (!sealed_) return;
@@ -114,7 +123,8 @@ public:
     const PresentationCommandPacket& Packet() const { return packet_; }
     bool TagLastSprite(TopologyKey key, float fx = 1.f, float fy = 1.f,
                        PresentationCommandPacket::PhasePolicy phase = PresentationCommandPacket::PhasePolicy::Static,
-                       float px = 0.f, float py = 0.f) { return packet_.TagLastSprite(key, fx, fy, phase, px, py); }
+                       float px = 0.f, float py = 0.f, float stepY = 0.f) { return packet_.TagLastSprite(key, fx, fy, phase, px, py, stepY); }
+    void TagStaticRange(std::size_t first, std::uint64_t namespaceKey) { packet_.TagStaticRange(first, namespaceKey); }
     bool HasPreviousPacket() const { return hasPrevious_; }
     const PresentationCommandPacket& PreviousPacket() const { return previous_; }
     void Replay() const { packet_.Replay(*inner_); }
