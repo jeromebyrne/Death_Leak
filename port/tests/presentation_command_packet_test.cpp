@@ -13,6 +13,7 @@ struct Spy final : Renderer {
     std::vector<std::string> calls;
     bool surfaceStable = true;
     mutable int inputReads = 0;
+    int eventPolls = 0;
     int textureLoads = 0;
     bool Initialize(const char*, int, int, bool, std::string&) override { return true; }
     TextureId LoadTexture(const std::string&, std::string&) override { ++textureLoads; return 7; }
@@ -28,7 +29,7 @@ struct Spy final : Renderer {
     void ApplyScenePostprocess() override { calls.push_back("post"); }
     void ResolveUnprocessedFrame() override { calls.push_back("resolve"); }
     void EndFrame() override { calls.push_back("present"); }
-    bool PollQuit() override { return false; }
+    bool PollQuit() override { ++eventPolls; return false; }
     bool PresentationSurfaceStable() const override { return surfaceStable; }
     bool KeyDown(int) const override { ++inputReads; return false; }
     MouseState Mouse() const override { ++inputReads; return {}; }
@@ -90,6 +91,7 @@ int main() {
     assert(refresh.TryPresent(origin + std::chrono::seconds(1)) == RefreshPresentationService::Result::Presented);
     assert(raw->calls == std::vector<std::string>({"begin:4", "sprite:10", "present"}));
     assert(refresh.RepeatPresents() == 2 && simulationUpdates == 2);
-    assert(raw->textureLoads == 0 && raw->inputReads == 0);
+    assert(raw->textureLoads == 0 && raw->inputReads == 0 && raw->eventPolls == 0);
+    assert(!raw->PollQuit() && raw->eventPolls == 1); // positive fixed-update event pump
     std::cout << "ordered packet 100000 repeat replays and positive next update passed\n";
 }

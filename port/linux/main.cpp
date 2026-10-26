@@ -803,7 +803,6 @@ int main(int argc, char** argv) {
     int presentedFramesInSample = 0;
     int displayedFps = -1;
     for (int frame = 0; !frameLimit || frame < frameLimit; ++frame) {
-        if (renderer->PollQuit()) break;
         // Scripted/fixed-dt routes retain their historical one-update/one-render
         // behavior. Live play instead consumes fixed 60-Hz simulation quanta.
         if (fixedDt <= 0.f) {
@@ -832,6 +831,8 @@ int main(int argc, char** argv) {
             }
             livePacer.Consume();
         }
+        // Input/event pumping belongs to fixed updates, never refresh-only replay.
+        if (renderer->PollQuit()) break;
         // Decode the first visible cave layer during Forest traversal; keep GPU allocation on its normal load path.
         if (frame == 120 && currentLevel == "Game/XmlFiles/levels/forest_exploration_1.xml") StartCaveDecodeWorker();
         const ControllerSticks controllerSticks = renderer->ControllerAxes();
