@@ -292,9 +292,18 @@ public:
                     std::istringstream row(line);
                     std::string name;
                     AtlasRegion region{};
-                    if (std::getline(row, name, '\t') &&
-                        row >> region.x >> region.y >> region.w >> region.h >>
-                        region.originalW >> region.originalH >> region.offsetX >> region.offsetY &&
+                    if (!std::getline(row, name, '\t')) continue;
+                    std::vector<int> fields;
+                    int field = 0;
+                    while (row >> field) fields.push_back(field);
+                    if (fields.size() != 8 && fields.size() != 9) continue;
+                    const size_t offset = fields.size() == 9 ? 1 : 0;
+                    region.page = offset ? fields[0] : 0;
+                    region.x = fields[offset]; region.y = fields[offset + 1];
+                    region.w = fields[offset + 2]; region.h = fields[offset + 3];
+                    region.originalW = fields[offset + 4]; region.originalH = fields[offset + 5];
+                    region.offsetX = fields[offset + 6]; region.offsetY = fields[offset + 7];
+                    if (region.page >= 0 && region.page <= 999 &&
                         region.w > 0 && region.h > 0 &&
                         region.originalW > 0 && region.originalH > 0 &&
                         region.offsetX >= 0 && region.offsetY >= 0 &&
@@ -305,7 +314,10 @@ public:
             }
             const auto region = regions.find(path);
             if (region == regions.end()) return InvalidTexture;
-            const TextureId page = LoadTexture(std::string(directory) + "/atlas_000.png", error);
+            const int pageNumber = region->second.page;
+            const std::string pageName = "atlas_" + std::string(3 - std::to_string(pageNumber).size(), '0') +
+                std::to_string(pageNumber) + ".png";
+            const TextureId page = LoadTexture(std::string(directory) + "/" + pageName, error);
             if (page == InvalidTexture) { error.clear(); return InvalidTexture; }
             const TextureId id = nextId_++;
             textures_.emplace(id, textures_.at(page));
@@ -1528,7 +1540,7 @@ private:
     int sepiaWidth_ = 0, sepiaHeight_ = 0;
     SDL_GameController* gamepad_ = nullptr;
     TextureId nextId_ = 1;
-    struct AtlasRegion { int x = 0, y = 0, w = 0, h = 0;
+    struct AtlasRegion { int page = 0, x = 0, y = 0, w = 0, h = 0;
                          int originalW = 0, originalH = 0, offsetX = 0, offsetY = 0; };
     bool iconRegionsLoaded_ = false;
     std::unordered_map<std::string, AtlasRegion> iconRegions_;

@@ -118,12 +118,12 @@ def pack(paths, output, full_rgba=False):
                 'pages': page_names, 'page_dimensions': page_dimensions,
                 'textures': sorted(placements, key=lambda p: p['source'])}
     (output / 'atlas_manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
-    # The first runtime family intentionally accepts only a single page. Keep
-    # its lightweight lookup file generated from the same verified placements.
-    if len(page_names) == 1:
-        (output / 'atlas_regions.tsv').write_text(''.join(
-            f"{entry['source']}\t" + '\t'.join(map(str, entry['rect'] + entry['original_size'] + entry['trim_offset'])) + '\n'
-            for entry in manifest['textures']))
+    # Preserve the legacy single-page layout; multi-page rows add page index.
+    (output / 'atlas_regions.tsv').write_text(''.join(
+        f"{entry['source']}\t" + '\t'.join(map(str,
+            ([entry['page']] if len(page_names) > 1 else []) +
+            entry['rect'] + entry['original_size'] + entry['trim_offset'])) + '\n'
+        for entry in manifest['textures']))
     return manifest
 
 
