@@ -178,7 +178,9 @@ public:
               float foliageGlobalTimeMultiplier = 1.f, ShaderClockSnapshot shaderClock = {},
               bool suppressLandingSprayDraw = false,
               std::function<void()> afterPlayerDraw = {},
-              std::function<void(const SceneSprite&, const render::Sprite&)> emittedOrdinarySprite = {}) const;
+              std::function<void(const SceneSprite&, const render::Sprite&)> emittedOrdinarySprite = {},
+              std::function<void(const SceneSprite&, const render::Sprite&, bool)> emittedAnySprite = {},
+              std::function<void(const ParticleSpray&, const ParticleSpray::Particle&, const render::Sprite&)> emittedParticle = {}) const;
     void UpdatePlayerVisual(float dt, float vx, float vy, bool grounded, int wallSide,
                             bool rolling, bool dashing, bool inWater, float meleeElapsed, int facing,
                             bool projectileFired, bool eligibleFireAttempt = false,

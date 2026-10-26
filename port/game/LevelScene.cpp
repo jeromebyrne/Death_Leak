@@ -1374,9 +1374,18 @@ void LevelScene::PreparePresentation() {
     previousRenderedModifiedDelta_ = pendingModifiedDelta_;
 }
 void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY, std::vector<PainterItem> dynamic, float playerDamageBurstGain, float foliageGlobalTimeMultiplier, ShaderClockSnapshot shaderClock, bool suppressLandingSprayDraw, std::function<void()> afterPlayerDraw,
-    std::function<void(const SceneSprite&, const render::Sprite&)> emittedOrdinarySprite) const {
+    std::function<void(const SceneSprite&, const render::Sprite&)> emittedOrdinarySprite,
+    std::function<void(const SceneSprite&, const render::Sprite&, bool)> emittedAnySprite,
+    std::function<void(const ParticleSpray&, const ParticleSpray::Particle&, const render::Sprite&)> emittedParticle) const {
     constexpr float scale = 2.f / 3.f; // Original world is authored for 1920x1080.
     const auto& filter = DiagnosticRenderFilter();
+    auto drawSpray = [&](const ParticleSpray& spray) {
+        if (emittedParticle) spray.Draw(renderer, cameraX, cameraY,
+            [&](const ParticleSpray::Particle& p, const render::Sprite& cmd) {
+                emittedParticle(spray, p, cmd);
+            });
+        else spray.Draw(renderer, cameraX, cameraY);
+    };
     // Orbs are runtime GameObjects at kOrb, not an unconditional backdrop.
     if (spawnedOrbTexture_ && filter.only.empty()) for (const auto& orb : spawnedOrbs_) {
         dynamic.push_back({3250, [&, orb] {
@@ -1405,7 +1414,7 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
             if (filter.Draw(spray.xmlId, levelPath_) &&
                 ((spray.xmlId != "47" && spray.xmlId != "37") ||
                  spray.Forest47EmitterInView(cameraX, cameraY)))
-                spray.Draw(renderer, cameraX, cameraY);
+                drawSpray(spray);
             ++nextSpray;
         }
     };
@@ -1415,7 +1424,7 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         // Runtime trails were inserted after authored kOrb GameObjects. Dynamic
         // same-depth items follow them; this is a deterministic port tie rule.
         if (filter.only.empty()) for (const auto& trail : orbTrails_)
-            trail.spray.Draw(renderer, cameraX, cameraY);
+            drawSpray(trail.spray);
     };
     for (const auto& object : sprites_) {
         if (object.depth < Depth("kOrb")) drawOrbTrails();
@@ -1504,6 +1513,7 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
                 auto armDraw = draw;
                 armDraw.texture = arm->second.frames[playerArmFrame_];
                 renderer.DrawSprite(armDraw);
+                if (emittedAnySprite) emittedAnySprite(object, armDraw, true);
             }
         }
         // Waterfall-top ID58 is a 2x2 fully opaque white texture repeated over a
@@ -1518,6 +1528,7 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
             renderer.FillRect({0.f, 0.f, 1280.f, 720.f}, draw.tint);
         } else {
             renderer.DrawSprite(draw);
+            if (emittedAnySprite) emittedAnySprite(object, draw, false);
             // Diagnostic only: the command has actually entered the renderer.
             // Exclude actor/scroll/shader/UV families until their semantics are modeled.
             if (emittedOrdinarySprite && !object.player && !object.playerShadow &&
@@ -1527,13 +1538,13 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
                 emittedOrdinarySprite(object, draw);
         }
         if (object.player && filter.only.empty()) for (const auto& spray : footstepSprays_)
-            spray.Draw(renderer, cameraX, cameraY);
+            drawSpray(spray);
         if (object.player && filter.only.empty()) for (const auto& spray : jumpTakeoffSprays_)
-            spray.Draw(renderer, cameraX, cameraY);
+            drawSpray(spray);
         if (object.player && filter.only.empty() && !suppressLandingSprayDraw) for (const auto& spray : landingSprays_)
-            spray.Draw(renderer, cameraX, cameraY);
+            drawSpray(spray);
         if (object.player && filter.only.empty()) for (const auto& spray : introSwordPullSprays_)
-            spray.Draw(renderer, cameraX, cameraY);
+            drawSpray(spray);
         // Player::Draw emits its child prompt after Character::Draw as one
         // GameObject draw, before a subsequent same-depth object is visited.
         if (object.player && afterPlayerDraw) afterPlayerDraw();

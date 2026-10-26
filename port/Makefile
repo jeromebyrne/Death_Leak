@@ -95,3 +95,10 @@ real-scene-topology-capture-test: build/real_scene_topology_capture_test
 build/real_scene_topology_capture_test: tests/real_scene_topology_capture_test.cpp linux/RealSceneTopologyCapture.h game/LevelScene.cpp game/LevelScene.h game/ParticleSpray.h
 	@mkdir -p build
 	$(CXX) $(CXXFLAGS) -UNDEBUG -Icompat tests/real_scene_topology_capture_test.cpp game/LevelScene.cpp ../Game/tinyxml/tinyxml.cpp ../Game/tinyxml/tinyxmlerror.cpp ../Game/tinyxml/tinyxmlparser.cpp ../Game/tinyxml/tinystr.cpp -o $@
+
+.PHONY: full-frame-interpolation-gate-test
+full-frame-interpolation-gate-test: build/full_frame_interpolation_gate_test
+	cd .. && port/build/full_frame_interpolation_gate_test
+build/full_frame_interpolation_gate_test: tests/full_frame_interpolation_gate_test.cpp linux/FullFrameInterpolationGate.h linux/PresentationCommandPacket.h game/LevelScene.cpp
+	@mkdir -p build
+	$(CXX) $(CXXFLAGS) -UNDEBUG -Icompat tests/full_frame_interpolation_gate_test.cpp game/LevelScene.cpp ../Game/tinyxml/tinyxml.cpp ../Game/tinyxml/tinyxmlerror.cpp ../Game/tinyxml/tinyxmlparser.cpp ../Game/tinyxml/tinystr.cpp -o $@

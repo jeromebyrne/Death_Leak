@@ -1,5 +1,6 @@
 #pragma once
 #include "../render/Renderer.h"
+#include "InterpolationTopologyOracle.h"
 #include <memory>
 #include <utility>
 #include <vector>
@@ -20,12 +21,20 @@ public:
         std::vector<render::Sprite> sprites;
         std::vector<render::Rect> rects;
         float zoom = 1.f;
+        TopologyKey key{}; // Diagnostic semantic identity; zero means unowned.
+        float cameraFactorX = 1.f, cameraFactorY = 1.f;
     };
     void Clear() { commands_.clear(); sealed_ = false; }
     void Add(Command command) { commands_.push_back(command); }
     void Seal() { sealed_ = true; }
     bool Sealed() const { return sealed_; }
     std::size_t Size() const { return commands_.size(); }
+    const std::vector<Command>& Commands() const { return commands_; }
+    bool TagLastSprite(TopologyKey key, float fx, float fy) {
+        if (sealed_ || commands_.empty() || commands_.back().kind != Kind::Sprite || !key.object) return false;
+        commands_.back().key = key; commands_.back().cameraFactorX = fx; commands_.back().cameraFactorY = fy;
+        return true;
+    }
     void Replay(render::Renderer& renderer) const {
         if (!sealed_) return;
         for (const auto& command : commands_) {
@@ -97,6 +106,7 @@ public:
     render::MouseState Mouse() const override { return inner_->Mouse(); }
     bool SaveFrame(const std::string& path, std::string& error) override { return inner_->SaveFrame(path, error); }
     const PresentationCommandPacket& Packet() const { return packet_; }
+    bool TagLastSprite(TopologyKey key, float fx = 1.f, float fy = 1.f) { return packet_.TagLastSprite(key, fx, fy); }
     void Replay() const { packet_.Replay(*inner_); }
     void PresentReplay() { inner_->EndFrame(); }
 private:
