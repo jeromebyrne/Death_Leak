@@ -1,0 +1,13 @@
+# Weather texture residency presentation seam — 2026-10-26
+
+Base: remote `feature/linux-renderer-foundation` at `6a4dd29f2fe1864cedab88e9986f3c5d31b6bc4a`; clean detached worktrees. The primary checkout's seven unrelated dirty tracked files and all untracked files were preserved.
+
+## Bounded decision
+
+Accept an on-demand fixed-update preparation seam for the two active-gameplay weather textures: `rain_drop.png` and `lightning_layer.png`. `WeatherTextureResidency::Prepare` runs after weather/rain simulation and before the simulation-only/catch-up/presentation forks. It loads only if the corresponding effect is visible, caches successful IDs, retries a failed load on a later fixed update, and binds the cached rain ID to the current rain object (including after its menu reset). The draw block only reads the lightning ID and submits weather sprites; it no longer calls `LoadTexture` or sets rain texture state. This neither preloads all atlas pages nor changes weather simulation. It does move a first-visible upload earlier in the frame and into an intermediate catch-up update when applicable.
+
+A fake-renderer C++17 contract test passed on-demand/no-load when invisible, family-specific paths, success caching, failure retry, 100,000 repeated const residency reads and visible rain draw submissions without additional loads. `git diff --check` passed. Final native-clock production Docker build passed: SHA-256 `903a9703848a587e08653c61d3398c869e9a14ca5406790e5f498233cb79ebd1`.
+
+Physical gate: strict serial baseline/candidate/baseline X11/OpenGL Mesa nouveau NVE7, SDL accelerated=1 software=0 vsync=1, 1280×720, fixed-dt 1/60 Forest-1 active gameplay frame 101. Identical **test-only** frame-100 rain activation and `frame*1000/60` film clock were inserted in both isolated sources, built, run, then removed from candidate. The three post-HUD BMP files match byte-for-byte: SHA-256 `7f4afd2f62273c4a44207601fe9457d5b9d380f9af32df8ef2a8b34b624bbfbf`, zero changed pixels. The forced activation exercises the rain first-visible residency path but the selected frame is before rain particles become visually significant. It does not exercise a lightning flash or prove native arbitrary film-clock phase parity. Logs/BMPs are retained under ignored primary `port/build/weather-residency-20261026/`.
+
+No extra update-free presentation slot or high-refresh output was added. Packet/capture effects remain draw-side; >60-Hz, 8K, sustained FPS and release acceptance remain open. Next: separate packet/capture diagnostics from ordinary presentation, then verify a genuinely update-free draw route with physical timing and pixel gates.

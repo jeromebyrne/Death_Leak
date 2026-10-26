@@ -7,6 +7,7 @@
 #include "FixedStepPacer.h"
 #include "../game/WeatherLightning.h"
 #include "../game/WeatherRain.h"
+#include "../game/WeatherTextureResidency.h"
 #include "../game/Combat.h"
 #include "../game/PlayerMotion.h"
 #include "../game/CameraShake.h"
@@ -539,8 +540,7 @@ int main(int argc, char** argv) {
     deathleak::game::LevelScene scene;
     deathleak::game::WeatherLightning weather;
     deathleak::game::WeatherRain rain;
-    TextureId rainTexture = InvalidTexture;
-    TextureId lightningTexture = InvalidTexture;
+    deathleak::game::WeatherTextureResidency weatherTextures;
     std::string levelPath = !playLevel.empty() ? playLevel : levelPreview;
     if (!levelPath.empty() && !scene.Load(levelPath, *renderer, error)) {
         std::cerr << error << '\n'; return 1;
@@ -1573,6 +1573,8 @@ int main(int argc, char** argv) {
                 rain.Update(dt, weather.Raining(), cameraX, cameraY);
             }
         }
+        if (!simulateOnly && !playLevel.empty())
+            weatherTextures.Prepare(*renderer, rain, rain.VisibleParticles(), weather.Alpha() > 0.f);
         if (simulateOnly) {
             // Keep the intro terminal signal advancing in deterministic CPU-only
             // simulations; ordinary gameplay visuals remain skipped.
@@ -1706,26 +1708,12 @@ int main(int argc, char** argv) {
                 // HealthUpgradePickup inherits SolidMovingSprite's kPlayer depth.
                 painterItems.push_back({3000, [&, sprite] { renderer->DrawSprite(sprite); }});
             }
-            if (weather.Alpha() > 0.f) {
-                if (!lightningTexture) {
-                    std::string lightningError;
-                    lightningTexture = renderer->LoadTexture("Game/Media/lightning_layer.png", lightningError);
-                    if (!lightningTexture) std::cerr << "Lightning texture load failed: " << lightningError << '\n';
-                }
-                if (lightningTexture) {
-                    const Sprite flash = weather.SpriteForCamera(lightningTexture, drawCameraX, drawCameraY);
-                    painterItems.push_back({20, [&, flash] { renderer->DrawSprite(flash); }});
-                }
+            if (weather.Alpha() > 0.f && weatherTextures.Lightning()) {
+                const Sprite flash = weather.SpriteForCamera(weatherTextures.Lightning(), drawCameraX, drawCameraY);
+                painterItems.push_back({20, [&, flash] { renderer->DrawSprite(flash); }});
             }
-            if (rain.VisibleParticles()) {
-                if (!rainTexture) {
-                    std::string rainError;
-                    rainTexture = renderer->LoadTexture("Game/Media/rain_drop.png", rainError);
-                    if (!rainTexture) std::cerr << "Rain texture load failed: " << rainError << '\n';
-                    rain.SetTexture(rainTexture);
-                }
+            if (rain.VisibleParticles())
                 painterItems.push_back({20, [&] { rain.Draw(*renderer, drawCameraX, drawCameraY); }});
-            }
             const bool packetTargetDraw = packetTrace && frame == frameLimit - 1;
             if (packetTargetDraw) packetTrace->StartScene();
             scene.Draw(*renderer, drawCameraX, drawCameraY, worldX, worldY, std::move(painterItems),
