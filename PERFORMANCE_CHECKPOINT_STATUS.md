@@ -261,3 +261,6 @@ Outcome: exact-staged-source GPU run improved active Forest frame p50 21.9874 ->
 
 ### DONE — arena post-HUD combat-hit functional gate; no performance acceptance — 2026-10-26
 - Two full-frame 1280×720 post-HUD ordinary/repeat/replay byte-exact cases passed at first arena enemy-damage hit and later firing followthrough on clean live-ref production Docker binary. Fixed-60-Hz gameplay and synchronized test film clock only. Physical Xorg authority rejected the available cookie, so no selected >60-Hz, NVE7, frame-time, FPS or release proof. Atlas/bind microgates untouched; sole lane released. See `port/ARENA_COMBAT_POSTHUD_REPLAY_GATE_20261026.md`.
+
+### 2026-10-26 — read-only presentation pose seam; no performance claim
+- Isolated clean-ref player/camera two-tick snapshot and pure midpoint sampler added. Ordinary alpha-1 full post-HUD arena parity held against baseline; offscreen software only. The live refresh service remains last-packet replay, not fresh high-Hz whole-frame motion. Physical `:0` MIT-MAGIC-COOKIE-1 authorization failed; selected >60-Hz, GPU frame-time, sustained FPS, thermal/VRAM and release gates remain open. Atlas/bind microgates paused.

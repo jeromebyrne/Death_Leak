@@ -19,6 +19,7 @@
 #include "../game/Combat.h"
 #include "../game/PlayerMotion.h"
 #include "../game/CameraShake.h"
+#include "../game/PresentationPose.h"
 #include "../game/Hud.h"
 #include "../game/HudPresentationPacket.h"
 #include "../game/BitmapText.h"
@@ -778,6 +779,9 @@ int main(int argc, char** argv) {
         if (ec) { std::cerr << "Menu save commit failed: " << ec.message() << '\n'; return false; }
         return true;
     };
+    deathleak::game::PresentationPoseHistory presentationPoseHistory;
+    std::string presentationSceneName;
+    std::uint64_t presentationSceneGeneration = 0;
     deathleak::game::ShaderClock shaderClock;
     float precedingRenderedModifiedDelta = 0.f;
     float cameraShakeTime = 0.f;
@@ -1726,14 +1730,24 @@ int main(int argc, char** argv) {
             loadingPhase != LoadingPhase::None, loadingHoldExitedThisFrame,
             loadingPhase == LoadingPhase::FadeIn, loadingPhase == LoadingPhase::FadeOut,
             loadingPhaseTime, kLoadingFadeSeconds);
+        // Capture consecutive fixed-update world poses, including update-debt
+        // steps that do not draw. Sampling this pair never re-enters simulation.
+        if (presentationSceneName != currentLevel) {
+            presentationSceneName = currentLevel;
+            ++presentationSceneGeneration;
+        }
+        const auto preparedShakeView = cameraShake.PresentationSample();
+        presentationPoseHistory.Seal({worldX, worldY, preparedShakeView.viewX,
+            preparedShakeView.viewY, presentationSceneGeneration});
         if (fixedDt <= 0.f && !livePacer.PresentNow()) {
             precedingRenderedModifiedDelta = dt;
             shaderClock.RenderCompleted(dt);
             continue;
         }
         if (!levelPath.empty()) scene.PreparePresentation();
-        const auto shakeView = cameraShake.PresentationSample();
-        const float drawCameraX = shakeView.viewX, drawCameraY = shakeView.viewY;
+        const auto shakeView = preparedShakeView;
+        const auto presentPose = presentationPoseHistory.Sample(1.0);
+        const float drawCameraX = presentPose.cameraX, drawCameraY = presentPose.cameraY;
         const auto shaderFrame = shaderClock.Draw();
         renderer->BeginFrame({0, 0, 0, 255});
         if (levelPath.empty()) {
@@ -1824,7 +1838,7 @@ int main(int argc, char** argv) {
                 painterItems.push_back({20, [&] { rain.Draw(*renderer, drawCameraX, drawCameraY); }});
             const bool packetTargetDraw = packetTrace && frame == frameLimit - 1;
             if (packetTargetDraw) packetTrace->StartScene();
-            scene.Draw(*renderer, drawCameraX, drawCameraY, worldX, worldY, std::move(painterItems),
+            scene.Draw(*renderer, drawCameraX, drawCameraY, presentPose.playerX, presentPose.playerY, std::move(painterItems),
                        combat.PlayerDamageBurstGain(), weather.FoliageSwayMultiplier(), shaderFrame, suppressLandingSprayDraw,
                        std::move(afterPlayerDraw), {},
                        fullFrameTopologyCheck ? std::function<void(const deathleak::game::SceneSprite&, const Sprite&, bool)>(
