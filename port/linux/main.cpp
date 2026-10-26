@@ -207,6 +207,8 @@ int main(int argc, char** argv) {
     int frameLimit = 0;
     std::string capture;
     std::string mixedReplayPrefix;
+    std::string refreshExtraCapturePrefix;
+    int refreshExtraCaptureFrame = -1;
     int mixedReplayFrame = -1;
     int mixedHoldAuditFrame = -1;
     std::string atomicFrame415Packet;
@@ -324,6 +326,8 @@ int main(int argc, char** argv) {
         else if (arg == "--mixed-replay-frame" && i + 1 < argc) mixedReplayFrame = std::atoi(argv[++i]);
         else if (arg == "--mixed-hold-audit-frame" && i + 1 < argc) { mixedHoldAuditFrame = std::atoi(argv[++i]); fullFrameTopologyCheck = true; }
         else if (arg == "--refresh-slots") refreshSlots = true;
+        else if (arg == "--capture-refresh-extra-prefix" && i + 1 < argc) refreshExtraCapturePrefix = argv[++i];
+        else if (arg == "--capture-refresh-extra-frame" && i + 1 < argc) refreshExtraCaptureFrame = std::atoi(argv[++i]);
         else if (arg == "--profile") { profile = true; showFps = true; }
         else if (arg == "--debug") showFps = true;
         else if (arg == "--show-fps") showFps = true;
@@ -505,6 +509,9 @@ int main(int argc, char** argv) {
     if (refreshSlots && (fixedDt > 0.f || simulateOnly || repeatPresentationCheck ||
                          (!testFreshSlots && (!fullscreen || !requestedRefreshHz)))) {
         std::cerr << "--refresh-slots requires live fullscreen GPU play, --refresh-hz, and no fixed-dt/repeat diagnostic\n"; return 2;
+    }
+    if (!refreshExtraCapturePrefix.empty() && (!testFreshSlots || refreshExtraCaptureFrame <= 0 || refreshExtraCaptureFrame >= frameLimit)) {
+        std::cerr << "--capture-refresh-extra-prefix requires software test slots and a valid --capture-refresh-extra-frame\n"; return 2;
     }
     if (!mixedReplayPrefix.empty() && (mixedReplayFrame <= 0 || mixedReplayFrame >= frameLimit || simulateOnly)) {
         std::cerr << "--mixed-replay-prefix requires --mixed-replay-frame in [1,frames-1] and GPU rendering\n"; return 2;
@@ -798,6 +805,31 @@ int main(int argc, char** argv) {
     if (refreshSlots) refreshPresentation = std::make_unique<deathleak::linux_port::RefreshPresentationService>(
         last, testFreshSlots ? testRefreshHz : requestedRefreshHz, *repeatRecorder, testFreshSlots);
     unsigned long long refreshSurfaceFailures = 0;
+    int refreshExtraFixedFrame = -1;
+    unsigned refreshExtraCaptureCount = 0;
+    std::string refreshExtraCaptureError;
+    if (refreshPresentation && !refreshExtraCapturePrefix.empty()) {
+        refreshPresentation->SetExtraSlotObserver([&](double alpha, const deathleak::linux_port::FreshPresentationPacket::SampledFrame& sample) {
+            if (refreshExtraFixedFrame != refreshExtraCaptureFrame || refreshExtraCaptureCount >= 4) return true;
+            const auto stem = refreshExtraCapturePrefix + "." + std::to_string(refreshExtraCaptureCount++);
+            // The first readback is the actual opt-in service's just-drawn extra slot.
+            if (!renderer->SaveFrame(stem + ".actual.bmp", refreshExtraCaptureError)) return false;
+            // Independent explicit sampler/replay oracle at the same sealed fixed pair.
+            const auto expected = freshPresentation.Sample(alpha);
+            repeatRecorder->ReplayPacket(expected.packet);
+            if (!renderer->SaveFrame(stem + ".expected.bmp", refreshExtraCaptureError)) return false;
+            repeatRecorder->ReplayPacket(repeatRecorder->Packet());
+            if (!renderer->SaveFrame(stem + ".held.bmp", refreshExtraCaptureError)) return false;
+            // Restore the exact service output before it calls PresentReplay.
+            repeatRecorder->ReplayPacket(sample.packet);
+            std::cout << "REFRESH_EXTRA_CAPTURE fixed_frame=" << refreshExtraFixedFrame
+                      << " slot=" << refreshExtraCaptureCount - 1 << " alpha=" << alpha
+                      << " actual_sampled=" << sample.sampledCommands
+                      << " expected_sampled=" << expected.sampledCommands
+                      << " actual=" << stem << ".actual.bmp expected=" << stem << ".expected.bmp\n";
+            return true;
+        });
+    }
     std::vector<double> presentationIntervalsMs;
     auto previousPresentation = std::chrono::steady_clock::time_point{};
     const auto notePresentation = [&] {
@@ -812,6 +844,7 @@ int main(int argc, char** argv) {
     int presentedFramesInSample = 0;
     int displayedFps = -1;
     for (int frame = 0; !frameLimit || frame < frameLimit; ++frame) {
+        refreshExtraFixedFrame = frame;
         auto presentationTickTime = std::chrono::steady_clock::now();
         // Scripted/fixed-dt routes retain their historical one-update/one-render
         // behavior. Live play instead consumes fixed 60-Hz simulation quanta.
@@ -829,6 +862,8 @@ int main(int argc, char** argv) {
                     if (result == deathleak::linux_port::RefreshPresentationService::Result::Presented) {
                         notePresentation();
                         ++presentedFramesInSample;
+                    } else if (result == deathleak::linux_port::RefreshPresentationService::Result::ObserverFailed) {
+                        std::cerr << "Refresh extra capture failed: " << refreshExtraCaptureError << "\n"; return 1;
                     } else if (result == deathleak::linux_port::RefreshPresentationService::Result::SurfaceChanged) {
                         ++refreshSurfaceFailures;
                         std::cerr << "Refresh surface changed during replay\n";

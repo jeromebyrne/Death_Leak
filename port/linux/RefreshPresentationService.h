@@ -2,6 +2,7 @@
 #include "PresentationCommandPacket.h"
 #include "FreshPresentationPacket.h"
 #include <algorithm>
+#include <functional>
 #include "RefreshSlotScheduler.h"
 
 namespace deathleak::linux_port {
@@ -10,10 +11,12 @@ namespace deathleak::linux_port {
 class RefreshPresentationService {
 public:
     using Clock = RefreshSlotScheduler::Clock;
-    enum class Result { NotDue, NoSnapshot, Presented, SurfaceChanged };
+    enum class Result { NotDue, NoSnapshot, Presented, SurfaceChanged, ObserverFailed };
     RefreshPresentationService(Clock::time_point origin, int hz,
                                PresentationRecordingRenderer& recorder, bool syntheticSlots = false)
         : slots_(origin, hz), recorder_(recorder), syntheticSlots_(syntheticSlots) {}
+    using ExtraSlotObserver = std::function<bool(double, const FreshPresentationPacket::SampledFrame&)>;
+    void SetExtraSlotObserver(ExtraSlotObserver observer) { extraSlotObserver_ = std::move(observer); }
     Result TryPresent(Clock::time_point slotTime) {
         if (!slots_.Due(slotTime)) return Result::NotDue;
         if (!recorder_.Packet().Sealed()) return Result::NoSnapshot;
@@ -24,6 +27,7 @@ public:
             const auto sample = fresh_->Sample(alpha);
             recorder_.ReplayPacket(sample.packet);
             sampledCommands = sample.sampledCommands;
+            if (extraSlotObserver_ && !extraSlotObserver_(alpha, sample)) return Result::ObserverFailed;
         } else recorder_.Replay();
         if (!recorder_.PresentationSurfaceStable()) return Result::SurfaceChanged;
         recorder_.PresentReplay();
@@ -56,5 +60,6 @@ private:
     const FreshPresentationPacket* fresh_ = nullptr;
     Clock::time_point fixedBoundary_{};
     bool syntheticSlots_ = false;
+    ExtraSlotObserver extraSlotObserver_;
 };
 } // namespace deathleak::linux_port
