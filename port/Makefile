@@ -87,3 +87,11 @@ interpolation-topology-oracle-test: build/interpolation_topology_oracle_test
 build/interpolation_topology_oracle_test: tests/interpolation_topology_oracle_test.cpp linux/InterpolationTopologyOracle.h linux/FixedStepPacer.h game/LevelScene.h game/ParticleSpray.h
 	@mkdir -p build
 	$(CXX) $(CXXFLAGS) -UNDEBUG tests/interpolation_topology_oracle_test.cpp -o $@
+
+.PHONY: real-scene-topology-capture-test
+real-scene-topology-capture-test: build/real_scene_topology_capture_test
+	cd .. && port/build/real_scene_topology_capture_test
+
+build/real_scene_topology_capture_test: tests/real_scene_topology_capture_test.cpp linux/RealSceneTopologyCapture.h game/LevelScene.cpp game/LevelScene.h game/ParticleSpray.h
+	@mkdir -p build
+	$(CXX) $(CXXFLAGS) -UNDEBUG -Icompat tests/real_scene_topology_capture_test.cpp game/LevelScene.cpp ../Game/tinyxml/tinyxml.cpp ../Game/tinyxml/tinyxmlerror.cpp ../Game/tinyxml/tinyxmlparser.cpp ../Game/tinyxml/tinystr.cpp -o $@

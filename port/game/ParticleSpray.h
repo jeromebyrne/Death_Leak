@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
+#include <functional>
 #include <string>
 #include <vector>
 
@@ -13,6 +14,8 @@ namespace deathleak::game {
 // an update/draw culling region, never a textured emitter rectangle.
 struct ParticleSpray {
     struct Particle {
+        std::uint64_t stableIdentity = 0; // Slot identity within the owning spray.
+        std::uint32_t generation = 1; // Increments before a looping slot is reused.
         float x = 0, y = 0, startX = 0, startY = 0;
         float drawX = 0, drawY = 0, drawSize = 0;
         float directionX = 0, directionY = 0;
@@ -20,6 +23,7 @@ struct ParticleSpray {
         float lifetime = 1, elapsed = 0, gravity = 0, brightness = 1, alpha = 1;
         bool dead = false;
     };
+    std::uint64_t stableIdentity = 0; // Scene-epoch scoped spray creation identity.
     render::TextureId texture = render::InvalidTexture;
     std::string xmlId;
     float x = 0, y = 0, width = 0, height = 0;
@@ -73,6 +77,7 @@ struct ParticleSpray {
                 p.size = p.startSize * (1 + (scaleTo - 1) * p.elapsed / p.lifetime);
             if (left <= 0) {
                 if (looping) {
+                    ++p.generation; // A restarted particle must never pair with its prior life.
                     p.x = parentXY ? parentXY[0] : p.startX;
                     p.y = parentXY ? parentXY[1] : p.startY;
                     if (parentXY) { p.startX = p.x; p.startY = p.y; }
@@ -93,7 +98,8 @@ struct ParticleSpray {
             warmed = true;
         }
     }
-    void Draw(render::Renderer& renderer, float cameraX, float cameraY) const {
+    void Draw(render::Renderer& renderer, float cameraX, float cameraY,
+              const std::function<void(const Particle&, const render::Sprite&)>& emitted = {}) const {
         constexpr float scale = 2.f / 3.f;
         for (const auto& p : particles) {
             if (p.dead) continue;
@@ -112,6 +118,7 @@ struct ParticleSpray {
             leaf.tint = {brightness, brightness, brightness,
                          static_cast<std::uint8_t>(std::lround(std::clamp(p.alpha * p.brightness, 0.f, 1.f)*255))};
             renderer.DrawSprite(leaf);
+            if (emitted) emitted(p, leaf);
         }
     }
 };

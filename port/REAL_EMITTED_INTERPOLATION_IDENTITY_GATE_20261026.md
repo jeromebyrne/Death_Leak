@@ -1,0 +1,22 @@
+# Real emitted-command interpolation identity gate — 2026-10-26
+
+**Decision: accept a narrow diagnostic identity/snapshot bridge; reject visible interpolation B on this base.** Work began at exact pushed `9dc101911acf7fabd5859f71392a20532da7b054` in detached `/tmp/deathleak-real-snapshot-20261026`. Primary dirty tracked/untracked work was not overwritten. No interpolation flag or visible behavior was enabled.
+
+## Implemented bounded seam
+
+- Successful `LevelScene::Load` assigns a monotonic scene epoch; every created authored/runtime `SceneSprite` and authored/runtime `ParticleSpray` gets a nonzero scene-local creation ID. Particles receive stable nonzero slot IDs at all creation sites and advance a generation when a looping lifetime reuses the slot. This does not change random draws, particle motion, painter order or renderer commands.
+- `LevelScene::Draw` offers an optional observer called **after** the actual `DrawSprite` submission for ordinary authored non-player, non-parallax, non-scrolling, non-shader sprites. Default callers pass no observer. `RealSceneTopologyCapture.h` records copied emitted commands and stable identity in actual family painter order, plus scene/camera projection. A pair owns `shared_ptr<const RealSceneSnapshot>` copies: subsequent draws cannot mutate prior/current history. It also maps emitted spray/slot/generation to the same topology keys for the particle diagnostic. Non-positional command differences hold current rather than interpolate.
+- The live-scene CPU spy loads Forest-1, passes camera positions through the real `LevelScene::Draw`, checks the observer's command against the renderer's just-emitted command, and sees two admitted ordinary commands. Stable identity/order and a real camera move admit interpolation for that **subset**; a viewport cull, marked camera cut and scene reload hold current. Direct actual `ParticleSpray::Draw` emission checks looped generation reuse, death omission and new birth all hold current. Synthetic 60/75/120/144/165/240-Hz cadence remains 601 fixed updates per ten seconds and zero dropped steps; this is clock-only evidence.
+
+## Why no runtime interpolation candidate follows
+
+This bridge captures only the admitted ordinary-sprite subset, not a complete frame's painter topology or the player-adjacent family. Actor body/arm, shadow, aim, attached sprays, combat dynamics, parallax, scrolling UV and shader paths still have separately varying positions, lifetimes, visibility and command state. The production `PresentationRecordingRenderer` still clears its only packet on each ordinary `BeginFrame`; it does not retain two sealed frame packets, associate semantic IDs with every draw, or present prior→current alpha on **both** ordinary and repeat slots. Interpolating the two admitted Forest commands would move only that subset under a current-state actor/scene and is unsound. The CPU admission result is not a pixel or input parity result. Accordingly no opt-in runtime B, physical NVE7 A/B/A, FPS or high-refresh gameplay acceptance is claimed. Running an A/B/A without a coherent candidate would be fabricated evidence.
+
+## Next distinct gate
+
+Record two whole-frame immutable ordered packets with semantic tags at the actual renderer submission seam, including player body/arm, shadow/aim, attached spray particles, dynamic combat and non-sprite commands. Prove one coherent painter family under real running/landing/aim-toggle/transition routes, with explicit camera-shake and shader/UV policy, and reject on any unmatched command. Only then implement one-update-latency ordinary **and** repeat sampling at identical alpha, rerun synthetic cadence and serial physical 60/120 advertised-mode active A/B/A with same-endpoint input and alpha=1 exact-pixel evidence. Also verify positive spare display presents before claiming >60-Hz benefit. No 8K, 60-FPS, sustained route, thermal or release acceptance follows from this gate.
+
+## Verification receipt
+
+- Docker `deathleak-linux-build:bookworm`: `make real-scene-topology-capture-test` passed (`family_count=2`); `make interpolation-topology-oracle-test` passed; final `make -B -j2` production build passed. Only pre-existing TinyXML and `main.cpp` compiler warnings appeared. Final isolated binary SHA-256: `602a2e56ee83130274e4e69f85d5398f4910608f46f7ce87ae9002104c719031`.
+- `git diff --check` passed. No game process, apitrace or physical GPU session was started by this gate. Physical A/B/A and alpha=1 exact-pixel were intentionally not run because there is no sound B candidate.

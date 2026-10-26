@@ -9,10 +9,10 @@
 using namespace deathleak::linux_port;
 template<class T, class = void> struct HasStableIdentity : std::false_type {};
 template<class T> struct HasStableIdentity<T, std::void_t<decltype(std::declval<T>().stableIdentity)>> : std::true_type {};
-static_assert(!HasStableIdentity<deathleak::game::SceneSprite>::value,
-              "current authored/runtime sprite has no semantic stableIdentity");
-static_assert(!HasStableIdentity<deathleak::game::ParticleSpray::Particle>::value,
-              "current attached particle has no semantic stableIdentity");
+static_assert(HasStableIdentity<deathleak::game::SceneSprite>::value,
+              "authored/runtime sprite has a scene-scoped stableIdentity");
+static_assert(HasStableIdentity<deathleak::game::ParticleSpray::Particle>::value,
+              "attached particle has a stable slot identity and generation");
 static TopologySnapshot Scene() {
     TopologySnapshot s;
     s.sceneEpoch = 9;

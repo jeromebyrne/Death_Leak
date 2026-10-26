@@ -4,6 +4,7 @@
 #include "ParticleSpray.h"
 #include "ShaderClock.h"
 #include <cstddef>
+#include <cstdint>
 #include <cmath>
 #include <functional>
 #include <unordered_map>
@@ -17,6 +18,7 @@ struct SceneSprite {
     render::TextureId texture = render::InvalidTexture;
     std::string xmlId; // Source level ID, retained only for opt-in render diagnostics.
     size_t order = 0;
+    std::uint64_t stableIdentity = 0; // Scene-epoch scoped creation identity.
     float x = 0, y = 0, width = 0, height = 0;
     float followWorldX = 0; // Parallax world-matrix X from the preceding eligible update.
     float rotation = 0;
@@ -167,6 +169,7 @@ public:
     bool IntroBodyFinished() const { return introBodyPhase_ == IntroBodyPhase::Pull && introBodyFinished_; }
     size_t IntroBodyFrame() const { return playerFrame_; }
     size_t IntroBodyFrameCount() const;
+    std::uint64_t SceneEpoch() const { return sceneEpoch_; }
     bool Load(const std::string& path, render::Renderer& renderer, std::string& error,
               const std::string& fromLevel = {}, const std::string& entryDoorId = {});
     void PreparePresentation(); // Commit former draw-time parallax/prior-render state once.
@@ -174,7 +177,8 @@ public:
               std::vector<PainterItem> dynamic = {}, float playerDamageBurstGain = 1.f,
               float foliageGlobalTimeMultiplier = 1.f, ShaderClockSnapshot shaderClock = {},
               bool suppressLandingSprayDraw = false,
-              std::function<void()> afterPlayerDraw = {}) const;
+              std::function<void()> afterPlayerDraw = {},
+              std::function<void(const SceneSprite&, const render::Sprite&)> emittedOrdinarySprite = {}) const;
     void UpdatePlayerVisual(float dt, float vx, float vy, bool grounded, int wallSide,
                             bool rolling, bool dashing, bool inWater, float meleeElapsed, int facing,
                             bool projectileFired, bool eligibleFireAttempt = false,
@@ -242,6 +246,8 @@ public:
     void ApplyPapers(const std::unordered_set<std::string>& papers);
     void ApplyHealthDevil(bool rewarded);
 private:
+    std::uint64_t sceneEpoch_ = 0;
+    std::uint64_t nextObjectIdentity_ = 1;
     std::vector<SceneSprite> sprites_;
     // program.cpp stores this render's modified delta after Render. A scene
     // draw consumes the preceding rendered delta, even during modal pauses.

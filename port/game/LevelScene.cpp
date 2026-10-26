@@ -126,6 +126,9 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     trace("xml parsed");
     auto* level = document.RootElement();
     if (!level || std::string(level->Value()) != "level") { error = "Not a Death Leak level: " + path; return false; }
+    static std::uint64_t nextSceneEpoch = 1;
+    sceneEpoch_ = nextSceneEpoch++;
+    nextObjectIdentity_ = 1;
     levelPath_ = path;
     playerVisualWidth_ = playerVisualHeight_ = 0;
     introBodyPhase_ = IntroBodyPhase::None; introBodyFinished_ = false;
@@ -318,6 +321,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
             auto filename = NormalizeAsset(asset ? asset->Attribute("filename") : nullptr);
             if (filename.empty() || !std::filesystem::exists(filename)) { ++skipped_; continue; }
             ParticleSpray spray;
+            spray.stableIdentity = nextObjectIdentity_++;
             spray.xmlId = sprayId; spray.order = objectOrder;
             // Keep the forest stream unchanged. Each splash has a stable private
             // capture stream; none reproduces the original global rand().
@@ -370,6 +374,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
                 particle.gravity = Attr(object->FirstChildElement("gravity"), "value");
                 particle.brightness = maxBright <= minBright ? maxBright :
                     minBright + .01f + spray.Random(static_cast<unsigned>((maxBright-minBright)*100.f))*.01f;
+                particle.stableIdentity = static_cast<std::uint64_t>(i) + 1;
                 spray.particles.push_back(particle);
             }
             particleSprays_.push_back(std::move(spray));
@@ -598,7 +603,10 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         sprite.alphaWhenNotOccluding = Attr(fade, "alphawhennotoccluding", 1.f);
         sprite.updateable = updateable;
         sprite.alwaysUpdate = alwaysUpdate;
-        if (sprite.width > 0 && sprite.height > 0) sprites_.push_back(sprite);
+        if (sprite.width > 0 && sprite.height > 0) {
+            sprite.stableIdentity = nextObjectIdentity_++;
+            sprites_.push_back(sprite);
+        }
     }
     trace("objects parsed");
     if (std::any_of(sprites_.begin(), sprites_.end(), [](const SceneSprite& s) { return s.authoredSmallOrb; })) {
@@ -625,6 +633,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         const auto aimTexture = renderer.LoadTexture(aimPath, aimError);
         if (!aimTexture) { error = "Cannot load player aim line: " + aimError; return false; }
         SceneSprite aim;
+        aim.stableIdentity = nextObjectIdentity_++;
         aim.texture = aimTexture;
         aim.xmlId = "__player_aim_line";
         aim.playerAimLine = true;
@@ -637,6 +646,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         const auto shadowTexture = renderer.LoadTexture(shadowPath, textureError);
         if (!shadowTexture) { error = "Cannot load player shadow: " + textureError; return false; }
         SceneSprite shadow;
+        shadow.stableIdentity = nextObjectIdentity_++;
         shadow.texture = shadowTexture;
         shadow.xmlId = "__player_shadow"; // Diagnostic ID for this non-XML child.
         shadow.playerShadow = true;
@@ -773,6 +783,7 @@ void LevelScene::AddOrbTrail(const SceneSprite& orb) {
     OrbTrail trail;
     trail.owner = orb.persistentId;
     auto& spray = trail.spray;
+    spray.stableIdentity = nextObjectIdentity_++;
     spray.texture = orbShatterTexture_;
     spray.x = orb.x; spray.y = orb.y;
     spray.width = 3200.f; spray.height = 1200.f;
@@ -798,6 +809,7 @@ void LevelScene::AddOrbTrail(const SceneSprite& orb) {
         p.speed = p.startSpeed = 1.51f + spray.Random(190)*.01f;
         p.gravity = .5f;
         p.brightness = .81f + spray.Random(20)*.01f;
+        p.stableIdentity = static_cast<std::uint64_t>(i) + 1;
         spray.particles.push_back(p);
     }
     orbTrails_.push_back(std::move(trail));
@@ -994,6 +1006,7 @@ void LevelScene::EmitJumpTakeoff(size_t segment, float x, float postBumpY, int f
     const auto texture = groundParticleTextures_.find(ground_[segment].material);
     if (texture == groundParticleTextures_.end() || !texture->second) return;
     ParticleSpray spray;
+    spray.stableIdentity = nextObjectIdentity_++;
     spray.texture = texture->second;
     spray.x = x + (facing < 0 ? -10.f : 10.f);
     spray.y = postBumpY - 214.898743f * .5f + 35.f;
@@ -1018,6 +1031,7 @@ void LevelScene::EmitJumpTakeoff(size_t segment, float x, float postBumpY, int f
         particle.speed = particle.startSpeed = 1.01f + spray.Random(50) * .01f;
         particle.gravity = .8f;
         particle.brightness = .81f + spray.Random(20) * .01f;
+        particle.stableIdentity = static_cast<std::uint64_t>(i) + 1;
         spray.particles.push_back(particle);
     }
     jumpRandomState_ = spray.randomState;
@@ -1032,6 +1046,7 @@ void LevelScene::EmitLandingMaterialSpray(size_t segment, float x, float y, int 
     const bool large = drop >= 700.f;
     const int count = large ? 10 : 5;
     ParticleSpray spray;
+    spray.stableIdentity = nextObjectIdentity_++;
     spray.texture = texture->second;
     spray.x = x + (facing < 0 ? -10.f : 10.f);
     spray.y = y - 214.898743f * .5f + (large ? 0.f : 35.f);
@@ -1057,6 +1072,7 @@ void LevelScene::EmitLandingMaterialSpray(size_t segment, float x, float y, int 
                                                    : 1.01f + spray.Random(50) * .01f;
         particle.gravity = .8f;
         particle.brightness = .81f + spray.Random(20) * .01f;
+        particle.stableIdentity = static_cast<std::uint64_t>(i) + 1;
         spray.particles.push_back(particle);
     }
     landingRandomState_ = spray.randomState;
@@ -1070,6 +1086,7 @@ void LevelScene::EmitRunningFootstep(const PlayerSequence& sequence, int movemen
     auto texture = groundParticleTextures_.find(material);
     if (texture == groundParticleTextures_.end() || !texture->second) return;
     ParticleSpray spray;
+    spray.stableIdentity = nextObjectIdentity_++;
     spray.texture = texture->second;
     spray.x = playerFootstepX_ + (movementDirection < 0 ? -12.f : 12.f);
     spray.y = playerFootstepY_ - 214.898743f * .5f + 17.f;
@@ -1091,6 +1108,7 @@ void LevelScene::EmitRunningFootstep(const PlayerSequence& sequence, int movemen
         particle.speed = particle.startSpeed = 2.01f + spray.Random(200) * .01f;
         particle.gravity = .5f;
         particle.brightness = .81f + spray.Random(20) * .01f;
+        particle.stableIdentity = static_cast<std::uint64_t>(i) + 1;
         spray.particles.push_back(particle);
     }
     footstepRandomState_ = spray.randomState;
@@ -1114,6 +1132,7 @@ void LevelScene::EmitIntroSwordPullBurst(render::Renderer& renderer, float playe
     for (int n = 0; n < 2; ++n) {
         const auto& r = recipes[n];
         ParticleSpray spray;
+        spray.stableIdentity = nextObjectIdentity_++;
         spray.texture = introBloodTextures_[n];
         spray.x = playerX + r.dx; spray.y = playerY + r.dy;
         spray.width = spray.height = 4000.f;
@@ -1136,6 +1155,7 @@ void LevelScene::EmitIntroSwordPullBurst(render::Renderer& renderer, float playe
             p.speed = p.startSpeed = r.minSpeed + .01f + spray.Random(static_cast<unsigned>((r.maxSpeed-r.minSpeed)*100.f)) * .01f;
             p.gravity = 1.5f;
             p.brightness = .51f + spray.Random(50) * .01f;
+            p.stableIdentity = static_cast<std::uint64_t>(i) + 1;
             spray.particles.push_back(p);
         }
         introBloodRandomState_ = spray.randomState;
@@ -1353,7 +1373,8 @@ void LevelScene::PreparePresentation() {
     }
     previousRenderedModifiedDelta_ = pendingModifiedDelta_;
 }
-void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY, std::vector<PainterItem> dynamic, float playerDamageBurstGain, float foliageGlobalTimeMultiplier, ShaderClockSnapshot shaderClock, bool suppressLandingSprayDraw, std::function<void()> afterPlayerDraw) const {
+void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, float playerX, float playerY, std::vector<PainterItem> dynamic, float playerDamageBurstGain, float foliageGlobalTimeMultiplier, ShaderClockSnapshot shaderClock, bool suppressLandingSprayDraw, std::function<void()> afterPlayerDraw,
+    std::function<void(const SceneSprite&, const render::Sprite&)> emittedOrdinarySprite) const {
     constexpr float scale = 2.f / 3.f; // Original world is authored for 1920x1080.
     const auto& filter = DiagnosticRenderFilter();
     // Orbs are runtime GameObjects at kOrb, not an unconditional backdrop.
@@ -1497,6 +1518,13 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
             renderer.FillRect({0.f, 0.f, 1280.f, 720.f}, draw.tint);
         } else {
             renderer.DrawSprite(draw);
+            // Diagnostic only: the command has actually entered the renderer.
+            // Exclude actor/scroll/shader/UV families until their semantics are modeled.
+            if (emittedOrdinarySprite && !object.player && !object.playerShadow &&
+                !object.playerAimLine && !object.parallaxLayer && !object.scrolling &&
+                !object.foliageSway.enabled && !object.pixelWobble.enabled &&
+                !object.currencyOrb && !object.authoredSmallOrb)
+                emittedOrdinarySprite(object, draw);
         }
         if (object.player && filter.only.empty()) for (const auto& spray : footstepSprays_)
             spray.Draw(renderer, cameraX, cameraY);
