@@ -15,6 +15,25 @@
   ],
   "textures": [
     {
+      "source": "Game/Media/UI/blank_dark.png",
+      "sha256": "51051789bc2a0e5d06b1f0a53913e0b55c0933e35c195cf2d950526825269d68",
+      "page": 0,
+      "rect": [
+        208,
+        117,
+        2,
+        2
+      ],
+      "original_size": [
+        2,
+        2
+      ],
+      "trim_offset": [
+        0,
+        0
+      ]
+    },
+    {
       "source": "Game/Media/UI/frame_top.png",
       "sha256": "ff66b65ecc01708f3f5c75726ea1d81b94cd0b817222a5aa8aed9f533502e65a",
       "page": 0,

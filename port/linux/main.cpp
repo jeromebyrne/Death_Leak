@@ -252,6 +252,7 @@ int main(int argc, char** argv) {
     bool suppressLandingSprayDraw = false;
     bool suppressIntroPromptDraw = false;
     float fixedDt = 0;
+    int testFilmClockStepMs = 0;
     int testRefreshHz = 0;
     int requestedRefreshHz = 0;
     int windowWidth = 1280, windowHeight = 720;
@@ -260,6 +261,7 @@ int main(int argc, char** argv) {
         std::string arg = argv[i];
         if (arg == "--frames" && i + 1 < argc) frameLimit = std::atoi(argv[++i]);
         else if (arg == "--capture" && i + 1 < argc) capture = argv[++i];
+        else if (arg == "--test-film-clock-step-ms" && i + 1 < argc) testFilmClockStepMs = std::atoi(argv[++i]);
         else if (arg == "--fullscreen") fullscreen = true;
         else if (arg == "--refresh-hz" && i + 1 < argc) {
             const std::string rate = argv[++i];
@@ -333,6 +335,9 @@ int main(int argc, char** argv) {
     }
     if (requestedRefreshHz && !fullscreen) {
         std::cerr << "--refresh-hz requires --fullscreen\n"; return 2;
+    }
+    if (testFilmClockStepMs && (testFilmClockStepMs < 1 || testFilmClockStepMs > 1000 || fixedDt <= 0.f || capture.empty())) {
+        std::cerr << "--test-film-clock-step-ms requires 1..1000, --fixed-dt and --capture\n"; return 2;
     }
     if (!atomicFrame415Packet.empty() && !sameRunWaterfallPackets && (capture.empty() || frameLimit != 416 ||
         atomicFrame415Packet == capture || fixedDt <= 0.f || script.empty() || playLevel.empty())) {
@@ -1677,8 +1682,10 @@ int main(int argc, char** argv) {
         // Prepare the authored 11-FPS film once per fixed update. Draw below
         // only reads the prepared index, including on a future update-free present.
         if (!levelPath.empty()) {
-            const auto filmNowMilliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(
-                std::chrono::steady_clock::now().time_since_epoch()).count();
+            const auto filmNowMilliseconds = testFilmClockStepMs ?
+                static_cast<std::int64_t>(frame + 1) * testFilmClockStepMs :
+                std::chrono::duration_cast<std::chrono::milliseconds>(
+                    std::chrono::steady_clock::now().time_since_epoch()).count();
             auto& selectedFilm = currentLevel == "Game/XmlFiles/levels/sea_2.xml" ? finalFilm : gameplayFilm;
             selectedFilm.Prepare(static_cast<std::uint64_t>(filmNowMilliseconds), filmFrames.Size());
         }
