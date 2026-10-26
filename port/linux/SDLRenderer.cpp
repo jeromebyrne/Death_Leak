@@ -306,6 +306,9 @@ public:
         if (const TextureId id = virtualRegion("DEATHLEAK_ATLAS_CART_PROPS", "Game/Media/",
                                                "port/assets/cart_props", cartPropRegionsLoaded_, cartPropRegions_))
             return id;
+        if (const TextureId id = virtualRegion("DEATHLEAK_ATLAS_ORANGE_LIGHT", "Game/Media/objects/orange_light.png",
+                                               "port/assets/orange_light", orangeLightRegionsLoaded_, orangeLightRegions_))
+            return id;
         return LoadDedicatedTexture(path, error, false);
     }
 
@@ -1474,6 +1477,8 @@ private:
     bool cartPropRegionsLoaded_ = false;
     std::unordered_map<std::string, AtlasRegion> cartPropRegions_;
     std::unordered_map<std::string, TextureId> dedicatedPaths_;
+    bool orangeLightRegionsLoaded_ = false;
+    std::unordered_map<std::string, AtlasRegion> orangeLightRegions_;
     std::unordered_map<TextureId, AtlasRegion> atlasRegions_;
     std::unordered_map<TextureId, SDL_Texture*> textures_;
     std::unordered_set<TextureId> parallaxLogged_;

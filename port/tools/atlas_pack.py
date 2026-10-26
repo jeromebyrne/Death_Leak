@@ -49,18 +49,18 @@ def place(free, used):
             if not any(i != j and contains(other, rect) for j, other in enumerate(remaining))]
 
 
-def pack(paths, output):
+def pack(paths, output, full_rgba=False):
     entries = []
     for path in sorted(set(paths), key=lambda p: p.as_posix()):
         with Image.open(path) as source:
             image = source.convert('RGBA')
             width, height = image.size
             # Invisible RGB bytes are not sampled by the alpha-blended sprite.
-            bounds = image.getchannel('A').getbbox() or (0, 0, 1, 1)
-            left = max(0, bounds[0] - GUARD)
-            top = max(0, bounds[1] - GUARD)
-            right = min(width, bounds[2] + GUARD)
-            bottom = min(height, bounds[3] + GUARD)
+            bounds = (0, 0, width, height) if full_rgba else (image.getchannel('A').getbbox() or (0, 0, 1, 1))
+            left = max(0, bounds[0] - (0 if full_rgba else GUARD))
+            top = max(0, bounds[1] - (0 if full_rgba else GUARD))
+            right = min(width, bounds[2] + (0 if full_rgba else GUARD))
+            bottom = min(height, bounds[3] + (0 if full_rgba else GUARD))
             trim = (left, top, right - left, bottom - top)
         if trim[2] + 2 * PAD > PAGE or trim[3] + 2 * PAD > PAGE:
             raise ValueError(f"too large for padded atlas: {path} ({trim[2]}x{trim[3]})")
@@ -114,7 +114,7 @@ def pack(paths, output):
         page_names.append(name)
         page_dimensions.append([page['width'], page['height']])
     manifest = {'format': 'deathleak-atlas-v3', 'max_page_size': PAGE, 'padding': PAD,
-                'transparent_guard': GUARD,
+                'transparent_guard': 0 if full_rgba else GUARD, 'full_rgba': full_rgba,
                 'pages': page_names, 'page_dimensions': page_dimensions,
                 'textures': sorted(placements, key=lambda p: p['source'])}
     (output / 'atlas_manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
@@ -151,6 +151,8 @@ def verify(manifest, output):
                 original_bytes = original.tobytes()
                 restored_bytes = reconstructed.tobytes()
                 for offset in range(0, len(original_bytes), 4):
+                    if manifest.get('full_rgba') and original_bytes[offset:offset+4] != restored_bytes[offset:offset+4]:
+                        raise ValueError(f"RGBA-byte mismatch: {source}")
                     if original_bytes[offset + 3] != restored_bytes[offset + 3] or (
                         original_bytes[offset + 3] and
                         original_bytes[offset:offset + 3] != restored_bytes[offset:offset + 3]
@@ -164,12 +166,13 @@ def verify(manifest, output):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', required=True, type=Path)
+    parser.add_argument('--full-rgba', action='store_true', help='retain all source RGBA bytes, including invisible RGB')
     parser.add_argument('png', nargs='+', type=Path)
     args = parser.parse_args()
     for path in args.png:
         if not path.is_file() or path.suffix.lower() != '.png':
             parser.error(f'not a PNG file: {path}')
-    manifest = pack(args.png, args.output)
+    manifest = pack(args.png, args.output, args.full_rgba)
     verify(manifest, args.output)
     print(f"packed and verified {len(manifest['textures'])} images into "
           f"{len(manifest['pages'])} page(s): {manifest['page_dimensions']}")
