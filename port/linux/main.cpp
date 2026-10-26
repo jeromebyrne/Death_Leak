@@ -1622,9 +1622,9 @@ int main(int argc, char** argv) {
         // Advance the visual/shader clocks for every simulation step, including
         // intermediate catch-up steps. The display retains its last image until
         // the final state in this batch is ready to present.
+        shaderClock.Prepare(); // One wobble step per update, including catch-up steps.
         if (fixedDt <= 0.f && !livePacer.PresentNow()) {
             precedingRenderedModifiedDelta = dt;
-            shaderClock.Draw(); // Pixel-wobble phase is defined per update, not per present.
             shaderClock.RenderCompleted(dt);
             continue;
         }

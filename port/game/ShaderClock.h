@@ -2,8 +2,8 @@
 
 namespace deathleak::game {
 // Process-owned shader timing. Total time advances with each main-loop update,
-// including menus and modals. Pixel wobble advances at draw using the preceding
-// rendered update's modified delta, matching Game::Draw/program.cpp ordering.
+// including menus and modals. Pixel wobble is prepared once per fixed update
+// using the preceding rendered update's modified delta.
 struct ShaderClockSnapshot {
     float totalTime = 0.f;
     float pixelWobbleTime = 0.f;
@@ -12,15 +12,13 @@ struct ShaderClockSnapshot {
 class ShaderClock {
 public:
     void Update(float modifiedDelta) { totalTime_ += modifiedDelta; }
-    ShaderClockSnapshot Draw() {
+    void Prepare() {
         pixelWobbleTime_ += reversing_ ? -previousRenderDelta_ : previousRenderDelta_;
         if (!reversing_ && pixelWobbleTime_ > 10.f) reversing_ = true;
         else if (reversing_ && pixelWobbleTime_ < 5.f) reversing_ = false;
-        return {totalTime_, pixelWobbleTime_};
     }
-    // A repeated/interpolated presentation may inspect these clocks, but must not
-    // call Draw() again: that would advance authored pixel-wobble phase.
-    ShaderClockSnapshot PresentationSnapshot() const { return {totalTime_, pixelWobbleTime_}; }
+    ShaderClockSnapshot Draw() const { return {totalTime_, pixelWobbleTime_}; }
+    ShaderClockSnapshot PresentationSnapshot() const { return Draw(); }
     void RenderCompleted(float modifiedDelta) { previousRenderDelta_ = modifiedDelta; }
     bool Reversing() const { return reversing_; }
 private:
