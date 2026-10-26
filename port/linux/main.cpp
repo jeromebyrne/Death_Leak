@@ -246,6 +246,7 @@ int main(int argc, char** argv) {
     bool combatState = false;
     bool freshSaveIntro = false;
     bool steamDeck = false;
+    bool testUpgradeModal = false;
     int startEncounter = -1;
     int startHazard = -1;
     bool exhaustedFocus = false;
@@ -326,12 +327,16 @@ int main(int argc, char** argv) {
         else if (arg == "--combat-state") combatState = true;
         else if (arg == "--fresh-save-intro") freshSaveIntro = true;
         else if (arg == "--steam-deck") steamDeck = true;
+        else if (arg == "--test-upgrade-modal") testUpgradeModal = true;
         else if (arg == "--exhaust-focus") exhaustedFocus = true;
         else if (arg == "--capture-suppress-landing-draw") suppressLandingSprayDraw = true;
         else if (arg == "--capture-suppress-intro-prompt") suppressIntroPromptDraw = true;
         else if (arg == "--start-encounter" && i + 1 < argc) startEncounter = std::atoi(argv[++i]);
         else if (arg == "--start-hazard" && i + 1 < argc) startHazard = std::atoi(argv[++i]);
         else { std::cerr << "Usage: deathleak-linux [--frames N] [--capture output.bmp] [--resolution WIDTHxHEIGHT] [--fullscreen [--refresh-hz HZ]] [--level-preview level.xml | --play level.xml] [--debug | --show-fps] [--profile]\n"; return 2; }
+    }
+    if (testUpgradeModal && (playLevel.empty() || fixedDt <= 0.f || frameLimit <= 0 || capture.empty())) {
+        std::cerr << "--test-upgrade-modal requires --play, --fixed-dt, --frames and --capture\n"; return 2;
     }
     if (requestedRefreshHz && !fullscreen) {
         std::cerr << "--refresh-hz requires --fullscreen\n"; return 2;
@@ -660,7 +665,7 @@ int main(int argc, char** argv) {
     bool finalTitleShown = false, storyEnded = false;
     float levelTime = 0.f, interactHeldTime = 0.f, doorUnlockWait = 0.f;
     bool unlockingDoor = false;
-    bool upgradeModal = false, paperModal = false;
+    bool upgradeModal = testUpgradeModal, paperModal = false;
     deathleak::game::PaperText paperText;
     if (!paperText.Load("Game/XmlFiles/strings.xml")) { std::cerr << "Cannot load Game/XmlFiles/strings.xml\n"; return 1; }
     std::string paperTitle, paperDescription;
