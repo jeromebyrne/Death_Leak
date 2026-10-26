@@ -5,6 +5,7 @@
 #include "../game/LevelScene.h"
 #include "../game/ShaderClock.h"
 #include "FixedStepPacer.h"
+#include "PresentationCommandPacket.h"
 #include "../game/WeatherLightning.h"
 #include "../game/WeatherRain.h"
 #include "../game/WeatherTextureResidency.h"
@@ -232,6 +233,7 @@ int main(int argc, char** argv) {
     bool simulateWallClock = false;
     bool profile = false;
     bool showFps = false;
+    bool repeatPresentationCheck = false;
     bool combatState = false;
     bool freshSaveIntro = false;
     bool steamDeck = false;
@@ -301,6 +303,7 @@ int main(int argc, char** argv) {
         else if (arg == "--simulate-only") simulateOnly = true;
         else if (arg == "--simulate-wall-clock") simulateWallClock = true;
         else if (arg == "--menu-loop") menuLoop = true;
+        else if (arg == "--repeat-presentation-check") repeatPresentationCheck = true;
         else if (arg == "--profile") { profile = true; showFps = true; }
         else if (arg == "--debug") showFps = true;
         else if (arg == "--show-fps") showFps = true;
@@ -469,6 +472,9 @@ int main(int argc, char** argv) {
         std::cerr << "--test-refresh-hz requires --simulate-only, --play, --script, --frames, no --fixed-dt, and 30..240 Hz\n";
         return 2;
     }
+    if (repeatPresentationCheck && (capture.empty() || frameLimit <= 0 || simulateOnly)) {
+        std::cerr << "--repeat-presentation-check requires --capture, --frames and GPU rendering\n"; return 2;
+    }
     if (fixedDt < 0 || fixedDt > 0.05f) { std::cerr << "--fixed-dt must be between 0 and 0.05\n"; return 2; }
     std::vector<char> scriptedInput;
     if (!script.empty()) {
@@ -524,6 +530,7 @@ int main(int argc, char** argv) {
     const char* testSoftwareEnv = std::getenv("DEATHLEAK_TEST_ALLOW_SOFTWARE_RENDERER");
     const bool testAllowSoftware = testSoftwareEnv && std::string(testSoftwareEnv) == "1";
     auto renderer = CreateRenderer(testAllowSoftware);
+    deathleak::linux_port::PresentationRecordingRenderer* repeatRecorder = nullptr;
     PacketTraceRenderer* packetTrace = nullptr;
     if (!atomicPostfadePacket.empty() || !atomicId22Prefix.empty()) {
         auto traced = std::make_unique<PacketTraceRenderer>(std::move(renderer), atomicId22Prefix);
@@ -535,6 +542,11 @@ int main(int argc, char** argv) {
     auto* bodySlowFrameObserver = observer.get();
     renderer = std::move(observer);
 #endif
+    if (repeatPresentationCheck) {
+        auto recording = std::make_unique<deathleak::linux_port::PresentationRecordingRenderer>(std::move(renderer));
+        repeatRecorder = recording.get();
+        renderer = std::move(recording);
+    }
     std::string error;
     renderer->SetRequestedRefreshHz(requestedRefreshHz);
     if (!renderer->Initialize("Death Leak - Linux renderer slice", windowWidth, windowHeight, fullscreen, error)) {
@@ -2014,6 +2026,23 @@ int main(int argc, char** argv) {
             std::cout << "ATOMIC_ID22_PACKET ordinal=" << ordinal << " pre=" << preHash << " post=" << postHash << '\n';
         }
         renderer->EndFrame();
+        if (repeatRecorder && frame == frameLimit - 1) {
+            const auto repeatStart = std::chrono::steady_clock::now();
+            repeatRecorder->Replay();
+            const auto repeatDrawEnd = std::chrono::steady_clock::now();
+            if (!renderer->SaveFrame(capture + ".repeat.bmp", error)) {
+                std::cerr << "Repeat capture failed: " << error << '\n'; return 1;
+            }
+            const auto repeatPresentStart = std::chrono::steady_clock::now();
+            repeatRecorder->PresentReplay();
+            const auto repeatPresentEnd = std::chrono::steady_clock::now();
+            std::cout << "PRESENTATION_REPEAT draw_ms="
+                      << std::chrono::duration<double, std::milli>(repeatDrawEnd - repeatStart).count()
+                      << " present_ms="
+                      << std::chrono::duration<double, std::milli>(repeatPresentEnd - repeatPresentStart).count()
+                      << " commands=" << repeatRecorder->Packet().Size()
+                      << " capture=" << capture << ".repeat.bmp\n";
+        }
 #ifdef DEATHLEAK_TEST_LOADING_FADE_OBSERVER
         if (loadingPhaseOnEntry != LoadingPhase::None || loadingPhase != LoadingPhase::None) {
             std::cout << "FADE_OBSERVER frame=" << frame
