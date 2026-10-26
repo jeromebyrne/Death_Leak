@@ -1,0 +1,13 @@
+# Configurable display / logical viewport first slice (2026-10-26)
+
+Scope: shared 1280×720 projection for Sepia and unprocessed presentation, plus inverse physical-output/window-to-logical mouse mapping. The CLI already accepts window dimensions up to 7680×4320 and validated fullscreen modes; this commit does not add new modes or alter simulation timing. The helper uses actual renderer output dimensions and SDL window dimensions, so HiDPI window coordinates map through the same output letterbox. Black-bar positions remain outside the authored UI. At 1280×720 the mapping is identity.
+
+The deterministic CPU fixture covers 1280×720 identity, 1440×900 centered 45-pixel bars and the positive Options point `(450,620)→(400,511.111)`, top-bar miss, 2× HiDPI equivalent, 7680×4320 arithmetic, and invalid dimensions. Physical GPU and exact-pixel results are recorded in the performance checkpoint after the serial gate.
+
+Timing audit: `FixedStepPacer` runs authoritative 1/60-s updates and live play presents only after due updates; `--fixed-dt` preserves one-update/one-render deterministic routes. Shader clock uses the fixed update delta. This is not update-free presentation or interpolation; display modes above 60 Hz can repeat/skip hardware vblank and are not accepted as high-Hz gameplay. The first following in-scope clock task is an update-free repeated presentation packet with a measured 75/120/144/240-Hz route on suitable hardware, while retaining 60-Hz deterministic parity.
+
+## Verified gates and limits
+
+Clean isolated candidate and clean remote-HEAD baseline native Docker production builds passed; `make -C port logical-viewport-cpu-test` and `git diff --check` passed. Strict serial physical X11/OpenGL nouveau NVE7, accelerated=1/software=0/vsync=1, 1280×720 two-update menu A/B/A full BMPs were byte-identical, SHA-256 `ff5ca1abf6bb31e6d708ce5f1978a00503b0781ca81c4ccf1bfa3d9ed8793254`. This is a short exact-pixel native gate, not representative gameplay or performance acceptance.
+
+The candidate physically opened advertised 1440×900@60 fullscreen, reported 1440×900 actual output and capture, and the BMP has black top rows 0–44/bottom rows 855–899. It rejected 7680×4320 fullscreen as unadvertised. NVE7 GL texture/renderbuffer/viewport limits report 16384 in each dimension; that does not establish a connected 8K mode. The physical desktop's locked screensaver still intercepts injected pointer events (prior `FULLSCREEN_INPUT_CAPTURE_GATE_20261025.md`); thus actual physical click activation at 1440×900 remains unverified. The positive mapping branch is the deterministic CPU fixture, not a physical input claim. No measured FPS or high-Hz gameplay claim.

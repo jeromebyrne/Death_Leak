@@ -6,6 +6,7 @@
 #include "WobbleUV.h"
 #include "FoliageSway.h"
 #include "EffectQuadGeometry.h"
+#include "LogicalViewport.h"
 #include <SDL.h>
 #define GL_GLEXT_PROTOTYPES
 #include <SDL_opengl.h>
@@ -1041,11 +1042,9 @@ public:
         }
         // Preserve the authored 16:9 projection on non-16:9 windows. SDL
         // maps mouse coordinates through the same logical-size letterbox.
-        const float scale = std::min(width / 1280.f, height / 720.f);
-        const int viewWidth = std::min(width, static_cast<int>(std::lround(1280.f * scale)));
-        const int viewHeight = std::min(height, static_cast<int>(std::lround(720.f * scale)));
-        const int viewX = (width - viewWidth) / 2;
-        const int viewY = (height - viewHeight) / 2;
+        const auto viewport = deathleak::linux_port::LogicalViewport::ForSize(width, height);
+        const int viewWidth = viewport.width, viewHeight = viewport.height;
+        const int viewX = viewport.x, viewY = viewport.y;
         glDisable(GL_SCISSOR_TEST);
         // The opaque Sepia quad covers every output pixel at matching aspect ratio.
         // Keep the black clear where letterbox bars would otherwise retain stale pixels.
@@ -1094,11 +1093,8 @@ public:
         if (SDL_GetRendererOutputSize(renderer_, &outputWidth, &outputHeight) != 0) {
             error = SDL_GetError(); return false;
         }
-        const float scale = std::min(outputWidth / 1280.f, outputHeight / 720.f);
-        const int viewWidth = std::min(outputWidth, static_cast<int>(std::lround(1280.f * scale)));
-        const int viewHeight = std::min(outputHeight, static_cast<int>(std::lround(720.f * scale)));
-        const SDL_Rect destination{(outputWidth - viewWidth) / 2,
-                                   (outputHeight - viewHeight) / 2, viewWidth, viewHeight};
+        const auto viewport = deathleak::linux_port::LogicalViewport::ForSize(outputWidth, outputHeight);
+        const SDL_Rect destination{viewport.x, viewport.y, viewport.width, viewport.height};
         SDL_SetRenderDrawColor(renderer_, 0, 0, 0, 255);
         SDL_RenderClear(renderer_);
         if (SDL_RenderCopy(renderer_, sceneTarget_, nullptr, &destination) != 0) {
@@ -1163,9 +1159,14 @@ public:
     MouseState Mouse() const override {
         int x = 0, y = 0;
         const Uint32 buttons = SDL_GetMouseState(&x, &y);
-        float logicalX = -1, logicalY = -1;
-        SDL_RenderWindowToLogical(renderer_, x, y, &logicalX, &logicalY);
-        return {logicalX, logicalY, (buttons & SDL_BUTTON(SDL_BUTTON_LEFT)) != 0};
+        int windowWidth = 0, windowHeight = 0, outputWidth = 0, outputHeight = 0;
+        SDL_GetWindowSize(window_, &windowWidth, &windowHeight);
+        if (SDL_GetRendererOutputSize(renderer_, &outputWidth, &outputHeight) != 0)
+            return {-1.f, -1.f, (buttons & SDL_BUTTON(SDL_BUTTON_LEFT)) != 0};
+        const auto viewport = deathleak::linux_port::LogicalViewport::ForSize(outputWidth, outputHeight);
+        const auto logical = viewport.WindowToLogical(float(x), float(y), windowWidth, windowHeight,
+                                                       outputWidth, outputHeight);
+        return {logical.x, logical.y, (buttons & SDL_BUTTON(SDL_BUTTON_LEFT)) != 0};
     }
     bool SaveFrame(const std::string& path, std::string& error) override {
         int width = 0, height = 0;
