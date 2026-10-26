@@ -245,6 +245,7 @@ public:
                       << " viewport=" << viewportLimits[0] << "x" << viewportLimits[1] << "\n";
             if (outputWidth > renderbufferLimit || outputHeight > renderbufferLimit ||
                 outputWidth > viewportLimits[0] || outputHeight > viewportLimits[1] ||
+                (sceneTarget_ == nullptr && (outputWidth > textureLimit || outputHeight > textureLimit)) ||
                 textureLimit < 1280 || textureLimit < 720) {
                 error = "output or 1280x720 scene target exceeds GL limits"; return false;
             }
@@ -1187,8 +1188,16 @@ public:
     }
     bool SaveFrame(const std::string& path, std::string& error) override {
         int width = 0, height = 0;
-        if (SDL_GetRendererOutputSize(renderer_, &width, &height) != 0) { error = SDL_GetError(); return false; }
-        std::cerr << "Capture output=" << width << "x" << height << " path=" << path << "\n";
+        SDL_Texture* target = SDL_GetRenderTarget(renderer_);
+        if (target) {
+            if (SDL_QueryTexture(target, nullptr, nullptr, &width, &height) != 0) {
+                error = SDL_GetError(); return false;
+            }
+        } else if (SDL_GetRendererOutputSize(renderer_, &width, &height) != 0) {
+            error = SDL_GetError(); return false;
+        }
+        std::cerr << "Capture " << (target ? "scene-target=" : "output=")
+                  << width << "x" << height << " path=" << path << "\n";
         SDL_Surface* surface = SDL_CreateRGBSurfaceWithFormat(0, width, height, 32, SDL_PIXELFORMAT_RGBA32);
         if (!surface) { error = SDL_GetError(); return false; }
         bool pixelsOk = false;

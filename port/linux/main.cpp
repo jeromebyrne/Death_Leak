@@ -263,7 +263,7 @@ int main(int argc, char** argv) {
                 std::cerr << "--refresh-hz expects an integer within 24..360\n"; return 2;
             }
         }
-        else if (arg == "--window-size" && i + 1 < argc) {
+        else if ((arg == "--window-size" || arg == "--resolution") && i + 1 < argc) {
             const std::string size = argv[++i];
             const auto separator = size.find('x');
             try {
@@ -277,7 +277,7 @@ int main(int argc, char** argv) {
                     throw std::invalid_argument("bounds");
                 windowWidth = width; windowHeight = height;
             } catch (const std::exception&) {
-                std::cerr << "--window-size expects WIDTHxHEIGHT within 640x360..7680x4320\n";
+                std::cerr << arg << " expects WIDTHxHEIGHT within 640x360..7680x4320\n";
                 return 2;
             }
         }
@@ -318,7 +318,7 @@ int main(int argc, char** argv) {
         else if (arg == "--capture-suppress-intro-prompt") suppressIntroPromptDraw = true;
         else if (arg == "--start-encounter" && i + 1 < argc) startEncounter = std::atoi(argv[++i]);
         else if (arg == "--start-hazard" && i + 1 < argc) startHazard = std::atoi(argv[++i]);
-        else { std::cerr << "Usage: deathleak-linux [--frames N] [--capture output.bmp] [--window-size WIDTHxHEIGHT] [--fullscreen [--refresh-hz HZ]] [--level-preview level.xml | --play level.xml] [--debug | --show-fps] [--profile]\n"; return 2; }
+        else { std::cerr << "Usage: deathleak-linux [--frames N] [--capture output.bmp] [--resolution WIDTHxHEIGHT] [--fullscreen [--refresh-hz HZ]] [--level-preview level.xml | --play level.xml] [--debug | --show-fps] [--profile]\n"; return 2; }
     }
     if (requestedRefreshHz && !fullscreen) {
         std::cerr << "--refresh-hz requires --fullscreen\n"; return 2;
