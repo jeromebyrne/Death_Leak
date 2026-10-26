@@ -94,12 +94,40 @@ public:
         if (initialized_) SDL_Quit();
     }
 
-    bool Initialize(const char* title, int width, int height, std::string& error) override {
+    bool Initialize(const char* title, int width, int height, bool fullscreen, std::string& error) override {
         if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER) != 0) { error = SDL_GetError(); return false; }
         initialized_ = true;
         window_ = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                    width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
         if (!window_) { error = SDL_GetError(); return false; }
+        if (fullscreen) {
+            const int display = SDL_GetWindowDisplayIndex(window_);
+            if (display < 0) { error = SDL_GetError(); return false; }
+            SDL_DisplayMode current{};
+            if (SDL_GetCurrentDisplayMode(display, &current) != 0) { error = SDL_GetError(); return false; }
+            SDL_DisplayMode selected{};
+            bool found = false;
+            const int modes = SDL_GetNumDisplayModes(display);
+            for (int i = 0; i < modes; ++i) {
+                SDL_DisplayMode mode{};
+                if (SDL_GetDisplayMode(display, i, &mode) != 0 || mode.w != width || mode.h != height) continue;
+                if (!found || std::abs(mode.refresh_rate - current.refresh_rate) <
+                              std::abs(selected.refresh_rate - current.refresh_rate)) {
+                    selected = mode; found = true;
+                }
+            }
+            if (!found) {
+                error = "fullscreen mode " + std::to_string(width) + "x" + std::to_string(height) +
+                        " is not advertised by display " + std::to_string(display);
+                return false;
+            }
+            if (SDL_SetWindowDisplayMode(window_, &selected) != 0 ||
+                SDL_SetWindowFullscreen(window_, SDL_WINDOW_FULLSCREEN) != 0) {
+                error = "cannot activate fullscreen mode: " + std::string(SDL_GetError()); return false;
+            }
+            std::cerr << "Fullscreen requested=" << width << "x" << height
+                      << " advertised_refresh=" << selected.refresh_rate << "Hz\n";
+        }
         constexpr Uint32 required = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
         renderer_ = SDL_CreateRenderer(window_, -1, required);
         std::string acceleratedError;
@@ -171,6 +199,38 @@ public:
                     return false;
                 }
                 std::cerr << "TEST-ONLY software/unidentified OpenGL accepted; this is not release/GPU evidence\n";
+            }
+        }
+        int outputWidth = 0, outputHeight = 0;
+        if (SDL_GetRendererOutputSize(renderer_, &outputWidth, &outputHeight) != 0) {
+            error = SDL_GetError(); return false;
+        }
+        // X11 fullscreen transitions are asynchronous; validate drawable pixels after settling.
+        if (fullscreen) {
+            for (int attempt = 0; attempt < 40 && (outputWidth != width || outputHeight != height); ++attempt) {
+                SDL_PumpEvents();
+                SDL_Delay(25);
+                if (SDL_GetRendererOutputSize(renderer_, &outputWidth, &outputHeight) != 0) {
+                    error = SDL_GetError(); return false;
+                }
+            }
+        }
+        std::cerr << "Output actual=" << outputWidth << "x" << outputHeight
+                  << " logical=1280x720 fullscreen=" << fullscreen << "\n";
+        if (fullscreen && (outputWidth != width || outputHeight != height)) {
+            error = "fullscreen output does not match requested resolution"; return false;
+        }
+        if (driver == "opengl" && SDL_GL_GetCurrentContext()) {
+            GLint textureLimit = 0, renderbufferLimit = 0, viewportLimits[2]{};
+            glGetIntegerv(GL_MAX_TEXTURE_SIZE, &textureLimit);
+            glGetIntegerv(GL_MAX_RENDERBUFFER_SIZE, &renderbufferLimit);
+            glGetIntegerv(GL_MAX_VIEWPORT_DIMS, viewportLimits);
+            std::cerr << "GL limits texture=" << textureLimit << " renderbuffer=" << renderbufferLimit
+                      << " viewport=" << viewportLimits[0] << "x" << viewportLimits[1] << "\n";
+            if (outputWidth > renderbufferLimit || outputHeight > renderbufferLimit ||
+                outputWidth > viewportLimits[0] || outputHeight > viewportLimits[1] ||
+                textureLimit < 1280 || textureLimit < 720) {
+                error = "output or 1280x720 scene target exceeds GL limits"; return false;
             }
         }
         if (SDL_RenderSetLogicalSize(renderer_, 1280, 720) != 0) { error = SDL_GetError(); return false; }
@@ -1087,6 +1147,7 @@ public:
     bool SaveFrame(const std::string& path, std::string& error) override {
         int width = 0, height = 0;
         if (SDL_GetRendererOutputSize(renderer_, &width, &height) != 0) { error = SDL_GetError(); return false; }
+        std::cerr << "Capture output=" << width << "x" << height << " path=" << path << "\n";
         SDL_Surface* surface = SDL_CreateRGBSurfaceWithFormat(0, width, height, 32, SDL_PIXELFORMAT_RGBA32);
         if (!surface) { error = SDL_GetError(); return false; }
         bool pixelsOk = false;

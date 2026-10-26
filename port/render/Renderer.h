@@ -75,7 +75,7 @@ struct Sprite {
 class Renderer {
 public:
     virtual ~Renderer() = default;
-    virtual bool Initialize(const char* title, int width, int height, std::string& error) = 0;
+    virtual bool Initialize(const char* title, int width, int height, bool fullscreen, std::string& error) = 0;
     virtual TextureId LoadTexture(const std::string& path, std::string& error) = 0;
     virtual void BeginFrame(Color clear) = 0;
     // Scene-only projection; BeginFrame and ApplyScenePostprocess reset it.

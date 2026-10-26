@@ -125,8 +125,8 @@ class PacketTraceRenderer final : public Renderer {
 public:
     explicit PacketTraceRenderer(std::unique_ptr<Renderer> inner, std::string id22Prefix = {})
         : inner_(std::move(inner)), id22Prefix_(std::move(id22Prefix)) {}
-    bool Initialize(const char* title, int width, int height, std::string& error) override {
-        return inner_->Initialize(title, width, height, error);
+    bool Initialize(const char* title, int width, int height, bool fullscreen, std::string& error) override {
+        return inner_->Initialize(title, width, height, fullscreen, error);
     }
     TextureId LoadTexture(const std::string& path, std::string& error) override {
         auto id = inner_->LoadTexture(path, error);
@@ -239,10 +239,12 @@ int main(int argc, char** argv) {
     float fixedDt = 0;
     int testRefreshHz = 0;
     int windowWidth = 1280, windowHeight = 720;
+    bool fullscreen = false;
     for (int i = 1; i < argc; ++i) {
         std::string arg = argv[i];
         if (arg == "--frames" && i + 1 < argc) frameLimit = std::atoi(argv[++i]);
         else if (arg == "--capture" && i + 1 < argc) capture = argv[++i];
+        else if (arg == "--fullscreen") fullscreen = true;
         else if (arg == "--window-size" && i + 1 < argc) {
             const std::string size = argv[++i];
             const auto separator = size.find('x');
@@ -296,7 +298,7 @@ int main(int argc, char** argv) {
         else if (arg == "--capture-suppress-intro-prompt") suppressIntroPromptDraw = true;
         else if (arg == "--start-encounter" && i + 1 < argc) startEncounter = std::atoi(argv[++i]);
         else if (arg == "--start-hazard" && i + 1 < argc) startHazard = std::atoi(argv[++i]);
-        else { std::cerr << "Usage: deathleak-linux [--frames N] [--capture output.bmp] [--window-size WIDTHxHEIGHT] [--level-preview level.xml | --play level.xml] [--debug | --show-fps] [--profile]\n"; return 2; }
+        else { std::cerr << "Usage: deathleak-linux [--frames N] [--capture output.bmp] [--window-size WIDTHxHEIGHT] [--fullscreen] [--level-preview level.xml | --play level.xml] [--debug | --show-fps] [--profile]\n"; return 2; }
     }
     if (!atomicFrame415Packet.empty() && !sameRunWaterfallPackets && (capture.empty() || frameLimit != 416 ||
         atomicFrame415Packet == capture || fixedDt <= 0.f || script.empty() || playLevel.empty())) {
@@ -517,10 +519,10 @@ int main(int argc, char** argv) {
     renderer = std::move(observer);
 #endif
     std::string error;
-    if (!renderer->Initialize("Death Leak - Linux renderer slice", windowWidth, windowHeight, error)) {
+    if (!renderer->Initialize("Death Leak - Linux renderer slice", windowWidth, windowHeight, fullscreen, error)) {
         std::cerr << "Renderer initialization failed: " << error << '\n'; return 1;
     }
-    std::cerr << "Window requested=" << windowWidth << "x" << windowHeight << " logical=1280x720\n";
+    std::cerr << "Window requested=" << windowWidth << "x" << windowHeight << " fullscreen=" << fullscreen << " logical=1280x720\n";
     std::unique_ptr<deathleak::audio::SoundPlayer> sound;
     if (!simulateOnly && !playLevel.empty()) {
         sound = deathleak::audio::CreateSoundPlayer();
