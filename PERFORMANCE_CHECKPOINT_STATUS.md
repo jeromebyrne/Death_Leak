@@ -237,3 +237,6 @@ Outcome: exact-staged-source GPU run improved active Forest frame p50 21.9874 ->
 
 ### 2026-10-26 — current-ref high-Hz blocker and route fallback
 - Live `e5b28c3` already contained actual-loop refresh replay; no duplicate source merge or FPS gain. Current-ref production build and offscreen full post-HUD ordinary/replay byte parity at Forest frame 179 passed. Physical `:0` Xauthority rejected the cookie; no selected NVE7 high-Hz, sustained cadence, thermal or release proof. Independent 4,140-update combat/cave-6 round-trip route gate passed; see `port/CAVE6_COMBAT_ROUNDTRIP_GATE_20261026.md`.
+
+### 2026-10-26 — Hot Springs route extension (acceptance only)
+- Fixed-60-Hz CPU normal-control route now reaches authored Hot Springs and underwater caves 4/3; no frame-time, physical GPU, high-Hz, or release claim. High-Hz presentation integration remains the sole source/build/GPU owner; atlas micro-gates stay paused.

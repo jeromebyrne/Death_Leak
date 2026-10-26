@@ -34,3 +34,21 @@ if printf '%s\n' "$return_route" | grep -q 'Player died'; then
   exit 1
 fi
 printf '%s\n' "$return_route" | grep -E '^(Trigger at frame|Simulation ended)'
+
+# Switch to ordinary right+jump/swim on the exact cave-6 entry tick. Waiting
+# until the right-hand solid pins the grounded player does not reach this exit.
+# No warp, save load, injected state, XML edit, or collision bypass is used.
+hot_springs_route=$(port/build/deathleak-linux \
+  --play Game/XmlFiles/levels/forest_exploration_1.xml \
+  --script R:1100,Q:40,R:640,E:1500,R:1300 \
+  --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$hot_springs_route" | grep -q 'Trigger at frame 1780 from .*underwater_cave.xml .*underwater_cave_6.xml'
+printf '%s\n' "$hot_springs_route" | grep -q 'Trigger at frame 3037 from .*underwater_cave_6.xml .*hot_springs.xml'
+printf '%s\n' "$hot_springs_route" | grep -q 'Trigger at frame 3190 from .*hot_springs.xml .*underwater_cave_4.xml'
+printf '%s\n' "$hot_springs_route" | grep -q 'Trigger at frame 3415 from .*underwater_cave_4.xml .*underwater_cave_3.xml'
+printf '%s\n' "$hot_springs_route" | grep -q 'Simulation ended at Game/XmlFiles/levels/underwater_cave_3.xml .*orbs=25 keys=0 health=25 .*balance=25'
+if printf '%s\n' "$hot_springs_route" | grep -q 'Player died'; then
+  echo 'Unexpected death on cave-6 to Hot Springs route' >&2
+  exit 1
+fi
+printf '%s\n' "$hot_springs_route" | grep -E '^(Trigger at frame|Simulation ended)'
