@@ -228,3 +228,6 @@ Outcome: exact-staged-source GPU run improved active Forest frame p50 21.9874 ->
 ## 2026-10-26 — presentation service boundary, no performance claim
 
 - Extracted the opt-in update-free sealed-packet replay/slot logic from `main.cpp` into `RefreshPresentationService` without changing the ordinary 60-Hz frame path. Focused packet/scheduler tests, Docker production build, and uninterrupted CPU route passed. No physical NVE7 A/B/A, post-HUD long-route pixel parity, sustained >60-Hz output or frame-time gain was measured in this slice. Atlas micro-gates remain paused under the acceptance pivot.
+
+### 2026-10-26 — presentation replay guard
+- CPU fixture now verifies unstable-surface rejection/no present, zero renderer resource/input reads over 100,000 repeat replays, and stable-slot resumption; packet/scheduler/HUD fixtures pass. No new measured GPU frame-time, >60-Hz mode, or FPS gain. Atlas micro-gates remain paused.

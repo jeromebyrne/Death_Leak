@@ -11,8 +11,11 @@ using namespace deathleak::linux_port;
 
 struct Spy final : Renderer {
     std::vector<std::string> calls;
+    bool surfaceStable = true;
+    mutable int inputReads = 0;
+    int textureLoads = 0;
     bool Initialize(const char*, int, int, bool, std::string&) override { return true; }
-    TextureId LoadTexture(const std::string&, std::string&) override { return 7; }
+    TextureId LoadTexture(const std::string&, std::string&) override { ++textureLoads; return 7; }
     void BeginFrame(Color c) override { calls.push_back("begin:" + std::to_string(c.r)); }
     void SetWorldZoom(float z) override { calls.push_back("zoom:" + std::to_string(z)); }
     void DrawSprite(const Sprite& s) override { calls.push_back("sprite:" + std::to_string(s.texture)); }
@@ -26,9 +29,9 @@ struct Spy final : Renderer {
     void ResolveUnprocessedFrame() override { calls.push_back("resolve"); }
     void EndFrame() override { calls.push_back("present"); }
     bool PollQuit() override { return false; }
-    bool PresentationSurfaceStable() const override { return true; }
-    bool KeyDown(int) const override { return false; }
-    MouseState Mouse() const override { return {}; }
+    bool PresentationSurfaceStable() const override { return surfaceStable; }
+    bool KeyDown(int) const override { ++inputReads; return false; }
+    MouseState Mouse() const override { ++inputReads; return {}; }
     bool SaveFrame(const std::string&, std::string&) override { calls.push_back("capture"); return true; }
 };
 int main() {
@@ -64,6 +67,12 @@ int main() {
     assert(raw->calls == replayAndPresent);
     assert(simulationUpdates == 1);
     assert(refresh.RepeatPresents() == 1);
+    // A display slot cannot turn an unstable surface into an extra present.
+    raw->surfaceStable = false;
+    raw->calls.clear();
+    assert(refresh.TryPresent(origin + std::chrono::seconds(1)) == RefreshPresentationService::Result::SurfaceChanged);
+    assert(raw->calls.empty() && refresh.RepeatPresents() == 1);
+    raw->surfaceStable = true;
     for (int repeat=0; repeat<100000; ++repeat) {
         raw->calls.clear();
         recorder.Replay();
@@ -81,5 +90,6 @@ int main() {
     assert(refresh.TryPresent(origin + std::chrono::seconds(1)) == RefreshPresentationService::Result::Presented);
     assert(raw->calls == std::vector<std::string>({"begin:4", "sprite:10", "present"}));
     assert(refresh.RepeatPresents() == 2 && simulationUpdates == 2);
+    assert(raw->textureLoads == 0 && raw->inputReads == 0);
     std::cout << "ordered packet 100000 repeat replays and positive next update passed\n";
 }
