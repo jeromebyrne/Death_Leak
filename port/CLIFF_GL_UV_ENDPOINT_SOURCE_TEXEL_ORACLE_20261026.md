@@ -1,0 +1,26 @@
+# Cliff GL endpoint and source-texel oracle — exception (2026-10-26)
+
+Base: clean detached exact pushed `02b54df9b758d47924f7529f1c7e7c4927cf9274`. Sole source/build/physical-NVE7 lane; primary dirty work was not built or overwritten. The candidate remains **rejected**; default atlas coverage stays 15/896. No new atlas runtime mapping was enabled.
+
+## Actual physical GL endpoints
+
+I extracted `glTexCoordPointer` and `glVertexPointer` float blobs from the prior physical X11/OpenGL nouveau NVE7 three-present cliff A/B apitraces (`/tmp/deathleak-multipage-evidence/cliff{,-B}.trace`) using `apitrace dump --blobs`. This is **fresh analysis of recorded physical traces**, not a fresh same-camera trace or a claim that live A/B clocks matched. Draw A call 7181 binds dedicated texture 243, uploaded at 4096×1434 (`cave_underlay`); draw B call 7122 binds trimmed page 0 texture 241, uploaded at 3895×3960. Both are six-vertex `GL_TRIANGLES` draws. Actual float32 UV endpoints:
+
+- A: `(0,0) → (1,1)`; upper-left GL position `(-1540.779053,466.925934)`, upper-right `(1189.740723,495.253387)`.
+- B: `(0.000513478823,0.000505050528) → (0.999486505985,0.362626254559)`; upper-left `(-1498.114746,466.264679)`, upper-right `(1095.745605,493.174347)`.
+
+B's UV endpoints map to atlas texel boundaries `(2,2) → (3893,1436)`, equivalent to source x `64→3955`, y `0→1434`, as specified by the verified crop. Its smaller quad is the expected transparent trim. The ~0.66 screen-y A/B offset demonstrates that these live clocks are **not** a matched physical-pixel A/B; only endpoint format/coordinates and the normalized source-coordinate calculation are inferred from them. The deterministic physical BMPs below provide the matched pixel gate.
+
+A float32 source-texel interpolation oracle using those captured B UVs and dedicated source coordinates `64+t×3891` produces, for example, x=2009.000000 dedicated versus 2008.999878 page at `t=.5`, and 3915.590088 versus 3915.589844 at `t=.99` (−0.000122/−0.000244 texels). Endpoints map to the same nominal source texels but interiors need not have identical bilinear weights. This CPU float model proves a representable coordinate discrepancy, **not** the GPU interpolator's exact arithmetic or exclusive causation of the final RGB differences; trim geometry, projection and sampler rounding remain additional possibilities. An arbitrary UV epsilon or filter change is not a proven general correction.
+
+## Matched physical multi-camera and both-page gate
+
+I independently recomputed full-frame RGB pixel differences from the predecessor's corrected deterministic-preview physical X11/OpenGL nouveau NVE7 1280×720 artifacts (`v2-*`, not the discarded `preview-*` override sweep). A/A controls are byte-identical at every camera. Two-page B differs at x=0/−2000/−4000 by **3,659 / 749 / 110 pixels**. At x=−2000/−4000, page-1-only B differs by **130 / 64 pixels**. A page-1 transparent knockout changes **137,089 / 4,809 pixels** by this RGB-count method, showing that page 1 is visibly sampled; page 0 is visibly sampled/failing in the full B and the earlier per-sprite isolation found cave-underlay 240, mill 4,137, windmill-blades 11,318 changed pixels at the preview camera. The two knockout counts differ by 2/1 from the predecessor's report; this script counts pixels with any nonzero RGB channel after Pillow RGB conversion, so its own counts are cited, not silently substituted. These are recorded physical runs rechecked here, not new GPU launches.
+
+The single-source cave-underlay atlas path therefore fails the pixel-exact gate, while both pages also fail in visible multi-camera use. A source-local programmable sampler is **not accepted** merely from the CPU coordinate model: exact shader interpolation, SDL texture-state, trim geometry and physical full-frame parity would still require an implemented and measured candidate. The previous two-page runtime B saved just one `glDrawArrays` and one `glBindTexture` in a warm cliff frame; no recurring material benefit has been established that justifies retaining invalid pixels. No new A/B/A timing, GL call, VRAM, GPU FPS, high-Hz/8K or release acceptance is claimed.
+
+## Disposition and next distinct family
+
+Classify `cave_underlay`, `mill`, `windmill_blades` and visibly sampled `cave_overlay` as **current normalized-UV/minified/rotated/trimmed atlas sampling exceptions**; keep dedicated textures. This is an exception to this routing method, not a proof that no future shader could match. Do not rerun the same padded two-page SDL virtual mapping. Next eligible-family search should start with actual ordered GL draws in Waterfall-bottom/cave for unrotated, untrimmed ordinary sprites sharing minification/filter state, then require dense co-resident packing, recurring bind/submission removal and physical exact-pixel A/B/A before default integration. `bottom_sand_cave` remains a repeat-X dedicated fallback, not an ordinary candidate.
+
+Evidence: `/tmp/deathleak-cliff-uv-evidence/blobs/` actual trace extracts; `/tmp/deathleak-cliff-uv-evidence/oracle.py` and `oracle.txt`; original physical BMPs/traces in `/tmp/deathleak-cliff-footprint-evidence/` and `/tmp/deathleak-multipage-evidence/`. Clean exact-ref Docker production build passed with SHA-256 `96e050a03aceffff219bd683970783e80cb30a02fb2d10dc0eaae0284312e9cd`.
