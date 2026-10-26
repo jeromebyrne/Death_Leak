@@ -1768,7 +1768,13 @@ int main(int argc, char** argv) {
             // Only a genuinely fresh forest-1 intro changes the world projection.
             renderer->SetWorldZoom(!hasPulledSword ? introEffectiveZoom : 1.f);
             std::vector<deathleak::game::PainterItem> painterItems;
-            combat.AppendPainterItems(painterItems, *renderer, drawCameraX, drawCameraY);
+            combat.AppendPainterItems(painterItems, *renderer, drawCameraX, drawCameraY,
+                fullFrameTopologyCheck ? std::function<void(const deathleak::game::ParticleSpray&, const deathleak::game::ParticleSpray::Particle&, const Sprite&)>(
+                    [&](const auto& spray, const auto& particle, const Sprite&) {
+                        auto key=deathleak::linux_port::EmittedParticleKey(spray,particle);
+                        key.object |= (std::uint64_t{1}<<60); // Runtime material-spray namespace.
+                        repeatRecorder->TagLastSprite(key);
+                    }) : std::function<void(const deathleak::game::ParticleSpray&, const deathleak::game::ParticleSpray::Particle&, const Sprite&)>());
             // Source Player::Draw places the X immediately after the player body.
             // A player-adjacent slot preserves same-depth object visitation order.
             std::function<void()> afterPlayerDraw;

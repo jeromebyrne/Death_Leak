@@ -220,6 +220,7 @@ void Combat::SpawnNinjaMaterialSpray(float x, float y) {
     // Character's common gruesome branch runs before NPC::DoNinjaExplosion.
     // Bottom() uses the NinjaSpawner visual height, not its collision box.
     ParticleSpray spray;
+    spray.stableIdentity = nextMaterialSprayIdentity_++;
     spray.texture = bloodParticleArt_;
     spray.x = x;
     spray.y = y - 231.714279f * .5f + 30.f;
@@ -256,6 +257,7 @@ void Combat::SpawnNinjaMaterialSpray(float x, float y) {
         // fade-in time zero so that frame cannot render fully opaque.
         particle.alpha = 0.f;
         particle.lifetime = 1.5f - .035f * static_cast<float>(i);
+        particle.stableIdentity = static_cast<std::uint64_t>(i) + 1;
         spray.particles.push_back(particle);
     }
     materialSprays_.push_back(std::move(spray));
@@ -265,6 +267,7 @@ void Combat::SpawnKnifeLineSpray(const LevelScene& scene, size_t segment, const 
     const auto texture = scene.GroundParticleTexture(scene.Ground()[segment].material);
     if (!texture) return;
     ParticleSpray spray;
+    spray.stableIdentity = nextMaterialSprayIdentity_++;
     spray.texture = texture;
     // SolidLineStrip::GetProjectileCollisionData returns line.Position() -
     // projectile.GetCollisionRayEnd(); Projectile subtracts that result from
@@ -309,6 +312,7 @@ void Combat::SpawnKnifeLineSpray(const LevelScene& scene, size_t segment, const 
         particle.gravity = .7f;
         particle.brightness = .71f + static_cast<float>(spray.Random(30)) * .01f;
         particle.alpha = 0.f;
+        particle.stableIdentity = static_cast<std::uint64_t>(i) + 1;
         spray.particles.push_back(particle);
     }
     materialSprays_.push_back(std::move(spray));
@@ -841,13 +845,18 @@ void Combat::UpdateVisuals(float dt) {
         }
     }
 }
-void Combat::AppendPainterItems(std::vector<PainterItem>& items, render::Renderer& renderer, float cameraX, float cameraY) const {
+void Combat::AppendPainterItems(std::vector<PainterItem>& items, render::Renderer& renderer, float cameraX, float cameraY,
+    const std::function<void(const ParticleSpray&, const ParticleSpray::Particle&, const render::Sprite&)>& emittedMaterialParticle) const {
     constexpr float scale=2.f/3.f;
     for (const auto& spray : materialSprays_) {
         if (!spray.texture) continue;
         const auto* stableSpray = &spray; // Valid until the next Combat mutation.
-        items.push_back({spray.depth, [stableSpray, &renderer, cameraX, cameraY] {
-            stableSpray->Draw(renderer, cameraX, cameraY);
+        items.push_back({spray.depth, [stableSpray, &renderer, cameraX, cameraY, emittedMaterialParticle] {
+            if (emittedMaterialParticle) stableSpray->Draw(renderer, cameraX, cameraY,
+                [stableSpray, &emittedMaterialParticle](const auto& particle, const auto& sprite) {
+                    emittedMaterialParticle(*stableSpray, particle, sprite);
+                });
+            else stableSpray->Draw(renderer, cameraX, cameraY);
         }});
     }
     for (const auto& enemy:enemies_) if (enemy.teleportTime<=0.f) {

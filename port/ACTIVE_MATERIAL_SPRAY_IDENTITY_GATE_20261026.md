@@ -1,0 +1,15 @@
+# Active material-spray emitted identity gate — 2026-10-26
+
+Base: exact pushed `78d2b1032c1076461249843bd00fac8257850718`, isolated detached `/tmp/deathleak-active-world-20261026`. Primary checkout's unrelated dirty work was not built or edited.
+
+## Executable slice
+
+Runtime combat **material sprays** (ninja-death blood and knife-line contact) now receive monotonic per-Combat emitter identities and stable per-emitter particle slot identities at construction. The actual `ParticleSpray::Draw` emission callback attaches the existing slot-generation topology key immediately after each submitted sprite, with a namespace separate from authored scene sprays. Vector erase/reallocation cannot rename a surviving emitter; a new emitter cannot reuse a removed emitter's key; loop generation remains part of the key. These diagnostic keys do not affect default rendering or gameplay. Material-particle position uses the already-stamped world-to-screen command and unit camera factors; changes to alpha, size, texture, rotation, painter ordinal, visibility, or generation remain current-state holds under the existing conservative mixed-command gate.
+
+Focused executable fixture draws two 20-particle blood emitters through `Combat::AppendPainterItems` and their actual painter callbacks, asserts 40 unique emitted keys, erases one emitter, births a third and proves no old key aliases the new emitter, and checks generation reuse. The existing mixed-command fixture checks birth/death, changed appearance, painter reorder, cuts and alpha=1 current state. Docker production build passed (binary SHA-256 `0464fb21b071d8e221ea7c07d5d0bf3dfe48705d1ee0832113f8280e2901088c`); focused material identity and mixed-command fixtures passed.
+
+## Admission decision
+
+**Reject visible interpolation B for this bounded slice.** This owns one complete gameplay effect family but not player, projectile, rain, spawned orbs, intro prompt, health pickup, weather flash or other combat effect families. The prior authenticated physical Forest packet at frame 120 had 18 unowned world sprites and the whole-packet guard held all 93 commands. An actual 125-frame paired Forest packet diagnostic from this exact production source/binary (software renderer, fixed 1/60, `B:125`) now has 85/88 sprites tagged at frame 120 versus the prior same-state 70/88: all 15 texture-243 material spray draws at ordinals 50–64 gained stable keys, with identical command count and destinations. The remaining three texture-293 projectile sprites at ordinals 65–67 are unowned, so frames 120–124 sample 0 commands (current packets 93/93/92/91/88). This is executable emitted-packet evidence, not hardware pixels. There is no sound coherent active-frame fractional candidate to put on the physical NVE7; no alpha=1 GPU parity or active A/B/A claim follows from this slice. The next distinct source gate is stable projectile identity/phase and remaining emitted active families, then an actual paired-packet birth/death/visibility and physical fractional replay before a visible B.
+
+No 8K, high-refresh, 60-FPS, sustained, thermal, VRAM or release acceptance is claimed.

@@ -1,4 +1,5 @@
 #pragma once
+struct CombatMaterialIdentityProbe;
 #include "LevelScene.h"
 #include "ParticleSpray.h"
 #include <string>
@@ -56,6 +57,7 @@ struct PlayerShotLaunchState {
     bool descending = false;
 };
 class Combat {
+    friend struct ::CombatMaterialIdentityProbe;
     friend struct CombatBloodFlightProbe; // focused CPU collision-edge fixture
     friend struct CombatBloodOcclusionProbe; // first-line occlusion fixture
     friend struct CombatBloodReboundProbe; // blocked-flight rebound fixture
@@ -75,7 +77,8 @@ public:
     void SetProjectileUpgrades(bool damage, bool speed) { projectileDamageUpgrade_ = damage; projectileSpeedUpgrade_ = speed; }
     void Draw(render::Renderer& renderer, float cameraX, float cameraY) const;
     void AppendPainterItems(std::vector<PainterItem>& items, render::Renderer& renderer,
-                            float cameraX, float cameraY) const;
+                            float cameraX, float cameraY,
+                            const std::function<void(const ParticleSpray&, const ParticleSpray::Particle&, const render::Sprite&)>& emittedMaterialParticle = {}) const;
     void UpdateVisuals(float dt);
     void SetTriggerHistory(std::unordered_map<std::string, std::int64_t> history) { triggerHistory_ = std::move(history); }
     void EnableSimulatedWallClock(); // test-only: advance trigger clock by fixed gameplay dt
@@ -130,6 +133,7 @@ private:
     std::unordered_map<std::string, bool> bloodMaterialPierceable_;
 
     std::vector<ParticleSpray> materialSprays_;
+    std::uint64_t nextMaterialSprayIdentity_ = 1; // Never recycle within a scene epoch.
     std::unordered_set<std::string> activeTriggers_;
     std::unordered_map<std::string, std::int64_t> triggerHistory_;
     bool simulatedWallClock_ = false;

@@ -109,3 +109,10 @@ mixed-command-interpolation-gate-test: build/mixed_command_interpolation_gate_te
 build/mixed_command_interpolation_gate_test: tests/mixed_command_interpolation_gate_test.cpp linux/MixedCommandInterpolationGate.h
 	@mkdir -p build
 	$(CXX) $(CXXFLAGS) -UNDEBUG -Icompat tests/mixed_command_interpolation_gate_test.cpp -o $@
+
+.PHONY: combat-material-identity-test
+combat-material-identity-test: build/combat_material_identity_test
+	cd .. && port/build/combat_material_identity_test
+build/combat_material_identity_test: tests/combat_material_identity_test.cpp game/Combat.cpp game/Combat.h game/LevelScene.cpp game/ParticleSpray.h linux/RealSceneTopologyCapture.h
+	@mkdir -p build
+	$(CXX) $(CXXFLAGS) -UNDEBUG -Icompat tests/combat_material_identity_test.cpp game/Combat.cpp game/LevelScene.cpp ../Game/tinyxml/tinyxml.cpp ../Game/tinyxml/tinyxmlerror.cpp ../Game/tinyxml/tinyxmlparser.cpp ../Game/tinyxml/tinystr.cpp -o $@
