@@ -7,6 +7,7 @@
 #include "FixedStepPacer.h"
 #include "PresentationCommandPacket.h"
 #include "FullFrameInterpolationGate.h"
+#include "MixedCommandInterpolationGate.h"
 #include "RealSceneTopologyCapture.h"
 #include "RefreshSlotScheduler.h"
 #include "../game/WeatherLightning.h"
@@ -2095,6 +2096,8 @@ int main(int argc, char** argv) {
                 -drawCameraY*(2.f/3.f),false,shaderFrame.totalTime,shaderFrame.pixelWobbleTime};
             if (hasPriorFullFrame) {
                 const auto decision=deathleak::linux_port::AdmitFullFrame(priorFullFrame,frameSnapshot,.5f);
+                const auto mixed=deathleak::linux_port::AdmitMixedCommands(priorFullFrame,frameSnapshot,.5f);
+                std::cout << "MIXED_COMMAND_TOPOLOGY frame=" << frame << " sampled=" << mixed.moving << " current=" << frameSnapshot.packet.Size()-mixed.moving << " valid=" << mixed.valid << '\n';
                 const auto& before=priorFullFrame.packet.Commands();
                 const auto& after=frameSnapshot.packet.Commands();
                 for (std::size_t ci=0;ci<before.size() && ci<after.size();++ci) {

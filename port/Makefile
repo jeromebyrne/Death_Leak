@@ -102,3 +102,10 @@ full-frame-interpolation-gate-test: build/full_frame_interpolation_gate_test
 build/full_frame_interpolation_gate_test: tests/full_frame_interpolation_gate_test.cpp linux/FullFrameInterpolationGate.h linux/PresentationCommandPacket.h game/LevelScene.cpp
 	@mkdir -p build
 	$(CXX) $(CXXFLAGS) -UNDEBUG -Icompat tests/full_frame_interpolation_gate_test.cpp game/LevelScene.cpp ../Game/tinyxml/tinyxml.cpp ../Game/tinyxml/tinyxmlerror.cpp ../Game/tinyxml/tinyxmlparser.cpp ../Game/tinyxml/tinystr.cpp -o $@
+
+.PHONY: mixed-command-interpolation-gate-test
+mixed-command-interpolation-gate-test: build/mixed_command_interpolation_gate_test
+	../port/build/mixed_command_interpolation_gate_test
+build/mixed_command_interpolation_gate_test: tests/mixed_command_interpolation_gate_test.cpp linux/MixedCommandInterpolationGate.h
+	@mkdir -p build
+	$(CXX) $(CXXFLAGS) -UNDEBUG -Icompat tests/mixed_command_interpolation_gate_test.cpp -o $@
