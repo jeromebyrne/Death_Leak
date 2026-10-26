@@ -9,8 +9,8 @@
   ],
   "page_dimensions": [
     [
-      1084,
-      137
+      2526,
+      333
     ]
   ],
   "textures": [
@@ -19,8 +19,8 @@
       "sha256": "51051789bc2a0e5d06b1f0a53913e0b55c0933e35c195cf2d950526825269d68",
       "page": 0,
       "rect": [
-        208,
-        117,
+        2350,
+        134,
         2,
         2
       ],
@@ -34,12 +34,88 @@
       ]
     },
     {
+      "source": "Game/Media/UI/film_frame.png",
+      "sha256": "4c4a78a429cf1b0f64cb5b6ca031448ce4d482ee9184f02b8755bbb037baec8e",
+      "page": 0,
+      "rect": [
+        2,
+        2,
+        576,
+        324
+      ],
+      "original_size": [
+        576,
+        324
+      ],
+      "trim_offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "source": "Game/Media/UI/film_frame_2.png",
+      "sha256": "24ee8e3c8496399ef4dba3df8a87c4daeb6f6cc2136a2406ced4bfe500bd37e2",
+      "page": 0,
+      "rect": [
+        582,
+        2,
+        576,
+        324
+      ],
+      "original_size": [
+        576,
+        324
+      ],
+      "trim_offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "source": "Game/Media/UI/film_frame_3.png",
+      "sha256": "cf11c5a2e1fb99668c235f02e89d415a78c628b4a7e8dacd50d7441cfc344744",
+      "page": 0,
+      "rect": [
+        1162,
+        2,
+        576,
+        324
+      ],
+      "original_size": [
+        576,
+        324
+      ],
+      "trim_offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "source": "Game/Media/UI/film_frame_4.png",
+      "sha256": "09cf4e58a627dc3b360bc88133d79df6f0872552a17c36b95050cd5828337129",
+      "page": 0,
+      "rect": [
+        1742,
+        2,
+        576,
+        324
+      ],
+      "original_size": [
+        576,
+        324
+      ],
+      "trim_offset": [
+        0,
+        0
+      ]
+    },
+    {
       "source": "Game/Media/UI/frame_top.png",
       "sha256": "ff66b65ecc01708f3f5c75726ea1d81b94cd0b817222a5aa8aed9f533502e65a",
       "page": 0,
       "rect": [
         2,
-        134,
+        330,
         1080,
         1
       ],
@@ -57,8 +133,8 @@
       "sha256": "a5eac3357f75694de2c02d954853ae935ae5decef15b85d291a130fe984bd4ab",
       "page": 0,
       "rect": [
-        208,
-        25,
+        2330,
+        134,
         1,
         19
       ],
@@ -76,8 +152,8 @@
       "sha256": "a3aabc61cae641984d1c8c5d012fd2e20f53ea75787af118ac2baa726da061cd",
       "page": 0,
       "rect": [
-        208,
-        48,
+        2335,
+        134,
         1,
         19
       ],
@@ -95,8 +171,8 @@
       "sha256": "0b7d3b2c113770a2230e13da3f46ed867b3de3747c85e162e790e257946d5dca",
       "page": 0,
       "rect": [
-        208,
-        2,
+        2322,
+        134,
         4,
         19
       ],
@@ -114,8 +190,8 @@
       "sha256": "76561a33afec5f8b5fe2717c8462a8a502685e2e71da42d589e3497278607019",
       "page": 0,
       "rect": [
-        208,
-        71,
+        2340,
+        134,
         1,
         19
       ],
@@ -133,7 +209,7 @@
       "sha256": "63516679e03c2b2d453b9b2f83170feaa79798485e5ae13b9cabf34349892844",
       "page": 0,
       "rect": [
-        2,
+        2322,
         2,
         202,
         128
@@ -152,8 +228,8 @@
       "sha256": "0d7f7638ee4895d33cb1e1c3e24f40550b9b8117fb6ab51c8a060299ccb1de76",
       "page": 0,
       "rect": [
-        208,
-        94,
+        2345,
+        134,
         1,
         19
       ],
