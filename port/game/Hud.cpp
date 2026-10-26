@@ -47,7 +47,7 @@ void Hud::Load(render::Renderer& renderer) {
     overlay_ = renderer.LoadTexture("Game/Media/UI/meter_overlay.png", error);
     orb_ = renderer.LoadTexture("Game/Media/UI/orb_count.png", error);
 }
-void Hud::Draw(render::Renderer& renderer, float health, float maxHealth, float focus, int orbBalance, float preRegistrationProcessTotal) {
+void Hud::Prepare(float health, float maxHealth, float focus, float preRegistrationProcessTotal) {
     // UIScreen advances children before UIGameHudScreen registers new targets.
     healthProgress_.Update(preRegistrationProcessTotal, false);
     focusProgress_.Update(preRegistrationProcessTotal, true);
@@ -66,6 +66,11 @@ void Hud::Draw(render::Renderer& renderer, float health, float maxHealth, float 
         lastMaxHealth_ = maxHealth;
         healthMeterUpgrade_ = true;
     }
+    const float healthProgress = maxHealth > 0.f ? std::clamp(health / maxHealth, 0.f, 1.f) : 0.f;
+    healthProgress_.SetProgress(healthProgress, preRegistrationProcessTotal);
+    focusProgress_.SetProgress(std::clamp(focus / 100.f, 0.f, 1.f), preRegistrationProcessTotal);
+}
+void Hud::Draw(render::Renderer& renderer, int orbBalance) const {
     // UIMeter forces every component to the 19px edge height, then draws
     // from the same bottom-left XML origin. Project each complete stack.
     constexpr float meterHeight = 19.f * (2.f / 3.f);
@@ -90,9 +95,6 @@ void Hud::Draw(render::Renderer& renderer, float health, float maxHealth, float 
     // UIGameHudScreen draws the spendable SaveManager count at (105,135)
     // in 1920x1080 coordinates; scale to this 1280x720 viewport.
     DrawBitmapText(renderer, std::to_string(orbBalance), 70, 90, 3, {179,179,179,204});
-    const float healthProgress = maxHealth > 0.f ? std::clamp(health / maxHealth, 0.f, 1.f) : 0.f;
-    healthProgress_.SetProgress(healthProgress, preRegistrationProcessTotal);
-    focusProgress_.SetProgress(std::clamp(focus / 100.f, 0.f, 1.f), preRegistrationProcessTotal);
     std::vector<deathleak::render::Sprite> hudBatch;
     auto emit = [&](const deathleak::render::Sprite& sprite) { hudBatch.push_back(sprite); };
     if (backing_ && healthProgress_.previousFill > healthProgress_.displayed &&

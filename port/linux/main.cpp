@@ -1779,7 +1779,8 @@ int main(int argc, char** argv) {
                     bottomBar.flipY = true;
                     renderer->DrawSprite(bottomBar);
                 }
-                hud.Draw(*renderer, combat.Health(), combat.MaxHealth(), combat.Focus(), orbBalance, shaderFrame.totalTime - dt);
+                hud.Prepare(combat.Health(), combat.MaxHealth(), combat.Focus(), shaderFrame.totalTime - dt);
+                hud.Draw(*renderer, orbBalance);
             }
             if (paperModal)
                 deathleak::game::DrawPaperModal(*renderer, paperTitle, paperDescription,

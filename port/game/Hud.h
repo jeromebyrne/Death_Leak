@@ -6,7 +6,10 @@ namespace deathleak::game {
 class Hud {
 public:
     void Load(render::Renderer& renderer);
-    void Draw(render::Renderer& renderer, float health, float maxHealth, float focus, int orbBalance, float preRegistrationProcessTotal);
+    // Called once per fixed gameplay update, at the original HUD draw point.
+    void Prepare(float health, float maxHealth, float focus, float preRegistrationProcessTotal);
+    // Submits the prepared HUD without advancing meter or upgrade state.
+    void Draw(render::Renderer& renderer, int orbBalance) const;
 private:
     struct MeterProgress {
         float displayed = 1.f;
