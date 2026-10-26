@@ -1,0 +1,19 @@
+# Live mouse delivery and controlled external-drift gate — 2026-10-26
+
+Exact base: pushed `0ecaa33b326e861922bdb35dadbaf72b40334224`, clean detached `/tmp/deathleak-live-input-20261026`; primary dirty tree preserved. Sole serial source/build/physical NVE7 owner. No production source change.
+
+## Focused input finding
+
+The prior SDL probe's zero events are reproducible with a valid X11 cookie and **external XTest** motion/button injection, not just `SDL_WarpMouseGlobal`. At actual fullscreen 1280×720@60 and 1440×810@120, the probe saw `SDL_WINDOW_INPUT_FOCUS` but not `SDL_WINDOW_MOUSE_FOCUS` (flags 519), zero `SDL_MOUSEMOTION`, and `SDL_GetMouseState=(0,0)`; global pointer position changed. Each probe exited 8 intentionally. The physical X11 root tree placed a full-screen `cinnamon-screensaver-window` (and backup locker) above the game, with a live screensaver/PAM helper. This locked/occluded session is a concrete environmental blocker to focused mouse delivery. An input-coordinate implementation defect is **not** established, and bypassing/unlocking the user's screen is outside this gate.
+
+Source inspection adds a separate scope limit: `SDLRenderer::Mouse()` maps through `LogicalViewport`, but `main.cpp` invokes it only in the menu loop (line 868 at this ref). Active gameplay consumes keyboard/controller controls, not SDL mouse coordinates. Therefore live *mouse* logical mapping in active gameplay cannot be claimed from this binary even in an unlocked session. The existing CPU `logical-viewport-cpu-test` and `display-surface-geometry-cpu-test` pass, including 1280×720 and 1440×810 transforms; those are not physical input-delivery proof. No parity-safe production mouse fix is supported by the locked-session evidence. The next distinct gate is an explicitly unlocked, user-attended X11 session: verify `SDL_WINDOW_MOUSE_FOCUS`, XTest/hardware motion and button events, probe window→logical center/edge mapping at both modes, then exercise an actual gameplay input consumer (keyboard/controller) separately. Only add gameplay mouse consumption if a gameplay contract requires it.
+
+## Controlled external surface drift and recovery
+
+A clean exact-ref Docker production build passed, SHA-256 `79fad56fd62d276184f5606c1bf5b5b3a6f72177673aa875002b571191bde2a1`. During physical NVE7 active Forest play requested at 1440×810@120 (SDL x11/opengl, accelerated=1/software=0/vsync=1), XRandR changed the external output to 1280×720 before the 120-update final capture. `SaveFrame` exited 1 with `Capture failed: fullscreen capture surface/mode changed from requested resolution`; **no BMP was written**. This is a live fail-closed rejection of the prior fix, not repair of the external mode change. XRandR was restored to 1440×810 after the run.
+
+Two subsequent serial final-binary physical menu controls selected actual 1280×720@60 and 1440×810@120 and captured correctly sized BMPs. Their full BMP SHA-256 values matched prior unchanged controls byte-for-byte: `ff5ca1abf6bb31e6d708ce5f1978a00503b0781ca81c4ccf1bfa3d9ed8793254` and `fc0200727f5538ffdadc20199f1b8f52ad90d3310dc29526f8479f4edd7e9c64`. This establishes capture recovery on fresh fullscreen initialization, not in-place recovery of the still-running game or an active-gameplay pixel oracle. Evidence logs/BMPs: `/tmp/deathleak-live-input-evidence/`.
+
+## Disposition
+
+No runtime change: the live drift rejection works, while locked-screen physical mouse delivery and gameplay mouse consumption are absent. No active-gameplay mouse parity, 8K, sustained high-Hz, 60-FPS, arbitrary mode, thermal/VRAM, or release acceptance is claimed. The next owner should first obtain a genuinely unlocked focused session for live input, then separately test policy for an in-place mode-change recovery if required; preserve fail-closed capture until a complete resize/render-target remap is proven.
