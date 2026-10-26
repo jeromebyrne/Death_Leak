@@ -79,3 +79,11 @@ build/display_surface_geometry_cpu_test: tests/display_surface_geometry_cpu_test
 build/display_surface_physical_probe: tests/display_surface_physical_probe.cpp linux/LogicalViewport.h
 	@mkdir -p build
 	$(CXX) $(CXXFLAGS) $(SDL_CFLAGS) tests/display_surface_physical_probe.cpp -o $@ $(SDL_LIBS)
+
+.PHONY: interpolation-topology-oracle-test
+interpolation-topology-oracle-test: build/interpolation_topology_oracle_test
+	./build/interpolation_topology_oracle_test
+
+build/interpolation_topology_oracle_test: tests/interpolation_topology_oracle_test.cpp linux/InterpolationTopologyOracle.h linux/FixedStepPacer.h game/LevelScene.h game/ParticleSpray.h
+	@mkdir -p build
+	$(CXX) $(CXXFLAGS) -UNDEBUG tests/interpolation_topology_oracle_test.cpp -o $@
