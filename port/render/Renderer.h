@@ -87,6 +87,7 @@ public:
     }
     // Apply the original Sepia.fx to the scene before UI is drawn.
     virtual void ApplyScenePostprocess() = 0;
+    virtual void ResolveUnprocessedFrame() {}
     virtual void EndFrame() = 0;
     virtual bool PollQuit() = 0;
     virtual bool KeyDown(int key) const = 0;

@@ -912,7 +912,17 @@ public:
             }
             glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, width, height);
         }
-        glViewport(0, 0, width, height);
+        // Preserve the authored 16:9 projection on non-16:9 windows. SDL
+        // maps mouse coordinates through the same logical-size letterbox.
+        const float scale = std::min(width / 1280.f, height / 720.f);
+        const int viewWidth = std::min(width, static_cast<int>(std::lround(1280.f * scale)));
+        const int viewHeight = std::min(height, static_cast<int>(std::lround(720.f * scale)));
+        const int viewX = (width - viewWidth) / 2;
+        const int viewY = (height - viewHeight) / 2;
+        glDisable(GL_SCISSOR_TEST);
+        glClearColor(0.f, 0.f, 0.f, 1.f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        glViewport(viewX, viewY, viewWidth, viewHeight);
         glDisable(GL_BLEND);
         glDisable(GL_DEPTH_TEST);
         glDisable(GL_SCISSOR_TEST);
@@ -943,7 +953,38 @@ public:
         glPopAttrib();
         glActiveTexture(oldActiveTexture);
     }
+    bool ResolveUnprocessedScene(std::string& error) {
+        if (!sceneTarget_ || !SDL_GetRenderTarget(renderer_)) return true;
+        if (SDL_SetRenderTarget(renderer_, nullptr) != 0) { error = SDL_GetError(); return false; }
+        // Copy to physical pixels explicitly; SDL's logical target state can
+        // otherwise place this menu/preview pass at y=0 on letterboxed windows.
+        if (SDL_RenderSetLogicalSize(renderer_, 0, 0) != 0) { error = SDL_GetError(); return false; }
+        int outputWidth = 0, outputHeight = 0;
+        if (SDL_GetRendererOutputSize(renderer_, &outputWidth, &outputHeight) != 0) {
+            error = SDL_GetError(); return false;
+        }
+        const float scale = std::min(outputWidth / 1280.f, outputHeight / 720.f);
+        const int viewWidth = std::min(outputWidth, static_cast<int>(std::lround(1280.f * scale)));
+        const int viewHeight = std::min(outputHeight, static_cast<int>(std::lround(720.f * scale)));
+        const SDL_Rect destination{(outputWidth - viewWidth) / 2,
+                                   (outputHeight - viewHeight) / 2, viewWidth, viewHeight};
+        SDL_SetRenderDrawColor(renderer_, 0, 0, 0, 255);
+        SDL_RenderClear(renderer_);
+        if (SDL_RenderCopy(renderer_, sceneTarget_, nullptr, &destination) != 0) {
+            error = SDL_GetError(); return false;
+        }
+        if (SDL_RenderSetLogicalSize(renderer_, 1280, 720) != 0) {
+            error = SDL_GetError(); return false;
+        }
+        return true;
+    }
+    void ResolveUnprocessedFrame() override {
+        std::string error;
+        if (!ResolveUnprocessedScene(error)) std::cerr << "Unprocessed scene presentation failed: " << error << "\n";
+    }
     void EndFrame() override {
+        std::string error;
+        if (!ResolveUnprocessedScene(error)) std::cerr << "Unprocessed scene presentation failed: " << error << "\n";
         const auto began = std::chrono::steady_clock::now();
         SDL_RenderPresent(renderer_);
         presentSeconds_ += std::chrono::duration<double>(std::chrono::steady_clock::now()-began).count();
@@ -1000,9 +1041,28 @@ public:
         if (SDL_GetRendererOutputSize(renderer_, &width, &height) != 0) { error = SDL_GetError(); return false; }
         SDL_Surface* surface = SDL_CreateRGBSurfaceWithFormat(0, width, height, 32, SDL_PIXELFORMAT_RGBA32);
         if (!surface) { error = SDL_GetError(); return false; }
-        bool ok = SDL_RenderReadPixels(renderer_, nullptr, surface->format->format,
-                                       surface->pixels, surface->pitch) == 0 &&
-                  SDL_SaveBMP(surface, path.c_str()) == 0;
+        bool pixelsOk = false;
+        if (!SDL_GetRenderTarget(renderer_) && SDL_GL_GetCurrentContext()) {
+            // SDL's logical viewport makes RenderReadPixels(nullptr) start at
+            // the viewport origin, shifting letterboxed window captures.
+            SDL_RenderFlush(renderer_);
+            std::vector<unsigned char> bottomFirst(static_cast<size_t>(width) * height * 4);
+            glPixelStorei(GL_PACK_ALIGNMENT, 1);
+            glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, bottomFirst.data());
+            pixelsOk = glGetError() == GL_NO_ERROR;
+            if (pixelsOk) {
+                const size_t rowBytes = static_cast<size_t>(width) * 4;
+                for (int y = 0; y < height; ++y)
+                    std::memcpy(static_cast<unsigned char*>(surface->pixels) + static_cast<size_t>(y) * surface->pitch,
+                                bottomFirst.data() + static_cast<size_t>(height - 1 - y) * rowBytes, rowBytes);
+            }
+        } else {
+            // Mid-scene diagnostic captures intentionally retain 1280x720
+            // scene-target pixels and do not change the active render target.
+            pixelsOk = SDL_RenderReadPixels(renderer_, nullptr, surface->format->format,
+                                            surface->pixels, surface->pitch) == 0;
+        }
+        bool ok = pixelsOk && SDL_SaveBMP(surface, path.c_str()) == 0;
         if (!ok) error = SDL_GetError();
         SDL_FreeSurface(surface);
         return ok;

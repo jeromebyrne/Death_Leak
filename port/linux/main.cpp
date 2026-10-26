@@ -158,6 +158,7 @@ public:
     }
     void FillRect(Rect rect, Color color) override { inner_->FillRect(rect, color); }
     void ApplyScenePostprocess() override { inner_->ApplyScenePostprocess(); }
+    void ResolveUnprocessedFrame() override { inner_->ResolveUnprocessedFrame(); }
     void EndFrame() override { inner_->EndFrame(); }
     bool PollQuit() override { return inner_->PollQuit(); }
     bool KeyDown(int key) const override { return inner_->KeyDown(key); }
@@ -234,10 +235,29 @@ int main(int argc, char** argv) {
     bool suppressLandingSprayDraw = false;
     bool suppressIntroPromptDraw = false;
     float fixedDt = 0;
+    int windowWidth = 1280, windowHeight = 720;
     for (int i = 1; i < argc; ++i) {
         std::string arg = argv[i];
         if (arg == "--frames" && i + 1 < argc) frameLimit = std::atoi(argv[++i]);
         else if (arg == "--capture" && i + 1 < argc) capture = argv[++i];
+        else if (arg == "--window-size" && i + 1 < argc) {
+            const std::string size = argv[++i];
+            const auto separator = size.find('x');
+            try {
+                if (separator == std::string::npos || size.find('x', separator + 1) != std::string::npos)
+                    throw std::invalid_argument("format");
+                size_t usedWidth = 0, usedHeight = 0;
+                const int width = std::stoi(size.substr(0, separator), &usedWidth);
+                const int height = std::stoi(size.substr(separator + 1), &usedHeight);
+                if (usedWidth != separator || usedHeight != size.size() - separator - 1 ||
+                    width < 640 || width > 7680 || height < 360 || height > 4320)
+                    throw std::invalid_argument("bounds");
+                windowWidth = width; windowHeight = height;
+            } catch (const std::exception&) {
+                std::cerr << "--window-size expects WIDTHxHEIGHT within 640x360..7680x4320\n";
+                return 2;
+            }
+        }
         else if (arg == "--atomic-frame415-packet" && i + 1 < argc) atomicFrame415Packet = argv[++i];
         else if (arg == "--atomic-postfade-waterfall-packet" && i + 1 < argc) atomicPostfadePacket = argv[++i];
         else if (arg == "--atomic-waterfall-id22-prefix" && i + 1 < argc) atomicId22Prefix = argv[++i];
@@ -272,7 +292,7 @@ int main(int argc, char** argv) {
         else if (arg == "--capture-suppress-intro-prompt") suppressIntroPromptDraw = true;
         else if (arg == "--start-encounter" && i + 1 < argc) startEncounter = std::atoi(argv[++i]);
         else if (arg == "--start-hazard" && i + 1 < argc) startHazard = std::atoi(argv[++i]);
-        else { std::cerr << "Usage: deathleak-linux [--frames N] [--capture output.bmp] [--level-preview level.xml | --play level.xml] [--debug | --show-fps] [--profile]\n"; return 2; }
+        else { std::cerr << "Usage: deathleak-linux [--frames N] [--capture output.bmp] [--window-size WIDTHxHEIGHT] [--level-preview level.xml | --play level.xml] [--debug | --show-fps] [--profile]\n"; return 2; }
     }
     if (!atomicFrame415Packet.empty() && !sameRunWaterfallPackets && (capture.empty() || frameLimit != 416 ||
         atomicFrame415Packet == capture || fixedDt <= 0.f || script.empty() || playLevel.empty())) {
@@ -488,9 +508,10 @@ int main(int argc, char** argv) {
     renderer = std::move(observer);
 #endif
     std::string error;
-    if (!renderer->Initialize("Death Leak - Linux renderer slice", 1280, 720, error)) {
+    if (!renderer->Initialize("Death Leak - Linux renderer slice", windowWidth, windowHeight, error)) {
         std::cerr << "Renderer initialization failed: " << error << '\n'; return 1;
     }
+    std::cerr << "Window requested=" << windowWidth << "x" << windowHeight << " logical=1280x720\n";
     std::unique_ptr<deathleak::audio::SoundPlayer> sound;
     if (!simulateOnly && !playLevel.empty()) {
         sound = deathleak::audio::CreateSoundPlayer();
@@ -1749,6 +1770,7 @@ int main(int argc, char** argv) {
                 loadingPhase == LoadingPhase::None && packetGameplayRan && packetWeatherRan &&
                 packetSceneRan && packetPlayerRan) packetFirstPostfadeOrdinal = frame;
         }
+        if (playLevel.empty()) renderer->ResolveUnprocessedFrame();
         const bool packetFrame415 = !atomicFrame415Packet.empty() && frame == 415;
         const bool packetPostfade = !atomicPostfadePacket.empty() && frame == frameLimit - 1;
         const std::string& frameCapture = (sameRunWaterfallPackets && packetFrame415) ? sameRunFrame415Capture : capture;
@@ -1782,11 +1804,12 @@ int main(int argc, char** argv) {
                     (static_cast<std::uint32_t>(bmpHeader[offset+3]) << 24);
             };
             if (!bmp || bmpHeader[0] != 'B' || bmpHeader[1] != 'M' ||
-                bmp32(18) != 1280 || bmp32(22) != 720 ||
+                bmp32(18) == 0 || bmp32(18) > 7680 || bmp32(22) == 0 || bmp32(22) > 4320 ||
                 bmpHeader[26] != 1 || bmpHeader[27] != 0 ||
                 bmpHeader[28] != 32 || bmpHeader[29] != 0) {
                 std::cerr << "Atomic packet image header/dimensions invalid\n"; return 1;
             }
+            const auto captureWidth = bmp32(18), captureHeight = bmp32(22);
             const auto imageHash = Sha256File(frameCapture);
             const std::string preHudPath = frameCapture + ".prehud.bmp";
             const auto preHudHash = postfadePacket ? Sha256File(preHudPath) : std::string{};
@@ -1815,14 +1838,14 @@ int main(int argc, char** argv) {
                    << ", \"loadSave\": " << JsonString(loadSaveFile) << "}, \"renderOrdinal\": " << frame
                    << ", \"updateOrdinal\": " << frame << "},\n"
                    << "  \"image\": {\"file\": " << JsonString(frameCapture) << ", \"sha256\": " << JsonString(imageHash)
-                   << ", \"bytes\": " << imageBytes << ", \"width\": 1280, \"height\": 720"
+                   << ", \"bytes\": " << imageBytes << ", \"width\": " << captureWidth << ", \"height\": " << captureHeight
                    << ", \"pixelFormat\": \"BMP BGRA32\", \"colorSpace\": \"sRGB-assumed\""
-                   << ", \"viewport\": [0,0,1280,720], \"captureStage\": \"post_overlay_pre_endframe\""
+                   << ", \"viewport\": [0,0," << captureWidth << "," << captureHeight << "], \"captureStage\": \"post_overlay_pre_endframe\""
                    << ", \"scenePostprocessSubmitted\": true},\n"
                    << (postfadePacket ? "  \"preHudImage\": " : "") << (postfadePacket ?
                        "{\"file\":" + JsonString(preHudPath) + ",\"sha256\":" + JsonString(preHudHash) +
                        ",\"bytes\":" + std::to_string(preHudBytes) +
-                       ",\"width\":1280,\"height\":720,\"pixelFormat\":\"BMP BGRA32\",\"captureStage\":\"post_scene_sepia_pre_hud\"}" :
+                       ",\"width\":" + std::to_string(captureWidth) + ",\"height\":" + std::to_string(captureHeight) + ",\"pixelFormat\":\"BMP BGRA32\",\"captureStage\":\"post_scene_sepia_pre_hud\"}" :
                        "") << (postfadePacket ? ",\n" : "")
                    << "  \"transition\": {\"activeLevel\": " << JsonString(currentLevel);
             // Preserve the published frame-415 v1 shape; these fields belong to postfade packets only.
@@ -1905,6 +1928,20 @@ int main(int argc, char** argv) {
             const std::string pre = atomicId22Prefix + ".pre.bmp";
             const std::string post = atomicId22Prefix + ".post.bmp";
             const auto preHash = Sha256File(pre), postHash = Sha256File(post);
+            std::array<unsigned char, 26> id22Header{};
+            std::ifstream id22Bmp(capture, std::ios::binary);
+            id22Bmp.read(reinterpret_cast<char*>(id22Header.data()), id22Header.size());
+            auto id22Dimension = [&](size_t at) {
+                return static_cast<std::uint32_t>(id22Header[at]) |
+                    (static_cast<std::uint32_t>(id22Header[at+1]) << 8) |
+                    (static_cast<std::uint32_t>(id22Header[at+2]) << 16) |
+                    (static_cast<std::uint32_t>(id22Header[at+3]) << 24);
+            };
+            const auto id22Width = id22Dimension(18), id22Height = id22Dimension(22);
+            if (!id22Bmp || id22Header[0] != 'B' || id22Header[1] != 'M' ||
+                id22Width == 0 || id22Width > 7680 || id22Height == 0 || id22Height > 4320) {
+                std::cerr << "ID22 capture dimensions invalid\n"; return 1;
+            }
             if (preHash.empty() || postHash.empty()) { std::cerr << "ID22 atomic hashes failed\n"; return 1; }
             std::ofstream packet(atomicId22Prefix + ".json.tmp", std::ios::trunc);
             if (!packet) { std::cerr << "ID22 atomic JSON open failed\n"; return 1; }
@@ -1926,7 +1963,7 @@ int main(int argc, char** argv) {
                    << ",\n  \"pre\": {\"file\": " << JsonString(pre) << ", \"sha256\": " << JsonString(preHash)
                    << "}, \"post\": {\"file\": " << JsonString(post) << ", \"sha256\": " << JsonString(postHash)
                    << "}, \"final\": {\"file\": " << JsonString(capture) << ", \"sha256\": " << JsonString(Sha256File(capture))
-                   << "}, \"captureStage\": \"scene_pre_and_post_draw_before_sepia\", \"width\": 1280, \"height\": 720}\n";
+                   << "}, \"captureStage\": \"scene_pre_and_post_draw_before_sepia\", \"width\": " << id22Width << ", \"height\": " << id22Height << "}\n";
             packet.close();
             if (!packet) { std::cerr << "ID22 atomic JSON write failed\n"; return 1; }
             std::filesystem::rename(atomicId22Prefix + ".json.tmp", atomicId22Prefix + ".json");
