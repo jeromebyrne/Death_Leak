@@ -128,6 +128,7 @@ public:
     bool HasPreviousPacket() const { return hasPrevious_; }
     const PresentationCommandPacket& PreviousPacket() const { return previous_; }
     void Replay() const { packet_.Replay(*inner_); }
+    void ReplayPacket(const PresentationCommandPacket& packet) { packet.Replay(*inner_); }
     void PresentReplay() { inner_->EndFrame(); }
 private:
     std::unique_ptr<render::Renderer> inner_;

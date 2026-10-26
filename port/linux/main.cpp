@@ -203,6 +203,8 @@ private:
 int main(int argc, char** argv) {
     int frameLimit = 0;
     std::string capture;
+    std::string mixedReplayPrefix;
+    int mixedReplayFrame = -1;
     std::string atomicFrame415Packet;
     std::string atomicPostfadePacket;
     std::string atomicId22Prefix;
@@ -311,6 +313,8 @@ int main(int argc, char** argv) {
         else if (arg == "--menu-loop") menuLoop = true;
         else if (arg == "--repeat-presentation-check") repeatPresentationCheck = true;
         else if (arg == "--full-frame-topology-check") fullFrameTopologyCheck = true;
+        else if (arg == "--mixed-replay-prefix" && i + 1 < argc) { mixedReplayPrefix = argv[++i]; fullFrameTopologyCheck = true; }
+        else if (arg == "--mixed-replay-frame" && i + 1 < argc) mixedReplayFrame = std::atoi(argv[++i]);
         else if (arg == "--refresh-slots") refreshSlots = true;
         else if (arg == "--profile") { profile = true; showFps = true; }
         else if (arg == "--debug") showFps = true;
@@ -482,6 +486,9 @@ int main(int argc, char** argv) {
     }
     if (refreshSlots && (fixedDt > 0.f || simulateOnly || repeatPresentationCheck || !fullscreen || !requestedRefreshHz)) {
         std::cerr << "--refresh-slots requires live fullscreen GPU play, --refresh-hz, and no fixed-dt/repeat diagnostic\n"; return 2;
+    }
+    if (!mixedReplayPrefix.empty() && (mixedReplayFrame <= 0 || mixedReplayFrame >= frameLimit || simulateOnly)) {
+        std::cerr << "--mixed-replay-prefix requires --mixed-replay-frame in [1,frames-1] and GPU rendering\n"; return 2;
     }
     if (repeatPresentationCheck && (capture.empty() || frameLimit <= 0 || simulateOnly)) {
         std::cerr << "--repeat-presentation-check requires --capture, --frames and GPU rendering\n"; return 2;
@@ -2128,6 +2135,28 @@ int main(int argc, char** argv) {
                 }
                 std::cout << "FULL_FRAME_TOPOLOGY frame=" << frame << " commands=" << frameSnapshot.packet.Size()
                           << " sprites=" << tagged << '/' << total << " decision=" << int(decision) << '\n';
+            }
+            if (!mixedReplayPrefix.empty() && frame == mixedReplayFrame && hasPriorFullFrame) {
+                // Diagnostic-only: replay complete sealed packets into the same SDL scene
+                // target and unswapped output backbuffer. Begin/Zoom/postprocess, blend,
+                // shaders and painter order are executed afresh for each arm. No arm is
+                // presented; the next ordinary BeginFrame replaces the backbuffer.
+                const auto current = frameSnapshot.packet;
+                const auto alphaOne = deathleak::linux_port::SampleMixedCommands(priorFullFrame,frameSnapshot,1.f);
+                const auto half = deathleak::linux_port::SampleMixedCommands(priorFullFrame,frameSnapshot,.5f);
+                const auto captureReplay = [&](const auto& packet, const char* label) {
+                    repeatRecorder->ReplayPacket(packet);
+                    const std::string path = mixedReplayPrefix + "." + label + ".bmp";
+                    if (!renderer->SaveFrame(path,error)) {
+                        std::cerr << "Mixed replay capture failed: " << error << '\n'; return false;
+                    }
+                    std::cout << "MIXED_REPLAY frame=" << frame << " label=" << label
+                              << " sceneEpoch=" << frameSnapshot.sceneEpoch
+                              << " commands=" << packet.Size() << " sha256=" << Sha256File(path) << '\n';
+                    return true;
+                };
+                if (!captureReplay(current,"current") || !captureReplay(alphaOne,"alpha1") ||
+                    !captureReplay(half,"alpha05")) return 1;
             }
             priorFullFrame=std::move(frameSnapshot); hasPriorFullFrame=true;
         }
