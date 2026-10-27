@@ -497,6 +497,8 @@ printf '%s\n' "$settings_reload" | grep -q 'Menu settings music=1 sfx=0 at frame
 # Authored XML bounds in logical coordinates: a press on Play released over
 # Options must cancel. Options checkboxes toggle only on same-widget release;
 # the Back and Play art bounds then navigate to a fresh game.
+mouse_gameplay=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --mouse-script port/tests/fixtures/gameplay_mouse.csv --frames 30 --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$mouse_gameplay" | grep -Eq 'fired=[1-9][0-9]*'
 mouse_settings=port/build/mouse-settings.xml
 rm -f "$mouse_settings"
 mouse_menu=$($bin --menu-loop --mouse-script port/tests/fixtures/menu_mouse.csv --frames 15 --fixed-dt 0.0166667 --simulate-only --settings-file "$mouse_settings")
