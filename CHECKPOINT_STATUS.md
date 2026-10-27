@@ -610,3 +610,32 @@ The parent session handles user-facing completion/blocker notification. Continue
 ## 2026-10-26 keyboard/mouse fallback worktree
 
 Isolated branch `feature/keyboard-mouse-fallback` is adding connected-gamepad priority and no-pad keyboard/mouse controls. Verification pending: Linux build, integration suite, input smoke, commit/push. Scripted and offscreen checks do not establish physical human-input or GPU release acceptance.
+
+## 2026-10-26 authorized resumed controls verification — checkpointed, integration blocked
+
+- Owner: announcing child `331a5bf4-61f5-4ba3-8d7a-b77a3b72558a` (Death Leak port resumed); parent owns originating-conversation completion delivery. No third-party messaging; no automation installed.
+- User explicitly resumed the stopped checkpoint. Inspected processes/containers: no prior Death Leak build, integration or GPU worker found. Dirty source checkout remains untouched.
+- Initial generic fetch tracked only master; explicit port-ref fetch subsequently recovered docs-only upstream `4b29327` after controls base `48a9cda`. That record will be preserved during reconciliation. Existing controls commits remain isolated until verified.
+- Current action: finishing Docker build, then deterministic mouse-fire and complete integration. Hardware X0 and DRM devices exist; strict physical GPU probe follows software checks.
+- Open gates: physical keyboard/mouse delivery, gamepad hot-plug, human active gameplay; real >60-Hz display and sustained physical GPU frame budget; broad visual/gameplay acceptance. Offscreen/simulation checks cannot close release gates.
+- Next action: collect build, run gates, correct concrete failures, integrate/push only verified software; report exact hardware blockers without substituting software-rendered acceptance.
+
+### Resumed verification checkpoint
+
+- Docker build completed (existing parentheses/TinyXML warnings). Targeted deterministic mouse consumer passed: held cadence, opposite aim velocities, release, four viewport edges and script priority.
+- Full integration exposed stale CPU Renderer::Initialize signatures and StrafeBack held-aim assertions; repaired narrowly in this checkout, complete suite rerunning.
+- Strict physical Xorg smoke passed on nouveau/NVE7 at 1280×720: 180 active Forest frames, alive, five orbs, no missing assets. Short sample p50/p95/p99 frame-wall 16.9911/17.3452/18.403 ms; not sustained 16.67-ms acceptance.
+- Current physical display modes top out near 60 Hz; active LVDS 1440×900 ~59.90 Hz. X root has slick-greeter, so unlocked physical-input/human playtest remains blocked. No verified controller; js0 is applesmc, not evidence of a gamepad.
+- Exact report: port/KEYBOARD_MOUSE_RESUME_GATE_20261026.md. Next: complete integration, investigate first concrete failure, commit/push verified software and verify remote SHA.
+
+### Final resumed milestone — focused controls PASS; full integration BLOCKED
+
+- Owner: announcing hidden child `331a5bf4-61f5-4ba3-8d7a-b77a3b72558a`; parent is the supported completion-notification owner. Final result returned through parent announcement; no scheduler/persistent worker or third-party message installed. All builds/tests/physical probes launched here have exited.
+- Completed interrupted build. Deterministic gameplay mouse gate passed (three held shots, left/right velocity signs, release, viewport negatives, script priority). Actual SDL backend virtual-gamepad gate passed startup attachment, mapped buttons/axes, detach fallback, reconnect. CPU strafe/running and rendered player-pose gates pass after minimal inherited fixture repairs.
+- The final complete `sh port/tests/integration.sh` command exited **1** at its legacy expected Forest-2 transition frame 1058: actual old script falls to Waterfall-bottom at 788 and ends there with 12 orbs. Do not call the suite passed. The non-fail-fast diagnostic suffix is not acceptance evidence.
+- Built exact remote `4b29327` separately from a git archive. Baseline and controls old-route transition/combat/end state are identical (wall time normalized), proving this blocker predates the controls patch. No mass fixture refresh or gameplay bypass was applied.
+- Implemented/passed the next bounded recovery `sh port/tests/waterfall_village_recovery.sh`: R:711,E:40,B:4515; authored transitions 398/1074/1730/2730/4053; village endpoint (7287.18,-1525.13), health 4, 101 unique saved earned IDs/balance; exact synthetic 60/144 gameplay/combat state equality. This does not restore all old full-ending fixtures.
+- Hardware: strict physical Xorg/NVE7 180-frame active Forest smoke passed (not software), short frame-wall p50/p95/p99=16.9911/17.3452/18.403 ms. Real-input acceptance blocked by current slick-greeter/unattended session and no verified controller; >60-Hz acceptance blocked by physical modes near 59.90 Hz only. Sustained 16.67-ms, human play and matched visual parity remain open.
+- Publication is held: full integration is red. Keep local controls/checkpoint commits isolated, preserve docs-only upstream 4b29327, and do not merge into the port integration branch or push as a verified completion. Remote port SHA was read live as 4b29327dc4404b4f40b946ef80aaf256c92c0e7f; no remote mutation was made by this milestone. Unrelated dirty source checkout remains untouched.
+- **Next action:** use the independently passing one-frame-later waterfall jump as the starting point to reconcile current-clock village/earned-purchase/full-ending itineraries and their saved earned-ID checks; run the complete integration suite. Only after that gate is green integrate into the existing port branch, push, and verify remote SHA. Separately obtain an unlocked attended desktop, real controller and >60-Hz physical display for mandatory input/display/GPU acceptance.
+- Detailed verified evidence, limits and ignored-log locations: port/KEYBOARD_MOUSE_RESUME_GATE_20261026.md; port/build/controls-resume-final-integration.log, controls-baseline-{upstream,controls}-route.log, controls-resume-physical.log, controls-input-backend.log and waterfall-village-recovery/. The Linux port remains partial, not release-accepted.

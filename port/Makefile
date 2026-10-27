@@ -123,3 +123,11 @@ fresh-presentation-packet-test: build/fresh_presentation_packet_test
 build/fresh_presentation_packet_test: tests/fresh_presentation_packet_test.cpp linux/FreshPresentationPacket.h game/PresentationPose.h
 	@mkdir -p build
 	$(CXX) $(CXXFLAGS) -Werror -UNDEBUG -Icompat tests/fresh_presentation_packet_test.cpp -o $@
+
+.PHONY: input-backend-test
+input-backend-test: build/input_backend_test
+	SDL_VIDEODRIVER=dummy SDL_RENDER_DRIVER=software ./build/input_backend_test
+
+build/input_backend_test: tests/input_backend_test.cpp linux/SDLRenderer.cpp $(wildcard linux/*.h render/*.h)
+	@mkdir -p build
+	$(CXX) $(CXXFLAGS) -UNDEBUG $(SDL_CFLAGS) $(PNG_CFLAGS) tests/input_backend_test.cpp linux/SDLRenderer.cpp -o $@ $(SDL_LIBS) $(PNG_LIBS) $(GL_LIBS)

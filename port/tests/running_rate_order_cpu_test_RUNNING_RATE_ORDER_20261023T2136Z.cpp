@@ -12,7 +12,7 @@ struct PathSpy final : render::Renderer {
     std::unordered_map<std::string, render::TextureId> ids;
     std::unordered_map<render::TextureId, std::string> paths;
     std::vector<std::string> drawn;
-    bool Initialize(const char*, int, int, std::string&) override { return true; }
+    bool Initialize(const char*, int, int, bool, std::string&) override { return true; }
     render::TextureId LoadTexture(const std::string& path, std::string&) override {
         auto [it, inserted] = ids.try_emplace(path, static_cast<render::TextureId>(ids.size() + 1));
         if (inserted) paths.emplace(it->second, path);

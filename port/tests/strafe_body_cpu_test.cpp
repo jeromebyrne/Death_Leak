@@ -14,7 +14,7 @@ public:
     std::unordered_map<std::string, render::TextureId> textures;
     std::unordered_map<render::TextureId, std::string> paths;
     std::vector<render::Sprite> drawn;
-    bool Initialize(const char*, int, int, std::string&) override { return true; }
+    bool Initialize(const char*, int, int, bool, std::string&) override { return true; }
     render::TextureId LoadTexture(const std::string& path, std::string&) override {
         auto [it, added] = textures.try_emplace(path, static_cast<render::TextureId>(textures.size()+1));
         if (added) paths.emplace(it->second, path);
@@ -116,7 +116,8 @@ int main() {
     // 30 FPS XML entry is used before the 47.7 FPS Player dry rate is stored.
     update(.030f, -600.f, rightBack, -1);
     assert(body().texture == frame(19) && !body().flipX);
-    assert(spy.drawn.size() == 1); // No authored StrafeBack arm sequence.
+    assert(spy.drawn.size() == 2); // Body and held aim line; no authored StrafeBack arm.
+    assert(spy.drawn.back().texture == aimId && spy.drawn.back().tint.a == 255);
     update(.001f, -600.f, rightBack, -1);
     assert(body().texture == frame(18)); // .031 > 1/47.7; stored rate applies now.
     update(.001f, -600.f, rightBack, -1);
@@ -242,7 +243,9 @@ int main() {
         slowSpy.drawn.clear();
         slowScene.Draw(slowSpy, slowScene.PlayerX(), slowScene.PlayerY(),
                        slowScene.PlayerX(), slowScene.PlayerY());
-        assert(slowSpy.drawn.size() == 1);
+        assert(slowSpy.drawn.size() == 2); // Body and held aim line.
+        assert(slowSpy.paths.at(slowSpy.drawn[1].texture) == "Game/Media/aim_line.png");
+        assert(slowSpy.drawn[1].tint.a == 255);
         return slowSpy.paths.at(slowSpy.drawn[0].texture);
     };
     auto slowUpdate = [&](float dt) {
