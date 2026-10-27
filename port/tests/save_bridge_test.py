@@ -138,7 +138,9 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
     village = 'Game/XmlFiles/levels/village_central.xml'
     village_start = root / 'village-smash-start.dl5'
     village_start.write_text('DL5\n' + village + '\n7470.876953 -1538.940674 25 100\nB:0\nU:kDownwardDash\n')
-    village_route = 'R:65,E:40,R:50,E:35,M:1,.:240'
+    # A held jump catches the last orbiting reward; idle alone leaves one
+    # pending on the exact fixed clock. Keep all eight credits/persistence.
+    village_route = 'R:65,E:40,R:50,E:35,M:1,.:240,J:30,.:120'
     village_saved = root / 'village-smash-earned.dl5'
     village_result = smash_trace(village_start, village_route, village_saved)
     assert 'Smashed ' + village + ' at frame 190 spawned_orbs=8' in village_result, village_result
@@ -490,15 +492,27 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
     edge_after = subprocess.run(edge_cmd + ['--script', 'I:753'],
                                 capture_output=True, text=True, check=True)
     assert f'Health upgrade collected {edge} at frame 752 max_health=45' in edge_after.stdout, edge_after.stdout
-    # Conversely x=-85 overlaps before the spawn-frame move, then leaves the
-    # pickup behind. A 0.05-second fixed step completes exactly one hold on
-    # that visited spawn frame, proving pre-motion overlap is honored too.
+    # Conversely x=-55 overlaps the pickup before each of its first three
+    # updates, but misses after the third move (x42.7875). At production's
+    # capped 60-Hz step the third pre-motion visit completes the 0.05s hold;
+    # testing post-motion overlap would see only two frames and fail. The
+    # historical --fixed-dt0.05 fixture is invalid under the production cap.
     exit_edge = 'port/tests/fixtures/health_pickup_overlap_exit.xml'
-    exit_run = subprocess.run(['port/build/deathleak-linux', '--play', exit_edge,
-                               '--script', 'I:250', '--fixed-dt', '0.05',
-                               '--simulate-only'], capture_output=True, text=True, check=True)
-    assert f'Health devil reward spawned {exit_edge} at frame 249' in exit_run.stdout, exit_run.stdout
-    assert f'Health upgrade collected {exit_edge} at frame 249 max_health=45' in exit_run.stdout, exit_run.stdout
+    exit_cmd = ['port/build/deathleak-linux', '--play', exit_edge,
+                '--fixed-dt', '0.0166667', '--simulate-only']
+    exit_before = subprocess.run(exit_cmd + ['--script', 'I:751'],
+                                 capture_output=True, text=True, check=True)
+    assert f'Health devil reward spawned {exit_edge} at frame 749' in exit_before.stdout, exit_before.stdout
+    assert 'Health upgrade collected ' not in exit_before.stdout and 'max_health=25' in exit_before.stdout, exit_before.stdout
+    exit_run = subprocess.run(exit_cmd + ['--script', 'I:752'],
+                              capture_output=True, text=True, check=True)
+    assert f'Health upgrade collected {exit_edge} at frame 751 max_health=45' in exit_run.stdout, exit_run.stdout
+    # Prove the post-third-move geometry independently on an unheld run.
+    exit_moved = subprocess.run(exit_cmd + ['--script', 'I:4,.:748'],
+                                capture_output=True, text=True, check=True)
+    pickup_x = re.search(r'Health upgrade pickup state x=([^\s]+)', exit_moved.stdout)
+    assert pickup_x and abs(float(pickup_x[1]) - 42.7875) < .001, exit_moved.stdout
+    assert abs(float(pickup_x[1]) - (-55)) > (128.959793 + 50) / 2
     # AddGameObject re-sorts on insertion: its kPlayer pickup precedes a
     # kGroundFront key, even though the key is earlier in XML. Neither target
     # overlaps until the first post-spawn movement tick, so there is no prior

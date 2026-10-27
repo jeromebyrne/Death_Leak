@@ -166,67 +166,67 @@ printf '%s\n' "$east_route" | grep -q 'Entered Game/XmlFiles/levels/waterfall_bo
 printf '%s\n' "$east_route" | grep -q 'Entered Game/XmlFiles/levels/underwater_cave.xml'
 # Current fixed-update orb-follow ordering yields 15 distinct pickups on this route.
 printf '%s\n' "$east_route" | grep -q 'underwater_cave.xml player=.*orbs=15 .*balance=15'
-# A rightward held jump at the authored waterfall-top gap (frame 710)
+# A rightward held jump at the authored waterfall-top gap (frame 711)
 # crosses its fall trigger and reaches forest 2 from the original forest-1
 # spawn. Normal knife fire then carries the same, unmodified run into village
 # central; no loaded balance, warp, or test-hit injection is used.
 continuous_save=port/build/continuous-village-save.txt
-continuous_route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script R:710,E:40,B:4500 --fixed-dt 0.0166667 --simulate-only --save-file "$continuous_save")
+continuous_route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script R:711,E:40,B:4515 --fixed-dt 0.0166667 --simulate-only --save-file "$continuous_save")
 printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 398 .*waterfall_top.xml'
-printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 1058 .*forest_exploration_2.xml'
-printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 1714 .*forest_exploration_barn.xml'
-printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 2714 .*village_forts.xml'
-printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 4037 .*village_central.xml'
-printf '%s\n' "$continuous_route" | grep -q 'village_central.xml player=(7287.18,-1525.13) orbs=99 .*health=1 .*balance=99'
+printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 1074 .*forest_exploration_2.xml'
+printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 1730 .*forest_exploration_barn.xml'
+printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 2730 .*village_forts.xml'
+printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 4053 .*village_central.xml'
+printf '%s\n' "$continuous_route" | grep -q 'village_central.xml player=(7287.18,-1525.13) orbs=101 .*health=4 .*balance=101'
 python3 - <<'PYTEST'
 from pathlib import Path
 lines = Path('port/build/continuous-village-save.txt').read_text().splitlines()
 orb_ids = [line for line in lines if line.startswith('Game/XmlFiles/levels/') and '#' in line]
-assert len(orb_ids) == len(set(orb_ids)) == 99, (len(orb_ids), len(set(orb_ids)))
-assert 'B:99' in lines
+assert len(orb_ids) == len(set(orb_ids)) == 101, (len(orb_ids), len(set(orb_ids)))
+assert 'B:101' in lines
 PYTEST
 # A single uninterrupted forest-spawn run combines the earned east itinerary
-# with a westward return through grass 3 into the arena. The east-side 190
-# includes its forest pickups; the 227 endpoint is 227 unique IDs, not 190+227.
-# This 227-orb intermediate stop dies under ordinary continued left movement;
+# with a westward return through grass 3 into the arena. The east-side 191
+# includes its forest pickups; the 228 endpoint is 228 unique IDs, not a sum.
+# The 228-orb intermediate stop dies under 500 further left-control frames;
 # the timed jump/fire itinerary below survives the arena and reaches sea 1.
 combined_save=port/build/combined-east-west-save.txt
-combined_prefix=R:710,E:40,B:4480,E:40,B:50,E:40,B:50,E:40,B:3400,L:3410,Q:40,L:4640,Q:40
+combined_prefix=R:711,E:40,B:4495,E:40,B:50,E:40,B:50,E:40,B:3400,L:3410,Q:40,L:4640,Q:40
 combined_route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$combined_prefix,L:1826,Q:40,L:260" --fixed-dt 0.0166667 --simulate-only --save-file "$combined_save")
-printf '%s\n' "$combined_route" | grep -q 'Trigger at frame 17306 from .*waterfall_top.xml .*forest_exploration_1.xml'
-printf '%s\n' "$combined_route" | grep -q 'Trigger at frame 17947 from .*forest_exploration_1.xml .*grass_exploration_3.xml'
-printf '%s\n' "$combined_route" | grep -q 'Trigger at frame 18740 from .*grass_exploration_3.xml .*first_ninja_arena.xml'
-printf '%s\n' "$combined_route" | grep -q 'first_ninja_arena.xml player=(4794.17,-1780.42) orbs=227 .*health=1 .*balance=227'
+printf '%s\n' "$combined_route" | grep -q 'Trigger at frame 17322 from .*waterfall_top.xml .*forest_exploration_1.xml'
+printf '%s\n' "$combined_route" | grep -q 'Trigger at frame 17963 from .*forest_exploration_1.xml .*grass_exploration_3.xml'
+printf '%s\n' "$combined_route" | grep -q 'Trigger at frame 18756 from .*grass_exploration_3.xml .*first_ninja_arena.xml'
+printf '%s\n' "$combined_route" | grep -q 'first_ninja_arena.xml player=(4794.17,-1780.42) orbs=228 .*health=4 .*balance=228'
 if printf '%s\n' "$combined_route" | grep -q 'Player died'; then exit 1; fi
 python3 - <<'PYCOMBINED'
 from pathlib import Path
 lines = Path('port/build/combined-east-west-save.txt').read_text().splitlines()
 orb_ids = [line for line in lines if line.startswith('Game/XmlFiles/levels/') and '#' in line]
-assert len(orb_ids) == len(set(orb_ids)) == 227, (len(orb_ids), len(set(orb_ids)))
-assert 'B:227' in lines
+assert len(orb_ids) == len(set(orb_ids)) == 228, (len(orb_ids), len(set(orb_ids)))
+assert 'B:228' in lines
 assert any('grass_exploration_3.xml#' in orb for orb in orb_ids)
 assert any('first_ninja_arena.xml#' in orb for orb in orb_ids)
 PYCOMBINED
-combined_overrun=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$combined_prefix,L:1826,Q:40,L:300" --fixed-dt 0.0166667 --simulate-only)
-printf '%s\n' "$combined_overrun" | grep -q 'Player died at frame 19109 in Game/XmlFiles/levels/first_ninja_arena.xml'
+combined_overrun=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$combined_prefix,L:1826,Q:40,L:500" --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$combined_overrun" | grep -q 'Player died at frame 19215 in Game/XmlFiles/levels/first_ninja_arena.xml'
 # Normal left-fire intercepts the close arena shot; a held left+jump clears
 # its wall. Timed jumps in grass 1/2 then reach cliff and sea 1. This remains
 # one uninterrupted forest-spawn simulation with earned IDs only.
 combined_sea_save=port/build/combined-sea1-save.txt
 combined_sea_script="$combined_prefix,L:1826,Q:40,L:245,Q:80,N:100,Q:80,N:960,Q:40,N:710,Q:40,N:50,Q:40,N:160,Q:40,N:2200"
 combined_sea=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$combined_sea_script" --fixed-dt 0.0166667 --simulate-only --save-file "$combined_sea_save")
-printf '%s\n' "$combined_sea" | grep -q 'Trigger at frame 19763 from .*first_ninja_arena.xml .*grass_exploration_1.xml'
-printf '%s\n' "$combined_sea" | grep -q 'Trigger at frame 20554 from .*grass_exploration_1.xml .*grass_exploration_2.xml'
-printf '%s\n' "$combined_sea" | grep -q 'Trigger at frame 21713 from .*grass_exploration_2.xml .*cliff.xml'
-printf '%s\n' "$combined_sea" | grep -q 'Trigger at frame 23326 from .*cliff.xml .*sea_1.xml'
-printf '%s\n' "$combined_sea" | grep -q 'sea_1.xml player=(-5761.85,-1266.6) orbs=290 .*health=1 .*balance=290'
+printf '%s\n' "$combined_sea" | grep -q 'Trigger at frame 19779 from .*first_ninja_arena.xml .*grass_exploration_1.xml'
+printf '%s\n' "$combined_sea" | grep -q 'Trigger at frame 20570 from .*grass_exploration_1.xml .*grass_exploration_2.xml'
+printf '%s\n' "$combined_sea" | grep -q 'Trigger at frame 21729 from .*grass_exploration_2.xml .*cliff.xml'
+printf '%s\n' "$combined_sea" | grep -q 'Trigger at frame 23342 from .*cliff.xml .*sea_1.xml'
+printf '%s\n' "$combined_sea" | grep -q 'sea_1.xml player=(-5761.85,-1266.6) orbs=291 .*health=1 .*balance=291'
 if printf '%s\n' "$combined_sea" | grep -q 'Player died'; then exit 1; fi
 python3 - <<'PYSEA'
 from pathlib import Path
 lines = Path('port/build/combined-sea1-save.txt').read_text().splitlines()
 orb_ids = [line for line in lines if line.startswith('Game/XmlFiles/levels/') and '#' in line]
-assert len(orb_ids) == len(set(orb_ids)) == 290, (len(orb_ids), len(set(orb_ids)))
-assert 'B:290' in lines
+assert len(orb_ids) == len(set(orb_ids)) == 291, (len(orb_ids), len(set(orb_ids)))
+assert 'B:291' in lines
 for level in ('grass_exploration_1.xml', 'grass_exploration_2.xml', 'cliff.xml'):
     assert any(level + '#' in orb for orb in orb_ids), level
 PYSEA
@@ -235,40 +235,40 @@ PYSEA
 # corridor stops at the authored id-30 solid wall; this is not forest return.
 combined_sea_return_save=port/build/combined-sea-return-save.txt
 combined_sea_return=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$combined_sea_script,R:1300" --fixed-dt 0.0166667 --simulate-only --save-file "$combined_sea_return_save")
-printf '%s\n' "$combined_sea_return" | grep -q 'Trigger at frame 23880 from .*sea_1.xml .*cliff.xml'
-printf '%s\n' "$combined_sea_return" | grep -q 'cliff.xml player=(-1500.15,-944.093) orbs=296 .*health=1 .*balance=296'
+printf '%s\n' "$combined_sea_return" | grep -q 'Trigger at frame 23896 from .*sea_1.xml .*cliff.xml'
+printf '%s\n' "$combined_sea_return" | grep -q 'cliff.xml player=(-1500.15,-944.093) orbs=297 .*health=1 .*balance=297'
 if printf '%s\n' "$combined_sea_return" | grep -q 'Player died'; then exit 1; fi
 python3 - <<'PYSEARETURN'
 from pathlib import Path
 prior = {line for line in Path('port/build/combined-sea1-save.txt').read_text().splitlines() if line.startswith('Game/XmlFiles/levels/') and '#' in line}
 lines = Path('port/build/combined-sea-return-save.txt').read_text().splitlines()
 earned = [line for line in lines if line.startswith('Game/XmlFiles/levels/') and '#' in line]
-assert len(earned) == len(set(earned)) == 296
+assert len(earned) == len(set(earned)) == 297
 assert len(set(earned) - prior) == 6
 assert all('cliff.xml#' in orb for orb in set(earned) - prior)
-assert 'B:296' in lines
+assert 'B:297' in lines
 PYSEARETURN
 # The same forest-start run reverses on the upper cliff route, traverses
 # grass 2/1, wall-jumps over both authored arena solids, and returns to the
-# real forest-1 scroll. Its 306 unique earned orbs are insufficient for 375.
+# real forest-1 scroll. Its 307 unique earned orbs are insufficient for 375.
 upper_return_save=port/build/upper-return-save.txt
 upper_return_script="$combined_prefix,L:1826,Q:40,L:245,Q:80,N:100,Q:80,N:960,Q:40,N:710,Q:40,N:50,Q:40,N:160,Q:40,N:1550,B:2560,E:80,B:2500,E:20,B:1,E:80,B:2000,E:20,B:1,E:80,B:1250,J:25,I:31,P:1"
 upper_return=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$upper_return_script" --fixed-dt 0.0166667 --simulate-only --combat-state --save-file "$upper_return_save")
-printf '%s\n' "$upper_return" | grep -q 'Trigger at frame 24213 from .*cliff.xml .*grass_exploration_2.xml'
-printf '%s\n' "$upper_return" | grep -q 'Trigger at frame 25369 from .*grass_exploration_2.xml .*grass_exploration_1.xml'
-printf '%s\n' "$upper_return" | grep -q 'Trigger at frame 30321 from .*first_ninja_arena.xml .*grass_exploration_3.xml'
-printf '%s\n' "$upper_return" | grep -q 'Trigger at frame 31103 from .*grass_exploration_3.xml .*forest_exploration_1.xml'
-printf '%s\n' "$upper_return" | grep -q 'Opened kDeflection upgrade modal at frame 31587 cost=375 balance=306'
-printf '%s\n' "$upper_return" | grep -q 'Not enough orbs for kDeflection at frame 31589 balance=306'
-printf '%s\n' "$upper_return" | grep -q 'forest_exploration_1.xml player=(1176.53,3381.52) orbs=306 .*health=1 .*balance=306'
+printf '%s\n' "$upper_return" | grep -q 'Trigger at frame 24229 from .*cliff.xml .*grass_exploration_2.xml'
+printf '%s\n' "$upper_return" | grep -q 'Trigger at frame 25385 from .*grass_exploration_2.xml .*grass_exploration_1.xml'
+printf '%s\n' "$upper_return" | grep -q 'Trigger at frame 30337 from .*first_ninja_arena.xml .*grass_exploration_3.xml'
+printf '%s\n' "$upper_return" | grep -q 'Trigger at frame 31119 from .*grass_exploration_3.xml .*forest_exploration_1.xml'
+printf '%s\n' "$upper_return" | grep -q 'Opened kDeflection upgrade modal at frame 31603 cost=375 balance=307'
+printf '%s\n' "$upper_return" | grep -q 'Not enough orbs for kDeflection at frame 31605 balance=307'
+printf '%s\n' "$upper_return" | grep -q 'forest_exploration_1.xml player=(1176.52,3381.52) orbs=307 .*health=1 .*balance=307'
 printf '%s\n' "$upper_return" | grep -q 'Deflection unlocked=0 count=0'
 if printf '%s\n' "$upper_return" | grep -q 'Player died'; then exit 1; fi
 python3 - <<'PYTEST'
 from pathlib import Path
 lines = Path('port/build/upper-return-save.txt').read_text().splitlines()
 earned = [line for line in lines if line.startswith('Game/XmlFiles/levels/') and '#' in line]
-assert len(earned) == len(set(earned)) == 306
-assert 'B:306' in lines
+assert len(earned) == len(set(earned)) == 307
+assert 'B:307' in lines
 assert 'U:kDeflection' not in lines
 for level in ('cliff.xml', 'grass_exploration_2.xml', 'grass_exploration_1.xml', 'first_ninja_arena.xml'):
     assert any(level + '#' in orb for orb in earned), level
@@ -278,12 +278,12 @@ PYTEST
 # agriculture earn 21 additional authored IDs while preserving the same
 # uninterrupted forest-start scroll return. They do not reach the price.
 optimized_upper_save=port/build/optimized-upper-save.txt
-optimized_upper_script="R:710,E:40,B:1200,E:40,B:1060,E:40,B:2140,E:40,B:50,E:40,B:50,E:40,B:800,E:40,B:2160,E:40,B:360,Q:40,L:20,Q:40,L:250,Q:40,L:2000,Q:40,L:980,Q:40,L:4640,Q:40,L:1826,Q:40,L:245,Q:80,N:100,Q:80,N:960,Q:40,N:710,Q:40,N:50,Q:40,N:160,Q:40,N:1550,B:2560,E:80,B:2500,E:20,B:1,E:80,B:2000,E:20,B:1,E:80,B:1250,J:25,I:31,P:1"
+optimized_upper_script="R:711,E:40,B:1215,E:40,B:1060,E:40,B:2140,E:40,B:50,E:40,B:50,E:40,B:800,E:40,B:2160,E:40,B:360,Q:40,L:20,Q:40,L:250,Q:40,L:2000,Q:40,L:980,Q:40,L:4640,Q:40,L:1826,Q:40,L:245,Q:80,N:100,Q:80,N:960,Q:40,N:710,Q:40,N:50,Q:40,N:160,Q:40,N:1550,B:2560,E:80,B:2500,E:20,B:1,E:80,B:2000,E:20,B:1,E:80,B:1250,J:25,I:31,P:1"
 optimized_upper=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$optimized_upper_script" --fixed-dt 0.0166667 --simulate-only --combat-state --save-file "$optimized_upper_save")
-printf '%s\n' "$optimized_upper" | grep -q 'Trigger at frame 31103 from .*grass_exploration_3.xml .*forest_exploration_1.xml'
-printf '%s\n' "$optimized_upper" | grep -q 'Opened kDeflection upgrade modal at frame 31587 cost=375 balance=327'
-printf '%s\n' "$optimized_upper" | grep -q 'Not enough orbs for kDeflection at frame 31589 balance=327'
-printf '%s\n' "$optimized_upper" | grep -q 'forest_exploration_1.xml player=(1176.53,3381.52) orbs=327 .*health=1 .*balance=327'
+printf '%s\n' "$optimized_upper" | grep -q 'Trigger at frame 31119 from .*grass_exploration_3.xml .*forest_exploration_1.xml'
+printf '%s\n' "$optimized_upper" | grep -q 'Opened kDeflection upgrade modal at frame 31603 cost=375 balance=328'
+printf '%s\n' "$optimized_upper" | grep -q 'Not enough orbs for kDeflection at frame 31605 balance=328'
+printf '%s\n' "$optimized_upper" | grep -q 'forest_exploration_1.xml player=(1176.52,3381.52) orbs=328 .*health=1 .*balance=328'
 printf '%s\n' "$optimized_upper" | grep -q 'Deflection unlocked=0 count=0'
 if printf '%s\n' "$optimized_upper" | grep -q 'Player died'; then exit 1; fi
 python3 - <<'PYOPTIMIZED'
@@ -292,10 +292,10 @@ old = Path('port/build/upper-return-save.txt').read_text().splitlines()
 new = Path('port/build/optimized-upper-save.txt').read_text().splitlines()
 ids = lambda lines: [line for line in lines if line.startswith('Game/XmlFiles/levels/') and '#' in line]
 prior, earned = set(ids(old)), ids(new)
-assert len(prior) == 306
-assert len(earned) == len(set(earned)) == 327
+assert len(prior) == 307
+assert len(earned) == len(set(earned)) == 328
 assert prior <= set(earned) and len(set(earned) - prior) == 21
-assert 'B:327' in new and 'U:kDeflection' not in new
+assert 'B:328' in new and 'U:kDeflection' not in new
 for level in ('forest_exploration_barn.xml', 'village_forts.xml', 'village_shrine.xml', 'village_agri.xml'):
     assert any(level + '#' in orb for orb in set(earned) - prior), level
 PYOPTIMIZED
@@ -304,12 +304,12 @@ PYOPTIMIZED
 # central, shrine, and agriculture leg collect 16 new distinct authored IDs
 # without changing the surviving upper-cliff scroll return.
 refined_upper_save=port/build/refined-upper-save.txt
-refined_upper_script="R:710,E:40,B:1200,E:40,B:1060,E:40,B:260,E:40,B:760,E:40,B:160,E:40,B:460,E:40,B:340,E:40,B:50,E:40,B:50,E:40,B:50,E:40,B:710,E:40,B:160,E:40,B:760,E:40,B:1060,E:40,B:60,E:40,B:360,Q:40,L:20,Q:40,L:250,Q:40,L:2000,Q:40,L:980,Q:40,L:4640,Q:40,L:1826,Q:40,L:245,Q:80,N:100,Q:80,N:960,Q:40,N:710,Q:40,N:50,Q:40,N:160,Q:40,N:1550,B:2560,E:80,B:2500,E:20,B:1,E:80,B:2000,E:20,B:1,E:80,B:1250,J:25,I:31,P:1"
+refined_upper_script="R:711,E:40,B:1215,E:40,B:1060,E:40,B:260,E:40,B:760,E:40,B:160,E:40,B:460,E:40,B:340,E:40,B:50,E:40,B:50,E:40,B:50,E:40,B:710,E:40,B:160,E:40,B:760,E:40,B:1060,E:40,B:60,E:40,B:360,Q:40,L:20,Q:40,L:250,Q:40,L:2000,Q:40,L:980,Q:40,L:4640,Q:40,L:1826,Q:40,L:245,Q:80,N:100,Q:80,N:960,Q:40,N:710,Q:40,N:50,Q:40,N:160,Q:40,N:1550,B:2560,E:80,B:2500,E:20,B:1,E:80,B:2000,E:20,B:1,E:80,B:1250,J:25,I:31,P:1"
 refined_upper=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$refined_upper_script" --fixed-dt 0.0166667 --simulate-only --combat-state --save-file "$refined_upper_save")
-printf '%s\n' "$refined_upper" | grep -q 'Trigger at frame 31103 from .*grass_exploration_3.xml .*forest_exploration_1.xml'
-printf '%s\n' "$refined_upper" | grep -q 'Opened kDeflection upgrade modal at frame 31587 cost=375 balance=343'
-printf '%s\n' "$refined_upper" | grep -q 'Not enough orbs for kDeflection at frame 31589 balance=343'
-printf '%s\n' "$refined_upper" | grep -q 'forest_exploration_1.xml player=(1176.53,3381.52) orbs=343 .*health=1 .*balance=343'
+printf '%s\n' "$refined_upper" | grep -q 'Trigger at frame 31119 from .*grass_exploration_3.xml .*forest_exploration_1.xml'
+printf '%s\n' "$refined_upper" | grep -q 'Opened kDeflection upgrade modal at frame 31603 cost=375 balance=344'
+printf '%s\n' "$refined_upper" | grep -q 'Not enough orbs for kDeflection at frame 31605 balance=344'
+printf '%s\n' "$refined_upper" | grep -q 'forest_exploration_1.xml player=(1176.52,3381.52) orbs=344 .*health=1 .*balance=344'
 printf '%s\n' "$refined_upper" | grep -q 'Deflection unlocked=0 count=0'
 if printf '%s\n' "$refined_upper" | grep -q 'Player died'; then exit 1; fi
 python3 - <<'PYREFINED'
@@ -319,8 +319,8 @@ prior = Path('port/build/optimized-upper-save.txt').read_text().splitlines()
 current = Path('port/build/refined-upper-save.txt').read_text().splitlines()
 ids = lambda lines: [line for line in lines if line.startswith('Game/XmlFiles/levels/') and '#' in line]
 old, earned = set(ids(prior)), ids(current)
-assert len(old) == 327
-assert len(earned) == len(set(earned)) == 343
+assert len(old) == 328
+assert len(earned) == len(set(earned)) == 344
 assert old <= set(earned) and len(set(earned) - old) == 16
 assert Counter(x.split('/')[-1].split('#')[0] for x in set(earned) - old) == {
     'village_forts.xml': 3,
@@ -328,7 +328,7 @@ assert Counter(x.split('/')[-1].split('#')[0] for x in set(earned) - old) == {
     'village_shrine.xml': 2,
     'village_agri.xml': 1,
 }
-assert 'B:343' in current and 'U:kDeflection' not in current
+assert 'B:344' in current and 'U:kDeflection' not in current
 PYREFINED
 
 # One continuous normal-control forest-start run earns exactly 375 distinct
@@ -338,17 +338,17 @@ PYREFINED
 earned_purchase_script=$(cat port/tests/routes/earned_deflection_purchase.script)
 earned_purchase_save=port/build/earned-purchase-save.txt
 earned_purchase=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$earned_purchase_script" --fixed-dt 0.0166667 --simulate-only --combat-state --save-file "$earned_purchase_save")
-printf '%s\n' "$earned_purchase" | grep -q 'Opened kDeflection upgrade modal at frame 31619 cost=375 balance=375'
-printf '%s\n' "$earned_purchase" | grep -q 'Purchased kDeflection at frame 31621 balance=0'
-printf '%s\n' "$earned_purchase" | grep -q 'forest_exploration_1.xml player=(1176.53,3381.52) orbs=375 .*health=1 .*balance=0'
+printf '%s\n' "$earned_purchase" | grep -q 'Opened kDeflection upgrade modal at frame 31635 cost=375 balance=375'
+printf '%s\n' "$earned_purchase" | grep -q 'Purchased kDeflection at frame 31637 balance=0'
+printf '%s\n' "$earned_purchase" | grep -q 'forest_exploration_1.xml player=(1176.52,3381.52) orbs=375 .*health=1 .*balance=0'
 printf '%s\n' "$earned_purchase" | grep -q 'Deflection unlocked=1 count=0'
 if printf '%s\n' "$earned_purchase" | grep -q 'Player died'; then exit 1; fi
-earned_deflect_suffix='R:550,E:40,B:1200,E:40,B:1060,E:40,B:260,E:40,B:760,E:40,B:160,E:40,B:460,E:40,B:340,E:40,B:50,E:40,B:50,E:40,B:50,E:40,B:550,E:40,B:70,M:25,B:25,E:40,B:160,E:40,B:760,E:40,B:1060,E:40,B:60,E:40,B:360'
+earned_deflect_suffix='R:566,E:40,B:1200,E:40,B:1060,E:40,B:260,E:40,B:760,E:40,B:160,E:40,B:460,E:40,B:340,E:40,B:50,E:40,B:50,E:40,B:50,E:40,B:550,E:40,B:70,M:25,B:25,E:40,B:160,E:40,B:760,E:40,B:1060,E:40,B:60,E:40,B:360'
 earned_deflect_save=port/build/earned-deflect-save.txt
 earned_deflect=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$earned_purchase_script,$earned_deflect_suffix" --fixed-dt 0.0166667 --simulate-only --combat-state --save-file "$earned_deflect_save")
-printf '%s\n' "$earned_deflect" | grep -q 'Purchased kDeflection at frame 31621 balance=0'
-printf '%s\n' "$earned_deflect" | grep -q 'Trigger at frame 37304 from .*village_central.xml .*village_shrine.xml'
-printf '%s\n' "$earned_deflect" | grep -q 'village_agri.xml player=(1951.18,-1278.17) orbs=383 .*health=4 .*balance=8 .*spawned=18'
+printf '%s\n' "$earned_deflect" | grep -q 'Purchased kDeflection at frame 31637 balance=0'
+printf '%s\n' "$earned_deflect" | grep -q 'Trigger at frame 37336 from .*village_central.xml .*village_shrine.xml'
+printf '%s\n' "$earned_deflect" | grep -q 'village_agri.xml player=(1951.18,-1278.17) orbs=383 .*health=1 .*balance=8 .*spawned=18'
 printf '%s\n' "$earned_deflect" | grep -q 'Deflection unlocked=1 count=1'
 if printf '%s\n' "$earned_deflect" | grep -q 'Player died'; then exit 1; fi
 python3 - <<'PYEARNEDEDFLECT'
@@ -369,15 +369,15 @@ PYEARNEDEDFLECT
 earned_dojo_hut_suffix=$(cat port/tests/routes/earned_dojo_hut_suffix.script)
 earned_dojo_hut_save=port/build/earned-dojo-hut-save.txt
 earned_dojo_hut=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$earned_purchase_script,$earned_deflect_suffix,$earned_dojo_hut_suffix" --fixed-dt 0.0166667 --simulate-only --combat-state --save-file "$earned_dojo_hut_save")
-printf '%s\n' "$earned_dojo_hut" | grep -q 'Purchased kDeflection at frame 31621 balance=0'
-printf '%s\n' "$earned_dojo_hut" | grep -q 'Collected key dojo at frame 40444'
-printf '%s\n' "$earned_dojo_hut" | grep -q 'Door at frame 42198 from .*village_shrine.xml to .*dojo_front.xml'
-printf '%s\n' "$earned_dojo_hut" | grep -q 'Unlocked door dojo at frame 42428'
-printf '%s\n' "$earned_dojo_hut" | grep -q 'Door at frame 42511 from .*dojo_front.xml to .*dojo.xml'
-printf '%s\n' "$earned_dojo_hut" | grep -q 'Collected key village_hut at frame 42658'
-printf '%s\n' "$earned_dojo_hut" | grep -q 'Trigger at frame 44229 from .*village_shrine.xml .*village_central.xml'
-printf '%s\n' "$earned_dojo_hut" | grep -q 'Unlocked door village_hut_entrance at frame 44747'
-printf '%s\n' "$earned_dojo_hut" | grep -q 'Door at frame 44830 from .*village_central.xml to .*village_hut.xml'
+printf '%s\n' "$earned_dojo_hut" | grep -q 'Purchased kDeflection at frame 31637 balance=0'
+printf '%s\n' "$earned_dojo_hut" | grep -q 'Collected key dojo at frame 40476'
+printf '%s\n' "$earned_dojo_hut" | grep -q 'Door at frame 42230 from .*village_shrine.xml to .*dojo_front.xml'
+printf '%s\n' "$earned_dojo_hut" | grep -q 'Unlocked door dojo at frame 42460'
+printf '%s\n' "$earned_dojo_hut" | grep -q 'Door at frame 42544 from .*dojo_front.xml to .*dojo.xml'
+printf '%s\n' "$earned_dojo_hut" | grep -q 'Collected key village_hut at frame 42690'
+printf '%s\n' "$earned_dojo_hut" | grep -q 'Trigger at frame 44261 from .*village_shrine.xml .*village_central.xml'
+printf '%s\n' "$earned_dojo_hut" | grep -q 'Unlocked door village_hut_entrance at frame 44779'
+printf '%s\n' "$earned_dojo_hut" | grep -q 'Door at frame 44863 from .*village_central.xml to .*village_hut.xml'
 printf '%s\n' "$earned_dojo_hut" | grep -q 'village_hut.xml player=(-205,-21.5506) orbs=388 keys=2 health=1 .*balance=13'
 printf '%s\n' "$earned_dojo_hut" | grep -q 'Deflection unlocked=1 count=1'
 if printf '%s\n' "$earned_dojo_hut" | grep -q 'Player died'; then exit 1; fi
@@ -405,7 +405,7 @@ PYBOATXML
 # key is required; neither a plain click nor a warmup-bypassing click sails.
 boat_early=$($bin --play port/tests/fixtures/boat_gate.xml --script I:4,R:38,I:2 --fixed-dt 0.0166667 --simulate-only)
 if printf '%s\n' "$boat_early" | grep -q 'Boat at frame'; then exit 1; fi
-boat_broken=$($bin --play port/tests/fixtures/boat_gate.xml --script R:43,I:4 --fixed-dt 0.0166667 --simulate-only)
+boat_broken=$($bin --play port/tests/fixtures/boat_gate.xml --script R:43,I:8 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$boat_broken" | grep -q 'Boat broken: requires has_repair_tools'
 printf '%s\n' "$boat_broken" | grep -q 'Simulation ended at port/tests/fixtures/boat_gate.xml'
 boat_repaired=$($bin --play port/tests/fixtures/boat_gate.xml --script I:4,R:43,I:4 --fixed-dt 0.0166667 --simulate-only --save-file port/build/boat-repaired-save.txt)
@@ -546,14 +546,14 @@ earned_full_script=$(cat port/tests/routes/earned_full_ending.script)
 # return encounter and current one-health death without a four-minute GPU run.
 realtime_prefix=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$earned_full_script" --frames 13000 --fixed-dt 0.0166667 --simulate-only --simulate-wall-clock)
 printf '%s\n' "$realtime_prefix" | grep -q 'TEST-ONLY encounter clock follows fixed gameplay dt'
-printf '%s\n' "$realtime_prefix" | grep -q 'Player died at frame 12837 in Game/XmlFiles/levels/village_central.xml'
+printf '%s\n' "$realtime_prefix" | grep -q 'Player died at frame 12950 in Game/XmlFiles/levels/village_central.xml'
 printf '%s\n' "$realtime_prefix" | grep -q 'health=0 .*spawned=12 enemies=2'
-full_preboat=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$earned_full_script" --frames 57822 --fixed-dt 0.0166667 --simulate-only --save-file port/build/earned-full-preboat.txt)
-printf '%s\n' "$full_preboat" | grep -q 'Collected key granary at frame 25665'
-printf '%s\n' "$full_preboat" | grep -q 'Purchased kDeflection at frame 33211 balance=9'
-printf '%s\n' "$full_preboat" | grep -q 'Collected key dojo at frame 42034'
-printf '%s\n' "$full_preboat" | grep -q 'Collected key village_hut at frame 44248'
-printf '%s\n' "$full_preboat" | grep -q 'Collected key has_repair_tools at frame 49742'
+full_preboat=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$earned_full_script" --frames 57854 --fixed-dt 0.0166667 --simulate-only --save-file port/build/earned-full-preboat.txt)
+printf '%s\n' "$full_preboat" | grep -q 'Collected key granary at frame 25681'
+printf '%s\n' "$full_preboat" | grep -q 'Purchased kDeflection at frame 33227 balance=9'
+printf '%s\n' "$full_preboat" | grep -q 'Collected key dojo at frame 42066'
+printf '%s\n' "$full_preboat" | grep -q 'Collected key village_hut at frame 44280'
+printf '%s\n' "$full_preboat" | grep -q 'Collected key has_repair_tools at frame 49774'
 printf '%s\n' "$full_preboat" | grep -q 'Simulation ended at Game/XmlFiles/levels/cliff.xml.*orbs=406 keys=4 health=1 .*balance=31'
 python3 - <<'PYTEST'
 from pathlib import Path
@@ -567,9 +567,9 @@ assert 'U:kDeflection' in lines
 PYTEST
 printf 'stale progression\n' > port/build/earned-full-completion-save.txt
 full_end=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$earned_full_script" --fixed-dt 0.0166667 --simulate-only --combat-state --save-file port/build/earned-full-completion-save.txt)
-printf '%s\n' "$full_end" | grep -q 'Boat at frame 57822 from .*cliff.xml to .*sea_2.xml'
-printf '%s\n' "$full_end" | grep -q 'Final title DEATH LEAK at frame 58723'
-printf '%s\n' "$full_end" | grep -q 'EndStory at frame 59923'
+printf '%s\n' "$full_end" | grep -q 'Boat at frame 57854 from .*cliff.xml to .*sea_2.xml'
+printf '%s\n' "$full_end" | grep -q 'Final title DEATH LEAK at frame 58755'
+printf '%s\n' "$full_end" | grep -q 'EndStory at frame 59955'
 printf '%s\n' "$full_end" | grep -q 'Main menu return event after story completion'
 printf '%s\n' "$full_end" | grep -q 'orbs=406 keys=4 health=1 .*balance=31'
 printf '%s\n' "$full_end" | grep -q 'Deflection unlocked=1 count=1'
@@ -612,17 +612,17 @@ PYGRASS
 # entrance. This same forest-spawn simulation reaches shrine and agriculture;
 # every orb is a distinct collected authored object, never injected currency.
 extended_save=port/build/extended-village-save.txt
-extended_route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script R:710,E:40,B:4480,E:40,B:50,E:40,B:50,E:40,B:3400 --fixed-dt 0.0166667 --simulate-only --save-file "$extended_save")
-printf '%s\n' "$extended_route" | grep -q 'Trigger at frame 5785 .*village_shrine.xml'
-printf '%s\n' "$extended_route" | grep -q 'Trigger at frame 8206 .*village_agri.xml'
-printf '%s\n' "$extended_route" | grep -q 'village_agri.xml player=(2711.18,-1286.6) orbs=187 .*health=1 .*balance=187'
+extended_route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script R:711,E:40,B:4495,E:40,B:50,E:40,B:50,E:40,B:3400 --fixed-dt 0.0166667 --simulate-only --save-file "$extended_save")
+printf '%s\n' "$extended_route" | grep -q 'Trigger at frame 5801 .*village_shrine.xml'
+printf '%s\n' "$extended_route" | grep -q 'Trigger at frame 8222 .*village_agri.xml'
+printf '%s\n' "$extended_route" | grep -q 'village_agri.xml player=(2711.18,-1286.6) orbs=189 .*health=4 .*balance=189'
 if printf '%s\n' "$extended_route" | grep -q 'Player died'; then exit 1; fi
 python3 - <<'PYTEST'
 from pathlib import Path
 lines = Path('port/build/extended-village-save.txt').read_text().splitlines()
 orb_ids = [line for line in lines if line.startswith('Game/XmlFiles/levels/') and '#' in line]
-assert len(orb_ids) == len(set(orb_ids)) == 187, (len(orb_ids), len(set(orb_ids)))
-assert 'B:187' in lines
+assert len(orb_ids) == len(set(orb_ids)) == 189, (len(orb_ids), len(set(orb_ids)))
+assert 'B:189' in lines
 PYTEST
 # Agriculture's east edge is an authored 4,000-unit-tall SolidMovingSprite
 # (id 14), not a missing LevelTrigger. Its left face stops this route at
@@ -630,19 +630,19 @@ PYTEST
 # avoids the optional village well. The source Player sprite bounds overlap
 # the forts west trigger even though its narrower collision box is blocked.
 # A further held left+jump crosses waterfall top back to forest 1.
-agri_wall=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script R:710,E:40,B:4480,E:40,B:50,E:40,B:50,E:40,B:3600,E:40,R:200 --fixed-dt 0.0166667 --simulate-only)
-printf '%s\n' "$agri_wall" | grep -q 'Player died at frame 8952 in Game/XmlFiles/levels/village_agri.xml'
-printf '%s\n' "$agri_wall" | grep -q 'village_agri.xml player=(3519.8,-1288.5) orbs=191 .*health=0 .*balance=191'
+agri_wall=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script R:711,E:40,B:4495,E:40,B:50,E:40,B:50,E:40,B:3600,E:40,R:200 --fixed-dt 0.0166667 --simulate-only)
+printf '%s\n' "$agri_wall" | grep -q 'Player died at frame 8969 in Game/XmlFiles/levels/village_agri.xml'
+printf '%s\n' "$agri_wall" | grep -q 'village_agri.xml player=(3519.8,-1288.5) orbs=193 .*health=0 .*balance=193'
 return_save=port/build/agri-return-save.txt
-return_route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script R:710,E:40,B:4480,E:40,B:50,E:40,B:50,E:40,B:3400,L:3410,Q:40,L:4640,Q:40,L:800 --fixed-dt 0.0166667 --simulate-only --save-file "$return_save")
-printf '%s\n' "$return_route" | grep -q 'Trigger at frame 9527 from .*village_agri.xml .*village_shrine.xml'
-printf '%s\n' "$return_route" | grep -q 'Trigger at frame 11943 from .*village_shrine.xml .*village_central.xml'
-printf '%s\n' "$return_route" | grep -q 'Trigger at frame 13701 from .*village_central.xml .*village_forts.xml'
-printf '%s\n' "$return_route" | grep -q 'Trigger at frame 15025 from .*village_forts.xml .*forest_exploration_barn.xml'
-printf '%s\n' "$return_route" | grep -q 'Trigger at frame 16010 from .*forest_exploration_barn.xml .*forest_exploration_2.xml'
-printf '%s\n' "$return_route" | grep -q 'Trigger at frame 16651 from .*forest_exploration_2.xml .*waterfall_top.xml'
-printf '%s\n' "$return_route" | grep -q 'Trigger at frame 17306 from .*waterfall_top.xml .*forest_exploration_1.xml'
-printf '%s\n' "$return_route" | grep -q 'forest_exploration_1.xml player=(-1078.02,3110.97) orbs=190 .*health=1 .*balance=190'
+return_route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script R:711,E:40,B:4495,E:40,B:50,E:40,B:50,E:40,B:3400,L:3410,Q:40,L:4640,Q:40,L:800 --fixed-dt 0.0166667 --simulate-only --save-file "$return_save")
+printf '%s\n' "$return_route" | grep -q 'Trigger at frame 9543 from .*village_agri.xml .*village_shrine.xml'
+printf '%s\n' "$return_route" | grep -q 'Trigger at frame 11959 from .*village_shrine.xml .*village_central.xml'
+printf '%s\n' "$return_route" | grep -q 'Trigger at frame 13717 from .*village_central.xml .*village_forts.xml'
+printf '%s\n' "$return_route" | grep -q 'Trigger at frame 15041 from .*village_forts.xml .*forest_exploration_barn.xml'
+printf '%s\n' "$return_route" | grep -q 'Trigger at frame 16026 from .*forest_exploration_barn.xml .*forest_exploration_2.xml'
+printf '%s\n' "$return_route" | grep -q 'Trigger at frame 16667 from .*forest_exploration_2.xml .*waterfall_top.xml'
+printf '%s\n' "$return_route" | grep -q 'Trigger at frame 17322 from .*waterfall_top.xml .*forest_exploration_1.xml'
+printf '%s\n' "$return_route" | grep -q 'forest_exploration_1.xml player=(-1078.01,3110.97) orbs=191 .*health=4 .*balance=191'
 # At the forts wall the player center is still outside trigger 13, but its
 # authored visual rectangle overlaps. Collision and trigger bounds differ.
 python3 - <<'PYGEOMETRY'
@@ -667,8 +667,8 @@ python3 - <<'PYTEST'
 from pathlib import Path
 lines = Path('port/build/agri-return-save.txt').read_text().splitlines()
 orb_ids = [line for line in lines if line.startswith('Game/XmlFiles/levels/') and '#' in line]
-assert len(orb_ids) == len(set(orb_ids)) == 190, (len(orb_ids), len(set(orb_ids)))
-assert 'B:190' in lines
+assert len(orb_ids) == len(set(orb_ids)) == 191, (len(orb_ids), len(set(orb_ids)))
+assert 'B:191' in lines
 PYTEST
 # Source SolidMovingSprite boundaries share geometry but not damage policy.
 # An attempted side overlap calls OnCollision once per simulated frame here;
@@ -681,7 +681,7 @@ solid_safe=$($bin --play port/tests/fixtures/solid_boundary_harmless.xml --scrip
 printf '%s\n' "$solid_safe" | grep -q 'player=(115.52,107.449) .*health=25 '
 # Forest 2's authored barn LevelEntry starts about 21 units embedded in its
 # ground strip. The one-frame shallow floor resolution preserves the route.
-# These independent branch checks supplement the connected 190-orb forest loop.
+# These independent branch checks supplement the connected 191-orb forest loop.
 village_route=$($bin --play Game/XmlFiles/levels/forest_exploration_2.xml --script R:3500 --fixed-dt 0.0166667 --simulate-only --save-file port/build/village-route-save.txt)
 printf '%s\n' "$village_route" | grep -q 'Trigger at frame 81 .*forest_exploration_barn.xml'
 printf '%s\n' "$village_route" | grep -q 'Trigger at frame 1081 .*village_forts.xml'
@@ -733,31 +733,33 @@ printf '%s\n' "$dojo_cancel" | grep -q 'Deflection unlocked=0 count=0'
 # Source Character::WillDeflectProjectile accepts only front-side, opposing
 # shots during melee phase 1 or 3. The feature flag represents an already
 # purchased upgrade in the Linux save; this fixture isolates combat gates.
+# Fixed-clock star arrival is frame107: retime every phase/facing discriminator
+# together; phase2 must reach the same swept-contact strip without deflecting.
 deflect_save=port/build/integration-deflection-save.txt
 make_deflect_save() {
     printf 'DL4\n%s\n0 107.44937 25 100\nU:kDeflection\n' "$1" > "$deflect_save"
 }
-deflect_locked=$($bin --play port/tests/fixtures/encounter_open.xml --script .:100,M:6 --fixed-dt 0.0166667 --simulate-only --combat-state)
+deflect_locked=$($bin --play port/tests/fixtures/encounter_open.xml --script .:102,M:6 --fixed-dt 0.0166667 --simulate-only --combat-state)
 printf '%s\n' "$deflect_locked" | grep -q 'health=25 .*shots=1'
 printf '%s\n' "$deflect_locked" | grep -q 'Deflection unlocked=0 count=0'
 printf '%s\n' "$deflect_locked" | grep -q 'Shot enemy .*deflected=0'
 make_deflect_save port/tests/fixtures/encounter_open.xml
-deflect_phase1=$($bin --load-save "$deflect_save" --script .:100,M:6 --fixed-dt 0.0166667 --simulate-only --combat-state)
+deflect_phase1=$($bin --load-save "$deflect_save" --script .:102,M:6 --fixed-dt 0.0166667 --simulate-only --combat-state)
 printf '%s\n' "$deflect_phase1" | grep -q 'health=25 .*shots=1'
 printf '%s\n' "$deflect_phase1" | grep -q 'Deflection unlocked=1 count=1'
 printf '%s\n' "$deflect_phase1" | grep -q 'Shot player .*vx=1350 .*deflected=1'
 grep -q '^U:kDeflection$' "$deflect_save"
 make_deflect_save port/tests/fixtures/encounter_open.xml
-deflect_phase2=$($bin --load-save "$deflect_save" --script .:88,M:18 --fixed-dt 0.0166667 --simulate-only --combat-state)
+deflect_phase2=$($bin --load-save "$deflect_save" --script .:90,M:18 --fixed-dt 0.0166667 --simulate-only --combat-state)
 printf '%s\n' "$deflect_phase2" | grep -q 'Deflection unlocked=1 count=0'
-printf '%s\n' "$deflect_phase2" | grep -q 'Shot enemy .*deflected=0'
+printf '%s\n' "$deflect_phase2" | grep -q 'Shot enemy x=74.0873 .*deflected=0'
 make_deflect_save port/tests/fixtures/encounter_open.xml
-deflect_phase3=$($bin --load-save "$deflect_save" --script .:80,M:40 --fixed-dt 0.0166667 --simulate-only --combat-state)
+deflect_phase3=$($bin --load-save "$deflect_save" --script .:82,M:40 --fixed-dt 0.0166667 --simulate-only --combat-state)
 printf '%s\n' "$deflect_phase3" | grep -q 'health=25 .*enemies=0 hits=1 kills=1'
 printf '%s\n' "$deflect_phase3" | grep -q 'Melee active=0 strikes=0'
 printf '%s\n' "$deflect_phase3" | grep -q 'Deflection unlocked=1 count=1'
 make_deflect_save port/tests/fixtures/encounter_open.xml
-deflect_behind=$($bin --load-save "$deflect_save" --script L:1,.:99,M:6 --fixed-dt 0.0166667 --simulate-only --combat-state)
+deflect_behind=$($bin --load-save "$deflect_save" --script L:1,.:101,M:6 --fixed-dt 0.0166667 --simulate-only --combat-state)
 printf '%s\n' "$deflect_behind" | grep -q 'Deflection unlocked=1 count=0'
 printf '%s\n' "$deflect_behind" | grep -q 'Shot enemy .*deflected=0'
 make_deflect_save port/tests/fixtures/encounter_skeleton_open.xml
@@ -767,18 +769,18 @@ printf '%s\n' "$deflect_skeleton" | grep -q 'Deflection unlocked=1 count=0'
 printf '%s\n' "$deflect_skeleton" | grep -q 'Shot enemy .*deflected=0'
 # AIStateRangeAttack: hold a 200-unit standoff and wind up for 0.25 s.
 range_warmup=$($bin --play port/tests/fixtures/encounter_open.xml --frames 90 --fixed-dt 0.0166667 --simulate-only --combat-state)
-printf '%s\n' "$range_warmup" | grep -q 'Enemy kNinja x=200 .*windup=0.049'
+printf '%s\n' "$range_warmup" | grep -q 'Enemy kNinja x=200 .*windup=0.0666667'
 printf '%s\n' "$range_warmup" | grep -q 'Enemy kNinja x=200 y=100 .*vy=0 grounded=1'
 falling=$($bin --play port/tests/fixtures/encounter_open.xml --frames 1 --fixed-dt 0.0166667 --simulate-only --combat-state)
-printf '%s\n' "$falling" | grep -q 'Enemy kNinja x=158 y=407.092 .*vy=-42.8572 grounded=0'
+printf '%s\n' "$falling" | grep -q 'Enemy kNinja x=158 y=407.092 .*vy=-42.8571 grounded=0'
 wall_enemy=$($bin --play port/tests/fixtures/encounter_npc_wall.xml --frames 90 --fixed-dt 0.0166667 --simulate-only --combat-state)
 printf '%s\n' "$wall_enemy" | grep -q 'Enemy kNinja x=175 y=100 .*grounded=1'
 box_enemy=$($bin --play port/tests/fixtures/encounter_npc_box.xml --frames 90 --fixed-dt 0.0166667 --simulate-only --combat-state)
 printf '%s\n' "$box_enemy" | grep -q 'Enemy kNinja x=200 y=300 .*grounded=1'
-open_shot=$($bin --play port/tests/fixtures/encounter_open.xml --frames 105 --fixed-dt 0.0166667 --simulate-only --combat-state)
-printf '%s\n' "$open_shot" | grep -q 'Shot enemy x=83.0809 y=103.445 .*vy=12.2994'
+open_shot=$($bin --play port/tests/fixtures/encounter_open.xml --frames 107 --fixed-dt 0.0166667 --simulate-only --combat-state)
+printf '%s\n' "$open_shot" | grep -q 'Shot enemy x=83.0811 y=103.445 .*vy=12.2994'
 # Original projectile terrain handling: the same shot is stopped by an authored wall.
-walled_shot=$($bin --play port/tests/fixtures/encounter_wall.xml --frames 105 --fixed-dt 0.0166667 --simulate-only --combat-state)
+walled_shot=$($bin --play port/tests/fixtures/encounter_wall.xml --frames 107 --fixed-dt 0.0166667 --simulate-only --combat-state)
 printf '%s\n' "$walled_shot" | grep -q 'spawned=1 enemies=1 .*shots=0'
 # Original Character::OnDamage kicks a non-player target 30 X units on
 # projectile impact. A direct injected hit is not a projectile and stays put.
@@ -795,9 +797,9 @@ printf '%s\n' "$range_kill" | grep -q 'spawned=1 enemies=0 .*kills=1'
 # the roll branch on the same positive-acceleration gate while grounded.
 jump_before=$($bin --play port/tests/fixtures/encounter_jump.xml --frames 119 --fixed-dt 0.0166667 --simulate-only --combat-state)
 printf '%s\n' "$jump_before" | grep -q 'Enemy kNinja x=175 y=100 .*jumps=0 rolls=0'
-jump_after=$($bin --play port/tests/fixtures/encounter_jump.xml --frames 125 --fixed-dt 0.0166667 --simulate-only --combat-state)
+jump_after=$($bin --play port/tests/fixtures/encounter_jump.xml --frames 126 --fixed-dt 0.0166667 --simulate-only --combat-state)
 printf '%s\n' "$jump_after" | grep -q 'Enemy kNinja x=175 y=195.143 .*grounded=0 .*jumps=1 rolls=0'
-roll_active=$($bin --play port/tests/fixtures/encounter_roll.xml --script R:125 --fixed-dt 0.0166667 --simulate-only --combat-state)
+roll_active=$($bin --play port/tests/fixtures/encounter_roll.xml --script R:126 --fixed-dt 0.0166667 --simulate-only --combat-state)
 printf '%s\n' "$roll_active" | grep -q 'Enemy kNinja .*jumps=0 rolls=1 roll=0.4166'
 # Simulation-only H injects a direct hit through Combat::DamageEnemy, the same
 # path used by knives. The skeleton's large source health keeps it alive long
@@ -808,7 +810,7 @@ six_hits=$($bin --play port/tests/fixtures/encounter_stun.xml --script .:90,H:1,
 printf '%s\n' "$six_hits" | grep -q 'grounded=1 combo=6 stun=2'
 mid_stun=$($bin --play port/tests/fixtures/encounter_stun.xml --script .:90,H:1,.:4,H:1,.:4,H:1,.:4,H:1,.:4,H:1,.:4,H:1,.:60 --fixed-dt 0.0166667 --simulate-only --combat-state)
 printf '%s\n' "$mid_stun" | grep -q 'windup=0 .*grounded=1 combo=0 stun=1'
-recovered=$($bin --play port/tests/fixtures/encounter_stun.xml --script .:90,H:1,.:4,H:1,.:4,H:1,.:4,H:1,.:4,H:1,.:4,H:1,.:120 --fixed-dt 0.0166667 --simulate-only --combat-state)
+recovered=$($bin --play port/tests/fixtures/encounter_stun.xml --script .:90,H:1,.:4,H:1,.:4,H:1,.:4,H:1,.:4,H:1,.:4,H:1,.:121 --fixed-dt 0.0166667 --simulate-only --combat-state)
 printf '%s\n' "$recovered" | grep -q 'windup=0.25 .*grounded=1 combo=0 stun=0'
 combo_expired=$($bin --play port/tests/fixtures/encounter_stun.xml --script .:90,H:1,.:35,H:1 --fixed-dt 0.0166667 --simulate-only --combat-state)
 printf '%s\n' "$combo_expired" | grep -q 'grounded=1 combo=1 stun=0'
@@ -824,7 +826,7 @@ printf '%s\n' "$teleport_active" | grep -q 'Enemy kNinja x=150 y=100 .*teleport=
 teleport_hit=$($bin --play port/tests/fixtures/encounter_teleport.xml --script L:140,.:380,H:1 --fixed-dt 0.0166667 --simulate-only --combat-state)
 printf '%s\n' "$teleport_hit" | grep -q 'enemies=1 hits=0'
 teleport_done=$($bin --play port/tests/fixtures/encounter_teleport.xml --script L:140,.:440 --fixed-dt 0.0166667 --simulate-only --combat-state)
-printf '%s\n' "$teleport_done" | grep -q 'Enemy kNinja x=-623.54 y=100 .*teleport=0 teleports=1'
+printf '%s\n' "$teleport_done" | grep -q 'Enemy kNinja x=-623.539 y=100 .*teleport=0 teleports=1'
 no_skeleton_teleport=$($bin --play port/tests/fixtures/encounter_teleport_skeleton.xml --script L:140,.:440 --fixed-dt 0.0166667 --simulate-only --combat-state)
 printf '%s\n' "$no_skeleton_teleport" | grep -q 'Enemy kSkeleton x=150 y=100 .*teleport=0 teleports=0'
 no_near_teleport=$($bin --play port/tests/fixtures/encounter_open.xml --frames 580 --fixed-dt 0.0166667 --simulate-only --combat-state)
@@ -848,24 +850,24 @@ printf '%s\n' "$restart" | grep -q 'health=25 focus=100'
 slope=$($bin --play port/tests/fixtures/slope_wall.xml --script R:90 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$slope" | grep -q 'player=(235.52,154.553).*grounded=1'
 combined_jump=$($bin --play port/tests/fixtures/slope_wall.xml --script .:60,Q:12 --fixed-dt 0.0166667 --simulate-only)
-printf '%s\n' "$combined_jump" | grep -q 'player=(-68.0002,295.329).*grounded=0'
+printf '%s\n' "$combined_jump" | grep -q 'player=(-68,295.329).*grounded=0'
 tap_jump=$($bin --play port/tests/fixtures/slope_wall.xml --script .:60,J:1,.:39 --fixed-dt 0.0166667 --simulate-only)
 held_jump=$($bin --play port/tests/fixtures/slope_wall.xml --script .:60,J:40 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$tap_jump" | grep -q 'player=(0,107.449).*grounded=1'
-printf '%s\n' "$held_jump" | grep -q 'player=(0,141.509).*grounded=0'
+printf '%s\n' "$held_jump" | grep -q 'player=(0,141.511).*grounded=0'
 solid_side=$($bin --play port/tests/fixtures/solid_box.xml --script R:30 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$solid_side" | grep -q 'player=(95.5201,107.449).*grounded=1'
 solid_top=$($bin --play port/tests/fixtures/solid_box.xml --script R:30,E:40 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$solid_top" | grep -q 'player=(235.52,407.449).*grounded=1'
 wall_jump=$($bin --play port/tests/fixtures/solid_box.xml --script R:30,J:1,R:19,E:1 --fixed-dt 0.0166667 --simulate-only)
-printf '%s\n' "$wall_jump" | grep -q 'player=(80.5201,158.244).*grounded=0'
+printf '%s\n' "$wall_jump" | grep -q 'player=(80.5201,158.245).*grounded=0'
 locked=$($bin --play port/tests/fixtures/key_door.xml --script R:43,I:90 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$locked" | grep -q 'Door locked: requires granary'
 printf '%s\n' "$locked" | grep -q 'Simulation ended at port/tests/fixtures/key_door.xml.*keys=0'
 key_door=$($bin --play port/tests/fixtures/key_door.xml --script I:4,R:43,I:110 --fixed-dt 0.0166667 --simulate-only --save-file port/build/key-door-save.txt)
 printf '%s\n' "$key_door" | grep -q 'Collected key granary at frame 2'
 printf '%s\n' "$key_door" | grep -q 'Unlocked door test_gate at frame 49'
-printf '%s\n' "$key_door" | grep -q 'Door at frame 132 from port/tests/fixtures/key_door.xml to port/tests/fixtures/door_destination.xml'
+printf '%s\n' "$key_door" | grep -q 'Door at frame 133 from port/tests/fixtures/key_door.xml to port/tests/fixtures/door_destination.xml'
 printf '%s\n' "$key_door" | grep -q 'player=(123,107.449).*keys=1'
 key_resume=$($bin --load-save port/build/key-door-save.txt --frames 1 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$key_resume" | grep -q 'keys=1'
@@ -898,4 +900,6 @@ for label in ('AMBIENT_LOG', 'WATERFALL_LOG'):
     samples = [(int(voices), int(size)) for voices, size in re.findall(r'Audio ambient streamed WAV voices=(\d+) authored=\d+ buffered_bytes=(\d+)', os.environ[label])]
     assert samples and all(0 < size <= voices * 131072 for voices, size in samples), (label, samples)
 PYTEST
+# Resolve all critical earned-save IDs to unchanged authored pickups.
+python3 port/tests/earned_route_provenance_test.py
 printf '%s\n' 'PASS: source-held-jump arena climb and exit, three-level route, burst/water fire, swim, focus cooldown, encounter, save/resume, drowning, landing/jump, combined jump, slope/wall, solid box, wall jump, death/restart, key/door gate, ghost flight, ranged warmup/terrain shots and kill, grounded NPC fall/wall/box, NPC combo/stun/recovery, NPC teleport timing/exclusion, ranged NPC jump/roll and projectile kickback, source-faithful player/NPC contact pass-through, grounded phase-three melee and its negative gates, DL3/DL4 compatibility, DL5 orb-balance persistence, authentic 375-orb purchase/debit and same-run authored ninja deflection, continuous dojo/hut key-door route, repair-gated boat transition, and retained completion count/language after source-style progression wipe'

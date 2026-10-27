@@ -1,6 +1,6 @@
 <level>
   <Player id="1">
-    <position x="-85" y="107.44937" depth_layer="kPlayer"/>
+    <position x="-55" y="107.44937" depth_layer="kPlayer"/>
     <dimensions width="181.393768" height="215.352036"/>
     <texture filename="Media/UI/player_silhouette.png"/>
   </Player>
