@@ -45,6 +45,7 @@
 #include <iomanip>
 #include <sstream>
 #include <optional>
+#include <tuple>
 #include "FilmFrameSelector.h"
 #include <limits>
 #include <sys/wait.h>
@@ -250,6 +251,7 @@ int main(int argc, char** argv) {
     bool fullFrameTopologyCheck = false;
     bool refreshSlots = false;
     bool verifyRefreshSideEffects = false;
+    bool testScheduledRefreshSlots = false;
     bool combatState = false;
     bool freshSaveIntro = false;
     bool steamDeck = false;
@@ -329,6 +331,7 @@ int main(int argc, char** argv) {
         else if (arg == "--mixed-hold-audit-frame" && i + 1 < argc) { mixedHoldAuditFrame = std::atoi(argv[++i]); fullFrameTopologyCheck = true; }
         else if (arg == "--refresh-slots") refreshSlots = true;
         else if (arg == "--verify-refresh-side-effects") verifyRefreshSideEffects = true;
+        else if (arg == "--test-scheduled-refresh-slots") testScheduledRefreshSlots = true;
         else if (arg == "--capture-refresh-extra-prefix" && i + 1 < argc) refreshExtraCapturePrefix = argv[++i];
         else if (arg == "--capture-refresh-extra-frame" && i + 1 < argc) refreshExtraCaptureFrame = std::atoi(argv[++i]);
         else if (arg == "--capture-refresh-extra-first-admitted-after" && i + 1 < argc) refreshExtraFirstAdmittedAfter = std::atoi(argv[++i]);
@@ -505,6 +508,9 @@ int main(int argc, char** argv) {
     const char* testSoftwareEnv = std::getenv("DEATHLEAK_TEST_ALLOW_SOFTWARE_RENDERER");
     const bool testAllowSoftware = testSoftwareEnv && std::string(testSoftwareEnv) == "1";
     const bool testFreshSlots = refreshSlots && testAllowSoftware && testRefreshHz > 0;
+    if (testScheduledRefreshSlots && !testFreshSlots) {
+        std::cerr << "--test-scheduled-refresh-slots requires synthetic software refresh slots\n"; return 2;
+    }
     if (verifyRefreshSideEffects && !testFreshSlots) {
         std::cerr << "--verify-refresh-side-effects requires synthetic software refresh slots\n"; return 2;
     }
@@ -816,13 +822,14 @@ int main(int argc, char** argv) {
         last, testFreshSlots ? testRefreshHz : requestedRefreshHz, *repeatRecorder, testFreshSlots);
     unsigned long long refreshSurfaceFailures = 0;
     unsigned long long verifiedRefreshSideEffectSlots = 0;
+    unsigned long long scheduledBoundaryPresents = 0, scheduledBoundaryNotDue = 0;
     // Test-only fixed-state witness around each update-free production service call.
-    // Graphics replay may mutate renderer state; these game-owned clocks and event
-    // counters must not advance until the next fixed update.
+    // Graphics replay may mutate renderer state; game, audio-routing, collection,
+    // combat and event state must not advance until the next fixed update.
     const auto refreshSideEffectState = [&] {
         const auto shader = shaderClock.PresentationSnapshot();
         const auto shake = cameraShake.PresentationSample();
-        return std::array<double, 30>{
+        const std::array<double, 44> clocksAndCounters{
             double(scene.SceneEpoch()), double(worldX), double(worldY),
             double(motion.X()), double(motion.Y()), double(cameraX), double(cameraY),
             double(cameraShakeTime), double(shake.viewX), double(shake.viewY),
@@ -832,7 +839,15 @@ int main(int argc, char** argv) {
             double(menuFilmTime), double(shader.totalTime), double(shader.pixelWobbleTime),
             double(precedingRenderedModifiedDelta), double(levelTime), double(loadingPhaseTime),
             double(combat.Health()), double(combat.Focus()), double(combat.Hits()),
-            double(combat.Fired()), double(finalSceneTime), double(presentationSceneGeneration)};
+            double(combat.Fired()), double(finalSceneTime), double(presentationSceneGeneration),
+            double(orbBalance), double(healthDevilRewardCount), double(completions),
+            double(combat.Kills()), double(combat.Spawned()), double(combat.PlayerContacts()),
+            double(combat.ContactFrames()), double(combat.EnemyCount()), double(combat.ShotCount()),
+            double(combat.PlayerBloodFlightCount()), double(scene.PendingSpawnedOrbs()),
+            double(scene.CameraZoom()), double(scene.CameraOffsetX()), double(scene.CameraOffsetY())};
+        return std::make_tuple(clocksAndCounters, currentLevel, audioLevel,
+            collectedOrbs, ownedKeys, unlockedDoors, collectedPapers,
+            rewardedHealthDevils, brokenSmashables, combat.TriggerHistory());
     };
     int refreshExtraFixedFrame = -1;
     unsigned refreshExtraCaptureCount = 0;
@@ -840,7 +855,8 @@ int main(int argc, char** argv) {
     if (refreshPresentation && !refreshExtraCapturePrefix.empty()) {
         refreshPresentation->SetExtraSlotObserver([&](double alpha, const deathleak::linux_port::FreshPresentationPacket::SampledFrame& sample) {
             if (refreshExtraFirstAdmittedAfter > 0 && refreshExtraCaptureFrame < 0 &&
-                refreshExtraFixedFrame >= refreshExtraFirstAdmittedAfter && sample.sampledCommands > 0)
+                refreshExtraFixedFrame >= refreshExtraFirstAdmittedAfter && sample.sampledCommands > 0 &&
+                alpha > 0.0 && alpha < 1.0)
                 refreshExtraCaptureFrame = refreshExtraFixedFrame;
             if (refreshExtraFixedFrame != refreshExtraCaptureFrame || refreshExtraCaptureCount >= 4) return true;
             const auto stem = refreshExtraCapturePrefix + "." + std::to_string(refreshExtraCaptureCount++);
@@ -890,10 +906,10 @@ int main(int argc, char** argv) {
             livePacer.Accumulate(tickTime);
             if (!livePacer.Due()) {
                 if (refreshPresentation) {
-                    const auto before = verifyRefreshSideEffects ? refreshSideEffectState() : std::array<double, 30>{};
-                    const auto levelBefore = verifyRefreshSideEffects ? currentLevel : std::string{};
+                    std::optional<decltype(refreshSideEffectState())> before;
+                    if (verifyRefreshSideEffects) before = refreshSideEffectState();
                     const auto result = refreshPresentation->TryPresent(tickTime);
-                    if (verifyRefreshSideEffects && (before != refreshSideEffectState() || levelBefore != currentLevel)) {
+                    if (before && *before != refreshSideEffectState()) {
                         std::cerr << "Refresh-only slot changed game-owned fixed state at frame " << frame << "\n";
                         return 1;
                     }
@@ -2336,7 +2352,7 @@ int main(int argc, char** argv) {
         }
         bool fixedBoundaryPresented = !refreshPresentation;
         if (refreshPresentation) {
-            if (testFreshSlots) {
+            if (testFreshSlots && !testScheduledRefreshSlots) {
                 // Preserve the deterministic synthetic-slot oracle's historical boundary.
                 const auto result = refreshPresentation->PresentFreshBoundary(freshPresentation, presentationTickTime);
                 if (result != deathleak::linux_port::RefreshPresentationService::Result::Presented) {
@@ -2348,7 +2364,18 @@ int main(int argc, char** argv) {
                 // A due display slot, not the 60-Hz simulation boundary, chooses when
                 // to replay/present. No game update, input, audio or clock is called here.
                 refreshPresentation->SealFreshBoundary(freshPresentation, presentationTickTime);
-                const auto result = refreshPresentation->TryPresent(std::chrono::steady_clock::now());
+                const auto slotTime = testScheduledRefreshSlots ? presentationTickTime : std::chrono::steady_clock::now();
+                std::optional<decltype(refreshSideEffectState())> before;
+                if (verifyRefreshSideEffects) before = refreshSideEffectState();
+                const auto result = refreshPresentation->TryPresent(slotTime);
+                if (before && *before != refreshSideEffectState()) {
+                    std::cerr << "Scheduled boundary present changed game-owned fixed state at frame " << frame << "\n";
+                    return 1;
+                }
+                if (testScheduledRefreshSlots) {
+                    if (result == deathleak::linux_port::RefreshPresentationService::Result::Presented) ++scheduledBoundaryPresents;
+                    else if (result == deathleak::linux_port::RefreshPresentationService::Result::NotDue) ++scheduledBoundaryNotDue;
+                }
                 if (result == deathleak::linux_port::RefreshPresentationService::Result::SurfaceChanged) {
                     std::cerr << "Refresh surface changed during scheduled present\n"; return 1;
                 }
@@ -2498,6 +2525,8 @@ int main(int argc, char** argv) {
     if (testRefreshHz) std::cout << "TEST_REFRESH_HZ=" << testRefreshHz
                                  << " display_slots=" << testDisplaySlots << '\n';
     if (verifyRefreshSideEffects) std::cout << "REFRESH_SIDE_EFFECTS invariant_slots=" << verifiedRefreshSideEffectSlots << "\n";
+    if (testScheduledRefreshSlots) std::cout << "TEST_SCHEDULED_REFRESH boundary_presents=" << scheduledBoundaryPresents
+                                             << " boundary_not_due=" << scheduledBoundaryNotDue << "\n";
     if (refreshSlots) std::cerr << "Refresh-only presents=" << refreshPresentation->RepeatPresents()
                                 << " fresh_presents=" << refreshPresentation->FreshPresents()
                                 << " surface_failures=" << refreshSurfaceFailures << "\n";
