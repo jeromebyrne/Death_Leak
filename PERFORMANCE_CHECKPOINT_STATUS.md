@@ -309,3 +309,6 @@ Outcome: exact-staged-source GPU run improved active Forest frame p50 21.9874 ->
 
 ### 2026-10-26 — scheduled multiscene cave-6 functional gate; hardware cadence still blocked
 - Controlled-clock scheduled production branch passed uninterrupted Forest→cave-6 full post-HUD pixel/purity gate: 1,880 boundary plus 2,655 update-free presents, zero surface failures, exact fixed endpoints. This is offscreen llvmpipe correctness only; connected LVDS ~59.901 Hz and unavailable Xorg/device authority still preclude physical >60-Hz, NVE7 FPS, input, or release acceptance. No speedup or atlas/bind claim. See `port/SCHEDULED_MULTISCENE_CAVE6_PIXEL_GATE_20261026.md`.
+
+### 2026-10-26 — scheduled Hot Springs route pixel correctness, no hardware performance claim
+- Uninterrupted Forest→Hot Springs route reached an admitted actual scheduled production extra slot at frame 3050; full 1280×720 post-HUD actual/oracle pixels matched, and synthetic 60/144-Hz fixed endpoints and bounded refresh-state purity passed. Service counted 3,090 scheduled fixed-boundary plus 4,399 due update-free presents, zero surface failures. These are controlled-clock offscreen llvmpipe correctness counts, not physical selected >60-Hz, NVE7 frame time/FPS, hardware input or release evidence. Connected LVDS ~59.901 Hz and Xorg/device authority remain blockers; atlas/bind microgates paused.
