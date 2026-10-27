@@ -297,3 +297,6 @@ Outcome: exact-staged-source GPU run improved active Forest frame p50 21.9874 ->
 
 ### 2026-10-26 — admitted cave-5 production pixel correctness; no hardware performance claim
 - Two actual synthetic 144-Hz extra slots at cave-5 frame 15 sampled 30 commands each and matched the independent full post-HUD oracle byte-for-byte; fixed endpoints matched 60 Hz and surfaces had zero failures. Direct scene load, not uninterrupted route pixel evidence. Offscreen llvmpipe is not physical selected >60-Hz, GPU frame-time/FPS, input or release acceptance. Atlas/bind work paused.
+
+### 2026-10-26 — uninterrupted cave-6 admitted production slot correctness, no performance acceptance
+- Clean-ref Docker production build and full post-HUD production extra-slot gate passed after an uninterrupted ordinary-control Forest→cave-6 route. The admitted frame-1800 alpha-.416667 slot sampled 12 commands, matched the independent sealed oracle byte-for-byte, and differed from held current; 2,657 refresh-only slots preserved listed fixed-state clocks/counters, with exact 60/144-Hz gameplay endpoints and zero surface failures. See `port/UNINTERRUPTED_CAVE6_FRESH_SLOT_GATE_20261026.md`. Synthetic llvmpipe timing is not physical high-Hz/FPS/NVE7 evidence; connected LVDS ~59.901 Hz and Xorg authority unavailable. No optimization or release claim; atlas/bind microgates paused.

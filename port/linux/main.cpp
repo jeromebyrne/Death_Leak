@@ -209,6 +209,7 @@ int main(int argc, char** argv) {
     std::string mixedReplayPrefix;
     std::string refreshExtraCapturePrefix;
     int refreshExtraCaptureFrame = -1;
+    int refreshExtraFirstAdmittedAfter = -1;
     int mixedReplayFrame = -1;
     int mixedHoldAuditFrame = -1;
     std::string atomicFrame415Packet;
@@ -248,6 +249,7 @@ int main(int argc, char** argv) {
     bool repeatPresentationCheck = false;
     bool fullFrameTopologyCheck = false;
     bool refreshSlots = false;
+    bool verifyRefreshSideEffects = false;
     bool combatState = false;
     bool freshSaveIntro = false;
     bool steamDeck = false;
@@ -326,8 +328,10 @@ int main(int argc, char** argv) {
         else if (arg == "--mixed-replay-frame" && i + 1 < argc) mixedReplayFrame = std::atoi(argv[++i]);
         else if (arg == "--mixed-hold-audit-frame" && i + 1 < argc) { mixedHoldAuditFrame = std::atoi(argv[++i]); fullFrameTopologyCheck = true; }
         else if (arg == "--refresh-slots") refreshSlots = true;
+        else if (arg == "--verify-refresh-side-effects") verifyRefreshSideEffects = true;
         else if (arg == "--capture-refresh-extra-prefix" && i + 1 < argc) refreshExtraCapturePrefix = argv[++i];
         else if (arg == "--capture-refresh-extra-frame" && i + 1 < argc) refreshExtraCaptureFrame = std::atoi(argv[++i]);
+        else if (arg == "--capture-refresh-extra-first-admitted-after" && i + 1 < argc) refreshExtraFirstAdmittedAfter = std::atoi(argv[++i]);
         else if (arg == "--profile") { profile = true; showFps = true; }
         else if (arg == "--debug") showFps = true;
         else if (arg == "--show-fps") showFps = true;
@@ -501,6 +505,9 @@ int main(int argc, char** argv) {
     const char* testSoftwareEnv = std::getenv("DEATHLEAK_TEST_ALLOW_SOFTWARE_RENDERER");
     const bool testAllowSoftware = testSoftwareEnv && std::string(testSoftwareEnv) == "1";
     const bool testFreshSlots = refreshSlots && testAllowSoftware && testRefreshHz > 0;
+    if (verifyRefreshSideEffects && !testFreshSlots) {
+        std::cerr << "--verify-refresh-side-effects requires synthetic software refresh slots\n"; return 2;
+    }
     if (testRefreshHz && (!(simulateOnly || testFreshSlots) || fixedDt > 0.f || script.empty() || frameLimit <= 0 ||
                           testRefreshHz < 30 || testRefreshHz > 240)) {
         std::cerr << "--test-refresh-hz requires --simulate-only, --play, --script, --frames, no --fixed-dt, and 30..240 Hz\n";
@@ -510,8 +517,11 @@ int main(int argc, char** argv) {
                          (!testFreshSlots && (!fullscreen || !requestedRefreshHz)))) {
         std::cerr << "--refresh-slots requires live fullscreen GPU play, --refresh-hz, and no fixed-dt/repeat diagnostic\n"; return 2;
     }
-    if (!refreshExtraCapturePrefix.empty() && (!testFreshSlots || refreshExtraCaptureFrame <= 0 || refreshExtraCaptureFrame >= frameLimit)) {
-        std::cerr << "--capture-refresh-extra-prefix requires software test slots and a valid --capture-refresh-extra-frame\n"; return 2;
+    if (!refreshExtraCapturePrefix.empty() && (!testFreshSlots ||
+        ((refreshExtraCaptureFrame > 0) == (refreshExtraFirstAdmittedAfter > 0)) ||
+        (refreshExtraCaptureFrame > 0 && refreshExtraCaptureFrame >= frameLimit) ||
+        (refreshExtraFirstAdmittedAfter > 0 && refreshExtraFirstAdmittedAfter >= frameLimit))) {
+        std::cerr << "--capture-refresh-extra-prefix requires software test slots and exactly one valid fixed frame or first-admitted-after frame\n"; return 2;
     }
     if (!mixedReplayPrefix.empty() && (mixedReplayFrame <= 0 || mixedReplayFrame >= frameLimit || simulateOnly)) {
         std::cerr << "--mixed-replay-prefix requires --mixed-replay-frame in [1,frames-1] and GPU rendering\n"; return 2;
@@ -805,11 +815,33 @@ int main(int argc, char** argv) {
     if (refreshSlots) refreshPresentation = std::make_unique<deathleak::linux_port::RefreshPresentationService>(
         last, testFreshSlots ? testRefreshHz : requestedRefreshHz, *repeatRecorder, testFreshSlots);
     unsigned long long refreshSurfaceFailures = 0;
+    unsigned long long verifiedRefreshSideEffectSlots = 0;
+    // Test-only fixed-state witness around each update-free production service call.
+    // Graphics replay may mutate renderer state; these game-owned clocks and event
+    // counters must not advance until the next fixed update.
+    const auto refreshSideEffectState = [&] {
+        const auto shader = shaderClock.PresentationSnapshot();
+        const auto shake = cameraShake.PresentationSample();
+        return std::array<double, 30>{
+            double(scene.SceneEpoch()), double(worldX), double(worldY),
+            double(motion.X()), double(motion.Y()), double(cameraX), double(cameraY),
+            double(cameraShakeTime), double(shake.viewX), double(shake.viewY),
+            double(shake.storedX), double(shake.storedY), double(shake.remaining),
+            double(shake.active), double(gameplayFilm.Index()), double(finalFilm.Index()),
+            double(gameplayFilm.LastSwitchMilliseconds()), double(finalFilm.LastSwitchMilliseconds()),
+            double(menuFilmTime), double(shader.totalTime), double(shader.pixelWobbleTime),
+            double(precedingRenderedModifiedDelta), double(levelTime), double(loadingPhaseTime),
+            double(combat.Health()), double(combat.Focus()), double(combat.Hits()),
+            double(combat.Fired()), double(finalSceneTime), double(presentationSceneGeneration)};
+    };
     int refreshExtraFixedFrame = -1;
     unsigned refreshExtraCaptureCount = 0;
     std::string refreshExtraCaptureError;
     if (refreshPresentation && !refreshExtraCapturePrefix.empty()) {
         refreshPresentation->SetExtraSlotObserver([&](double alpha, const deathleak::linux_port::FreshPresentationPacket::SampledFrame& sample) {
+            if (refreshExtraFirstAdmittedAfter > 0 && refreshExtraCaptureFrame < 0 &&
+                refreshExtraFixedFrame >= refreshExtraFirstAdmittedAfter && sample.sampledCommands > 0)
+                refreshExtraCaptureFrame = refreshExtraFixedFrame;
             if (refreshExtraFixedFrame != refreshExtraCaptureFrame || refreshExtraCaptureCount >= 4) return true;
             const auto stem = refreshExtraCapturePrefix + "." + std::to_string(refreshExtraCaptureCount++);
             // The first readback is the actual opt-in service's just-drawn extra slot.
@@ -858,7 +890,15 @@ int main(int argc, char** argv) {
             livePacer.Accumulate(tickTime);
             if (!livePacer.Due()) {
                 if (refreshPresentation) {
+                    const auto before = verifyRefreshSideEffects ? refreshSideEffectState() : std::array<double, 30>{};
+                    const auto levelBefore = verifyRefreshSideEffects ? currentLevel : std::string{};
                     const auto result = refreshPresentation->TryPresent(tickTime);
+                    if (verifyRefreshSideEffects && (before != refreshSideEffectState() || levelBefore != currentLevel)) {
+                        std::cerr << "Refresh-only slot changed game-owned fixed state at frame " << frame << "\n";
+                        return 1;
+                    }
+                    if (verifyRefreshSideEffects && result == deathleak::linux_port::RefreshPresentationService::Result::Presented)
+                        ++verifiedRefreshSideEffectSlots;
                     if (result == deathleak::linux_port::RefreshPresentationService::Result::Presented) {
                         notePresentation();
                         ++presentedFramesInSample;
@@ -2438,6 +2478,7 @@ int main(int argc, char** argv) {
     }
     if (testRefreshHz) std::cout << "TEST_REFRESH_HZ=" << testRefreshHz
                                  << " display_slots=" << testDisplaySlots << '\n';
+    if (verifyRefreshSideEffects) std::cout << "REFRESH_SIDE_EFFECTS invariant_slots=" << verifiedRefreshSideEffectSlots << "\n";
     if (refreshSlots) std::cerr << "Refresh-only presents=" << refreshPresentation->RepeatPresents()
                                 << " fresh_presents=" << refreshPresentation->FreshPresents()
                                 << " surface_failures=" << refreshSurfaceFailures << "\n";

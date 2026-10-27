@@ -14,6 +14,7 @@ public:
         }
     }
     std::size_t Index() const { return index_; }
+    std::uint64_t LastSwitchMilliseconds() const { return lastSwitchMilliseconds_; }
 private:
     std::uint64_t lastSwitchMilliseconds_ = 0;
     std::size_t index_ = 0;
