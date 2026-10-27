@@ -131,3 +131,10 @@ input-backend-test: build/input_backend_test
 build/input_backend_test: tests/input_backend_test.cpp linux/SDLRenderer.cpp $(wildcard linux/*.h render/*.h)
 	@mkdir -p build
 	$(CXX) $(CXXFLAGS) -UNDEBUG $(SDL_CFLAGS) $(PNG_CFLAGS) tests/input_backend_test.cpp linux/SDLRenderer.cpp -o $@ $(SDL_LIBS) $(PNG_LIBS) $(GL_LIBS)
+
+.PHONY: encounter-cooldown-visit-test
+encounter-cooldown-visit-test: build/encounter_cooldown_visit_test
+	cd .. && port/build/encounter_cooldown_visit_test
+build/encounter_cooldown_visit_test: tests/encounter_cooldown_visit_test.cpp game/Combat.cpp game/Combat.h game/LevelScene.cpp
+	@mkdir -p build
+	$(CXX) $(CXXFLAGS) -UNDEBUG -Icompat tests/encounter_cooldown_visit_test.cpp game/Combat.cpp game/LevelScene.cpp ../Game/tinyxml/tinyxml.cpp ../Game/tinyxml/tinyxmlerror.cpp ../Game/tinyxml/tinyxmlparser.cpp ../Game/tinyxml/tinystr.cpp -o $@

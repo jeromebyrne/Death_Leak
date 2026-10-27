@@ -1,5 +1,6 @@
 #pragma once
 struct CombatMaterialIdentityProbe;
+struct EncounterCooldownProbe;
 #include "LevelScene.h"
 #include "ParticleSpray.h"
 #include <string>
@@ -59,11 +60,12 @@ struct PlayerShotLaunchState {
 };
 class Combat {
     friend struct ::CombatMaterialIdentityProbe;
+    friend struct ::EncounterCooldownProbe;
     friend struct CombatBloodFlightProbe; // focused CPU collision-edge fixture
     friend struct CombatBloodOcclusionProbe; // first-line occlusion fixture
     friend struct CombatBloodReboundProbe; // blocked-flight rebound fixture
 public:
-    void ClearLevel() { enemies_.clear(); shots_.clear(); deathEffects_.clear(); bloodFlights_.clear(); materialSprays_.clear(); activeTriggers_.clear(); fireCooldown_ = burstCooldown_ = hurtCooldown_ = 0; burstCount_ = 0; playerContacts_ = contactFrames_ = 0; meleeTime_ = 0; meleeHeld_ = false; playerDamageBurstAge_ = 0.25f; }
+    void ClearLevel() { enemies_.clear(); shots_.clear(); deathEffects_.clear(); bloodFlights_.clear(); materialSprays_.clear(); activeTriggers_.clear(); levelEncountersInitialized_ = false; fireCooldown_ = burstCooldown_ = hurtCooldown_ = 0; burstCount_ = 0; playerContacts_ = contactFrames_ = 0; meleeTime_ = 0; meleeHeld_ = false; playerDamageBurstAge_ = 0.25f; }
     void SetArt(render::Renderer& renderer);
     void SpawnIntroBloodFlight(float x, float y);
     void UpdateBloodFlights(const LevelScene& scene, float dt);
@@ -83,6 +85,8 @@ public:
                             const std::function<void(const Shot&, const render::Sprite&)>& emittedShot = {}) const;
     void UpdateVisuals(float dt);
     void SetTriggerHistory(std::unordered_map<std::string, std::int64_t> history) { triggerHistory_ = std::move(history); }
+    // NPCTrigger::Initialise removes cooling triggers for this entire level visit.
+    void InitializeLevelEncounters(const LevelScene& scene);
     void EnableSimulatedWallClock(); // test-only: advance trigger clock by fixed gameplay dt
     const std::unordered_map<std::string, std::int64_t>& TriggerHistory() const { return triggerHistory_; }
     void ApplySolidContactDamage(float damage) { ApplyPlayerDamage(damage); }
@@ -137,6 +141,8 @@ private:
 
     std::vector<ParticleSpray> materialSprays_;
     std::uint64_t nextMaterialSprayIdentity_ = 1; // Never recycle within a scene epoch.
+    bool levelEncountersInitialized_ = false;
+    std::int64_t EncounterNowMs() const;
     std::unordered_set<std::string> activeTriggers_;
     std::unordered_map<std::string, std::int64_t> triggerHistory_;
     bool simulatedWallClock_ = false;

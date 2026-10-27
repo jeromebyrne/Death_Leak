@@ -25,6 +25,8 @@ g++ -O2 -g -std=c++17 -Wall -Wextra -Wpedantic -UNDEBUG -Iport/compat \
   Game/tinyxml/tinyxmlparser.cpp Game/tinyxml/tinystr.cpp \
   -o "$strafe_cpu_dir/running_rate_order_cpu_test"
 env -u DEATHLEAK_RENDER_HIDE_XML_IDS "$strafe_cpu_dir/running_rate_order_cpu_test"
+# Source NPCTrigger removal is latched at level install, not first overlap.
+make -C port encounter-cooldown-visit-test
 # Virtual SDL devices verify backend mappings/lifecycle, not hardware input.
 make -C port input-backend-test
 # Release/default mode must reject dummy/software even if SDL offers a fallback.
@@ -540,14 +542,14 @@ PYMENU
 # ordinary controls, no save load/state injection. The pre-boat snapshot is
 # inspected separately because EndStory clears the selected progression save.
 earned_full_script=$(cat port/tests/routes/earned_full_ending.script)
-# The native 120-second NPCTrigger cooldown is wall-clock based. A fast
-# simulate-only route finishes before the village-central trigger can refire;
-# advancing only that trigger clock at fixed dt reproduces the physical-Xorg
-# return encounter and current one-health death without a four-minute GPU run.
-realtime_prefix=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$earned_full_script" --frames 13000 --fixed-dt 0.0166667 --simulate-only --simulate-wall-clock)
+# Original NPCTrigger::Initialise removes a cooling trigger for that visit.
+# Central is installed at age116717ms, before expiry; walking into its bounds
+# at129850ms cannot resurrect it. Keep the normal route and120-second rule.
+realtime_prefix=$(DEATHLEAK_TRACE_ENCOUNTERS=1 $bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$earned_full_script" --frames 13000 --fixed-dt 0.0166667 --simulate-only --simulate-wall-clock)
 printf '%s\n' "$realtime_prefix" | grep -q 'TEST-ONLY encounter clock follows fixed gameplay dt'
-printf '%s\n' "$realtime_prefix" | grep -q 'Player died at frame 12950 in Game/XmlFiles/levels/village_central.xml'
-printf '%s\n' "$realtime_prefix" | grep -q 'health=0 .*spawned=12 enemies=2'
+printf '%s\n' "$realtime_prefix" | grep -q 'Encounter initialize id=Game/XmlFiles/levels/village_central.xml#151 elapsed_ms=116717 suppressed=1'
+printf '%s\n' "$realtime_prefix" | grep -q 'village_central.xml player=(3167.18,-1223.81) orbs=228 keys=0 health=4 .*balance=228 spawned=10 enemies=0'
+if printf '%s\n' "$realtime_prefix" | grep -q 'Player died'; then exit 1; fi
 full_preboat=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$earned_full_script" --frames 57854 --fixed-dt 0.0166667 --simulate-only --save-file port/build/earned-full-preboat.txt)
 printf '%s\n' "$full_preboat" | grep -q 'Collected key granary at frame 25681'
 printf '%s\n' "$full_preboat" | grep -q 'Purchased kDeflection at frame 33227 balance=9'

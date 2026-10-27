@@ -682,6 +682,7 @@ int main(int argc, char** argv) {
         combat.EnableSimulatedWallClock();
         std::cout << "TEST-ONLY encounter clock follows fixed gameplay dt; not physical real-time acceptance\n";
     }
+    combat.InitializeLevelEncounters(scene);
     if (restorePosition) combat.SetVitals(savedHealth, savedFocus);
     if (exhaustedFocus) combat.SetFocus(0);
     double updateSeconds = 0, drawSeconds = 0;
@@ -1072,6 +1073,7 @@ int main(int argc, char** argv) {
                     collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear(); collectedPapers.clear(); rewardedHealthDevils.clear(); brokenSmashables.clear(); healthDevilRewardCount = 0;
                     orbBalance = 0; combat = deathleak::game::Combat{};
                     if (!simulateOnly) combat.SetArt(*renderer);
+                    combat.InitializeLevelEncounters(scene);
                     speedUnlocked = projectileDamageUnlocked = projectileSpeedUnlocked = false; downwardDashUnlocked = rollUnlocked = false; savedMaxHealth = 25; hasSavedMaxHealth = false; windowsPermanentExtension.clear();
                     motion.SetSpeedUpgrade(false); motion.SetMovementUnlocks(false, false);
                     motion.Reset(scene.PlayerX(), scene.PlayerY(), true);
@@ -1114,7 +1116,7 @@ int main(int argc, char** argv) {
                     cameraX = scene.CameraFollowX() ? worldX : scene.CameraX();
                     cameraY = scene.CameraFollowY() ? worldY : scene.CameraY();
                     cameraShake.Reset();
-                    motion.Reset(worldX, worldY, true); combat.ClearLevel();
+                    motion.Reset(worldX, worldY, true); combat.ClearLevel(); combat.InitializeLevelEncounters(scene);
                     levelTime = interactHeldTime = doorUnlockWait = 0;
                     unlockingDoor = false; interactionTarget.clear();
                     std::cout << "Entered " << currentLevel << std::endl;
@@ -1261,7 +1263,7 @@ int main(int argc, char** argv) {
                         motion.Reset(scene.PlayerX(), scene.PlayerY(), true);
                         worldX = motion.X(); worldY = motion.Y();
                         cameraX = scene.CameraX(); cameraY = scene.CameraY(); cameraShake.Reset();
-                        combat.ClearLevel(); combat.SetVitals(25.f, 100.f);
+                        combat.ClearLevel(); combat.InitializeLevelEncounters(scene); combat.SetVitals(25.f, 100.f);
                         wasDead = false; levelTime = interactHeldTime = doorUnlockWait = 0; unlockingDoor = false; interactionTarget.clear();
                         std::cout << "Restarted " << currentLevel << " at frame " << frame << '\n';
                     } else std::cerr << "Restart failed: " << error << '\n';
@@ -1650,7 +1652,7 @@ int main(int argc, char** argv) {
                         motion.Reset(scene.PlayerX(),scene.PlayerY(), true);
                         worldX = motion.X(); worldY = motion.Y();
                         cameraX = scene.CameraX(); cameraY = scene.CameraY(); cameraShake.Reset();
-                        combat.ClearLevel(); levelTime = interactHeldTime = doorUnlockWait = 0; unlockingDoor = false; interactionTarget.clear();
+                        combat.ClearLevel(); combat.InitializeLevelEncounters(scene); levelTime = interactHeldTime = doorUnlockWait = 0; unlockingDoor = false; interactionTarget.clear();
                     } else std::cerr << "Door transition failed: " << error << '\n';
                     continue;
                 }
@@ -1682,7 +1684,7 @@ int main(int argc, char** argv) {
                         motion.Reset(scene.PlayerX(),scene.PlayerY(), true);
                         worldX = motion.X(); worldY = motion.Y();
                         cameraX = scene.CameraX(); cameraY = scene.CameraY(); cameraShake.Reset();
-                        combat.ClearLevel(); levelTime = interactHeldTime = doorUnlockWait = 0; unlockingDoor = false; interactionTarget.clear();
+                        combat.ClearLevel(); combat.InitializeLevelEncounters(scene); levelTime = interactHeldTime = doorUnlockWait = 0; unlockingDoor = false; interactionTarget.clear();
                     } else std::cerr << "Boat transition failed: " << error << '\n';
                     continue;
                 }
@@ -1722,7 +1724,7 @@ int main(int argc, char** argv) {
                             cameraX = scene.CameraFollowX() ? worldX : scene.CameraX();
                             cameraY = scene.CameraFollowY() ? worldY : scene.CameraY();
                             cameraShake.Reset();
-                            motion.Reset(worldX, worldY, true); combat.ClearLevel();
+                            motion.Reset(worldX, worldY, true); combat.ClearLevel(); combat.InitializeLevelEncounters(scene);
                             levelTime = interactHeldTime = doorUnlockWait = 0; unlockingDoor = false; interactionTarget.clear();
                             std::cout << "Entered " << currentLevel << std::endl;
                         } else std::cerr << "Transition failed: " << error << '\n';

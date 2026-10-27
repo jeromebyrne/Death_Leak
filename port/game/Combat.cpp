@@ -367,6 +367,28 @@ void Combat::SpawnBloodFlight(float x, float y, float directionX, float directio
     blood.size=size; blood.variant=variant;
     bloodFlights_.push_back(blood);
 }
+std::int64_t Combat::EncounterNowMs() const {
+    return simulatedWallClock_ ?
+        simulatedClockOriginMs_ + static_cast<std::int64_t>(std::llround(simulatedClockElapsedMs_)) :
+        std::chrono::duration_cast<std::chrono::milliseconds>(
+            std::chrono::system_clock::now().time_since_epoch()).count();
+}
+void Combat::InitializeLevelEncounters(const LevelScene& scene) {
+    if (levelEncountersInitialized_) return;
+    levelEncountersInitialized_ = true;
+    const auto nowMs = EncounterNowMs();
+    const bool trace = std::getenv("DEATHLEAK_TRACE_ENCOUNTERS") != nullptr;
+    for (const auto& trigger : scene.Encounters()) {
+        const auto previous = triggerHistory_.find(trigger.id);
+        const auto elapsedMs = previous == triggerHistory_.end() ? -1 : nowMs - previous->second;
+        const bool suppressed = previous != triggerHistory_.end() && elapsedMs < 120000;
+        // Windows NPCTrigger::Initialise removes it at load, not when reached.
+        // Expiring the cooldown later cannot resurrect a removed trigger.
+        if (suppressed) activeTriggers_.insert(trigger.id);
+        if (trace) std::cout << "Encounter initialize id=" << trigger.id
+            << " elapsed_ms=" << elapsedMs << " suppressed=" << suppressed << std::endl;
+    }
+}
 void Combat::EnableSimulatedWallClock() {
     simulatedWallClock_ = true;
     simulatedClockOriginMs_ = std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -482,6 +504,9 @@ void Combat::UpdateBloodFlights(const LevelScene& scene, float dt) {
         }), materialSprays_.end());
 }
 void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fire, bool melee, bool grounded, bool rolling, int facing, render::Renderer& renderer, float aimX, float aimY, PlayerShotLaunchState launchState) {
+    // CPU callers may not have an explicit scene-install boundary. Snapshot
+    // before advancing the synthetic clock on their first update as well.
+    InitializeLevelEncounters(scene);
     UpdateBloodFlights(scene, dt);
     for (auto& effect : deathEffects_) {
         effect.age += std::max(0.f, dt);
@@ -520,18 +545,12 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
         if (!Inside(x,y,trigger.x,trigger.y,trigger.width,trigger.height) || !activeTriggers_.insert(trigger.id).second) continue;
         // NPCTrigger::Initialise removes a trigger if it last fired less than
         // 120000 ms ago. Keep wall-clock history across levels and saves.
-        const auto nowMs = simulatedWallClock_ ?
-            simulatedClockOriginMs_ + static_cast<std::int64_t>(std::llround(simulatedClockElapsedMs_)) :
-            std::chrono::duration_cast<std::chrono::milliseconds>(
-                std::chrono::system_clock::now().time_since_epoch()).count();
+        const auto nowMs = EncounterNowMs();
         const auto previous = triggerHistory_.find(trigger.id);
         const auto elapsedMs = previous == triggerHistory_.end() ? -1 : nowMs - previous->second;
-        const bool onCooldown = previous != triggerHistory_.end() && elapsedMs < 120000;
-        const bool traceEncounter = std::getenv("DEATHLEAK_TRACE_ENCOUNTERS") != nullptr;
-        if (traceEncounter) std::cout << "Encounter trigger id=" << trigger.id << " elapsed_ms=" << elapsedMs
-            << " cooldown=" << onCooldown
-            << " count=" << trigger.count << " type=" << trigger.type << std::endl;
-        if (onCooldown) continue;
+        if (std::getenv("DEATHLEAK_TRACE_ENCOUNTERS"))
+            std::cout << "Encounter trigger id=" << trigger.id << " elapsed_ms=" << elapsedMs
+                << " cooldown=0 count=" << trigger.count << " type=" << trigger.type << std::endl;
         triggerHistory_[trigger.id] = nowMs;
         if (!ninjaArt_) SetArt(renderer);
         for (int i=0; i<std::clamp(trigger.count,0,20); ++i) {
