@@ -20,6 +20,14 @@ make -C port smoke
 
 This uses SDL's dummy video driver, renders two frames, and writes `port/build/smoke.bmp` (ignored by Git).
 
+## Linux input controls
+
+An attached SDL gamepad takes priority. Unplugging it restores keyboard/mouse input on the next frame; mouse clicks are ignored while a pad is attached. Gamepad: left stick/D-pad move, A jump/accept/restart, right stick aim/fire, X interact, Y purchase, left shoulder roll, right shoulder melee/dash, Start pause/exit, B close dialogs/back in menus.
+
+Without a gamepad: A/D or Left/Right move; W/Up/Space jump or swim up; S/Down crouch; move the mouse and hold left click to aim/fire. F fires in the facing direction. E interacts, C melees/dashes, Left Shift rolls, Y purchases upgrades, R restarts after death, and Escape exits. Menu focus uses Up/Down or mouse hover; Enter/E/Space activates, and Escape/Backspace goes back. Clicking a menu item activates it on release over the same item.
+
+The keyboard/mouse mapping is a Linux-port accessibility adaptation. Display-attached human input acceptance remains separate from scripted and offscreen checks.
+
 ## Rendering seam
 
 `render/Renderer.h` is the platform-neutral contract. Game-side code submits source/destination rectangles, tint, rotation and flips using `TextureId`; it never sees SDL, Direct3D or Metal objects. `linux/SDLRenderer.cpp` owns the SDL2 window, textures, input polling and presentation. `CreateRenderer()` is the backend selection point. A macOS backend can implement this contract (or the same SDL backend can be compiled there initially); no macOS-specific code is required in callers.

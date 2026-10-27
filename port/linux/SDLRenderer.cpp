@@ -1200,21 +1200,25 @@ public:
     }
     bool KeyDown(int key) const override {
         const Uint8* keys = SDL_GetKeyboardState(nullptr);
-        auto button = [this](SDL_GameControllerButton b) { return gamepad_ && SDL_GameControllerGetButton(gamepad_, b); };
-        auto axis = [this](SDL_GameControllerAxis a) { return gamepad_ ? SDL_GameControllerGetAxis(gamepad_, a) : 0; };
+        const bool pad = gamepad_ && SDL_GameControllerGetAttached(gamepad_);
+        auto button = [this, pad](SDL_GameControllerButton b) { return pad && SDL_GameControllerGetButton(gamepad_, b); };
+        auto axis = [this, pad](SDL_GameControllerAxis a) { return pad ? SDL_GameControllerGetAxis(gamepad_, a) : 0; };
         switch (key) {
-            case Left: return keys[SDL_SCANCODE_LEFT] || keys[SDL_SCANCODE_A] || button(SDL_CONTROLLER_BUTTON_DPAD_LEFT) || axis(SDL_CONTROLLER_AXIS_LEFTX) < -8000;
-            case Right: return keys[SDL_SCANCODE_RIGHT] || keys[SDL_SCANCODE_D] || button(SDL_CONTROLLER_BUTTON_DPAD_RIGHT) || axis(SDL_CONTROLLER_AXIS_LEFTX) > 8000;
-            case Up: return keys[SDL_SCANCODE_UP] || keys[SDL_SCANCODE_W] || keys[SDL_SCANCODE_SPACE] || button(SDL_CONTROLLER_BUTTON_DPAD_UP) || button(SDL_CONTROLLER_BUTTON_A);
-            case Down: return keys[SDL_SCANCODE_DOWN] || keys[SDL_SCANCODE_S] || button(SDL_CONTROLLER_BUTTON_DPAD_DOWN);
-            case Fire: return keys[SDL_SCANCODE_F];
-            case Restart: return keys[SDL_SCANCODE_R];
-            case Interact: return keys[SDL_SCANCODE_E] || button(SDL_CONTROLLER_BUTTON_X);
-            case Purchase: return keys[SDL_SCANCODE_Y] || button(SDL_CONTROLLER_BUTTON_Y);
-            case Roll: return keys[SDL_SCANCODE_LSHIFT] || button(SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
-            case Melee: return keys[SDL_SCANCODE_C] || button(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
-            case Escape: return keys[SDL_SCANCODE_ESCAPE] || button(SDL_CONTROLLER_BUTTON_START);
-            case ModalBack: return button(SDL_CONTROLLER_BUTTON_B);
+            case Left: return pad ? button(SDL_CONTROLLER_BUTTON_DPAD_LEFT) || axis(SDL_CONTROLLER_AXIS_LEFTX) < -8000 : keys[SDL_SCANCODE_LEFT] || keys[SDL_SCANCODE_A];
+            case Right: return pad ? button(SDL_CONTROLLER_BUTTON_DPAD_RIGHT) || axis(SDL_CONTROLLER_AXIS_LEFTX) > 8000 : keys[SDL_SCANCODE_RIGHT] || keys[SDL_SCANCODE_D];
+            case Up: return pad ? button(SDL_CONTROLLER_BUTTON_DPAD_UP) || button(SDL_CONTROLLER_BUTTON_A) : keys[SDL_SCANCODE_UP] || keys[SDL_SCANCODE_W] || keys[SDL_SCANCODE_SPACE];
+            case Down: return pad ? button(SDL_CONTROLLER_BUTTON_DPAD_DOWN) : keys[SDL_SCANCODE_DOWN] || keys[SDL_SCANCODE_S];
+            case Fire: return !pad && keys[SDL_SCANCODE_F];
+            case Restart: return pad ? button(SDL_CONTROLLER_BUTTON_A) : keys[SDL_SCANCODE_R];
+            case Interact: return pad ? button(SDL_CONTROLLER_BUTTON_X) : keys[SDL_SCANCODE_E];
+            case Purchase: return pad ? button(SDL_CONTROLLER_BUTTON_Y) : keys[SDL_SCANCODE_Y];
+            case Roll: return pad ? button(SDL_CONTROLLER_BUTTON_LEFTSHOULDER) : keys[SDL_SCANCODE_LSHIFT];
+            case Melee: return pad ? button(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) : keys[SDL_SCANCODE_C];
+            case Escape: return pad ? button(SDL_CONTROLLER_BUTTON_START) : keys[SDL_SCANCODE_ESCAPE];
+            case ModalBack: return pad ? button(SDL_CONTROLLER_BUTTON_B) : keys[SDL_SCANCODE_BACKSPACE];
+            case MenuAccept: return pad ? button(SDL_CONTROLLER_BUTTON_A) || button(SDL_CONTROLLER_BUTTON_X) : keys[SDL_SCANCODE_RETURN] || keys[SDL_SCANCODE_E] || keys[SDL_SCANCODE_SPACE];
+            case MenuUp: return pad ? button(SDL_CONTROLLER_BUTTON_DPAD_UP) || axis(SDL_CONTROLLER_AXIS_LEFTY) < -8000 : keys[SDL_SCANCODE_UP] || keys[SDL_SCANCODE_W];
+            case MenuDown: return pad ? button(SDL_CONTROLLER_BUTTON_DPAD_DOWN) || axis(SDL_CONTROLLER_AXIS_LEFTY) > 8000 : keys[SDL_SCANCODE_DOWN] || keys[SDL_SCANCODE_S];
             default: return false;
         }
     }

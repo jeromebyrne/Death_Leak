@@ -942,6 +942,7 @@ int main(int argc, char** argv) {
         // Decode the first visible cave layer during Forest traversal; keep GPU allocation on its normal load path.
         if (frame == 120 && currentLevel == "Game/XmlFiles/levels/forest_exploration_1.xml") StartCaveDecodeWorker();
         const ControllerSticks controllerSticks = renderer->ControllerAxes();
+        const MouseState liveMouse = controllerSticks.connected ? MouseState{} : renderer->Mouse();
         deathleak::game::PlayerStrafeVisual strafeVisual{};
         auto now = std::chrono::steady_clock::now();
         const auto fpsSampleSeconds = std::chrono::duration<double>(now - fpsSampleStart).count();
@@ -998,7 +999,7 @@ int main(int argc, char** argv) {
         if (menuLoop && playLevel.empty()) {
             menuFilmTime += dt;
             if (auto scripted = scriptedMouse.find(frame); scripted != scriptedMouse.end()) scriptedMouseState = scripted->second;
-            const MouseState mouse = mouseScriptFile.empty() ? renderer->Mouse() : scriptedMouseState;
+            const MouseState mouse = mouseScriptFile.empty() ? liveMouse : scriptedMouseState;
             const int page = menuLanguages ? 2 : menuOptions ? 1 : 0;
             mouseHover = -1;
             if (page == 0) {
@@ -1020,10 +1021,10 @@ int main(int argc, char** argv) {
                 mousePressed = -1;
             }
             lastMouseDown = mouse.leftDown;
-            const bool up = script.empty() ? renderer->KeyDown(Up) : command == 'J';
-            const bool down = script.empty() ? renderer->KeyDown(Down) : command == 'N';
-            const bool activate = script.empty() ? renderer->KeyDown(Interact) : command == 'S';
-            const bool back = script.empty() ? renderer->KeyDown(Escape) : command == 'X';
+            const bool up = script.empty() ? renderer->KeyDown(MenuUp) : command == 'J';
+            const bool down = script.empty() ? renderer->KeyDown(MenuDown) : command == 'N';
+            const bool activate = script.empty() ? renderer->KeyDown(MenuAccept) : command == 'S';
+            const bool back = script.empty() ? (renderer->KeyDown(Escape) || renderer->KeyDown(ModalBack)) : command == 'X';
             if (back && !menuBackHeld && menuLanguages) { menuLanguages = false; menuSelection = 2; }
             else if (back && !menuBackHeld && menuOptions) { menuOptions = false; menuSelection = 0; }
             else if (back && !menuBackHeld) break;
@@ -1333,11 +1334,20 @@ int main(int argc, char** argv) {
             const int rightY = deathleak::game::RightStickCameraTarget::WorldRightY(controllerSticks.rightY);
             stickAim = script.empty() && !simulateOnly && controllerSticks.connected &&
                 (std::abs(controllerSticks.rightX) > rightDeadzone || std::abs(rightY) > rightDeadzone);
+            // The cursor is in logical viewport coordinates. Match the scene's
+            // world projection before deriving a world-up shot vector.
+            const bool mouseAim = script.empty() && !simulateOnly && !controllerSticks.connected &&
+                liveMouse.leftDown && liveMouse.x >= 0.f && liveMouse.y >= 0.f &&
+                liveMouse.x < 1280.f && liveMouse.y < 720.f;
+            const float playerScale = (2.f / 3.f) / scene.CameraZoom();
+            const float playerScreenX = 640.f + (worldX - cameraX) * playerScale;
+            const float playerScreenY = 360.f + (cameraY - worldY) * playerScale;
             const bool fire = ResolveGameplayAttackInput(!script.empty(), command, *renderer,
                 wasGrounded, motion.WallSide() != 0, motion.Rolling(),
-                combat.MeleeActive(), stickAim).fire;
-            aimX = stickAim ? static_cast<float>(controllerSticks.rightX) : 0.f;
-            aimY = stickAim ? static_cast<float>(rightY) : 0.f;
+                combat.MeleeActive(), stickAim).fire || mouseAim;
+            aimX = stickAim ? static_cast<float>(controllerSticks.rightX) : mouseAim ? liveMouse.x - playerScreenX : 0.f;
+            aimY = stickAim ? static_cast<float>(rightY) : mouseAim ? playerScreenY - liveMouse.y : 0.f;
+            stickAim = stickAim || mouseAim;
             playerEligibleFireAttempt = fire && !motion.Rolling() && !motion.InWater() &&
                 !combat.MeleeActive() && combat.Health() > 0.f && motion.WallSide() == 0;
             const int firedBefore = combat.Fired();
