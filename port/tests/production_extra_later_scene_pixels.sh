@@ -4,9 +4,9 @@
 set -eu
 export SDL_VIDEODRIVER=offscreen SDL_RENDER_DRIVER=opengl SDL_AUDIODRIVER=dummy
 export DEATHLEAK_TEST_ALLOW_SOFTWARE_RENDERER=1
-out=${1:-port/build/production-extra-later-scenes}
+out=${1:-/tmp/deathleak-production-extra-later-scenes}
 mkdir -p "$out"
-for spec in cave6:1782:1781:underwater_cave_6.xml:R:1100,Q:40,R:640,E:1500,R:1300 arena_damage:1465:1464:first_ninja_arena.xml:L:1500,Q:40,L:100,F:300; do
+for spec in waterfall_active:510:501:waterfall_top.xml:R:510 cave6:1782:1781:underwater_cave_6.xml:R:1100,Q:40,R:640,E:1500,R:1300 arena_damage:1465:1464:first_ninja_arena.xml:L:1500,Q:40,L:100,F:300; do
   name=${spec%%:*}; rest=${spec#*:}; frames=${rest%%:*}; rest=${rest#*:}
   sample=${rest%%:*}; rest=${rest#*:}; scene=${rest%%:*}; route=${rest#*:}
   prefix="$out/$name"
@@ -30,14 +30,18 @@ assert state(a)==state(b), f'{p.name}: synthetic rate changed gameplay/transitio
 assert f'Simulation ended at Game/XmlFiles/levels/{scene}' in b
 assert 'Player died' not in b
 for n,src,dst in ((398,'forest_exploration_1.xml','waterfall_top.xml'),(762,'waterfall_top.xml','waterfall_bottom.xml'),(1378,'waterfall_bottom.xml','underwater_cave.xml')):
-    if p.name!='arena_damage': assert re.search(rf'Trigger at frame {n} from .*{src} .*{dst}',b)
-if p.name in ('cave6','hot_springs'):
+    if p.name=='cave6': assert re.search(rf'Trigger at frame {n} from .*{src} .*{dst}',b)
+if p.name=='waterfall_active':
+    assert 'Trigger at frame 398 from' in b
+if p.name=='cave6':
     assert 'Trigger at frame 1780 from' in b
 if p.name=='arena_damage':
     assert 'Trigger at frame 300 from' in b and 'Trigger at frame 1093 from' in b
     assert re.search(r'\bhits=1\b',b) and re.search(r'\bhealth=22\b',b)
 rows=re.findall(r'REFRESH_EXTRA_CAPTURE fixed_frame=(\d+) slot=(\d+) alpha=([0-9.]+) actual_sampled=(\d+) expected_sampled=(\d+)',b)
 assert rows, f'{p.name}: no actual production extra slot captured'
+if p.name=='waterfall_active':
+    assert any(int(sampled)>0 for _,_,_,sampled,_ in rows), 'Waterfall active slot never admitted motion'
 for f,slot,alpha,sampled,expected_sampled in rows:
     assert int(f)==frame and sampled==expected_sampled
     paths=[pathlib.Path(str(p)+f'.{slot}.{arm}.bmp') for arm in ('actual','expected','held')]
