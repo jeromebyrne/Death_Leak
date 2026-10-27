@@ -138,3 +138,7 @@ encounter-cooldown-visit-test: build/encounter_cooldown_visit_test
 build/encounter_cooldown_visit_test: tests/encounter_cooldown_visit_test.cpp game/Combat.cpp game/Combat.h game/LevelScene.cpp
 	@mkdir -p build
 	$(CXX) $(CXXFLAGS) -UNDEBUG -Icompat tests/encounter_cooldown_visit_test.cpp game/Combat.cpp game/LevelScene.cpp ../Game/tinyxml/tinyxml.cpp ../Game/tinyxml/tinyxmlerror.cpp ../Game/tinyxml/tinyxmlparser.cpp ../Game/tinyxml/tinystr.cpp -o $@
+
+.PHONY: earned-wall-clock-route-test
+earned-wall-clock-route-test: $(TARGET)
+	cd .. && sh port/tests/earned_wall_clock_route.sh

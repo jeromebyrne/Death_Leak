@@ -56,9 +56,12 @@ respawn is legitimate and remains enabled. Normal jump/fire route exploration
 can bypass that trigger, retain health4 and reach the barn; an added normal
 Forest-2 return jump sequence advances to the granary key and second arena
 visit around frame29563. That later arena fight is also legitimately eligible.
-These route explorations are separate from the source bug fix; failed/dead/
-out-of-level candidates are retained and are not acceptance evidence.
-The original fast ending must not be called a complete real-time clear.
+The subsequent [clock-aware earned-route gate](REALTIME_EARNED_ROUTE_GATE_20261027.md)
+now completes the entire deterministic encounter-clock ending with421 IDs, all
+four keys and a natural deflection. Failed/dead/out-of-level candidates remain
+evidence only. The same route also passed a separately collected977.685-second actual-clock
+replay on strict offscreen hardware. The original fast ending alone is never
+treated as a complete real-time clear.
 
 Physical attended gameplay, real controller and >60Hz display remain external
 prerequisites. Human visual/audio parity and sustained physical-display GPU
