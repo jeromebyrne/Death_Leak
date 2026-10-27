@@ -37,12 +37,19 @@ public:
         return Result::Presented;
     }
     void OrdinaryPresented(Clock::time_point when) { slots_.Presented(when); }
+    // Publishing a completed fixed frame does not itself consume a display slot.
+    // The live display loop asks TryPresent only when the independent slot is due.
+    void SealFreshBoundary(const FreshPresentationPacket& fresh, Clock::time_point when) {
+        fresh_ = &fresh;
+        fixedBoundary_ = when;
+    }
+    double UntilNextSeconds(Clock::time_point now) const { return slots_.UntilNextSeconds(now); }
     // The update has rendered and sealed N. Present N-1 at alpha=0, then
     // monotonically advance toward N on display-only slots. No rewind after
     // an ordinary alpha=1 present, and scene cuts fail closed to N.
     Result PresentFreshBoundary(const FreshPresentationPacket& fresh, Clock::time_point when) {
         if (!recorder_.PresentationSurfaceStable()) return Result::SurfaceChanged;
-        fresh_ = &fresh; fixedBoundary_ = when;
+        SealFreshBoundary(fresh, when);
         const auto sample = fresh.Sample(0.0);
         recorder_.ReplayPacket(sample.packet);
         if (!recorder_.PresentationSurfaceStable()) return Result::SurfaceChanged;

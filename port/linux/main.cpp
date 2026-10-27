@@ -910,8 +910,12 @@ int main(int argc, char** argv) {
                         return 1;
                     }
                 }
-                if (!testRefreshHz) std::this_thread::sleep_for(std::chrono::duration<double>(
-                    std::min(livePacer.UntilNextSeconds(), 0.002)));
+                if (!testRefreshHz) {
+                    const double untilDisplay = refreshPresentation
+                        ? refreshPresentation->UntilNextSeconds(std::chrono::steady_clock::now()) : 0.002;
+                    std::this_thread::sleep_for(std::chrono::duration<double>(
+                        std::min({livePacer.UntilNextSeconds(), untilDisplay, 0.002})));
+                }
                 --frame;
                 continue;
             }
@@ -2330,10 +2334,25 @@ int main(int argc, char** argv) {
             }
             priorFullFrame=std::move(frameSnapshot); hasPriorFullFrame=true;
         }
+        bool fixedBoundaryPresented = !refreshPresentation;
         if (refreshPresentation) {
-            const auto result = refreshPresentation->PresentFreshBoundary(freshPresentation, presentationTickTime);
-            if (result != deathleak::linux_port::RefreshPresentationService::Result::Presented) {
-                std::cerr << "Refresh surface changed during fresh boundary\n"; return 1;
+            if (testFreshSlots) {
+                // Preserve the deterministic synthetic-slot oracle's historical boundary.
+                const auto result = refreshPresentation->PresentFreshBoundary(freshPresentation, presentationTickTime);
+                if (result != deathleak::linux_port::RefreshPresentationService::Result::Presented) {
+                    std::cerr << "Refresh surface changed during fresh boundary\n"; return 1;
+                }
+                fixedBoundaryPresented = true;
+            } else {
+                // Production: fixed updates only publish immutable post-HUD packets.
+                // A due display slot, not the 60-Hz simulation boundary, chooses when
+                // to replay/present. No game update, input, audio or clock is called here.
+                refreshPresentation->SealFreshBoundary(freshPresentation, presentationTickTime);
+                const auto result = refreshPresentation->TryPresent(std::chrono::steady_clock::now());
+                if (result == deathleak::linux_port::RefreshPresentationService::Result::SurfaceChanged) {
+                    std::cerr << "Refresh surface changed during scheduled present\n"; return 1;
+                }
+                fixedBoundaryPresented = result == deathleak::linux_port::RefreshPresentationService::Result::Presented;
             }
         }
         if (fixedDt <= 0.f && !liveClockAnchored) {
@@ -2343,7 +2362,7 @@ int main(int argc, char** argv) {
         if (refreshSlots && !renderer->PresentationSurfaceStable()) {
             std::cerr << "Refresh surface changed during ordinary present\n"; return 1;
         }
-        if (profile || refreshSlots) notePresentation();
+        if ((profile || refreshSlots) && fixedBoundaryPresented) notePresentation();
 
         if (repeatPresentationCheck && repeatRecorder && frame == frameLimit - 1) {
             const auto repeatStart = std::chrono::steady_clock::now();
@@ -2376,7 +2395,7 @@ int main(int argc, char** argv) {
                       << " time=" << loadingPhaseTime << '\n';
         }
 #endif
-        if (showFps) ++presentedFramesInSample;
+        if (showFps && fixedBoundaryPresented) ++presentedFramesInSample;
         precedingRenderedModifiedDelta = dt;
         shaderClock.RenderCompleted(dt);
         const auto afterDraw = std::chrono::steady_clock::now();

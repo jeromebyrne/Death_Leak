@@ -131,6 +131,28 @@ int main() {
     raw->surfaceStable=false; raw->calls.clear();
     assert(freshService.TryPresent(freshOrigin+std::chrono::milliseconds(26))==RefreshPresentationService::Result::SurfaceChanged);
     assert(raw->calls.empty()); raw->surfaceStable=true;
+    // Live-style publication is independent of the fixed boundary. A completed
+    // post-HUD packet cannot swap until a display slot becomes due.
+    const auto scheduledOrigin = RefreshPresentationService::Clock::time_point{};
+    RefreshPresentationService scheduled(scheduledOrigin, 120, recorder, true);
+    FreshPresentationPacket scheduledFresh;
+    scheduledFresh.Seal(makeFrame(0),{0,20,0,0,7});
+    scheduledFresh.Seal(makeFrame(10),{10,20,0,0,7});
+    raw->calls.clear();
+    scheduled.SealFreshBoundary(scheduledFresh, scheduledOrigin);
+    assert(raw->calls.empty());
+    assert(scheduled.TryPresent(scheduledOrigin)==RefreshPresentationService::Result::Presented);
+    assert(raw->calls == std::vector<std::string>({"begin:0","sprite:7","post","sprite:9","present"}));
+    raw->calls.clear();
+    assert(scheduled.TryPresent(scheduledOrigin+std::chrono::milliseconds(4))==RefreshPresentationService::Result::NotDue);
+    assert(raw->calls.empty());
+    scheduledFresh.Seal(makeFrame(20),{20,20,0,0,7});
+    scheduled.SealFreshBoundary(scheduledFresh, scheduledOrigin+std::chrono::milliseconds(5));
+    assert(raw->calls.empty());
+    assert(scheduled.TryPresent(scheduledOrigin+std::chrono::milliseconds(9))==RefreshPresentationService::Result::Presented);
+    assert(raw->calls == std::vector<std::string>({"begin:0","sprite:7","post","sprite:9","present"}));
+    assert(raw->spriteXs[raw->spriteXs.size()-2]>10.f && raw->spriteXs[raw->spriteXs.size()-2]<20.f);
+    assert(scheduled.FreshPresents()==2);
     assert(raw->textureLoads == 0 && raw->inputReads == 0 && raw->eventPolls == 0);
     assert(!raw->PollQuit() && raw->eventPolls == 1); // positive fixed-update event pump
     std::cout << "ordered packet 100000 repeat replays and positive next update passed\n";

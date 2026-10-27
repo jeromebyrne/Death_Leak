@@ -1,0 +1,12 @@
+# Production scheduled present-loop step — 2026-10-26 17:38 PDT
+
+Base: live `ae3675bf3c3f408093f200e151859dc251504e1a` in clean isolated worktree. This step changes the live opt-in `--refresh-slots --refresh-hz` path: a 60-Hz fixed update seals a complete renderer-owned post-HUD command packet but no longer automatically swaps at that fixed boundary. `RefreshPresentationService::TryPresent` owns the due display-slot decision after publication and in the update-free loop. Its packet replay samples sealed frames only; it does not run scene update, input polling, audio dispatch, gameplay film update, shader clock, camera shake, or event transitions. Missed slots are skipped by `RefreshSlotScheduler`. The short sleep now respects both simulation and display deadlines. Synthetic test mode retains the old deterministic boundary to preserve its pixel oracle.
+
+The production path is still single-threaded: fixed work can delay a due slot, and renderer-owned texture IDs require resident resources. This is independent *scheduling*, not an independent renderer thread or proven >60-Hz output. No atlas/bind changes.
+
+Verification on this worktree:
+- `make -C port presentation-command-packet-test refresh-slot-scheduler-test` passed. New spy-renderer case proves publication itself makes no `EndFrame` call, a non-due slot makes no renderer call, and a due slot replays a full Begin→scene sprite→postprocess→HUD sprite→present sequence with interpolated sprite position. No texture load, input read or event poll occurred in the service.
+- `docker run --rm -v "$PWD":/src -w /src/port deathleak-linux-build:bookworm make -j2 all` passed (existing unrelated compiler warnings).
+- `docker run --rm -v "$PWD":/src -w /src deathleak-linux-build:bookworm sh port/tests/fresh_refresh_slots.sh port/build/independent-present-refresh` passed. At synthetic 120/144 Hz, 9/13 fresh extra slots of 131/163 extra slots; full-packet scene topology and fixed gameplay/combat endpoints match the 60-Hz control, zero surface failures per gate.
+
+Limits: synthetic offscreen llvmpipe confirms functional regression only. The connected LVDS is ~59.901 Hz and Xorg/display/device access prevents a physical >60-Hz, GPU, input or sustained frame-time/FPS claim. The new live scheduling path has source-level/spy verification but cannot be physically exercised here. Full post-HUD replay retains prior cave-6 and scene pixel evidence; this step does not claim a new hardware pixel gate or release acceptance.
