@@ -294,3 +294,6 @@ Outcome: exact-staged-source GPU run improved active Forest frame p50 21.9874 ->
 
 ### 2026-10-26 — admitted Hot Springs production extra-slot correctness, not performance
 - Direct real-XML Hot Springs frame-15 actual opt-in extra slot admitted 40 commands; full 1280×720 post-HUD actual/oracle bytes identical, with 696,797 pixels distinct from held. Synthetic 60/144-Hz fixed endpoints matched and surface failures were zero. Offscreen llvmpipe's 9 fresh/208 extra presents are correctness counters, not physical cadence/FPS or NVE7 evidence. LVDS 59.901 Hz/Xorg cookie blocker remains; no physical selected >60-Hz, GPU/input/release claim or atlas/bind optimization. See `port/ADMITTED_HOT_SPRINGS_PRODUCTION_PIXEL_GATE_20261026.md`.
+
+### 2026-10-26 — admitted cave-5 production pixel correctness; no hardware performance claim
+- Two actual synthetic 144-Hz extra slots at cave-5 frame 15 sampled 30 commands each and matched the independent full post-HUD oracle byte-for-byte; fixed endpoints matched 60 Hz and surfaces had zero failures. Direct scene load, not uninterrupted route pixel evidence. Offscreen llvmpipe is not physical selected >60-Hz, GPU frame-time/FPS, input or release acceptance. Atlas/bind work paused.
