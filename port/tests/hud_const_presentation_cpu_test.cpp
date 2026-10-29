@@ -62,6 +62,13 @@ int main() {
     hud.Prepare(20, 25, 50, 1.25f);
     const game::HudPresentationPacket packet{hud, 12};
     packet.Draw(first);
+    // Authored game_hud.xml: orb and focus use vflip=true, health false.
+    // UISprite V0 is world-bottom; SDL must use the inverse authored flag.
+    constexpr float healthTop=(540.f-460.f-19.f)*2.f/3.f;
+    for (const auto& sprite : first.sprites) {
+        if (sprite.texture==5) assert(!sprite.flipY);
+        else assert(sprite.flipY == (std::fabs(sprite.destination.y-healthTop)<.001f));
+    }
     for (int i = 0; i < 100000; ++i) {
         repeated.clear();
         packet.Draw(repeated);

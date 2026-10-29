@@ -894,6 +894,7 @@ void Combat::AppendPainterItems(std::vector<PainterItem>& items, render::Rendere
         render::Sprite sprite{texture, {}, {640.f+(enemy.x-cameraX-width/2)*scale,
             360.f+(cameraY-enemy.y-height/2)*scale,width*scale,height*scale}};
         sprite.flipX = enemy.facing < 0;
+        sprite.flipY = true; // Sprite V0 is world-bottom, not SDL screen-top.
         sprite.rgbGain = DamageBurstGain(enemy.damageBurstAge);
         items.push_back({3500, [&, sprite] { renderer.DrawSprite(sprite); }});
     }
@@ -905,7 +906,8 @@ void Combat::AppendPainterItems(std::vector<PainterItem>& items, render::Rendere
         const float w = effect.width*fade, h = effect.height*fade;
         render::Sprite sprite{effect.texture, {}, {640.f+(effect.x-cameraX-w/2.f)*scale,
             360.f+(cameraY-effect.y-h/2.f)*scale,w*scale,h*scale}};
-        sprite.rotationDegrees = effect.rotation;
+        sprite.flipY = true;
+        sprite.rotationDegrees = render::OrdinarySpriteRotationDegrees(effect.rotation, false, false);
         sprite.tint.a = static_cast<std::uint8_t>(std::lround(255.f*fade));
         items.push_back({effect.spray ? 1750 : 3500, [&, sprite] { renderer.DrawSprite(sprite); }});
     }
@@ -921,7 +923,8 @@ void Combat::AppendPainterItems(std::vector<PainterItem>& items, render::Rendere
             {640.f+(blood.x-cameraX-size/2.f)*scale,
              360.f+(cameraY-blood.y-size/2.f)*scale, size*scale, size*scale}};
         sprite.tint.a = static_cast<std::uint8_t>(std::lround(255.f*alpha));
-        sprite.rotationDegrees = blood.rotation;
+        sprite.flipY = true;
+        sprite.rotationDegrees = render::OrdinarySpriteRotationDegrees(blood.rotation, false, false);
         items.push_back({blood.impacted && !blood.blocked ? 4000 : 3000, [&, sprite] { renderer.DrawSprite(sprite); }});
     }
     for (const auto& shot:shots_) {
@@ -933,17 +936,16 @@ void Combat::AppendPainterItems(std::vector<PainterItem>& items, render::Rendere
         render::Sprite sprite{texture,{}, {640.f+(shot.x-cameraX-w/2)*scale,
             360.f+(cameraY-shot.y-h/2)*scale,w*scale,h*scale}};
         sprite.flipX = shot.vx < 0.f;
-        // Projectile::DoRotateToDirection follows the gravity-adjusted velocity.
-        // Left-facing blades carry the source's horizontal launch flip and
-        // vertical flip; only ninja stars use continuous angular spin.
+        sprite.flipY = true;
+        // The original knife texture points along local +X. Reflect it once
+        // for left flight, then pitch that reflected axis along velocity.
+        // Using a full +/-acos angle AND the launch X reflection reversed
+        // leftward blades a second time. SDL also needs inverse authored V.
         if (shot.playerKnife && std::hypot(shot.vx, shot.vy) > 0.00001f) {
-            sprite.flipY = shot.vx < 0.f;
-            const float sourceAngle = shot.vx < 0.f
-                ? (shot.vy < 0.f ? std::acos(std::clamp(shot.vx / std::hypot(shot.vx, shot.vy), -1.f, 1.f))
-                                  : -std::acos(std::clamp(shot.vx / std::hypot(shot.vx, shot.vy), -1.f, 1.f)))
-                : std::atan2(shot.vy, shot.vx);
-            sprite.rotationDegrees = render::OrdinarySpriteRotationDegrees(
-                sourceAngle, sprite.flipX, sprite.flipY);
+            sprite.flipY = shot.vx >= 0.f;
+            const float pitch = std::atan2(shot.vy, std::abs(shot.vx));
+            sprite.rotationDegrees = pitch * (shot.vx < 0.f ? 1.f : -1.f) *
+                                     (180.f / 3.14159265358979323846f);
         }
         sprite.tint.a = static_cast<std::uint8_t>(std::lround(255.f * visualScale));
         const auto* stableShot = &shot; // Valid until the next Combat mutation.

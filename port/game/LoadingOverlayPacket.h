@@ -30,7 +30,7 @@ struct LoadingOverlayPacket {
     void Draw(render::Renderer& renderer, render::TextureId art) const {
         if (!visible) return;
         const render::Color tint{255, 255, 255, static_cast<std::uint8_t>(tintAlpha)};
-        if (art) renderer.DrawSprite({art, {}, {0, 0, 1280, 720}, tint});
+        if (art) renderer.DrawSprite({art, {}, {0, 0, 1280, 720}, tint, 1.f, 0.f, false, true});
         else renderer.FillRect({0, 0, 1280, 720}, {0, 0, 0, tint.a});
     }
 };

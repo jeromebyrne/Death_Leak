@@ -9,7 +9,7 @@ TARGET := build/deathleak-linux
 
 .PHONY: all clean smoke
 all: $(TARGET)
-$(TARGET): linux/main.cpp linux/FilmFrameSelector.h linux/FixedStepPacer.h linux/RefreshSlotScheduler.h linux/RefreshPresentationService.h linux/PresentationCommandPacket.h linux/MixedCommandInterpolationGate.h linux/FreshPresentationPacket.h linux/SDLRenderer.cpp linux/LogicalViewport.h linux/DisplaySurfaceGeometry.h linux/RepeatX.h linux/RotatedRepeatX.h linux/UVWrap.h linux/ParallaxUV.h linux/ParallaxUVCommand.h linux/WobbleUV.h linux/FoliageSway.h linux/EffectQuadGeometry.h render/OrdinarySpriteRotation.h linux/SDLSoundPlayer.cpp audio/SoundPlayer.h game/Settings.h game/LevelScene.cpp game/LevelScene.h game/CameraShake.h game/PresentationPose.h render/ViewportCull.h game/ShaderClock.h game/WeatherLightning.h game/WeatherRain.h game/WeatherTextureResidency.h game/FilmFrameResidency.h game/LoadingOverlayPacket.h game/ParticleSpray.h game/Combat.cpp game/Combat.h game/PlayerMotion.cpp game/PlayerMotion.h game/Hud.cpp game/Hud.h game/HudPresentationPacket.h game/BitmapText.h game/PaperText.h render/Renderer.h $(wildcard ../Game/tinyxml/*.cpp)
+$(TARGET): linux/main.cpp linux/FilmFrameSelector.h linux/FixedStepPacer.h linux/RefreshSlotScheduler.h linux/RefreshPresentationService.h linux/PresentationCommandPacket.h linux/MixedCommandInterpolationGate.h linux/FreshPresentationPacket.h linux/SDLRenderer.cpp linux/KeyboardState.h linux/LogicalViewport.h linux/DisplaySurfaceGeometry.h linux/RepeatX.h linux/RotatedRepeatX.h linux/UVWrap.h linux/ParallaxUV.h linux/ParallaxUVCommand.h linux/WobbleUV.h linux/FoliageSway.h linux/EffectQuadGeometry.h render/OrdinarySpriteRotation.h linux/SDLSoundPlayer.cpp audio/SoundPlayer.h game/Settings.h game/LevelScene.cpp game/LevelScene.h game/CameraShake.h game/PresentationPose.h render/ViewportCull.h game/ShaderClock.h game/WeatherLightning.h game/WeatherRain.h game/WeatherTextureResidency.h game/FilmFrameResidency.h game/LoadingOverlayPacket.h game/ParticleSpray.h game/Combat.cpp game/Combat.h game/PlayerMotion.cpp game/PlayerMotion.h game/Hud.cpp game/Hud.h game/HudPresentationPacket.h game/BitmapText.h game/PaperText.h render/Renderer.h $(wildcard ../Game/tinyxml/*.cpp)
 	@mkdir -p build
 	$(CXX) $(CXXFLAGS) $(SDL_CFLAGS) $(PNG_CFLAGS) -Icompat linux/main.cpp linux/SDLRenderer.cpp linux/SDLSoundPlayer.cpp game/LevelScene.cpp game/Combat.cpp game/PlayerMotion.cpp game/Hud.cpp ../Game/tinyxml/tinyxml.cpp ../Game/tinyxml/tinyxmlerror.cpp ../Game/tinyxml/tinyxmlparser.cpp ../Game/tinyxml/tinystr.cpp -o $@ $(SDL_LIBS) $(PNG_LIBS) $(GL_LIBS)
 smoke: $(TARGET)
@@ -142,3 +142,15 @@ build/encounter_cooldown_visit_test: tests/encounter_cooldown_visit_test.cpp gam
 .PHONY: earned-wall-clock-route-test
 earned-wall-clock-route-test: $(TARGET)
 	cd .. && sh port/tests/earned_wall_clock_route.sh
+
+# Runs only when explicitly invoked: strict hardware rendering, never software.
+build/render_target_orientation_test: tests/render_target_orientation_test.cpp linux/SDLRenderer.cpp $(wildcard linux/*.h render/*.h)
+	@mkdir -p build
+	$(CXX) $(CXXFLAGS) -UNDEBUG $(SDL_CFLAGS) $(PNG_CFLAGS) tests/render_target_orientation_test.cpp linux/SDLRenderer.cpp -o $@ $(SDL_LIBS) $(PNG_LIBS) $(GL_LIBS)
+
+.PHONY: knife-visual-lifecycle-test
+knife-visual-lifecycle-test: build/knife_visual_lifecycle_test
+	cd .. && port/build/knife_visual_lifecycle_test
+build/knife_visual_lifecycle_test: tests/knife_visual_lifecycle_test.cpp game/Combat.cpp game/Combat.h game/LevelScene.cpp game/LevelScene.h $(wildcard ../Game/tinyxml/*.cpp)
+	@mkdir -p build
+	$(CXX) $(CXXFLAGS) -UNDEBUG -Icompat tests/knife_visual_lifecycle_test.cpp game/Combat.cpp game/LevelScene.cpp ../Game/tinyxml/tinyxml.cpp ../Game/tinyxml/tinyxmlerror.cpp ../Game/tinyxml/tinyxmlparser.cpp ../Game/tinyxml/tinystr.cpp -o $@

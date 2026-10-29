@@ -28,6 +28,17 @@ Without a gamepad: A/D or Left/Right move; W/Up/Space jump or swim up; S/Down cr
 
 The keyboard/mouse mapping is a Linux-port accessibility adaptation. Display-attached human input acceptance remains separate from scripted and offscreen checks.
 
+## Desktop/remote-input repair (2026-10-29)
+
+`./Play-DeathLeak.sh` uses isolated backed-up state and distinguishes active DL6
+progress from completed MENU metadata. Escape exits; Ctrl+Q and Alt+F4 are
+unconditional emergency exits, and the window close button is supported.
+Original menu cursor art is rendered into the frame for remote capture. Remote
+key/mouse press edges survive a press/release delivered within one update;
+focus loss clears held state. Local hardware and actual remote transport remain
+separate attended acceptance checks. See `PLAYTEST_REPAIR_20261029.md` for source
+parity, reproduced render-target projection errors and exact verification scope.
+
 ## Rendering seam
 
 `render/Renderer.h` is the platform-neutral contract. Game-side code submits source/destination rectangles, tint, rotation and flips using `TextureId`; it never sees SDL, Direct3D or Metal objects. `linux/SDLRenderer.cpp` owns the SDL2 window, textures, input polling and presentation. `CreateRenderer()` is the backend selection point. A macOS backend can implement this contract (or the same SDL backend can be compiled there initially); no macOS-specific code is required in callers.

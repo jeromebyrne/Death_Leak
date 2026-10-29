@@ -7,6 +7,7 @@
 #include "FoliageSway.h"
 #include "EffectQuadGeometry.h"
 #include "LogicalViewport.h"
+#include "KeyboardState.h"
 #include "DisplaySurfaceGeometry.h"
 #include <SDL.h>
 #define GL_GLEXT_PROTOTYPES
@@ -124,6 +125,8 @@ public:
     bool Initialize(const char* title, int width, int height, bool fullscreen, std::string& error) override {
         if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER) != 0) { error = SDL_GetError(); return false; }
         initialized_ = true;
+        SDL_SetRelativeMouseMode(SDL_FALSE);
+        SDL_ShowCursor(SDL_ENABLE);
         window_ = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                    width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
         if (!window_) { error = SDL_GetError(); return false; }
@@ -663,7 +666,7 @@ public:
         glColor4f(sprite.tint.r / 255.f, sprite.tint.g / 255.f,
                   sprite.tint.b / 255.f, sprite.tint.a / 255.f * sprite.opacity);
         glMatrixMode(GL_PROJECTION); glPushMatrix(); glLoadIdentity();
-        glOrtho(0, 1280, 720, 0, -1, 1);
+        ApplyLogicalProjection();
         glMatrixMode(GL_MODELVIEW); glPushMatrix(); glLoadIdentity();
         glBegin(GL_QUADS);
         for (const auto& vertex : quad.vertices) {
@@ -797,7 +800,7 @@ public:
             glColor4f(sprite.tint.r / 255.f, sprite.tint.g / 255.f,
                       sprite.tint.b / 255.f, sprite.tint.a / 255.f);
             glMatrixMode(GL_PROJECTION); glPushMatrix(); projectionPushed = true; glLoadIdentity();
-            glOrtho(0, 1280, 720, 0, -1, 1);
+            ApplyLogicalProjection();
             glMatrixMode(GL_MODELVIEW); glPushMatrix(); modelviewPushed = true; glLoadIdentity();
             const float x[4] = {destination.x, destination.x + destination.w,
                                 destination.x + destination.w, destination.x};
@@ -862,7 +865,7 @@ public:
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glDisable(GL_DEPTH_TEST);
         glMatrixMode(GL_PROJECTION); glPushMatrix(); glLoadIdentity();
-        glOrtho(0, 1280, 720, 0, -1, 1);
+        ApplyLogicalProjection();
         glMatrixMode(GL_MODELVIEW); glPushMatrix(); glLoadIdentity();
         glUseProgram(damageBurstProgram_);
         glUniform1f(glGetUniformLocation(damageBurstProgram_, "rgbGain"), sprite.rgbGain);
@@ -910,7 +913,7 @@ public:
         glActiveTexture(GL_TEXTURE0);
         glGetIntegerv(GL_TEXTURE_BINDING_2D, &oldBinding);
         float textureWidth = 1.f, textureHeight = 1.f;
-        const GLuint privateTexture = WobbleMipTexture(sprite.texture);
+        const GLuint privateTexture = std::getenv("DEATHLEAK_TEST_WOBBLE_SDL_TEXTURE") ? 0 : WobbleMipTexture(sprite.texture);
         const bool usePrivate = privateTexture != 0;
         bool sdlBound = false;
         GLint oldWrapS = 0, oldWrapT = 0, oldMin = 0, oldMag = 0;
@@ -936,9 +939,10 @@ public:
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glDisable(GL_DEPTH_TEST);
         glMatrixMode(GL_PROJECTION); glPushMatrix(); glLoadIdentity();
-        glOrtho(0, 1280, 720, 0, -1, 1);
+        ApplyLogicalProjection();
         glMatrixMode(GL_MODELVIEW); glPushMatrix(); glLoadIdentity();
         glUseProgram(pixelWobbleProgram_);
+        glUniform1f(glGetUniformLocation(pixelWobbleProgram_, "reversedRows"), usePrivate ? 1.f : 0.f);
         glUniform1f(glGetUniformLocation(pixelWobbleProgram_, "effectTime"), sprite.pixelWobble.time);
         glUniform1f(glGetUniformLocation(pixelWobbleProgram_, "speedMod"), sprite.pixelWobble.speedMod);
         glUniform1f(glGetUniformLocation(pixelWobbleProgram_, "intensity"), sprite.pixelWobble.intensity);
@@ -1185,10 +1189,29 @@ public:
                !(flags & SDL_WINDOW_MINIMIZED);
     }
     bool PollQuit() override {
+        keyboard_.BeginUpdate();
+        mousePressedThisUpdate_ = false;
         SDL_Event event;
         bool quit = false;
         while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) quit = true;
+            if (event.type == SDL_QUIT ||
+                (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE)) quit = true;
+            if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_FOCUS_LOST)
+            {
+                keyboard_.Clear();
+                mouseLeftHeld_ = mousePressedThisUpdate_ = false;
+            }
+            if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT)
+                mouseLeftHeld_ = mousePressedThisUpdate_ = true;
+            if (event.type == SDL_MOUSEBUTTONUP && event.button.button == SDL_BUTTON_LEFT)
+                mouseLeftHeld_ = false;
+            if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP) {
+                keyboard_.Handle(event.key);
+                // Always available, including menus/modals/controller mode.
+                if (event.type == SDL_KEYDOWN &&
+                    ((event.key.keysym.sym == SDLK_F4 && (event.key.keysym.mod & KMOD_ALT)) ||
+                     (event.key.keysym.sym == SDLK_q && (event.key.keysym.mod & KMOD_CTRL)))) quit = true;
+            }
             if (event.type == SDL_CONTROLLERDEVICEADDED && !gamepad_ && SDL_IsGameController(event.cdevice.which))
                 gamepad_ = SDL_GameControllerOpen(event.cdevice.which);
             if (event.type == SDL_CONTROLLERDEVICEREMOVED && gamepad_ &&
@@ -1199,26 +1222,26 @@ public:
         return quit;
     }
     bool KeyDown(int key) const override {
-        const Uint8* keys = SDL_GetKeyboardState(nullptr);
+        const auto keyHeld = [this](SDL_Scancode code) { return keyboard_.Down(code); };
         const bool pad = gamepad_ && SDL_GameControllerGetAttached(gamepad_);
         auto button = [this, pad](SDL_GameControllerButton b) { return pad && SDL_GameControllerGetButton(gamepad_, b); };
         auto axis = [this, pad](SDL_GameControllerAxis a) { return pad ? SDL_GameControllerGetAxis(gamepad_, a) : 0; };
         switch (key) {
-            case Left: return pad ? button(SDL_CONTROLLER_BUTTON_DPAD_LEFT) || axis(SDL_CONTROLLER_AXIS_LEFTX) < -8000 : keys[SDL_SCANCODE_LEFT] || keys[SDL_SCANCODE_A];
-            case Right: return pad ? button(SDL_CONTROLLER_BUTTON_DPAD_RIGHT) || axis(SDL_CONTROLLER_AXIS_LEFTX) > 8000 : keys[SDL_SCANCODE_RIGHT] || keys[SDL_SCANCODE_D];
-            case Up: return pad ? button(SDL_CONTROLLER_BUTTON_DPAD_UP) || button(SDL_CONTROLLER_BUTTON_A) : keys[SDL_SCANCODE_UP] || keys[SDL_SCANCODE_W] || keys[SDL_SCANCODE_SPACE];
-            case Down: return pad ? button(SDL_CONTROLLER_BUTTON_DPAD_DOWN) : keys[SDL_SCANCODE_DOWN] || keys[SDL_SCANCODE_S];
-            case Fire: return !pad && keys[SDL_SCANCODE_F];
-            case Restart: return pad ? button(SDL_CONTROLLER_BUTTON_A) : keys[SDL_SCANCODE_R];
-            case Interact: return pad ? button(SDL_CONTROLLER_BUTTON_X) : keys[SDL_SCANCODE_E];
-            case Purchase: return pad ? button(SDL_CONTROLLER_BUTTON_Y) : keys[SDL_SCANCODE_Y];
-            case Roll: return pad ? button(SDL_CONTROLLER_BUTTON_LEFTSHOULDER) : keys[SDL_SCANCODE_LSHIFT];
-            case Melee: return pad ? button(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) : keys[SDL_SCANCODE_C];
-            case Escape: return pad ? button(SDL_CONTROLLER_BUTTON_START) : keys[SDL_SCANCODE_ESCAPE];
-            case ModalBack: return pad ? button(SDL_CONTROLLER_BUTTON_B) : keys[SDL_SCANCODE_BACKSPACE];
-            case MenuAccept: return pad ? button(SDL_CONTROLLER_BUTTON_A) || button(SDL_CONTROLLER_BUTTON_X) : keys[SDL_SCANCODE_RETURN] || keys[SDL_SCANCODE_E] || keys[SDL_SCANCODE_SPACE];
-            case MenuUp: return pad ? button(SDL_CONTROLLER_BUTTON_DPAD_UP) || axis(SDL_CONTROLLER_AXIS_LEFTY) < -8000 : keys[SDL_SCANCODE_UP] || keys[SDL_SCANCODE_W];
-            case MenuDown: return pad ? button(SDL_CONTROLLER_BUTTON_DPAD_DOWN) || axis(SDL_CONTROLLER_AXIS_LEFTY) > 8000 : keys[SDL_SCANCODE_DOWN] || keys[SDL_SCANCODE_S];
+            case Left: return pad ? button(SDL_CONTROLLER_BUTTON_DPAD_LEFT) || axis(SDL_CONTROLLER_AXIS_LEFTX) < -8000 : keyHeld(SDL_SCANCODE_LEFT) || keyHeld(SDL_SCANCODE_A);
+            case Right: return pad ? button(SDL_CONTROLLER_BUTTON_DPAD_RIGHT) || axis(SDL_CONTROLLER_AXIS_LEFTX) > 8000 : keyHeld(SDL_SCANCODE_RIGHT) || keyHeld(SDL_SCANCODE_D);
+            case Up: return pad ? button(SDL_CONTROLLER_BUTTON_DPAD_UP) || button(SDL_CONTROLLER_BUTTON_A) : keyHeld(SDL_SCANCODE_UP) || keyHeld(SDL_SCANCODE_W) || keyHeld(SDL_SCANCODE_SPACE);
+            case Down: return pad ? button(SDL_CONTROLLER_BUTTON_DPAD_DOWN) : keyHeld(SDL_SCANCODE_DOWN) || keyHeld(SDL_SCANCODE_S);
+            case Fire: return !pad && keyHeld(SDL_SCANCODE_F);
+            case Restart: return pad ? button(SDL_CONTROLLER_BUTTON_A) : keyHeld(SDL_SCANCODE_R);
+            case Interact: return pad ? button(SDL_CONTROLLER_BUTTON_X) : keyHeld(SDL_SCANCODE_E);
+            case Purchase: return pad ? button(SDL_CONTROLLER_BUTTON_Y) : keyHeld(SDL_SCANCODE_Y);
+            case Roll: return pad ? button(SDL_CONTROLLER_BUTTON_LEFTSHOULDER) : keyHeld(SDL_SCANCODE_LSHIFT);
+            case Melee: return pad ? button(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) : keyHeld(SDL_SCANCODE_C);
+            case Escape: return keyHeld(SDL_SCANCODE_ESCAPE) || button(SDL_CONTROLLER_BUTTON_START);
+            case ModalBack: return pad ? button(SDL_CONTROLLER_BUTTON_B) : keyHeld(SDL_SCANCODE_BACKSPACE);
+            case MenuAccept: return pad ? button(SDL_CONTROLLER_BUTTON_A) || button(SDL_CONTROLLER_BUTTON_X) : keyHeld(SDL_SCANCODE_RETURN) || keyHeld(SDL_SCANCODE_E) || keyHeld(SDL_SCANCODE_SPACE);
+            case MenuUp: return pad ? button(SDL_CONTROLLER_BUTTON_DPAD_UP) || axis(SDL_CONTROLLER_AXIS_LEFTY) < -8000 : keyHeld(SDL_SCANCODE_UP) || keyHeld(SDL_SCANCODE_W);
+            case MenuDown: return pad ? button(SDL_CONTROLLER_BUTTON_DPAD_DOWN) || axis(SDL_CONTROLLER_AXIS_LEFTY) > 8000 : keyHeld(SDL_SCANCODE_DOWN) || keyHeld(SDL_SCANCODE_S);
             default: return false;
         }
     }
@@ -1230,15 +1253,16 @@ public:
     }
     MouseState Mouse() const override {
         int x = 0, y = 0;
-        const Uint32 buttons = SDL_GetMouseState(&x, &y);
+        SDL_GetMouseState(&x, &y);
+        const bool leftDown = mouseLeftHeld_ || mousePressedThisUpdate_;
         int windowWidth = 0, windowHeight = 0, outputWidth = 0, outputHeight = 0;
         SDL_GetWindowSize(window_, &windowWidth, &windowHeight);
         if (SDL_GetRendererOutputSize(renderer_, &outputWidth, &outputHeight) != 0)
-            return {-1.f, -1.f, (buttons & SDL_BUTTON(SDL_BUTTON_LEFT)) != 0};
+            return {-1.f, -1.f, leftDown};
         const auto viewport = deathleak::linux_port::LogicalViewport::ForSize(outputWidth, outputHeight);
         const auto logical = viewport.WindowToLogical(float(x), float(y), windowWidth, windowHeight,
                                                        outputWidth, outputHeight);
-        return {logical.x, logical.y, (buttons & SDL_BUTTON(SDL_BUTTON_LEFT)) != 0};
+        return {logical.x, logical.y, leftDown};
     }
     bool SaveFrame(const std::string& path, std::string& error) override {
         int width = 0, height = 0;
@@ -1290,6 +1314,14 @@ public:
         return ok;
     }
 private:
+    void ApplyLogicalProjection() const {
+        // SDL OpenGL target textures use a bottom-up projection so their
+        // texture UVs still match ordinary SDL copies. A window uses top-down
+        // logical Y. Custom GL must match the CURRENT target, not hard-code
+        // the window projection (which mirrored effect positions about y=360).
+        if (SDL_GetRenderTarget(renderer_)) glOrtho(0, 1280, 0, 720, -1, 1);
+        else glOrtho(0, 1280, 720, 0, -1, 1);
+    }
     bool FullscreenGeometryStable() const {
         if (!window_ || !renderer_ || !presentationFullscreen_) return false;
         const Uint32 flags = SDL_GetWindowFlags(window_);
@@ -1468,13 +1500,13 @@ private:
         constexpr const char* source = R"(
             #version 120
             uniform sampler2D diffuse;
-            uniform float effectTime, speedMod, intensity, spriteAlpha;
+            uniform float effectTime, speedMod, intensity, spriteAlpha, reversedRows;
             uniform vec2 textureSpan;
             void main() {
                 vec2 uv = gl_TexCoord[0].xy;
                 uv.y += sin(uv.x * (effectTime * speedMod)) * intensity;
                 uv.x += sin(uv.y * (effectTime * speedMod)) * intensity;
-                vec4 sampled = texture2D(diffuse, vec2(uv.x, 1.0-uv.y) * textureSpan);
+                vec4 sampled = texture2D(diffuse, vec2(uv.x, reversedRows > 0.5 ? 1.0-uv.y : uv.y) * textureSpan);
                 gl_FragColor = vec4(sampled.rgb, sampled.a * spriteAlpha);
             }
         )";
@@ -1576,6 +1608,8 @@ private:
     int presentationWidth_ = 0, presentationHeight_ = 0;
     bool presentationFullscreen_ = false;
     int requestedRefreshHz_ = 0;
+    bool mouseLeftHeld_ = false, mousePressedThisUpdate_ = false;
+    deathleak::linux_port::KeyboardState keyboard_;
     bool testAllowSoftware_ = false;
     bool sceneSamplingPhase_ = false;
     float worldZoom_ = 1.f;

@@ -51,7 +51,7 @@ inline std::vector<std::string> WrapPaperText(const std::string& input, size_t c
 inline void DrawPaperModal(render::Renderer& renderer, const std::string& title,
                            const std::string& description, render::TextureId background,
                            render::TextureId backButton, bool ready) {
-    if (background) renderer.DrawSprite({background, {}, {0,0,1280,720}, {255,255,255,204}});
+    if (background) renderer.DrawSprite({background, {}, {0,0,1280,720}, {255,255,255,204}, 1.f, 0.f, false, true});
     auto upper = [](std::string value) {
         for (char& c : value) c = static_cast<char>(std::toupper(static_cast<unsigned char>(c)));
         return value;

@@ -96,7 +96,12 @@ void Hud::Draw(render::Renderer& renderer, int orbBalance) const {
     // in 1920x1080 coordinates; scale to this 1280x720 viewport.
     DrawBitmapText(renderer, std::to_string(orbBalance), 70, 90, 3, {179,179,179,204});
     std::vector<deathleak::render::Sprite> hudBatch;
-    auto emit = [&](const deathleak::render::Sprite& sprite) { hudBatch.push_back(sprite); };
+    auto emit = [&](deathleak::render::Sprite sprite) {
+        // UIMeter inherits UISprite: convert its authored V flag to SDL.
+        // The separate orb icon already uses XML vflip=true -> SDL false.
+        sprite.flipY = !sprite.flipY;
+        hudBatch.push_back(sprite);
+    };
     if (backing_ && healthProgress_.previousFill > healthProgress_.displayed &&
         healthBarWidth * healthProgress_.previousFill > 0.f)
         emit({backing_, {}, {barX, healthTop, healthBarWidth * healthProgress_.previousFill, meterHeight}, {255,255,255,220}});

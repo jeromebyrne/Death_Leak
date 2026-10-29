@@ -7,7 +7,7 @@
 class CaptureRenderer final : public deathleak::render::Renderer {
 public:
     std::vector<deathleak::render::Sprite> sprites;
-    bool Initialize(const char*, int, int, std::string&) override { return true; }
+    bool Initialize(const char*, int, int, bool, std::string&) override { return true; }
     deathleak::render::TextureId LoadTexture(const std::string&, std::string&) override { return 1; }
     void BeginFrame(deathleak::render::Color) override {}
     void DrawSprite(const deathleak::render::Sprite& sprite) override { sprites.push_back(sprite); }
@@ -61,7 +61,7 @@ int main() {
     assert(contact.ShotCount() == 0); // Existing solid contact still retires immediately.
     // Original Projectile::DoRotateToDirection pitches with current velocity:
     // gravity turns a horizontal throw downward, while a left throw preserves
-    // both authored reflection flags. It must not complete repeated spins.
+    // the launch reflection. Its texture tip must point along velocity.
     for (int facing : {1, -1}) {
         Combat trajectory;
         auto step = [&](float dt, bool fire) {
@@ -80,11 +80,42 @@ int main() {
         const auto early = drawKnife();
         step(.15f, false);
         const auto late = drawKnife();
-        assert(early.flipX == (facing < 0) && early.flipY == (facing < 0));
+        assert(early.flipX == (facing < 0) && early.flipY == (facing > 0));
+        const auto& shot = trajectory.Shots().front();
+        const float radians = late.rotationDegrees * 3.14159265358979323846f / 180.f;
+        const float sign = late.flipX ? -1.f : 1.f;
+        const float tipX = sign*std::cos(radians), tipY = sign*std::sin(radians);
+        const float speed = std::hypot(shot.vx,shot.vy);
+        assert((tipX*shot.vx-tipY*shot.vy)/speed > .9999f);
         assert(late.flipX == early.flipX && late.flipY == early.flipY);
         assert(std::abs(late.rotationDegrees - early.rotationDegrees) > .1f);
         assert(std::abs(late.rotationDegrees) <= 180.f);
         assert(std::abs(early.rotationDegrees) <= 180.f);
     }
-    std::cout << "PASS: player knife fade-in, trajectory pitch, active-flight bound and solid contact\n";
+    for (const auto aim : {std::pair<float,float>{1,0}, {-1,0}, {1,1},
+                           {-1,1}, {1,-1}, {-1,-1}, {0,1}, {0,-1}}) {
+        Combat directed;
+        directed.Update(empty,100000,100000,0,true,false,true,false,1,renderer,aim.first,aim.second);
+        directed.Update(empty,100000,100000,.15f,false,false,true,false,1,renderer);
+        assert(directed.ShotCount()==1);
+        const auto& shot=directed.Shots().front(); renderer.sprites.clear();
+        directed.Draw(renderer,shot.x,shot.y); assert(renderer.sprites.size()==1);
+        const auto& sprite=renderer.sprites.front();
+        const float angle=sprite.rotationDegrees*3.14159265358979323846f/180.f;
+        const float sign=sprite.flipX?-1.f:1.f;
+        assert(sign*(std::cos(angle)*shot.vx-std::sin(angle)*shot.vy)/std::hypot(shot.vx,shot.vy)>.9999f);
+    }
+    LevelScene encounter;
+    assert(encounter.Load("port/tests/fixtures/encounter_open.xml",renderer,error));
+    Combat actor; actor.Update(encounter,0,107.44937f,0,false,false,true,false,1,renderer);
+    actor.SetArt(renderer); assert(actor.EnemyCount()==1);
+    const auto& enemy=actor.Enemies().front(); renderer.sprites.clear();
+    actor.Draw(renderer,enemy.x,enemy.y); assert(renderer.sprites.size()==1);
+    const auto& body=renderer.sprites.front(); assert(body.flipY);
+    assert(std::abs(body.destination.x+body.destination.width/2-640.f)<.001f);
+    assert(std::abs(body.destination.y+body.destination.height/2-360.f)<.001f);
+    Combat blood; blood.SetArt(renderer); blood.SpawnIntroBloodFlight(0,0);
+    blood.UpdateBloodFlights(empty,.15f); renderer.sprites.clear(); blood.Draw(renderer,0,0);
+    assert(renderer.sprites.size()==1 && renderer.sprites.front().flipY);
+    std::cout << "PASS: player knife fade-in, eight-direction forward tips, actor/blood V, trajectory pitch, active-flight bound and solid contact\n";
 }

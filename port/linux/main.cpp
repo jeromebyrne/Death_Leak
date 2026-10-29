@@ -758,6 +758,7 @@ int main(int argc, char** argv) {
     if (!hasPulledSword) scene.SetIntroBodyPhase(deathleak::game::LevelScene::IntroBodyPhase::Looped);
     // Main-menu assets and ordering follow mainmenu.xml. Keyboard/controller
     // navigation is a Linux accessibility fallback for the source mouse widgets.
+    auto menuCursor = menuLoop ? renderer->LoadTexture("Game/Media/UI/cursor.png", error) : InvalidTexture;
     auto menuTitle = menuLoop ? renderer->LoadTexture("Game/Media/UI/title.png", error) : InvalidTexture;
     auto menuBlur = menuLoop ? renderer->LoadTexture("Game/Media/UI/main_menu_blur.png", error) : InvalidTexture;
     auto titleBlur = menuLoop ? renderer->LoadTexture("Game/Media/UI/title_blurred.png", error) : InvalidTexture;
@@ -1005,11 +1006,19 @@ int main(int argc, char** argv) {
             const int page = menuLanguages ? 2 : menuOptions ? 1 : 0;
             mouseHover = -1;
             if (page == 0) {
-                for (int i = 0; i < 3; ++i) if (Hit(menuBounds[i], mouse)) mouseHover = i;
+                // The visible Linux text labels are part of the same clickable
+                // row as their authored icon, not dead UI beside a tiny target.
+                for (int i = 0; i < 3; ++i) {
+                    Rect row = menuBounds[i]; row.width = 720.f - row.x;
+                    if (Hit(row, mouse)) mouseHover = i;
+                }
             } else if (page == 1) {
                 for (int i = 0; i < 2; ++i) if (Hit(optionsBounds[i], mouse)) mouseHover = i;
                 if (Hit({500, 548, 250, 48}, mouse)) mouseHover = 2; // Linux language supplement.
                 if (Hit(optionsBounds[2], mouse)) mouseHover = 3;
+            } else {
+                for (int i = 0; i < 4; ++i)
+                    if (Hit({400, float(270 + i*65), 400, 48}, mouse)) mouseHover = i;
             }
             if (mouse.leftDown && !lastMouseDown) {
                 mousePressed = mouseHover; mousePage = page;
@@ -1866,38 +1875,45 @@ int main(int argc, char** argv) {
         const auto shaderFrame = shaderClock.Draw();
         renderer->BeginFrame({0, 0, 0, 255});
         if (levelPath.empty()) {
-            renderer->DrawSprite({background, {}, {0, 0, 1280, 720}});
+            // UISprite's authored V=0 is at world-bottom. Original PNG art
+            // (including background, title, buttons and cursor) is stored
+            // upside-down for that convention; SDL copies need inverse V.
+            const auto drawMenuArt = [&](Sprite sprite) {
+                sprite.flipY = !sprite.flipY;
+                renderer->DrawSprite(sprite);
+            };
+            drawMenuArt({background, {}, AuthoredUI(-970,-540,1939.2f,1090.8f)});
             if (menuLoop) {
-                if (menuBlur) renderer->DrawSprite({menuBlur, {}, AuthoredUI(-990,-540,1969.2f,1115.8f), {255,255,255,115}});
+                if (menuBlur) drawMenuArt({menuBlur, {}, AuthoredUI(-990,-540,1969.2f,1115.8f), {255,255,255,115}});
                 if (!menuOptions && !menuLanguages) {
-                    if (titleBlur) renderer->DrawSprite({titleBlur, {}, AuthoredUI(-750,300,753,194), {255,255,255,128}});
-                    if (menuTitle) renderer->DrawSprite({menuTitle, {}, AuthoredUI(-754,307,753,194)});
+                    if (titleBlur) drawMenuArt({titleBlur, {}, AuthoredUI(-750,300,753,194), {255,255,255,128}});
+                    if (menuTitle) drawMenuArt({menuTitle, {}, AuthoredUI(-754,307,753,194)});
                 }
-                if (menuFrame) renderer->DrawSprite({menuFrame, {}, {0, 0, 1280, 720}});
+                if (menuFrame) drawMenuArt({menuFrame, {}, {0, 0, 1280, 720}});
                 const int filmIndex = static_cast<int>(menuFilmTime * 11.f) % 4;
-                if (menuFilm[filmIndex]) renderer->DrawSprite({menuFilm[filmIndex], {}, {0,0,1280,720}, {255,255,255,26}});
+                if (menuFilm[filmIndex]) drawMenuArt({menuFilm[filmIndex], {}, {0,0,1280,720}, {255,255,255,26}});
                 if (menuLanguages) {
                     constexpr std::array<const char*, 4> labels = {"ENGLISH", "PORTUGUESE", "DEUTSCH", "BACK"};
                     for (int i = 0; i < 4; ++i)
                         deathleak::game::DrawBitmapText(*renderer, labels[i], 400, 270 + i*65, 4,
-                            i == menuSelection ? Color{255,0,0,255} : Color{255,255,255,255});
+                            (mouseHover >= 0 ? mouseHover : menuSelection) == i ? Color{255,0,0,255} : Color{255,255,255,255});
                 } else if (menuOptions) {
                     for (int i = 0; i < 2; ++i) {
                         const bool checked = i == 0 ? settings.music : settings.sfx;
                         const bool focused = (mouseHover >= 0 ? mouseHover : menuSelection) == i;
                         auto art = checked ? (focused ? optionsOnFocus[i] : optionsOn[i]) :
                             (focused ? optionsOffFocus[i] : optionsOff[i]);
-                        if (art) renderer->DrawSprite({art, {}, optionsBounds[i]});
+                        if (art) drawMenuArt({art, {}, optionsBounds[i]});
                     }
                     const bool backFocused = (mouseHover >= 0 ? mouseHover : menuSelection) == 3;
                     auto backArt = backFocused ? menuFocus[2] : menuButtons[2];
-                    if (backArt) renderer->DrawSprite({backArt, {}, optionsBounds[2]});
+                    if (backArt) drawMenuArt({backArt, {}, optionsBounds[2]});
                     deathleak::game::DrawBitmapText(*renderer, "LANGUAGE", 500, 555, 3,
                         (mouseHover >= 0 ? mouseHover : menuSelection) == 2 ? Color{255,0,0,255} : Color{255,255,255,255});
                 } else {
                     for (int i = 0; i < 3; ++i) {
                         auto art = i == (mouseHover >= 0 ? mouseHover : menuSelection) ? menuFocus[i] : menuButtons[i];
-                        if (art) renderer->DrawSprite({art, {}, menuBounds[i]});
+                        if (art) drawMenuArt({art, {}, menuBounds[i]});
                     }
                     deathleak::game::DrawBitmapText(*renderer, "PLAY", 480, 350, 4);
                     deathleak::game::DrawBitmapText(*renderer, "OPTIONS", 480, 492, 4);
@@ -1905,6 +1921,12 @@ int main(int argc, char** argv) {
                     deathleak::game::DrawBitmapText(*renderer, "COMPLETED: " + std::to_string(completions), 750, 570, 3);
                 }
             } else renderer->DrawSprite({player, {}, {playerX, playerY, 100, 170}});
+            // Original UIManager cursor: authored 28x42 world/UI units,
+            // top-left hotspot. Render into the frame so remote desktop
+            // video captures it even when the OS cursor is a separate plane.
+            if (menuCursor && liveMouse.x >= 0.f && liveMouse.y >= 0.f &&
+                liveMouse.x < 1280.f && liveMouse.y < 720.f)
+                drawMenuArt({menuCursor, {}, {liveMouse.x, liveMouse.y, 28.f*2.f/3.f, 42.f*2.f/3.f}});
         } else if (playLevel.empty())
             scene.Draw(*renderer, scene.CameraX() + (playerX - 590) * 1.5f,
                        scene.CameraY() + (430 - playerY) * 1.5f, scene.PlayerX(), scene.PlayerY(), {}, 1.f, 1.f, shaderFrame);
@@ -1938,10 +1960,11 @@ int main(int argc, char** argv) {
             }
             if (healthPickup && healthPickupArt) {
                 constexpr float scale = 2.f / 3.f;
-                const auto sprite = deathleak::render::Sprite{healthPickupArt, {},
+                auto sprite = deathleak::render::Sprite{healthPickupArt, {},
                     {640.f + (healthPickup->x-drawCameraX-25.f)*scale,
                      360.f + (drawCameraY-healthPickup->y-35.f)*scale,
                      50.f*scale, 70.f*scale}};
+                sprite.flipY = true;
                 // HealthUpgradePickup inherits SolidMovingSprite's kPlayer depth.
                 painterItems.push_back({3000, [&, sprite] { renderer->DrawSprite(sprite); }});
             }
@@ -1992,24 +2015,24 @@ int main(int argc, char** argv) {
                 // final_scene_hud: four authored film frames at 11 FPS and
                 // quarter opacity, plus the original frame_top art. Bitmap
                 // lettering remains a typography fallback for Impact.
-                if (filmFrames.Frame(finalFilm.Index())) renderer->DrawSprite({filmFrames.Frame(finalFilm.Index()), {}, {0,0,1280,720}, {255,255,255,64}});
+                if (filmFrames.Frame(finalFilm.Index())) renderer->DrawSprite({filmFrames.Frame(finalFilm.Index()), {}, {0,0,1280,720}, {255,255,255,64}, 1.f, 0.f, false, true});
                 if (finalFrame) {
-                    renderer->DrawSprite({finalFrame, {}, {0,0,1280,100}});
+                    renderer->DrawSprite({finalFrame, {}, {0,0,1280,100}, {255,255,255,255}, 1.f, 0.f, false, true});
                     Sprite bottomBar{finalFrame, {}, {0,620,1280,100}};
-                    bottomBar.flipY = true;
+                    bottomBar.flipY = false; // Authored vflip=true -> SDL inverse V.
                     renderer->DrawSprite(bottomBar);
                 }
                 if (finalTitleShown) deathleak::game::DrawBitmapText(*renderer, "DEATH LEAK", 200, 255, 16, {255,0,0,245});
             } else {
                 if (filmFrames.Frame(gameplayFilm.Index()))
-                    { renderer->DrawSprite({filmFrames.Frame(gameplayFilm.Index()), {}, {0,0,1280,720}, {255,255,255,51}});
+                    { renderer->DrawSprite({filmFrames.Frame(gameplayFilm.Index()), {}, {0,0,1280,720}, {255,255,255,51}, 1.f, 0.f, false, true});
                     if (recordFreshTopology) repeatRecorder->TagLastSprite({(std::uint64_t{1}<<61)|1,0},0.f,0.f); }
                 // game_hud.xml: opaque 50-unit bands follow the film and precede HUD widgets.
                 if (finalFrame) {
-                    renderer->DrawSprite({finalFrame, {}, AuthoredUI(-960, 490, 1920, 50), {255,255,255,255}});
+                    renderer->DrawSprite({finalFrame, {}, AuthoredUI(-960, 490, 1920, 50), {255,255,255,255}, 1.f, 0.f, false, true});
                     if (recordFreshTopology) repeatRecorder->TagLastSprite({(std::uint64_t{1}<<61)|2,0},0.f,0.f);
                     Sprite bottomBar{finalFrame, {}, AuthoredUI(-960, -540, 1920, 50), {255,255,255,255}};
-                    bottomBar.flipY = true;
+                    bottomBar.flipY = false; // Authored vflip=true -> SDL inverse V.
                     renderer->DrawSprite(bottomBar);
                     if (recordFreshTopology) repeatRecorder->TagLastSprite({(std::uint64_t{1}<<61)|3,0},0.f,0.f);
                 }
@@ -2021,7 +2044,7 @@ int main(int argc, char** argv) {
                 deathleak::game::DrawPaperModal(*renderer, paperTitle, paperDescription,
                     modalBackground, paperBackButton, modalWarmup >= 1.f);
             if (upgradeModal) {
-                if (modalBackground) renderer->DrawSprite({modalBackground, {}, {0,0,1280,720}, {255,255,255,204}});
+                if (modalBackground) renderer->DrawSprite({modalBackground, {}, {0,0,1280,720}, {255,255,255,204}, 1.f, 0.f, false, true});
                 if (modalOrb) renderer->DrawSprite({modalOrb, {}, {520,460,56,85}});
                 if (modalButton) renderer->DrawSprite({modalButton, {}, {590,460,150,90}});
                 deathleak::game::DrawBitmapText(*renderer, "NEW TECHNIQUE", 340, 120, 6);
@@ -2031,7 +2054,7 @@ int main(int argc, char** argv) {
                 deathleak::game::DrawBitmapText(*renderer, orbBalance >= 375 ? "Y BUY / ESC BACK" : "NOT ENOUGH ORBS / ESC BACK", 260, 565, 4);
             }
             if (combat.Health() <= 0 && deathArt)
-                renderer->DrawSprite({deathArt, {}, {0, 0, 1280, 720}});
+                renderer->DrawSprite({deathArt, {}, {0, 0, 1280, 720}, {255,255,255,255}, 1.f, 0.f, false, true});
             // UIManager draws gameloading after scene postprocess and all HUD.
             loadingPacket.Draw(*renderer, modalBackground);
 #ifdef DEATHLEAK_TEST_LOADING_FADE_OBSERVER
