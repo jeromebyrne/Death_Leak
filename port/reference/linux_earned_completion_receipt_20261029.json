@@ -1,0 +1,59 @@
+{
+  "purchase": {
+    "authored_pickups": 396,
+    "runtime_reward_pickups": 0,
+    "source_debit": 375,
+    "balance": 21,
+    "health": 12.0,
+    "keys": 1,
+    "level": "Game/XmlFiles/levels/forest_exploration_1.xml",
+    "grounded": true
+  },
+  "preboat": {
+    "authored_pickups": 425,
+    "runtime_reward_pickups": 36,
+    "source_debit": 375,
+    "balance": 86,
+    "health": 4.0,
+    "keys": 4,
+    "level": "Game/XmlFiles/levels/cliff.xml",
+    "grounded": true
+  },
+  "completion": {
+    "authored_pickups": 425,
+    "runtime_reward_pickups": 36,
+    "source_debit": 375,
+    "balance": 86,
+    "health": 4.0,
+    "keys": 4,
+    "level": "Game/XmlFiles/levels/sea_2.xml",
+    "grounded": true
+  },
+  "milestones": {
+    "granary": 25607,
+    "dojo": 41502,
+    "village_hut": 43716,
+    "repair_tools": 49210,
+    "natural_deflection": 53357,
+    "boat": 57470,
+    "title": 58371,
+    "end_story": 59571
+  },
+  "natural_deflections": 1,
+  "binary_sha256": "9e1b6f1157121eff6534403b105967781fa409221e89aaef87b42e0f3fc4fb9d",
+  "script_sha256": "1b8e89ec6933c40b3838dca875d3cf00f3f1df1c2309963865e6b5bf86bdfae9",
+  "fresh_process_per_snapshot": true,
+  "loaded_or_injected_progression": false,
+  "test_only_encounter_clock": true,
+  "physical_acceptance": false,
+  "source_commit": "a2c95c8a14d7a49b3acb696fa89278c799f079e6",
+  "remote_branch": "refs/heads/feature/linux-renderer-foundation",
+  "runtime_source_manifest_sha256": "57e9abb8adb49135ea0e7307138e9fa3687d1a889e7c68cfce5aaaa9e5a0a988",
+  "installed_binary_sha256": "9e1b6f1157121eff6534403b105967781fa409221e89aaef87b42e0f3fc4fb9d",
+  "installed_strict_intel_offscreen_smoke": true,
+  "save_settings_shortcut_launcher_unchanged": true,
+  "original_windows_sources_changed": false,
+  "master_merge": false,
+  "macos_work": false,
+  "rollback_suffix": ".pre-earned-ending-20261029"
+}

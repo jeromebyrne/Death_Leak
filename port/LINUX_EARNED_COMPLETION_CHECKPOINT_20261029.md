@@ -1,6 +1,6 @@
 # Linux earned completion / bounded fidelity checkpoint — 2026-10-29
 
-State: final integrated earned ending and bounded mechanics verified; publication/deployment finalization in progress. Not full-release acceptance.
+State: final integrated earned ending and bounded mechanics verified, committed/pushed and atomically deployed. Not full-release acceptance.
 Owner: existing keyboard_mouse_wt Linux checkout, no concurrent writers. Independent reviewers prepared external patches only; parent reviewed/integrated them. Windows original source/assets/projects untouched. No master merge, branch restructuring or macOS work.
 
 ## Recovered progression
@@ -48,3 +48,12 @@ Delivery: return through announcing parent completion. Source-conversation messa
 - Early five-transition village route now ends health25; purchase health12. Exact health fixtures were reconciled to these source-correct results; survival/source prices/pickup-ID requirements were not removed.
 - Strict Intel HD4000 offscreen changed-scene capture verified. Offscreen/CPU tests do not replace attended physical-display, real input, audible sound, rumble or live wall-clock acceptance.
 - Evidence directory:`port/build/linux-earned-continuation-20261029/`; `final-earned/receipt.json`,3 logs/saves,final-runtime-manifest.json,source/build/test logs and strict GPU captures retained. Failed probes retained and never counted as successful clears.
+
+## Publication / deployment verified
+
+- Source revision `a2c95c8a14d7a49b3acb696fa89278c799f079e6` pushed without force to the existing `feature/linux-renderer-foundation` remote; live SHA matched. Existing checkout branch structure unchanged; no master merge.
+- Established `/home/jerome/Games/DeathLeak-Playtest-20261029` now contains the exact tested `9e1b6f11…` binary. Installed copy itself passed strict Intel HD4000 offscreen Forest smoke with disposable container-only save/settings, not user progression.
+- User save SHA256 stayed `faf1044d31baea43f30b690399e99a2f0b6bf1ba2b2fb7c5c0fc508d7775088d`; settings absent both times. Existing Desktop shortcut and launcher hashes unchanged. No active desktop game process/window launched or interrupted.
+- Immediate prior binary/metadata/docs retained with `.pre-earned-ending-20261029` suffix; all older rollbacks retained. To roll back with game stopped, restore prior binary and BUILD_REVISION.txt siblings; never overwrite progression/settings.
+- Machine-readable receipt: `port/reference/linux_earned_completion_receipt_20261029.json`. Final GPU smoke covers changed Hot Springs/catacombs/arena plus installed Forest; historical51 captures were not relabeled as this binary's captures.
+- Completion notification/delivery handoff is parent-owned; no source-conversation message can be sent from this worker turn.
