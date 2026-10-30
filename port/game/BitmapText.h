@@ -59,7 +59,10 @@ inline void DrawBitmapText(render::Renderer& renderer, const std::string& label,
     std::vector<render::Rect> pixels;
     pixels.reserve(label.size() * 20);
     for (char c : label) {
-        auto found = glyphs.find(c);
+        // Original localized strings are mixed case; this uppercase-only fallback
+        // must map lowercase letters rather than silently emitting blank cells.
+        const char glyph = c >= 'a' && c <= 'z' ? static_cast<char>(c - 'a' + 'A') : c;
+        auto found = glyphs.find(glyph);
         if (found != glyphs.end())
             for (int row = 0; row < 7; ++row)
                 for (int col = 0; col < 5; ++col)

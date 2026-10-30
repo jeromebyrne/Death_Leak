@@ -1,6 +1,7 @@
 #include "../game/BombProjectileMotion.h"
 #include "../render/OrdinarySpriteRotation.h"
 #include "../game/TechniqueCatalog.h"
+#include "../game/UpgradeModal.h"
 #include "../render/Renderer.h"
 #ifdef DEATHLEAK_TEST_BODY_SLOW_FRAME_COMMAND
 #include "../tests/private_body_slow_frame_command_observer_20261023.h"
@@ -2208,19 +2209,11 @@ int main(int argc, char** argv) {
                 deathleak::game::DrawPaperModal(*renderer, paperTitle, paperDescription,
                     modalBackground, paperBackButton, modalWarmup >= 1.f);
             if (upgradeModal) {
-                if (modalBackground) renderer->DrawSprite({modalBackground, {}, {0,0,1280,720}, {255,255,255,204}, 1.f, 0.f, false, true});
-                if (modalOrb) renderer->DrawSprite({modalOrb, {}, {520,460,56,85}});
-                if (modalButton) renderer->DrawSprite({modalButton, {}, {590,460,150,90}});
-                deathleak::game::DrawBitmapText(*renderer, "NEW TECHNIQUE", 340, 120, 6);
-                const auto* technique = deathleak::game::FindTechnique(modalTechnique);
-                deathleak::game::DrawBitmapText(*renderer, technique ? technique->title : "TECHNIQUE", 280, 215, 5);
-                const auto description = paperText.Lookup("dojo_scroll_desc_"+modalTechnique,language);
-                const auto lines = deathleak::game::WrapPaperText(description,72);
-                float descriptionY=280.f;
-                for(const auto& line:lines){deathleak::game::DrawBitmapText(*renderer,line,140,descriptionY,2);descriptionY+=24.f;}
-                deathleak::game::DrawBitmapText(*renderer, "COST " + std::to_string(technique ? technique->cost : 0) + " ORBS", 355, 410, 4);
-                deathleak::game::DrawBitmapText(*renderer, "BALANCE: " + std::to_string(orbBalance), 380, 450, 4);
-                deathleak::game::DrawBitmapText(*renderer, orbBalance >= (technique ? technique->cost : 0) ? "Y BUY / ESC BACK" : "NOT ENOUGH ORBS / ESC BACK", 260, 565, 4);
+                const auto* technique=deathleak::game::FindTechnique(modalTechnique);
+                deathleak::game::DrawUpgradeModal(*renderer,
+                    paperText.Lookup("dojo_scroll_desc_"+modalTechnique,language),
+                    technique?technique->cost:0,orbBalance,modalBackground,modalOrb,
+                    modalButton,paperBackButton,modalWarmup>=1.f);
             }
             if (combat.Health() <= 0 && deathArt)
                 renderer->DrawSprite({deathArt, {}, {0, 0, 1280, 720}, {255,255,255,255}, 1.f, 0.f, false, true});

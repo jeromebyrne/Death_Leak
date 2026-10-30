@@ -1,0 +1,162 @@
+[
+  {
+    "level": "Game/XmlFiles/deprecated_levels/door_test_1.xml",
+    "classes": {
+      "Sprite": 4,
+      "Player": 1,
+      "SolidLineStrip": 1,
+      "Door": 1
+    },
+    "source_only_or_not_current": []
+  },
+  {
+    "level": "Game/XmlFiles/deprecated_levels/door_test_2.xml",
+    "classes": {
+      "Sprite": 4,
+      "Player": 1,
+      "SolidLineStrip": 1
+    },
+    "source_only_or_not_current": []
+  },
+  {
+    "level": "Game/XmlFiles/deprecated_levels/field_1.xml",
+    "classes": {
+      "Player": 1,
+      "Butterfly": 11,
+      "ParallaxLayer": 2,
+      "Sprite": 169,
+      "SolidLineStrip": 11,
+      "ParticleSpray": 2,
+      "LevelTrigger": 2,
+      "AmbientBird": 7,
+      "ScrollingSprite": 8,
+      "TextObject": 1,
+      "CurrencyOrb": 30
+    },
+    "source_only_or_not_current": []
+  },
+  {
+    "level": "Game/XmlFiles/deprecated_levels/level1.xml",
+    "classes": {
+      "ParallaxLayer": 21,
+      "Sprite": 390,
+      "SolidMovingSprite": 15,
+      "WaterBlock": 2,
+      "ParticleSpray": 10,
+      "PathingPlatform": 2,
+      "Player": 1,
+      "Rabbit": 11,
+      "LevelTrigger": 1,
+      "AudioObject": 5
+    },
+    "source_only_or_not_current": []
+  },
+  {
+    "level": "Game/XmlFiles/deprecated_levels/save_shrine_test_level.xml",
+    "classes": {
+      "Sprite": 6,
+      "Player": 1,
+      "SolidLineStrip": 1,
+      "SaveShrine": 1,
+      "ParticleSpray": 2
+    },
+    "source_only_or_not_current": []
+  },
+  {
+    "level": "Game/XmlFiles/deprecated_levels/test_level.xml",
+    "classes": {
+      "Player": 1,
+      "SolidLineStrip": 1
+    },
+    "source_only_or_not_current": []
+  },
+  {
+    "level": "Game/XmlFiles/deprecated_levels/underwater_cave.xml",
+    "classes": {
+      "Player": 1,
+      "WaterBlock": 1,
+      "Sprite": 13,
+      "SolidLineStrip": 1,
+      "ParticleSpray": 6,
+      "AudioObject": 1,
+      "SolidMovingSprite": 3,
+      "LevelTrigger": 1,
+      "TextObject": 1
+    },
+    "source_only_or_not_current": []
+  },
+  {
+    "level": "Game/XmlFiles/deprecated_levels/village.xml",
+    "classes": {
+      "Player": 1,
+      "ParallaxLayer": 6,
+      "Sprite": 257,
+      "SolidLineStrip": 27,
+      "ParticleSpray": 3,
+      "ForceBox": 1,
+      "SolidMovingSprite": 1,
+      "LevelTrigger": 2,
+      "AmbientBird": 8,
+      "TextObject": 1,
+      "ScrollingSprite": 15,
+      "CurrencyOrb": 68,
+      "Breakable": 18,
+      "Rabbit": 1,
+      "ActiveBird": 1
+    },
+    "source_only_or_not_current": []
+  },
+  {
+    "level": "Game/XmlFiles/deprecated_levels/village_2.xml",
+    "classes": {
+      "Player": 1,
+      "SolidLineStrip": 10,
+      "ParallaxLayer": 5,
+      "Sprite": 71,
+      "AmbientBird": 3,
+      "ScrollingSprite": 2,
+      "SolidMovingSprite": 1
+    },
+    "source_only_or_not_current": []
+  },
+  {
+    "level": "Game/XmlFiles/deprecated_levels/village_outskirts.xml",
+    "classes": {
+      "LevelTrigger": 2,
+      "NPCTrigger": 1,
+      "AudioObject": 2,
+      "Player": 1,
+      "Butterfly": 10,
+      "Sprite": 132,
+      "ParallaxLayer": 5,
+      "SolidLineStrip": 9,
+      "FallingPlatform": 1,
+      "AmbientBird": 7,
+      "TextObject": 1,
+      "ScrollingSprite": 10
+    },
+    "source_only_or_not_current": []
+  },
+  {
+    "level": "Game/XmlFiles/deprecated_levels/waterfall_level.xml",
+    "classes": {
+      "Player": 1,
+      "LevelTrigger": 2,
+      "Sprite": 101,
+      "ParallaxLayer": 15,
+      "SolidLineStrip": 6,
+      "AudioObject": 1,
+      "AmbientBird": 3,
+      "TextObject": 1,
+      "ScrollingSprite": 2
+    },
+    "source_only_or_not_current": []
+  },
+  {
+    "level": "Game/XmlFiles/animation_preview.xml",
+    "classes": {
+      "Player": 1
+    },
+    "source_only_or_not_current": []
+  }
+]

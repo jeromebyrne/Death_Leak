@@ -1,12 +1,12 @@
 # All-level reference audit — 2026-10-29
 
-**State: exhaustive scene/source audit and repairs implemented; historical regression limitation recorded; publication/deployment in progress. Physical release acceptance remains blocked.**
+**State: exhaustive audit/fix milestone; all final native-layout software gates collected. Final UI publication/deployment in progress. Physical release acceptance remains blocked; full earned ending is not certified.**
 
 ## Exact coverage
 
 - 51 level-root XML definitions: 39 in levels/, 11 deprecated and 1 animation preview.
 - 34 campaign-reachable scenes; reference positively shows 33 (29 high-confidence, four medium-confidence underwater identities). Optional underwater_cave_6 is not positively shown.
-- Full retained 45:13.467 footage sampled at 10 seconds plus dense 2-second ranges: 781 images,115 annotated intervals including setup/obscured/edit gaps. Not every frame watched, no frame-exact transition claim.
+- Full retained 45:13.467 footage sampled at 10 seconds plus dense 2-second ranges: 781 identification images,115 annotated intervals including setup/obscured/edit gaps.33 native640x360 representative frames additionally extracted/reviewed for detailed comparison. Not every frame watched, no frame-exact transition claim.
 - All39 levels-directory XMLs reviewed against original code/objects; all39 loaded/captured in actual --play with strict Intel accelerated offscreen rendering. These are diagnostics, not physical scanout or complete playthrough proof.
 
 Reference: https://www.youtube.com/watch?v=03EPlXOJLtg . SHA256 `60c56d9230c39cefac8765e6ffd4e420413d283a4c4fbba70178f49a8c408849`. Compact reproducible level/timestamp map: `reference/level_reference_map_20261029.json`.
@@ -74,7 +74,7 @@ Times are approximate reviewed intervals, not runtime telemetry. `fixed` identif
 | deprecated_levels/waterfall_level.xml | not shown | verified accelerated load/exact-scene capture only |
 | animation_preview.xml | not shown | verified accelerated load/exact-scene capture only |
 
-All12 auxiliary files are separately captured at20 ticks. This is not gameplay completion or missing campaign content. All51 requested definitions now have an exact-scene hardware-offscreen capture; current39 source review is substantially deeper than deprecated/preview review.
+All12 auxiliary files are separately captured at20 ticks; their complete class inventory adds no classes beyond the current32. This is not gameplay completion or missing campaign content. All51 requested definitions now have an exact-scene hardware-offscreen capture; current39 source review is substantially deeper than deprecated/preview review.
 
 ## Repair scope
 
@@ -101,19 +101,23 @@ Original Windows sources, assets and build projects are unchanged. Native Linux 
 | F20/F21 | All15 NPCTriggers use strict Player AABB; ordinary player/enemy/ghost shots use typed swept collider extents and offsets. |
 | F22 |11 hard-edge strips retained and enforced using strip-wide bounds, not triangulated segment endpoints. No source-disabled drop-through added. |
 
+Final rendered QA additionally repaired missing lowercase glyphs in all source descriptions and restored the original upgrade_modal.xml/UIUpgradeModal structure: exact orb/purchase/back widgets, source title/description/cost bounds, numeric cost alone, gray/red affordability and one-second dismiss warmup. No duplicate ad-hoc feature title/balance row; bitmap typography remains an explicit fallback for the original Windows Impact system font.
+
 Independent integrated review found four new defects, all repaired: focused player reload/burst exception, free Focus during final/intro, nonblade projectile-to-bomb contacts, and same-tick bomb-break persistence. Keyboard/controller OR-coexistence and mouse-with-pad restored; emergency exits remain intact. No original artwork replaced or generated.
 
 ## Verified diagnostics (not release acceptance)
 
-- Coherent O2 binary SHA256: `7384df76213821fe1036965e16a4c8261ee6d5353438ad93c182c50cd2cec959`. Frozen runtime source hashes rechecked unchanged.
+- Coherent O2 binary SHA256: `f40eeb9f43ccf5090e2390d25c3a3abb05bd2514ded6db8c5e5413c987e7c3e7`. Frozen runtime source hashes rechecked unchanged.
 - All39 current scenes: actual --play captures, strict Intel HD Graphics4000 OpenGL accelerated1/software0. underwater_cave_3 uses20 ticks before natural sink transition; retained90-tick run is explicitly partial. Separate12 auxiliary exact captures also pass.
 - Expanded helper/dynamics/combat/knife/independent damage-burst/audio suite PASS: exact full inventories, moving bounds, orb50 rewards, foliage rearm, spring/koto timers, broken revisits and600-tick raft ride.
 - All67 entry XY/directions and all11 hard-edge strip declarations asserted in final expanded suite. Save bridge full permanent-subset/load/rejection/isolation suite PASS; new Focus3/bomb8 original typed Windows vectors round-trip separately/together.
 - Fresh ordinary-input five-transition earned survival: Forest-1 to village-central,92 distinct original CurrencyOrb IDs, balance92, health13. No loaded/synthetic state, debug damage, currency injection or disabled enemies. Test-only fixed encounter clock, not live wall-clock or full ending.
+- **Fresh earned Deflection purchase PASS on this final binary:** real granary key25607, real vendor purchase31001,396 unique original CurrencyOrb IDs =375 debit +21 balance, health1. New replay validates every ID against original XML and retains its exact ledger. No save load, synthetic currency, debug damage or disabled enemies; TEST-ONLY fixed encounter clock, not live pacing/full ending.
 - All8 source-price/payload purchase/debit/reload fixtures PASS, including bomb NG+ exclusion. These use synthetic currency/location state, NOT earned progression.
 - Six renderer families orientation/placement/letterbox PASS at1280x720 and1440x900; forced SDL-texture wobble fallback PASS on strict Intel. Input hotplug/coexistence/keyboard remote-local edges PASS with dummy software diagnostic, not physical interaction proof.
 - Actual bomb dispatcher fires at tick0, contacts terrain and explodes at327, health unchanged25. Final original-spawn fixture with owned Focus held reaches title at900/end2100 ticks (~15/~35s), player remains grounded on moving raft and Focus100. Fixture ending is NOT an earned ending.
-- Comparative artifact:6 sheets cover all33 positively identified reference scenes;7th shows controlled actor before/after. Camera/time/state differ: identity/style review, not synchronized pixel comparisons.
+- All8 actual original-payload upgrade modals captured/visually reviewed on final strict GPU binary; full descriptions now readable with original widget/cost placement. Original mixed-case emitted-pixel and source XML/color/bottom-position regressions PASS.
+- Comparative artifacts:6 native-resolution-reference sheets cover all33 positively identified scenes; final enemy before/after, all8 native modals and rendered-description/layout before/after also retained. Cameras/times/states differ: identity/style review, not synchronized pixel comparisons.
 
 ## Remaining limitations / gates
 
@@ -121,8 +125,13 @@ Independent integrated review found four new defects, all repaired: focused play
 2. Reference does not positively show underwater_cave_6 or the other5 unlinked current definitions, nor the12 deprecated/preview definitions.29 identities are high confidence;4 similar underwater scenes are medium. No menu footage certification, no every-frame or every-branch playthrough claim.
 3. Original saw.png and controls_crate.png are absent from retained Game/source_art, affecting unlinked cave_platforming_1/test development assets. No fabricated substitute art; logical colliders retained. Recover original files to resolve.
 4. NPC AI, RNG stream, full animal collision/damage/debris, some bomb response/force feedback and typography remain bounded Linux implementations rather than complete original-engine translations; no demonstrated clean frame-perfect/all-input parity claim.
-5. The obsolete continuous-village input died at5140; a revised entirely ordinary jump/fire itinerary now passes five transitions to village-central alive (health13),92 unique authored IDs/B92, independently checked against original XML. Historical integration advances to the next obsolete combined itinerary and still FAILS; later old assertions are not certified. The old full earned-ending script dies at5140; recovered early controls reach the arena with304 authored earned pickups but need further wall/input itinerary repair. No death/earned requirement was weakened; no current fresh earned whole-game ending is claimed.
+5. The obsolete continuous-village input died at5140; a revised entirely ordinary jump/fire itinerary now passes five transitions to village-central alive (health13),92 unique authored IDs/B92, independently checked against original XML. Historical integration advances to the next obsolete combined itinerary and still FAILS; later old assertions are not certified. The old full earned-ending script dies at5140. Recovered ordinary input now earns granary and Deflection legitimately (396=375+21), and reaches45870 alive in village-central. Its full continuation still dies45973 to trigger151; dojo/hut/tools remain uncollected. Later B100 includes58 runtime reward currency, so it is not falsely equated to417 authored IDs minus375. No death/earned requirement was weakened; no current fresh earned whole-game ending is claimed.
 
 ## Publication / deployment
 
-Pending final historical test receipts; no master merge. Established desktop copy and save hash/rollback verified read-only before deployment. Final receipts will be appended after publication.
+- Fix/source milestone committed and pushed: `18ed8d3702898020d871fb83ada0173d1902563a`, remote `refs/heads/feature/linux-renderer-foundation`; live ls-remote matched. No master merge/branch restructuring.
+- Initial milestone18ed8d3 installed v2 with preserved rollbacks. Final native-layout v5 hash above has passed all independent gates; final source commit/deployment receipt pending. Existing Desktop shortcut and launcher remain unchanged.
+- Previous binary + BUILD_REVISION.txt retained as `.pre-all-level-audit-20261029` backups. Rollback: stop the game, restore those two sibling backups; do not replace or delete progression/settings. Prior `.pre-repair-20261029` backups also retained.
+- User progression SHA256 unchanged before/after: `faf1044d31baea43f30b690399e99a2f0b6bf1ba2b2fb7c5c0fc508d7775088d`; settings remained absent, shortcut hash unchanged. No user save was loaded by diagnostics.
+- Complete copied assets/XML verified:1192 files /375,534,332 source bytes exactly match, no missing/different files (runtime settings excluded). Initial installed copy passed strict Intel hardware-offscreen Forest-1, zero missing assets; final v5 installed smoke follows deployment. No process/window launched on the active desktop, no physical or actual remote-input acceptance implied.
+- This is a published/deployed **audit/fix playtest milestone**, not a full-release acceptance declaration. Full historical earned itinerary and physical gates remain as stated above.

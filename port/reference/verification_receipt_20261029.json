@@ -1,6 +1,6 @@
 {
   "baseline_commit": "e8388f861918f31b26cbce9f9fea72a20cf1b1cc",
-  "binary_sha256": "7384df76213821fe1036965e16a4c8261ee6d5353438ad93c182c50cd2cec959",
+  "binary_sha256": "f40eeb9f43ccf5090e2390d25c3a3abb05bd2514ded6db8c5e5413c987e7c3e7",
   "all_current_exact_scene_gpu_captures": 39,
   "auxiliary_exact_scene_gpu_captures": 12,
   "gpu": "Mesa Intel(R) HD Graphics 4000 (IVB GT2)",
@@ -13,11 +13,19 @@
   "input_backend": "PASS virtual gamepad+keyboard+mouse lifecycle/edges; NOT actual local/remote transport",
   "bomb_runtime": "PASS fire0, terrain-contact fuse, explode327, health25",
   "final_runtime": "PASS original spawn and owned held Focus title900/end2100; grounded raft, Focus100; NOT earned ending",
-  "historical_integration": "FAIL obsolete combined full itinerary; death requirement retained, no current earned full ending certified",
+  "historical_integration": "FAIL obsolete combined itinerary at5140; fresh earned purchase recovered separately, full continuation dies45973; no full ending certified",
   "physical_display_audio_local_remote_input": "BLOCKED coordinated attended slot required",
   "windows_original_sources_build_projects": "UNCHANGED; Windows build not executed",
   "missing_original_development_assets": [
     "saw.png",
     "controls_crate.png"
-  ]
+  ],
+  "deployed_candidate_verified": false,
+  "user_save_sha256_unchanged": "faf1044d31baea43f30b690399e99a2f0b6bf1ba2b2fb7c5c0fc508d7775088d",
+  "shortcut_unchanged": true,
+  "settings_remained_absent": true,
+  "initial_gameplay_source_commit": "18ed8d3702898020d871fb83ada0173d1902563a",
+  "current_earned_deflection": "PASS final binary,396 original pickup IDs=375 debit+21 balance, real granary key, health1, ordinary controls, no loaded state; TEST-ONLY encounter clock",
+  "native_upgrade_modal": "PASS all8 mixed-case source descriptions visible; original XML widget rectangles, source body/cost bounds, affordability colors and dismiss warmup",
+  "deployed_assets": "1192 source files,375534332 bytes, no missing/different; runtime settings excluded"
 }

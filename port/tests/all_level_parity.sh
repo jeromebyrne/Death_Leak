@@ -12,7 +12,7 @@ xml_objects="$work/tinyxml.o $work/tinyxmlerror.o $work/tinyxmlparser.o $work/ti
 g++ $flags -c port/game/LevelScene.cpp -o "$work/scene.o"
 g++ $flags -c port/game/PlayerMotion.cpp -o "$work/motion.o"
 g++ $flags -c port/game/Combat.cpp -o "$work/combat.o"
-for test in authored_platform_motion authored_ambient_actor bomb_projectile_motion; do
+for test in authored_platform_motion authored_ambient_actor bomb_projectile_motion bitmap_text_case upgrade_modal_layout; do
  g++ $flags "port/tests/${test}_test.cpp" $xml_objects -o "$work/$test"
  "$work/$test"
 done

@@ -1,0 +1,238 @@
+{
+  "source_video_sha256": "60c56d9230c39cefac8765e6ffd4e420413d283a4c4fbba70178f49a8c408849",
+  "resolution": "640x360",
+  "method": "Native-size original-frame representatives at requested source seek times, not exact XML-transition telemetry",
+  "frames": [
+    {
+      "level": "catacombs_entrance_1",
+      "seek_seconds": 2110,
+      "confidence": "high",
+      "filename": "catacombs_entrance_1.png",
+      "sha256": "76e7537cfd0498eaec83a92efb6fa20fe3578f4e14874bd029de67359c2f307f"
+    },
+    {
+      "level": "cliff",
+      "seek_seconds": 1804,
+      "confidence": "high",
+      "filename": "cliff.png",
+      "sha256": "5fa300c7d6bfad89332a5fb809448c6cac0bcc7aa608664c5bf160aa243218dc"
+    },
+    {
+      "level": "cliff_hut",
+      "seek_seconds": 1800,
+      "confidence": "high",
+      "filename": "cliff_hut.png",
+      "sha256": "9ec299a3a5edaf10c0311e5cd288f87cdc6c79487e67a5bd938c4df1e860238c"
+    },
+    {
+      "level": "cliff_windmill",
+      "seek_seconds": 1862,
+      "confidence": "high",
+      "filename": "cliff_windmill.png",
+      "sha256": "630a9d66c75b930505aca4e4075fcdf939bd5d69bd807fcff3ce7f4b6cf03e13"
+    },
+    {
+      "level": "dojo",
+      "seek_seconds": 1195,
+      "confidence": "high",
+      "filename": "dojo.png",
+      "sha256": "311dce3734b3cf557d2be95b835700dd74289769bfe3da15a9ba66722cf65f29"
+    },
+    {
+      "level": "dojo_front",
+      "seek_seconds": 1094,
+      "confidence": "high",
+      "filename": "dojo_front.png",
+      "sha256": "5629ad61dd6efc17728de42c8a9a2fcd26679a477024e7ef5989ff2222573141"
+    },
+    {
+      "level": "first_ninja_arena",
+      "seek_seconds": 1615,
+      "confidence": "high",
+      "filename": "first_ninja_arena.png",
+      "sha256": "7cdd0f36ffe57f1a79dd2b4d484c0fb18c5c748a4713c46c67c54854477d1352"
+    },
+    {
+      "level": "forest_exploration_1",
+      "seek_seconds": 120,
+      "confidence": "high",
+      "filename": "forest_exploration_1.png",
+      "sha256": "e98f05480a64a70a50d83ed76cb945fc78f0f3e5a55ca106790cbacb012462ce"
+    },
+    {
+      "level": "forest_exploration_2",
+      "seek_seconds": 175,
+      "confidence": "high",
+      "filename": "forest_exploration_2.png",
+      "sha256": "d25977e037b57c4bf0adf9906827060dd0c4081102db317da49f6ef30787b788"
+    },
+    {
+      "level": "forest_exploration_barn",
+      "seek_seconds": 260,
+      "confidence": "high",
+      "filename": "forest_exploration_barn.png",
+      "sha256": "fc19da88a712beee6d6494c8e7e3ca0c9d5073625aecc8fc87e758b0021e09db"
+    },
+    {
+      "level": "grass_exploration_1",
+      "seek_seconds": 1670,
+      "confidence": "high",
+      "filename": "grass_exploration_1.png",
+      "sha256": "0825de595fc1b27881fbdd9ca86db99ab359cefba9913e925625828cd0866993"
+    },
+    {
+      "level": "grass_exploration_2",
+      "seek_seconds": 1735,
+      "confidence": "high",
+      "filename": "grass_exploration_2.png",
+      "sha256": "504b7e3130d4d6ee414918bb74b35db30fb2975652da21eb03b649ffe0b055ab"
+    },
+    {
+      "level": "grass_exploration_3",
+      "seek_seconds": 45,
+      "confidence": "high",
+      "filename": "grass_exploration_3.png",
+      "sha256": "aa5b28ad6bb4ab7c4a649cfa922886e41733c3a010e62f10598da5a30712cd27"
+    },
+    {
+      "level": "grass_exploration_dead_end_below_2",
+      "seek_seconds": 1696,
+      "confidence": "high",
+      "filename": "grass_exploration_dead_end_below_2.png",
+      "sha256": "624c19afbd0ca10256ab1dc5fde5e3a57032ec8fef75388c5d4446721507f56a"
+    },
+    {
+      "level": "hot_springs",
+      "seek_seconds": 1545,
+      "confidence": "high",
+      "filename": "hot_springs.png",
+      "sha256": "b7f97d8acdd2a976dd3c091c5eafafb73f9393cf5585caadb5406f1418128d57"
+    },
+    {
+      "level": "inside_hanging_shadow",
+      "seek_seconds": 2092,
+      "confidence": "high",
+      "filename": "inside_hanging_shadow.png",
+      "sha256": "b108b577f4f44178acf8e1fec11ed5b08c7b126a46dcbfe7d4b0f3877c6e5be9"
+    },
+    {
+      "level": "sea_1",
+      "seek_seconds": 1925,
+      "confidence": "high",
+      "filename": "sea_1.png",
+      "sha256": "ae363f1d6463d8a22e486e5d178d0a515dd56bd8c5063b32b688c999d555517f"
+    },
+    {
+      "level": "sea_2",
+      "seek_seconds": 2245,
+      "confidence": "high",
+      "filename": "sea_2.png",
+      "sha256": "6b6c0db92867de7e0ad837694cbe3e2aaa89671945d9bff7992cecdd9c7e803c"
+    },
+    {
+      "level": "underwater_cave",
+      "seek_seconds": 1467,
+      "confidence": "medium",
+      "filename": "underwater_cave.png",
+      "sha256": "af2342c5742f25d9e8dedb3a775526208e0343e871baa1ba32f6ab42e0354465"
+    },
+    {
+      "level": "underwater_cave_1_5",
+      "seek_seconds": 1473,
+      "confidence": "medium",
+      "filename": "underwater_cave_1_5.png",
+      "sha256": "7e1ee25bde5d48735bbbe39e7bf7f84e2470eec0c852c2137ef2aead37e13769"
+    },
+    {
+      "level": "underwater_cave_2",
+      "seek_seconds": 1481,
+      "confidence": "medium",
+      "filename": "underwater_cave_2.png",
+      "sha256": "8e2171d35d1f4dcde3083af0a8dcc75872e2f27dd2a951560ac32ddc3563f9a6"
+    },
+    {
+      "level": "underwater_cave_3",
+      "seek_seconds": 1493,
+      "confidence": "medium",
+      "filename": "underwater_cave_3.png",
+      "sha256": "6fd295bc25841a2d40e055480d2db5d502cb9411372caa6bd705618b2470e985"
+    },
+    {
+      "level": "underwater_cave_4",
+      "seek_seconds": 1503,
+      "confidence": "high",
+      "filename": "underwater_cave_4.png",
+      "sha256": "559109e498c3c9a419de20d40e1096c0298cb983d51ca885286bbfaf1aa8e8d6"
+    },
+    {
+      "level": "underwater_cave_5",
+      "seek_seconds": 1513,
+      "confidence": "high",
+      "filename": "underwater_cave_5.png",
+      "sha256": "abebb7efbdc8cfab1cc9fe33a383f9163bb184d5137fe9401a1ba5c77719541b"
+    },
+    {
+      "level": "village_agri",
+      "seek_seconds": 1125,
+      "confidence": "high",
+      "filename": "village_agri.png",
+      "sha256": "0b97308ad898564b56d27beb8c7989a35e1876049c7ec02ba28442b682cb3dc0"
+    },
+    {
+      "level": "village_central",
+      "seek_seconds": 954,
+      "confidence": "high",
+      "filename": "village_central.png",
+      "sha256": "78d1d7a58790326b9a1c7e06cef121382af90a68572b47b4bdc3e2cbeb14c39c"
+    },
+    {
+      "level": "village_forts",
+      "seek_seconds": 295,
+      "confidence": "high",
+      "filename": "village_forts.png",
+      "sha256": "49b9db0abf2dffef32f654d2b7312286ba4597e7ebd3d38b8d3988a437de0241"
+    },
+    {
+      "level": "village_hut",
+      "seek_seconds": 1285,
+      "confidence": "high",
+      "filename": "village_hut.png",
+      "sha256": "9db6a29667660f6c2b592f977902628f9ecfe02146d47bea35646a40ab5a6d0b"
+    },
+    {
+      "level": "village_shrine",
+      "seek_seconds": 1025,
+      "confidence": "high",
+      "filename": "village_shrine.png",
+      "sha256": "4c20c32d8ff27bcd437d60a3b8531102601bf147a640a9ce4d3c24afd244b0af"
+    },
+    {
+      "level": "water_well_1",
+      "seek_seconds": 1245,
+      "confidence": "high",
+      "filename": "water_well_1.png",
+      "sha256": "3fb96d486fd965c19c7764ab496b3a62dc1f17feaa392230e8ea4a143cc342be"
+    },
+    {
+      "level": "waterfall_bottom",
+      "seek_seconds": 458,
+      "confidence": "high",
+      "filename": "waterfall_bottom.png",
+      "sha256": "b7a25ccca1520658ecb14877681602b032c36697887cdfbff63384766c6642e9"
+    },
+    {
+      "level": "waterfall_cave",
+      "seek_seconds": 478,
+      "confidence": "high",
+      "filename": "waterfall_cave.png",
+      "sha256": "40f582b82f07d9c5b2dd0290105fa84f9b5aed8e4230b7784f464790027b18a5"
+    },
+    {
+      "level": "waterfall_top",
+      "seek_seconds": 152,
+      "confidence": "high",
+      "filename": "waterfall_top.png",
+      "sha256": "8b7711567bd7e3c418189c6f751026a9715a0c26b107c6f2145f6a95f0d0ed9d"
+    }
+  ]
+}
