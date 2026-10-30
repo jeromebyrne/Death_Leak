@@ -1,6 +1,6 @@
 # All-level reference audit — 2026-10-29
 
-**State: exhaustive audit/fix milestone; all final native-layout software gates collected. Final UI publication/deployment in progress. Physical release acceptance remains blocked; full earned ending is not certified.**
+**State: exhaustive audit/fix milestone published and safely deployed. Physical release acceptance remains blocked; full current earned ending and full original-engine fidelity are not certified.**
 
 ## Exact coverage
 
@@ -129,9 +129,9 @@ Independent integrated review found four new defects, all repaired: focused play
 
 ## Publication / deployment
 
-- Fix/source milestone committed and pushed: `18ed8d3702898020d871fb83ada0173d1902563a`, remote `refs/heads/feature/linux-renderer-foundation`; live ls-remote matched. No master merge/branch restructuring.
-- Initial milestone18ed8d3 installed v2 with preserved rollbacks. Final native-layout v5 hash above has passed all independent gates; final source commit/deployment receipt pending. Existing Desktop shortcut and launcher remain unchanged.
-- Previous binary + BUILD_REVISION.txt retained as `.pre-all-level-audit-20261029` backups. Rollback: stop the game, restore those two sibling backups; do not replace or delete progression/settings. Prior `.pre-repair-20261029` backups also retained.
+- Gameplay/audit milestone `18ed8d3702898020d871fb83ada0173d1902563a`; final native UI/source revision **`abb28cf0b44e48d7e3c1a2a185a4a00071cec69f`**. Both pushed to `refs/heads/feature/linux-renderer-foundation`; live ls-remote matched final source. Every compiled runtime file matches the published source revision exactly. No master merge/branch restructuring.
+- Final native-layout v5 installed atomically in established `DeathLeak-Playtest-20261029`; BUILD_REVISION records sourceabb28cf and exact finalf40eeb9f hash. Existing Desktop shortcut/launcher unchanged; latest controls/audit documentation included.
+- Previous binary + BUILD_REVISION.txt retained as `.pre-all-level-audit-20261029` backups. Rollback: stop the game, restore those two sibling backups; do not replace or delete progression/settings. Intermediate v2 binary/metadata/docs retained separately as `.pre-ui-parity-20261029`; prior `.pre-repair-20261029` backups also retained.
 - User progression SHA256 unchanged before/after: `faf1044d31baea43f30b690399e99a2f0b6bf1ba2b2fb7c5c0fc508d7775088d`; settings remained absent, shortcut hash unchanged. No user save was loaded by diagnostics.
-- Complete copied assets/XML verified:1192 files /375,534,332 source bytes exactly match, no missing/different files (runtime settings excluded). Initial installed copy passed strict Intel hardware-offscreen Forest-1, zero missing assets; final v5 installed smoke follows deployment. No process/window launched on the active desktop, no physical or actual remote-input acceptance implied.
+- Complete copied assets/XML verified:1192 files /375,534,332 source bytes exactly match, no missing/different files (runtime settings excluded). Final installed v5 itself rendered the original Focus modal with copied original assets on strict Intel offscreen, zero missing assets; text/layout visually reviewed. Initial installed Forest-1 smoke also passed. No process/window launched on the active desktop, no physical or actual remote-input acceptance implied.
 - This is a published/deployed **audit/fix playtest milestone**, not a full-release acceptance declaration. Full historical earned itinerary and physical gates remain as stated above.

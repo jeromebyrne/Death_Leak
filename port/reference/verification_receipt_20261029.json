@@ -20,12 +20,14 @@
     "saw.png",
     "controls_crate.png"
   ],
-  "deployed_candidate_verified": false,
+  "deployed_candidate_verified": true,
   "user_save_sha256_unchanged": "faf1044d31baea43f30b690399e99a2f0b6bf1ba2b2fb7c5c0fc508d7775088d",
   "shortcut_unchanged": true,
   "settings_remained_absent": true,
   "initial_gameplay_source_commit": "18ed8d3702898020d871fb83ada0173d1902563a",
   "current_earned_deflection": "PASS final binary,396 original pickup IDs=375 debit+21 balance, real granary key, health1, ordinary controls, no loaded state; TEST-ONLY encounter clock",
   "native_upgrade_modal": "PASS all8 mixed-case source descriptions visible; original XML widget rectangles, source body/cost bounds, affordability colors and dismiss warmup",
-  "deployed_assets": "1192 source files,375534332 bytes, no missing/different; runtime settings excluded"
+  "deployed_assets": "1192 source files,375534332 bytes, no missing/different; runtime settings excluded",
+  "source_commit": "abb28cf0b44e48d7e3c1a2a185a4a00071cec69f",
+  "installed_native_modal_smoke": "PASS strict Intel offscreen; no desktop launch"
 }

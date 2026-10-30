@@ -1,0 +1,28 @@
+{
+  "source_commit": "abb28cf0b44e48d7e3c1a2a185a4a00071cec69f",
+  "binary_sha256": "f40eeb9f43ccf5090e2390d25c3a3abb05bd2514ded6db8c5e5413c987e7c3e7",
+  "previous_binary_sha256": "7384df76213821fe1036965e16a4c8261ee6d5353438ad93c182c50cd2cec959",
+  "backups": [
+    "/deploy/port/build/deathleak-linux.pre-ui-parity-20261029",
+    "/deploy/BUILD_REVISION.txt.pre-ui-parity-20261029",
+    "/deploy/port/ALL_LEVEL_REFERENCE_AUDIT_20261029.md.pre-ui-parity-20261029",
+    "/deploy/port/README.md.pre-ui-parity-20261029"
+  ],
+  "original_pre_audit_backup_sha256": "d67b1d3b7516deafd8d9f86855c63ab9c738ca58853047b660f8dba443f951be",
+  "state_before": {
+    "/state/progression.dl": "faf1044d31baea43f30b690399e99a2f0b6bf1ba2b2fb7c5c0fc508d7775088d",
+    "/state/settings.xml": "ABSENT",
+    "/shortcut": "19078b7cb7f678106b0dd2925aaa5d74bfd96e41378a1746ee4fc4354b43375a"
+  },
+  "state_after": {
+    "/state/progression.dl": "faf1044d31baea43f30b690399e99a2f0b6bf1ba2b2fb7c5c0fc508d7775088d",
+    "/state/settings.xml": "ABSENT",
+    "/shortcut": "19078b7cb7f678106b0dd2925aaa5d74bfd96e41378a1746ee4fc4354b43375a"
+  },
+  "desktop_game_launched": false,
+  "physical_acceptance": false,
+  "paths_are_logical_test_bind_mounts": true,
+  "copied_original_assets_verified_files": 1192,
+  "copied_original_assets_verified_source_bytes": 375534332,
+  "installed_original_focus_modal_strict_gpu_smoke": "PASS"
+}
