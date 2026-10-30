@@ -97,6 +97,7 @@ public:
     virtual bool PresentationSurfaceStable() const { return false; }
     virtual bool PollQuit() = 0;
     virtual bool KeyDown(int key) const = 0;
+    virtual void Vibrate(float,float,float) {} // Optional physical-controller feedback.
     virtual ControllerSticks ControllerAxes() const { return {}; }
     virtual MouseState Mouse() const = 0;
     virtual bool SaveFrame(const std::string& path, std::string& error) = 0;

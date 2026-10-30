@@ -132,7 +132,9 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     nextObjectIdentity_ = 1;
     levelPath_ = path;
     playerVisualWidth_ = playerVisualHeight_ = 0;
-    platforms_.clear();ambientActors_.clear(); dynamicsClock_=0;playerEntryDirection_=0;
+    platforms_.clear();ambientActors_.clear();ambientDebris_.clear();
+    std::fill(std::begin(ambientDebrisTextures_),std::end(ambientDebrisTextures_),render::InvalidTexture);
+    ambientDamageRandom_=0x414d4249u; dynamicsClock_=0;playerEntryDirection_=0;
     forceRegions_.clear();breakables_.clear();healingSprings_.clear();instruments_.clear();sceneSounds_.clear();
     playerVelocityX_=playerVelocityY_=0;
     introBodyPhase_ = IntroBodyPhase::None; introBodyFinished_ = false;
@@ -661,6 +663,9 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         }
         if(kind=="Breakable") {
             sprite.breakableIndex=breakables_.size()-1;
+            const float c=std::abs(std::cos(sprite.rotation)),sn=std::abs(std::sin(sprite.rotation));
+            breakables_.back().viewWidth=c*sprite.width+sn*sprite.height;
+            breakables_.back().viewHeight=sn*sprite.width+c*sprite.height;
             for(const char* sequence:{"Still","Damage1","Damage2","Damage3","Damage4"}) {
                 const auto frame=AnimationFrame(animationPath,sequence);
                 render::TextureId id=render::InvalidTexture;
@@ -711,6 +716,10 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
             config.collisionHeight=sprite.collisionHeight;config.collisionOffsetY=sprite.collisionOffsetY;
             unsigned hash=2166136261u;for(unsigned char c:path+"#"+sprite.xmlId)hash=(hash^c)*16777619u;config.seed=hash;
             AmbientBody body;
+            // Butterfly::OnDamage ignores health/can_be_damaged, but requires
+            // EXACT kGround (not merely foreground/non-background).
+            body.damageable = kind=="Rabbit" ? Flag(object->FirstChildElement("can_be_damaged"),"value") :
+                kind=="Butterfly" && sprite.depth==Depth("kGround");
             TiXmlDocument animation(animationPath.c_str());
             if(animation.LoadFile() && animation.RootElement()) {
                 auto* part=animation.RootElement()->FirstChildElement("body");
@@ -1134,13 +1143,111 @@ bool LevelScene::PlayInstrument(const std::string& id) {
     }
     return false;
 }
+std::vector<LevelScene::AmbientTarget> LevelScene::AmbientTargets() const {
+    std::vector<AmbientTarget> result;
+    for(size_t i=0;i<sprites_.size();++i) {
+        const auto& sprite=sprites_[i];
+        if(sprite.ambientRetired || sprite.collected || sprite.ambientActorIndex>=ambientActors_.size())continue;
+        const auto& body=ambientActors_[sprite.ambientActorIndex];
+        if(!body.damageable)continue;
+        result.push_back({i,sprite.x,sprite.y,sprite.collisionWidth,sprite.collisionHeight,
+            sprite.collisionOffsetX,sprite.collisionOffsetY,
+            body.motion.Configuration().kind==AuthoredAmbientActor::Kind::Butterfly});
+    }
+    return result;
+}
+bool LevelScene::DamageAmbient(size_t index,float damage,render::Renderer& renderer) {
+    if(index>=sprites_.size() || !std::isfinite(damage) || damage<0.f)return false;
+    auto& sprite=sprites_[index];
+    if(sprite.ambientRetired || sprite.collected || sprite.ambientActorIndex>=ambientActors_.size())return false;
+    auto& body=ambientActors_[sprite.ambientActorIndex];
+    if(!body.damageable)return false;
+    const bool butterfly=body.motion.Configuration().kind==AuthoredAmbientActor::Kind::Butterfly;
+    if(!butterfly) {
+        body.health-=damage;
+        if(body.health>0.f)return true;
+    }
+    sprite.ambientRetired=true;sprite.updateable=false;sprite.alpha=0.f;
+    const auto random=[&](unsigned bound) {
+        ambientDamageRandom_^=ambientDamageRandom_<<13;
+        ambientDamageRandom_^=ambientDamageRandom_>>17;
+        ambientDamageRandom_^=ambientDamageRandom_<<5;
+        return ambientDamageRandom_%bound;
+    };
+    // Rabbit explicitly passes shouldExplode=false to Character; no 25 currency
+    // reward. Its own post-death burst uses ten Debris with original orb art.
+    // Bounded: source load-shedding at 200/250/300 visible DrawableObjects is
+    // not reproduced (this scene does not own Combat's drawable population).
+    const unsigned count=butterfly ? 2u : 10u;
+    for(unsigned i=0;i<count;++i) {
+        const unsigned variant=butterfly ? i : 2u+random(3);
+        auto& texture=ambientDebrisTextures_[variant];
+        if(!texture) {
+            const std::string path=variant<2 ?
+                "Game/Media/characters/butterfly/dead_wing_"+std::to_string(variant+1)+".png" :
+                "Game/Media/orb"+(variant==2 ? std::string{} : std::to_string(variant-1))+".png";
+            std::string error;texture=renderer.LoadTexture(path,error);
+        }
+        AmbientDebris debris;debris.texture=texture;debris.x=sprite.x+(butterfly ? i*10.f : 0.f);
+        debris.y=sprite.y;debris.depth=sprite.depth;
+        // Both source dead-wing PNGs are native 32x32 (IHDR verified).
+        debris.width=debris.height=butterfly ? 32.f : 20.f+(variant-2)*5.f;
+        debris.collisionWidth=debris.collisionHeight=butterfly || variant==2 ? 15.f : debris.width;
+        const float multiplier=butterfly ? .15f : .5f;
+        const float speed=(random(20)+5)*multiplier;
+        debris.vx=(random(2) ? 1.f : -1.f)*speed;debris.vy=.5f*speed;
+        debris.maxVelocity=25.f*multiplier;
+        ambientDebris_.push_back(debris);
+    }
+    return true;
+}
+void LevelScene::ApplyAmbientDebrisImpulse(float x,float y,float radius,const std::function<bool(float,float,float,float)>& visible) {
+    for(auto& body:ambientDebris_) {
+        const float dx=body.x-x,dy=body.y-y,length=std::hypot(dx,dy);
+        if(length>0.f && length<radius && visible(body.x,body.y,body.width,body.height)) {
+            body.vx+=dx/length*10.f;body.vy+=dy/length*15.f;
+        }
+    }
+}
+void LevelScene::UpdateAmbientDebris(float dt,float cameraX,float cameraY) {
+    if(!std::isfinite(dt) || dt<=0.f)return;
+    const float ticks=dt*60.f;
+    for(auto& d:ambientDebris_) {
+        // Match ordinary drawable update eligibility; no forced offscreen TTL.
+        if(std::abs(d.x-cameraX)>2000.f+d.width*.5f || std::abs(d.y-cameraY)>2000.f+d.height*.5f)continue;
+        const float oldBottom=d.y-d.collisionHeight*.5f;
+        d.vx=std::clamp(d.vx,-d.maxVelocity,d.maxVelocity);
+        d.vy=std::clamp(d.vy+d.ay,-d.maxVelocity,d.maxVelocity);
+        d.ay=d.grounded ? 0.f : -(d.vy>0.f || d.vy<-15.f ? 1.f : 3.f)*ticks;
+        d.x+=d.vx*ticks;d.y+=d.vy*ticks;
+        d.vx*=.95f;if(std::abs(d.vx)<.1f)d.vx=0.f;
+        d.rotation-=d.vx*(d.grounded ? .003f : .02f)*ticks;
+        if(d.fading)d.fadeRemaining=std::max(0.f,d.fadeRemaining-dt);
+        d.grounded=false;
+        // Bounded top-contact solver. Full source strip-ray/sidewall/water,
+        // debris/character collisions and material SFX remain outside bridge.
+        float floor=-std::numeric_limits<float>::infinity();
+        if(d.vy<=0.f)for(const auto& line:ground_) {
+            const float dx=line.x2-line.x1;if(std::abs(dx)<1.f)continue;
+            const float t=(d.x-line.x1)/dx;if(t<0.f || t>1.f)continue;
+            const float y=line.y1+t*(line.y2-line.y1);
+            if(oldBottom>=y-.001f && d.y-d.collisionHeight*.5f<=y && y>floor)floor=y;
+        }
+        if(std::isfinite(floor)) {
+            d.y=floor+d.collisionHeight*.5f;d.vy=d.ay=0.f;d.grounded=true;d.fading=true;
+        }
+    }
+    ambientDebris_.erase(std::remove_if(ambientDebris_.begin(),ambientDebris_.end(),
+        [](const AmbientDebris& d){return d.fading && d.fadeRemaining<=0.f;}),ambientDebris_.end());
+}
 float LevelScene::UpdateDynamics(float dt,float playerX,float playerY,float cameraX,float cameraY,bool grounded,float velocityY) {
     if(dt<=0.f)return 0.f;
     dynamicsClock_+=dt;
+    UpdateAmbientDebris(dt,cameraX,cameraY);
     for(auto& instrument:instruments_)instrument.cooldown=std::max(0.f,instrument.cooldown-dt);
     float carryX=0.f;
     for(auto& sprite:sprites_) {
-        if(sprite.collected)continue;
+        if(sprite.collected || sprite.ambientRetired)continue;
         const bool eligible = sprite.updateable && (sprite.alwaysUpdate ||
             (sprite.x + sprite.width*.5f > cameraX - 2000.f &&
              sprite.x - sprite.width*.5f < cameraX + 2000.f &&
@@ -1279,7 +1386,7 @@ void LevelScene::UpdateVisuals(float dt, float playerX, float playerY, float cam
             [](const ParticleSpray::Particle& p) { return p.dead; });
     }), orbTrails_.end());
     for (auto& sprite : sprites_) {
-        if (sprite.collected) continue;
+        if (sprite.collected || sprite.ambientRetired) continue;
         // GameObject builds the world matrix before ParallaxLayer follows camera X.
         // Retain GameObject world-matrix X before ParallaxLayer follows camera,
         // including schedules with multiple eligible updates per draw.
@@ -1392,7 +1499,8 @@ void LevelScene::EmitBombExplosion(render::Renderer& renderer,float x,float y) {
         particleSprays_.push_back(std::move(spray));
     }
     std::stable_sort(particleSprays_.begin(),particleSprays_.end(),[](const auto& a,const auto& b){return a.depth>b.depth || (a.depth==b.depth && a.order<b.order);});
-    sceneSounds_.push_back("explosion/bang.wav");
+    const auto bang=static_cast<unsigned>(dynamicsClock_*100000.f)%3u;
+    sceneSounds_.push_back(bang==0?"explosion/bang.wav":bang==1?"explosion/bang2.wav":"explosion/bang3.wav");
 }
 void LevelScene::EmitJumpTakeoff(size_t segment, float x, float postBumpY, int facing) {
     if (segment >= ground_.size()) return;
@@ -1754,7 +1862,7 @@ void LevelScene::PreparePresentation() {
     // eligibility predicate, then commit only for a newly presented update.
     const auto& filter = DiagnosticRenderFilter();
     for (auto& object : sprites_) {
-        if (!object.texture || object.collected || (object.playerShadow && !playerGrounded_) ||
+        if (!object.texture || object.collected || object.ambientRetired || (object.playerShadow && !playerGrounded_) ||
             (object.playerAimLine && aimLineAlpha_ <= 0.f) ||
             !filter.Draw(object.xmlId, levelPath_)) continue;
         if (!object.parallaxLayer || !object.autoScrollY) continue;
@@ -1780,6 +1888,20 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
             });
         else spray.Draw(renderer, cameraX, cameraY);
     };
+    if(filter.only.empty())for(const auto& debris:ambientDebris_) {
+        const auto* source=&debris;
+        dynamic.push_back({debris.depth,[&,source] {
+            if(!source->texture)return;
+            const float shrink=source->fading ? std::min(1.f,source->fadeRemaining/.2f) : 1.f;
+            render::Sprite draw;draw.texture=source->texture;
+            const float w=source->width*shrink,h=source->height*shrink;
+            draw.destination={640.f+(source->x-cameraX-w*.5f)*scale,
+                              360.f+(cameraY-source->y-h*.5f)*scale,w*scale,h*scale};
+            draw.flipY=true;
+            draw.rotationDegrees=render::OrdinarySpriteRotationDegrees(source->rotation,false,false);
+            if(render::SpriteMayIntersectViewport(draw))renderer.DrawSprite(draw);
+        }});
+    }
     // Orbs are runtime GameObjects at kOrb, not an unconditional backdrop.
     if (spawnedOrbTexture_ && filter.only.empty()) for (const auto& orb : spawnedOrbs_) {
         dynamic.push_back({3250, [&, orb] {
@@ -1828,7 +1950,7 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         if (object.depth < Depth("kOrb")) drawOrbTrails();
         drawSpraysBefore(object.depth, object.order);
         drawDynamicBefore(object.depth);
-        if (!object.texture || object.collected || (object.playerShadow && !playerGrounded_) ||
+        if (!object.texture || object.collected || object.ambientRetired || (object.playerShadow && !playerGrounded_) ||
             (object.playerAimLine && aimLineAlpha_ <= 0.f) ||
             !filter.Draw(object.xmlId, levelPath_)) continue;
         // ParallaxLayer world matrix precedes camera-follow; current camera

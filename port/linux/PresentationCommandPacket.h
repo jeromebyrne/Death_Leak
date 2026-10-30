@@ -123,6 +123,7 @@ public:
     bool PollQuit() override { return inner_->PollQuit(); }
     bool PresentationSurfaceStable() const override { return inner_->PresentationSurfaceStable(); }
     bool KeyDown(int key) const override { return inner_->KeyDown(key); }
+    void Vibrate(float low,float high,float seconds) override {inner_->Vibrate(low,high,seconds);}
     render::ControllerSticks ControllerAxes() const override { return inner_->ControllerAxes(); }
     render::MouseState Mouse() const override { return inner_->Mouse(); }
     bool SaveFrame(const std::string& path, std::string& error) override { return inner_->SaveFrame(path, error); }

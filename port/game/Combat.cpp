@@ -98,6 +98,11 @@ bool BoxContact(float ax, float ay, float bx, float by, const SolidBox& box, flo
 void MoveGroundEnemy(Enemy& enemy, const LevelScene& scene, float desiredX, float dt) {
     constexpr float halfW = 50.f, halfH = 100.f;
     const float oldX = enemy.x, oldY = enemy.y;
+    if(enemy.grounded && enemy.supportingSegment<scene.Ground().size()) {
+        const auto& support=scene.Ground()[enemy.supportingSegment];
+        if((support.hardRight && desiredX>oldX && desiredX>support.stripRight-support.rightOffset) ||
+           (support.hardLeft && desiredX<oldX && desiredX<support.stripLeft+support.leftOffset))desiredX=oldX;
+    }
     enemy.x = desiredX;
     for (const auto& line : scene.Ground()) {
         if (std::abs(line.x2-line.x1) > 1.f) continue;
@@ -120,23 +125,26 @@ void MoveGroundEnemy(Enemy& enemy, const LevelScene& scene, float desiredX, floa
     const bool wasGrounded = enemy.grounded;
     enemy.grounded = false;
     float floor = -1e9f;
-    for (const auto& line : scene.Ground()) {
+    size_t floorSegment=size_t(-1);
+    for (size_t i=0;i<scene.Ground().size();++i) {
+        const auto& line=scene.Ground()[i];
         const float dx = line.x2-line.x1;
         if (std::abs(dx) <= 1.f) continue;
         const float t=(enemy.x-line.x1)/dx;
         if (t < 0.f || t > 1.f) continue;
         const float surface=line.y1+t*(line.y2-line.y1);
         if ((wasGrounded && std::abs(surface-(oldY-halfH)) <= 20.f) ||
-            (enemy.vy <= 0.f && oldY-halfH >= surface-4.f && enemy.y-halfH <= surface)) floor=std::max(floor,surface);
+            (enemy.vy <= 0.f && oldY-halfH >= surface-4.f && enemy.y-halfH <= surface)) { if(surface>floor) {floor=surface;floorSegment=i;} }
     }
     for (const auto& box : scene.SolidBoxes()) {
         if (enemy.x+halfW <= box.left || enemy.x-halfW >= box.right) continue;
         if ((wasGrounded && std::abs(box.top-(oldY-halfH)) <= 20.f) ||
-            (enemy.vy <= 0.f && oldY-halfH >= box.top-4.f && enemy.y-halfH <= box.top)) floor=std::max(floor,box.top);
+            (enemy.vy <= 0.f && oldY-halfH >= box.top-4.f && enemy.y-halfH <= box.top)) {if(box.top>floor){floor=box.top;floorSegment=size_t(-1);}}
         if (enemy.vy > 0.f && oldY+halfH <= box.bottom && enemy.y+halfH > box.bottom) {
             enemy.y=box.bottom-halfH; enemy.vy=0.f;
         }
     }
+    enemy.supportingSegment=floorSegment;
     if (floor > -1e8f) { enemy.y=floor+halfH; enemy.vy=0.f; enemy.grounded=true; }
 }
 }
@@ -367,9 +375,16 @@ bool Combat::DamageEnemy(size_t index, float damage, float projectileDirectionX)
 }
 void Combat::ApplyExplosion(float x,float y,float radius,float damage) {
     for(size_t i=0;i<enemies_.size();++i) {
-        const float dx=enemies_[i].x-x,dy=enemies_[i].y-y;
-        if(dx*dx+dy*dy<radius*radius)DamageEnemy(i,damage);
+        const auto& e=enemies_[i];const float dx=e.x-x,dy=e.y-y;
+        if(dx*dx+dy*dy<radius*radius && BodyInView(e.x,e.y,e.type=="kGhost"?113.f:183.f,e.type=="kGhost"?208.f:231.f))DamageEnemy(i,damage);
     }
+    auto impulse=[&](float px,float py,float w,float h,float& vx,float& vy,float units) {
+        const float dx=px-x,dy=py-y,length=std::hypot(dx,dy);
+        if(length>0.f && length<radius && BodyInView(px,py,w,h)) {vx+=dx/length*10.f*units;vy+=dy/length*15.f*units;}
+    };
+    for(auto& shot:shots_)impulse(shot.x,shot.y,shot.visualWidth,shot.visualHeight,shot.vx,shot.vy,60.f);
+    for(auto& debris:deathEffects_)if(!debris.spray)impulse(debris.x,debris.y,debris.width,debris.height,debris.vx,debris.vy,60.f);
+    for(auto& blood:bloodFlights_)impulse(blood.x,blood.y,blood.size,blood.size,blood.vx,blood.vy,1.f);
 }
 void Combat::ApplyPlayerDamage(float damage) {
     if (damage <= 0.f || health_ <= 0.f) return;
@@ -531,10 +546,11 @@ void Combat::UpdateBloodFlights(const LevelScene& scene, float dt) {
                                [](const ParticleSpray::Particle& p) { return p.dead; });
         }), materialSprays_.end());
 }
-void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fire, bool melee, bool grounded, bool rolling, int facing, render::Renderer& renderer, float aimX, float aimY, PlayerShotLaunchState launchState,const std::function<void(size_t,float)>& breakableHit) {
+void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fire, bool melee, bool grounded, bool rolling, int facing, render::Renderer& renderer, float aimX, float aimY, PlayerShotLaunchState launchState,const std::function<void(size_t,float)>& breakableHit,const std::function<void(size_t,float)>& ambientHit) {
     // CPU callers may not have an explicit scene-install boundary. Snapshot
     // before advancing the synthetic clock on their first update as well.
     InitializeLevelEncounters(scene);
+    playerGroundTime_=grounded?playerGroundTime_+dt:0.f;
     UpdateBloodFlights(scene, dt);
     for (auto& effect : deathEffects_) {
         effect.age += std::max(0.f, dt);
@@ -660,67 +676,75 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
             if (!ghost) MoveGroundEnemy(enemy,scene,enemy.x,dt);
             continue;
         }
+        bool fireEnemy=false;
         if (ghost) {
-            // AIStateFlying: seek 250-400 above the player, holding a 150-400 X offset.
-            const float side = enemy.targetX < x ? -1.f : 1.f;
-            enemy.targetX = x + side*250.f;
-            enemy.targetY = y + 300.f;
-            if (enemy.x < x-250.f) enemy.x += std::min(x-250.f-enemy.x,720.f*dt);
-            else if (enemy.x > x+250.f) enemy.x -= std::min(enemy.x-x-250.f,720.f*dt);
-            enemy.y += std::clamp(enemy.targetY-enemy.y,-210.f*dt,210.f*dt);
+            // MovingSprite physics precedes NPC::Update's AI. Source units/tick.
+            const float ticks=dt*60.f;
+            enemy.ghostVx=std::clamp(enemy.ghostVx+enemy.ghostAx,-12.f,12.f);
+            enemy.ghostVy=std::clamp(enemy.ghostVy+enemy.ghostAy,-3.5f,3.5f);
+            enemy.x+=enemy.ghostVx*ticks;enemy.y+=enemy.ghostVy*ticks;
+            // AIStateFlying checks fire BEFORE updating its target/accelerations.
+            fireEnemy=enemy.fireCooldown<=0 && y<enemy.y && std::abs(x-enemy.x)<45.f;
+            enemy.ghostTargetAge+=dt;
+            if(enemy.ghostTargetAge>2.f && grounded) {
+                enemy.targetY=y+300.f;
+                if(viewKnown_)enemy.targetY=std::min(enemy.targetY,viewTop_-170.f);
+                enemy.ghostTargetAge=0.f;
+            }
+            if(enemy.y<enemy.targetY-10.f)enemy.ghostAy=.1f;
+            else if(enemy.y>enemy.targetY+10.f)enemy.ghostAy=-.1f;
+            else {enemy.ghostAy=0.f;enemy.ghostVy*=.99f;}
+            if(enemy.x>x+250.f)enemy.ghostAx=-1.f;
+            else if(enemy.x<x-250.f)enemy.ghostAx=1.f;
+            else enemy.ghostVx*=.99f; // source retains X acceleration in band
         } else {
-            // AIStateRangeAttack teleports a distant NPC after 8-12 s;
-            // SkeletonEnemy::CanTeleport is false. Fixed in-range values replace rand().
-            enemy.teleportCooldown=std::max(0.f,enemy.teleportCooldown-dt);
-            if (enemy.type != "kSkeleton" && std::abs(dx)>600.f && enemy.teleportCooldown<=0.f) {
-                enemy.teleportX=x-facing*550.f;
-                enemy.teleportY=y+250.f;
-                enemy.teleportTime=0.8f; // Character::kTeleportTime
-                enemy.teleportCooldown=8.f;
+            enemy.rangeHold=std::max(0.f,enemy.rangeHold-dt);
+            if(enemy.windup!=0.f) {
+                // RangeAttack's pending-shot branch stops all X motion.
+                MoveGroundEnemy(enemy,scene,enemy.x,dt);
+                if(enemy.windup>0.f) {enemy.windup-=dt;if(enemy.windup<=0.f)enemy.windup=-.000001f;continue;}
                 enemy.windup=0.f;
-                enemy.vy=0.f;
-                continue;
-            }
-            // AIStateRangeAttack follows beyond 500, retreats inside 200, and holds the band.
-            const float range = std::abs(dx);
-            const float speed = enemy.type == "kSkeleton" ? 240.f : 480.f;
-            float desiredX=enemy.x;
-            if (range > 500.f) desiredX += std::copysign(std::min(range-500.f,speed*dt),dx);
-            else if (range < 200.f && range > 0.01f) desiredX -= std::copysign(std::min(200.f-range,speed*dt),dx);
-            // AIStateRangeAttack chooses a jump if the player is >50 above,
-            // otherwise a roll, only while grounded and accelerating.
-            // Use the source delay's 2 s lower bound and a fixed 18-unit/tick
-            // ninja jump (NinjaSpawner randomizes 16..20) for repeatability.
-            enemy.jumpRollDelay = std::max(0.f,enemy.jumpRollDelay-dt);
-            if (enemy.type != "kSkeleton" && enemy.grounded &&
-                desiredX-enemy.x > 0.01f && enemy.jumpRollDelay <= 0.f) {
-                if (y > enemy.y+50.f) {
-                    enemy.vy=18.f*60.f;
-                    enemy.grounded=false;
-                    ++enemy.jumps;
-                } else {
-                    enemy.targetX=enemy.x+10000.f;
-                    enemy.rollTime=0.5f; // bounded stand-in for Roll animation duration
-                    ++enemy.rolls;
-                }
-                enemy.jumpRollDelay=2.f;
-            }
-            MoveGroundEnemy(enemy,scene,desiredX,dt);
-            if (enemy.rollTime > 0.f) continue;
-        }
-        if (ghost) {
-            // AIStateFlying fires only when the player is below and horizontally near.
-            if (enemy.fireCooldown > 0 || y >= enemy.y || std::abs(x-enemy.x) > 45.f) continue;
-        } else {
-            if (enemy.windup > 0) {
-                enemy.windup = std::max(0.f,enemy.windup-dt);
-                if (enemy.windup > 0) continue;
+                fireEnemy=enemy.fireCooldown<=0.f;
+                // A pending shot returns even when its reload rejects firing.
+                if(!fireEnemy)continue;
             } else {
-                if (enemy.fireCooldown > 0 || std::abs(dx)>700.f || std::abs(dy)>500.f) continue;
-                enemy.windup=0.25f; // AIStateRangeAttack fire warmup
+                const bool inView=BodyInView(enemy.x,enemy.y,183.f,231.f);
+                const bool outsideRight=!inView && scene.HasCameraBounds() && enemy.x+10.f>scene.CameraBoundRight();
+                const bool outsideLeft=!inView && scene.HasCameraBounds() && enemy.x-10.f<scene.CameraBoundLeft();
+                const bool verticalRecovery=dy>500.f && grounded && playerGroundTime_>1.f;
+                const bool distant=inView && std::abs(dx)>600.f;
+                if(enemy.type!="kSkeleton" && (outsideRight || outsideLeft ||
+                    ((distant || verticalRecovery) && enemy.teleportCooldown<=0.f))) {
+                    const float offset=playerVx_>0.f?-450.f:playerVx_<0.f?550.f:facing*550.f;
+                    enemy.teleportX=outsideRight?x-300.f:outsideLeft?x+300.f:x-offset;
+                    enemy.teleportY=y+((outsideRight||outsideLeft)?300.f:250.f);
+                    enemy.teleportTime=.8f;enemy.teleportCooldown=8.f;
+                    enemy.rangeHold=.5f;enemy.vy=0.f;continue;
+                }
+                const float distance=std::hypot(dx,dy);
+                float desiredX=enemy.x;
+                if(enemy.rangeHold>0.f) {
+                    enemy.windup=.25f;
+                    MoveGroundEnemy(enemy,scene,enemy.x,dt);
+                    continue;
+                }
+                const float speed=enemy.type=="kSkeleton"?240.f:480.f;
+                // Full XY distance controls the original desired/follow band.
+                if(distance<200.f && distance>.01f)desiredX-=dx/distance*speed*dt;
+                else if(distance>500.f)desiredX+=dx/std::max(1.f,distance)*speed*dt;
+                else if(inView)enemy.rangeHold=.5f;
+                enemy.jumpRollDelay=std::max(0.f,enemy.jumpRollDelay-dt);
+                if(enemy.type!="kSkeleton" && enemy.grounded && desiredX-enemy.x>.01f && enemy.jumpRollDelay<=0.f) {
+                    if(y>enemy.y+50.f) {enemy.vy=18.f*60.f;enemy.grounded=false;++enemy.jumps;}
+                    else {enemy.targetX=enemy.x+10000.f;enemy.rollTime=.5f;++enemy.rolls;}
+                    enemy.jumpRollDelay=2.f;
+                }
+                MoveGroundEnemy(enemy,scene,desiredX,dt);
+                enemy.teleportCooldown=std::max(0.f,enemy.teleportCooldown-dt);
                 continue;
             }
         }
+        if(!fireEnemy)continue;
         const float aimX=x-enemy.x, aimY=y-enemy.y;
         const float length=std::max(1.f,std::hypot(aimX,aimY));
         const bool skeleton = enemy.type == "kSkeleton";
@@ -848,6 +872,25 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
             shot.rotation=(shot.vy<0.f ? (shot.vx>0.f ? -angle : angle) :
                                                     (shot.vx>0.f ? angle : -angle));
         }
+        shot.wasInWaterLastFrame=shot.inWater;shot.inWater=false;
+        for(const auto& water:scene.Hazards())if(water.water &&
+            std::abs(shot.x-water.x)<(shot.collisionWidth+water.width)*.5f &&
+            std::abs(shot.y-water.y)<(shot.collisionHeight+water.height)*.5f)shot.inWater=true;
+        // Butterfly is a special continuation branch BEFORE NPC ownership
+        // filtering in Projectile::OnCollision. Other animal NPCs reject enemy shots.
+        if(ambientHit && shot.active)for(const auto& target:scene.AmbientTargets()) {
+            if(!target.butterfly && shot.enemy)continue;
+            if(target.butterfly && shot.inWater)continue;
+            const float hw=(target.width+shot.collisionWidth)*.5f,hh=(target.height+shot.collisionHeight)*.5f;
+            float contact=0.f;
+            if(SweptBoxContact(oldX,oldY,shot.x,shot.y,target.x+target.offsetX-hw,target.x+target.offsetX+hw,
+                target.y+target.offsetY-hh,target.y+target.offsetY+hh,contact) && (terrainT>=1.f || contact<1.f)) {
+                if(target.butterfly || !shot.wasInWaterLastFrame)ambientHit(target.index,shot.damage);
+                if(!target.butterfly) {
+                    shot.x=oldX+(shot.x-oldX)*contact;shot.y=oldY+(shot.y-oldY)*contact;deactivate(true);break;
+                }
+            }
+        }
         // Sweep only as far as the winning terrain surface. An actor before
         // that surface still wins; terrain at an equal contact time wins ties.
         if (shot.enemy) {
@@ -901,7 +944,7 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
                     deactivate(true); ++hits_;
                 }
             }
-        } else for (size_t enemyIndex=0; enemyIndex<enemies_.size(); ++enemyIndex) {
+        } else if(shot.active) for (size_t enemyIndex=0; enemyIndex<enemies_.size(); ++enemyIndex) {
             auto& enemy=enemies_[enemyIndex];
             if (enemy.health<=0 || enemy.teleportTime>0.f) continue;
             const auto collider = Collider(enemy);
@@ -923,6 +966,11 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
                 breakableHit(winningBreakable,shot.damage);
             deactivate();
         }
+    }
+    if(ambientHit && meleeStrikePhase)for(const auto& target:scene.AmbientTargets()) {
+        const float dx=target.x+target.offsetX-x;
+        if(dx*facing>=0.f && std::abs(dx)<(target.width+128.959793f*1.5f)*.5f &&
+            std::abs(target.y+target.offsetY-y)<(target.height+214.898743f*1.1201479f)*.5f)ambientHit(target.index,500.f);
     }
     shots_.erase(std::remove_if(shots_.begin(),shots_.end(),[](const auto& p){return p.life<=0;}),shots_.end());
     enemies_.erase(std::remove_if(enemies_.begin(),enemies_.end(),[](const auto& e){return e.health<=0;}),enemies_.end());

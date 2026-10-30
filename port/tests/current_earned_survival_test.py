@@ -15,7 +15,7 @@ with tempfile.TemporaryDirectory(prefix='deathleak-earned-survival-') as directo
  assert 'Player died' not in result.stdout,result.stdout
  for level in ('waterfall_top','forest_exploration_2','forest_exploration_barn','village_forts','village_central'):
   assert 'Entered Game/XmlFiles/levels/'+level+'.xml' in result.stdout,result.stdout
- assert re.search(r'Simulation ended at .*village_central.xml .*orbs=92 keys=0 health=13 .*balance=92 .*grounded=1',result.stdout),result.stdout
+ assert re.search(r'Simulation ended at .*village_central.xml .*orbs=92 keys=0 health=25 .*balance=92 .*grounded=1',result.stdout),result.stdout
  lines=save.read_text().splitlines();ids=[s for s in lines if s.startswith('Game/') and '#' in s]
  assert len(ids)==len(set(ids))==92 and 'B:92' in lines and not any(s.startswith('U:') for s in lines)
  cache={}
@@ -23,4 +23,4 @@ with tempfile.TemporaryDirectory(prefix='deathleak-earned-survival-') as directo
   level,ident=pickup.rsplit('#',1)
   if level not in cache:cache[level]={o.get('id'):o.tag for o in ET.parse(level).getroot()}
   assert cache[level][ident]=='CurrencyOrb',pickup
-print('PASS: fresh authored Forest-1 to village-central, five transitions,92 unique original pickups/B92, health13; ordinary jump/fire, no loaded/synthetic state or debug damage; not whole-game/display acceptance')
+print('PASS: fresh authored Forest-1 to village-central, five transitions,92 unique original pickups/B92, health25; ordinary jump/fire, no loaded/synthetic state or debug damage; not whole-game/display acceptance')

@@ -443,6 +443,10 @@ public:
         SDL_SetRenderDrawColor(renderer_, clear.r, clear.g, clear.b, clear.a);
         SDL_RenderClear(renderer_);
     }
+    void Vibrate(float low,float high,float seconds) override {
+        if(gamepad_)SDL_GameControllerRumble(gamepad_,static_cast<Uint16>(std::clamp(low,0.f,1.f)*65535.f),
+            static_cast<Uint16>(std::clamp(high,0.f,1.f)*65535.f),static_cast<Uint32>(std::max(0.f,seconds)*1000.f));
+    }
     void SetWorldZoom(float zoom) override {
         worldZoom_ = sceneSamplingPhase_ && std::isfinite(zoom) && zoom > 0.f ? zoom : 1.f;
     }

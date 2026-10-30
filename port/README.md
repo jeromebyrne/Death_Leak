@@ -242,3 +242,17 @@ on 2026-10-21 measured approximately 32 ms decode / 11 ms upload for
 `underwater_cave/cave_background.png`, and 13 ms / 2 ms for `waterfall_4.png`
 on direct nouveau/NVE7. These are single-run measurements, not performance
 budgets or a fixed transition-stall mitigation.
+
+## Current Linux earned ending and bounded fidelity continuation — 2026-10-29
+
+See [Linux completion checkpoint](LINUX_EARNED_COMPLETION_CHECKPOINT_20261029.md).
+`make -C port current-earned-ending-test` replays a fresh ordinary-input all4-key
+ending, legitimate375-orb Deflection purchase and natural deflection, validating
+source pickup IDs, separate runtime rewards, survival and DL6/MENU/C:1 reset.
+It explicitly uses a test encounter clock; no loaded/injected progression.
+`bounded-ai-test`, `bomb-strip-contact-test`, `bomb-positional-audio-test` and
+`ambient-damage-bridge-test` cover the concrete source repair boundaries.
+Historical20261027/older integration itineraries and exact combat/health counts
+are not current release acceptance; use the current earned gate and named
+source fixtures. Physical display/input/audio/rumble and live pacing remain
+attended gates. No original Windows source or assets changed, no master merge.

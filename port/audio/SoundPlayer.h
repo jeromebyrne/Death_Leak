@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <cstdint>
 #include <string>
 #include <vector>
 
@@ -21,6 +22,14 @@ public:
     virtual void Play(Cue cue, int variation = 0) = 0;
     // Authored one-shot WAV under Game/Media/Audio; optional for non-SDL backends.
     virtual void PlayFile(const std::string&) {}
+    // Independently owned looping positional SFX, not authored level ambience.
+    // Zero is unavailable/muted/invalid; handles survive mute and must be stopped
+    // on owner destruction or cleared on scene/session reset. Main thread only.
+    using PositionalVoice = std::uint64_t;
+    virtual PositionalVoice StartPositionalLoop(const AmbientSource&) { return 0; }
+    virtual void UpdatePositionalLoop(PositionalVoice, float, float, float, float) {}
+    virtual void StopPositionalLoop(PositionalVoice) {}
+    virtual void ClearPositionalLoops() {}
     // Zero means audio is unavailable or muted; the caller may complete dialog immediately.
     virtual unsigned PlayDevilVoice(bool third) = 0;
     virtual bool VoiceFinished(unsigned id) = 0;

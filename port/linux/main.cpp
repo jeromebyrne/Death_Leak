@@ -1,4 +1,5 @@
 #include "../game/BombProjectileMotion.h"
+#include "../game/BombStripContact.h"
 #include "../render/OrdinarySpriteRotation.h"
 #include "../game/TechniqueCatalog.h"
 #include "../game/UpgradeModal.h"
@@ -181,6 +182,7 @@ public:
     void EndFrame() override { inner_->EndFrame(); }
     bool PollQuit() override { return inner_->PollQuit(); }
     bool KeyDown(int key) const override { return inner_->KeyDown(key); }
+    void Vibrate(float low,float high,float seconds) override {inner_->Vibrate(low,high,seconds);}
     ControllerSticks ControllerAxes() const override { return inner_->ControllerAxes(); }
     MouseState Mouse() const override { return inner_->Mouse(); }
     bool SaveFrame(const std::string& path, std::string& error) override {
@@ -726,8 +728,10 @@ int main(int argc, char** argv) {
     float focusCooldown = 0.f;
     bool focusing = false;
     bool bombHeld = false;
-    struct LiveBomb { deathleak::game::BombProjectileMotion motion; bool inWater=false,onLine=false; };
+    struct LiveBomb { deathleak::game::BombProjectileMotion motion; bool inWater=false,onLine=false; deathleak::audio::SoundPlayer::PositionalVoice fuseVoice=0; };
     std::vector<LiveBomb> bombs;
+    struct PendingBlast {float x,y;unsigned updates=0;};
+    std::vector<PendingBlast> pendingBlasts;
     std::uint64_t bombSceneEpoch=scene.SceneEpoch();
     double bombClock=0;
     TextureId bombArt=InvalidTexture;
@@ -1033,6 +1037,10 @@ int main(int argc, char** argv) {
             audioLevel = currentLevel;
             std::cout << "Audio level " << audioLevel << " authored_ambience=" << scene.Ambience().size() << '\n';
         }
+        if(bombSceneEpoch!=scene.SceneEpoch()) {
+            if(sound)sound->ClearPositionalLoops();
+            bombs.clear();pendingBlasts.clear();bombSceneEpoch=scene.SceneEpoch();
+        }
         if (sound) sound->UpdateObjectAmbience(cameraX,cameraY,worldX,worldY,dt);
 
         if (renderer->KeyDown(Escape) && !upgradeModal && !paperModal && !dismissHeld && (!menuLoop || !playLevel.empty())) break;
@@ -1116,7 +1124,7 @@ int main(int argc, char** argv) {
                     }
                     playLevel = levelPath = currentLevel = freshLevel;
                     hasPulledSword = true; introHeldTime = 0.f; introPromptClock.Reset(); introEffectiveZoom = scene.CameraZoom();
-                    focusCooldown=0.f;focusing=false;bombs.clear();bombHeld=false;
+                    focusCooldown=0.f;focusing=false;if(sound)sound->ClearPositionalLoops();bombs.clear();pendingBlasts.clear();bombHeld=false;
             sessionBrokenBreakables.clear();
                     collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear(); collectedPapers.clear(); rewardedHealthDevils.clear(); brokenSmashables.clear(); healthDevilRewardCount = 0;
                     orbBalance = 0; combat = deathleak::game::Combat{};
@@ -1411,6 +1419,8 @@ int main(int argc, char** argv) {
             const auto collectedNow = scene.CollectCurrencyOrbs(worldX, worldY, collectedOrbs);
             const auto collectedSpawned = scene.UpdateSpawnedOrbs(worldX, worldY, dt);
             orbBalance += static_cast<int>(collectedNow + collectedSpawned);
+            if(std::getenv("DEATHLEAK_TRACE_CURRENCY") && (collectedNow || collectedSpawned))
+                std::cout<<"Currency frame="<<frame<<" authored="<<collectedNow<<" runtime="<<collectedSpawned<<" balance="<<orbBalance<<'\n';
             if (sound && (collectedNow || collectedSpawned)) sound->Play(deathleak::audio::Cue::OrbCollect);
             // XInput activates aim/fire when either right axis exceeds its
             // strict deadzone. SDL Y is screen-down, so convert to world-up.
@@ -1435,6 +1445,7 @@ int main(int argc, char** argv) {
             playerEligibleFireAttempt = fire && !motion.Rolling() && !motion.InWater() &&
                 !combat.MeleeActive() && combat.Health() > 0.f && motion.WallSide() == 0;
             const int firedBefore = combat.Fired();
+            const int deflectionsBefore=combat.Deflections();
             const float healthBeforeCombat = combat.Health();
             const float focusBeforeCombat = combat.Focus();
             const int spawnedBeforeCombat = combat.Spawned();
@@ -1451,9 +1462,12 @@ int main(int argc, char** argv) {
                 shotAirborne && verticalSpeed > -30.f,
                 shotAirborne && verticalSpeed <= -30.f
             };
+            combat.SetEncounterView(cameraX,cameraY,scene.CameraZoom(),motion.VelocityX());
             combat.SetFocusing(focusing);
             combat.Update(scene, worldX, worldY, dt, fire, melee, motion.Grounded(), motion.Rolling(), facing, *renderer, aimX, aimY, launchState,
-                [&](size_t index,float damage){scene.DamageBreakable(index,damage);});
+                [&](size_t index,float damage){scene.DamageBreakable(index,damage);},
+                [&](size_t index,float damage){scene.DamageAmbient(index,damage,*renderer);});
+            if(combat.Deflections()>deflectionsBefore)std::cout<<"Deflected projectile at frame "<<frame<<'\n';
             for(const auto& id:scene.BrokenBreakableIds())sessionBrokenBreakables.insert(id);
             if(focusing) {
                 // Combat's normal dry recharge precedes this owner; cancel that
@@ -1461,8 +1475,34 @@ int main(int argc, char** argv) {
                 combat.ConsumeFocus(80.f*dt+std::max(0.f,combat.Focus()-focusBeforeCombat));
                 if(!combat.HasFocus(.0001f))focusCooldown=5.f;
             }
-            if(bombSceneEpoch!=scene.SceneEpoch()) {bombs.clear();bombSceneEpoch=scene.SceneEpoch();}
+            if(bombSceneEpoch!=scene.SceneEpoch()) {if(sound)sound->ClearPositionalLoops();bombs.clear();pendingBlasts.clear();bombSceneEpoch=scene.SceneEpoch();}
             bombClock+=dt;
+            // Explosion::Update inflicts on its second eligible update.
+            for(auto it=pendingBlasts.begin();it!=pendingBlasts.end();) {
+                if(++it->updates<2) {++it;continue;}
+                const float bx=it->x,by=it->y;
+                combat.ApplyExplosion(bx,by,1000.f,500.f);
+                for(size_t index=0;index<scene.Breakables().size();++index) {
+                    const auto& object=scene.Breakables()[index];
+                    if(std::hypot(object.x-bx,object.y-by)<1000.f && combat.BodyInView(object.x,object.y,
+                        object.viewWidth,object.viewHeight))scene.DamageBreakable(index,500.f);
+                }
+                for(const auto& animal:scene.AmbientTargets())if(std::hypot(animal.x-bx,animal.y-by)<1000.f) {
+                    const auto& visual=scene.SceneSprites()[animal.index];
+                    if(combat.BodyInView(visual.x,visual.y,visual.width,visual.height))scene.DamageAmbient(animal.index,500.f,*renderer);
+                }
+                scene.ApplyAmbientDebrisImpulse(bx,by,1000.f,[&](float x,float y,float w,float h){return combat.BodyInView(x,y,w,h);});
+                for(auto& other:bombs) {
+                    auto& state=other.motion;const float dx=state.x-bx,dy=state.y-by,length=std::hypot(dx,dy);
+                    if(length>0.f && length<1000.f && combat.BodyInView(state.x,state.y,45.f,45.f)) {
+                        state.vx+=dx/length*10.f;state.vy+=dy/length*15.f;
+                    }
+                }
+                if(!simulateOnly)scene.EmitBombExplosion(*renderer,bx,by);
+                renderer->Vibrate(.8f,1.f,.2f);
+                it=pendingBlasts.erase(it);
+            }
+
             const bool bombInput=script.empty() ? renderer->KeyDown(Bomb) : command=='V';
             if(bombInput && !bombHeld && bombUnlocked && !motion.InWater() && combat.Health()>0.f) {
                 float dx=static_cast<float>(facing),dy=0.f;
@@ -1470,13 +1510,20 @@ int main(int argc, char** argv) {
                 const auto origin=deathleak::game::BombProjectileMotion::FireBombOrigin(worldX,worldY,dx);
                 bombs.push_back({deathleak::game::BombProjectileMotion(origin.x,origin.y,dx,dy)});
                 if(!simulateOnly && !bombArt)bombArt=renderer->LoadTexture("Game/Media/bomb.png",error);
-                if(sound)sound->PlayFile("Game/Media/Audio/fuse_burning.wav");
+                if(sound) {
+                    deathleak::audio::AmbientSource fuse;
+                    fuse.file="Game/Media/Audio/fuse_burning.wav";
+                    fuse.x=origin.x;fuse.y=origin.y;fuse.width=fuse.height=600.f;
+                    fuse.fadeWidth=fuse.fadeHeight=3000.f;
+                    bombs.back().fuseVoice=sound->StartPositionalLoop(fuse);
+                    sound->UpdatePositionalLoop(bombs.back().fuseVoice,origin.x,origin.y,cameraX,cameraY);
+                }
                 std::cout<<"Bomb fired at frame "<<frame<<'\n';
             }
             bombHeld=bombInput;
             for(auto it=bombs.begin();it!=bombs.end();) {
                 auto& bomb=*it;auto& state=bomb.motion;
-                const float oldY=state.y;
+                const deathleak::game::BombProjectileMotion::Point previous{state.x,state.y};
                 deathleak::game::BombProjectileMotion::Environment environment;
                 environment.wasInWaterLastFrame=bomb.inWater;environment.onSolidLine=bomb.onLine;
                 for(const auto& water:scene.Hazards())if(water.water && std::abs(state.x-water.x)<(water.width+30.f)*.5f &&
@@ -1485,11 +1532,10 @@ int main(int argc, char** argv) {
                 state.Update(dt,bombClock,environment);
                 if(state.active && !environment.inWater && !environment.wasInWaterLastFrame) {
                     for(const auto& line:scene.Ground()) {
-                        const float length=line.x2-line.x1;if(std::abs(length)<1.f)continue;
-                        const float t=(state.x-line.x1)/length;if(t<0.f || t>1.f)continue;
-                        const float top=line.y1+t*(line.y2-line.y1);
-                        if(oldY-15.f>=top && state.y-15.f<=top) {
-                            state.y=top+15.f;bomb.onLine=true;
+                        if(deathleak::game::BombStripContact::Query(state,previous,
+                            {line.x1,line.y1,line.x2,line.y2},environment)) {
+                            // Source stops at current position; it does not snap to the line.
+                            bomb.onLine=true;
                             state.OnContact(deathleak::game::BombProjectileMotion::Contact::SolidLine,bombClock,environment);break;
                         }
                     }
@@ -1502,14 +1548,11 @@ int main(int argc, char** argv) {
                     std::abs(shot.y-state.y)<(shot.collisionHeight+30.f)*.5f)
                     state.OnContact(shot.playerKnife ? deathleak::game::BombProjectileMotion::Contact::Blade :
                         deathleak::game::BombProjectileMotion::Contact::OtherProjectile,bombClock,environment);
+                if(sound)sound->UpdatePositionalLoop(bomb.fuseVoice,state.x,state.y,cameraX,cameraY);
                 if(state.pendingExplosion) {
-                    combat.ApplyExplosion(state.x,state.y,1000.f,500.f);
-                    for(size_t index=0;index<scene.Breakables().size();++index) {
-                        const auto& object=scene.Breakables()[index];
-                        if(std::hypot(object.x-state.x,object.y-state.y)<1000.f)scene.DamageBreakable(index,500.f);
-                    }
-                    if(!simulateOnly)scene.EmitBombExplosion(*renderer,state.x,state.y);
-                    cameraShake.Start(30.f,.45f,cameraShakeTime-dt);
+                    if(sound)sound->StopPositionalLoop(bomb.fuseVoice);
+                    pendingBlasts.push_back({state.x,state.y});
+                    if(combat.BodyInView(state.x,state.y,45.f,45.f))cameraShake.Start(30.f,.45f,cameraShakeTime-dt);
                     std::cout<<"Bomb exploded at frame "<<frame<<'\n';it=bombs.erase(it);
                 }else ++it;
             }
@@ -1905,7 +1948,7 @@ int main(int argc, char** argv) {
             if (!persistMenuMetadata()) return 1;
             std::cout << "Main menu return after story completion count=" << completions << " language=" << language << '\n';
             playLevel.clear(); levelPath.clear(); currentLevel.clear();
-            focusCooldown=0.f;focusing=false;bombs.clear();bombHeld=false;
+            focusCooldown=0.f;focusing=false;if(sound)sound->ClearPositionalLoops();bombs.clear();pendingBlasts.clear();bombHeld=false;
             sessionBrokenBreakables.clear();
             collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear(); collectedPapers.clear(); rewardedHealthDevils.clear(); brokenSmashables.clear(); healthDevilRewardCount = 0;
             devilDialog.reset(); healthPickup.reset();

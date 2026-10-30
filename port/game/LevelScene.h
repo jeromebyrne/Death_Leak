@@ -30,6 +30,7 @@ struct SceneSprite {
     size_t solidBoxIndex = static_cast<size_t>(-1);
     size_t platformIndex = static_cast<size_t>(-1);
     size_t ambientActorIndex = static_cast<size_t>(-1);
+    bool ambientRetired = false; // Damage retirement, never a collected reward.
     int depth = 0;
     render::Color tint{255, 255, 255, 255};
     float alpha = 1.f, alphaWhenOccluding = .5f, alphaWhenNotOccluding = 1.f;
@@ -97,7 +98,7 @@ struct KeyPickup { float x, y, width, height; std::string keyId; int depth = 300
 struct PaperPickup { float x, y, width, height; std::string descriptionId, titleId; int depth = 3000; size_t order = 0; bool updateable = true, alwaysUpdate = false; };
 struct HealthDevil { float x, y, width, height; int depth = 3000; size_t order = 0; bool updateable = true, alwaysUpdate = false; };
 struct Smashable { SolidBox box; float x = 0, y = 0; bool smashed = false; };
-struct BreakableBody { SolidBox box; float x=0,y=0,health=10,maxHealth=10; bool canDamage=true,deleteOnBreak=false; std::string id,destroySound; };
+struct BreakableBody { SolidBox box; float x=0,y=0,health=10,maxHealth=10; bool canDamage=true,deleteOnBreak=false; std::string id,destroySound; float viewWidth=0,viewHeight=0; };
 struct SpawnedOrb { float x, y, vx, vy, spawnDelay, trackingTime = 0; };
 struct HazardRegion { float x, y, width, height; bool water; float damage;
     bool OverlapsPlayer(float px,float py) const {
@@ -282,6 +283,25 @@ public:
     bool SmashAt(size_t index);
     const std::vector<BreakableBody>& Breakables() const { return breakables_; }
     bool DamageBreakable(size_t index,float damage);
+    // Snapshot: index is a stable SceneSprites() index for THIS scene epoch.
+    // width/height and offsets are the authored COLLIDER, not drawable bounds.
+    struct AmbientTarget {
+        size_t index; float x, y, width, height, offsetX, offsetY; bool butterfly;
+    };
+    std::vector<AmbientTarget> AmbientTargets() const;
+    // True means damage accepted (not necessarily lethal). Caller owns source
+    // ownership/water/visibility gates; butterflies CONTINUE projectiles, even
+    // NPC-owned ones (Projectile.cpp's butterfly branch precedes NPC filtering).
+    bool DamageAmbient(size_t index, float damage, render::Renderer& renderer);
+    // Separate runtime debris: never appended to sprites_, never collectible.
+    struct AmbientDebris {
+        render::TextureId texture = render::InvalidTexture;
+        float x=0, y=0, width=0, height=0, collisionWidth=0, collisionHeight=0;
+        float vx=0, vy=0, ay=0, maxVelocity=0, rotation=0, fadeRemaining=4.f;
+        int depth=4500; bool grounded=false, fading=false;
+    };
+    void ApplyAmbientDebrisImpulse(float x,float y,float radius,const std::function<bool(float,float,float,float)>& visible);
+    const std::vector<AmbientDebris>& AmbientDebrisBodies() const { return ambientDebris_; }
     void ApplyBrokenBreakables(const std::unordered_set<std::string>& ids);
     std::vector<std::string> BrokenBreakableIds() const;
 
@@ -339,8 +359,12 @@ private:
     float playerX_ = 0, playerY_ = 0, playerEntryDirection_ = 0;
     struct PlatformBody { AuthoredPlatformMotion motion; size_t boxIndex; bool pathing; };
     std::vector<PlatformBody> platforms_;
-    struct AmbientBody { AuthoredAmbientActor motion; std::unordered_map<std::string,std::vector<render::TextureId>> frames; std::string sequence; };
+    struct AmbientBody { float health=.01f; bool damageable=false; AuthoredAmbientActor motion; std::unordered_map<std::string,std::vector<render::TextureId>> frames; std::string sequence; };
     std::vector<AmbientBody> ambientActors_;
+    std::vector<AmbientDebris> ambientDebris_;
+    render::TextureId ambientDebrisTextures_[5] = {}; // wings 1/2, orb 1/2/3
+    std::uint32_t ambientDamageRandom_ = 0x414d4249u;
+    void UpdateAmbientDebris(float dt, float cameraX, float cameraY);
     double dynamicsClock_ = 0;
     std::vector<ForceRegion> forceRegions_;
     std::vector<BreakableBody> breakables_;

@@ -85,6 +85,56 @@ public:
         if (voices_.size() < 16) voices_.push_back({index, 0, 0});
         SDL_UnlockAudioDevice(device_);
     }
+    PositionalVoice StartPositionalLoop(const AmbientSource& source) override {
+        if (!device_ || !sfxEnabled_) return 0;
+        // Reuse streaming decoding/refill, but own a distinct voice per object.
+        // Never call SetAmbience here: it would restart the authored soundscape.
+        if (source.file.size() < 4 || source.file.substr(source.file.size()-4) != ".wav") return 0;
+        AmbientSource loop = source;
+        loop.repeat = true;
+        loop.adjustToCamera = true;
+        loop.followPlayer = false;
+        loop.startDelay = 0.f;
+        auto voice = OpenAmbient(loop);
+        if (!voice) return 0;
+        Fill(*voice); // Decoder/file work is outside the callback lock.
+        SDL_LockAudioDevice(device_);
+        do { ++nextPositionalId_; } while (!nextPositionalId_ || positionalLoops_.count(nextPositionalId_));
+        const auto id = nextPositionalId_;
+        positionalLoops_.emplace(id, std::move(voice));
+        SDL_UnlockAudioDevice(device_);
+        return id;
+    }
+    void UpdatePositionalLoop(PositionalVoice id, float x, float y, float cameraX, float cameraY) override {
+        if (!device_ || !id) return;
+        SDL_LockAudioDevice(device_);
+        const auto it = positionalLoops_.find(id);
+        if (it != positionalLoops_.end()) {
+            auto& voice = *it->second;
+            voice.source.x = x; voice.source.y = y;
+            voice.gain = PositionalGain(voice.source, cameraX, cameraY, x, y);
+        }
+        SDL_UnlockAudioDevice(device_);
+    }
+    void StopPositionalLoop(PositionalVoice id) override {
+        if (!device_ || !id) return;
+        std::shared_ptr<AmbientVoice> retired;
+        SDL_LockAudioDevice(device_);
+        const auto it = positionalLoops_.find(id);
+        if (it != positionalLoops_.end()) {
+            retired = std::move(it->second);
+            positionalLoops_.erase(it);
+        }
+        SDL_UnlockAudioDevice(device_);
+        // Close file/converter only after removal from the callback's view.
+    }
+    void ClearPositionalLoops() override {
+        if (!device_) return;
+        decltype(positionalLoops_) retired;
+        SDL_LockAudioDevice(device_);
+        retired.swap(positionalLoops_);
+        SDL_UnlockAudioDevice(device_);
+    }
     unsigned PlayDevilVoice(bool third) override {
         if (!device_ || !sfxEnabled_) return 0;
         SDL_LockAudioDevice(device_);
@@ -116,6 +166,13 @@ public:
     size_t CachedFilesForTest() const { return fileSamples_.size(); }
     size_t ActiveVoicesForTest() const { return voices_.size(); } // Device paused.
     size_t AmbientVoicesForTest() const { return ambience_.size(); }
+    size_t PositionalVoicesForTest() const { return positionalLoops_.size(); }
+    size_t LiveStreamsForTest() const { return AmbientVoice::liveCount; }
+    float PositionalGainForTest(PositionalVoice id) const { return positionalLoops_.at(id)->gain; }
+    size_t PositionalReadForTest(PositionalVoice id) const { return positionalLoops_.at(id)->readPos; }
+    size_t PositionalRepeatsForTest(PositionalVoice id) const { return positionalLoops_.at(id)->repeats; }
+    const void* AmbientIdentityForTest() const { return ambience_.empty() ? nullptr : ambience_[0].get(); }
+    size_t AmbientReadForTest() const { return ambience_.at(0)->readPos; }
     bool AdvanceForTest(int bytes) { // Device paused: drive the real mixer callback deterministically.
         std::vector<Uint8> output(static_cast<size_t>(bytes));
         Callback(this, output.data(), bytes);
@@ -154,19 +211,14 @@ public:
         std::vector<std::shared_ptr<AmbientVoice>> snapshot;
         SDL_LockAudioDevice(device_);
         snapshot = ambience_;
+        for (const auto& entry : positionalLoops_) snapshot.push_back(entry.second);
         for (auto& voice : snapshot) {
             const auto& a = voice->source;
             voice->startDelay=std::max(0.f,voice->startDelay-dt);
             const float ownerX=a.followPlayer ? playerX : a.x;
             const float ownerY=a.followPlayer ? playerY : a.y;
             if (!a.adjustToCamera) { voice->gain = 1.f; continue; }
-            const float dx = std::max(0.f, std::abs(cameraX - ownerX) - a.width * 0.5f);
-            const float dy = std::max(0.f, std::abs(cameraY - ownerY) - a.height * 0.5f);
-            const float fx = (a.fadeWidth - a.width) * 0.5f;
-            const float fy = (a.fadeHeight - a.height) * 0.5f;
-            const float gx = dx == 0 ? 1.f : fx > 0 ? 1.f - dx / fx : 0.f;
-            const float gy = dy == 0 ? 1.f : fy > 0 ? 1.f - dy / fy : 0.f;
-            voice->gain = std::clamp(std::min(gx, gy), 0.f, 1.f);
+            voice->gain = PositionalGain(a,cameraX,cameraY,ownerX,ownerY);
         }
         SDL_UnlockAudioDevice(device_);
         // Only the main thread touches file and converter; callback only consumes buffer.
@@ -178,6 +230,15 @@ public:
         }
     }
 private:
+    static float PositionalGain(const AmbientSource& a, float cameraX, float cameraY, float x, float y) {
+        const float dx = std::max(0.f, std::abs(cameraX - x) - a.width * 0.5f);
+        const float dy = std::max(0.f, std::abs(cameraY - y) - a.height * 0.5f);
+        const float fx = (a.fadeWidth - a.width) * 0.5f;
+        const float fy = (a.fadeHeight - a.height) * 0.5f;
+        const float gx = dx == 0 ? 1.f : fx > 0 ? 1.f - dx / fx : 0.f;
+        const float gy = dy == 0 ? 1.f : fy > 0 ? 1.f - dy / fy : 0.f;
+        return std::clamp(std::min(gx,gy),0.f,1.f);
+    }
     bool LoadSample(const char* file, std::vector<Uint8>& sample, std::string& error) {
         SDL_AudioSpec source{}; Uint8* data = nullptr; Uint32 length = 0;
         if (!SDL_LoadWAV(file, &source, &data, &length)) { error = SDL_GetError(); return false; }
@@ -200,6 +261,10 @@ private:
     }
     static constexpr size_t kTargetBytes = 48000 * 2 * 2 / 2; // 0.5 second at output format.
     struct AmbientVoice {
+#ifdef DEATHLEAK_AUDIO_TESTING
+        inline static size_t liveCount = 0;
+        AmbientVoice() { ++liveCount; }
+#endif
         AmbientSource source;
         SDL_RWops* file = nullptr;
         SDL_AudioStream* converter = nullptr;
@@ -208,8 +273,14 @@ private:
         bool finished = false;
         std::vector<Uint8> buffer;
         size_t readPos = 0;
+#ifdef DEATHLEAK_AUDIO_TESTING
+        size_t repeats = 0;
+#endif
         float gain = 0,startDelay=0;
         ~AmbientVoice() {
+#ifdef DEATHLEAK_AUDIO_TESTING
+            --liveCount;
+#endif
             if (converter) SDL_FreeAudioStream(converter);
             if (file) SDL_RWclose(file);
         }
@@ -302,6 +373,9 @@ private:
                         voice.finished = true; break;
                     }
                     voice.dataRead = 0;
+#ifdef DEATHLEAK_AUDIO_TESTING
+                    ++voice.repeats;
+#endif
                 } else { voice.finished = true; break; }
             }
             const size_t toRead = static_cast<size_t>(std::min<Sint64>(
@@ -329,6 +403,8 @@ private:
         }
     }
     std::vector<std::shared_ptr<AmbientVoice>> ambience_;
+    std::unordered_map<PositionalVoice, std::shared_ptr<AmbientVoice>> positionalLoops_;
+    PositionalVoice nextPositionalId_ = 0;
     bool sfxEnabled_ = true;
     struct Voice { size_t sample, offset; unsigned id; };
     unsigned nextVoiceId_ = 0;
@@ -342,15 +418,18 @@ private:
                                static_cast<Uint32>(count), SDL_MIX_MAXVOLUME / 2);
             voice.offset += count;
         }
-        if (self.sfxEnabled_) for (auto& ptr : self.ambience_) {
-            auto& voice = *ptr;
-            if(voice.startDelay>0.f)continue;
+        const auto mixAmbient = [&](AmbientVoice& voice) {
+            if(voice.startDelay>0.f)return;
             const size_t available = voice.buffer.size() - voice.readPos;
             const size_t count = std::min(static_cast<size_t>(length), available);
             if (count && voice.gain > 0.f)
                 SDL_MixAudioFormat(stream, voice.buffer.data() + voice.readPos, self.spec_.format,
                     static_cast<Uint32>(count), static_cast<int>(std::lround(voice.gain * SDL_MIX_MAXVOLUME / 2)));
-            voice.readPos += count; // Keep time moving even when muted or outside fade bounds.
+            voice.readPos += count; // Inaudible distance still advances; global mute freezes streams.
+        };
+        if (self.sfxEnabled_) {
+            for (auto& ptr : self.ambience_) mixAmbient(*ptr);
+            for (auto& entry : self.positionalLoops_) mixAmbient(*entry.second);
         }
         self.voices_.erase(std::remove_if(self.voices_.begin(), self.voices_.end(),
             [&](const Voice& voice) { return voice.offset == self.samples_[voice.sample].size(); }), self.voices_.end());

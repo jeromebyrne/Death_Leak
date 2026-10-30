@@ -1,3 +1,5 @@
+> **Superseding Linux continuation (2026-10-29):** the historical full-earned-ending failure below is now recovered on the current Linux repair revision. Fresh all4-key/natural-deflection/boat/EndStory and independent authored+runtime currency ledger pass. See [current Linux completion checkpoint](LINUX_EARNED_COMPLETION_CHECKPOINT_20261029.md) for exact evidence, concrete T01–T09 repairs and remaining bounded fidelity/physical gates. The original51-scene audit/capture receipt below remains evidence of its explicitly named earlier binary, not recaptured final-revision51-scene proof. Windows untouched; no master merge/macOS work.
+
 # All-level reference audit — 2026-10-29
 
 **State: exhaustive audit/fix milestone published and safely deployed. Physical release acceptance remains blocked; full current earned ending and full original-engine fidelity are not certified.**

@@ -69,7 +69,12 @@ struct AllLevelCombatParityProbe {
             Combat c; c.SetArt(renderer);
             auto e=Target(type,500,300); e.stunTime=0; e.fireCooldown=0;
             e.windup=.001f; e.targetX=500; e.targetY=300; c.enemies_.push_back(e);
-            Tick(c,.01f,500,0); assert(c.shots_.size()==1);
+            Tick(c,.01f,500,0);
+            if(std::string(type)!="kGhost") {
+                // Source pending countdown decrements, then fires NEXT update.
+                assert(c.shots_.empty());Tick(c,.01f,500,0);
+            }
+            assert(c.shots_.size()==1);
             const auto& s=c.shots_[0]; const bool ghost=std::string(type)=="kGhost";
             const bool skeleton=std::string(type)=="kSkeleton";
             assert(Near(s.visualWidth,skeleton?95.625f:ghost?100.f:90.f));

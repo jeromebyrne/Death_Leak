@@ -32,6 +32,9 @@ struct Enemy {
     int facing = 1;
     float lastVisualX = 0.f;
     float damageBurstAge = 0.25f;
+    float rangeHold = 0.f;
+    size_t supportingSegment = size_t(-1);
+    float ghostVx=0,ghostVy=0,ghostAx=0,ghostAy=0,ghostTargetAge=0;
 };
 struct Shot {
     float x, y, vx, vy, life, damage;
@@ -60,6 +63,7 @@ struct Shot {
     float activeVisualAge = 0.f;
     float launchDirectionX = 0.f, launchDirectionY = 0.f;
     std::uint64_t stableIdentity = 0; // Monotonic projectile birth, never a vector index.
+    bool inWater=false,wasInWaterLastFrame=false;
 };
 // Character's mutually selected air flags, plus the independently set crouch flag.
 // Keep both air fields so Player::FireWeapon's up-before-down branch is explicit.
@@ -72,17 +76,25 @@ class Combat {
     friend struct ::CombatMaterialIdentityProbe;
     friend struct ::EncounterCooldownProbe;
     friend struct AllLevelCombatParityProbe;
+    friend struct BoundedAIProbe;
     friend struct CombatBloodFlightProbe; // focused CPU collision-edge fixture
     friend struct CombatBloodOcclusionProbe; // first-line occlusion fixture
     friend struct CombatBloodReboundProbe; // blocked-flight rebound fixture
 public:
-    void ClearLevel() { enemies_.clear(); shots_.clear(); deathEffects_.clear(); bloodFlights_.clear(); materialSprays_.clear(); activeTriggers_.clear(); levelEncountersInitialized_ = false; fireCooldown_ = burstCooldown_ = hurtCooldown_ = 0; burstCount_ = 0; playerContacts_ = contactFrames_ = 0; meleeTime_ = 0; meleeHeld_ = false; playerDamageBurstAge_ = 0.25f; }
+    void ClearLevel() { playerGroundTime_=0; enemies_.clear(); shots_.clear(); deathEffects_.clear(); bloodFlights_.clear(); materialSprays_.clear(); activeTriggers_.clear(); levelEncountersInitialized_ = false; fireCooldown_ = burstCooldown_ = hurtCooldown_ = 0; burstCount_ = 0; playerContacts_ = contactFrames_ = 0; meleeTime_ = 0; meleeHeld_ = false; playerDamageBurstAge_ = 0.25f; }
     void SetArt(render::Renderer& renderer);
     void SpawnIntroBloodFlight(float x, float y);
     void UpdateBloodFlights(const LevelScene& scene, float dt);
-    void Update(const LevelScene& scene, float x, float y, float dt, bool fire, bool melee, bool grounded, bool rolling, int facing, render::Renderer& renderer, float aimX = 0.f, float aimY = 0.f, PlayerShotLaunchState launchState = {}, const std::function<void(size_t,float)>& breakableHit = {});
+    void Update(const LevelScene& scene, float x, float y, float dt, bool fire, bool melee, bool grounded, bool rolling, int facing, render::Renderer& renderer, float aimX = 0.f, float aimY = 0.f, PlayerShotLaunchState launchState = {}, const std::function<void(size_t,float)>& breakableHit = {}, const std::function<void(size_t,float)>& ambientHit = {});
     void ApplyExplosion(float x,float y,float radius,float damage);
     bool DamageEnemy(size_t index, float damage, float projectileDirectionX = 0.f); // shared projectile/melee hit path
+    void SetEncounterView(float x,float y,float zoom,float playerVx) {
+        viewKnown_=true;viewLeft_=x-960.f*zoom;viewRight_=x+960.f*zoom;
+        viewBottom_=y-540.f*zoom;viewTop_=y+540.f*zoom;playerVx_=playerVx;
+    }
+    bool BodyInView(float x,float y,float w,float h) const {
+        return !viewKnown_ || (x+w*.5f>viewLeft_ && x-w*.5f<viewRight_ && y+h*.5f>viewBottom_ && y-h*.5f<viewTop_);
+    }
     void SetFocusing(bool active) { focusing_=active; }
     bool MeleeActive() const { return meleeTime_ > 0.f; }
     float MeleeElapsed() const { return meleeTime_; }
@@ -130,6 +142,8 @@ public:
     const std::vector<Shot>& Shots() const { return shots_; }
 private:
     bool focusing_=false;
+    bool viewKnown_=false;
+    float viewLeft_=0,viewRight_=0,viewBottom_=0,viewTop_=0,playerVx_=0,playerGroundTime_=0;
     std::vector<Enemy> enemies_;
     std::vector<Shot> shots_;
     std::uint64_t nextShotIdentity_ = 1; // Never recycle across ClearLevel/scene epochs.

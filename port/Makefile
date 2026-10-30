@@ -9,7 +9,7 @@ TARGET := build/deathleak-linux
 
 .PHONY: all clean smoke
 all: $(TARGET)
-$(TARGET): game/UpgradeModal.h game/AuthoredPlatformMotion.h game/AuthoredAmbientActor.h game/BombProjectileMotion.h game/TechniqueCatalog.h linux/main.cpp linux/FilmFrameSelector.h linux/FixedStepPacer.h linux/RefreshSlotScheduler.h linux/RefreshPresentationService.h linux/PresentationCommandPacket.h linux/MixedCommandInterpolationGate.h linux/FreshPresentationPacket.h linux/SDLRenderer.cpp linux/KeyboardState.h linux/LogicalViewport.h linux/DisplaySurfaceGeometry.h linux/RepeatX.h linux/RotatedRepeatX.h linux/UVWrap.h linux/ParallaxUV.h linux/ParallaxUVCommand.h linux/WobbleUV.h linux/FoliageSway.h linux/EffectQuadGeometry.h render/OrdinarySpriteRotation.h linux/SDLSoundPlayer.cpp audio/SoundPlayer.h game/Settings.h game/LevelScene.cpp game/LevelScene.h game/CameraShake.h game/PresentationPose.h render/ViewportCull.h game/ShaderClock.h game/WeatherLightning.h game/WeatherRain.h game/WeatherTextureResidency.h game/FilmFrameResidency.h game/LoadingOverlayPacket.h game/ParticleSpray.h game/Combat.cpp game/Combat.h game/PlayerMotion.cpp game/PlayerMotion.h game/Hud.cpp game/Hud.h game/HudPresentationPacket.h game/BitmapText.h game/PaperText.h render/Renderer.h $(wildcard ../Game/tinyxml/*.cpp)
+$(TARGET): game/UpgradeModal.h game/AuthoredPlatformMotion.h game/AuthoredAmbientActor.h game/BombProjectileMotion.h game/BombStripContact.h game/TechniqueCatalog.h linux/main.cpp linux/FilmFrameSelector.h linux/FixedStepPacer.h linux/RefreshSlotScheduler.h linux/RefreshPresentationService.h linux/PresentationCommandPacket.h linux/MixedCommandInterpolationGate.h linux/FreshPresentationPacket.h linux/SDLRenderer.cpp linux/KeyboardState.h linux/LogicalViewport.h linux/DisplaySurfaceGeometry.h linux/RepeatX.h linux/RotatedRepeatX.h linux/UVWrap.h linux/ParallaxUV.h linux/ParallaxUVCommand.h linux/WobbleUV.h linux/FoliageSway.h linux/EffectQuadGeometry.h render/OrdinarySpriteRotation.h linux/SDLSoundPlayer.cpp audio/SoundPlayer.h game/Settings.h game/LevelScene.cpp game/LevelScene.h game/CameraShake.h game/PresentationPose.h render/ViewportCull.h game/ShaderClock.h game/WeatherLightning.h game/WeatherRain.h game/WeatherTextureResidency.h game/FilmFrameResidency.h game/LoadingOverlayPacket.h game/ParticleSpray.h game/Combat.cpp game/Combat.h game/PlayerMotion.cpp game/PlayerMotion.h game/Hud.cpp game/Hud.h game/HudPresentationPacket.h game/BitmapText.h game/PaperText.h render/Renderer.h $(wildcard ../Game/tinyxml/*.cpp)
 	@mkdir -p build
 	$(CXX) $(CXXFLAGS) $(SDL_CFLAGS) $(PNG_CFLAGS) -Icompat linux/main.cpp linux/SDLRenderer.cpp linux/SDLSoundPlayer.cpp game/LevelScene.cpp game/Combat.cpp game/PlayerMotion.cpp game/Hud.cpp ../Game/tinyxml/tinyxml.cpp ../Game/tinyxml/tinyxmlerror.cpp ../Game/tinyxml/tinyxmlparser.cpp ../Game/tinyxml/tinystr.cpp -o $@ $(SDL_LIBS) $(PNG_LIBS) $(GL_LIBS)
 smoke: $(TARGET)
@@ -164,3 +164,25 @@ all-level-dynamics-test:
 .PHONY: all-level-parity-test
 all-level-parity-test:
 	cd .. && sh port/tests/all_level_parity.sh
+
+.PHONY: bounded-ai-test
+bounded-ai-test:
+	$(CXX) $(CXXFLAGS) -UNDEBUG -Icompat tests/bounded_ai_test.cpp game/Combat.cpp game/LevelScene.cpp ../Game/tinyxml/tinyxml.cpp ../Game/tinyxml/tinyxmlerror.cpp ../Game/tinyxml/tinyxmlparser.cpp ../Game/tinyxml/tinystr.cpp -o build/bounded_ai_test
+	cd .. && port/build/bounded_ai_test
+
+.PHONY: bomb-strip-contact-test
+bomb-strip-contact-test:
+	$(CXX) $(CXXFLAGS) -UNDEBUG tests/bomb_strip_contact_test.cpp -o build/bomb_strip_contact_test
+	./build/bomb_strip_contact_test
+
+.PHONY: bomb-positional-audio-test current-earned-ending-test
+bomb-positional-audio-test:
+	$(CXX) $(CXXFLAGS) -UNDEBUG $(SDL_CFLAGS) tests/bomb_positional_audio_test.cpp -o build/bomb_positional_audio_test $(SDL_LIBS)
+	cd .. && SDL_AUDIODRIVER=dummy port/build/bomb_positional_audio_test
+current-earned-ending-test: $(TARGET)
+	cd .. && python3 port/tests/current_earned_ending_test.py
+
+.PHONY: ambient-damage-bridge-test
+ambient-damage-bridge-test:
+	$(CXX) $(CXXFLAGS) -UNDEBUG -Icompat tests/ambient_damage_bridge_test.cpp game/LevelScene.cpp ../Game/tinyxml/tinyxml.cpp ../Game/tinyxml/tinyxmlerror.cpp ../Game/tinyxml/tinyxmlparser.cpp ../Game/tinyxml/tinystr.cpp -o build/ambient_damage_bridge_test
+	cd .. && port/build/ambient_damage_bridge_test
