@@ -1,0 +1,23 @@
+{
+  "baseline_commit": "e8388f861918f31b26cbce9f9fea72a20cf1b1cc",
+  "binary_sha256": "7384df76213821fe1036965e16a4c8261ee6d5353438ad93c182c50cd2cec959",
+  "all_current_exact_scene_gpu_captures": 39,
+  "auxiliary_exact_scene_gpu_captures": 12,
+  "gpu": "Mesa Intel(R) HD Graphics 4000 (IVB GT2)",
+  "mode": "strict-accelerated offscreen; NOT physical scanout acceptance",
+  "source_parity_suite": "PASS including67 entries/11 hard-edge strips; full inventories, raft physics, combat and audio",
+  "upgrade_fixtures": "PASS8 synthetic purchase/debit/reload; NOT earned",
+  "original_windows_bridge": "PASS full suite and Focus3/bomb8 typed-vector round-trip",
+  "current_earned_survival": "PASS fresh Forest1\u2192villagecentral,5 transitions,92 source pickups/B92/health13, normal controls, test-only fixed encounter clock",
+  "renderer_orientation": "PASS six families1280x720/1440x900/forced SDL wobble texture",
+  "input_backend": "PASS virtual gamepad+keyboard+mouse lifecycle/edges; NOT actual local/remote transport",
+  "bomb_runtime": "PASS fire0, terrain-contact fuse, explode327, health25",
+  "final_runtime": "PASS original spawn and owned held Focus title900/end2100; grounded raft, Focus100; NOT earned ending",
+  "historical_integration": "FAIL obsolete combined full itinerary; death requirement retained, no current earned full ending certified",
+  "physical_display_audio_local_remote_input": "BLOCKED coordinated attended slot required",
+  "windows_original_sources_build_projects": "UNCHANGED; Windows build not executed",
+  "missing_original_development_assets": [
+    "saw.png",
+    "controls_crate.png"
+  ]
+}

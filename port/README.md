@@ -22,11 +22,17 @@ This uses SDL's dummy video driver, renders two frames, and writes `port/build/s
 
 ## Linux input controls
 
-An attached SDL gamepad takes priority. Unplugging it restores keyboard/mouse input on the next frame; mouse clicks are ignored while a pad is attached. Gamepad: left stick/D-pad move, A jump/accept/restart, right stick aim/fire, X interact, Y purchase, left shoulder roll, right shoulder melee/dash, Start pause/exit, B close dialogs/back in menus.
+Keyboard/mouse and an attached SDL gamepad coexist; attaching a pad does not disable keyboard or mouse. Unplugging/hot-plugging is supported. Gamepad: left stick/D-pad move, A jump/accept/restart, right stick aim/fire, X interact, Y purchase, left shoulder roll, right shoulder melee/dash, left trigger Focus, left-stick click bomb, Start pause/exit, B close dialogs/back in menus.
 
-Without a gamepad: A/D or Left/Right move; W/Up/Space jump or swim up; S/Down crouch; move the mouse and hold left click to aim/fire. F fires in the facing direction. E interacts, C melees/dashes, Left Shift rolls, Y purchases upgrades, R restarts after death, and Escape exits. Menu focus uses Up/Down or mouse hover; Enter/E/Space activates, and Escape/Backspace goes back. Clicking a menu item activates it on release over the same item.
+Keyboard/mouse: A/D or Left/Right move; W/Up/Space jump or swim up; S/Down crouch; move the mouse and hold left click to aim/fire. F fires in the facing direction. E interacts, C melees/dashes, Left Shift rolls, Ctrl holds Focus, B throws a bomb, Y purchases upgrades, R restarts after death, and Escape exits. Menu focus uses Up/Down or mouse hover; Enter/E/Space activates, and Escape/Backspace goes back. Clicking a menu item activates it on release over the same item.
 
-The keyboard/mouse mapping is a Linux-port accessibility adaptation. Display-attached human input acceptance remains separate from scripted and offscreen checks.
+Focus, roll, dash and bombs require their authored purchased unlocks; the bomb scroll additionally requires a completed game. The keyboard/mouse mapping is a Linux-port accessibility adaptation. Display-attached human input acceptance remains separate from scripted and offscreen checks.
+
+## All-level audit and source parity repairs (2026-10-29)
+
+See [the full level-by-level audit](ALL_LEVEL_REFERENCE_AUDIT_20261029.md) for51 definitions,33 positively identified reference-video scenes, exact timestamps, shared-mechanic repairs, all51 strict hardware-offscreen scene captures and the remaining attended physical-display gate. All8 scrolls, orb rewards, authored water/actor/projectile boundaries, moving platforms, breakables, ambient actors and final raft dynamics are now implemented through the existing Linux runtime. Historical sections below describe earlier milestones and do not supersede this audit or prove a current earned full-game ending. Original Windows sources/build projects remain unchanged; no master merge is included.
+
+Source-backed diagnostics: `sh port/tests/all_level_parity.sh`; synthetic purchase fixtures: `python3 port/tests/all_level_progression_test.py` (requires a built binary and explicitly selected diagnostic/display environment). Neither substitutes for physical GPU/input acceptance or earned progression.
 
 ## Desktop/remote-input repair (2026-10-29)
 

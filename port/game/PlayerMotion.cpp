@@ -61,9 +61,13 @@ void PlayerMotion::Update(LevelScene& scene, float dt, int direction, bool jump)
     if (direction) facing_ = direction < 0 ? -1 : 1;
     bool inWater = false;
     for (const auto& hazard : scene.Hazards())
-        if (hazard.water && std::abs(x_-hazard.x) <= hazard.width*0.5f &&
-            std::abs(y_-hazard.y) <= hazard.height*0.5f) inWater = true;
+        if (hazard.water && hazard.OverlapsPlayer(x_,y_)) inWater = true;
     inWater_ = inWater;
+    for(const auto& region:scene.ForceRegions())if(std::abs(x_-region.x)<region.width*.5f && std::abs(y_-region.y)<region.height*.5f) {
+        if(grounded_) {y_+=10.f;vy_=60.f;grounded_=false;}
+        const float percent=(region.y+region.height*.5f-(y_-kHalfHeight))/region.height;
+        vy_+=region.directionY*region.force*percent*dt*60.f;
+    }
     const float maxSpeed = speedUpgrade_ ? 11.f * 60.f : kBaseMaxSpeed;
     if (wallJumpRemaining_ > 0) wallJumpRemaining_ = std::max(0.f, wallJumpRemaining_ - dt);
     if (rollTime_ > 0.f) {
@@ -111,6 +115,12 @@ void PlayerMotion::Update(LevelScene& scene, float dt, int direction, bool jump)
     }
     if (landingApexValid_) landingApexY_ = std::max(landingApexY_, y_);
     const float oldX = x_, oldY = y_;
+    if(grounded_ && groundedSegment_<scene.Ground().size()) {
+        const auto& line=scene.Ground()[groundedSegment_];
+        const float nextX=x_+vx_*dt;
+        if((line.hardRight && vx_>0.f && nextX>line.stripRight-line.rightOffset) ||
+           (line.hardLeft && vx_<0.f && nextX<line.stripLeft+line.leftOffset))vx_=0.f;
+    }
     const float targetX = x_ + vx_ * dt;
     x_ = targetX;
     wallSide_ = 0;
@@ -175,9 +185,8 @@ void PlayerMotion::Update(LevelScene& scene, float dt, int direction, bool jump)
     }
     // Smashable::OnCollision only accepts a downward-dashing player entering
     // the upper half of its collision box. A normal landing remains solid.
-    // Do not alter the established non-upgraded traversal route: the Linux
-    // slice currently activates this additional solid only with dash ownership.
-    for (size_t i = 0; dashUnlocked_ && i < scene.Smashables().size(); ++i) {
+    // The source block remains solid before the smash technique is owned.
+    for (size_t i = 0; i < scene.Smashables().size(); ++i) {
         const auto& smash = scene.Smashables()[i];
         if (smash.smashed) continue;
         const auto box = smash.box;

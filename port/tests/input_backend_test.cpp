@@ -54,8 +54,9 @@ int main() {
     SDL_JoystickClose(pad);
     index = attach(); tick();
     assert(renderer->ControllerAxes().connected);
-    assert(SDL_JoystickDetachVirtual(index) == 0); tick();
-    assert(!renderer->ControllerAxes().connected);
+    pad = SDL_JoystickOpen(index);
+    assert(pad);
+    // Keep the reconnected virtual controller attached for ALL keyboard tests.
     // SDL_PushEvent deliberately does NOT update SDL_GetKeyboardState: this
     // models remote synthetic delivery and down/up coalesced in one pump.
     auto key = [&](Uint32 type, SDL_Scancode scan, SDL_Keycode symbol, SDL_Keymod mods = KMOD_NONE) {
@@ -65,18 +66,33 @@ int main() {
     };
     for (const auto& mapping : {std::pair<SDL_Keycode, Key>{SDLK_a, Left},
          {SDLK_d, Right}, {SDLK_w, Up}, {SDLK_s, Down}, {SDLK_LEFT, Left},
-         {SDLK_RIGHT, Right}, {SDLK_UP, Up}, {SDLK_DOWN, Down}}) {
-        key(SDL_KEYDOWN, SDL_SCANCODE_UNKNOWN, mapping.first); tick();
-        assert(renderer->KeyDown(mapping.second));
-        tick(); assert(renderer->KeyDown(mapping.second)); // Held, no repeat required.
-        key(SDL_KEYUP, SDL_SCANCODE_UNKNOWN, mapping.first); tick();
-        assert(!renderer->KeyDown(mapping.second));
-        key(SDL_KEYDOWN, SDL_SCANCODE_UNKNOWN, mapping.first);
-        key(SDL_KEYUP, SDL_SCANCODE_UNKNOWN, mapping.first); tick();
-        assert(renderer->KeyDown(mapping.second)); // At least one update for a remote tap.
-        tick(); assert(!renderer->KeyDown(mapping.second));
+         {SDLK_RIGHT, Right}, {SDLK_UP, Up}, {SDLK_DOWN, Down},
+         {SDLK_SPACE, Up}, {SDLK_f, Fire}, {SDLK_r, Restart}, {SDLK_e, Interact},
+         {SDLK_y, Purchase}, {SDLK_LSHIFT, Roll}, {SDLK_c, Melee},
+         {SDLK_ESCAPE, Escape}, {SDLK_BACKSPACE, ModalBack},
+         {SDLK_RETURN, MenuAccept}, {SDLK_e, MenuAccept}, {SDLK_SPACE, MenuAccept},
+         {SDLK_UP, MenuUp}, {SDLK_w, MenuUp}, {SDLK_DOWN, MenuDown}, {SDLK_s, MenuDown}}) {
+        for (SDL_Scancode scan : {SDL_SCANCODE_UNKNOWN, SDL_GetScancodeFromKey(mapping.first)}) {
+            assert(renderer->ControllerAxes().connected);
+            key(SDL_KEYDOWN, scan, mapping.first); tick();
+            assert(renderer->KeyDown(mapping.second));
+            tick(); assert(renderer->KeyDown(mapping.second)); // Held, no repeat required.
+            key(SDL_KEYUP, scan, mapping.first); tick();
+            assert(!renderer->KeyDown(mapping.second));
+            key(SDL_KEYDOWN, scan, mapping.first);
+            key(SDL_KEYUP, scan, mapping.first); tick();
+            assert(renderer->KeyDown(mapping.second)); // At least one update for a remote tap.
+            tick(); assert(!renderer->KeyDown(mapping.second));
+        }
     }
+    // Releasing either device must not cancel the other's held action.
     key(SDL_KEYDOWN, SDL_SCANCODE_D, SDLK_d); tick();
+    assert(SDL_JoystickSetVirtualButton(pad, SDL_CONTROLLER_BUTTON_DPAD_RIGHT, 1) == 0); tick();
+    key(SDL_KEYUP, SDL_SCANCODE_D, SDLK_d); tick();
+    assert(renderer->KeyDown(Right));
+    key(SDL_KEYDOWN, SDL_SCANCODE_D, SDLK_d); tick();
+    assert(SDL_JoystickSetVirtualButton(pad, SDL_CONTROLLER_BUTTON_DPAD_RIGHT, 0) == 0); tick();
+    assert(renderer->KeyDown(Right));
     SDL_Event focus{}; focus.type = SDL_WINDOWEVENT;
     focus.window.event = SDL_WINDOWEVENT_FOCUS_LOST;
     assert(SDL_PushEvent(&focus) == 1); tick(); assert(!renderer->KeyDown(Right));
@@ -93,6 +109,9 @@ int main() {
     SDL_Event close{}; close.type = SDL_WINDOWEVENT;
     close.window.event = SDL_WINDOWEVENT_CLOSE; assert(SDL_PushEvent(&close) == 1);
     assert(renderer->PollQuit());
+    assert(SDL_JoystickDetachVirtual(index) == 0); tick();
+    assert(!renderer->ControllerAxes().connected);
+    SDL_JoystickClose(pad);
     renderer.reset();
-    std::cout << "PASS: SDL initial gamepad, mapped buttons/axes, detach fallback and hot-plug reconnect; remote/local key edges, focus reset and emergency/window exits\n";
+    std::cout << "PASS: SDL initial gamepad, mapped buttons/axes, detach fallback and hot-plug reconnect; concurrent attached-pad keyboard gameplay/menu/actions, remote/local key edges, focus reset and emergency/window exits\n";
 }

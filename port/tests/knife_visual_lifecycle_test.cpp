@@ -111,7 +111,7 @@ int main() {
     actor.SetArt(renderer); assert(actor.EnemyCount()==1);
     const auto& enemy=actor.Enemies().front(); renderer.sprites.clear();
     actor.Draw(renderer,enemy.x,enemy.y); assert(renderer.sprites.size()==1);
-    const auto& body=renderer.sprites.front(); assert(body.flipY);
+    const auto& body=renderer.sprites.front(); assert(!body.flipY); // spawners FlipVertical -> inverse SDL V
     assert(std::abs(body.destination.x+body.destination.width/2-640.f)<.001f);
     assert(std::abs(body.destination.y+body.destination.height/2-360.f)<.001f);
     Combat blood; blood.SetArt(renderer); blood.SpawnIntroBloodFlight(0,0);

@@ -1,3 +1,6 @@
+#include "../game/BombProjectileMotion.h"
+#include "../render/OrdinarySpriteRotation.h"
+#include "../game/TechniqueCatalog.h"
 #include "../render/Renderer.h"
 #ifdef DEATHLEAK_TEST_BODY_SLOW_FRAME_COMMAND
 #include "../tests/private_body_slow_frame_command_observer_20261023.h"
@@ -229,8 +232,10 @@ int main(int argc, char** argv) {
     bool restorePosition = false;
     std::unordered_set<std::string> collectedOrbs, ownedKeys, unlockedDoors, collectedPapers, rewardedHealthDevils, brokenSmashables;
     int healthDevilRewardCount = 0;
+    std::unordered_set<std::string> sessionBrokenBreakables;
     bool deflectionUnlocked = false, speedUnlocked = false;
     bool downwardDashUnlocked = false, rollUnlocked = false;
+    bool slowMotionUnlocked = false, bombUnlocked = false;
     bool projectileDamageUnlocked = false, projectileSpeedUnlocked = false;
     float savedMaxHealth = 25;
     bool hasSavedMaxHealth = false;
@@ -446,6 +451,8 @@ int main(int argc, char** argv) {
                     healthDevilRewardCount = static_cast<int>(value);
                 } catch (const std::exception&) { std::cerr << "Invalid health devil count in save\n"; return 2; }
             }
+            else if (line == "U:kSlowMotion") slowMotionUnlocked = true;
+            else if (line == "U:kBombUnlock") bombUnlocked = true;
             else if (line == "U:kDeflection") deflectionUnlocked = true;
             else if (line == "U:kSpeedIncrease") speedUnlocked = true;
             else if (line == "U:kDownwardDash") downwardDashUnlocked = true;
@@ -541,7 +548,7 @@ int main(int argc, char** argv) {
         std::istringstream parts(script); std::string token;
         while (std::getline(parts, token, ',')) {
             auto colon = token.find(':');
-            if (colon == std::string::npos || token.empty() || std::string("LRJ.FBNTQEIHMPXSOYZC").find(token[0]) == std::string::npos) { std::cerr << "Bad --script token\n"; return 2; }
+            if (colon == std::string::npos || token.empty() || std::string("LRJ.FBNTQEIHMPXSOYZCKV").find(token[0]) == std::string::npos) { std::cerr << "Bad --script token\n"; return 2; }
             int count = std::atoi(token.c_str() + colon + 1);
             if (count < 1 || count > 100000 || scriptedInput.size() + count > 100000) { std::cerr << "Bad --script duration\n"; return 2; }
             scriptedInput.insert(scriptedInput.end(), count, token[0]);
@@ -690,18 +697,39 @@ int main(int argc, char** argv) {
     constexpr int kProfileWarmupFrames = 120;
     bool wasDead = false, restartHeld = false;
     bool dashHeld = false, rollHeld = false;
-    // Player::Update freezes the final scene, reveals its title after 15 s,
-    // and calls EndStory after 35 s (both thresholds are strict).
+    // Player::Update locks final-scene controls, but Character/boat/camera keep
+    // updating. It reveals the title after15s and ends after35s (strict).
     float finalSceneTime = 0.f;
     bool finalTitleShown = false, storyEnded = false;
     float levelTime = 0.f, interactHeldTime = 0.f, doorUnlockWait = 0.f;
     bool unlockingDoor = false;
     bool upgradeModal = testUpgradeModal, paperModal = false;
+    std::string modalTechnique = "kDeflection";
+    auto ownedTechniques = [&]() {
+        std::unordered_set<std::string> owned;
+        if(combat.DeflectionUnlocked())owned.insert("kDeflection");
+        if(speedUnlocked)owned.insert("kSpeedIncrease");
+        if(downwardDashUnlocked)owned.insert("kDownwardDash");
+        if(rollUnlocked)owned.insert("kRoll");
+        if(projectileDamageUnlocked)owned.insert("kProjectileDamageIncrease");
+        if(projectileSpeedUnlocked)owned.insert("kProjectileSpeedIncrease");
+        if(slowMotionUnlocked)owned.insert("kSlowMotion");
+        if(bombUnlocked)owned.insert("kBombUnlock");
+        return owned;
+    };
     deathleak::game::PaperText paperText;
     if (!paperText.Load("Game/XmlFiles/strings.xml")) { std::cerr << "Cannot load Game/XmlFiles/strings.xml\n"; return 1; }
     std::string paperTitle, paperDescription;
     float modalWarmup = 0.f;
     bool purchaseHeld = false, dismissHeld = false;
+    float focusCooldown = 0.f;
+    bool focusing = false;
+    bool bombHeld = false;
+    struct LiveBomb { deathleak::game::BombProjectileMotion motion; bool inWater=false,onLine=false; };
+    std::vector<LiveBomb> bombs;
+    std::uint64_t bombSceneEpoch=scene.SceneEpoch();
+    double bombClock=0;
+    TextureId bombArt=InvalidTexture;
     auto modalBackground = (playLevel.empty() && !menuLoop) ? InvalidTexture : renderer->LoadTexture("Game/Media/UI/blank_dark.png", error);
     // gameloading.xml's sole active sprite is blank_dark.png. Its authored
     // 2048-square rectangle covers the entire 1920x1080 UI viewport; the
@@ -945,8 +973,7 @@ int main(int argc, char** argv) {
         if (frame == 120 && currentLevel == "Game/XmlFiles/levels/forest_exploration_1.xml") StartCaveDecodeWorker();
         const ControllerSticks controllerSticks = renderer->ControllerAxes();
         if (auto scripted = scriptedMouse.find(frame); scripted != scriptedMouse.end()) scriptedMouseState = scripted->second;
-        const MouseState liveMouse = controllerSticks.connected ? MouseState{} :
-            mouseScriptFile.empty() ? renderer->Mouse() : scriptedMouseState;
+        const MouseState liveMouse = mouseScriptFile.empty() ? renderer->Mouse() : scriptedMouseState;
         deathleak::game::PlayerStrafeVisual strafeVisual{};
         auto now = std::chrono::steady_clock::now();
         const auto fpsSampleSeconds = std::chrono::duration<double>(now - fpsSampleStart).count();
@@ -969,6 +996,15 @@ int main(int argc, char** argv) {
 #ifdef DEATHLEAK_TEST_BODY_SLOW_FRAME_COMMAND
         bodySlowFrameObserver->Start(frame, requestedDt, dt, precedingRenderedModifiedDelta);
 #endif
+        const char focusCommand = frame < static_cast<int>(scriptedInput.size()) ? scriptedInput[frame] : 0;
+        const bool focusInput = script.empty() ? renderer->KeyDown(Focus) : focusCommand=='K';
+        const bool canFocus = slowMotionUnlocked && combat.Health()>0.f && !motion.InWater() &&
+            focusCooldown<=0.f && combat.HasFocus(.0001f) && !playLevel.empty() && hasPulledSword &&
+            currentLevel!="Game/XmlFiles/levels/sea_2.xml" &&
+            !paperModal && !upgradeModal && loadingPhase==LoadingPhase::None;
+        focusing=focusInput && canFocus;
+        if(focusing)dt*=.15f;
+        if(focusCooldown>0.f)focusCooldown=std::max(0.f,focusCooldown-dt);
         shaderClock.Update(dt);
         cameraShakeTime += dt;
         const char command = frame < static_cast<int>(scriptedInput.size()) ? scriptedInput[frame] : 0;
@@ -996,7 +1032,7 @@ int main(int argc, char** argv) {
             audioLevel = currentLevel;
             std::cout << "Audio level " << audioLevel << " authored_ambience=" << scene.Ambience().size() << '\n';
         }
-        if (sound) sound->UpdateAmbience(cameraX, cameraY);
+        if (sound) sound->UpdateObjectAmbience(cameraX,cameraY,worldX,worldY,dt);
 
         if (renderer->KeyDown(Escape) && !upgradeModal && !paperModal && !dismissHeld && (!menuLoop || !playLevel.empty())) break;
         if (!renderer->KeyDown(Escape) && !upgradeModal && !paperModal) dismissHeld = false;
@@ -1079,15 +1115,18 @@ int main(int argc, char** argv) {
                     }
                     playLevel = levelPath = currentLevel = freshLevel;
                     hasPulledSword = true; introHeldTime = 0.f; introPromptClock.Reset(); introEffectiveZoom = scene.CameraZoom();
+                    focusCooldown=0.f;focusing=false;bombs.clear();bombHeld=false;
+            sessionBrokenBreakables.clear();
                     collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear(); collectedPapers.clear(); rewardedHealthDevils.clear(); brokenSmashables.clear(); healthDevilRewardCount = 0;
                     orbBalance = 0; combat = deathleak::game::Combat{};
                     if (!simulateOnly) combat.SetArt(*renderer);
                     combat.InitializeLevelEncounters(scene);
+                    slowMotionUnlocked = bombUnlocked = false;
                     speedUnlocked = projectileDamageUnlocked = projectileSpeedUnlocked = false; downwardDashUnlocked = rollUnlocked = false; savedMaxHealth = 25; hasSavedMaxHealth = false; windowsPermanentExtension.clear();
                     motion.SetSpeedUpgrade(false); motion.SetMovementUnlocks(false, false);
-                    motion.Reset(scene.PlayerX(), scene.PlayerY(), true);
+                    motion.Reset(scene.PlayerX(), scene.PlayerY(), true);motion.ApplyEntryDirection(scene.PlayerEntryDirection());
                     worldX = motion.X(); worldY = motion.Y();
-                    cameraX = scene.CameraX(); cameraY = scene.CameraY(); cameraShake.Reset();
+                    cameraX = scene.CameraFollowX() ? worldX : scene.CameraX(); cameraY = scene.CameraFollowY() ? worldY : scene.CameraY(); cameraShake.Reset();
                     finalSceneTime = levelTime = interactHeldTime = doorUnlockWait = 0;
                     finalTitleShown = storyEnded = wasDead = unlockingDoor = upgradeModal = paperModal = false;
                     interactionTarget.clear(); menuSelection = 0;
@@ -1114,6 +1153,7 @@ int main(int argc, char** argv) {
                     nextScene.ApplyHealthDevil(rewardedHealthDevils.count(loadingDestination) != 0);
                     nextScene.ApplySmashable(brokenSmashables.count(loadingDestination) != 0);
                     nextScene.ApplyDeflection(combat.DeflectionUnlocked());
+                    nextScene.ApplyBrokenBreakables(sessionBrokenBreakables);
                     scene = std::move(nextScene);
                     cameraTarget = {scene.CameraOffsetX(), scene.CameraOffsetY()};
                     devilDialog.reset(); healthPickup.reset();
@@ -1125,7 +1165,7 @@ int main(int argc, char** argv) {
                     cameraX = scene.CameraFollowX() ? worldX : scene.CameraX();
                     cameraY = scene.CameraFollowY() ? worldY : scene.CameraY();
                     cameraShake.Reset();
-                    motion.Reset(worldX, worldY, true); combat.ClearLevel(); combat.InitializeLevelEncounters(scene);
+                    motion.Reset(worldX, worldY, true);motion.ApplyEntryDirection(scene.PlayerEntryDirection()); combat.ClearLevel(); combat.InitializeLevelEncounters(scene);
                     levelTime = interactHeldTime = doorUnlockWait = 0;
                     unlockingDoor = false; interactionTarget.clear();
                     std::cout << "Entered " << currentLevel << std::endl;
@@ -1153,6 +1193,16 @@ int main(int argc, char** argv) {
                 loadingDestination.clear();
             }
             if (currentLevel == "Game/XmlFiles/levels/sea_2.xml") {
+                crouchInput=true;
+                if(weather.StartRainingIfNotAlready() && sound)sound->PlayFile("Game/Media/Audio/weather/thunder.wav");
+                deathleak::game::FollowCameraWithTarget({cameraX,cameraY,worldX,worldY,
+                    scene.CameraZoom(),scene.CameraLagX(),scene.CameraLagY(),scene.CameraFollowX(),scene.CameraFollowY(),false,
+                    scene.HasCameraBounds(),scene.CameraBoundLeft(),scene.CameraBoundRight(),scene.CameraBoundTop(),scene.CameraBoundBottom()},
+                    cameraTarget,cameraX,cameraY);
+                scene.SetPlayerVelocity(motion.VelocityX(),motion.VelocityY());
+                motion.CarryX(scene.UpdateDynamics(dt,worldX,worldY,cameraX,cameraY,motion.Grounded(),motion.VelocityY()));
+                motion.Update(scene,dt,0,false);
+                worldX=motion.X();worldY=motion.Y();
                 finalSceneTime += dt;
                 if (!finalTitleShown && finalSceneTime > 15.f) {
                     finalTitleShown = true;
@@ -1180,21 +1230,34 @@ int main(int argc, char** argv) {
                 const bool dismiss = !script.empty() ? command == 'X' :
                     (renderer->KeyDown(Escape) || renderer->KeyDown(ModalBack));
                 if (purchase && !purchaseHeld) {
-                    if (orbBalance >= 375) {
-                        orbBalance -= 375;
-                        combat.SetDeflectionUnlocked(true);
-                        scene.ApplyDeflection(true);
+                    const auto* technique = deathleak::game::FindTechnique(modalTechnique);
+                    if (technique && orbBalance >= technique->cost && !ownedTechniques().count(modalTechnique)) {
+                        orbBalance -= technique->cost;
+                        if(modalTechnique=="kDeflection")combat.SetDeflectionUnlocked(true);
+                        else if(modalTechnique=="kSpeedIncrease")speedUnlocked=true;
+                        else if(modalTechnique=="kDownwardDash")downwardDashUnlocked=true;
+                        else if(modalTechnique=="kRoll")rollUnlocked=true;
+                        else if(modalTechnique=="kProjectileDamageIncrease")projectileDamageUnlocked=true;
+                        else if(modalTechnique=="kProjectileSpeedIncrease")projectileSpeedUnlocked=true;
+                        else if(modalTechnique=="kSlowMotion")slowMotionUnlocked=true;
+                        else if(modalTechnique=="kBombUnlock")bombUnlocked=true;
+                        motion.SetSpeedUpgrade(speedUnlocked);
+                        motion.SetMovementUnlocks(downwardDashUnlocked,rollUnlocked);
+                        combat.SetProjectileUpgrades(projectileDamageUnlocked,projectileSpeedUnlocked);
+                        scene.ApplyTechniques(ownedTechniques(),completions);
                         upgradeModal = false;
-                        std::cout << "Purchased kDeflection at frame " << frame << " balance=" << orbBalance << '\n';
-                    } else std::cout << "Not enough orbs for kDeflection at frame " << frame << " balance=" << orbBalance << '\n';
+                        std::cout << "Purchased " << modalTechnique << " at frame " << frame << " balance=" << orbBalance << '\n';
+                    } else std::cout << "Not enough orbs for " << modalTechnique << " at frame " << frame << " balance=" << orbBalance << '\n';
                 } else if (dismiss && !dismissHeld && modalWarmup >= 1.f) {
                     upgradeModal = false;
-                    std::cout << "Dismissed kDeflection modal at frame " << frame << '\n';
+                    std::cout << "Dismissed " << modalTechnique << " modal at frame " << frame << '\n';
                 }
                 purchaseHeld = purchase; dismissHeld = dismiss;
             } else if (!hasPulledSword) {
             // Player::Update runs Character physics before its unpulled-sword
             // early return. Keep that step on the completion tick as well.
+            scene.SetPlayerVelocity(motion.VelocityX(),motion.VelocityY());
+            motion.CarryX(scene.UpdateDynamics(dt,worldX,worldY,cameraX,cameraY,motion.Grounded(),motion.VelocityY()));
             motion.Update(scene, dt, 0, false);
             worldX = motion.X(); worldY = motion.Y();
             // Raw Interact is held independently of world-object activation.
@@ -1265,13 +1328,14 @@ int main(int argc, char** argv) {
                         nextScene.ApplyHealthDevil(rewardedHealthDevils.count(restartLevel) != 0);
                         nextScene.ApplySmashable(brokenSmashables.count(restartLevel) != 0);
                         nextScene.ApplyDeflection(combat.DeflectionUnlocked());
+                        nextScene.ApplyBrokenBreakables(sessionBrokenBreakables);
                         scene = std::move(nextScene);
                         cameraTarget = {scene.CameraOffsetX(), scene.CameraOffsetY()};
                         devilDialog.reset(); healthPickup.reset();
                         currentLevel = restartLevel; introPromptClock.Reset();
-                        motion.Reset(scene.PlayerX(), scene.PlayerY(), true);
+                        motion.Reset(scene.PlayerX(), scene.PlayerY(), true);motion.ApplyEntryDirection(scene.PlayerEntryDirection());
                         worldX = motion.X(); worldY = motion.Y();
-                        cameraX = scene.CameraX(); cameraY = scene.CameraY(); cameraShake.Reset();
+                        cameraX = scene.CameraFollowX() ? worldX : scene.CameraX(); cameraY = scene.CameraFollowY() ? worldY : scene.CameraY(); cameraShake.Reset();
                         combat.ClearLevel(); combat.InitializeLevelEncounters(scene); combat.SetVitals(25.f, 100.f);
                         wasDead = false; levelTime = interactHeldTime = doorUnlockWait = 0; unlockingDoor = false; interactionTarget.clear();
                         std::cout << "Restarted " << currentLevel << " at frame " << frame << '\n';
@@ -1311,6 +1375,8 @@ int main(int argc, char** argv) {
                 cameraX = it->second.first; cameraY = it->second.second;
             }
             const bool wasGrounded = motion.Grounded();
+            scene.SetPlayerVelocity(motion.VelocityX(),motion.VelocityY());
+            motion.CarryX(scene.UpdateDynamics(dt,worldX,worldY,cameraX,cameraY,motion.Grounded(),motion.VelocityY()));
             motion.Update(scene, dt, (combat.MeleeActive() || motion.Rolling() || crouchInput) ? 0 : static_cast<int>(direction),
                           jump && !combat.MeleeActive());
             // Scripted input has no controller strafe resolution, but Roll footstep
@@ -1335,6 +1401,11 @@ int main(int argc, char** argv) {
                 cameraShake.StartMedium(cameraShakeTime - dt);
             }
             worldX = motion.X(); worldY = motion.Y();
+            if(scene.UpdateHealing(dt,worldX,worldY,scene.FullyCrouched())) {
+                combat.SetVitals(combat.MaxHealth(),combat.Focus());
+                cameraShake.StartMedium(cameraShakeTime-dt);
+                std::cout << "Healing spring at frame " << frame << " health=" << combat.Health() << '\n';
+            }
             scene.UpdateAuthoredOrbs(dt, worldX, worldY, cameraX, cameraY);
             const auto collectedNow = scene.CollectCurrencyOrbs(worldX, worldY, collectedOrbs);
             const auto collectedSpawned = scene.UpdateSpawnedOrbs(worldX, worldY, dt);
@@ -1348,7 +1419,7 @@ int main(int argc, char** argv) {
                 (std::abs(controllerSticks.rightX) > rightDeadzone || std::abs(rightY) > rightDeadzone);
             // The cursor is in logical viewport coordinates. Match the scene's
             // world projection before deriving a world-up shot vector.
-            const bool mouseAim = script.empty() && (!simulateOnly || !mouseScriptFile.empty()) && !controllerSticks.connected &&
+            const bool mouseAim = script.empty() && (!simulateOnly || !mouseScriptFile.empty()) &&
                 liveMouse.leftDown && liveMouse.x >= 0.f && liveMouse.y >= 0.f &&
                 liveMouse.x < 1280.f && liveMouse.y < 720.f;
             const float playerScale = 2.f / 3.f; // Gameplay uses world zoom 1; intro blocks combat.
@@ -1364,6 +1435,7 @@ int main(int argc, char** argv) {
                 !combat.MeleeActive() && combat.Health() > 0.f && motion.WallSide() == 0;
             const int firedBefore = combat.Fired();
             const float healthBeforeCombat = combat.Health();
+            const float focusBeforeCombat = combat.Focus();
             const int spawnedBeforeCombat = combat.Spawned();
             // Character::Update clears its air flags on solid ground or at a
             // wall, and changes from up to down only below -0.5 unit/tick.
@@ -1378,7 +1450,69 @@ int main(int argc, char** argv) {
                 shotAirborne && verticalSpeed > -30.f,
                 shotAirborne && verticalSpeed <= -30.f
             };
-            combat.Update(scene, worldX, worldY, dt, fire, melee, motion.Grounded(), motion.Rolling(), facing, *renderer, aimX, aimY, launchState);
+            combat.SetFocusing(focusing);
+            combat.Update(scene, worldX, worldY, dt, fire, melee, motion.Grounded(), motion.Rolling(), facing, *renderer, aimX, aimY, launchState,
+                [&](size_t index,float damage){scene.DamageBreakable(index,damage);});
+            for(const auto& id:scene.BrokenBreakableIds())sessionBrokenBreakables.insert(id);
+            if(focusing) {
+                // Combat's normal dry recharge precedes this owner; cancel that
+                // recharge and spend source80 focus per modified gameplay second.
+                combat.ConsumeFocus(80.f*dt+std::max(0.f,combat.Focus()-focusBeforeCombat));
+                if(!combat.HasFocus(.0001f))focusCooldown=5.f;
+            }
+            if(bombSceneEpoch!=scene.SceneEpoch()) {bombs.clear();bombSceneEpoch=scene.SceneEpoch();}
+            bombClock+=dt;
+            const bool bombInput=script.empty() ? renderer->KeyDown(Bomb) : command=='V';
+            if(bombInput && !bombHeld && bombUnlocked && !motion.InWater() && combat.Health()>0.f) {
+                float dx=static_cast<float>(facing),dy=0.f;
+                if(stickAim && std::hypot(aimX,aimY)>0.f) {const float length=std::hypot(aimX,aimY);dx=aimX/length;dy=aimY/length;}
+                const auto origin=deathleak::game::BombProjectileMotion::FireBombOrigin(worldX,worldY,dx);
+                bombs.push_back({deathleak::game::BombProjectileMotion(origin.x,origin.y,dx,dy)});
+                if(!simulateOnly && !bombArt)bombArt=renderer->LoadTexture("Game/Media/bomb.png",error);
+                if(sound)sound->PlayFile("Game/Media/Audio/fuse_burning.wav");
+                std::cout<<"Bomb fired at frame "<<frame<<'\n';
+            }
+            bombHeld=bombInput;
+            for(auto it=bombs.begin();it!=bombs.end();) {
+                auto& bomb=*it;auto& state=bomb.motion;
+                const float oldY=state.y;
+                deathleak::game::BombProjectileMotion::Environment environment;
+                environment.wasInWaterLastFrame=bomb.inWater;environment.onSolidLine=bomb.onLine;
+                for(const auto& water:scene.Hazards())if(water.water && std::abs(state.x-water.x)<(water.width+30.f)*.5f &&
+                    std::abs(state.y-water.y)<(water.height+30.f)*.5f)environment.inWater=true;
+                bomb.inWater=environment.inWater;
+                state.Update(dt,bombClock,environment);
+                if(state.active && !environment.inWater && !environment.wasInWaterLastFrame) {
+                    for(const auto& line:scene.Ground()) {
+                        const float length=line.x2-line.x1;if(std::abs(length)<1.f)continue;
+                        const float t=(state.x-line.x1)/length;if(t<0.f || t>1.f)continue;
+                        const float top=line.y1+t*(line.y2-line.y1);
+                        if(oldY-15.f>=top && state.y-15.f<=top) {
+                            state.y=top+15.f;bomb.onLine=true;
+                            state.OnContact(deathleak::game::BombProjectileMotion::Contact::SolidLine,bombClock,environment);break;
+                        }
+                    }
+                    for(const auto& box:scene.SolidBoxes())if(state.x+15.f>box.left && state.x-15.f<box.right &&
+                        state.y+15.f>box.bottom && state.y-15.f<box.top)
+                        state.OnContact(deathleak::game::BombProjectileMotion::Contact::Terrain,bombClock,environment);
+                }
+                for(const auto& shot:combat.Shots())if(shot.active &&
+                    std::abs(shot.x-state.x)<(shot.collisionWidth+30.f)*.5f &&
+                    std::abs(shot.y-state.y)<(shot.collisionHeight+30.f)*.5f)
+                    state.OnContact(shot.playerKnife ? deathleak::game::BombProjectileMotion::Contact::Blade :
+                        deathleak::game::BombProjectileMotion::Contact::OtherProjectile,bombClock,environment);
+                if(state.pendingExplosion) {
+                    combat.ApplyExplosion(state.x,state.y,1000.f,500.f);
+                    for(size_t index=0;index<scene.Breakables().size();++index) {
+                        const auto& object=scene.Breakables()[index];
+                        if(std::hypot(object.x-state.x,object.y-state.y)<1000.f)scene.DamageBreakable(index,500.f);
+                    }
+                    if(!simulateOnly)scene.EmitBombExplosion(*renderer,state.x,state.y);
+                    cameraShake.Start(30.f,.45f,cameraShakeTime-dt);
+                    std::cout<<"Bomb exploded at frame "<<frame<<'\n';it=bombs.erase(it);
+                }else ++it;
+            }
+            for(const auto& id:scene.BrokenBreakableIds())sessionBrokenBreakables.insert(id);
             playerProjectileFired = combat.Fired() > firedBefore;
             // SolidMovingSprite::OnCollision applies authored damage per contact, not per second.
             combat.ApplySolidContactDamage(motion.SolidContactDamage());
@@ -1503,6 +1637,7 @@ int main(int argc, char** argv) {
             for (const auto& devil : scene.HealthDevils()) inspectLock("V:" + currentLevel, devil);
             for (const auto& scroll : scene.Scrolls()) inspectLock("S:" + scroll.id, scroll);
             for (const auto& door : scene.Doors()) inspectLock("D:" + door.id + door.destination, door);
+            for (const auto& instrument : scene.Instruments()) inspectLock("A:" + instrument.id, instrument);
             for (const auto& boat : scene.Boats()) inspectLock("B:" + boat.id, boat);
             if (interactionTarget == "H:" + currentLevel && healthPickup) {
                 lockFound = true;
@@ -1548,6 +1683,7 @@ int main(int argc, char** argv) {
             const deathleak::game::PaperPickup* nearbyPaper = nullptr;
             const deathleak::game::HealthDevil* nearbyDevil = nullptr;
             const deathleak::game::DojoScroll* nearbyScroll = nullptr;
+            const deathleak::game::Instrument* nearbyInstrument = nullptr;
             const deathleak::game::Door* nearbyDoor = nullptr;
             const deathleak::game::Boat* nearbyBoat = nullptr;
             for (const auto& key : scene.Keys()) if (!ownedKeys.count(key.keyId) && visited(key) && overlap(key.x,key.y,key.width,key.height)) {
@@ -1563,10 +1699,18 @@ int main(int argc, char** argv) {
                     select("V:" + currentLevel, devil.depth, devil.order);
                     if (target == "V:" + currentLevel) nearbyDevil = &devil;
                 }
-            if (!combat.DeflectionUnlocked())
-                for (const auto& scroll : scene.Scrolls()) if (scroll.feature == "kDeflection" && visited(scroll) && overlap(scroll.x,scroll.y,scroll.width,scroll.height)) {
+            const auto currentTechniques = ownedTechniques();
+            scene.ApplyTechniques(currentTechniques,completions);
+            for (const auto& scroll : scene.Scrolls()) if (deathleak::game::FindTechnique(scroll.feature) &&
+                !currentTechniques.count(scroll.feature) && (scroll.feature!="kBombUnlock" || completions>0) &&
+                visited(scroll) && overlap(scroll.x,scroll.y,scroll.width,scroll.height)) {
                     select("S:" + scroll.id, scroll.depth, scroll.order);
                     if (target == "S:" + scroll.id) nearbyScroll = &scroll;
+                }
+            if(motion.Grounded())for(const auto& instrument:scene.Instruments())
+                if(instrument.cooldown<=0.f && visited(instrument) && overlap(instrument.x,instrument.y,instrument.width,instrument.height)) {
+                    select("A:"+instrument.id,instrument.depth,instrument.order);
+                    if(target=="A:"+instrument.id)nearbyInstrument=&instrument;
                 }
             if (levelTime >= 0.75f && motion.Grounded()) {
                 for (const auto& door : scene.Doors()) if (visited(door) && overlap(door.x,door.y,door.width,door.height)) {
@@ -1586,6 +1730,7 @@ int main(int argc, char** argv) {
             if (target.empty() || target[0] != 'S') nearbyScroll = nullptr;
             if (target.empty() || target[0] != 'D') nearbyDoor = nullptr;
             if (target.empty() || target[0] != 'B') nearbyBoat = nullptr;
+            if (target.empty() || target[0] != 'A') nearbyInstrument = nullptr;
             if (!frozenInteractable && (interactionTarget.empty() || !target.empty())) {
                 if (!interact || target != interactionTarget) interactHeldTime = 0;
                 interactionTarget = target;
@@ -1600,6 +1745,9 @@ int main(int argc, char** argv) {
                           << " at frame " << frame << " max_health=" << savedMaxHealth << '\n';
                 healthPickup.reset();
                 interactHeldTime = 0; interactionTarget.clear();
+            } else if(interactHeldTime>=.05f && nearbyInstrument) {
+                if(scene.PlayInstrument(nearbyInstrument->id))std::cout<<"Played koto at frame "<<frame<<'\n';
+                interactHeldTime=0;interactionTarget.clear();
             } else if (interactHeldTime >= 0.05f && nearbyKey) {
                 ownedKeys.insert(nearbyKey->keyId);
                 scene.ApplyKeys(ownedKeys);
@@ -1629,9 +1777,11 @@ int main(int argc, char** argv) {
                           << " voice=" << (third ? 3 : 1) << '\n';
                 interactHeldTime = 0; interactionTarget.clear();
             } else if (interactHeldTime >= 0.5f && nearbyScroll) {
-                upgradeModal = true; modalWarmup = 0; purchaseHeld = dismissHeld = false;
+                upgradeModal = true; modalTechnique = nearbyScroll->feature;
+                modalWarmup = 0; purchaseHeld = dismissHeld = false;
                 interactHeldTime = 0; interactionTarget.clear();
-                std::cout << "Opened kDeflection upgrade modal at frame " << frame << " cost=375 balance=" << orbBalance << '\n';
+                std::cout << "Opened " << modalTechnique << " upgrade modal at frame " << frame
+                          << " cost=" << deathleak::game::FindTechnique(modalTechnique)->cost << " balance=" << orbBalance << '\n';
             } else if (interactHeldTime >= (unlockingDoor ? 0.4f : 0.05f) && nearbyDoor && doorUnlockWait <= 0) {
                 const auto door = *nearbyDoor;
                 interactHeldTime = 0;
@@ -1653,14 +1803,15 @@ int main(int argc, char** argv) {
                         nextScene.ApplyHealthDevil(rewardedHealthDevils.count(door.destination) != 0);
                         nextScene.ApplySmashable(brokenSmashables.count(door.destination) != 0);
                         nextScene.ApplyDeflection(combat.DeflectionUnlocked());
+                        nextScene.ApplyBrokenBreakables(sessionBrokenBreakables);
                         scene = std::move(nextScene);
                         cameraTarget = {scene.CameraOffsetX(), scene.CameraOffsetY()};
                         devilDialog.reset(); healthPickup.reset();
                         std::cout << "Door at frame " << frame << " from " << currentLevel << " to " << door.destination << '\n';
                         currentLevel = door.destination; introPromptClock.Reset();
-                        motion.Reset(scene.PlayerX(),scene.PlayerY(), true);
+                        motion.Reset(scene.PlayerX(),scene.PlayerY(), true);motion.ApplyEntryDirection(scene.PlayerEntryDirection());
                         worldX = motion.X(); worldY = motion.Y();
-                        cameraX = scene.CameraX(); cameraY = scene.CameraY(); cameraShake.Reset();
+                        cameraX = scene.CameraFollowX() ? worldX : scene.CameraX(); cameraY = scene.CameraFollowY() ? worldY : scene.CameraY(); cameraShake.Reset();
                         combat.ClearLevel(); combat.InitializeLevelEncounters(scene); levelTime = interactHeldTime = doorUnlockWait = 0; unlockingDoor = false; interactionTarget.clear();
                     } else std::cerr << "Door transition failed: " << error << '\n';
                     continue;
@@ -1684,15 +1835,16 @@ int main(int argc, char** argv) {
                         nextScene.ApplyHealthDevil(rewardedHealthDevils.count(destination) != 0);
                         nextScene.ApplySmashable(brokenSmashables.count(destination) != 0);
                         nextScene.ApplyDeflection(combat.DeflectionUnlocked());
+                        nextScene.ApplyBrokenBreakables(sessionBrokenBreakables);
                         scene = std::move(nextScene);
                         cameraTarget = {scene.CameraOffsetX(), scene.CameraOffsetY()};
                         devilDialog.reset(); healthPickup.reset();
                         std::cout << "Boat at frame " << frame << " from " << currentLevel << " to " << destination << '\n';
                         currentLevel = destination; introPromptClock.Reset();
                         if (!simulateOnly) filmFrames.Prepare(*renderer, error);
-                        motion.Reset(scene.PlayerX(),scene.PlayerY(), true);
+                        motion.Reset(scene.PlayerX(),scene.PlayerY(), true);motion.ApplyEntryDirection(scene.PlayerEntryDirection());
                         worldX = motion.X(); worldY = motion.Y();
-                        cameraX = scene.CameraX(); cameraY = scene.CameraY(); cameraShake.Reset();
+                        cameraX = scene.CameraFollowX() ? worldX : scene.CameraX(); cameraY = scene.CameraFollowY() ? worldY : scene.CameraY(); cameraShake.Reset();
                         combat.ClearLevel(); combat.InitializeLevelEncounters(scene); levelTime = interactHeldTime = doorUnlockWait = 0; unlockingDoor = false; interactionTarget.clear();
                     } else std::cerr << "Boat transition failed: " << error << '\n';
                     continue;
@@ -1723,7 +1875,8 @@ int main(int argc, char** argv) {
                             nextScene.ApplyHealthDevil(rewardedHealthDevils.count(destination) != 0);
                             nextScene.ApplySmashable(brokenSmashables.count(destination) != 0);
                             nextScene.ApplyDeflection(combat.DeflectionUnlocked());
-                            scene = std::move(nextScene);
+                            nextScene.ApplyBrokenBreakables(sessionBrokenBreakables);
+                        scene = std::move(nextScene);
                             cameraTarget = {scene.CameraOffsetX(), scene.CameraOffsetY()};
                             devilDialog.reset(); healthPickup.reset();
                             currentLevel = destination; introPromptClock.Reset();
@@ -1733,7 +1886,7 @@ int main(int argc, char** argv) {
                             cameraX = scene.CameraFollowX() ? worldX : scene.CameraX();
                             cameraY = scene.CameraFollowY() ? worldY : scene.CameraY();
                             cameraShake.Reset();
-                            motion.Reset(worldX, worldY, true); combat.ClearLevel(); combat.InitializeLevelEncounters(scene);
+                            motion.Reset(worldX, worldY, true);motion.ApplyEntryDirection(scene.PlayerEntryDirection()); combat.ClearLevel(); combat.InitializeLevelEncounters(scene);
                             levelTime = interactHeldTime = doorUnlockWait = 0; unlockingDoor = false; interactionTarget.clear();
                             std::cout << "Entered " << currentLevel << std::endl;
                         } else std::cerr << "Transition failed: " << error << '\n';
@@ -1751,6 +1904,8 @@ int main(int argc, char** argv) {
             if (!persistMenuMetadata()) return 1;
             std::cout << "Main menu return after story completion count=" << completions << " language=" << language << '\n';
             playLevel.clear(); levelPath.clear(); currentLevel.clear();
+            focusCooldown=0.f;focusing=false;bombs.clear();bombHeld=false;
+            sessionBrokenBreakables.clear();
             collectedOrbs.clear(); ownedKeys.clear(); unlockedDoors.clear(); collectedPapers.clear(); rewardedHealthDevils.clear(); brokenSmashables.clear(); healthDevilRewardCount = 0;
             devilDialog.reset(); healthPickup.reset();
             orbBalance = 0; scene = deathleak::game::LevelScene{};
@@ -1758,6 +1913,7 @@ int main(int argc, char** argv) {
             weather = deathleak::game::WeatherLightning{};
             rain = deathleak::game::WeatherRain{};
             combat = deathleak::game::Combat{};
+            slowMotionUnlocked = bombUnlocked = false;
             speedUnlocked = projectileDamageUnlocked = projectileSpeedUnlocked = false; downwardDashUnlocked = rollUnlocked = false; savedMaxHealth = 25; hasSavedMaxHealth = false; windowsPermanentExtension.clear();
             motion.SetSpeedUpgrade(false); motion.SetMovementUnlocks(false, false);
             finalSceneTime = 0; finalTitleShown = storyEnded = false;
@@ -1779,6 +1935,7 @@ int main(int argc, char** argv) {
         }
         if (!simulateOnly && !playLevel.empty())
             weatherTextures.Prepare(*renderer, rain, rain.VisibleParticles(), weather.Alpha() > 0.f);
+        for(const auto& file:scene.ConsumeSceneSounds())if(sound)sound->PlayFile("Game/Media/Audio/"+file);
         if (simulateOnly) {
             // Keep the intro terminal signal advancing in deterministic CPU-only
             // simulations; ordinary gameplay visuals remain skipped.
@@ -1945,6 +2102,13 @@ int main(int argc, char** argv) {
                     [&](const auto& shot, const Sprite&) {
                         repeatRecorder->TagLastSprite({(std::uint64_t{1}<<59) | shot.stableIdentity,0});
                     }) : std::function<void(const deathleak::game::Shot&, const Sprite&)>());
+            if(bombSceneEpoch==scene.SceneEpoch())for(const auto& bomb:bombs)if(bombArt) {
+                Sprite sprite;sprite.texture=bombArt;
+                sprite.destination={640.f+(bomb.motion.x-drawCameraX-22.5f)*2.f/3.f,
+                    360.f+(drawCameraY-bomb.motion.y-22.5f)*2.f/3.f,30.f,30.f};
+                sprite.flipY=true;sprite.rotationDegrees=deathleak::render::OrdinarySpriteRotationDegrees(bomb.motion.rotation,false,false);
+                painterItems.push_back({2520,[&,sprite]{renderer->DrawSprite(sprite);}});
+            }
             // Source Player::Draw places the X immediately after the player body.
             // A player-adjacent slot preserves same-depth object visitation order.
             std::function<void()> afterPlayerDraw;
@@ -2048,10 +2212,15 @@ int main(int argc, char** argv) {
                 if (modalOrb) renderer->DrawSprite({modalOrb, {}, {520,460,56,85}});
                 if (modalButton) renderer->DrawSprite({modalButton, {}, {590,460,150,90}});
                 deathleak::game::DrawBitmapText(*renderer, "NEW TECHNIQUE", 340, 120, 6);
-                deathleak::game::DrawBitmapText(*renderer, "DEFLECTION", 400, 240, 7);
-                deathleak::game::DrawBitmapText(*renderer, "COST 375 ORBS", 355, 360, 5);
-                deathleak::game::DrawBitmapText(*renderer, "BALANCE: " + std::to_string(orbBalance), 380, 410, 5);
-                deathleak::game::DrawBitmapText(*renderer, orbBalance >= 375 ? "Y BUY / ESC BACK" : "NOT ENOUGH ORBS / ESC BACK", 260, 565, 4);
+                const auto* technique = deathleak::game::FindTechnique(modalTechnique);
+                deathleak::game::DrawBitmapText(*renderer, technique ? technique->title : "TECHNIQUE", 280, 215, 5);
+                const auto description = paperText.Lookup("dojo_scroll_desc_"+modalTechnique,language);
+                const auto lines = deathleak::game::WrapPaperText(description,72);
+                float descriptionY=280.f;
+                for(const auto& line:lines){deathleak::game::DrawBitmapText(*renderer,line,140,descriptionY,2);descriptionY+=24.f;}
+                deathleak::game::DrawBitmapText(*renderer, "COST " + std::to_string(technique ? technique->cost : 0) + " ORBS", 355, 410, 4);
+                deathleak::game::DrawBitmapText(*renderer, "BALANCE: " + std::to_string(orbBalance), 380, 450, 4);
+                deathleak::game::DrawBitmapText(*renderer, orbBalance >= (technique ? technique->cost : 0) ? "Y BUY / ESC BACK" : "NOT ENOUGH ORBS / ESC BACK", 260, 565, 4);
             }
             if (combat.Health() <= 0 && deathArt)
                 renderer->DrawSprite({deathArt, {}, {0, 0, 1280, 720}, {255,255,255,255}, 1.f, 0.f, false, true});
@@ -2503,6 +2672,8 @@ int main(int argc, char** argv) {
         if (healthDevilRewardCount) saved << "J:" << healthDevilRewardCount << '\n';
         for (const auto& door : unlockedDoors) saved << "D:" << door << '\n';
         if (combat.DeflectionUnlocked()) saved << "U:kDeflection\n";
+        if (slowMotionUnlocked) saved << "U:kSlowMotion\n";
+        if (bombUnlocked) saved << "U:kBombUnlock\n";
         if (speedUnlocked) saved << "U:kSpeedIncrease\n";
         if (downwardDashUnlocked) saved << "U:kDownwardDash\n";
         if (rollUnlocked) saved << "U:kRoll\n";

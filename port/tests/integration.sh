@@ -90,12 +90,16 @@ printf '%s\n' "$swim" | python3 -c 'import re,sys; s=sys.stdin.read(); m=re.sear
 focus_lock=$($bin --play Game/XmlFiles/levels/test.xml --start-hazard 1 --exhaust-focus --script L:240,.:240 --fixed-dt 0.0166667 --simulate-only)
 printf '%s\n' "$focus_lock" | grep -q 'focus=0'
 focus_recover=$($bin --play Game/XmlFiles/levels/test.xml --start-hazard 1 --exhaust-focus --script L:240,.:360 --fixed-dt 0.0166667 --simulate-only)
-printf '%s\n' "$focus_recover" | grep -Eq 'focus=19\.333[34] '
+# WaterBlock now uses source strict player-AABB overlap, delaying dry recharge.
+printf '%s\n' "$focus_recover" | grep -q 'focus=16 '
 combat=$($bin --play Game/XmlFiles/levels/first_ninja_arena.xml --start-encounter 0 --script F:300 --fixed-dt 0.0166667 --simulate-only --save-file port/build/integration-save.txt)
-# Source-correct active knife flight now reaches the arena NPC and kills it.
-printf '%s\n' "$combat" | grep -q 'spawned=2 enemies=1 hits=14 kills=1'
+# Source collider/projectile extents admit three enemy-star hits (nine damage)
+# in addition to fourteen knife hits. Keep two spawns, one survivor and one kill.
+printf '%s\n' "$combat" | grep -q 'spawned=2 enemies=1 hits=17 kills=1'
 resume=$($bin --load-save port/build/integration-save.txt --frames 1 --fixed-dt 0.0166667 --simulate-only)
-printf '%s\n' "$resume" | grep -q 'health=25 focus=100'
+# Source combat now deals nine damage; loading must retain that exact damage,
+# not heal back to the old pre-combat baseline.
+printf '%s\n' "$resume" | grep -q 'health=16 focus=100'
 # NPCTrigger removes a recently-fired trigger on level load (120000 ms).
 # Force overlap on resume so a missing cooldown would visibly respawn it.
 cooldown=$($bin --load-save port/build/integration-save.txt --start-encounter 0 --frames 1 --fixed-dt 0.0166667 --simulate-only)
@@ -166,26 +170,36 @@ east_route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script 
 printf '%s\n' "$east_route" | grep -q 'Entered Game/XmlFiles/levels/waterfall_top.xml'
 printf '%s\n' "$east_route" | grep -q 'Entered Game/XmlFiles/levels/waterfall_bottom.xml'
 printf '%s\n' "$east_route" | grep -q 'Entered Game/XmlFiles/levels/underwater_cave.xml'
-# Current fixed-update orb-follow ordering yields 15 distinct pickups on this route.
-printf '%s\n' "$east_route" | grep -q 'underwater_cave.xml player=.*orbs=15 .*balance=15'
+# Source orb sine hover/tracking and strict water bounds yield 17 pickups here.
+printf '%s\n' "$east_route" | grep -q 'underwater_cave.xml player=.*orbs=17 .*balance=17'
 # A rightward held jump at the authored waterfall-top gap (frame 711)
 # crosses its fall trigger and reaches forest 2 from the original forest-1
 # spawn. Normal knife fire then carries the same, unmodified run into village
 # central; no loaded balance, warp, or test-hit injection is used.
 continuous_save=port/build/continuous-village-save.txt
-continuous_route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script R:711,E:40,B:4515 --fixed-dt 0.0166667 --simulate-only --save-file "$continuous_save")
+continuous_script=$(cat port/tests/routes/current_earned_village.script)
+# Real jump/fire pulses cross the upper fort route and avoid source-valid stars.
+# This revised ordinary-input itinerary must stay alive; no enemies are disabled.
+continuous_route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$continuous_script" --fixed-dt 0.0166667 --simulate-only --save-file "$continuous_save")
+# Preserve the earned/alive route gate. Diagnose death before obsolete exact
+# transition timing so combat regressions cannot be hidden by counter updates.
+if printf '%s\n' "$continuous_route" | grep -q 'Player died'; then
+    printf '%s\n' "$continuous_route" >&2
+    echo "historical continuous-village route failed: player died; alive earned progression required" >&2
+    exit 1
+fi
 printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 398 .*waterfall_top.xml'
-printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 1074 .*forest_exploration_2.xml'
-printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 1730 .*forest_exploration_barn.xml'
-printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 2730 .*village_forts.xml'
-printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 4053 .*village_central.xml'
-printf '%s\n' "$continuous_route" | grep -q 'village_central.xml player=(7287.18,-1525.13) orbs=101 .*health=4 .*balance=101'
+printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 1073 .*forest_exploration_2.xml'
+printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 1728 .*forest_exploration_barn.xml'
+printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 2727 .*village_forts.xml'
+printf '%s\n' "$continuous_route" | grep -q 'Trigger at frame 4049 .*village_central.xml'
+printf '%s\n' "$continuous_route" | grep -q 'village_central.xml player=(7326.18,-1528.39) orbs=92 .*health=13 .*balance=92'
 python3 - <<'PYTEST'
 from pathlib import Path
 lines = Path('port/build/continuous-village-save.txt').read_text().splitlines()
 orb_ids = [line for line in lines if line.startswith('Game/XmlFiles/levels/') and '#' in line]
-assert len(orb_ids) == len(set(orb_ids)) == 101, (len(orb_ids), len(set(orb_ids)))
-assert 'B:101' in lines
+assert len(orb_ids) == len(set(orb_ids)) == 92, (len(orb_ids), len(set(orb_ids)))
+assert 'B:92' in lines
 PYTEST
 # A single uninterrupted forest-spawn run combines the earned east itinerary
 # with a westward return through grass 3 into the arena. The east-side 191
@@ -195,6 +209,11 @@ PYTEST
 combined_save=port/build/combined-east-west-save.txt
 combined_prefix=R:711,E:40,B:4495,E:40,B:50,E:40,B:50,E:40,B:3400,L:3410,Q:40,L:4640,Q:40
 combined_route=$($bin --play Game/XmlFiles/levels/forest_exploration_1.xml --script "$combined_prefix,L:1826,Q:40,L:260" --fixed-dt 0.0166667 --simulate-only --save-file "$combined_save")
+if printf '%s\n' "$combined_route" | grep -q 'Player died'; then
+    printf '%s\n' "$combined_route" >&2
+    echo "historical combined earned route failed: ordinary-input itinerary needs recovery; alive requirement retained" >&2
+    exit 1
+fi
 printf '%s\n' "$combined_route" | grep -q 'Trigger at frame 17322 from .*waterfall_top.xml .*forest_exploration_1.xml'
 printf '%s\n' "$combined_route" | grep -q 'Trigger at frame 17963 from .*forest_exploration_1.xml .*grass_exploration_3.xml'
 printf '%s\n' "$combined_route" | grep -q 'Trigger at frame 18756 from .*grass_exploration_3.xml .*first_ninja_arena.xml'

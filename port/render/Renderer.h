@@ -103,7 +103,7 @@ public:
 };
 
 // Key codes are intentionally backend-neutral.
-enum Key { Left = 1, Right, Up, Down, Escape, Restart, Interact, Melee, Purchase, Roll, ModalBack, Fire, MenuAccept, MenuUp, MenuDown };
+enum Key { Left = 1, Right, Up, Down, Escape, Restart, Interact, Melee, Purchase, Roll, ModalBack, Fire, MenuAccept, MenuUp, MenuDown, Focus, Bomb };
 
 // Linux keyboard adaptation: crouch and fire are independent grounded actions.
 // Down remains the legacy airborne shot; scripted commands and stick aim keep

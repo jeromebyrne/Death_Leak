@@ -658,13 +658,17 @@ with tempfile.TemporaryDirectory(prefix='save-bridge-') as root:
     ordinary = [line for line in upgraded if line not in ('U:kProjectileDamageIncrease', 'U:kProjectileSpeedIncrease')]
     fast = simulate_projectiles(upgraded, 'F:120')
     slow = simulate_projectiles(ordinary, 'F:120')
-    assert 'fired=12' in fast and 'fired=8' in slow, (fast, slow)
+    # Player::Update freezes reload during its 0.5s burst pause: seven ordinary
+    # shots per 120 ticks, versus twelve with the original reload/burst upgrade.
+    assert 'fired=12' in fast and 'fired=7' in slow, (fast, slow)
     fast_fall = simulate_projectiles(upgraded, 'F:1,.:5')
     slow_fall = simulate_projectiles(ordinary, 'F:1,.:5')
     assert float(re.search(r'Shot player .* vy=([-0-9.]+)', fast_fall).group(1)) > float(re.search(r'Shot player .* vy=([-0-9.]+)', slow_fall).group(1)), (fast_fall, slow_fall)
     damage_only = [line for line in upgraded if line != 'U:kProjectileSpeedIncrease']
-    upgraded_hit = simulate_projectiles(damage_only, 'F:110', encounter=True)
-    ordinary_hit = simulate_projectiles(ordinary, 'F:110', encounter=True)
+    # The exclusive burst/reload chain delays the fifth impact past tick 110.
+    # At 120 both variants land five hits; only damage upgrade earns the kill.
+    upgraded_hit = simulate_projectiles(damage_only, 'F:120', encounter=True)
+    ordinary_hit = simulate_projectiles(ordinary, 'F:120', encounter=True)
     assert 'hits=5 kills=1' in upgraded_hit and 'kills=0' in ordinary_hit, (upgraded_hit, ordinary_hit)
     # Imported permanent unlocks must change real movement and focus, while
     # their absent-mirror baseline keeps the old behavior. The open authored

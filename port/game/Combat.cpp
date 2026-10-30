@@ -7,11 +7,29 @@
 #include <cstdlib>
 #include <filesystem>
 #include <iostream>
+#include <fstream>
 
 namespace deathleak::game {
 namespace {
 bool Inside(float x, float y, float cx, float cy, float w, float h) {
     return std::abs(x-cx) <= w*0.5f && std::abs(y-cy) <= h*0.5f;
+}
+// Runtime native-dimension sprites use the PNG's actual dimensions, not collider size.
+void NativePngDimensions(const char* path, float& width, float& height) {
+    std::ifstream file(path, std::ios::binary);
+    unsigned char bytes[24]{};
+    if (!file.read(reinterpret_cast<char*>(bytes), sizeof(bytes))) return;
+    constexpr unsigned char signature[] = {137,80,78,71,13,10,26,10};
+    if (!std::equal(std::begin(signature), std::end(signature), bytes)) return;
+    auto integer = [&](int offset) {
+        return (std::uint32_t(bytes[offset])<<24) | (std::uint32_t(bytes[offset+1])<<16) |
+               (std::uint32_t(bytes[offset+2])<<8) | bytes[offset+3];
+    };
+    if (integer(16) && integer(20)) { width=float(integer(16)); height=float(integer(20)); }
+}
+struct EnemyCollider { float halfW, halfH, offsetY; };
+EnemyCollider Collider(const Enemy& enemy) {
+    return enemy.type == "kGhost" ? EnemyCollider{27.5f,65.f,20.f} : EnemyCollider{50.f,100.f,0.f};
 }
 // First contact of a moving projectile center with an authored segment.
 bool SegmentContact(float ax, float ay, float bx, float by,
@@ -132,6 +150,10 @@ void Combat::SetArt(render::Renderer& renderer) {
     upgradedKnifeArt_ = renderer.LoadTexture("Game/Media/knife_2.png", error);
     ninjaShotArt_ = renderer.LoadTexture("Game/Media/ninjastar.png", error);
     ghostShotArt_ = renderer.LoadTexture("Game/Media/puke_temp.png", error);
+    NativePngDimensions("Game/Media/ninjastar.png", ninjaShotWidth_, ninjaShotHeight_);
+    NativePngDimensions("Game/Media/puke_temp.png", ghostShotWidth_, ghostShotHeight_);
+    ninjaImpactArt_ = renderer.LoadTexture("Game/Media/ninjastar_impact.png", error);
+    ghostImpactArt_ = renderer.LoadTexture("Game/Media/puke_impact_temp.png", error);
     skeletonShotArt_ = renderer.LoadTexture("Game/Media/fireball.png", error);
     if (!skeletonShotArt_) skeletonShotArt_ = ghostShotArt_; // source fireball PNG is absent
     constexpr const char* deathPaths[] = {
@@ -343,6 +365,12 @@ bool Combat::DamageEnemy(size_t index, float damage, float projectileDirectionX)
     }
     return true;
 }
+void Combat::ApplyExplosion(float x,float y,float radius,float damage) {
+    for(size_t i=0;i<enemies_.size();++i) {
+        const float dx=enemies_[i].x-x,dy=enemies_[i].y-y;
+        if(dx*dx+dy*dy<radius*radius)DamageEnemy(i,damage);
+    }
+}
 void Combat::ApplyPlayerDamage(float damage) {
     if (damage <= 0.f || health_ <= 0.f) return;
     health_ = std::max(0.f, health_ - damage);
@@ -503,7 +531,7 @@ void Combat::UpdateBloodFlights(const LevelScene& scene, float dt) {
                                [](const ParticleSpray::Particle& p) { return p.dead; });
         }), materialSprays_.end());
 }
-void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fire, bool melee, bool grounded, bool rolling, int facing, render::Renderer& renderer, float aimX, float aimY, PlayerShotLaunchState launchState) {
+void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fire, bool melee, bool grounded, bool rolling, int facing, render::Renderer& renderer, float aimX, float aimY, PlayerShotLaunchState launchState,const std::function<void(size_t,float)>& breakableHit) {
     // CPU callers may not have an explicit scene-install boundary. Snapshot
     // before advancing the synthetic clock on their first update as well.
     InitializeLevelEncounters(scene);
@@ -525,12 +553,17 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
     for (auto& enemy : enemies_)
         enemy.damageBurstAge = std::min(0.25f, enemy.damageBurstAge + std::max(0.f, dt));
     if (simulatedWallClock_) simulatedClockElapsedMs_ += static_cast<double>(dt) * 1000.0;
-    fireCooldown_ = std::max(0.f, fireCooldown_-dt);
-    burstCooldown_ = std::max(0.f, burstCooldown_-dt);
+    // Player::Update's mutually exclusive burst/reload branches. Focus
+    // accelerates only the player's reload, never the NPC/world update.
+    if(!focusing_ && !projectileSpeedUpgrade_ && burstCount_>=5) {
+        burstCount_=0;burstCooldown_=.5f;
+    } else if(!focusing_ && burstCooldown_>0.f)
+        burstCooldown_=std::max(0.f,burstCooldown_-dt);
+    else fireCooldown_=std::max(0.f,fireCooldown_-dt*(focusing_?5.f:1.f));
     hurtCooldown_ = std::max(0.f, hurtCooldown_-dt);
     bool inWater = false;
     for (const auto& hazard : scene.Hazards())
-        if (hazard.water && Inside(x,y,hazard.x,hazard.y,hazard.width,hazard.height)) inWater = true;
+        if (hazard.water && hazard.OverlapsPlayer(x,y)) inWater = true;
     // Player::DoMeleeAttack requires solid footing, 4 focus and dry ground.
     // The four sequences in player_anim_default.xml contain 7/15/9/7 frames
     // at 60 FPS. Character::DoMeleeCollisions damages only in phase 3.
@@ -542,7 +575,11 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
     }
     const bool meleeStrikePhase = meleeTime_ >= 22.f/60.f && meleeTime_ < 31.f/60.f;
     for (const auto& trigger : scene.Encounters()) {
-        if (!Inside(x,y,trigger.x,trigger.y,trigger.width,trigger.height) || !activeTriggers_.insert(trigger.id).second) continue;
+        const float triggerPlayerHalfW = (meleeStrikePhase ? 1.5f : 1.f)*128.959793f*.5f;
+        const float triggerPlayerHalfH = (meleeTime_ > 0.f ? 1.1201479f : 1.f)*214.898743f*.5f;
+        if (std::abs(x-trigger.x) >= trigger.width*.5f+triggerPlayerHalfW ||
+            std::abs(y-trigger.y) >= trigger.height*.5f+triggerPlayerHalfH ||
+            !activeTriggers_.insert(trigger.id).second) continue;
         // NPCTrigger::Initialise removes a trigger if it last fired less than
         // 120000 ms ago. Keep wall-clock history across levels and saves.
         const auto nowMs = EncounterNowMs();
@@ -568,7 +605,7 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
     // Player::FireWeapon blocks shots in water and fires at most five knives
     // before its 0.5-second burst pause. Source's 0.25 s is an inactive,
     // post-contact retirement interval, not an active-flight lifetime.
-    if (fire && !rolling && meleeTime_ <= 0.f && fireCooldown_ <= 0 && burstCooldown_ <= 0 && !inWater && health_ > 0) {
+    if (fire && !rolling && meleeTime_ <= 0.f && fireCooldown_ <= 0 && (focusing_ || burstCooldown_ <= 0) && !inWater && health_ > 0) {
         if (!knifeArt_) SetArt(renderer);
         // The port removes on contact. Ten seconds only bounds an unimpeded
         // offscreen knife in this simplified collection; it is not source TTL.
@@ -589,7 +626,7 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
         shots_.back().launchDirectionY = knifeY;
         fireCooldown_ = projectileSpeedUpgrade_ ? 0.220f*0.75f : 0.220f;
         ++fired_;
-        if (!projectileSpeedUpgrade_ && ++burstCount_ == 5) { burstCount_ = 0; burstCooldown_ = 0.5f; }
+        if(!projectileSpeedUpgrade_ && !focusing_)++burstCount_;
     }
     for (auto& enemy : enemies_) {
         if (enemy.health <= 0) continue;
@@ -688,16 +725,26 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
         const float length=std::max(1.f,std::hypot(aimX,aimY));
         const bool skeleton = enemy.type == "kSkeleton";
         const float speed = skeleton ? 300.f : ghost ? 510.f : 540.f;
+        // Source has no active TTL. This two-minute orphan bound only protects
+        // the port's camera-zone-less collection from unbounded abandoned shots.
         shots_.push_back({enemy.x,enemy.y+(skeleton?50.f:0.f),aimX/length*speed,aimY/length*speed,
-            ghost || skeleton ? 2.f : 0.25f, skeleton ? 35.f : ghost ? 2.f : 3.f,true,
+            120.f, skeleton ? 35.f : ghost ? 2.f : 3.f,true,
             ghost ? 0.9f : 1.f, !skeleton});
         shots_.back().stableIdentity = nextShotIdentity_++;
         shots_.back().depth = ghost || skeleton ? 2530 : 2510;
         shots_.back().deflectable=!ghost && !skeleton;
         shots_.back().baseSpeed=speed;
         shots_.back().texture = skeleton ? skeletonShotArt_ : ghost ? ghostShotArt_ : ninjaShotArt_;
-        shots_.back().visualWidth = ghost ? 40.f : 25.f;
-        shots_.back().visualHeight = ghost ? 25.f : skeleton ? 8.f : 13.f;
+        auto& shot = shots_.back();
+        shot.npcProjectile = true;
+        shot.inactiveRetention = ghost || skeleton ? 2.f : .25f;
+        shot.collisionWidth = ghost ? 40.f : 25.f;
+        shot.collisionHeight = ghost ? 25.f : skeleton ? 8.f : 13.f;
+        shot.visualWidth = skeleton ? 95.625f : ghost ? ghostShotWidth_ : ninjaShotWidth_;
+        shot.visualHeight = skeleton ? 62.625f : ghost ? ghostShotHeight_ : ninjaShotHeight_;
+        shot.authoredFlipY = !skeleton && shot.vx <= 0.f;
+        shot.spinning = !ghost && !skeleton;
+        shot.impactTexture = skeleton ? skeletonShotArt_ : ghost ? ghostImpactArt_ : ninjaImpactArt_;
         enemy.fireCooldown=1.3f; // fixed within NPC's original 1.0..1.6 s randomized reload
     }
     // CollisionManager dispatches each strict-AABB character contact in both
@@ -711,16 +758,17 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
         if (enemy.health <= 0.f || enemy.teleportTime > 0.f) continue;
         const float playerHalfW = (meleeStrikePhase ? 1.5f : 1.f)*128.959793f*0.5f;
         const float playerHalfH = (meleeTime_ > 0.f ? 1.1201479f : 1.f)*214.898743f*0.5f;
-        const bool overlap = std::abs(x-enemy.x) < playerHalfW+50.f &&
-                             std::abs(y-enemy.y) < playerHalfH+100.f;
+        const auto collider = Collider(enemy);
+        const bool overlap = std::abs(x-enemy.x) < playerHalfW+collider.halfW &&
+                             std::abs(y-enemy.y-collider.offsetY) < playerHalfH+collider.halfH;
         if (!overlap) continue;
         ++playerContacts_;
         // Character::OnCollision calls DoMeleeCollisions on each overlapping
         // damageable NPC. Its edge check rejects targets behind the player;
         // SolidMovingSprite allows one melee strike per target per 0.5 s.
         if (meleeStrikePhase && enemy.meleeStrikeCooldown <= 0.f &&
-            ((facing > 0 && enemy.x-50.f > x-playerHalfW) ||
-             (facing < 0 && enemy.x+50.f < x+playerHalfW))) {
+            ((facing > 0 && enemy.x-collider.halfW > x-playerHalfW) ||
+             (facing < 0 && enemy.x+collider.halfW < x+playerHalfW))) {
             if (DamageEnemy(index,500.f)) {
                 enemy.meleeStrikeCooldown = 0.5f;
                 ++meleeStrikes_;
@@ -734,6 +782,24 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
     }
     for (auto& shot : shots_) {
         if (shot.life<=0) continue;
+        if (!shot.active) {
+            shot.inactiveAge += dt;
+            if (shot.attachedToPlayer) { shot.x=x+shot.attachedOffsetX; shot.y=y+shot.attachedOffsetY; }
+            if (shot.inactiveAge > shot.inactiveRetention) shot.life=0.f;
+            continue;
+        }
+        auto deactivate = [&](bool characterContact = false) {
+            // Keep existing player-knife retirement; NPC retention starts on contact only.
+            if (!shot.npcProjectile) { shot.life=0.f; return; }
+            shot.active=false; shot.inactiveAge=0.f;
+            if (shot.spinning) {
+                if (characterContact && shot.vx<0.f) shot.authoredFlipX=true;
+                shot.rotation=0.f;
+            }
+            shot.vx=shot.vy=0.f;
+            if (shot.impactTexture) shot.texture=shot.impactTexture;
+        };
+        bool deflectedThisStep = false;
         shot.meleeCooldown=std::max(0.f,shot.meleeCooldown-dt);
         const float oldX=shot.x, oldY=shot.y;
         // Projectile::Update uses 60-Hz-equivalent gravity and displacement resistance.
@@ -744,7 +810,7 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
         float terrainT=1.f;
         size_t winningLine = scene.Ground().size();
         // Original blades pass line strips while an enemy is alive, but still hit solid boxes.
-        if (shot.enemy || enemies_.empty()) for (size_t index = 0; index < scene.Ground().size(); ++index) {
+        if ((shot.enemy && !shot.spinning) || enemies_.empty()) for (size_t index = 0; index < scene.Ground().size(); ++index) {
             const auto& line = scene.Ground()[index];
             float t;
             if (SegmentContact(oldX,oldY,newX,newY,line.x1,line.y1,line.x2,line.y2,t) && t < terrainT) {
@@ -754,6 +820,17 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
         }
         for (const auto& box : scene.SolidBoxes())
             if (BoxContact(oldX,oldY,newX,newY,box,terrainT)) winningLine=scene.Ground().size();
+        size_t winningBreakable=scene.Breakables().size();
+        if(enemies_.empty())for(size_t index=0;index<scene.Breakables().size();++index) {
+            const auto& object=scene.Breakables()[index];
+            if(object.health<=0.f || !object.canDamage)continue;
+            auto box=object.box;
+            box.left-=shot.collisionWidth*.5f;box.right+=shot.collisionWidth*.5f;
+            box.bottom-=shot.collisionHeight*.5f;box.top+=shot.collisionHeight*.5f;
+            if(BoxContact(oldX,oldY,newX,newY,box,terrainT)) {
+                winningBreakable=index;winningLine=scene.Ground().size();
+            }
+        }
         if (shot.playerKnife && !shot.enemy && winningLine < scene.Ground().size() && terrainT < 1.f) {
             const float halfBlade = shot.visualWidth * .5f;
             SpawnKnifeLineSpray(scene, winningLine, shot,
@@ -762,13 +839,22 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
         shot.x=oldX+(newX-oldX)*terrainT;
         shot.y=oldY+(newY-oldY)*terrainT;
         shot.life-=dt;
-        if (shot.playerKnife) shot.activeVisualAge += dt;
-        if (terrainT < 1.f) shot.life=0;
+        shot.activeVisualAge += dt;
+        if (shot.spinning) shot.rotation -= 20.f*dt;
+        else if (shot.npcProjectile && std::hypot(shot.vx,shot.vy)>0.00001f) {
+            // Projectile::DoRotateToDirection sets vertical reflection on left flight.
+            if (shot.vx <= 0.f) shot.authoredFlipY=true;
+            const float angle=std::acos(std::clamp(shot.vx/std::hypot(shot.vx,shot.vy),-1.f,1.f));
+            shot.rotation=(shot.vy<0.f ? (shot.vx>0.f ? -angle : angle) :
+                                                    (shot.vx>0.f ? angle : -angle));
+        }
+        // Sweep only as far as the winning terrain surface. An actor before
+        // that surface still wins; terrain at an equal contact time wins ties.
         if (shot.enemy) {
             const float playerHalfW=(meleeStrikePhase?1.5f:1.f)*128.959793f*0.5f;
             const float playerHalfH=(meleeTime_>0.f?1.1201479f:1.f)*214.898743f*0.5f;
-            const float shotHalfW=shot.resistance<1.f?20.f:12.5f;
-            const float shotHalfH=shot.resistance<1.f?12.5f:(shot.gravity?6.5f:4.f);
+            const float shotHalfW=shot.collisionWidth*.5f;
+            const float shotHalfH=shot.collisionHeight*.5f;
             // Original ghost 40x25, ninja star 25x13, skeleton fireball 25x8.
             float contact=0.f;
             if (deflectionUnlocked_ && shot.deflectable && shot.life>0.f &&
@@ -776,7 +862,8 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
                 (meleeTime_<7.f/60.f || meleeStrikePhase) &&
                 SweptBoxContact(oldX,oldY,shot.x,shot.y,
                                 x-playerHalfW-shotHalfW,x+playerHalfW+shotHalfW,
-                                y-playerHalfH-shotHalfH,y+playerHalfH+shotHalfH,contact)) {
+                                y-playerHalfH-shotHalfH,y+playerHalfH+shotHalfH,contact) &&
+                (terrainT >= 1.f || contact < 1.f)) {
                 const float contactX=oldX+(shot.x-oldX)*contact;
                 const bool front=(facing>0 && shot.vx<0.f && contactX-shotHalfW>x-playerHalfW) ||
                     (facing<0 && shot.vx>0.f && contactX+shotHalfW<x+playerHalfW);
@@ -787,15 +874,15 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
                     shot.vy=0.f; // deterministic representative of source random y offset
                     shot.enemy=false; shot.damage=9999.f; shot.wasDeflected=true;
                     shot.meleeCooldown=0.5f;
+                    deflectedThisStep = true;
                     ++deflections_;
                 }
             }
-            // Retain the existing prototype hitbox outside successful melee
-            // deflection; upgrading all projectile collision is separate work.
             if (shot.enemy && hurtCooldown_<=0.f) {
-                const float vx=shot.x-oldX, vy=shot.y-oldY;
-                const float t=std::clamp(((x-oldX)*vx+(y-oldY)*vy)/(vx*vx+vy*vy+0.0001f),0.f,1.f);
-                if (Inside(oldX+t*vx,oldY+t*vy,x,y,70.f,180.f)) {
+                if (SweptBoxContact(oldX,oldY,shot.x,shot.y,
+                        x-playerHalfW-shotHalfW,x+playerHalfW+shotHalfW,
+                        y-playerHalfH-shotHalfH,y+playerHalfH+shotHalfH,contact) &&
+                (terrainT >= 1.f || contact < 1.f)) {
                     if (std::getenv("DEATHLEAK_TRACE_ENCOUNTERS"))
                         std::cout << "Encounter projectile hit player=(" << x << ',' << y
                                   << ") shot_from=(" << oldX << ',' << oldY
@@ -808,19 +895,33 @@ void Combat::Update(const LevelScene& scene, float x, float y, float dt, bool fi
                         if (!bloodProjectileArt_) SetArt(renderer);
                         SpawnPlayerBloodFlight(x, y);
                     }
-                    hurtCooldown_=0.5f; shot.life=0; ++hits_;
+                    hurtCooldown_=0.5f;
+                    shot.x=oldX+(shot.x-oldX)*contact; shot.y=oldY+(shot.y-oldY)*contact;
+                    shot.attachedToPlayer=true; shot.attachedOffsetX=shot.x-x; shot.attachedOffsetY=shot.y-y;
+                    deactivate(true); ++hits_;
                 }
             }
         } else for (size_t enemyIndex=0; enemyIndex<enemies_.size(); ++enemyIndex) {
             auto& enemy=enemies_[enemyIndex];
             if (enemy.health<=0 || enemy.teleportTime>0.f) continue;
-            // Swept segment avoids tunneling at the knife's 1200 world-units/s speed.
-            const float vx=shot.x-oldX, vy=shot.y-oldY;
-            const float t=std::clamp(((enemy.x-oldX)*vx+(enemy.y-oldY)*vy)/(vx*vx+vy*vy+0.0001f),0.f,1.f);
-            if (Inside(oldX+t*vx,oldY+t*vy,enemy.x,enemy.y,80.f,190.f)) {
-                DamageEnemy(enemyIndex,shot.damage,shot.vx); shot.life=0;
+            const auto collider = Collider(enemy);
+            const float halfW=collider.halfW+shot.collisionWidth*.5f;
+            const float halfH=collider.halfH+shot.collisionHeight*.5f;
+            float contact=0.f;
+            if (SweptBoxContact(oldX,oldY,shot.x,shot.y,
+                    enemy.x-halfW,enemy.x+halfW,
+                    enemy.y+collider.offsetY-halfH,enemy.y+collider.offsetY+halfH,contact) &&
+                (terrainT >= 1.f || contact < 1.f)) {
+                DamageEnemy(enemyIndex,shot.damage,shot.vx);
+                shot.x=oldX+(shot.x-oldX)*contact; shot.y=oldY+(shot.y-oldY)*contact;
+                deactivate(true);
                 break;
             }
+        }
+        if(terrainT<1.f && shot.active && !deflectedThisStep) {
+            if(winningBreakable<scene.Breakables().size() && breakableHit)
+                breakableHit(winningBreakable,shot.damage);
+            deactivate();
         }
     }
     shots_.erase(std::remove_if(shots_.begin(),shots_.end(),[](const auto& p){return p.life<=0;}),shots_.end());
@@ -894,7 +995,7 @@ void Combat::AppendPainterItems(std::vector<PainterItem>& items, render::Rendere
         render::Sprite sprite{texture, {}, {640.f+(enemy.x-cameraX-width/2)*scale,
             360.f+(cameraY-enemy.y-height/2)*scale,width*scale,height*scale}};
         sprite.flipX = enemy.facing < 0;
-        sprite.flipY = true; // Sprite V0 is world-bottom, not SDL screen-top.
+        sprite.flipY = false; // All three source spawners FlipVertical; inverse authored V cancels it.
         sprite.rgbGain = DamageBurstGain(enemy.damageBurstAge);
         items.push_back({3500, [&, sprite] { renderer.DrawSprite(sprite); }});
     }
@@ -928,15 +1029,19 @@ void Combat::AppendPainterItems(std::vector<PainterItem>& items, render::Rendere
         items.push_back({blood.impacted && !blood.blocked ? 4000 : 3000, [&, sprite] { renderer.DrawSprite(sprite); }});
     }
     for (const auto& shot:shots_) {
-        const float visualScale = shot.playerKnife ? std::clamp(shot.activeVisualAge / 0.3f, 0.f, 1.f) : 1.f;
+        const float visualScale = shot.active ? std::clamp(shot.activeVisualAge / 0.3f, 0.f, 1.f) : 1.f;
+        const float alpha = shot.active ? visualScale :
+            std::clamp(1.f-shot.inactiveAge/shot.inactiveRetention,0.f,1.f);
         if (visualScale <= 0.f) continue;
         const auto texture = shot.texture ? shot.texture : knifeArt_;
         if (!texture) continue;
         const float w = shot.visualWidth * visualScale, h = shot.visualHeight * visualScale;
         render::Sprite sprite{texture,{}, {640.f+(shot.x-cameraX-w/2)*scale,
             360.f+(cameraY-shot.y-h/2)*scale,w*scale,h*scale}};
-        sprite.flipX = shot.vx < 0.f;
-        sprite.flipY = true;
+        sprite.flipX = shot.playerKnife ? shot.vx < 0.f : shot.authoredFlipX;
+        sprite.flipY = !shot.authoredFlipY;
+        if (shot.npcProjectile)
+            sprite.rotationDegrees = render::OrdinarySpriteRotationDegrees(shot.rotation,shot.authoredFlipX,shot.authoredFlipY);
         // The original knife texture points along local +X. Reflect it once
         // for left flight, then pitch that reflected axis along velocity.
         // Using a full +/-acos angle AND the launch X reflection reversed
@@ -947,7 +1052,7 @@ void Combat::AppendPainterItems(std::vector<PainterItem>& items, render::Rendere
             sprite.rotationDegrees = pitch * (shot.vx < 0.f ? 1.f : -1.f) *
                                      (180.f / 3.14159265358979323846f);
         }
-        sprite.tint.a = static_cast<std::uint8_t>(std::lround(255.f * visualScale));
+        sprite.tint.a = static_cast<std::uint8_t>(std::lround(255.f * alpha));
         const auto* stableShot = &shot; // Valid until the next Combat mutation.
         items.push_back({shot.depth, [&, sprite, stableShot, emittedShot] {
             renderer.DrawSprite(sprite);

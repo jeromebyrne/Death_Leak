@@ -22,6 +22,8 @@ public:
     void SetImpactVisualDriven(bool enabled) { impactVisualDriven_ = enabled; }
     void CompleteImpactRecovery() { impactRecovery_ = ImpactRecovery::None; impactRecoveryTime_ = 0.f; }
     HardLandingEvent ConsumeHardLandingEvent() { const auto event = hardLandingEvent_; hardLandingEvent_ = HardLandingEvent::None; return event; }
+    void ApplyEntryDirection(float direction) { vx_=direction*60.f;if(direction!=0.f)facing_=direction<0.f?-1:1; }
+    void CarryX(float amount) { x_+=amount; }
     void Update(LevelScene& scene, float dt, int direction, bool jump);
     unsigned ConsumeJumpRollVocalActions() { const auto count = vocalActions_; vocalActions_ = 0; return count; }
     bool SmashedSomething() const { return smashedSomething_; }

@@ -7,7 +7,7 @@
 class CaptureRenderer final : public deathleak::render::Renderer {
 public:
     std::vector<deathleak::render::Sprite> sprites;
-    bool Initialize(const char*, int, int, std::string&) override { return true; }
+    bool Initialize(const char*, int, int, bool, std::string&) override { return true; }
     deathleak::render::TextureId LoadTexture(const std::string&, std::string&) override { return 1; }
     void BeginFrame(deathleak::render::Color) override {}
     void DrawSprite(const deathleak::render::Sprite& sprite) override { sprites.push_back(sprite); }

@@ -44,7 +44,17 @@ struct Shot {
     float meleeCooldown = 0.f;
     render::TextureId texture = render::InvalidTexture;
     float visualWidth = 84.5f, visualHeight = 25.f;
-    // Only player-thrown knives use the source Projectile fade-in lifecycle.
+    // Collision metadata never scales with the .3-second visual fade.
+    float collisionWidth = 84.5f, collisionHeight = 25.f;
+    bool npcProjectile = false; // birth type, retained after deflection
+    bool active = true;
+    float inactiveRetention = .25f, inactiveAge = 0.f;
+    bool authoredFlipX = false, authoredFlipY = false, spinning = false;
+    float rotation = 0.f;
+    render::TextureId impactTexture = render::InvalidTexture;
+    bool attachedToPlayer = false;
+    float attachedOffsetX = 0.f, attachedOffsetY = 0.f;
+    // Every active Projectile uses the source fade-in lifecycle.
     int depth = 2500; // GameObject depth remains fixed after a projectile is deflected.
     bool playerKnife = false;
     float activeVisualAge = 0.f;
@@ -61,6 +71,7 @@ struct PlayerShotLaunchState {
 class Combat {
     friend struct ::CombatMaterialIdentityProbe;
     friend struct ::EncounterCooldownProbe;
+    friend struct AllLevelCombatParityProbe;
     friend struct CombatBloodFlightProbe; // focused CPU collision-edge fixture
     friend struct CombatBloodOcclusionProbe; // first-line occlusion fixture
     friend struct CombatBloodReboundProbe; // blocked-flight rebound fixture
@@ -69,8 +80,10 @@ public:
     void SetArt(render::Renderer& renderer);
     void SpawnIntroBloodFlight(float x, float y);
     void UpdateBloodFlights(const LevelScene& scene, float dt);
-    void Update(const LevelScene& scene, float x, float y, float dt, bool fire, bool melee, bool grounded, bool rolling, int facing, render::Renderer& renderer, float aimX = 0.f, float aimY = 0.f, PlayerShotLaunchState launchState = {});
+    void Update(const LevelScene& scene, float x, float y, float dt, bool fire, bool melee, bool grounded, bool rolling, int facing, render::Renderer& renderer, float aimX = 0.f, float aimY = 0.f, PlayerShotLaunchState launchState = {}, const std::function<void(size_t,float)>& breakableHit = {});
+    void ApplyExplosion(float x,float y,float radius,float damage);
     bool DamageEnemy(size_t index, float damage, float projectileDirectionX = 0.f); // shared projectile/melee hit path
+    void SetFocusing(bool active) { focusing_=active; }
     bool MeleeActive() const { return meleeTime_ > 0.f; }
     float MeleeElapsed() const { return meleeTime_; }
     int MeleeStrikes() const { return meleeStrikes_; }
@@ -116,6 +129,7 @@ public:
     const std::vector<Enemy>& Enemies() const { return enemies_; }
     const std::vector<Shot>& Shots() const { return shots_; }
 private:
+    bool focusing_=false;
     std::vector<Enemy> enemies_;
     std::vector<Shot> shots_;
     std::uint64_t nextShotIdentity_ = 1; // Never recycle across ClearLevel/scene epochs.
@@ -155,6 +169,9 @@ private:
     render::TextureId ninjaDeathArt_[7]{};
     render::TextureId explosionLinesArt_ = 0;
     render::TextureId bloodParticleArt_ = 0, bloodProjectileArt_ = 0, bloodImpactArt_[2]{};
+    float ninjaShotWidth_ = 20.f, ninjaShotHeight_ = 20.f;
+    float ghostShotWidth_ = 20.f, ghostShotHeight_ = 20.f;
+    render::TextureId ninjaImpactArt_ = 0, ghostImpactArt_ = 0;
     render::TextureId ninjaShotArt_ = 0, ghostShotArt_ = 0, skeletonShotArt_ = 0, upgradedKnifeArt_ = 0;
     float maxHealth_ = 25.f, health_ = 25.f, focus_ = 100.f, fireCooldown_ = 0.f, burstCooldown_ = 0.f;
     float focusCooldown_ = 0.f, hurtCooldown_ = 0.f;

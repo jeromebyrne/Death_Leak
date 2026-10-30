@@ -1,0 +1,1334 @@
+{
+  "source_url": "https://www.youtube.com/watch?v=03EPlXOJLtg",
+  "video_duration_seconds": 2713.466667,
+  "video_sha256": "60c56d9230c39cefac8765e6ffd4e420413d283a4c4fbba70178f49a8c408849",
+  "inventory_counts": {
+    "levels_directory": 39,
+    "campaign_reachable_including_hardcoded_boat_ending": 34,
+    "levels_directory_positively_or_route_geometry_matched": 33,
+    "deprecated_levels": 11,
+    "auxiliary_animation_preview": 1,
+    "total_level_root_xml": 51
+  },
+  "method": "Full-duration 10-second decoded contact sheets (271 frames) plus 2-second dense transition clips (20 ranges). Geometry, XML transition topology, unique pickup text and unique assets used jointly. No display used. Identity not always high confidence, boundaries approximate. Post-ending footage contains abrupt edited/montage jumps; do not interpolate unseen traversal.",
+  "unresolved": [
+    "Exact frame-perfect transitions were not instrumented in original video; numerical interval boundaries are review approximations, not runtime telemetry.",
+    "Underwater_cave, _1_5, _2, _3 identities are medium-confidence topology/geometry matches; very similar water overlays obscure unique assets at 360p.",
+    "2443-2447 waterfall_top is explicitly inferred only; no positive standalone sample match in that tiny traversal. This level is positively shown many earlier times.",
+    "Steam overlay710-791 obscures whether/when crossing village_forts/central; not assigned an exact XML."
+  ],
+  "levels": [
+    {
+      "name": "catacombs_entrance_1",
+      "path": "levels/catacombs_entrance_1.xml",
+      "sha256": "3acefbb4bfae3a70c45fab095a61d097815e11f97918a4b927b7d80ea57fcdf7",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 2097.0,
+          "end_seconds": 2125.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 2110,
+      "identity_anchor": "Eight huge wall_foreground.png slabs; KeyPickup30 has_repair_tools (Tools text)",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "catacombs_entrance_2",
+      "path": "levels/catacombs_entrance_2.xml",
+      "sha256": "ad6650f22cc583b8078461ff3fc742a9e8c7586b9e92a884817b27be77180454",
+      "category": "levels",
+      "footage_status": "not_observed_in_reviewed_full_video_samples",
+      "intervals": [],
+      "representative_seconds": null,
+      "identity_anchor": null,
+      "reachable_from_main_menu_campaign": false,
+      "not_shown_reason": "No incoming campaign transition from main-menu entry; orphan/test island"
+    },
+    {
+      "name": "cave_platforming_1",
+      "path": "levels/cave_platforming_1.xml",
+      "sha256": "0d39e42f31f11461c1d5cfcc2345f4bf9e196637c959f98d081b81615a64d59e",
+      "category": "levels",
+      "footage_status": "not_observed_in_reviewed_full_video_samples",
+      "intervals": [],
+      "representative_seconds": null,
+      "identity_anchor": null,
+      "reachable_from_main_menu_campaign": false,
+      "not_shown_reason": "No incoming campaign transition from main-menu entry; orphan/test island"
+    },
+    {
+      "name": "cliff",
+      "path": "levels/cliff.xml",
+      "sha256": "61e31aae909c85803f3d79594adb5d89376dff267696621b6baad4ecac7f26c1",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 1782.6,
+          "end_seconds": 1793.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 1801.8,
+          "end_seconds": 1853.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 1868.2,
+          "end_seconds": 1920.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 1936.6,
+          "end_seconds": 1967.7,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2218.0,
+          "end_seconds": 2234.1,
+          "identity_confidence": "high",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 1804,
+      "identity_anchor": "Huge multi-sailed windmills, cliff wall, coastal cave pool, Door105 windmill and Door206 hut, Boat209",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "cliff_hut",
+      "path": "levels/cliff_hut.xml",
+      "sha256": "1c9fd4afcf966cbc3c537b785fa9d15f5a4b8b283ed47225fbaf9b65cbf2dbd3",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 1793.0,
+          "end_seconds": 1801.8,
+          "identity_confidence": "high",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 1800,
+      "identity_anchor": "DojoScrollPickup12 kSlowMotion/FOCUS inside tiny vignetted hut",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "cliff_windmill",
+      "path": "levels/cliff_windmill.xml",
+      "sha256": "b9abc6fa617c823b1dbd9d72ab5c3b025c7b896546b1ce761a53dbc1b1fe6554",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 1853.0,
+          "end_seconds": 1868.2,
+          "identity_confidence": "high",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 1862,
+      "identity_anchor": "Narrow brick cylinder interior and PaperPickup24 Grain Supply Status hint",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "dojo",
+      "path": "levels/dojo.xml",
+      "sha256": "8d4d87e24a131f97f246d7ca7853ffc23e5061c43619995b4db3e86c050ab5dc",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 1173.0,
+          "end_seconds": 1208.5,
+          "identity_confidence": "high",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 1195,
+      "identity_anchor": "Dragon bg_temp wall panel and pillars; DojoScrollPickup27 kDownwardDash",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "dojo_front",
+      "path": "levels/dojo_front.xml",
+      "sha256": "e13b70e2a06a81a876d5565f579cf7bcac2f92d613e5cc6f73b8ee6d4b243be4",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 1077.0,
+          "end_seconds": 1099.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 1162.0,
+          "end_seconds": 1173.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 1208.5,
+          "end_seconds": 1212.0,
+          "identity_confidence": "medium",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 1094,
+      "identity_anchor": "Door10 locked by dojo key; PaperPickup25 DOJO NOTE; unique broad timber facade",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "first_ninja_arena",
+      "path": "levels/first_ninja_arena.xml",
+      "sha256": "33488a98bdefe2fe89524c790f45cf230bf77008f722e7988348e57030a0440e",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 1611.0,
+          "end_seconds": 1653.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2006.0,
+          "end_seconds": 2031.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2175.0,
+          "end_seconds": 2183.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 1615,
+      "identity_anchor": "Bowl-shaped pit with broken/angled raft-platform arena, ropes and orbs",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "forest_exploration_1",
+      "path": "levels/forest_exploration_1.xml",
+      "sha256": "6d36a837708a732ac7d2a085010a3d22229e29618b8594b5c2576d491c4161c5",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 104.0,
+          "end_seconds": 146.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 554.0,
+          "end_seconds": 570.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 1579.0,
+          "end_seconds": 1585.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2040.0,
+          "end_seconds": 2048.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2157.0,
+          "end_seconds": 2164.7,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2392.0,
+          "end_seconds": 2397.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2447.0,
+          "end_seconds": 2457.6,
+          "identity_confidence": "medium",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2494.0,
+          "end_seconds": 2513.0,
+          "identity_confidence": "medium",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 120,
+      "identity_anchor": "DojoScrollPickup117 kDeflection; branch_4/5/6 and rope; underwater_cave_5 shortcut trigger",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "forest_exploration_2",
+      "path": "levels/forest_exploration_2.xml",
+      "sha256": "c07a3e2f35778316922f49ada30339cff3a806e846dc89b68d919b1e29bd5577",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 158.0,
+          "end_seconds": 235.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 380.0,
+          "end_seconds": 393.0,
+          "identity_confidence": "medium",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 580.0,
+          "end_seconds": 631.0,
+          "identity_confidence": "medium",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 1364.4,
+          "end_seconds": 1390.7,
+          "identity_confidence": "medium",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2058.0,
+          "end_seconds": 2080.0,
+          "identity_confidence": "medium",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2141.0,
+          "end_seconds": 2147.0,
+          "identity_confidence": "medium",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2436.0,
+          "end_seconds": 2443.0,
+          "identity_confidence": "medium",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2519.0,
+          "end_seconds": 2525.2,
+          "identity_confidence": "medium",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 175,
+      "identity_anchor": "Branch_1/2/3 forest without granary; links waterfall_top to forest_exploration_barn",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "forest_exploration_barn",
+      "path": "levels/forest_exploration_barn.xml",
+      "sha256": "37d6a32caddb8fe0f4d729e9dd198e057ff1ca9e0fa5cfde4dec002bfebb1bd0",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 235.0,
+          "end_seconds": 269.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 360.0,
+          "end_seconds": 380.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 631.0,
+          "end_seconds": 650.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 883.0,
+          "end_seconds": 909.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 1343.0,
+          "end_seconds": 1364.4,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2080.0,
+          "end_seconds": 2089.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2128.0,
+          "end_seconds": 2141.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2423.0,
+          "end_seconds": 2436.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2525.2,
+          "end_seconds": 2538.6,
+          "identity_confidence": "high",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 260,
+      "identity_anchor": "Sprite Media/buildings/barn.png; Door24 granary-key gate; DojoScrollPickup139 kSpeedIncrease",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "grass_exploration_1",
+      "path": "levels/grass_exploration_1.xml",
+      "sha256": "3d267c6bd0e2b60e05b603d029c2879c151f899f601bd7b5c4b7abc9272f7455",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 1653.0,
+          "end_seconds": 1691.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 1704.5,
+          "end_seconds": 1710.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 1991.2,
+          "end_seconds": 2006.0,
+          "identity_confidence": "medium",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2183.0,
+          "end_seconds": 2190.0,
+          "identity_confidence": "medium",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 1670,
+      "identity_anchor": "DojoScrollPickup53 kRoll; PaperPickup54 strange-stones note; smash-access opening to dead_end_below_2",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "grass_exploration_2",
+      "path": "levels/grass_exploration_2.xml",
+      "sha256": "7d581ff67348fd144e61e3ae028f8885bb6275ea9a2a95f2ee7fee73b26946e1",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 1710.0,
+          "end_seconds": 1782.6,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 1967.7,
+          "end_seconds": 1991.2,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2200.5,
+          "end_seconds": 2218.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2397.0,
+          "end_seconds": 2407.6,
+          "identity_confidence": "high",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 1735,
+      "identity_anchor": "Dense tall raft-platform fort, posts and long downward hillside; unlike bowl-shaped first arena",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "grass_exploration_3",
+      "path": "levels/grass_exploration_3.xml",
+      "sha256": "7187751860410d91f31bbf2d12fc52436b37ebed8906335e4a6523f89cb3b438",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 10.6,
+          "end_seconds": 104.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 1585.0,
+          "end_seconds": 1611.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2031.0,
+          "end_seconds": 2040.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2164.7,
+          "end_seconds": 2175.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2272.7,
+          "end_seconds": 2337.9,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2407.6,
+          "end_seconds": 2417.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2457.6,
+          "end_seconds": 2494.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 45,
+      "identity_anchor": "PaperPickup103 projectile tutorial; opening long sloped raft walkway; far-right large trunks",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "grass_exploration_dead_end_below_1",
+      "path": "levels/grass_exploration_dead_end_below_1.xml",
+      "sha256": "fb430303b50b70a646930a40ffc6b84956436fa7dd081519c364c4006bc47de9",
+      "category": "levels",
+      "footage_status": "not_observed_in_reviewed_full_video_samples",
+      "intervals": [],
+      "representative_seconds": null,
+      "identity_anchor": null,
+      "reachable_from_main_menu_campaign": false,
+      "not_shown_reason": "No incoming campaign transition from main-menu entry; orphan/test island"
+    },
+    {
+      "name": "grass_exploration_dead_end_below_2",
+      "path": "levels/grass_exploration_dead_end_below_2.xml",
+      "sha256": "e3896cd233b4a5deda8ca7c94767f004c27151edc3af8ef3cb68956a3a0d7771",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 1691.0,
+          "end_seconds": 1704.5,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2190.0,
+          "end_seconds": 2200.5,
+          "identity_confidence": "medium",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 1696,
+      "identity_anchor": "KeyPickup34 granary key; black vignette and breakable roof stone row",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "hot_springs",
+      "path": "levels/hot_springs.xml",
+      "sha256": "3311c1f0730b076709480380285c1efdced5e71320e4eb8f4965f3ea81636fd9",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 1525.9,
+          "end_seconds": 1565.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2347.7,
+          "end_seconds": 2378.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 1545,
+      "identity_anchor": "Pale water_pool with very dark foreground stalagmites; PaperPickup55 Kato note",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "inside_hanging_shadow",
+      "path": "levels/inside_hanging_shadow.xml",
+      "sha256": "c9e9affffe4b8a2903d7e6ae103eb1e739b8fe538fdf7cfbdd980dbe5bab371f",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 2089.0,
+          "end_seconds": 2097.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2125.0,
+          "end_seconds": 2128.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 2092,
+      "identity_anchor": "Small wall/structural_post room with hangmans_shadow.png; Door47 catacombs",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "sea_1",
+      "path": "levels/sea_1.xml",
+      "sha256": "20da670e166cd5c0c76ee307204d3efedf453100549de54efe128ec43a710849",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 1920.0,
+          "end_seconds": 1936.6,
+          "identity_confidence": "high",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 1925,
+      "identity_anchor": "Open swimming ocean west of cliff, sea_bed and seaweed; distinct from final boat scene",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "sea_2",
+      "path": "levels/sea_2.xml",
+      "sha256": "0047c13d77e8fafe617719eaa1699de271edd0f29357d7c250ebbfa74d6ef65e",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 2234.1,
+          "end_seconds": 2269.8,
+          "identity_confidence": "high",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 2245,
+      "identity_anchor": "Ending ocean boat; Boat.cpp EnterBoat explicitly switches to sea_2, Player.cpp final-level flag matches",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "test",
+      "path": "levels/test.xml",
+      "sha256": "cb9560dc95041495538dce48df8f130c14771d886a6385ff33af3f2279fad6c1",
+      "category": "levels",
+      "footage_status": "not_observed_in_reviewed_full_video_samples",
+      "intervals": [],
+      "representative_seconds": null,
+      "identity_anchor": null,
+      "reachable_from_main_menu_campaign": false,
+      "not_shown_reason": "No incoming campaign transition from main-menu entry; orphan/test island"
+    },
+    {
+      "name": "test_2",
+      "path": "levels/test_2.xml",
+      "sha256": "9e8356681acc747fd64ec72de101dd99ac7a6751a56ec80ec2ec1ced9008d6c1",
+      "category": "levels",
+      "footage_status": "not_observed_in_reviewed_full_video_samples",
+      "intervals": [],
+      "representative_seconds": null,
+      "identity_anchor": null,
+      "reachable_from_main_menu_campaign": false,
+      "not_shown_reason": "No incoming campaign transition from main-menu entry; orphan/test island"
+    },
+    {
+      "name": "underwater_cave",
+      "path": "levels/underwater_cave.xml",
+      "sha256": "44c7dde1dfdf48b2f71388c9ac06f35a8452151408c413bfeaad732914cf4b33",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 1465.0,
+          "end_seconds": 1470.0,
+          "identity_confidence": "medium",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 1467,
+      "identity_anchor": "Unique dead_woman.png, seaweed, submerged chamber; waterfall_bottom above, tunnel1_5 left",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "underwater_cave_1_5",
+      "path": "levels/underwater_cave_1_5.xml",
+      "sha256": "4303201614702d8135f24e4ca6b3d902a0d2480ecbef093a45e2321032ad741e",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 1470.0,
+          "end_seconds": 1478.0,
+          "identity_confidence": "medium",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 1473,
+      "identity_anchor": "Wide low horizontal water-layer tunnel connecting main underwater chamber and upward bend2",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "underwater_cave_2",
+      "path": "levels/underwater_cave_2.xml",
+      "sha256": "78b5842ff0c27601c5f38a316a493068ceb2b3d6b8aa285e9eb9110bf578d1a5",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 1478.0,
+          "end_seconds": 1485.0,
+          "identity_confidence": "medium",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 1481,
+      "identity_anchor": "Shorter tunnel turning upward at left; links horizontal1_5 to vertical3",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "underwater_cave_3",
+      "path": "levels/underwater_cave_3.xml",
+      "sha256": "a685c488159e0c319ca21fe5d989355fa79c12ee7d4a2c019805de6b19794539",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 1485.0,
+          "end_seconds": 1498.0,
+          "identity_confidence": "medium",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2337.9,
+          "end_seconds": 2341.0,
+          "identity_confidence": "medium",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 1493,
+      "identity_anchor": "Narrow vertical shaft; cave_background panels and water_layer_2; top exit cave4",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "underwater_cave_4",
+      "path": "levels/underwater_cave_4.xml",
+      "sha256": "1c356d327137aee9d214bb05e56553ac19e0551635247115feeff0a434b9e368",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 1498.0,
+          "end_seconds": 1510.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 1519.0,
+          "end_seconds": 1525.9,
+          "identity_confidence": "medium",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 1565.0,
+          "end_seconds": 1574.0,
+          "identity_confidence": "medium",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2341.0,
+          "end_seconds": 2347.7,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2378.0,
+          "end_seconds": 2388.0,
+          "identity_confidence": "medium",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 1503,
+      "identity_anchor": "Long dark split-route chamber with cave_floor_3 and pale lower opening; hot_springs left and cave5 right",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "underwater_cave_5",
+      "path": "levels/underwater_cave_5.xml",
+      "sha256": "76ea99469384d4afc07f8aa6d4996ba8a5620424da2008d492704deb4d91a62f",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 1510.0,
+          "end_seconds": 1519.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 1574.0,
+          "end_seconds": 1579.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2388.0,
+          "end_seconds": 2392.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 1513,
+      "identity_anchor": "Vertical rope_long rotated pi/2 at x1683, Door16 forest_exploration_1 shortcut",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "underwater_cave_6",
+      "path": "levels/underwater_cave_6.xml",
+      "sha256": "e8334db77bf1347e165b1de91c599e2a08b1ca0ed5f6dc4daefd0bf86c77d70d",
+      "category": "levels",
+      "footage_status": "not_observed_in_reviewed_full_video_samples",
+      "intervals": [],
+      "representative_seconds": null,
+      "identity_anchor": null,
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": "No positive visual match; do not imply absence from game"
+    },
+    {
+      "name": "village_agri",
+      "path": "levels/village_agri.xml",
+      "sha256": "5a8ee2832c9cbc6a6c5d86c6ecf963a993f3329f03547eecc41d439cf4c2c09f",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 1110.0,
+          "end_seconds": 1155.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2690.0,
+          "end_seconds": 2713.467,
+          "identity_confidence": "high",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 1125,
+      "identity_anchor": "Crop fence; KeyPickup137 dojo key; projectile-speed scroll126",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "village_central",
+      "path": "levels/village_central.xml",
+      "sha256": "c8de2f3f3bb0a038dba12845c95244a95da5f29b78ddd7b36bfe596f617a0824",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 791.0,
+          "end_seconds": 840.0,
+          "identity_confidence": "medium",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 923.0,
+          "end_seconds": 998.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 1237.0,
+          "end_seconds": 1241.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 1268.2,
+          "end_seconds": 1275.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 1289.0,
+          "end_seconds": 1320.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2630.0,
+          "end_seconds": 2663.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 954,
+      "identity_anchor": "Hut Door93 and water-well opening between isolated tall raft platforms; hanging body nearby",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "village_forts",
+      "path": "levels/village_forts.xml",
+      "sha256": "c4fab4d32477e17b1ef8a59310ee1bbcc46260085b7ae7bac24a1674e18f94e3",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 269.0,
+          "end_seconds": 360.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 650.0,
+          "end_seconds": 710.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 840.0,
+          "end_seconds": 883.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 909.0,
+          "end_seconds": 923.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 1320.0,
+          "end_seconds": 1343.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2417.0,
+          "end_seconds": 2423.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2538.6,
+          "end_seconds": 2630.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 295,
+      "identity_anchor": "PaperPickup27 Shogunate note; multiple stacked wall pieces and cantilevered short raft platforms",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "village_hut",
+      "path": "levels/village_hut.xml",
+      "sha256": "44812a22ce07e07a522c4b5ef0354361cd69448ea45b3cfb538542ef2c62feb5",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 1275.0,
+          "end_seconds": 1289.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 1285,
+      "identity_anchor": "PaperPickup15 suicide note; vignetted tiny hut",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "village_shrine",
+      "path": "levels/village_shrine.xml",
+      "sha256": "60aaaf2bd89ef53e4d61fa0a88971c4eb2683638d05d273720b86a8680c35452",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 998.0,
+          "end_seconds": 1077.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 1099.0,
+          "end_seconds": 1110.0,
+          "identity_confidence": "medium",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 1155.0,
+          "end_seconds": 1162.0,
+          "identity_confidence": "medium",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 1212.0,
+          "end_seconds": 1237.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2663.0,
+          "end_seconds": 2680.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2680.0,
+          "end_seconds": 2690.0,
+          "identity_confidence": "medium",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 1025,
+      "identity_anchor": "Dense wide multilevel raft scaffolding; distant dojo gateway Door19 at east",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "water_well_1",
+      "path": "levels/water_well_1.xml",
+      "sha256": "708d391ac0a40056da2e0acd72b8533878afcdeaec99e13d57d70580460a8d1c",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 1241.0,
+          "end_seconds": 1268.2,
+          "identity_confidence": "high",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 1245,
+      "identity_anchor": "Narrow brick shaft and PaperPickup42 cave-clue Hilmar note",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "waterfall_bottom",
+      "path": "levels/waterfall_bottom.xml",
+      "sha256": "da4d2f97f81e9e838abd0d62cdf167d1af9db13edce1d33a34dfd11393788f04",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 452.5,
+          "end_seconds": 467.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 514.3,
+          "end_seconds": 545.6,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 1459.0,
+          "end_seconds": 1465.0,
+          "identity_confidence": "medium",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 458,
+      "identity_anchor": "Tall clear waterfall shaft, floating_platform_1.png; side exit to waterfall_cave",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "waterfall_cave",
+      "path": "levels/waterfall_cave.xml",
+      "sha256": "454e6eb9efca20e3976a04e43854c7a0b5d5f74717e4225c57ed985f7634f045",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 467.0,
+          "end_seconds": 514.3,
+          "identity_confidence": "high",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 478,
+      "identity_anchor": "Side cave off bottom; HealthDevil and ring-like currency arrangement",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "waterfall_top",
+      "path": "levels/waterfall_top.xml",
+      "sha256": "d1e8a7a4986a54f0d5ba55329237adced9283cd3fc540e32604299967cde02b6",
+      "category": "levels",
+      "footage_status": "shown",
+      "intervals": [
+        {
+          "start_seconds": 146.0,
+          "end_seconds": 158.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 393.0,
+          "end_seconds": 452.5,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 545.6,
+          "end_seconds": 554.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 570.0,
+          "end_seconds": 580.0,
+          "identity_confidence": "medium",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 1390.7,
+          "end_seconds": 1459.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2048.0,
+          "end_seconds": 2058.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2147.0,
+          "end_seconds": 2157.0,
+          "identity_confidence": "high",
+          "inferred_only": false
+        },
+        {
+          "start_seconds": 2443.0,
+          "end_seconds": 2447.0,
+          "identity_confidence": "low",
+          "inferred_only": true
+        },
+        {
+          "start_seconds": 2513.0,
+          "end_seconds": 2519.0,
+          "identity_confidence": "medium",
+          "inferred_only": false
+        }
+      ],
+      "representative_seconds": 152,
+      "identity_anchor": "Media/waterfall_4.png + rafts flanking luminous opening; camera remains in this XML during long refracted descent",
+      "reachable_from_main_menu_campaign": true,
+      "not_shown_reason": null
+    },
+    {
+      "name": "door_test_1",
+      "path": "deprecated_levels/door_test_1.xml",
+      "sha256": "7897e04b5184dafb803da3ab5c65a1fb2117e83888941166ece0622ab75eb2e3",
+      "category": "deprecated_levels",
+      "footage_status": "not_observed_in_reviewed_full_video_samples",
+      "intervals": [],
+      "representative_seconds": null,
+      "identity_anchor": null,
+      "reachable_from_main_menu_campaign": false,
+      "not_shown_reason": "No positive visual match; do not imply absence from game"
+    },
+    {
+      "name": "door_test_2",
+      "path": "deprecated_levels/door_test_2.xml",
+      "sha256": "965c8b87a5e65631a4076fd8221c794e51db0b89eb0246dac9730b7fc225701b",
+      "category": "deprecated_levels",
+      "footage_status": "not_observed_in_reviewed_full_video_samples",
+      "intervals": [],
+      "representative_seconds": null,
+      "identity_anchor": null,
+      "reachable_from_main_menu_campaign": false,
+      "not_shown_reason": "No positive visual match; do not imply absence from game"
+    },
+    {
+      "name": "field_1",
+      "path": "deprecated_levels/field_1.xml",
+      "sha256": "e5b3a8a2241db7bf4f6a16b7a3e66c9da9007c9558e7ad1f803d97e645da926e",
+      "category": "deprecated_levels",
+      "footage_status": "not_observed_in_reviewed_full_video_samples",
+      "intervals": [],
+      "representative_seconds": null,
+      "identity_anchor": null,
+      "reachable_from_main_menu_campaign": false,
+      "not_shown_reason": "No positive visual match; do not imply absence from game"
+    },
+    {
+      "name": "level1",
+      "path": "deprecated_levels/level1.xml",
+      "sha256": "897aa64707b0df6fca4b62d7e189c90faafc3c2a949a41f7f812ed69e2a682ea",
+      "category": "deprecated_levels",
+      "footage_status": "not_observed_in_reviewed_full_video_samples",
+      "intervals": [],
+      "representative_seconds": null,
+      "identity_anchor": null,
+      "reachable_from_main_menu_campaign": false,
+      "not_shown_reason": "No positive visual match; do not imply absence from game"
+    },
+    {
+      "name": "save_shrine_test_level",
+      "path": "deprecated_levels/save_shrine_test_level.xml",
+      "sha256": "6efb169f8a5e9d69c6f38410e234ecf9d3972aecbe321ec1e3406f36bf21c9f4",
+      "category": "deprecated_levels",
+      "footage_status": "not_observed_in_reviewed_full_video_samples",
+      "intervals": [],
+      "representative_seconds": null,
+      "identity_anchor": null,
+      "reachable_from_main_menu_campaign": false,
+      "not_shown_reason": "No positive visual match; do not imply absence from game"
+    },
+    {
+      "name": "test_level",
+      "path": "deprecated_levels/test_level.xml",
+      "sha256": "3fe54dcac3f3f0e3a04028db6363c86088336e50c3ea9b955149ad795de9ae5c",
+      "category": "deprecated_levels",
+      "footage_status": "not_observed_in_reviewed_full_video_samples",
+      "intervals": [],
+      "representative_seconds": null,
+      "identity_anchor": null,
+      "reachable_from_main_menu_campaign": false,
+      "not_shown_reason": "No positive visual match; do not imply absence from game"
+    },
+    {
+      "name": "underwater_cave",
+      "path": "deprecated_levels/underwater_cave.xml",
+      "sha256": "341d4b7217ddcc8b1636c5f688596e0e569157dae305a7beb8841e589d634466",
+      "category": "deprecated_levels",
+      "footage_status": "not_observed_in_reviewed_full_video_samples",
+      "intervals": [],
+      "representative_seconds": null,
+      "identity_anchor": null,
+      "reachable_from_main_menu_campaign": false,
+      "not_shown_reason": "No positive visual match; do not imply absence from game"
+    },
+    {
+      "name": "village",
+      "path": "deprecated_levels/village.xml",
+      "sha256": "f24593e19f4b1dd36ff8226987a8a1a369b8983c0a729b36e239d2ef7c944832",
+      "category": "deprecated_levels",
+      "footage_status": "not_observed_in_reviewed_full_video_samples",
+      "intervals": [],
+      "representative_seconds": null,
+      "identity_anchor": null,
+      "reachable_from_main_menu_campaign": false,
+      "not_shown_reason": "No positive visual match; do not imply absence from game"
+    },
+    {
+      "name": "village_2",
+      "path": "deprecated_levels/village_2.xml",
+      "sha256": "164484c8e42ba733aa6727314cbcfbf3728760550c60bb5f85bb52682c9569e9",
+      "category": "deprecated_levels",
+      "footage_status": "not_observed_in_reviewed_full_video_samples",
+      "intervals": [],
+      "representative_seconds": null,
+      "identity_anchor": null,
+      "reachable_from_main_menu_campaign": false,
+      "not_shown_reason": "No positive visual match; do not imply absence from game"
+    },
+    {
+      "name": "village_outskirts",
+      "path": "deprecated_levels/village_outskirts.xml",
+      "sha256": "4e934d7e21412156b6e4d7c652f7b92da59bbff17729d68701c6fcbb5992f962",
+      "category": "deprecated_levels",
+      "footage_status": "not_observed_in_reviewed_full_video_samples",
+      "intervals": [],
+      "representative_seconds": null,
+      "identity_anchor": null,
+      "reachable_from_main_menu_campaign": false,
+      "not_shown_reason": "No positive visual match; do not imply absence from game"
+    },
+    {
+      "name": "waterfall_level",
+      "path": "deprecated_levels/waterfall_level.xml",
+      "sha256": "6cc585b10a413328d18139b65cdeff8970b2935dbf5366c263fbf88e52e250fb",
+      "category": "deprecated_levels",
+      "footage_status": "not_observed_in_reviewed_full_video_samples",
+      "intervals": [],
+      "representative_seconds": null,
+      "identity_anchor": null,
+      "reachable_from_main_menu_campaign": false,
+      "not_shown_reason": "No positive visual match; do not imply absence from game"
+    }
+  ],
+  "auxiliary": [
+    {
+      "path": "Game/XmlFiles/animation_preview.xml",
+      "status": "not_observed",
+      "purpose": "animation-preview scene, not a campaign level"
+    }
+  ]
+}

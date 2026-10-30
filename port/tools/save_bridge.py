@@ -173,7 +173,7 @@ def windows_to_dl5(fields, level):
     lines += ['K:' + key for key in keys] + ['D:' + door for door in doors]
     if features is not None and ('int', '4') in features: lines.append('U:kDeflection')
     if speed_unlocked: lines.append('U:kSpeedIncrease')
-    for name, feature_id in (('kDownwardDash', '1'), ('kRoll', '2')):
+    for name, feature_id in (('kDownwardDash', '1'), ('kRoll', '2'), ('kSlowMotion', '3'), ('kBombUnlock', '8')):
         if features is not None and ('int', feature_id) in features: lines.append('U:' + name)
     for name, feature_id in (('kProjectileDamageIncrease', '6'), ('kProjectileSpeedIncrease', '7')):
         if features is not None and ('int', feature_id) in features: lines.append('U:' + name)
@@ -228,7 +228,7 @@ def dl5_to_windows(path):
         elif line.startswith('P:'):
             if line[2:] not in PAPERS or line[2:] in papers: raise ValueError('unmapped/duplicate paper')
             papers.add(line[2:])
-        elif line in ('U:kDeflection', 'U:kSpeedIncrease', 'U:kProjectileDamageIncrease', 'U:kProjectileSpeedIncrease', 'U:kDownwardDash', 'U:kRoll'):
+        elif line in ('U:kDeflection', 'U:kSpeedIncrease', 'U:kProjectileDamageIncrease', 'U:kProjectileSpeedIncrease', 'U:kDownwardDash', 'U:kRoll', 'U:kSlowMotion', 'U:kBombUnlock'):
             unlock = line[2:]
             if unlock in fields: raise ValueError('duplicate unlock')
             fields[unlock] = True
@@ -241,7 +241,7 @@ def dl5_to_windows(path):
             migration = extension_fields(line[3:])
         elif line.startswith(('B:', 'N:')) or '#' in line: runtime.append(line)
         else: raise ValueError('unmapped Linux line: ' + line)
-    if lines[0] == 'DL6' and (keys or doors or papers or devils or smashes or runtime or fields.get('J') or fields.get('kDeflection') or fields.get('kSpeedIncrease') or fields.get('kProjectileDamageIncrease') or fields.get('kProjectileSpeedIncrease') or fields.get('kDownwardDash') or fields.get('kRoll') or fields.get('H') or migration):
+    if lines[0] == 'DL6' and (keys or doors or papers or devils or smashes or runtime or fields.get('J') or fields.get('kDeflection') or fields.get('kSpeedIncrease') or fields.get('kProjectileDamageIncrease') or fields.get('kProjectileSpeedIncrease') or fields.get('kDownwardDash') or fields.get('kRoll') or fields.get('kSlowMotion') or fields.get('kBombUnlock') or fields.get('H') or migration):
         raise ValueError('DL6 MENU cannot carry progression')
     if lines[0] == 'DL5' and len([v for v in runtime if v.startswith('B:')]) != 1:
         raise ValueError('DL5 requires one balance')
@@ -261,7 +261,7 @@ def dl5_to_windows(path):
             if new_count < old_count or int(fields['H']) != int(previous[1]) + 20 * (new_count - old_count):
                 raise ValueError('max health migration conflicts with Linux value')
         migration['player_max_health'] = ('int', fields['H'])
-    for name, feature_id in (('kDownwardDash', '1'), ('kRoll', '2'), ('kDeflection', '4'), ('kSpeedIncrease', '5'), ('kProjectileDamageIncrease', '6'), ('kProjectileSpeedIncrease', '7')):
+    for name, feature_id in (('kDownwardDash', '1'), ('kRoll', '2'), ('kSlowMotion', '3'), ('kBombUnlock', '8'), ('kDeflection', '4'), ('kSpeedIncrease', '5'), ('kProjectileDamageIncrease', '6'), ('kProjectileSpeedIncrease', '7')):
         if fields.get(name):
             if migration is None: migration = {}
             features = migration.get('gameplay_features_unlocked', ('vector', []))[1]
@@ -302,7 +302,7 @@ def dl5_to_windows(path):
         if migration is None: migration = {}
         migration['paper_pickups_collected'] = ('vector', [('string', value) for value in sorted(papers)])
     if migration:
-        for name, feature_id in (('kDownwardDash', '1'), ('kRoll', '2'), ('kDeflection', '4'), ('kSpeedIncrease', '5'), ('kProjectileDamageIncrease', '6'), ('kProjectileSpeedIncrease', '7')):
+        for name, feature_id in (('kDownwardDash', '1'), ('kRoll', '2'), ('kSlowMotion', '3'), ('kBombUnlock', '8'), ('kDeflection', '4'), ('kSpeedIncrease', '5'), ('kProjectileDamageIncrease', '6'), ('kProjectileSpeedIncrease', '7')):
             if not fields.get(name) and ('int', feature_id) in migration.get('gameplay_features_unlocked', ('vector', []))[1]:
                 raise ValueError(name + ' migration conflicts with Linux unlock')
         if not fields.get('H') and 'player_max_health' in migration:

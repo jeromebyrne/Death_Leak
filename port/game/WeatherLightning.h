@@ -13,6 +13,12 @@ public:
     explicit WeatherLightning(std::uint32_t seed = 1) : randomState_(seed) {}
     void SetAllowed(bool allowed) { allowed_ = allowed; }
     bool Allowed() const { return allowed_; }
+    bool StartRainingIfNotAlready() {
+        if(raining_)return false;
+        raining_=hadWeather_=true;foliageSwayMultiplier_=2.625f;
+        rainStart_=elapsed_;rainDuration_=70.f+Centiseconds(5000);
+        alpha_=0.f;nextFlash_=0.f;return true;
+    }
     bool Raining() const { return raining_; }
     float Alpha() const { return raining_ ? alpha_ : 0.f; }
     float Elapsed() const { return elapsed_; }

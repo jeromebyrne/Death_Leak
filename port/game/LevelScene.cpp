@@ -8,6 +8,7 @@
 #include <cctype>
 #include <cstdlib>
 #include <iostream>
+#include <limits>
 #include <filesystem>
 #include <unordered_map>
 
@@ -131,6 +132,9 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     nextObjectIdentity_ = 1;
     levelPath_ = path;
     playerVisualWidth_ = playerVisualHeight_ = 0;
+    platforms_.clear();ambientActors_.clear(); dynamicsClock_=0;playerEntryDirection_=0;
+    forceRegions_.clear();breakables_.clear();healingSprings_.clear();instruments_.clear();sceneSounds_.clear();
+    playerVelocityX_=playerVelocityY_=0;
     introBodyPhase_ = IntroBodyPhase::None; introBodyFinished_ = false;
     playerSequences_.clear(); playerSequence_.clear(); playerFrame_ = 0; playerFrameElapsed_ = 0; impactVisualFinished_ = false; playerFacing_= playerAimLineFacing_ = 1; playerAimLineRotation_ = 0.f;
     playerAimLineFlipY_ = playerAimLineDirected_ = false; playerGrounded_ = false;
@@ -142,7 +146,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     // New ParallaxLayer vertices start at V=0; Timing::LastUpdateDelta is
     // process-owned and survives a level load on this scene instance.
     pendingModifiedDelta_ = 0.f;
-    sprites_.clear(); particleSprays_.clear(); footstepSprays_.clear(); jumpTakeoffSprays_.clear(); landingSprays_.clear(); introSwordPullSprays_.clear(); groundParticleTextures_.clear();
+    sprites_.clear(); particleSprays_.clear();healthDevilSprays_.clear(); footstepSprays_.clear(); jumpTakeoffSprays_.clear(); landingSprays_.clear(); introSwordPullSprays_.clear(); groundParticleTextures_.clear();
     introBloodTextures_[0] = introBloodTextures_[1] = render::InvalidTexture; introBloodRandomState_ = 0x424c4f44u;
     playerFootstepSegment_ = static_cast<size_t>(-1); lastRunningFrame_ = static_cast<size_t>(-1); footstepRandomState_ = 0x464f4f54u; jumpRandomState_ = 0x4a554d50u; landingRandomState_ = 0x4c414e44u; ground_.clear(); solidBoxes_.clear(); triggers_.clear(); encounters_.clear(); hazards_.clear(); ambience_.clear(); doors_.clear(); boats_.clear(); keys_.clear(); papers_.clear(); healthDevils_.clear(); smashables_.clear(); spawnedOrbs_.clear(); scrolls_.clear(); skipped_ = 0;
     cameraBounds_ = false;
@@ -165,11 +169,19 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
     std::unordered_map<std::string, render::TextureId> textures;
     // Resolve only authored material particle assets used by solid-line contacts.
     std::unordered_map<std::string, std::vector<std::string>> materialParticles;
+    std::unordered_map<std::string,std::string> materialDestroyed;
     TiXmlDocument materials("Game/XmlFiles/materials.xml");
     if (materials.LoadFile() && materials.RootElement())
         for (auto* material = materials.RootElement()->FirstChildElement("material"); material;
              material = material->NextSiblingElement("material")) {
             if (!material->Attribute("name")) continue;
+            auto* destruction=material->FirstChildElement("destroysoundeffects");
+            auto* firstSound=destruction ? destruction->FirstChildElement("sound") : nullptr;
+            if(firstSound && firstSound->Attribute("file")) {
+                std::string sound=firstSound->Attribute("file");std::replace(sound.begin(),sound.end(),'\\','/');
+                while(sound.find("//")!=std::string::npos)sound.replace(sound.find("//"),2,"/");
+                materialDestroyed[material->Attribute("name")]=sound;
+            }
             auto* particles = material->FirstChildElement("particletextures");
             for (auto* texture = particles ? particles->FirstChildElement("texture") : nullptr; texture;
                  texture = texture->NextSiblingElement("texture")) {
@@ -192,7 +204,20 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         const float x = Attr(position, "x"), y = Attr(position, "y");
         const int interactionDepth = Depth(position->Attribute("depth_layer"));
         const bool updateable = !object->Attribute("updateable") || Flag(object, "updateable");
-        const bool alwaysUpdate = Flag(object, "always_update");
+        const bool alwaysUpdate = Flag(object, "always_update") ||
+            Flag(object->FirstChildElement("pos_audio_props"),"enabled");
+        if(kind=="ForceBox")forceRegions_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),
+            Attr(object->FirstChildElement("force"),"value"),Attr(object->FirstChildElement("force_direction"),"y")});
+        if(kind=="SaveShrine")healingSprings_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height")});
+        if(kind=="SfxPickup")instruments_.push_back({x,y,Attr(dimensions,"width"),Attr(dimensions,"height"),
+            object->Attribute("id") ? object->Attribute("id") : "",interactionDepth,objectOrder,updateable,alwaysUpdate});
+        if(auto* props=object->FirstChildElement("pos_audio_props");Flag(props,"enabled") && props->Attribute("file")) {
+            std::string file=props->Attribute("file");std::replace(file.begin(),file.end(),'\\','/');
+            if(!file.empty() && file.front()!='/' && file.find("..") == std::string::npos)
+                ambience_.push_back({"Game/Media/Audio/"+file,x,y,Attr(props,"dim_x"),Attr(props,"dim_y"),
+                    Attr(props,"fade_dim_x"),Attr(props,"fade_dim_y"),true,Flag(props,"repeat"),
+                    std::max(0.f,Attr(props,"play_delay")),kind=="Player"});
+        }
         if (kind == "AudioObject") {
             auto* file = object->FirstChildElement("audiofile");
             auto* fade = object->FirstChildElement("fadedimensions");
@@ -220,6 +245,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
             if (NormalizeAsset(cameFrom ? cameFrom->Attribute("value") : nullptr) == fromLevel &&
                 std::string(doorId && doorId->Attribute("value") ? doorId->Attribute("value") : "") == entryDoorId) {
                 playerX_ = x; playerY_ = y;
+                playerEntryDirection_=Attr(object->FirstChildElement("player_direction"),"x");
             }
         }
         if (kind == "DojoScrollPickup") {
@@ -268,7 +294,14 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
             auto* damage = object->FirstChildElement("applydamage");
             float amount = kind != "SolidMovingSprite" && Flag(damage, "flag") ? Attr(damage, "amount") : 0.f;
             if (kind == "WaterBlock" || amount > 0 || (kind == "SolidMovingSprite" && Flag(damage, "flag")))
-                hazards_.push_back({x, y, Attr(dimensions, "width"), Attr(dimensions, "height"), kind == "WaterBlock", amount});
+            {
+                auto* collision = object->FirstChildElement("collisionboxdimensions");
+                const bool water = kind == "WaterBlock";
+                hazards_.push_back({x + (water ? Attr(collision,"offsetX") : 0.f),
+                    y + (water ? Attr(collision,"offsetY") : 0.f),
+                    water ? Attr(collision,"x",Attr(dimensions,"width")) : Attr(dimensions,"width"),
+                    water ? Attr(collision,"y",Attr(dimensions,"height")) : Attr(dimensions,"height"),water,amount});
+            }
         }
         if (kind == "SolidLineStrip") {
             const auto* materialAttribute = object->FirstChildElement("material");
@@ -284,12 +317,28 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
             }
             auto* points = object->FirstChildElement("points");
             int count = static_cast<int>(Attr(points, "num_points"));
+            float stripLeft=1e30f,stripRight=-1e30f;
+            for(int i=0;i<count;++i){const auto key="x_"+std::to_string(i);const float px=x+Attr(points,key.c_str());stripLeft=std::min(stripLeft,px);stripRight=std::max(stripRight,px);}
+            auto* edges=object->FirstChildElement("edge_properties");
             for (int i = 1; i < count; ++i) {
                 const std::string x0 = "x_" + std::to_string(i - 1), y0 = "y_" + std::to_string(i - 1);
                 const std::string x1 = "x_" + std::to_string(i), y1 = "y_" + std::to_string(i);
                 ground_.push_back({x + Attr(points, x0.c_str()), y + Attr(points, y0.c_str()),
-                                   x + Attr(points, x1.c_str()), y + Attr(points, y1.c_str()), material});
+                                   x + Attr(points, x1.c_str()), y + Attr(points, y1.c_str()), material,
+                    Flag(edges,"has_left_hard_edge"),Flag(edges,"has_right_hard_edge"),stripLeft,stripRight,
+                    Attr(edges,"left_hard_edge_offset_x"),Attr(edges,"right_hard_edge_offset_x")});
             }
+        }
+        if(kind=="Breakable") {
+            auto* collision=object->FirstChildElement("collisionboxdimensions");
+            const float cx=x+Attr(collision,"offsetX"),cy=y+Attr(collision,"offsetY");
+            const float hw=Attr(collision,"x")*.5f,hh=Attr(collision,"y")*.5f;
+            auto* health=object->FirstChildElement("health");
+            auto* material=object->FirstChildElement("material");
+            const std::string name=material && material->Attribute("value") ? material->Attribute("value") : "";
+            breakables_.push_back({{cx-hw,cx+hw,cy-hh,cy+hh,0.f},x,y,Attr(health,"value",10.f),Attr(health,"value",10.f),
+                !object->FirstChildElement("can_be_damaged") || Flag(object->FirstChildElement("can_be_damaged"),"value"),
+                Flag(health,"delete_on_break"),std::filesystem::path(path).lexically_normal().string()+"#"+(object->Attribute("id") ? object->Attribute("id") : ""),materialDestroyed[name]});
         }
         if (kind == "Smashable") {
             auto* box = object->FirstChildElement("collisionboxdimensions");
@@ -299,7 +348,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
                 if (halfX > 0 && halfY > 0) smashables_.push_back({{cx-halfX,cx+halfX,cy-halfY,cy+halfY,0.f},x,y,false});
             }
         }
-        if (kind == "SolidMovingSprite") {
+        if (kind == "SolidMovingSprite" || kind == "PathingPlatform" || kind == "FallingPlatform") {
             auto* box = object->FirstChildElement("collisionboxdimensions");
             if (box) {
                 const float cx = x + Attr(box, "offsetX"), cy = y + Attr(box, "offsetY");
@@ -310,14 +359,11 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
             }
         }
         if (kind == "ParticleSpray") {
-            // Admit only the source-audited forest leaves and three waterfall-top splashes.
+            // Every authored ParticleSpray uses the same source emitter contract.
             const std::string levelName = std::filesystem::path(path).filename().string();
             const std::string sprayId = object->Attribute("id") ? object->Attribute("id") : "";
-            const bool forestLeaf = (levelName == "forest_exploration_1.xml" && sprayId == "47") ||
-                (levelName == "forest_exploration_2.xml" && sprayId == "37");
             const bool waterfallSplash = levelName == "waterfall_top.xml" &&
                 (sprayId == "49" || sprayId == "50" || sprayId == "51");
-            if (!forestLeaf && !waterfallSplash) continue;
             auto filename = NormalizeAsset(asset ? asset->Attribute("filename") : nullptr);
             if (filename.empty() || !std::filesystem::exists(filename)) { ++skipped_; continue; }
             ParticleSpray spray;
@@ -392,7 +438,13 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
                 filename = it->second;
             }
         }
-        if (filename.empty() || !std::filesystem::exists(filename)) { ++skipped_; continue; }
+        const bool missingTexture = filename.empty() || !std::filesystem::exists(filename);
+        // Some unlinked development maps reference absent saw.png. Keep their
+        // authored moving collision state without inventing replacement artwork.
+        const bool motionOnly = missingTexture && (kind=="PathingPlatform" || kind=="FallingPlatform" ||
+            (kind == "SolidMovingSprite" && (Attr(position, "auto_rotate_value") != 0.f ||
+             Flag(object->FirstChildElement("sine_wave_props"), "active"))));
+        if (missingTexture) { ++skipped_; if (!motionOnly) continue; }
         // Bottom ID4 is a static sea sheet authored far outside the playable
         // camera range. Loading it eagerly used ~12 MiB of GPU residency and
         // dominated the top-to-bottom transition despite never reaching a draw.
@@ -410,14 +462,14 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         if (unreachableBottomSea) { ++skipped_; continue; }
         auto found = textures.find(filename);
         render::TextureId texture = render::InvalidTexture;
-        if (found == textures.end()) {
+        if (!motionOnly && found == textures.end()) {
             std::string textureError;
             if (traceLoad) trace("texture begin " + filename);
             texture = renderer.LoadTexture(filename, textureError);
             if (traceLoad) trace("texture end " + filename);
             textures.emplace(filename, texture);
-        } else texture = found->second;
-        if (!texture) { ++skipped_; continue; }
+        } else if (!motionOnly) texture = found->second;
+        if (!texture && !motionOnly) { ++skipped_; continue; }
         SceneSprite sprite;
         sprite.texture = texture;
         if (const char* id = object->Attribute("id")) sprite.xmlId = id;
@@ -465,8 +517,8 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
                     if (!visual.frames.empty()) playerSequences_.emplace(name, std::move(visual));
                 }
                 if (playerSequences_.count("Still")) playerSequence_ = "Still";
-                // Forest Player ID2's transient back-arm is a separate part.
-                if (sprite.xmlId == "2") {
+                // Character's transient back-arm belongs to every authored player.
+                {
                     auto* arm = animation.RootElement() ? animation.RootElement()->FirstChildElement("arm") : nullptr;
                     for (const char* name : {"Still", "Running"}) {
                         auto* sequence = arm ? arm->FirstChildElement(name) : nullptr;
@@ -494,7 +546,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
                 }
             }
         }
-        if (kind == "CurrencyOrb" && !animationPath.empty()) {
+        if (kind != "Player" && !animationPath.empty()) {
             auto [stillIt, inserted] = stillAnimationFrames.try_emplace(animationPath);
             if (inserted) stillIt->second = StillFrames(animationPath);
             const auto& still = stillIt->second;
@@ -516,20 +568,75 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         sprite.followWorldX = sprite.x;
         sprite.width = Attr(dimensions, "width"); sprite.height = Attr(dimensions, "height");
         sprite.rotation = Attr(position, "rotation");
+        sprite.autoRotation = Attr(position, "auto_rotate_value");
+        // GameObject::Update advances rotation and sine before building its world
+        // matrix. Moving solids must move their collision bounds with the art.
+        auto* sine = object->FirstChildElement("sine_wave_props");
+        sprite.sineEnabled = kind != "CurrencyOrb" && kind != "FallingPlatform" &&
+            Flag(sine, "active");
+        sprite.sineOriginX = sprite.x; sprite.sineOriginY = sprite.y;
+        sprite.sineOffsetX = Attr(sine, "x_offset"); sprite.sineOffsetY = Attr(sine, "y_offset");
+        sprite.sineSpeed = Attr(sine, "amplitude");
+        if (sprite.sineEnabled && Attr(sine, "rand_init_step") != 0.f) {
+            std::uint32_t hash = 2166136261u;
+            for (unsigned char c : path + "#" + sprite.xmlId) hash = (hash ^ c) * 16777619u;
+            sprite.sinePhase = static_cast<float>(hash % 999999u);
+        }
+        if (kind == "SolidMovingSprite" && object->FirstChildElement("collisionboxdimensions") &&
+            Attr(object->FirstChildElement("collisionboxdimensions"), "x") > 0.f &&
+            Attr(object->FirstChildElement("collisionboxdimensions"), "y") > 0.f)
+            sprite.solidBoxIndex = solidBoxes_.size() - 1;
         sprite.depth = Depth(position->Attribute("depth_layer"));
         sprite.order = objectOrder;
         sprite.currencyOrb = kind == "CurrencyOrb";
-        // Authored non-native Forest/Waterfall orbs use the small-orb hover/tracking path.
-        sprite.authoredSmallOrb = sprite.currencyOrb &&
-            (std::filesystem::path(path).filename() == "waterfall_top.xml" ||
-             std::filesystem::path(path).filename() == "forest_exploration_1.xml" ||
-             std::filesystem::path(path).filename() == "forest_exploration_2.xml") &&
-            !Flag(dimensions, "native");
+        if ((kind == "PathingPlatform" || kind == "FallingPlatform") &&
+            Attr(object->FirstChildElement("collisionboxdimensions"),"x")>0.f &&
+            Attr(object->FirstChildElement("collisionboxdimensions"),"y")>0.f) {
+            AuthoredPlatformMotion::Config config;
+            config.kind = kind=="PathingPlatform" ? AuthoredPlatformMotion::Kind::Pathing : AuthoredPlatformMotion::Kind::Falling;
+            config.origin={x,y};
+            auto* speed=object->FirstChildElement("platformspeed");
+            config.speed={Attr(speed,"x",1.f),Attr(speed,"y",1.f)};
+            auto* maximum=object->FirstChildElement("maxvelocity");
+            config.maxVelocity={Attr(maximum,"x",10.f),Attr(maximum,"y",99999.f)};
+            auto* resistance=object->FirstChildElement("resistance");
+            config.resistanceX=Attr(resistance,"x",1.f);config.resistanceY=Attr(resistance,"y",1.f);
+            config.applyGravity=Flag(object->FirstChildElement("applygravity"),"value");
+            config.gravity=.75f;
+            auto* type=object->FirstChildElement("platformpathtype");
+            config.pathWhenTriggered=type && type->Attribute("value") && std::string(type->Attribute("value"))=="pathwhentriggered";
+            auto* state=object->FirstChildElement("platformpathstate");
+            config.pathForward=!(state && state->Attribute("value") && std::string(state->Attribute("value"))=="pathbackward");
+            auto* points=object->FirstChildElement("pathpoints");
+            for(auto* point=points ? points->FirstChildElement():nullptr;point;point=point->NextSiblingElement())
+                config.points.push_back({x+Attr(point,"x"),y+Attr(point,"y")});
+            config.maxTriggerTime=Attr(object->FirstChildElement("maxtriggertime"),"value",1.5f);
+            config.timeUntilReturn=Attr(object->FirstChildElement("timeuntilreturn"),"value",5.f);
+            config.alpha=Attr(object->FirstChildElement("alpha"),"value",1.f);
+            config.sineActive=Flag(sine,"active");config.sineOffsetX=Attr(sine,"x_offset");
+            config.sineOffsetY=Attr(sine,"y_offset");config.sineSpeed=Attr(sine,"amplitude");
+            sprite.sineEnabled=false;
+            sprite.platformIndex=platforms_.size();sprite.solidBoxIndex=solidBoxes_.size()-1;
+            if(kind=="PathingPlatform")sprite.alwaysUpdate=true;
+            platforms_.push_back({AuthoredPlatformMotion(config),sprite.solidBoxIndex,kind=="PathingPlatform"});
+        }
+        // CurrencyOrb::Initialise chooses large type by native dimensions in
+        // every level, and overrides sine/alpha/depth rather than trusting XML.
+        sprite.largeOrb = sprite.currencyOrb && Flag(dimensions, "native");
+        sprite.authoredSmallOrb = sprite.currencyOrb && !sprite.largeOrb;
+        auto* collision = object->FirstChildElement("collisionboxdimensions");
+        sprite.collisionWidth = Attr(collision,"x",sprite.width);
+        sprite.collisionHeight = Attr(collision,"y",sprite.height);
+        sprite.collisionOffsetX = Attr(collision,"offsetX");
+        sprite.collisionOffsetY = Attr(collision,"offsetY");
+        if (sprite.largeOrb) {
+            sprite.sineEnabled = true;
+            sprite.sineOffsetX = 0.f; sprite.sineOffsetY = 20.f; sprite.sineSpeed = 2.f;
+        }
         if (sprite.authoredSmallOrb) {
             sprite.orbOriginY = sprite.y;
-            auto* sine = object->FirstChildElement("sine_wave_props");
-            sprite.orbHoverOffsetY = Attr(sine, "y_offset", 20.f);
-            sprite.orbHoverSpeed = Attr(sine, "amplitude", 2.f);
+            sprite.orbHoverOffsetY = 20.f;
+            sprite.orbHoverSpeed = 2.f;
             // Deterministic phase for reproducible Linux captures, not Windows
             // rand() parity. Hash the normalized level path and authored ID.
             const auto key = std::filesystem::path(path).lexically_normal().string() + "#" + sprite.xmlId;
@@ -550,6 +657,19 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
                     sprite.smashedTexture = renderer.LoadTexture(brokenFrame, textureError);
                     textures.emplace(brokenFrame, sprite.smashedTexture);
                 } else sprite.smashedTexture = foundBroken->second;
+            }
+        }
+        if(kind=="Breakable") {
+            sprite.breakableIndex=breakables_.size()-1;
+            for(const char* sequence:{"Still","Damage1","Damage2","Damage3","Damage4"}) {
+                const auto frame=AnimationFrame(animationPath,sequence);
+                render::TextureId id=render::InvalidTexture;
+                if(!frame.empty() && std::filesystem::exists(frame)) {
+                    auto found=textures.find(frame);
+                    if(found!=textures.end())id=found->second;
+                    else {std::string textureError;id=renderer.LoadTexture(frame,textureError);textures.emplace(frame,id);}
+                }
+                sprite.damageFrames.push_back(id);
             }
         }
         sprite.dojoScroll = kind == "DojoScrollPickup";
@@ -575,12 +695,58 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
             sprite.pixelWobble.intensity = Attr(effect, "pixelwobbleintensity");
             sprite.pixelWobble.speedMod = Attr(effect, "pixelwobblespeedmod");
         }
+        if(kind=="AmbientBird" || kind=="ActiveBird" || kind=="Rabbit" || kind=="Butterfly") {
+            AuthoredAmbientActor::Config config;
+            config.kind=kind=="AmbientBird" ? AuthoredAmbientActor::Kind::AmbientBird :
+                kind=="ActiveBird" ? AuthoredAmbientActor::Kind::ActiveBird :
+                kind=="Rabbit" ? AuthoredAmbientActor::Kind::Rabbit : AuthoredAmbientActor::Kind::Butterfly;
+            config.origin={x,y};config.dimensions={sprite.width,sprite.height};
+            auto* max=object->FirstChildElement("maxvelocity");config.maxVelocity={Attr(max,"x",10.f),Attr(max,"y",99999.f)};
+            auto* resistance=object->FirstChildElement("resistance");config.resistanceX=Attr(resistance,"x",1.f);config.resistanceY=Attr(resistance,"y",1.f);
+            config.accelX=Attr(object->FirstChildElement("xaccelrate"),"value",1.f);
+            config.maxJumpSpeed=Attr(object->FirstChildElement("maxjumpspeed"),"value",10.f);
+            config.applyGravity=Flag(object->FirstChildElement("applygravity"),"value");config.gravity=.75f;
+            config.travelOffset=Attr(object->FirstChildElement("travel_offset"),"value",1000.f);
+            config.background=sprite.depth>Depth("kGround");config.horizontalFlip=Flag(object->FirstChildElement("horizontalflip"),"value");
+            config.collisionHeight=sprite.collisionHeight;config.collisionOffsetY=sprite.collisionOffsetY;
+            unsigned hash=2166136261u;for(unsigned char c:path+"#"+sprite.xmlId)hash=(hash^c)*16777619u;config.seed=hash;
+            AmbientBody body;
+            TiXmlDocument animation(animationPath.c_str());
+            if(animation.LoadFile() && animation.RootElement()) {
+                auto* part=animation.RootElement()->FirstChildElement("body");
+                for(const char* name:{"Still","Running","JumpingUp","JumpingDown","SlidingDown"}) {
+                    auto* sequence=part ? part->FirstChildElement(name):nullptr;
+                    if(!sequence)continue;
+                    if(std::string(name)=="Still")config.stillRate=Attr(sequence,"FrameRate",2.f);
+                    if(std::string(name)=="Running") {config.runningMaxRate=Attr(sequence,"MaxFrameRate",10.f);config.runningMinRate=Attr(sequence,"MinFrameRate");}
+                    if(std::string(name)=="JumpingUp")config.jumpingUpRate=Attr(sequence,"FrameRate",4.f);
+                    if(std::string(name)=="JumpingDown")config.jumpingDownRate=Attr(sequence,"FrameRate",4.f);
+                    for(auto* frame=sequence->FirstChildElement("frame");frame;frame=frame->NextSiblingElement("frame")) {
+                        auto file=NormalizeAsset(frame->Attribute("filename"));
+                        if(file.empty() || !std::filesystem::exists(file))continue;
+                        auto found=textures.find(file);render::TextureId id=render::InvalidTexture;
+                        if(found!=textures.end())id=found->second;
+                        else {std::string textureError;id=renderer.LoadTexture(file,textureError);textures.emplace(file,id);}
+                        if(id)body.frames[name].push_back(id);
+                    }
+                }
+            }
+            body.motion.Reset(config);body.sequence="Still";
+            sprite.ambientActorIndex=ambientActors_.size();ambientActors_.push_back(std::move(body));
+        }
+        sprite.collisionFoliage=kind=="Foliage";
+        if(sprite.collisionFoliage) {
+            sprite.foliageSway.enabled=true;
+            sprite.foliageSway.topLeft.x=sprite.foliageSway.topRight.x=10.f;
+            sprite.foliageSway.timeMultiplier=0.f;
+        }
         sprite.flipX = Flag(object->FirstChildElement("horizontalflip"), "value");
         sprite.flipY = Flag(object->FirstChildElement("verticalflip"), "value");
         // Windows Sprite::SetupVertices repeats non-native X at source-pixel scale.
         // ParallaxLayer overrides that UV span to one in its Draw method.
         sprite.repeatX = !sprite.parallaxLayer && !Flag(dimensions, "native") && Flag(dimensions, "repeatX");
-        auto alpha = std::clamp(Attr(object->FirstChildElement("alpha"), "value", 1), 0.f, 1.f);
+        if (sprite.currencyOrb) sprite.depth = Depth("kOrb");
+        auto alpha = sprite.currencyOrb ? .75f : std::clamp(Attr(object->FirstChildElement("alpha"), "value", 1), 0.f, 1.f);
         sprite.alpha = alpha;
         sprite.tint.a = static_cast<std::uint8_t>(std::lround(alpha * 255));
         if (kind == "ScrollingSprite") {
@@ -602,11 +768,36 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         sprite.alphaWhenOccluding = Attr(fade, "alphawhenoccluding", .5f);
         sprite.alphaWhenNotOccluding = Attr(fade, "alphawhennotoccluding", 1.f);
         sprite.updateable = updateable;
-        sprite.alwaysUpdate = alwaysUpdate;
+        sprite.alwaysUpdate = alwaysUpdate || kind=="PathingPlatform";
         if (sprite.width > 0 && sprite.height > 0) {
             sprite.stableIdentity = nextObjectIdentity_++;
             sprites_.push_back(sprite);
         }
+    }
+    // HealthDevil::Update creates its original runtime shroud once. Keep it
+    // separate from authored XML emitters and in the ordinary painter stream.
+    for(const auto& devil:healthDevils_) {
+        ParticleSpray spray;std::string textureError;
+        spray.texture=renderer.LoadTexture("Game/Media/characters/health_devil/shroud_particle.png",textureError);
+        if(!spray.texture)continue;
+        spray.stableIdentity=nextObjectIdentity_++;spray.x=devil.x;spray.y=devil.y+60.f;
+        spray.width=3200;spray.height=2000;spray.depth=4500;spray.alwaysUpdate=true;
+        spray.looping=true;spray.warmed=true;spray.scalesByLifetime=true;spray.scaleTo=.4f;
+        spray.fadeIn=.1f;spray.fadeOut=.8f;
+        for(int i=0;i<60;++i) {
+            ParticleSpray::Particle particle;particle.stableIdentity=i+1;
+            auto sign=[&](){return spray.Random(2)?1.f:-1.f;};
+            particle.startX=particle.x=particle.drawX=spray.x+sign()*spray.Random(121);
+            particle.startY=particle.y=particle.drawY=spray.y+sign()*spray.Random(61);
+            particle.directionX=sign()*(spray.Random(100)+1)*.01f;
+            particle.directionY=sign()*(spray.Random(100)+1)*.01f;
+            particle.speed=particle.startSpeed=.05f+spray.Random(36)*.01f;
+            particle.lifetime=3.3f+spray.Random(531)*.01f;
+            particle.size=particle.startSize=particle.drawSize=300.f+spray.Random(201);
+            particle.brightness=.2f+spray.Random(41)*.01f;
+            spray.particles.push_back(particle);
+        }
+        healthDevilSprays_.push_back(std::move(spray));
     }
     trace("objects parsed");
     if (std::any_of(sprites_.begin(), sprites_.end(), [](const SceneSprite& s) { return s.authoredSmallOrb; })) {
@@ -616,11 +807,12 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         orbShatterTexture_ = renderer.LoadTexture(shatterPath, textureError);
         if (!orbShatterTexture_) { error = "Cannot load orb trail texture: " + textureError; return false; }
     }
-    if (!smashables_.empty()) {
+    if (!smashables_.empty() || !breakables_.empty() || std::any_of(sprites_.begin(),sprites_.end(),
+        [](const SceneSprite& sprite){return sprite.largeOrb;})) {
         const auto frame = AnimationFrame("Game/XmlFiles/orb_anim.xml", "Still");
         if (!frame.empty()) spawnedOrbTexture_ = renderer.LoadTexture(frame, error);
     }
-    originalSpriteCount_ = sprites_.size();
+    originalSpriteCount_=std::count_if(sprites_.begin(),sprites_.end(),[](const SceneSprite& sprite){return sprite.texture!=render::InvalidTexture;});
     // GameObjectManager adds Character's shadow after all XML objects, then
     // orders by depth. Stable sorting keeps it after authored kGround peers.
     const auto playerSprite = std::find_if(sprites_.begin(), sprites_.end(),
@@ -655,6 +847,7 @@ bool LevelScene::Load(const std::string& path, render::Renderer& renderer, std::
         shadow.order = objectOrder;
         sprites_.push_back(shadow);
     }
+    std::stable_sort(particleSprays_.begin(),particleSprays_.end(),[](const auto& a,const auto& b){return a.depth>b.depth || (a.depth==b.depth && a.order<b.order);});
     std::stable_sort(sprites_.begin(), sprites_.end(), [](const auto& a, const auto& b) { return a.depth > b.depth; });
     if (sprites_.empty()) { error = "Level has no renderable assets: " + path; return false; }
     trace("complete");
@@ -666,7 +859,11 @@ size_t LevelScene::CollectCurrencyOrbs(float playerX, float playerY, std::unorde
         if (!object.currencyOrb || object.collected) continue;
         const float dx = object.x - playerX, dy = object.y - playerY;
         // CurrencyOrb::OnCollision uses a 100-world-unit collection radius.
-        if (dx * dx + dy * dy >= 100.f * 100.f) continue;
+        if (object.largeOrb) {
+            if (std::abs(playerX-object.x-object.collisionOffsetX) >= (128.959793f+object.collisionWidth)*.5f ||
+                std::abs(playerY-object.y-object.collisionOffsetY) >= (214.898743f+object.collisionHeight)*.5f) continue;
+            SpawnTemporaryOrbs(object.x,object.y,50,static_cast<unsigned>(object.stableIdentity)*0x9e3779b9u);
+        } else if (dx * dx + dy * dy >= 100.f * 100.f) continue;
         object.collected = true;
         DetachOrbTrail(object.persistentId);
         if (!object.persistentId.empty()) collected.insert(object.persistentId);
@@ -695,6 +892,7 @@ void LevelScene::ApplyPapers(const std::unordered_set<std::string>& papers) {
 }
 void LevelScene::ApplyHealthDevil(bool rewarded) {
     for (auto& object : sprites_) if (object.healthDevil) object.collected = rewarded;
+    if(rewarded && dynamicsClock_>0.f)for(auto& spray:healthDevilSprays_)spray.looping=false;
 }
 void LevelScene::ApplySmashable(bool smashed) {
     for (auto& object : smashables_) object.smashed = smashed;
@@ -712,18 +910,54 @@ bool LevelScene::SmashAt(size_t index) {
                           (static_cast<unsigned int>(index+1) * 0x9e3779b9u);
     auto next = [&random]() { random = random * 1664525u + 1013904223u; return random; };
     const unsigned int count = next() % 8 + 1;
-    for (unsigned int i = 0; i < count; ++i) {
-        const float vx = (next()%100) * 0.18f * ((next()%2) ? -1.f : 1.f) * 60.f;
-        const float vy = ((next()%100) * 0.3f + 30.f) * ((next()%2) ? -1.f : 1.f) * 60.f;
-        const float delay = (next()%100) * 0.001f + 0.01f;
-        spawnedOrbs_.push_back({origin.x, origin.y, vx, vy, delay});
-    }
+    SpawnTemporaryOrbs(origin.x,origin.y,count,random);
     // The shipped levels have one Smashable each; keep other objects independent.
     const auto& box = smashables_[index].box;
     for (auto& sprite : sprites_) if (sprite.smashable && sprite.smashedTexture &&
         sprite.x >= box.left && sprite.x <= box.right && sprite.y >= box.bottom && sprite.y <= box.top)
         sprite.texture = sprite.smashedTexture;
     return true;
+}
+bool LevelScene::DamageBreakable(size_t index,float damage) {
+    if(index>=breakables_.size())return false;
+    auto& object=breakables_[index];
+    if(object.health<=0.f || !object.canDamage || damage<=0.f)return false;
+    object.health=std::max(0.f,object.health-damage);
+    const float healthy=object.maxHealth>0.f ? object.health/object.maxHealth : 1.f;
+    const size_t stage=healthy==1.f ? 0 : healthy>.8f ? 1 : healthy>.4f ? 2 : healthy>0.f ? 3 : 4;
+    for(auto& sprite:sprites_)if(sprite.breakableIndex==index) {
+        sprite.animationFrames.clear();
+        if(stage<sprite.damageFrames.size() && sprite.damageFrames[stage])sprite.texture=sprite.damageFrames[stage];
+        if(stage==4 && object.deleteOnBreak)sprite.collected=true;
+    }
+    if(stage==4) {
+        unsigned hash=2166136261u;for(unsigned char c:object.id)hash=(hash^c)*16777619u;
+        SpawnTemporaryOrbs(object.x,object.y,(hash%8)+1,hash);
+        if(!object.destroySound.empty())sceneSounds_.push_back(object.destroySound);
+    }
+    return true;
+}
+void LevelScene::ApplyBrokenBreakables(const std::unordered_set<std::string>& ids) {
+    for(size_t i=0;i<breakables_.size();++i)if(ids.count(breakables_[i].id) && breakables_[i].health>0.f) {
+        auto& object=breakables_[i];object.health=0.f;
+        for(auto& sprite:sprites_)if(sprite.breakableIndex==i) {
+            sprite.animationFrames.clear();
+            if(sprite.damageFrames.size()>4 && sprite.damageFrames[4])sprite.texture=sprite.damageFrames[4];
+            if(object.deleteOnBreak)sprite.collected=true;
+        }
+    }
+}
+std::vector<std::string> LevelScene::BrokenBreakableIds() const {
+    std::vector<std::string> ids;for(const auto& object:breakables_)if(object.health<=0.f)ids.push_back(object.id);return ids;
+}
+void LevelScene::SpawnTemporaryOrbs(float x,float y,unsigned count,unsigned random) {
+    auto next = [&random]() { random = random * 1664525u + 1013904223u; return random; };
+    for (unsigned i=0;i<count;++i) {
+        const float vx = (next()%100) * .18f * ((next()%2) ? -1.f : 1.f) * 60.f;
+        const float vy = ((next()%100) * .3f + 30.f) * ((next()%2) ? -1.f : 1.f) * 60.f;
+        const float delay = (next()%100) * .001f + .01f;
+        spawnedOrbs_.push_back({x,y,vx,vy,delay});
+    }
 }
 size_t LevelScene::UpdateSpawnedOrbs(float playerX, float playerY, float dt) {
     size_t collected = 0;
@@ -765,6 +999,12 @@ void LevelScene::ApplyDeflection(bool unlocked) {
         for (const auto& scroll : scrolls_) if (scroll.feature == "kDeflection" &&
             object.persistentId == scroll.id) object.collected = true;
     }
+}
+void LevelScene::ApplyTechniques(const std::unordered_set<std::string>& owned,int completions) {
+    for(auto& object:sprites_)if(object.dojoScroll)
+        for(const auto& scroll:scrolls_)if(object.persistentId==scroll.id &&
+            (owned.count(scroll.feature) || (scroll.feature=="kBombUnlock" && completions<1)))
+            object.collected=true;
 }
 std::vector<LevelScene::OrbTrailView> LevelScene::OrbTrails() const {
     std::vector<OrbTrailView> result;
@@ -866,6 +1106,129 @@ void LevelScene::UpdateAuthoredOrbs(float dt, float playerX, float playerY, floa
             orb.rotation = std::atan2(orb.orbVx, -orb.orbVy);
     }
 }
+bool LevelScene::FullyCrouched() const {
+    const auto it=playerSequences_.find("Crouch");
+    return playerCrouching_ && playerSequence_=="Crouch" && it!=playerSequences_.end() &&
+        !it->second.frames.empty() && playerFrame_>=it->second.frames.size()-1;
+}
+bool LevelScene::UpdateHealing(float dt,float x,float y,bool fullyCrouched) {
+    bool healed=false;
+    for(auto& spring:healingSprings_) {
+        if(!spring.used && fullyCrouched && std::abs(x-spring.x)<spring.width*.5f && std::abs(y-spring.y)<spring.height*.5f) {
+            spring.used=true;spring.rearm=5.f;healed=true;
+            sceneSounds_.push_back("save_game.wav");sceneSounds_.push_back("water/steam_hissing.wav");
+        }
+        if(spring.used && !fullyCrouched) {
+            spring.rearm-=dt;
+            if(spring.rearm<=0.f)spring.used=false;
+        }
+    }
+    return healed;
+}
+bool LevelScene::PlayInstrument(const std::string& id) {
+    for(auto& instrument:instruments_)if(instrument.id==id && instrument.cooldown<=0.f) {
+        instrument.cooldown=2.f;
+        const unsigned choice=static_cast<unsigned>(dynamicsClock_*100000.f)%5u;
+        sceneSounds_.push_back(choice==0 ? "koto/koto.wav" : "koto/koto_"+std::to_string(choice+1)+".wav");
+        return true;
+    }
+    return false;
+}
+float LevelScene::UpdateDynamics(float dt,float playerX,float playerY,float cameraX,float cameraY,bool grounded,float velocityY) {
+    if(dt<=0.f)return 0.f;
+    dynamicsClock_+=dt;
+    for(auto& instrument:instruments_)instrument.cooldown=std::max(0.f,instrument.cooldown-dt);
+    float carryX=0.f;
+    for(auto& sprite:sprites_) {
+        if(sprite.collected)continue;
+        const bool eligible = sprite.updateable && (sprite.alwaysUpdate ||
+            (sprite.x + sprite.width*.5f > cameraX - 2000.f &&
+             sprite.x - sprite.width*.5f < cameraX + 2000.f &&
+             sprite.y + sprite.height*.5f > cameraY - 2000.f &&
+             sprite.y - sprite.height*.5f < cameraY + 2000.f));
+        if (eligible) {
+            if(sprite.ambientActorIndex<ambientActors_.size()) {
+                auto& body=ambientActors_[sprite.ambientActorIndex];
+                AuthoredAmbientActor::Environment environment;
+                environment.hasPlayer=true;environment.player={playerX,playerY};environment.playerOnGround=grounded;
+                environment.levelLeft=cameraBoundLeft_;environment.levelRight=cameraBoundRight_;
+                environment.groundHeight=[&](float px,float oldBottom) {
+                    float best=std::numeric_limits<float>::quiet_NaN();
+                    for(const auto& line:ground_) {
+                        const float dx=line.x2-line.x1;if(std::abs(dx)<1.f)continue;
+                        const float t=(px-line.x1)/dx;if(t<0.f || t>1.f)continue;
+                        const float y=line.y1+t*(line.y2-line.y1);
+                        if(y<=oldBottom+32.f && (!std::isfinite(best) || y>best))best=y;
+                    }
+                    for(const auto& box:solidBoxes_)if(px>box.left && px<box.right && box.top<=oldBottom+32.f &&
+                        (!std::isfinite(best) || box.top>best))best=box.top;
+                    return best;
+                };
+                float lx=1.f,ly=1.f;
+                switch(sprite.depth){case 5999:lx=.03f;ly=.90f;break;case 6000:lx=.25f;ly=.95f;break;
+                    case 5500:lx=.5f;ly=.97f;break;case 5000:lx=.75f;ly=.99f;break;
+                    case 1500:lx=1.1f;ly=1.05f;break;case 1000:lx=1.3f;ly=1.08f;break;case 500:case 20:lx=1.8f;ly=1.2f;break;}
+                const auto visible=[&](float x,float y){return std::abs((x-cameraX)*lx)<960.f+sprite.width*.5f && std::abs((y-cameraY)*ly)<540.f+sprite.height*.5f;};
+                environment.visibilityKnown=true;environment.objectInView=visible(sprite.x,sprite.y);
+                const auto origin=body.motion.Configuration().origin;environment.startInView=visible(origin.x,origin.y);
+                const auto pose=body.motion.Update(dt,environment);sprite.x=pose.x;sprite.y=pose.y;sprite.flipX=pose.facing<0;
+                if(body.sequence!=pose.sequence) {
+                    body.sequence=pose.sequence;sprite.animationFrame=0;sprite.animationElapsed=0;
+                    auto found=body.frames.find(body.sequence);
+                    sprite.animationFrames=found==body.frames.end() ? std::vector<render::TextureId>{} : found->second;
+                    if(!sprite.animationFrames.empty())sprite.texture=sprite.animationFrames.front();
+                }
+                sprite.animationFrameRate=pose.rate;
+            }
+            if(sprite.collisionFoliage) {
+                const bool inside=playerX-128.959793f*.5f>sprite.x+sprite.collisionOffsetX-sprite.collisionWidth*.5f &&
+                    playerX+128.959793f*.5f<sprite.x+sprite.collisionOffsetX+sprite.collisionWidth*.5f &&
+                    std::abs(playerY-sprite.y-sprite.collisionOffsetY)<(214.898743f+sprite.collisionHeight)*.5f;
+                const float speedSquared=(playerVelocityX_*playerVelocityX_+playerVelocityY_*playerVelocityY_)/3600.f;
+                if(inside && speedSquared>5.f && sprite.foliageWindDown<=0.f) {
+                    sprite.foliageWindDown=.5f;sceneSounds_.push_back("foliage_1.wav");
+                }
+                if(sprite.foliageWindDown>0.f)sprite.foliageWindDown=std::max(0.f,sprite.foliageWindDown-dt);
+                sprite.foliageSway.timeMultiplier=sprite.foliageWindDown>0.f ? 12.f : 0.f;
+            }
+            if (sprite.autoRotation != 0.f) {
+                sprite.rotation += sprite.autoRotation * dt * 60.f;
+                // GameObject::SetRotationAngle resets, rather than modulo wraps.
+                if (sprite.rotation > 6.28318531f || sprite.rotation < -6.28318531f)
+                    sprite.rotation = 0.f;
+            }
+            if (sprite.sineEnabled) {
+                const float oldX = sprite.x, oldY = sprite.y;
+                sprite.sinePhase += sprite.sineSpeed * dt;
+                sprite.x = sprite.sineOriginX + sprite.sineOffsetX * std::sin(sprite.sinePhase);
+                sprite.y = sprite.sineOriginY + sprite.sineOffsetY * std::sin(sprite.sinePhase);
+                if (sprite.solidBoxIndex < solidBoxes_.size()) {
+                    auto& box = solidBoxes_[sprite.solidBoxIndex];
+                    box.left += sprite.x-oldX; box.right += sprite.x-oldX;
+                    box.bottom += sprite.y-oldY; box.top += sprite.y-oldY;
+                }
+            }
+        }
+        if(eligible && sprite.platformIndex<platforms_.size()) {
+            auto& platform=platforms_[sprite.platformIndex];
+            auto& box=solidBoxes_[platform.boxIndex];
+            const float playerBottom=playerY-214.898743f*.5f;
+            const bool overlap=std::abs(playerX-(box.left+box.right)*.5f)<(box.right-box.left+128.959793f)*.5f &&
+                std::abs(playerY-(box.bottom+box.top)*.5f)<(box.top-box.bottom+214.898743f)*.5f+.01f;
+            const bool contact=overlap && AuthoredPlatformMotion::PlayerCanTrigger(playerX,playerBottom,velocityY,
+                sprite.x-sprite.width*.5f,sprite.x+sprite.width*.5f,sprite.y);
+            platform.motion.OnPlayerCollision(contact,dynamicsClock_);
+            const bool riding=contact && grounded && std::abs(playerBottom-box.top)<20.f;
+            if(riding && platform.pathing)carryX=platform.motion.Velocity().x*dt*60.f;
+            const float oldX=sprite.x,oldY=sprite.y;
+            platform.motion.Update(dt,dynamicsClock_,riding);
+            const auto position=platform.motion.Position();sprite.x=position.x;sprite.y=position.y;
+            box.left+=sprite.x-oldX;box.right+=sprite.x-oldX;box.bottom+=sprite.y-oldY;box.top+=sprite.y-oldY;
+            sprite.alpha=platform.motion.Alpha();sprite.tint.a=static_cast<std::uint8_t>(std::lround(std::clamp(sprite.alpha,0.f,1.f)*255.f));
+        }
+    }
+    return carryX;
+}
 void LevelScene::UpdateVisuals(float dt, float playerX, float playerY, float cameraX, float cameraY,
                                bool objectsPaused, float precedingRenderedModifiedDelta) {
     // The game loop's current modified update delta is not visible to
@@ -889,6 +1252,7 @@ void LevelScene::UpdateVisuals(float dt, float playerX, float playerY, float cam
     landingSprays_.erase(std::remove_if(landingSprays_.begin(), landingSprays_.end(),
         [](const ParticleSpray& spray) { return std::all_of(spray.particles.begin(), spray.particles.end(),
             [](const ParticleSpray::Particle& particle) { return particle.dead; }); }), landingSprays_.end());
+    for(auto& spray:healthDevilSprays_)spray.Update(dt);
     for (auto& spray : particleSprays_) {
         if (spray.alwaysUpdate || (spray.updateable &&
             spray.x + spray.width*.5f > cameraX - 2000.f && spray.x - spray.width*.5f < cameraX + 2000.f &&
@@ -1000,6 +1364,35 @@ void LevelScene::UpdateVisuals(float dt, float playerX, float playerY, float cam
 void LevelScene::SetPlayerFootstepContact(size_t segment, float x, float y) {
     playerFootstepSegment_ = segment;
     playerFootstepX_ = x; playerFootstepY_ = y;
+}
+void LevelScene::EmitBombExplosion(render::Renderer& renderer,float x,float y) {
+    struct Spec { const char* file;int count,depth;float minSpeed,maxSpeed,minLife,maxLife,minSize,maxSize,gravity,minBright,maxBright,scale,fadeIn,fadeOut; };
+    const Spec specs[]={
+        {"Game/Media/blast_circle.png",1,2250,.01f,.01f,.25f,.4f,32,32,0,.7f,1,75,.2f,.5f},
+        {"Game/Media/smoke4.png",15,2520,10,30.5f,.4f,.6f,80,160,1.1f,.3f,.6f,12.5f,.1f,.5f},
+        {"Game/Media/flame3.png",20,2520,5,10.5f,.15f,.3f,300,400,1.1f,1,1,.4f,.1f,.5f}};
+    for(const auto& spec:specs) {
+        ParticleSpray spray;std::string error;spray.texture=renderer.LoadTexture(spec.file,error);
+        if(!spray.texture)continue;
+        spray.stableIdentity=nextObjectIdentity_++;spray.x=x;spray.y=y;spray.width=3200;spray.height=2000;
+        spray.depth=spec.depth;spray.looping=false;spray.warmed=true;spray.alwaysUpdate=true;
+        spray.scalesByLifetime=true;spray.scaleTo=spec.scale;spray.fadeIn=spec.fadeIn;spray.fadeOut=spec.fadeOut;
+        for(int i=0;i<spec.count;++i) {
+            ParticleSpray::Particle particle;particle.stableIdentity=i+1;
+            particle.x=particle.startX=particle.drawX=x;particle.y=particle.startY=particle.drawY=y;
+            const float angle=spray.Random(6284)*.001f;
+            particle.directionX=spec.count==1 ? 0.f : std::cos(angle);particle.directionY=spec.count==1 ? 0.f : std::sin(angle);
+            const float f=spray.Random(1000)*.001f;
+            particle.speed=particle.startSpeed=spec.minSpeed+(spec.maxSpeed-spec.minSpeed)*f;
+            particle.size=particle.startSize=particle.drawSize=spec.minSize+(spec.maxSize-spec.minSize)*f;
+            particle.lifetime=spec.minLife+(spec.maxLife-spec.minLife)*f;particle.gravity=spec.gravity;
+            particle.brightness=spec.minBright+(spec.maxBright-spec.minBright)*f;
+            spray.particles.push_back(particle);
+        }
+        particleSprays_.push_back(std::move(spray));
+    }
+    std::stable_sort(particleSprays_.begin(),particleSprays_.end(),[](const auto& a,const auto& b){return a.depth>b.depth || (a.depth==b.depth && a.order<b.order);});
+    sceneSounds_.push_back("explosion/bang.wav");
 }
 void LevelScene::EmitJumpTakeoff(size_t segment, float x, float postBumpY, int facing) {
     if (segment >= ground_.size()) return;
@@ -1361,7 +1754,7 @@ void LevelScene::PreparePresentation() {
     // eligibility predicate, then commit only for a newly presented update.
     const auto& filter = DiagnosticRenderFilter();
     for (auto& object : sprites_) {
-        if (object.collected || (object.playerShadow && !playerGrounded_) ||
+        if (!object.texture || object.collected || (object.playerShadow && !playerGrounded_) ||
             (object.playerAimLine && aimLineAlpha_ <= 0.f) ||
             !filter.Draw(object.xmlId, levelPath_)) continue;
         if (!object.parallaxLayer || !object.autoScrollY) continue;
@@ -1399,6 +1792,10 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
             renderer.DrawSprite(draw);
         }});
     }
+    if(filter.only.empty())for(const auto& spray:healthDevilSprays_) {
+        const auto* source=&spray;
+        dynamic.push_back({spray.depth,[&,source]{drawSpray(*source);}});
+    }
     std::stable_sort(dynamic.begin(), dynamic.end(),
                      [](const PainterItem& a, const PainterItem& b) { return a.depth > b.depth; });
     size_t nextDynamic = 0, nextSpray = 0;
@@ -1431,7 +1828,7 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
         if (object.depth < Depth("kOrb")) drawOrbTrails();
         drawSpraysBefore(object.depth, object.order);
         drawDynamicBefore(object.depth);
-        if (object.collected || (object.playerShadow && !playerGrounded_) ||
+        if (!object.texture || object.collected || (object.playerShadow && !playerGrounded_) ||
             (object.playerAimLine && aimLineAlpha_ <= 0.f) ||
             !filter.Draw(object.xmlId, levelPath_)) continue;
         // ParallaxLayer world matrix precedes camera-follow; current camera
@@ -1494,7 +1891,7 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
             draw.foliageSway.worldY = worldY - (cameraY - worldY) * (layerY - 1.f);
         }
         draw.foliageSway.time = shaderClock.totalTime;
-        draw.foliageSway.globalTimeMultiplier = foliageGlobalTimeMultiplier;
+        draw.foliageSway.globalTimeMultiplier = object.collisionFoliage ? 1.f : foliageGlobalTimeMultiplier;
         draw.pixelWobble = object.pixelWobble;
         draw.pixelWobble.time = shaderClock.pixelWobbleTime;
         draw.flipY = (draw.foliageSway.enabled || draw.pixelWobble.enabled)
@@ -1508,7 +1905,7 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
             draw.uvShiftY = object.autoScrollYPhase;
         // Cull using the rendered rotated quad, not its unrotated destination.
         if (!render::SpriteMayIntersectViewport(draw)) continue;
-        if (object.player && object.xmlId == "2" && introBodyPhase_ == IntroBodyPhase::None) {
+        if (object.player && introBodyPhase_ == IntroBodyPhase::None) {
             auto arm = playerArmSequences_.find(playerArmSequence_);
             if (arm != playerArmSequences_.end() && playerArmFrame_ < arm->second.frames.size()) {
                 auto armDraw = draw;
