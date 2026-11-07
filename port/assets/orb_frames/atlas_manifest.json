@@ -1,0 +1,207 @@
+{
+  "format": "deathleak-atlas-v3",
+  "max_page_size": 4096,
+  "padding": 2,
+  "transparent_guard": 2,
+  "pages": [
+    "atlas_000.png"
+  ],
+  "page_dimensions": [
+    [
+      171,
+      2590
+    ]
+  ],
+  "textures": [
+    {
+      "source": "Game/Media/orb/1.png",
+      "sha256": "ac0e7e191014faa92eedaea5bd297631ebf2ab278597aa9fda001d1c07d699a8",
+      "page": 0,
+      "rect": [
+        2,
+        2,
+        167,
+        255
+      ],
+      "original_size": [
+        167,
+        255
+      ],
+      "trim_offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "source": "Game/Media/orb/11.png",
+      "sha256": "c7f32bc70dab19e593a4a331886090912e745869c7f759f076b98a8d53af176a",
+      "page": 0,
+      "rect": [
+        2,
+        261,
+        167,
+        255
+      ],
+      "original_size": [
+        167,
+        255
+      ],
+      "trim_offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "source": "Game/Media/orb/21.png",
+      "sha256": "ffd14b6c1d2ed12ee456fb09a3ba15be88c7041ac517bfc0c8e05dbbbe3a11eb",
+      "page": 0,
+      "rect": [
+        2,
+        520,
+        167,
+        255
+      ],
+      "original_size": [
+        167,
+        255
+      ],
+      "trim_offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "source": "Game/Media/orb/31.png",
+      "sha256": "4d90ce43ca16bf221500730ea730f93ef644f8efe30341b64e054d78698cc97c",
+      "page": 0,
+      "rect": [
+        2,
+        779,
+        167,
+        255
+      ],
+      "original_size": [
+        167,
+        255
+      ],
+      "trim_offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "source": "Game/Media/orb/41.png",
+      "sha256": "4ae8313061b61e2bae57ebb9df41fb5eec8f21828a39345e7bba465f3b263671",
+      "page": 0,
+      "rect": [
+        2,
+        1038,
+        167,
+        255
+      ],
+      "original_size": [
+        167,
+        255
+      ],
+      "trim_offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "source": "Game/Media/orb/51.png",
+      "sha256": "d3998c7f10189f42b84c2bb2f1bf6a8e17a926d92e4b5937e93f7b21636ef62f",
+      "page": 0,
+      "rect": [
+        2,
+        1297,
+        167,
+        255
+      ],
+      "original_size": [
+        167,
+        255
+      ],
+      "trim_offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "source": "Game/Media/orb/61.png",
+      "sha256": "1634a7fe69cc818b7a7465395e2c8405c63c765b063e1d488af6a2b4ec0ad90c",
+      "page": 0,
+      "rect": [
+        2,
+        1556,
+        167,
+        255
+      ],
+      "original_size": [
+        167,
+        255
+      ],
+      "trim_offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "source": "Game/Media/orb/71.png",
+      "sha256": "9628c17e88f605749fb19a5bb62ab3111bea4653c6018c492f8a743d130f67f0",
+      "page": 0,
+      "rect": [
+        2,
+        1815,
+        167,
+        255
+      ],
+      "original_size": [
+        167,
+        255
+      ],
+      "trim_offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "source": "Game/Media/orb/81.png",
+      "sha256": "1526c3f3f3c44b0e95c39a279a38d85010aa0d5f89df48075230a8862a13a06e",
+      "page": 0,
+      "rect": [
+        2,
+        2074,
+        167,
+        255
+      ],
+      "original_size": [
+        167,
+        255
+      ],
+      "trim_offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "source": "Game/Media/orb/91.png",
+      "sha256": "332d7e2d8a58611ee2690287ee644f37e7cefba682ef4224a2c686c022bcffd3",
+      "page": 0,
+      "rect": [
+        2,
+        2333,
+        167,
+        255
+      ],
+      "original_size": [
+        167,
+        255
+      ],
+      "trim_offset": [
+        0,
+        0
+      ]
+    }
+  ]
+}

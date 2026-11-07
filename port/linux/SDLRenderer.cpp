@@ -77,7 +77,9 @@ public:
     ~SDLRenderer() override {
         if (std::getenv("DEATHLEAK_RENDER_PROFILE"))
             std::cerr << "SDL profile calls=" << drawCalls_ << " copy=" << copySeconds_
-                      << "s present=" << presentSeconds_ << "s\n";
+                      << "s present=" << presentSeconds_ << "s batch_submissions=" << batchSubmissions_
+                      << " batch_sprites=" << batchSprites_
+                      << " orb_atlas_submissions=" << orbAtlasSubmissions_ << "\n";
         if (gamepad_) SDL_GameControllerClose(gamepad_);
         if (sceneTarget_) SDL_DestroyTexture(sceneTarget_);
         for (const auto& entry : wobbleMipTextures_)
@@ -86,6 +88,7 @@ public:
         if (sepiaProgram_) glDeleteProgram(sepiaProgram_);
         if (pixelWobbleProgram_) glDeleteProgram(pixelWobbleProgram_);
         if (damageBurstProgram_) glDeleteProgram(damageBurstProgram_);
+        if (orbAtlasProgram_) glDeleteProgram(orbAtlasProgram_);
         std::unordered_set<SDL_Texture*> destroyed;
         for (auto& texture : textures_)
             if (destroyed.insert(texture.second).second) SDL_DestroyTexture(texture.second);
@@ -294,6 +297,9 @@ public:
             texturePaths_.emplace(id, path);
             return id;
         };
+        if (const TextureId id = virtualRegion("DEATHLEAK_ATLAS_ORB", "Game/Media/orb/",
+                                               "port/assets/orb_frames", orbRegionsLoaded_, orbRegions_))
+            return id;
         if (const TextureId id = virtualRegion("DEATHLEAK_ATLAS_ICONS", "Game/Media/UI/gamepad_icons/",
                                                "port/assets/gamepad_icons", iconRegionsLoaded_, iconRegions_))
             return id;
@@ -374,11 +380,164 @@ public:
         const Rect projected = ProjectWorldRect({rect.x, rect.y, rect.w, rect.h}, worldZoom_);
         return {projected.x, projected.y, projected.width, projected.height};
     }
+    // Runtime counterpart of the matched NVE7 orb probe: page texels are
+    // fetched at integer centers and bilinearly mixed in source-frame space.
+    // Region bounds clamp as a dedicated GL_CLAMP_TO_EDGE texture would. The
+    // whole ordered run is one GL_QUADS submission, with per-quad region/tint.
+    bool DrawOrbAtlasBatch(const Sprite* sprites, size_t count) {
+        if (!count || !sceneSamplingPhase_ || !SDL_GL_GetCurrentContext()) return false;
+        SDL_Texture* page = nullptr;
+        const Sprite& firstSprite = sprites[0];
+        const AtlasRegion* firstRegion = nullptr;
+        for (size_t i = 0; i < count; ++i) {
+            const Sprite& sprite = sprites[i];
+            auto t = textures_.find(sprite.texture);
+            auto r = atlasRegions_.find(sprite.texture);
+            auto path = texturePaths_.find(sprite.texture);
+            if (t == textures_.end() || r == atlasRegions_.end() ||
+                path == texturePaths_.end() || path->second.rfind("Game/Media/orb/", 0) != 0 ||
+                (page && page != t->second) ||
+                (firstRegion && (r->second.x != firstRegion->x || r->second.y != firstRegion->y ||
+                                 r->second.w != firstRegion->w || r->second.h != firstRegion->h)) ||
+                sprite.tint.r != firstSprite.tint.r || sprite.tint.g != firstSprite.tint.g ||
+                sprite.tint.b != firstSprite.tint.b || sprite.tint.a != firstSprite.tint.a ||
+                sprite.source.width > 0 || sprite.source.height > 0 ||
+                sprite.rotationDegrees != 0 || sprite.repeatX || sprite.uvShiftX != 0 ||
+                sprite.uvShiftY != 0 || sprite.foliageSway.enabled || sprite.pixelWobble.enabled ||
+                sprite.rgbGain > 1.f || r->second.offsetX || r->second.offsetY ||
+                r->second.w != r->second.originalW || r->second.h != r->second.originalH)
+                return false;
+            page = t->second;
+            firstRegion = &r->second;
+        }
+        if (!orbAtlasProgram_) {
+            constexpr const char* vertex = R"(
+                #version 130
+                out vec2 frameUv;
+                void main() {
+                    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
+                    frameUv = gl_MultiTexCoord0.xy;
+                }
+            )";
+            constexpr const char* fragment = R"(
+                #version 130
+                uniform sampler2D page;
+                in vec2 frameUv;
+                uniform ivec4 frameRect;
+                uniform vec4 frameTint;
+                out vec4 color;
+                void main() {
+                    vec2 pixel = frameUv * vec2(frameRect.zw) - vec2(0.5);
+                    ivec2 base = ivec2(floor(pixel));
+                    vec2 weight = fract(pixel);
+                    ivec2 lo = clamp(base, ivec2(0), frameRect.zw - ivec2(1));
+                    ivec2 hi = clamp(base + ivec2(1), ivec2(0), frameRect.zw - ivec2(1));
+                    ivec2 origin = frameRect.xy;
+                    vec4 a = texelFetch(page, origin + lo, 0);
+                    vec4 b = texelFetch(page, origin + ivec2(hi.x, lo.y), 0);
+                    vec4 c = texelFetch(page, origin + ivec2(lo.x, hi.y), 0);
+                    vec4 d = texelFetch(page, origin + hi, 0);
+                    color = mix(mix(a, b, weight.x), mix(c, d, weight.x), weight.y) * frameTint;
+                }
+            )";
+            auto compile = [](GLenum type, const char* code) -> GLuint {
+                GLuint shader = glCreateShader(type);
+                glShaderSource(shader, 1, &code, nullptr);
+                glCompileShader(shader);
+                GLint ok = GL_FALSE;
+                glGetShaderiv(shader, GL_COMPILE_STATUS, &ok);
+                if (ok) return shader;
+                char log[1024]{};
+                glGetShaderInfoLog(shader, sizeof(log), nullptr, log);
+                std::cerr << "Orb atlas shader compile failed: " << log << "\n";
+                glDeleteShader(shader);
+                return 0;
+            };
+            GLuint vs = compile(GL_VERTEX_SHADER, vertex);
+            GLuint fs = compile(GL_FRAGMENT_SHADER, fragment);
+            if (!vs || !fs) {
+                if (vs) glDeleteShader(vs);
+                if (fs) glDeleteShader(fs);
+                return false;
+            }
+            GLuint program = glCreateProgram();
+            glAttachShader(program, vs);
+            glAttachShader(program, fs);
+            glLinkProgram(program);
+            glDeleteShader(vs); glDeleteShader(fs);
+            GLint linked = GL_FALSE;
+            glGetProgramiv(program, GL_LINK_STATUS, &linked);
+            if (!linked) {
+                char log[1024]{};
+                glGetProgramInfoLog(program, sizeof(log), nullptr, log);
+                std::cerr << "Orb atlas shader link failed: " << log << "\n";
+                glDeleteProgram(program);
+                return false;
+            }
+            orbAtlasProgram_ = program;
+            GLint oldProgram = 0;
+            glGetIntegerv(GL_CURRENT_PROGRAM, &oldProgram);
+            glUseProgram(program);
+            glUniform1i(glGetUniformLocation(program, "page"), 0);
+            glUseProgram(static_cast<GLuint>(oldProgram));
+        }
+        if (SDL_RenderFlush(renderer_) != 0) return false;
+        GLint oldProgram = 0, oldMatrixMode = 0, oldActiveTexture = 0, oldBinding = 0;
+        glGetIntegerv(GL_CURRENT_PROGRAM, &oldProgram);
+        glGetIntegerv(GL_MATRIX_MODE, &oldMatrixMode);
+        glGetIntegerv(GL_ACTIVE_TEXTURE, &oldActiveTexture);
+        glPushAttrib(GL_ALL_ATTRIB_BITS);
+        glActiveTexture(GL_TEXTURE0);
+        glGetIntegerv(GL_TEXTURE_BINDING_2D, &oldBinding);
+        float spanX = 1.f, spanY = 1.f;
+        if (SDL_GL_BindTexture(page, &spanX, &spanY) != 0) {
+            glPopAttrib(); glActiveTexture(oldActiveTexture); return false;
+        }
+        glDisable(GL_TEXTURE_2D); // texelFetch uses the bound page, not fixed-function sampling.
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glDisable(GL_DEPTH_TEST);
+        glMatrixMode(GL_PROJECTION); glPushMatrix(); glLoadIdentity();
+        glOrtho(0, 1280, 720, 0, -1, 1);
+        glMatrixMode(GL_MODELVIEW); glPushMatrix(); glLoadIdentity();
+        glUseProgram(orbAtlasProgram_);
+        glUniform4i(glGetUniformLocation(orbAtlasProgram_, "frameRect"),
+                    firstRegion->x, firstRegion->y, firstRegion->w, firstRegion->h);
+        glUniform4f(glGetUniformLocation(orbAtlasProgram_, "frameTint"),
+                    firstSprite.tint.r / 255.f, firstSprite.tint.g / 255.f,
+                    firstSprite.tint.b / 255.f, firstSprite.tint.a / 255.f);
+        glBegin(GL_QUADS);
+        for (size_t i = 0; i < count; ++i) {
+            const Sprite& sprite = sprites[i];
+            SDL_FRect d = ProjectWorld({sprite.destination.x, sprite.destination.y,
+                                        sprite.destination.width, sprite.destination.height});
+            const float u0 = sprite.flipX ? 1.f : 0.f, u1 = sprite.flipX ? 0.f : 1.f;
+            const float v0 = sprite.flipY ? 1.f : 0.f, v1 = sprite.flipY ? 0.f : 1.f;
+            glTexCoord2f(u0, v0); glVertex2f(d.x, d.y);
+            glTexCoord2f(u1, v0); glVertex2f(d.x+d.w, d.y);
+            glTexCoord2f(u1, v1); glVertex2f(d.x+d.w, d.y+d.h);
+            glTexCoord2f(u0, v1); glVertex2f(d.x, d.y+d.h);
+        }
+        glEnd();
+        glUseProgram(static_cast<GLuint>(oldProgram));
+        glMatrixMode(GL_MODELVIEW); glPopMatrix();
+        glMatrixMode(GL_PROJECTION); glPopMatrix();
+        glMatrixMode(oldMatrixMode);
+        SDL_GL_UnbindTexture(page);
+        glBindTexture(GL_TEXTURE_2D, static_cast<GLuint>(oldBinding));
+        glPopAttrib();
+        glActiveTexture(oldActiveTexture);
+        drawCalls_ += count;
+        ++orbAtlasSubmissions_;
+        if (count > 1) { ++batchSubmissions_; batchSprites_ += count; }
+        return true;
+    }
     void DrawSprite(const Sprite& sprite) override {
         const auto began = std::chrono::steady_clock::now();
         auto it = textures_.find(sprite.texture);
         if (it == textures_.end()) return;
         SDL_Texture* texture = it->second;
+        if (DrawOrbAtlasBatch(&sprite, 1)) return;
         // Repeat/shift and private-GL shaders sample outside the ordinary
         // source rectangle. Keep their original texture and sampler contract.
         if (atlasRegions_.count(sprite.texture) &&
@@ -506,30 +665,77 @@ public:
     }
     void DrawSpriteBatch(const Sprite* sprites, std::size_t count) override {
         const char* opt = std::getenv("DEATHLEAK_BATCH_HUD");
-        if (!opt || std::strcmp(opt, "on") != 0 || sceneSamplingPhase_ || !count) {
+        const char* sceneOpt = std::getenv("DEATHLEAK_BATCH_SCENE_ORBS");
+        const bool enabled = sceneSamplingPhase_
+            ? (sceneOpt && std::strcmp(sceneOpt, "on") == 0)
+            : (opt && std::strcmp(opt, "on") == 0);
+        if (!enabled || !count) {
             for (size_t i = 0; i < count; ++i) DrawSprite(sprites[i]);
             return;
         }
+        // A non-atlased or special-effect sprite is a painter-order barrier,
+        // not a reason to discard every compatible run in the whole list.
+        // Keep singletons on SDL_RenderCopyF so the opt-in changes no pixels
+        // unless a run really can be submitted as one geometry draw.
         SDL_Texture* page = nullptr;
         std::vector<SDL_Vertex> vertices;
         std::vector<int> indices;
-        vertices.reserve(count * 4); indices.reserve(count * 6);
+        size_t first = 0;
+        auto flush = [&](size_t end) {
+            const size_t run = end - first;
+            if (!run) return;
+            if (run == 1) {
+                DrawSprite(sprites[first]);
+            } else if (sceneSamplingPhase_) {
+                if (!DrawOrbAtlasBatch(sprites + first, run))
+                    for (size_t j = first; j < end; ++j) DrawSprite(sprites[j]);
+            } else {
+                SDL_SetTextureColorMod(page, 255, 255, 255);
+                SDL_SetTextureAlphaMod(page, 255);
+                SDL_SetTextureScaleMode(page, sceneSamplingPhase_
+                    ? SDL_ScaleModeLinear : SDL_ScaleModeNearest);
+                if (SDL_RenderGeometry(renderer_, page, vertices.data(),
+                                       static_cast<int>(vertices.size()), indices.data(),
+                                       static_cast<int>(indices.size())) == 0) {
+                    drawCalls_ += run;
+                    ++batchSubmissions_;
+                    batchSprites_ += run;
+                } else {
+                    for (size_t j = first; j < end; ++j) DrawSprite(sprites[j]);
+                }
+            }
+            vertices.clear(); indices.clear(); page = nullptr;
+        };
         for (size_t i = 0; i < count; ++i) {
             const Sprite& sprite = sprites[i];
             auto tex = textures_.find(sprite.texture);
             auto region = atlasRegions_.find(sprite.texture);
-            if (tex == textures_.end() || region == atlasRegions_.end() ||
-                (page && page != tex->second) || sprite.rotationDegrees != 0 ||
-                sprite.repeatX || sprite.uvShiftX != 0 || sprite.uvShiftY != 0 ||
-                sprite.pixelWobble.enabled || sprite.foliageSway.enabled ||
-                sprite.rgbGain > 1.f || sprite.source.width > 0 || sprite.source.height > 0) {
-                for (size_t j = 0; j < count; ++j) DrawSprite(sprites[j]);
-                return;
+            const bool eligible = tex != textures_.end() && region != atlasRegions_.end() &&
+                (!sceneSamplingPhase_ || (texturePaths_.count(sprite.texture) &&
+                    texturePaths_.at(sprite.texture).rfind("Game/Media/orb/", 0) == 0)) &&
+                sprite.rotationDegrees == 0 && !sprite.repeatX &&
+                sprite.uvShiftX == 0 && sprite.uvShiftY == 0 &&
+                !sprite.pixelWobble.enabled && !sprite.foliageSway.enabled &&
+                sprite.rgbGain <= 1.f && sprite.source.width <= 0 && sprite.source.height <= 0;
+            if (!eligible || (page && page != tex->second)) {
+                flush(i);
+                first = i;
+            }
+            if (!eligible) {
+                DrawSprite(sprite);
+                first = i + 1;
+                continue;
             }
             page = tex->second;
             const AtlasRegion& r = region->second;
-            int tw = 0, th = 0; SDL_QueryTexture(page, nullptr, nullptr, &tw, &th);
-            if (tw <= 0 || th <= 0) { for (size_t j=0;j<count;++j) DrawSprite(sprites[j]); return; }
+            int tw = 0, th = 0;
+            SDL_QueryTexture(page, nullptr, nullptr, &tw, &th);
+            if (tw <= 0 || th <= 0) {
+                flush(i);
+                DrawSprite(sprite);
+                first = i + 1;
+                continue;
+            }
             SDL_FRect d = ProjectWorld({sprite.destination.x + sprite.destination.width * (sprite.flipX ? 1.f-float(r.offsetX+r.w)/r.originalW : float(r.offsetX)/r.originalW),
                 sprite.destination.y + sprite.destination.height * (sprite.flipY ? 1.f-float(r.offsetY+r.h)/r.originalH : float(r.offsetY)/r.originalH),
                 sprite.destination.width * float(r.w)/r.originalW,
@@ -546,11 +752,7 @@ public:
             vertices.push_back({{d.x,d.y+d.h},color,{ul,vb}});
             for (int index : {0,1,3,1,2,3}) indices.push_back(base+index);
         }
-        SDL_SetTextureColorMod(page, 255,255,255);
-        SDL_SetTextureAlphaMod(page, 255);
-        SDL_SetTextureScaleMode(page, SDL_ScaleModeNearest);
-        SDL_RenderGeometry(renderer_, page, vertices.data(), static_cast<int>(vertices.size()), indices.data(), static_cast<int>(indices.size()));
-        drawCalls_ += count;
+        flush(count);
     }
     bool DrawRotatedRepeatX(const Sprite& sprite, const SDL_FRect& destination,
                             float authoredWidth, int textureWidth, int textureHeight) {
@@ -1452,6 +1654,7 @@ private:
     bool sceneSamplingPhase_ = false;
     float worldZoom_ = 1.f;
     size_t drawCalls_ = 0;
+    size_t batchSubmissions_ = 0, batchSprites_ = 0, orbAtlasSubmissions_ = 0;
     double copySeconds_ = 0, presentSeconds_ = 0;
     bool initialized_ = false;
     SDL_Window* window_ = nullptr;
@@ -1460,11 +1663,14 @@ private:
     SDL_Texture* sceneTarget_ = nullptr;
     GLuint pixelWobbleProgram_ = 0;
     GLuint damageBurstProgram_ = 0;
+    GLuint orbAtlasProgram_ = 0;
     int sepiaWidth_ = 0, sepiaHeight_ = 0;
     SDL_GameController* gamepad_ = nullptr;
     TextureId nextId_ = 1;
     struct AtlasRegion { int x = 0, y = 0, w = 0, h = 0;
                          int originalW = 0, originalH = 0, offsetX = 0, offsetY = 0; };
+    bool orbRegionsLoaded_ = false;
+    std::unordered_map<std::string, AtlasRegion> orbRegions_;
     bool iconRegionsLoaded_ = false;
     std::unordered_map<std::string, AtlasRegion> iconRegions_;
     bool hudRegionsLoaded_ = false;

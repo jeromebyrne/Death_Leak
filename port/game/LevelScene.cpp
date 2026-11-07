@@ -1340,15 +1340,22 @@ void LevelScene::Draw(render::Renderer& renderer, float cameraX, float cameraY, 
     constexpr float scale = 2.f / 3.f; // Original world is authored for 1920x1080.
     const auto& filter = DiagnosticRenderFilter();
     // Orbs are runtime GameObjects at kOrb, not an unconditional backdrop.
-    if (spawnedOrbTexture_ && filter.only.empty()) for (const auto& orb : spawnedOrbs_) {
-        dynamic.push_back({3250, [&, orb] {
+    if (spawnedOrbTexture_ && filter.only.empty() && !spawnedOrbs_.empty()) {
+        std::vector<render::Sprite> orbSprites;
+        orbSprites.reserve(spawnedOrbs_.size());
+        for (const auto& orb : spawnedOrbs_) {
             render::Sprite draw;
             draw.texture = spawnedOrbTexture_;
             draw.destination = {640.f + (orb.x-cameraX-23.84865f)*scale,
                                 360.f + (cameraY-orb.y-36.415604f)*scale,
                                 47.6973f*scale, 72.831207f*scale};
             draw.tint = {255,255,255,204};
-            renderer.DrawSprite(draw);
+            orbSprites.push_back(draw);
+        }
+        // These runtime orbs were consecutive kOrb-depth painter items. Keep
+        // their relative order and use the renderer's ordered batch seam.
+        dynamic.push_back({3250, [&renderer, sprites = std::move(orbSprites)] {
+            renderer.DrawSpriteBatch(sprites.data(), sprites.size());
         }});
     }
     std::stable_sort(dynamic.begin(), dynamic.end(),

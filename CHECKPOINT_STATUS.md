@@ -606,3 +606,29 @@ The parent session handles user-facing completion/blocker notification. Continue
 - A fast sweep of six left+jump timings around the second central encounter did not save the one-health player (death frames 12837–12865); the changes were not retained. The failed left+fire route still reaches the earned ending in ordinary fast simulation, demonstrating why that old gate misses the wall-clock respawn. The new regression in the full integration suite asserts the real-time-clock death separately from the existing earned `EndStory at frame 59923` test.
 - Docker build passed with only pre-existing TinyXML warnings; complete Docker `sh port/tests/integration.sh` exited 0, including the new respawn gate, save bridge, strict renderer tests, rendered visual test and old earned ending. `git diff --check` passed. Ignored logs: `port/build/sim-wall-clock-final-build.log`, `sim-wall-clock-integration.log`, `sim-wall-clock-route.log`.
 - Next recovery: use the new fast wall-clock route gate to find an ordinary-control return that survives the legitimate second central encounter (or identify a source-backed combat discrepancy), verify the candidate on physical Xorg, then profile the full earned route and address transition stalls. Human display/play, controller, speakers, worst-case/thermal GPU, missing skeleton/fireball art and broader parity remain open. The Linux port is partial, not release-accepted.
+
+## Orb atlas + ordered batching (2026-10-26)
+
+Status: active isolated implementation on `feature/orb-atlas-batching-20261026`.
+
+- Physical NVE7 matched probe found 1-LSB orb differences with hardware normalized-UV linear sampling; explicit texel-center four-fetch filtering matched interior pixels. This is a sampling-path precision defect to repair, not an atlas exemption.
+- First bounded code slice: split the HUD atlas batch into compatible consecutive runs, preserving painter order and individual fallback, and count real geometry submissions.
+- Next: route an animation family through a page with corrected sampling, add ordered scene batches, then exact post-HUD A/B/A and GPU timing. Physical display/high-refresh release acceptance remains separate.
+
+### Candidate implementation
+
+- `port/assets/orb_frames/` is a verified 10-frame, no-trim 171×2590 atlas; source hashes and exact visible RGBA crop reconstruction are in its manifest. Runtime routing is opt-in with `DEATHLEAK_ATLAS_ORB=on`.
+- `SDLRenderer` now has a GLSL 130 four-texel fetch/mix path in frame-local coordinates with source-edge clamp, using the same mechanism that eliminated the interior 1-LSB residual in the matched NVE7 probe. Consecutive orb sprites use one ordered `GL_QUADS` submission when `DEATHLEAK_BATCH_SCENE_ORBS=on`; default rendering remains dedicated textures.
+- The existing opt-in HUD batch now segments at incompatible/page-change barriers and reports real geometry submissions. These are candidate changes pending build/runtime/pixel checks, not accepted optimizations.
+- Real-display Xorg `:0` rejected the available MIT-MAGIC-COOKIE; physical full-frame A/B/A and GPU frame-time measurements remain unavailable from this session.
+
+### Offscreen implementation discriminator
+
+- Build passed. `offscreen` SDL/OpenGL selects **llvmpipe**, not physical NVE7. Two-frame active Forest controls were byte-identical, and the first shader candidate ran 16 orb-atlas submissions but changed 13,655 RGB pixels localized to the orb sprites; the candidate orbs disappeared. This is a genuine implementation failure, not a film-clock difference, and is rejected.
+- The first shader passed frame rectangle/tint through compatibility vertex attributes; the bounded repair now passes a same-frame/same-tint run via uniforms (matching the prior standalone sampler probe) and falls back at mixed-frame boundaries. Rebuild and A/B are pending. No runtime atlas default or performance claim is authorized by this gate.
+
+### Corrected metadata gate and next discriminator
+
+- Rebuild passed. Same two-frame Forest route on offscreen OpenGL/llvmpipe: 16 orb-atlas shader submissions, identical gameplay endpoint, but **13,655 changed RGB pixels**, same orb-local failure as the first variant; source orbs disappear. Independent baseline A/A controls were byte-identical. This candidate is **rejected** for runtime enablement; default remains dedicated frames.
+- An isolated tiny SDL/OpenGL probe against the generated page found the expected 171×2590 texture, valid visible alpha at frame-row texels, linked the exact four-fetch GLSL 130 shader, and produced nontransparent `sample=229,229,229,255` at its center with GL error 0. The page content and shader math work outside the game. The next investigation must inspect game draw-time framebuffer/viewport/scissor/program/texture/unit/uniform state and a pre/post scene-target readback at the orb quad.
+- This test is functional offscreen software GL only. Physical Xorg rejected the available cookie; no NVE7 parity, driver submission trace, frame-time gain, or release acceptance is claimed.

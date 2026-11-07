@@ -49,18 +49,21 @@ def place(free, used):
             if not any(i != j and contains(other, rect) for j, other in enumerate(remaining))]
 
 
-def pack(paths, output):
+def pack(paths, output, trim_transparent=True):
     entries = []
     for path in sorted(set(paths), key=lambda p: p.as_posix()):
         with Image.open(path) as source:
             image = source.convert('RGBA')
             width, height = image.size
             # Invisible RGB bytes are not sampled by the alpha-blended sprite.
-            bounds = image.getchannel('A').getbbox() or (0, 0, 1, 1)
-            left = max(0, bounds[0] - GUARD)
-            top = max(0, bounds[1] - GUARD)
-            right = min(width, bounds[2] + GUARD)
-            bottom = min(height, bounds[3] + GUARD)
+            if trim_transparent:
+                bounds = image.getchannel('A').getbbox() or (0, 0, 1, 1)
+                left = max(0, bounds[0] - GUARD)
+                top = max(0, bounds[1] - GUARD)
+                right = min(width, bounds[2] + GUARD)
+                bottom = min(height, bounds[3] + GUARD)
+            else:
+                left, top, right, bottom = 0, 0, width, height
             trim = (left, top, right - left, bottom - top)
         if trim[2] + 2 * PAD > PAGE or trim[3] + 2 * PAD > PAGE:
             raise ValueError(f"too large for padded atlas: {path} ({trim[2]}x{trim[3]})")
@@ -164,12 +167,14 @@ def verify(manifest, output):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', required=True, type=Path)
+    parser.add_argument('--no-trim', action='store_true',
+                        help='retain original frame dimensions for exact sampling experiments')
     parser.add_argument('png', nargs='+', type=Path)
     args = parser.parse_args()
     for path in args.png:
         if not path.is_file() or path.suffix.lower() != '.png':
             parser.error(f'not a PNG file: {path}')
-    manifest = pack(args.png, args.output)
+    manifest = pack(args.png, args.output, trim_transparent=not args.no_trim)
     verify(manifest, args.output)
     print(f"packed and verified {len(manifest['textures'])} images into "
           f"{len(manifest['pages'])} page(s): {manifest['page_dimensions']}")
