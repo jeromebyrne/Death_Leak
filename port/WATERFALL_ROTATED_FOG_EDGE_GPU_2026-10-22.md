@@ -1,0 +1,17 @@
+# Waterfall-top rotated-fog edge — bounded GPU diagnostic (2026-10-22)
+
+## Disposition
+
+The source-backed gap described in `NEXT_WATERFALL_VISUAL_DISCRIMINATOR_2026-10-22.md` has **already been corrected** in this working tree: `LevelScene::Draw` now calls `render::SpriteMayIntersectViewport(draw)` (`port/game/LevelScene.cpp:1267`), which computes the rotated screen-space AABB (`port/render/ViewportCull.h`). The older unrotated rectangle reject is not present on this path. I made **no source, test, build, checkpoint, status, or art edits**.
+
+The existing physical A/B edge evidence for ID117 is decisive for the former bug. In `port/build/rotated-fog-cull-2026-10-22/`, camera Y=4077.5 with X=-1675.014648 gives an all-black old-path frame but 1,202 nonblack corrected-path pixels in x166–611/y670–719. At Y=4045 the old and corrected BMPs are pixel-identical (5,157 nonblack pixels); at Y=4185 both are black. I independently decoded and counted these six existing 1280×720 BMPs. Their `gpu.log` records Xorg/X11 OpenGL `accelerated=1 software=0`, `vendor=nouveau renderer=NVE7`. These are ID117-only, fixed-state diagnostic frames, **not** matched Windows/gameplay frames. See `port/ROTATED_FOG_CULL_GPU_REVIEW_2026-10-22.md` for the original capture procedure and focused test.
+
+## This lane's frozen-binary check
+
+At entry I copied the then-current `port/build/deathleak-linux` to the ignored directory `port/build/waterfall-rotated-fog-edge-evidence-20261022-1792719942/deathleak-linux-frozen` (SHA-256 `acf63798b57a782e765cb4fc881467e5e804a171ad54ddd86f0638523644a3a4`). I ran **only that frozen executable**, not the concurrently rebuilt shared binary, once on physical Xorg `:0` through Docker with `/dev/dri` and the LightDM X authority. `frozen-preview.log` confirms SDL X11/OpenGL strict accelerated mode (`accelerated=1 software=0`), OpenGL `vendor=nouveau renderer=NVE7`, GPU sepia postprocess, and loading 81 original waterfall-top sprites with zero missing assets. The 1280×720 preview BMP and log are in that ignored evidence directory. No game/recorder process was left running.
+
+## IDs 117/118/119/121 and remaining limit
+
+`Game/XmlFiles/levels/waterfall_top.xml:1798-1861` authors all four as 1988×1290 `Media/fog.png` quads at 0.11 rad on `kGroundFront`, with differing positions, flips, fade/scroll and initial alpha (0.6/0.6/0.6/0.5). They share the generic culling path and geometry; the rotated vertical half-extent is about 750 world units versus 645 unrotated, a roughly 105-world-unit edge interval where old-path rejection could lose visible pixels. ID117 has the measured GPU edge case above. IDs 118/119/121 are **source-covered but not separately GPU-captured**.
+
+A new same-state ID-only camera-boundary capture of those three is not safely available from the frozen game executable: its `--camera-script` is restricted to `--simulate-only`, and the existing GPU probe source (`port/tests/rotated_fog_gpu_probe.cpp`) hardcodes ID117 and its world position. Extending/recompiling that probe would breach this lane's no source/test edits and no build instruction, while normal gameplay or `--level-preview` does not set arbitrary fixed camera/ID-only fade state. I therefore stopped at the verified prior A/B plus frozen physical-GPU smoke capture rather than mislabel a nonmatched preview as edge evidence. No matched Windows frame or visual-parity acceptance is established.

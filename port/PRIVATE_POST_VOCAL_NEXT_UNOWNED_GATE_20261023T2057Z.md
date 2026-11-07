@@ -1,0 +1,15 @@
+# Post-vocal next unowned gate — read-only, 2026-10-23 20:57Z
+
+## Decision
+
+No distinct, unowned, high-impact Windows-versus-Linux **visual** discrepancy is established by the current active Forest evidence. The delivered knife/FPS Forest-1 clip is Linux-only and predates the already pushed ParticleSpray leaf flip; it has no matched original render ordinal or draw packet. Its conspicuous dark player/trunk and lower band are consistent with the authored ID10 (alpha .7, non-fading middle foreground) and ID37 (alpha .95, non-fading foreground) in `Game/XmlFiles/levels/forest_exploration_1.xml:176-190,612-635`. Windows sorts drawables by depth in `GameObjectManager::OrderDrawablesByDepth`; the port interleaves XML and dynamic painter items in `LevelScene::Draw`. The 20:41, 20:50, 20:51 and 20:54 private gates already disposition ID10/37, fog/foliage and leaf orientation. Neither the Steam JPEG nor the delivered moving clip supplies a first divergent Windows draw field. Do not open a speculative visual patch or demand a new reel merely for the small leaf flip.
+
+## One executable remaining release gate
+
+**Independent post-vocal integration QA owner, after the exclusive audio worker releases the files/build:** verify the *settled* jump/roll vocal correction against the original action-trigger contract, then record a frozen-tree acceptance receipt. Original `Game/src/GameObjects/Character.cpp:1239-1258,1460-1525` invokes `PlayJumpSFX` only after a successful player jump or roll; one `rand()%20` selection plays exactly one of five `character/jump_1.wav`–`jump_5.wav` for values 0–4, otherwise silence. This is distinct from a visual parity investigation and needs no Windows runtime or human input. At this report's inspection, `PlayerMotion`, `main`, `SoundPlayer`, `SDLSoundPlayer`, integration test and new `jump_roll_vocal_*` test files are actively dirty/untracked under another worker's ownership, so no in-flight verdict is possible and this lane did not touch them.
+
+Exact bounded task: wait for that owner's release receipt; freeze HEAD plus hashes of those four production files, five WAVs and the two vocal tests; review the final diff for **one picker call per successful jump, immediate roll and buffered landing roll**, zero calls on held/failed/water/enemy actions, correct 5/20 branches and SFX mute; run the final deterministic CPU event fixture and non-GPU SDL disk-mix fixture against that frozen source; record exit codes, the silent control and nonzero vocal PCM delta in a unique QA receipt. Reject a pass if the source changes between fixture and receipt, or if the test only asserts input press rather than the successful transition. This QA is independent of the worker's implementation/build and of speaker audibility. Do not claim final release or visual parity from it.
+
+## Scope
+
+Only this unique report was written. No shared status, source, test, index, commit, build, Docker, GPU/Xorg, capture or messaging was touched. The post-vocal QA owner is not assigned to this reporting lane; the exclusive audio worker retains its stated file/build ownership until release.

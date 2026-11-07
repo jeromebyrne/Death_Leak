@@ -17,7 +17,7 @@ Maximize sustained active-gameplay frame rate on the real NVE7 display at 1280×
 
 1. Preserve and reconcile the dirty source tree. Use isolated diagnostic sources/builds; never overwrite unrelated changes or race another GPU owner.
 2. Repeat an uncontended physical-GPU baseline with exact binary/route/settings, p50/p95/p99, slow-frame and pass timings; keep control runs interleaved with candidates.
-3. Run the next ID-1 scissor/visible-region diagnostic to distinguish fragment/overdraw cost from fractional-GL state/driver overhead. The diagnostic may change pixels; it is not a candidate fix.
+3. Completed ID-1 scissor/visible-region diagnostic on physical NVE7: full/half/zero coverage frame medians 20.16/19.49/18.69 ms. Fragment/coverage cost is material; the scissor itself changes pixels and is not a candidate fix. Derive conservative opaque-coverage masks before attempting any copy-free occlusion treatment.
 4. Exhaust measured, visually lossless avenues in priority order: occlusion-aware scene painter/geometry; batching and state-change reduction; texture sampling and formats; shader/pass fusion; framebuffer/target traffic; upload/readback avoidance; SDL/OpenGL presentation/compositor path; driver and GPU power-state controls. For each, record predicted mechanism, GPU A/B, exact-frame pixel checks, and keep/reject result. Do not optimize based on CPU wall-time phase labels alone.
 5. Repair the Waterfall-bottom scripted traversal gate separately, then run sustained physical-display routes through all available scene types and transitions. Track median and tail latency, frame pacing, memory/VRAM, and thermal behavior.
 6. Commit and push only verified, scoped source changes; leave failed prototypes as documented experiments. Update the checkpoint after each bounded step and proactively report meaningful gains or genuine blockers in the originating DM.
@@ -28,4 +28,7 @@ Performance work is complete only after representative sustained physical-GPU pl
 
 ## Next action
 
-Run the isolated ID-1 scissor diagnostic on the physical NVE7 display, then prototype the best supported visual-preserving change and repeat A/B plus pixel checks. Current status: goal recorded; no new optimization accepted yet.
+Commit `f888a96` replaced Waterfall-top ID58's viewport-covering 2×2 white repeat-X texture with an exact-pixel solid blend, yielding repeated physical-NVE7 mixed-route p50 29.655/28.913 ms controls versus 21.090/21.045 ms candidates; p95 31.524/31.732 versus 22.894/22.864 ms. Top ordinal 700 lossless RGB matched serial control and production capture exactly, but same-binary visual-clock variance exists in other runs. Transition max remains ~99 ms, and neither 60 FPS nor sustained release acceptance is evidenced. Next: remeasure current-tree scene-tagged GPU bands after ID58; split the remaining 3000–1001 painter interval by ordered draw/SDL-private spans, test only pixel-preserving candidates, and independently run the repaired 1,500+ frame bottom→cave route with scene/tail statistics. Preserve unrelated dirty work and one physical GPU owner.
+
+## Scope expansion — 2026-10-25
+Jerome authorized 4K atlas coverage, maximum safe draw batching, shader optimization, up-to-8K display resolution and device-supported refresh rates with game-logic timing rework. The implementation contract, starting inventory and first vertical slices are in PORT_ATLAS_SCALING_GOAL.md. This new scope supersedes the earlier 1280×720/60-Hz-only outcome; do not claim completion from old benchmarks.

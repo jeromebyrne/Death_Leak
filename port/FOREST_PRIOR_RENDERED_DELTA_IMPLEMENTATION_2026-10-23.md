@@ -1,0 +1,19 @@
+# Forest prior-rendered-delta implementation handoff — 2026-10-23
+
+## Outcome
+
+**Blocked by pre-existing edits in the exact implementation files; no source or test change made.** This bounded lane stopped under its explicit same-file ownership rule. It did not run a new CPU regression, commit, push, build, or invoke GPU/Xorg. This document is the sole write from this lane; forest animation visual acceptance is **not** claimed.
+
+At inspection, `port/game/LevelScene.cpp`, `port/game/LevelScene.h`, and `port/linux/main.cpp` were already modified. Their uncommitted diff is a right-stick aim-line change: it expands `UpdatePlayerVisual`'s signature/state and call, edits the same function's sequence/aim processing vicinity, and modifies sprite draw rotation. These are precisely the files needed to split animation delta from current physics/visual delta and to commit a preceding-rendered-delta slot after the frame. The existing `port/tests/integration.sh` and `port/tests/strafe_body_cpu_test.cpp` were dirty too. All were left untouched; no unrelated dirty state was staged or reset. HEAD at inspection was `2e1624e` (`Match waterfall Y scroll to prior rendered delta`).
+
+## Source-grounded correction still needed
+
+The existing `FOREST_ANIMATION_PRECEDING_DELTA_CPU_SPY_2026-10-23.md` already proves command-level divergence for forest ID68 and player ID2: six of twenty controlled ticks emitted different texture paths under current-delta versus preceding-rendered-delta animation accumulation. In the live port, `LevelScene::UpdateVisuals` adds current `dt` to the orb fractional animation clock, and `LevelScene::UpdatePlayerVisual` adds current `dt` to the player body clock; `port/linux/main.cpp` passes the current `dt` to both before `renderer->EndFrame()`. Original `Game/src/Animation/AnimationPart.cpp` consumes `Timing::GetLastUpdateDelta()` and `Game/src/program.cpp` writes that modified delta after `Render()`. The local original Windows frame/trace gate remains unavailable, per `FOREST_ORIGINAL_ANIMATION_MATCH_GATE_2026-10-23.md`.
+
+After the owners of the dirty files integrate/release their work, introduce one zero-initialized preceding **rendered, modified** delta slot and update it at the post-render boundary. Feed that slot only to the orb and player body animation accumulators, while retaining current `dt` for physics, weather, shader clock, orb hover, other visual timers and separately owned waterfall cadence. Preserve the orb update-zone freeze/re-entry, player sequence reset and rate semantics, and at-most-one-frame advancement. The previous slot must advance even when an orb is off-zone; it is a render-iteration slot, not an eligible-orb cache. Reconcile this against any later changes to the dirty files before patching.
+
+## Focused verification once ownership clears
+
+Adapt the disposable CPU render-command spy described in `FOREST_ANIMATION_PRECEDING_DELTA_CPU_SPY_2026-10-23.md` into a focused regression against the live `LevelScene` path. Use its 20-tick schedule and exact prior-slot emitted texture paths as oracle, including tick 3 player Still, tick 8 orb zone re-entry, tick 13 Running, tick 16 orb continuity, off-zone freeze and player resets. Assert current-delta consumers remain current by a narrow state/command check; do not use shared build output or a physical GPU for this gate. Only after that focused verification should the owner make a scoped source/test/report commit and push.
+
+**Next GPU need:** a later exclusive visual lane must obtain registered, lossless original Windows and Linux forest ID68/player crops with identical timing history, animation phase, zone eligibility, camera/viewport, effects, and asset hashes. Existing unmatched screenshots/video and the CPU command spy cannot establish pixel parity or visual prominence.

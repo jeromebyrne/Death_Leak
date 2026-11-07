@@ -1,0 +1,23 @@
+# Next bounded visual gap after strafe-footstep — forest foreground follow timing
+
+## Nomination (read-only, HEAD `8f8d817` plus concurrent uncommitted strafe work)
+
+Nominate the still-open **forest-1 ParallaxLayer destination/UV temporal split**, not another player aim-line change. This is a source-backed composition mismatch visible *when the gameplay camera moves*: XML IDs 37 (`shrubbery.png`, lower foreground) and 40 (`trees_top.png`, upper foreground) cover broad frame regions at alpha 0.95. The expected discrepancy is a transient horizontal translation, not a persistent color, contrast, darkness, or haze correction. Existing reports `NEXT_FOREST_VISUAL_DISCRIMINATOR`, `PARALLAX_FOLLOW_TEMPORAL_TRACE`, and `NEXT_CURRENT_HEAD_VISUAL_DISCRIMINATOR` previously identified the same contract; this report revalidates the **current source seam after strafe-footstep**, and does not claim a newly discovered defect or measured Windows/Linux pixel delta. It is a good next *discriminator*, not yet a justified production patch.
+
+## Exact Windows versus Linux chain
+
+- Authored forest XML `Game/XmlFiles/levels/forest_exploration_1.xml:612-635,666-689`: IDs 37/40 are always-updated `ParallaxLayer`s, `followcamx=true`, `followcamy=false`, 2048-world-unit width, camera-X UV coefficient 0.000690, unflipped, alpha 0.95.
+- Windows `Game/src/GameObjects/ParallaxLayer.cpp:26-35`: `ParallaxLayer::Update` first calls `Sprite::Update(delta)`, then changes `m_position.X` to current camera X. `Game/src/GameObjects/GameObject.cpp:202-212` constructs `m_world` from the position during that earlier update; `Game/src/GameObjects/Sprite.cpp:626-637` subsequently supplies that cached world matrix to the authored `effectlighttexture` draw. But `ParallaxLayer::Draw` reads **current** camera X for UV shift (`ParallaxLayer.cpp:37-83`). Hence the drawn quad center is from the *previous followed position* while texture phase uses the current camera. This is subject to source manager update/draw order, as traced in the existing temporal reports.
+- Current Linux `port/game/LevelScene.cpp:1217-1224` chooses `worldX = cameraX` for a following parallax layer and `:1244-1253` computes both destination and UV phase from that same current camera X. It retains no prior-follow destination. The uncommitted strafe-footstep changes concern the player material emitter and do not close this draw path. The concurrent GPU aim-line reviewer owns a separate player-local issue; this nomination does not alter or test it.
+
+For an illustrative +8-world-unit camera step at 2/3 projection, the Windows quad center is predicted about 5.33 screen pixels behind Linux while UV phase agrees. At a stopped camera, the difference should converge after the next update. This numeric example is a source prediction, **not** a measured frame difference or proof that the lag is artistically desirable. ID37's broad dark art and ID40's canopy make the seam active in ordinary forest movement, but their alpha/art must not be retuned to chase an unmatched Steam JPEG.
+
+## Smallest conditional fix and discriminator
+
+First perform a CPU-only camera-step trace for IDs 37/40: three draws at camera X = A, A+8, A+8, recording destination center and `uvShiftX`. The source-equivalent prediction is prior-follow destination with current-camera UV on the moving step, then convergence on the held step. A render-spy assertion can verify this without GPU contention. After the exclusive reviewer releases the GPU lane, use a **render-only** ID37 (and optionally ID40) A/B at one fixed active forest frame and camera history: baseline current-X destination versus cached prior-follow-X destination, identical UV, depth, opacity, art and controls. The moving-frame edge should shift by the predicted amount; the held-camera control should not. Require a matched Windows transform/frame trace before merging an emulation of this legacy one-update lag. If the pixel effect is immaterial, close it as a low-priority source difference.
+
+If that discriminator proves a worthwhile correction, the smallest code slice is to retain each following layer's previous update-follow X in `SceneSprite`/scene state, use it **only** for that layer's destination in `LevelScene::Draw`, and leave `cameraX` for the UV shift; initialize/reset on level load to avoid a first-frame jump. Do not change ordinary sprites, parallax UV math, XML, source art, sepia, footstep spray, right-stick/aim-line state, or camera-follow algorithm.
+
+## Evidence boundary
+
+Static source/XML and existing-report inspection only. No build, Docker, GPU/Xorg, capture, shared source/test/status edit, or visual-acceptance claim. Current dirty state was preserved; this uniquely named report is the only file written.

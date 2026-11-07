@@ -1,0 +1,18 @@
+# Next source-proven forest-1 visual gap — player firing-arm composition (2026-10-22)
+
+## Finding
+
+At HEAD `e676e30`, the Linux port draws **only the player's body animation texture**. The Windows game draws a separate, transient **back-arm attack** sprite behind the body while firing. This is a definite missing composition element in forest-1's active right+fire route, not a speculative color or fog discrepancy. It affects the focal moving character repeatedly, but is **local to the player**; it cannot explain the screen-wide dark foreground or right pale shaft.
+
+## Evidence
+
+- Forest-1 authors Player ID2 with `XmlFiles\\animation\\player_anim_default.xml`, 181.393768×215.352036 world units, at `kPlayer` (`Game/XmlFiles/levels/forest_exploration_1.xml:35-47`). That XML has a separate `<arm>` part (`Game/XmlFiles/animation/player_anim_default.xml:1483-1537`), with 10 `Still` frames from `Media/characters/player/back_arm_attack` and 10 `Running` frames from `back_arm_attack_run`, both at 30 fps. The source frame size on screen is about 121×144 px at the port's 2/3 projection; actual nontransparent arm coverage is smaller and was not measured.
+- Windows `Character::Initialise` selects arm `Still` (`Game/src/GameObjects/Character.cpp:524-526`). `Player` restarts and advances the arm on projectile fire (`Game/src/GameObjects/Player.cpp:467-475`; the bomb path does likewise at :249-257). `Character::Draw` draws an unfinished arm via `SolidMovingSprite::Draw` **before** restoring/drawing `m_mainBodyTexture` (`Character.cpp:1888-1907`). `AnimationPart::IsFinished` tests the frame cursor against sequence length (`Game/src/Animation/AnimationPart.cpp:54-70`), so this is a finite, firing-linked overlay, not a perpetual idle arm.
+- Linux `LevelScene` loads only the XML `<body>` sequences and explicitly notes the separate arm is unrepresented (`port/game/LevelScene.cpp:359-390`). `UpdatePlayerVisual` advances only `playerSequence_`/`playerFrame_` (`:671-706`), and `Draw` replaces the player's one texture with that body frame and calls `renderer.DrawSprite(draw)` once (`:745-786`). Its `UpdatePlayerVisual` call from `port/linux/main.cpp:1053-1056` receives motion/melee/facing but no projectile-fire event. The post-foliage gameplay checkpoint's 10 s `B:300,F:99700` right+fire script proves firing is exercised in the reviewed forest route (`port/POST_FOLIAGE_GAMEPLAY_REVIEW_2026-10-22.md`); this read-only audit did not inspect/capture a new frame.
+- `git log -20` through HEAD includes foliage UV, ordinary UV, rotation, fog wobble/scroll, and ID47 alpha fixes, but no player-arm composition change. Current source still has the single-body draw. This is distinct from already-fixed ID46 repeat phase and ID47 particle alpha, and from the source-attributed ID37/ID15 regions.
+
+## Bounded implementation suggestion
+
+For Player ID2 only, load the authored `<arm>` `Still`/`Running` frames; retain a finite arm frame/timer and selected body-compatible sequence. Feed an actual successful player-projectile-fire event into visual update (not merely held fire input), restart/advance the 30-fps arm animation per source, and draw its frame at the same player transform **immediately before** the body within the existing depth-ordered player draw slot. Preserve the source's `IsFinished` suppression and horizontal facing. Do not change forest art/XML, global sprite blending, or unrelated foreground layers. Verify with one deterministic same-frame firing and non-firing player crop plus the existing active-gameplay route; exact Windows pixel parity still requires matched camera/state/time and an original Windows frame.
+
+No build, GPU use, capture, source edit, or commit was performed for this audit.

@@ -1,0 +1,21 @@
+# Fresh-save intro camera source audit — 2026-10-23
+
+Scope: bounded, read-only comparison of the Windows original with the current Linux `main.cpp`, `PlayerMotion.cpp`, and `LevelScene.cpp`. No build, GPU/display run, or visual parity claim was made. This file is the only artifact of this audit.
+
+## Source ordering and existing correspondence
+
+- On an unpulled save, Windows `Player::Update` runs `Character::Update(delta)` (physics/contact) before `UpdateIsPullingSwordFromStomach(delta)` and then returns, suppressing ordinary player actions (`Game/src/GameObjects/Player.cpp:275-284`). Linux similarly calls `motion.Update(scene, dt, 0, false)` and copies the contacted position before evaluating intro completion/input (`port/linux/main.cpp:640-658`); `PlayerMotion::Update` resolves movement/contact in that call (`port/game/PlayerMotion.cpp:49-57,110-115,160-170`).
+- Windows, while `IntroCutscene1` and Interact are held, adds `delta`; **strictly greater** than 2.75 seconds changes to `IntroCutscene2`, restores the load zoom, emits effects, and returns **before** its ongoing shake/zoom block (`Game/src/GameObjects/Player.cpp:998-1029,1030-1033,1100-1127`). Release resets held time and zooms back at twice the pull-in rate (`Game/src/GameObjects/Player.cpp:1129-1135`). Linux retains the strict `> 2.75f` threshold, immediate load-zoom reset, pull phase switch, and held/release rates (`port/linux/main.cpp:656-672`).
+- Windows completion is not the threshold: in phase 2, `bodyPart->IsFinished()` sets the pulled-save flag (`Game/src/GameObjects/Player.cpp:1150-1157`), after `Player::UpdateAnimations` animates the non-looped body (`Game/src/GameObjects/Player.cpp:927-955`). Linux advances its intro frames in `LevelScene::UpdatePlayerVisual`, marks completion after the final visible frame (`port/game/LevelScene.cpp:1173-1194`), and consumes that signal on the next gameplay update (`port/linux/main.cpp:648-653,1192-1196`).
+
+## One concrete visual-timing gap: held-pull camera shake is absent
+
+Windows calls `Camera2D::DoShake(time * 5.0f, 0.1f)` on every *sub-threshold* held update, where `time = mCurrentTimePullingSword / 2.75f` (`Game/src/GameObjects/Player.cpp:1103-1105`). `DoShake` starts only when no shake is active, so sustained hold yields successive 0.1-second shake windows with intensity sampled at their starts, rising toward 5; it does **not** restart every frame (`Game/src/Core/Camera2D.cpp:297-307`). `Camera2D::Update` applies signed X/Y displacement while the shake remains active (`Game/src/Core/Camera2D.cpp:120-165`). The threshold branch returns before scheduling another shake, although an already-active window may finish afterward (`Game/src/GameObjects/Player.cpp:1025-1033,1100-1105`).
+
+Linux's held-pull block changes only time/zoom/phase and never starts `cameraShake` (`port/linux/main.cpp:656-672`). The current `cameraShake` trigger is a hard-landing event in the ordinary gameplay branch (`port/linux/main.cpp:745-764`); intro takes the separate branch (`port/linux/main.cpp:640-687`). The draw path still samples `cameraShake`, but without an intro start it has no pull-induced jitter (`port/linux/main.cpp:1197-1203`; `port/game/CameraShake.h:13-35`). Thus a stationary fresh-save hold has smooth framing where the original has short, increasingly strong camera impulses. This is a source-backed gap, not a measured screenshot difference.
+
+## Focused next implementation recommendation
+
+Give `CameraShake` a parameterized `Start(intensity, duration, time)` preserving its active-window refusal and existing view-before-jitter/stored-position behavior (`port/game/CameraShake.h:4-35`). In the Linux held branch, **only when `introHeldTime <= 2.75f`**, request `Start((introHeldTime / 2.75f) * 5.f, 0.1f, cameraShakeTime - dt)` after incrementing held time; do not start on the threshold frame, release frame, or phase-2/completion frame. Keep `StartMedium` as the 15/0.30 wrapper for landings. Check timing with a deterministic CPU-only trace of start/expiry and held/release/threshold frames before any optional visual validation by the integration owner. Do not change contact or completion sequencing as part of this focused fix.
+
+Ownership released: this audit makes no claim on shared build/GPU, `Combat`, `main.cpp`, `LevelScene`, source, tests, or existing reports/status.

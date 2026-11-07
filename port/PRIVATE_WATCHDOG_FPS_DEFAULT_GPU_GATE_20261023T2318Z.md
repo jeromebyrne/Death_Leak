@@ -1,0 +1,15 @@
+# FPS-default physical GPU gate — 2026-10-23 23:18Z
+
+## Decision
+
+**Pass.** At HEAD `55f34fc9efc9fd1832eb09e8cee5e353a05fbff5`, strict accelerated Forest-1 gameplay on physical Xorg `:0`/nouveau NVE7 rendered the normal HUD without an FPS readout. The same executable and scripted gameplay with only `--show-fps` added rendered `FPS 41` in the bottom-left diagnostic band. No defect found in this bounded gate.
+
+## Reproduction and evidence
+
+Preflight `ps` and `docker ps` showed standing Xorg `:0` only, no Death Leak/FFmpeg/capture process or capture container. Built a unique executable with `deathleak-linux-build:bookworm` and `make -C port TARGET=build/private-watchdog-fps-default-gpu-20261023t2318z/deathleak-linux`; build passed with existing TinyXML warnings. Executable SHA-256: `b79f6c07f38edf314d611ae1a33955b1997bc51b631da4d33fbcdcde1cec6ebf`.
+
+Ignored packet `port/build/private-watchdog-fps-default-gpu-20261023t2318z/` contains exact `capture.sh`, `default.log`, `opt-in.log`, lossless `default.bmp`/`opt-in.bmp`, PNG review stills and enlarged HUD crops. Serial runs used `deathleak-capture:post-foliage` with physical X socket/LightDM Xauthority and `/dev/dri`, read-only source mount, SDL `x11`/`opengl`, dummy audio, strict renderer (no software override). `capture.sh` runs `--play Game/XmlFiles/levels/forest_exploration_1.xml --script B:120 --frames 120 --fixed-dt 0.0166667 --capture /out/<mode>.bmp`; `opt-in` alone appends `--show-fps`. Both returned 0. Both logs say `name=opengl accelerated=1 software=0 vsync=1 mode=strict-accelerated`, `OpenGL device vendor=nouveau renderer=NVE7`, GPU Sepia before HUD, 71 original Forest sprites with 0 missing/unsupported, and Forest audio. Both endpoints are the same `(888.985,3116.18)`, 4 orbs, 25 health, grounded, `vx=480`; wall elapsed differs (2.990/3.052 seconds), as expected.
+
+Direct inspection of 1280×720 stills shows active Forest traversal, player, orbs, and health/focus HUD in both. In the bottom-left `x=10..99,y=693..706` FPS text region, default has **0** pixels above RGB 10, whereas opt-in has **272** bright glyph pixels; enlarged crops show blank/default versus `FPS 41`/opt-in. This is a numeric FPS reading after the half-second sample, not just initial `FPS --`. Default BMP SHA-256 `e83c4b778e38894dc85256950eab4127ed41eb3e97596c8f00e601a4f3ccaf6a`; opt-in `dde95cd2782c04a0ea45febcfd9f4bba762a2c0c7b46bae33a2fef90ad02c46e`.
+
+This proves the default/opt-in presentation at one scripted active-play endpoint on the physical GPU, not a frame-by-frame FPS performance benchmark or original-Windows parity. The `--script`/`--fixed-dt` route is deterministic game input/simulation; the FPS readout itself samples wall clock. Concurrent preexisting dirty `port/linux/SDLRenderer.cpp` and `port/tests/integration.sh` were incorporated by the unique build and left untouched; `port/linux/main.cpp` was clean at HEAD. No source, shared checkpoint/status, Git index, commit, or push changed. Postflight `ps`/`docker ps` found no game/FFmpeg/capture process/container, so the exclusive physical GPU lane is **released**.

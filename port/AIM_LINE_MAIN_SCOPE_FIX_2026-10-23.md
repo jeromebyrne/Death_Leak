@@ -1,0 +1,18 @@
+# Aim-line main scope recovery — 2026-10-23
+
+Scope: `port/linux/main.cpp` plus this report. No physical GPU, Xorg, capture, shared status-file, fixture, or other source edit in this lane. Starting HEAD: `19c28af824824aa7ad90edc0f374ae5621925a06` on `feature/linux-renderer-foundation`; the checkout had unrelated dirty work.
+
+## Fix
+
+The right-stick `stickAim`, `aimX`, and `aimY` declarations inside the player-update branch ended before `UpdatePlayerVisual` at line 1109. Moved their lifetime to the per-frame loop with neutral defaults (`false`, `0.f`, `0.f`) and assigned the existing values in the original update branch. `Combat::Update` still receives the same computed vector; the visual call now receives it when gameplay updates, while menus, death, story, and modal paths retain neutral defaults. `git diff --check -- port/linux/main.cpp` passed. The preexisting, uncommitted visual call itself remains in the main.cpp diff.
+
+## Verification on frozen dirty tree
+
+The six-file SHA-256 manifest at `port/build/aim-line-main-scope-fix-2026-10-23/source-before.sha256` passed `sha256sum -c` after all testing. Relevant hashes: `main.cpp` `ffcae0623ddc1440693913d0b56561a293cd51ad93734ab87c043bb7bd8924e1`; `LevelScene.cpp` `cda0ed58236418b27f417b815b749c393622b458fd12034ae85e76a303d684a0`; `LevelScene.h` `166044066bc6b41df77dfe065b6b6bc7bab6bf254a174dc7c410eb4a478f2f0b`; integration fixture `f49219e9dbf61c489ace8b2931be08db813d039c5fde53986d48f93d6aabffd5`. Fresh executable SHA-256: `4011c2fc6de7a758b46331b9c8bffcf49da933743806f8572f334dcdb318e158`.
+
+- **PASS:** forced production rebuild: `docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/src" -w /src deathleak-linux-build:bookworm make -C port -B -j1 all`. Only existing TinyXML warnings. Log: `port/build/aim-line-main-scope-fix-2026-10-23/build.log`.
+- **PASS:** focused right-stick aim-line CPU fixture (`forest-1 neutral-first parity, right-stick quadrants, knife vectors, strafe hold and neutral fade`), compiled with LevelScene/Combat/PlayerMotion/TinyXML.
+- **PASS:** focused strafe-body CPU fixture (`strafe raw-input gate, body selection/flip, clock, priorities, spray, aim-line`), compiled with LevelScene/PlayerMotion/TinyXML. Both used `g++ -O2 -g -std=c++17 -Wall -Wextra -Wpedantic -UNDEBUG -Iport/compat` in the same Docker image; log: `port/build/aim-line-main-scope-fix-2026-10-23/focused.log`.
+- **FAIL, not a full-suite pass:** `docker run ... deathleak-linux-build:bookworm sh port/tests/integration.sh` returned 1. The first confirmed failing assertion is `port/tests/integration.sh:602`: expected `village_agri.xml player=(2711.18,-1286.6) orbs=187 .*health=1 .*balance=187`; actual fresh simulation reaches the same player/level after expected shrine/agri transitions with `orbs=188 health=4 balance=188`. The next saved-ID assertions and remainder of the suite were not reached. This is a route expectation mismatch, not the main.cpp compile-scope defect. Untraced log: `port/build/aim-line-main-scope-fix-2026-10-23/integration.log`; `sh -x` rerun confirms the exact assertion in `integration-trace.log`. No fixture was edited.
+
+No scoped commit/push: the full integration suite did not pass, and HEAD's `LevelScene.h` still has the old `UpdatePlayerVisual` signature. A main.cpp-only commit would not compile against HEAD until the separately owned LevelScene source is committed. The verified change remains in the working tree for coordinated integration. Visual-fidelity and latest active-gameplay video gates, including Jerome's review, remain pending; CPU/offscreen testing is not physical-GPU evidence.

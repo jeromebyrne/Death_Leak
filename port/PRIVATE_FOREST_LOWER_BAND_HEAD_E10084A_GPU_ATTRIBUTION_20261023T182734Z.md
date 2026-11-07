@@ -1,0 +1,33 @@
+# Private Forest lower-band e10084a physical-GPU attribution — 2026-10-23 18:27 UTC
+
+## Decision
+
+**The gross near-black lower Forest-1 gameplay band is source-authored composition, not a demonstrated renderer defect.** On frozen clean HEAD `e10084a6b13019c57ca1d96d886fd56fe624f644`, render-only hiding XML ID37 changes 51,796 visible pixels, all in the ragged lower shrub silhouette at y596–686. The last y687–719 rows are invariant opaque black in both images because the authored gameplay HUD bottom bar is drawn *after* the scene and film. This separates the shrub and bar causes. No art/XML deletion, opacity change, or shared renderer edit is warranted. Original-Windows matched-frame parity and Jerome visual acceptance remain unproved.
+
+## Frozen inputs and exact physical capture
+
+Evidence directory: `port/build/forest-lower-band-e10084a-gpu-20261023/` (ignored). Copied the existing clean-HEAD binary from `port/build/head-e10084a-hud-film-gpu-gate-20261023/deathleak-linux` to `deathleak-linux.frozen`; no rebuild and no dirty `port/linux/SDLRenderer.cpp` was included. Binary SHA-256 `db0add04dfdd178b7cc970903c57762445fcca39d32147d5782a3a45894ca470`. Forest XML SHA-256 `6d36a837708a732ac7d2a085010a3d22229e29618b8594b5c2576d491c4161c5`; ID37 `shrubbery.png` SHA-256 `5a834d342975883ca54b79aa2da08730e86db11aee282f6a7a094f1fec05c412`.
+
+After confirming no competing Death Leak Docker/game/FFmpeg process, each mode ran sequentially on physical Xorg `:0`/`/dev/dri` using this command (substitute `mode=baseline`, `hide=`; then `mode=hide37`, `hide=37`; finally repeat baseline as `mode=baseline-repeat`, `hide=`):
+
+```sh
+timeout --signal=TERM --kill-after=5s 110s docker run --rm --hostname jerome-Linux-MacBookPro --name "deathleak-e10084a-lower-$mode" --device /dev/dri --mount type=bind,source=/tmp/.X11-unix,target=/tmp/.X11-unix --mount type=bind,source=/var/run/lightdm/root/:0,target=/tmp/auth,readonly --mount "type=bind,source=$PWD,target=/src,readonly" --mount "type=bind,source=$PWD/port/build/forest-lower-band-e10084a-gpu-20261023,target=/out" -e DISPLAY=:0 -e XAUTHORITY=/tmp/auth -e SDL_VIDEODRIVER=x11 -e SDL_RENDER_DRIVER=opengl -e SDL_AUDIODRIVER=dummy -e DEATHLEAK_RENDER_HIDE_XML_IDS="$hide" -w /src deathleak-video-capture:bookworm /out/deathleak-linux.frozen --play Game/XmlFiles/levels/forest_exploration_1.xml --script R:180 --frames 180 --fixed-dt 0.0166667 --capture "/out/$mode.bmp"
+```
+
+Logs `baseline.log`, `hide37.log`, `baseline-repeat.log` each show SDL X11/OpenGL `accelerated=1 software=0 mode=strict-accelerated`, `nouveau/NVE7`, GPU Sepia postprocess, 71 loaded original sprites and zero missing/unsupported assets. All print the same gameplay endpoint: player `(1368.99,3107.3)`, 5 orbs, health 25, grounded, `vx=480`; wall-clock elapsed differs. No software/Xvfb fallback. BMPs are lossless RGB 1280×720.
+
+SHA-256: `baseline.bmp` `248300b136fd275c9933925a8b6c4522158a68535fcef1a629afef85be531100`; `hide37.bmp` `f3da57504fa069da2c9bcf5c26d9f01088e16515f202ac06f3fe102b48a84d99`; `baseline-repeat.bmp` `2b56d1084080fba2bc5751410ad298f78ba804a65fee290965d9e8dd372ac0df`.
+
+## Pixel and source attribution
+
+Pillow RGB exact inequality on baseline versus hide37: **51,796** changed pixels, bbox `[0,596,1267,687)` (half-open); **zero** changed at y0–595 and y687–719. Rows y596/600/620/650/680/683/686 have 9/44/162/792/1084/1104/1129 changed pixels. At `(100,680)`, ID37 present `(2,2,2)` versus hidden `(55,47,34)`; at `(640,680)`, `(40,35,27)` versus `(50,43,32)`. At `(640,590)`, both `(99,89,73)`; at `(640,700)`, both `(0,0,0)`. The onset and growing variable-width mask match a textured shrub silhouette, not a flat shader rectangle. ID37's 2048×512 RGBA asset has alpha extrema 0–255 and `(1024,256)=(0,0,0,255)`, demonstrating authored opaque black texels.
+
+XML `Game/XmlFiles/levels/forest_exploration_1.xml:612–635` declares ID37 `kMiddleForeground`, alpha `.95`, `effectlighttexture`, followed camera X, repeated X, with no sway/animation/occlusion fade. `Game/src/GameObjects/GameObject.h:34–54` places that depth in front of the player/ground; `port/game/LevelScene.cpp` sorts and draws by depth. Clean-HEAD float-parallax path wraps UV, uses source-over blending and applies tint alpha once. The prior same-route physical-GPU ID37/ID38 control (`port/FOREST_ID37_POST_ID21_GPU_CAUSAL_2026-10-23.md`) found ID38 contributed **zero** pixels to its lower ROI; the prior valid-mip discriminator (`port/FOREST_ID37_VALID_MIP_GPU_DISCRIMINATOR_2026-10-23.md`) changed at most 2/255 per channel and did not remove the mass. Current HEAD `port/linux/main.cpp:1373–1388` draws the 11-FPS film after Sepia, then the opaque 50-unit gameplay bars, then HUD; hence the hard black y687–719 area in this frame is UI occlusion, not ID37. The bar itself is source-authored (`game_hud.xml`) and is not a candidate for speculative removal.
+
+**Repeat caveat:** baseline-repeat is not byte-identical: 514,171 pixels above y596 change, plausibly because the film selector uses wall-clock time (`main.cpp:1374–1379`). Thus this is not strict A/B/A full-frame determinism. However baseline versus hide37 has *zero* differences above y596, indicating those two captures coincided in the same visible film phase; the bottom invariant bar and the exact render-only filter establish a strong local causal mask. Do not attribute the repeat's global phase differences to ID37.
+
+## Next bounded gate and release
+
+No high-confidence safe renderer fix follows. The remaining specific sampler question is Windows `BasicLightTexture.fx` mip-linear request versus Linux `GL_LINEAR` float-parallax minification, but the prior generated-complete-mip NVE7 test showed only <=2-code local effects, not this broad darkness. Acquire an original-Windows **lossless active Forest-1 matched frame plus atomic state/resource sidecar** at the `R:180` camera/player pose: viewport, camera, render ordinal, fog/effect and film phase, ID37 light/tint/UV/blend/depth, bound D3D SRV mip count/LOD. Register static landmarks and compare the lower ROI against a Linux capture at the same state. Only if a concrete original/port draw parameter differs should a scoped patch be proposed; do not edit the currently dirty `SDLRenderer.cpp` or authored assets from the unmatched Steam JPEG.
+
+All three Docker runs exited zero; postcheck showed no Death Leak container or game/FFmpeg capture process. **Physical Xorg `:0`, NVE7 GPU and build/capture lane are explicitly released.** No shared source, index, `PORT_WORK_STATUS.md`, checkpoints, commit or push was changed; pre-existing dirty renderer was preserved. Only this private report and ignored evidence were written.

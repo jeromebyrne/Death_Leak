@@ -1,0 +1,25 @@
+# Forest→Waterfall transition-entry visual gate — 2026-10-24 03:58Z
+
+## Verdict
+
+**Negative gate: no new, source-proven first Windows/Linux divergence in entry fade, HUD, or background ordering.** The available synchronized footage is Linux-only; the original Steam screenshots/trailer are not a frame- or state-matched Forest→Waterfall transition. The transition fade that was once missing is now implemented and already owned. This is not a parity or acceptance claim, and no production edit is nominated.
+
+## Visual-first evidence inspected
+
+- `port/build/private-corrected-fade-active-gameplay-20261023t2231z/contact-fade.png` and its 13 s video: outgoing Forest and HUD are visible at 9.4 s; the capture is black at 9.7/9.9 s; Waterfall entry and HUD are visible at 10.1 s, followed by the left-entry moving scene at 10.5/11.5/12.8 s. The frames visually support a covered level replacement, not an abrupt exposed cut. They cannot measure the 0.20 s source-clock alpha ramp or prove Windows pixels.
+- `port/build/synchronized-waterfall-active-20261024t0252z/still-9s.png` shows Forest with upper-left meter/orb HUD and top/bottom film bars; `still-11s.png` shows Waterfall entry with the same HUD placement, sepia scene, trees and dark near foreground. `alignment.json` identifies this as a 1280×720 Linux capture and places the first active Waterfall render at ordinal 424, 9.923678528 s from source start. The sampled 11 s still is *after* the first reveal and cannot substitute for the precise boundary frame. The first-active row in `first-active-waterfall.csv` records camera (-1340,3000), player (-2139.01,3114.7), loading phase 0; it is not a Windows measurement.
+- `store_media/contact.png` includes original-game forest/waterfall promotional stills (notably tiles 13/14/16); `store_media/trailer-contact.png` samples a different combat/traversal segment. These establish style and broad scene motifs only. No original image here has the matching transition ordinal, camera/player, UI stack, asset provenance, or fade alpha. Comparing their darkness or HUD geometry directly to the Linux stills would manufacture a divergence.
+
+## Source composition and exclusion check
+
+- Original `Game/src/program.cpp:293-318` renders world/postprocess before `UIManager::Draw`; `Game/src/GameObjects/GameObjectManager.cpp:532-561` pushes `gameloading` after the existing HUD; `Game/src/UI/UIManager.cpp:174-180` draws screens in list order. `Game/XmlFiles/UI/gameloading.xml:1-20` has one active `blank_dark.png` splash; the icon is commented out. `Game/src/UI/UIGameLoading.cpp:40-135` sets splash alpha, loads at the opaque boundary and removes it after fade-out. Thus expected order is outgoing/incoming scene → HUD → loading splash, with scene replacement hidden beneath opacity.
+- Current `port/linux/main.cpp:1474-1519,1535-1547` renders scene/postprocess, then film/bars/HUD, then loading splash. `PRIVATE_FOREST_WATERFALL_LOADING_FADE_IMPLEMENTATION_20261023T2209Z.md` owns the deferred replacement/timing implementation. `PRIVATE_LOADING_FADE_COMPOSITION_ORDER_SOURCE_AUDIT_20261023T2222Z.md` already records the sole general-order caveat: Windows interactable icons can draw after all screens, but no icon is proven queued at the automatic Forest exit. The Linux-only FPS readout is an existing diagnostic, not a fresh transition defect.
+- Entry background ordering cannot be inferred from two video timestamps. A previously logged Linux first-active draw packet at `port/build/private-watchdog-frame424-prehud-drawstate-20261023t2336z/frame424.json` is a renderer submission trace, not an object-ID-complete original comparison. Existing ID46 sampling, rotated-repeat ground, ID22/23 occlusion, bottom ID69, and bottom fog/foreground work have separate owners; none is relabeled here as a new entry-composition mismatch.
+
+## Precise next discriminator
+
+Acquire a qualified **same-state original D3D10 Forest→Waterfall pair**: last outgoing Forest with nonzero splash alpha and first partially revealed Waterfall (plus the first splash-absent active frame). For each, record executable/assets, level, camera/player, source-clock/fade alpha, UI stack, ordered world and UI draws, bound splash texture/blend, and lossless pre-HUD/final pixels. Pair to serial Linux frames by state and stage, not video seconds or ordinal equality. First compare world→HUD→splash ordering and alpha-command values; then register HUD and entry-background crops with an unaffected control. A differing first command plus localized residual can open a narrow transition fix. If commands/pixels agree, close this gate. `PRIVATE_WATCHDOG_ORIGINAL_FRAME424_PACKET_ROUTE_20261023T2339Z.md` documents that a runnable original Windows node/EXE and atomic original packet were unavailable; the existing Steam JPEGs/trailer do not clear that blocker.
+
+## Scope and release
+
+Only this uniquely named report was written. No GPU/Xorg/Docker/build, capture, source/test/shared status, ID69, Git index, commit or push was touched. **Read-only transition-entry lane explicitly released.**

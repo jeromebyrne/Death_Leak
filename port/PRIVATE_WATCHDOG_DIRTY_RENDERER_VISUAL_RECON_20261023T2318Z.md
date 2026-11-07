@@ -1,0 +1,13 @@
+# Dirty renderer visual reconciliation — 2026-10-23 23:18Z
+
+## Verdict
+
+**No new distinct source-backed visual fidelity finding** in the current `port/linux/SDLRenderer.cpp` diff. The sole change is an opt-in, scene-only `Media/objects/raft.png` private-GL mip draw (`DEATHLEAK_RAFT_MIP_EXPERIMENT=on`) at the ordinary sprite painter slot. Default/unset operation falls through to the pre-existing SDL copy. This is not a Windows pixel-parity verdict: no bound Windows raft SRV/mip view or matched lossless frame is available, and this audit did not execute a GPU draw.
+
+## Reconciliation and first boundary
+
+- `git diff -- port/linux/SDLRenderer.cpp` adds only the raft predicate and `DrawRaftMipExperiment` (`:237-240,284-354`). It excludes source rectangles, repetition, UV shifts, special effects and non-scene draws; failed private upload falls through to SDL. `SDL_RenderFlush` precedes the GL quad, preserving painter order.
+- Original `Game/ShaderFiles/BasicLightTexture.fx:10-16,53-59` specifies `MIN_LINEAR_MAG_POINT_MIP_LINEAR`, U/V `WRAP`, light-color multiplication and one `alpha` multiplication. `Game/src/GameObjects/Sprite.cpp:626-637` sets the effect's texture and `m_alpha`; `Game/src/Core/Graphics.cpp:394-405` specifies source-alpha/inverse-source-alpha RGB blending. The private draw uses a trilinear-minifying, nearest-magnifying PNG mip texture (`SDLRenderer.cpp:809-904`), fixed-function modulation, and the same RGB blend factors (`:318-327`). Its projected quad, rotation, X/Y flips and scene phase are explicit (`:330-345`). These contracts alone do not establish actual mip pixels or Windows bound resource extent.
+- The **first known contract divergence**, if this branch executes, remains draw-site `GL_CLAMP_TO_EDGE` at `SDLRenderer.cpp:317-318` versus shader `WRAP`; this and its native-scale visibility are already bounded in `port/RAFT_WRAP_NOMINAL_LOD_GATE_2026-10-23.md`, so it is not a new finding. Likewise, the conditional `tint.a / 255 * opacity` alpha squaring at `:325-326` is already recorded in `port/CURRENT_RENDERER_DIRTY_VISUAL_AUDIT_2026-10-23.md:16`; Forest-1 IDs 11/57/58 are authored alpha 1 and do not demonstrate it. The sampler mip-bound question and off/on crop are already assigned in `port/RAFT_MIP_RENDERER_EXPERIMENT_2026-10-23.md`.
+
+No further independent first divergence can be substantiated from this diff plus the available Windows shader/render contract. Do not promote the experiment or infer parity from source alone. This was a bounded read-only audit: no build, GPU, capture, source edit, commit or shared checkpoint edit. This report is the sole write.

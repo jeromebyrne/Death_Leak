@@ -1,0 +1,12 @@
+# Knife/FPS read-only handoff — 2026-10-23 20:40 UTC
+
+## Verdict
+
+- **Player knife now tumbles, not merely pitches, in the Linux port's source.** `port/game/Combat.cpp:740-743` subtracts `20 * dt` radians from each active player knife's persistent `knifeRotationRadians`; `:900-914` converts that angle to `rotationDegrees` for the submitted sprite, with the current horizontal reflection accounted for by `port/render/OrdinarySpriteRotation.h:7-10`. At 60 Hz this advances ~19.1 degrees per update. It does not derive the angle from velocity, so it is continuous spin rather than gravity-driven pitch. This is a deliberate deviation from the Windows player knife (`Game/src/GameObjects/Player.cpp:452-486`, `Projectile.cpp:469-481,801-834`), as the implementation comment notes; Windows reserves the 20-rad/s spin for ninja stars. `port/tests/ordinary_sprite_rotation_contract_test.cpp` covers transform signs, not this knife's temporal animation.
+- **The FPS HUD can be visible in active gameplay.** `port/linux/main.cpp:523-539` samples completed frames on a steady-clock half-second window; `:1422-1426` draws `FPS --` or the rounded number at virtual (10,693) within the `--play` gameplay branch, after HUD/film/bottom band and before modals/death art; `:1446-1447` counts completed `EndFrame` calls. Thus unobscured active play has the text path, while a full-screen death overlay can cover it. This is a port-only diagnostic, not an original Windows game-HUD parity claim (`port/PRIVATE_FPS_HUD_SOURCE_QA_20261023T2038Z.md`).
+
+## Existing evidence and one verification gap
+
+The finished `port/build/knife-fps-gpu-20261023/` capture has a game log identifying strict accelerated X11/OpenGL on nouveau NVE7 with Forest-1 loaded, and `ffprobe.txt` reports a 1280x720, 30-fps, 300-frame, 10-second H.264 video. Those files establish a completed gameplay capture route, not a frame-by-frame judgment of the same knife's rotation. **Gap:** extract/inspect a consecutive-frame crop tracking one unobscured player knife in that capture (or a fresh post-patch capture) to confirm its visible blade actually tumbles over time; the source and general contact sheet alone do not prove that perceptual result. The FPS draw path is source-proven for unobscured gameplay, but no claim of pixel-level legibility is made here.
+
+Read-only QA: no tracked source edits, build, game/GPU run, capture mutation, or external message. Concurrent work was left untouched; this report is the only file written.

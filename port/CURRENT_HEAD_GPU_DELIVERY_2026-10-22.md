@@ -1,0 +1,17 @@
+# Current-HEAD physical-GPU gameplay capture and private delivery — 2026-10-22
+
+**Capture complete; private Discord delivery blocked and not attempted.** The fresh artifact is `port/build/current-head-gpu-delivery-2026-10-22/forest-1-current-head-active-10s.mp4` at source HEAD `bbc113b4bd5f8408401b09db5fee6d57d731c636` (checked before build and after capture). SHA-256: `9572fb3a86d2e7b4425f4b096675ffd9a59f67d9d1a3a33116d47fa5604259bf`; size 8,169,116 bytes.
+
+## Capture and validation
+
+- Brief stale-integration check: `port/build/village-integration-gate-rerun8-2026-10-22.log` was last modified 17:48:32 PDT and ends in a `village_agri.xml` simulation result, but no integration, build, Death Leak game, FFmpeg, or video-capture container process was running at the pre-capture check. No full integration was run here.
+- Forced current-tree build passed with `make -C port -B -j2` in `deathleak-linux-build:bookworm`. Capture executable SHA-256: `1acee39eb433e204721e2e8f51d055025afe78e1fdd71cc9c042a5ba46b3bd8e`.
+- The isolated `record.sh` launches directly into `forest_exploration_1.xml` (`B:300,F:99700`, fixed dt), waits for both the named X11 game window and its authored-ambience level-entry log, then x11grabs that window ID for ten seconds. It ran alone in `deathleak-video-capture:bookworm` against physical Xorg `:0`, `/dev/dri`, and LightDM Xauthority. The game log confirms SDL X11/OpenGL, `accelerated=1 software=0`, strict accelerated mode, `nouveau / NVE7`, GPU Sepia.fx, and 71 loaded original sprites with zero missing/unsupported assets. The FFmpeg shared-memory fallback warning was nonfatal.
+- `final-ffprobe.txt` confirms H.264, 1280×720, 30 fps, exactly 10.000000 seconds and 300 readable frames. Full FFmpeg `-xerror` decode exited zero; `decode.log` is empty. Personally inspected stills at 1, 5 and 9 seconds: all are active forest-level gameplay with player, HUD, scenery and progression (orb count 3 to 5, changing camera); no menu, setup, lock screen or desktop. Recording was gated after level entry; sample inspection is not a claim of individual inspection of all 300 frames.
+- Ignored evidence directory includes `record.sh`, `head.txt`, `rerun8-stat.txt`, `game.log`, `window.txt`, `ffmpeg.log`, `ffprobe.txt`, `final-ffprobe.txt`, `decode.log`, and three stills. The game and FFmpeg exited; physical GPU/display lane is free. No source, test, or shared status file was edited.
+
+## Delivery blocker
+
+The parent task authorized a real **private Discord attachment to Jerome** only if a verified private destination and attachment-capable tool are available. This child has neither: current tool discovery exposes no Discord/message/media attachment-send tool, and the prior recipient-route audits (`CORRECTED_GAMEPLAY_PRIVATE_DELIVERY_ROUTE_2026-10-22.md`, `CURRENT_HEAD_PRIVATE_DELIVERY_2026-10-22.md`) found no verified Jerome DM in child-visible session context. No recipient was guessed and no message/upload was attempted. There is **no Discord receipt and no delivery claim**. The coordinator should use a verified private DM plus an attachment-capable tool to send this MP4 itself, retaining message and attachment IDs/URL; if the route is still unavailable, obtain one from Jerome in the originating conversation.
+
+This clip demonstrates current-HEAD active GPU gameplay, not Windows pixel parity, audio quality (dummy audio driver), the lethal-debris event specifically, or Jerome's acceptance.

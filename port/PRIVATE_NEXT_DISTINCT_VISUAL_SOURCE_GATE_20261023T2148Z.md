@@ -1,0 +1,21 @@
+# Next distinct Forest→Waterfall visual source gate — 2026-10-23 21:48Z
+
+## Decision
+
+**No defensible, distinct, currently unowned source-backed visual mismatch is established in corrected active Forest-to-Waterfall gameplay.** Do not assign a speculative CPU patch or another Linux-only physical-GPU capture from this packet. This is a bounded negative source audit, not Windows pixel parity or Jerome's visual acceptance.
+
+## What this lane could establish
+
+- The latest reviewable 10 s/300-frame active Forest MP4 is `port/build/knife-trajectory-gpu-20261023/forest-knife-trajectory-10s.mp4` (SHA-256 `a44f5d33395c865da0ef66970cdba6320a409bd7af0627624898667eeda26e87`), per `PRIVATE_CURRENT_VIDEO_REVIEW_PACKAGE_20261023T2144Z.md`. It predates Running-rate commit `29984eb` and contains no Waterfall entry. It cannot be used as a current-HEAD or same-state original/port comparator.
+- Forest's obvious dark player/tree region is already the ID10/ID37 authored foreground case. The original Forest XML IDs10 and 37 are front layers with alpha .7 and .95; `PRIVATE_TREE_PLAYER_LEGIBILITY_DISCRIMINATOR_20261023T2146Z.md` reports ID10's registered Linux player-box contribution and ID37's zero contribution there. Neither is a first divergent Windows-versus-port command. That area and Running-rate order are specifically excluded from this gate.
+- Original `Game/src/UI/UIGameHudScreen.cpp::InitialiseText` requests D3DX10 Impact at height 32, whereas `port/game/Hud.cpp` uses a 5×7 bitmap. This is a real active Forest face contract difference, but existing `PRIVATE_HUD_GLYPH_SOURCE_CONTRACT_20261023T183754Z.md` / `PRIVATE_HUD_IMPACT_NUMERAL_FIDELITY_20261023T1942Z.md` own it; no genuine Impact asset or original raster packet is available. Reassigning it would duplicate work.
+- On Waterfall entry, the measured ID46 same-frame Linux A/B (`PRIVATE_WATERFALL_ID46_ENTRY_GPU_GATE_20261023T2131Z.md`) shows no pixels at T=398/399 and a localized 44,089-pixel shaft contribution at T+120=518. The source-path mip distinction (original `Game/ShaderFiles/BasicLightTexture.fx` min-linear/mag-point/mip-linear versus the port's single uploaded SDL texture and minification selection in `port/linux/SDLRenderer.cpp::DrawSprite`) is already owned by `PRIVATE_WATERFALL_POST_FOREST_SOURCE_GATE_20261023T2124Z.md` and `PRIVATE_POST_ID46_VISUAL_DISCRIMINATOR_20261023T2142Z.md`. Visibility does not establish the original bound SRV mip count, selected LOD, or a new residual.
+- The other conspicuous Waterfall curtain (XML ID13) already has a fixed-camera Linux contribution test and source cadence/UV analysis in `PRIVATE_POST_FOREST_WATERFALL_VISUAL_GATE_20261023T2111Z.md`. No registered Windows command/pixel difference was found. Current `port/game/LevelScene.cpp::Draw` forwards authored painter order, depth, flip, opacity, parallax phase, wobble and rotation; `port/linux/SDLRenderer.cpp::DrawSprite` chooses ordinary, UV-scroll and effect paths. Reading these contracts yielded no additional first divergent field that could support a minimal CPU-only correction.
+
+## Next discriminating evidence, not another implementation claim
+
+A qualified original Windows D3D10 executable/content set and **atomic, lossless original render packet** are missing. At a synchronized Forest right-ground frame and a separately synchronized post-entry Waterfall frame, capture the original EXE/asset hashes, render ordinal, camera/player/animation/orbs, ordered relevant draw commands (object ID, destination, four UVs, opacity, blend, bound SRV/mips and sampler, effect clocks), and pre/post-object plus final pixels. Compare to a same-state Linux packet. Only a first differing field with object-local registered pixels would nominate a distinct, CPU-testable patch; command/pixel agreement would close that candidate. Existing Steam JPEGs and asynchronous Linux MP4/stills cannot substitute. `PRIVATE_WINDOWS_ORIGINAL_REFERENCE_ACQUISITION_20261023T2112Z.md` reports no qualified runnable original-Windows route here.
+
+## Scope
+
+Only this unique report was written. No source, tests, shared `CHECKPOINT_STATUS.md`/`PORT_WORK_STATUS.md`, build, Docker, physical Xorg/GPU, capture, Git index, commit, push, or user message. The exclusive integration/GPU lane remains with its separate owner.

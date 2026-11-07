@@ -1,0 +1,19 @@
+# Forest legibility source gate — 08:31, 2026-10-23
+
+## Verdict
+
+**No previously unreported, source-backed Forest-1 gameplay-legibility discrepancy is established by the delivered 11-second clip.** No fix is nominated. This is a bounded negative gate, not a claim of original-Windows visual parity.
+
+## Evidence checked and duplicate exclusions
+
+- Delivered evidence: `port/build/current-tree-post-fog-10s-gameplay-2026-10-23/forest-1-active-11s.mp4` and its saved `still-{1,5,9}s.png`. `CURRENT_TREE_POST_FOG_10S_GAMEPLAY_REVIEW_2026-10-23.md` verifies 330 decoded frames, 11.000 seconds, SHA-256 `6dd020d67ceab553c37d35017dc431f6b592a88c5d37a523fe25705e1bf968bb`, physical accelerated GPU/Sepia, and a late Forest-1 → waterfall-top transition. The stills are wall-clock H.264 samples, not matching original-Windows render states.
+- The prominent dark lower shrub edge is already assigned to authored ID37 (`forest_exploration_1.xml:612-635`) by same-frame hide controls: `FOREST_ID37_CURRENT_LOWER_BAND_GATE_2026-10-23.md` reports 91,122 changed pixels in the ragged y=596–719 region. `FOREST_LOWER_BAND_NEXT_DISTINCT_GATE_2026-10-23.md` already excludes missing shrub, double-applied alpha and conditional mip work as new nominations. The XML deliberately gives ID37 alpha 0.95 and no player-occlusion fade.
+- Intermittent player/trunk low contrast is already assigned to authored ID10 overlap, not a missing player. `FOREST_PLAYER_VISIBILITY_SOURCE_GATE_2026-10-23.md` notes the latest stills keep the character recognizable, and a **different** fixed frame 540 yields median player contribution 12.0 luma codes with ID10 versus 38.7 when hidden. XML ID10 (`forest_exploration_1.xml:176-190`) is a 0.7-alpha middle-foreground blurred tree with occlusion fade disabled. Original `Game/src/GameObjects/DrawableObject.cpp:58-112` respects the authored fade flag; current `port/game/LevelScene.cpp:911-925,1234-1329` preserves the painter/player route and conditional fade. The fixed-frame number must not be attributed to the latest clip's 9-second wall-clock still.
+- The pale middle/right field is already isolated to ID15/38/39 and ground overdraw in `FOREST_PALE_MIDDLE_FIELD_CURRENT_GPU_2026-10-23.md`; fog IDs119/122 have a same-frame hide control in the delivered-video report. Foliage/leaf/weather and other visible effects were checked in `FOREST_DYNAMIC_EFFECT_NEXT_SOURCE_GATE_2026-10-23.md` and `FOREST_NEXT_UNOWNED_SOURCE_VISUAL_GATE_2026-10-23.md`; no absent opening-clip effect was established. The late waterfall transition/ID59 is separately owned, so it is not a Forest legibility finding.
+- The current port draw code still submits depth-sorted dynamic and authored sprites, player arm/body, ID37 parallax, opacity and effect state (`port/game/LevelScene.cpp:1185-1329`). This source read does not supply a newly absent draw or inverted ordering to explain a novel legibility defect.
+
+## Next discriminator
+
+Capture one **lossless, same-render-ordinal original-Windows Forest-1 frame and state packet** at a pre-transition player/ID10 overlap with the ID37 lower edge visible, then replay it on Linux. Register executable/assets, viewport, camera/player pose, draw order, ID2/10/37 textures/transforms, bound sampler/mips, alpha/blend, effect clock and pre/post-Sepia boundary. Compare registered player-mask contrast and shrub/atmosphere crops; only a measured residual localized to a source/port draw state warrants a new owner. `FOREST_ID10_WINDOWS_MATCH_FEASIBILITY_2026-10-23.md` and `FOREST1_MATCHED_FRAME_CAPTURE_PACKET_2026-10-23.md` record that no such runnable original/packet is locally available. A Steam JPEG or this Linux-only MP4 cannot resolve parity.
+
+Read-only inspection at HEAD `5c2d335`; this report is the sole write. No GPU/display/game/build, source/test/shared-status edit, commit or push.

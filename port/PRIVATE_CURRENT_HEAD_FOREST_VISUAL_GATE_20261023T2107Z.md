@@ -1,0 +1,27 @@
+# Current-head Forest physical-GPU visual gate — 2026-10-23 21:07Z assignment
+
+## Verdict
+
+**Negative gate: no *new* concrete original-versus-port visible defect or first divergent source/render field was established.** The current production tree builds and renders active Forest-1 on strict physical NVE7, but the visible dark player/trunk region and lower foreground are already attributed to authored ID10/ID37 layers, and the fog/foliage candidates in `PRIVATE_POST_ID37_FOLIAGE_FOG_SOURCE_GATE_20261023T2104Z.md` lack an original bound-draw/frame comparator. No speculative software edit, commit, or push is warranted. This is not visual parity or Jerome acceptance.
+
+## Bounded current-tree hardware evidence
+
+At preflight the repository was `a4a09b4`; tracked dirty files included `CHECKPOINT_STATUS.md`, `port/COMPOSITION_DIAGNOSTIC_NOTES.md`, `port/linux/SDLRenderer.cpp`, `port/tests/integration.sh`, and `port/tests/strafe_body_cpu_test.cpp`, with many pre-existing untracked reports/tests. None were edited here. An independent audio QA container was building CPU fixtures, but no other Death Leak Xorg/GPU capture was present. An isolated read-only-source Docker build (`deathleak-linux-build:bookworm`, `make -e -C port TARGET=/out/deathleak-linux -j2`) exited 0. Executable SHA-256: `b9178c37f47a448640f59beafb8243de997a30811d551c54883764ae6e3ae80b`.
+
+A fresh physical-Xorg `:0` run used `deathleak-capture:post-foliage`, `/dev/dri`, LightDM Xauthority, SDL X11/OpenGL/dummy audio and `--play Game/XmlFiles/levels/forest_exploration_1.xml --script B:300,F:240 --frames 540 --fixed-dt 0.0166667 --capture /out/forest-active-540.bmp`. It exited 0. `game.log` reports `accelerated=1 software=0 mode=strict-accelerated`, OpenGL `nouveau/NVE7`, GPU Sepia scene-before-HUD, 71 original sprites and zero missing/unsupported assets. Endpoint: player `(2360.52,3114.74)`, 5 orbs, health 25, grounded, 32 fired and 2 shots. Lossless frame SHA-256: `bd9c4be7515283b187b3b1e06c00ec375fc754b0f0ec5c417b2895d9d95abd6a`. Build log, game log, executable, BMP and inspection PNG are in ignored `port/build/private-current-head-forest-visual-20261023t2107z/`.
+
+The Git tip advanced during/after the build to `c5d3a00`; intervening `774e7e4` changed an audio CPU test/report only, and `c5d3a00` changed only its receipt. The captured production binary therefore remains representative of current production source, including the pre-existing dirty renderer. It is not labeled a build of those later test/report files.
+
+## Visual comparison and attribution limit
+
+Inspected the lossless 540-frame endpoint, delivered `port/build/knife-fps-gpu-20261023/forest-knife-fps-10s.mp4` (particularly saved 5-second still), and original Steam `../store_media/screenshots/14.jpg`. Current frame shows active Forest traversal, HUD/orbs, projectiles and a very dark player around the right tree. The delivered clip shows the earlier bright player at 5 s and the known late trunk attenuation at ~9 s. Those are different gameplay instants, not a registered pixel pair. The Steam still is the identifiable Forest-1 bridge/branch/pickup composition but has different camera, player/orb state, viewport and unknown render ordinal. It provides qualitative palette/landmark context only. No novel effect-local image residual survives this comparison.
+
+The known candidate is ID10 `tree2_blur.png`: authored alpha .7, no player-occlusion fade, middle-foreground painter depth; earlier controlled Linux ID10 hide evidence already demonstrates causal player attenuation (`PRIVATE_POST_KNIFE_FPS_CURRENT_CLIP_VISUAL_GATE_20261023T2041Z.md`). The lower shrubbery is authored ID37, already isolated on strict NVE7 with 51,801 registered RGB changes confined below y596 (`PRIVATE_POST_KNIFE_ID37_GPU_DISCRIMINATOR_20261023T2100Z.md`). Foliage sway and fog source fields were reviewed in the immediately preceding gate; no new original-versus-Linux first divergent field is exposed by this frame. Do not tune alpha, mip, fog, sway, color or painter order from unmatched imagery.
+
+## Actionable original-reference blocker
+
+The first required artifact is a **binary-identified original Windows D3D10 Forest-1 lossless backbuffer plus atomic same-render-ordinal sidecar**, preferably at the ID10/player overlap visible in this capture or at a named fog/foliage effect. Record actual camera/view/projection, player/animation/orbs, object ID and painter slot, vertices/UV/flip/alpha, bound SRV mip range/sampler/effective LOD, effect clocks, pre/post-object target pixels and image SHA-256. Replay the same input/state for a separately captured Linux frame; find the first divergent command field and effect-local residual with an unaffected control crop before assigning a field-scoped patch. `FOREST1_MATCHED_FRAME_CAPTURE_PACKET_2026-10-23.md` defines the packet. The latest Windows route check (`PRIVATE_WINDOWS_FOREST_MATCHED_CAPTURE_EXECUTION_20261023T2043Z.md`) found no reachable original runtime/node/EXE, so this original-side artifact is unavailable here. A Steam JPEG or unmatched MP4 cannot replace it.
+
+## Release
+
+The single capture container exited, and the subsequent `docker ps`/process check found no Death Leak GPU/build container from this lane. **Exclusive physical Xorg/NVE7 GPU and build lane released.** Only this unique report and ignored evidence directory were written; unrelated dirty files and Git index preserved. No production change, commit or push.

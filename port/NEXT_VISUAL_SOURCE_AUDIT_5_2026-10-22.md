@@ -1,0 +1,16 @@
+# Next waterfall-top / forest visual source audit 5 (2026-10-22)
+
+## Verdict — no new bounded source-proven gap in this pass
+
+No **distinct, high-impact renderer discrepancy** was established after the already assigned shader-clock, rotated-fog culling, sheet autoscroll/wobble UV, foliage/weather phase, splash, and orb-hover work. This is a bounded negative finding, not a claim of Windows/Linux visual parity. Do not open another renderer change from this audit alone.
+
+## Exact source/port checks
+
+- Waterfall-top's broad curtains are eight `ParallaxLayer` `waterfall_4.png` objects, IDs 6, 7, 10, 13, 14, 15, 16 and 31 (`Game/XmlFiles/levels/waterfall_top.xml:109-355,563-585`). Their authored vertical autoscroll and IDs 13/14 pixel wobble are already represented in the current scene model (`port/game/LevelScene.cpp:357-374,742-749,983-1011`) and have separate autoscroll/UV audits. The shader-clock owner covers phase continuity; this audit did not retest either path.
+- The waterfall-top splash sprays 49–51 and forest leaf spray 47 are admitted by the current loader (`port/game/LevelScene.cpp:267-324`) and have separate particle audits. ScrollingSprite position/fade properties in the source (`Game/src/GameObjects/ScrollingSprite.cpp:19-58`) have corresponding parsing/update in the port (`port/game/LevelScene.cpp:515-526,749-775`). This source check does not assert GPU pixel parity.
+- Two waterfall sprites (IDs 23/24) and two forest sprites (IDs 5/6) author player-occlusion fade (`Game/XmlFiles/levels/waterfall_top.xml:435-465`; `Game/XmlFiles/levels/forest_exploration_1.xml:86-124`). Source `DrawableObject::Update` tests the player against sprite bounds and steps alpha (`Game/src/GameObjects/DrawableObject.cpp:52-113`); the port parses these fields and implements that fade in the update zone (`port/game/LevelScene.cpp:528-532,777-804`). Thus their presence is not a new omission.
+- A possible texture-repeat concern was checked and rejected for these two levels: source `Sprite::RecalculateVertices` can repeat non-native X UVs (`Game/src/GameObjects/Sprite.cpp:219-234`), while `ParallaxLayer::Draw` replaces X UVs when X parallax is positive (`Game/src/GameObjects/ParallaxLayer.cpp:62-108`). The only authored `ParallaxLayer`s with `repeatX=true` here are waterfall ID59 and forest IDs37/40; all have positive X parallax (`waterfall_top.xml:1034-1056`; `forest_exploration_1.xml:612-690`). The port's no-repeat parallax path (`port/game/LevelScene.cpp:511-512,991-992`) therefore does not establish a live repeat-X mismatch for these IDs. Neither level authors `repeatY=true` in its XML dimensions.
+
+## Impact and next verification
+
+Impact of this finding is **no newly justified high-impact patch** from the inspected effects. The remaining uncertainty is empirical: when the active shader-clock and other reserved changes settle, use a matched camera/player/time waterfall-top frame and a forest frame to isolate unexplained compositional regions, then trace the specific XML ID and source draw path before proposing another fix. A discrepancy in an unmatched screenshot or an unimplemented feature in a different level is insufficient evidence for this scoped audit. No build, game, display/GPU capture, source/test/checkpoint edit, or shared-state change was made; only this report was written.

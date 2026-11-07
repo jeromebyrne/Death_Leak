@@ -1,0 +1,15 @@
+# Corrected synchronized Forest 7–8 s composition — read-only gate
+
+## Verdict
+
+No **new source-verifiable original-versus-port composition defect** can be established from this pair. The striking 7 s near-disappearance of the player behind the dark central trunk, and the much heavier lower shrub/ground treatment than the Steam stills, are visible review concerns but already covered by Forest player-occlusion/ID37/fog checkpoints. Neither warrants a speculative change. No checkpoint was appended because the finding is not novel.
+
+## Evidence and discriminator
+
+- Reviewed the *corrected synchronized* active-core clip `port/build/waterfall-bottom-snap-video-20261024T030110Z/source.mp4` (SHA-256 `b18f791b217765ce0e8159028b155ccca7cfcb19e8a2d07f9d8b3bf7078f4110`) at nominal 7 and 8 seconds, software-decoded as ignored `port/build/private-readonly-forest-{7,8}.png`; no game, build, Xorg or GPU was used. Capture/provenance and timestamp caveats are in `PRIVATE_WATCHDOG_WATERFALL_BOTTOM_POSTSNAP_SYNCHRONIZED_VIDEO_20261024T0301Z.md`. Both frames are active Forest-1, with HUD orb count 5→7 and player motion rightward.
+- The 7 s composition has the giant dark tree at left, its narrow branch pointing right, a dark central trunk and a further pale tree at right; the player is nearly lost against the central trunk. At 8 s the player is discernible again near the right pale tree. Steam `../store_media/screenshots/13.jpg` shows a giant right-hand tree/left-pointing branch and player near center with **54** orbs; screenshot 14 shows the bridge and sword-pickup tree neighborhood with **13** orbs. Screenshot 14 is an earlier raft/branch neighborhood, not the 7–8 s camera. Screenshot 13 is also not registered to either clip frame by a unique fixed landmark or camera/state trace.
+- Original Forest-1 XML (`Game/XmlFiles/levels/forest_exploration_1.xml`) authors the prominent opaque `tree2.png` foreground tree ID6 at world x=1339.985, with occlusion fade target 0.4, plus a `tree2_blur.png` middle-foreground tree ID10 at x=2171.985 and follow-camera/parallax layers. The moving clip's change of silhouette/framing is therefore consistent with traversing distinct authored trees, not proof that the port mirrored, omitted or shifted one. Prior `FOREST_REFERENCE_AUDIT.md` identifies screenshot 14's separate bridge/ID117 pickup grouping; the original screenshots have no camera XY, frame, pickup/collection or effect phase sidecar. Existing Forest ID6/ID10 occlusion, ID37 lower band and fog reports already gate the plausible visual complaints.
+
+**Next exact discriminator:** obtain a lossless original-Windows Forest-1 frame and same-present camera/player XY, viewport, object IDs/alpha and render phase around the ID6→ID10 passage, then capture a state-registered Linux present. Compare fixed trunk/branch landmarks before assessing player contrast or lower-field pixels. Store JPEGs 13/14 alone cannot establish an original-port first differing draw field.
+
+No production source/assets/tests, build, game, physical GPU/Xorg, Sea-2 or `PORT_WORK_STATUS.md` touched; unrelated dirty work preserved. **Read-only lane released.**

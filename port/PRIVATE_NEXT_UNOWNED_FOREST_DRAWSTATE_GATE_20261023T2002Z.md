@@ -1,0 +1,19 @@
+# Private next unowned Forest draw-state gate — 2026-10-23 20:02Z
+
+## Verdict
+
+**Negative gate:** this read-only source comparison found no *new, unowned, source-proven RGB-visible draw-state discrepancy in the first 10 seconds of active Forest-1*. No production patch is warranted. This is not an assertion of Windows/Linux pixel parity: there is still no lossless, same-render-ordinal original-Windows frame and bound draw-state packet. The one additional state difference inspected below is alpha-channel-only at the scene target, so it does not meet the requested visible-effect criterion.
+
+## Evidence and duplicate check
+
+- Forest-1's visible ordinary sprites (for example the two wide white atmospheric quads IDs38/39 at `Game/XmlFiles/levels/forest_exploration_1.xml:636-665`) use `effectlighttexture`. Original `Game/src/GameObjects/Sprite.cpp:369-380,626-672` binds that effect, texture and object alpha; `Game/ShaderFiles/BasicLightTexture.fx:10-16,53-59` samples RGB/alpha and applies object alpha once. The original RGB blend is source-alpha over (`Game/src/Core/Graphics.cpp:392-407`). Linux stably depth-sorts scene sprites (`port/game/LevelScene.cpp:625`), submits texture, tint, opacity, flips, effect and rotation in its painter loop (`:1354-1449`), and ordinary SDL copy uses `SDL_BLENDMODE_BLEND`, texture alpha modulation and minified linear sampling (`port/linux/SDLRenderer.cpp:147,184,205-280`). These source paths establish presence/order/state plumbing, not pixel equality or exact sampled mips.
+- A literal blend-state difference exists: original `Graphics.cpp:401-403` forces render-target **alpha output to zero** while its RGB uses source-alpha-over; SDL's standard texture blend at `SDLRenderer.cpp:184` does not expressly implement that zero-alpha equation. However, original `Game/ShaderFiles/Sepia.fx:64-83` reads only scene RGB and returns alpha 1; the requested active-play visual comparison is RGB after that pass. No source path or measured first-10-second pixel result shows this alpha-only state affects visible Forest RGB. It is **not** a qualifying patch nomination. This audit did not inspect or modify the separately owned clear-color gate.
+- Excluded already owned work: ID10/ID37 overdraw and draw order (`PRIVATE_NEXT_UNOWNED_FOREST_VISUAL_SOURCE_GATE_20261023T1954Z.md`), ID6 fade command gate (`PRIVATE_FOREST1_ID6_OCCLUSION_CPU_GATE_20261023T1936Z.md`), particle/foliage/pixel-wobble effects (`PRIVATE_FOREST_PARTICLE_EFFECT_NEXT_GATE_20261023T1959Z.md`), raft/foliage mip uncertainty, middle-band IDs17/19/21/22, player/HUD legibility, film, and the other renderer/clear-color owner's physical capture. Their source-state or Linux-local deltas do not become a new Windows mismatch without a matched original packet. No other unaudited, visibly active Forest draw-state failure was established by this bounded pass.
+
+## Next acceptance discriminator
+
+If an unowned RGB residual is identified in a fresh matched state, acquire one atomic original-Windows lossless 1280×720 active Forest-1 frame with post-HUD/pre-Present RGB and same-ordinal ID, texture/SRV mip range, sampler, transform/UV, alpha, blend and effect clock. Reproduce its camera/player/effect history on Linux and compare registered object-local **RGB** crops plus a production draw-command spy for the first divergent field. Only then assign a field-scoped patch and physical-GPU A/B to the exclusive renderer owner. Current minimal patch: **none**; no build or GPU test is justified by this negative gate.
+
+## Scope and release
+
+Only this uniquely named report was written. Original Game source/XML and Linux source were read only. Existing dirty files, reports, shared checkpoints/status, Git index and other ownership were preserved; no build, Docker, game runtime, capture, GPU/display, commit or push. **Read-only lane explicitly released.**

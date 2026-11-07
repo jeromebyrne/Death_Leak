@@ -1,0 +1,17 @@
+# Forest-1 player silhouette: fresh source/clip gate (2026-10-23)
+
+## Decision
+
+**No genuinely unowned, actionable visual correction is established.** In the delivered 11-second active clip, the player remains visible at the raft (~1 s) and running corridor (~5 s), then loses contrast beside/behind the near-black foreground trunk (~9–10 s). That is the highest-impact local silhouette concern, but it is already owned by the ID2/ID10 contrast and original-Windows matched-frame gates. This bounded review finds no separate source-backed player draw, depth, or fade defect; do not brighten the player or change the trunk alpha, art, or order on this evidence. This is not a claim of Windows/Linux pixel parity.
+
+## Evidence and non-duplication
+
+- Delivered clip: `port/build/current-tree-post-fog-10s-gameplay-2026-10-23/forest-1-active-11s.mp4`; saved `still-1s.png`, `still-5s.png`, `still-9s.png`, `still-10s.png` and `ffprobe.txt` (1280×720, 30 fps, 330 frames). `FOREST_CURRENT_11S_SHOT_BY_SHOT_GAP_2026-10-23.md` records the 9–10 s partial-to-mostly-hidden transition. These lossy wall-clock samples have no same-render-ordinal original-Windows state.
+- Forest XML `Game/XmlFiles/levels/forest_exploration_1.xml:33-46,176-190` authors player ID2 at `kPlayer`, alpha 1, and trunk ID10 (`tree2_blur.png`) at `kMiddleForeground`, alpha 0.7, with occlusion fade **disabled**. ID6 instead has an explicit fade-to-0.4 flag (`:116-129`); extending that behavior to ID10 would alter the authored contract. Original depth/sort and alpha-over paths versus current port are mapped in `FOREST_PLAYER_DRAW_ORDER_SOURCE_AUDIT_2026-10-23.md` and `FOREST_PLAYER_VISIBILITY_SOURCE_GATE_2026-10-23.md`; targeted current `port/game/LevelScene.cpp:911-925,1225-1248,1311-1321` inspection still shows conditional fade, painter traversal, and arm-before-body draw.
+- Existing Linux-only fixed-frame isolation (`FOREST_PLAYER_CONTRAST_9S_GPU_GATE_2026-10-23.md`) proves ID2 is drawn (2,735 changed RGB pixels in bbox 810,509–893,621) and ID10 suppresses its median luma contribution from 38.7 to 12.0 at a nearby registered pose. That older frame/binary is **not** the delivered clip's exact 9 s pose. `FOREST_PLAYER_SILHOUETTE_NEXT_SOURCE_GATE_2026-10-23.md` and `FOREST_ID10_WINDOWS_MATCH_FEASIBILITY_2026-10-23.md` already own the unresolved parity question; the local original-Windows runtime/packet is unavailable. No independent new silhouette correction emerges from these sources.
+
+## Exact next task and owner/file scope
+
+**No new implementation owner or patch file.** The existing *original-Windows ID10 matched-pose capture owner* should execute `FOREST_ID10_WINDOWS_MATCH_FEASIBILITY_2026-10-23.md`: acquire one lossless same-ordinal Forest-1 ID2/ID10 frame plus camera/player/animation/effect state and D3D ID10 draw alpha/blend/texture/pre-post pixels, then compare registered player-mask contribution with the Linux four-state packet. Capture/output scope only: a new evidence directory and a new result report under `port/`; do not edit `port/game/LevelScene.cpp`, `port/linux/SDLRenderer.cpp`, XML/assets, tests, or shared checkpoints unless a measured mismatch identifies a narrow correction. If the original packet cannot be obtained, retain this as authored-occlusion evidence with parity unresolved, not an actionable player-contrast patch.
+
+Read-only source/report/clip-artifact audit; this report is the sole write. Existing dirty work preserved; no build, capture, GPU/display, or source edit.

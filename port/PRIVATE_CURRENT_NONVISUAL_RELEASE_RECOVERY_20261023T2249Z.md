@@ -1,0 +1,15 @@
+# Current-tree nonvisual release recovery — 2026-10-23 22:49Z
+
+**Lane disposition: CPU input/gameplay gate PASS; physical keyboard acceptance remains BLOCKED, not failed.** Snapshot HEAD `64b2b09`. Existing tracked dirt (`CHECKPOINT_STATUS.md`, `port/COMPOSITION_DIAGNOSTIC_NOTES.md`, `port/linux/SDLRenderer.cpp`, `port/tests/integration.sh`, `port/tests/strafe_body_cpu_test.cpp`) and numerous untracked owner reports were preserved. This report is the only repository write. No GPU/display/capture, shared build output, commit, or push.
+
+## Targeted current-tree verification
+
+- Compiled the current `port/tests/keyboard_fire_cpu_test.cpp` with current `LevelScene.cpp`, `Combat.cpp`, and TinyXML sources using `g++ -std=c++17 -O0 -UNDEBUG -Icompat`, output solely `/tmp/deathleak-nonvisual-mDFwNi/keyboard-fire-cpu-test`; execution exited 0: `keyboard fire CPU: grounded knife fired, crouch/air/stick/script passed`. The fixture checks a grounded independent Fire action yields one accepted Combat knife, grounded Down crouches without firing, airborne Down fires, right-stick and scripted F fire, and F+Down permits crouched fire. This is a fake-Renderer CPU contract, not physical SDL scancode delivery.
+- Production wiring is present: `port/render/Renderer.h:95-110` resolves independent Fire versus Down/crouch; `port/linux/main.cpp:923-931` passes live stick/input state and checks attack eligibility; `port/linux/SDLRenderer.cpp:767-768` maps Down/S separately from F. `git diff --check` and `sh -n port/tests/integration.sh` exited 0.
+- An isolated current-tree observer build succeeded using a read-only source bind and `/tmp` output. A 426-frame software-rendered fade run was boundedly stopped after over two minutes without completing; **no loading-fade observer pass is claimed**. A separate `--simulate-only` 426-frame current binary run exited 0, triggered Forest→Waterfall at frame 398, and installed Waterfall, but its simulation branch skips scene/draw observer instrumentation and does not close the fade cadence gate.
+
+## Remaining release action
+
+The prior physical F-key attempt (`PRIVATE_KEYBOARD_FIRE_PHYSICAL_GPU_GATE_20261023T2114Z.md`) was inconclusive because desktop lock-screen windows could intercept input even while the game was nominally active. On an **unlocked, focused** physical desktop, the input owner should actuate actual F, S/Down, and optionally F+S in separate unscripted runs, recording `fired` and crouch state. Expected: grounded F `fired>0`, S/Down crouch with `fired=0`, F+S both. Scripted F or this CPU fixture cannot substitute for that acceptance. No source fix is indicated by this CPU gate; investigate SDL focus/scancode delivery only if the unlocked physical test fails.
+
+The full connected loading-fade CPU observer remains a separate unclosed gate; if prioritized, run it in an isolated faster no-render observer seam or give the software-rendering job a deliberately budgeted completion window. Do not infer a fade failure from the bounded stop.

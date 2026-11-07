@@ -1,0 +1,18 @@
+# Private sepia→HUD composition source gate — 2026-10-23 19:56Z
+
+## Verdict
+
+**Negative gate for a new, unowned *visible* mismatch in the scene→GPU sepia→HUD→present order.** The active-gameplay ordering in current source matches the original at the stage level. This read-only lane found no source proof that a new presentation-order patch would change an observable corrected-gameplay pixel. It does **not** assert matched Windows/Linux pixel parity or close the broader visual-fidelity work.
+
+## Exact source chain
+
+- Original `Game/src/program.cpp:293-322`: `Graphics::Clear`, alpha blending, pre-process target → `Game::Draw` → backbuffer target → `Game::PostDraw` → `UIManager::Draw`, then `Present`. `Game/src/Game.cpp:430-455` binds the pre-process SRV to `EffectSepia` and draws the screen-aligned quad. `Game/ShaderFiles/Sepia.fx:49-77` defines the red-excess gates, 0.75-scaled sepia coefficients and opaque output. `Game/src/Core/Graphics.cpp:259` presents the swap chain.
+- Port `port/linux/main.cpp:1277,1373-1412,1432`: begin frame → `scene.Draw` → `ApplyScenePostprocess` → gameplay four-frame film at authored 0.2 alpha, then top/bottom bars, orb/meters in `hud.Draw`, then `EndFrame`. `port/linux/SDLRenderer.cpp:688-742,1007-1062` copies the composited scene on GPU, executes a GLSL translation of the same sepia coefficients/gates and opaque result, restores GL state, then presents with `SDL_RenderPresent`. The film/bar ordering agrees with `Game/XmlFiles/UI/game_hud.xml:3-16,49-98` and map-key iteration in `Game/src/UI/UIScreen.cpp:161-171`; the original draws UI after sepia in `program.cpp`.
+- A **real ordering detail, but not a proven visible seam**: original `UIGameHudScreen::Draw` calls `UIScreen::Draw` before drawing the orb numeral (`Game/src/UI/UIGameHudScreen.cpp:226-241`), so numeral submission follows both meters. Port `port/game/Hud.cpp:68-115` submits the numeral before both meters. Their authored screen regions are separated (numeral anchor ≈x70,y90; meter stacks ≈y41-67 in 1280×720), so this command-order difference alone does not establish an overlapped changed pixel. The independently known **Impact versus 5×7 numeral glyph** is already documented/blocked by `PRIVATE_HUD_GLYPH_SOURCE_CONTRACT_20261023T183754Z.md`; it is not a new nomination here.
+- Another conditional-only difference: original clears pre-process and backbuffer to opaque black (`Game/src/Core/Graphics.cpp:9,243-255`), while port begins active frames with opaque (8,12,20) (`main.cpp:1277`). If a corrected active scene leaves an uncovered pixel, sepia could expose a difference. This source pass has no source/runtime proof of an uncovered **visible** active-gameplay pixel; do not promote the clear value to a confirmed visual defect or patch it on speculation.
+
+## Ownership and handoff
+
+Prior `GAMEPLAY_HUD_FILM_OVERLAY_SOURCE_QA_2026-10-23.md`, `PRIVATE_HEAD_E10084A_HUD_FILM_ACTIVE_FOREST_GPU_GATE_20261023.md`, `PRIVATE_NEXT_UNOWNED_FOREST_VISUAL_AUDIT_20261023T1933Z.md` and `PRIVATE_CURRENT_TREE_ACTIVE_GAMEPLAY_VISUAL_GATE_20261023T1939Z.md` already cover film/bars, meter/UV and the known numeral concern. The remaining discriminating acceptance is an original-Windows, same-state **post-HUD** active-play frame with composition/film/HUD state sidecar versus a lossless Linux frame; original acquisition belongs to the separate Windows worker. No new source owner is proposed from this narrow gate.
+
+Only this unique report was written. No source/tests, shared status, Git index, GPU/display/Docker/build, game runtime or original-Windows lane was touched. **Read-only sepia/HUD composition lane explicitly released.**

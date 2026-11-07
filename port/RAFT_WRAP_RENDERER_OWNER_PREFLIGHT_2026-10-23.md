@@ -1,0 +1,20 @@
+# Raft WRAP renderer-owner preflight — 2026-10-23
+
+## Decision
+
+**Do not assign the renderer edit or GPU test yet.** The exact two-line correction is technically scoped, but this read-only snapshot does not establish exclusive `port/linux/SDLRenderer.cpp` ownership or release of the reserved GPU lane. Have the coordinator obtain explicit completion/release from the owning sessions and confirm no newer renderer writer before assigning a single renderer editor. A missing process, absent run-local child, or an audit report is not that handoff.
+
+## Evidence
+
+- HEAD `5c2d335`; `port/linux/SDLRenderer.cpp` is already dirty with an uncommitted raft-mip experiment. Its current diff adds `RaftMipExperimentEnabled`/`DrawRaftMipExperiment` and painter-slot routing. At draw lines 307-308, immediately after `glBindTexture(GL_TEXTURE_2D, name)`, S and T are set to `GL_CLAMP_TO_EDGE`; the existing private uploader sets both to `GL_REPEAT` around lines 878-879. No renderer line was changed in this preflight.
+- `port/RAFT_GL_WRAP_SOURCE_CONTRACT_0838_2026-10-23.md` traces the original `BasicLightTexture.fx` diffuse sampler to `AddressU/V = WRAP` and the current opt-in GL draw to CLAMP. `port/RAFT_WRAP_PIXEL_IMPACT_GATE_2026-10-23.md` recommends a draw-site-only assertion, notes that endpoint UVs can be address-sensitive, but establishes neither a changed composited Forest pixel nor Windows parity. Default SDL rendering is outside the correction.
+- `PORT_WORK_STATUS.md` at 15:44 UTC records completion of read-only WRAP pixel-impact owner `1828244c-83fd-405f-9f42-dcc3cb6d8d9f`, and this read-only preflight as the next report owner. Earlier dirty-renderer fidelity reviewer `48018312-f6c2-4f42-be8e-4d838af92cff` produced its report at 15:34 UTC; neither audit owned renderer code. The checkpoint does **not** identify/release whoever authored or may still own the uncommitted renderer diff. Cross-run owner visibility is explicitly tree-restricted. Older exclusive-GPU Forest discriminator `7f13cbd7-b73f-4be2-aa45-e2d96c7838c5` and read-only ID59 gate `0bb3162e-4efd-4221-b35b-fa7884a5237d` still lack verified release. The latest checkpoint's blank owner IDs are not release evidence.
+
+## Handoff after ownership is verified
+
+1. Coordinator obtains explicit release of any `SDLRenderer.cpp` writer and the GPU owner, rechecks current `git diff -- port/linux/SDLRenderer.cpp`, then gives one editor exclusive renderer scope. If the two draw-site lines or surrounding branch changed, re-evaluate rather than applying a stale patch.
+2. Editor changes **only** the two `DrawRaftMipExperiment` calls at the bound-texture draw site: `GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE` → `GL_TEXTURE_WRAP_S, GL_REPEAT` and likewise T. Leave uploader, env gate, transforms, UVs, fallback and ordinary SDL path untouched. Check with `git diff --check -- port/linux/SDLRenderer.cpp` and `git diff -- port/linux/SDLRenderer.cpp`.
+3. Run a CPU-only source gate scoped between `bool DrawRaftMipExperiment(` and `bool DrawFractionalParallax(`: between `glBindTexture(GL_TEXTURE_2D, name)` and `glBegin(GL_QUADS)`, require exactly one S/REPEAT and one T/REPEAT `glTexParameteri`, no S/T CLAMP or other wrap assignment. A whole-file `GL_REPEAT` search is insufficient because the uploader already has it. Confirm the two-line-only delta against the pre-edit diff.
+4. Only after exclusive GPU/build handoff: exercise an actual identified Forest-1 raft ID 11/57/58 draw with opt-in `DEATHLEAK_RAFT_MIP_EXPERIMENT=on`, query bound `GL_TEXTURE_WRAP_S/T` after assignment and before `glBegin`, then make frozen-state lossless CLAMP-vs-REPEAT captures and inspect alpha-edge/non-raft controls. A raft-path hit alone does not identify an object ID. A local Linux pixel change does not establish Windows fidelity; matched Windows bound-SRV/sampler and same-state frame remain unavailable in the cited reports.
+
+No build, capture, GPU use, code edit, shared-checkpoint change or commit was performed by this preflight. Sole output is this report.

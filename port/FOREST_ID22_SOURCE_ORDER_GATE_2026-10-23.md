@@ -1,0 +1,15 @@
+# Forest-1 ID22/ID17 source-order gate — 2026-10-23
+
+## Verdict
+
+**ID22 covering ID17 at x320/y519+ is source-equivalent in painter order, not a demonstrated port discrepancy.** The original XML puts ID17 before ID22, gives both `kNearBackground`, alpha 1, ordinary `effectlighttexture`, and horizontally flipped repeat-X textures (`Game/XmlFiles/levels/forest_exploration_1.xml:277-291,352-366`). Original `kNearBackground` is 5000 (`Game/src/GameObjects/GameObject.h:33-39`). Original loading appends XML siblings in sequence (`Game/src/GameObjects/GameObjectManager.cpp:403-427`), then sorts the `std::list` descending by depth only (`:58-64,448-450,1021-1025`) and draws in list order (`:302-330`). `std::list::sort` preserves equal-key order; ID22 therefore follows ID17. Original D3D depth comparison is **ALWAYS**, not a depth rejection of the later same-depth strip (`Game/src/Core/Graphics.cpp:77-107`). Original light-texture pixel shader retains texture alpha multiplied by object alpha (`Game/ShaderFiles/BasicLightTexture.fx:53-59`). Where tree-strip texels have coverage, later ID22 is expected to obscure earlier ID17.
+
+The Linux loader records XML order and depth (`port/game/LevelScene.cpp:393-395,486-490`), stable-sorts descending depth (`:620`), traverses that sorted vector to draw (`:1225-1231,1319`), and maps `kNearBackground` to 5000 (`:33-40`). Its ordinary draw path retains repeat-X and alpha (`:550-554,1270-1278`). Thus the **relative ID17→ID22 order is identical** in both implementations. This is a source-order conclusion, not a claim of pixel-identical sampling, camera, color, or complete Windows-frame parity.
+
+## Existing same-frame discriminator
+
+The physical-GPU hide experiment already reported in `port/FOREST_ID22_OVERDRAW_GPU_DISCRIMINATOR_2026-10-23.md` changed 158/180 pixels at x320/y380–559 when ID22 was hidden, versus zero at x640 and x960. In the *hide22* frame, additionally hiding ID17 changed 40 pixels at x320 in that band, first at y519. The sample x320/y520 changed `(98,85,60)` baseline → `(83,71,50)` hide22 → `(92,79,56)` hide22+17. That establishes **Linux ID17 visibility after removing ID22**, consistent with the above source order. It does not prove ID22 is the only contributor to the baseline pixel or that Windows produces the same RGB. The same report found hide22→hide22+19 changed zero x320 pixels in the band; do not extend the ID17 finding to ID19.
+
+## Smallest next gate
+
+**No source-order or XML correction is justified.** When a matched original-Windows forest-1 frame/state is available, compare only x320/y519–559 against the existing lossless Linux baseline at the same camera/effect state (and verify the original submitted ID17/ID22 order if that pixel comparison differs). A matched Windows frame is presently unavailable per the existing discriminator; without it, classify the ID22/ID17 overlap as *source-order equivalent, visual parity unproven*. No new Linux capture, GPU work, build, or broad visual acceptance follows from this read-only audit.

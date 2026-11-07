@@ -1,0 +1,30 @@
+# Waterfall-bottom ID33 center wobble sheet — atomic physical-NVE7 GPU gate
+
+## Verdict
+
+**Material Linux pixel contribution proven; no original/port parity verdict or source-proven fix.** On active bottom render ordinal 826, the isolated XML Sprite ID33 draw changes **396,682** RGB pixels immediately. A same-executable visible/hidden A/B retains **364,266** changed scene pixels after later draws and GPU Sepia but before HUD, and **342,970** in the final readback. The pre-draw images are byte-identical, the hidden post-draw image equals pre-draw, and outside controls stay identical. The saved original D3D10 active-bottom state/readbacks remain unavailable, so this proves Linux reachability and surviving composition only; no speculative wobble or sampler adjustment is warranted.
+
+## Identity, intervention, reproduction
+
+The target is authored `Game/XmlFiles/levels/waterfall_bottom.xml` Sprite **ID33** at lines 615–629, center wobble `Game/Media/waterfall_4.png`, not the neighboring upper ID34 sharing that texture. Prior source gate: `port/PRIVATE_WATCHDOG_BOTTOM_ID33_CENTER_WOBBLE_SHEET_SOURCE_GATE_20261024T0411Z.md`. The isolated overlay `port/build/private-bottom-id33-atomic-gpu-20261024t0415z/main.cpp` was copied from the successful ID6 instrumentation and changes only its diagnostic selector to texture `waterfall_4.png`, scene ordinal 3 (fourth command), and `pixelWobble=true`; the opt-in `DEATHLEAK_PRIVATE_BOTTOM_ID33_HIDE=1` skips **only that draw**. Overlay SHA-256 `5d618311927cfa997cf67f2ff8f8c7b56c4b75544fddd7cbd19786e47b61aa60`; isolated binary SHA-256 `5e7300a0db725b00e5ebfbc034ab051b39712ced068e62bd62465529d2261d13`. Docker build completed successfully (`build.log`). Source XML SHA-256 `da4d2f97f81e9e838abd0d62cdf167d1af9db13edce1d33a34dfd11393788f04`; art SHA-256 `33c06ae5c326865d39ee1f7f928991dfbdbece8c5bc249611a2365842d42ca3e`.
+
+Serial visible then hidden captures used the **same binary** in `deathleak-capture:post-foliage` on physical Xorg `:0` with `/dev/dri`, host X11 networking/auth, `SDL_VIDEODRIVER=x11`, `DRI_PRIME=pci-0000_01_00_0`, `MESA_LOADER_DRIVER_OVERRIDE=nouveau`, and dummy audio. Both exited 0. Both logs confirm accelerated OpenGL `software=0`, nouveau **NVE7**, GPU Sepia, and the Forest→Waterfall-top→bottom transitions. Recipe from repository root in each container: `--play Game/XmlFiles/levels/forest_exploration_1.xml --script B:1800 --frames 827 --fixed-dt 0.016666667 --capture /out/nve7-{visible|hidden}/final.bmp --atomic-postfade-waterfall-packet /out/nve7-{visible|hidden}/packet.json`; set `DEATHLEAK_PRIVATE_BOTTOM_ID33_PREFIX=/out/nve7-{arm}/id33` in each arm and `DEATHLEAK_PRIVATE_BOTTOM_ID33_HIDE=1` **only** in hidden arm. The visible arm had that hide variable absent. Logs, packets, readbacks and build are in the unique ignored evidence directory above.
+
+Both atomic packets agree on active `waterfall_bottom.xml`, player `(833.383118,1370.51953)`, frozen render/stored camera `(438.31134,1445.68396)`, pixel-wobble time `6.23335934`, and all ordered scene commands. Ordinal 3 submits `waterfall_4.png` at `[229.100098,48.0518799,678.698547,1357.39709]`, tint alpha 128/opacity .5, zero rotation, `flipX=true`, `flipY=false`, no UV shift/repeat, pixel-wobble enabled. This matches the saved bottom packet. The camera is pinned at frame 826 to the saved Linux witness because replay camera varies with wall-clock duration; it is a disclosed Linux diagnostic intervention, **not** a naturally matched original frame. Neither packet claims `matchedStateEligible`.
+
+## Lossless RGB readback
+
+Pillow RGB difference on 1280×720 BGRA32 BMPs; changed means any unequal RGB channel, and mean absolute RGB is on 0–255. Bounding boxes are **readback image coordinates** (not reprojected world/screen geometry). Immediate ID33 contribution occupies `[275,0,877,672)`; later composition contracts it to `[280,0,877,672)` before HUD and `[280,33,877,672)` final. Full-height left `[0,0,220,720)`, right `[920,0,1280,720)`, and lower `[0,680,1280,720)` controls have **zero** changed pixels at every listed boundary.
+
+| Boundary | Changed RGB pixels | Mean abs RGB | Difference bbox |
+|---|---:|---:|---|
+| Visible pre→post ID33 | 396,682 | 21.54362 | `[275,0,877,672)` |
+| Visible→hidden post-ID33 | 396,682 | 21.54362 | `[275,0,877,672)` |
+| Visible→hidden post-Sepia/pre-HUD | 364,266 | 3.32993 | `[280,0,877,672)` |
+| Visible→hidden final post-overlay | 342,970 | 2.53980 | `[280,33,877,672)` |
+
+Both pre-ID33 BMPs and hidden post-ID33 BMP are byte-identical (SHA-256 `1613380921a929b00301af98ec071d12df0cb41c4b67e6cebbd89bb44c93ea76`). Visible post-ID33 SHA-256 `7f8a57db2977f8ec8d593f8f182d54825d930563e17828e17a3c946e36f6ff02`. Pre-HUD visible/hidden SHA-256 `7ac8644e4e9d788967e72871fdd2dbe06c4d9004e7bcaf9073818dadea361ae0` / `9fe5372090654c7e9bc3083377ae71c1bce3b7dc563435741efbc1620bb19213`; final `691df19b199ce54127532a5df643dbb6678d68cb50a1adee76b1cf4dc0fd14ab` / `536e81dc529a0bdff3200dd02d95097655b1e7c27cc25315eb232d10cd7bccd3`. Pre-HUD is the clean surviving-scene estimator; final is corroboration because film phase is not pinned.
+
+## Boundary and release
+
+Next parity discriminator: provenance-qualified original D3D10 **active Waterfall-bottom ID33** at registered camera/player/viewport and equivalent shader clock, with bound texture/hash, world/view/projection, reflected UV corners, wobble time/intensity/speed, sampler/mip/blend, painter order, and lossless target before/after ID33 plus unaffected control. Compare source command fields first and isolated residual second. No original command/readback was available here. No software/source/test/asset edit, commit or push. Existing dirty renderer/Sea-2 and `PORT_WORK_STATUS.md` were preserved; only this unique report and requested append to `CHECKPOINT_STATUS.md` were written. Both capture containers and the build container exited; no Death Leak build/capture process remains. **Exclusive physical Xorg `:0`/NVE7 GPU and build lane released.**

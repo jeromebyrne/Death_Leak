@@ -1,0 +1,37 @@
+# Forest-1 post-ID37 middle-field/player same-frame GPU gate — 2026-10-23
+
+## Decision
+
+At the established post-ID37 Forest-1 `R:180` camera/frame, the broad pale middle field is causally brightened by **authored white overlay IDs 38 and 39**, chiefly ID39 in the selected middle ROI. Hiding both does **not materially improve the player's visible contribution**: its median absolute post-sepia luminance delta against the player-hidden control is 5.996 codes with overlays and 6.068 codes without them. The player is present, but its low contribution here is not established as a missing-render or white-overlay alpha bug. Do not reduce/remove these authored overlays or add a speculative player contrast boost. This closes the bounded Linux attribution, **not** original-Windows visual parity or Jerome's aesthetic acceptance.
+
+## Frozen physical-GPU packet
+
+Ignored evidence: `port/build/forest-post-id37-middle-field-gpu-gate-2026-10-23/` contains `capture.sh`, frozen executable, input/BMP hashes, all six BMPs/logs, `analyze.py`/`analysis.json`, and pre-work tree status. The binary is an unchanged copy of the ID37 post-ID21 causal packet, SHA-256 `9ff1c721345f13f546a3a0877e207a8a482ef7acfa41f00c1ea74eee8625d8ab`; that packet verified copied compiled source hashes against its then-current tree. Forest XML SHA-256 `6d36a837708a732ac7d2a085010a3d22229e29618b8594b5c2576d491c4161c5`; `blank_white.png` SHA-256 `5dfa9477f53eaeebbe59c085512bcd61cee4a8e5c273b31b95b4a55ebe48acbd`. No shared binary/source/XML/art was touched. The worktree is dirty and the frozen binary is **not** claimed byte-identical to the later delivered 11-second clip's binary (`ba78aa9a…`).
+
+At lane entry, `docker ps` showed only unrelated containers and process inspection found no Death Leak game/capture or x11grab process. Six runs were sequential, fresh-process Docker executions with physical Xorg `:0`, LightDM Xauthority, `/dev/dri`, SDL X11/OpenGL and dummy audio. Exact common game invocation: `--play Game/XmlFiles/levels/forest_exploration_1.xml --script R:180 --frames 180 --fixed-dt 0.0166667 --capture /out/<mode>.bmp`. The render-only `DEATHLEAK_RENDER_HIDE_XML_IDS` was respectively unset, `38`, `39`, `38,39`, `2`, and `38,39,2`; `LevelScene.cpp:60-87,1227-1249` filters draws without changing simulation. All logs say strict `accelerated=1 software=0`, `nouveau/NVE7`, GPU `Sepia.fx`, 71 original sprites with zero missing/unsupported assets, and identical printed gameplay endpoint player `(1368.99,3107.3)`, five orbs, health 25, grounded. Wall-clock `elapsed` differs. The prior ID21 GDB packet registered this route's final camera at `(1248.98621,3400)`; this lane did not independently remeasure camera. Baseline BMP SHA-256 `8d85a22bd50aab1ef8adf44702f01567fb432434ab6263e6c249045e088d7bd5` is byte-identical to the independent ID37 causal baseline, anchoring frame identity.
+
+## Pixel discriminator
+
+Images are lossless RGB 1280×720, top-down coordinates. A changed pixel differs in any RGB channel; boxes are half-open. Middle ROI is `[250,380,1000,560)` (135,000 pixels). The player mask is defined by each enabled-versus-hidden ID2 pair, not by a guessed rectangular crop. Values are post-sepia/post-HUD and measure final visible contribution, not pre-effect alpha.
+
+| Baseline/control → hidden draw(s) | Changed pixels / bbox | Changed pixels in middle ROI |
+| --- | ---: | ---: |
+| baseline → hide 38 | 342,104 / `[0,0,1280,549)` | 45,279 |
+| baseline → hide 39 | 677,664 / `[0,0,1280,633)` | 115,084 |
+| baseline → hide 38+39 | 678,296 / `[0,0,1280,633)` | 115,103 |
+| baseline → hide player ID2 | 7,767 / `[522,520,747,638)` | 798 |
+| hide 38+39 → also hide player ID2 | 7,932 / `[522,520,747,638)` | 795 |
+
+At `(640,400)`, baseline `(86,74,52)` becomes `(75,65,46)` hiding 38, `(71,61,43)` hiding 39, and `(57,49,35)` hiding both: both white authored overlays brighten this exposed field. At `(640,520)`, hiding 38 has no visible effect, while hiding 39 changes `(66,57,41)` to `(51,44,32)`, reflecting overdraw/coverage variation. The ID37-controlled near-black `(640,700)` stays `(4,3,2)` in every variant, so these white overlays do not cause its lower edge. Middle-ROI hide counts overlap; their sum is not an additive light budget.
+
+Median absolute Rec.709 luminance difference of RGB-changed player pixels, comparing the player-present frame to its same-overlay player-hidden mate, is **5.996** with both overlays and **6.068** with both hidden (7,767 versus 7,932 changed pixels). This small 0.072-code shift does not establish a meaningful legibility gain from deleting the white field. The mask includes body/arm draw effects and later foreground occlusion; it is a diagnostic visible-contribution metric, not a psychophysical contrast score. It is also a different pose/frame from the earlier 9-second ID10 low-contrast experiment and its 12.0/38.7-code values must not be transferred here.
+
+BMP SHA-256: hide-38 `8ade7e66b9aac7857bd1e0c660df75456aeee59a1e8488f5ce20c6fc925cc732`; hide-39 `df877555eec659b403daacf75bfdc4e98484a5e7b0b77d8443a44691327a1f90`; hide-38-39 `7b9972f2905b239f20a62a1313ea23c2468d039fb653e5ef401b14bae61ffa5d`; hide-player `6a8c118e042bce7220454c99852a58df0ab8fbbb453d9b3e822a3d0adbdf02e6`; hide-38-39-player `df8f2f1fb87d1f7632af755eb836557a4f0d2bb558eee68b3873c66b72d6eb32`.
+
+## Source contract, acceptance boundary, next gate
+
+Forest XML `:636-665` authors ID38 as 20,000×2743 `blank_white.png`, alpha .15 at `kMiddleBackground` (5500), and ID39 as the same white texture/size, alpha .20 at `kGroundBack` (4750). Both sort before player ID2 at `kPlayer` (3000), while later near-black foreground can overdraw the player (`Game/src/GameObjects/GameObject.h:34-54`; `port/game/LevelScene.cpp:35-43,621,1227-1249`). Original `Sprite.cpp:626-648` and `BasicLightTexture.fx:53-59` multiply sampled alpha by the authored object alpha once; `Graphics.cpp:392-407` specifies source-alpha-over. The port's ordinary `SDLRenderer.cpp:197-225` uses alpha modulation and blend mode, with the matching depth values. This is a source-consistent compositing explanation for the Linux deltas, not a proof of byte-identical D3D/GL sampler, effect or alpha behavior.
+
+The delivered 11-second clip is live `B:1800` recording with wall-clock stills and a different executable; it is **not frame-registered** to this deterministic `R:180` packet. This packet is the exact same Forest-1 frame as the prior ID37 and ID21 controls, and tests the remaining field/player question at that fixed camera. It cannot certify the clip's later 9-second ID10 pose or the transition to waterfall. No lossless original-Windows frame/state at camera `(1248.98621,3400)` exists here, so neither matched-Windows parity nor a shipping renderer fix follows. The concrete next gate is a synchronized Windows frame/draw-state sidecar at this pose (viewport, camera, simulation/animation/effect phase, overlay IDs 38/39 alpha/blend/order, player mask, and sampler/resource state), compared with these BMP controls. If a measured Windows/GL divergence identifies a specific alpha, order, sampler or postprocess contract, patch only that demonstrated path; otherwise leave XML/art unchanged and seek Jerome's visual judgment on the delivered clip.
+
+The physical GPU lane is released: all six containers exited and no Death Leak container remained at postcheck. Only this unique report was written outside ignored evidence; shared dirty files, ID59's reserved report, checkpoints and renderer were not edited.

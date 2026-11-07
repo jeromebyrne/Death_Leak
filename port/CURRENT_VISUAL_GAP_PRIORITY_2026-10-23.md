@@ -1,0 +1,23 @@
+# Current visual-gap priority — source/reference audit (2026-10-23)
+
+## Verdict
+
+**No fresh, genuinely unowned, high-impact rendered discrepancy is established by the current evidence.** Do not start another source-only visual patch from this audit. The strongest broad forest anomaly in available active-play imagery—the near-black lower foreground—is causally tied to authored ID37 in a prior same-frame hide comparison, not demonstrated to be a Linux defect. The pale right field is similarly attributed to authored ID15. Neither the saved Linux video nor Steam screenshots register an identical Windows camera, time, player/effect state and viewport, so their visual difference cannot distinguish source composition from renderer error. This is an evidence limit, not a claim of parity.
+
+## State and ownership checked
+
+At inspection, HEAD was `2e1624e` (`Match waterfall Y scroll to prior rendered delta`). `git status --short` showed dirty `CHECKPOINT_STATUS.md`, `port/COMPOSITION_DIAGNOSTIC_NOTES.md`, `port/game/LevelScene.cpp/.h`, `port/linux/main.cpp`, tests and numerous untracked reports; all were left untouched. The latest checkpoint tail records the corrected forest gameplay video and its unresolved human/Windows visual acceptance, but its old claims that foliage/arm or waterfall effects were absent are superseded by later current-tree reports and code. In particular, the current draw path emits a finite player arm before the body (`port/game/LevelScene.cpp:1306-1314`) and uses the prior-rendered delta for waterfall Y scroll (`:1295-1302`). Do not revive either original omission as a new gap.
+
+Existing owners already cover the source-path candidates: ID46 repeat seam (`FOREST1_COMPOSITION_NEXT_SOURCE_GATE_2026-10-23.md`, plus the exclusive ID46 worker); follow-X temporal registration (`FOREST1_NEXT_RENDER_CONTRACT_2026-10-23.md` and original-trace feasibility); waterfall Y cadence (HEAD and its cadence reports); waterfall foliage world-centre phase (`VISUAL_GAP_SOURCE_GATE_0644_2026-10-23.md` and implementation preflight); player/body/orb/arm timing (`FOREST_NEXT_SOURCE_DISCRIMINATOR_0624_2026-10-23.md`, `NEXT_POST_FOLIAGE_VISUAL_GATE_2026-10-23.md`); and conditional raft mip sampling (`RAFT_MIP_SOURCE_GATE_2026-10-23.md`). None is an unowned finding here.
+
+## Source/reference cross-check
+
+- Forest ID37 is explicitly a 2048×512, alpha-.95 `ParallaxLayer` using `shrubbery.png`, with occlusion fading disabled and camera-X follow enabled (`Game/XmlFiles/levels/forest_exploration_1.xml:612-635`). Windows updates its camera-follow position and UVs in `Game/src/GameObjects/ParallaxLayer.cpp:26-35,37-82`. Current Linux carries parallax destination, UV shift, alpha and one-span behavior through `port/game/LevelScene.cpp:1232-1275`. The prior controlled hide-ID37 evidence changes the lower band by 162,082 pixels and its center sample from (6,5,3) to (112,96,68) (`CURRENT_TREE_LOWER_ATMOSPHERE_SOURCE_AUDIT_2026-10-23.md`); it does **not** prove exact Windows parity.
+- Forest IDs38/39 are authored 20,000×2743 white alpha-.15/.20 overlays (`forest_exploration_1.xml:636-665`), so their rectangular extent alone is not a missing Linux mask. The current pale right-side field has a prior hide/only-ID15 causal attribution (`CURRENT_TREE_PALE_EDGE_ATTRIBUTION_2026-10-23.md`), not a newly evidenced shader defect.
+- Linux's current foreground draw path applies source depth factors and draw order, preserves author opacity, and dispatches foliage/pixel paths (`port/game/LevelScene.cpp:1225-1294`). This inspection did not prove all pixels correct; it rules out calling a broad missing-layer omission from these code paths alone.
+
+## Smallest next discriminator
+
+Obtain **one lossless original-Windows active forest-1 frame** at a specified fixed game frame after a reproducible start, with camera XY, viewport, player XY/facing, and shader/effect time recorded. Use the existing Linux fixed-frame route to reproduce that same state, then register an ID37 lower-band crop and an ID15 right-field crop separately against the reference. If the original has the same dark ID37 band and ID15 field, close those broad composition suspicions without a patch; if one differs at matched state, trace that object's draw call/texture/sampler before changing code. This single registered reference is smaller and more discriminating than another unmatched trailer/still comparison or a new speculative source audit. It is a proposal for the next owner, not work performed here.
+
+Read-only audit except this sole report. No source/test/shared-status edits, build, GPU/Xorg use, capture, commit or push.

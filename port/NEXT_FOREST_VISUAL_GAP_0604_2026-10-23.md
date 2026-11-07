@@ -1,0 +1,19 @@
+# Next unowned forest-1 visual gap — ordinary raft minification (2026-10-23 06:04)
+
+## Nomination and evidence grade
+
+After excluding the now-attributed ID15 right-edge field, authored ID37 lower band, and the separately documented fog/parallax questions, the strongest *unowned, bounded source-path discrepancy worth testing* in the active opening is **ordinary `effectlighttexture` sprite mip sampling**, first isolated on the three visible raft pieces (XML IDs 11/57/58). This is not a newly discovered omission: `NEXT_FOREST_VISUAL_GAP_0247_2026-10-22.md` identified it before the current capture. It remains unresolved in the inspected current renderer, and has no source/test/GPU owner in this read-only lane. Rank it by repeated opening-frame visibility and a roughly 3.35× minified, high-detail RGBA source, **not** by a measured Windows/Linux pixel delta. It cannot explain the broad lower darkness or pale shaft. The 0556 current-tree clip shows active bridge/raft scenery, but is H.264, not a registered original-Windows comparison (`CURRENT_TREE_GPU_REVIEW_0556_2026-10-23.md`).
+
+## Exact chain
+
+- `Game/XmlFiles/levels/forest_exploration_1.xml:191-205,928-957` gives IDs 11/57/58 `Media/objects/raft.png`, dimensions 458.298584×125.316017 world units, `effectlighttexture`, alpha 1, with authored individual flips/rotations. The PNG is 1024×280 (`NEXT_FOREST_VISUAL_GAP_0247_2026-10-22.md` asset inventory). At the port's 2/3 projection a complete quad is about 305.5×83.5 screen pixels, so its source image is substantially minified.
+- Windows `Game/ShaderFiles/BasicLightTexture.fx:10-16,53-59` samples with `MIN_LINEAR_MAG_POINT_MIP_LINEAR` and wrapped UV, then multiplies sampled alpha by object alpha. `Game/src/Core/TextureManager.cpp:50-66` creates the SRV with default D3DX10 load options. This proves the *requested sampler*, **not** the actual shipped SRV mip count; a one-level SRV would weaken/close the proposed visible mip mismatch.
+- Linux `port/linux/SDLRenderer.cpp:160-188,197-225,263-266` decodes/uploads a PNG as one SDL texture and selects `SDL_ScaleModeLinear` for a minified ordinary pre-sepia copy, then uses SDL copy/ex-copy for these non-repeat raft sprites. No mip-chain or LOD selection appears in that ordinary path. The private GL mip handling for special effects does not make these ordinary copies mipmapped. The prior base-level nearest-to-linear correction (`SCENE_MIN_FILTER_FOLLOWUP_2026-10-22.md`) closes the base-filter issue, **not** this conditional mip question.
+
+## Single bounded discriminator / conditional fix
+
+First, on an original Windows forest opening frame, inspect the **actual raft texture/SRV `MipLevels` and bound `BasicLightTexture` sampler** at draw, with camera/viewport recorded. If one level, close this candidate without a Linux change. If multiple levels, compare one same-camera, same-state, lossless raft-local crop and an ID11/57/58-only Linux baseline versus a render-only mipmapped branch. Keep geometry, alpha, flips, rotations, painter order, sepia and all other sprites unchanged. A local branch can reuse the renderer's private GL texture/state-restoration pattern, but must preserve SDL-to-GL interop and restore GL state before the following draw. Only merge a raft-specific change if the branch moves the isolated crop toward the matched original; generalizing ordinary sprites requires separate evidence.
+
+**Limits:** This is a source-backed *sampling-capability candidate*, not proven current visual error, pixel parity, or a reason to tune ID15/37/fog. The Steam forest JPEG has unmatched camera, state and processing; the 0556 MP4 likewise does not reveal Windows SRV mips. If no original runtime/SRV trace is available, keep the gap conditional and make no speculative renderer edit.
+
+Scope: read-only source/evidence audit; this report is the sole write. No source/tests/shared checkpoint, build, game, GPU/Xorg, commit or push.

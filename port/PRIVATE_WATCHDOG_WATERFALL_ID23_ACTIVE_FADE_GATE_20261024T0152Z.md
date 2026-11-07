@@ -1,0 +1,18 @@
+# Waterfall-top ID23 active sharp-tree fade discriminator — 2026-10-24 01:52Z
+
+## Bounded result
+
+**No safe new production correction.** A separate, sharp foreground tree (XML ID23) is actually in its authored player-occlusion fade state in the saved active Waterfall-top ordinal-638 Linux packet. This distinguishes it from the already-proven nonfading blurred ID27 covering the player. Its measured Linux draw alpha is consistent with the original source rule; it does not establish matched Windows pixels or Jerome's visual acceptance. No source, XML, renderer, test, or build change is justified.
+
+## Source and witnessed command
+
+- `Game/XmlFiles/levels/waterfall_top.xml:443-457` authors ID23 at center (-760.014648,3931), size 1112.317383×2743.384033, `kGroundFront`, `tree2.png`, initial alpha .95, and `fade_when_player_occluded=true`, with .5/1.0 targets. Nearby ID24 is also fade-enabled but is rotated and farther right; ID27 at `:502-516` is a different `tree2_blur.png` sprite at `kFarForeground` with fade **disabled**.
+- Original `Game/src/GameObjects/DrawableObject.cpp:54-117` tests whether the **player center** lies strictly within the sprite's unrotated Left/Right/Bottom/Top bounds, then steps alpha by 1.5×delta toward .5 on overlap (with its authored one-update overshoot/clamp behavior). `Game/src/GameObjects/GameObjectManager.cpp:216-250` updates eligible in-zone sprites. Current `port/game/LevelScene.cpp:919-950` uses the same center/rectangle test and step, gated on `updateable` and the update zone; its XML load reads the two targets at `:576-580`.
+- Saved physical-Linux `port/build/private-watchdog-waterfall-player-packet-20261024t0040z/frame638.json` records active Waterfall-top, camera (-546.968933,3000), and player center (-427.014648,2958.12427) at ordinal 638. Parsed XML rectangles put the center **inside ID23 and ID27**, but **outside ID24**. The packet submits one sharp `tree2.png` command at scene ordinal **48**, destination `[127.197021,-1175.12793,741.544922,1828.92273]`, alpha/opacity **.5**, **after** the player arm/body at ordinals 21/22. ID27's separate blurred tree is ordinal 101 at alpha .95. Thus ID23's actual submitted .5 is the authored fade target, whereas ID27 remains nonfading. Texture identity plus geometry support ID23 attribution; the packet does not independently carry an XML-ID field for each ordinary sprite.
+- This packet is from an earlier probe binary, **not** an exact frame in the fresh 25-second `corrected-active-25s.mp4`; its ordinal must not be converted to video seconds. No pre/post-ID23 readback or qualified original-Windows D3D10 same-state packet exists. The saved pre/post-ID27 readbacks isolate ID27 only and must not be claimed as an ID23 pixel measurement.
+
+## Next discriminator
+
+If the sharp tree's transparency remains a visual concern, collect a single qualified original-Windows and serial Linux **same-state** active Waterfall-top draw with player/camera, update history and ID23 alpha, XML ID/draw ordinal, bound texture/sampler, and lossless **pre/post-ID23** RGB crops plus post-sepia and unaffected control. First compare the alpha command (including the .95→.5 ramp and update admission); only a first divergent command plus localized crop residual would justify a one-field correction. If both commands and registered pixels agree, close ID23. Current unmatched Steam media and the 25-second clip cannot decide that parity question.
+
+Scope: source/XML/saved-JSON CPU inspection and this report only; no physical GPU use, new MP4, build, production edit, shared checkpoint, index, commit, or push. Pre-existing dirty work preserved; GPU lane released.

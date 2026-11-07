@@ -1,0 +1,30 @@
+# Forest-1 ID37 lower-band causal gate after ID21 control — 2026-10-23
+
+## Decision
+
+**Close the gross near-black lower band as source-authored ID37 foreground in the current Linux frame, not a renderer-added rectangle or ID38 contribution.** The new same-frame accelerated GPU captures reproduce the previous ID37 baseline/hide BMPs *byte-for-byte*, and hiding the neighboring XML ID38 after hiding ID37 changes no pixel in the lower-band or its onset. No source/art correction is justified by this gate. Exact original-Windows parity remains unproved; the bounded unresolved renderer contract is ID37 minification's mip-linear selection, conditional on the original D3D10 SRV actually containing a level-1 mip.
+
+## Frozen route and controls
+
+Evidence is solely in ignored `port/build/forest-id37-post-id21-gpu-causal-2026-10-23/`: frozen compiled source, executable, source/input/BMP hash manifests, capture script and logs, lossless BMPs, JSON pixel analysis, and before/after status. HEAD `9ba65c3a7b8f618b8257a132a6c5e77a179cebb1`, dirty before work (387 status entries). The 37 compiled source files were copied from the just-completed ID21 source freeze and each hash was confirmed identical to the live current source; see `source-sha256.txt`. Frozen uninstrumented binary SHA-256 `9ff1c721345f13f546a3a0877e207a8a482ef7acfa41f00c1ea74eee8625d8ab`. Forest XML SHA-256 `6d36a837708a732ac7d2a085010a3d22229e29618b8594b5c2576d491c4161c5`; ID37 `shrubbery.png` SHA-256 `5a834d342975883ca54b79aa2da08730e86db11aee282f6a7a094f1fec05c412`. This is a frozen current-source build reused from the ID21 control, not the differently hashed mutable shared `port/build/deathleak-linux`.
+
+No competing Death Leak container or process owned physical Xorg `:0` at lane check. Three variants ran **sequentially** in `deathleak-video-capture:bookworm`, repo read-only, output writable, `/dev/dri`, LightDM Xauthority, X11 OpenGL and dummy audio. Exact common invocation: `--play Game/XmlFiles/levels/forest_exploration_1.xml --script R:180 --frames 180 --fixed-dt 0.0166667 --capture /out/<variant>.bmp`. Render-only `DEATHLEAK_RENDER_HIDE_XML_IDS` was empty (baseline), `37`, then `37,38`. Every successful log says `accelerated=1 software=0 mode=strict-accelerated`, OpenGL `nouveau / NVE7`, initialized `Sepia.fx` GPU postprocess, 71 sprites and zero missing/unsupported assets. Printed gameplay endpoints agree in player `(1368.99,3107.3)`, orbs 5, health 25, grounded, `vx=480` and combat fields; only nondeterministic wall-clock elapsed differs. The ID21 GDB control for this same frozen source/frame measured final-draw camera `(1248.98621,3400)`; this lane did not remeasure camera independently. No game GPU container remained afterward.
+
+## Pixel/edge result
+
+All images are lossless RGB BMP 1280×720. Counts are any changed RGB channel, boxes half-open. Lower ROI is `[0,596,1280,720)`; onset-edge ROI is `[0,580,1280,621)`.
+
+| Pair | Changed pixels / bbox | Lower ROI | Onset-edge ROI | Changed pixels y596 / 600 / 620 / 650 / 700 / 719 |
+| --- | ---: | ---: | ---: | --- |
+| baseline → hide-37 | **92,357** / `[0,596,1280,720)` | 92,357 | 2,171 | 9 / 44 / 163 / 794 / 1,199 / 1,277 |
+| hide-37 → hide-37-38 | 342,104 / `[0,0,1280,549)` | **0** | **0** | 0 / 0 / 0 / 0 / 0 / 0 |
+
+The ID37 delta's sparse onset at y596 (only x507–1193), expanding to nearly full width by y719, is a ragged authored silhouette. At `(640,590)` all variants are `(87,75,54)`. At `(640,700)` baseline `(4,3,2)` becomes `(81,71,51)` when ID37 is hidden and stays that color when ID38 is also hidden. At `(100,700)` it moves `(4,3,2)` → `(73,63,44)` with ID37 hidden. The ID38-only difference ends at y548; this neighboring middle-background white tint is visible elsewhere but does **not** compose the lower edge in this frame. The ID37 PNG is 2048×512 with a variable-alpha shrub silhouette, including opaque near-black source rows, corroborating the painter/alpha mechanism. The final image is post-sepia/HUD; this comparison isolates visible contribution, not pre-effect alpha numerics.
+
+Baseline BMP SHA-256 `8d85a22bd50aab1ef8adf44702f01567fb432434ab6263e6c249045e088d7bd5`; hide-37 `26f8f3b1d1f7103464d58beba0528c1551494bfc12f03fba0815acb84944f564`; hide-37-38 `0ea2ef279945f54194166fde8166a54dcef32a762e076670fe6133d80038e5ad`. Baseline and hide-37 are each byte-identical to the independent `FOREST_ID37_CURRENT_LOWER_BAND_GATE_2026-10-23.md` captures; baseline also equals the just-completed ID21 unmasked post BMP. This directly connects the post-ID21 control frame to the current 11-second clip's known lower-band cause without repeating a broader capture matrix.
+
+## Source-backed remaining contract and boundary
+
+Forest XML lines 612–635 authors ID37 as `kMiddleForeground`, 2048×512 `shrubbery.png`, alpha `.95`, `effectlighttexture`, followed camera X, fixed Y, one repeated X span, and no sway/animation/occlusion fade. ID38 is immediately adjacent in XML but `kMiddleBackground` with `blank_white.png`, alpha `.15` (lines 636 onward). Windows `ParallaxLayer.cpp:26-100` supplies followed-X/UV; `Sprite.cpp:626-648` supplies one alpha; `BasicLightTexture.fx:10-16,53-59` wraps UV and requests `MIN_LINEAR_MAG_POINT_MIP_LINEAR`. Current Linux `SDLRenderer.cpp:418-430` wraps UV, blends source-over, applies tint alpha once, but selects `GL_LINEAR` minification with no mip selection on this float-parallax path. The D3DX loader (`Game/src/Core/TextureManager.cpp:50-79`) does not prove the runtime SRV mip count. At 2/3 projection, nominal 1.5× minification makes edge/seam detail a plausible local residual *if* original level 1 exists; it cannot explain this gross opaque coverage. Gate any renderer change on an original-Windows matched pre/post-effect packet with camera, light color, UV, blend and SRV mip count/LOD; a Steam JPEG or unmatched clip frame is not pixel parity evidence.
+
+No shared source, checkpoints, ID21/ID59 reports, commit or push changed. The before/after `git status --short` snapshots are byte-identical; only this unique report and ignored evidence were written. No Windows parity or aesthetic acceptance claim is made.

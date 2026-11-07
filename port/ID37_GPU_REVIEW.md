@@ -1,0 +1,25 @@
+# ID37 physical-GPU review — 2026-10-22
+
+## Verdict
+
+HEAD `b43df4c`'s parallax UV/Y correction **passes the bounded physical-GPU visual check**. At the deterministic forest-1 `R:180` frame, ID37 no longer creates a hard opaque edge at screen y≈593. The corrected `shrubbery.png` makes a soft, irregular foreground silhouette that darkens toward the bottom, consistent with the source's V orientation and the qualitative shape in Steam screenshot 14. ID37 remains intentionally dark at the very bottom; this is authored foreground, not a reason to remove or recolor it. This is not exact Windows pixel parity because screenshot 14 has no matched camera, state, time or viewport.
+
+## Capture provenance and comparisons
+
+Built the current tree with `deathleak-linux-build:bookworm` (`make -C port -j2`, exit 0). Ran the compiled binary, sequentially and alone, on physical Xorg `:0` with `/dev/dri` in `deathleak-video-capture:bookworm`. Each 1280×720 lossless BMP used forest-1, fresh process, `--script R:180 --frames 180 --fixed-dt 0.0166667`, the same camera/viewport/sepia path, and only the named XML-ID diagnostic environment difference. All three logs report SDL x11/OpenGL `accelerated=1 software=0 vsync=1 mode=strict-accelerated`, `nouveau / NVE7`, GPU `Sepia.fx`, 71 loaded sprites and zero missing assets, forest-1 entry, and the same final player position `(1368.99,3107.3)` and five orbs. Wall-clock `elapsed` differs by a few hundredths of a second; it is not the fixed simulation clock.
+
+Evidence directory: `port/build/id37-gpu-review-2026-10-22/` (ignored build artifacts). Its `baseline.bmp`, `only-37.bmp`, `hide-37.bmp`, per-mode logs, PNG conversions and `comparison-montage.png` are the exact fresh captures. Current baseline vs hide-ID37 differs in **91,802 pixels**, bounded to `[0,596,1280,720)`; at `(640,650)` the baseline is `(79,68,48)` and hide-ID37 is `(101,87,62)`, and at `(640,700)` they are `(6,5,4)` vs `(120,104,74)`. The only-ID37 image shows the silhouette independently.
+
+The historical pre-fix `port/build/id-audit-2026-10-22/baseline.bmp` and `only-37.bmp` are useful *qualitative mapping* evidence at the same `R:180` route: at `(640,593/620/650)`, old only-ID37 is `(4,3,2)/(1,0,0)/(1,0,0)` while fresh only-ID37 remains `(9,8,5)/(9,8,5)/(7,6,4)`, darkening gradually toward y700. The old baseline's hard dark edge around y593 is visibly absent in the new baseline. **Do not use a full-image old/new pixel count as a code-change effect:** intervening scene changes altered upper/background pixels and the old capture loaded 72 sprites rather than today's 71. The within-current baseline/hide pair is the controlled ID37 attribution.
+
+Steam `../store_media/screenshots/14.jpg` (1200×675 store JPEG) shows an irregular dark shrub silhouette above a black lower matte. The current `R:180` frame has a similar foreground treatment; the trees, bridge, player/HUD and crop differ because it is a different camera/state. No numerical screenshot-14 parity claim is made.
+
+## Corrected active gameplay video
+
+`port/build/id37-gpu-review-2026-10-22/forest-1-id37-corrected-active-10s.mp4` is the new direct game-window H.264 capture, **9,381,027 bytes**, SHA-256 **`46c1f89d79870c6e811cfa898bb32aa30b6dbbf9cf92a52f6d7ac09b0185ca19`**. `record.sh` starts a fresh forest-1 game using `B:300,F:99700`, waits for the named game window *and* forest-1 audio/level-entry log, then records only active gameplay. `game.log` confirms strict accelerated SDL/OpenGL, physical `nouveau / NVE7`, GPU sepia, forest-1 entry and 71 loaded sprites. `ffprobe.txt` confirms H.264 1280×720, 30 fps, **300 readable frames and 10.000000 s**; full ffmpeg decode exited 0. The x11grab shared-memory warning fell back successfully to non-shared-memory capture. Extracted `still-1s.png`, `still-5s.png`, `still-9s.png` show changing gameplay/HUD and different image content across the full frame, not setup/menu/desktop. No audio track was captured because the container uses dummy audio.
+
+## Remaining visual caveat / source-backed next issue
+
+A broad straight-edged middle/background patch is still visible in the active video (for example around y≈500 in `still-5s.png`). It is **not** the corrected ID37 lower silhouette. The separate read-only `port/FOREST_PATCH_AUDIT.md` traces a concrete remaining source/port mismatch: original forest-1 `ScrollingSprite` fog IDs 119/122 have timed drift and fade-in/out (and pixel wobble), while `port/game/LevelScene.cpp` currently renders their initial XY at static XML alpha and has no scrolling-sprite update. Those layers overlap the middle strip. This warrants a separate controlled same-frame 119/122 isolation and implementation; it does **not** prove that fog alone causes every straight edge. Authored `ground.png`/`ground_blur.png` rectangles also contribute there. No art/XML changes were made or inferred from unmatched screenshot 14.
+
+No software changes, commit or push in this review. Unrelated working-tree edits were preserved; only this report and ignored evidence were written.

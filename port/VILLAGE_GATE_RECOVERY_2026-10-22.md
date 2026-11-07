@@ -1,0 +1,21 @@
+# Village integration gate recovery — 2026-10-22
+
+Scope: read-only recovery audit of the missing `port/VILLAGE_INTEGRATION_GATE_2026-10-22.md` handoff for worker run `f8b0eaf7-b711-4375-8aff-1d40e93d5d71`. This report is the only write. No source/test/status edits, build, test, GPU/display use, or process interference. Findings are a snapshot of existing artifacts, not a new execution result.
+
+## Last verified outcome
+
+The newest completed gate trace found is `port/build/village-integration-gate-rerun8-2026-10-22.log` (mtime 17:48:32 PDT; earlier gate/rerun through rerun7 have progressively earlier mtimes). It reaches the uninterrupted forest-start 375-orb earned purchase: `Opened kDeflection ... frame 31619 cost=375 balance=375`, `Purchased ... frame 31621 balance=0`, endpoint `orbs=375 health=4 balance=0`, and `Deflection unlocked=1 count=0` (`:3030-3034`; subsequent shell checks through the no-death check appear at `:3214-3334`). The saved purchase snapshot contains 375 distinct orb IDs, `B:0`, and `U:kDeflection`.
+
+Rerun8 then executes the next continuous purchase-plus-shrine-deflection route. It records the expected village-central→shrine transition at frame 37304, ends at `village_agri.xml player=(1951.18,-1278.17) orbs=383 keys=0 health=4 balance=8 spawned=18`, and prints `Deflection unlocked=1 count=1` (`:3396-3418`). Its saved `earned-deflect-save.txt` contains 383 distinct IDs, `B:8`, `U:kDeflection`, and the shrine NPC `#189` entry. The first failed assertion is the endpoint grep at `port/tests/integration.sh` (current line 328): the trace's shell command expects `orbs=383 .*health=1 .*balance=8 .*spawned=18` (`rerun8.log:3584`), whereas the repeated actual endpoint remains health 4 (`:3658`). The trace ends there; the subsequent `Deflection unlocked=1 count=1` grep, no-death check, saved-ID Python assertions, dojo/hut/boat and remainder of the suite were **not** executed by this run. No complete integration PASS is evidenced.
+
+## Diagnosis and confidence limit
+
+This is an observed stale **endpoint-health expectation**, not evidence in rerun8 of a broken purchase, debit, pickup count, transition, or deflection runtime. The actual route is alive at its expected location with the expected 383 orbs, balance 8, spawn count 18, and deflection count 1. The saved state corroborates the 375→383 unique-ID increase and debit. Earlier reruns and current test diff show sequential, individually exposed 1→4 health expectation updates for the 100/227/290/296/306/327/343/375 endpoints; `port/VILLAGE_INTEGRATION_EXPECTATION_AUDIT_2026-10-22.md` and `port/VILLAGE_ASSERTION_CAUSAL_TRACE_2026-10-22.md` describe the plausible corrected knife-lifetime combat path, but no same-route encounter trace proves the exact avoided damage frame. Thus health 4 is the reproducible current endpoint baseline, not proof of source-perfect combat parity. Do not blanket-change later health checks without their own run.
+
+## Process and artifact uncertainty
+
+At audit time, a read-only `ps` filter for `village-integration|dotnet|DeathLeak|death_leak|ffmpeg` returned no matching process; that is only a local snapshot, not proof that another owner/GPU worker is idle. `port/tests/integration.sh` had uncommitted changes (mtime 17:46:01 PDT), and the executable `port/build/deathleak-linux` was modified later at 17:51:43 PDT, after rerun8. No rerun9 log or the expected gate report was found in this snapshot. Therefore do **not** describe rerun8 as a pass on the latest rebuilt binary or infer the prior worker's final intent/status from the absent report. Preserve the current exclusive execution lane.
+
+## Bounded next owner action
+
+After confirming whether the execution owner has a newer result, update only the `earned_deflect` endpoint grep's `health=1` to the observed `health=4` if that is still its first failure. Retain position, 383-orb/balance-8/spawned-18, purchase frame/debit, deflection-count, survival, and unique-ID/set checks. Under the exclusive build/test lane, rerun the suite against the current binary and adjudicate its first newly exposed assertion from that run. In particular, the later dojo/hut endpoint still expects health 1 but has not been reached in rerun8; do not pre-edit it. If the rebuilt binary changes this route, use its actual endpoint and save before changing any expectation.

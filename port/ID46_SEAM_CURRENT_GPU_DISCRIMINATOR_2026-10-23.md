@@ -1,0 +1,35 @@
+# ID46 current-tree physical-GPU seam discriminator — 2026-10-23
+
+## Verdict
+
+A bounded, accelerated physical-X11 forest-1 `R:98` capture was completed from a freshly scoped build of the current dirty source: unfiltered baseline, ID46-only, and hide-ID46, each in a separate process at the same fixed frame. The corrected candidate seam window at **x863–878** is the sepia-clear pixel `(9,8,5)` at 2,393/2,400 pixels (the other seven are `(10,8,6)`) in the ID46-only BMP over y560–709, and unfiltered versus hide-ID46 has **zero changed pixels** in that window. The interior control at **x940–955** has substantial ID46 contribution (1,328 changed pixels in y590–709, with channel delta up to 44). Thus the captured *post-sepia unfiltered composited* seam window has no measurable ID46 contribution, while the nearby interior does; the isolated seven one-LSB pixels do not survive the unfiltered attribution comparison. This is consistent with the PNG's transparent edge guard, not evidence of a visible wrap defect. No source change is justified by this capture.
+
+This does **not** establish GL wrap/min/mag/mip state or a Windows match. The candidate x position uses the separately derived camera/vertex prediction, not an instrumented draw-time camera; because a transparent seam cannot be independently located from the rendered pixels, absence of contribution in this predicted window is a bounded finding, not proof about every possible seam pixel or LOD.
+
+## Provenance and exclusive lane
+
+- Before build/capture, `ps` showed physical Xorg `:0` but no competing `deathleak-linux`, ffmpeg, make/C++ compiler, or capture container. `docker ps` showed no game/build owner. The source tree was dirty (`LevelScene.cpp`, `LevelScene.h`, `main.cpp` and unrelated files); existing `port/build/deathleak-linux` could not be trusted merely from its timestamp. Built only `port/build/id46-seam-gpu-2026-10-23/deathleak-linux` via `make -C port TARGET=build/id46-seam-gpu-2026-10-23/deathleak-linux` in `deathleak-linux-build:bookworm`; no shared target/source/test/status was edited. Scoped binary SHA-256 `a9528ca9002ea7e5843ae11b421f81aed96a4dadb2e4c5136ec2182c56b932d2`. Input hashes for `LevelScene.cpp/.h`, `main.cpp`, `SDLRenderer.cpp`, XML and PNG were captured before and verified unchanged after build in `port/build/id46-seam-gpu-2026-10-23/input-sha256.txt`; full compiler output is `build.log`. HEAD at preflight was `2e1624e` and the capture is explicitly **HEAD plus dirty source**, not clean-HEAD evidence.
+- Each run mounted source read-only and the ignored artifact directory writable, attached `/dev/dri`, physical X11 socket and LightDM authority, with `SDL_VIDEODRIVER=x11`, `SDL_RENDER_DRIVER=opengl`, dummy audio, 1280×720, `--play Game/XmlFiles/levels/forest_exploration_1.xml --script R:98 --fixed-dt 0.0166667 --frames 98 --settings-file /out/settings.xml --capture /out/<mode>.bmp`. Baseline had no XML filter, isolated used `DEATHLEAK_RENDER_ONLY_XML_IDS=46`, hide used `DEATHLEAK_RENDER_HIDE_XML_IDS=46`; the filter was reset by process restart. All three logs say `video_driver=x11 name=opengl flags=14 accelerated=1 software=0 vsync=1 mode=strict-accelerated`, `nouveau / NVE7`, Sepia.fx GPU postprocess, forest-1 gameplay ending at player `(712.986,3159.72)`, 3 orbs, health 25, no enemies. Capture processes exited; no competing game/capture process remained.
+- Lossless BMP SHA-256: baseline `d29dee6ba35a40f4d2de48ed112eb916a4dfac80b1bad2054395996523af0fb5`; ID46-only `82d653359299b627f2e810c9076e9e81fc20655f02b3587cbe0ecca44fc17c4f`; hide-ID46 `cf5ccb97bebc13ac2007ebda8e571fcabafa4cc02736a728e430bcbd480685c6`. Logs and cropped PNGs are adjacent under the ignored artifact directory. No software/offscreen frame was substituted.
+
+## Narrow pixel evidence
+
+The companion `ID46_CPU_INTERPOLATION_DISCRIMINATOR_2026-10-23.md` corrects `ID46_WRAP_REFERENCE_FEASIBILITY_2026-10-23.md`: its x≈233 omitted the +640 viewport center. Its predicted deformed R:98 boundary is x≈869.21 at top, x≈870.95 at y640, x≈872.91 at bottom; x948 is an interior control. The initial x225–241 crop was also evaluated, but **is not a seam test**. RGB comparisons below decode 1280×720 BMPs with PIL and use per-channel absolute differences of unfiltered minus hide-ID46, holding all game inputs/timing/postprocess fixed.
+
+| ROI | y band | changed pixels / total | maximum channel delta |
+|---|---:|---:|---:|
+| Predicted seam x863–878 | 560–709 | 0 / 2,400 | 0 |
+| Interior x940–955 | 590–619 | 129 / 480 | 22 |
+| Interior x940–955 | 620–649 | 480 / 480 | 44 |
+| Interior x940–955 | 650–679 | 480 / 480 | 44 |
+| Interior x940–955 | 680–709 | 239 / 480 | 11 |
+
+At sample y640, ID46-only x863–878 is uniformly `(9,8,5)` and baseline and hide-ID46 are identical there. At x948,y640 the ID46-only pixel is `(19,16,11)` and baseline–hide absolute RGB delta is `(36,32,24)`. The unfiltered-minus-hide whole-image bounding box is `(0,588)–(1050,707)` with 17,313 changed pixels, confirming ID46 contributes elsewhere. The ID46-only and hide-ID46 images cannot be directly differenced as a source contribution because their different filter modes remove different scene layers; the valid attribution comparison is unfiltered versus hide.
+
+The original asset is RGBA 2048×252 and has alpha zero across columns 0–5 and 2035–2047 (`ID46_WRAP_REFERENCE_FEASIBILITY_2026-10-23.md`). That supplies a plausible reason for the flat seam pixels. This rendered result does not distinguish transparent source edges from an incorrectly addressed sampler that happens to produce the same composited pixels at this state.
+
+## Sampler and geometry limit; next action
+
+`SDLRenderer.cpp` sets SDL scale mode to linear for minified/repeated scene sprites, and ID46 goes through per-tile `SDL_RenderGeometry`; neither source call proves actual GL `GL_TEXTURE_WRAP_S`, MIN/MAG, populated mip levels, or draw-time bound texture. No graphics debugger/API trace was available in this lane (`apitrace`/`glretrace` absent). A simple pre-draw GL query would also be nonconclusive because SDL batches render commands. This run did not instrument the ID46 callback's actual tile offsets, UVs, deformed corner Xs, or camera X; the named boundary remains CPU-predicted. Therefore do **not** infer WRAP or CLAMP, claim mip parity, or apply a renderer-wide fix.
+
+Next, only if this seam remains a visual priority, use an isolated draw-time GL trace or carefully scoped diagnostic build that flushes/identifies ID46 geometry, records bound texture and wrap/min/mag/base/max/populated mip state plus actual camera/tile vertices, and repeats the same frame with an ID46-specific wrap/global-UV control. Choose a state/region where ID46 edge alpha is nonzero or inspect pre-sepia ID46 source sampling; at this R:98 state the composited seam is a zero-signal gate. The strongest original forest still (`../store_media/screenshots/14.jpg`) is unmatched JPEG with no camera/state; same-state lossless original Windows capture is still required before Windows parity can be assessed. No Jerome visual acceptance is claimed.

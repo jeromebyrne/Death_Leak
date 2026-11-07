@@ -451,7 +451,10 @@ public:
             ? SDL_ScaleModeLinear : SDL_ScaleModeNearest);
         SDL_RendererFlip flip = static_cast<SDL_RendererFlip>(
             (sprite.flipX ? SDL_FLIP_HORIZONTAL : 0) | (sprite.flipY ? SDL_FLIP_VERTICAL : 0));
-        if (sprite.rgbGain > 1.f && damageBurstProgram_) {
+        if (RaftMipExperimentEnabled(sprite, sourcePtr) &&
+            DrawRaftMipExperiment(sprite, destination)) {
+            // Private GL draw at this exact painter slot.
+        } else if (sprite.rgbGain > 1.f && damageBurstProgram_) {
             DrawDamageBurst(sprite, texture, destination);
         } else if (sprite.pixelWobble.enabled && pixelWobbleProgram_ && !sourcePtr) {
             DrawPixelWobble(sprite, texture, destination);
@@ -614,6 +617,78 @@ public:
                       << " angle=" << sprite.rotationDegrees
                       << " backend=private-gl drawError=" << drawError << "\n";
         return drawError == GL_NO_ERROR;
+    }
+    bool RaftMipExperimentEnabled(const Sprite& sprite, const SDL_Rect* source) const {
+        const char* setting = std::getenv("DEATHLEAK_RAFT_MIP_EXPERIMENT");
+        if (!sceneSamplingPhase_ || !setting || std::strcmp(setting, "on") != 0 ||
+            source || sprite.repeatX || sprite.pixelWobble.enabled ||
+            sprite.foliageSway.enabled || sprite.rgbGain > 1.f ||
+            sprite.uvShiftX != 0 || sprite.uvShiftY != 0 ||
+            !SDL_GL_GetCurrentContext()) return false;
+        const auto path = texturePaths_.find(sprite.texture);
+        if (path == texturePaths_.end()) return false;
+        constexpr const char* suffix = "Media/objects/raft.png";
+        const auto& value = path->second;
+        const size_t length = std::strlen(suffix);
+        return value.size() >= length &&
+            value.compare(value.size() - length, length, suffix) == 0 &&
+            (value.size() == length || value[value.size() - length - 1] == '/');
+    }
+    bool DrawRaftMipExperiment(const Sprite& sprite, const SDL_FRect& destination) {
+        if (!std::isfinite(destination.x) || !std::isfinite(destination.y) ||
+            !std::isfinite(destination.w) || !std::isfinite(destination.h) ||
+            destination.w <= 0 || destination.h <= 0) return false;
+        SDL_RenderFlush(renderer_);
+        // Reuse the existing private PNG mip uploader; failed allocation
+        // falls through to the unchanged SDL copy path.
+        const GLuint name = WobbleMipTexture(sprite.texture);
+        if (!name) return false;
+        GLint oldProgram = 0, oldMatrixMode = 0, oldActiveTexture = 0, oldBinding = 0;
+        glGetIntegerv(GL_CURRENT_PROGRAM, &oldProgram);
+        glGetIntegerv(GL_MATRIX_MODE, &oldMatrixMode);
+        glGetIntegerv(GL_ACTIVE_TEXTURE, &oldActiveTexture);
+        glPushAttrib(GL_ALL_ATTRIB_BITS);
+        glActiveTexture(GL_TEXTURE0);
+        glGetIntegerv(GL_TEXTURE_BINDING_2D, &oldBinding);
+        glBindTexture(GL_TEXTURE_2D, name);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glEnable(GL_TEXTURE_2D);
+        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glDisable(GL_DEPTH_TEST);
+        glUseProgram(0);
+        glColor4f(sprite.tint.r / 255.f, sprite.tint.g / 255.f,
+                  sprite.tint.b / 255.f, sprite.tint.a / 255.f * sprite.opacity);
+        glMatrixMode(GL_PROJECTION); glPushMatrix(); glLoadIdentity();
+        glOrtho(0, 1280, 720, 0, -1, 1);
+        glMatrixMode(GL_MODELVIEW); glPushMatrix(); glLoadIdentity();
+        const float radians = sprite.rotationDegrees * 3.14159265358979323846f / 180.f;
+        const float cosine = std::cos(radians), sine = std::sin(radians);
+        const float cx = destination.x + destination.w * .5f;
+        const float cy = destination.y + destination.h * .5f;
+        const float uLeft = sprite.flipX ? 1.f : 0.f, uRight = 1.f - uLeft;
+        // FlipPngRows makes V=1 the authored PNG top.
+        const float vTop = sprite.flipY ? 0.f : 1.f, vBottom = 1.f - vTop;
+        struct Corner { float x, y, u, v; };
+        const Corner corners[4] = {{-.5f,-.5f,uLeft,vTop}, {.5f,-.5f,uRight,vTop},
+                                   {.5f,.5f,uRight,vBottom}, {-.5f,.5f,uLeft,vBottom}};
+        glBegin(GL_QUADS);
+        for (const auto& corner : corners) {
+            const float x = corner.x * destination.w, y = corner.y * destination.h;
+            glTexCoord2f(corner.u, corner.v);
+            glVertex2f(cx + x*cosine-y*sine, cy + x*sine+y*cosine);
+        }
+        glEnd();
+        glMatrixMode(GL_MODELVIEW); glPopMatrix();
+        glMatrixMode(GL_PROJECTION); glPopMatrix();
+        glUseProgram(static_cast<GLuint>(oldProgram));
+        glMatrixMode(oldMatrixMode);
+        glBindTexture(GL_TEXTURE_2D, static_cast<GLuint>(oldBinding));
+        glPopAttrib();
+        glActiveTexture(oldActiveTexture);
+        return true;
     }
     bool DrawFractionalParallax(const Sprite& sprite, SDL_Texture* texture,
                                 const SDL_FRect& destination, int logicalWidth, int logicalHeight) {

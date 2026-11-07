@@ -1,0 +1,23 @@
+# Private gameplay film phase clock gate — 2026-10-23
+
+## Decision
+
+**No source edit justified by the Forest-1 lower-band A/B/A pixels.** Current HEAD `e10084a` advances the ordinary gameplay film from a monotonic wall-clock sample, independently of fixed/capped gameplay delta. The original Windows animated UI widget also advances from an uptime clock rather than gameplay time. Thus the nonidentical A-repeat at `(514,171)` and elsewhere above y596 is consistent with an intentionally time-varying full-viewport film; it does not prove that the Linux selector violates the Windows timing contract, nor that ID37 caused those upper pixels. Original-Windows matched-frame parity and Jerome visual review remain open.
+
+## Source comparison
+
+- `Game/XmlFiles/UI/game_hud.xml:3-16` specifies four `film_frame*.png` frames at 11 FPS and alpha 0.2. `Game/src/UI/UIAnimatedSprite.cpp:4-7,61-77` initializes `(last,index)=(0,0)`, samples `timeGetTime()` in each active UI update, advances **one** index if `last + 1000/fps < current`, wraps at the texture count, and sets `last=current` only on advance. `Game/src/Game.cpp:253-255` calls UI update; `Game/src/program.cpp:164-173,287-318` updates before rendering the UI.
+- HEAD `port/linux/main.cpp:37-49,416-430,1373-1380` initializes separate ordinary `(last,index)=(0,0)`, samples integer milliseconds from `steady_clock` at active HUD draw, applies a strict `last+90<now` gate, advances once and records the sampled time. The four assets, index order and alpha 51 are intact. For ordinary nonwrapping integer millisecond samples, Windows strict `last+90.909...<now` and Linux strict `last+90<now` both first permit an advance at `last+91`. Fixed `--fixed-dt` controls gameplay time, **not** this wall-clock selector.
+- There are bounded timing-model differences: Windows samples during UI update before scene/UI render, whereas Linux samples after scene postprocess immediately before HUD film draw; Windows `timeGetTime()` is 32-bit uptime whereas the port uses a 64-bit monotonic epoch. Update-to-draw threshold crossings or extreme uptime/wrap could select different indices. Those differences are not established as the cause of the cited A/B/A pixels, and no atomic Windows/Linux clock/index trace supports a phase-correction patch. Moving the sample without such a gate could itself change the visible phase and would not make independent process uptimes equal.
+
+## Existing evidence and local check
+
+`port/PRIVATE_FOREST_LOWER_BAND_HEAD_E10084A_GPU_ATTRIBUTION_20261023T182734Z.md` records three physical-NVE7 Forest-1 captures from the same clean binary and gameplay endpoint. Baseline versus ID37-hidden differs only at y596–686 (51,796 pixels); baseline-repeat differs in 514,171 pixels above y596. The opaque HUD bar fixes y687–719 in all captures. The repeat's upper-region change is **plausibly** a film-phase change, not a measured selector-index fact: no selector index or per-frame wall-clock sample was recorded. `port/PRIVATE_HEAD_E10084A_HUD_FILM_ACTIVE_FOREST_GPU_GATE_20261023.md` likewise explicitly cannot recover indices/91-ms boundaries from video. `port/PRIVATE_SEA2_FINAL_FILM_CONTROLLED_INDEX_GPU_GATE_20261023.md` demonstrated a controlled index changes a viewport overlay, but it is a separate final HUD and does not establish this Forest repeat's index.
+
+Ran `python3 port/tests/gameplay_film_first_active_frame_private_cpu_test.py`: PASS, compiling the production selector and checking first 90/91-ms threshold, one-step late update, wrap, assets and draw order. This is a selector contract check, not a Windows runtime trace or proof of equal absolute phase.
+
+## Concrete next gate
+
+An owner of a **separate** runtime/capture lane should record, for each A/B/A Linux frame, the pre-film `(index,last)`, sampled steady-clock integer milliseconds, post-film index, frame/render ordinal, wall elapsed, selected film asset, and a lossless post-HUD frame. Hold scene/gameplay state and other animated clocks fixed, or record their values. That would test whether `(514,171)` changes track an actual film-index difference; a controlled same-index repeat should also be byte-compared. For source parity, obtain the same fields at the original Windows `UIAnimatedSprite::Update` and a lossless matched post-HUD frame with camera/effects/resource identity. Compare the **relative** 91-ms eligibility and update/draw boundary, not raw absolute epoch values. Only a reproducible source-command mismatch at matched state should trigger a narrow patch.
+
+Scope: no GPU/Xorg/capture, SDL renderer, Windows runtime, source edit, index staging, commit/push, or shared status/checkpoint write in this gate. All pre-existing dirty files were preserved. This private report is the only new file.

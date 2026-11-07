@@ -1,0 +1,18 @@
+# Gameplay HUD film capture — bounded read-only fidelity assessment (2026-10-23)
+
+## Verdict and exactly one next visual fix
+
+**Restore the two authored black `frame_top.png` bars to ordinary gameplay, after the film quad and before orb/meter/text HUD draws.** This is the highest-priority source-backed visible HUD defect in the existing active Forest-1 capture. The new film treatment itself is visible and subtle, and the health/focus/orb HUD remains legible; the capture does not establish exact Windows film pixel or animation-phase parity.
+
+## Evidence
+
+- The already-recorded physical-GPU review, `port/GAMEPLAY_HUD_FILM_GPU_REVIEW_2026-10-23.md`, identifies `port/build/gameplay-hud-film-gpu-2026-10-23/forest-1-active-5s.mp4` as a decoded, accelerated OpenGL, 1280×720, 5-second active Forest-1 clip, with `still-2s.png` in the same directory. This assessment reused those artifacts; it made no new capture. The review notes a subtle scene film overlay and readable HUD, but no state-matched post-HUD original Windows frame.
+- Original `Game/XmlFiles/UI/game_hud.xml:3-16` authors full-screen `26_scratch_anim`, four film textures, alpha 0.2 and 11 FPS. The **active**, uncommented `29_frame_top` and `30_frame_bottom` widgets at `:49-65` each use `Media/UI/frame_top.png`, alpha 1, width 1920 and height 50; the bottom is vertically flipped. The left/right frame widgets at `:29-47` are commented out and are not part of this recommendation. The asset `Game/Media/UI/frame_top.png` is an opaque, all-black 1080×1 RGB PNG (inspected via Pillow). On the 1280×720 logical viewport, the authored 50/1080 height corresponds to approximately 33.3 pixels at each edge.
+- Original `Game/src/UI/UIScreen.cpp:161-171` draws visible widgets in name-key order: film `26`, bars `29`/`30`, orb `40`, meters `9`/`91`. Current `port/linux/main.cpp:1207-1235` composites film after scene postprocess, then calls `hud.Draw()` with **no gameplay bar draw**. `port/game/Hud.cpp:40-95` loads/draws orb and meters but not `frame_top.png`. `main.cpp:377,1212-1222` loads and uses that asset only in the separate `sea_2` final-scene branch, which demonstrates the asset/render path exists but does not cover ordinary Forest gameplay.
+- At the center of the saved `still-2s.png` (x=640), the top edge and lower edge show scene color, not an opaque black bar: y=0 RGB (73,64,45), y=32 (80,72,50), y=700 (59,49,37), y=719 (44,36,25). Those sample coordinates fall inside the expected approximately 33-pixel top/bottom bands. The video review's qualitative scene observation is consistent with this; the still supplies concrete visible evidence.
+
+## Bounded handoff
+
+The next owning visual patch should load/reuse the authored `frame_top.png` for ordinary gameplay and draw its top and vertically flipped bottom quads at source-scaled height, **after film and before `Hud::Draw()`**, preserving `sea_2`'s separately authored final-scene layout. Recheck the same Forest-1 route for opaque top/bottom bands and unobscured later HUD widgets. This is a specific missing-draw fix, not a request to retune film opacity/timing or alter `main.cpp` in this read-only task.
+
+Limits: the existing H.264 still is not a registered Windows reference, so it cannot prove exact film-frame index, per-texel opacity, edge rasterization, or global Windows visual parity. The startup/reentry film-phase difference documented by the GPU/source QA remains open but is not a visible defect established by this capture. No build, GPU/display use, source edit, shared status/checkpoint edit, or other report edit was performed. Another worker owns hard-landing shake/`main.cpp`; this report only is the explicit completion handoff.

@@ -1,0 +1,17 @@
+# Forest→Waterfall post-fade visual source gate — 2026-10-23 23:16Z
+
+## Verdict
+
+**No distinct, source-backed, owner-free renderer/composition discrepancy is established. No patch is nominated.** The corrected 13-second Linux clip shows active Waterfall-top gameplay after the black hold, but supplies neither a same-state original-Windows image nor an original draw packet. The visually strongest post-fade candidate—player coverage by the broad blurred tree and later sharp trunk—has an authored explanation and is already owned by the 23:07/23:10 watchdog Waterfall gates. This pass cannot turn visibility alone into a Linux defect.
+
+## Bounded evidence and impact
+
+- `port/PRIVATE_CORRECTED_FADE_ACTIVE_GAMEPLAY_VIDEO_20261023T2231Z.md` records the 1280×720, 390-frame/13-second physical-NVE7 clip (`port/build/private-corrected-fade-active-gameplay-20261023t2231z/corrected-active-13s.mp4`, SHA-256 `93f4ff3fec07002db491951b3bda2cffdfa0871168040759d73776dd9ab8e4d2`). Its decoded 10.1–12.8 s samples show moving player/shots, persistent HUD and central curtain/tree coverage after Waterfall reveal; wall-clock video frames are not simulation ordinals. The separate lossless Linux presentation gate `port/PRIVATE_CURRENT_FADE_GPU_PRESENTATION_GATE_20261023T2258Z.md` verifies black frames 410–414 and first Waterfall reveal at 415–416. These establish current Linux visibility, not Windows pixel parity.
+- Original `Game/XmlFiles/levels/waterfall_top.xml:533-547` authors broad blurred tree ID29 at `kFarForeground`, alpha .95, `fade_when_player_occluded=false`; `:443-457` authors sharp tree ID23 at `kGroundFront`, alpha .95, with fade **enabled**. Port `port/game/LevelScene.cpp:919-944` updates alpha only for fade-enabled sprites and `:1381-1407` submits the authored placement/tint/opacity. Thus ID29 can intentionally cover a moving player; ID23 has a potentially different behavior, but the clip has no registered player/ID23 intersection or measured first divergent alpha/draw command. Impact is intermittent player legibility, not a proved missing object or renderer error. `port/PRIVATE_WATCHDOG_WATERFALL_NEXT_UNOWNED_SOURCE_GATE_20261023T2310Z.md` already owns precisely this ID29/ID23 distinction.
+- The left shaft ID46 (`waterfall_top.xml:796-810`) and its conditional original-mip versus Linux-sampling question are already assigned in `port/PRIVATE_POST_FADE_NEXT_DISTINCT_VISUAL_GATE_20261023T2241Z.md`; no new shaft-local residual is in this clip. The fade, HUD balance, FPS diagnostic, waterfall effects and Forest ID10/ID37 occlusion are separately covered in the 22:41–23:14 private gates. No additional unassigned first divergent source field was found in this bounded review.
+
+## Smallest next step
+
+No implementation. Use the existing original-reference owner to obtain **one lossless, identity/state-matched original Waterfall-top frame** at an actual player/ID23 or ID29 overlap, with camera/player rectangle, ordered object draws, pre/post-object pixels, alpha and film state; pair with the same-state Linux packet. A first divergent command plus localized residual would define a narrow fix; agreement closes the occlusion question. An unmatched promotional JPEG or another Linux-only clip cannot decide it.
+
+Only this report was written. No source, tests, build, GPU/Xorg/game/capture, shared `CHECKPOINT_STATUS.md`/`PORT_WORK_STATUS.md`, index or other existing files were touched; unrelated worktree changes were preserved.
